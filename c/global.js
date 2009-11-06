@@ -85,3 +85,14 @@ HTMLElement.prototype.addClass = function(class_name){
 String.prototype.clearnl = function(){
     return this.replace(/(\n(\r)?)/g, '');
 }
+
+if (typeof Object.prototype.toSource != 'function'){
+    
+    Array.prototype.toSource = function(){
+        return '[' + this.join( ', ' ) + ']';
+    }
+    
+    Object.prototype.toSource = function(){
+        return 'This browser not support Object toSource method';
+    }
+}
