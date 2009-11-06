@@ -1,0 +1,266 @@
+<?php
+session_start();
+
+ob_start();
+
+include "../conf_serv.php";
+include "../getid3/getid3.php";
+include "../lib/func.php";
+
+$error = '';
+
+$db = new Database(DB_NAME);
+
+moderator_access();
+
+echo '<pre>';
+//print_r($_FILES);
+//print_r($_SESSION);
+//print_r($_POST);
+echo '</pre>';
+
+$search = @$_GET['search'];
+$letter = @$_GET['letter'];
+
+
+if (@$_GET['video_out']){
+    $video_out = @$_GET['video_out'];
+    $id = intval(@$_GET['id']);
+    
+    if ($video_out == 'svideo'){
+        $new_video_out = 'svideo';
+    }else{
+        $new_video_out = 'rca';
+    }
+    $sql = "update users set video_out='$new_video_out' where id=$id";
+    $rs=$db->executeQuery($sql);
+    
+    header("Location: profile.php?id=".@$_GET['id']);
+    exit();
+}
+
+if (@$_GET['parent_password'] && $_GET['parent_password'] == 'default'){
+    $id = intval(@$_GET['id']);
+    
+    $sql = "update users set parent_password='0000' where id=$id";
+    $rs=$db->executeQuery($sql);
+    
+    header("Location: profile.php?id=".@$_GET['id']);
+    exit();
+}
+
+if (isset($_GET['set_services'])){
+    $id = intval(@$_GET['id']);
+    
+    $set = intval($_GET['set_services']);
+    if ($set == 0){
+        
+    }else{
+        $set = 1;
+    }
+    
+    $sql = "update users set additional_services_on=$set where id=$id";
+    $rs=$db->executeQuery($sql);
+    
+    header("Location: profile.php?id=".@$_GET['id']);
+    exit();
+}
+
+?>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+td {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    color: #000000;
+}
+td.other {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    color: #000000;
+	border-width: 1px;
+    border-style: solid;
+    border-color: #E5E5E5;
+	background-color:#FFFFFF;
+}
+.list{
+    border-width: 1px;
+    border-style: solid;
+    border-color: #E5E5E5;
+}
+a{
+	color:#0000FF;
+	font-weight: bold;
+	text-decoration:none;
+}
+a:link,a:visited {
+	color:#5588FF;
+	font-weight: bold;
+}
+a:hover{
+	color:#0000FF;
+	font-weight: bold;
+	text-decoration:underline;
+}
+</style>
+<?
+$id = intval(@$_GET['id']);
+
+function get_video_out($video_out, $id){
+    if ($video_out == 'rca'){
+        $change_link = 'video_out=svideo';
+        $change_v_out = 'S-video';
+        $now_v_out = 'RCA';
+    }else{
+        $change_link = 'video_out=rca';
+        $change_v_out = 'RCA';
+        $now_v_out = 'S-video';
+    }
+    $link = '<a href="#" onclick="if(confirm(\'Поменять видео выход на '.$change_v_out.'?\')){document.location=\'profile.php?'.$change_link.'&id='.$id.'\'}">'.$now_v_out.'</a>';    
+    
+    return $link;
+}
+
+function get_cost_sub_channels(){
+    global $db,$id;
+    
+    $sub_ch = get_sub_channels();
+    if (count($sub_ch) > 0){
+        $sub_ch_str = join(",", get_sub_channels());
+        $sql = "select SUM(cost) as total_cost from itv where id in ($sub_ch_str)";
+        $rs = $db->executeQuery($sql);
+        $total_cost = @$rs->getValueByName(0, 'total_cost');
+        return $total_cost;
+    }else{
+        return 0;
+    }
+}
+
+function additional_services_btn(){
+    global $db,$id;
+    
+    $sql = "select * from users where id=".$id;
+    $rs = $db->executeQuery($sql);
+    $additional_services_on = @$rs->getValueByName(0, 'additional_services_on');
+    if ($additional_services_on == 0){
+        $color = 'red';
+        $txt = 'Выключены';
+        $set = 1;
+    }else{
+        $color = 'green';
+        $txt = 'Включены';
+        $set = 0;
+    }
+    return '<a href="profile.php?id='.$id.'&set_services='.$set.'" style="color:'.$color.'"><b>'.$txt.'</b></a>';
+}
+
+
+$sql = "select * from users where id=$id";
+$rs=$db->executeQuery($sql);
+
+while(@$rs->next()){
+        $arr=$rs->getCurrentValuesAsHash();
+        $mac = $arr['mac'];
+        $ip  = $arr['ip'];
+        $video_out  = $arr['video_out'];
+        $parent_password  = $arr['parent_password'];
+}
+?>
+<title>Профиль пользователя</title>
+</head>
+<body>
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
+<tr>
+    <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
+    <font size="5px" color="White"><b>&nbsp;Профиль пользователя&nbsp;</b></font>
+    </td>
+</tr>
+<tr>
+    <td width="100%" align="left" valign="bottom">
+        <a href="users.php"><< Назад</a> 
+    </td>
+</tr>
+<tr>
+    <td align="center">
+    <font color="Red">
+    <strong>
+    <? echo $error?>
+    </strong>
+    </font>
+    <br>
+    <br>
+    </td>
+</tr>
+<tr>
+<td>
+<table cellpadding="0" cellspacing="3">
+    <tr>
+        <td class="other" width="230">
+        <table>
+            <tr>
+                <td></td>
+                <td><b><?echo check_keep_alive_txt($arr['keep_alive'])?></b></td>
+            </tr>
+            <tr>
+                <td>mac:</td>
+                <td><b><?echo $mac?></b></td>
+            </tr>
+            <tr>
+                <td>ip:</td>
+                <td><b><?echo $ip?></b></td>
+            </tr>
+            <tr>
+                <td>v/out:</td>
+                <td><b><?echo get_video_out($video_out, $id)?></b></td>
+            </tr>
+            <tr>
+                <td>pass:</td>
+                <td>[<?echo $parent_password?>] <a href="#" onclick="if(confirm('Изменить на пароль по умолчанию?')){document.location='profile.php?parent_password=default&id=<?echo $id?>'}">Сбросить</a></td>
+            </tr>
+        </table>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <?// if (ENABLE_SUBSCRIPTION && check_access(array(3))){ ?>
+    <? if (check_access(array(3)) || @$_SESSION['login'] == 'alex'){ ?>
+    <tr>
+        <td class="other" width="150">
+        <table>
+            <tr>
+                <td><a href="subscribe.php?id=<?echo $id?>">Подписка на каналы</a> (<?echo kop2grn(get_cost_sub_channels())?> грн)</td>
+            </tr>
+            <tr>
+                <td><b>Доп. сервисы</b>: <? echo additional_services_btn() ?></td>
+            </tr>
+        </table>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <?} ?>
+    <tr>
+        <td class="other" width="150">
+        <table>
+            <tr>
+                <td><a href="userlog.php?id=<?echo $id?>">Логи</a></td>
+            </tr>
+        </table>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+</td>
+</tr>
+</table>
+
