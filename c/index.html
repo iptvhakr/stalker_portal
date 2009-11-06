@@ -5,16 +5,229 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="global.js"></script>
 <script type="text/javascript" src="JsHttpRequest.js"></script>
-<script type="text/javascript" src="lang/lang_ru.js"></script>
 <style type="text/css">
 
 </style>
 <script language="JavaScript" type="text/javascript">
 
+var ver = '4.0.0';
+var debug = 1;
+var stb;
+
+/**
+ * Init STB
+ */
 function init(){
-    webkit_xpcom.prototype = gSTB
-    common_xpcom.prototype = new webkit_xpcom()
-    stb = new common_xpcom()
+    webkit_xpcom.prototype = gSTB;
+    common_xpcom.prototype = new webkit_xpcom();
+    stb = new common_xpcom();
+    stb.init();
+}
+
+/**
+ * Debug function
+ */
+function _debug(t){
+    if (debug){
+        try{
+            gSTB.Debug(t)
+        }catch(e){}
+    }
+}
+
+/**
+ * XPCOM STB constructor
+ * @constructor
+ */
+function common_xpcom(){
+    
+    this.user = {};
+    this.mac = '';
+    this.ip  = '';
+    this.hd  = 0;
+    this.type  = '';
+    this.version    = '';
+    this.ajax_loader  = '';
+    this.images   = [];
+    this.storages = {};
+    this.player;
+    
+    this.menu_clock = new main_menu_clock();
+    
+    this.init = function(){
+        this.player = new player();
+    }
+    
+    this.get_server_params = function(){
+        
+        var pattern = /http:\/\/([\w\.\-]*)\/([\w]+)*\/(.)*/;
+
+        this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+document.URL.replace(pattern, "$2")+'/server/load.php';
+        
+        _debug('stb.serv_path: '+this.ajax_loader);
+    }
+    
+    this.get_stb_params = function (){
+        
+        try{
+            
+            this.mac = stb.RDir('MACAddress').toUpperCase().clearnl()
+            
+            this.ip  = stb.RDir('IPAddress').clearnl()
+            
+            this.type = stb.RDir('Model').clearnl()
+            
+            this.version = 'PORTAL version: '+ver+'; '+stb.Version()
+            
+            if (this.type == 'MAG200'){
+                this.hd = 1
+            }else{
+                this.hd = 0
+            }
+        }catch(e){
+            _debug(e)
+        }
+        
+        _debug('this.mac: ' +this.mac)
+        _debug('this.ip: '  +this.ip)
+        _debug('this.type: '+this.type)
+        _debug('this.version: '+this.version)
+        _debug('this.hd: '+this.hd)
+    }
+    
+    this.set_cookie = function(name, val){
+        document.cookie = name + '=' + escape(val) + '; path=/;'
+    }
+    
+    this.preload_images = function(){
+        
+        JsHttpRequest.query(
+            
+            this.ajax_loader,
+            
+            {'type' : 'preload_images'},
+            
+            function(result, errors){
+                _debug(errors);
+                if (result.data != null){
+                    for (var i=0; i<result.data.length; i++){
+                        stb.images[i] = new Image();
+                        stb.images[i].src = result.data[i];
+                    	stb.images.onload = function(){}
+                    }
+                }
+            },
+            
+            true
+        );
+    }
+    
+    this.get_user_profile = function(){
+        
+        JsHttpRequest.query(
+            
+            this.ajax_loader,
+            
+            {'hd':this.hd, 'ver':this.version},
+            
+            function(result, errors){
+                _debug(errors);
+                if (result.data != null){
+                    this.user_init(result.data);
+                }
+            },
+            
+            true
+        );
+    }
+    
+    this.check_image_version = function(){
+        if (this.type == 'MAG200'){
+            var cur_version = stb.RDir('ImageVersion').clearnl()
+            _debug('cur_version: '+cur_version)
+            _debug('stb.user.image_version: '+stb.user['image_version'])
+            if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0'){
+                _debug('RebootDHCP')
+                stb.ExecAction('RebootDHCP')
+                return 0
+            }
+        }
+        return 1
+    }
+    
+    this.user_init = function(user_data){
+        
+        this.user = user_data
+        
+        _debug('this.user: '+this.user.toSource())
+        
+        if (this.user['status'] == 0){
+            
+            if (this.type == 'MAG200'){
+                if (!this.check_image_version()){
+                    return;
+                }
+            }
+            
+            this.preload_images()
+            
+            this.player.volume_bar.set_volume(parseInt(this.user['volume']))
+            
+            /*fav_itv_on = parseInt(this.user['fav_itv_on'])
+            rec_channels_ids = this.user['my_rec_ch']
+            mount_home_dir(this.user['storages'])
+            set_additional_services(this.user['additional_services_on'])
+            load_channels()
+            load_fav_channels()
+            load_fav_itv()
+            isset_channels()
+            key_lock = 0
+            
+            cur_weather = this.user['cur_weather']
+            
+            set_updated_places(this.user['updated'])
+            get_media_cats()
+            run_watchdog()
+            epg_loader.start()*/
+        }else if(this.user['status'] == 1){
+            /*cut_off()
+            run_watchdog()*/
+        }
+    }
+}
+
+/**
+ * Player constructor
+ * @constructor
+ */
+function player(){
+    
+    this.init = function(){
+        stb.InitPlayer();
+        stb.SetChromaKey(0, 0xffffff)
+        stb.SetAspect(0x10);
+        stb.SetPIG(1, -1, -1, -1);
+        stb.SetUserFlickerControl(1);
+        stb.SetDefaultFlicker(1);
+        stb.SetLoop(0);
+        stb.SetMicVolume(100);
+    }
+    
+    this.volume_bar = new function(){
+        this.volume = v;
+        
+        this.set_volume = function(v){
+            stb.SetVolume(this.volume);
+        }
+        
+        this.show = function(){
+            
+        }
+        
+        this.hide = function(){
+            
+        }
+    }
 }
 
 
