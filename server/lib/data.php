@@ -135,14 +135,18 @@ function get_data(){
     if ($type == 'set_id'){
         $last_id=$_GET['id'];
         //increment_counter($last_id, 'itv');
-        $sql = "select * from last_id where ident='".$stb->mac."'";
+        /*$sql = "select * from last_id where ident='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
         $ip = $rs->getValueByName(0, 'id');
         if($ip){
             $sql = "update last_id set last_id='".$last_id."' where ident='".$stb->mac."'";
         }else{
             $sql = "insert into last_id (ident, last_id) values ('".$stb->mac."', '".$last_id."')";
-        }
+        }*/
+        
+        $sql = "insert into last_id (ident, last_id) values ('".$stb->mac."', '".$last_id."')
+                on duplicate key update last_id='".$last_id."'";
+        
         $rs = $db->executeQuery($sql);
         return 0;
     }
@@ -680,6 +684,11 @@ function get_data(){
         $sql = "update users set time_last_play_tv=NOW() where id=$uid";
         $db->executeQuery($sql);
         
+        $sql = "insert into last_id (ident, last_id) values ('".$stb->mac."', '".$itv_id."')
+                on duplicate key update last_id='".$itv_id."'";
+        
+        $db->executeQuery($sql);
+        
         return 1;
     }
     
@@ -754,6 +763,7 @@ function get_data(){
         $arr['storages'] = $master->getStoragesForStb();
         $arr['additional_services_on'] = $rs->getValueByName(0, 'additional_services_on');
         $arr['image_version'] = $rs->getValueByName(0, 'image_version');
+        $arr['last_itv_id'] = intval($db->executeQuery("select * from last_id where ident='".$stb->mac."'")->getValueByName(0, 'last_id'));
                 
         $master->checkAllHomeDirs();
         
