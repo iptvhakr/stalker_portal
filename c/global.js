@@ -1,6 +1,6 @@
 /**
- *
- *
+ * Custom prototype metods
+ * @author zhurbitsky@gmail.com
  */
 
 HTMLElement.prototype.show = function(){
@@ -95,4 +95,26 @@ if (typeof Object.prototype.toSource != 'function'){
     Object.prototype.toSource = function(){
         return 'This browser not support Object toSource method';
     }
+}
+
+Array.prototype.getIdxById = function(id){
+    for (var i=0; i<this.length; i++){
+        if (this[i].hasOwnProperty('id')){
+            if (this[i].id == id){
+                return i;
+            }
+        }
+    }
+    return null;
+}
+
+Array.prototype.getIdxByNumber = function(number){
+    for (var i=0; i<this.length; i++){
+        if (this[i].hasOwnProperty('number')){
+            if (this[i].number == number){
+                return i;
+            }
+        }
+    }
+    return null;
 }
