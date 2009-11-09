@@ -13,6 +13,16 @@
 var ver = '4.0.0';
 var debug = 1;
 var stb;
+var stbEvent;
+
+/**
+ * Alias for document.getElementById
+ * @param {Number} id 
+ * @return {*} DOMElement
+ */
+var $ = function(id){
+    return document.getElementById(id);
+}
 
 /**
  * Init STB
@@ -51,6 +61,8 @@ function common_xpcom(){
     this.images   = [];
     this.storages = {};
     this.player;
+    this.key_lock = 1;
+    this.channels_inited = 0;
     
     this.menu_clock = new main_menu_clock();
     
@@ -71,28 +83,28 @@ function common_xpcom(){
         
         try{
             
-            this.mac = stb.RDir('MACAddress').toUpperCase().clearnl()
+            this.mac = stb.RDir('MACAddress').toUpperCase().clearnl();
             
-            this.ip  = stb.RDir('IPAddress').clearnl()
+            this.ip  = stb.RDir('IPAddress').clearnl();
             
-            this.type = stb.RDir('Model').clearnl()
+            this.type = stb.RDir('Model').clearnl();
             
-            this.version = 'PORTAL version: '+ver+'; '+stb.Version()
+            this.version = 'PORTAL version: '+ver+'; '+stb.Version();
             
             if (this.type == 'MAG200'){
-                this.hd = 1
+                this.hd = 1;
             }else{
-                this.hd = 0
+                this.hd = 0;
             }
         }catch(e){
-            _debug(e)
+            _debug(e);
         }
         
-        _debug('this.mac: ' +this.mac)
-        _debug('this.ip: '  +this.ip)
-        _debug('this.type: '+this.type)
-        _debug('this.version: '+this.version)
-        _debug('this.hd: '+this.hd)
+        _debug('this.mac: ' +this.mac);
+        _debug('this.ip: '  +this.ip);
+        _debug('this.type: '+this.type);
+        _debug('this.version: '+this.version);
+        _debug('this.hd: '+this.hd);
     }
     
     this.set_cookie = function(name, val){
@@ -113,7 +125,7 @@ function common_xpcom(){
                     for (var i=0; i<result.data.length; i++){
                         stb.images[i] = new Image();
                         stb.images[i].src = result.data[i];
-                    	stb.images.onload = function(){}
+                    	stb.images.onload = function(){};
                     }
                 }
             },
@@ -128,7 +140,11 @@ function common_xpcom(){
             
             this.ajax_loader,
             
-            {'hd':this.hd, 'ver':this.version},
+            {
+                'type': 'get_profile',
+                'hd'  : this.hd,
+                'ver' : this.version
+            },
             
             function(result, errors){
                 _debug(errors);
@@ -143,21 +159,21 @@ function common_xpcom(){
     
     this.check_image_version = function(){
         if (this.type == 'MAG200'){
-            var cur_version = stb.RDir('ImageVersion').clearnl()
-            _debug('cur_version: '+cur_version)
-            _debug('stb.user.image_version: '+stb.user['image_version'])
+            var cur_version = stb.RDir('ImageVersion').clearnl();
+            _debug('cur_version: '+cur_version);
+            _debug('stb.user.image_version: '+stb.user['image_version']);
             if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0'){
-                _debug('RebootDHCP')
-                stb.ExecAction('RebootDHCP')
-                return 0
+                _debug('RebootDHCP');
+                stb.ExecAction('RebootDHCP');
+                return 0;
             }
         }
-        return 1
+        return 1;
     }
     
     this.user_init = function(user_data){
         
-        this.user = user_data
+        this.user = user_data;
         
         _debug('this.user: '+this.user.toSource())
         
@@ -169,30 +185,144 @@ function common_xpcom(){
                 }
             }
             
-            this.preload_images()
+            this.preload_images();
             
-            this.player.volume_bar.set_volume(parseInt(this.user['volume']))
+            this.player.volume_bar.set_volume(parseInt(this.user['volume']));
             
-            /*fav_itv_on = parseInt(this.user['fav_itv_on'])
-            rec_channels_ids = this.user['my_rec_ch']
+            this.user.fav_itv_on = parseInt(this.user.fav_itv_on);
+            
+            /*
             mount_home_dir(this.user['storages'])
-            set_additional_services(this.user['additional_services_on'])
-            load_channels()
-            load_fav_channels()
-            load_fav_itv()
-            isset_channels()
-            key_lock = 0
+            
+            get_media_cats()
             
             cur_weather = this.user['cur_weather']
             
             set_updated_places(this.user['updated'])
-            get_media_cats()
-            run_watchdog()
             epg_loader.start()*/
+            
+            this.load_channels();
+            this.load_fav_channels();
+            this.load_fav_itv();
+            
         }else if(this.user['status'] == 1){
-            /*cut_off()
-            run_watchdog()*/
+            //cut_off()
         }
+        //run_watchdog();
+    }
+    
+    this.load_channels = function(){
+        JsHttpRequest.query(
+            
+            this.ajax_loader,
+            
+            {
+                'type'  : 'itv',
+                'action': 'all'
+            },
+            
+            function(result, errors){
+                _debug(errors);
+                this.player.channels = result.data || [];
+                this.channels_loaded();
+            },
+            
+            true
+        );
+    }
+    
+    this.load_fav_channels = function(){
+        JsHttpRequest.query(
+            
+            this.ajax_loader,
+            
+            {
+                'type'  : 'itv',
+                'action': 'all',
+                'fav'   : 1
+            },
+            
+            function(result, errors){
+                _debug(errors);
+                this.player.fav_channels = result.data || [];
+                this.channels_loaded();
+            },
+            
+            true
+        );
+    }
+    
+    this.load_fav_itv = function(){
+        JsHttpRequest.query(
+            
+            this.ajax_loader,
+            
+            {
+                'type'  : 'fav_itv',
+            },
+            
+            function(result, errors){
+                _debug(errors);
+                this.player.fav_channels_ids = result.data || [];
+                if (this.player.fav_channels_ids.length > 0){
+                    this.user.fav_itv_on = 0;
+                }
+                this.channels_loaded();
+            },
+            
+            true
+        );
+    }
+    
+    this.channels_loaded = function(){
+        
+        if (this.channels_inited){
+            return;
+        }
+        
+        if (typeof(this.player.channels) != 'undefined' &&
+            typeof(this.player.fav_channels) != 'undefined' &&
+            typeof(this.player.fav_channels_ids) != 'undefined'){
+            
+                
+            if (this.user.fav_itv_on){
+                this.player.f_ch_idx = this.player.fav_channels.getIdxById(this.user.last_itv_id);
+                if (this.player.f_ch_idx === null){
+                    this.player.f_ch_idx = 0;
+                }
+                var channel = this.player.fav_channels[this.player.f_ch_idx];
+            }else{
+                this.player.ch_idx = this.player.channels.getIdxById(this.user.last_itv_id);
+                if (this.player.ch_idx === null){
+                    this.player.ch_idx = 0;
+                }
+                var channel = this.player.channels[this.player.ch_idx];
+            }
+            
+            this.player.show_info(channel);
+            this.player.play(channel);
+            
+            this.key_lock = 0;
+            this.channels_inited = 1;
+        }
+    }
+    
+}
+
+/**
+ * WebKit STB constructor
+ * @constructor
+ */
+function webkit_xpcom(){
+    
+    this.StandBy = function(par){
+        gSTB.StandBy(par)
+        panel = '.200'
+        if (par){
+            panel = '....'
+        }
+        _debug('front_panel caption ' + panel)
+        gSTB.ExecAction('front_panel caption ' + panel)
     }
 }
 
@@ -202,30 +332,212 @@ function common_xpcom(){
  */
 function player(){
     
+    var self = this;
+    
+    this.f_ch_idx = 0;
+    this.ch_idx   = 0;
+    this.channels;
+    this.fav_channels;
+    this.fav_channels_ids;
+    
+    this.start_time;
+    this.cur_media_item;
+    this.paused = 0;
+    this.need_show_info = 0;
+    this.pause_dom_obj = $('pause');
+    
+    this.init();
+    
     this.init = function(){
-        stb.InitPlayer();
-        stb.SetChromaKey(0, 0xffffff)
-        stb.SetAspect(0x10);
-        stb.SetPIG(1, -1, -1, -1);
-        stb.SetUserFlickerControl(1);
-        stb.SetDefaultFlicker(1);
-        stb.SetLoop(0);
-        stb.SetMicVolume(100);
+        try{
+            stb.InitPlayer();
+            stb.SetChromaKey(0, 0xffffff)
+            stb.SetAspect(0x10);
+            stb.SetPIG(1, -1, -1, -1);
+            stb.SetUserFlickerControl(1);
+            stb.SetDefaultFlicker(1);
+            stb.SetLoop(0);
+            stb.SetMicVolume(100);
+            
+            initEvents();
+            stbEvent.onEvent = event_callback;
+        }catch(e){
+            _debug(e);
+        }
     }
     
     this.volume_bar = new function(){
-        this.volume = v;
+        this.volume = 100;
+        this.volume_bar_dom_obj = $('volume_bar');
         
         this.set_volume = function(v){
+            this.volume = v;
             stb.SetVolume(this.volume);
         }
         
         this.show = function(){
-            
+            this.volume_bar_dom_obj.show();
         }
         
         this.hide = function(){
+            this.volume_bar_dom_obj.hide();
+        }
+        
+        this.save = function(){
+            JsHttpRequest.query(
             
+                this.ajax_loader,
+                
+                {
+                    'type' : 'set_volume',
+                    'data' : this.volume
+                },
+                
+                function(result, errors){
+                    _debug(errors);
+                },
+                
+                true
+            );
+        }
+    };
+    
+    this.seek_bar = new function(){
+        
+        this.seek_bar_dom_obj = $('seek_bar');
+        
+        this.show = function(){
+            this.seek_bar_dom_obj.show();
+        }
+        
+        this.hide = function(){
+            this.seek_bar_dom_obj.hide();
+        }
+        
+        this.set_pos = function(){
+            
+        }
+    };
+    
+    this.define_media_type = function(cmd){
+        
+        if (cmd.indexOf('://') > 0){
+            return 'stream';
+        }else{
+            return 'file';
+        }
+    }
+    
+    this.play = function(item){
+        
+        var cmd;
+        
+        this.cur_media_item = item;
+        
+        if (typeof(item) == 'object'){
+            if (!item.hasOwnProperty('cmd')){
+                return;
+            }
+            cmd = item.cmd;
+        }else{
+            cmd = item;
+        }
+        
+        this.media_type = this.define_media_type(cmd);
+        
+        if (this.media_type == 'stream'){
+            this.play_now(cmd);
+        }else{
+            this.create_link(item);
+        }
+        
+    }
+    
+    this.create_link = function(uri){
+        
+        JsHttpRequest.query(
+            
+            stb.ajax_loader,
+            
+            {
+                'type'   : 'create_link',
+                'action' : '',
+                'cmd'    : uri,
+                'series' : ''
+            },
+            
+            function(result, errors){
+                _debug(errors);
+                
+            },
+            
+            true
+        );
+    }
+    
+    this.play_now = function(uri){
+        
+        this.start_time = Date.parse(new Date())/1000;
+
+        if (this.need_show_info){
+            this.show_info(cur_media_item);
+        }
+        
+        try{
+            stb.Play(uri);
+        }catch(e){}
+    }
+    
+    this.stop = function(){
+        this.need_show_info = 0;
+        try{
+            stb.Stop();
+        }catch(e){}
+    }
+    
+    this.pause = function(){
+        try{
+            stb.Pause();
+            this.paused = 1;
+            this.pause_dom_obj.show();
+        }catch(e){}
+    }
+    
+    this.continue = function(){
+        try{
+            stb.Continue();
+            this.paused = 0;
+            this.pause_dom_obj.hide();
+        }catch(e){}
+    }
+    
+    this.show_info_after_play = function(){
+        this.need_show_info = 1;
+    }
+    
+    this.show_info = function(item){
+        
+        
+    }
+    
+}
+
+/**
+ * Callback for player events
+ */
+function event_callback(event){
+    _debug('event: '+event)
+    
+    switch(event){
+        case 1: // End of stream
+        {
+            stb.player.stop();
+            break;
+        }
+        case 4: // Playback started
+        {
+            
+            break;
         }
     }
 }
