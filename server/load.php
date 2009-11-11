@@ -25,7 +25,7 @@ require_once "./conf_serv.php";
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
-$JsHttpRequest =& new Subsys_JsHttpRequest_Php("utf-8");
+$JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
 //$JsHttpRequest = new JsHttpRequest("utf-8");
 
 $_RESULT = get_data(); 
