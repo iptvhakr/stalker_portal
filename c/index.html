@@ -16,7 +16,7 @@ var debug = 1;
 var stb;
 var stbEvent;
 
-window.onerror = function(){
+window.onerror = function(msg, url, lno){
     _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
     return true;
 }
@@ -38,7 +38,9 @@ var $ = function(id){
  * Init STB.
  */
 function init(){
-    webkit_xpcom.prototype = gSTB;
+    try{
+        webkit_xpcom.prototype = gSTB;
+    }catch(e){}
     common_xpcom.prototype = new webkit_xpcom();
     stb = new common_xpcom();
     stb.init();
@@ -74,19 +76,22 @@ function common_xpcom(){
     this.key_lock = 1;
     this.channels_inited = 0;
     
-    this.menu_clock = new main_menu_clock();
+    //this.menu_clock = new main_menu_clock();
     
     this.init = function(){
         this.player = new player();
+        this.get_stb_params();
+        this.get_server_params();
+        this.get_user_profile();
     }
     
     this.get_server_params = function(){
         
-        var pattern = /http:\/\/([\w\.\-]*)\/([\w]+)*\/(.)*/;
+        var pattern = /http:\/\/([\w\.\-]*)\/([\w\/]+)*\/([\w\/]+)\/(.)*/;
 
         this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+document.URL.replace(pattern, "$2")+'/server/load.php';
         
-        _debug('stb.serv_path: '+this.ajax_loader);
+        _debug('stb.ajax_loader: '+this.ajax_loader);
     }
     
     this.get_stb_params = function (){
@@ -357,180 +362,179 @@ function player(){
     this.pause_dom_obj = $('pause');
     
     this.init();
+}
+
+player.prototype.init = function(){
+    try{
+        stb.InitPlayer();
+        stb.SetChromaKey(0, 0xffffff)
+        stb.SetAspect(0x10);
+        stb.SetPIG(1, -1, -1, -1);
+        stb.SetUserFlickerControl(1);
+        stb.SetDefaultFlicker(1);
+        stb.SetLoop(0);
+        stb.SetMicVolume(100);
+        
+        initEvents();
+        stbEvent.onEvent = event_callback;
+    }catch(e){
+        _debug(e);
+    }
+}
+
+player.prototype.volume_bar = new function(){
+    this.volume = 100;
+    this.volume_bar_dom_obj = $('volume_bar');
     
-    this.init = function(){
-        try{
-            stb.InitPlayer();
-            stb.SetChromaKey(0, 0xffffff)
-            stb.SetAspect(0x10);
-            stb.SetPIG(1, -1, -1, -1);
-            stb.SetUserFlickerControl(1);
-            stb.SetDefaultFlicker(1);
-            stb.SetLoop(0);
-            stb.SetMicVolume(100);
-            
-            initEvents();
-            stbEvent.onEvent = event_callback;
-        }catch(e){
-            _debug(e);
-        }
+    this.set_volume = function(v){
+        this.volume = v;
+        stb.SetVolume(this.volume);
     }
     
-    this.volume_bar = new function(){
-        this.volume = 100;
-        this.volume_bar_dom_obj = $('volume_bar');
-        
-        this.set_volume = function(v){
-            this.volume = v;
-            stb.SetVolume(this.volume);
-        }
-        
-        this.show = function(){
-            this.volume_bar_dom_obj.show();
-        }
-        
-        this.hide = function(){
-            this.volume_bar_dom_obj.hide();
-        }
-        
-        this.save = function(){
-            JsHttpRequest.query(
-            
-                this.ajax_loader,
-                
-                {
-                    'type' : 'set_volume',
-                    'data' : this.volume
-                },
-                
-                function(result, errors){
-                    _debug(errors);
-                },
-                
-                true
-            );
-        }
-    };
-    
-    this.seek_bar = new function(){
-        
-        this.seek_bar_dom_obj = $('seek_bar');
-        
-        this.show = function(){
-            this.seek_bar_dom_obj.show();
-        }
-        
-        this.hide = function(){
-            this.seek_bar_dom_obj.hide();
-        }
-        
-        this.set_pos = function(){
-            
-        }
-    };
-    
-    this.define_media_type = function(cmd){
-        
-        if (cmd.indexOf('://') > 0){
-            return 'stream';
-        }else{
-            return 'file';
-        }
+    this.show = function(){
+        this.volume_bar_dom_obj.show();
     }
     
-    this.play = function(item){
-        
-        var cmd;
-        
-        this.cur_media_item = item;
-        
-        if (typeof(item) == 'object'){
-            if (!item.hasOwnProperty('cmd')){
-                return;
-            }
-            cmd = item.cmd;
-        }else{
-            cmd = item;
-        }
-        
-        this.media_type = this.define_media_type(cmd);
-        
-        if (this.media_type == 'stream'){
-            this.play_now(cmd);
-        }else{
-            this.create_link(item);
-        }
-        
+    this.hide = function(){
+        this.volume_bar_dom_obj.hide();
     }
     
-    this.create_link = function(uri){
-        
+    this.save = function(){
         JsHttpRequest.query(
-            
-            stb.ajax_loader,
+        
+            this.ajax_loader,
             
             {
-                'type'   : 'create_link',
-                'action' : '',
-                'cmd'    : uri,
-                'series' : ''
+                'type' : 'set_volume',
+                'data' : this.volume
             },
             
             function(result, errors){
                 _debug(errors);
-                
             },
             
             true
         );
     }
-    
-    this.play_now = function(uri){
-        
-        this.start_time = Date.parse(new Date())/1000;
+};
 
-        if (this.need_show_info){
-            this.show_info(cur_media_item);
+player.prototype.seek_bar = new function(){
+    
+    this.seek_bar_dom_obj = $('seek_bar');
+    
+    this.show = function(){
+        this.seek_bar_dom_obj.show();
+    }
+    
+    this.hide = function(){
+        this.seek_bar_dom_obj.hide();
+    }
+    
+    this.set_pos = function(){
+        
+    }
+};
+
+player.prototype.define_media_type = function(cmd){
+    
+    if (cmd.indexOf('://') > 0){
+        return 'stream';
+    }else{
+        return 'file';
+    }
+}
+
+player.prototype.play = function(item){
+    
+    var cmd;
+    
+    this.cur_media_item = item;
+    
+    if (typeof(item) == 'object'){
+        if (!item.hasOwnProperty('cmd')){
+            return;
         }
-        
-        try{
-            stb.Play(uri);
-        }catch(e){}
+        cmd = item.cmd;
+    }else{
+        cmd = item;
     }
     
-    this.stop = function(){
-        this.need_show_info = 0;
-        try{
-            stb.Stop();
-        }catch(e){}
-    }
+    this.media_type = this.define_media_type(cmd);
     
-    this.pause = function(){
-        try{
-            stb.Pause();
-            this.paused = 1;
-            this.pause_dom_obj.show();
-        }catch(e){}
-    }
-    
-    this.continue = function(){
-        try{
-            stb.Continue();
-            this.paused = 0;
-            this.pause_dom_obj.hide();
-        }catch(e){}
-    }
-    
-    this.show_info_after_play = function(){
-        this.need_show_info = 1;
-    }
-    
-    this.show_info = function(item){
-        
-        
+    if (this.media_type == 'stream'){
+        this.play_now(cmd);
+    }else{
+        this.create_link(item);
     }
     
 }
+
+player.prototype.create_link = function(uri){
+    
+    JsHttpRequest.query(
+        
+        stb.ajax_loader,
+        
+        {
+            'type'   : 'create_link',
+            'action' : '',
+            'cmd'    : uri,
+            'series' : ''
+        },
+        
+        function(result, errors){
+            _debug(errors);
+            
+        },
+        
+        true
+    );
+}
+
+player.prototype.play_now = function(uri){
+    
+    this.start_time = Date.parse(new Date())/1000;
+
+    if (this.need_show_info){
+        this.show_info(cur_media_item);
+    }
+    
+    try{
+        stb.Play(uri);
+    }catch(e){}
+}
+
+player.prototype.stop = function(){
+    this.need_show_info = 0;
+    try{
+        stb.Stop();
+    }catch(e){}
+}
+
+player.prototype.pause = function(){
+    try{
+        stb.Pause();
+        this.paused = 1;
+        this.pause_dom_obj.show();
+    }catch(e){}
+}
+
+player.prototype.continue = function(){
+    try{
+        stb.Continue();
+        this.paused = 0;
+        this.pause_dom_obj.hide();
+    }catch(e){}
+}
+
+player.prototype.show_info_after_play = function(){
+    this.need_show_info = 1;
+}
+
+player.prototype.show_info = function(item){
+    
+}
+    
 
 /**
  * Callback for player events.
