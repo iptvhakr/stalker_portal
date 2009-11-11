@@ -32,7 +32,7 @@ if (OS_UNIX){
     define("MYSQL_PASS", '1');
 }else{
     define("XMLTV_URI",  'D:\\listing.xml');
-    define("PORTAL_PATH", 'd:\\projects\\stalker_portal\\');
+    define("PORTAL_PATH", 'd:\\projects\\stalker_portal\\current\\');
     define("IMG_PATH", 'd:\\media\\screenshots\\');
     define("DB_NAME", 'stalker_db_mirror');
     define("MYSQL_USER", 'root');
