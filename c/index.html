@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="global.js"></script>
 <script type="text/javascript" src="JsHttpRequest.js"></script>
+<script type="text/javascript" src="keycodes.js"></script>
 <style type="text/css">
 
 </style>
@@ -15,8 +16,17 @@ var debug = 1;
 var stb;
 var stbEvent;
 
+window.onerror = function(){
+    _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
+    return true;
+}
+
+window.onload = init;
+
+document.addEventListener("keydown", function(event){observer.fire(event)}, false);
+
 /**
- * Alias for document.getElementById
+ * Alias for document.getElementById.
  * @param {Number} id 
  * @return {*} DOMElement
  */
@@ -25,7 +35,7 @@ var $ = function(id){
 }
 
 /**
- * Init STB
+ * Init STB.
  */
 function init(){
     webkit_xpcom.prototype = gSTB;
@@ -35,7 +45,7 @@ function init(){
 }
 
 /**
- * Debug function
+ * Debug function.
  */
 function _debug(t){
     if (debug){
@@ -46,7 +56,7 @@ function _debug(t){
 }
 
 /**
- * XPCOM STB constructor
+ * XPCOM STB constructor.
  * @constructor
  */
 function common_xpcom(){
@@ -310,7 +320,7 @@ function common_xpcom(){
 }
 
 /**
- * WebKit STB constructor
+ * WebKit STB constructor.
  * @constructor
  */
 function webkit_xpcom(){
@@ -523,7 +533,7 @@ function player(){
 }
 
 /**
- * Callback for player events
+ * Callback for player events.
  */
 function event_callback(event){
     _debug('event: '+event)
@@ -541,6 +551,137 @@ function event_callback(event){
         }
     }
 }
+
+
+/**
+ * KeyDown event observer.
+ *
+ */
+var observer = new function(){
+    
+    this.listeners = {};
+    
+    this.fire = function(e){
+        
+        var code = e.keyCode || e.which;
+        
+        _debug('code: '+code);
+        
+        if (this.listeners.hasOwnProperty(code)){
+            for(var i=0; i<this.listeners[code].length; i++){
+                
+                var item = this.listeners[code][i];
+                
+                if (item.c.hasOwnProperty('con_menu')){
+                    if (item.c.con_menu.on == 1){
+                        continue;
+                    }
+                }
+                
+                if (item.c.on == 1 || item.c === window){
+                    item.f.apply(item.c, item.a);
+                    return;
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Binding function to key.
+ * @param {number} key
+ * @param {Object} context The object to be used as the value of 'this' within 'f'
+ * @param {*} args
+ * @return {Function}
+ */
+Function.prototype.bind = function(key, context, args){
+    context = context || window;
+    observer.listeners[key] = observer.listeners[key] || [];
+    args = Array.prototype.splice.apply(arguments, [2, arguments.length]);
+    observer.listeners[key].unshift({'f' : this, 'c' : context, 'a' : args});
+    return this;
+}
+
+
+/**
+ * Layer constructor
+ * @constructor
+ */
+function Layer(){
+    
+    this.name = 'Layer';
+    this.on = 0;
+    
+    this.cur_row = 0;
+    this.prev_row = 1;
+    this.cur_page = 0;
+    this.total_pages = 0;
+    
+    this.con_menu_action = [];
+    this.con_menu_on = 0;
+    this.con_menu_cur_row = 0;
+    this.con_menu_prev_row = 0;
+    
+    this.col_ids = [];
+    
+    this.layer_dom_obj = $('layer_'+this.name);
+    
+}
+
+Layer.prototype.show = function(){
+    _debug(this.name + ' show');
+    
+    this.layer_dom_obj.show();
+    this.on = 1;
+}
+
+Layer.prototype.hide = function(){
+    _debug(this.name + ' hide');
+    
+    this.layer_dom_obj.hide();
+    this.on = 0;
+}
+
+Layer.prototype.shift_row = function(dir){
+    _debug(this.name + ' shift_row ' + dir);
+    
+}
+
+Layer.prototype.shift_page = function(dir){
+    _debug(this.name + ' shift_page ' + dir);
+    
+}
+
+Layer.prototype.set_active_row = function(){
+    _debug(this.name + ' set_active_row');
+    
+}
+
+Layer.prototype.set_passive_row = function(){
+    _debug(this.name + ' set_passive_row');
+    
+}
+
+Layer.prototype.set_passive_all_rows = function(){
+    _debug(this.name + ' set_passive_all_rows');
+    
+}
+
+Layer.prototype.load = function(p){
+    _debug(this.name + ' load ' + p);
+    
+}
+
+Layer.prototype.fill_rows = function(arr){
+    _debug(this.name + ' fill_rows ' + arr.toSource());
+    
+}
+
+Layer.prototype.del_rows = function(arr){
+    _debug(this.name + ' del_rows ');
+    
+}
+
 
 
 </script>
