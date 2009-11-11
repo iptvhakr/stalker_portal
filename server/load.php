@@ -25,12 +25,12 @@ require_once "./conf_serv.php";
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
-$JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
-//$JsHttpRequest = new JsHttpRequest("utf-8");
+//$JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
+$JsHttpRequest = new JsHttpRequest("utf-8");
 
-$_RESULT = get_data(); 
-//$GLOBALS['_RESULT'] = get_data();
-    
+//$_RESULT = get_data();
+$GLOBALS['_RESULT'] = get_data();
+
 $end_time = microtime(1);
 $load_time = $end_time - $start_time;
 $db = Database::getInstance(DB_NAME);
