@@ -1,6 +1,6 @@
 <?php
 /**
- * Master for video storages
+ * Master for video storages.
  *
  * @package stalket_portal
  * @author zhurbitsky@gmail.com
