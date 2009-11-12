@@ -1,6 +1,6 @@
 <?php
 /**
- * Master for karaoke storages
+ * Master for karaoke storages.
  * 
  * @package stalker_portal
  * @author zhurbitsky@gmail.com
