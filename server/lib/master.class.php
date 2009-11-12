@@ -1,12 +1,12 @@
 <?php
 /**
- * Master for storages
+ * Master for storages.
  * 
  * @package stalker_portal
  * @author zhurbitsky@gmail.com
  */
 
-class Master
+abstract class Master
 {
     private $storages;
     private $clients;
@@ -424,9 +424,7 @@ class Master
      * @param int $media_id
      * @return string
      */
-    protected function getMediaNameById($media_id){
-        return '';
-    }
+    abstract function getMediaNameById($media_id){}
     
     /**
      * Increment counter of storage deny
