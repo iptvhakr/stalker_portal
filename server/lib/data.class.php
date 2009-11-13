@@ -13,6 +13,8 @@ abstract class Data
     
     abstract function deleteData(){}
     
+/*    abstract function setData(){}*/
+    
     protected function getKey($prefix, $data = array()){
         
     }
