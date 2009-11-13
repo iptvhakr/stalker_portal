@@ -559,7 +559,6 @@ function event_callback(event){
 
 /**
  * KeyDown event observer.
- *
  */
 var observer = new function(){
     
@@ -630,6 +629,11 @@ function Layer(){
     
     this.layer_dom_obj = $('layer_'+this.name);
     
+    this.shift_row.bind(key.UP,   this, -1);
+    this.shift_row.bind(key.DOWN, this,  1);
+    
+    this.shift_page.bind(key.PAGE_PREV, this, -1);
+    this.shift_page.bind(key.PAGE_NEXT, this,  1);
 }
 
 Layer.prototype.show = function(){
