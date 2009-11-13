@@ -53,7 +53,7 @@ class SysEvent extends Event
      */
     public function sendMountAllStorages(){
         $this->setEvent('mount_all_storages');
-        $master = new Master();
+        $master = new VideoMaster();
         $this->setMsg(json_encode($master->getStoragesForStb()));
         $this->send();
     }
