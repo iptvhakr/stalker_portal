@@ -29,7 +29,12 @@ set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 $JsHttpRequest = new JsHttpRequest("utf-8");
 
 //$_RESULT = get_data();
-$GLOBALS['_RESULT'] = get_data();
+//$GLOBALS['_RESULT'] = get_data();
+try{
+    $GLOBALS['_RESULT'] = DataManager::create($_REQUEST['type']);
+}catch (Exception $e){
+    trigger_error($e->getMessage());
+}
 
 $end_time = microtime(1);
 $load_time = $end_time - $start_time;
