@@ -4,7 +4,7 @@
  * @package stalker_portal
  */
 
-class Mysql
+class Mysql extends Data
 {
     private  $db_connect_id;
     private  $num_queries = 0;
@@ -192,6 +192,19 @@ class Mysql
         
         return true;
     }
+    
+    /*public function setData($table, $set_data_arr = array(), $where_arr = array()){
+        
+        if (empty($set_data_arr) || empty($where_arr)){
+            return false;
+        }
+        
+        if ($this->getRowCount($table, $where_arr) > 0){
+            return $this->updateData($table, $set_data_arr, $where_arr);
+        }else{
+            return $this->insertData($table, $set_data_arr);
+        }
+    }*/
 
     private public function update($str){
         
