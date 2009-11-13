@@ -1,6 +1,6 @@
 <?php
 
-class UserData extends Data 
+class UserDataLoader extends DataLoader
 {
     
     public function __construct($action){
