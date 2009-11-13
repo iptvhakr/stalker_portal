@@ -93,16 +93,6 @@ class Mysql
         return $result;
     }
     
-    public function getFirstData(){
-        $result = call_user_func_array(array($this, 'getData'), func_get_args());
-        
-        if (is_array($result) && count($result) > 0){
-            return $result[0];
-        }
-        
-        return $result;
-    }
-    
     public function getRowCount($table = '', $where_arr = array()){
         
         if (!$table){
