@@ -64,7 +64,7 @@ class Mysql
         return $rows;
     }
     
-    public function getData($table, $where_arr = array(), $page = 0 , $end_query = ''){
+    public function getData($table, $where_arr = array(), $page = 0, $end_query = ''){
         
         $where = '';
         
@@ -88,6 +88,16 @@ class Mysql
             $result = $this->query($sql);
         }catch (Exception $e){
             return false;
+        }
+        
+        return $result;
+    }
+    
+    public function getFirstData(){
+        $result = call_user_func_array(array($this, 'getData'), func_get_args());
+        
+        if (is_array($result) && count($result) > 0){
+            return $result[0];
         }
         
         return $result;
@@ -154,7 +164,7 @@ class Mysql
         return $last_id;
     }
     
-    public function setData($table, $set_data_arr = array(), $where_arr = array()){
+    public function updateData($table, $set_data_arr = array(), $where_arr = array()){
         
         $where = '';
         $set_data = '';
