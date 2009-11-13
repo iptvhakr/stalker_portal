@@ -18,7 +18,7 @@ class DataManager
         
         foreach (self::$map as $name => $types){
             if (in_array($type, $types)){
-                $class = ucfirst($name).'Data';
+                $class = ucfirst($name).'DataLoader';
                 if (class_exists($class)){
                     return new $class;
                 }
