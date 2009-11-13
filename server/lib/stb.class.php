@@ -12,6 +12,7 @@ class Stb
     public $mac = '';
     public $ip;
     public $hd  = 0;
+    public $params = array();
     private $db;
     
     static private $instance = NULL;
@@ -37,6 +38,7 @@ class Stb
     
     public function setId($id){
         $this->id = $id;
+        $this->params['id'] = $id;
     }
     
     public function getStbParams(){
@@ -44,6 +46,7 @@ class Stb
         $rs = $this->db->executeQuery($sql);
         $params = @$rs->getValuesByRow(0);
         if (is_array($params)){
+            $this->params = $params;
             $this->id  = $params['id'];
             $this->hd  = $params['hd'];
             $this->additional_services_on = $params['additional_services_on'];
