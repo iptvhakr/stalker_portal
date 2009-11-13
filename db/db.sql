@@ -139,7 +139,7 @@ DROP TABLE `last_id`;
 CREATE TABLE `last_id`(
     `id` int NOT NULL auto_increment, 
     `ident` varchar(64) NOT NULL default '',
-    `last_id` int unsigned NOT NULL default '',
+    `last_id` int unsigned NOT NULL default 0,
     UNIQUE KEY (`ident`),
     PRIMARY KEY (`id`)
 );
