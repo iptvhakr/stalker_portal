@@ -750,7 +750,7 @@ function get_data(){
         $sql = "select * from users where mac='$stb->mac'";
         $rs = $db->executeQuery($sql);
         
-        $master = new Master();
+        $master = new VideoMaster();
             
         $arr['id'] = $uid;
         $arr['parent_password'] = $rs->getValueByName(0, 'parent_password');
