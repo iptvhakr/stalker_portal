@@ -4,7 +4,7 @@
  * @package stalker_portal
  */
 
-class Mysql extends Data
+class Mysql
 {
     private  $db_connect_id;
     private  $num_queries = 0;
@@ -88,6 +88,17 @@ class Mysql extends Data
             $result = $this->query($sql);
         }catch (Exception $e){
             return false;
+        }
+        
+        return $result;
+    }
+    
+    public function getFirstData(){
+        $args = func_get_args();
+        $result = call_user_func_array(array($this, 'getData'), $args);
+        
+        if (is_array($result) && count($result) > 0){
+            return $result[0];
         }
         
         return $result;
@@ -192,21 +203,8 @@ class Mysql extends Data
         
         return true;
     }
-    
-    /*public function setData($table, $set_data_arr = array(), $where_arr = array()){
-        
-        if (empty($set_data_arr) || empty($where_arr)){
-            return false;
-        }
-        
-        if ($this->getRowCount($table, $where_arr) > 0){
-            return $this->updateData($table, $set_data_arr, $where_arr);
-        }else{
-            return $this->insertData($table, $set_data_arr);
-        }
-    }*/
 
-    private public function update($str){
+    private function update($str){
         
         $this->num_queries++;
         $rs = mysql_query($str);
@@ -217,6 +215,10 @@ class Mysql extends Data
         
         $this->last_insert_id = mysql_insert_id($this->db_connect_id);
         return $rs;
+    }
+    
+    public function getQueryCounter(){
+        return $this->num_queries;
     }
 }
 ?>
