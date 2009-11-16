@@ -14,7 +14,7 @@ abstract class Master
     private $media_id;
     private $media_name;
     private $source_type;
-    private $cache_expire_h = 24;
+    private $cache_expire_h = MASTER_CACHE_EXPIRE;
     protected $db;
     protected $media_type;
     
