@@ -132,7 +132,10 @@ function common_xpcom(){
             
             this.ajax_loader,
             
-            {'type' : 'preload_images'},
+            {
+                'type'   : 'stb',
+                'action' : 'get_preload_images'
+            },
             
             function(result, errors){
                 _debug(errors);
@@ -156,9 +159,10 @@ function common_xpcom(){
             this.ajax_loader,
             
             {
-                'type': 'get_profile',
-                'hd'  : this.hd,
-                'ver' : this.version
+                'type'  : 'stb',
+                'action': 'get_profile',
+                'hd'    : this.hd,
+                'ver'   : this.version
             },
             
             function(result, errors){
@@ -233,7 +237,7 @@ function common_xpcom(){
             
             {
                 'type'  : 'itv',
-                'action': 'all'
+                'action': 'get_all_channels'
             },
             
             function(result, errors){
@@ -253,8 +257,7 @@ function common_xpcom(){
             
             {
                 'type'  : 'itv',
-                'action': 'all',
-                'fav'   : 1
+                'action': 'get_all_fav_channels',
             },
             
             function(result, errors){
@@ -273,7 +276,8 @@ function common_xpcom(){
             this.ajax_loader,
             
             {
-                'type'  : 'fav_itv',
+                'type'   : 'itv',
+                'action' : 'get_fav_itv_ids',
             },
             
             function(result, errors){
@@ -405,7 +409,8 @@ player.prototype.volume_bar = new function(){
             this.ajax_loader,
             
             {
-                'type' : 'set_volume',
+                'type'   : 'stb',
+                'action' : 'set_volume',
                 'data' : this.volume
             },
             
@@ -469,15 +474,15 @@ player.prototype.play = function(item){
     
 }
 
-player.prototype.create_link = function(uri){
+player.prototype.create_link = function(type,uri){
     
     JsHttpRequest.query(
         
         stb.ajax_loader,
         
         {
-            'type'   : 'create_link',
-            'action' : '',
+            'type'   : type,
+            'action' : 'create_link',
             'cmd'    : uri,
             'series' : ''
         },
