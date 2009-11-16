@@ -71,7 +71,17 @@ class Mysql
         if (count($where_arr) > 0){
             $where .= "where ";
             foreach ($where_arr as $field => $val){
-                $where .= "$field='".mysql_real_escape_string($val)."' and ";
+                if (is_array($val)){
+                    $val_s = implode(",", $val);
+                    $where .= "$field in ($val_s) and ";
+                    
+                    if (empty($end_query)){
+                        $end_query = "order by field($field,$val_s)";
+                    }
+                    
+                }else{
+                    $where .= "$field='".mysql_real_escape_string($val)."' and ";
+                }
             }
         }
         
