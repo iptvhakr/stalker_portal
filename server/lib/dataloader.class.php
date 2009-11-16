@@ -4,7 +4,7 @@
  * @package stalker_portal
  */
  
-class Data
+class DataLoader extends Data 
 {
     protected $db;
     protected $stb;
@@ -37,7 +37,10 @@ class Data
     
     protected function getData($source, $where = array()){
         $args = func_get_args();
-        $key = getKey($source, $args);
+        $key  = $this->getKey($source, $args);
+        $tags = $this->getTags($where);
+        
+        call_user_func_array(array($this->db, 'getData'), $args);
     }
     
     /**
@@ -46,9 +49,11 @@ class Data
      * @param string $destination
      * @param array $data
      * @param array $where
+     * @return bool
      */
-    protected function setData($destination, $data, $where = array()){
+    protected function updateData($destination, $data, $where = array()){
         
+        return call_user_func_array(array($this->db, 'updateData'), $args);
     }
     
     /**
@@ -58,10 +63,12 @@ class Data
      * @param array $data
      * @return int last insert id
      */
-    protected function addData($destination, $data){
-        $last_id = 0;
-        return $last_id;
+    protected function insertData($destination, $data){
+        
+        return call_user_func_array(array($this->db, 'insertData'), $args);
     }
+    
+    
 }
 
 ?>
