@@ -1,7 +1,12 @@
 <?php
 
 function __autoload($class_name) {
-    require_once PORTAL_PATH.'/server/lib/'.strtolower($class_name).'.class.php';
+    $class = PORTAL_PATH.'/server/lib/'.strtolower($class_name).'.class.php';
+    if (file_exists($class)){
+        require_once $class;
+    }else{
+        trigger_error('Class "'.$class_name.'" not exist in '.$class);
+    }
 }
 
 function get_save_folder($id){
