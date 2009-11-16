@@ -23,6 +23,8 @@ define("FILES_IN_DIR", 100);
 
 define("PORTAL_URI", '/stalker_portal/');
 
+define("MASTER_CACHE_EXPIRE", 24); // hours
+
 if (OS_UNIX){
     define("XMLTV_URI",  '/home/zx/listing.xml');
     define("PORTAL_PATH", '/var/www/stalker_portal/');
