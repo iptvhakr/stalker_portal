@@ -95,14 +95,11 @@ class Stb
         
         $profile = $this->params;
         $profile['storages'] = $master->getStoragesForStb();
-        $profile['last_itv_id'] = $this->getLastItvId();
         
-        //$updated_places_arr = $this->db->getData('updated_places', array('uid' => $this->id));
+        $itv = Itv::getInstance();
+        $profile['last_itv_id'] = $itv->getLastId();
         
         $profile['updated'] = $this->getUpdatedPlaces();
-/*            'anec'  => intval($updated_places_arr[0]['anec']),
-            'vclub' => intval($updated_places_arr[0]['vclub'])
-        );*/
         
         return $profile;
     }
@@ -117,30 +114,6 @@ class Stb
         $this->setId($uid);
             
         $this->insertData('updated_places', array('uid' => $this->id));
-    }
-    
-    public function getLastItvId(){
-        
-        $last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->mac));
-        
-        if(!empty($last_id_arr) && key_exists('last_id', $last_id_arr)){
-            return $last_id_arr['last_id'];
-        }
-        
-        return 0;
-    }
-    
-    public function setLastItvId(){
-        
-        $last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->mac));
-        
-        if (!empty($last_id_arr) && key_exists('last_id', $last_id_arr)){
-            $this->db->updateData('last_id', array('last_id' => $_REQUEST['id']), array('ident' => $this->mac));
-        }else{
-            $this->db->insertData('last_id', array('last_id' => $_REQUEST['id']));
-        }
-        
-        return true;
     }
     
     public function getPreloadImages(){
@@ -203,10 +176,74 @@ class Stb
         
         $place = $_REQUEST['place'];
         
-        $this->db->updateData('updated_places', array($place => 0), array('uid' => $stb->id));
+        $this->db->updateData('updated_places', array($place => 0), array('uid' => $this->id));
         
         return true;
     }
     
+    public function setEventConfirm(){
+        
+        $event_id = intval($_REQUEST['event_id']);
+
+        Event::setConfirmed($event_id);
+        
+        return true;
+    }
+    
+    public function getWatchdog(){
+        
+        $this->db->updateData('users', 
+                              array('keep_alive'       => 'NOW()',
+                                    'ip'               => $this->ip,
+                                    'now_playing_type' => intval($_REQUEST['cur_play_type'])
+                                   ), 
+                              array('mac' => $this->mac));
+        
+        
+        $events = Event::getAllNotEndedEvents($this->id);
+        
+        $messages = count($events);
+                
+        $res = array();
+        $res['msgs'] = $messages;
+        
+        if ($messages>0){
+            if ($events[0]['sended'] == 0){
+                
+                Event::setSended($events[0]['id']);
+                
+                if($events[0]['need_confirm'] == 0){
+                    Event::setEnded($events[0]['id']);
+                }
+            }
+            
+            if ($events[0]['id'] != @$_REQUEST['event_active_id']){
+                $res['id']    = $events[0]['id'];
+                $res['event'] = $events[0]['event'];
+                $res['need_confirm'] = $events[0]['need_confirm'];
+                $res['msg']   = $events[0]['msg'];
+                $res['reboot_after_ok'] = $events[0]['reboot_after_ok'];
+            }
+        }
+        
+        $res['additional_services_on'] = $this->additional_services_on;
+        
+        $cur_weather = new Curweather();
+        $res['cur_weather'] = $cur_weather->getData();
+        
+        $res['updated'] = $this->getUpdatedPlaces();
+        
+        return $res;
+    }
+    
+    public function setStreamError(){
+        $this->db->insertData('stream_error',
+                               array(
+                                    'ch_id'      => intval($_REQUEST['ch_id']),
+                                    'mac'        => $this->stb->mac,
+                                    'error_time' => 'NOW()'
+                               ));
+        return true;
+    }
 }
 ?>
