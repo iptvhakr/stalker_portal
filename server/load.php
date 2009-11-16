@@ -18,8 +18,8 @@ header("Pragma: no-cache");
 header("Cache-Control: max-age=0, no-cache, must-revalidate");
 
 require_once "./lib/config.php";
-require_once "./lib/subsys/php.php";
-require_once "./lib/data.php";
+//require_once "./lib/subsys/php.php";
+//require_once "./lib/data.php";
 require_once "./lib/func.php";
 require_once "./conf_serv.php";
 
@@ -30,14 +30,12 @@ $JsHttpRequest = new JsHttpRequest("utf-8");
 
 //$_RESULT = get_data();
 //$GLOBALS['_RESULT'] = get_data();
-try{
-    $GLOBALS['_RESULT'] = DataManager::create($_REQUEST['type']);
-}catch (Exception $e){
-    trigger_error($e->getMessage());
-}
 
-$end_time = microtime(1);
-$load_time = $end_time - $start_time;
+$loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
+$GLOBALS['_RESULT'] = $loader->getResult();
+
 $db = Database::getInstance(DB_NAME);
-echo "generated in: ".round($load_time, 2)."s; query counter: $db->query_counter; ".$debug->getErrorStr();
+$mysql = Mysql::getInstance();
+
+echo "generated in: ".round(microtime(1) - $start_time, 3)."s; query counter: ".($db->query_counter+$mysql->getQueryCounter())."; ".$debug->getErrorStr();
 ?>
