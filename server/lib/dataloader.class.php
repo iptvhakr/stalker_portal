@@ -1,22 +1,70 @@
 <?php
 /**
  * Data class for AJAX loader.
+ * Call method associated with $action, from context associated with $type.
  * @package stalker_portal
+ * @author zhurbitsky@gmail.com
  */
  
-class DataLoader extends Data 
+class DataLoader
 {
-    protected $db;
-    protected $stb;
     
-    protected function __construct($action){
-        $this->db  = Mysql::getInstance();
-        $this->stb = Stb::getInstance();
+    private $type;
+    private $action;
+    private $context;
+    private $method;
+    
+    public function __construct($type, $action){
+        
+        $this->type   = $type;
+        $this->action = $action;
+        
+        try {
+            $this->context = $this->getContext();
+            $this->method  = $this->getMethod();
+        
+        }catch (Exception $e){
+            trigger_error($e->getMessage());
+        }
+    }
+    
+    public function getResult(){
+        
+        try {
+            $result = call_user_func(array($this->context, $this->method));
+            return $result;
+        
+        }catch (Exception $e){
+            trigger_error($e->getMessage());
+        }
+    }
+    
+    private function getContext(){
+     
+        $class = ucfirst($this->type);
+        
+        if (!class_exists($class)){
+            throw new Exception('Class "'.$class.'" not exist');
+        }
+        
+        if (is_callable(array($class, 'getInstance'))){
+            return call_user_func(array($class, 'getInstance'));
+        }else{
+            return new $class;
+        }
+
+    }
+    
+    private function getMethod(){
+        
+        if (empty($this->action)){
+            throw new Exception('Action is empty');
+        }
+        
+        $parts = explode('_', $this->action);
         
         
-        $parts = explode('_', $action);
-        
-        for($i=0; $i<=count($parts); $i++){
+        for($i=0; $i < count($parts); $i++){
 
             if ($i == 0){
                 continue;
@@ -27,48 +75,12 @@ class DataLoader extends Data
         
         $method = implode($parts);
         
-        if (method_exists($this, $method)){
-            return $this->$method();
+        if (method_exists($this->context, $method)){
+            return $method;
         }else{
-            throw new Exception('Method '.$method.' not exist');
+            throw new Exception('Method "'.$method.'" not exist');
         }
-        
     }
-    
-    protected function getData($source, $where = array()){
-        $args = func_get_args();
-        $key  = $this->getKey($source, $args);
-        $tags = $this->getTags($where);
-        
-        call_user_func_array(array($this->db, 'getData'), $args);
-    }
-    
-    /**
-     * Update data array in destination
-     *
-     * @param string $destination
-     * @param array $data
-     * @param array $where
-     * @return bool
-     */
-    protected function updateData($destination, $data, $where = array()){
-        
-        return call_user_func_array(array($this->db, 'updateData'), $args);
-    }
-    
-    /**
-     * Insert data array in destination
-     *
-     * @param string $destination
-     * @param array $data
-     * @return int last insert id
-     */
-    protected function insertData($destination, $data){
-        
-        return call_user_func_array(array($this->db, 'insertData'), $args);
-    }
-    
-    
 }
 
 ?>
