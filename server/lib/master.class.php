@@ -424,7 +424,7 @@ abstract class Master
      * @param int $media_id
      * @return string
      */
-    abstract function getMediaNameById($media_id){}
+    abstract protected function getMediaNameById($media_id);
     
     /**
      * Increment counter of storage deny
