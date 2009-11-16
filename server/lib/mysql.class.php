@@ -35,7 +35,7 @@ class Mysql extends Data
         if ($this->db_connect_id){
             mysql_select_db(DB_NAME);
         }else{
-            die('Could not connect to MySQL server');
+            
         }
         
         foreach ($this->charset_query as $query){
