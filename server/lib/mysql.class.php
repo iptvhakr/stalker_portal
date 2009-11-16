@@ -17,9 +17,9 @@ class Mysql
         "SET CHARACTER SET utf8"
     );
     
-    static private $instance = NULL;
+    private static $instance = NULL;
     
-    static function getInstance(){
+    public static function getInstance(){
         if (self::$instance == NULL)
         {
             self::$instance = new Mysql();
