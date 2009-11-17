@@ -12,6 +12,8 @@ define("DB_TYPE", 'mysql');
 
 define("MYSQL_HOST", 'localhost');
 
+define("MEMCACHE_HOST", 'localhost');
+
 define("OS_UNIX", 1);
 
 define("HOROSCOPE_RSS",  'http://www.hyrax.ru/cgi-bin/bn_xml.cgi');
