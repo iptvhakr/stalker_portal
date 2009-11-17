@@ -6,6 +6,7 @@
 <script type="text/javascript" src="global.js"></script>
 <script type="text/javascript" src="JsHttpRequest.js"></script>
 <script type="text/javascript" src="keycodes.js"></script>
+<script type="text/javascript" src="keydown_observer.js"></script>
 <style type="text/css">
 
 </style>
@@ -22,8 +23,6 @@ window.onerror = function(msg, url, lno){
 }
 
 window.onload = init;
-
-document.addEventListener("keydown", function(event){observer.fire(event)}, false);
 
 /**
  * Alias for document.getElementById.
@@ -560,56 +559,6 @@ function event_callback(event){
         }
     }
 }
-
-
-/**
- * KeyDown event observer.
- */
-var observer = new function(){
-    
-    this.listeners = {};
-    
-    this.fire = function(e){
-        
-        var code = e.keyCode || e.which;
-        
-        _debug('code: '+code);
-        
-        if (this.listeners.hasOwnProperty(code)){
-            for(var i=0; i<this.listeners[code].length; i++){
-                
-                var item = this.listeners[code][i];
-                
-                if (item.c.hasOwnProperty('con_menu')){
-                    if (item.c.con_menu.on == 1){
-                        continue;
-                    }
-                }
-                
-                if (item.c.on == 1 || item.c === window){
-                    item.f.apply(item.c, item.a);
-                    return;
-                }
-            }
-        }
-    }
-}
-
-/**
- * Binding function to key.
- * @param {number} key
- * @param {Object} context The object to be used as the value of 'this' within 'f'
- * @param {*} args
- * @return {Function}
- */
-Function.prototype.bind = function(key, context, args){
-    context = context || window;
-    observer.listeners[key] = observer.listeners[key] || [];
-    args = Array.prototype.splice.apply(arguments, [2, arguments.length]);
-    observer.listeners[key].unshift({'f' : this, 'c' : context, 'a' : args});
-    return this;
-}
-
 
 /**
  * Layer constructor
