@@ -28,7 +28,7 @@ class Mysql
     }
 
     
-    public function __construct(){
+    private function __construct(){
         
         $this->db_connect_id = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
         
