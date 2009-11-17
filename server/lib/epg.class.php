@@ -41,7 +41,7 @@ class Epg
                 $start = date("YmdHis", datetime2timestamp($mysql_start) + $this->correction_time*60);
                 $mysql_start = date("Y-m-d H:i:s", datetime2timestamp($mysql_start) + $this->correction_time*60);
                 
-                $title = addslashes(iconv("UTF-8","WINDOWS-1251",$programme->title));
+                $title = addslashes($programme->title);
                 //var_dump($title);
                 foreach ($itv_id_arr as $itv_id){
                     $this->cleanEpgByDate($start,$itv_id);
