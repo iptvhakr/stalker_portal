@@ -22,7 +22,7 @@ class Itv
         return self::$instance;
     }
     
-    public function __construct(){
+    private function __construct(){
         $this->db  = Mysql::getInstance();
         $this->stb = Stb::getInstance();
     }
@@ -125,6 +125,16 @@ class Itv
         }
         
         return array();
+    }
+    
+    public function getListByNumber(){
+        
+        $page = intval($_REQUEST['p']);
+        
+        $this->db->getData('itv',
+                            array(
+                                'status' => 1,
+                            ));
     }
     
 }
