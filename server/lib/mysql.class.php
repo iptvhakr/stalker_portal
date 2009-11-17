@@ -69,9 +69,13 @@ class Mysql
         $where = '';
         
         if (count($where_arr) > 0){
+            
             $where .= "where ";
+            
             foreach ($where_arr as $field => $val){
+
                 if (is_array($val)){
+
                     $val_s = implode(",", $val);
                     $where .= "$field in ($val_s) and ";
                     
@@ -151,7 +155,7 @@ class Mysql
         if (count($add_data_arr) > 0){
             foreach ($add_data_arr as $field => $val){
                 $fields[] = $field;
-                if ($val == 'NOW()'){
+                if (in_array(strtoupper($val), array('NOW()', 'CURDATE()', 'CURTIME()'))){
                     $values[] = $val;
                 }else{
                     $values[] = "'".mysql_real_escape_string($val)."'";
@@ -182,7 +186,7 @@ class Mysql
         
         if (count($set_data_arr) > 0){
             foreach ($set_data_arr as $field => $val){
-                if ($val == 'NOW()'){
+                if (in_array(strtoupper($val), array('NOW()', 'CURDATE()', 'CURTIME()'))){
                     $set_data .= "$field=".$val.", ";
                 }else{
                     $set_data .= "$field='".mysql_escape_string($val)."', ";
