@@ -125,6 +125,7 @@ function get_data(){
     
     $table = $table_map[$type];
     
+/*  done  */
     if ($type == 'stream_error'){
         $ch_id = @$_REQUEST['data'];
         $sql = "insert into stream_error (`ch_id`, `mac`, `error_time`) value ($ch_id, '$stb->mac', NOW())";
@@ -132,6 +133,7 @@ function get_data(){
         return 0;
     }
     
+/* done */
     if ($type == 'set_id'){
         $last_id=$_REQUEST['id'];
         //increment_counter($last_id, 'itv');
@@ -151,6 +153,7 @@ function get_data(){
         return 0;
     }
     
+/*  done  */
     if($type == 'watchdog'){
         $ip = $stb->ip;
         
@@ -201,6 +204,7 @@ function get_data(){
         exit;
     }
     
+/*  done  */
     if($type == 'event_confirm'){
         $id = intval($_REQUEST['data']);
 
@@ -211,6 +215,7 @@ function get_data(){
         exit;
     }
     
+/*  done  */
     if ($type == 'create_link'){
         
         if(is_array($_REQUEST['data'])){
@@ -225,6 +230,7 @@ function get_data(){
             $series = 0;
         }
         
+/*   done   */
         if ($action == 'vclub'){
             
             preg_match("/auto \/media\/(\d+).mpg$/", $data_req, $tmp_arr);
@@ -241,6 +247,7 @@ function get_data(){
             
             var_dump($res);
             
+/*   done   */            
         }elseif($action == 'karaoke'){
             preg_match("/auto \/media\/(\d+).mpg$/", $data_req, $tmp_arr);
             $media_id = $tmp_arr[1];
@@ -503,6 +510,7 @@ function get_data(){
         exit;
     }
     
+/*  done?  */
     if ($type == 'get_media_cats'){
         $arr = array('all'=>0);
         $arr2 = array(0=>'Все');
@@ -604,11 +612,13 @@ function get_data(){
         exit;
     }
     
+/*  done  */
     if ($type == 'vclub_vote'){
         $data = $_REQUEST['data'];
         $media_id = $data['media_id'];
         $type     = $data['type'];
         $vote     = $data['vote'];
+        
         if ($vote == 'good'){
             $good = 1;
             $bad = 0;
@@ -627,6 +637,7 @@ function get_data(){
         exit;
     }
     
+/*  done  */
     if ($type == 'played_video'){
         $video_id = $_REQUEST['data']['video_id'];
         $storage_id = $_REQUEST['data']['storage_id'];
@@ -674,6 +685,7 @@ function get_data(){
         exit;
     }
     
+/*  done  */
     if ($type == 'played_itv'){
         $itv_id = $_REQUEST['data'];
         $day = date("j");
@@ -692,6 +704,7 @@ function get_data(){
         return 1;
     }
     
+/*  done  */
     if ($type == 'preload_images'){
         $dir = PORTAL_PATH.'/client/i/';
         $files = array();
@@ -710,6 +723,7 @@ function get_data(){
         return $data;
     }
     
+/*  done  */
     if ($type == 'get_profile'){
         
         $params = @$_REQUEST['data'];
@@ -780,6 +794,7 @@ function get_data(){
         return $data;
     }
     
+/*  done  */
     if ($type == 'set_parent_password'){
         $data = $_REQUEST['data'];
         $sql = "update users set parent_password='".$data."' where mac='".$stb->mac."'";
@@ -788,6 +803,7 @@ function get_data(){
         return $data;
     }
     
+/*  dont need  */
     if ($type == 'set_bright'){
         $data = $_REQUEST['data'];
         $sql = "update users set bright='".$data."' where mac='".$stb->mac."'";
@@ -795,7 +811,8 @@ function get_data(){
         $data['data'] = 'ok';
         return $data;
     }
-    
+
+/*  dont need  */    
     if ($type == 'set_video_out'){
         $data = $_REQUEST['data'];
         $sql = "update users set video_out='".$data."' where mac='".$stb->mac."'";
@@ -804,6 +821,7 @@ function get_data(){
         return $data;
     }
     
+/*  done  */
     if($type == 'set_volume'){
         $data_req = intval($_REQUEST['data']);
         if($data_req>=0 && $data_req<=100){
@@ -817,7 +835,8 @@ function get_data(){
         $data['data'] = 'ok';
         return $data;
     }
-    
+
+/*  done  */
     if ($type == 'save_fav_itv_status'){
         $fav_itv_on = intval($_REQUEST['data']);
         $sql = "update users set fav_itv_on='".$fav_itv_on."' where mac='".$stb->mac."'";
@@ -826,6 +845,7 @@ function get_data(){
         return $data;
     }
     
+/*  dont need  */
     if ($type == 'add_to_playlist'){
         $new_id = $_REQUEST['data'];
         $sql = "select * from playlist where uid=$uid";
@@ -849,6 +869,7 @@ function get_data(){
         exit;
     }
     
+/*  dont need  */
     if ($type == 'del_from_playlist'){
         $del_id = $_REQUEST['data'];
         $sql = "select * from playlist where uid=$uid";
@@ -867,6 +888,7 @@ function get_data(){
         exit;
     }
     
+/*  done  */
     if ($type == 'add_vclub_fav'){
         $new_id = $_REQUEST['data'];
         $sql = "select * from fav_vclub where uid=$uid";
@@ -890,6 +912,7 @@ function get_data(){
         exit;
     }
     
+/*  done  */
     if ($type == 'del_vclub_fav'){
         $del_id = $_REQUEST['data'];
         $sql = "select * from fav_vclub where uid=$uid";
@@ -909,7 +932,7 @@ function get_data(){
         return $data;
     }
     
-    if ($type == 'vclub_news'){
+    /*if ($type == 'vclub_news'){
         $sql = "select * from vclub_news order by id desc limit 2";
         $rs = $db->executeQuery($sql);
         while(@$rs->next()){
@@ -919,8 +942,9 @@ function get_data(){
         }
         $data['data'] = $arr;
         return $data;
-    }
+    }*/
     
+/*  done  */
     if ($type == 'vclub_not_ended'){
         $video_id   = $_REQUEST['data']['video_id'];
         $series     = $_REQUEST['data']['series'];
@@ -972,6 +996,7 @@ function get_data(){
     	return $data;
     }
     
+/*  done  */
     if ($type == 'get_id'){
         $sql = "select * from last_id where ident='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
@@ -980,6 +1005,7 @@ function get_data(){
         return $data;
     }
     
+/*  done  */
     if ($type == 'fav_itv'){
         
         $itv_ch = array();
@@ -1006,13 +1032,14 @@ function get_data(){
         return $data;
     }
     
+/*  done  */
     if($type == 'save_fav'){
-        
         
         $data = $_REQUEST['data'];
         if ($data == NULL){
             $data = array();
         }
+        
         if (is_array($data)){
             $data_str = base64_encode(serialize($data));
         
@@ -1032,6 +1059,7 @@ function get_data(){
         exit;
     }
     
+/* done */
     if ($type == 'updated_place_confirm'){
         $col = $_REQUEST['data'];
         
