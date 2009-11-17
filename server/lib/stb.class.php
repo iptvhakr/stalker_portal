@@ -25,7 +25,7 @@ class Stb
         return self::$instance;
     }
     
-    public function __construct(){
+    private function __construct(){
         
         $this->mac = @trim(urldecode($_COOKIE['mac']));
         
