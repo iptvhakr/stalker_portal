@@ -6,7 +6,7 @@
 <script language="JavaScript" type="text/javascript" src="event.js"></script>
 <style type="text/css">
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: bold;
     background: url("i/bg_main.jpg");
@@ -29,8 +29,8 @@ img{
     border: 0px
 }
 a, td {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
     font-weight: bold;
     text-decoration: none;
     outline:none;
@@ -667,30 +667,7 @@ td, table{
     overflow: hidden; 
     white-space: nowrap;
 }
-.program_name_nowrap {
-    padding-left: 5px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:410px;
-}
-.program_ch_name_nowrap {
-    padding-left: 10px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:230px;
-}
-.ch_name_nowrap {
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:125px;
-}
+
 /* CLUB */
 #club {
 	position:absolute;
@@ -723,9 +700,13 @@ td, table{
 }
 
 #club_declaration td {
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 18px;
-	font-weight: bold;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #3f81cc;
+    color:#3f81cc;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
 }
 #video_records_page{
 	position:absolute;
@@ -844,6 +825,8 @@ td, table{
     padding-top: 10px;
     border: 2px solid #3f81cc;
     background-color: #3f81cc;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
 }
 #mastermind_steps{
 	position:absolute;
@@ -1096,16 +1079,13 @@ td, table{
 	position:absolute;
 	
 	height:326px;
-    width: 387px;
+    width: 375px;
     
 	left: 3px;
-	top: 134px;
+	top: 137px;
 	
-	overflow: auto;
+	overflow: hidden;
 	
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 16px;
-	font-weight: bold;
 }
 #video_club_info_descr_txt{
     font-family: Verdana, Arial, Helvetica, sans-serif;
@@ -1329,7 +1309,7 @@ td, table{
 
 .menu_style1 {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 16px;
+	font-size: 16px !important;
 	font-weight: bold;
 	color: #000000;
 }
@@ -1355,7 +1335,7 @@ td, table{
 	top: 0px;
 	width:720px; 
 	height:576px;
-	background: url("i/25alfa.png");
+	background: url("i/25alfa_20.png");
 }
 #con_alpha_layer_top{
 	position:absolute;
@@ -1455,31 +1435,56 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     font-size: 16px;
 }
 
-.grey_row, .grey_row td {
-    font-family: Verdana, Arial, Helvetica, sans-serif; 
+.content_table{
+    table-layout: fixed;
+}
+
+.content_table tr td{
+    padding-left: 3px;
+    white-space: pre;
+    height: 25px;
+    /*font-family: Verdana, Arial, Helvetica, sans-serif; */
     font-size: 18px;
+    text-overflow: ellipsis;
+    overflow:hidden;
     background-color: #66aaee; 
+}
+
+.content_table tr th{
+    /*font-family: Verdana, Arial, Helvetica, sans-serif;*/
+    font-size: 16px;
+    height: 20px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #ffffff;
+    color: #000001;
+}
+
+.grey_row, .grey_row td {
+    /*font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 18px;*/
+    background-color: #66aaee !important; 
     color: #444444;
 }
 
 .black_row, .black_row td{
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    background-color: #66aaee; 
+    /*font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;*/
+    background-color: #66aaee !important; 
     color: #000001;
 }
 
 .hover_grey_row, .hover_grey_row td {
-    font-family: Verdana, Arial, Helvetica, sans-serif; 
-    font-size: 18px;
-    background-color:#000001; 
+    /*font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 18px;*/
+    background-color:#000001 !important; 
     color: #1979d8;
 }
 
 .hover_black_row, .hover_black_row td {
-    font-family: Verdana, Arial, Helvetica, sans-serif; 
-    font-size: 18px;
-    background-color: #000001; 
+    /*font-family: Verdana, Arial, Helvetica, sans-serif; 
+    font-size: 18px;*/
+    background-color: #000001 !important; 
     color: #66aaee;
 }
 
@@ -1499,14 +1504,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 }
 
 /**/
-.td_nowrap_125{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:112px;
-}
 .td_nowrap_80{
     padding-left: 6px; 
     text-overflow: ellipsis;
@@ -1515,22 +1512,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     display:block;
     width:67px;
 }
-.td_nowrap_165{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:153px;
-}
-.td_nowrap_150{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:137px;
-}
 .td_nowrap_155{
     padding-left: 3px; 
     text-overflow: ellipsis;
@@ -1538,38 +1519,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     white-space: nowrap;
     display:block;
     width:142px;
-}
-.td_nowrap_60{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:47px;
-}
-.td_nowrap_110{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:97px;
-}
-.td_nowrap_115{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:102px;
-}
-.td_nowrap_295{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:283px;
 }
 .td_nowrap_270{
     padding-left: 3px; 
@@ -1587,14 +1536,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     display:block;
     width:276px;
 }
-.td_nowrap_465{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:453px;
-}
 .td_nowrap_505{
     padding-left: 3px; 
     text-overflow: ellipsis;
@@ -1606,46 +1547,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 .wordwrap {
     white-space: normal;
 }
-.td_nowrap_485{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:473px;
-}
-.td_nowrap_530{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:518px;
-}
-.td_nowrap_540{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:528px;
-}
-.td_nowrap_467{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:455px;
-}
-.td_nowrap_420{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:408px;
-}
 .td_nowrap_435{
     padding-left: 3px; 
     text-overflow: ellipsis;
@@ -1653,30 +1554,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     white-space: nowrap;
     display:block;
     width:423px;
-}
-.td_nowrap_490{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:478px;
-}
-.td_nowrap_345{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:333px;
-}
-.td_nowrap_389{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:377px;
 }
 .td_nowrap_200{
     padding-left: 3px; 
@@ -1710,22 +1587,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     display:block;
     width:228px;
 }
-.td_nowrap_260{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:248px;
-}
-.td_nowrap_250{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:238px;
-}
 .td_nowrap_280{
     padding-left: 3px; 
     text-overflow: ellipsis;
@@ -1742,14 +1603,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     display:block;
     width:148px;
 }
-.td_nowrap_170{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:158px;
-}
 .td_nowrap_302{
     padding-left: 3px; 
     text-overflow: ellipsis;
@@ -1765,14 +1618,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
     white-space: nowrap;
     display: block;
     width: 310px;
-}
-.td_nowrap_362{
-    padding-left: 3px; 
-    text-overflow: ellipsis;
-    overflow: hidden; 
-    white-space: nowrap;
-    display:block;
-    width:350px;
 }
 /**/
 
@@ -2265,7 +2110,7 @@ var debug = 0
 var alex_debug = 1
 var log_on = 1
 
-const ver = '3.36.1'
+const ver = '3.36.2'
 
 //const use_ctrl_alt = 1 // использование ctrl+alt в lirc для power, mute и mic
 var record = 0
@@ -2655,7 +2500,7 @@ var func_tv_by_theme = new Array('start_play_tv_by_theme();hide_tv_page()','show
 var cur_theme_id = 1
 var tv_by_theme_per_page = 10
 var lighted_row_tv_by_theme = 0
-var need_tv_by_theme_row_focus = 1
+var need_tv_by_theme_row_focus = 0
 
 /* THEME BAR */
 var cur_theme_bar = 0
@@ -3368,11 +3213,11 @@ var cur_page_radio_by_name_play = 0
             return '[' + this.join( ', ' ) + ']';
         }
                 
-    } else if (browser == 'firefox'){ // MAG100
+    } //else if (browser == 'firefox'){ // MAG100
         
         win_focus()
         
-    }
+    //}
 
 /*  XPCOM STB CONSTRUCTOR  */
 
@@ -4156,9 +4001,9 @@ function firefox_xpcom(){
             
             case 9: // Channel+  Channel- Shift+Tab
             {
-                if (browser == 'firefox'){
+                //if (browser == 'firefox'){
                     win_focus()
-                }
+                //}
 
                 if (recipe_info_page_on || main_city_info_on || other_city_info_on || recipes_by_cat_on || anec_page_on){
                     break
@@ -4172,7 +4017,7 @@ function firefox_xpcom(){
                         move_fav_ch(-1)
                     }
                 }
-                if (!vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){
+                if (!video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){
                     if (es){ // Shift+Tab
                         if (fav_itv_on){
                             if (f_ch_idx > 0){
@@ -5379,6 +5224,10 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (anec_blog_on){
+                    shift_anec_blog_body(-1, 20)
+                }
+                
                 if (horoscope_page_on){
                     shift_common_horoscope(-1)
                     break
@@ -5504,6 +5353,11 @@ function firefox_xpcom(){
                 
                 if (video_club_info_on == 1 && video_club_info_con_menu_on == 1){
                     shift_video_club_info_con_menu(-1)
+                    break
+                }
+                
+                if (video_club_info_on == 1 && video_club_info_con_menu_on == 0){
+                    shift_video_club_info(-1, 20)
                     break
                 }
                 
@@ -5861,6 +5715,10 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (anec_blog_on){
+                    shift_anec_blog_body(1, 20)
+                }
+                
                 if (horoscope_page_on){
                     shift_common_horoscope(1)
                     break
@@ -5987,6 +5845,11 @@ function firefox_xpcom(){
                 //
                 if (video_club_info_on == 1 && video_club_info_con_menu_on == 1){
                     shift_video_club_info_con_menu(1)
+                    break
+                }
+                
+                if (video_club_info_on == 1 && video_club_info_con_menu_on == 0){
+                    shift_video_club_info(1, 20)
                     break
                 }
                 
@@ -6324,6 +6187,10 @@ function firefox_xpcom(){
                     return
                 }
                 
+                if (anec_blog_on){
+                    shift_anec_blog_body(-1, 200)
+                }
+                
                 if (horoscope_page_on){
                     shift_common_horoscope(-1)
                     break
@@ -6390,6 +6257,11 @@ function firefox_xpcom(){
                 
                 if (tv_page_on == 1 && tv_by_theme_on == 1 && tv_by_number_con_menu == 0 && cur_theme_bar == 0){
                     shift_tv_by_theme_page(-1)
+                    break
+                }
+                
+                if (video_club_info_on == 1 && video_club_info_con_menu_on == 0){
+                    shift_video_club_info(-1, 200)
                     break
                 }
                 
@@ -6547,6 +6419,10 @@ function firefox_xpcom(){
                     return
                 }
                 
+                if (anec_blog_on){
+                    shift_anec_blog_body(1, 200)
+                }
+                
                 if (horoscope_page_on){
                     shift_common_horoscope(1)
                     break
@@ -6613,6 +6489,11 @@ function firefox_xpcom(){
                 
                 if (tv_page_on == 1 && tv_by_theme_on == 1 && tv_by_number_con_menu == 0 && cur_theme_bar == 0){
                     shift_tv_by_theme_page(1)
+                    break
+                }
+                
+                if (video_club_info_on == 1 && video_club_info_con_menu_on == 0){
+                    shift_video_club_info(1, 200)
                     break
                 }
                 
@@ -10138,7 +10019,7 @@ function firefox_xpcom(){
     }
 
     function win_focus(){
-        window.setTimeout(window.focus, 100)
+        window.setTimeout(window.focus, 10)
     }
 
     function show_epg(){
@@ -12247,7 +12128,7 @@ function shift_tv_by_number(shift_row){
 
 function shift_tv_by_number_page(dir){
     _debug('shift_tv_by_number_page('+dir+')')
-    stb.IgnoreUpdates(true)
+   // stb.IgnoreUpdates(true)
     tv_by_number_page_dir = dir
     if (dir > 0){
         if (cur_tv_by_num_page < total_tv_by_num_pages){
@@ -12285,19 +12166,19 @@ function set_active_tv_by_number_row(){
     _debug('set_active_tv_by_number_row()')
     _debug('cur_row_tv_by_number: '+cur_row_tv_by_number)
     set_passive_tv_by_number_row()
-    class_changer('row_', cur_row_tv_by_number, "hover")
-    stb.IgnoreUpdates(false)
+    r_class_changer('row_', cur_row_tv_by_number, "hover")
+    //stb.IgnoreUpdates(false)
 }
 
 function set_passive_tv_by_number_row(){
     _debug('set_passive_tv_by_number_row()')
     _debug('prev_row_tv_by_number: '+prev_row_tv_by_number)
-    class_changer('row_', prev_row_tv_by_number, "unhover")
+    r_class_changer('row_', prev_row_tv_by_number, "unhover")
 }
 
 function set_passive_all_tv_by_number_row(){
     _debug('set_passive_tv_by_number_row()')
-    class_changer('row_', cur_row_tv_by_number, "unhover")
+    r_class_changer('row_', cur_row_tv_by_number, "unhover")
 }
 
 function show_tv_by_number_con_menu(){
@@ -12497,27 +12378,44 @@ function fill_tv_by_number(arr){
     _debug('max_tv_rows: '+max_tv_by_num_rows)
     for(tv_n_i = 0; tv_n_i < arr_length; tv_n_i++){
         if (parseInt(arr[tv_n_i].open) == 1){
-            document.getElementById('row_'+tv_n_i).className = "black_row"
-            //change_class_by_ids('black_row', document.getElementById('row_'+tv_n_i))
+            //document.getElementById('row_'+tv_n_i).className = "black_row"
+            
+            //r_class_changer('row_', tv_n_i, "hover")
+
+            change_class_by_ids('black_row', document.getElementById('row_'+tv_n_i))
+            //document.getElementById('row_'+tv_n_i).className = ""
         }else{
-            document.getElementById('row_'+tv_n_i).className = "grey_row"
-            //change_class_by_ids('grey_row', document.getElementById('row_'+tv_n_i))
+            //document.getElementById('row_'+tv_n_i).className = "grey_row"
+            
+            //r_class_changer('row_', tv_n_i, "unhover")
+            
+            //document.getElementById('row_'+tv_n_i).className = ""
+            change_class_by_ids('grey_row', document.getElementById('row_'+tv_n_i))
         }
         document.getElementById('num_'+(tv_n_i)).innerHTML = arr[tv_n_i].number+'.'
         document.getElementById('name_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
-        document.getElementById('theme_'+(tv_n_i)).innerHTML = arr[tv_n_i].desc
+/*        document.getElementById('theme_'+(tv_n_i)).innerHTML = arr[tv_n_i].desc*/
         document.getElementById('my_ch_'+(tv_n_i)).innerHTML = arr[tv_n_i].my_ch
-        document.getElementById('prog_start_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start
-        document.getElementById('prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].cur_prog
+        /*document.getElementById('prog_start_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start
+        document.getElementById('prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].cur_prog*/
+        
+        document.getElementById('prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start+' '+arr[tv_n_i].cur_prog
+        
+        /*document.getElementById('num_'+(tv_n_i)).innerHTML = tv_n_i+'.'
+        document.getElementById('name_'+(tv_n_i)).innerHTML = 'Интер'
+        document.getElementById('theme_'+(tv_n_i)).innerHTML = 'новости'
+        document.getElementById('my_ch_'+(tv_n_i)).innerHTML = ''
+        document.getElementById('prog_start_'+(tv_n_i)).innerHTML = '00:00'
+        document.getElementById('prog_name_'+(tv_n_i)).innerHTML = '-'*/
     }
     _debug('end fill')
     if (arr_length <= 9){
         for(tv_i = arr_length; tv_i < 10; tv_i++){
             document.getElementById('num_'+(tv_i)).innerHTML = ''
             document.getElementById('name_'+(tv_i)).innerHTML = ''
-            document.getElementById('theme_'+(tv_i)).innerHTML = ''
+/*            document.getElementById('theme_'+(tv_i)).innerHTML = ''*/
             document.getElementById('my_ch_'+(tv_i)).innerHTML = ''
-            document.getElementById('prog_start_'+(tv_i)).innerHTML = ''
+/*            document.getElementById('prog_start_'+(tv_i)).innerHTML = ''*/
             document.getElementById('prog_name_'+(tv_i)).innerHTML = ''
         }
     }
@@ -12621,17 +12519,17 @@ function disable_tv_by_ch_row(){
 function set_active_tv_by_channel_row(){
     _debug('set_active_tv_by_channel_row()')
     set_passive_tv_by_channel_row()
-    class_changer('ch_row_', cur_row_tv_by_channel, "hover")
+    r_class_changer('ch_row_', cur_row_tv_by_channel, "hover")
 }
 
 function set_passive_tv_by_channel_row(){
     _debug('set_passive_tv_by_channel_row()')
-    class_changer('ch_row_', prev_row_tv_by_channel, "unhover")
+    r_class_changer('ch_row_', prev_row_tv_by_channel, "unhover")
 }
 
 function set_passive_all_tv_by_channel_row(){
     _debug('set_passive_tv_by_channel_row()')
-    class_changer('ch_row_', cur_row_tv_by_channel, "unhover")
+    r_class_changer('ch_row_', cur_row_tv_by_channel, "unhover")
 }
 
 function hide_tv_by_channel_con_menu(){
@@ -12741,16 +12639,18 @@ function fill_tv_by_channel(arr){
     _debug('max_tv_rows: '+max_tv_by_ch_rows)
     for(tv_n_i = 0; tv_n_i < arr.length; tv_n_i++){
         if (parseInt(arr[tv_n_i].open) == 1){
-            document.getElementById('ch_row_'+tv_n_i).className = "black_row"
+            //document.getElementById('ch_row_'+tv_n_i).className = "black_row"
+            change_class_by_ids('black_row', document.getElementById('ch_row_'+tv_n_i))
         }else{
-            document.getElementById('ch_row_'+tv_n_i).className = "grey_row"
+            //document.getElementById('ch_row_'+tv_n_i).className = "grey_row"
+            change_class_by_ids('grey_row', document.getElementById('ch_row_'+tv_n_i))
         }
         document.getElementById('ch_num_'+(tv_n_i)).innerHTML = arr[tv_n_i].number+'.'
         document.getElementById('ch_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
-        document.getElementById('ch_theme_'+(tv_n_i)).innerHTML = arr[tv_n_i].desc
+/*        document.getElementById('ch_theme_'+(tv_n_i)).innerHTML = arr[tv_n_i].desc*/
         document.getElementById('ch_my_ch_'+(tv_n_i)).innerHTML = arr[tv_n_i].my_ch
-        document.getElementById('ch_prog_start_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start
-        document.getElementById('ch_prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].cur_prog
+/*        document.getElementById('ch_prog_start_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start*/
+        document.getElementById('ch_prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start+' '+arr[tv_n_i].cur_prog
     }
     if (need_vclub_by_channel_row_focus){
         set_active_tv_by_channel_row()
@@ -12762,9 +12662,9 @@ function del_tv_by_channel(){
     for(tv_n_i = 0; tv_n_i < 10; tv_n_i++){
         document.getElementById('ch_num_'+(tv_n_i)).innerHTML = ''
         document.getElementById('ch_name_'+(tv_n_i)).innerHTML = ''
-        document.getElementById('ch_theme_'+(tv_n_i)).innerHTML = ''
+/*        document.getElementById('ch_theme_'+(tv_n_i)).innerHTML = ''*/
         document.getElementById('ch_my_ch_'+(tv_n_i)).innerHTML = ''
-        document.getElementById('ch_prog_start_'+(tv_n_i)).innerHTML = ''
+/*        document.getElementById('ch_prog_start_'+(tv_n_i)).innerHTML = ''*/
         document.getElementById('ch_prog_name_'+(tv_n_i)).innerHTML = ''
     }
     max_tv_by_ch_rows = 0
@@ -12871,18 +12771,18 @@ function set_active_tv_program_row(){
     _debug('set_active_tv_program_row()')
     _debug('program_row_'+cur_row_tv_program)
     set_passive_tv_program_row()
-    class_changer('program_row_', cur_row_tv_program, "hover")
+    r_class_changer('program_row_', cur_row_tv_program, "hover")
 }
 
 function set_passive_tv_program_row(){
     _debug('set_passive_tv_program_row()')
     _debug('program_row_'+prev_row_tv_program)
-    class_changer('program_row_', prev_row_tv_program, "unhover")
+    r_class_changer('program_row_', prev_row_tv_program, "unhover")
 }
 
 function set_passive_all_tv_program_row(){
     _debug('set_passive_all_tv_program_row()')
-    class_changer('program_row_', cur_row_tv_program, "unhover")
+    r_class_changer('program_row_', cur_row_tv_program, "unhover")
 }
 
 function show_tv_program_con_menu(){
@@ -12965,12 +12865,16 @@ function fill_program_by_channel(arr){
     tmp_tv_program_by_channel_arr = arr
     _debug('max_program_by_channel_rows: '+max_program_by_channel_rows)
     for(abc_p_i = 0; abc_p_i < arr.length; abc_p_i++){
-        document.getElementById('program_name_'+(abc_p_i)).innerHTML = arr[abc_p_i].name
-        document.getElementById('program_time_'+(abc_p_i)).innerHTML = arr[abc_p_i].cmd
+        
+        document.getElementById('program_name_'+(abc_p_i)).innerHTML = arr[abc_p_i].cmd+' '+arr[abc_p_i].name
+        //document.getElementById('program_time_'+(abc_p_i)).innerHTML = arr[abc_p_i].cmd
+        
         if (arr[abc_p_i].sel == 1){
-            class_changer('program_row_', abc_p_i, "hightlight")
+            //class_changer('program_row_', abc_p_i, "hightlight")
+            change_class_by_ids('black_row', document.getElementById('program_row_'+abc_p_i))
         }else{
-            class_changer('program_row_', abc_p_i, "normlight")
+            //class_changer('program_row_', abc_p_i, "normlight")
+            change_class_by_ids('grey_row', document.getElementById('program_row_'+abc_p_i))
         }
     }
 
@@ -12988,7 +12892,7 @@ function del_program_by_channel(){
     _debug('del_program_by_channel()')
     tv_program_page_bar(cur_tv_prog_page ,total_tv_prog_pages)
     for(tv_c_i = 0; tv_c_i < 10; tv_c_i++){
-        document.getElementById('program_time_'+tv_c_i).innerHTML = '&nbsp'
+        //document.getElementById('program_time_'+tv_c_i).innerHTML = '&nbsp'
         document.getElementById('program_name_'+tv_c_i).innerHTML = '&nbsp'
     }
     max_program_by_channel_rows = 0
@@ -13138,17 +13042,17 @@ function disable_tv_by_theme_row(){
 function set_active_tv_by_theme_row(){
     _debug('set_active_tv_by_theme_row()')
     set_passive_tv_by_theme_row()
-    class_changer('theme_row_', cur_row_tv_by_theme, "hover")
+    r_class_changer('theme_row_', cur_row_tv_by_theme, "hover")
 }
 
 function set_passive_tv_by_theme_row(){
     _debug('set_passive_tv_by_theme_row()')
-    class_changer('theme_row_', prev_row_tv_by_theme, "unhover")
+    r_class_changer('theme_row_', prev_row_tv_by_theme, "unhover")
 }
 
 function set_passive_all_tv_by_theme_row(){
     _debug('set_passive_all_tv_by_theme_row()')
-    class_changer('theme_row_', cur_row_tv_by_theme, "unhover")
+    r_class_changer('theme_row_', cur_row_tv_by_theme, "unhover")
 }
 
 function call_con_menu_tv_by_theme_func(){
@@ -13187,11 +13091,11 @@ function load_tv_by_theme(page){
 
 function hightlight_theme_bar_row(){
     lighted_row_tv_by_theme = cur_row_tv_theme
-    class_changer('bar_theme_', lighted_row_tv_by_theme, "hightlight")
+    r_class_changer('bar_theme_', lighted_row_tv_by_theme, "hightlight")
 }
 
 function normlight_theme_bar_row(){
-    class_changer('bar_theme_', lighted_row_tv_by_theme, "normlight")
+    r_class_changer('bar_theme_', lighted_row_tv_by_theme, "normlight")
 }
 
 function fill_tv_by_theme(arr){
@@ -13203,15 +13107,16 @@ function fill_tv_by_theme(arr){
     _debug('max_tv_theme: '+max_tv_by_theme_rows)
     for(tv_n_i = 0; tv_n_i < arr.length; tv_n_i++){
         if (parseInt(arr[tv_n_i].open) == 1){
-            document.getElementById('theme_row_'+tv_n_i).className = "black_row"
+            //document.getElementById('theme_row_'+tv_n_i).className = "black_row"
+            change_class_by_ids('black_row', document.getElementById('theme_row_'+tv_n_i))
         }else{
-            document.getElementById('theme_row_'+tv_n_i).className = "grey_row"
+            //document.getElementById('theme_row_'+tv_n_i).className = "grey_row"
+            change_class_by_ids('grey_row', document.getElementById('theme_row_'+tv_n_i))
         }
         document.getElementById('theme_num_'+(tv_n_i)).innerHTML = arr[tv_n_i].number+'.'
         document.getElementById('theme_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('theme_my_theme_'+(tv_n_i)).innerHTML = arr[tv_n_i].my_ch
-        document.getElementById('theme_prog_start_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start
-        document.getElementById('theme_prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].cur_prog
+        document.getElementById('theme_prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start+' '+arr[tv_n_i].cur_prog
     }
     _debug('end fill')
     if (arr_length <= 9){
@@ -13219,26 +13124,17 @@ function fill_tv_by_theme(arr){
             document.getElementById('theme_num_'+(tv_i)).innerHTML = ''
             document.getElementById('theme_name_'+(tv_i)).innerHTML = ''
             document.getElementById('theme_my_theme_'+(tv_i)).innerHTML = ''
-            document.getElementById('theme_prog_start_'+(tv_i)).innerHTML = ''
+/*            document.getElementById('theme_prog_start_'+(tv_i)).innerHTML = ''*/
             document.getElementById('theme_prog_name_'+(tv_i)).innerHTML = ''
         }
     }
+    
     if (need_tv_by_theme_row_focus){
         set_active_tv_by_theme_row()
         need_tv_by_theme_row_focus = 0
     }
 }
 
-function del_tv_by_theme(){
-    for(tv_n_i = 0; tv_n_i < 10; tv_n_i++){
-        document.getElementById('theme_num_'+(tv_n_i)).innerHTML = ''
-        document.getElementById('theme_name_'+(tv_n_i)).innerHTML = ''
-        document.getElementById('theme_my_theme_'+(tv_n_i)).innerHTML = ''
-        document.getElementById('theme_prog_start_'+(tv_n_i)).innerHTML = ''
-        document.getElementById('theme_prog_name_'+(tv_n_i)).innerHTML = ''
-    }
-    max_tv_by_theme_rows = 0
-}
 /**/
 
 /* THEME BAR */
@@ -13265,17 +13161,17 @@ function set_active_tv_theme_row(){
     _debug('set_active_tv_theme_row()')
     _debug('cur_row_tv_theme: '+cur_row_tv_theme)
     set_passive_tv_theme_row()
-    class_changer('bar_theme_', cur_row_tv_theme, "hover")
+    r_class_changer('bar_theme_', cur_row_tv_theme, "hover")
 }
 
 function set_passive_tv_theme_row(){
     _debug('set_passive_tv_theme_row()')
-    class_changer('bar_theme_', prev_row_tv_theme, "unhover")
+    r_class_changer('bar_theme_', prev_row_tv_theme, "unhover")
 }
 
 function set_passive_all_tv_theme_row(){
     _debug('set_passive_all_tv_theme_row()')
-    class_changer('bar_theme_', cur_row_tv_theme, "unhover")
+    r_class_changer('bar_theme_', cur_row_tv_theme, "unhover")
 }
 /**/
 
@@ -14501,8 +14397,9 @@ function show_video_club_by_name(){
     switch_on_video_club_page(1)
     vclub_by_name_on = 1
     lighted_row_vclub_abc = 0
+    need_vclub_by_name_row_focus = 1
     load_vclub_by_name(0)
-    set_active_vclub_by_name_row()
+    //set_active_vclub_by_name_row()
 }
 
 function hide_video_club_by_name(){
@@ -14588,19 +14485,19 @@ function set_active_vclub_by_name_row(){
     _debug('set_active_vclub_by_name_row()')
     _debug('cur_row_vclub_by_name: '+cur_row_vclub_by_name)
     set_passive_vclub_by_name_row()
-    class_changer('video_club_by_name_row_', cur_row_vclub_by_name, "hover")
+    r_class_changer('video_club_by_name_row_', cur_row_vclub_by_name, "hover")
 }
 
 function set_passive_vclub_by_name_row(){
     _debug('set_passive_vclub_by_name_row()')
     _debug('prev_row_vclub_by_name: '+prev_row_vclub_by_name)
-    class_changer('video_club_by_name_row_', prev_row_vclub_by_name, "unhover")
+    r_class_changer('video_club_by_name_row_', prev_row_vclub_by_name, "unhover")
 }
 
 function set_passive_all_vclub_by_name_row(){
     _debug('set_passive_all_vclub_by_name_row()')
     _debug('cur_row_vclub_by_name: '+cur_row_vclub_by_name)
-    class_changer('video_club_by_name_row_', cur_row_vclub_by_name, "unhover")
+    r_class_changer('video_club_by_name_row_', cur_row_vclub_by_name, "unhover")
 }
 
 function call_con_menu_vclub_by_name_func(){
@@ -14632,6 +14529,10 @@ function fill_vclub_by_name(arr){
     _debug('max_vclub_by_name: '+max_vclub_by_name_rows)
     var arr_length = arr.length
     for(tv_n_i = 0; tv_n_i < arr_length; tv_n_i++){
+        
+        //document.getElementById('video_club_by_name_row_'+tv_n_i).className = ""
+        change_class_by_ids('black_row', document.getElementById('video_club_by_name_row_'+tv_n_i))
+        
         document.getElementById('video_club_by_name_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('video_club_by_name_my_video_'+(tv_n_i)).innerHTML = arr[tv_n_i].my_video
         document.getElementById('video_club_by_name_year_'+(tv_n_i)).innerHTML = arr[tv_n_i].year
@@ -14710,26 +14611,26 @@ function set_active_vclub_abc_row(){
     _debug('set_active_vclub_abc_row()')
     _debug('cur_row_vclub_abc: '+cur_row_vclub_abc)
     set_passive_vclub_abc_row()
-    class_changer('video_club_abc_row_', cur_row_vclub_abc, "hover")
+    r_class_changer('video_club_abc_row_', cur_row_vclub_abc, "hover")
 }
 
 function set_passive_vclub_abc_row(){
     _debug('set_passive_vclub_abc_row()')
-    class_changer('video_club_abc_row_', prev_row_vclub_abc, "unhover")
+    r_class_changer('video_club_abc_row_', prev_row_vclub_abc, "unhover")
 }
 
 function set_passive_all_vclub_abc_row(){
     _debug('set_passive_all_vclub_abc_row()')
-    class_changer('video_club_abc_row_', cur_row_vclub_abc, "unhover")
+    r_class_changer('video_club_abc_row_', cur_row_vclub_abc, "unhover")
 }
 
 function hightlight_abc_bar_row(){
     lighted_row_vclub_abc = cur_row_vclub_abc
-    class_changer('video_club_abc_row_', lighted_row_vclub_abc, "hightlight")
+    r_class_changer('video_club_abc_row_', lighted_row_vclub_abc, "hightlight")
 }
 
 function normlight_abc_bar_row(){
-    class_changer('video_club_abc_row_', lighted_row_vclub_abc, "normlight")
+    r_class_changer('video_club_abc_row_', lighted_row_vclub_abc, "normlight")
 }
 /**/
 
@@ -14746,6 +14647,7 @@ function class_changer(item, item_num, action){
         }else if(tmp_class_name == "grey_row"){
             document.getElementById(item+''+item_num).className = "hover_grey_row"
         }
+        return;
     }
     
     if (action == "unhover"){
@@ -14754,25 +14656,8 @@ function class_changer(item, item_num, action){
         }else if(tmp_class_name == "hover_grey_row"){
             document.getElementById(item+''+item_num).className = "grey_row"
         }
+        return;
     }
-
-    /*row = document.getElementById(item+''+item_num)
-    tmp_class_name = row.cells[0].className
-    _debug('tmp_class_name: '+tmp_class_name)
-    if (action == "hover"){
-        if (tmp_class_name == "black_row"){
-            change_class_by_ids('hover_black_row', row)
-        }else if(tmp_class_name == "grey_row"){
-            change_class_by_ids('hover_grey_row', row)
-        }
-    }
-    if (action == "unhover"){
-        if(tmp_class_name == "hover_black_row"){
-            change_class_by_ids('black_row', row)
-        }else if(tmp_class_name == "hover_grey_row"){
-            change_class_by_ids('grey_row', row)
-        }
-    }*/
     
     if (action == "hightlight"){
         if(tmp_class_name == "hover_black_row" || tmp_class_name == "hover_grey_row"){
@@ -14780,14 +14665,60 @@ function class_changer(item, item_num, action){
         }else if (tmp_class_name == "black_row" || tmp_class_name == "grey_row"){
             document.getElementById(item+''+item_num).className = "black_row"
         }
+        return;
     }
+    
     if (action == "normlight"){
         if(tmp_class_name == "black_row" || tmp_class_name == "grey_row"){
             document.getElementById(item+''+item_num).className = "grey_row"
         }else if (tmp_class_name == "hover_black_row" || tmp_class_name == "hover_grey_row"){
             document.getElementById(item+''+item_num).className = "hover_grey_row"
         }
+        return;
     } 
+}
+
+function r_class_changer(item, item_num, action){
+    _debug('class_changer('+item+', '+item_num+', '+action+')')
+
+    row = document.getElementById(item+''+item_num)
+    tmp_class_name = row.cells[0].className
+    
+    if (action == "hover"){
+        if (tmp_class_name == "black_row"){
+            change_class_by_ids('hover_black_row', row)
+        }else if(tmp_class_name == "grey_row"){
+            change_class_by_ids('hover_grey_row', row)
+        }
+        return;
+    }
+    if (action == "unhover"){
+        if(tmp_class_name == "hover_black_row"){
+            change_class_by_ids('black_row', row)
+        }else if(tmp_class_name == "hover_grey_row"){
+            change_class_by_ids('grey_row', row)
+        }
+        return;
+    }
+    
+    if (action == "hightlight"){
+        if(tmp_class_name == "hover_black_row" || tmp_class_name == "hover_grey_row"){
+            change_class_by_ids('hover_black_row', row)
+        }else if (tmp_class_name == "black_row" || tmp_class_name == "grey_row"){
+            change_class_by_ids('black_row', row)
+        }
+        return;
+    }
+    
+    if (action == "normlight"){
+        if(tmp_class_name == "black_row" || tmp_class_name == "grey_row"){
+            change_class_by_ids('grey_row', row)
+        }else if (tmp_class_name == "hover_black_row" || tmp_class_name == "hover_grey_row"){
+            change_class_by_ids('hover_grey_row', row)
+        }
+        return;
+    } 
+    
 }
 
 function change_class_by_ids(class_name, row){
@@ -14839,7 +14770,7 @@ function hide_video_club_info(){
     _debug('hide_video_club_info()')
     document.getElementById('video_club_info').style.display = 'none'
     //document.getElementById('video_club_info_descr_txt').blur()
-    document.getElementById('video_club_info_descr').blur()
+    //document.getElementById('video_club_info_descr').blur()
     video_club_info_on = 0
     if(video_club_info_con_menu_on == 1){
         hide_video_club_info_con_menu()
@@ -14872,7 +14803,7 @@ function fill_video_club_info(){
     document.getElementById('video_club_info_name').innerHTML = item_for_vclub_info.name
     document.getElementById('video_club_info_descr_txt').innerHTML = item_for_vclub_info.desc
     //document.getElementById('video_club_info_descr_txt').focus()
-    document.getElementById('video_club_info_descr').focus()
+    //document.getElementById('video_club_info_descr').focus()
     show_video_club_info_slide()
     empty_vclub_info = 0
 }
@@ -14883,6 +14814,28 @@ function del_video_club_info(){
     document.getElementById('video_club_info_name').innerHTML = ''
     document.getElementById('video_club_info_screen_img').innerHTML = ''
     empty_vclub_info = 1
+}
+
+function shift_video_club_info(dir, offset){
+    
+    var video_club_info = document.getElementById('video_club_info_descr');
+    
+    var top = video_club_info.scrollTop;
+    
+    _debug('top: '+top);
+
+    if (dir>0){
+        top = top+offset
+    }else{
+        if (top != 0){
+            top = top-offset
+        }
+    }
+    
+    video_club_info.scrollTop = top
+    
+    _debug('after top: '+top);
+    _debug('after scrollTop: '+video_club_info.scrollTop);
 }
 
 function check_empty_video_club_info(){
@@ -14918,7 +14871,7 @@ function show_video_club_info_con_menu(){
     set_active_video_club_info_con_menu_row()
     //document.getElementById('video_club_info_descr_txt').blur()
     document.getElementById('video_club_info_descr').blur()
-    document.getElementById('video_club_info_con_menu').focus()
+    //document.getElementById('video_club_info_con_menu').focus()
     show_con_alpha_layer()
 }
 
@@ -14928,9 +14881,9 @@ function hide_video_club_info_con_menu(){
     set_passive_all_video_club_info_con_menu_row()
     prev_row_vclub_info_con_menu = 1
     cur_row_vclub_info_con_menu = 0
-    document.getElementById('video_club_info_con_menu').blur()
+    //document.getElementById('video_club_info_con_menu').blur()
     //document.getElementById('video_club_info_descr_txt').focus()
-    document.getElementById('video_club_info_descr').focus()
+    //document.getElementById('video_club_info_descr').focus()
     hide_con_alpha_layer()
 }
 
@@ -15025,6 +14978,7 @@ function show_video_club_by_genre(){
     cur_row_vclub_abc = 0
     lighted_row_vclub_abc = 0
     lighted_row_vclub_genre = 0
+    need_vclub_by_genre_row_focus = 1
     load_vclub_by_genre(0)
     show_vclub_genre_bar()
     set_active_vclub_by_genre_row()
@@ -15121,19 +15075,19 @@ function set_active_vclub_by_genre_row(){
     _debug('set_active_vclub_by_genre_row()')
     _debug('cur_row_vclub_by_genre: '+cur_row_vclub_by_genre)
     set_passive_vclub_by_genre_row()
-    class_changer('video_club_by_genre_row_', cur_row_vclub_by_genre, "hover")
+    r_class_changer('video_club_by_genre_row_', cur_row_vclub_by_genre, "hover")
 }
 
 function set_passive_vclub_by_genre_row(){
     _debug('set_passive_vclub_by_genre_row()')
     _debug('prev_row_vclub_by_genre: '+prev_row_vclub_by_genre)
-    class_changer('video_club_by_genre_row_', prev_row_vclub_by_genre, "unhover")
+    r_class_changer('video_club_by_genre_row_', prev_row_vclub_by_genre, "unhover")
 }
 
 function set_passive_all_vclub_by_genre_row(){
     _debug('set_passive_all_vclub_by_genre_row()')
     _debug('cur_row_vclub_by_genre: '+cur_row_vclub_by_genre)
-    class_changer('video_club_by_genre_row_', cur_row_vclub_by_genre, "unhover")
+    r_class_changer('video_club_by_genre_row_', cur_row_vclub_by_genre, "unhover")
 }
 
 function call_con_menu_vclub_by_genre_func(){
@@ -15203,6 +15157,9 @@ function fill_vclub_by_genre(arr){
     _debug('max_vclub_by_genre_rows: '+max_vclub_by_genre_rows)
     var arr_length = arr.length
     for(tv_n_i = 0; tv_n_i < arr_length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('video_club_by_genre_row_'+tv_n_i))
+        
         document.getElementById('video_club_by_genre_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('video_club_by_genre_year_'+(tv_n_i)).innerHTML = arr[tv_n_i].year
     }
@@ -15353,27 +15310,27 @@ function set_active_vclub_genre_bar_row(){
     _debug('set_active_vclub_genre_bar_row()')
     _debug('cur_row_vclub_genre_bar: '+cur_row_vclub_genre_bar)
     set_passive_vclub_genre_bar_row()
-    class_changer('video_club_genre_row_', cur_row_vclub_genre_bar, "hover")
+    r_class_changer('video_club_genre_row_', cur_row_vclub_genre_bar, "hover")
 }
 
 function set_passive_vclub_genre_bar_row(){
     _debug('set_passive_vclub_genre_bar_row()')
-    class_changer('video_club_genre_row_', prev_row_vclub_genre_bar, "unhover")
+    r_class_changer('video_club_genre_row_', prev_row_vclub_genre_bar, "unhover")
 }
 
 function set_passive_all_vclub_genre_bar_row(){
     _debug('set_passive_all_vclub_genre_bar_row()')
     _debug('cur_row_vclub_genre_bar: '+cur_row_vclub_genre_bar)
-    class_changer('video_club_genre_row_', cur_row_vclub_genre_bar, "unhover")
+    r_class_changer('video_club_genre_row_', cur_row_vclub_genre_bar, "unhover")
 }
 
 function hightlight_genre_bar_row(){
     lighted_row_vclub_genre = cur_row_vclub_genre_bar
-    class_changer('video_club_genre_row_', lighted_row_vclub_genre, "hightlight")
+    r_class_changer('video_club_genre_row_', lighted_row_vclub_genre, "hightlight")
 }
 
 function normlight_genre_bar_row(){
-    class_changer('video_club_genre_row_', lighted_row_vclub_genre, "normlight")
+    r_class_changer('video_club_genre_row_', lighted_row_vclub_genre, "normlight")
 }
 /**/
 
@@ -15441,17 +15398,17 @@ function set_active_vclub_year_bar_row(){
     _debug('set_active_vclub_year_bar_row()')
     _debug('cur_row_vclub_year_bar: '+cur_row_vclub_year_bar)
     set_passive_vclub_year_bar_row()
-    class_changer('video_club_year_row_', cur_row_vclub_year_bar, "hover")
+    r_class_changer('video_club_year_row_', cur_row_vclub_year_bar, "hover")
 }
 
 function set_passive_vclub_year_bar_row(){
     _debug('set_passive_vclub_year_bar_row()')
-    class_changer('video_club_year_row_', prev_row_vclub_year_bar, "unhover")
+    r_class_changer('video_club_year_row_', prev_row_vclub_year_bar, "unhover")
 }
 
 function set_passive_all_vclub_year_bar_row(){
     _debug('set_passive_all_vclub_year_bar_row()')
-    class_changer('video_club_year_row_', cur_row_vclub_year_bar, "unhover")
+    r_class_changer('video_club_year_row_', cur_row_vclub_year_bar, "unhover")
 }
 
 function load_vclub_year_bar(page){
@@ -15494,6 +15451,7 @@ function show_video_club_by_year(){
     cur_row_vclub_abc = 0
     lighted_row_vclub_abc = 0
     show_vclub_year_bar()
+    need_vclub_by_year_focus = 1
     load_vclub_by_year(0)
     set_active_vclub_by_year_row()
 }
@@ -15592,19 +15550,19 @@ function set_active_vclub_by_year_row(){
     _debug('set_active_vclub_by_year_row()')
     _debug('cur_row_vclub_by_year: '+cur_row_vclub_by_year)
     set_passive_vclub_by_year_row()
-    class_changer('video_club_by_year_row_', cur_row_vclub_by_year, "hover")
+    r_class_changer('video_club_by_year_row_', cur_row_vclub_by_year, "hover")
 }
 
 function set_passive_vclub_by_year_row(){
     _debug('set_passive_vclub_by_year_row()')
     _debug('prev_row_vclub_by_year: '+prev_row_vclub_by_year)
-    class_changer('video_club_by_year_row_', prev_row_vclub_by_year, "unhover")
+    r_class_changer('video_club_by_year_row_', prev_row_vclub_by_year, "unhover")
 }
 
 function set_passive_all_vclub_by_year_row(){
     _debug('set_passive_all_vclub_by_year_row()')
     _debug('cur_row_vclub_by_year '+cur_row_vclub_by_year)
-    class_changer('video_club_by_year_row_', cur_row_vclub_by_year, "unhover")
+    r_class_changer('video_club_by_year_row_', cur_row_vclub_by_year, "unhover")
 }
 
 function call_con_menu_vclub_by_year_func(){
@@ -15633,11 +15591,11 @@ function load_vclub_by_year(page){
 
 function hightlight_year_bar_row(){
     lighted_row_vclub_year = cur_row_vclub_year_bar
-    class_changer('video_club_year_row_', lighted_row_vclub_year, "hightlight")
+    r_class_changer('video_club_year_row_', lighted_row_vclub_year, "hightlight")
 }
 
 function normlight_year_bar_row(){
-    class_changer('video_club_year_row_', lighted_row_vclub_year, "normlight")
+    r_class_changer('video_club_year_row_', lighted_row_vclub_year, "normlight")
 }
 
 function fill_vclub_by_year(arr){
@@ -15650,6 +15608,9 @@ function fill_vclub_by_year(arr){
     _debug('max_vclub_by_year_rows: '+max_vclub_by_year_rows)
     var arr_length = arr.length
     for(tv_n_i = 0; tv_n_i < arr.length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('video_club_by_year_row_'+tv_n_i))
+        
         document.getElementById('video_club_by_year_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         //document.getElementById('video_club_by_year_genre_'+(tv_n_i)).innerHTML = arr[tv_n_i].genre_name
     }
@@ -15772,19 +15733,19 @@ function set_active_vclub_by_add_time_row(){
     _debug('set_active_vclub_by_add_time_row()')
     _debug('cur_row_vclub_by_add_time: '+cur_row_vclub_by_add_time)
     set_passive_vclub_by_add_time_row()
-    class_changer('video_club_by_add_time_row_', cur_row_vclub_by_add_time, "hover")
+    r_class_changer('video_club_by_add_time_row_', cur_row_vclub_by_add_time, "hover")
 }
 
 function set_passive_vclub_by_add_time_row(){
     _debug('set_passive_vclub_by_add_time_row()')
     _debug('prev_row_vclub_by_add_time: '+prev_row_vclub_by_add_time)
-    class_changer('video_club_by_add_time_row_', prev_row_vclub_by_add_time, "unhover")
+    r_class_changer('video_club_by_add_time_row_', prev_row_vclub_by_add_time, "unhover")
 }
 
 function set_passive_all_vclub_by_add_time_row(){
     _debug('set_passive_all_vclub_by_add_time_row()')
     _debug('cur_row_vclub_by_add_time: '+cur_row_vclub_by_add_time)
-    class_changer('video_club_by_add_time_row_', cur_row_vclub_by_add_time, "unhover")
+    r_class_changer('video_club_by_add_time_row_', cur_row_vclub_by_add_time, "unhover")
 }
 
 function call_con_menu_vclub_by_add_time_func(){
@@ -15818,6 +15779,9 @@ function fill_vclub_by_add_time(arr){
     _debug('max_vclub_by_add_time: '+max_vclub_by_add_time_rows)
     var arr_length = arr.length
     for(tv_n_i = 0; tv_n_i < arr.length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('video_club_by_add_time_row_'+tv_n_i))
+        
         document.getElementById('video_club_by_add_time_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('video_club_by_add_time_year_'+(tv_n_i)).innerHTML = arr[tv_n_i].year
     }
@@ -15869,26 +15833,26 @@ function set_active_vclub_add_time_row(){
     _debug('set_active_vclub_add_time_row()')
     _debug('cur_row_vclub_add_time: '+cur_row_vclub_add_time)
     set_passive_vclub_add_time_row()
-    class_changer('video_club_add_time_row_', cur_row_vclub_add_time, "hover")
+    r_class_changer('video_club_add_time_row_', cur_row_vclub_add_time, "hover")
 }
 
 function set_passive_vclub_add_time_row(){
     _debug('set_passive_vclub_add_time_row()')
-    class_changer('video_club_add_time_row_', prev_row_vclub_add_time, "unhover")
+    r_class_changer('video_club_add_time_row_', prev_row_vclub_add_time, "unhover")
 }
 
 function set_passive_all_vclub_add_time_row(){
     _debug('set_passive_all_vclub_add_time_row()')
-    class_changer('video_club_add_time_row_', cur_row_vclub_add_time, "unhover")
+    r_class_changer('video_club_add_time_row_', cur_row_vclub_add_time, "unhover")
 }
 
 function hightlight_add_time_bar_row(){
     lighted_row_vclub_add_time = cur_row_vclub_add_time
-    class_changer('video_club_add_time_row_', lighted_row_vclub_add_time, "hightlight")
+    r_class_changer('video_club_add_time_row_', lighted_row_vclub_add_time, "hightlight")
 }
 
 function normlight_add_time_bar_row(){
-    class_changer('video_club_add_time_row_', lighted_row_vclub_add_time, "normlight")
+    r_class_changer('video_club_add_time_row_', lighted_row_vclub_add_time, "normlight")
 }
 /**/
 
@@ -15901,7 +15865,7 @@ function show_video_club_by_top(){
     switch_on_video_club_page(4)
     vclub_by_top_on = 1
     load_vclub_by_top(0)
-    set_active_vclub_by_top_row()
+    //set_active_vclub_by_top_row()
 }
 
 function hide_video_club_by_top(){
@@ -15972,19 +15936,19 @@ function set_active_vclub_by_top_row(){
     _debug('set_active_vclub_by_top_row()')
     _debug('cur_row_vclub_by_top: '+cur_row_vclub_by_top)
     set_passive_vclub_by_top_row()
-    class_changer('video_club_by_top_row_', cur_row_vclub_by_top, "hover")
+    r_class_changer('video_club_by_top_row_', cur_row_vclub_by_top, "hover")
 }
 
 function set_passive_vclub_by_top_row(){
     _debug('set_passive_vclub_by_top_row()')
     _debug('prev_row_vclub_by_top: '+prev_row_vclub_by_top)
-    class_changer('video_club_by_top_row_', prev_row_vclub_by_top, "unhover")
+    r_class_changer('video_club_by_top_row_', prev_row_vclub_by_top, "unhover")
 }
 
 function set_passive_all_vclub_by_top_row(){
     _debug('set_passive_all_vclub_by_top_row()')
     _debug('cur_row_vclub_by_top: '+cur_row_vclub_by_top)
-    class_changer('video_club_by_top_row_', cur_row_vclub_by_top, "unhover")
+    r_class_changer('video_club_by_top_row_', cur_row_vclub_by_top, "unhover")
 }
 
 function call_con_menu_vclub_by_top_func(){
@@ -16015,6 +15979,9 @@ function fill_vclub_by_top(arr){
     _debug('max_vclub_by_name: '+max_vclub_by_top_rows)
     var arr_length = arr.length
     for(tv_n_i = 0; tv_n_i < arr_length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('video_club_by_top_row_'+tv_n_i))
+        
         document.getElementById('video_club_by_top_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('video_club_by_top_year_'+(tv_n_i)).innerHTML = arr[tv_n_i].year
     }
@@ -16025,6 +15992,7 @@ function fill_vclub_by_top(arr){
             document.getElementById('video_club_by_top_year_'+(tv_i)).innerHTML = ''
         }
     }
+    set_active_vclub_by_top_row()
 }
 
 function del_vclub_by_top(){
@@ -16128,19 +16096,19 @@ function set_active_vclub_by_search_row(){
     _debug('set_active_vclub_by_search_row()')
     _debug('cur_row_vclub_by_search: '+cur_row_vclub_by_search)
     set_passive_vclub_by_search_row()
-    class_changer('video_club_by_search_row_', cur_row_vclub_by_search, "hover")
+    r_class_changer('video_club_by_search_row_', cur_row_vclub_by_search, "hover")
 }
 
 function set_passive_vclub_by_search_row(){
     _debug('set_passive_vclub_by_search_row()')
     _debug('prev_row_vclub_by_search: '+prev_row_vclub_by_search)
-    class_changer('video_club_by_search_row_', prev_row_vclub_by_search, "unhover")
+    r_class_changer('video_club_by_search_row_', prev_row_vclub_by_search, "unhover")
 }
 
 function set_passive_all_vclub_by_search_row(){
     _debug('set_passive_all_vclub_by_search_row()')
     _debug('cur_row_vclub_by_search: '+cur_row_vclub_by_search)
-    class_changer('video_club_by_search_row_', cur_row_vclub_by_search, "unhover")
+    r_class_changer('video_club_by_search_row_', cur_row_vclub_by_search, "unhover")
 }
 
 function call_con_menu_vclub_by_search_func(){
@@ -16171,6 +16139,9 @@ function fill_vclub_by_search(arr){
     _debug('max_vclub_by_search: '+max_vclub_by_search_rows)
     var arr_length = arr.length
     for(tv_n_i = 0; tv_n_i < arr_length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('video_club_by_search_row_'+tv_n_i))
+        
         document.getElementById('video_club_by_search_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('video_club_by_search_year_'+(tv_n_i)).innerHTML = arr[tv_n_i].year
     }
@@ -16251,19 +16222,19 @@ function set_active_vclub_not_ended_row(){
     _debug('set_active_vclub_not_ended_row()')
     _debug('cur_row_vclub_not_ended: '+cur_row_vclub_not_ended)
     set_passive_vclub_not_ended_row()
-    class_changer('vclub_not_ended_row_', cur_row_vclub_not_ended, "hover")
+    r_class_changer('vclub_not_ended_row_', cur_row_vclub_not_ended, "hover")
 }
 
 function set_passive_vclub_not_ended_row(){
     _debug('set_passive_vclub_not_ended_row()')
     _debug('prev_row_vclub_not_ended: '+prev_row_vclub_not_ended)
-    class_changer('vclub_not_ended_row_', prev_row_vclub_not_ended, "unhover")
+    r_class_changer('vclub_not_ended_row_', prev_row_vclub_not_ended, "unhover")
 }
 
 function set_passive_all_vclub_not_ended_row(){
     _debug('set_passive_all_vclub_not_ended_row()')
     _debug('cur_row_vclub_not_ended: '+cur_row_vclub_not_ended)
-    class_changer('vclub_not_ended_row_', cur_row_vclub_not_ended, "unhover")
+    r_class_changer('vclub_not_ended_row_', cur_row_vclub_not_ended, "unhover")
 }
 
 function call_con_menu_vclub_not_ended_func(){
@@ -16290,6 +16261,9 @@ function fill_vclub_not_ended(arr){
     _debug('max_vclub_not_ended: '+max_vclub_not_ended_rows)
     var arr_length = arr.length
     for(tv_n_i = 0; tv_n_i < arr_length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('vclub_not_ended_row_'+tv_n_i))
+        
         document.getElementById('vclub_not_ended_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('vclub_not_ended_year_'+(tv_n_i)).innerHTML = arr[tv_n_i].year
     }
@@ -17979,26 +17953,26 @@ function set_active_karaoke_abc_row(){
     _debug('set_active_karaoke_abc_row()')
     _debug('cur_row_karaoke_abc: '+cur_row_karaoke_abc)
     set_passive_karaoke_abc_row()
-    class_changer('karaoke_abc_row_', cur_row_karaoke_abc, "hover")
+    r_class_changer('karaoke_abc_row_', cur_row_karaoke_abc, "hover")
 }
 
 function set_passive_karaoke_abc_row(){
     _debug('set_passive_karaoke_abc_row()')
-    class_changer('karaoke_abc_row_', prev_row_karaoke_abc, "unhover")
+    r_class_changer('karaoke_abc_row_', prev_row_karaoke_abc, "unhover")
 }
 
 function set_passive_all_karaoke_abc_row(){
     _debug('set_passive_all_karaoke_abc_row()')
-    class_changer('karaoke_abc_row_', cur_row_karaoke_abc, "unhover")
+    r_class_changer('karaoke_abc_row_', cur_row_karaoke_abc, "unhover")
 }
 
 function hightlight_abc_karaoke_bar_row(){
     lighted_row_karaoke_abc = cur_row_karaoke_abc
-    class_changer('karaoke_abc_row_', lighted_row_karaoke_abc, "hightlight")
+    r_class_changer('karaoke_abc_row_', lighted_row_karaoke_abc, "hightlight")
 }
 
 function normlight_abc_karaoke_bar_row(){
-    class_changer('karaoke_abc_row_', lighted_row_karaoke_abc, "normlight")
+    r_class_changer('karaoke_abc_row_', lighted_row_karaoke_abc, "normlight")
 }
 /**/
 
@@ -18091,27 +18065,27 @@ function set_active_karaoke_genre_bar_row(){
     _debug('set_active_karaoke_genre_bar_row()')
     _debug('cur_row_karaoke_genre: '+cur_row_karaoke_genre_bar)
     set_passive_karaoke_genre_bar_row()
-    class_changer('karaoke_genre_row_', cur_row_karaoke_genre_bar, "hover")
+    r_class_changer('karaoke_genre_row_', cur_row_karaoke_genre_bar, "hover")
 }
 
 function set_passive_karaoke_genre_bar_row(){
     _debug('set_passive_karaoke_genre_bar_row()')
-    class_changer('karaoke_genre_row_', prev_row_karaoke_genre_bar, "unhover")
+    r_class_changer('karaoke_genre_row_', prev_row_karaoke_genre_bar, "unhover")
 }
 
 function set_passive_all_karaoke_genre_bar_row(){
     _debug('set_passive_all_karaoke_genre_bar_row()')
     _debug('cur_row_karaoke_genre_bar: '+cur_row_karaoke_genre_bar)
-    class_changer('karaoke_genre_row_', cur_row_karaoke_genre_bar, "unhover")
+    r_class_changer('karaoke_genre_row_', cur_row_karaoke_genre_bar, "unhover")
 }
 
 function hightlight_karaoke_genre_bar_row(){
     lighted_row_karaoke_genre = cur_row_karaoke_genre_bar
-    class_changer('karaoke_genre_row_', lighted_row_karaoke_genre, "hightlight")
+    r_class_changer('karaoke_genre_row_', lighted_row_karaoke_genre, "hightlight")
 }
 
 function normlight_karaoke_genre_bar_row(){
-    class_changer('karaoke_genre_row_', lighted_row_karaoke_genre, "normlight")
+    r_class_changer('karaoke_genre_row_', lighted_row_karaoke_genre, "normlight")
 }
 /**/
 
@@ -18127,8 +18101,9 @@ function show_karaoke_by_name(){
     switch_on_karaoke_page(1)
     karaoke_by_name_on = 1
     lighted_row_vclub_abc = 0
+    need_karaoke_by_name_row_focus = 1
     load_karaoke_by_name(0)
-    set_active_karaoke_by_name_row()
+    //set_active_karaoke_by_name_row()
 }
 
 function hide_karaoke_by_name(){
@@ -18204,19 +18179,19 @@ function set_active_karaoke_by_name_row(){
     _debug('set_active_karaoke_by_name_row()')
     _debug('cur_row_karaoke_by_name: '+cur_row_karaoke_by_name)
     set_passive_karaoke_by_name_row()
-    class_changer('karaoke_by_name_row_', cur_row_karaoke_by_name, "hover")
+    r_class_changer('karaoke_by_name_row_', cur_row_karaoke_by_name, "hover")
 }
 
 function set_passive_karaoke_by_name_row(){
     _debug('set_passive_karaoke_by_name_row()')
     _debug('prev_row_karaoke_by_name: '+prev_row_karaoke_by_name)
-    class_changer('karaoke_by_name_row_', prev_row_karaoke_by_name, "unhover")
+    r_class_changer('karaoke_by_name_row_', prev_row_karaoke_by_name, "unhover")
 }
 
 function set_passive_all_karaoke_by_name_row(){
     _debug('set_passive_all_karaoke_by_name_row()')
     _debug('cur_row_karaoke_by_name: '+cur_row_karaoke_by_name)
-    class_changer('karaoke_by_name_row_', cur_row_karaoke_by_name, "unhover")
+    r_class_changer('karaoke_by_name_row_', cur_row_karaoke_by_name, "unhover")
 }
 
 function call_con_menu_karaoke_by_name_func(){
@@ -18256,6 +18231,9 @@ function fill_karaoke_by_name(arr){
     arr_length = max_karaoke_by_name_rows = arr.length
     _debug('max_karaoke_by_name: '+max_karaoke_by_name_rows)
     for(tv_n_i = 0; tv_n_i < arr.length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('karaoke_by_name_row_'+tv_n_i))
+        
         document.getElementById('karaoke_by_name_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
         document.getElementById('karaoke_by_name_singer_'+(tv_n_i)).innerHTML = arr[tv_n_i].singer
     }
@@ -18375,19 +18353,19 @@ function set_active_karaoke_by_singer_row(){
     _debug('set_active_karaoke_by_singer_row()')
     _debug('cur_row_karaoke_by_singer: '+cur_row_karaoke_by_singer)
     set_passive_karaoke_by_singer_row()
-    class_changer('karaoke_by_singer_row_', cur_row_karaoke_by_singer, "hover")
+    r_class_changer('karaoke_by_singer_row_', cur_row_karaoke_by_singer, "hover")
 }
 
 function set_passive_karaoke_by_singer_row(){
     _debug('set_passive_karaoke_by_singer_row()')
     _debug('prev_row_karaoke_by_singer: '+prev_row_karaoke_by_singer)
-    class_changer('karaoke_by_singer_row_', prev_row_karaoke_by_singer, "unhover")
+    r_class_changer('karaoke_by_singer_row_', prev_row_karaoke_by_singer, "unhover")
 }
 
 function set_passive_all_karaoke_by_singer_row(){
     _debug('set_passive_all_karaoke_by_singer_row()')
     _debug('cur_row_karaoke_by_singer: '+cur_row_karaoke_by_singer)
-    class_changer('karaoke_by_singer_row_', cur_row_karaoke_by_singer, "unhover")
+    r_class_changer('karaoke_by_singer_row_', cur_row_karaoke_by_singer, "unhover")
 }
 
 function call_con_menu_karaoke_by_singer_func(){
@@ -18562,27 +18540,27 @@ function set_active_karaoke_singer_bar_row(){
     _debug('set_active_karaoke_singer_bar_row()')
     _debug('cur_row_karaoke_singer: '+cur_row_karaoke_singer_bar)
     set_passive_karaoke_singer_bar_row()
-    class_changer('karaoke_singer_bar_row_', cur_row_karaoke_singer_bar, "hover")
+    r_class_changer('karaoke_singer_bar_row_', cur_row_karaoke_singer_bar, "hover")
 }
 
 function set_passive_karaoke_singer_bar_row(){
     _debug('set_passive_karaoke_singer_bar_row()')
-    class_changer('karaoke_singer_bar_row_', prev_row_karaoke_singer_bar, "unhover")
+    r_class_changer('karaoke_singer_bar_row_', prev_row_karaoke_singer_bar, "unhover")
 }
 
 function set_passive_all_karaoke_singer_bar_row(){
     _debug('set_passive_all_karaoke_singer_bar_row()')
     _debug('cur_row_karaoke_singer_bar: '+cur_row_karaoke_singer_bar)
-    class_changer('karaoke_singer_bar_row_', cur_row_karaoke_singer_bar, "unhover")
+    r_class_changer('karaoke_singer_bar_row_', cur_row_karaoke_singer_bar, "unhover")
 }
 
 function hightlight_karaoke_singer_bar_row(){
     lighted_row_karaoke_singer_bar = cur_row_karaoke_singer_bar
-    class_changer('karaoke_singer_bar_row_', lighted_row_karaoke_singer_bar, "hightlight")
+    r_class_changer('karaoke_singer_bar_row_', lighted_row_karaoke_singer_bar, "hightlight")
 }
 
 function normlight_karaoke_singer_bar_row(){
-    class_changer('karaoke_singer_bar_row_', lighted_row_karaoke_singer_bar, "normlight")
+    r_class_changer('karaoke_singer_bar_row_', lighted_row_karaoke_singer_bar, "normlight")
 }
 /**/
 
@@ -19780,7 +19758,7 @@ function show_radio_by_name(){
     switch_on_radio_page(1)
     radio_by_name_on = 1
     load_radio_by_name(0)
-    set_active_radio_by_name_row()
+    //set_active_radio_by_name_row()
     hide_all_radio_by_name_play()
 }
 
@@ -19841,19 +19819,19 @@ function set_active_radio_by_name_row(){
     _debug('set_active_radio_by_name_row()')
     _debug('cur_row_radio_by_name: '+cur_row_radio_by_name)
     set_passive_radio_by_name_row()
-    class_changer('radio_by_name_row_', cur_row_radio_by_name, "hover")
+    r_class_changer('radio_by_name_row_', cur_row_radio_by_name, "hover")
 }
 
 function set_passive_radio_by_name_row(){
     _debug('set_passive_radio_by_name_row()')
     _debug('prev_row_radio_by_name: '+prev_row_radio_by_name)
-    class_changer('radio_by_name_row_', prev_row_radio_by_name, "unhover")
+    r_class_changer('radio_by_name_row_', prev_row_radio_by_name, "unhover")
 }
 
 function set_passive_all_radio_by_name_row(){
     _debug('set_passive_all_radio_by_name_row()')
     _debug('cur_row_radio_by_name: '+cur_row_radio_by_name)
-    class_changer('radio_by_name_row_', cur_row_radio_by_name, "unhover")
+    r_class_changer('radio_by_name_row_', cur_row_radio_by_name, "unhover")
 }
 
 function call_con_menu_radio_by_name_func(){
@@ -19895,8 +19873,12 @@ function fill_radio_by_name(arr){
     max_radio_by_name_rows = arr.length
     _debug('max_radio_by_name: '+max_radio_by_name_rows)
     for(tv_n_i = 0; tv_n_i < arr.length; tv_n_i++){
+        
+        change_class_by_ids('black_row', document.getElementById('radio_by_name_row_'+tv_n_i))
+        
         document.getElementById('radio_by_name_title_'+(tv_n_i)).innerHTML = arr[tv_n_i].name
     }
+    set_active_radio_by_name_row()
 }
 
 function del_radio_by_name(){
@@ -20640,7 +20622,7 @@ function fill_anec_blog(arr){
     _debug('fill_anec_blog()')
     anec_page_bar(cur_anec_blog_page, total_anec_blog_pages)
     document.getElementById('anec_blog_body').scrollTop = 0
-    document.getElementById('anec_blog_body').focus()
+    //document.getElementById('anec_blog_body').focus()
     cur_anec_id = arr[0].id
     tmp_str  = arr[0].added + '   <span style="color:green">'+words['rating']+': </span><span id="anec_rating" style="color:green">'+ arr[0].rating+'</span><br><br>'
     tmp_str += arr[0].anec_body
@@ -20659,8 +20641,30 @@ function fill_anec_blog(arr){
 function del_anec_blog(){
     _debug('del_anec_blog()')
     anec_page_bar(cur_anec_blog_page, total_anec_blog_pages)
-    document.getElementById('anec_blog_body').blur()
+    //document.getElementById('anec_blog_body').blur()
     document.getElementById('anec_blog_body').innerHTML = ''
+}
+
+function shift_anec_blog_body(dir, offset){
+    
+    var anec_blog_body = document.getElementById('anec_blog_body');
+    
+    var top = anec_blog_body.scrollTop;
+    
+    _debug('top: '+top);
+
+    if (dir>0){
+        top = top+offset
+    }else{
+        if (top != 0){
+            top = top-offset
+        }
+    }
+    
+    anec_blog_body.scrollTop = top
+    
+    _debug('after top: '+top);
+    _debug('after scrollTop: '+anec_blog_body.scrollTop);
 }
 
 function make_anec_bookmark(){
@@ -20767,7 +20771,9 @@ function fill_common_horoscope(arr){
     _debug('fill_common_horoscope()')
     horoscope_arr = arr
     document.getElementById('common_horoscope').innerHTML = arr[0].description
+    _debug('fill description')
     document.getElementById('common_horoscope').scrollTop = 0
+    _debug('scrollTop')
 }
 
 function shift_common_horoscope(dir){
@@ -20866,6 +20872,7 @@ function horoscope_menu_disable_active(){
 function horoscope_menu_set_active(){
     _debug('horoscope_menu_set_active()')
     document.getElementById("horoscope_menu_1_"+cur_horoscope_menu_col).src = "i/horoscope_menu_button_1_"+((cur_horoscope_menu_page-1)*3+cur_horoscope_menu_col)+"_b.png"
+    _debug('set_active done')
 }
 
 function horoscope_menu_action(){
@@ -22133,14 +22140,14 @@ var epg_loader = {
                     }else if (this.epg[ch_id][i]['start_timestamp'] == now){
                         result = this.epg[ch_id][i].time + ' ' + this.epg[ch_id][i].name
                         if (typeof(this.epg[ch_id][i+1]) == 'object'){
-                            result += '<br>'+this.epg[ch_id][i+1].time + ' ' + this.epg[ch_id][i+1].name
+                            result += '<br>'+this.epg[ch_id][i+1].t_time + ' ' + this.epg[ch_id][i+1].name
                         }
                         return result
                     }else{
                         if (typeof(this.epg[ch_id][i-1]) == 'object'){
-                            result = this.epg[ch_id][i-1].time + ' ' + this.epg[ch_id][i-1].name
+                            result = this.epg[ch_id][i-1].t_time + ' ' + this.epg[ch_id][i-1].name
                             if (typeof(this.epg[ch_id][i]) == 'object'){
-                                result += '<br>'+this.epg[ch_id][i].time + ' ' + this.epg[ch_id][i].name
+                                result += '<br>'+this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name
                             }
                             return result
                         }
@@ -22524,94 +22531,94 @@ var epg_loader = {
     </div>
     
     <div id="main_bar_tv_by_number">
-    <table width="610" height="220" cellspacing="2" cellpadding="0">
-        <tr bgcolor="#FFFFFF">
-            <td width="60" height="20" align="center" class="menu_style1"><strong><script>echo(words['num_char'])</script></strong></td>
-            <td width="150" align="center" class="menu_style1"><strong><script>echo(words['channel'])</script></strong></td>
-            <td width="110" align="center" class="menu_style1"><strong><script>echo(words['theme'])</script></strong></td>
-            <td width="60" align="center" class="menu_style1">&nbsp;</td>
-            <td width="85" class="menu_style1">&nbsp;</td>
-            <td width="145" align="center" class="menu_style1"><strong><script>echo(words['now_playing'])</script></strong></td>
+    <table width="610" cellspacing="2" cellpadding="0" class="content_table">
+        <tr>
+            <th width="50"><script>echo(words['num_char'])</script></th>
+            <th width="200"><script>echo(words['channel'])</script></th>
+<!--            <th width="110" align="center" class="menu_style1"><strong><script>echo(words['theme'])</script></strong></th>-->
+            <th width="20">&nbsp;</th>
+<!--            <th width="70" class="menu_style1">&nbsp;</th>-->
+            <th width=""><script>echo(words['now_playing'])</script></th>
         </tr>
-        <tr id="row_0" class="grey_row">
-            <td height="25" align="right" id="num_0">&nbsp;</td>
-            <td id="td_name_0"><div id="name_0" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_0"><div id="theme_0" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_0">
+            <td align="right" id="num_0">&nbsp;</td>
+            <td id="name_0">&nbsp;</td>
+<!--            <td id="theme_0">&nbsp;</td>-->
             <td align="center" id="my_ch_0">&nbsp;</td>
-            <td id="prog_start_0">&nbsp;</td>
-            <td id="td_prog_name_0"><div id="prog_name_0" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_0">&nbsp;</td>-->
+            <td id="prog_name_0">&nbsp;</td>
         </tr>
-        <tr id="row_1" class="grey_row">
-            <td height="25" align="right" id="num_1">&nbsp;</td>
-            <td id="td_name_1"><div id="name_1" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_1"><div id="theme_1" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_1">
+            <td align="right" id="num_1">&nbsp;</td>
+            <td id="name_1">&nbsp;</td>
+<!--            <td id="theme_1">&nbsp;</td>-->
             <td align="center" id="my_ch_1">&nbsp;</td>
-            <td id="prog_start_1">&nbsp;</td>
-            <td id="td_prog_name_1"><div id="prog_name_1" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_1">&nbsp;</td>-->
+            <td id="prog_name_1">&nbsp;</td>
         </tr>
-        <tr id="row_2" class="grey_row">
-            <td height="25" align="right" id="num_2">&nbsp;</td>
-            <td id="td_name_2"><div id="name_2" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_2"><div id="theme_2" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_2">
+            <td align="right" id="num_2">&nbsp;</td>
+            <td id="name_2">&nbsp;</td>
+<!--            <td id="theme_2">&nbsp;</td>-->
             <td align="center" id="my_ch_2">&nbsp;</td>
-            <td id="prog_start_2">&nbsp;</td>
-            <td id="td_prog_name_2"><div id="prog_name_2" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_2">&nbsp;</td>-->
+            <td id="prog_name_2">&nbsp;</td>
         </tr>
-        <tr id="row_3" class="grey_row">
-            <td height="25" align="right" id="num_3">&nbsp;</td>
-            <td id="td_name_3"><div id="name_3" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_3"><div id="theme_3" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_3">
+            <td align="right" id="num_3">&nbsp;</td>
+            <td id="name_3">&nbsp;</td>
+<!--            <td id="theme_3">&nbsp;</td>-->
             <td align="center" id="my_ch_3">&nbsp;</td>
-            <td id="prog_start_3">&nbsp;</td>
-            <td id="td_prog_name_3"><div id="prog_name_3" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_3">&nbsp;</td>-->
+            <td id="prog_name_3">&nbsp;</td>
         </tr>
-        <tr id="row_4" class="grey_row">
-            <td height="25" align="right" id="num_4">&nbsp;</td>
-            <td id="td_name_4"><div id="name_4" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_4"><div id="theme_4" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_4">
+            <td align="right" id="num_4">&nbsp;</td>
+            <td id="name_4">&nbsp;</td>
+<!--            <td id="theme_4">&nbsp;</td>-->
             <td align="center" id="my_ch_4">&nbsp;</td>
-            <td id="prog_start_4">&nbsp;</td>
-            <td id="td_prog_name_4"><div id="prog_name_4" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_4">&nbsp;</td>-->
+            <td id="prog_name_4">&nbsp;</td>
         </tr>
-        <tr id="row_5" class="grey_row">
-            <td height="25" align="right" id="num_5">&nbsp;</td>
-            <td id="td_name_5"><div id="name_5" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_5"><div id="theme_5" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_5">
+            <td align="right" id="num_5">&nbsp;</td>
+            <td id="name_5">&nbsp;</td>
+<!--            <td id="theme_5">&nbsp;</td>-->
             <td align="center" id="my_ch_5">&nbsp;</td>
-            <td id="prog_start_5">&nbsp;</td>
-            <td id="td_prog_name_5"><div id="prog_name_5" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_5">&nbsp;</td>-->
+            <td id="prog_name_5">&nbsp;</td>
         </tr>
-        <tr id="row_6" class="grey_row">
-            <td height="25" align="right" id="num_6">&nbsp;</td>
-            <td id="td_name_6"><div id="name_6" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_6"><div id="theme_6" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_6">
+            <td align="right" id="num_6">&nbsp;</td>
+            <td id="name_6">&nbsp;</td>
+<!--            <td id="theme_6">&nbsp;</td>-->
             <td align="center" id="my_ch_6">&nbsp;</td>
-            <td id="prog_start_6">&nbsp;</td>
-            <td id="td_prog_name_6"><div id="prog_name_6" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_6">&nbsp;</td>-->
+            <td id="prog_name_6">&nbsp;</td>
         </tr>
-        <tr id="row_7" class="grey_row">
-            <td height="25" align="right" id="num_7">&nbsp;</td>
-            <td id="td_name_7"><div id="name_7" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_7"><div id="theme_7" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_7">
+            <td align="right" id="num_7">&nbsp;</td>
+            <td id="name_7">&nbsp;</td>
+<!--            <td id="theme_7">&nbsp;</td>-->
             <td align="center" id="my_ch_7">&nbsp;</td>
-            <td id="prog_start_7">&nbsp;</td>
-            <td id="td_prog_name_7"><div id="prog_name_7" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_7">&nbsp;</td>-->
+            <td id="prog_name_7">&nbsp;</td>
         </tr>
-        <tr id="row_8" class="grey_row">
-            <td height="25" align="right" id="num_8">&nbsp;</td>
-            <td id="td_name_8"><div id="name_8" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_8"><div id="theme_8" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_8">
+            <td align="right" id="num_8">&nbsp;</td>
+            <td id="name_8">&nbsp;</td>
+<!--            <td id="theme_8">&nbsp;</td>-->
             <td align="center" id="my_ch_8">&nbsp;</td>
-            <td id="prog_start_8">&nbsp;</td>
-            <td id="td_prog_name_8"><div id="prog_name_8" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_8">&nbsp;</td>-->
+            <td id="prog_name_8">&nbsp;</td>
         </tr>
-        <tr id="row_9" class="grey_row">
-            <td height="25" align="right" id="num_9">&nbsp;</td>
-            <td id="td_name_9"><div id="name_9" class="td_nowrap_150">&nbsp;</div></td>
-            <td id="td_theme_9"><div id="theme_9" class="td_nowrap_110">&nbsp;</div></td>
+        <tr id="row_9">
+            <td align="right" id="num_9">&nbsp;</td>
+            <td id="name_9">&nbsp;</td>
+<!--            <td id="theme_9">&nbsp;</td>-->
             <td align="center" id="my_ch_9">&nbsp;</td>
-            <td id="prog_start_9">&nbsp;</td>
-            <td id="td_prog_name_9"><div id="prog_name_9" class="program_ch_name_nowrap">&nbsp;</div></td>
+<!--            <td id="prog_start_9">&nbsp;</td>-->
+            <td id="prog_name_9">&nbsp;</td>
         </tr>
     </table>
     </div>
@@ -22620,94 +22627,84 @@ var epg_loader = {
     </div>
     
     <div id="main_bar_tv_by_channel" style="display:none">
-    <table width="610" height="220" cellspacing="2" cellpadding="0">
-        <tr bgcolor="#FFFFFF">
-            <td width="150" height="20" align="center" class="menu_style1"><strong><script>echo(words['channel'])</script></strong></td>
-            <td width="60" align="center" class="menu_style1"><strong><script>echo(words['num_char'])</script></strong></td>
-            <td width="110" align="center" class="menu_style1"><strong><script>echo(words['theme'])</script></strong></td>
-            <td width="60" align="center" class="menu_style1"><strong>&nbsp;</strong></td>
-            <td width="85" align="center" class="menu_style1"><strong>&nbsp;</strong></td>
-            <td width="145" align="center" class="menu_style1"><strong><script>echo(words['now_playing'])</script></strong></td>
+    
+    <table width="610" cellspacing="2" cellpadding="0" class="content_table">
+        <tr>
+            <th width="200"><script>echo(words['channel'])</script></th>
+            <th width="50"><script>echo(words['num_char'])</script></th>
+<!--            <th width="110"><script>echo(words['theme'])</script></th>-->
+            <th width="20">&nbsp;</strong></th>
+            <th width=""><script>echo(words['now_playing'])</script></th>
         </tr>
-        <tr id="ch_row_0" class="black_row">
-            <td><div id="ch_name_0" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_0">&nbsp;</td>
-            <td><div id="ch_theme_0" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" width="75" id="ch_my_ch_0">&nbsp;</td>
-            <td id="ch_prog_start_0">&nbsp;</td>
-            <td><div id="ch_prog_name_0" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_0">
+            <td id="ch_name_0">&nbsp;</td>
+            <td id="ch_num_0" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_0">&nbsp;</td>-->
+            <td id="ch_my_ch_0" align="center">&nbsp;</td>
+            <td id="ch_prog_name_0">&nbsp;</td>
         </tr>
-        <tr id="ch_row_1" class="black_row">
-            <td><div id="ch_name_1" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_1">&nbsp;</td>
-            <td><div id="ch_theme_1" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_1">&nbsp;</td>
-            <td id="ch_prog_start_1">&nbsp;</td>
-            <td><div id="ch_prog_name_1" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_1">
+            <td id="ch_name_1">&nbsp;</td>
+            <td id="ch_num_1" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_1">&nbsp;</td>-->
+            <td id="ch_my_ch_1" align="center">&nbsp;</td>
+            <td id="ch_prog_name_1">&nbsp;</td>
         </tr>
-        <tr id="ch_row_2" class="black_row">
-            <td><div id="ch_name_2" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_2">&nbsp;</td>
-            <td><div id="ch_theme_2" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_2">&nbsp;</td>
-            <td id="ch_prog_start_2">&nbsp;</td>
-            <td><div id="ch_prog_name_2" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_2">
+            <td id="ch_name_2">&nbsp;</td>
+            <td id="ch_num_2" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_2">&nbsp;</td>-->
+            <td id="ch_my_ch_2" align="center">&nbsp;</td>
+            <td id="ch_prog_name_2">&nbsp;</td>
         </tr>
-        <tr id="ch_row_3" class="black_row">
-            <td><div id="ch_name_3" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_3">&nbsp;</td>
-            <td><div id="ch_theme_3" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_3">&nbsp;</td>
-            <td id="ch_prog_start_3">&nbsp;</td>
-            <td><div id="ch_prog_name_3" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_3">
+            <td id="ch_name_3">&nbsp;</td>
+            <td id="ch_num_3" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_3">&nbsp;</td>-->
+            <td id="ch_my_ch_3" align="center">&nbsp;</td>
+            <td id="ch_prog_name_3">&nbsp;</td>
         </tr>
-        <tr id="ch_row_4" class="black_row">
-            <td><div id="ch_name_4" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_4">&nbsp;</td>
-            <td><div id="ch_theme_4" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_4">&nbsp;</td>
-            <td id="ch_prog_start_4">&nbsp;</td>
-            <td><div id="ch_prog_name_4" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_4">
+            <td id="ch_name_4">&nbsp;</td>
+            <td id="ch_num_4" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_4">&nbsp;</td>-->
+            <td id="ch_my_ch_4" align="center">&nbsp;</td>
+            <td id="ch_prog_name_4">&nbsp;</td>
         </tr>
-        <tr id="ch_row_5" class="black_row">
-            <td><div id="ch_name_5" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_5">&nbsp;</td>
-            <td><div id="ch_theme_5" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_5">&nbsp;</td>
-            <td id="ch_prog_start_5">&nbsp;</td>
-            <td><div id="ch_prog_name_5" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_5">
+            <td id="ch_name_5">&nbsp;</td>
+            <td id="ch_num_5" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_5">&nbsp;</td>-->
+            <td id="ch_my_ch_5" align="center">&nbsp;</td>
+            <td id="ch_prog_name_5">&nbsp;</td>
         </tr>
-        <tr id="ch_row_6" class="black_row">
-            <td><div id="ch_name_6" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_6">&nbsp;</td>
-            <td><div id="ch_theme_6" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_6">&nbsp;</td>
-            <td id="ch_prog_start_6">&nbsp;</td>
-            <td><div id="ch_prog_name_6" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_6">
+            <td id="ch_name_6">&nbsp;</td>
+            <td id="ch_num_6" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_6">&nbsp;</td>-->
+            <td id="ch_my_ch_6" align="center">&nbsp;</td>
+            <td id="ch_prog_name_6">&nbsp;</td>
         </tr>
-        <tr id="ch_row_7" class="black_row">
-            <td><div id="ch_name_7" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_7">&nbsp;</td>
-            <td><div id="ch_theme_7" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_7">&nbsp;</td>
-            <td id="ch_prog_start_7">&nbsp;</td>
-            <td><div id="ch_prog_name_7" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_7">
+            <td id="ch_name_7">&nbsp;</td>
+            <td id="ch_num_7" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_7">&nbsp;</td>-->
+            <td id="ch_my_ch_7" align="center">&nbsp;</td>
+            <td id="ch_prog_name_7">&nbsp;</td>
         </tr>
-        <tr id="ch_row_8" class="black_row">
-            <td><div id="ch_name_8" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_8">&nbsp;</td>
-            <td><div id="ch_theme_8" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_8">&nbsp;</td>
-            <td id="ch_prog_start_8">&nbsp;</td>
-            <td><div id="ch_prog_name_8" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_8">
+            <td id="ch_name_8">&nbsp;</td>
+            <td id="ch_num_8" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_8">&nbsp;</td>-->
+            <td id="ch_my_ch_8" align="center">&nbsp;</td>
+            <td id="ch_prog_name_8">&nbsp;</td>
         </tr>
-        <tr id="ch_row_9" class="black_row">
-            <td><div id="ch_name_9" class="td_nowrap_150">&nbsp;</div></td>
-            <td height="25" align="right" id="ch_num_9">&nbsp;</td>
-            <td><div id="ch_theme_9" class="td_nowrap_110">&nbsp;</div></td>
-            <td align="center" id="ch_my_ch_9">&nbsp;</td>
-            <td id="ch_prog_start_9">&nbsp;</td>
-            <td><div id="ch_prog_name_9" class="program_ch_name_nowrap">&nbsp;</div></td>
+        <tr id="ch_row_9">
+            <td id="ch_name_9">&nbsp;</td>
+            <td id="ch_num_9" align="right">&nbsp;</td>
+<!--            <td id="ch_theme_9">&nbsp;</td>-->
+            <td id="ch_my_ch_9" align="center">&nbsp;</td>
+            <td id="ch_prog_name_9">&nbsp;</td>
         </tr>
     </table>
     </div>
@@ -22716,121 +22713,111 @@ var epg_loader = {
     </div>
     
     <div id="theme_bar_tv_by_theme" style="display:none">
-    <table width="130" height="120" cellspacing="2" cellpadding="0">
-        <tr bgcolor="#FFFFFF">
-            <td width="130" height="20" align="center" class="menu_style1"><strong><script>echo(words['theme'])</script></strong></td>
+    <table width="130" cellspacing="2" cellpadding="0" class="content_table">
+        <tr>
+            <th width=""><script>echo(words['theme'])</script></th>
         </tr>
-        <tr id="bar_theme_0" class="grey_row">
-            <td height="25" align="left" id="theme_text_0"><script>echo(words['tv_theme_0'])</script></td>
+        <tr id="bar_theme_0">
+            <td align="left" id="theme_text_0" class="grey_row"><script>echo(words['tv_theme_0'])</script></td>
         </tr>
-        <tr id="bar_theme_1" class="grey_row">
-            <td height="25" align="left" id="theme_text_1"><script>echo(words['tv_theme_1'])</script></td>
+        <tr id="bar_theme_1">
+            <td align="left" id="theme_text_1" class="grey_row"><script>echo(words['tv_theme_1'])</script></td>
         </tr>
-        <tr id="bar_theme_2" class="grey_row">
-            <td height="25" align="left" id="theme_text_2"><script>echo(words['tv_theme_2'])</script></td>
+        <tr id="bar_theme_2">
+            <td align="left" id="theme_text_2" class="grey_row"><script>echo(words['tv_theme_2'])</script></td>
         </tr>
-        <tr id="bar_theme_3" class="grey_row">
-            <td height="25" align="left" id="theme_text_3"><script>echo(words['tv_theme_3'])</script></td>
+        <tr id="bar_theme_3">
+            <td align="left" id="theme_text_3" class="grey_row"><script>echo(words['tv_theme_3'])</script></td>
         </tr>
-        <tr id="bar_theme_4" class="grey_row">
-            <td height="25" align="left" id="theme_text_4"><script>echo(words['tv_theme_4'])</script></td>
+        <tr id="bar_theme_4">
+            <td align="left" id="theme_text_4" class="grey_row"><script>echo(words['tv_theme_4'])</script></td>
         </tr>
-        <tr id="bar_theme_5" class="grey_row">
-            <td height="25" align="left" id="theme_text_5"><script>echo(words['tv_theme_5'])</script></td>
+        <tr id="bar_theme_5">
+            <td align="left" id="theme_text_5" class="grey_row"><script>echo(words['tv_theme_5'])</script></td>
         </tr>
-        <tr id="bar_theme_6" class="grey_row">   
-            <td height="25" align="left" id="theme_text_6"><script>echo(words['tv_theme_6'])</script></td>
+        <tr id="bar_theme_6">   
+            <td align="left" id="theme_text_6" class="grey_row"><script>echo(words['tv_theme_6'])</script></td>
         </tr>
-        <tr id="bar_theme_7" class="grey_row">   
-            <td height="25" align="left" id="theme_text_7"><script>echo(words['tv_theme_7'])</script></td>
+        <tr id="bar_theme_7">   
+            <td align="left" id="theme_text_7" class="grey_row"><script>echo(words['tv_theme_7'])</script></td>
         </tr>
-        <tr id="bar_theme_8" class="grey_row">   
-            <td height="25" align="left" id="theme_text_8"><script>echo(words['tv_theme_8'])</script></td>
+        <tr id="bar_theme_8">   
+            <td align="left" id="theme_text_8" class="grey_row"><script>echo(words['tv_theme_8'])</script></td>
         </tr>
-        <tr id="bar_theme_9" class="grey_row">   
-            <td height="25" align="left" id="theme_text_9"><script>echo(words['tv_theme_9'])</script></td>
+        <tr id="bar_theme_9">   
+            <td align="left" id="theme_text_9" class="grey_row"><script>echo(words['tv_theme_9'])</script></td>
         </tr>
     </table>
     </div>
     
     <div id="main_bar_tv_by_theme" style="display:none">
-    <table width="470" height="220" cellspacing="2" cellpadding="0">
-        <tr bgcolor="#FFFFFF">
-            <td width="40" height="20" class="menu_style1" align="center"><strong><script>echo(words['num_char'])</script></strong></td>
-            <td width="150" class="menu_style1" align="center"><strong><script>echo(words['channel'])</script></strong></td>
-            <td width="40" align="center" class="menu_style1"><strong>&nbsp;</strong></td>
-            <td width="75" class="menu_style1" align="center"><strong>&nbsp;</strong></td>
-            <td width="165" class="menu_style1"align="center"><strong><script>echo(words['now_playing'])</script></strong></td>
+    
+    <table width="479" cellspacing="2" cellpadding="0" class="content_table">
+        <tr>
+            <th width="50"><script>echo(words['num_char'])</script></th>
+            <th width="150"><script>echo(words['channel'])</script></th>
+            <th width="20">&nbsp;</th>
+            <th width=""><script>echo(words['now_playing'])</script></th>
         </tr>
-        <tr id="theme_row_0" class="black_row">
-            <td height="25" align="right" id="theme_num_0">&nbsp;</td>
-            <td><div id="theme_name_0" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_0">&nbsp;</td>
-            <td id="theme_prog_start_0">&nbsp;</td>
-            <td><div id="theme_prog_name_0" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_0">
+            <td id="theme_num_0" align="right">&nbsp;</td>
+            <td id="theme_name_0">&nbsp;</td>
+            <td id="theme_my_theme_0" align="center">&nbsp;</td>
+            <td id="theme_prog_name_0">&nbsp;</td>
         </tr>
-        <tr id="theme_row_1" class="black_row">
-            <td height="25" align="right" id="theme_num_1">&nbsp;</td>
-            <td><div id="theme_name_1" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_1">&nbsp;</td>
-            <td id="theme_prog_start_1">&nbsp;</td>
-            <td><div id="theme_prog_name_1" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_1">
+            <td id="theme_num_1" align="right">&nbsp;</td>
+            <td id="theme_name_1">&nbsp;</td>
+            <td id="theme_my_theme_1" align="center">&nbsp;</td>
+            <td id="theme_prog_name_1">&nbsp;</td>
         </tr>
-        <tr id="theme_row_2" class="black_row">
-            <td height="25" align="right" id="theme_num_2">&nbsp;</td>
-            <td><div id="theme_name_2" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_2">&nbsp;</td>
-            <td id="theme_prog_start_2">&nbsp;</td>
-            <td><div id="theme_prog_name_2" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_2">
+            <td id="theme_num_2" align="right">&nbsp;</td>
+            <td id="theme_name_2">&nbsp;</td>
+            <td id="theme_my_theme_2" align="center">&nbsp;</td>
+            <td id="theme_prog_name_2">&nbsp;</td>
         </tr>
-        <tr id="theme_row_3" class="black_row">
-            <td height="25" align="right" id="theme_num_3">&nbsp;</td>
-            <td><div id="theme_name_3" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_3">&nbsp;</td>
-            <td id="theme_prog_start_3">&nbsp;</td>
-            <td><div id="theme_prog_name_3" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_3">
+            <td id="theme_num_3" align="right">&nbsp;</td>
+            <td id="theme_name_3">&nbsp;</td>
+            <td id="theme_my_theme_3" align="center">&nbsp;</td>
+            <td id="theme_prog_name_3">&nbsp;</td>
         </tr>
-        <tr id="theme_row_4" class="black_row">
-            <td height="25" align="right" id="theme_num_4">&nbsp;</td>
-            <td><div id="theme_name_4" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_4">&nbsp;</td>
-            <td id="theme_prog_start_4">&nbsp;</td>
-            <td><div id="theme_prog_name_4" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_4">
+            <td id="theme_num_4" align="right">&nbsp;</td>
+            <td id="theme_name_4">&nbsp;</td>
+            <td id="theme_my_theme_4" align="center">&nbsp;</td>
+            <td id="theme_prog_name_4">&nbsp;</td>
         </tr>
-        <tr id="theme_row_5" class="black_row">
-            <td height="25" align="right" id="theme_num_5">&nbsp;</td>
-            <td><div id="theme_name_5" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_5">&nbsp;</td>
-            <td id="theme_prog_start_5">&nbsp;</td>
-            <td><div id="theme_prog_name_5" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_5">
+            <td id="theme_num_5" align="right">&nbsp;</td>
+            <td id="theme_name_5">&nbsp;</td>
+            <td id="theme_my_theme_5" align="center">&nbsp;</td>
+            <td id="theme_prog_name_5">&nbsp;</td>
         </tr>
-        <tr id="theme_row_6" class="black_row">
-            <td height="25" align="right" id="theme_num_6">&nbsp;</td>
-            <td><div id="theme_name_6" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_6">&nbsp;</td>
-            <td id="theme_prog_start_6">&nbsp;</td>
-            <td><div id="theme_prog_name_6" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_6">
+            <td id="theme_num_6" align="right">&nbsp;</td>
+            <td id="theme_name_6">&nbsp;</td>
+            <td id="theme_my_theme_6" align="center">&nbsp;</td>
+            <td id="theme_prog_name_6">&nbsp;</td>
         </tr>
-        <tr id="theme_row_7" class="black_row">
-            <td height="25" align="right" id="theme_num_7">&nbsp;</td>
-            <td><div id="theme_name_7" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_7">&nbsp;</td>
-            <td id="theme_prog_start_7">&nbsp;</td>
-            <td><div id="theme_prog_name_7" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_7">
+            <td id="theme_num_7" align="right">&nbsp;</td>
+            <td id="theme_name_7">&nbsp;</td>
+            <td id="theme_my_theme_7" align="center">&nbsp;</td>
+            <td id="theme_prog_name_7">&nbsp;</td>
         </tr>
-        <tr id="theme_row_8" class="black_row">
-            <td height="25" align="right" id="theme_num_8">&nbsp;</td>
-            <td><div id="theme_name_8" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_8">&nbsp;</td>
-            <td id="theme_prog_start_8">&nbsp;</td>
-            <td><div id="theme_prog_name_8" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_8">
+            <td id="theme_num_8" align="right">&nbsp;</td>
+            <td id="theme_name_8">&nbsp;</td>
+            <td id="theme_my_theme_8" align="center">&nbsp;</td>
+            <td id="theme_prog_name_8">&nbsp;</td>
         </tr>
-        <tr id="theme_row_9" class="black_row">
-            <td height="25" align="right" id="theme_num_9">&nbsp;</td>
-            <td><div id="theme_name_9" class="td_nowrap_150">&nbsp;</div></td>
-            <td align="center" id="theme_my_theme_9">&nbsp;</td>
-            <td id="theme_prog_start_9">&nbsp;</td>
-            <td><div id="theme_prog_name_9" class="td_nowrap_165">&nbsp;</div></td>
+        <tr id="theme_row_9">
+            <td id="theme_num_9" align="right">&nbsp;</td>
+            <td id="theme_name_9">&nbsp;</td>
+            <td id="theme_my_theme_9" align="center">&nbsp;</td>
+            <td id="theme_prog_name_9">&nbsp;</td>
         </tr>
     </table>
     </div>
@@ -22885,50 +22872,39 @@ var epg_loader = {
     </div>
 
     <div id="main_bar_tv_program">
-    <table width="485" height="220" cellspacing="2" cellpadding="0">
-        <tr bgcolor="#FFFFFF">
-            <td width="65" height="20" class="menu_style1" align="center"><strong>&nbsp;</strong></td>
-            <td width="420" class="menu_style1" align="center"><strong><script>echo(words['program_name'])</script></strong></td>
+    <table width="485" cellspacing="2" cellpadding="0" class="content_table">
+        <tr>
+            <th><script>echo(words['program_name'])</script></th>
         </tr>
-        <tr id="program_row_0" class="grey_row">
-            <td height="25" align="right" id="program_time_0">&nbsp;</td>
-            <td><div id="program_name_0" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_0">
+            <td id="program_name_0">&nbsp;</td>
         </tr>
-        <tr id="program_row_1" class="grey_row">
-            <td height="25" align="right" id="program_time_1">&nbsp;</td>
-            <td><div id="program_name_1" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_1">
+            <td id="program_name_1">&nbsp;</td>
         </tr>
-        <tr id="program_row_2" class="grey_row">
-            <td height="25" align="right" id="program_time_2">&nbsp;</td>
-            <td><div id="program_name_2" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_2">
+            <td id="program_name_2">&nbsp;</td>
         </tr>
-        <tr id="program_row_3" class="grey_row">
-            <td height="25" align="right" id="program_time_3">&nbsp;</td>
-            <td><div id="program_name_3" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_3">
+            <td id="program_name_3">&nbsp;</td>
         </tr>
-        <tr id="program_row_4" class="grey_row">
-            <td height="25" align="right" id="program_time_4">&nbsp;</td>
-            <td><div id="program_name_4" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_4">
+            <td id="program_name_4">&nbsp;</td>
         </tr>
-        <tr id="program_row_5" class="grey_row">
-            <td height="25" align="right" id="program_time_5">&nbsp;</td>
-            <td><div id="program_name_5" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_5">
+            <td id="program_name_5">&nbsp;</td>
         </tr>
-        <tr id="program_row_6" class="grey_row">
-            <td height="25" align="right" id="program_time_6">&nbsp;</td>
-            <td><div id="program_name_6" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_6">
+            <td id="program_name_6">&nbsp;</td>
         </tr>
-        <tr id="program_row_7" class="grey_row">
-            <td height="25" align="right" id="program_time_7">&nbsp;</td>
-            <td><div id="program_name_7" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_7">
+            <td id="program_name_7">&nbsp;</td>
         </tr>
-        <tr id="program_row_8" class="grey_row">
-            <td height="25" align="right" id="program_time_8">&nbsp;</td>
-            <td><div id="program_name_8" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_8">
+            <td id="program_name_8">&nbsp;</td>
         </tr>
-        <tr id="program_row_9" class="grey_row">
-            <td height="25" align="right" id="program_time_9">&nbsp;</td>
-            <td><div id="program_name_9" class="program_name_nowrap">&nbsp;</div></td>
+        <tr id="program_row_9">
+            <td id="program_name_9">&nbsp;</td>
         </tr>
     </table>
     </div>
@@ -22989,7 +22965,7 @@ var epg_loader = {
     <div id="club_declaration">
     <table width="500" height="90">
         <tr>
-            <td align="center" style="border: 2px solid #3f81cc; color:#3f81cc;"><script>echo(words['club_info'])</script></td>
+            <td align="center" style=""><script>echo(words['club_info'])</script></td>
         </tr>
     </table>
     </div>
@@ -23439,109 +23415,109 @@ var epg_loader = {
     </div>-->
     
     <div id="abc_bar_video_club" style="display:none">
-    <table width="54" height="120" cellspacing="2" cellpadding="0">
+    <table width="54" cellspacing="2" cellpadding="0" class="content_table">
         <tr>
-            <td width="54" height="20" align="center" bgcolor="#FFFFFF" class="menu_style1">&nbsp;</td>
+            <th width="">&nbsp;</th>
         </tr>
-        <tr id="video_club_abc_row_0" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_0"></td>
+        <tr id="video_club_abc_row_0">
+            <td align="center" class="grey_row" id="video_club_abc_text_0"></td>
         </tr>
-        <tr id="video_club_abc_row_1" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_1"></td>
+        <tr id="video_club_abc_row_1">
+            <td align="center" class="grey_row" id="video_club_abc_text_1"></td>
         </tr>
-        <tr id="video_club_abc_row_2" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_2"></td>
+        <tr id="video_club_abc_row_2">
+            <td align="center" class="grey_row" id="video_club_abc_text_2"></td>
         </tr>
-        <tr id="video_club_abc_row_3" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_3"></td>
+        <tr id="video_club_abc_row_3">
+            <td align="center" class="grey_row" id="video_club_abc_text_3"></td>
         </tr>
-        <tr id="video_club_abc_row_4" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_4"></td>
+        <tr id="video_club_abc_row_4">
+            <td align="center" class="grey_row" id="video_club_abc_text_4"></td>
         </tr>
-        <tr id="video_club_abc_row_5" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_5"></td>
+        <tr id="video_club_abc_row_5">
+            <td align="center" class="grey_row" id="video_club_abc_text_5"></td>
         </tr>
-        <tr id="video_club_abc_row_6" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_6"></td>
+        <tr id="video_club_abc_row_6">
+            <td align="center"  class="grey_row"id="video_club_abc_text_6"></td>
         </tr>
-        <tr id="video_club_abc_row_7" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_7"></td>
+        <tr id="video_club_abc_row_7">
+            <td align="center" class="grey_row" id="video_club_abc_text_7"></td>
         </tr>
-        <tr id="video_club_abc_row_8" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_8"></td>
+        <tr id="video_club_abc_row_8">
+            <td align="center" class="grey_row" id="video_club_abc_text_8"></td>
         </tr>
-        <tr id="video_club_abc_row_9" class="grey_row">
-            <td height="25" align="center" id="video_club_abc_text_9"></td>
+        <tr id="video_club_abc_row_9">
+            <td align="center" class="grey_row" id="video_club_abc_text_9"></td>
         </tr>
     </table>
     </div>
     
     <div id="main_bar_video_club_by_name" style="display:none">
 
-    <table width="550"  cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="465" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
-        <td width="20" align="center" class="menu_style1"><strong></strong></td>
-        <td width="65" height="20" align="center" class="menu_style1"><strong><script>echo(words['year'])</script></strong></td>
+    <table width="558" cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th width="473"><script>echo(words['name'])</script></th>
+        <th width="20"></th>
+        <th width=""><script>echo(words['year'])</script></th>
       </tr>
-      <tr class="black_row" id="video_club_by_name_row_0">
-        <td height="25" align="left"><div id="video_club_by_name_title_0" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_0">
+        <td id="video_club_by_name_title_0" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_0" align="center"></td>
-        <td id="video_club_by_name_year_0" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_1">
-        <td height="25" align="left"><div id="video_club_by_name_title_1" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_1">
+        <td id="video_club_by_name_title_1" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_1" align="center"></td>
-        <td id="video_club_by_name_year_1" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_2">
-        <td height="25" align="left"><div id="video_club_by_name_title_2" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_2">
+        <td id="video_club_by_name_title_2" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_2" align="center"></td>
-        <td id="video_club_by_name_year_2" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_3">
-        <td height="25" align="left"><div id="video_club_by_name_title_3" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_3">
+        <td id="video_club_by_name_title_3" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_3" align="center"></td>
-        <td id="video_club_by_name_year_3" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_3">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_4">
-        <td height="25" align="left"><div id="video_club_by_name_title_4" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_4">
+        <td id="video_club_by_name_title_4" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_4" align="center"></td>
-        <td id="video_club_by_name_year_4" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_4">&nbsp;</td>
       </tr>
 
-      <tr class="black_row" id="video_club_by_name_row_5">
-        <td height="25" align="left"><div id="video_club_by_name_title_5" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_5">
+        <td id="video_club_by_name_title_5" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_5" align="center"></td>
-        <td id="video_club_by_name_year_5" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_6">
-        <td height="25" align="left"><div id="video_club_by_name_title_6" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_6">
+        <td id="video_club_by_name_title_6" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_6" align="center"></td>
-        <td id="video_club_by_name_year_6" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_7">
-        <td height="25" align="left"><div id="video_club_by_name_title_7" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_7">
+        <td id="video_club_by_name_title_7" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_7" align="center"></td>
-        <td id="video_club_by_name_year_7" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_8">
-        <td height="25" align="left"><div id="video_club_by_name_title_8" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_8">
+        <td id="video_club_by_name_title_8" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_8" align="center"></td>
-        <td id="video_club_by_name_year_8" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_name_row_9">
-        <td height="25" align="left"><div id="video_club_by_name_title_9" class="td_nowrap_465">&nbsp;</div></td>
+      <tr id="video_club_by_name_row_9">
+        <td id="video_club_by_name_title_9" align="left">&nbsp;</td>
         <td id="video_club_by_name_my_video_9" align="center"></td>
-        <td id="video_club_by_name_year_9" align="center">&nbsp;</td>
+        <td id="video_club_by_name_year_9">&nbsp;</td>
       </tr> 
 
       </table>
@@ -23549,59 +23525,59 @@ var epg_loader = {
     
     <div id="main_bar_video_club_by_genre" style="display:none">
     
-    <table width="410" cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="345" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
-        <td width="65" height="20" align="center" class="menu_style1"><strong><script>echo(words['year'])</script></strong></td>    
+    <table width="417" cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th width="354"><script>echo(words['name'])</script></th>
+        <th width=""><script>echo(words['year'])</script></th>
       </tr>
-      <tr class="black_row" id="video_club_by_genre_row_0">
-        <td height="25" align="left"><div id="video_club_by_genre_title_0" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_0" align="center">&nbsp;</td>
-      </tr>
-      
-      <tr class="black_row" id="video_club_by_genre_row_1">
-        <td height="25" align="left"><div id="video_club_by_genre_title_1" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_1" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_0">
+        <td id="video_club_by_genre_title_0" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_genre_row_2">
-        <td height="25" align="left"><div id="video_club_by_genre_title_2" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_2" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_1">
+        <td id="video_club_by_genre_title_1" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_genre_row_3">
-        <td height="25" align="left"><div id="video_club_by_genre_title_3" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_3" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_2">
+        <td id="video_club_by_genre_title_2" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_genre_row_4">
-        <td height="25" align="left"><div id="video_club_by_genre_title_4" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_4" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_3">
+        <td id="video_club_by_genre_title_3" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_3">&nbsp;</td>
+      </tr>
+      
+      <tr id="video_club_by_genre_row_4">
+        <td id="video_club_by_genre_title_4" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_4">&nbsp;</td>
       </tr>
 
-      <tr class="black_row" id="video_club_by_genre_row_5">
-        <td height="25" align="left"><div id="video_club_by_genre_title_5" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_5" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_5">
+        <td id="video_club_by_genre_title_5" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_genre_row_6">
-        <td height="25" align="left"><div id="video_club_by_genre_title_6" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_6" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_6">
+        <td id="video_club_by_genre_title_6" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_genre_row_7">
-        <td height="25" align="left"><div id="video_club_by_genre_title_7" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_7" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_7">
+        <td id="video_club_by_genre_title_7" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_genre_row_8">
-        <td height="25" align="left"><div id="video_club_by_genre_title_8" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_8" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_8">
+        <td id="video_club_by_genre_title_8" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_genre_row_9">
-        <td height="25" align="left"><div id="video_club_by_genre_title_9" class="td_nowrap_345">&nbsp;</div></td>
-        <td id="video_club_by_genre_year_9" align="center">&nbsp;</td>
+      <tr id="video_club_by_genre_row_9">
+        <td id="video_club_by_genre_title_9" align="left">&nbsp;</td>
+        <td id="video_club_by_genre_year_9">&nbsp;</td>
       </tr> 
       </table>
     </div>
@@ -23611,48 +23587,48 @@ var epg_loader = {
     
     <div id="main_bar_video_club_by_year" style="display:none">
 
-    <table width="467" cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="467" height="20" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
+    <table width="482" cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th><script>echo(words['name'])</script></th>
       </tr>
-      <tr class="black_row" id="video_club_by_year_row_0">
-        <td height="25" align="left"><div id="video_club_by_year_title_0" class="td_nowrap_467">&nbsp;</div></td>
-      </tr>
-      
-      <tr class="black_row" id="video_club_by_year_row_1">
-        <td height="25" align="left"><div id="video_club_by_year_title_1" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_0">
+        <td align="left" class="black_row" id="video_club_by_year_title_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_year_row_2">
-        <td height="25" align="left"><div id="video_club_by_year_title_2" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_1">
+        <td align="left" class="black_row" id="video_club_by_year_title_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_year_row_3">
-        <td height="25" align="left"><div id="video_club_by_year_title_3" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_2">
+        <td align="left" class="black_row" id="video_club_by_year_title_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_year_row_4">
-        <td height="25" align="left"><div id="video_club_by_year_title_4" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_3">
+        <td align="left" class="black_row" id="video_club_by_year_title_3">&nbsp;</td>
+      </tr>
+      
+      <tr id="video_club_by_year_row_4">
+        <td align="left" class="black_row" id="video_club_by_year_title_4">&nbsp;</td>
       </tr>
 
-      <tr class="black_row" id="video_club_by_year_row_5">
-        <td height="25" align="left"><div id="video_club_by_year_title_5" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_5">
+        <td align="left" class="black_row" id="video_club_by_year_title_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_year_row_6">
-        <td height="25" align="left"><div id="video_club_by_year_title_6" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_6">
+        <td align="left" class="black_row" id="video_club_by_year_title_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_year_row_7">
-        <td height="25" align="left"><div id="video_club_by_year_title_7" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_7">
+        <td align="left" class="black_row" id="video_club_by_year_title_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_year_row_8">
-        <td height="25" align="left"><div id="video_club_by_year_title_8" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_8">
+        <td align="left" class="black_row" id="video_club_by_year_title_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_year_row_9">
-        <td height="25" align="left"><div id="video_club_by_year_title_9" class="td_nowrap_467">&nbsp;</div></td>
+      <tr id="video_club_by_year_row_9">
+        <td align="left" class="black_row" id="video_club_by_year_title_9">&nbsp;</td>
       </tr> 
       </table>
 
@@ -23660,368 +23636,370 @@ var epg_loader = {
       <div id="title_bar_video_club_by_genre" style="display:none">
       </div>
       <div id="genre_bar_video_club" style="display:none">
-    <table width="142" cellspacing="2" cellpadding="0">
+    <table width="142" cellspacing="2" cellpadding="0" class="content_table">
         <tr>
-            <td height="20" align="center" width="142" bgcolor="#FFFFFF" class="menu_style1"><strong><script>echo(words['genre'])</script></strong></td>
+            <th><script>echo(words['genre'])</script></th>
         </tr>
-        <tr id="video_club_genre_row_0" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_0" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_0">
+            <td id="video_club_genre_text_0" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_1" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_1" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_1">
+            <td id="video_club_genre_text_1" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_2" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_2" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_2">
+            <td id="video_club_genre_text_2" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_3" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_3" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_3">
+            <td id="video_club_genre_text_3" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_4" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_4" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_4">
+            <td id="video_club_genre_text_4" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_5" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_5" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_5">
+            <td id="video_club_genre_text_5" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_6" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_6" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_6">
+            <td id="video_club_genre_text_6" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_7" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_7" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_7">
+            <td id="video_club_genre_text_7" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_8" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_8" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_8">
+            <td id="video_club_genre_text_8" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_genre_row_9" class="grey_row">
-            <td height="25"><div id="video_club_genre_text_9" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="video_club_genre_row_9">
+            <td id="video_club_genre_text_9" class="grey_row">&nbsp;</td>
         </tr>
     </table>
     </div>
     
     <div id="year_bar_video_club" style="display:none">
-    <table width="77" height="120" cellspacing="2" cellpadding="0">
+    <table width="77" cellspacing="2" cellpadding="0" class="content_table">
         <tr>
-            <td width="77" height="20" align="center" bgcolor="#FFFFFF" class="menu_style1"><script>echo(words['year'])</script></td>
+            <th><script>echo(words['year'])</script></th>
         </tr>
-        <tr id="video_club_year_row_0" class="grey_row">
-            <td width="25" height="25" id="video_club_year_text_0" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_0">
+            <td id="video_club_year_text_0" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_1" class="grey_row">
-            <td height="25" id="video_club_year_text_1" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_1">
+            <td id="video_club_year_text_1" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_2" class="grey_row">
-            <td height="25" id="video_club_year_text_2" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_2">
+            <td id="video_club_year_text_2" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_3" class="grey_row">
-            <td height="25" id="video_club_year_text_3" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_3">
+            <td id="video_club_year_text_3" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_4" class="grey_row">
-            <td height="25" id="video_club_year_text_4" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_4">
+            <td id="video_club_year_text_4" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_5" class="grey_row">
-            <td height="25" id="video_club_year_text_5" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_5">
+            <td id="video_club_year_text_5" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_6" class="grey_row">
-            <td height="25" id="video_club_year_text_6" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_6">
+            <td id="video_club_year_text_6" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_7" class="grey_row">
-            <td height="25" id="video_club_year_text_7" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_7">
+            <td id="video_club_year_text_7" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_8" class="grey_row">
-            <td height="25" id="video_club_year_text_8" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_8">
+            <td id="video_club_year_text_8" align="center" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="video_club_year_row_9" class="grey_row">
-            <td height="25" id="video_club_year_text_9" align="center">&nbsp;</td>
+        <tr id="video_club_year_row_9">
+            <td id="video_club_year_text_9" align="center" class="grey_row">&nbsp;</td>
         </tr>
     </table>
     </div>
     
     <div id="main_bar_video_club_by_add_time" style="display:none">
 
-    <table width="490" cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="420" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
-        <td width="70" height="20" align="center" class="menu_style1"><strong><script>echo(words['year'])</script></strong></td>    
+    <table width="506" cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th width="443"><script>echo(words['name'])</script></th>
+        <th width=""><script>echo(words['year'])</script></th>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_0">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_0" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_0" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_0">
+        <td id="video_club_by_add_time_title_0" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_1">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_1" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_1" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_1">
+        <td id="video_club_by_add_time_title_1" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_2">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_2" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_2" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_2">
+        <td id="video_club_by_add_time_title_2" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_3">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_3" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_3" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_3">
+        <td id="video_club_by_add_time_title_3" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_3">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_4">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_4" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_4" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_4">
+        <td id="video_club_by_add_time_title_4" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_4">&nbsp;</td>
       </tr>
 
-      <tr class="black_row" id="video_club_by_add_time_row_5">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_5" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_5" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_5">
+        <td id="video_club_by_add_time_title_5" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_6">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_6" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_6" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_6">
+        <td id="video_club_by_add_time_title_6" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_7">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_7" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_7" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_7">
+        <td id="video_club_by_add_time_title_7" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_8">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_8" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_8" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_8">
+        <td id="video_club_by_add_time_title_8" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_add_time_row_9">
-        <td height="25" align="left"><div id="video_club_by_add_time_title_9" class="td_nowrap_420">&nbsp;</div></td>
-        <td id="video_club_by_add_time_year_9" align="center">&nbsp;</td>
+      <tr id="video_club_by_add_time_row_9">
+        <td id="video_club_by_add_time_title_9" align="left">&nbsp;</td>
+        <td id="video_club_by_add_time_year_9">&nbsp;</td>
       </tr>
       </table>
     </div>
     
     <div id="video_club_add_time_bar" style="display:none">
     
-    <table width="107" cellspacing="2" cellpadding="0">
-    
-        <tr bgcolor="#FFFFFF">
-            <td width="107" height="20" align="center" class="menu_style1"><strong><script>echo(words['period'])</script></strong></td>    
+    <table width="107" cellspacing="2" cellpadding="0" class="content_table">
+        <tr>
+            <th><script>echo(words['period'])</script></th>    
         </tr>
         
-        <tr id="video_club_add_time_row_0" class="black_row">
-            <td width="25" height="25" id="video_club_add_time_bar_text_0" style="padding-left: 4px;">1 <script>echo(words['day'])</script></td>
+        <tr id="video_club_add_time_row_0">
+            <td class="black_row">1 <script>echo(words['day'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_1" class="grey_row">
-            <td height="25" id="video_club_add_time_text_1" style="padding-left: 4px;">2 <script>echo(words['day2'])</script></td>
+        <tr id="video_club_add_time_row_1">
+            <td class="grey_row">2 <script>echo(words['day2'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_2" class="grey_row">
-            <td height="25" id="video_club_add_time_text_2" style="padding-left: 4px;">3 <script>echo(words['day2'])</script></td>
+        <tr id="video_club_add_time_row_2">
+            <td class="grey_row">3 <script>echo(words['day2'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_3" class="grey_row">
-            <td height="25" id="video_club_add_time_text_3" style="padding-left: 4px;">4 <script>echo(words['day2'])</script></td>
+        <tr id="video_club_add_time_row_3">
+            <td class="grey_row">4 <script>echo(words['day2'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_4" class="grey_row">
-            <td height="25" id="video_club_add_time_text_4" style="padding-left: 4px;">5 <script>echo(words['days'])</script></td>
+        <tr id="video_club_add_time_row_4">
+            <td class="grey_row">5 <script>echo(words['days'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_5" class="grey_row">
-            <td height="25" id="video_club_add_time_text_5" style="padding-left: 4px;">6 <script>echo(words['days'])</script></td>
+        <tr id="video_club_add_time_row_5">
+            <td class="grey_row">6 <script>echo(words['days'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_6" class="grey_row">
-            <td height="25" id="video_club_add_time_text_6" style="padding-left: 4px;">7 <script>echo(words['days'])</script></td>
+        <tr id="video_club_add_time_row_6">
+            <td class="grey_row">7 <script>echo(words['days'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_7" class="grey_row">
-            <td height="25" id="video_club_add_time_text_7" style="padding-left: 4px;">2 <script>echo(words['weeks'])</script></td>
+        <tr id="video_club_add_time_row_7">
+            <td class="grey_row">2 <script>echo(words['weeks'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_8" class="grey_row">
-            <td height="25" id="video_club_add_time_text_8" style="padding-left: 4px;">3 <script>echo(words['weeks'])</script></td>
+        <tr id="video_club_add_time_row_8">
+            <td class="grey_row">3 <script>echo(words['weeks'])</script></td>
         </tr>
-        <tr id="video_club_add_time_row_9" class="grey_row">
-            <td height="25" id="video_club_add_time_text_9" style="padding-left: 4px;">1 <script>echo(words['month'])</script></td>
+        <tr id="video_club_add_time_row_9">
+            <td class="grey_row">1 <script>echo(words['month'])</script></td>
         </tr>
     </table>
     
     </div>
     
     <div id="main_bar_video_club_by_top" style="display:none">
-        <table width="595"  cellpadding="0" cellspacing="2">
-          <tr bgcolor="#FFFFFF">
-            <td width="40" align="center" class="menu_style1"><strong></strong></td>
-            <td width="490" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
-            <td width="65" height="20" align="center" class="menu_style1"><strong><script>echo(words['year'])</script></strong></td>
+    
+        <table width="613"  cellpadding="0" cellspacing="2" class="content_table">
+          <tr>
+            <th width="40"></th>
+            <th width="508"><script>echo(words['name'])</script></th>
+            <th width=""><script>echo(words['year'])</script></th>
           </tr>
-          <tr class="black_row" id="video_club_by_top_row_0">
-            <td id="video_club_by_top_num_0" align="center">1.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_0" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_0" align="center">&nbsp;</td>
-          </tr>
-          
-          <tr class="black_row" id="video_club_by_top_row_1">
-            <td id="video_club_by_top_num_1" align="center">2.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_1" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_1" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_0">
+            <td id="video_club_by_top_num_0" align="right">1.</td>
+            <td id="video_club_by_top_title_0">&nbsp;</td>
+            <td id="video_club_by_top_year_0">&nbsp;</td>
           </tr>
           
-          <tr class="black_row" id="video_club_by_top_row_2">
-            <td id="video_club_by_top_num_2" align="center">3.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_2" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_2" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_1">
+            <td id="video_club_by_top_num_1" align="right">2.</td>
+            <td id="video_club_by_top_title_1" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_1">&nbsp;</td>
           </tr>
           
-          <tr class="black_row" id="video_club_by_top_row_3">
-            <td id="video_club_by_top_num_3" align="center">4.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_3" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_3" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_2">
+            <td id="video_club_by_top_num_2" align="right">3.</td>
+            <td id="video_club_by_top_title_2" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_2">&nbsp;</td>
           </tr>
           
-          <tr class="black_row" id="video_club_by_top_row_4">
-            <td id="video_club_by_top_num_4" align="center">5.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_4" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_4" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_3">
+            <td id="video_club_by_top_num_3" align="right">4.</td>
+            <td id="video_club_by_top_title_3" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_3">&nbsp;</td>
+          </tr>
+          
+          <tr id="video_club_by_top_row_4">
+            <td id="video_club_by_top_num_4" align="right">5.</td>
+            <td id="video_club_by_top_title_4" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_4">&nbsp;</td>
           </tr>
     
-          <tr class="black_row" id="video_club_by_top_row_5">
-            <td id="video_club_by_top_num_5" align="center">6.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_5" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_5" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_5">
+            <td id="video_club_by_top_num_5" align="right">6.</td>
+            <td id="video_club_by_top_title_5" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_5">&nbsp;</td>
           </tr>
           
-          <tr class="black_row" id="video_club_by_top_row_6">
-            <td id="video_club_by_top_num_6" align="center">7.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_6" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_6" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_6">
+            <td id="video_club_by_top_num_6" align="right">7.</td>
+            <td id="video_club_by_top_title_6" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_6">&nbsp;</td>
           </tr>
           
-          <tr class="black_row" id="video_club_by_top_row_7">
-            <td id="video_club_by_top_num_7" align="center">8.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_7" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_7" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_7">
+            <td id="video_club_by_top_num_7" align="right">8.</td>
+            <td id="video_club_by_top_title_7" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_7">&nbsp;</td>
           </tr>
           
-          <tr class="black_row" id="video_club_by_top_row_8">
-            <td id="video_club_by_top_num_8" align="center">9.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_8" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_8" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_8">
+            <td id="video_club_by_top_num_8" align="right">9.</td>
+            <td id="video_club_by_top_title_8" align="left">&nbsp;</div></td>
+            <td id="video_club_by_top_year_8">&nbsp;</td>
           </tr>
           
-          <tr class="black_row" id="video_club_by_top_row_9">
-            <td id="video_club_by_top_num_9" align="center">10.</td>
-            <td height="25" align="left"><div id="video_club_by_top_title_9" class="td_nowrap_490">&nbsp;</div></td>
-            <td id="video_club_by_top_year_9" align="center">&nbsp;</td>
+          <tr id="video_club_by_top_row_9">
+            <td id="video_club_by_top_num_9" align="right">10.</td>
+            <td id="video_club_by_top_title_9" align="left">&nbsp;</td>
+            <td id="video_club_by_top_year_9">&nbsp;</td>
           </tr> 
         </table>
     </div>
     
     <div id="main_bar_video_club_by_search" style="display:none">
     <div id="search_kbd_btn" class="yellow_button_horizontal_active color_button_bar" style="position:absolute;top:-85px;left:330px;height:50px;width:165px;"><script>echo(words['list'])</script></div>
-    <table width="605"  cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="540" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
-        <td width="65" height="20" align="center" class="menu_style1"><strong><script>echo(words['year'])</script></strong></td>
+
+    <table width="613" cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th width="550"><script>echo(words['name'])</script></th>
+        <th width=""><script>echo(words['year'])</script></th>
       </tr>
-      <tr class="black_row" id="video_club_by_search_row_0">
-        <td height="25" align="left"><div id="video_club_by_search_title_0" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_0" align="center">&nbsp;</td>
-      </tr>
-      
-      <tr class="black_row" id="video_club_by_search_row_1">
-        <td height="25" align="left"><div id="video_club_by_search_title_1" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_1" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_0">
+        <td id="video_club_by_search_title_0">&nbsp;</td>
+        <td id="video_club_by_search_year_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_search_row_2">
-        <td height="25" align="left"><div id="video_club_by_search_title_2" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_2" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_1">
+        <td id="video_club_by_search_title_1">&nbsp;</td>
+        <td id="video_club_by_search_year_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_search_row_3">
-        <td height="25" align="left"><div id="video_club_by_search_title_3" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_3" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_2">
+        <td id="video_club_by_search_title_2">&nbsp;</td>
+        <td id="video_club_by_search_year_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_search_row_4">
-        <td height="25" align="left"><div id="video_club_by_search_title_4" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_4" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_3">
+        <td id="video_club_by_search_title_3">&nbsp;</td>
+        <td id="video_club_by_search_year_3">&nbsp;</td>
+      </tr>
+      
+      <tr id="video_club_by_search_row_4">
+        <td id="video_club_by_search_title_4">&nbsp;</td>
+        <td id="video_club_by_search_year_4">&nbsp;</td>
       </tr>
 
-      <tr class="black_row" id="video_club_by_search_row_5">
-        <td height="25" align="left"><div id="video_club_by_search_title_5" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_5" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_5">
+        <td id="video_club_by_search_title_5">&nbsp;</td>
+        <td id="video_club_by_search_year_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_search_row_6">
-        <td height="25" align="left"><div id="video_club_by_search_title_6" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_6" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_6">
+        <td id="video_club_by_search_title_6">&nbsp;</td>
+        <td id="video_club_by_search_year_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_search_row_7">
-        <td height="25" align="left"><div id="video_club_by_search_title_7" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_7" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_7">
+        <td id="video_club_by_search_title_7">&nbsp;</td>
+        <td id="video_club_by_search_year_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_search_row_8">
-        <td height="25" align="left"><div id="video_club_by_search_title_8" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_8" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_8">
+        <td id="video_club_by_search_title_8">&nbsp;</td>
+        <td id="video_club_by_search_year_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="video_club_by_search_row_9">
-        <td height="25" align="left"><div id="video_club_by_search_title_9" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="video_club_by_search_year_9" align="center">&nbsp;</td>
+      <tr id="video_club_by_search_row_9">
+        <td id="video_club_by_search_title_9">&nbsp;</td>
+        <td id="video_club_by_search_year_9">&nbsp;</td>
       </tr> 
 
       </table>
     </div>
     
     <div id="main_bar_vclub_not_ended" style="display:none">
-      <table width="605"  cellpadding="0" cellspacing="2">
+    
+      <table width="613"  cellpadding="0" cellspacing="2" class="content_table">
       
-      <tr bgcolor="#FFFFFF">
-        <td width="540" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
-        <td width="65" height="20" align="center" class="menu_style1"><strong><script>echo(words['year'])</script></strong></td>
+      <tr>
+        <th width="550"><script>echo(words['name'])</script></th>
+        <th><script>echo(words['year'])</script></th>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_0">
-        <td height="25" align="left"><div id="vclub_not_ended_title_0" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_0" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_0">
+        <td id="vclub_not_ended_title_0">&nbsp;</td>
+        <td id="vclub_not_ended_year_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_1">
-        <td height="25" align="left"><div id="vclub_not_ended_title_1" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_1" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_1">
+        <td id="vclub_not_ended_title_1">&nbsp;</td>
+        <td id="vclub_not_ended_year_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_2">
-        <td height="25" align="left"><div id="vclub_not_ended_title_2" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_2" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_2">
+        <td id="vclub_not_ended_title_2">&nbsp;</td>
+        <td id="vclub_not_ended_year_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_3">
-        <td height="25" align="left"><div id="vclub_not_ended_title_3" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_3" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_3">
+        <td id="vclub_not_ended_title_3">&nbsp;</td>
+        <td id="vclub_not_ended_year_3">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_4">
-        <td height="25" align="left"><div id="vclub_not_ended_title_4" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_4" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_4">
+        <td id="vclub_not_ended_title_4">&nbsp;</td>
+        <td id="vclub_not_ended_year_4">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_5">
-        <td height="25" align="left"><div id="vclub_not_ended_title_5" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_5" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_5">
+        <td id="vclub_not_ended_title_5">&nbsp;</td>
+        <td id="vclub_not_ended_year_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_6">
-        <td height="25" align="left"><div id="vclub_not_ended_title_6" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_6" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_6">
+        <td id="vclub_not_ended_title_6">&nbsp;</td>
+        <td id="vclub_not_ended_year_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_7">
-        <td height="25" align="left"><div id="vclub_not_ended_title_7" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_7" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_7">
+        <td id="vclub_not_ended_title_7">&nbsp;</td>
+        <td id="vclub_not_ended_year_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_8">
-        <td height="25" align="left"><div id="vclub_not_ended_title_8" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_8" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_8">
+        <td id="vclub_not_ended_title_8">&nbsp;</td>
+        <td id="vclub_not_ended_year_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="vclub_not_ended_row_9">
-        <td height="25" align="left"><div id="vclub_not_ended_title_9" class="td_nowrap_540">&nbsp;</div></td>
-        <td id="vclub_not_ended_year_9" align="center">&nbsp;</td>
+      <tr id="vclub_not_ended_row_9">
+        <td id="vclub_not_ended_title_9">&nbsp;</td>
+        <td id="vclub_not_ended_year_9">&nbsp;</td>
       </tr>
       
       </table>
@@ -24036,20 +24014,14 @@ var epg_loader = {
  <div style="position:absolute;left:30px;top:46px;">
     <div style="position:absolute;left:20px;top:20px;width:300px;" class="vclub_title"><script>echo(words['video_club_title'])</script></div>
     
-    <div id="video_attributes">
-    </div>
+    <div id="video_attributes"></div>
     
     <div id="video_club_info_name"></div>
     
-    <div style="position:absolute;z-index:802;left:372px;top:135px;"><img src="i/line.jpg" border="0"></div>
-    
     <div id="video_club_info_descr">
-    <table border="0" height="327" cellpadding="0" cellspacing="0">
-        <tr>
-            <td><div id="video_club_info_descr_txt"></div></td>
-        </tr>
-    </table>
+        <div id="video_club_info_descr_txt"></div>
     </div>
+    
     <div id="video_club_info_screen">
         <table border="0" width="240" height="320" cellpadding="0" cellspacing="0">
             <tr>
@@ -24057,6 +24029,7 @@ var epg_loader = {
             </tr>
         </table>
     </div>
+    
   </div>
 </div>
 
@@ -24437,214 +24410,219 @@ var epg_loader = {
     </div>
 
     <div id="abc_bar_karaoke" style="display:none">
-    <table width="54" height="120" cellspacing="2" cellpadding="0">
+    
+    <table width="54" height="120" cellspacing="2" cellpadding="0" class="content_table">
         <tr>
-            <td width="54" height="20" align="center" bgcolor="#FFFFFF" class="menu_style1">&nbsp;</td>
+            <th>&nbsp;</th>
         </tr>
-        <tr id="karaoke_abc_row_0" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_0"></td>
+        <tr id="karaoke_abc_row_0">
+            <td align="center" id="karaoke_abc_text_0" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_1" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_1"></td>
+        <tr id="karaoke_abc_row_1">
+            <td align="center" id="karaoke_abc_text_1" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_2" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_2"></td>
+        <tr id="karaoke_abc_row_2">
+            <td align="center" id="karaoke_abc_text_2" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_3" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_3"></td>
+        <tr id="karaoke_abc_row_3">
+            <td align="center" id="karaoke_abc_text_3" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_4" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_4"></td>
+        <tr id="karaoke_abc_row_4">
+            <td align="center" id="karaoke_abc_text_4" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_5" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_5"></td>
+        <tr id="karaoke_abc_row_5">
+            <td align="center" id="karaoke_abc_text_5" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_6" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_6"></td>
+        <tr id="karaoke_abc_row_6">
+            <td align="center" id="karaoke_abc_text_6" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_7" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_7"></td>
+        <tr id="karaoke_abc_row_7">
+            <td align="center" id="karaoke_abc_text_7" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_8" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_8"></td>
+        <tr id="karaoke_abc_row_8">
+            <td align="center" id="karaoke_abc_text_8" class="grey_row"></td>
         </tr>
-        <tr id="karaoke_abc_row_9" class="grey_row">
-            <td height="25" align="center" id="karaoke_abc_text_9"></td>
+        <tr id="karaoke_abc_row_9">
+            <td align="center" id="karaoke_abc_text_9" class="grey_row"></td>
         </tr>
     </table>
     </div>
     
     <div id="genre_bar_karaoke" style="display:none">
-    <table width="142" cellspacing="2" cellpadding="0">
+    
+    <table width="142" cellspacing="2" cellpadding="0" class="content_table">
         <tr>
-            <td height="20" align="center" width="142" bgcolor="#FFFFFF" class="menu_style1"><strong><script>echo(words['genre'])</script></strong></td>
+            <th><script>echo(words['genre'])</script></th>
         </tr>
-        <tr id="karaoke_genre_row_0" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_0" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_0">
+            <td id="karaoke_genre_text_0" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_1" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_1" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_1">
+            <td id="karaoke_genre_text_1" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_2" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_2" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_2">
+            <td id="karaoke_genre_text_2" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_3" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_3" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_3">
+            <td id="karaoke_genre_text_3" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_4" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_4" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_4">
+            <td id="karaoke_genre_text_4" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_5" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_5" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_5">
+            <td id="karaoke_genre_text_5" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_6" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_6" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_6">
+            <td id="karaoke_genre_text_6" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_7" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_7" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_7">
+            <td id="karaoke_genre_text_7" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_8" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_8" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_8">
+            <td id="karaoke_genre_text_8" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_genre_row_9" class="grey_row">
-            <td height="25"><div id="karaoke_genre_text_9" class="vclub_genre_nowrap">&nbsp;</div></td>
+        <tr id="karaoke_genre_row_9">
+            <td id="karaoke_genre_text_9" class="grey_row">&nbsp;</td>
         </tr>
     </table>
     </div>
     
     <div id="main_bar_karaoke_by_name" style="display:none">
-    <table width="540"  cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="260" height="20" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
-        <td width="280" align="center" class="menu_style1"><strong><script>echo(words['performer'])</script></strong></td>
+    
+    <table width="558"  cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th width="260"><script>echo(words['name'])</script></th>
+        <th width=""><script>echo(words['performer'])</script></th>
       </tr>
-      <tr class="black_row" id="karaoke_by_name_row_0">
-        <td height="25"><div id="karaoke_by_name_title_0" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_0" class="td_nowrap_280">&nbsp;</div></td>
-      </tr>
-      
-      <tr class="black_row" id="karaoke_by_name_row_1">
-        <td height="25"><div id="karaoke_by_name_title_1" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_1" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_0">
+        <td id="karaoke_by_name_title_0">&nbsp;</td>
+        <td id="karaoke_by_name_singer_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_name_row_2">
-        <td height="25"><div id="karaoke_by_name_title_2" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_2" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_1">
+        <td id="karaoke_by_name_title_1">&nbsp;</td>
+        <td id="karaoke_by_name_singer_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_name_row_3">
-        <td height="25"><div id="karaoke_by_name_title_3" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_3" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_2">
+        <td id="karaoke_by_name_title_2">&nbsp;</td>
+        <td id="karaoke_by_name_singer_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_name_row_4">
-        <td height="25"><div id="karaoke_by_name_title_4" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_4" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_3">
+        <td id="karaoke_by_name_title_3">&nbsp;</td>
+        <td id="karaoke_by_name_singer_3">&nbsp;</td>
+      </tr>
+      
+      <tr id="karaoke_by_name_row_4">
+        <td id="karaoke_by_name_title_4">&nbsp;</td>
+        <td id="karaoke_by_name_singer_4">&nbsp;</td>
       </tr>
 
-      <tr class="black_row" id="karaoke_by_name_row_5">
-        <td height="25"><div id="karaoke_by_name_title_5" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_5" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_5">
+        <td id="karaoke_by_name_title_5">&nbsp;</td>
+        <td id="karaoke_by_name_singer_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_name_row_6">
-        <td height="25"><div id="karaoke_by_name_title_6" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_6" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_6">
+        <td id="karaoke_by_name_title_6">&nbsp;</td>
+        <td id="karaoke_by_name_singer_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_name_row_7">
-        <td height="25"><div id="karaoke_by_name_title_7" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_7" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_7">
+        <td id="karaoke_by_name_title_7">&nbsp;</td>
+        <td id="karaoke_by_name_singer_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_name_row_8">
-        <td height="25"><div id="karaoke_by_name_title_8" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_8" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_8">
+        <td id="karaoke_by_name_title_8">&nbsp;</td>
+        <td id="karaoke_by_name_singer_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_name_row_9">
-        <td height="25"><div id="karaoke_by_name_title_9" class="td_nowrap_260">&nbsp;</div></td>
-        <td><div id="karaoke_by_name_singer_9" class="td_nowrap_280">&nbsp;</div></td>
+      <tr id="karaoke_by_name_row_9">
+        <td id="karaoke_by_name_title_9">&nbsp;</td>
+        <td id="karaoke_by_name_singer_9">&nbsp;</td>
       </tr> 
       
       </table>  
     </div>
     
     <div id="main_bar_karaoke_by_singer" style="display:none">
-    <table width="322"  cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="322" height="20" align="center" class="menu_style1"><strong><script>echo(words['name'])</script></strong></td>
+    
+    <table width="322" cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th><script>echo(words['name'])</script></th>
       </tr>
       
-      <tr class="black_row" id="karaoke_by_singer_row_0">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_0" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_0">
+        <td id="karaoke_by_singer_title_0" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_1">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_1" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_1">
+        <td id="karaoke_by_singer_title_1" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_2">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_2" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_2">
+        <td id="karaoke_by_singer_title_2" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_3">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_3" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_3">
+        <td id="karaoke_by_singer_title_3" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_4">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_4" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_4">
+        <td id="karaoke_by_singer_title_4" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_5">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_5" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_5">
+        <td id="karaoke_by_singer_title_5" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_6">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_6" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_6">
+        <td id="karaoke_by_singer_title_6" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_7">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_7" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_7">
+        <td id="karaoke_by_singer_title_7" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_8">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_8" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_8">
+        <td id="karaoke_by_singer_title_8" class="black_row">&nbsp;</td>
       </tr>
-      <tr class="black_row" id="karaoke_by_singer_row_9">
-        <td height="25" align="left"><div id="karaoke_by_singer_title_9" class="td_nowrap_322">&nbsp;</div></td>
+      <tr id="karaoke_by_singer_row_9">
+        <td id="karaoke_by_singer_title_9" class="black_row">&nbsp;</td>
       </tr>
 
       </table>  
     </div>
     
     <div id="karaoke_singer_bar" style="display:none">
-        <table width="220" cellspacing="2" cellpadding="0">
-        <tr bgcolor="#FFFFFF">
-            <td height="20" align="center" width="220" class="menu_style1"><strong><script>echo(words['performer'])</script></strong></td>
+    
+        <table width="220" cellspacing="2" cellpadding="0" class="content_table">
+        <tr>
+            <th><script>echo(words['performer'])</script></th>
         </tr>
-        <tr id="karaoke_singer_bar_row_0" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_0" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_0">
+            <td id="karaoke_singer_bar_text_0" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_1" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_1" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_1">
+            <td id="karaoke_singer_bar_text_1" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_2" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_2" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_2">
+            <td id="karaoke_singer_bar_text_2" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_3" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_3" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_3">
+            <td id="karaoke_singer_bar_text_3" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_4" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_4" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_4">
+            <td id="karaoke_singer_bar_text_4" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_5" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_5" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_5">
+            <td id="karaoke_singer_bar_text_5" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_6" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_6" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_6">
+            <td id="karaoke_singer_bar_text_6" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_7" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_7" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_7">
+            <td id="karaoke_singer_bar_text_7" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_8" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_8" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_8">
+            <td id="karaoke_singer_bar_text_8" class="grey_row">&nbsp;</td>
         </tr>
-        <tr id="karaoke_singer_bar_row_9" class="grey_row">
-            <td height="25"><div id="karaoke_singer_bar_text_9" class="td_nowrap_220">&nbsp;</div></td>
+        <tr id="karaoke_singer_bar_row_9">
+            <td id="karaoke_singer_bar_text_9" class="grey_row">&nbsp;</td>
         </tr>
     </table>
     </div>
@@ -25059,59 +25037,60 @@ var epg_loader = {
     </div>
   
     <div id="main_bar_radio_by_name" style="display:none">
-    <table width="595"  cellpadding="0" cellspacing="2">
-      <tr bgcolor="#FFFFFF">
-        <td width="30" height="20" align="center" class="menu_style1"><strong>&nbsp;</strong></td>
-        <td width="565"align="center" class="menu_style1"><strong>НАЗВАНИЕ</strong></td>
+    
+    <table width="613"  cellpadding="0" cellspacing="2" class="content_table">
+      <tr>
+        <th width="30">&nbsp;</th>
+        <th>НАЗВАНИЕ</th>
       </tr>
-      <tr class="black_row" id="radio_by_name_row_0">
-        <td height="25" id="radio_by_name_play_0" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_0" class="td_nowrap_240">&nbsp;</div></td>
-      </tr>
-      
-      <tr class="black_row" id="radio_by_name_row_1">
-        <td height="25" id="radio_by_name_play_1" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_1" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_0">
+        <td id="radio_by_name_play_0" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_0">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="radio_by_name_row_2">
-        <td height="25" id="radio_by_name_play_2" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_2" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_1">
+        <td id="radio_by_name_play_1" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_1">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="radio_by_name_row_3">
-        <td height="25" id="radio_by_name_play_3" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_3" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_2">
+        <td id="radio_by_name_play_2" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_2">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="radio_by_name_row_4">
-        <td height="25" id="radio_by_name_play_4" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_4" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_3">
+        <td id="radio_by_name_play_3" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_3">&nbsp;</td>
+      </tr>
+      
+      <tr id="radio_by_name_row_4">
+        <td id="radio_by_name_play_4" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_4">&nbsp;</td>
       </tr>
 
-      <tr class="black_row" id="radio_by_name_row_5"> 
-        <td height="25" id="radio_by_name_play_5" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_5" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_5"> 
+        <td id="radio_by_name_play_5" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_5">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="radio_by_name_row_6">
-        <td height="25" id="radio_by_name_play_6" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_6" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_6">
+        <td id="radio_by_name_play_6" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_6">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="radio_by_name_row_7">
-        <td height="25" id="radio_by_name_play_7" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_7" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_7">
+        <td id="radio_by_name_play_7" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_7">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="radio_by_name_row_8">
-        <td height="25" id="radio_by_name_play_8" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_8" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_8">
+        <td id="radio_by_name_play_8" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_8">&nbsp;</td>
       </tr>
       
-      <tr class="black_row" id="radio_by_name_row_9">
-        <td height="25" id="radio_by_name_play_9" align="center">&nbsp;</td>
-        <td height="25"><div id="radio_by_name_title_9" class="td_nowrap_240">&nbsp;</div></td>
+      <tr id="radio_by_name_row_9">
+        <td id="radio_by_name_play_9" align="center">&nbsp;</td>
+        <td id="radio_by_name_title_9">&nbsp;</td>
       </tr> 
       
     </table>  
@@ -25294,7 +25273,7 @@ var epg_loader = {
   <div style="position:absolute;top:470px;color:#3f81cc;text-align:center;width:640px"><script>echo(words['anec_page_info'])</script></div>
   
   <div id="main_bar_anec_blog" style="display:none">
-   <div id="anec_blog_body" style="width:589px;height:280px;overflow:auto;">
+   <div id="anec_blog_body" style="width:589px;height:280px;overflow:hidden;">
 
    </div>
    <div style="position:absolute;z-index:802;left:594px;top:-2px;"><img src="i/scroll.jpg"></div>
@@ -25327,7 +25306,7 @@ var epg_loader = {
             </tr>
             <tr>
                 <td background="i/white_bg_l.png"><img src="i/1x1.gif" width="12" height="140"></td>
-                <td background="i/white_bg_c.png" style="color:#003b89" width="586" height="12"><div id="common_horoscope" style="width: 586px;height: 140px;overflow: auto;outline:none;"></div></td>
+                <td background="i/white_bg_c_20.png" style="color:#003b89" width="586"><div id="common_horoscope" style="width: 586px;height: 140px;overflow: auto;outline:none;"></div></td>
                 <td background="i/white_bg_r.png"><img src="i/1x1.gif" width="12" height="140"></td>
             </tr>
             <tr>
