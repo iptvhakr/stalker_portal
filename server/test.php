@@ -30,12 +30,28 @@ echo "<pre>";
 //$event->setUserListById(1500);
 //$event->sendMsg('test');
 
+$db = Mysql::getInstance();
+
+/*var_dump($db->select(array('itv.*','tv_genre.title as genres_name'))
+->from(array('itv'))
+->join('tv_genre', 'itv.tv_genre_id', 'tv_genre.id', 'INNER')
+->where(array('status' => 1,'base_ch' => 1))
+->get()
+->first_row());*/
+
+var_dump(
+$db->where(array('id<=' => 5))->orderby('login', 'desc')->get('administrators')->all()
+);
+
+/*var_dump(
+$db->update('administrators', array('name' => 'name'),array('id' => 1))
+);*/
 
 echo "</pre>";
 /**/
+$db = Mysql::getInstance();
 $end_time = microtime(1);
 $load_time = $end_time - $start_time;
-$db = Database::getInstance(DB_NAME);
-echo "<br>\ngenerated in: ".round($load_time, 2)."s; query counter: $db->query_counter; ".$debug->getErrorStr();
+echo "<br>\ngenerated in: ".round($load_time, 4)."s; queries: ".$db->get_num_queries()."; cache hits:".$db->get_cache_hits()." ".$debug->getErrorStr();
 
 ?>
