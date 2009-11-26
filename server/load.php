@@ -18,21 +18,21 @@ header("Pragma: no-cache");
 header("Cache-Control: max-age=0, no-cache, must-revalidate");
 
 require_once "./lib/config.php";
-//require_once "./lib/subsys/php.php";
-//require_once "./lib/data.php";
+require_once "./lib/subsys/php.php";
+require_once "./lib/data.php";
 require_once "./lib/func.php";
 require_once "./conf_serv.php";
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
-//$JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
-$JsHttpRequest = new JsHttpRequest("utf-8");
-
-//$_RESULT = get_data();
-//$GLOBALS['_RESULT'] = get_data();
-
-$loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
-$GLOBALS['_RESULT'] = $loader->getResult();
+if (isset($_GET['JsHttpRequest'])){
+    $JsHttpRequest = new JsHttpRequest("utf-8");
+    $loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
+    $GLOBALS['_RESULT'] = $loader->getResult();
+}else{
+    $JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
+    $_RESULT = get_data();
+}
 
 $db = Database::getInstance(DB_NAME);
 $mysql = Mysql::getInstance();
