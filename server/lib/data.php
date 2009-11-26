@@ -977,7 +977,8 @@ function get_data(){
         
         foreach ($cur_program_arr as $cur_program){
             $period_end = date("Y-m-d H:i:s", ($cur_program['start_timestamp'] + 9*3600));
-            $sql = 'select *,UNIX_TIMESTAMP(time) as start_timestamp, TIME_FORMAT(time,"%H:%i") as time from epg where ch_id='.$cur_program['ch_id'].' and time>="'.$cur_program['time'].'" and time<="'.$period_end.'" order by time';
+            $sql = 'select *,UNIX_TIMESTAMP(time) as start_timestamp, TIME_FORMAT(time,"%H:%i") as t_time from epg where ch_id='.$cur_program['ch_id'].' and time>="'.$cur_program['time'].'" and time<="'.$period_end.'" order by time';
+            
             $rs  = $db->executeQuery($sql);
             $data['data'][$cur_program['ch_id']] = $rs->getAllValues();
         }
