@@ -1,21 +1,32 @@
 <?php
 /**
- * Mysql class.
+ * Mysql driver.
+ * 
  * @package stalker_portal
+ * @author zhurbitsky@gmail.com
  */
 
 class Mysql
 {
-    private  $db_connect_id;
-    private  $num_queries = 0;
-    private  $num_rows;
-    private  $last_insert_id;
-    private  $max_page_items = MAX_PAGE_ITEMS;
+    private  $link;
     
-    private $charset_query = array(
-        "SET NAMES 'utf8'",
-        "SET CHARACTER SET utf8"
-    );
+    private $charset = 'utf8';
+    private $num_queries = 0;
+    private $cache_hits = 0;
+    
+    private $cache;
+    
+    private $allow_caching = true;
+
+    private $select  = array();
+    private $from    = array();
+    private $where   = array();
+    private $join    = array();
+    private $orderby = array();
+    private $groupby = array();
+    private $limit   = false;
+    private $offset  = false;
+    
     
     private static $instance = NULL;
     
@@ -26,213 +37,443 @@ class Mysql
         }
         return self::$instance;
     }
-
     
     private function __construct(){
         
-        $this->db_connect_id = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+        $this->link = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
         
-        if ($this->db_connect_id){
+        if (QUERY_CACHE){
+            $this->cache = Cache::getInstance();
+        }
+        
+        if ($this->link){
             mysql_select_db(DB_NAME);
+        }
+        
+        $this->set_charset($this->charset);
+    }
+    
+    private function set_charset($charset){
+
+        if (!mysql_set_charset($charset)){
+            throw new Exception('Error: '.mysql_error($this->link));
+        }
+    }
+    
+    public function select($sql = '*'){
+        
+        if(is_string($sql)){
+            $sql = explode(',', $sql);
+        }
+        
+        foreach ($sql as $val){
+            if (($val = trim($val)) === '') continue;
+            
+            $this->select[] = $val;
+        }
+        return $this;
+    }
+    
+    public function from($tables){
+        
+        if (is_string($tables)){
+            $tables = array($tables);
+        }
+        
+        foreach ($tables as $table){
+            
+            if(($table = trim($table)) === '') continue;
+            
+            $this->from[] = trim($table);
+        }
+        
+        return $this;
+    }
+    
+    public function join($table, $key, $value, $type){
+        
+        $join = array();
+        
+        if (!empty($type)){
+            
+            $type = strtolower(trim($type));
+            
+            if (!in_array($type, array('LEFT', 'RIGHT', 'OUTER', 'INNER'))){
+                $type = '';
+            }else{
+                $type .= ' '; 
+            }
+        }
+        
+        $cond = array();
+        $keys  = is_array($key) ? $key : array($key => $value);
+        
+        foreach ($keys as $key => $value){
+            
+            $cond[] = $key.'='.$value;
+            
+        }
+        
+        $join['tables'][] = $table;
+        
+        $join['conditions'] = '('.trim(implode(' ', $cond)).')';
+        $join['type'] = $type;
+        
+        $this->join[] = $join;
+        
+        return $this;
+    }
+    
+    public function where($key, $type = 'AND ', $value = null, $quote = true){
+        
+        if (!is_array($key)){
+            $keys = array($key => $value);
         }else{
+            $keys = $key;
+        }
+        
+        foreach ($keys as $key => $value){
             
-        }
-        
-        foreach ($this->charset_query as $query){
-            $result = mysql_query($query);
-        }
-    }
-    
-    public function query($str){
-        
-        $rows = array();
-        
-        $this->num_queries++;
-        
-        $result = mysql_query($str);
-        
-        if (!$result){
-            throw new Exception("Error: mysql_query ".mysql_error());
-        }
-        
-        while ($row = @mysql_fetch_array($result, MYSQL_ASSOC)) {
-            $rows[]=$row;	
-        }
-        
-        $this->num_rows = count($rows);
-        
-        return $rows;
-    }
-    
-    public function getData($table, $where_arr = array(), $page = 0, $end_query = ''){
-        
-        $where = '';
-        
-        if (count($where_arr) > 0){
+            $prefix = (count($this->where) == 0) ? '' : $type;
             
-            $where .= "where ";
-            
-            foreach ($where_arr as $field => $val){
-
-                if (is_array($val)){
-
-                    $val_s = implode(",", $val);
-                    $where .= "$field in ($val_s) and ";
-                    
-                    if (empty($end_query)){
-                        $end_query = "order by field($field,$val_s)";
+            if ($quote === -1){
+                $value = '';
+            }else{
+                
+                if ($value === null){
+                    if (!$this->has_operator($key)){
+                        $key .= ' IS';
                     }
                     
+                    $value = ' NULL';
                 }else{
-                    $where .= "$field='".mysql_real_escape_string($val)."' and ";
+                    if (!$this->has_operator($key) && !empty($key)){
+                        $key = $key.'=';
+                    }else{
+                        preg_match('/^(.+?)([<>!=]+|\bIS(?:\s+NULL))\s*$/i', $key, $matches);
+                        if(isset($matches[1]) && isset($matches[2])){
+                            $key = trim($matches[1]).''.trim($matches[2]);
+                        }
+                    }
+                    
+                    $value = $this->escape($value);
                 }
             }
+            
+            $this->where[] = $prefix.$key.$value;
         }
         
-        $where = substr($where, 0, strlen($where)-5);
-        
-        if ($page >= 1){
-            $page_offset = ($page-1) * $this->max_page_items;
-            $end_query .= " limit $page_offset, ".$this->max_page_items;
-        }
-        
-        $sql = "select * from $table $where $end_query";
-        
-        try {
-            $result = $this->query($sql);
-        }catch (Exception $e){
-            return false;
-        }
-        
-        return $result;
+        return $this;
     }
     
-    public function getFirstData(){
-        $args = func_get_args();
-        $result = call_user_func_array(array($this, 'getData'), $args);
+    public function in($field, $values, $not = false){
         
-        if (is_array($result) && count($result) > 0){
-            return $result[0];
-        }
+        $escaped_values = array();
         
-        return $result;
-    }
-    
-    public function getRowCount($table = '', $where_arr = array()){
-        
-        if (!$table){
-            return $this->num_rows;
-        }
-        
-        $where = '';
-        
-        if (count($where_arr) > 0){
-            $where .= "where ";
-            foreach ($where_arr as $field => $val){
-                $where .= "$field = '$val' and ";
+        foreach ($values as $value){
+            if (is_numeric($value)){
+                $escaped_values = $value;
+            }else{
+                $escaped_values = "'".$this->escape_str($value)."'";
             }
         }
         
-        $where = substr($where, 0, strlen($where)-5);
-        $sql = "select count(*) as counter from $table $where";
+        $values = implode(",", $escaped_values);
         
-        try {
-            $arr = $this->query($sql);
-            $counter = $arr[0]['counter'];
-            $this->num_rows = $counter;
-        }catch (Exception $e){
-            return 0;
-        }
+        $where = $field.' '.($not === true ? 'not ' : '').'in ('.$values.')';
         
-        return $counter;
+        $this->where($where, 'and ', '', -1);
+        
+        return $this;
     }
     
-    public function insertData($table, $add_data_arr = array()){
+    public function limit($limit, $offset = null){
+        
+        $this->limit = intval($limit);
+        
+        if ($offset !== null || !is_int($this->offset)){
+            $this->offset = intval($offset);
+        }
+        
+        return $this;
+    }
+    
+    public function orderby($orderby, $direction = null){
+        
+        if (!is_array($orderby)){
+            $orderby = array($orderby => $direction);
+        }
+        
+        foreach ($orderby as $column => $direction){
+            
+            $direction = strtoupper(trim($direction));
+            
+            if (!in_array($direction, array('ASC', 'DESC', 'RAND()', 'RANDOM()', 'NULL'))){
+                $direction = 'ASC';
+            }
+            
+            $this->orderby[] = $column.' '.$direction;
+        }
+        
+        return $this;
+    }
+    
+    public function groupby($by){
+        
+        if (!is_array($by)){
+			$by = explode(',', strval($by));
+		}
+		
+		foreach ($by as $val){
+		    $val = trim($val);
+		    
+		    if ($val != ''){
+				$this->groupby[] = $val;
+			}
+		}
+		
+		return $this;
+    }
+    
+    private function compile_select($database){
+        
+        $sql = 'SELECT ';
+        $sql .= (count($database['select']) > 0) ? implode(', ', $database['select']) : '*';
+        
+        if (count($database['from']) > 0)
+		{
+			$sql .= "\nFROM (";
+			$sql .= implode(', ', $database['from']).")";
+		}
+
+		if (count($database['join']) > 0)
+		{
+			foreach($database['join'] AS $join)
+			{
+				$sql .= "\n".$join['type'].'JOIN '.implode(', ', $join['tables']).' ON '.$join['conditions'];
+			}
+		}
+
+		if (count($database['where']) > 0)
+		{
+			$sql .= "\nWHERE ";
+		}
+
+		$sql .= implode("\n", $database['where']);
+
+		if (count($database['groupby']) > 0)
+		{
+			$sql .= "\nGROUP BY ";
+			$sql .= implode(', ', $database['groupby']);
+		}
+
+		/*if (count($database['having']) > 0)
+		{
+			$sql .= "\nHAVING ";
+			$sql .= implode("\n", $database['having']);
+		}*/
+
+		if (count($database['orderby']) > 0)
+		{
+			$sql .= "\nORDER BY ";
+			$sql .= implode(', ', $database['orderby']);
+		}
+
+		if (is_numeric($database['limit']))
+		{
+			$sql .= "\n";
+			$sql .= 'LIMIT '.$database['offset'].', '.$database['limit'];
+		}
+
+		return $sql;
+    }
+    
+    public function insert($table, $keys){
+        
         
         $fields = array();
         $values = array();
         
-        if (count($add_data_arr) > 0){
-            foreach ($add_data_arr as $field => $val){
-                $fields[] = $field;
-                if (in_array(strtoupper($val), array('NOW()', 'CURDATE()', 'CURTIME()'))){
-                    $values[] = $val;
-                }else{
-                    $values[] = "'".mysql_real_escape_string($val)."'";
-                }
-            }
-        }else{
-            return false;
+        foreach ($keys as $field => $value){
+            $fields[] = $field;
+            $values[] = $this->escape($value);
         }
         
-        $field_str = join(", ", $fields);
-        $value_str = join(", ", $values);
+        $sql = 'INSERT INTO '.$table.' ('.implode(', ', $fields).') value ('.implode(', ', $values).')';
         
-        $sql = "insert into $table ($field_str) value ($value_str)";
+        $result = $this->query($sql);
         
-        try {
-            $last_id = $this->update($sql);
-        }catch (Exception $e){
-            return false;
-        }
+        $this->reset_write();
         
-        return $last_id;
+        return $result;
     }
     
-    public function updateData($table, $set_data_arr = array(), $where_arr = array()){
+    public function update($table, $values, $where){
         
-        $where = '';
-        $set_data = '';
+        $this->from[] = $table;
         
-        if (count($set_data_arr) > 0){
-            foreach ($set_data_arr as $field => $val){
-                if (in_array(strtoupper($val), array('NOW()', 'CURDATE()', 'CURTIME()'))){
-                    $set_data .= "$field=".$val.", ";
-                }else{
-                    $set_data .= "$field='".mysql_escape_string($val)."', ";
-                }
-            }
-        }else{
-            return false;
+        foreach ($where as $key => $value){
+            $this->where(array($key => $value), 'AND ');
         }
         
-        $set_data = substr($set_data, 0, strlen($set_data)-2);
-        
-        if (count($where_arr) > 0){
-            $where .= "where ";
-            foreach ($where_arr as $field => $val){
-                $where .= "$field='$val' and ";
-            }
+        foreach ($values as $key => $val){
+            $valstr[] = $key.'='.$this->escape($val);
         }
         
-        $where = substr($where, 0, strlen($where)-5);
+        $sql = 'UPDATE '.$table.' SET '.implode(', ', $valstr).' WHERE '.implode(' ', $this->where);
         
-        $sql = "update $table set $set_data $where";
+        $result = $this->query($sql);
         
-        try {
-            $this->update($sql);
-        }catch (Exception $e){
-            return false;
-        }
+        $this->reset_write();
         
-        return true;
+        return $result;
     }
-
-    private function update($str){
+    
+    public function get($table = ''){
+        
+        if ($table != ''){
+            $this->from($table);
+        }
+        
+        $sql = $this->compile_select(get_object_vars($this));
+        
+        $result = $this->query($sql);
+        
+        $this->reset_select();
+        
+        return $result;
+    }
+    
+    public function query($sql){
+        
+        echo $sql."\n";
+        
+        if (QUERY_CACHE && $this->allow_caching){
+            
+            $tags = $this->get_tags(get_object_vars($this));
+            
+            
+            if(!preg_match('/INSERT|UPDATE|REPLACE|SET|DELETE|TRUNCATE/i', $sql)){                
+                
+                $key = $this->get_cache_key($sql);
+                
+                if(($result = $this->cache->get($key)) === false){
+                    $this->num_queries++;
+                    
+                    $result = new MysqlResult(mysql_query($sql, $this->link), $sql, $this->link);
+                    
+                    $this->cache->set($key, $result->as_array(true), $tags);
+                    
+                    return $result;
+                }else{
+                    $this->cache_hits++;
+                    
+                    $result = new CacheResult($result, $sql);
+                    
+                    return $result;
+                }
+                
+            }else{
+                
+                $this->cache->setInvalidTags($tags);
+                
+            }
+        }
+        
+        $this->enable_caching();
         
         $this->num_queries++;
-        $rs = mysql_query($str);
         
-        if (!$rs){
-            throw new Exception("Error: mysql_query ".mysql_error());
-        }
-        
-        $this->last_insert_id = mysql_insert_id($this->db_connect_id);
-        return $rs;
+        return new MysqlResult(mysql_query($sql, $this->link), $sql, $this->link);
     }
     
-    public function getQueryCounter(){
-        return $this->num_queries;
+    private function reset_select(){
+        
+        $this->select   = array();
+		$this->from     = array();
+		$this->join     = array();
+		$this->where    = array();
+		$this->orderby  = array();
+		$this->groupby  = array();
+		$this->limit    = false;
+		$this->offset   = false;
     }
+    
+    private function reset_write(){
+        
+        $this->set   = array();
+		$this->from  = array();
+		$this->where = array();
+    }
+    
+    private function escape_str($str){
+        
+        return mysql_real_escape_string($str, $this->link); 
+    }
+    
+    private function escape($value){
+        if(is_int($value)){
+            
+            return $value;
+        }elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()'))){
+            
+            $value = "'".$this->escape_str($value)."'";
+        }else{
+            
+            $this->disable_caching();
+        }
+        
+        return $value;
+    }
+    
+    public function has_operator($str){
+		return (bool) preg_match('/[<>!=]|\sIS(?:\s+NOT\s+)?\b|BETWEEN/i', trim($str));
+	}
+	
+	public function get_num_queries(){
+	    return $this->num_queries;
+	}
+	
+	public function get_cache_hits(){
+	    return $this->cache_hits;
+	}
+	
+	private function get_cache_key($sql){
+		return sha1(serialize($sql));
+	}
+	
+	private function get_tags($database){
+	    
+	    $tags = array();
+	    
+	    if (count($database['from']) > 0)
+		{
+			$tags = array_merge($tags, $database['from']);
+		}
+
+		if (count($database['where']) > 0)
+		{
+		    if(count($database['from']) == 1){
+		        $where = array();
+		        foreach ($database['where'] as $str){
+		            $where[] = $database['from'][0].'.'.$str;
+		        }
+		    }else{
+		        $where = $database['where'];
+		    }
+		    
+			$tags = array_merge($tags, $where);
+		}
+		
+		return $tags;
+	}
+	
+	private function enable_caching(){
+	    $this->allow_caching = true;
+	}
+	
+	private function disable_caching(){
+	    $this->allow_caching = false;
+	}
 }
 ?>
