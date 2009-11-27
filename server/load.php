@@ -29,13 +29,15 @@ if (isset($_GET['JsHttpRequest'])){
     $JsHttpRequest = new JsHttpRequest("utf-8");
     $loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
     $GLOBALS['_RESULT'] = $loader->getResult();
+    $mysql = Mysql::getInstance();
+    $counter = $mysql->getQueryCounter();
 }else{
     $JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
     $_RESULT = get_data();
+    $counter = 0;
 }
 
 $db = Database::getInstance(DB_NAME);
-$mysql = Mysql::getInstance();
 
-echo "generated in: ".round(microtime(1) - $start_time, 3)."s; query counter: ".($db->query_counter+$mysql->getQueryCounter())."; ".$debug->getErrorStr();
+echo "generated in: ".round(microtime(1) - $start_time, 3)."s; query counter: ".($db->query_counter+$counter)."; ".$debug->getErrorStr();
 ?>
