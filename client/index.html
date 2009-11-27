@@ -684,7 +684,7 @@ td, table{
 	position:absolute;
 	left: 70px;
 	/*top: 100px;*/
-	bottom: 115px;
+	bottom: 100px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 16px;
 	font-weight: bold;
@@ -696,10 +696,22 @@ td, table{
 #club_declaration {
 	position:absolute;
 	left: 70px;
-	top: 370px;
+	top: 390px;
+	width:500px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #3f81cc;
+    color:#3f81cc;
+    padding: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-align:center;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 
-#club_declaration td {
+/*#club_declaration td {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: bold;
@@ -707,7 +719,7 @@ td, table{
     color:#3f81cc;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
-}
+}*/
 #video_records_page{
 	position:absolute;
 	z-index:801;
@@ -987,6 +999,26 @@ td, table{
 	left: 23px;
 	top: 139px;
 }
+
+#media_browser_page{
+	position:absolute;
+	z-index:801;
+	left: 0px;
+	top: 0px;
+	width:720px;
+	height:576px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	background: url("i/bg_page.jpg");
+}
+
+#media_browser{
+    position:absolute;
+	left: 23px;
+	top: 139px;
+}
+
 #search_kbd{
     position:absolute;
     z-index:801;
@@ -1199,13 +1231,18 @@ td, table{
 	top: 210px;
 	z-index:1000;
 	width:350px; 
-	height:46px;
-	border: 2px solid #CCCCCC;
+	/*height:46px;*/
+	padding: 5px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border: 4px solid #cccccc;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 18px;
 	font-weight: bold;
 	background-color: #3399FF;
 	color: #FFFFFF;
+	-webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 
 #warning_message{
@@ -1215,13 +1252,15 @@ td, table{
 	z-index:1000;
 	width:400px; 
 	/*height:46px;*/
-	padding: 3px;
-	border: 2px solid #CCCCCC;
+	padding: 5px;
+	border: 4px solid #cccccc;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 18px;
 	font-weight: bold;
 	background-color: #3399FF;
 	color: #FFFFFF;
+	-webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 
 /* PASSWORD INPUT */
@@ -2125,6 +2164,9 @@ var dom_cache = {}
 
 //var stb_params = {}
 //var stb_type
+
+var media_browser
+
 var cur_place = ''
 var cur_place_num = 0
 //var user
@@ -3310,9 +3352,21 @@ function common_xpcom(){
             
             if (this.type == 'MAG200'){
                 func_setting_page = new Array('hide_setting_page();show_parent_password_page()')
+                
                 total_rows_club = 11
                 func_club_menu = new Array('hide_club();show_video_club(media_cats.all)','hide_club();show_video_club(101)', 'hide_club();show_video_club(media_cats.animation)', 'hide_club();show_video_club(media_cats.our_film)', 'hide_club();show_video_club(media_cats.world_film)', 'hide_club();show_video_club(media_cats.doc_film)', 'hide_club();show_video_club(media_cats.humor)', 'hide_club();show_video_club(media_cats.liking)', 'hide_club();show_video_club(media_cats.owr_serial)', 'hide_club();show_video_club(media_cats.world_serial)' ,'hide_club();show_video_club(100)')
                 document.getElementById('club_row_1').style.display = ''
+                
+                if (browser == 'webkit'){
+                    total_rows_club = 12
+                    
+                    document.getElementById('club_row_11').style.display = ''
+                    
+                    media_browser = new media_browser()
+                    
+                    func_club_menu.push('if(media_browser.is_drive_mounted()){hide_club(); media_browser.show()}')
+                    
+                }
                 
                 if (!this.check_image_version()){
                     return;
@@ -3663,8 +3717,9 @@ function firefox_xpcom(){
                         show_video_club()
                     }else if (prev_video_record_page == 'video_records'){
                         show_video_records()
-                    }else if (prev_karaoke_page = 'karaoke_page'){
+                    }else if (prev_karaoke_page == 'karaoke_page'){
                     	show_karaoke_page()
+                    }else if (media_browser.on){
                     }else{
                         show_menu()
                     }
@@ -4005,7 +4060,7 @@ function firefox_xpcom(){
                     win_focus()
                 //}
 
-                if (recipe_info_page_on || main_city_info_on || other_city_info_on || recipes_by_cat_on || anec_page_on){
+                if (media_browser.on || recipe_info_page_on || main_city_info_on || other_city_info_on || recipes_by_cat_on || anec_page_on){
                     break
                 }
                 
@@ -4143,6 +4198,13 @@ function firefox_xpcom(){
                 
                 if (vclub_vote_on){
                     return
+                }
+                
+                if (media_browser.on){
+                    if (!player_on || media_browser.is_audio){
+                        media_browser.action();
+                    }
+                    break;
                 }
                 
                 if (horoscope_page_on){
@@ -4634,6 +4696,13 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (media_browser.on){
+                    if(!player_on || media_browser.is_audio){
+                        media_browser.action(1)
+                    }
+                    break;
+                }
+                
                 if (vclub_vote_on){
                     return
                 }
@@ -4921,6 +4990,13 @@ function firefox_xpcom(){
                 if (kbd_on && kbd_active){
                     kbd_horizontal_move(-1)
                     break
+                }
+                
+                if (media_browser.on){
+                    if(!player_on || media_browser.is_audio){
+                        media_browser.out_dir()
+                    }
+                    break;
                 }
                 
                 if (vclub_vote_on){
@@ -5222,6 +5298,13 @@ function firefox_xpcom(){
                 
                 if (course_page_on){
                     break
+                }
+                
+                if (media_browser.on){
+                    if (!player_on || media_browser.is_audio){
+                        media_browser.shift_row(-1);
+                    }
+                    break;
                 }
                 
                 if (anec_blog_on){
@@ -5715,6 +5798,13 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (media_browser.on){
+                    if (!player_on || media_browser.is_audio){
+                        media_browser.shift_row(1);
+                    }
+                    break;
+                }
+                
                 if (anec_blog_on){
                     shift_anec_blog_body(1, 20)
                 }
@@ -6187,8 +6277,16 @@ function firefox_xpcom(){
                     return
                 }
                 
+                if (media_browser.on){
+                    if (!player_on || media_browser.is_audio){
+                        media_browser.shift_page(-1);
+                    }
+                    break;
+                }
+                
                 if (anec_blog_on){
                     shift_anec_blog_body(-1, 200)
+                    break;
                 }
                 
                 if (horoscope_page_on){
@@ -6417,6 +6515,13 @@ function firefox_xpcom(){
                 
                 if (vclub_vote_on){
                     return
+                }
+                
+                if (media_browser.on){
+                    if (!player_on || media_browser.is_audio){
+                        media_browser.shift_page(1);
+                    }
+                    break;
                 }
                 
                 if (anec_blog_on){
@@ -6658,6 +6763,13 @@ function firefox_xpcom(){
                     start_slide()
                 }*/
                 
+                if (media_browser.on){
+                    if(!player_on || media_browser.is_audio){
+                        media_browser.out_dir()
+                    }
+                    break;
+                }
+                
                 if (ch_by_num_on){
                     del_ch_num_char()
                     break
@@ -6711,6 +6823,11 @@ function firefox_xpcom(){
             case 112: // Red
             {
                 
+                if(e.altKey){
+                    media_browser.drive_mounted();
+                    break
+                }
+                
                 if (vclub_vote_on){
                     vclub_vote('bad')
                     break
@@ -6723,10 +6840,11 @@ function firefox_xpcom(){
             }
             case 113: // Green
             {
-                /*if (epg_on == 1 && !cur_bur_right){
-                    c_id = chanArray_startIdx-(-chanTbl_index)
-                    add_to_fav(c_id)
-                }*/
+                
+                if(e.altKey){
+                    media_browser.drive_umounted();
+                    break
+                }
                 
                 if (vclub_vote_on){
                     vclub_vote('good')
@@ -6812,6 +6930,7 @@ function firefox_xpcom(){
                     if (video_club_on && vclub_by_name_on){
                         fav_vclub_on = 0
                         if (vclub_by_name_on){
+                            need_vclub_by_name_row_focus = 1
                             set_passive_all_vclub_by_name_row()
                             cur_vclub_by_name_page =1
                             cur_row_vclub_by_name = 0
@@ -6820,6 +6939,7 @@ function firefox_xpcom(){
                             cur_abc_vclub_bar = 0
                             set_active_vclub_by_name_row()
                         }else if(vclub_by_genre_on){
+                            need_vclub_by_genre_row_focus = 1
                             set_passive_all_vclub_by_genre_row()
                             cur_vclub_by_genre_page = 1
                             cur_row_vclub_by_genre = 0
@@ -6830,6 +6950,7 @@ function firefox_xpcom(){
                             cur_genre_vclub_bar = 0
                             set_active_vclub_by_genre_row()
                         }else if(vclub_by_year_on){
+                            need_vclub_by_year_focus = 1
                             set_passive_all_vclub_by_year_row()
                             cur_vclub_by_year_page = 1
                             cur_row_vclub_by_year = 0
@@ -6840,6 +6961,7 @@ function firefox_xpcom(){
                             cur_year_vclub_bar = 0
                             set_active_vclub_by_year_row()
                         }else if(vclub_by_add_time_on){
+                            need_vclub_by_add_time_row_focus = 1
                             set_passive_all_vclub_by_add_time_row()
                             cur_vclub_by_add_time_page = 1
                             cur_row_vclub_by_add_time = 0
@@ -6930,6 +7052,7 @@ function firefox_xpcom(){
                     if (video_club_on && vclub_by_name_on){
                         fav_vclub_on = 1
                         if (vclub_by_name_on){
+                            need_vclub_by_name_row_focus = 1
                             set_passive_all_vclub_by_name_row()
                             cur_vclub_by_name_page =1
                             cur_row_vclub_by_name = 0
@@ -6938,6 +7061,7 @@ function firefox_xpcom(){
                             cur_abc_vclub_bar = 0
                             set_active_vclub_by_name_row()
                         }else if(vclub_by_genre_on){
+                            need_vclub_by_genre_row_focus = 1
                             set_passive_all_vclub_by_genre_row()
                             cur_vclub_by_genre_page = 1
                             cur_row_vclub_by_genre = 0
@@ -6948,6 +7072,7 @@ function firefox_xpcom(){
                             cur_genre_vclub_bar = 0
                             set_active_vclub_by_genre_row()
                         }else if(vclub_by_year_on){
+                            need_vclub_by_year_focus = 1
                             set_passive_all_vclub_by_year_row()
                             cur_vclub_by_year_page = 1
                             cur_row_vclub_by_year = 0
@@ -6958,6 +7083,7 @@ function firefox_xpcom(){
                             cur_year_vclub_bar = 0
                             set_active_vclub_by_year_row()
                         }else if(vclub_by_add_time_on){
+                            need_vclub_by_add_time_row_focus = 1
                             set_passive_all_vclub_by_add_time_row()
                             cur_vclub_by_add_time_page = 1
                             cur_row_vclub_by_add_time = 0
@@ -7337,6 +7463,7 @@ function firefox_xpcom(){
                                     show_tv_page()
                                 }else if( prev_video_record_page == 'video_records'){
                                     show_video_records()
+                                }else if(media_browser.on){
                                 }else{
                                     show_menu()
                                 }
@@ -7756,6 +7883,10 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (media_browser.on){
+                    break
+                }
+                
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
                     //show_ch_num(1)
@@ -7904,6 +8035,9 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (media_browser.on){
+                    break
+                }
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
                     //show_ch_num(2)
@@ -8034,6 +8168,10 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (media_browser.on){
+                    break
+                }
+                
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
                     //show_ch_num(3)
@@ -8123,6 +8261,10 @@ function firefox_xpcom(){
                     }
                 //}
                 
+                if (media_browser.on){
+                    break
+                }
+                
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
                     //show_ch_num(4)
@@ -8187,6 +8329,10 @@ function firefox_xpcom(){
                         break
                     }
                 //}
+                
+                if (media_browser.on){
+                    break
+                }
                     
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
@@ -8251,6 +8397,10 @@ function firefox_xpcom(){
                     break
                 }*/
                 
+                if (media_browser.on){
+                    break
+                }
+                
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
                     //show_ch_num(6)
@@ -8281,6 +8431,10 @@ function firefox_xpcom(){
                 
                 if (anec_blog_on){
                     set_anec_page_box(7)
+                    break
+                }
+                
+                if (media_browser.on){
                     break
                 }
                 
@@ -8317,6 +8471,10 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (media_browser.on){
+                    break
+                }
+                
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
                     //show_ch_num(8)
@@ -8347,6 +8505,10 @@ function firefox_xpcom(){
                 
                 if (anec_blog_on){
                     set_anec_page_box(9)
+                    break
+                }
+                
+                if (media_browser.on){
                     break
                 }
                 
@@ -8383,6 +8545,10 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (media_browser.on){
+                    break
+                }
+                
                 //if (!recipe_info_page_on && !recipes_by_cat_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && !video_clips_on && !my_video_records_on && !video_records_by_addtime_on && !vclub_by_name_on && !vclub_by_genre_on && !vclub_by_add_time_on && !vclub_by_top_on && !seek_bar_on && !radio_page_on && !audio_club_page_on && !video_out_setting_page_on && !setting_page_on && !tv_program_on && !video_club_info_on && !club_on && !karaoke_page_on && !video_club_on && !tv_page_on && !ch_by_num_on && !epg_on && !tv_list_on && !web_bar_on && !abc_video_search_on && !menu_on){
                 if (player_on && media_type == 'stream'){
                     //show_ch_num(0)
@@ -8412,8 +8578,13 @@ function firefox_xpcom(){
             pause = 0
         }
         
-        
         if (menu_on == 1){
+            return
+        }
+        
+        if(media_browser.on && !player_on){
+            media_browser.hide()
+            show_menu()
             return
         }
         
@@ -8630,12 +8801,22 @@ function firefox_xpcom(){
                 hide_radio_page()
                 prev_radio_page = ''
             }
+            
+            if (media_browser.on){
+                media_browser.hide()
+            }
 
             show_menu()
         }
     }
     
     function exit_btn(){
+        
+        if(media_browser.on && !player_on){
+            media_browser.hide()
+            show_club()
+            return
+        }
         
         if (vclub_vote_on){
             return
@@ -8898,6 +9079,7 @@ function firefox_xpcom(){
                 show_audio_club_page()
             }else if(prev_radio_page == 'radio_page'){
                 show_radio_page()
+            }else if(media_browser.on){
             }else{
                 if (tv_page_on == 0){
                     need_show_tv_by_number_cur_row = 1
@@ -22160,7 +22342,367 @@ var epg_loader = {
         return '';
     }
 }
-/*  */
+/**/
+
+/* MEDIA BROWSER */
+function media_browser(){
+    
+    this.on = 0;
+    
+    this.mounted = 0;
+    
+    this.dir_hist = [{'path' : '/media/usbdisk/', 'page' : 1, 'row' : 1}];
+    
+    this.cur_dir_list;
+    
+    this.cur_row  = 0;
+    this.prev_row = 1;
+    this.max_rows = 0;
+    this.cur_page = 1;
+    this.total_pages = 0;
+    this.page_items = [];
+    this.is_audio;
+    
+    this.layer_dom_obj = document.getElementById('media_browser_page');
+    
+    stb.SetListFilesExt('.mpg .mkv .avi .ts .mp4 .wmv .mp3 .ac3 .mov .vob .wav');
+    
+    this.check_mounted();
+}
+
+media_browser.prototype.show = function(){
+    _debug('media_browser.show');
+    
+    this.layer_dom_obj.style.display = 'block';
+    
+    this.on = 1;
+    
+    this.dir_list();
+}
+    
+media_browser.prototype.hide = function(){
+    _debug('media_browser.hide');
+    
+    this.layer_dom_obj.style.display = 'none';
+    this.on = 0;
+    
+    this.reset_dir_hist()
+    
+    this.reset();
+}
+    
+media_browser.prototype.shift_row = function(dir){
+    _debug('media_browser.shift_row('+dir+')');
+    
+    this.prev_row = this.cur_row;
+    
+    if (dir > 0){
+        if (this.cur_row < this.max_rows - 1){
+            this.cur_row++;
+            this.set_active_row();
+        }else{
+            this.shift_page(1);
+        }
+    }else{
+        if (this.cur_row > 0){
+            this.cur_row--;
+            this.set_active_row();
+        }else{
+            this.shift_page(-1);
+        }
+    }
+}
+    
+media_browser.prototype.shift_page = function(dir){
+    _debug('media_browser.shift_page('+dir+')');
+    
+    if (dir > 0){
+        if (this.cur_page < this.total_pages){
+            
+            this.cur_page++;
+            this.set_passive_all_rows();
+            this.cur_row = 0;
+            this.show_dir_list(this.cur_page);
+        }
+    }else{
+        if (this.cur_page > 1){
+            this.cur_page--;
+            this.set_passive_all_rows();
+            this.cur_row = 9;
+            this.show_dir_list(this.cur_page);
+        }
+    }
+}
+    
+media_browser.prototype.dir_list = function(){
+    _debug('media_browser.dir_list');
+    
+    var txt = stb.ListDir(this.compile_path());
+    
+    _debug(txt);
+    
+    eval(txt);
+    
+    var list = dirs.concat(files);
+    
+    //this.cur_row = 0;
+    //this.prev_row = 1;
+    //this.cur_page = 1;
+    
+    if (this.dir_hist.length == 1){
+        var clear_arr = [];
+    }else{
+        var clear_arr = ['..'];
+    }
+    
+    for (var i=0; i < list.length; i++){
+        if (!empty(list[i])){
+            clear_arr.push(list[i]);
+        }
+    }
+    
+    this.total_pages = Math.ceil(clear_arr.length/10);
+    
+    _debug('media_browser.total_pages: '+this.total_pages);
+    
+    this.cur_dir_list = clear_arr;
+    
+    this.show_dir_list(this.cur_page)
+}
+    
+media_browser.prototype.show_dir_list = function(page){
+    _debug('media_browser.show_dir_list('+page+')');
+    
+    var begin = (page-1)*10;
+    var end   = page*10;
+    
+    this.page_items = this.cur_dir_list.slice(begin,end);
+    
+    this.fill(this.page_items);
+}
+    
+media_browser.prototype.fill = function(arr){
+    _debug('media_browser.fill');
+    this.fill_page_bar();
+    this.max_rows = arr.length;
+    
+    _debug('media_browser.max_rows: '+this.max_rows);
+    
+    for(var i = 0; i <= 9; i++){
+        
+        if (arr.hasOwnProperty(i)){
+            if (arr[i].hasOwnProperty('name')){
+                document.getElementById('media_browser_file_'+i).innerHTML = arr[i].name;
+            }else{
+                if (!empty(arr[i])){
+                    document.getElementById('media_browser_file_'+i).innerHTML = arr[i];
+                }
+            }
+        }else{
+            document.getElementById('media_browser_file_'+i).innerHTML = '';
+        }
+    }
+    
+    this.set_active_row();
+}
+
+media_browser.prototype.fill_page_bar = function(){
+    document.getElementById('media_browser_page_bar').innerHTML = create_page_bar_str(this.cur_page, this.total_pages)
+}
+    
+media_browser.prototype.set_active_row = function(){
+    _debug('media_browser.set_active_row');
+    this.set_passive_row();
+    r_class_changer('media_browser_row_', this.cur_row, "hover");
+}
+    
+media_browser.prototype.set_passive_row = function(){
+    _debug('media_browser.set_passive_row');
+    r_class_changer('media_browser_row_', this.prev_row, "unhover");
+}
+    
+media_browser.prototype.set_passive_all_rows = function(){
+    _debug('media_browser.set_passive_all_rows');
+    r_class_changer('media_browser_row_', this.cur_row, "unhover");
+}
+    
+media_browser.prototype.drive_mounted = function(){
+    _debug('drive_mounted');
+    this.mounted = 1;
+    this.dir_list();
+    show_warning_message('USB устройство подключено');
+}
+    
+media_browser.prototype.drive_umounted = function(){
+    _debug('drive_umounted');
+    this.mounted = 0;
+    show_warning_message('USB устройство отключено');
+    
+    if (this.on){
+        
+        if (player_on){
+            stop()
+            hide_black()
+            stb.SetDefaultFlicker(1)
+        }
+        
+        this.hide();
+        show_club();
+    }
+}
+    
+media_browser.prototype.is_drive_mounted = function(){
+    
+    if (this.mounted){
+        return true;
+    }
+    show_warning_message('USB устройство не обнаружено');
+    return false;
+}
+    
+media_browser.prototype.compile_path = function(){
+    var path = '';
+    for(var i=0; i<this.dir_hist.length; i++){
+        path += this.dir_hist[i].path;
+    }
+    
+    return path;
+}
+    
+media_browser.prototype.action = function(not_play){
+    if (typeof(this.page_items[this.cur_row]) == 'string'){
+        
+        if (this.page_items[this.cur_row] == '..'){
+            this.out_dir();
+        }else{
+            this.in_dir(this.page_items[this.cur_row]);
+        }
+    }else{
+        if(!not_play){
+            this.play(this.page_items[this.cur_row].name)
+        }
+    }
+}
+    
+media_browser.prototype.in_dir = function(dir){
+    
+    this.dir_hist[this.dir_hist.length - 1].page = this.cur_page;
+    this.dir_hist[this.dir_hist.length - 1].row  = this.cur_row;
+    
+    var hist_item = {'path' : dir , 'page' : 1, 'row' : 1};
+    
+    this.dir_hist.push(hist_item);
+    
+    this.reset();
+    
+    this.dir_list();
+}
+    
+media_browser.prototype.out_dir = function(){
+    if (this.dir_hist.length > 1){
+        this.dir_hist.pop();
+        
+        this.reset()
+        
+        this.cur_row  = this.dir_hist[this.dir_hist.length - 1].row;
+        this.cur_page = this.dir_hist[this.dir_hist.length - 1].page;
+        
+        this.dir_list();
+    }
+}
+    
+media_browser.prototype.play = function(file){
+    
+    var p_file = this.compile_path() + file;
+    
+    var type = get_file_type(file);
+    
+    if (type == 'audio'){
+        this.is_audio = true;
+    }else{
+        this.is_audio = false;
+    }
+    
+    show_playing(file, 0, type);
+    
+    var play_cmd = 'auto ' + p_file;
+    
+    media_type = define_media_type(play_cmd);
+    
+    to_play_now(play_cmd);
+}
+    
+media_browser.prototype.reset = function(){
+    
+    this.set_passive_all_rows();
+    
+    this.cur_row  = 0;
+    this.prev_row = 1;
+    this.max_rows = 0;
+    this.cur_page = 1;
+    this.total_pages = 1;
+}
+
+media_browser.prototype.reset_dir_hist = function(){
+    _debug('media_browser.reset_dir_hist');
+    
+    this.dir_hist.splice(1, this.dir_hist.length-1);
+}
+
+media_browser.prototype.check_mounted = function(){
+    _debug('media_browser.check_mounted');
+    
+    var txt = stb.ListDir(this.compile_path());
+    
+    eval(txt);
+    
+    var list = dirs.concat(files);
+    
+    for (var i=0; i < list.length; i++){
+        if (!empty(list[i])){
+            this.drive_mounted();
+            return;
+        }
+    }
+    
+    return;  
+}
+/* END MEDIA BROWSER */
+
+function empty(val){
+    
+    var type = typeof(val);
+    
+    if (type == 'string' && val == ''){
+        return true;
+    }else if (type == 'undefined'){
+        return true;
+    }else{
+        if (type == 'object'){
+            for(var p in val){
+                if (val.hasOwnProperty(p)){
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+function get_file_type(cmd){
+    
+    var p = /^(.*)\.(\S+)$/
+    var ext = ['mp3', 'ac3', 'mov', 'vob', 'wav'];
+
+    if (ext.indexOf(cmd.replace(p, "$2")) != -1){
+        return 'audio';
+    }else{
+        return 'video';
+    }
+}
 
 </script>
 </head>
@@ -22960,14 +23502,16 @@ var epg_loader = {
         <tr id="club_row_10" class="black_row" align="center">
             <td>Недосмотренное видео</td>
         </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr id="club_row_11" class="black_row" align="center" style="display:none">
+            <td>USB Устройство</td>
+        </tr>
     </table>
     </div>
     <div id="club_declaration">
-    <table width="500" height="90">
-        <tr>
-            <td align="center" style=""><script>echo(words['club_info'])</script></td>
-        </tr>
-    </table>
+        <script>echo(words['club_info'])</script>
     </div>
 </div>
 
@@ -24032,6 +24576,68 @@ var epg_loader = {
     
   </div>
 </div>
+
+<!-- MEDIA BROWSER -->
+<div id="media_browser_page" style="display:none;">
+  <div style="position:absolute;left:30px;top:46px;">
+  
+  <div style="position:absolute;left:20px;top:37px;width:400px;" class="vclub_title">USB Устройство</div>
+  <div id="media_browser_page_bar" style="position:absolute;top:454px;color:#3f81cc;text-align:center;width:640px"></div>
+  
+  <div id="media_browser">
+    <table width="613"  cellpadding="0" cellspacing="2" class="content_table">
+      
+      <tr>
+        <th><script>echo(words['name'])</script></th>
+      </tr>
+      
+      <tr id="media_browser_row_0">
+        <td id="media_browser_file_0" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_1">
+        <td id="media_browser_file_1" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_2">
+        <td id="media_browser_file_2" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_3">
+        <td id="media_browser_file_3" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_4">
+        <td id="media_browser_file_4" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_5">
+        <td id="media_browser_file_5" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_6">
+        <td id="media_browser_file_6" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_7">
+        <td id="media_browser_file_7" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_8">
+        <td id="media_browser_file_8" class="black_row">&nbsp;</td>
+      </tr>
+      
+      <tr id="media_browser_row_9">
+        <td id="media_browser_file_9" class="black_row">&nbsp;</td>
+      </tr>
+      
+      
+    </table>
+  </div>
+  
+  </div>
+</div>
+<!---->
 
 <!-- VCLUB VOTE -->
 <div id="vclub_vote" style="display:none;">
