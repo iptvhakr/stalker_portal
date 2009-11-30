@@ -1,6 +1,7 @@
 <?php
 /**
  * Memcache driver.
+ * Implementation of http://www.smira.ru/2008/10/29/web-caching-memcached-5/
  * 
  * @package stalker_portal
  * @author zhurbitsky@gmail.com

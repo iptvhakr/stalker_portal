@@ -37,6 +37,11 @@ abstract class DatabaseResult
         }
 	}
 	
+	public function first($name = null){
+	    $this->current_row = 0;
+	    return $this->get($name);
+	}
+	
 	public function offsetExist($offset){
 	    
 	    return ($offset >=0 && $offset < $this->total_rows);

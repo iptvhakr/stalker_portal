@@ -16,79 +16,105 @@ class Epg
     public $cur_program_idx;
     public $cur_program_page;
     public $cur_program_row;
-    public $correction_time = -60; // min
+    public $correction_time = 0; // minutes
     
     public function __construct(){
-        $this->db = Database::getInstance(DB_NAME);
+        $this->db = Mysql::getInstance();
         $this->day_begin_datetime = date("Y-m-d 00:00:00");
         $this->now_datetime = date("Y-m-d H:i:s");
     }
     
     public function updateEpg(){
+        
         $xml = simplexml_load_file(XMLTV_URI);
         $ids_arr = $this->getITVids();
-        $init_sql = 'insert into epg (`ch_id`, `time`, `name`) value ';
-        $sql_arr = array();
-        //var_dump($ids_arr);
+        
+        $insert_data = array();
+        $data_arr = array();
+        
         foreach ($xml->programme as $programme){
+            
             $itv_id_arr = @$ids_arr[strval($programme->attributes()->channel)];
-            //$itv_id = array_search(strval($programme->attributes()->channel), $ids);
             
             if ($itv_id_arr){
-                //$start = strval($programme->attributes()->start);
+                
                 $mysql_start = xmltvdatetime2datetime($programme->attributes()->start);
 
                 $start = date("YmdHis", datetime2timestamp($mysql_start) + $this->correction_time*60);
                 $mysql_start = date("Y-m-d H:i:s", datetime2timestamp($mysql_start) + $this->correction_time*60);
                 
                 $title = addslashes($programme->title);
-                //var_dump($title);
+                
                 foreach ($itv_id_arr as $itv_id){
-                    $this->cleanEpgByDate($start,$itv_id);
-                    if (@$sql_arr[$itv_id]){
-                        $sql_arr[$itv_id] .= "($itv_id, '$mysql_start', '$title'),";
-                    }else{
-                        $sql_arr[$itv_id] = $init_sql."($itv_id, '$mysql_start', '$title'),";
+                    
+                    $this->cleanEpgByDate($start, $itv_id);
+                    
+                    if (!key_exists($itv_id, $data_arr)){
+                        $data_arr[$itv_id][] = array();
                     }
+                    
+                    $data_arr[$itv_id][] = array(
+                                                'ch_id' => $itv_id,
+                                                'time'  => $mysql_start,
+                                                'name'  => $title
+                                                );
+                    
                 }
-             }
+            }
         }
-        //var_dump($sql_arr);
+        
         $err = 0;
         $done = 0;
         $xml_ids_done = '';
         $xml_ids_err = '';
         $total = 0;
-        foreach ($sql_arr as $itv_xml_id => $sql){
-            //var_dump(substr($sql, 0, strlen($sql)-1));
-            if ($this->db->executeQuery(substr($sql, 0, strlen($sql)-1))){
+        
+        foreach ($data_arr as $itv_xml_id => $data){
+            
+            $result = $this->db->insert('epg', $data);
+            
+            if ($result->insert_id()){
                 $done++;
                 $xml_ids_done .= "xml_id #".$itv_xml_id."\n";
             }else{
                 $err++;
-                $xml_ids_err .= "xml_id #".$itv_xml_id."\n";
+                $xml_ids_err  .= "xml_id #".$itv_xml_id."\n";
             }
+            
             $total++;
         }
+        
         $str = "Обновлено $done каналов из $total, $err ошибок \n";
         $str .= "<b>Ошибки :</b>".$xml_ids_err."\n";
         $str .= "<b>Успешно :</b>".$xml_ids_done."\n";
+        
         return $str;
     }
     
     private function getITVids(){
-        //$sql = "select * from itv where status=1 and xmltv_id!=''";
-        $sql = "select * from itv where xmltv_id!=''";
-        $rs = $this->db->executeQuery($sql);
+        
+        /*$sql = "select * from itv where xmltv_id!=''";
+        $rs = $this->db->executeQuery($sql);*/
+        
+        $valid_channels = $this->db->from('itv')->where(array('xmltv_id!=' => ''))->get()->all();
+        
         $ids = array();
-        while(@$rs->next()){
+        
+        foreach ($valid_channels as $channel){
+            if (!key_exists($channel['xmltv_id'], $ids)){
+                $ids[$channel['xmltv_id']] = array();
+            }
+            $ids[$channel['xmltv_id']][] = $channel['id'];
+        }
+        
+        /*while(@$rs->next()){
             $xmltv_id = $rs->getCurrentValueByName('xmltv_id');
             if (!key_exists($xmltv_id,$ids)){
                 $ids[$xmltv_id] = array();
             }
             $ids[$xmltv_id][] = $rs->getCurrentValueByName('id');
-            //$ids[$rs->getCurrentValueByName('id')] = $rs->getCurrentValueByName('xmltv_id');
-        }
+        }*/
+        
         return $ids;
     }
     
@@ -106,8 +132,16 @@ class Epg
         
         if (!@$this->cleaned_epg[$itv_id]["$yy-$mm-$dd"]){
             $this->cleaned_epg[$itv_id] = array("$yy-$mm-$dd" => 1);
-            $sql = "delete from epg where ch_id=$itv_id and time>='$from' and time<'$to'";
-            $this->db->executeQuery($sql);
+            
+            /*$sql = "delete from epg where ch_id=$itv_id and time>='$from' and time<'$to'";
+            $this->db->executeQuery($sql);*/
+            
+            $this->db->delete('epg',
+                              array(
+                                  'ch_id'  => $itv_id,
+                                  'time>=' => $from,
+                                  'time<'  => $to
+                              ));
         }
     }
     
@@ -121,12 +155,24 @@ class Epg
     
     public function getCurProgram($ch_id){
         $ch_id = intval($ch_id);
-        $sql = 'select * from epg where ch_id='.$ch_id.' and time>="'.$this->day_begin_datetime.'" and time<"'.$this->now_datetime.'" order by time desc';
         
-        $rs = $this->db->executeQuery($sql);
+        
+        /*$sql = 'select * from epg where ch_id='.$ch_id.' and time>="'.$this->day_begin_datetime.'" and time<"'.$this->now_datetime.'" order by time desc';
+        $rs = $this->db->executeQuery($sql);*/
+        
+        $result = $this->db->from('epg')
+                           ->where(
+                               array(
+                                   'ch_id'  => $ch_id,
+                                   'time>=' => $this->day_begin_datetime,
+                                   'time<'  => $this->now_datetime
+                               ))
+                           ->orderby('time', 'desc')
+                           ->get();
+        
         //echo $this->cur_program_idx;
-        $this->cur_program_idx = intval($rs->getRowCount());
-        $this->cur_program_id  = intval($rs->getValueByName(0, 'id'));
+        $this->cur_program_idx = intval($result->count());
+        $this->cur_program_id  = intval($result->get('id'));
         if ($this->cur_program_id > 0){
             $this->cur_program_page = ceil($this->cur_program_idx/MAX_PAGE_ITEMS);
             $this->cur_program_row = $this->cur_program_idx - floor($this->cur_program_idx/MAX_PAGE_ITEMS)*MAX_PAGE_ITEMS;

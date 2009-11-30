@@ -14,7 +14,7 @@ class Course
     public $codes = array(840, 978, 643);
     
     public function __construct(){
-        $this->db = Database::getInstance(DB_NAME);
+        $this->db = Mysql::getInstance();
         $this->cache_table = "course_cache";
     }
     
@@ -44,9 +44,11 @@ class Course
     }
     
     private function getDataFromDBCache(){
-        $sql = "select * from $this->cache_table";
-        $rs = $this->db->executeQuery($sql);
+        
+        $content = $this->db->from($this->cache_table)->get()->first('content');
+                
         $content = unserialize(base64_decode($rs->getValueByName(0, 'content')));
+        
         if (is_array($content)){
             return $content;
         }else{
@@ -55,16 +57,40 @@ class Course
     }
     
     private function setDataDBCache($arr){
+        
         $content = base64_encode(serialize($arr));
-        $sql = "select * from $this->cache_table";
-        $rs = $this->db->executeQuery($sql);
-        if (md5($content) != @$rs->getValueByName(0, 'crc')){
-            if ($rs->getRowCount() == 1){
-                $sql = "update $this->cache_table set content='$content', updated=NOW(), url='$this->content_url', crc=MD5('$content')";
-                $rs = $this->db->executeQuery($sql);
+        
+        /*$sql = "select * from $this->cache_table";
+        $rs = $this->db->executeQuery($sql);*/
+        
+        $result = $this->db->from($this->cache_table)->get();
+        $crc = $result->get('crc');
+        
+        
+        if (md5($content) != $crc){
+            
+            $data = array(
+                          'content' => $content,
+                          'updated' => 'NOW()',
+                          'url'     => $this->content_url,
+                          'crc'     => md5($content)
+                      );
+            
+            if ($result->count() == 1){
+                
+                //$sql = "update $this->cache_table set content='$content', updated=NOW(), url='$this->content_url', crc=MD5('$content')";
+                //$rs = $this->db->executeQuery($sql);
+                
+                $this->db->update($this->cache_table,
+                                  $data);
+                
             }else{
-                $sql = "insert into $this->cache_table (content, updated, url, crc) value ('$content', NOW(), '".$this->content_url."', MD5('$content'))";
-                $rs = $this->db->executeQuery($sql);
+                
+                //$sql = "insert into $this->cache_table (content, updated, url, crc) value ('$content', NOW(), '".$this->content_url."', MD5('$content'))";
+                //$rs = $this->db->executeQuery($sql);
+                
+                $this->db->insert($this->cache_table,
+                                  $data);
             }
         }
     }

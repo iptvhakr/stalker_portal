@@ -40,7 +40,7 @@ class MysqlResult extends DatabaseResult
         }
 	}
 	
-	public function as_array($return = false){
+	public function as_array($return = false, $field = null){
 	    
 	    if (!$return){
 	        return $this;
@@ -51,19 +51,25 @@ class MysqlResult extends DatabaseResult
 	    if ($this->total_rows > 0){
 	        
             mysql_data_seek($this->result, 0);
-
-            while ($row = mysql_fetch_assoc($this->result)){
-				$array[] = $row;
-			}
+            
+            if($field !== null){
+                while ($row = mysql_fetch_assoc($this->result)){
+    				$array[] = $row[$field];
+    			}
+            }else{
+                while ($row = mysql_fetch_assoc($this->result)){
+    				$array[] = $row;
+    			}
+            }
 
 		}
 		
 		return $array;
 	}
 	
-	public function all(){
+	public function all($field){
 	    
-	    return $this->as_array(true);
+	    return $this->as_array(true, $field);
 	}
 	
 	public function seek($offset){

@@ -46,7 +46,11 @@ class Stb
     
     public function getStbParams(){
 
-        $user = $this->db->getFirstData('users', array('mac' => $this->mac));
+        //$user = $this->db->getFirstData('users', array('mac' => $this->mac));
+        $user = $this->db->from('users')
+                         ->where(array('mac' => $this->mac))
+                         ->get()
+                         ->first();
         
         if (!empty($user)){
             $this->params = $user;
@@ -58,7 +62,11 @@ class Stb
     
     public function getIdByMAC($mac){
         
-        $user = $this->db->getFirstData('users', array('mac' => $mac));
+        //$user = $this->db->getFirstData('users', array('mac' => $mac));
+        $user = $this->db->from('users')
+                         ->where(array('mac' => $mac))
+                         ->get()
+                         ->first();
         
         if(!empty($user) && key_exists('id', $user)){
             return $user['id'];
@@ -68,7 +76,10 @@ class Stb
     }
     
     private function getAllMACs(){
-        $users = $this->db->getData('users');
+        //$users = $this->db->getData('users');
+        
+        $users = $this->db->get('users')->all();
+        
         $arr = array();
         foreach ($users as $user){
             $arr[$user['mac']] = intval($user['id']);
@@ -82,7 +93,7 @@ class Stb
             $this->createProfile();
         }
         
-        $this->db->updateData('users', array(
+        $this->db->update('users', array(
                 'last_start' => 'NOW()',
                 'keep_alive' => 'NOW()',
                 'version'    => @$_REQUEST['ver'],
@@ -106,7 +117,7 @@ class Stb
     
     private function createProfile(){
         
-        $uid = $this->db->insertData('users', array(
+        $uid = $this->db->insert('users', array(
                     'mac'  => $this->mac,
                     'name' => substr($this->mac, 12, 16)
                 ));
@@ -137,7 +148,7 @@ class Stb
     public function setParentPassword(){
         
         if (isset($_REQUEST['pass'])){
-            $this->db->updateData('users', array('parent_password' => $_REQUEST['pass']), array('mac' => $this->mac));
+            $this->db->update('users', array('parent_password' => $_REQUEST['pass']), array('mac' => $this->mac));
             $this->params['parent_password'] = $_REQUEST['pass'];
         }
         
@@ -152,7 +163,7 @@ class Stb
             $volume = 100;
         }
         
-        $this->db->updateData('users', array('volume' => $volume), array('mac' => $this->mac));
+        $this->db->update('users', array('volume' => $volume), array('mac' => $this->mac));
         $this->params['volume'] = $volume;
         
         return true;
@@ -162,21 +173,22 @@ class Stb
         
         $fav_itv_on = intval($_REQUEST['fav_itv_on']);
         
-        $this->db->updateData('users', array('fav_itv_on' => $fav_itv_on), array('mac' => $this->mac));
+        $this->db->update('users', array('fav_itv_on' => $fav_itv_on), array('mac' => $this->mac));
         $this->params['fav_itv_on'] = $fav_itv_on;
         
         return true;
     }
     
     public function getUpdatedPlaces(){
-        return $this->db->getFirstData('updated_places', array('uid' => $this->id));
+        //return $this->db->getFirstData('updated_places', array('uid' => $this->id));
+        return $this->db->from('updated_places')->where(array('uid' => $this->id))->get()->first();
     }
     
     public function setUpdatedPlaceConfirm(){
         
         $place = $_REQUEST['place'];
         
-        $this->db->updateData('updated_places', array($place => 0), array('uid' => $this->id));
+        $this->db->update('updated_places', array($place => 0), array('uid' => $this->id));
         
         return true;
     }
@@ -192,12 +204,12 @@ class Stb
     
     public function getWatchdog(){
         
-        $this->db->updateData('users', 
-                              array('keep_alive'       => 'NOW()',
-                                    'ip'               => $this->ip,
-                                    'now_playing_type' => intval($_REQUEST['cur_play_type'])
-                                   ), 
-                              array('mac' => $this->mac));
+        $this->db->update('users', 
+                          array('keep_alive'       => 'NOW()',
+                                'ip'               => $this->ip,
+                                'now_playing_type' => intval($_REQUEST['cur_play_type'])
+                               ), 
+                          array('mac' => $this->mac));
         
         
         $events = Event::getAllNotEndedEvents($this->id);
@@ -237,12 +249,12 @@ class Stb
     }
     
     public function setStreamError(){
-        $this->db->insertData('stream_error',
-                               array(
-                                    'ch_id'      => intval($_REQUEST['ch_id']),
-                                    'mac'        => $this->stb->mac,
-                                    'error_time' => 'NOW()'
-                               ));
+        $this->db->insert('stream_error',
+                           array(
+                                'ch_id'      => intval($_REQUEST['ch_id']),
+                                'mac'        => $this->stb->mac,
+                                'error_time' => 'NOW()'
+                           ));
         return true;
     }
 }

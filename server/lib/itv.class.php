@@ -30,13 +30,15 @@ class Itv
     public function setPlayed(){
         $itv_id = intval($_REQUEST['itv_id']);
         
-        $this->db->insertData('played_itv', array(
+        $this->db->insert('played_itv', array(
                                             'itv_id'   => $itv_id,
                                             'uid'      => $this->stb->id,
                                             'playtime' => 'NOW()'
-                                            ));
+                                        ));
         
-        $this->db->updateData('users', array('time_last_play_tv' => 'NOW()'), array('id' => $this->stb->id));
+        $this->db->update('users',
+                          array('time_last_play_tv' => 'NOW()'),
+                          array('id' => $this->stb->id));
         
         $this->setLastId($itv_id);
         
@@ -45,7 +47,11 @@ class Itv
     
     public function getLastId(){
         
-        $last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->stb->mac));
+        //$last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->stb->mac));
+        $last_id_arr = $this->db->from('last_id')
+                                ->where(array('ident' => $this->stb->mac))
+                                ->get()
+                                ->first();
         
         if(!empty($last_id_arr) && key_exists('last_id', $last_id_arr)){
             return $last_id_arr['last_id'];
@@ -60,12 +66,16 @@ class Itv
             $id = intval($_REQUEST['id']);
         }
         
-        $last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->stb->mac));
+        //$last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->stb->mac));
+        $last_id_arr = $this->db->from('last_id')
+                                ->where(array('ident' => $this->stb->mac))
+                                ->get()
+                                ->first();
         
         if (!empty($last_id_arr) && key_exists('last_id', $last_id_arr)){
-            $this->db->updateData('last_id', array('last_id' => $id), array('ident' => $this->stb->mac));
+            $this->db->update('last_id', array('last_id' => $id), array('ident' => $this->stb->mac));
         }else{
-            $this->db->insertData('last_id', array('last_id' => $id));
+            $this->db->insert('last_id', array('last_id' => $id));
         }
         
         return true;
@@ -86,22 +96,23 @@ class Itv
         if (is_array($fav_ch)){
             $fav_ch_str = base64_encode(serialize($fav_ch));
             
-            $fav_itv_arr = $this->db->getFirstData('fav_itv', array('uid' => $uid));
+            //$fav_itv_arr = $this->db->getFirstData('fav_itv', array('uid' => $uid));
+            $fav_itv_arr = $this->db->from('fav_itv')->where(array('uid' => $uid))->get()->first();
             
             if (empty($fav_itv_arr)){
-                $this->db->insertData('fav_itv',
-                                       array(
-                                            'uid'     => $uid,
-                                            'fav_ch'  => $fav_ch_str,
-                                            'addtime' => 'NOW()'
-                                       ));
+                $this->db->insert('fav_itv',
+                                   array(
+                                        'uid'     => $uid,
+                                        'fav_ch'  => $fav_ch_str,
+                                        'addtime' => 'NOW()'
+                                   ));
             }else{
-                $this->db->updateData('fav_itv',
-                                       array(
-                                            'fav_ch'  => $fav_ch_str,
-                                            'addtime' => 'NOW()'
-                                       ),
-                                       array('uid' => $uid));
+                $this->db->update('fav_itv',
+                                   array(
+                                        'fav_ch'  => $fav_ch_str,
+                                        'addtime' => 'NOW()'
+                                   ),
+                                   array('uid' => $uid));
             }
         }
         
@@ -114,7 +125,8 @@ class Itv
             $uid = $this->stb->id;
         }
         
-        $fav_itv_ids_arr = $this->db->getFirstData('fav_itv', array('uid' => $uid));
+        //$fav_itv_ids_arr = $this->db->getFirstData('fav_itv', array('uid' => $uid));
+        $fav_itv_ids_arr = $this->db->from('fav_itv')->where(array('uid' => $uid))->get()->first();
         
         if (!empty($fav_itv_ids_arr)){
             $fav_ch = unserialize(base64_decode($fav_itv_ids_arr['fav_ch']));
@@ -131,10 +143,8 @@ class Itv
         
         $page = intval($_REQUEST['p']);
         
-        $this->db->getData('itv',
-                            array(
-                                'status' => 1,
-                            ));
+        $this->db->from('itv')
+                 ->where(array('status' => 1));
     }
     
 }

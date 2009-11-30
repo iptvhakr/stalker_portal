@@ -2,6 +2,7 @@
 /**
  * Data class for AJAX loader.
  * Call method associated with $action, from context associated with $type.
+ * 
  * @package stalker_portal
  * @author zhurbitsky@gmail.com
  */

@@ -19,7 +19,7 @@ abstract class Master
     protected $media_type;
     
     public function __construct(){
-        $this->db = Database::getInstance(DB_NAME);
+        $this->db = Mysql::getInstance();
         $this->stb = Stb::getInstance();
         $this->storages = $this->getAllActiveStorages();
         $this->clients = $this->getClients();
@@ -142,7 +142,10 @@ abstract class Master
      */
     private function getAllActiveStorages(){
         $storages = array();
-        $data = $this->db->executeQuery('select * from storages where status=1')->getAllValues();
+        
+        //$data = $this->db->executeQuery('select * from storages where status=1')->getAllValues();
+        $data = $this->db->from('storages')->where(array('status' => 1))->get()->all();
+        
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;
         }
@@ -290,8 +293,15 @@ abstract class Master
      * @param string $txt
      */
     private function addToLog($txt){
-        $sql = 'insert into master_log (log_txt, added) values ("'.mysql_real_escape_string(trim($txt)).'", NOW())';
-        $this->db->executeQuery($sql);
+        /*$sql = 'insert into master_log (log_txt, added) values ("'.mysql_real_escape_string(trim($txt)).'", NOW())';
+        $this->db->executeQuery($sql);*/
+        
+        $this->db->insert('master_log',
+                          array(
+                              'log_txt' => trim($txt),
+                              'added'   => 'NOW()'
+                          ));
+        
     }
     
     /**
@@ -305,8 +315,18 @@ abstract class Master
         
         foreach ($this->getAllCacheKeys() as $key){
         
-            $sql = 'select * from storage_cache where cache_key="'.$key.'" and status=1 and UNIX_TIMESTAMP(changed)>'.(time() - $this->cache_expire_h*3600);
-            $storage_cache = $this->db->executeQuery($sql)->getAllValues();
+            /*$sql = 'select * from storage_cache where cache_key="'.$key.'" and status=1 and UNIX_TIMESTAMP(changed)>'.(time() - $this->cache_expire_h*3600);
+            $storage_cache = $this->db->executeQuery($sql)->getAllValues();*/
+            
+            $storage_cache = $this->db->from('storage_cache')
+                                      ->where(array(
+                                          'cache_key'                => $key,
+                                          'status'                   => 1,
+                                          'UNIX_TIMESTAMP(changed)>' => time() - $this->cache_expire_h*3600
+                                      ))
+                                      ->get()
+                                      ->all();
+            
             if(!empty($storage_cache)){
                 $storage_cache = $storage_cache[0];
                 $storage_data = unserialize($storage_cache['storage_data']);
@@ -326,10 +346,13 @@ abstract class Master
      * @param array $storages
      */
     private function setStorageCache($storages){
+        
         if (!empty($storages)){
+            
             foreach ($storages as $name => $data){
+                
                 $storage_data = serialize($data);
-                $sql = 'insert into storage_cache (
+                /*$sql = 'insert into storage_cache (
                                             cache_key, 
                                             media_type, 
                                             media_id, 
@@ -346,7 +369,39 @@ abstract class Master
                                             NOW())
                                 on duplicate key
                         update storage_data="'.mysql_real_escape_string($storage_data).'", status=1, changed=NOW()';
-                $this->db->executeQuery($sql);
+                $this->db->executeQuery($sql);*/
+                
+                $cache_key = $this->getCacheKey($name);
+                
+                $record = $this->db->from('storage_cache')
+                                   ->where(array('cache_key' => $cache_key))
+                                   ->get()
+                                   ->first();
+
+                if (empty($record)){
+                    
+                    $this->db->insert('storage_cache',
+                                      array(
+                                          'cache_key'    => $cache_key,
+                                          'media_type'   => $this->media_type,
+                                          'media_id'     => $this->media_id,
+                                          'storage_name' => $name,
+                                          'storage_data' => $storage_data,
+                                          'status'       => 1,
+                                          'changed'      => 'NOW()'
+                                      ));
+                }else{
+                    
+                    $this->db->update('storage_cache',
+                                      array(
+                                          'storage_data' => $storage_data,
+                                          'status'       => 1,
+                                          'changed'      => 'NOW()',
+                                      ),
+                                      array('cache_key' => $cache_key));
+                    
+                }
+                                      
             }
         }
     }
@@ -409,11 +464,36 @@ abstract class Master
      * @return int sessions online
      */
     protected function getStorageOnline($storage_name){
-        $sql = 'select count(*) as sd_online from users where now_playing_type=2 and hd_content=0 and storage_name="'.$storage_name.'" and UNIX_TIMESTAMP(keep_alive)>'.(time() - 120);
-        $sd_online = $this->db->executeQuery($sql)->getValueByName(0, 'sd_online');
         
-        $sql = 'select count(*) as hd_online from users where now_playing_type=2 and hd_content=1 and storage_name="'.$storage_name.'" and UNIX_TIMESTAMP(keep_alive)>'.(time() - 120);
-        $hd_online = $this->db->executeQuery($sql)->getValueByName(0, 'hd_online');
+        /*$sql = 'select count(*) as sd_online from users where now_playing_type=2 and hd_content=0 and storage_name="'.$storage_name.'" and UNIX_TIMESTAMP(keep_alive)>'.(time() - 120);
+        $sd_online = $this->db->executeQuery($sql)->getValueByName(0, 'sd_online');*/
+        
+        $sd_online = $this->db->select('count(*) as sd_online')
+                              ->from('users')
+                              ->where(
+                                  array(
+                                      'now_playing_type' => 2,
+                                      'hd_content'       => 0,
+                                      'storage_name'     => $storage_name,
+                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - 120,
+                                  ))
+                              ->get()
+                              ->first('sd_online');
+        
+        /*$sql = 'select count(*) as hd_online from users where now_playing_type=2 and hd_content=1 and storage_name="'.$storage_name.'" and UNIX_TIMESTAMP(keep_alive)>'.(time() - 120);
+        $hd_online = $this->db->executeQuery($sql)->getValueByName(0, 'hd_online');*/
+        
+        $hd_online = $this->db->select('count(*) as hd_online')
+                              ->from('users')
+                              ->where(
+                                  array(
+                                      'now_playing_type' => 2,
+                                      'hd_content'       => 1,
+                                      'storage_name'     => $storage_name,
+                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - 120,
+                                  ))
+                              ->get()
+                              ->first('hd_online'); 
         
         return $sd_online + 3*$hd_online;
     }
@@ -432,7 +512,15 @@ abstract class Master
      * @param string $storage_name
      */
     private function incrementStorageDeny($storage_name){
-        $this->db->executeQuery('update storage_deny set counter=counter+1, updated=NOW() where name="'.$storage_name.'"');
+        
+        //$this->db->executeQuery('update storage_deny set counter=counter+1, updated=NOW() where name="'.$storage_name.'"');
+        $this->db->update('storage_deny',
+                          array(
+                              'counter' => 'counter+1',
+                              'updated' => 'NOW()'
+                          ),
+                          array('name' => $storage_name));
+        
     }
     
     /**
@@ -475,7 +563,12 @@ abstract class Master
      */
     private function saveSeries($series_arr){
         sort($series_arr);
-        $this->db->executeQuery("update video set series='".serialize($series_arr)."' where id='$this->media_id'");
+        
+        //$this->db->executeQuery("update video set series='".serialize($series_arr)."' where id='$this->media_id'");
+        $this->db->update('video',
+                          array('series' => serialize($series_arr)),
+                          array('id' => $this->media_id));
+        
     }
     
     /**

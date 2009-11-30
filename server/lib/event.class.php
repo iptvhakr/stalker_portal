@@ -22,7 +22,7 @@ class Event extends HTTPPush
     private $db;
     
     public function __construct(){
-        $this->db  = Database::getInstance(DB_NAME);
+        $this->db = Mysql::getInstance();
         $this->pattern = $this->param;
     }
     
@@ -69,8 +69,9 @@ class Event extends HTTPPush
      * @param int $id event id
      */
     public static function setSended($id){
-        $db = Database::getInstance(DB_NAME);
-        $db->executeQuery('update events set sended=1 where id='.$id);
+        $db = Mysql::getInstance();
+        //$db->executeQuery('update events set sended=1 where id='.$id);
+        $db->update('events', array('sended' => 1), array('id' => $id));
     }
     
     /**
@@ -79,8 +80,9 @@ class Event extends HTTPPush
      * @param int $id event id
      */
     public static function setConfirmed($id){
-        $db = Database::getInstance(DB_NAME);
-        $db->executeQuery('update events set confirmed=1,ended=1 where id='.$id);
+        $db = Mysql::getInstance();
+        //$db->executeQuery('update events set confirmed=1,ended=1 where id='.$id);
+        $db->update('events', array('confirmed' => 1, 'ended' => 1), array('id' => $id));
     }
     
     /**
@@ -89,8 +91,9 @@ class Event extends HTTPPush
      * @param int $id event id
      */
     public static function setEnded($id){
-        $db = Database::getInstance(DB_NAME);
-        $db->executeQuery('update events set ended=1 where id='.$id);
+        $db = Mysql::getInstance();
+        //$db->executeQuery('update events set ended=1 where id='.$id);
+        $db->update('events', array('ended' => 1), array('id' => $id));
     }
     
     /**
@@ -101,8 +104,13 @@ class Event extends HTTPPush
      */
     public static function getAllNotEndedEvents($uid){
         if ($uid){
-            $db = Database::getInstance(DB_NAME);
-            return $db->executeQuery('select * from events where uid='.$uid.' and ended=0 and eventtime>NOW() order by priority, addtime')->getAllValues();
+            $db = Mysql::getInstance();
+            //return $db->executeQuery('select * from events where uid='.$uid.' and ended=0 and eventtime>NOW() order by priority, addtime')->getAllValues();
+            return $db->from('events')
+                      ->where(array('uid' => $uid, 'ended' => 0, 'eventtime>' => 'NOW()'))
+                      ->orderby(array('priority', 'addtime'))
+                      ->get()
+                      ->all();
         }
         return false;
     }
@@ -201,8 +209,9 @@ class Event extends HTTPPush
      *
      */
     protected function saveInDb(){
+        
         if (is_array($this->param['user_list']) && count($this->param['user_list']) > 0){
-        $sql = 'insert into events (
+        /*$sql = 'insert into events (
                                       uid,
                                       event,
                                       addtime,
@@ -218,10 +227,31 @@ class Event extends HTTPPush
                 $sql .= '('.$uid.', "'.$this->param['event'].'", NOW(), "'.$this->param['eventtime'].'", '.$this->param['need_confirm'].', '.$this->param['reboot_after_ok'].', "'.mysql_real_escape_string($this->param['msg']).'", '.$this->param['priority'].'),';
             }
             $sql = substr($sql, 0, strlen($sql)-1);
-            $this->db->executeQuery($sql);
-            if ($this->db->getLastError()){
-                echo $this->db->getLastError();
+            $this->db->executeQuery($sql);*/
+            
+            $data = array();
+            
+            foreach ($this->param['user_list'] as $uid){
+                
+                $data[] = array(
+                    'uid'             => $uid,
+                    'event'           => $this->param['event'],
+                    'addtime'         => 'NOW()',
+                    'eventtime'       => $this->param['eventtime'],
+                    'need_confirm'    => $this->param['need_confirm'],
+                    'reboot_after_ok' => $this->param['reboot_after_ok'],
+                    'msg'             => $this->param['msg'],
+                    'priority'        => $this->param['priority'],
+                );
+                
             }
+            
+            $this->db->insert('events', $data);
+            
+            
+            /*if ($this->db->getLastError()){
+                echo $this->db->getLastError();
+            }*/
         }
     }
 }

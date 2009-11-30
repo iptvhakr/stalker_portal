@@ -8,7 +8,7 @@
 
 class Mysql
 {
-    private  $link;
+    private $link;
     
     private $charset = 'utf8';
     private $num_queries = 0;
@@ -294,12 +294,35 @@ class Mysql
         $fields = array();
         $values = array();
         
-        foreach ($keys as $field => $value){
-            $fields[] = $field;
-            $values[] = $this->escape($value);
+        if (key_exists(0, $keys)){
+            
+            $fields = array_keys($keys[0]);
+            
+            foreach ($keys as $data){
+                $value_arr = array();
+                
+                foreach ($data as $field => $value){
+                    $value_arr[] = $this->escape($value);
+                }
+                
+                $values[] = '('.implode(', ', $value_arr).')';
+                
+            }
+            
+            $value_str = implode(', ', $values);
+            
+        }else{
+            
+            foreach ($keys as $field => $value){
+                $fields[] = $field;
+                $values[] = $this->escape($value);
+            }
+            
+            $value_str = '('.implode(', ', $values).')';
+            
         }
         
-        $sql = 'INSERT INTO '.$table.' ('.implode(', ', $fields).') value ('.implode(', ', $values).')';
+        $sql = 'INSERT INTO '.$table.' ('.implode(', ', $fields).') value '.$value_str;
         
         $result = $this->query($sql);
         
@@ -321,6 +344,21 @@ class Mysql
         }
         
         $sql = 'UPDATE '.$table.' SET '.implode(', ', $valstr).' WHERE '.implode(' ', $this->where);
+        
+        $result = $this->query($sql);
+        
+        $this->reset_write();
+        
+        return $result;
+    }
+    
+    public function delete($table, $where){
+        
+        foreach ($where as $key => $value){
+            $this->where(array($key => $value), 'AND ');
+        }
+        
+        $sql = 'DELETE FROM '.$table.' WHERE '.implode(' ', $this->where);
         
         $result = $this->query($sql);
         
@@ -415,7 +453,7 @@ class Mysql
         if(is_int($value)){
             
             return $value;
-        }elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()'))){
+        }elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && !strpos($value, '+')){
             
             $value = "'".$this->escape_str($value)."'";
         }else{

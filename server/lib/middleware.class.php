@@ -15,8 +15,9 @@ class Middleware
      * @return array users id's
      */
     public static function getAllUsersId(){
-        $db = Database::getInstance(DB_NAME);
-        return $db->executeQuery('select * from users')->getValuesByName('id');
+        $db = Mysql::getInstance();
+        //return $db->executeQuery('select * from users')->getValuesByName('id');
+        return $db->get('users')->all('id');
     }
     
     /**
@@ -28,8 +29,11 @@ class Middleware
     public static function getUidByMac($mac){
         if ($mac){
             $mac = self::normalizeMac($mac);
-            $db = Database::getInstance(DB_NAME);
-            $id = $db->executeQuery('select * from users where mac="'.$mac.'"')->getValueByName(0, 'id');
+            $db = Mysql::getInstance();
+            
+            //$id = $db->executeQuery('select * from users where mac="'.$mac.'"')->getValueByName(0, 'id');
+            $id = $db->from('users')->where(array('mac' => $mac))->get()->first('id');
+            
             if ($id > 0){
                 return intval($id);
             }
