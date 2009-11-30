@@ -63,6 +63,21 @@ class Middleware
             return false;
         }
     }
+    
+    public static function log($text, $type = null){
+        
+        if (!$type){
+            $type = 'notice';
+        }
+        
+        $db = Mysql::getInstance();
+        
+        $this->db->insert('sys_log',
+                          array(
+                              'text' => $text,
+                              'type' => $type
+                          ));
+    }
 }
 
 ?>
