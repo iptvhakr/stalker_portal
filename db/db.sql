@@ -940,3 +940,13 @@ CREATE TABLE `master_log`(
     PRIMARY KEY (`id`),
     INDEX(`added`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `system_log`;
+CREATE TABLE `system_log`(
+    `id` int NOT NULL auto_increment,
+    `type` varchar(128) NOT NULL default '',
+    `text` text NOT NULL,
+    `added` datetime,
+    PRIMARY KEY (`id`),
+    INDEX (`added`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
