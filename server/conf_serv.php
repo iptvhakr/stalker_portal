@@ -11,7 +11,7 @@ define("MAX_USER_REC_LENGTH", 86400);
 define("DB_TYPE", 'mysql');
 
 define("MYSQL_HOST", 'localhost');
-define("QUERY_CACHE", true);
+define("QUERY_CACHE", false);
 define("MEMCACHE_HOST", 'localhost');
 
 define("OS_UNIX", 1);
