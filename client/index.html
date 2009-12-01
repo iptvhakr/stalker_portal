@@ -9,7 +9,7 @@ body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
     font-size: 20px;
     font-weight: bold;
-    background: url("i/bg_main.jpg");
+    /*background: url("i/bg_main.jpg");*/
 }
 
 input, .input_passive  {
@@ -46,21 +46,51 @@ td, table{
 .a_menu{
     color: #FFFFFF;
 }
-.play_txt {      /* название текущего ТВ-канала в прямоугольнике в центре экрана */
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:20px;
-    color: #F5F5F5;                /* WhiteSmoke */
-    background-color: #1E90FF;     /* DodgerBlue */
+
+/*.play_txt_all {
+    font-size: 20px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #103268;
 }
+.play_txt_wk {
+    font-size: 20px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: #ffffff;
+	border: 1px solid #ff0000;
+}*/
+
 #play {
 	position:absolute;
-	width:720px;
-	height:80px;
+	width: 655px;
+	height: 126px;
 	z-index:1000;
-	top: 446px;
-	/*bottom: 0px;*/
+	/*top: 446px;*/
+	bottom: 0px;
 	left: 0px;
+	padding-left: 65px;
+	padding-top: 13px;
+	/*border: 0px;
+	border: 1px solid #ff0000;*/
+	white-space: pre;
+	overflow:hidden;
+	
+	font-size: 20px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-weight: bold;
 }
+
+.play_osd_all {
+    background-color: #99BBFF;
+	color: #103268;
+}
+
+.play_osd_wk {
+    background-image: url("i/osd_menu_mag200_bg.png");
+	color: #ffffff;
+}
+
 #language_menu {
 	position:absolute;
 	width:150px;
@@ -123,23 +153,31 @@ td, table{
     top: 0px;
     left: 0px;
 }
-.black {
+#black {
     position: absolute;
     top: 0px;
     left: 0px;
     z-index: 870;
     height: 576px;
     width: 720px;
-    background-color: #000000;
     /*border: 2px solid #FF0000;*/
 }
+
+.black_all {
+    background-color: #000000;
+}
+
+.black_wk { 
+}
+
 .main {
     position: absolute;
     z-index: 1;
-    height: auto;
-    width: auto;
-    top: 46px;
-    left: 35px;
+    width: 720;
+    height: 576;
+    top: 0px;
+    left: 0px;
+    background-image: url("i/bg_main.jpg");
 }
 .menu_table {
     background-image: url("i/bg.png");
@@ -1763,8 +1801,25 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 	left: 0px;
 	bottom: 0px;
 	overflow: hidden;
-	border: 2px solid #497CBA;
+}
+
+.full_incoming_message_all{
+    border: 2px solid #497CBA;
 	background-color: #99BBFF;
+	color: #103268;
+}
+
+.full_incoming_message_wk{
+    background-image: url("i/osd_menu_mag200_bg.png");
+	color: #ffffff;
+}
+
+.full_incoming_message_wk font{
+    color: #77ccff;
+}
+
+.full_incoming_message_all font{
+    color: #050505;
 }
 
 #rec_notice{
@@ -1933,7 +1988,7 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 }
 
 /* WIDGET PAGE */
-.widget_page{
+#widget_page{
     position:absolute;
 	z-index:801;
 	left: 0px;
@@ -1943,7 +1998,7 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 16px;
 	font-weight: bold;
-	background: url("i/bg_page.jpg");
+	background: url("i/bg_main.jpg");
 }
 
 .widget_menu_row_1{
@@ -3366,6 +3421,12 @@ function common_xpcom(){
                     
                     func_club_menu.push('if(media_browser.is_drive_mounted()){hide_club(); media_browser.show()}')
                     
+                    //document.getElementById('play_txt').className = 'play_txt_wk';
+                    document.getElementById('play').className = 'play_osd_wk';
+                    document.getElementById('black').className = 'black_wk';
+                    
+                    document.getElementById('full_incoming_message').className = 'full_incoming_message_wk';
+                    
                 }
                 
                 if (!this.check_image_version()){
@@ -3542,7 +3603,12 @@ function firefox_xpcom(){
         }
         
         try{
-            stb.SetChromaKey(0, 0xffffff)
+            if(browser != 'webkit'){
+                stb.SetChromaKey(0, 0xffffff)
+            }else{
+                stb.SetTopWin(0);
+            }
+            
             stb.SetupRTSP(2, 0x29)
             stb.SetAspect(0x10)
             stb.SetPIG(1, -1, -1, -1)
@@ -3719,7 +3785,8 @@ function firefox_xpcom(){
                         show_video_records()
                     }else if (prev_karaoke_page == 'karaoke_page'){
                     	show_karaoke_page()
-                    }else if (media_browser.on){
+                    }else if (media_browser.hidden){
+                        media_browser.show()
                     }else{
                         show_menu()
                     }
@@ -4195,6 +4262,10 @@ function firefox_xpcom(){
                 continue_on_next_page = 0
                 play_on_next_page = 0
                 
+                if(full_incoming_msg_on){
+                    hide_full_incoming_message()
+                    break
+                }
                 
                 if (vclub_vote_on){
                     return
@@ -4248,11 +4319,6 @@ function firefox_xpcom(){
                 if (lang_menu_on == 1){
                     _debug('lang_l: '+lang_l)
                     _debug('pid: '+languages[lang_l-1].pid)
-                    break
-                }
-                
-                if(full_incoming_msg_on){
-                    hide_full_incoming_message()
                     break
                 }
                 
@@ -8802,6 +8868,15 @@ function firefox_xpcom(){
                 prev_radio_page = ''
             }
             
+            /*if (media_browser.on){
+                media_browser.hide()
+            }*/
+            
+            if (media_browser.hidden){
+                media_browser.hidden = 0
+                media_browser.hide()
+            }
+            
             if (media_browser.on){
                 media_browser.hide()
             }
@@ -9079,7 +9154,10 @@ function firefox_xpcom(){
                 show_audio_club_page()
             }else if(prev_radio_page == 'radio_page'){
                 show_radio_page()
+            }else if(media_browser.hidden){
+                media_browser.show()
             }else if(media_browser.on){
+                
             }else{
                 if (tv_page_on == 0){
                     need_show_tv_by_number_cur_row = 1
@@ -11031,7 +11109,8 @@ function slider (type) {
             ip = ip+'<br><span style="font-size:18px;">'+epg_loader.get_epg(id)+'</span>'
         }
         
-        document.getElementById('play_txt').innerHTML = ip
+        //document.getElementById('play_txt').innerHTML = ip
+        document.getElementById('play').innerHTML = ip
         document.getElementById('play').style.display = ''
         
         if (!t2_id){
@@ -11047,7 +11126,8 @@ function slider (type) {
         
     	_debug('hide_playing()')
         document.getElementById('play').style.display = 'none'
-        document.getElementById('play_txt').innerHTML = ''
+        //document.getElementById('play_txt').innerHTML = ''
+        document.getElementById('play').innerHTML = ''
         show_playing_on = 0
     }
 
@@ -11066,7 +11146,9 @@ function slider (type) {
         _debug('set_mode('+num+')')
 
         try{
-            stb.SetMode(num)
+            if(browser != 'webkit'){
+                stb.SetMode(num)
+            }
         }catch(err){
             _debug(err)
         }
@@ -12583,12 +12665,6 @@ function fill_tv_by_number(arr){
         
         document.getElementById('prog_name_'+(tv_n_i)).innerHTML = arr[tv_n_i].time_start+' '+arr[tv_n_i].cur_prog
         
-        /*document.getElementById('num_'+(tv_n_i)).innerHTML = tv_n_i+'.'
-        document.getElementById('name_'+(tv_n_i)).innerHTML = 'Интер'
-        document.getElementById('theme_'+(tv_n_i)).innerHTML = 'новости'
-        document.getElementById('my_ch_'+(tv_n_i)).innerHTML = ''
-        document.getElementById('prog_start_'+(tv_n_i)).innerHTML = '00:00'
-        document.getElementById('prog_name_'+(tv_n_i)).innerHTML = '-'*/
     }
     _debug('end fill')
     if (arr_length <= 9){
@@ -22363,6 +22439,8 @@ function media_browser(){
     this.page_items = [];
     this.is_audio;
     
+    this.hidden = 0;
+    
     this.layer_dom_obj = document.getElementById('media_browser_page');
     
     stb.SetListFilesExt('.mpg .mkv .avi .ts .mp4 .wmv .mp3 .ac3 .mov .vob .wav');
@@ -22377,18 +22455,25 @@ media_browser.prototype.show = function(){
     
     this.on = 1;
     
-    this.dir_list();
+    if(!this.hidden){
+        this.dir_list();
+    }
+    this.hidden = 0
 }
     
-media_browser.prototype.hide = function(){
+media_browser.prototype.hide = function(dont_reset){
     _debug('media_browser.hide');
     
     this.layer_dom_obj.style.display = 'none';
     this.on = 0;
     
-    this.reset_dir_hist()
-    
-    this.reset();
+    if (!dont_reset){
+        this.reset_dir_hist()
+        
+        this.reset();
+    }else{
+        this.hidden = 1;
+    }
 }
     
 media_browser.prototype.shift_row = function(dir){
@@ -22621,6 +22706,7 @@ media_browser.prototype.play = function(file){
         this.is_audio = true;
     }else{
         this.is_audio = false;
+        this.hide(true);
     }
     
     show_playing(file, 0, type);
@@ -22710,37 +22796,9 @@ function get_file_type(cmd){
 <iframe src="" width="0" height="0" scrolling="no" frameborder="0" id="fframe"></iframe>
 <!-- Main Layer -->
 <div id="main" class="main">
-
-<table width="640" height="480" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td height="175" align="center" valign="bottom">
-   </td>
-  </tr>
-  <tr>
-    <td align="center">
-        <div id="result" style="position:absolute;top: 190px"></div>
-    </td>
-  </tr>
-   <tr>
-    <td valign="bottom">
-       <div id="xpcom" style="border:1px dashed red; margin:2px;display:none;">
-       xpcom
-       </div>
-       <div id="debug" style="border:1px dashed red; margin:2px;display:none;">
-       Debug
-       </div>
-    </td>
-  </tr>
-</table>
 </div>
 
-<div id="play" style="display:none;">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr bgcolor="#99BBFF">
-      <td height="126" width="65" bgcolor="#99BBFF">&nbsp;</td>
-      <td valign="top"><br style="font-size:13px"><div id="play_txt" class="style2">&nbsp;</div></td>
-    </tr>
-  </table>
+<div id="play" class="play_osd_all" style="display:none;">
 </div>
 
 <!-- Seek BAR -->
@@ -22778,7 +22836,7 @@ function get_file_type(cmd){
 </div>
 
 <!-- Black Screen -->
-<div id="black" class="black" style="display:none;"></div>
+<div id="black" class="black_all" style="display:none;"></div>
     
 <!-- Alert -->
 <div id="alert" class="alert" style="display:none;">
@@ -22852,78 +22910,6 @@ function get_file_type(cmd){
 </table>
 </div>
 <!---->
-
-<!-- GENRES SELECT
-<div id="genres_select" style="display:none;">
-<table width="640" height="480" border="0" cellpadding="0" cellspacing="0" background="i/bg_abc_search.jpg">
-  <tr>
-    <td>
-      <div style="position:absolute;left:10px;top:52px;">
-        <table width="420" height="200" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td><img src="i/top.png" width="420" height="15" /></td>
-          </tr>
-          <tr>
-            <td valign="top" background="i/50alfa.png">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td height="22" class="video_td" id="genres_0"><img src="i/1x1.gif" width="10" height="10" border="0" />Все</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_1"><img src="i/1x1.gif" width="10" height="10" border="0" />Боевик</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_2"><img src="i/1x1.gif" width="10" height="10" border="0" />Детектив</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_3"><img src="i/1x1.gif" width="10" height="10" border="0" />Док. фильм</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_4"><img src="i/1x1.gif" width="10" height="10" border="0" />Драма</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_5"><img src="i/1x1.gif" width="10" height="10" border="0" />Исторический</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_6"><img src="i/1x1.gif" width="10" height="10" border="0" />Клипы</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_7"><img src="i/1x1.gif" width="10" height="10" border="0" />Комедия</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_8"><img src="i/1x1.gif" width="10" height="10" border="0" />Мелодрама</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_9"><img src="i/1x1.gif" width="10" height="10" border="0" />Мультфильм</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_10"><img src="i/1x1.gif" width="10" height="10" border="0" />Приключения</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_11"><img src="i/1x1.gif" width="10" height="10" border="0" />Триллер</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_12"><img src="i/1x1.gif" width="10" height="10" border="0" />Ужасы</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_13"><img src="i/1x1.gif" width="10" height="10" border="0" />Фантастика</td>
-                </tr>
-                <tr>
-                  <td height="22" class="video_td" id="genres_14"><img src="i/1x1.gif" width="10" height="10" border="0" />Эротика</td>
-                </tr>
-            </table>
-            </td>
-          </tr>
-          <tr>
-            <td><img src="i/bottom.png" width="420" height="15" /></td>
-          </tr>
-        </table>
-      </div>
-    </td>
-  </tr>
-</table>
-</div>
--->
 
 <!-- SPEED TITLE -->
 <div id="speed_title" style="display:none;"></div>
@@ -26562,26 +26548,17 @@ function get_file_type(cmd){
 
 <!-- INCOMING MESSAGE -->
 <div id="incoming_message" style="display:none">
-<!--<table border="0" cellpadding="0" cellspacing="0" width="720">
-<tbody>
-    <tr>
-        <td background="i/scroll3.png" height="126" width="65">&nbsp;</td>
-        <td background="i/scroll3.png" valign="top" ><br style="font-size:13px;"><font color="#050505">[<script>echo(words['incoming_msg'])</script>]</font>&nbsp;<span id="incoming_message_txt" class="style2">&nbsp;</span></td>
-        <td background="i/scroll3.png" width="40">&nbsp;</td>
-    </tr>
-</tbody>
-</table>-->
 <div style="padding-left: 20px;padding-right: 22px;padding-top: 3px;padding-bottom: 14px;">
 <font color="#050505">[<script>echo(words['incoming_msg'])</script>]</font>&nbsp;<span id="incoming_message_txt" class="style2">&nbsp;</span>
 </div>
 </div>
 <!---->
 
-<div id="full_incoming_message" style="display:none">
-<div style="width: 640px;padding-left: 40px;padding-right: 18px;padding-top: 3px;padding-bottom: 14px;">
-<font color="#050505">[<script>echo(words['incoming_msg'])</script>]</font>&nbsp;<span id="full_incoming_message_txt" class="style2">&nbsp;</span>
-<br><font color="#050505">[Для подтверждения нажмите ОК]</font><br><br>
-</div>
+<div id="full_incoming_message" class="full_incoming_message_all" style="display:none">
+    <div style="width: 640px;padding-left: 40px;padding-right: 18px;padding-top: 13px;padding-bottom: 14px;">
+        <font color="#050505">[<script>echo(words['incoming_msg'])</script>]</font>&nbsp;<span id="full_incoming_message_txt">&nbsp;</span>
+        <br><font color="#050505">[Для подтверждения нажмите ОК]</font><br><br>
+    </div>
 </div>
 
 <!-- REC NOTICE -->
