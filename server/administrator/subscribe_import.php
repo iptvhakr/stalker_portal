@@ -357,7 +357,7 @@ $id = intval(@$_GET['id']);
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="subscribe_import.php"><< Назад</a> 
+        <a href="index.php"><< Назад</a> 
     </td>
 </tr>
 <tr>
