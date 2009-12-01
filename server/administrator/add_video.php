@@ -51,12 +51,33 @@ if (isset($_GET['accessed']) && @$_GET['id']){
     $id = $_GET['id'];
     $path = get_path($_GET['id']);
     
+    $query = 'select * from video where id='.intval($_GET['id']);
+    $rs = $db->executeQuery($query);
+    $video = $rs->getValuesByRow(0);
+    
+    $name = mysql_escape_string($video['name']);
+    $o_name = mysql_escape_string($video['o_name']);
+    $director = mysql_escape_string($video['director']);
+    $year = $video['year'];
+    
     if ($_GET['accessed'] == 1){
         add_video_log('on', @$_GET['id']);
         $sql = "update updated_places set vclub=1";
         $db->executeQuery($sql);
+        
+        if ($video['hd']){
+            // disable this video in SD for hd devices
+            $sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
+            $db->executeQuery($sql);
+        }
+        
     }else{
         add_video_log('off', @$_GET['id']);
+        
+        if ($video['hd']){
+            $sql = "update video set disable_for_hd_devices=0 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
+            $db->executeQuery($sql);
+        }
     }
     
     if ($_GET['accessed'] == 1){
