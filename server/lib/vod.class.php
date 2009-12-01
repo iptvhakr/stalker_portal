@@ -122,14 +122,14 @@ class Vod
                            array('id' => $this->stb->id));
         
         //$today_record = $this->db->getFirstData('daily_played_video', array('date' => 'CURDATE()'));
-        $today_record = $this->db->from('daily_played_video')->where(array('date' => 'CURDATE()'))->get()->first();
+        $today_record = $this->db->from('daily_played_video')->where(array('date' => date('Y-m-d')))->get()->first();
         
         if (empty($today_record)){
             
             $this->db->insert('daily_played_video',
                                array(
                                     'count' => 1,
-                                    'date'  => 'CURDATE()'
+                                    'date'  => date('Y-m-d')
                                ));
             
         }else{
@@ -137,7 +137,7 @@ class Vod
             $this->db->update('daily_played_video',
                                array(
                                     'count' => $today_record['count'] + 1,
-                                    'date'  => 'NOW()'
+                                    'date'  => date('Y-m-d')
                                ));
             
         }
