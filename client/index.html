@@ -2201,7 +2201,7 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 <script language="JavaScript" src="lang/lang_ru.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/javascript">
 var debug = 0
-var alex_debug = 1
+var alex_debug = 0
 var log_on = 1
 
 const ver = '3.37.0'
@@ -2212,7 +2212,7 @@ var show_watchdog_debug = 0
 
 //var serv_ip = ''
 
-//var _GET = {}
+var _GET = {}
 
 var dom_cache = {}
 //var images = new Array;
@@ -3292,6 +3292,12 @@ var cur_page_radio_by_name_play = 0
     /* SYSTEM */
     window.onerror = error_handler
     
+    get_params()
+    
+    if (_GET.hasOwnProperty('debug')){
+        alex_debug = 1
+    }
+    
     /* Remove \n\r from string */
     String.prototype.clearnl = function(){
         return this.replace(/(\n(\r)?)/g, '');
@@ -3682,7 +3688,7 @@ function firefox_xpcom(){
         stb.ExecAction('reload')
     }
     
-    /*function get_params(){
+    function get_params(){
         var get = new String(window.location)
         var x = get.indexOf('?');
         if (x!=-1){
@@ -3690,14 +3696,15 @@ function firefox_xpcom(){
             get = get.substr(x+1, l-x);
             l = get.split('&');
             x = 0;
-            for(i in l)
-            {
-                get = l[i].split('=');
-                _GET[get[0]] = get[1]
-                x++;
+            for(i in l){
+                if (l.hasOwnProperty(i)){
+                    get = l[i].split('=');
+                    _GET[get[0]] = get[1]
+                    x++;
+                }
             }
         }
-    }*/
+    }
     
     function get_user_browser(){
         ua = navigator.userAgent.toLowerCase();
