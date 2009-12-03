@@ -37,8 +37,16 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     
     if (@$_POST['user_list_type'] == 'to_all'){
         $event->setUserListByMac('all');
+        
+        $user_list = Middleware::getAllUsersId();
+        
     }elseif (@$_POST['user_list_type'] == 'to_single'){
         $event->setUserListByMac(@$_POST['mac']);
+        
+        $user_list = Middleware::getUidByMac(@$_POST['mac']);
+
+        $user_list == array($user_list);
+        
     }elseif (@$_POST['user_list_type'] == 'by_user_list'){
         if (@$_FILES['user_list']){
             if (is_uploaded_file($_FILES['user_list']['tmp_name'])) {
@@ -55,23 +63,26 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
                     }
                 }
                 
-                if (count($user_list) > 0 && $_POST['event'] == 'cut_off'){
-                    $sql = "update users set status=1, last_change_status=NOW() where id in (".join(",", $user_list).")";
-                    $db->executeQuery($sql);
-                    if ($db->getLastError()){
-                        echo '<b>Ошибка обновления статуса</b>: '.$db->getLastError();
-                        exit;
-                    }
-                }
-                
                 $event->setUserListById($user_list);
-                
+
                 $error = count($user_list).' событий '.$_POST['event'].' отослано, '.$error_counter." ошибок<br>\n".$error;
                 
             }
         }else{
             $error .= 'Отсутствует файл со списком<br>';
         }
+    }
+    
+    if ($_POST['event'] == 'cut_off'){
+        
+        if (!is_array($user_list)){
+            $user_list = array($user_list);
+        }
+        
+        $sql = "update users set status=1, last_change_status=NOW() where id in (".implode(",", $user_list).")";
+        $db->executeQuery($sql);
+        
+        $event->sendCutOff();
     }
     
     switch ($_POST['event']) {
@@ -90,9 +101,6 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     		break;
     	case 'play_channel':
                 $event->sendPlayChannel(@$_POST['channel']);
-    		break;
-    	case 'mount_all_storages':
-                $event->sendMountAllStorages();
     		break;
     }
     
@@ -281,6 +289,7 @@ function fill_msg(){
             <option value="update_channels">update_channels
             <option value="play_channel">play_channel
             <option value="mount_all_storages">mount_all_storages
+            <option value="cut_off">switch_off
         </select>
         <span style="display:none" id="checkbox_need_reboot"><input type="checkbox" name="need_reboot" id="need_reboot" value="1"> перезапускать по OK</span>
         <span style="display:none" id="text_channel"><input type="text" name="channel" id="channel" size="5" maxlength="3"> канал</span>
