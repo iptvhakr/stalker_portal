@@ -950,3 +950,22 @@ CREATE TABLE `system_log`(
     PRIMARY KEY (`id`),
     INDEX (`added`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `acl_roles`;
+CREATE TABLE `acl_roles`(
+    `id` int NOT NULL auto_increment,
+    `name` varchar(255) NOT NULL default '',
+    `parent_id` int NOT NULL default 0,
+    `rights` text NOT NULL default '',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `acl_resources`;
+CREATE TABLE `acl_resources`(
+    `id` int NOT NULL auto_increment,
+    `name` varchar(255) NOT NULL default '',
+    `acrions` text NOT NULL default '',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
