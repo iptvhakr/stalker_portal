@@ -246,6 +246,9 @@ CREATE TABLE `users`(
     `parent_password` varchar(64) NOT NULL default '0000',
     
     `bright` varchar(64) NOT NULL default '200',
+    `contrast` varchar(64) NOT NULL default '100',
+    `saturation` varchar(64) NOT NULL default '100',
+
     `video_out` varchar(64) NOT NULL default 'rca',
     `volume` varchar(64) NOT NULL default '100',
     
