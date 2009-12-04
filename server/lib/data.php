@@ -45,24 +45,24 @@ function get_data(){
     
     $datetime = date("Y-m-d H:i:s"); 
     
-    $type     = $_REQUEST['type'];
-    $action   = @$_REQUEST['action'];
-    $num      = @$_REQUEST['num'];
-    $search   = @urldecode($_REQUEST['s']);
+    $type     = $_GET['type'];
+    $action   = @$_GET['action'];
+    $num      = @$_GET['num'];
+    $search   = @urldecode($_GET['s']);
     
     if (mb_check_encoding($search,'windows-1251')){
         $search = iconv("WINDOWS-1251","UTF-8", $search);
     }
     
-    $l        = @$_REQUEST['l'];
-    $genre_id = @$_REQUEST['genre_id'];
-    $year_range = @$_REQUEST['year_range'];
-    $param    = @$_REQUEST['param'];
+    $l        = @$_GET['l'];
+    $genre_id = @$_GET['genre_id'];
+    $year_range = @$_GET['year_range'];
+    $param    = @$_GET['param'];
     
     $db = Database::getInstance(DB_NAME);
     
-    if (@$_REQUEST['p']){
-        $page = @$_REQUEST['p']-1;
+    if (@$_GET['p']){
+        $page = @$_GET['p']-1;
     }
     
     $page_offset = $page*MAX_PAGE_ITEMS;
@@ -72,7 +72,7 @@ function get_data(){
             $where .= "where name like '".$l."%'";
         }
         
-        if (intval($_REQUEST['cat_num']) == 0 || intval($_REQUEST['cat_num']) == 101){
+        if (intval($_GET['cat_num']) == 0 || intval($_GET['cat_num']) == 101){
             $genre_field = 'genre';
         }else{
             $genre_field = 'cat_genre';
@@ -125,39 +125,32 @@ function get_data(){
     
     $table = $table_map[$type];
     
-/*  done  */
     if ($type == 'stream_error'){
-        $ch_id = @$_REQUEST['data'];
+        $ch_id = @$_GET['data'];
         $sql = "insert into stream_error (`ch_id`, `mac`, `error_time`) value ($ch_id, '$stb->mac', NOW())";
         $db->executeQuery($sql);
         return 0;
     }
     
-/* done */
     if ($type == 'set_id'){
-        $last_id=$_REQUEST['id'];
+        $last_id=$_GET['id'];
         //increment_counter($last_id, 'itv');
-        /*$sql = "select * from last_id where ident='".$stb->mac."'";
+        $sql = "select * from last_id where ident='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
         $ip = $rs->getValueByName(0, 'id');
         if($ip){
             $sql = "update last_id set last_id='".$last_id."' where ident='".$stb->mac."'";
         }else{
             $sql = "insert into last_id (ident, last_id) values ('".$stb->mac."', '".$last_id."')";
-        }*/
-        
-        $sql = "insert into last_id (ident, last_id) values ('".$stb->mac."', '".$last_id."')
-                on duplicate key update last_id='".$last_id."'";
-        
+        }
         $rs = $db->executeQuery($sql);
         return 0;
     }
     
-/*  done  */
     if($type == 'watchdog'){
         $ip = $stb->ip;
         
-        $update = "update users set keep_alive=NOW(), ip='$ip', now_playing_type=".intval($_REQUEST['data']['cur_play_type'])."  where mac='$stb->mac'";
+        $update = "update users set keep_alive=NOW(), ip='$ip', now_playing_type=".intval($_GET['data']['cur_play_type'])."  where mac='$stb->mac'";
         $rs = $db->executeQuery($update);
         
         $events = Event::getAllNotEndedEvents($stb->id);
@@ -177,7 +170,7 @@ function get_data(){
                 }
             }
             
-            if ($events[0]['id'] != @$_REQUEST['data']['event_active_id']){
+            if ($events[0]['id'] != @$_GET['data']['event_active_id']){
                 $res['data']['id'] = $events[0]['id'];
                 $res['data']['event'] = $events[0]['event'];
                 $res['data']['need_confirm'] = $events[0]['need_confirm'];
@@ -204,9 +197,8 @@ function get_data(){
         exit;
     }
     
-/*  done  */
     if($type == 'event_confirm'){
-        $id = intval($_REQUEST['data']);
+        $id = intval($_GET['data']);
 
         Event::setConfirmed($id);
         
@@ -215,22 +207,20 @@ function get_data(){
         exit;
     }
     
-/*  done  */
     if ($type == 'create_link'){
         
-        if(is_array($_REQUEST['data'])){
-            $data_req = @$_REQUEST['data']['cmd'];
+        if(is_array($_GET['data'])){
+            $data_req = @$_GET['data']['cmd'];
         }else{
-            $data_req = $_REQUEST['data'];
+            $data_req = $_GET['data'];
         }
         
-        if (is_array($_REQUEST['data'])){
-            $series = @$_REQUEST['data']['series'];
+        if (is_array($_GET['data'])){
+            $series = @$_GET['data']['series'];
         }else{
             $series = 0;
         }
         
-/*   done   */
         if ($action == 'vclub'){
             
             preg_match("/auto \/media\/(\d+).mpg$/", $data_req, $tmp_arr);
@@ -247,7 +237,6 @@ function get_data(){
             
             var_dump($res);
             
-/*   done   */            
         }elseif($action == 'karaoke'){
             preg_match("/auto \/media\/(\d+).mpg$/", $data_req, $tmp_arr);
             $media_id = $tmp_arr[1];
@@ -271,8 +260,8 @@ function get_data(){
             $param = '';
         }
         $type = 0;
-        if (@$_REQUEST['data']){
-            $type = $_REQUEST['data'];
+        if (@$_GET['data']){
+            $type = $_GET['data'];
         }
         $sql = "insert into user_log (mac, action, param, time, type) values ('$stb->mac', '$action', '$param', '$datetime', '$type')";
         $rs = $db->executeQuery($sql);
@@ -479,7 +468,7 @@ function get_data(){
     }
     
     if ($type == 'make_anec_bookmark'){
-        $anec_id = $_REQUEST['data'];
+        $anec_id = $_GET['data'];
         
         $sql = "select * from anec_bookmark where uid=$stb->id";
         $rs = $db->executeQuery($sql);
@@ -510,7 +499,6 @@ function get_data(){
         exit;
     }
     
-/*  done?  */
     if ($type == 'get_media_cats'){
         $arr = array('all'=>0);
         $arr2 = array(0=>'Все');
@@ -527,7 +515,7 @@ function get_data(){
     }
     
     if ($type == 'vote_anec'){
-        $anec_id = intval($_REQUEST['data']);
+        $anec_id = intval($_GET['data']);
         $voted_anec_id = 0;
         
         $sql = "select * from anec_rating where uid=$stb->id and anec_id=$anec_id";
@@ -574,7 +562,7 @@ function get_data(){
     }
     
     if ($type == 'add_recipes_fav'){
-        $new_id = intval($_REQUEST['data']);
+        $new_id = intval($_GET['data']);
         $sql = 'select * from fav_recipes where uid='.$stb->id;
         $rs = $db->executeQuery($sql);
         $fav_recipes_arr = @unserialize($rs->getValueByName(0, 'fav_recipes'));
@@ -595,7 +583,7 @@ function get_data(){
     }
     
     if ($type == 'del_recipes_fav'){
-        $del_id = intval($_REQUEST['data']);
+        $del_id = intval($_GET['data']);
         $sql = 'select * from fav_recipes where uid='.$stb->id;
         $rs = $db->executeQuery($sql);
         $fav_recipes_arr = @unserialize($rs->getValueByName(0, 'fav_recipes'));
@@ -612,13 +600,11 @@ function get_data(){
         exit;
     }
     
-/*  done  */
     if ($type == 'vclub_vote'){
-        $data = $_REQUEST['data'];
+        $data = $_GET['data'];
         $media_id = $data['media_id'];
         $type     = $data['type'];
         $vote     = $data['vote'];
-        
         if ($vote == 'good'){
             $good = 1;
             $bad = 0;
@@ -637,10 +623,9 @@ function get_data(){
         exit;
     }
     
-/*  done  */
     if ($type == 'played_video'){
-        $video_id = $_REQUEST['data']['video_id'];
-        $storage_id = $_REQUEST['data']['storage_id'];
+        $video_id = $_GET['data']['video_id'];
+        $storage_id = $_GET['data']['storage_id'];
         $day = date("j");
         
         if ($day <= 15){
@@ -685,9 +670,8 @@ function get_data(){
         exit;
     }
     
-/*  done  */
     if ($type == 'played_itv'){
-        $itv_id = $_REQUEST['data'];
+        $itv_id = $_GET['data'];
         $day = date("j");
         
         $sql = "insert into played_itv (itv_id, uid, playtime) values ( $itv_id, $uid, NOW())";
@@ -696,15 +680,9 @@ function get_data(){
         $sql = "update users set time_last_play_tv=NOW() where id=$uid";
         $db->executeQuery($sql);
         
-        $sql = "insert into last_id (ident, last_id) values ('".$stb->mac."', '".$itv_id."')
-                on duplicate key update last_id='".$itv_id."'";
-        
-        $db->executeQuery($sql);
-        
         return 1;
     }
     
-/*  done  */
     if ($type == 'preload_images'){
         $dir = PORTAL_PATH.'/client/i/';
         $files = array();
@@ -723,10 +701,9 @@ function get_data(){
         return $data;
     }
     
-/*  done  */
     if ($type == 'get_profile'){
         
-        $params = @$_REQUEST['data'];
+        $params = @$_GET['data'];
         
         if (@$params['hd'] == 1){
             $hd = 1;
@@ -764,12 +741,14 @@ function get_data(){
         $sql = "select * from users where mac='$stb->mac'";
         $rs = $db->executeQuery($sql);
         
-        $master = new VideoMaster();
+        $master = new Master();
             
         $arr['id'] = $uid;
         $arr['parent_password'] = $rs->getValueByName(0, 'parent_password');
         $arr['status'] = $rs->getValueByName(0, 'status');
         $arr['bright'] = $rs->getValueByName(0, 'bright');
+        $arr['contrast'] = $rs->getValueByName(0, 'contrast');
+        $arr['saturation'] = $rs->getValueByName(0, 'saturation');
         $arr['video_out'] = $rs->getValueByName(0, 'video_out');
         $arr['fav_itv_on'] = $rs->getValueByName(0, 'fav_itv_on');
         $arr['volume'] = $rs->getValueByName(0, 'volume');
@@ -777,7 +756,6 @@ function get_data(){
         $arr['storages'] = $master->getStoragesForStb();
         $arr['additional_services_on'] = $rs->getValueByName(0, 'additional_services_on');
         $arr['image_version'] = $rs->getValueByName(0, 'image_version');
-        $arr['last_itv_id'] = intval($db->executeQuery("select * from last_id where ident='".$stb->mac."'")->getValueByName(0, 'last_id'));
                 
         $master->checkAllHomeDirs();
         
@@ -794,36 +772,48 @@ function get_data(){
         return $data;
     }
     
-/*  done  */
     if ($type == 'set_parent_password'){
-        $data = $_REQUEST['data'];
+        $data = $_GET['data'];
         $sql = "update users set parent_password='".$data."' where mac='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
         $data['data'] = 'ok';
         return $data;
     }
     
-/*  dont need  */
     if ($type == 'set_bright'){
-        $data = $_REQUEST['data'];
+        $data = $_GET['data'];
         $sql = "update users set bright='".$data."' where mac='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
         $data['data'] = 'ok';
         return $data;
     }
-
-/*  dont need  */    
+    
+    if ($type == 'set_contrast'){
+        $data = $_GET['data'];
+        $sql = "update users set contrast='".$data."' where mac='".$stb->mac."'";
+        $rs = $db->executeQuery($sql);
+        $data['data'] = 'ok';
+        return $data;
+    }
+    
+    if ($type == 'set_saturation'){
+        $data = $_GET['data'];
+        $sql = "update users set saturation='".$data."' where mac='".$stb->mac."'";
+        $rs = $db->executeQuery($sql);
+        $data['data'] = 'ok';
+        return $data;
+    }
+    
     if ($type == 'set_video_out'){
-        $data = $_REQUEST['data'];
+        $data = $_GET['data'];
         $sql = "update users set video_out='".$data."' where mac='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
         $data['data'] = 'ok';
         return $data;
     }
     
-/*  done  */
     if($type == 'set_volume'){
-        $data_req = intval($_REQUEST['data']);
+        $data_req = intval($_GET['data']);
         if($data_req>=0 && $data_req<=100){
             $volume = $data_req;
         }else{
@@ -835,19 +825,17 @@ function get_data(){
         $data['data'] = 'ok';
         return $data;
     }
-
-/*  done  */
+    
     if ($type == 'save_fav_itv_status'){
-        $fav_itv_on = intval($_REQUEST['data']);
+        $fav_itv_on = intval($_GET['data']);
         $sql = "update users set fav_itv_on='".$fav_itv_on."' where mac='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
         $data['data'] = 'ok';
         return $data;
     }
     
-/*  dont need  */
     if ($type == 'add_to_playlist'){
-        $new_id = $_REQUEST['data'];
+        $new_id = $_GET['data'];
         $sql = "select * from playlist where uid=$uid";
         $rs = $db->executeQuery($sql);
         $records = @$rs->getRowCount();
@@ -869,9 +857,8 @@ function get_data(){
         exit;
     }
     
-/*  dont need  */
     if ($type == 'del_from_playlist'){
-        $del_id = $_REQUEST['data'];
+        $del_id = $_GET['data'];
         $sql = "select * from playlist where uid=$uid";
         $rs = $db->executeQuery($sql);
         $records = @$rs->getRowCount();
@@ -888,9 +875,8 @@ function get_data(){
         exit;
     }
     
-/*  done  */
     if ($type == 'add_vclub_fav'){
-        $new_id = $_REQUEST['data'];
+        $new_id = $_GET['data'];
         $sql = "select * from fav_vclub where uid=$uid";
         $rs = $db->executeQuery($sql);
         $records = @$rs->getRowCount();
@@ -912,9 +898,8 @@ function get_data(){
         exit;
     }
     
-/*  done  */
     if ($type == 'del_vclub_fav'){
-        $del_id = $_REQUEST['data'];
+        $del_id = $_GET['data'];
         $sql = "select * from fav_vclub where uid=$uid";
         $rs = $db->executeQuery($sql);
         $records = @$rs->getRowCount();
@@ -932,7 +917,7 @@ function get_data(){
         return $data;
     }
     
-    /*if ($type == 'vclub_news'){
+    if ($type == 'vclub_news'){
         $sql = "select * from vclub_news order by id desc limit 2";
         $rs = $db->executeQuery($sql);
         while(@$rs->next()){
@@ -942,13 +927,12 @@ function get_data(){
         }
         $data['data'] = $arr;
         return $data;
-    }*/
+    }
     
-/*  done  */
     if ($type == 'vclub_not_ended'){
-        $video_id   = $_REQUEST['data']['video_id'];
-        $series     = $_REQUEST['data']['series'];
-        $end_time   = $_REQUEST['data']['end_time'];
+        $video_id   = $_GET['data']['video_id'];
+        $series     = $_GET['data']['series'];
+        $end_time   = $_GET['data']['end_time'];
         
         
         $sql = "select * from vclub_not_ended where uid=$stb->id and video_id=$video_id";
@@ -996,7 +980,6 @@ function get_data(){
     	return $data;
     }
     
-/*  done  */
     if ($type == 'get_id'){
         $sql = "select * from last_id where ident='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
@@ -1005,7 +988,6 @@ function get_data(){
         return $data;
     }
     
-/*  done  */
     if ($type == 'fav_itv'){
         
         $itv_ch = array();
@@ -1032,14 +1014,13 @@ function get_data(){
         return $data;
     }
     
-/*  done  */
     if($type == 'save_fav'){
         
-        $data = $_REQUEST['data'];
+        
+        $data = $_GET['data'];
         if ($data == NULL){
             $data = array();
         }
-        
         if (is_array($data)){
             $data_str = base64_encode(serialize($data));
         
@@ -1059,9 +1040,8 @@ function get_data(){
         exit;
     }
     
-/* done */
     if ($type == 'updated_place_confirm'){
-        $col = $_REQUEST['data'];
+        $col = $_GET['data'];
         
         $sql = "update updated_places set $col=0 where uid=".$stb->id;
         $rs = $db->executeQuery($sql);
@@ -1071,7 +1051,7 @@ function get_data(){
     }
     
     if ($type == 'mastermind_log'){
-        $data = $_REQUEST['data'];
+        $data = $_GET['data'];
         $points = 1;
         $tries = $data['tries'];
         $total_time = $data['total_time'];
@@ -1094,7 +1074,7 @@ function get_data(){
         $vtrack = '';
         $atrack = '';
         
-        $rec_ch_id = $_REQUEST['data'];
+        $rec_ch_id = $_GET['data'];
         
         $sql = "select * from itv where id=$rec_ch_id";
         $rs = $db->executeQuery($sql);
@@ -1148,7 +1128,7 @@ function get_data(){
     
     if ($type == 'stop_rec'){
 
-        $rec_ch_id = $_REQUEST['data'];
+        $rec_ch_id = $_GET['data'];
         
         $sql = "select * from rec_files where ch_id=$rec_ch_id and ended=0";
         $rs = $db->executeQuery($sql);
@@ -1181,7 +1161,7 @@ function get_data(){
     
     if ($type == 'del_my_video_rec'){
 
-        $u_rec_id = $_REQUEST['data'];
+        $u_rec_id = $_GET['data'];
         
         $sql = "select * from users_rec where id=".$u_rec_id;
         $rs = $db->executeQuery($sql);
@@ -1204,7 +1184,7 @@ function get_data(){
     
     if($type == 'all_vclub_genres'){
         $genres = array();
-        $cat_id = @intval($_REQUEST['data']);
+        $cat_id = @intval($_GET['data']);
         
         if ($cat_id != 0 && $cat_id != 101){
             $sql = "select category_alias from media_category where id=$cat_id";
@@ -1242,8 +1222,8 @@ function get_data(){
             }
     	    
     	    $fav_arr = get_fav_ids($uid);
-    	    if (isset($_REQUEST['data']) && $_REQUEST['data']){
-                $fav = $_REQUEST['data'];
+    	    if (isset($_GET['data']) && $_GET['data']){
+                $fav = $_GET['data'];
                 if ($fav_arr){
                     $fav_str = join(",", $fav_arr);
                     //echo $fav_str;
@@ -1300,7 +1280,7 @@ function get_data(){
     	}
     	
     	if ($type == 'audio_club'){
-    	    if (isset($_REQUEST['playlist'])){
+    	    if (isset($_GET['playlist'])){
                 $palylist_ids = get_playlist_ids();
                 if (count($palylist_ids) > 0){
                     $palylist_str = join(",", $palylist_ids);
@@ -1319,8 +1299,8 @@ function get_data(){
     	
     	if ($type == 'vod'){
     	    $fav_arr = get_fav_video_ids();
-    	    if (isset($_REQUEST['data']) && $_REQUEST['data']){
-    	        $fav = $_REQUEST['data'];
+    	    if (isset($_GET['data']) && $_GET['data']){
+    	        $fav = $_GET['data'];
     	        //$fav_arr = get_fav_video_ids();
     	        if ($fav_arr){
                     $fav_str = join(",", $fav_arr);
@@ -1376,7 +1356,7 @@ function get_data(){
                 $sql = 'select * from itv where '.$where.' order by count desc limit '.$num;
             }
             elseif ($action == 'all'){
-                if (!isset($_REQUEST['data'])){
+                if (!isset($_GET['data'])){
                     $where .= " and censored=0 ";
                 }
                 
@@ -1392,14 +1372,14 @@ function get_data(){
                     $where .= ' itv.tv_genre_id=tv_genre.id ';
                 }
                 
-                if ($_REQUEST['p']==0){
+                if ($_GET['p']==0){
                     $sql = "select *,itv.number as itv_number from last_id,itv where last_id.last_id=itv.id and ident='".$stb->mac."'";
                     $rs = $db->executeQuery($sql);
                     $last_id = intval($rs->getValueByName(0, 'last_id'));
                     $last_ch = intval($rs->getValueByName(0, 'itv_number'));
                     //echo '$last_id: '.$last_id.'; ';
                     $where2 = '';
-                    if (@$_REQUEST['data'] == 1){
+                    if (@$_GET['data'] == 1){
                         if (in_array($last_id, $fav_arr)){
                             //$fav_str = $fav_str;
                             $ch_tmp_idx = array_search($last_id, $fav_arr);
@@ -1490,11 +1470,11 @@ function get_data(){
                 $where .= ' where genre.id='.$genre_id;
             }*/
             
-            if (isset($_REQUEST['s'])){
-                //$s = urldecode($_REQUEST['s']);
-                //$s = $_REQUEST['s'];
+            if (isset($_GET['s'])){
+                //$s = urldecode($_GET['s']);
+                //$s = $_GET['s'];
                 //var_dump($_SERVER);
-                //var_dump($_REQUEST);
+                //var_dump($_GET);
                 //var_dump(mb_check_encoding($s,'windows-1251'));
                 //var_dump(mb_check_encoding($s,'utf-8'));
                 //$s = iconv("WINDOWS-1251","UTF-8", $s);
@@ -1502,7 +1482,7 @@ function get_data(){
             }
             
             $letters = '';
-            if (isset($action) && !isset($_REQUEST['vclub_by_add_time'])){
+            if (isset($action) && !isset($_GET['vclub_by_add_time'])){
                 switch ($action){
                     case 1:
                         $letters = '';
@@ -1532,9 +1512,9 @@ function get_data(){
                 }
             }
             
-            if (isset($_REQUEST['vclub_by_add_time'])){
-                $range = intval(@$_REQUEST['action']);
-                //echo $_REQUEST['action'];
+            if (isset($_GET['vclub_by_add_time'])){
+                $range = intval(@$_GET['action']);
+                //echo $_GET['action'];
                 $timestamp = time();
                 $from_timestamp = '';
                 switch ($range){
@@ -1600,15 +1580,15 @@ function get_data(){
                 $where .=  ' and disable_for_hd_devices=0';
             }
             
-            //$where .= ' and category_id='.$_REQUEST['cat_num'];
-            if (intval($_REQUEST['cat_num']) > 0 && intval($_REQUEST['cat_num']) != 101){
-                $where .= ' and category_id='.$_REQUEST['cat_num'];
-                $where_cat_num = ' and category_id='.$_REQUEST['cat_num'];
+            //$where .= ' and category_id='.$_GET['cat_num'];
+            if (intval($_GET['cat_num']) > 0 && intval($_GET['cat_num']) != 101){
+                $where .= ' and category_id='.$_GET['cat_num'];
+                $where_cat_num = ' and category_id='.$_GET['cat_num'];
             }else{
                 $where_cat_num = '';
             }
             
-            if (@$_REQUEST['hd']){
+            if (@$_GET['hd']){
                 $where .=  " and hd=1";
                 $where_cat_num .= " and hd=1";
             }else{
@@ -1618,9 +1598,9 @@ function get_data(){
             
             //echo $where;
             $sql  = 'select video.* from '.$table.' '.$where.'  '.$order.'';
-            if (isset($_REQUEST['vclub_by_top'])){
+            if (isset($_GET['vclub_by_top'])){
                 $sql  = 'select video.*, (count_first_0_5+count_second_0_5) as count_sum from video where status=1 '.$where_cat_num.' order by count_sum desc limit 0,10';
-            }elseif (isset($_REQUEST['get_vclub_not_ended'])){
+            }elseif (isset($_GET['get_vclub_not_ended'])){
                 $sql  = 'select video.*, vclub_not_ended.* ,vclub_not_ended.series as cur_series from video,vclub_not_ended where video.id=vclub_not_ended.video_id and vclub_not_ended.uid='.$stb->id.' and status=1 '.$where_accessed.' limit 0,10';
             }
             //echo '$sql: '.$sql;
@@ -1628,9 +1608,9 @@ function get_data(){
 	        $total_items = $rs->getRowCount();
 	        $total_pages=ceil($total_items/MAX_PAGE_ITEMS);
             $sql  = 'select video.* from '.$table.' '.$where.'  '.$order.' limit '.$page_offset.', '.MAX_PAGE_ITEMS;
-            if (isset($_REQUEST['vclub_by_top'])){
+            if (isset($_GET['vclub_by_top'])){
                 $sql  = 'select video   .*, (count_first_0_5+count_second_0_5) as count_sum from video where status=1 '.$where_cat_num.' order by count_sum desc limit 0,10';
-            }elseif (isset($_REQUEST['get_vclub_not_ended'])){
+            }elseif (isset($_GET['get_vclub_not_ended'])){
                 $sql  = 'select video.*, video.id as id,vclub_not_ended.series as cur_series,vclub_not_ended.end_time as end_time from video,vclub_not_ended where video.id=vclub_not_ended.video_id and vclub_not_ended.uid='.$stb->id.' and status=1 '.$where_accessed.' order by vclub_not_ended.added desc limit 0,10';
             }
             $id   = 'id';
@@ -1652,8 +1632,8 @@ function get_data(){
             }
 
             $letters = '';
-            if (isset($action) && !isset($_REQUEST['video_clips_by_add_time'])){
-                if (isset($_REQUEST['video_clips_singer_bar'])){
+            if (isset($action) && !isset($_GET['video_clips_by_add_time'])){
+                if (isset($_GET['video_clips_singer_bar'])){
                     $field = 'singer';
                     $order = ' group by singer';
                 }else{
@@ -1679,16 +1659,16 @@ function get_data(){
                 }
             }
             
-            if (isset($_REQUEST['singer'])){
+            if (isset($_GET['singer'])){
                 if ($where != ''){
-                    $where .= " and singer='{$_REQUEST['singer']}'";
+                    $where .= " and singer='{$_GET['singer']}'";
                 }else if($where == ''){
-                    $where .= " where singer='{$_REQUEST['singer']}'";
+                    $where .= " where singer='{$_GET['singer']}'";
                 }
             }
             
-            if (isset($_REQUEST['video_clips_by_add_time'])){
-                $range = intval(@$_REQUEST['action']);
+            if (isset($_GET['video_clips_by_add_time'])){
+                $range = intval(@$_GET['action']);
                 $timestamp = time();
                 $from_timestamp = '';
                 switch ($range){
@@ -1741,7 +1721,7 @@ function get_data(){
             if (!check_moderator($stb->mac)){
                 $where .= ' and accessed=1';
             }
-            if (isset($_REQUEST['video_clips_singer_bar'])){
+            if (isset($_GET['video_clips_singer_bar'])){
                 $sql  = 'select video_clips.* from '.$table.' '.$where.'  '.$order.'';
                 $rs=$db->executeQuery($sql);
     	        $total_items = $rs->getRowCount();
@@ -1749,7 +1729,7 @@ function get_data(){
     	        $sql  = 'select video_clips.* from '.$table.' '.$where.'  '.$order.'';
             }else{
                 $sql  = 'select video_clips.* from '.$table.' '.$where.'  '.$order.'';
-                if (isset($_REQUEST['video_clips_by_top'])){
+                if (isset($_GET['video_clips_by_top'])){
                     $sql  = 'select video_clips.*, (count_first_0_5+count_second_0_5) as count_sum from video_clips order by count_sum desc limit 0,10';
                 }
                 
@@ -1757,7 +1737,7 @@ function get_data(){
     	        $total_items = $rs->getRowCount();
     	        $total_pages=ceil($total_items/MAX_PAGE_ITEMS);
                 $sql  = 'select video_clips.* from '.$table.' '.$where.'  '.$order.' limit '.$page_offset.', '.MAX_PAGE_ITEMS;
-                if (isset($_REQUEST['video_clips_by_top'])){
+                if (isset($_GET['video_clips_by_top'])){
                     $sql  = 'select video_clips.*, (count_first_0_5+count_second_0_5) as count_sum from video_clips order by count_sum desc limit 0,10';
                 }
             }
@@ -1803,13 +1783,13 @@ function get_data(){
             }
             $letters = '';
             
-            if(isset($_REQUEST['karaoke_by_name'])){
+            if(isset($_GET['karaoke_by_name'])){
                 $field = 'name';
             }else{
                 $field = 'singer';
             }
             
-            if (isset($action) && (isset($_REQUEST['karaoke_singer_bar']) || isset($_REQUEST['karaoke_by_name']))){
+            if (isset($action) && (isset($_GET['karaoke_singer_bar']) || isset($_GET['karaoke_by_name']))){
                 switch ($action){
                     case 1:
                         $letters = '';
@@ -1839,11 +1819,11 @@ function get_data(){
                 $where .= ' and accessed=1';
             }
             
-            if (isset($_REQUEST['singer'])){
-                $where .= " and singer='{$_REQUEST['singer']}'";
+            if (isset($_GET['singer'])){
+                $where .= " and singer='{$_GET['singer']}'";
             }
             
-            if (isset($_REQUEST['karaoke_singer_bar'])){
+            if (isset($_GET['karaoke_singer_bar'])){
                 $sql  = 'select karaoke.* from '.$table.' '.$where.' group by singer order by singer';
                 $rs=$db->executeQuery($sql);
     	        $total_items = $rs->getRowCount();
@@ -1872,22 +1852,22 @@ function get_data(){
         case 'audio_club':
             $letters = '';
             
-            if(isset($_REQUEST['audio_club_by_name'])){
+            if(isset($_GET['audio_club_by_name'])){
                 $field = 'audio.name';
             }else{
                 $field = 'singer.singer';
                 $table = 'singer';
             }
-            if (isset($_REQUEST['audio_club_singer_bar'])){
+            if (isset($_GET['audio_club_singer_bar'])){
                 $lang_field = 'singer.lang';
             }else{
                 $lang_field = 'audio.lang';
             }
             
-            if (isset($_REQUEST['action']) && !isset($_REQUEST['audio_club_by_singer'])){
+            if (isset($_GET['action']) && !isset($_GET['audio_club_by_singer'])){
                     
-                if (@$_REQUEST['abc'] == 0){
-                    switch ($_REQUEST['action']){
+                if (@$_GET['abc'] == 0){
+                    switch ($_GET['action']){
                         case 1:
                             $letters = '';
                             if ($where != ''){
@@ -1924,7 +1904,7 @@ function get_data(){
                             $letters = ' like "0%" or '.$field.' like "1%" or '.$field.' like "2%" or '.$field.' like "3%" or '.$field.' like "4%" or '.$field.' like "5%" or '.$field.' like "6%" or '.$field.' like "7%" or '.$field.' like "8%" or '.$field.' like "9%")';
                             break;
                     }
-                }else if (@$_REQUEST['abc'] == 1){
+                }else if (@$_GET['abc'] == 1){
                     switch ($action){
                         case 1:
                             $letters = '';
@@ -1972,15 +1952,15 @@ function get_data(){
                 }
             }
             
-            if (isset($_REQUEST['singer'])){
+            if (isset($_GET['singer'])){
                 if ($where != ''){
-                    $where .= " and audio.singer_id='{$_REQUEST['singer']}'";
+                    $where .= " and audio.singer_id='{$_GET['singer']}'";
                 }else{
-                    $where .= " where audio.singer_id='{$_REQUEST['singer']}'";
+                    $where .= " where audio.singer_id='{$_GET['singer']}'";
                 }
             }
             
-            if (isset($_REQUEST['audio_club_singer_bar'])){
+            if (isset($_GET['audio_club_singer_bar'])){
                 $sql  = 'select singer.* from '.$table.' '.$where.' order by singer';
                 $rs=$db->executeQuery($sql);
     	        $total_items = $rs->getRowCount();
@@ -2010,7 +1990,7 @@ function get_data(){
             
             break;
         case 'radio':
-            if (isset($_REQUEST['radio_by_name'])){
+            if (isset($_GET['radio_by_name'])){
                 $sql = 'select * from radio where status=1 order by name';
                 $rs=$db->executeQuery($sql);
                 $total_items = $rs->getRowCount();
@@ -2030,7 +2010,7 @@ function get_data(){
             $sql = 'select * from game order by name limit '.$page_offset.', '.MAX_PAGE_ITEMS;
             break;
         case 'epg':
-            if ($_REQUEST['data'] == 0){
+            if ($_GET['data'] == 0){
                 $time = time();
                 $year = date("Y",$time);
                 $month = date("n",$time);
@@ -2040,19 +2020,19 @@ function get_data(){
                 $time_from = date("Y-m-d H:00:00", mktime (0,0,0,$month,$day,$year));
                 $time_to = date("Y-m-d H:00:00", mktime (23,59,59,$month,$day,$year));
             }else{
-                $time_from = $_REQUEST['data']." 00:00:00";
-                $time_to = $_REQUEST['data']." 23:59:59";
+                $time_from = $_GET['data']." 00:00:00";
+                $time_to = $_GET['data']." 23:59:59";
                 
             }
             
-            if ($_REQUEST['data'] == 0 || $_REQUEST['data'] == date("Y-m-d")){
+            if ($_GET['data'] == 0 || $_GET['data'] == date("Y-m-d")){
                 $epg = new Epg();
                 $epg->getCurProgram($action);
                 $cur_page       = $epg->cur_program_page;
                 $selected_item  = $epg->cur_program_row;
                 $cur_program_id = $epg->cur_program_id;
 
-                if ($_REQUEST['p']==0){
+                if ($_GET['p']==0){
                     $page_offset = ($cur_page-1)*MAX_PAGE_ITEMS;
                     if ($page_offset < 0){
                         $page_offset = 0;
@@ -2115,7 +2095,7 @@ function get_data(){
             $rs=$db->executeQuery($sql);
             $total_items = $rs->getRowCount();
             $total_pages=ceil($total_items/10);
-            if ($_REQUEST['p'] == 0){
+            if ($_GET['p'] == 0){
                 $sql = 'select SUM(points) as sum_points from mastermind_wins where uid='.$stb->id;
                 $rs=$db->executeQuery($sql);
                 $uid_points = intval($rs->getValueByName(0, 'sum_points'));
@@ -2144,7 +2124,7 @@ function get_data(){
             break;
         case 'recipes_by_cat':
             
-            $req = $_REQUEST['data'];
+            $req = $_GET['data'];
             $cat_id = intval($req['cat_id']);
             $fav = intval($req['fav']);;
             
@@ -2216,9 +2196,9 @@ function get_data(){
             $page_offset = $page;
             $sql = 'select *, DATE(added) as added from anec order by id desc limit '.$page_offset.',1';
             //echo $sql;
-            /*if ($_REQUEST['data']){
-                $dir    = $_REQUEST['data']['dir'];
-                $cur_id = intval($_REQUEST['data']['cur_id']);
+            /*if ($_GET['data']){
+                $dir    = $_GET['data']['dir'];
+                $cur_id = intval($_GET['data']['cur_id']);
                 if ($dir>0){
                     $where = "id>$cur_id";
                     $desc = '';
@@ -2257,7 +2237,7 @@ function get_data(){
         if($type == 'itv'){
             $itv_id = $rs->getCurrentValueByName($id);
             $cur_epg = get_cur_program($itv_id);
-            if (@$_REQUEST['data'] == 1){
+            if (@$_GET['data'] == 1){
                 $num = array_search($itv_id, $fav_arr)+1;
             }else{
                 $num = $rs->getCurrentValueByName($number);
@@ -2318,7 +2298,7 @@ function get_data(){
             }
             $cur_series = 0;
             $end_time   = 0;
-            if (isset($_REQUEST['get_vclub_not_ended'])){
+            if (isset($_GET['get_vclub_not_ended'])){
                 $cur_series = $rs->getCurrentValueByName('cur_series');
                 $end_time   = $rs->getCurrentValueByName('end_time');
             }
@@ -2341,7 +2321,7 @@ function get_data(){
                 'end_time'    => $end_time
             );
         }else if ($type == 'video_clip'){
-            if (isset($_REQUEST['video_clips_singer_bar'])){
+            if (isset($_GET['video_clips_singer_bar'])){
                 $arr[] = array(
                     'id'     => $rs->getCurrentValueByName('id'),
                     'singer' => $rs->getCurrentValueByName('singer'),
@@ -2379,7 +2359,7 @@ function get_data(){
                     'ended'         => $rs->getCurrentValueByName('ended'),
                 );
         }else if($type == 'karaoke'){
-            if (isset($_REQUEST['karaoke_singer_bar'])){
+            if (isset($_GET['karaoke_singer_bar'])){
                 $arr[] = array(
                     'id'     => $rs->getCurrentValueByName('id'),
                     'singer' => $rs->getCurrentValueByName('singer'),
@@ -2396,7 +2376,7 @@ function get_data(){
                 );
             }
         }else if($type == 'audio_club'){
-            if (isset($_REQUEST['audio_club_singer_bar'])){
+            if (isset($_GET['audio_club_singer_bar'])){
                 $arr[] = array(
                     'id'     => $rs->getCurrentValueByName('id'),
                     'singer' => $rs->getCurrentValueByName('singer'),
