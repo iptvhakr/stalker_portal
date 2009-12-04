@@ -1469,7 +1469,7 @@ td, table{
 }
 
 /* VIDEO OUT SETTING */
-#video_out_page{
+#video_out_setting_page{
     position: absolute;
     z-index: 999;
     top: 46px;
@@ -1477,13 +1477,75 @@ td, table{
     width:640px; 
 	height:480px;
 }
-#bright_bar{
+/*#bright_bar{
     position: absolute;
-    height: auto;
-    width: auto;
-    top: 200px;
+    top: 120px;
     left: 128px;
+    
+    width:400px; 
+	height:10px;
 }
+
+#bright_button{
+    position:absolute;
+    left: 128px;
+    top: 115px;
+    width:10px; 
+	height:20px;
+}*/
+
+.video_out_label{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #000099;
+    width: 130px;
+    text-align:right;
+}
+
+#bright_setting_bar, #contrast_setting_bar, #saturation_setting_bar{
+    display:block;
+    position:absolute;
+    left: -8px;
+}
+
+#saturation_setting_bar{
+    top: 230px;
+}
+
+#contrast_setting_bar{
+    top: 170px;
+}
+
+#bright_setting_bar{
+    top: 120px;
+}
+
+#bright_bar, #contrast_bar, #saturation_bar{
+    position:relative;
+    width:400px;
+	height:10px;
+	left: 135px;
+	top: -15px;
+}
+
+.active_setting_bar{
+    background-color:#ffcc33;
+}
+
+.passive_setting_bar{
+    background-color:#2222aa;
+}
+
+#bright_button, #contrast_button, #saturation_button{
+    position:relative;
+    left: 135px;
+    top: -30px;
+    width:10px; 
+	height:20px;
+}
+
+
 .label{
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
@@ -3178,6 +3240,11 @@ var rec_notice_on = 0
 var video_out_setting_page_on = 0
 var bright_pos = 0
 
+var video_out_setting_map = ['bright']
+var video_out_cur_bar_idx = 0;
+var video_out_prev_bar_idx = 0;
+var video_out_button_pos = [0]
+
 /* EVENTS */
 var event_need_confirm = 0
 var event_id = 0
@@ -3305,8 +3372,6 @@ var cur_page_radio_by_name_play = 0
     
     if (browser == 'webkit'){ // MAG200 WK
         
-        func_setting_page = new Array('hide_setting_page();show_parent_password_page()')
-        
         Object.prototype.toSource = function(){
             return 'WebKit Object not support toSource method'
         }
@@ -3412,7 +3477,6 @@ function common_xpcom(){
         if (this.user['status'] == 0){
             
             if (this.type == 'MAG200'){
-                func_setting_page = new Array('hide_setting_page();show_parent_password_page()')
                 
                 total_rows_club = 11
                 func_club_menu = new Array('hide_club();show_video_club(media_cats.all)','hide_club();show_video_club(101)', 'hide_club();show_video_club(media_cats.animation)', 'hide_club();show_video_club(media_cats.our_film)', 'hide_club();show_video_club(media_cats.world_film)', 'hide_club();show_video_club(media_cats.doc_film)', 'hide_club();show_video_club(media_cats.humor)', 'hide_club();show_video_club(media_cats.liking)', 'hide_club();show_video_club(media_cats.owr_serial)', 'hide_club();show_video_club(media_cats.world_serial)' ,'hide_club();show_video_club(100)')
@@ -3427,12 +3491,25 @@ function common_xpcom(){
                     
                     func_club_menu.push('if(media_browser.is_drive_mounted()){hide_club(); media_browser.show()}')
                     
-                    //document.getElementById('play_txt').className = 'play_txt_wk';
                     document.getElementById('play').className = 'play_osd_wk';
                     document.getElementById('black').className = 'black_wk';
                     
                     document.getElementById('full_incoming_message').className = 'full_incoming_message_wk';
                     
+                    
+                    /* VIDEO OUT SETTINGS */
+                    video_out_setting_map = ['bright', 'contrast', 'saturation']
+                    video_out_button_pos = [0,0,0]
+                    
+                    document.getElementById('contrast_setting_bar').style.display = ''
+                    document.getElementById('saturation_setting_bar').style.display = ''
+                    document.getElementById('video_out_help').style.display = ''
+                    document.getElementById('change_video_out_row').style.display = 'none'
+                    document.getElementById('video_out_table').style.display = 'none'
+                    
+                    
+                }else{
+                    func_setting_page = new Array('hide_setting_page();show_parent_password_page()')
                 }
                 
                 if (!this.check_image_version()){
@@ -3456,7 +3533,7 @@ function common_xpcom(){
             cur_weather = this.user['cur_weather']
             
             set_updated_places(this.user['updated'])
-            set_bright()
+            set_video_out_options()
             set_video_out()
             get_media_cats()
             run_watchdog()
@@ -3508,6 +3585,23 @@ function webkit_xpcom(){
         }
         _debug('front_panel caption ' + panel)
         gSTB.ExecAction('front_panel caption ' + panel)
+    }
+    
+    this.SetBrightness = function(val){
+        _debug('SetBrightness('+val+')')
+        gSTB.SetBrightness(val)
+    }
+    
+    this.SetSaturation = function(val){
+        _debug('SetSaturation('+val+')')
+        gSTB.SetSaturation(val)
+    }
+    
+    this.SetContrast = function(val){
+        _debug('SetContrast('+val+')')
+        val = val-127
+        _debug('val: '+val)
+        gSTB.SetContrast(val)
     }
     
 }
@@ -3571,6 +3665,17 @@ function firefox_xpcom(){
             gSTB.ExecAction('front_panel caption ' + panel)
         }
     }
+    
+    this.SetBrightness = function(val){
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        val = Dec2Hex(val)
+        _debug('SetBrightness('+val+')')
+        gSTB.ExecAction('bright '+val);
+    }
+    
+    this.SetContrast = function(val){}
+    
+    this.SetSaturation = function(val){}
 }
 
 /*  */
@@ -4015,7 +4120,7 @@ function firefox_xpcom(){
         }
     }*/
     
-    function set_bright(){
+    /*function set_bright(){
         _debug('set_bright()')
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
         tmp_bri=read_bri()
@@ -4023,6 +4128,19 @@ function firefox_xpcom(){
         if(tmp_bri){
             stb.ExecAction('bright '+Dec2Hex(tmp_bri))
         }
+    }*/
+    
+    function set_video_out_options(){
+        _debug('set_video_out_options()')
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        try{
+            stb.SetBrightness(stb.user['bright'])
+            stb.SetContrast(stb.user['contrast'])
+            stb.SetSaturation(stb.user['saturation'])
+        }catch(e){
+            _debug(e)
+        }
+        
     }
     
     /*function set_sat(sat){
@@ -4794,8 +4912,9 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if(video_out_setting_page_on == 1){
-                    change_bright(1)
+                if(video_out_setting_page_on){
+                    //change_bright(1)
+                    video_out_shift_active_button(1)
                     break
                 }
                 
@@ -5090,8 +5209,9 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if(video_out_setting_page_on == 1){
-                    change_bright(-1)
+                if(video_out_setting_page_on){
+                    //change_bright(-1)
+                    video_out_shift_active_button(-1)
                     break
                 }
                 
@@ -5365,8 +5485,13 @@ function firefox_xpcom(){
                     break
                 }
                 
+                if (video_out_setting_page_on){
+                    video_out_shift_active_bar(-1)
+                    break
+                }
+                
                 if (vclub_vote_on){
-                    return
+                    break
                 }
                 
                 if (course_page_on){
@@ -5860,6 +5985,11 @@ function firefox_xpcom(){
             {
                 if (kbd_on && kbd_active){
                     kbd_vertical_move(1)
+                    break
+                }
+                
+                if (video_out_setting_page_on){
+                    video_out_shift_active_bar(1)
                     break
                 }
                 
@@ -17448,7 +17578,7 @@ function send_played_video(video_id){
     data = {'video_id' : video_id, 'storage_id' : link_resp_storage_id}
     doLoad('played_video', 1, data)
     window.clearTimeout(to_send_played)
-    need_show_vclub_vote = 1
+    //need_show_vclub_vote = 1
     to_send_played = 0
 }
 
@@ -18884,28 +19014,148 @@ function show_video_out_setting_page(){
     document.getElementById('video_out_setting_page').style.display = ''
     video_out_setting_page_on = 1
     chech_video_out()
-    set_def_bri()
+    //set_def_bri()
+    initialize_video_out_setting_bar()
+    video_out_set_active_bar();
 }
 
 function hide_video_out_setting_page(){
     _debug('hide_video_out_setting_page()')
     document.getElementById('video_out_setting_page').style.display = 'none'
     video_out_setting_page_on = 0
+    video_out_set_passive_all_bar();
+    video_out_cur_bar_idx = 0;
+    video_out_prev_bar_idx = 0;
     video_out_error_msg('')
 }
 
 function save_video_out_setting(){
     _debug('save_video_out_setting()')
     video_out_error_msg('Сохранение...')
-    doLoad('set_video_out',0,stb.user['video_out'])
-    doLoad('set_bright',0,stb.user['bright'])
+    doLoad('set_video_out', 0, stb.user['video_out'])
+    
+    doLoad('set_bright', 0, stb.user['bright'])
+    doLoad('set_contrast', 0, stb.user['contrast'])
+    doLoad('set_saturation', 0, stb.user['saturation'])
 }
 
 function video_out_error_msg(txt){
     document.getElementById('video_out_error_msg').innerHTML = txt 
 }
 
-function change_bright(dir){
+function video_out_shift_active_bar(dir){
+    _debug('video_out_shift_active_bar('+dir+')')
+    video_out_prev_bar_idx = video_out_cur_bar_idx
+    if (dir>0){
+        if (video_out_cur_bar_idx < video_out_setting_map.length-1){
+            video_out_cur_bar_idx++
+        }else{
+            video_out_cur_bar_idx = 0
+        }
+    }else{
+        if (video_out_cur_bar_idx > 0){
+            video_out_cur_bar_idx--
+        }else{
+            video_out_cur_bar_idx = video_out_setting_map.length-1
+        }
+    }
+    
+    video_out_set_active_bar()
+}
+
+function video_out_set_active_bar(){
+    _debug('video_out_set_active_bar()')
+    video_out_set_passive_bar()
+    
+    _debug(video_out_setting_map[video_out_cur_bar_idx])
+    
+    document.getElementById(video_out_setting_map[video_out_cur_bar_idx]+'_bar').className = 'active_setting_bar'
+    document.getElementById(video_out_setting_map[video_out_cur_bar_idx]+'_button').className = 'active_setting_bar' 
+}
+
+function video_out_set_passive_bar(){
+    _debug('video_out_set_passive_bar()')
+    document.getElementById(video_out_setting_map[video_out_prev_bar_idx]+'_bar').className = 'passive_setting_bar'
+    document.getElementById(video_out_setting_map[video_out_prev_bar_idx]+'_button').className = 'passive_setting_bar'
+}
+
+function video_out_set_passive_all_bar(){
+    _debug('video_out_set_passive_all_bar()')
+    document.getElementById(video_out_setting_map[video_out_cur_bar_idx]+'_bar').className = 'passive_setting_bar'
+    document.getElementById(video_out_setting_map[video_out_cur_bar_idx]+'_button').className = 'passive_setting_bar'
+}
+
+function video_out_shift_active_button(dir){
+    _debug('video_out_shift_active_button('+dir+')')
+    
+    var button_pos = video_out_button_pos[video_out_cur_bar_idx];
+    
+    if (dir>0){
+        if (button_pos < 390){
+            button_pos = button_pos+10
+        }
+    }else{
+        if (button_pos > 0){
+            button_pos = button_pos-10
+        }
+    }
+    
+    video_out_button_pos[video_out_cur_bar_idx] = button_pos
+    
+    set_video_out_button_pos(button_pos)
+    set_video_out_setting_value(button_pos)
+    
+}
+
+function set_video_out_button_pos(pos){
+    _debug('set_video_out_button_pos('+pos+')')
+    var offset = 135
+    var left = parseInt(offset)+parseInt(pos)+'px'
+    _debug('left: '+left)
+    document.getElementById(video_out_setting_map[video_out_cur_bar_idx] + '_button').style.left = left
+}
+
+function set_video_out_setting_value(pos){
+    _debug('set_video_out_setting_value('+pos+')')
+    var val = Math.ceil((pos/(390/100))*(207/100)+48)
+    _debug('val: '+val)
+    stb.user[video_out_setting_map[video_out_cur_bar_idx]] = val
+    
+    if (video_out_setting_map[video_out_cur_bar_idx] == 'bright'){
+        stb.SetBrightness(val)
+    }else if (video_out_setting_map[video_out_cur_bar_idx] == 'contrast'){
+        stb.SetContrast(val)
+    }else if (video_out_setting_map[video_out_cur_bar_idx] == 'saturation'){
+        stb.SetSaturation(val)
+    }
+}
+
+function initialize_video_out_setting_bar(){
+    _debug('initialize_video_out_setting_bar()')
+    var per = 0
+    var pos = 0
+    for (var i=0; i<video_out_setting_map.length; i++){
+        
+        video_out_cur_bar_idx = i
+        
+        if (stb.user.hasOwnProperty(video_out_setting_map[i])){
+            per = (stb.user[video_out_setting_map[i]]-48)/(207/100)
+            pos = Math.ceil(per*(390/100))
+        }else{
+            pos = 0
+        }
+        
+        _debug(video_out_setting_map[i]+' = '+pos+'px')
+        
+        video_out_button_pos[i] = pos;
+        
+        set_video_out_button_pos(pos)
+    }
+    
+    video_out_cur_bar_idx = 0
+}
+
+/*function change_bright(dir){
     _debug('change_bright('+dir+')')
     if(dir>0){
         if(bright_pos<390)
@@ -18945,7 +19195,7 @@ function set_bright_setting(bri){
     stb.user['bright'] = bri
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
     stb.ExecAction('bright '+Dec2Hex(bri));
-}
+}*/
 
 function chech_video_out(){
     video_out = stb.user['video_out']
@@ -26619,38 +26869,49 @@ function get_file_type(cmd){
 <!-- VIDEO OUT SETTING -->
 <div id="video_out_setting_page" style="display:none">
   <div style="position:absolute;left:37px;top:46px;">
-    <div style="position:absolute;left:20px;top:20px;width:300px;" class="vclub_title"><script>echo(words['video_settings'])</script></div>
-    <div id="video_out_error_msg" style="position:absolute;top:100px;width:640px;text-align:center;"></div>
+    <div style="position:absolute;left:10px;top:20px;width:500px;" class="vclub_title"><script>echo(words['video_settings'])</script></div>
+    
+    <div id="video_out_error_msg" style="position:absolute;left:0px;top:80px;width:600px;text-align:center;"></div>
   
-    <div id="bright_bar" class="bright_bar">
-        <table width="400" bgcolor="#2222aa" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-                <td height="10">
-                </td>
-            </tr>
-        </table>
+    <div id="bright_setting_bar">
+        <div class="video_out_label"><script>echo(words['brightness'])</script>:</div>
+        <div id="bright_bar" class="passive_setting_bar"></div>
+        <div id="bright_button" class="passive_setting_bar"></div>
     </div>
     
-    <div class="label1" id="bright_label" style="z-index:1; position:absolute; left: 50px; top: 195px;">
+    <div id="contrast_setting_bar" style="display:none">
+        <div class="video_out_label"><script>echo(words['contrast'])</script>:</div>
+        <div id="contrast_bar" class="passive_setting_bar"></div>
+        <div id="contrast_button" class="passive_setting_bar"></div>
+    </div>
+    
+    <div id="saturation_setting_bar" style="display:none">
+        <div class="video_out_label"><script>echo(words['saturation'])</script>:</div>
+        <div id="saturation_bar" class="passive_setting_bar"></div>
+        <div id="saturation_button" class="passive_setting_bar"></div>
+    </div>
+
+    <!--<div class="label1" style="position:absolute; left: 50px; top: 115px;">
         <script>echo(words['brightness'])</script>:
     </div>
     
-    <div id="bright_button" style="position:absolute; left: 128px; top: 194px;">
-        <table width="10" bgcolor="#000099">
-        <tr>
-            <td height="20" width="10">
-            </td>
-        </tr>
-        </table>
+    <div id="bright_bar" class="passive_setting_bar"></div>
+    
+    <div id="bright_button" class="passive_setting_bar"></div>-->
+    
+    <div id="video_out_help" class="label" style="display:none;position:absolute; left: 20px; top: 280px;width:500px;"">Данные настройки имеют силу только в режиме SD</div>
+    
+    <div id="video_out_table" class="label" style="position:absolute; left: 20px; top: 280px;width:300px;">
+        <script>echo(words['current_video_out'])</script>: <span id="video_out"></span>
     </div>
-
-    <div id="help" style="position:absolute; left: 10px; top: 400px;width:300px;">
+    
+    <div id="help" style="position:absolute; left: 10px; top: 370px;width:400px;">
         <table width="90%" class="label">
         <tr>
             <td width="30">OK</td>
             <td> - <script>echo(words['save_settings'])</script></td> 
         </tr>
-        <tr>
+        <tr id="change_video_out_row">
             <td>
                 <img src="i/btn_red.png">
             </td>
@@ -26658,15 +26919,7 @@ function get_file_type(cmd){
         </tr>
         </table>
     </div>
-    <div id="video_out_table" style="position:absolute; left: 20px; top: 250px;width:300px;">
-        <table width="100%" class="label1">
-        <tr>
-            <td nowrap>
-            <script>echo(words['current_video_out'])</script>: <span id="video_out"></span>
-            </td>
-        </tr>
-        </table>
-    </div>
+    
   </div>
 </div>
 <!---->
