@@ -145,6 +145,8 @@ words['error_password_change'] = 'Password do not match'
 /* VIDEO SETTING */
 words['video_settings'] = 'Video out settings'
 words['brightness'] = 'Brightness'
+words['contrast'] = 'Contrast'
+words['saturation'] = 'Saturation'
 words['save_settings'] = 'Save settings'
 words['change_video_out'] = 'Change video out'
 words['current_video_out'] = 'Current video out'

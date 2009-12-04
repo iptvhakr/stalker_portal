@@ -145,6 +145,8 @@ words['error_password_change'] = 'Ошибка изменения пароля'
 /* VIDEO SETTING */
 words['video_settings'] = 'Настройки видео выхода'
 words['brightness'] = 'Яркость'
+words['contrast'] = 'Контраст'
+words['saturation'] = 'Насыщенность'
 words['save_settings'] = 'Сохранить настройки'
 words['change_video_out'] = 'Сменить видео выход'
 words['current_video_out'] = 'Текущий видео выход'
