@@ -19181,6 +19181,11 @@ function set_video_out_button_pos(pos){
 function set_video_out_setting_value(pos){
     _debug('set_video_out_setting_value('+pos+')')
     var val = Math.ceil((pos/(390/100))*(207/100)+48)
+
+    if(val >= 255){
+        val = 254;
+    }
+    
     _debug('val: '+val)
     stb.user[video_out_setting_map[video_out_cur_bar_idx]] = val
     
@@ -26071,32 +26076,32 @@ function get_file_type(cmd){
     <div id="main_bar_main_city_info" style="display:none">
     <table width="605"  cellpadding="0" cellspacing="2">
       <tr bgcolor="#FFFFFF">
-        <td width="505" align="center" class="menu_style1"><strong><script>echo(words['service'])</script></strong></td>
-        <td width="100" height="20" align="center" class="menu_style1"><strong><script>echo(words['number'])</script></strong></td>
+        <td width="500" align="center" class="menu_style1"><strong><script>echo(words['service'])</script></strong></td>
+        <td width="" height="20" align="center" class="menu_style1"><strong><script>echo(words['number'])</script></strong></td>
       </tr>
       <tr class="black_row" id="main_city_info_row_0">
         <td height="50" align="left"><div id="main_city_info_title_0" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="main_city_info_number_0" align="center">&nbsp;</td>
+        <td id="main_city_info_number_0" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="main_city_info_row_1">
         <td height="50" align="left"><div id="main_city_info_title_1" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="main_city_info_number_1" align="center">&nbsp;</td>
+        <td id="main_city_info_number_1" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="main_city_info_row_2">
         <td height="50" align="left"><div id="main_city_info_title_2" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="main_city_info_number_2" align="center">&nbsp;</td>
+        <td id="main_city_info_number_2" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="main_city_info_row_3">
         <td height="50" align="left"><div id="main_city_info_title_3" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="main_city_info_number_3" align="center">&nbsp;</td>
+        <td id="main_city_info_number_3" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="main_city_info_row_4">
         <td height="50" align="left"><div id="main_city_info_title_4" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="main_city_info_number_4" align="center">&nbsp;</td>
+        <td id="main_city_info_number_4" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       </table>
     </div>
@@ -26104,32 +26109,32 @@ function get_file_type(cmd){
     <div id="main_bar_other_city_info" style="display:none">
     <table width="605"  cellpadding="0" cellspacing="2">
       <tr bgcolor="#FFFFFF">
-        <td width="505" align="center" class="menu_style1"><strong><script>echo(words['service'])</script></strong></td>
-        <td width="100" height="20" align="center" class="menu_style1"><strong><script>echo(words['number'])</script></strong></td>
+        <td width="500" align="center" class="menu_style1"><strong><script>echo(words['service'])</script></strong></td>
+        <td width="" height="20" align="center" class="menu_style1"><strong><script>echo(words['number'])</script></strong></td>
       </tr>
       <tr class="black_row" id="other_city_info_row_0">
         <td height="50" align="left"><div id="other_city_info_title_0" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="other_city_info_number_0" align="center">&nbsp;</td>
+        <td id="other_city_info_number_0" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="other_city_info_row_1">
         <td height="50" align="left"><div id="other_city_info_title_1" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="other_city_info_number_1" align="center">&nbsp;</td>
+        <td id="other_city_info_number_1" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="other_city_info_row_2">
         <td height="50" align="left"><div id="other_city_info_title_2" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="other_city_info_number_2" align="center">&nbsp;</td>
+        <td id="other_city_info_number_2" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="other_city_info_row_3">
         <td height="50" align="left"><div id="other_city_info_title_3" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="other_city_info_number_3" align="center">&nbsp;</td>
+        <td id="other_city_info_number_3" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="other_city_info_row_4">
         <td height="50" align="left"><div id="other_city_info_title_4" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="other_city_info_number_4" align="center">&nbsp;</td>
+        <td id="other_city_info_number_4" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       </table>
     </div>
@@ -26137,32 +26142,32 @@ function get_file_type(cmd){
     <div id="main_bar_help_city_info" style="display:none">
     <table width="605"  cellpadding="0" cellspacing="2">
       <tr bgcolor="#FFFFFF">
-        <td width="505" align="center" class="menu_style1"><strong><script>echo(words['service'])</script></strong></td>
-        <td width="100" height="20" align="center" class="menu_style1"><strong><script>echo(words['number'])</script></strong></td>
+        <td width="500" align="center" class="menu_style1"><strong><script>echo(words['service'])</script></strong></td>
+        <td width="" height="20" align="center" class="menu_style1"><strong><script>echo(words['number'])</script></strong></td>
       </tr>
       <tr class="black_row" id="help_city_info_row_0">
         <td height="50" align="left"><div id="help_city_info_title_0" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="help_city_info_number_0" align="center">&nbsp;</td>
+        <td id="help_city_info_number_0" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="help_city_info_row_1">
         <td height="50" align="left"><div id="help_city_info_title_1" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="help_city_info_number_1" align="center">&nbsp;</td>
+        <td id="help_city_info_number_1" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="help_city_info_row_2">
         <td height="50" align="left"><div id="help_city_info_title_2" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="help_city_info_number_2" align="center">&nbsp;</td>
+        <td id="help_city_info_number_2" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="help_city_info_row_3">
         <td height="50" align="left"><div id="help_city_info_title_3" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="help_city_info_number_3" align="center">&nbsp;</td>
+        <td id="help_city_info_number_3" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       
       <tr class="black_row" id="help_city_info_row_4">
         <td height="50" align="left"><div id="help_city_info_title_4" class="td_nowrap_505 wordwrap">&nbsp;</div></td>
-        <td id="help_city_info_number_4" align="center">&nbsp;</td>
+        <td id="help_city_info_number_4" align="center" style="font-size: 16px">&nbsp;</td>
       </tr>
       </table>
     </div>
