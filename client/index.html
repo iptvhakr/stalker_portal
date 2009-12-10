@@ -7937,9 +7937,72 @@ function firefox_xpcom(){
                 */
                 
                 if ((e.altKey && browser == 'webkit') || browser == 'firefox'){
+                    
                     if (mode_one == 1){
                         show_playing(cur_playing_str)
+                        break
                     }
+                    
+                    if(vclub_by_name_on && mode_one == 0){
+                        show_video_club_info()
+                        hide_video_club()
+                        break
+                    }
+                    
+                    if(vclub_by_genre_on && mode_one == 0){
+                        show_video_club_info()
+                        hide_video_club()
+                        break
+                    }
+                    
+                    if(vclub_by_year_on && mode_one == 0){
+                        show_video_club_info()
+                        hide_video_club()
+                        break
+                    }
+                    
+                    if(vclub_by_add_time_on && mode_one == 0){
+                        show_video_club_info()
+                        hide_video_club()
+                        break
+                    }
+                    
+                    if(vclub_by_top_on && mode_one == 0){
+                        show_video_club_info()
+                        hide_video_club()
+                        break
+                    }
+                    
+                    if(vclub_by_search_on && mode_one == 0){
+                        show_video_club_info()
+                        hide_video_club()
+                        break
+                    }
+                    
+                    if(vclub_not_ended_on && mode_one == 0){
+                        show_video_club_info()
+                        hide_video_club()
+                        break
+                    }
+                    
+                    if (tv_by_number_on && mode_one == 0){
+                        show_program()
+                        hide_tv_page()
+                        break
+                    }
+                    
+                    if (tv_by_channel_on && mode_one == 0){
+                        show_program()
+                        hide_tv_page()
+                        break
+                    }
+                    
+                    if (tv_by_theme_on && mode_one == 0){
+                        show_program()
+                        hide_tv_page()
+                        break
+                    }
+                    
                 }
                 
                 break
