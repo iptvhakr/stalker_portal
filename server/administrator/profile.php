@@ -49,6 +49,16 @@ if (@$_GET['parent_password'] && $_GET['parent_password'] == 'default'){
     exit();
 }
 
+if (@$_GET['fav_itv'] && $_GET['fav_itv'] == 'default'){
+    $id = intval(@$_GET['id']);
+    
+    $sql = "update fav_itv set fav_ch='' where uid=$id";
+    $rs=$db->executeQuery($sql);
+    
+    header("Location: profile.php?id=".@$_GET['id']);
+    exit();
+}
+
 if (isset($_GET['set_services'])){
     $id = intval(@$_GET['id']);
     
@@ -174,6 +184,18 @@ while(@$rs->next()){
         $video_out  = $arr['video_out'];
         $parent_password  = $arr['parent_password'];
 }
+
+$rs=$db->executeQuery("select * from fav_itv where uid=".$id);
+$fav_ch = $rs->getValueByName(0, 'fav_ch');
+
+$fav_ch_arr = unserialize(base64_decode($fav_ch));
+
+if (is_array($fav_ch_arr)){
+    $fav_ch_count = count($fav_ch_arr);
+}else{
+    $fav_ch_count = 0;
+}
+
 ?>
 <title>Профиль пользователя</title>
 </head>
@@ -204,7 +226,7 @@ while(@$rs->next()){
 <td>
 <table cellpadding="0" cellspacing="3">
     <tr>
-        <td class="other" width="230">
+        <td class="other" width="320">
         <table>
             <tr>
                 <td></td>
@@ -225,6 +247,10 @@ while(@$rs->next()){
             <tr>
                 <td>pass:</td>
                 <td>[<?echo $parent_password?>] <a href="#" onclick="if(confirm('Изменить на пароль по умолчанию?')){document.location='profile.php?parent_password=default&id=<?echo $id?>'}">Сбросить</a></td>
+            </tr>
+            <tr>
+                <td>избранное тв:</td>
+                <td>[<?echo $fav_ch_count?> канала] <a href="#" onclick="if(confirm('Сбросить избранные ТВ каналы? Каналы полностью сбросятся только если сразу перезапустить приставку!')){document.location='profile.php?fav_itv=default&id=<?echo $id?>'}">Сбросить</a></td>
             </tr>
         </table>
         </td>
