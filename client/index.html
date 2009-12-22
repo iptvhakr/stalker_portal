@@ -551,10 +551,20 @@ td, table{
 }
 
 #atrack_info {
+	display:table;
     color: #ffffff;
     left: auto;
     right: 100px;
     font-size: 20px;
+	padding: 5px;
+	border: 4px solid #cccccc;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	background-color: #3399FF;
+	color: #FFFFFF;
+	-webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
 }
 
 #rec_bar {
@@ -3502,7 +3512,7 @@ function common_xpcom(){
                     
                     media_browser = new media_browser()
                     
-                    atrack_switch = new atrack_switch()
+                    //atrack_switch = new atrack_switch()
                     
                     func_club_menu.push('if(media_browser.is_drive_mounted()){hide_club(); media_browser.show()}')
                     
@@ -3531,6 +3541,8 @@ function common_xpcom(){
                     return;
                 }
             }
+            
+            atrack_switch = new atrack_switch()
             
             fav_itv_on = parseInt(this.user['fav_itv_on'])
             volume = parseInt(this.user['volume'])
@@ -3986,6 +3998,7 @@ function firefox_xpcom(){
 	        }
 	        case 4:
 	        {
+            
 	            tmp_cur_id = get_cur_vclub_id()
 	            
                 _debug('_continue_play: '+_continue_play)
@@ -23264,6 +23277,11 @@ atrack_switch.prototype.reset = function(){
 }
 
 atrack_switch.prototype.get_all_pids = function(){
+    
+    if (browser != 'webkit'){
+        return;
+    }
+    
     _debug('atrack_switch.get_all_pids()');
     
     this.reset();
@@ -23326,7 +23344,7 @@ atrack_switch.prototype.show_cur_lang = function(){
     }
     
     document.getElementById('atrack_info').innerHTML = 'Аудио дорожка: '+lang;
-    document.getElementById('atrack_info').style.display = 'block';
+    document.getElementById('atrack_info').style.display = 'table';
     
     if (this.info_t){
         window.clearTimeout(this.info_t);
@@ -23336,6 +23354,11 @@ atrack_switch.prototype.show_cur_lang = function(){
 }
 
 atrack_switch.prototype.shift = function(dir){
+    
+    if (browser != 'webkit'){
+        return;
+    }
+    
     _debug('atrack_switch.shift('+dir+')');
     
     if (dir > 0){
