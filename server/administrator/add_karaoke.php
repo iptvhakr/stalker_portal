@@ -344,7 +344,13 @@ function get_done_karaoke_color($id){
     }
 }
 
-$query = "select karaoke.*,administrators.login from karaoke,administrators  $where order by name LIMIT $page_offset, $MAX_PAGE_ITEMS";
+if (!empty($_GET['letter'])){
+    $orderby = 'name';
+}else{
+    $orderby = 'id';
+}
+
+$query = "select karaoke.*,administrators.login from karaoke,administrators  $where order by $orderby LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
 //echo $_GET['search'];
 $rs = $db->executeQuery($query);
