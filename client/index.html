@@ -537,7 +537,7 @@ td, table{
 	left: 35px;
 	top: 46px;
 }
-#speed_title {
+#speed_title, #atrack_info {
     position:absolute;
     z-index: 871;
 	left: 585px;
@@ -547,6 +547,14 @@ td, table{
 	color: #00CC00;
 	font-weight:bold
 }
+
+#atrack_info {
+    color: #ffffff;
+    left: auto;
+    right: 100px;
+    font-size: 20px;
+}
+
 #rec_bar {
     position:absolute;
     z-index: 871;
@@ -2268,6 +2276,8 @@ var log_on = 1
 
 const ver = '3.37.0'
 
+var revision = '$Rev$'
+
 //const use_ctrl_alt = 1 // использование ctrl+alt в lirc для power, mute и mic
 var record = 0
 var show_watchdog_debug = 0
@@ -2283,6 +2293,7 @@ var dom_cache = {}
 //var stb_type
 
 var media_browser
+var atrack_switch
 
 var cur_place = ''
 var cur_place_num = 0
@@ -3489,6 +3500,8 @@ function common_xpcom(){
                     
                     media_browser = new media_browser()
                     
+                    atrack_switch = new atrack_switch()
+                    
                     func_club_menu.push('if(media_browser.is_drive_mounted()){hide_club(); media_browser.show()}')
                     
                     document.getElementById('play').className = 'play_osd_wk';
@@ -3668,6 +3681,7 @@ function firefox_xpcom(){
     
     this.SetBrightness = function(val){
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
         val = Dec2Hex(val)
         _debug('SetBrightness('+val+')')
         gSTB.ExecAction('bright '+val);
@@ -3676,6 +3690,51 @@ function firefox_xpcom(){
     this.SetContrast = function(val){}
     
     this.SetSaturation = function(val){}
+    
+    this.GetAudioPIDs = function(){
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
+        var x={}
+        gSTB.GetAudioPIDs(x)
+        return x.value
+    }
+    
+    this.GetAudioPID = function(){
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
+        var x={}
+        gSTB.GetAudioPID(x)
+        return x.value
+    }
+    
+    this.SetAudioPID = function(val){
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
+        gSTB.SetAudioPID(val)
+    }
+    
+    this.GetSubtitlePIDs = function(){
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
+        var x={}
+        gSTB.GetSubtitlePIDs(x)
+        return x.value
+    }
+    
+    this.GetSubtitlePID = function(){
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
+        var x={}
+        gSTB.GetSubtitlePID(x)
+        return x.value
+    }
+    
+    this.SetSubtitlePID = function(val){
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
+        gSTB.SetSubtitlePID(val)
+    }
+    
 }
 
 /*  */
@@ -3751,15 +3810,17 @@ function firefox_xpcom(){
         _debug('mount_home_dir('+storages.toSource()+')')
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
         for(var i in storages){
-            stb.ExecAction('make_dir /media/'+storages[i]['storage_name'])
+            if (storages.hasOwnProperty(i)){
+                stb.ExecAction('make_dir /media/'+storages[i]['storage_name'])
+                
+                mount_cmd = '"'+storages[i]['storage_ip']+':'+storages[i]['nfs_home_path']+stb.mac+'" /media/'+storages[i]['storage_name']
+                _debug('mount_cmd: '+mount_cmd)
             
-            mount_cmd = '"'+storages[i]['storage_ip']+':'+storages[i]['nfs_home_path']+stb.mac+'" /media/'+storages[i]['storage_name']
-            _debug('mount_cmd: '+mount_cmd)
-        
-            try{
-                stb.ExecAction('mount_dir '+mount_cmd)
-            }catch(e){
-                _debug(e)
+                try{
+                    stb.ExecAction('mount_dir '+mount_cmd)
+                }catch(e){
+                    _debug(e)
+                }
             }
         }
     }
@@ -3915,6 +3976,9 @@ function firefox_xpcom(){
 	        }
 	        case 2:
 	        {
+	            //if (){
+                atrack_switch.get_all_pids();
+	            //}
 	            
 	            break
 	        }
@@ -4251,20 +4315,43 @@ function firefox_xpcom(){
                 //if (browser == 'firefox'){
                     win_focus()
                 //}
-
+                
+                
                 if (media_browser.on || recipe_info_page_on || main_city_info_on || other_city_info_on || recipes_by_cat_on || anec_page_on){
                     break
                 }
                 
+                if (media_browser.hidden && !media_browser.is_audio){
+                    if (es){ // Shift+Tab (-)
+                        atrack_switch.shift(1);
+                    }else{  // (+)
+                        atrack_switch.shift(-1);
+                    }
+                    break
+                }
+                
+                if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
+                    if (es){ // Shift+Tab (-)
+                        atrack_switch.shift(1);
+                    }else{  // (+)
+                        atrack_switch.shift(-1);
+                    }
+                    break
+                }
+                
                 _debug('keyCode 9')
+                
                 if (tv_by_number_on && mode_one == 0 && fav_itv_on){
                     if (es){ // Shift+Tab (-)
                         move_fav_ch(1)
                     }else{  // (+)
                         move_fav_ch(-1)
                     }
+                    break
                 }
-                if (!video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){
+                                
+                if (!karaoke_by_singer_on && !karaoke_by_name_on && !video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){
+                    
                     if (es){ // Shift+Tab
                         if (fav_itv_on){
                             if (f_ch_idx > 0){
@@ -4402,6 +4489,31 @@ function firefox_xpcom(){
                     }
                     break;
                 }
+                
+                if (media_browser.hidden && !media_browser.is_audio){
+                    atrack_switch.shift(1);
+                    break;
+                }
+                
+                if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
+                    atrack_switch.shift(1);
+                    break;
+                }
+                
+                if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
+                    atrack_switch.shift(1);
+                    break;
+                }
+                
+                /*if (media_browser.hidden && player_on){
+                    atrack_switch.get_all_pids();
+                    break;
+                }
+                
+                if (vclub_by_name_on && mode_one == 1){
+                    atrack_switch.get_all_pids();
+                    break;
+                }*/
                 
                 if (horoscope_page_on){
                     horoscope_menu_action()
@@ -4875,6 +4987,11 @@ function firefox_xpcom(){
                             need_to_show_abc_video_search = 1
                         }
                     }
+                }
+                
+                if (mode_one){
+                    atrack_switch.shift(1);
+                    break;
                 }
                 
                 break
@@ -5505,6 +5622,10 @@ function firefox_xpcom(){
                     break;
                 }
                 
+                if (media_browser.hidden){
+                    break;
+                }
+                
                 if (anec_blog_on){
                     shift_anec_blog_body(-1, 20)
                 }
@@ -6005,6 +6126,10 @@ function firefox_xpcom(){
                     if (!player_on || media_browser.is_audio){
                         media_browser.shift_row(1);
                     }
+                    break;
+                }
+                
+                if (media_browser.hidden){
                     break;
                 }
                 
@@ -22948,7 +23073,7 @@ media_browser.prototype.drive_umounted = function(){
     this.mounted = 0;
     show_warning_message('USB устройство отключено');
     
-    if (this.on){
+    if (this.hidden || (this.on && this.is_audio)){
         
         if (player_on){
             stop()
@@ -23052,6 +23177,7 @@ media_browser.prototype.reset = function(){
     this.max_rows = 0;
     this.cur_page = 1;
     this.total_pages = 1;
+    this.hidden = 0;
 }
 
 media_browser.prototype.reset_dir_hist = function(){
@@ -23114,6 +23240,180 @@ function get_file_type(cmd){
         return 'video';
     }
 }
+
+/* AUDIO TRACK SWITCH */
+
+function atrack_switch(){
+    
+    this.on = 0;
+    this.cur_pid;
+    this.cur_pid_idx = 0;
+    this.all_pids;
+    this.info_t;
+    
+}
+
+atrack_switch.prototype.reset = function(){
+    
+    delete this.cur_pid;
+    delete this.all_pids;
+    this.cur_pid_idx = 0;
+    
+}
+
+atrack_switch.prototype.get_all_pids = function(){
+    _debug('atrack_switch.get_all_pids()');
+    
+    this.reset();
+    
+    var all_pids = stb.GetAudioPIDs();
+    _debug('all_pids: '+all_pids);
+    
+    this.all_pids = eval('(' + all_pids + ')');
+    
+    this.get_cur_pid();
+}
+
+atrack_switch.prototype.get_cur_pid = function(){
+    _debug('atrack_switch.get_cur_pid()');
+    
+    this.cur_pid = stb.GetAudioPID();
+    _debug('cur_pid: '+this.cur_pid);
+    
+    this.cur_pid_idx = this.get_idx_by_pid(this.cur_pid);
+    
+}
+
+atrack_switch.prototype.get_idx_by_pid = function(pid){
+    
+    for(var i=0; i<this.all_pids.length; i++){
+            
+        if (this.all_pids[i].pid == pid){
+            return i;
+        }
+    }
+    
+    return null;
+}
+
+atrack_switch.prototype.set_cur_pid = function(){
+    _debug('atrack_switch.set_cur_pid()');
+    
+    _debug('lang[0]: '+this.all_pids[this.cur_pid_idx].lang[0]);
+    _debug('lang[1]: '+this.all_pids[this.cur_pid_idx].lang[1]);
+    _debug('pid: '+this.all_pids[this.cur_pid_idx].pid);
+    
+    this.cur_pid = this.all_pids[this.cur_pid_idx].pid;
+    
+    this.show_cur_lang();
+    stb.SetAudioPID(this.cur_pid);
+    _debug('SetAudioPID ended');
+}
+
+atrack_switch.prototype.show_cur_lang = function(){
+    _debug('atrack_switch.show_cur_pid()');
+    
+    var lang = '';
+    
+    if (this.all_pids[this.cur_pid_idx].lang[1] != ''){
+        lang = this.all_pids[this.cur_pid_idx].lang[1];
+    }else if (this.all_pids[this.cur_pid_idx].lang[0] != ''){
+        lang = this.all_pids[this.cur_pid_idx].lang[0];
+    }else{
+        lang = this.cur_pid_idx+1;
+    }
+    
+    document.getElementById('atrack_info').innerHTML = 'Аудио дорожка: '+lang;
+    document.getElementById('atrack_info').style.display = 'block';
+    
+    if (this.info_t){
+        window.clearTimeout(this.info_t);
+    }
+    
+    this.info_t = window.setTimeout(function(){document.getElementById('atrack_info').style.display = 'none'}, 3000)
+}
+
+atrack_switch.prototype.shift = function(dir){
+    _debug('atrack_switch.shift('+dir+')');
+    
+    if (dir > 0){
+        if (this.cur_pid_idx < this.all_pids.length - 1){
+            this.cur_pid_idx++;
+        }else{
+            this.cur_pid_idx = 0;
+        }
+    }else{
+        if (this.cur_pid_idx > 0){
+            this.cur_pid_idx--;
+        }else{
+            this.cur_pid_idx = this.all_pids.length - 1;
+        }
+    }
+    
+    this.set_cur_pid();
+}
+/* END AUDIO TRACK SWITCH */
+
+
+/* CONTEXT MENU */
+function context_menu(map){
+    
+    this.on = 0;
+    this.offset_x = 0;
+    this.offset_y = 0;
+    this.z_index  = 0;
+    this.map = [];
+    this.dom_obj;
+    
+    this.construct_menu(this.map);
+}
+
+context_menu.prototype.construct_menu = function(map, parent){
+    _debug('context_menu.construct_menu('+map+', '+parent+')');
+    
+    var dom_obj = document.createElement("ul");
+    
+    dom_obj.className = 'context_menu';
+    dom_obj.style.display = 'none';
+    
+    if (map == this.map){
+        this.dom_obj = dom_obj;
+    }
+    
+    for (var i=0; i<map.lenght; i++){
+        
+        if (typeof(map[i].cmd) == 'object'){
+            
+            this.construct_menu(map[i].cmd, dom_obj);
+        }else{
+            
+            map[i].dom_obj = document.createElement("li");
+            map[i].dom_obj.innerHTML = map[i].title;
+            dom_obj.appendChild(map[i].dom_obj);
+        }
+    }
+    
+    document.body.appendChild(dom_obj);
+}
+
+context_menu.prototype.set_x_offset = function(x){
+    _debug('context_menu.set_x_offset('+x+')');
+    
+    this.dom_obj.style.left = parseInt(x) + 'px';
+}
+
+context_menu.prototype.set_y_offset = function(y){
+    _debug('context_menu.set_y_offset('+y+')');
+    
+    this.dom_obj.style.top = parseInt(y) + 'px';
+}
+
+context_menu.prototype.set_z_index = function(z){
+    _debug('context_menu.set_z_index('+z+')');
+    
+    this.dom_obj.style.zIndex = parseInt(z) + 'px';
+}
+/* END CONTEXT MENU */
 
 </script>
 </head>
@@ -23238,6 +23538,10 @@ function get_file_type(cmd){
 
 <!-- SPEED TITLE -->
 <div id="speed_title" style="display:none;"></div>
+<!---->
+
+<!-- ATRACK INFO -->
+<div id="atrack_info" style="display:none;"></div>
 <!---->
 
 <!-- TV PAGE CON MENU -->
