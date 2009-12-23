@@ -3991,14 +3991,15 @@ function firefox_xpcom(){
 	        case 2:
 	        {
 	            //if (){
-                atrack_switch.get_all_pids();
+                //atrack_switch.get_all_pids();
 	            //}
 	            
 	            break
 	        }
 	        case 4:
 	        {
-            
+                atrack_switch.get_all_pids();
+                
 	            tmp_cur_id = get_cur_vclub_id()
 	            
                 _debug('_continue_play: '+_continue_play)
@@ -11253,6 +11254,8 @@ function slider (type) {
         
         last_vclub_pos_time = get_cur_played_time()
         _debug('last_vclub_pos_time: '+last_vclub_pos_time)
+        
+        atrack_switch.reset()
         
         total_paused_time = 0
         total_time_seek_sum = 0
