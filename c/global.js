@@ -118,3 +118,12 @@ Array.prototype.getIdxByNumber = function(number){
     }
     return null;
 }
+
+Array.prototype.inArray = function (value){
+    for (var i=0; i < this.length; i++){
+        if (this[i] === value){
+            return true;
+        }
+    }
+    return false;
+};
