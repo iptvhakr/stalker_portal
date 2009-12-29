@@ -22,8 +22,8 @@ class Database
             //'SET NAMES cp1251',
             //'SET CHARACTER SET cp1251'
             
-            //'SET character_set_database = utf8',
-            //'SET character_set_server = utf8',
+            'SET character_set_database = utf8',
+            'SET character_set_server = utf8',
             "SET NAMES 'utf8'",
             "SET CHARACTER SET utf8"
     );
