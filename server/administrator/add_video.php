@@ -409,7 +409,8 @@ if ($search){
     $where = 'where name like "%'.$search.'%"';
 }
 if (@$_GET['letter']) {
-	$where = 'where name like "'.urldecode($letter).'%"';
+	//$where = 'where name like "'.urldecode($letter).'%"';
+	$where = 'where name like "'.$letter.'%"';
 }
 
 if (@$_GET['status']){
@@ -463,7 +464,7 @@ $rs = $db->executeQuery($query);
 </tr>
 <tr>
 <td align="center">
-<a href="#" onclick="document.location='?letter='+urlencode('А')">А</a>&nbsp;
+<!--<a href="#" onclick="document.location='?letter='+urlencode('А')">А</a>&nbsp
 <a href="#" onclick="document.location='?letter='+urlencode('Б')">Б</a>&nbsp;
 <a href="#" onclick="document.location='?letter='+urlencode('В')">В</a>&nbsp;
 <a href="#" onclick="document.location='?letter='+urlencode('Г')">Г</a>&nbsp;
@@ -495,7 +496,40 @@ $rs = $db->executeQuery($query);
 <a href="#" onclick="document.location='?letter='+urlencode('Ь')">Ь</a>&nbsp;
 <a href="#" onclick="document.location='?letter='+urlencode('Э')">Э</a>&nbsp;
 <a href="#" onclick="document.location='?letter='+urlencode('Ю')">Ю</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Я')">Я</a>&nbsp;
+<a href="#" onclick="document.location='?letter='+urlencode('Я')">Я</a>&nbsp;-->
+<a href="?letter=А">А</a>&nbsp
+<a href="?letter=Б">Б</a>&nbsp;
+<a href="?letter=В">В</a>&nbsp;
+<a href="?letter=Г">Г</a>&nbsp;
+<a href="?letter=Д">Д</a>&nbsp;
+<a href="?letter=Е">Е</a>&nbsp;
+<a href="?letter=Ё">Ё</a>&nbsp;
+<a href="?letter=Ж">Ж</a>&nbsp;
+<a href="?letter=З">З</a>&nbsp;
+<a href="?letter=И">И</a>&nbsp;
+<a href="?letter=Й">Й</a>&nbsp;
+<a href="?letter=К">К</a>&nbsp;
+<a href="?letter=Л">Л</a>&nbsp;
+<a href="?letter=М">М</a>&nbsp;
+<a href="?letter=Н">Н</a>&nbsp;
+<a href="?letter=О">О</a>&nbsp;
+<a href="?letter=П">П</a>&nbsp;
+<a href="?letter=Р">Р</a>&nbsp;
+<a href="?letter=С">С</a>&nbsp;
+<a href="?letter=Т">Т</a>&nbsp;
+<a href="?letter=У">У</a>&nbsp;
+<a href="?letter=Ф">Ф</a>&nbsp;
+<a href="?letter=Х">Х</a>&nbsp;
+<a href="?letter=Ц">Ц</a>&nbsp;
+<a href="?letter=Ч">Ч</a>&nbsp;
+<a href="?letter=Ш">Ш</a>&nbsp;
+<a href="?letter=Щ">Щ</a>&nbsp;
+<a href="?letter=Ъ">Ъ</a>&nbsp;
+<a href="?letter=Ы">Ы</a>&nbsp;
+<a href="?letter=Ь">Ь</a>&nbsp;
+<a href="?letter=Э">Э</a>&nbsp;
+<a href="?letter=Ю">Ю</a>&nbsp;
+<a href="?letter=Я">Я</a>&nbsp;
 <td>
 </tr>
 <tr>
