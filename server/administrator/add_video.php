@@ -160,7 +160,8 @@ if (count(@$_POST) > 0){
             $category_id = @$_POST['category_id'] ? @intval($_POST['category_id']) : 0;
             
             if (@$_GET['save']){
-                $trans_name = transliterate(@$_POST['name']);
+                $trans_name = transliterate(@urldecode($_POST['name']));
+                
                 if ($hd){
                     $trans_name .= '_HD';
                 }
@@ -234,7 +235,7 @@ if (count(@$_POST) > 0){
                     $rs = $db->executeQuery($query);
                     add_video_log('add', $rs->getLastInsertId());
                     
-                    if($_SESSION['upload']){
+                    if(@$_SESSION['upload']){
                         $query = 'UPDATE screenshots SET media_id=\''.mysql_insert_id().'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
                         $rs=$db->executeQuery($query);
                         unset($_SESSION['upload']);
