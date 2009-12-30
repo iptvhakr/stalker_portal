@@ -15,6 +15,7 @@ function get_save_folder($id){
     $dir_path = IMG_PATH.$dir_name;
     echo '$dir_path: '.$dir_path;
     if (!is_dir($dir_path)){
+        umask(0);
         if (!mkdir ($dir_path, 0777)){
             return -1;
         }else{
