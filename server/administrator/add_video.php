@@ -1044,7 +1044,11 @@ function display_info(arr, id){
         for (i=0; i<arr.length; i++){
             var md5btn_txt = '';
             if (arr[i]['files'][0]['status'] == 'done'){
-                md5btn_txt = 'посчитать MD5 сумму'
+                if (arr[i]['files'][0]['md5'] != ''){
+                    md5btn_txt = 'проверить'
+                }else{
+                    md5btn_txt = 'посчитать MD5 сумму'
+                }
             }else{
                 md5btn_txt = 'идет подсчет'
             }
