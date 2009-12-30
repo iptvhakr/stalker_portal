@@ -277,7 +277,7 @@ $cur_infoportal = get_cur_infoportal($db);
   </tr>
   
   <tr>
-    <td align="center">&nbsp;</td>
+    <td align="center"><a href="claims.php">Жалобы</a></td>
     <td>&nbsp;</td>
     <td align="center"><a href="stat_not_active_users.php">Неактивные абоненты</a></td>
   </tr>
