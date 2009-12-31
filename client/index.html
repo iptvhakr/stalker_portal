@@ -2278,6 +2278,39 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 }
 
 
+/* CONTEXT MENU */
+.context_menu_container{
+    position: absolute;
+    top: 30;
+    left: 100;
+}
+
+.context_menu {
+    display: table;
+    position: relative;
+    list-style: none;
+    background-color: #66aaee;
+    border: 1px solid #66aaee;
+    padding: 2px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+.context_menu li {
+    padding: 2px;
+}
+
+.active_row {
+    background-color: #000001;
+    color: #66aaee;
+}
+
+.passive_row {
+    background-color: #66aaee;
+    color: #000001;
+}
+/* END CONTEXT MENU */
+
 </style>
 <script language="JavaScript" src="js.js" type="text/javascript"></script>
 <script language="JavaScript" src="lang/lang_ru.js" type="text/javascript"></script>
@@ -2307,6 +2340,8 @@ var dom_cache = {}
 var media_browser
 var atrack_switch
 
+var playing_con_menu = [];
+
 var cur_place = ''
 var cur_place_num = 0
 //var user
@@ -2326,6 +2361,12 @@ var vclub_play_auto_ended = 0
 var fav_idx = -1
 
 var aspect_idx = 0
+var aspect_array = [
+    {alias: 'fit', mode: 0x10},
+    {alias: 'big', mode: 0x40},
+    {alias: 'opt', mode: 0x50},
+    {alias: 'exp', mode: 0x00}
+]
 
 var cur_weather
 
@@ -3393,6 +3434,17 @@ var cur_page_radio_by_name_play = 0
         return this.replace(/(\n(\r)?)/g, '');
     }
     
+    Array.prototype.getIdxByVal = function(what, eq){
+        for (var i=0; i<this.length; i++){
+            if (this[i].hasOwnProperty(what)){
+                if (this[i][what] == eq){
+                    return i;
+                }
+            }
+        }
+        return null;
+    }
+    
     if (browser == 'webkit'){ // MAG200 WK
         
         Object.prototype.toSource = function(){
@@ -3532,12 +3584,29 @@ function common_xpcom(){
                     document.getElementById('change_video_out_row').style.display = 'none'
                     document.getElementById('video_out_table').style.display = 'none'
                     
+                    _debug(this.user['aspect']);
+                    this.user['aspect'] = parseInt(this.user['aspect']);
+                    _debug(this.user['aspect']);
+                    
+                    aspect_idx = aspect_array.getIdxByVal('mode', this.user['aspect'])
+                    
+                    _debug('aspect_idx: '+aspect_idx);
+                    
+                    if (aspect_idx == null){
+                        aspect_idx = 0;
+                    }
+                    
+                    stb.SetAspect(this.user['aspect']);
                     
                 }else{
                     func_setting_page = new Array('hide_setting_page();show_parent_password_page()')
                 }
                 
                 if (!this.check_image_version()){
+                    return;
+                }
+                
+                if (!this.check_graphic_res()){
                     return;
                 }
             }
@@ -3572,6 +3641,26 @@ function common_xpcom(){
             run_watchdog()
         }
         portal_loading_bar(40)
+    }
+    
+    this.check_graphic_res = function(){
+        _debug('check_graphic_res');
+        
+        try{
+            var gres = stb.RDir('gmode');
+            
+            _debug('gres: '+gres)
+            
+            if (gres != '720'){
+                _debug('Reboot');
+                stb.ExecAction('graphicres 720');
+                stb.ExecAction('reboot');
+                return 0;
+            }
+        }catch(e){
+            _debug(e)
+        }
+        return 1;
     }
     
     this.Mount = function(link_cmd){
@@ -3796,7 +3885,7 @@ function firefox_xpcom(){
             }
             
             stb.SetupRTSP(2, 0x29)
-            stb.SetAspect(0x10)
+            //stb.SetAspect(0x10)
             stb.SetPIG(1, -1, -1, -1)
             stb.SetUserFlickerControl(1)
             stb.SetDefaultFlicker(1)
@@ -4005,10 +4094,13 @@ function firefox_xpcom(){
                 
                 subtitle_switch.get_all_pids();
                 
+                build_playing_con_menu();
+                
 	            tmp_cur_id = get_cur_vclub_id()
 	            
                 _debug('_continue_play: '+_continue_play)
                 _debug('vclub_not_ended_on: '+vclub_not_ended_on)
+                vclub_play_auto_ended = 0;
                 
                 if ((_continue_play == 1 && last_vclub_played_id != 0 && last_vclub_played_id == tmp_cur_id && last_vclub_pos_time > 0) || (_continue_play == 1 && vclub_not_ended_on)){
                     _debug('stb.SetPosTime('+last_vclub_pos_time+')')
@@ -4290,22 +4382,26 @@ function firefox_xpcom(){
     
     function change_aspect(){
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
-        aspect_array = [
-            {alias: 'fit', mode: 0x10},
-            {alias: 'big', mode: 0x40},
-            {alias: 'opt', mode: 0x50},
-            {alias: 'exp', mode: 0x00}
-        ]
+        
         aspect_idx++
         if (aspect_idx==aspect_array.length){
             aspect_idx = 0
         }
+        
         _debug('SetAspect: '+aspect_array[aspect_idx].alias)
+        
         try{
             stb.SetAspect(aspect_array[aspect_idx].mode)
+            save_aspect(aspect_array[aspect_idx].mode)
         }catch(e){
             _debug(e)
         }
+    }
+    
+    function save_aspect(aspect){
+        _debug('save_aspect()')
+        
+        doLoad('set_aspect', 0, aspect)
     }
     
     function slice_itv(page){
@@ -4372,6 +4468,7 @@ function firefox_xpcom(){
                 }
                                 
                 if (!karaoke_by_singer_on && !karaoke_by_name_on && !video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){
+                    
                     
                     if (es){ // Shift+Tab
                         if (fav_itv_on){
@@ -4511,18 +4608,52 @@ function firefox_xpcom(){
                     break;
                 }
                 
-                if (media_browser.hidden && !media_browser.is_audio){
+                /*if (media_browser.hidden && !media_browser.is_audio){
                     atrack_switch.shift(1);
+                    break;
+                }*/
+                
+                if (media_browser.hidden && !media_browser.is_audio){
+                    //atrack_switch.shift(1);
+                    if (playing_con_menu.menu_windows.length > 0){
+                        if (!playing_con_menu.on){
+                            playing_con_menu.show();
+                        }else{
+                            playing_con_menu.action();
+                        }
+                    }
+                    
                     break;
                 }
                 
                 if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
-                    atrack_switch.shift(1);
+                    //atrack_switch.shift(1);
+                    if (playing_con_menu.menu_windows.length > 0){
+                        if (!playing_con_menu.on){
+                            playing_con_menu.show();
+                        }else{
+                            playing_con_menu.action();
+                        }
+                    }
+                    
                     break;
                 }
                 
-                if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
+                /*if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
                     atrack_switch.shift(1);
+                    break;
+                }*/
+                
+                if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
+                    //atrack_switch.shift(1);
+                    if (playing_con_menu.menu_windows.length > 0){
+                        if (!playing_con_menu.on){
+                            playing_con_menu.show();
+                        }else{
+                            playing_con_menu.action();
+                        }
+                    }
+                    
                     break;
                 }
                 
@@ -4865,7 +4996,7 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if (karaoke_by_name_on == 1){
+                if (karaoke_by_name_on == 1 && !mode_one){
                     if (cur_abc_karaoke_bar == 0 && cur_genre_karaoke_bar == 0){
                         if (karaoke_con_menu_on == 0 && max_karaoke_by_name_rows > 0){
                             show_karaoke_con_menu()
@@ -4880,7 +5011,7 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if (karaoke_by_singer_on == 1){
+                if (karaoke_by_singer_on == 1 && !mode_one){
                     if (cur_abc_karaoke_bar == 0 && cur_karaoke_singer_bar == 0){
                         if (karaoke_con_menu_on == 0 && max_karaoke_by_singer_rows > 0){
                             show_karaoke_con_menu()
@@ -5011,7 +5142,15 @@ function firefox_xpcom(){
                 }
                 
                 if (mode_one){
-                    atrack_switch.shift(1);
+                    //atrack_switch.shift(1);
+                    if (playing_con_menu.menu_windows.length > 0){
+                        if (!playing_con_menu.on){
+                            playing_con_menu.show();
+                        }else{
+                            playing_con_menu.action();
+                        }
+                    }
+                    
                     break;
                 }
                 
@@ -5035,6 +5174,13 @@ function firefox_xpcom(){
                 if (vclub_vote_on){
                     return
                 }
+                
+                try{
+                    if (playing_con_menu.on){
+                        playing_con_menu.open_sub_menu()
+                        break;
+                    }
+                }catch(e){}
                 
                 if (course_page_on){
                     break
@@ -5332,6 +5478,17 @@ function firefox_xpcom(){
                 if (vclub_vote_on){
                     return
                 }
+                
+                try{
+                    if (playing_con_menu.on){
+                        if(playing_con_menu.cur_win.win_idx > 0){
+                            playing_con_menu.close_sub_menu()
+                        }else{
+                            playing_con_menu.hide()
+                        }
+                        break;
+                    }
+                }catch(e){}
                 
                 if (course_page_on){
                     break
@@ -5631,6 +5788,13 @@ function firefox_xpcom(){
                 if (vclub_vote_on){
                     break
                 }
+                
+                try{
+                    if (playing_con_menu.on){
+                        playing_con_menu.shift_row(-1)
+                        break;
+                    }
+                }catch(e){}
                 
                 if (course_page_on){
                     break
@@ -6139,6 +6303,13 @@ function firefox_xpcom(){
                     return
                 }
                 
+                try{
+                    if (playing_con_menu.on){
+                        playing_con_menu.shift_row(1)
+                        break;
+                    }
+                }catch(e){}
+                
                 if (course_page_on){
                     break
                 }
@@ -6633,7 +6804,7 @@ function firefox_xpcom(){
                     break;
                 }
                 
-                if (media_browser.hidden && !media_browser.is_audio){
+                /*if (media_browser.hidden && !media_browser.is_audio){
                     subtitle_switch.shift(-1);
                     break
                 }
@@ -6646,7 +6817,7 @@ function firefox_xpcom(){
                 if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
                     subtitle_switch.shift(-1);
                     break;
-                }
+                }*/
                 
                 
                 if (anec_blog_on){
@@ -6873,10 +7044,10 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if (mode_one){
+                /*if (mode_one){
                     subtitle_switch.shift(-1);
                     break;
-                }
+                }*/
                 
                 break
             }
@@ -6894,7 +7065,7 @@ function firefox_xpcom(){
                     break;
                 }
                 
-                if (media_browser.hidden && !media_browser.is_audio){
+                /*if (media_browser.hidden && !media_browser.is_audio){
                     subtitle_switch.shift(1);
                     break
                 }
@@ -6907,7 +7078,7 @@ function firefox_xpcom(){
                 if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
                     subtitle_switch.shift(1);
                     break;
-                }
+                }*/
                 
                 if (anec_blog_on){
                     shift_anec_blog_body(1, 200)
@@ -7132,10 +7303,10 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if (mode_one){
+                /*if (mode_one){
                     subtitle_switch.shift(1);
                     break;
-                }
+                }*/
                 
                 break
             }
@@ -9044,6 +9215,12 @@ function firefox_xpcom(){
         if (vclub_vote_on){
             return
         }
+        
+        try{
+            if (playing_con_menu.on){
+                playing_con_menu.hide()
+            }
+        }catch(e){}
 
         if (password_input_on == 1){
             dont_hide_con_alpha_layer = 0
@@ -9283,6 +9460,14 @@ function firefox_xpcom(){
         if (vclub_vote_on){
             return
         }
+        
+        try{
+            if (playing_con_menu.on){
+                playing_con_menu.hide()
+                return;
+            }
+        }catch(e){}
+        
         
         if (rec_bar_on){
             hide_rec_bar()
@@ -11079,6 +11264,17 @@ function slider (type) {
         else{
             cur_playing_time = 0
         }
+        
+        stb.SetSubtitles(false);
+        
+        try{
+            atrack_switch.reset()
+        }catch(e){_debug(e)}
+        
+        try{
+            playing_con_menu.reset();
+        }catch(e){_debug(e)}
+        
         media_type = define_media_type(str)
         _debug('cur_playing_time: '+cur_playing_time)
         
@@ -11195,6 +11391,9 @@ function slider (type) {
         if (media_type == 'stream'){
             cur_place = 'itv'
         }
+        
+        init_playing_con_menu()
+        
         player_on = 1
         _log('play', str, get_current_place())
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
@@ -11301,7 +11500,21 @@ function slider (type) {
         last_vclub_pos_time = get_cur_played_time()
         _debug('last_vclub_pos_time: '+last_vclub_pos_time)
         
-        atrack_switch.reset()
+        stb.SetSubtitles(false);
+        
+        try{
+            atrack_switch.reset()
+        }catch(e){_debug(e)}
+        
+        try{
+            playing_con_menu.reset();
+        }catch(e){_debug(e)}
+        
+        if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
+            if (playing_con_menu.on){
+                playing_con_menu.hide();
+            }
+        }
         
         total_paused_time = 0
         total_time_seek_sum = 0
@@ -14788,6 +15001,88 @@ function switch_off_video_club_page(page_num){
     /*document.getElementById('vclub_punct_'+page_num).className = "top_marks_style1"
     document.getElementById('vclub_punct_l_img_'+page_num).src = "i/insert_l.png"
     document.getElementById('vclub_punct_r_img_'+page_num).src = "i/insert_r.png"*/
+}
+
+function init_playing_con_menu(){
+    _debug('init_playing_con_menu()');
+    
+    var map;
+    
+    if (!media_browser.hidden){
+        map = [
+            {
+                'title' : 'Пожаловаться',
+                'cmd'   : [
+                    {
+                        'cmd'   : 'vote_bad_sound()',
+                        'title' : 'на звук',
+                    },
+                    {
+                        'cmd'   : 'vote_bad_video()',
+                        'title' : 'на изображение',
+                    }
+                  ]
+            }
+        ];
+    }else{
+        map = [];
+    }
+    
+    playing_con_menu = new context_menu(map);
+    playing_con_menu.set_x_offset(100);
+    playing_con_menu.set_y_offset(100);
+    
+}
+
+function build_playing_con_menu(){
+    _debug('build_playing_con_menu()');
+        
+    playing_con_menu.map.unshift(
+        {
+            'title' : 'Аудио',
+            'type'  : 'switch',
+            'cmd'   : atrack_switch.get_pids_for_menu()
+        },
+        {
+            'title' : 'Субтитры',
+            'type'  : 'switch',
+            'cmd'   : subtitle_switch.get_pids_for_menu()
+        }
+    );
+    
+    //if (!media_browser.hidden){
+    /*if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
+        map.push({
+            'title' : 'Пожаловаться',
+            'cmd'   : [
+                        {
+                            'cmd'   : 'vclub_vote_bad_sound()',
+                            'title' : 'на звук',
+                        },
+                        {
+                            'cmd'   : 'vclub_vote_bad_video()',
+                            'title' : 'на изображение',
+                        }
+                      ]
+                })
+    }*/
+    
+    _debug(playing_con_menu.map.toSource());
+    
+    if (playing_con_menu.on){
+        playing_con_menu.hide();
+        playing_con_menu.destroy_container();
+        playing_con_menu = new context_menu(playing_con_menu.map);
+        playing_con_menu.set_x_offset(100);
+        playing_con_menu.set_y_offset(100);
+        playing_con_menu.show();
+    }else{
+        playing_con_menu.destroy_container();
+        playing_con_menu = new context_menu(playing_con_menu.map);
+        playing_con_menu.set_x_offset(100);
+        playing_con_menu.set_y_offset(100);
+    }
+    
 }
 /**/
 
@@ -22355,6 +22650,86 @@ function vclub_vote(v){
     _debug('data: '+data.toSource())
     doLoad('vclub_vote', 0, data)
 }
+
+function vote_bad_sound(){
+    _debug('vote_bad_sound()')
+    
+    if (vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on){
+        vclub_vote_bad_sound();
+    }else{
+        itv_vote_bad_sound();
+    }
+}
+
+function vote_bad_video(){
+    _debug('vote_bad_sound()')
+    
+    if (vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on){
+        vclub_vote_bad_video();
+    }else{
+        itv_vote_bad_video();
+    }
+}
+
+function vclub_vote_bad_sound(){
+    _debug('vclub_vote_bad_sound()');
+    show_warning_message('Спасибо, Ваше мнение будет учтено');
+    data = {'media_id':last_vclub_played_id_for_vote, 'type':'sound', 'vote':'bad'}
+    _debug('data: '+data.toSource())
+    doLoad('vclub_vote', 0, data)
+}
+
+function vclub_vote_bad_video(){
+    _debug('vclub_vote_bad_video()');
+    show_warning_message('Спасибо, Ваше мнение будет учтено');
+    data = {'media_id':last_vclub_played_id_for_vote, 'type':'video', 'vote':'bad'}
+    _debug('data: '+data.toSource())
+    doLoad('vclub_vote', 0, data)
+}
+
+function itv_vote_bad_sound(){
+    _debug('itv_vote_bad_sound()');
+    var id;
+    
+    show_warning_message('Спасибо, Ваше мнение будет учтено');
+    
+    if (fav_itv_on){
+        id = fav_channels[f_ch_idx].id
+    }else{
+        if (channels[ch_idx]){
+            id = channels[ch_idx].id
+        }
+    }
+    
+    if (id){
+        data = {'media_id':id, 'type':'sound', 'vote':'bad'}
+        _debug('data: '+data.toSource())
+        doLoad('itv_vote', 0, data)
+    }
+}
+
+function itv_vote_bad_video(){
+    _debug('itv_vote_bad_video()');
+    var id;
+    
+    show_warning_message('Спасибо, Ваше мнение будет учтено');
+    
+    if (fav_itv_on){
+        id = fav_channels[f_ch_idx].id
+    }else{
+        if (channels[ch_idx]){
+            id = channels[ch_idx].id
+        }
+    }
+    
+    if (id){
+        data = {'media_id':id, 'type':'video', 'vote':'bad'}
+        _debug('data: '+data.toSource())
+        doLoad('itv_vote', 0, data)
+    }
+}
+
+
 /**/
 
 /* RECIPE PAGE */
@@ -23312,9 +23687,51 @@ function atrack_switch(){
     this.cur_pid_idx = 0;
     this.all_pids;
     this.info_t;
+    
+}
+
+atrack_switch.prototype.get_pids_for_menu = function(){
+    _debug('atrack_switch.get_pids_for_menu()');
+    
+    var map = [];
+    var title;
+    var active;
+    var lang;
+    
+    try{
+        
+    for (var i = 0; i < this.all_pids.length; i++){
+        
+        active = 0;
+        
+        if (i == this.cur_pid_idx){
+            active = 1;
+        }
+        
+        if (this.all_pids[i].lang[1] != ''){
+            lang = ' - ' + this.all_pids[i].lang[1];
+        }else if (this.all_pids[i].lang[0] != ''){
+            lang = ' - ' + this.all_pids[i].lang[0];
+        }else{
+            lang = '';
+        }
+        
+        title = 'Дорожка ' + (i+1) + lang;
+        
+        map.push({'title' : title, 'cmd' : 'atrack_switch.set_pid('+this.all_pids[i].pid+')', 'active' : active});
+    }
+    
+    }catch(e){
+        _debug(e);
+    }
+    
+    _debug('get_pids_for_menu map: '+map);
+    
+    return map;
 }
 
 atrack_switch.prototype.reset = function(){
+    _debug('atrack_switch.reset()');
     
     delete this.cur_pid;
     delete this.all_pids;
@@ -23360,6 +23777,12 @@ atrack_switch.prototype.get_idx_by_pid = function(pid){
     }
     
     return null;
+}
+
+atrack_switch.prototype.set_pid = function(pid){
+    _debug('atrack_switch.set_pid('+pid+')');
+    
+    stb.SetAudioPID(pid);
 }
 
 atrack_switch.prototype.set_cur_pid = function(){
@@ -23440,7 +23863,6 @@ subtitle_switch.prototype.reset = function(){
     delete this.cur_pid;
     delete this.all_pids;
     this.cur_pid_idx = 0;
-    
 }
 
 subtitle_switch.prototype.get_all_pids = function(){
@@ -23459,6 +23881,49 @@ subtitle_switch.prototype.get_all_pids = function(){
     this.all_pids = eval('(' + all_pids + ')');
     
     this.get_cur_pid();
+}
+
+subtitle_switch.prototype.get_pids_for_menu = function(){
+    _debug('subtitle_switch.get_pids_for_menu()');
+    
+    var map = [];
+    var title;
+    var active;
+    var lang;
+    
+    map.push({'title' : 'Отключить', 'cmd' : 'stb.SetSubtitles('+false+')', 'active' : 1});
+    
+    try{
+        
+    for (var i = 0; i < this.all_pids.length; i++){
+        
+        active = 0;
+        
+        //if (i == this.cur_pid_idx){
+            //active = 1;
+            //map[0].active = 0;
+        //}
+        
+        if (this.all_pids[i].lang[1] != ''){
+            lang = ' - ' + this.all_pids[i].lang[1];
+        }else if (this.all_pids[i].lang[0] != ''){
+            lang = ' - ' + this.all_pids[i].lang[0];
+        }else{
+            lang = '';
+        }
+        
+        title = 'Титры ' + (i+1) + lang;
+        
+        map.push({'title' : title, 'cmd' : 'stb.SetSubtitles('+true+');subtitle_switch.set_pid('+this.all_pids[i].pid+')', 'active' : active});
+    }
+    
+    }catch(e){
+        _debug(e);
+    }
+    
+    _debug('get_pids_for_menu map: '+map);
+    
+    return map;
 }
 
 subtitle_switch.prototype.get_cur_pid = function(){
@@ -23480,6 +23945,12 @@ subtitle_switch.prototype.get_idx_by_pid = function(pid){
     }
     
     return null;
+}
+
+subtitle_switch.prototype.set_pid = function(pid){
+    _debug('subtitle_switch.set_pid('+pid+')');
+    
+    stb.SetSubtitlePID(pid);
 }
 
 subtitle_switch.prototype.set_cur_pid = function(){
@@ -23547,61 +24018,389 @@ subtitle_switch.prototype.shift = function(dir){
 
 /* CONTEXT MENU */
 function context_menu(map){
+    _debug('context_menu()');
     
     this.on = 0;
-    this.offset_x = 0;
-    this.offset_y = 0;
-    this.z_index  = 0;
-    this.map = [];
-    this.dom_obj;
+    this.map = map;
+    this.container;
+    this.parent = document.body;
+    this.menu_windows = [];
+    this.cur_win;
+    this.options;
+    
+    if (arguments.length > 1){
+        if (arguments[1].hasOwnProperty('parent')){
+            this.parent = arguments[1].parent;
+        }
+    }
     
     this.construct_menu(this.map);
+    //this.key_binding();
 }
 
-context_menu.prototype.construct_menu = function(map, parent){
-    _debug('context_menu.construct_menu('+map+', '+parent+')');
+context_menu.prototype.destroy_container = function(){
+    _debug('context_menu.destroy_container()');
+    
+    _debug('remove DOM element - container')
+    
+    try{
+        this.container.parentNode.removeChild(this.container);
+    }catch(e){
+        _debug(e);
+    }
+}
+
+context_menu.prototype.reset = function(){
+    _debug('context_menu.reset()');
+    
+    if (this.on){
+        playing_con_menu.hide()
+    }
+    
+    this.destroy_container();
+    
+    delete this.map;
+    this.menu_windows = [];
+}
+
+context_menu.prototype.show = function(){
+    _debug('context_menu.show()');
+    
+    if (this.map.length > 0){
+        this.on = 1;
+        this.container.style.display = 'block';
+        this.container.style.height = 0;
+        this.set_active_row();
+    }
+}
+
+context_menu.prototype.hide = function(){
+    _debug('context_menu.hide()');
+    
+    this.on = 0;
+    this.container.style.display = 'none';
+    
+    for (var i=1; i < this.menu_windows.length; i++){
+        if (this.menu_windows[i].dom_obj.style.display != 'none'){
+            
+            this.cur_win.dom_obj.style.display = 'none';
+            this.cur_win = this.menu_windows[i];
+            this.set_passive_row();
+        }
+    }
+    
+    this.cur_win = this.menu_windows[0];
+    this.set_passive_row();
+    this.menu_windows[0].cur_row = 0;
+    
+}
+
+/**
+ * @param {Array} map = [{'title' : String, 'cmd' : String | Array map, 'type' : 'switch|options'}]
+ * @param {Object}
+ *
+ */
+context_menu.prototype.construct_menu = function(map, options){
+    _debug('context_menu.construct_menu('+map+')');
+    
+    var title;
+    var win;
+    var from_row;
+    var self = this;
+    var parent_win;
+    var type;
+    
+    this.options = options;
+    
+    if (!this.container){
+        
+        this.container = document.createElement("div");
+        this.container.style.display = 'none';
+        this.container.className = 'context_menu_container';
+        
+        this.parent.appendChild(this.container);
+    }
     
     var dom_obj = document.createElement("ul");
     
     dom_obj.className = 'context_menu';
-    dom_obj.style.display = 'none';
     
-    if (map == this.map){
-        this.dom_obj = dom_obj;
+    if (options){
+        
+        dom_obj.style.display = 'none';
+        
+        var idx = this.menu_windows.getIdxByVal('win_idx', options.win.win_idx);
+        
+        this.menu_windows[idx].dom_obj = dom_obj;
+        
+    }else{
+        
+        this.cur_win = {'win_idx' : this.menu_windows.length,
+                        'parent_win' : -1,
+                        'from_row' : 0,
+                        'dom_obj' : dom_obj,
+                        'cur_row' : 0,
+                        'prev_row' : 0,
+                        'map' : map};
+        
+        this.menu_windows[this.menu_windows.length] = this.cur_win;
+        dom_obj.style.left = '0px';
+        dom_obj.style.top = '0px';
     }
     
-    for (var i=0; i<map.lenght; i++){
+    for (var i=0; i<map.length; i++){
+        
+        map[i].dom_obj = document.createElement("li");
+        
+        if (i == 0){
+            map[i].dom_obj.className = 'active_row';
+        }else{
+            map[i].dom_obj.className = 'passive_row';
+        }
+        
+        title = map[i].title;
+        
+        if (typeof(map[i].cmd) == 'object'){
+            title += '<span style="float:right;margin-left:3px">&rsaquo;</span>';
+        }
+        
+        if (map[i].hasOwnProperty('active')){
+            if (map[i].active == 1 && (options.win.type == 'switch' || options.win.type == 'options')){
+                title += '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+            }
+        }
+        
+        map[i].dom_obj.innerHTML = title;
+        
+        dom_obj.appendChild(map[i].dom_obj);
         
         if (typeof(map[i].cmd) == 'object'){
             
-            this.construct_menu(map[i].cmd, dom_obj);
-        }else{
+            if (options){
+                parent_win = options.win.win_idx;
+            }else{
+                parent_win = 0;
+            }
             
-            map[i].dom_obj = document.createElement("li");
-            map[i].dom_obj.innerHTML = map[i].title;
-            dom_obj.appendChild(map[i].dom_obj);
+            var idx = this.menu_windows.getIdxByVal('win_idx', parent_win);
+            
+            this.menu_windows[idx].left;
+            
+            from_row = i;
+            
+            if (map[i].hasOwnProperty('type')){
+                type = map[i].type;
+            }else{
+                type = 'menu';
+            }
+            
+            win = {'win_idx' : this.menu_windows.length,
+                   'parent_win' : parent_win,
+                   'from_row' : from_row,
+                   'dom_obj' : {},
+                   'cur_row' : 0,
+                   'prev_row' : 0,
+                   'map' : map[i].cmd,
+                   'type' : type};
+            
+            this.menu_windows[this.menu_windows.length] = win;
+            
+            _debug('menu_windows: '+this.menu_windows.toSource());
+            
+            (function(cmd, obj){
+                window.setTimeout(function(){self.construct_menu(cmd, obj)}, 100);
+            })(map[i].cmd, {'dom_obj' : map[i].dom_obj, 'win' : win, 'parent_win' : this.menu_windows.length, 'from_row' : i});
         }
     }
     
-    document.body.appendChild(dom_obj);
+    this.container.appendChild(dom_obj);
+}
+
+context_menu.prototype.key_binding = function(){
+    
+    this.shift_row.bind(key.UP,   this, -1);
+    this.shift_row.bind(key.DOWN, this,  1);
+    
+    this.open_sub_menu.bind(key.RIGHT,   this);
+    this.action.bind(key.OK, this);
+    
+    this.close_sub_menu.bind(key.LEFT, this);
+}
+
+context_menu.prototype.open_sub_menu = function(){
+    _debug('context_menu.open_sub_menu()');
+    
+    _debug('this.cur_win.win_idx :'+this.cur_win.win_idx);
+    _debug('this.cur_win.cur_row :'+this.cur_win.cur_row);
+    
+    for (var i = 0; i < this.menu_windows.length; i++){
+        
+        _debug('parent_win: '+this.menu_windows[i].parent_win);
+        _debug('from_row: '+this.menu_windows[i].from_row);
+        
+        if (this.menu_windows[i].parent_win == this.cur_win.win_idx &&  this.menu_windows[i].from_row == this.cur_win.cur_row){
+            
+            this.cur_win = this.menu_windows[i];
+            
+            _debug('show');
+            
+            if (this.options){
+                
+                var parent_ = this.menu_windows[this.menu_windows.getIdxByVal('win_idx', this.menu_windows[i].parent_win)];
+                
+                //_debug(parent_.dom_obj.childNodes[parent_.cur_row].innerHTML);
+                //_debug(parent_.dom_obj.childNodes[parent_.cur_row].offsetParent.style.top);
+                //_debug(parent_.dom_obj.childNodes[parent_.cur_row].clientHeight);
+                
+                var left = parseInt(parent_.dom_obj.childNodes[parent_.cur_row].offsetParent.style.left) + parent_.dom_obj.childNodes[parent_.cur_row].clientWidth + 7;
+                
+                var top = parent_.dom_obj.childNodes[parent_.cur_row].clientHeight * (parent_.dom_obj.childNodes.length - parent_.cur_row) - parseInt(parent_.dom_obj.childNodes[parent_.cur_row].offsetParent.style.top) + 6 + 20;
+                
+                top = '-' + top + 'px';
+                
+                this.cur_win.dom_obj.style.left = left + 'px';
+                this.cur_win.dom_obj.style.top = top;
+            }
+            
+            this.cur_win.dom_obj.style.display = 'block';
+            
+            this.cur_win.cur_row = 0;
+            this.set_active_row();
+            
+            return;
+        }
+    }
+}
+
+context_menu.prototype.close_sub_menu = function(){
+    _debug('context_menu.close_sub_menu()');
+    
+    if (this.cur_win.parent_win >= 0){
+    
+        this.cur_win.dom_obj.style.display = 'none';
+        this.set_passive_row();
+        
+        this.cur_win = this.menu_windows[this.menu_windows.getIdxByVal('win_idx', this.cur_win.parent_win)];
+    }
+}
+
+context_menu.prototype.action = function(){
+    _debug('context_menu.action()');
+    
+    for (var i = 0; i < this.menu_windows.length; i++){
+        if (this.menu_windows[i].parent_win == this.cur_win.win_idx &&  this.menu_windows[i].from_row == this.cur_win.cur_row){
+            
+            this.open_sub_menu();
+            return;
+        }
+    }
+    
+    if (this.cur_win.type == 'switch'){
+        
+        if (this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].childNodes.length == 1){
+            this.reset_switch(this.cur_win.cur_row);
+        }
+    }else if(this.cur_win.type == 'options'){
+        this.set_active_option(this.cur_win.cur_row);
+    }
+    
+    _debug('title: '+this.cur_win.map[this.cur_win.cur_row].title);
+    _debug('cmd: '+this.cur_win.map[this.cur_win.cur_row].cmd);
+    
+    try{
+        eval(this.cur_win.map[this.cur_win.cur_row].cmd);
+    }catch(e){
+        _debug(e);
+    }
+}
+
+context_menu.prototype.set_active_option = function(row){
+    if (this.cur_win.dom_obj.childNodes[row].childNodes.length > 1){
+        this.cur_win.dom_obj.childNodes[row].removeChild(this.cur_win.dom_obj.childNodes[row].lastChild);
+    }else{
+        this.cur_win.dom_obj.childNodes[row].innerHTML = this.cur_win.dom_obj.childNodes[row].innerHTML + '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+    }
+}
+
+context_menu.prototype.reset_switch = function(exept){
+    
+    for (var i = 0; i < this.cur_win.dom_obj.childNodes.length; i++){
+        
+        if (this.cur_win.dom_obj.childNodes[i].childNodes.length > 1){
+            if (i != exept){
+                this.cur_win.dom_obj.childNodes[i].removeChild(this.cur_win.dom_obj.childNodes[i].lastChild);
+            }
+        }else{
+            if (i == exept){
+                this.cur_win.dom_obj.childNodes[i].innerHTML = this.cur_win.dom_obj.childNodes[i].innerHTML + '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+            }
+        }
+    }
+}
+
+context_menu.prototype.shift_row = function(dir){
+    _debug('context_menu.shift_row('+dir+')');
+    
+    this.cur_win.prev_row = this.cur_win.cur_row;
+    
+    if (dir > 0){
+        if (this.cur_win.cur_row < this.cur_win.dom_obj.childNodes.length - 1){
+            this.cur_win.cur_row++;
+        }else{
+            this.cur_win.cur_row = 0;
+        }
+    }else{
+        if (this.cur_win.cur_row > 0){
+            this.cur_win.cur_row--;
+        }else{
+            this.cur_win.cur_row = this.cur_win.dom_obj.childNodes.length - 1;
+        }
+    }
+    
+    this.set_active_row();
+}
+
+context_menu.prototype.set_active_row = function(){
+    _debug('context_menu.set_active_row()');
+    
+    this.cur_win.dom_obj.childNodes[this.cur_win.prev_row].className = 'passive_row';
+    this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].className = 'active_row';
+}
+
+context_menu.prototype.set_passive_row = function(){
+    _debug('context_menu.set_passive_row()');
+    
+    this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].className = 'passive_row';
 }
 
 context_menu.prototype.set_x_offset = function(x){
     _debug('context_menu.set_x_offset('+x+')');
     
-    this.dom_obj.style.left = parseInt(x) + 'px';
+    x = parseInt(x);
+    
+    if(this.container){
+        this.container.style.left = parseInt(x) + 'px';
+    }
 }
 
 context_menu.prototype.set_y_offset = function(y){
     _debug('context_menu.set_y_offset('+y+')');
     
-    this.dom_obj.style.top = parseInt(y) + 'px';
+    y = parseInt(y);
+    
+    if(this.container){
+        this.container.style.top = parseInt(y) + 'px';
+    }
 }
 
 context_menu.prototype.set_z_index = function(z){
     _debug('context_menu.set_z_index('+z+')');
     
-    this.dom_obj.style.zIndex = parseInt(z) + 'px';
+    z = parseInt(z);
+    
+    if(this.container){
+        this.container.style.zIndex = parseInt(z) + 'px';
+    }
 }
 /* END CONTEXT MENU */
 
