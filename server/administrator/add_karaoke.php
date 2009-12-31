@@ -337,10 +337,11 @@ function get_done_karaoke_color($id){
     }
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
+    
     if (check_access(array(1))){
-    	return "<font color='$color'><b>$txt</b></font>";
+    	return "<a href='add_karaoke.php?done=$done&id=$id&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
     }else{
-        return "<a href='add_karaoke.php?done=$done&id=$id&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
+        return "<font color='$color'><b>$txt</b></font>";
     }
 }
 
