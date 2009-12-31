@@ -11,7 +11,7 @@ abstract class Master
     private $storages;
     private $clients;
     private $stb;
-    private $media_id;
+    protected $media_id;
     private $media_name;
     private $source_type;
     private $cache_expire_h = MASTER_CACHE_EXPIRE;
@@ -561,14 +561,8 @@ abstract class Master
      *
      * @param array $series_arr
      */
-    private function saveSeries($series_arr){
-        sort($series_arr);
-        
-        //$this->db->executeQuery("update video set series='".serialize($series_arr)."' where id='$this->media_id'");
-        $this->db->update('video',
-                          array('series' => serialize($series_arr)),
-                          array('id' => $this->media_id));
-        
+    protected function saveSeries($series_arr){
+        return true;
     }
     
     /**
