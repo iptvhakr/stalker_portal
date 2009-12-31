@@ -27,6 +27,14 @@ class VideoMaster extends Master
             return '';
         }
     }
+    
+    protected function saveSeries($series_arr){
+        sort($series_arr);
+        //$this->db->executeQuery("update video set series='".serialize($series_arr)."' where id='$this->media_id'");
+        $this->db->update('video',
+                          array('series' => serialize($series_arr)),
+                          array('id' => $this->media_id));
+    }
 }
 
 ?>
