@@ -248,6 +248,8 @@ CREATE TABLE `users`(
     `bright` varchar(64) NOT NULL default '200',
     `contrast` varchar(64) NOT NULL default '100',
     `saturation` varchar(64) NOT NULL default '100',
+    
+    `aspect` int NOT NULL default 16,
 
     `video_out` varchar(64) NOT NULL default 'rca',
     `volume` varchar(64) NOT NULL default '100',
@@ -968,7 +970,44 @@ DROP TABLE `acl_resources`;
 CREATE TABLE `acl_resources`(
     `id` int NOT NULL auto_increment,
     `name` varchar(255) NOT NULL default '',
-    `acrions` text NOT NULL default '',
+    `actions` text NOT NULL default '',
     PRIMARY KEY (`id`),
     UNIQUE KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `itv_claims`;
+CREATE TABLE `itv_claims`(
+    `id` int NOT NULL auto_increment,
+    `itv_id` int NOT NULL default 0,
+    `sound_counter` int NOT NULL default 0,
+    `video_counter` int NOT NULL default 0,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`itv_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `itv_claims_log`;
+CREATE TABLE `itv_claims_log`(
+    `id` int NOT NULL auto_increment,
+    `media_id` int NOT NULL default 0,
+    `uid` int NOT NULL default 0,
+    `vote_type` varchar(64) NOT NULL default '',
+    `good` int NOT NULL default 0,
+    `bad` int NOT NULL default 0,
+    `added` datetime,
+    INDEX(`added`),
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `daily_claims`;
+CREATE TABLE `daily_claims`(
+    `id` int NOT NULL auto_increment,
+    `date` date NOT NULL default 0,
+    `vclub_sound` int NOT NULL default 0,
+    `vclub_video` int NOT NULL default 0,
+    `itv_sound` int NOT NULL default 0,
+    `itv_video` int NOT NULL default 0,
+    `karaoke_sound` int NOT NULL default 0,
+    `karaoke_video` int NOT NULL default 0,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`date`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
