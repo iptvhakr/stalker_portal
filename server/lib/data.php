@@ -48,9 +48,11 @@ function get_data(){
     $type     = $_GET['type'];
     $action   = @$_GET['action'];
     $num      = @$_GET['num'];
-    $search   = @urldecode($_GET['s']);
+    //$search   = @urldecode($_GET['s']);
+    $search   = @$_GET['s'];
     
-    if (mb_check_encoding($search,'windows-1251')){
+    //if (mb_check_encoding($search,'windows-1251')){
+    if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'webkit') === false){
         $search = iconv("WINDOWS-1251","UTF-8", $search);
     }
     
@@ -750,6 +752,7 @@ function get_data(){
         $arr['contrast'] = $rs->getValueByName(0, 'contrast');
         $arr['saturation'] = $rs->getValueByName(0, 'saturation');
         $arr['video_out'] = $rs->getValueByName(0, 'video_out');
+        $arr['aspect'] = $rs->getValueByName(0, 'aspect');
         $arr['fav_itv_on'] = $rs->getValueByName(0, 'fav_itv_on');
         $arr['volume'] = $rs->getValueByName(0, 'volume');
         $arr['my_rec_ch'] = $my_rec_ch;
@@ -807,6 +810,14 @@ function get_data(){
     if ($type == 'set_video_out'){
         $data = $_GET['data'];
         $sql = "update users set video_out='".$data."' where mac='".$stb->mac."'";
+        $rs = $db->executeQuery($sql);
+        $data['data'] = 'ok';
+        return $data;
+    }
+    
+    if ($type == 'set_aspect'){
+        $data = $_GET['data'];
+        $sql = "update users set aspect='".$data."' where mac='".$stb->mac."'";
         $rs = $db->executeQuery($sql);
         $data['data'] = 'ok';
         return $data;
@@ -1475,6 +1486,8 @@ function get_data(){
                 //$s = $_GET['s'];
                 //var_dump($_SERVER);
                 //var_dump($_GET);
+                //var_dump($_GET['s']);
+                //$search = $_GET['s'];
                 //var_dump(mb_check_encoding($s,'windows-1251'));
                 //var_dump(mb_check_encoding($s,'utf-8'));
                 //$s = iconv("WINDOWS-1251","UTF-8", $s);
