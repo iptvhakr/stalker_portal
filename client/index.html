@@ -3636,11 +3636,13 @@ function common_xpcom(){
             get_media_cats()
             run_watchdog()
             epg_loader.start()
+            portal_loading_bar(40)
         }else if(this.user['status'] == 1){
+            portal_loading_bar(100)
+            hide_portal_loading_bar()
             cut_off()
             run_watchdog()
         }
-        portal_loading_bar(40)
     }
     
     this.check_graphic_res = function(){
@@ -11502,9 +11504,7 @@ function slider (type) {
         
         stb.SetSubtitles(false);
         
-        try{
-            atrack_switch.reset()
-        }catch(e){_debug(e)}
+        atrack_switch&&atrack_switch.reset&&atrack_switch.reset();
         
         try{
             playing_con_menu.reset();
