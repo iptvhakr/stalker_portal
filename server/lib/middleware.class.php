@@ -48,6 +48,8 @@ class Middleware
      * @return string|false clean mac address or error if string don't looks like mac address
      */
     public static function normalizeMac($mac){
+        $mac = iconv("WINDOWS-1251","UTF-8", $mac);
+        
         $pattern = array('А', 'В', 'С', 'Е'); // ru
         $replace = array('A', 'B', 'C', 'E'); // en
         
