@@ -86,8 +86,7 @@ function get_data(){
             case 'startmd5sum':
                 {
                     $resp = array();
-                    
-                    if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda'){
+                    if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
                         $master = new VideoMaster();
                         try {
                             $master->startMD5Sum($data['storage_name'], $data['media_name']);
