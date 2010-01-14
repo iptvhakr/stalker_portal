@@ -13,7 +13,7 @@ abstract class Master
     private $stb;
     protected $media_id;
     private $media_name;
-    private $source_type;
+    private $from_cache;
     private $cache_expire_h = MASTER_CACHE_EXPIRE;
     protected $db;
     protected $media_type;
@@ -32,11 +32,11 @@ abstract class Master
      * @param int $series_num
      * @return array contains path to media or error
      */
-    public function play($media_id, $series_num = 0){
+    public function play($media_id, $series_num = 0, $from_cache = true){
         
         $this->initMedia($media_id);
         
-        $good_storages = $this->getAllGoodStoragesForMedia($this->media_id);
+        $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, !$from_cache);
         
         $default_error = 'nothing_to_play';
         
@@ -64,7 +64,13 @@ abstract class Master
                 }catch (SoapFault $exception){
                     $default_error = 'link_fault';
                     $this->parseException($exception);
-                    continue;
+                    
+                    if ($this->from_cache){
+                        
+                        return $this->play($media_id, $series_num, false);
+                    }else{
+                        continue;
+                    }
                 }
                 
                 preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
@@ -74,7 +80,7 @@ abstract class Master
                 $res['id']   = $this->media_id;
                 $res['load'] = $storage['load'];
                 $res['storage_id'] = $this->storages[$name]['id'];
-                $res['source_type'] = $this->source_type;
+                $res['from_cache'] = $this->from_cache;
                 return $res;
             }else{
                 $this->incrementStorageDeny($name);
@@ -82,8 +88,15 @@ abstract class Master
                 return $res;
             }
         }
-        $res['error'] = $default_error;
-        return $res;
+        
+        if ($this->from_cache){
+            
+            return $this->play($media_id, $series_num, false);
+        }else{
+            $res['error'] = $default_error;
+            return $res;
+        }
+
     }
     
     /**
@@ -143,7 +156,6 @@ abstract class Master
     private function getAllActiveStorages(){
         $storages = array();
         
-        //$data = $this->db->executeQuery('select * from storages where status=1')->getAllValues();
         $data = $this->db->from('storages')->where(array('status' => 1))->get()->all();
         
         foreach ($data as $idx => $storage){
@@ -171,18 +183,22 @@ abstract class Master
      * @param int $media_id
      * @return array good storages, sorted by load
      */
-    private function getAllGoodStoragesForMedia($media_id){
+    private function getAllGoodStoragesForMedia($media_id, $force_net = false){
+        
+        $cache = array();
         
         $this->initMedia($media_id);
         
-        $cache = $this->getAllGoodStoragesForMediaFromCache();
+        if (!$force_net){
+            $cache = $this->getAllGoodStoragesForMediaFromCache();
+        }
         
         if (!empty($cache)){
             $good_storages = $cache;
-            $this->source_type = 'DB_CACHE';
+            $this->from_cache = true;
         }else{
             $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name);
-            $this->source_type = 'NET';
+            $this->from_cache = false;
         }
         
         $good_storages = $this->sortByLoad($good_storages);
