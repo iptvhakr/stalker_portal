@@ -2319,7 +2319,7 @@ var debug = 0
 var alex_debug = 0
 var log_on = 1
 
-const ver = '3.37.0'
+const ver = '3.38.0'
 
 var revision = '$Revision$'
 
@@ -3558,6 +3558,11 @@ function common_xpcom(){
                 document.getElementById('club_row_1').style.display = ''
                 
                 if (browser == 'webkit'){
+                    
+                    _debug('stb.GetBrightness: '+stb.GetBrightness());
+                    _debug('stb.GetSaturation: '+stb.GetSaturation());
+                    _debug('stb.GetContrast: '+stb.GetContrast());
+                    
                     total_rows_club = 12
                     
                     document.getElementById('club_row_11').style.display = ''
@@ -4092,13 +4097,13 @@ function firefox_xpcom(){
 	        case 4:
 	        {
                 
-	            atrack_switch.get_all_pids();
+                atrack_switch.get_all_pids();
                 
                 subtitle_switch.get_all_pids();
                 
                 build_playing_con_menu();
                 
-	            tmp_cur_id = get_cur_vclub_id()
+                tmp_cur_id = get_cur_vclub_id()
 	            
                 _debug('_continue_play: '+_continue_play)
                 _debug('vclub_not_ended_on: '+vclub_not_ended_on)
@@ -4469,8 +4474,7 @@ function firefox_xpcom(){
                     break
                 }
                                 
-                if (!karaoke_by_singer_on && !karaoke_by_name_on && !video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){
-                    
+                if (!karaoke_by_singer_on && !karaoke_by_name_on && !video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){                    
                     
                     if (es){ // Shift+Tab
                         if (fav_itv_on){
@@ -18647,7 +18651,7 @@ function cut_off(){
     netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
     stop()
     stb.SetDefaultFlicker(1)
-    document.getElementById('cut_off').style.display = ''
+    document.getElementById('cut_off').style.display = 'block'
     cut_off_on = 1
 }
 /**/
@@ -24533,7 +24537,7 @@ context_menu.prototype.set_z_index = function(z){
 <div id="atrack_info" style="display:none;"></div>
 <!---->
 
-<!-- ATRACK INFO -->
+<!-- SUBTITLE INFO -->
 <div id="subtitle_info" style="display:none;"></div>
 <!---->
 
