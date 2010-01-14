@@ -285,7 +285,7 @@ $cur_infoportal = get_cur_infoportal($db);
 <br>
 
 
-<? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda'){ ?>
+<? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){ ?>
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
   <tr>
     <td colspan="3" align="center"><span class="style1">Настройки</span></td>
