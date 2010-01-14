@@ -5,6 +5,7 @@ MAILTO=alex
 10 4 * * 1 /var/www/stalker_portal/server/tasks/clear_master_log.sh
 10 5 * * 1 /var/www/stalker_portal/server/tasks/clear_epg.sh
 01 4 * * * /var/www/stalker_portal/server/tasks/reset_paused.sh
+01 2 * * * /var/www/stalker_portal/server/tasks/cache_refresh.sh
 0,20,40 * * * * /var/www/stalker_portal/server/tasks/update_cur_weather.sh
 01 * * * * /var/www/stalker_portal/server/tasks/update_day_weather.sh
 10 0,2,6 * * * /var/www/stalker_portal/server/tasks/update_horoscope.sh
