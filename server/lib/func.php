@@ -164,7 +164,7 @@ function moderator_access(){
 }
 
 function check_access($num = array()){
-    
+    $num[] = 0;
     if(in_array($_SESSION['access'], $num)){
         return 1;
     }else{
