@@ -964,7 +964,7 @@ if (@$_GET['id']){
     echo "var sel_category_id = 0\n";
 }
 
-if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda'){
+if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
     echo "var can_md5dum=1\n";
 }else{
     echo "var can_md5dum=0\n";
