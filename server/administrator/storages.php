@@ -13,7 +13,7 @@ $db = new Database(DB_NAME);
 
 moderator_access();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda'){ 
+if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
     exit;
 }
 
@@ -84,6 +84,15 @@ if (@$_GET['reset_cache'] && !empty($id)){
     }
 }
 
+if (@$_GET['reset_all_cache']){
+    $db->executeQuery('update storage_cache set changed="0000-00-00 00:00:00"');
+    if (!$db->getLastError()){
+        $error = 'Кеш сброшен';
+    }else{
+        $error = $db->getLastError();
+    }
+}
+
 $storages = $db->executeQuery('select * from storages')->getAllValues();
 
 ?>
@@ -133,7 +142,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="master_log.php">Логи</a>
+        <a href="index.php"><< Назад</a> | <a href="master_log.php">Логи</a> | <a href="?reset_all_cache=1" onclick="if(confirm('Вы действительно хотите сбросить весь кеш?')){return true}else{return false}">Сбросить кеш</a> | <a href="cache_refresh.php" onclick="if(confirm('Вы действительно хотите обновить весь кеш? Эта операция займет какое-то время.')){return true}else{return false}">Обновить кеш</a>
     </td>
 </tr>
 <tr>
