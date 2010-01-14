@@ -13,7 +13,7 @@ $db = new Database(DB_NAME);
 
 moderator_access();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda'){ 
+if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda'  && !check_access()){ 
     exit;
 }
 
