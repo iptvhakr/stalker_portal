@@ -5128,11 +5128,12 @@ function firefox_xpcom(){
                     window.clearTimeout(t_hide_ch_id)
                     play('' + search_in_ch_cmd(ch_num_in.value))
                     hide_ch_num()
+                    break;
                 }
+                
                 if(tv_list_on){
                 	t_hide_channel_list()
                 }
-                _debug('abc_video_search_on: '+abc_video_search_on+'; menu_on: '+menu_on)
                 
                 if(abc_video_search_on == 1 && menu_on == 0){
                     if (cur_video_list_row == 0){
