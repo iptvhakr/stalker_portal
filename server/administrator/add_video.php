@@ -450,7 +450,7 @@ $total_items = $rs->getRowCount();
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-$query = "select * from video $where $order_by LIMIT $page_offset, $MAX_PAGE_ITEMS";
+$query = "select video.*, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter from video left join media_claims on video.id=media_claims.media_id and media_claims.media_type='vclub' $where group by video.id $order_by LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
 $rs = $db->executeQuery($query);
 //echo $total_pages;
@@ -579,8 +579,9 @@ echo "<td class='list'><b>Оригинальное название</b></td>\n";
 echo "<td class='list'><b>Ограничение</b></td>\n";
 echo "<td class='list'><b>Длительность, мин</b></td>\n";
 echo "<td class='list'><b>Серии</b></td>\n";
-echo "<td class='list'><b>Качество звука</b></td>\n";
-echo "<td class='list'><b>Качество видео</b></td>\n";
+echo "<td class='list'><b>Жалобы на звук/видео</b></td>\n";
+//echo "<td class='list'><b>Качество звука</b></td>\n";
+//echo "<td class='list'><b>Качество видео</b></td>\n";
 echo "<td class='list'>&nbsp;</td>\n";
 echo "<td class='list'><b>Включен</b></td>\n";
 echo "</tr>\n";
@@ -598,7 +599,17 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['time']."</td>\n";
     echo "<td class='list'><span id='series_{$arr['id']}'>".count_series($arr['series'])."</span></td>\n";
     echo "<td class='list' align='center'>";
+    
     if (check_access(array(1))){
+        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик жалоб?\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
+    }
+    echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
+    if (check_access(array(1))){
+        echo "</a>";
+    }
+    echo "</td>\n";
+    
+    /*if (check_access(array(1))){
         echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик качества звука?\")){document.location=\"add_video.php?reset_sound_vote=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."\"}'>";
     }
     echo "<span style='color:green;font-weight:bold'>".$arr['vote_sound_good']."</span> / <span style='color:red;font-weight:bold'>".$arr['vote_sound_bad']."</span>";
@@ -615,7 +626,7 @@ while(@$rs->next()){
     if (check_access(array(1))){
         echo "</a>";
     }
-    echo "</td>\n";
+    echo "</td>\n";*/
     
     echo "<td class='list'>";
     if (check_access(array(1, 2))){
