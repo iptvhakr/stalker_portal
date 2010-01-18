@@ -217,13 +217,24 @@ a:hover {
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$where = 'where administrators.id=karaoke.add_by ';
+//$where = 'where administrators.id=karaoke.add_by ';
+$where = '';
 if ($search){
-    $where .= 'and karaoke.name like "%'.$search.'%"';
+    if (!$where){
+        $where .= ' where ';
+    }else{
+        $where .= ' and ';
+    }
+    $where .= ' karaoke.name like "%'.$search.'%"';
 }
 
 if ($letter) {
-	$where .= 'and karaoke.name like "'.$letter.'%"';
+	if (!$where){
+        $where .= ' where ';
+    }else{
+        $where .= ' and ';
+    }
+    $where .= ' karaoke.name like "'.$letter.'%"';
 }
 
 if (@$_GET['status']){
@@ -241,7 +252,7 @@ if (@$_GET['status']){
     
 }
 
-$query = "select * from karaoke, administrators $where";
+$query = "select * from karaoke $where";
 //echo $query;
 $rs = $db->executeQuery($query);
 //var_dump($rs);
@@ -351,7 +362,11 @@ if (!empty($_GET['letter'])){
     $orderby = 'id';
 }
 
-$query = "select karaoke.*,administrators.login from karaoke,administrators  $where order by $orderby LIMIT $page_offset, $MAX_PAGE_ITEMS";
+$query = "select karaoke.*,administrators.login, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter
+    from karaoke 
+    inner join administrators on administrators.id=karaoke.add_by
+    left join media_claims on karaoke.id=media_claims.media_id and media_claims.media_type='karaoke'
+    $where group by karaoke.id, karaoke.add_by order by $orderby LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
 //echo $_GET['search'];
 $rs = $db->executeQuery($query);
@@ -456,6 +471,7 @@ echo "<td class='list'><b>Название композиции</b></td>";
 echo "<td class='list'><b>Исполнитель</b></td>";
 echo "<td class='list'><b>Добавил</b></td>";
 echo "<td class='list'><b>Когда</b></td>";
+echo "<td class='list'><b>Жалобы на<br>звук/видео</b></td>\n";
 //echo "<td class='list'><b>Путь</b></td>";
 //echo "<td class='list'><b>Длительность, с</b></td>";
 //echo "<td class='list'><b>Описание</b></td>";
@@ -471,6 +487,18 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['singer']."</td>";
     echo "<td class='list'>".$arr['login']."</td>";
     echo "<td class='list'>".$arr['added']."</td>";
+    
+    echo "<td class='list' align='center'>";
+    
+    if (check_access(array(1))){
+        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик жалоб?\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
+    }
+    echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
+    if (check_access(array(1))){
+        echo "</a>";
+    }
+    echo "</td>\n";
+    
     echo "<td class='list'><a href='?edit=1&id=".$arr['id']."&search=$search&letter=$letter#form'>edit</a>&nbsp;&nbsp;";
     if (check_access(array(1))){
         echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"add_karaoke.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
