@@ -22660,9 +22660,11 @@ function vote_bad_sound(){
     _debug('vote_bad_sound()')
     
     if (vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on){
-        vclub_vote_bad_sound();
+        vclub_claim('sound');
+    }else if(karaoke_by_name_on || karaoke_by_singer_on){
+        karaoke_claim('sound');
     }else{
-        itv_vote_bad_sound();
+        itv_claim('sound');
     }
 }
 
@@ -22670,13 +22672,31 @@ function vote_bad_video(){
     _debug('vote_bad_sound()')
     
     if (vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on){
-        vclub_vote_bad_video();
+        vclub_claim('video');
+    }else if(karaoke_by_name_on || karaoke_by_singer_on){
+        karaoke_claim('video');
     }else{
-        itv_vote_bad_video();
+        itv_claim('video');
     }
 }
 
-function vclub_vote_bad_sound(){
+function vclub_claim(type){
+    _debug('vclub_claim('+type+')');
+    show_warning_message('Спасибо, Ваше мнение будет учтено');
+    var data = {'media_type':'vclub', 'media_id':last_vclub_played_id_for_vote, 'type':type}
+    _debug('data: '+data.toSource())
+    doLoad('media_claim', 0, data)
+}
+
+function karaoke_claim(type){
+    _debug('karaoke_claim('+type+')');
+    show_warning_message('Спасибо, Ваше мнение будет учтено');
+    var data = {'media_type':'karaoke', 'media_id': last_vclub_played_id_for_vote, 'type':type}
+    _debug('data: '+data.toSource())
+    doLoad('media_claim', 0, data)
+}
+
+/*function vclub_vote_bad_sound(){
     _debug('vclub_vote_bad_sound()');
     show_warning_message('Спасибо, Ваше мнение будет учтено');
     data = {'media_id':last_vclub_played_id_for_vote, 'type':'sound', 'vote':'bad'}
@@ -22690,10 +22710,10 @@ function vclub_vote_bad_video(){
     data = {'media_id':last_vclub_played_id_for_vote, 'type':'video', 'vote':'bad'}
     _debug('data: '+data.toSource())
     doLoad('vclub_vote', 0, data)
-}
+}*/
 
-function itv_vote_bad_sound(){
-    _debug('itv_vote_bad_sound()');
+function itv_claim(type){
+    _debug('itv_claim('+type+')');
     var id;
     
     show_warning_message('Спасибо, Ваше мнение будет учтено');
@@ -22707,12 +22727,12 @@ function itv_vote_bad_sound(){
     }
     
     if (id){
-        data = {'media_id':id, 'type':'sound', 'vote':'bad'}
+        var data = {'media_type':'itv', 'media_id':id, 'type':type}
         _debug('data: '+data.toSource())
-        doLoad('itv_vote', 0, data)
+        doLoad('media_claim', 0, data)
     }
 }
-
+/*
 function itv_vote_bad_video(){
     _debug('itv_vote_bad_video()');
     var id;
@@ -22732,7 +22752,7 @@ function itv_vote_bad_video(){
         _debug('data: '+data.toSource())
         doLoad('itv_vote', 0, data)
     }
-}
+}*/
 
 
 /**/
