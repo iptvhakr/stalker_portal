@@ -602,7 +602,7 @@ function get_data(){
         exit;
     }
     
-    if ($type == 'vclub_vote'){
+/*    if ($type == 'vclub_vote'){
         $data = $_GET['data'];
         $media_id = $data['media_id'];
         $type     = $data['type'];
@@ -623,9 +623,9 @@ function get_data(){
         
         return 1;
         exit;
-    }
+    }*/
     
-    if ($type == 'itv_vote'){
+/*    if ($type == 'itv_vote'){
         $data = $_GET['data'];
         $media_id = $data['media_id'];
         $type     = $data['type'];
@@ -656,6 +656,50 @@ function get_data(){
             $sql = "update itv_claims set sound_counter=sound_counter+$sound_counter, video_counter=video_counter+$video_counter where itv_id=$media_id";
         }else{
             $sql = "insert into itv_claims (itv_id, sound_counter, video_counter) values ($media_id, $sound_counter, $video_counter)";
+        }
+        
+        $db->executeQuery($sql);
+        
+        return 1;
+        exit;
+    }*/
+    
+    if ($type == 'media_claim'){
+        
+        $data = $_GET['data'];
+        $media_id   = intval($data['media_id']);
+        $media_type = $data['media_type'];
+        $type       = $data['type'];
+        
+        $sql = "insert into media_claims_log (media_type, media_id, type, uid, added) values ('$media_type', $media_id, '$type', $stb->id, NOW())";
+        $db->executeQuery($sql);
+        
+        $sql = "select * from media_claims where media_type='$media_type' and media_id=$media_id";
+        $rs = $db->executeQuery($sql);
+        
+        $sound_counter = 0;
+        $video_counter = 0;
+        if ($type == 'video'){
+            $video_counter++;
+        }else{
+            $sound_counter++;
+        }
+        
+        if ($rs->getRowCount() > 0){
+            $sql = "update media_claims set sound_counter=sound_counter+$sound_counter, video_counter=video_counter+$video_counter where media_type='$media_type' and media_id=$media_id";
+        }else{
+            $sql = "insert into media_claims (media_type, media_id, sound_counter, video_counter) values ('$media_type', $media_id, $sound_counter, $video_counter)";
+        }
+        
+        $db->executeQuery($sql);
+        
+        $sql = "select * from daily_media_claims where date=CURDATE()";
+        $rs = $db->executeQuery($sql);
+        
+        if ($rs->getRowCount() > 0){
+            $sql = "update daily_media_claims set ".$media_type."_sound=".$media_type."_sound+$sound_counter, ".$media_type."_video=".$media_type."_video+$video_counter where date=CURDATE()";
+        }else{
+            $sql = "insert into daily_media_claims (`date`, ".$media_type."_sound, ".$media_type."_video) values (CURDATE(), $sound_counter, $video_counter)";
         }
         
         $db->executeQuery($sql);
