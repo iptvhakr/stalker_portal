@@ -214,7 +214,9 @@ a:hover{
 Внимание, с 1 апреля вводится подписка на каналы! Во избежание недоразумений менять номера каналов и ставить опции необходимо по согласованию.</div><br>
 
 <?
-$query = "select itv.*, tv_genre.title as genres_name from itv, tv_genre where itv.tv_genre_id=tv_genre.id order by number";
+$query = "select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number";
+
+//echo $query;
 
 $rs=$db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
@@ -226,6 +228,8 @@ echo "<td class='list'><b>Имя</b></td>";
 echo "<td class='list'><b>Адрес</b></td>";
 //echo "<td class='list'><b>Описание</b></td>";
 echo "<td class='list'><b>Жанр</b></td>";
+echo "<td class='list'><b>Жалобы на<br>звук/видео</b></td>\n";
+echo "<td class='list'><b>&nbsp;</b></td>";
 echo "</tr>";
 while(@$rs->next()){
     
@@ -258,7 +262,18 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['cmd']."</td>";
     //echo "<td class='list'>".$arr['descr']."</td>";
     echo "<td class='list'>".$arr['genres_name']."</td>";
-    echo "<td class='list'><a href='?edit=1&id=".$arr['id']."#form'>edit</a>&nbsp;&nbsp;";
+    
+    echo "<td class='list' align='center'>\n";
+    if (check_access(array(1))){
+        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик жалоб?\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
+    }
+    echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
+    if (check_access(array(1))){
+        echo "</a>";
+    }
+    echo "</td>\n";
+    
+    echo "<td class='list' nowrap><a href='?edit=1&id=".$arr['id']."#form'>edit</a>&nbsp;&nbsp;";
     //echo "<a href='?del=1&id=".$arr['id']."' >del</a>&nbsp;&nbsp;";
     echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"add_itv.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
     if ($arr['status']){
