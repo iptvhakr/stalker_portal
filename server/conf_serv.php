@@ -28,14 +28,12 @@ define("PORTAL_URI", '/stalker_portal/');
 define("MASTER_CACHE_EXPIRE", 365); // hours
 
 if (OS_UNIX){
-    define("XMLTV_URI",  '/home/zx/listing.xml');
     define("PORTAL_PATH", '/var/www/stalker_portal/');
     define("IMG_PATH", '/var/www/stalker_portal/screenshots/');
     define("DB_NAME", 'stalker_db');
     define("MYSQL_USER", 'stalker');
     define("MYSQL_PASS", '1');
 }else{
-    define("XMLTV_URI",  'D:\\listing.xml');
     define("PORTAL_PATH", 'd:\\projects\\stalker_portal\\current\\');
     define("IMG_PATH", 'd:\\media\\screenshots\\');
     define("DB_NAME", 'stalker_db_mirror');
