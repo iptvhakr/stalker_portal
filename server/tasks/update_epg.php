@@ -11,8 +11,14 @@ include "../lib/func.php";
 
 $epg = new Epg();
 
+if (isset($_GET['force'])){
+    $force = true;
+}else{
+    $force = false;
+}
+
 echo "<pre>";
-echo $epg->updateEpg();
+echo $epg->updateEpg($force);
 echo "</pre>";
 ?>
 </body>
