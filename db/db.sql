@@ -246,8 +246,8 @@ CREATE TABLE `users`(
     `parent_password` varchar(64) NOT NULL default '0000',
     
     `bright` varchar(64) NOT NULL default '200',
-    `contrast` varchar(64) NOT NULL default '100',
-    `saturation` varchar(64) NOT NULL default '100',
+    `contrast` varchar(64) NOT NULL default '127',
+    `saturation` varchar(64) NOT NULL default '127',
     
     `aspect` int NOT NULL default 16,
 
@@ -946,16 +946,6 @@ CREATE TABLE `master_log`(
     INDEX(`added`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE `system_log`;
-CREATE TABLE `system_log`(
-    `id` int NOT NULL auto_increment,
-    `type` varchar(128) NOT NULL default '',
-    `text` text NOT NULL,
-    `added` datetime,
-    PRIMARY KEY (`id`),
-    INDEX (`added`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 DROP TABLE `acl_roles`;
 CREATE TABLE `acl_roles`(
     `id` int NOT NULL auto_increment,
@@ -974,43 +964,6 @@ CREATE TABLE `acl_resources`(
     PRIMARY KEY (`id`),
     UNIQUE KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-/*DROP TABLE `itv_claims`;
-CREATE TABLE `itv_claims`(
-    `id` int NOT NULL auto_increment,
-    `itv_id` int NOT NULL default 0,
-    `sound_counter` int NOT NULL default 0,
-    `video_counter` int NOT NULL default 0,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY (`itv_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-DROP TABLE `itv_claims_log`;
-CREATE TABLE `itv_claims_log`(
-    `id` int NOT NULL auto_increment,
-    `media_id` int NOT NULL default 0,
-    `uid` int NOT NULL default 0,
-    `vote_type` varchar(64) NOT NULL default '',
-    `good` int NOT NULL default 0,
-    `bad` int NOT NULL default 0,
-    `added` datetime,
-    INDEX(`added`),
-    PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-DROP TABLE `daily_claims`;
-CREATE TABLE `daily_claims`(
-    `id` int NOT NULL auto_increment,
-    `date` date NOT NULL default 0,
-    `vclub_sound` int NOT NULL default 0,
-    `vclub_video` int NOT NULL default 0,
-    `itv_sound` int NOT NULL default 0,
-    `itv_video` int NOT NULL default 0,
-    `karaoke_sound` int NOT NULL default 0,
-    `karaoke_video` int NOT NULL default 0,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY (`date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;*/
 
 DROP TABLE `media_claims`;
 CREATE TABLE `media_claims`(
@@ -1046,4 +999,14 @@ CREATE TABLE `daily_media_claims`(
     `karaoke_video` int NOT NULL default 0,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`date`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `epg_setting`;
+CREATE TABLE `epg_setting`(
+    `id` int NOT NULL auto_increment,
+    `uri` varchar(255) NOT NULL default '',
+    `etag` varchar(255) NOT NULL default '',
+    `updated` datetime,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`uri`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
