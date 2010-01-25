@@ -534,36 +534,36 @@ td, table{
     border: 2px solid #FFFFFF;
 }
 #genres_select {
-	position:absolute;
-	z-index:799;
-	left: 35px;
-	top: 46px;
+    position:absolute;
+    z-index:799;
+    left: 35px;
+    top: 46px;
 }
 #speed_title, #atrack_info, #subtitle_info {
     position:absolute;
     z-index: 871;
-	left: 585px;
-	top: 66px;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 28px;
-	color: #00CC00;
-	font-weight:bold
+    left: 585px;
+    top: 66px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 28px;
+    color: #00CC00;
+    font-weight:bold
 }
 
 #atrack_info, #subtitle_info {
-	display:table;
+    display:table;
     color: #ffffff;
     left: auto;
     right: 100px;
     font-size: 20px;
-	padding: 5px;
-	border: 4px solid #cccccc;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 18px;
-	font-weight: bold;
-	background-color: #3399FF;
-	color: #FFFFFF;
-	-webkit-border-radius: 3px;
+    padding: 5px;
+    border: 4px solid #cccccc;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #3399FF;
+    color: #FFFFFF;
+    -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
 }
 
@@ -2277,7 +2277,6 @@ table tr .black_row, table tr .grey_row, table tr .hover_black_row , table tr .h
 	top: 250px;
 }
 
-
 /* CONTEXT MENU */
 .context_menu_container{
     position: absolute;
@@ -2319,7 +2318,7 @@ var debug = 0
 var alex_debug = 0
 var log_on = 1
 
-const ver = '3.38.0'
+const ver = '3.38.1'
 
 var revision = '$Revision$'
 
@@ -2341,6 +2340,8 @@ var media_browser
 var atrack_switch
 
 var playing_con_menu = [];
+
+var replay_channel_t;
 
 var cur_place = ''
 var cur_place_num = 0
@@ -3559,11 +3560,9 @@ function common_xpcom(){
                 
                 if (browser == 'webkit'){
                     
-                    _debug('stb.GetBrightness: '+stb.GetBrightness());
-                    _debug('stb.GetSaturation: '+stb.GetSaturation());
-                    _debug('stb.GetContrast: '+stb.GetContrast());
-                    
                     total_rows_club = 12
+                    
+                    this.show_image_version();
                     
                     document.getElementById('club_row_11').style.display = ''
                     
@@ -3648,6 +3647,37 @@ function common_xpcom(){
             cut_off()
             run_watchdog()
         }
+    }
+    
+    this.show_image_version = function(){
+        document.getElementById('ver').innerHTML = document.getElementById('ver').innerHTML + '(' + this.get_image_version() + ')';
+    }
+    
+    this.get_image_version = function(){
+        _debug('check_graphic_res');
+        
+        var ver = '';
+        
+        try{
+            var full_ver = stb.RDir('Img_Ver');
+            
+            _debug('full_ver: ' + full_ver);
+            
+            var pattern = /ImageVersion:\s([^\s]*)\s(.*)/
+
+            var short_ver = full_ver.replace(pattern, "$1");
+            
+            if (short_ver.length < 10){
+                ver = short_ver.clearnl();
+            }
+            
+            _debug('ver: ' + ver);
+            
+        }catch(e){
+            _debug(e);
+        }
+        
+        return ver
     }
     
     this.check_graphic_res = function(){
@@ -4082,6 +4112,8 @@ function firefox_xpcom(){
 	            }else{
 	                _debug('stream error')
 	                log_stream_error()
+	                
+	                replay_channel_t = window.setTimeout(function(){play_not_to(hist_ch[1])}, 1000);
 	            }
 	            
 	            break
@@ -4096,13 +4128,13 @@ function firefox_xpcom(){
 	        }
 	        case 4:
 	        {
-                
+	            
                 atrack_switch.get_all_pids();
                 
                 subtitle_switch.get_all_pids();
                 
                 build_playing_con_menu();
-                
+
                 tmp_cur_id = get_cur_vclub_id()
 	            
                 _debug('_continue_play: '+_continue_play)
@@ -4389,7 +4421,7 @@ function firefox_xpcom(){
     
     function change_aspect(){
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
-        
+
         aspect_idx++
         if (aspect_idx==aspect_array.length){
             aspect_idx = 0
@@ -4425,6 +4457,10 @@ function firefox_xpcom(){
     
     function getkeydown(e){
         netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect")
+        
+        if (replay_channel_t){
+            window.clearTimeout(replay_channel_t)
+        }
         
         var es = e.shiftKey
         
@@ -4474,7 +4510,7 @@ function firefox_xpcom(){
                     break
                 }
                                 
-                if (!karaoke_by_singer_on && !karaoke_by_name_on && !video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){                    
+                if (!karaoke_by_singer_on && !karaoke_by_name_on && !video_club_info_on && !vclub_vote_on && !course_page_on && !horoscope_sign_page_on && !horoscope_page_on && !mastermind_game_on && !widget_page_on && !weather_page_on && !anec_page_on && !city_info_page_on && radio_page_on == 0 && karaoke_page_on == 0 && video_out_setting_page_on == 0 && setting_page_on == 0 && club_on == 0 && parent_password_page_on == 0 && video_club_on == 0 && tv_page_on == 0 && web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && video_records_by_addtime_on == 0 && my_video_records_on == 0){
                     
                     if (es){ // Shift+Tab
                         if (fav_itv_on){
@@ -4540,6 +4576,10 @@ function firefox_xpcom(){
         var code
         var chanNumber = 0
         var progId = 0
+        
+        if (replay_channel_t){
+            window.clearTimeout(replay_channel_t)
+        }
 
         _debug('getkeypress() keyCode:'+e.keyCode+'; which:'+e.which)
         if (cut_off_on == 1 && e.keyCode != 13 && !full_incoming_msg_on){
@@ -4644,6 +4684,16 @@ function firefox_xpcom(){
                     
                     break;
                 }
+
+                if (ch_by_num_on == 1){
+                    pause=0
+                    ch_num_in = document.getElementById('ch_num_txt')
+                    show_playing(ch_num_in.value + '. ' + search_in_ch(ch_num_in.value))
+                    window.clearTimeout(t_hide_ch_id)
+                    play('' + search_in_ch_cmd(ch_num_in.value))
+                    hide_ch_num()
+                    break;
+                }
                 
                 /*if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
                     atrack_switch.shift(1);
@@ -4662,7 +4712,7 @@ function firefox_xpcom(){
                     
                     break;
                 }
-                
+
                 /*if (media_browser.hidden && player_on){
                     atrack_switch.get_all_pids();
                     break;
@@ -5001,7 +5051,7 @@ function firefox_xpcom(){
                     }
                     break
                 }
-                
+
                 if (karaoke_by_name_on == 1 && !mode_one){
                     if (cur_abc_karaoke_bar == 0 && cur_genre_karaoke_bar == 0){
                         if (karaoke_con_menu_on == 0 && max_karaoke_by_name_rows > 0){
@@ -5016,7 +5066,7 @@ function firefox_xpcom(){
                     }
                     break
                 }
-                
+
                 if (karaoke_by_singer_on == 1 && !mode_one){
                     if (cur_abc_karaoke_bar == 0 && cur_karaoke_singer_bar == 0){
                         if (karaoke_con_menu_on == 0 && max_karaoke_by_singer_rows > 0){
@@ -5121,7 +5171,7 @@ function firefox_xpcom(){
                         play(''+search_in_ch_cmd(array_chan[chanArray_startIdx+chanTbl_index].index))
                     }
                 }
-                if (ch_by_num_on == 1){
+                /*if (ch_by_num_on == 1){
                     pause=0
                     ch_num_in = document.getElementById('ch_num_txt')
                     show_playing(ch_num_in.value + '. ' + search_in_ch(ch_num_in.value))
@@ -5129,10 +5179,10 @@ function firefox_xpcom(){
                     play('' + search_in_ch_cmd(ch_num_in.value))
                     hide_ch_num()
                     break;
-                }
+                }*/
                 
                 if(tv_list_on){
-                	t_hide_channel_list()
+                    t_hide_channel_list()
                 }
                 
                 if(abc_video_search_on == 1 && menu_on == 0){
@@ -5188,7 +5238,7 @@ function firefox_xpcom(){
                         break;
                     }
                 }catch(e){}
-                
+
                 if (course_page_on){
                     break
                 }
@@ -6213,7 +6263,7 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if(web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0){
+                if(web_bar_on == 0 && menu_on == 0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && vclub_not_ended_on == 0 && vclub_by_top_on == 0 && vclub_by_search_on == 0){
                     if (fav_itv_on){
                         if (f_ch_idx < (fav_channels.length-1)){
                             f_ch_idx++
@@ -6716,7 +6766,7 @@ function firefox_xpcom(){
                     break
                 }
                 
-                if(web_bar_on == 0 && menu_on ==0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0){
+                if(web_bar_on == 0 && menu_on ==0 && tv_program_on == 0 && vclub_by_name_on == 0 && vclub_by_genre_on == 0 && vclub_by_year_on == 0 && vclub_not_ended_on == 0 && vclub_by_top_on == 0 && vclub_by_search_on == 0){
                     if (fav_itv_on){
                         if (f_ch_idx > 0){
                             f_ch_idx--
@@ -6810,22 +6860,6 @@ function firefox_xpcom(){
                     }
                     break;
                 }
-                
-                /*if (media_browser.hidden && !media_browser.is_audio){
-                    subtitle_switch.shift(-1);
-                    break
-                }
-                
-                if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
-                    subtitle_switch.shift(-1);
-                    break
-                }
-                
-                if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
-                    subtitle_switch.shift(-1);
-                    break;
-                }*/
-                
                 
                 if (anec_blog_on){
                     shift_anec_blog_body(-1, 200)
@@ -7051,11 +7085,6 @@ function firefox_xpcom(){
                     break
                 }
                 
-                /*if (mode_one){
-                    subtitle_switch.shift(-1);
-                    break;
-                }*/
-                
                 break
             }
             case 34: // PageDown
@@ -7071,21 +7100,6 @@ function firefox_xpcom(){
                     }
                     break;
                 }
-                
-                /*if (media_browser.hidden && !media_browser.is_audio){
-                    subtitle_switch.shift(1);
-                    break
-                }
-                
-                if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
-                    subtitle_switch.shift(1);
-                    break
-                }
-                
-                if ((tv_by_number_on || tv_by_channel_on || tv_by_theme_on) && mode_one){
-                    subtitle_switch.shift(1);
-                    break;
-                }*/
                 
                 if (anec_blog_on){
                     shift_anec_blog_body(1, 200)
@@ -7309,11 +7323,6 @@ function firefox_xpcom(){
                     set_active_radio_by_name_row()
                     break
                 }
-                
-                /*if (mode_one){
-                    subtitle_switch.shift(1);
-                    break;
-                }*/
                 
                 break
             }
@@ -9467,15 +9476,14 @@ function firefox_xpcom(){
         if (vclub_vote_on){
             return
         }
-        
+
         try{
             if (playing_con_menu.on){
                 playing_con_menu.hide()
                 return;
             }
         }catch(e){}
-        
-        
+
         if (rec_bar_on){
             hide_rec_bar()
         }
@@ -11682,7 +11690,7 @@ function slider (type) {
         }
         
         if (tmp_series_num>0){
-            ip = ip+'  '+tmp_series_num+' серия'
+            ip = ip+'<br/>'+tmp_series_num+' серия'
         }
         
         cur_playing_str = ip
@@ -11698,7 +11706,6 @@ function slider (type) {
                 
                 ip = ip+'<br>'+cur_time_len+' / '+total_time_len;
             }
-            
         }
         
         try{
@@ -15007,6 +15014,7 @@ function switch_off_video_club_page(page_num){
     document.getElementById('vclub_punct_l_img_'+page_num).src = "i/insert_l.png"
     document.getElementById('vclub_punct_r_img_'+page_num).src = "i/insert_r.png"*/
 }
+/**/
 
 function init_playing_con_menu(){
     _debug('init_playing_con_menu()');
@@ -15041,6 +15049,10 @@ function init_playing_con_menu(){
 
 function build_playing_con_menu(){
     _debug('build_playing_con_menu()');
+    
+    if (playing_con_menu.map.length > 1){
+        return;
+    }
         
     playing_con_menu.map.unshift(
         {
@@ -15054,23 +15066,6 @@ function build_playing_con_menu(){
             'cmd'   : subtitle_switch.get_pids_for_menu()
         }
     );
-    
-    //if (!media_browser.hidden){
-    /*if ((vclub_by_name_on || vclub_by_genre_on || vclub_by_year_on || vclub_by_add_time_on || vclub_by_top_on || vclub_by_search_on || vclub_not_ended_on) && mode_one){
-        map.push({
-            'title' : 'Пожаловаться',
-            'cmd'   : [
-                        {
-                            'cmd'   : 'vclub_vote_bad_sound()',
-                            'title' : 'на звук',
-                        },
-                        {
-                            'cmd'   : 'vclub_vote_bad_video()',
-                            'title' : 'на изображение',
-                        }
-                      ]
-                })
-    }*/
     
     _debug(playing_con_menu.map.toSource());
     
@@ -22696,22 +22691,6 @@ function karaoke_claim(type){
     doLoad('media_claim', 0, data)
 }
 
-/*function vclub_vote_bad_sound(){
-    _debug('vclub_vote_bad_sound()');
-    show_warning_message('Спасибо, Ваше мнение будет учтено');
-    data = {'media_id':last_vclub_played_id_for_vote, 'type':'sound', 'vote':'bad'}
-    _debug('data: '+data.toSource())
-    doLoad('vclub_vote', 0, data)
-}
-
-function vclub_vote_bad_video(){
-    _debug('vclub_vote_bad_video()');
-    show_warning_message('Спасибо, Ваше мнение будет учтено');
-    data = {'media_id':last_vclub_played_id_for_vote, 'type':'video', 'vote':'bad'}
-    _debug('data: '+data.toSource())
-    doLoad('vclub_vote', 0, data)
-}*/
-
 function itv_claim(type){
     _debug('itv_claim('+type+')');
     var id;
@@ -22732,29 +22711,6 @@ function itv_claim(type){
         doLoad('media_claim', 0, data)
     }
 }
-/*
-function itv_vote_bad_video(){
-    _debug('itv_vote_bad_video()');
-    var id;
-    
-    show_warning_message('Спасибо, Ваше мнение будет учтено');
-    
-    if (fav_itv_on){
-        id = fav_channels[f_ch_idx].id
-    }else{
-        if (channels[ch_idx]){
-            id = channels[ch_idx].id
-        }
-    }
-    
-    if (id){
-        data = {'media_id':id, 'type':'video', 'vote':'bad'}
-        _debug('data: '+data.toSource())
-        doLoad('itv_vote', 0, data)
-    }
-}*/
-
-
 /**/
 
 /* RECIPE PAGE */
@@ -23873,7 +23829,6 @@ atrack_switch.prototype.shift = function(dir){
 }
 /* END AUDIO TRACK SWITCH */
 
-
 /* SUBTITLE SWITCH */
 function subtitle_switch(){
     
@@ -24543,7 +24498,7 @@ context_menu.prototype.set_z_index = function(z){
         <div style="position:absolute;left:158px;top:0px;"><img src="i/new_label.png"></div>
         </div>
         
-        <div id="ver" align="right" style="position:absolute;left:620px;top:510px;color:#efefef;"></div>
+        <div id="ver" align="right" style="position:absolute;right:10px;top:510px;color:#efefef;"></div>
     </td>
   </tr>
 </table>
