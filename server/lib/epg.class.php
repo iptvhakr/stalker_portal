@@ -17,16 +17,56 @@ class Epg
     public $cur_program_page;
     public $cur_program_row;
     public $correction_time = 0; // minutes
+    private $settings = array();
     
     public function __construct(){
         $this->db = Mysql::getInstance();
         $this->day_begin_datetime = date("Y-m-d 00:00:00");
         $this->now_datetime = date("Y-m-d H:i:s");
+        
+        $this->settings = $this->getSettings();
     }
     
-    public function updateEpg(){
+    public function updateEpg($force = false){
         
-        $xml = simplexml_load_file(XMLTV_URI);
+        $result = '';
+        
+        foreach ($this->settings as $setting){
+            $result .= $this->updateEpgBySetting($setting, $force);
+            $result .= "\n";
+        }
+        
+        return $result;
+    }
+    
+    public function updateEpgBySetting($setting, $force = false){
+        
+        $str = "From {$setting['uri']}\n";
+        
+        if (strpos($setting['uri'], 'http') === 0){
+            
+            $headers = get_headers($setting['uri']);
+            
+            foreach ($headers as $header){
+                
+                if (preg_match('/^ETag: "(.*)"/', $header, $matches)){
+                    if (!empty($matches[1])){
+                        
+                        $etag = $matches[1];
+                        
+                        break;
+                    }
+                }
+            }
+        }else{
+            $etag = md5_file($setting['uri']);
+        }
+        
+        if ($setting['etag'] == $etag && !$force){
+            return 'Файл не изменился';
+        }
+        
+        $xml = simplexml_load_file($setting['uri']);
         $ids_arr = $this->getITVids();
         
         $insert_data = array();
@@ -38,16 +78,15 @@ class Epg
             
             if ($itv_id_arr){
                 
-                $mysql_start = xmltvdatetime2datetime($programme->attributes()->start);
-
-                $start = date("YmdHis", datetime2timestamp($mysql_start) + $this->correction_time*60);
-                $mysql_start = date("Y-m-d H:i:s", datetime2timestamp($mysql_start) + $this->correction_time*60);
+                $start_ts = strtotime(strval($programme->attributes()->start)) + $this->correction_time*60;
                 
+                $mysql_start = date("Y-m-d H:i:s",$start_ts);
+
                 $title = addslashes($programme->title);
                 
                 foreach ($itv_id_arr as $itv_id){
                     
-                    $this->cleanEpgByDate($start, $itv_id);
+                    $this->cleanEpgByDate($start_ts, $itv_id);
                     
                     if (!key_exists($itv_id, $data_arr)){
                         $data_arr[$itv_id][] = array();
@@ -91,6 +130,31 @@ class Epg
         return $str;
     }
     
+    private function getSettings(){
+        
+        return $this->db->from('epg_setting')->get()->all();
+    }
+    
+    private function setSettings($setting){
+        
+        if (isset($setting['id'])){
+            //$sql = "update epg_setting set uri='{$setting['uri']}', etag='{$setting['etag']}', updated=NOW() where id=".$setting['id'];
+            $this->db->update('epg_setting',
+                              array(
+                                'uri'     => $setting['uri'],
+                                'etag'    => $setting['etag'],
+                                'updated' => 'NOW()'
+                              ),
+                              array('id' => $setting['id']));
+        }else{
+            //$sql = "insert into epg_setting (uri) values ('{$setting['uri']}')";
+            $this->db->insert('epg_setting',
+                              array(
+                                'uri' => $setting['uri']
+                              ));
+        }
+    }
+    
     private function getITVids(){
         
         /*$sql = "select * from itv where xmltv_id!=''";
@@ -119,19 +183,18 @@ class Epg
     }
     
     private function cleanEpgByDate($date, $itv_id){
-        $yy = substr($date, 0,4);
-        $mm = substr($date, 4,2);
-        $dd = substr($date, 6,2);
         
-        $from = "$yy-$mm-$dd 00:00:00";
-        $to   = "$yy-$mm-$dd 23:59:59";
+        $date = date("Y-m-d", $date);
+        
+        $from = $date." 00:00:00";
+        $to   = $date." 23:59:59";
         
         if (!@$this->cleaned_epg[$itv_id]){
             $this->cleaned_epg[$itv_id] = array();
         }
         
-        if (!@$this->cleaned_epg[$itv_id]["$yy-$mm-$dd"]){
-            $this->cleaned_epg[$itv_id] = array("$yy-$mm-$dd" => 1);
+        if (!@$this->cleaned_epg[$itv_id][$date]){
+            $this->cleaned_epg[$itv_id] = array($date => 1);
             
             /*$sql = "delete from epg where ch_id=$itv_id and time>='$from' and time<'$to'";
             $this->db->executeQuery($sql);*/
