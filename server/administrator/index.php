@@ -296,6 +296,11 @@ $cur_infoportal = get_cur_infoportal($db);
     <td width="6%">&nbsp;</td>
     <td width="47%" align="center"><a href="storages.php">Хранилища</a></td>
   </tr>
+  <tr>
+    <td width="47%" align="center"><a href="epg_setting.php">EPG</a></td>
+    <td width="6%">&nbsp;</td>
+    <td width="47%" align="center">&nbsp;</td>
+  </tr>
 </table>
 <?}?>
 </body>
