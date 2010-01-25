@@ -7,6 +7,7 @@ MAILTO=alex
 01 4 * * * /var/www/stalker_portal/server/tasks/reset_paused.sh
 01 2 * * * /var/www/stalker_portal/server/tasks/cache_refresh.sh
 0,20,40 * * * * /var/www/stalker_portal/server/tasks/update_cur_weather.sh
+0 2-12 * * 1 /var/www/stalker_portal/server/tasks/update_epg.sh
 01 * * * * /var/www/stalker_portal/server/tasks/update_day_weather.sh
 10 0,2,6 * * * /var/www/stalker_portal/server/tasks/update_horoscope.sh
 01 7,9,12,16,19,21 * * * /var/www/stalker_portal/server/tasks/update_course.sh
