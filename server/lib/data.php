@@ -602,68 +602,6 @@ function get_data(){
         exit;
     }
     
-/*    if ($type == 'vclub_vote'){
-        $data = $_GET['data'];
-        $media_id = $data['media_id'];
-        $type     = $data['type'];
-        $vote     = $data['vote'];
-        if ($vote == 'good'){
-            $good = 1;
-            $bad = 0;
-        }else{
-            $good = 0;
-            $bad = 1;
-        }
-        
-        $sql = "insert into vclub_vote (media_id, uid, vote_type, good, bad, added) values ($media_id, $stb->id, '$type', $good, $bad, NOW())";
-        $db->executeQuery($sql);
-        
-        $sql = "update video set vote_".$type."_good=vote_".$type."_good+$good, vote_".$type."_bad=vote_".$type."_bad+$bad where id=$media_id";
-        $db->executeQuery($sql);
-        
-        return 1;
-        exit;
-    }*/
-    
-/*    if ($type == 'itv_vote'){
-        $data = $_GET['data'];
-        $media_id = $data['media_id'];
-        $type     = $data['type'];
-        $vote     = $data['vote'];
-        if ($vote == 'good'){
-            $good = 1;
-            $bad = 0;
-        }else{
-            $good = 0;
-            $bad = 1;
-        }
-        
-        $sql = "insert into itv_claims_log (media_id, uid, vote_type, good, bad, added) values ($media_id, $stb->id, '$type', $good, $bad, NOW())";
-        $db->executeQuery($sql);
-        
-        $sql = "select * from itv_claims where itv_id=$media_id";
-        $rs = $db->executeQuery($sql);
-        
-        $sound_counter = 0;
-        $video_counter = 0;
-        if ($type == 'video'){
-            $video_counter++;
-        }else{
-            $sound_counter++;
-        }
-        
-        if ($rs->getRowCount() > 0){
-            $sql = "update itv_claims set sound_counter=sound_counter+$sound_counter, video_counter=video_counter+$video_counter where itv_id=$media_id";
-        }else{
-            $sql = "insert into itv_claims (itv_id, sound_counter, video_counter) values ($media_id, $sound_counter, $video_counter)";
-        }
-        
-        $db->executeQuery($sql);
-        
-        return 1;
-        exit;
-    }*/
-    
     if ($type == 'media_claim'){
         
         $data = $_GET['data'];
@@ -807,7 +745,14 @@ function get_data(){
         $uid = @$rs->getValueByName(0, 'id');
         
         if(!$uid){
-            $sql = "insert into users (mac) values ('$stb->mac')";
+            
+            if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'webkit') === false){
+                $bright = 200;
+            }else{
+                $bright = 127;
+            }
+            
+            $sql = "insert into users (mac, bright) values ('$stb->mac', $bright)";
             $db->executeQuery($sql);
             
             $uid = $rs->getLastInsertId();
@@ -1670,12 +1615,12 @@ function get_data(){
             }else{
                 $where .= ' and accessed=1';
                 $where_accessed = ' and accessed=1';
+                
+                if ($stb->hd){
+                    $where .=  ' and disable_for_hd_devices=0';
+                }
             }
-            
-            if ($stb->hd){
-                $where .=  ' and disable_for_hd_devices=0';
-            }
-            
+                        
             //$where .= ' and category_id='.$_GET['cat_num'];
             if (intval($_GET['cat_num']) > 0 && intval($_GET['cat_num']) != 101){
                 $where .= ' and category_id='.$_GET['cat_num'];
