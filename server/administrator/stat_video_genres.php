@@ -114,16 +114,9 @@ function page_bar(){
     return $page_bar;
 }
 
-function get_view_by_genre($genre_id = 0){
-    $db = Database::getInstance(DB_NAME);
-    $genre_id = intval($genre_id);
-    
-    $sql = "select count(*) as counter from video where genre_id_1=$genre_id or genre_id_2=$genre_id or genre_id_3=$genre_id or genre_id_4=$genre_id";
-    $rs = $db->executeQuery($sql);
-    return $rs->getValueByName(0, 'counter');
-}
+$from = date("Y-m-d H:i:s", time()-60*60*24*30);
 
-$query = "select * from genre order by title";
+$query = "select count(played_video.id) as played_counter, genre.title as genre_title from played_video left join video on played_video.video_id=video.id inner join genre on genre.id=genre_id_1 or genre.id=genre_id_2 or genre.id=genre_id_3 or genre.id=genre_id_4 where playtime>'$from' group by genre.title";
 //echo $query;
 $rs = $db->executeQuery($query);
 
@@ -137,8 +130,8 @@ while(@$rs->next()){
     $arr=$rs->getCurrentValuesAsHash();
     
     echo "<tr>";
-    echo "<td class='list'>".$arr['title']."</td>\n";
-    echo "<td class='list'>".get_view_by_genre($arr['id'])."</td>\n";
+    echo "<td class='list'>".$arr['genre_title']."</td>\n";
+    echo "<td class='list'>".$arr['played_counter']."</td>\n";
     echo "</tr>\n";
 }
 echo "</table>\n";
