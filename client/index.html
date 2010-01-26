@@ -15044,14 +15044,27 @@ function init_playing_con_menu(){
     playing_con_menu = new context_menu(map);
     playing_con_menu.set_x_offset(100);
     playing_con_menu.set_y_offset(100);
+    playing_con_menu.set_z_index(871);
     
 }
 
 function build_playing_con_menu(){
     _debug('build_playing_con_menu()');
     
+    _debug('playing_con_menu.map.length: '+playing_con_menu.map.length);
+    
     if (playing_con_menu.map.length > 1){
         return;
+    }
+    
+    if (browser == 'webkit'){
+        playing_con_menu.map.unshift(
+            {
+                'title' : 'Субтитры',
+                'type'  : 'switch',
+                'cmd'   : subtitle_switch.get_pids_for_menu()
+            }
+        );
     }
         
     playing_con_menu.map.unshift(
@@ -15059,11 +15072,6 @@ function build_playing_con_menu(){
             'title' : 'Аудио',
             'type'  : 'switch',
             'cmd'   : atrack_switch.get_pids_for_menu()
-        },
-        {
-            'title' : 'Субтитры',
-            'type'  : 'switch',
-            'cmd'   : subtitle_switch.get_pids_for_menu()
         }
     );
     
@@ -15075,12 +15083,14 @@ function build_playing_con_menu(){
         playing_con_menu = new context_menu(playing_con_menu.map);
         playing_con_menu.set_x_offset(100);
         playing_con_menu.set_y_offset(100);
+        playing_con_menu.set_z_index(871);
         playing_con_menu.show();
     }else{
         playing_con_menu.destroy_container();
         playing_con_menu = new context_menu(playing_con_menu.map);
         playing_con_menu.set_x_offset(100);
         playing_con_menu.set_y_offset(100);
+        playing_con_menu.set_z_index(871);
     }
     
 }
@@ -23722,9 +23732,9 @@ atrack_switch.prototype.reset = function(){
 
 atrack_switch.prototype.get_all_pids = function(){
     
-    if (browser != 'webkit'){
+    /*if (browser != 'webkit'){
         return;
-    }
+    }*/
     
     _debug('atrack_switch.get_all_pids()');
     
@@ -23743,6 +23753,11 @@ atrack_switch.prototype.get_cur_pid = function(){
     
     this.cur_pid = stb.GetAudioPID();
     _debug('cur_pid: '+this.cur_pid);
+    
+    if (this.all_pids.length == 0){
+        this.all_pids = [{'pid' : this.cur_pid, 'lang' : ["", ""]}];
+        _debug('this.all_pids: '+this.all_pids.toSource());
+    }
     
     this.cur_pid_idx = this.get_idx_by_pid(this.cur_pid);
     
@@ -23852,15 +23867,19 @@ subtitle_switch.prototype.get_all_pids = function(){
     }
     
     _debug('subtitle_switch.get_all_pids()');
-    
-    this.reset();
-    
-    var all_pids = stb.GetSubtitlePIDs();
-    _debug('subtitle_switch all_pids: '+all_pids);
-    
-    this.all_pids = eval('(' + all_pids + ')');
-    
-    this.get_cur_pid();
+    try{
+        this.reset();
+        
+        var all_pids = stb.GetSubtitlePIDs();
+        
+        _debug('subtitle_switch all_pids: '+all_pids);
+        
+        this.all_pids = eval('(' + all_pids + ')');
+        
+        this.get_cur_pid();
+    }catch(e){
+        _debug(e)
+    }
 }
 
 subtitle_switch.prototype.get_pids_for_menu = function(){
@@ -24060,18 +24079,23 @@ context_menu.prototype.hide = function(){
     this.on = 0;
     this.container.style.display = 'none';
     
-    for (var i=1; i < this.menu_windows.length; i++){
-        if (this.menu_windows[i].dom_obj.style.display != 'none'){
-            
-            this.cur_win.dom_obj.style.display = 'none';
-            this.cur_win = this.menu_windows[i];
-            this.set_passive_row();
+    try{
+        for (var i=1; i < this.menu_windows.length; i++){
+            if (this.menu_windows[i].dom_obj.style.display != 'none'){
+                
+                this.cur_win.dom_obj.style.display = 'none';
+                this.cur_win = this.menu_windows[i];
+                this.set_passive_row();
+            }
         }
+        
+        this.cur_win = this.menu_windows[0];
+        this.set_passive_row();
+        this.menu_windows[0].cur_row = 0;
+        
+    }catch(e){
+        _debug(e);
     }
-    
-    this.cur_win = this.menu_windows[0];
-    this.set_passive_row();
-    this.menu_windows[0].cur_row = 0;
     
 }
 
@@ -24141,12 +24165,20 @@ context_menu.prototype.construct_menu = function(map, options){
         title = map[i].title;
         
         if (typeof(map[i].cmd) == 'object'){
-            title += '<span style="float:right;margin-left:3px">&rsaquo;</span>';
+            if (browser == 'webkit'){
+                title += '<span style="float:right;margin-left:3px">&rsaquo;</span>';
+            }else{
+                title += '<span>&rsaquo;</span>';
+            }
         }
         
         if (map[i].hasOwnProperty('active')){
             if (map[i].active == 1 && (options.win.type == 'switch' || options.win.type == 'options')){
-                title += '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+                if (browser == 'webkit'){
+                    title += '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+                }else{
+                    title += '<span>&bull;</span>';
+                }
             }
         }
         
@@ -24298,12 +24330,18 @@ context_menu.prototype.set_active_option = function(row){
     if (this.cur_win.dom_obj.childNodes[row].childNodes.length > 1){
         this.cur_win.dom_obj.childNodes[row].removeChild(this.cur_win.dom_obj.childNodes[row].lastChild);
     }else{
-        this.cur_win.dom_obj.childNodes[row].innerHTML = this.cur_win.dom_obj.childNodes[row].innerHTML + '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+        
+        var bull =  '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+        
+        if (browser != 'webkit'){
+            bull = '<span>&bull;</span>';
+        }
+        
+        this.cur_win.dom_obj.childNodes[row].innerHTML = this.cur_win.dom_obj.childNodes[row].innerHTML + bull;
     }
 }
 
 context_menu.prototype.reset_switch = function(exept){
-    
     for (var i = 0; i < this.cur_win.dom_obj.childNodes.length; i++){
         
         if (this.cur_win.dom_obj.childNodes[i].childNodes.length > 1){
@@ -24312,7 +24350,14 @@ context_menu.prototype.reset_switch = function(exept){
             }
         }else{
             if (i == exept){
-                this.cur_win.dom_obj.childNodes[i].innerHTML = this.cur_win.dom_obj.childNodes[i].innerHTML + '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+                
+                var bull = '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
+                
+                if (browser != 'webkit'){
+                    bull = '<span>&bull;</span>';
+                }
+                
+                this.cur_win.dom_obj.childNodes[i].innerHTML = this.cur_win.dom_obj.childNodes[i].innerHTML + bull;
             }
         }
     }
@@ -24343,14 +24388,22 @@ context_menu.prototype.shift_row = function(dir){
 context_menu.prototype.set_active_row = function(){
     _debug('context_menu.set_active_row()');
     
-    this.cur_win.dom_obj.childNodes[this.cur_win.prev_row].className = 'passive_row';
-    this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].className = 'active_row';
+    try{
+        this.cur_win.dom_obj.childNodes[this.cur_win.prev_row].className = 'passive_row';
+        this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].className = 'active_row';
+    }catch(e){
+        _debug(e)
+    }
 }
 
 context_menu.prototype.set_passive_row = function(){
     _debug('context_menu.set_passive_row()');
     
-    this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].className = 'passive_row';
+    try{
+        this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].className = 'passive_row';
+    }catch(e){
+        _debug(e)
+    }
 }
 
 context_menu.prototype.set_x_offset = function(x){
@@ -24379,7 +24432,7 @@ context_menu.prototype.set_z_index = function(z){
     z = parseInt(z);
     
     if(this.container){
-        this.container.style.zIndex = parseInt(z) + 'px';
+        this.container.style.zIndex = parseInt(z);
     }
 }
 /* END CONTEXT MENU */
