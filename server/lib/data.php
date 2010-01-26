@@ -2059,7 +2059,7 @@ function get_data(){
                 $hour = date("G",$time);
                 
                 $time_from = date("Y-m-d H:00:00", mktime (0,0,0,$month,$day,$year));
-                $time_to = date("Y-m-d H:00:00", mktime (23,59,59,$month,$day,$year));
+                $time_to = date("Y-m-d H:59:59", mktime (23,59,59,$month,$day,$year));
             }else{
                 $time_from = $_GET['data']." 00:00:00";
                 $time_to = $_GET['data']." 23:59:59";
