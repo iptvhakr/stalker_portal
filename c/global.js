@@ -108,6 +108,17 @@ Array.prototype.getIdxById = function(id){
     return null;
 }
 
+Array.prototype.getIdxByVal = function(what, eq){
+    for (var i=0; i<this.length; i++){
+        if (this[i].hasOwnProperty(what)){
+            if (this[i][what] == eq){
+                return i;
+            }
+        }
+    }
+    return null;
+}
+
 Array.prototype.getIdxByNumber = function(number){
     for (var i=0; i<this.length; i++){
         if (this[i].hasOwnProperty('number')){
