@@ -334,5 +334,4 @@ function common_xpcom(){
             this.channels_inited = 1;
         }
     }
-    
 }
