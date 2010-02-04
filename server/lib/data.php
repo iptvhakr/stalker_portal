@@ -54,6 +54,10 @@ function get_data(){
     //if (mb_check_encoding($search,'windows-1251')){
     if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'webkit') === false){
         $search = iconv("WINDOWS-1251","UTF-8", $search);
+        
+        if (isset($_GET['singer'])){
+            $_GET['singer'] = iconv("WINDOWS-1251","UTF-8", $_GET['singer']);
+        }
     }
     
     $l        = @$_GET['l'];
