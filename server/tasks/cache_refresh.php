@@ -2,6 +2,9 @@
 /*
     
 */
+
+set_time_limit(0);
+
 include "../conf_serv.php";
 include "../lib/func.php";
 
