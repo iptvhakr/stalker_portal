@@ -5,13 +5,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="reset.css" type="text/css" />
 
-<script type="text/javascript" src="global.js"></script>
-<script type="text/javascript" src="JsHttpRequest.js"></script>
-<script type="text/javascript" src="keycodes.keydown.js"></script>
-<script type="text/javascript" src="observer.keydown.js"></script>
-<script type="text/javascript" src="common.xpcom.js"></script>
-<script type="text/javascript" src="webkit.xpcom.js"></script>
-
 <script language="JavaScript" type="text/javascript">
 
 var ver = '4.0.0';
@@ -39,31 +32,61 @@ var $ = function(id){
  * Init STB.
  */
 function init(){
+    _debug('init');
     try{
-        webkit_xpcom.prototype = gSTB;
-    }catch(e){}
-    common_xpcom.prototype = new webkit_xpcom();
-    stb = new common_xpcom();
-    stb.init();
+        
+        var g_stb;
+        
+        if (typeof(gSTB) == 'undefined'){
+            g_stb = {};
+        }else{
+            g_stb = gSTB;
+        }
+        
+        webkit_xpcom.prototype = g_stb;
+        common_xpcom.prototype = new webkit_xpcom();
+        
+        stb = new common_xpcom();
+        
+        stb.init();
+    }catch(e){
+        _debug(e)
+    }
 }
 
 /**
  * Debug function.
  */
-function _debug(t){
+function _debug(){
     if (debug){
+        
+        var text = '';
+        for (var i = 0; i < arguments.length; i++){
+            if (arguments[i].message && arguments[i].name){
+                text += ' '+arguments[i];
+            }else{
+                text += ' '+arguments[i].toSource();
+            }
+        }
+        
         try{
-            gSTB.Debug(t)
-        }catch(e){}
+            gSTB.Debug(text);
+        }catch(e){
+            console&&console.log&&console.log(t);
+        }
     }
 }
 
+var stbEvent = {
+    onEvent : function(data){},
+    event : 0
+}
 
 /**
  * Callback for player events.
  */
 function event_callback(event){
-    _debug('event: '+event)
+    _debug('event:',event)
     
     switch(event){
         case 1: // End of stream
@@ -110,7 +133,7 @@ function Layer(){
 }
 
 Layer.prototype.show = function(){
-    _debug(this.name + ' show');
+    _debug(this.name +' show');
     
     this.layer_dom_obj.show();
     this.on = true;
@@ -154,7 +177,7 @@ Layer.prototype.load = function(p){
 }
 
 Layer.prototype.fill_rows = function(arr){
-    _debug(this.name + ' fill_rows ' + arr.toSource());
+    _debug(this.name, 'fill_rows', arr);
     
 }
 
@@ -187,8 +210,16 @@ default_tv_player.prototype.switch_channel = function(dir){
 }
 
 
-
 </script>
+
+<script type="text/javascript" src="global.js"></script>
+<script type="text/javascript" src="JsHttpRequest.js"></script>
+<script type="text/javascript" src="keycodes.keydown.js"></script>
+<script type="text/javascript" src="observer.keydown.js"></script>
+<script type="text/javascript" src="player.js"></script>
+<script type="text/javascript" src="common.xpcom.js"></script>
+<script type="text/javascript" src="webkit.xpcom.js"></script>
+
 </head>
 <body>
 
