@@ -19,7 +19,7 @@ abstract class DatabaseResult
     
     abstract public function __destruct();
     
-    abstract public function all();
+    abstract public function all($field = null);
     
     public function insert_id(){
         
