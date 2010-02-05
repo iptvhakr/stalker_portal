@@ -12,9 +12,14 @@ var observer = new function(){
     
     this.fire = function(e){
         
+        if (stb && stb.key_lock === true){
+            _debug('key locked');
+            return;
+        }
+        
         var code = e.keyCode || e.which;
         
-        _debug('code: '+code);
+        _debug('code:', code);
         
         if (this.listeners.hasOwnProperty(code)){
             for(var i=0; i<this.listeners[code].length; i++){
