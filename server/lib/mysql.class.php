@@ -172,19 +172,46 @@ class Mysql
         
         foreach ($values as $value){
             if (is_numeric($value)){
-                $escaped_values = $value;
+                $escaped_values []= $value;
             }else{
-                $escaped_values = "'".$this->escape_str($value)."'";
+                $escaped_values []= "'".$this->escape_str($value)."'";
             }
         }
-        
-        $values = implode(",", $escaped_values);
+        if (!empty($values)){
+            $values = implode(",", $escaped_values);
+        }else{
+            $values = 'null';
+        }
         
         $where = $field.' '.($not === true ? 'not ' : '').'in ('.$values.')';
         
         $this->where($where, 'and ', '', -1);
         
         return $this;
+    }
+    
+    public function like($field, $match){
+        
+        $fields = is_array($field) ? $field : array($field => $match);
+        
+        foreach ($fields as $field => $match_item){
+            
+            $matches = is_array($match_item) ? $match_item : array($match_item);
+            
+            foreach ($matches as $match){
+                    
+                    $match = $this->escape_str($match);
+                    
+                    $prefix = (count($this->where) == 0) ? '' : ' AND';
+                    
+                    $match = '%'.str_replace('%', '\\%', $match).'%';
+                    
+                    $this->where[] = $prefix.' '.$field.' LIKE \''.$match.'\'';
+            }
+            
+        }
+
+        return $this; 
     }
     
     public function limit($limit, $offset = null){
@@ -453,7 +480,8 @@ class Mysql
         if(is_int($value)){
             
             return $value;
-        }elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && !strpos($value, '+')){
+        //}elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && !strpos($value, '+')){
+        }elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()'))){
             
             $value = "'".$this->escape_str($value)."'";
         }else{
