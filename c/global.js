@@ -88,13 +88,54 @@ String.prototype.clearnl = function(){
 
 if (typeof Object.prototype.toSource != 'function'){
     
-    Array.prototype.toSource = function(){
+    /*Array.prototype.toSource = function(){
         return '[' + this.join( ', ' ) + ']';
     }
     
     Object.prototype.toSource = function(){
         return 'This browser not support Object toSource method';
+    }*/
+    
+    Object.prototype.toSource = function() {
+        var con = this.constructor;
+        if(con == String) {
+            //return '"' + this + '"';
+            return this;
+        } else if(con == Number) {
+            return this;
+        } else if(con == Array) {
+            var res = '[';
+            for(var i=0,len=this.length;i<len;i++) {
+                if(i == len-1)
+                    res += this[i].toSource() + ']';
+                else
+                    res += this[i].toSource() + ', ';
+            }
+            return res;
+        } else if(con == RegExp) {
+            return this;
+        } else if(con == Object) {
+            var res = '{';
+            var i=0;
+            for(var j in this) {
+                if(j != 'toSource') {
+                    if(i == 0) {
+                        res += j + ':' + this[j].toSource(1);
+                    } else {
+                        res += ', ' + j + ':' + this[j].toSource(1);
+                    }
+                    i++;
+                }
+            }
+            res += '}';
+            if(arguments.length) {
+                return res;
+            } else {
+                return '(' + res + ')';
+            }
+        }
     }
+    
 }
 
 Array.prototype.getIdxById = function(id){
