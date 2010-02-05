@@ -67,7 +67,7 @@ class MysqlResult extends DatabaseResult
 		return $array;
 	}
 	
-	public function all($field){
+	public function all($field = null){
 	    
 	    return $this->as_array(true, $field);
 	}
