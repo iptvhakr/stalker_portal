@@ -12,6 +12,7 @@ class Stb
     public $mac = '';
     public $ip;
     public $hd  = 0;
+    private $is_moderator = 0;
     private $params = array();
     private $db;
     
@@ -127,8 +128,12 @@ class Stb
         $this->insertData('updated_places', array('uid' => $this->id));
     }
     
+    public function isModerator(){
+        return $this->is_moderator;
+    }
+    
     public function getPreloadImages(){
-        $dir = PORTAL_PATH.'/client/i/';
+        $dir = PORTAL_PATH.'/c/i/';
         $files = array();
         
         if (is_dir($dir)) {
