@@ -16,6 +16,7 @@ function player(){
     this.cur_media_item;
     this.paused = false;
     this.need_show_info = 0;
+    
     this.pause_dom_obj = $('pause');
     
     this.init();
@@ -32,7 +33,6 @@ player.prototype.init = function(){
         stb.SetLoop(0);
         stb.SetMicVolume(100);
         
-        initEvents();
         stbEvent.onEvent = event_callback;
     }catch(e){
         _debug(e);
@@ -162,19 +162,21 @@ player.prototype.stop = function(){
 }
 
 player.prototype.pause = function(){
-    try{
-        stb.Pause();
-        this.paused = true;
-        this.pause_dom_obj.show();
-    }catch(e){}
-}
-
-player.prototype.continue = function(){
-    try{
-        stb.Continue();
+        
+    if (this.paused){
+        try{
+            stb.Continue();
+        }catch(e){};
         this.paused = false;
         this.pause_dom_obj.hide();
-    }catch(e){}
+    }else{
+        try{
+            stb.Pause();
+        }catch(e){};
+        this.paused = true;
+        this.pause_dom_obj.show();
+    }
+        
 }
 
 player.prototype.show_info_after_play = function(){
