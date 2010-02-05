@@ -14,7 +14,7 @@ function common_xpcom(){
     this.images   = [];
     this.storages = {};
     this.player;
-    this.key_lock = 1;
+    this.key_lock = true;
     this.channels_inited = 0;
     this.aspect_idx = 0;
     this.aspect_array = [
@@ -23,10 +23,13 @@ function common_xpcom(){
         {alias: 'opt', mode: 0x50},
         {alias: 'exp', mode: 0x00}
     ];
+    this.player;
     
     //this.menu_clock = new main_menu_clock();
     
     this.init = function(){
+        _debug('stb.init');
+        
         this.player = new player();
         this.get_stb_params();
         this.get_server_params();
@@ -39,7 +42,7 @@ function common_xpcom(){
 
         this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+document.URL.replace(pattern, "$2")+'/server/load.php';
         
-        _debug('stb.ajax_loader: '+this.ajax_loader);
+        _debug('stb.ajax_loader:', this.ajax_loader);
     }
     
     this.get_stb_params = function (){
@@ -63,18 +66,24 @@ function common_xpcom(){
             _debug(e);
         }
         
-        _debug('this.mac: ' +this.mac);
-        _debug('this.ip: '  +this.ip);
-        _debug('this.type: '+this.type);
-        _debug('this.version: '+this.version);
-        _debug('this.hd: '+this.hd);
+        this.set_cookie('mac', this.mac);
+        
+        _debug('this.mac:', this.mac);
+        _debug('this.ip:', this.ip);
+        _debug('this.type:', this.type);
+        _debug('this.version:', this.version);
+        _debug('this.hd:',this.hd);
     }
     
     this.set_cookie = function(name, val){
         document.cookie = name + '=' + escape(val) + '; path=/;'
     }
     
-    this.load = function(params, callback){
+    this.load = function(params, callback, context){
+        _debug('this.load()');
+        _debug('params:', params);
+        
+        context = context || window;
         
         JsHttpRequest.query(
             
@@ -83,8 +92,13 @@ function common_xpcom(){
             params,
             
             function(result, errors){
+                _debug('callback');
                 _debug(errors);
-                callback.apply(callback, result);
+                try{
+                    callback.call(context, result);
+                }catch(e){
+                    _debug(e);
+                }
             },
             
             true
@@ -102,10 +116,10 @@ function common_xpcom(){
             },
             
             function(result){
-                if (result.data != null){
-                    for (var i=0; i<result.data.length; i++){
+                if (result != null){
+                    for (var i=0; i<result.length; i++){
                         stb.images[i] = new Image();
-                        stb.images[i].src = result.data[i];
+                        stb.images[i].src = result[i];
                     	stb.images.onload = function(){};
                     }
                 }
@@ -114,6 +128,7 @@ function common_xpcom(){
     }
     
     this.get_user_profile = function(){
+        _debug('this.get_user_profile');
         
         this.load(
 
@@ -125,18 +140,20 @@ function common_xpcom(){
             },
             
             function(result){
-                if (result.data != null){
-                    this.user_init(result.data);
+                if (result != null){
+                    this.user_init(result);
                 }
-            }
-        );
+            },
+            
+            this
+        )
     }
     
     this.check_image_version = function(){
         if (this.type == 'MAG200'){
             var cur_version = stb.RDir('ImageVersion').clearnl();
-            _debug('cur_version: '+cur_version);
-            _debug('stb.user.image_version: '+stb.user['image_version']);
+            _debug('cur_version:', cur_version);
+            _debug('stb.user.image_version:', stb.user['image_version']);
             if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0'){
                 _debug('RebootDHCP');
                 stb.ExecAction('RebootDHCP');
@@ -150,10 +167,11 @@ function common_xpcom(){
         
         this.user = user_data;
         
-        _debug('this.user: '+this.user.toSource())
+        _debug('this.user:', user_data)
         
         if (this.user['status'] == 0){
-            
+            try{
+                
             if (this.type == 'MAG200'){
                 if (!this.check_image_version()){
                     return;
@@ -163,7 +181,7 @@ function common_xpcom(){
             if (!this.check_graphic_res()){
                 return;
             }
-            
+
             this.preload_images();
             
             this.player.volume_bar.set_volume(parseInt(this.user['volume']));
@@ -174,8 +192,8 @@ function common_xpcom(){
             
             this.aspect_idx = this.aspect_array.getIdxByVal('mode', this.user['aspect']);
             
-            if (aspect_idx == null){
-                aspect_idx = 0;
+            if (this.aspect_idx == null){
+                this.aspect_idx = 0;
             }
             
             stb.SetAspect(this.user['aspect']);
@@ -193,7 +211,9 @@ function common_xpcom(){
             this.load_channels();
             this.load_fav_channels();
             this.load_fav_itv();
-            
+            }catch(e){
+                _debug(e);
+            }
         }else if(this.user['status'] == 1){
             //cut_off()
         }
@@ -212,7 +232,7 @@ function common_xpcom(){
         try{
             var full_ver = stb.RDir('Img_Ver');
             
-            _debug('full_ver: ' + full_ver);
+            _debug('full_ver:', full_ver);
             
             var pattern = /ImageVersion:\s([^\s]*)\s(.*)/
 
@@ -222,7 +242,7 @@ function common_xpcom(){
                 ver = short_ver.clearnl();
             }
             
-            _debug('ver: ' + ver);
+            _debug('ver:', ver);
             
         }catch(e){
             _debug(e);
@@ -237,7 +257,7 @@ function common_xpcom(){
         try{
             var gres = stb.RDir('gmode');
             
-            _debug('gres: '+gres);
+            _debug('gres:', gres);
             
             if (gres != '720'){
                 _debug('Reboot');
@@ -261,10 +281,13 @@ function common_xpcom(){
             },
             
             function(result){
-                this.player.channels = result.data || [];
+                _debug('all_channels', result);
+                this.player.channels = result || [];
                 this.channels_loaded();
-            }
-        );
+            },
+            
+            this
+        )
     }
     
     this.load_fav_channels = function(){
@@ -277,10 +300,13 @@ function common_xpcom(){
             },
             
             function(result){
-                this.player.fav_channels = result.data || [];
+                _debug('all_fav_channels', result);
+                this.player.fav_channels = result || [];
                 this.channels_loaded();
-            }
-        );
+            },
+            
+            this
+        )
     }
     
     this.load_fav_itv = function(){
@@ -293,13 +319,16 @@ function common_xpcom(){
             },
             
             function(result){
-                this.player.fav_channels_ids = result.data || [];
+                _debug('fav_itv_ids', result);
+                this.player.fav_channels_ids = result || [];
                 if (this.player.fav_channels_ids.length > 0){
                     this.user.fav_itv_on = 0;
                 }
                 this.channels_loaded();
-            }
-        );
+            },
+            
+            this
+        )
     }
     
     this.channels_loaded = function(){
@@ -330,7 +359,7 @@ function common_xpcom(){
             this.player.show_info(channel);
             this.player.play(channel);
             
-            this.key_lock = 0;
+            this.key_lock = false;
             this.channels_inited = 1;
         }
     }
