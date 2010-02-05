@@ -10,7 +10,7 @@ function webkit_xpcom(){
         if (par){
             panel = '....'
         }
-        _debug('front_panel caption ' + panel)
+        _debug('front_panel caption', panel)
         gSTB.ExecAction('front_panel caption ' + panel)
     }
 }
