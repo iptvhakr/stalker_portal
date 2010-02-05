@@ -81,7 +81,7 @@ class Itv
         return true;
     }
     
-    public function setFav($uid){
+    public function setFav($uid = null){
         
         if (!$uid){
             $uid = $this->stb->id;
@@ -119,7 +119,7 @@ class Itv
         return true;
     }
     
-    public function getFav($uid){
+    public function getFav($uid = null){
         
         if (!$uid){
             $uid = $this->stb->id;
@@ -145,6 +145,47 @@ class Itv
         
         $this->db->from('itv')
                  ->where(array('status' => 1));
+    }
+    
+    public function getChannels(){
+        
+        $query = $this->db->from('itv')
+                        ->where(array(
+                            'censored' => 0
+                        ));
+        
+        if (!$this->stb->isModerator()){
+            $query->where(array('status' => 1));
+        }
+        
+        return $query;
+    }
+    
+    public function getAllChannels(){
+        
+        return $this->getChannels()
+                    ->orderby('number')
+                    ->get()
+                    ->all();
+        
+    }
+    
+    public function getAllFavChannels(){
+        
+        $fav_ids = $this->getFav();
+        
+        return $this->getChannels()
+                    ->in('id' , $fav_ids)
+                    ->orderby('number')
+                    ->get()
+                    ->all();
+        
+    }
+    
+    public function getFavItvIds(){
+        
+        return $this->getFav();
+        
     }
     
 }
