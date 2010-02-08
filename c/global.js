@@ -1,4 +1,36 @@
 /**
+ * Alias for document.getElementById.
+ * @param {Number} id 
+ * @return {*} DOMElement
+ */
+var $ = function(id){
+    return document.getElementById(id);
+}
+
+/**
+ * Debug function.
+ */
+function _debug(){
+    if (debug){
+        
+        var text = '';
+        for (var i = 0; i < arguments.length; i++){
+            if (arguments[i].message && arguments[i].name){
+                text += ' '+arguments[i];
+            }else{
+                text += ' '+arguments[i].toSource();
+            }
+        }
+        
+        try{
+            gSTB.Debug(text);
+        }catch(e){
+            console&&console.log&&console.log(t);
+        }
+    }
+}
+
+/**
  * Custom prototype metods
  * @author zhurbitsky@gmail.com
  */
