@@ -20,15 +20,6 @@ window.onerror = function(msg, url, lno){
 window.onload = init;
 
 /**
- * Alias for document.getElementById.
- * @param {Number} id 
- * @return {*} DOMElement
- */
-var $ = function(id){
-    return document.getElementById(id);
-}
-
-/**
  * Init STB.
  */
 function init(){
@@ -51,29 +42,6 @@ function init(){
         stb.init();
     }catch(e){
         _debug(e)
-    }
-}
-
-/**
- * Debug function.
- */
-function _debug(){
-    if (debug){
-        
-        var text = '';
-        for (var i = 0; i < arguments.length; i++){
-            if (arguments[i].message && arguments[i].name){
-                text += ' '+arguments[i];
-            }else{
-                text += ' '+arguments[i].toSource();
-            }
-        }
-        
-        try{
-            gSTB.Debug(text);
-        }catch(e){
-            console&&console.log&&console.log(t);
-        }
     }
 }
 
@@ -188,27 +156,6 @@ Layer.prototype.del_rows = function(arr){
 /*
  * END Layer
  */
-
-
-/**
- * Default tv player.
- * @constructor
- */
-function default_tv_player(){
-    this.on = false;
-    
-}
-
-default_tv_player.prototype.switch_channel = function(dir){
-    
-    if (dir > 0){
-        
-    }else{
-        
-    }
-    
-}
-
 
 </script>
 
