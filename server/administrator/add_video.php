@@ -407,7 +407,7 @@ $MAX_PAGE_ITEMS = 30;
 
 $where = '';
 if ($search){
-    $where = 'where name like "%'.$search.'%"';
+    $where = 'where name like "%'.$search.'%" or path like "%'.$search.'%"';
 }
 if (@$_GET['letter']) {
 	//$where = 'where name like "'.urldecode($letter).'%"';
