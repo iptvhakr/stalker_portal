@@ -25,14 +25,13 @@ function _debug(){
         try{
             gSTB.Debug(text);
         }catch(e){
-            console&&console.log&&console.log(t);
+            console&&console.log&&console.log(text);
         }
     }
 }
 
 /**
  * Custom prototype metods
- * @author zhurbitsky@gmail.com
  */
 
 HTMLElement.prototype.show = function(){
@@ -46,6 +45,18 @@ HTMLElement.prototype.show = function(){
 HTMLElement.prototype.hide = function(){
     try{
         this.style.display = 'none';
+    }catch(e){
+        _debug(e);
+    }
+}
+
+HTMLElement.prototype.isHidden = function(){
+    try{
+        if (this.style.display == 'none'){
+            return true;
+        }else{
+            return false;
+        }
     }catch(e){
         _debug(e);
     }
@@ -68,24 +79,16 @@ HTMLElement.prototype.moveY = function(to_y){
 }
 
 HTMLElement.prototype.offsetX = function(offset_x){
-    if (!this.style.left){
-        this.style.left = 0+'px';
-    };
-    
     try{
-        this.style.left = parseInt(this.style.left)+offset_x+'px';
+        this.style.left = parseInt(this.offsetLeft)+offset_x+'px';
     }catch(e){
         _debug(e);
     }
 }
 
 HTMLElement.prototype.offsetY = function(offset_y){
-    if (!this.style.top){
-        this.style.top = 0+'px';
-    };
-    
     try{
-        this.style.top = parseInt(this.style.top)+offset_y+'px';
+        this.style.top = parseInt(this.offsetTop)+offset_y+'px';
     }catch(e){
         _debug(e);
     }
@@ -114,19 +117,31 @@ HTMLElement.prototype.addClass = function(class_name){
     }
 }
 
+HTMLElement.prototype.removeClass = function(class_name){
+    try{
+        if (this.className.indexOf(class_name) >= 0){
+            this.className.replace(/(class_name)/g, '').replace(/((\s)+)/g, ' ');
+        }
+    }catch(e){
+        _debug(e);
+    }
+}
+
+HTMLElement.prototype.replaceClass = function(from, to){
+    try{
+        if (this.className.indexOf(from) >= 0 ){
+            this.className.replace(/(from)/g, to);
+        }
+    }catch(e){
+        _debug(e);
+    }
+}
+
 String.prototype.clearnl = function(){
     return this.replace(/(\n(\r)?)/g, '');
 }
 
 if (typeof Object.prototype.toSource != 'function'){
-    
-    /*Array.prototype.toSource = function(){
-        return '[' + this.join( ', ' ) + ']';
-    }
-    
-    Object.prototype.toSource = function(){
-        return 'This browser not support Object toSource method';
-    }*/
     
     Object.prototype.toSource = function() {
         var con = this.constructor;
