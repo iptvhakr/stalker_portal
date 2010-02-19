@@ -6,6 +6,8 @@ function player(){
     
     var self = this;
     
+    this.on = false;
+    
     this.f_ch_idx = 0;
     this.ch_idx   = 0;
     this.channels;
@@ -18,6 +20,8 @@ function player(){
     this.need_show_info = 0;
     
     this.pause_dom_obj = $('pause');
+    
+    this.is_tv = false;
     
     this.init();
 }
@@ -93,8 +97,14 @@ player.prototype.seek_bar = new function(){
 player.prototype.define_media_type = function(cmd){
     
     if (cmd.indexOf('://') > 0){
+        
+        if (cmd.indexOf('udp://') || cmd.indexOf('rtp://')){
+            this.is_tv = true;
+        }
+        
         return 'stream';
     }else{
+        this.is_tv = false;
         return 'file';
     }
 }
@@ -102,6 +112,8 @@ player.prototype.define_media_type = function(cmd){
 player.prototype.play = function(item){
     
     var cmd;
+    
+    this.on = true;
     
     this.cur_media_item = item;
     
@@ -138,7 +150,7 @@ player.prototype.create_link = function(type,uri){
         function(result){
             
         }
-    );
+    )
 }
 
 player.prototype.play_now = function(uri){
@@ -156,6 +168,9 @@ player.prototype.play_now = function(uri){
 
 player.prototype.stop = function(){
     this.need_show_info = 0;
+    
+    this.on = false;
+    
     try{
         stb.Stop();
     }catch(e){}
@@ -185,6 +200,46 @@ player.prototype.show_info_after_play = function(){
 
 player.prototype.show_info = function(item){
     
+}
+
+player.prototype.switch_channel = function(dir){
+    
+    if (!this.is_tv){
+        return;
+    }
+    
+    if (dir > 0){
+        
+        if (stb.user.fav_itv_on){
+            
+            if (this.f_ch_idx > 0){
+                this.f_ch_idx--;
+            }else{
+                this.f_ch_idx = this.fav_channels.length-1;
+            }
+            
+            _debug('this.f_ch_idx:', this.f_ch_idx);
+            
+            this.show_info(this.fav_channels[f_ch_idx]);
+            this.play(this.fav_channels[f_ch_idx].cmd);
+            
+        }else{
+            
+            if (this.ch_idx > 0){
+                this.ch_idx--
+            }else{
+                this.ch_idx = this.channels.length-1
+            }
+            
+            _debug('this.ch_idx:', this.ch_idx);
+            
+            this.show_info(this.channels[ch_idx]);
+            this.play(this.channels[ch_idx].cmd);
+        }
+        
+    }else{
+        
+    }
 }
 /*
  * END Player
