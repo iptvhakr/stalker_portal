@@ -16,8 +16,11 @@ function Layer(){
     this.map = [];
     this.loading = false;
     this.load_params = {};
-    
     this.total_vclub_items_obj = {};
+    
+    this.sidebar = {};
+    
+    this.bind();
 }
 
 Layer.prototype.show = function(){
@@ -30,13 +33,17 @@ Layer.prototype.hide = function(){
     this.on = false;
 }
 
+Layer.prototype.init = function(){
+    this.init_page_bar();
+    this.init_list()
+}
+
 Layer.prototype.init_page_bar = function(){
     
     this.total_vclub_items_obj = this.create_block();
     this.total_vclub_items_obj.addClass('mb_header_info text14_white');
     
     this.dom_obj.appendChild(this.total_vclub_items_obj);
-    
 }
 
 Layer.prototype.init_list = function(){
@@ -61,6 +68,8 @@ Layer.prototype.init_list = function(){
     }
     
     this.init_active_row();
+    
+    this.sidebar();
     
     this.load_data();
 }
@@ -94,6 +103,10 @@ Layer.prototype.init_active_row = function(){
     this.active_row['row'] = active_row;
     
     this.dom_obj.appendChild(active_row);
+}
+
+Layer.prototype.init_sidebar = function(){
+    this.sidebar = new sidebar(this);
 }
 
 Layer.prototype.create_block = function(class_name, is_active){
@@ -279,3 +292,4 @@ Layer.prototype.bind = function(){
     
     this.sidebar_switcher.bind(key.BLUE, this);
 }
+
