@@ -199,6 +199,9 @@ function get_data(){
         $res['data']['updated']['anec'] = intval($rs->getValueByName(0, 'anec'));
         $res['data']['updated']['vclub'] = intval($rs->getValueByName(0, 'vclub'));
         
+        $ad = new Advertising();
+        $res['data']['main_ad'] = $ad->getMainMini();
+        
         return $res;
         exit;
     }
@@ -227,7 +230,7 @@ function get_data(){
             $series = 0;
         }
         
-        if ($action == 'vclub'){
+        if ($action == 'vclub' || $action == 'ad'){
             
             preg_match("/auto \/media\/(\d+).mpg$/", $data_req, $tmp_arr);
             
@@ -1093,6 +1096,14 @@ function get_data(){
         exit;
     }
     
+    if ($type == 'main_ad'){
+        
+        $ad = new Advertising();
+        $res['data'] = $ad->getMain();
+        
+        return $res;
+    }
+    
     if ($type == 'mastermind_log'){
         $data = $_GET['data'];
         $points = 1;
@@ -1644,7 +1655,7 @@ function get_data(){
             //echo $where;
             $sql  = 'select video.* from '.$table.' '.$where.'  '.$order.'';
             if (isset($_GET['vclub_by_top'])){
-                $sql  = 'select video.*, (count_first_0_5+count_second_0_5) as count_sum from video where status=1 '.$where_cat_num.' order by count_sum desc limit 0,10';
+                $sql  = 'select video.*, (count_first_0_5+count_second_0_5) as count_sum from video where status=1 '.$where_cat_num.' '.$where_accessed.' order by count_sum desc limit 0,10';
             }elseif (isset($_GET['get_vclub_not_ended'])){
                 $sql  = 'select video.*, vclub_not_ended.* ,vclub_not_ended.series as cur_series from video,vclub_not_ended where video.id=vclub_not_ended.video_id and vclub_not_ended.uid='.$stb->id.' and status=1 '.$where_accessed.' limit 0,10';
             }
@@ -1654,7 +1665,7 @@ function get_data(){
 	        $total_pages=ceil($total_items/MAX_PAGE_ITEMS);
             $sql  = 'select video.* from '.$table.' '.$where.'  '.$order.' limit '.$page_offset.', '.MAX_PAGE_ITEMS;
             if (isset($_GET['vclub_by_top'])){
-                $sql  = 'select video   .*, (count_first_0_5+count_second_0_5) as count_sum from video where status=1 '.$where_cat_num.' order by count_sum desc limit 0,10';
+                $sql  = 'select video   .*, (count_first_0_5+count_second_0_5) as count_sum from video where status=1 '.$where_cat_num.' '.$where_accessed.' order by count_sum desc limit 0,10';
             }elseif (isset($_GET['get_vclub_not_ended'])){
                 $sql  = 'select video.*, video.id as id,vclub_not_ended.series as cur_series,vclub_not_ended.end_time as end_time from video,vclub_not_ended where video.id=vclub_not_ended.video_id and vclub_not_ended.uid='.$stb->id.' and status=1 '.$where_accessed.' order by vclub_not_ended.added desc limit 0,10';
             }
