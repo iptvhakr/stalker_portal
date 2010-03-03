@@ -225,6 +225,15 @@ class Mysql
         return $this;
     }
     
+    public function nolimit(){
+        
+        $this->limit = false;
+        
+        $this->offset = false;
+        
+        return $this;
+    }
+    
     public function orderby($orderby, $direction = null){
         
         if (!is_array($orderby)){
