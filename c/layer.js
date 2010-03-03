@@ -5,22 +5,26 @@
 
 function Layer(){
     
+    /*  required properties  */
+    this.row_blocks  = [];
+    this.load_params = {};
+    
     this.on = false;
     this.dom_obj = this.create_block();
-    this.row_blocks  = [];
+    $('vclub_page').appendChild(this.dom_obj);
     this.total_rows  = 14;
     this.total_items = 0;
     this.total_pages = 0;
     this.cur_row = 0;
+    this.cur_page = 1;
     this.data_items  = [];
     this.map = [];
     this.loading = false;
-    this.load_params = {};
     this.total_vclub_items_obj = {};
     
     this.sidebar = {};
     
-    this.bind();
+    //this.bind();
 }
 
 Layer.prototype.show = function(){
@@ -69,8 +73,6 @@ Layer.prototype.init_list = function(){
     
     this.init_active_row();
     
-    this.sidebar();
-    
     this.load_data();
 }
 
@@ -79,7 +81,7 @@ Layer.prototype.init_blocks = function(parent, is_active_row){
     var block_name;
     var block_map = {};
     
-    for (var j=0; j<this.row_blocks; j++){
+    for (var j=0; j<this.row_blocks.length; j++){
         
         block_name = this.row_blocks[j]+'_block';
         
@@ -107,6 +109,7 @@ Layer.prototype.init_active_row = function(){
 
 Layer.prototype.init_sidebar = function(){
     this.sidebar = new sidebar(this);
+    this.sidebar.init();
 }
 
 Layer.prototype.create_block = function(class_name, is_active){
@@ -128,15 +131,18 @@ Layer.prototype.create_block = function(class_name, is_active){
 
 Layer.prototype.load_data = function(){
     
+    this.load_params['p'] = this.cur_page;
+    
     stb.load(
 
         this.load_params,
         
         function(result){
-            this.total_pages = Math.ceil(req.responseJS.total_items/req.responseJS.max_page_items);
-            this.set_total_items(req.responseJS.total_items);
+            _debug('callback run');
+            this.total_pages = Math.ceil(result.total_items/result.max_page_items);
+            this.set_total_items(result.total_items);
             
-            this.fill_list(result);
+            this.fill_list(result.data);
         },
         
         this
@@ -154,10 +160,9 @@ Layer.prototype.fill_list = function(data){
     this.total_items = data.length;
     this.data_items = data;
     
-    
     for (var i=0; i<data.length; i++){
         
-        for (var j=0; j<this.row_blocks; j++){
+        for (var j=0; j<this.row_blocks.length; j++){
             this.handling_block(data[i][this.row_blocks[j]], this.map[i][this.row_blocks[j]+'_block']);
         }
     }
@@ -175,10 +180,9 @@ Layer.prototype.fill_list = function(data){
 
 Layer.prototype.handling_block = function(data, block_obj){
     
-    switch (typeof(data)){
+    /*switch (typeof(data)){
         case 'boolean': {
             
-            if (typeof(data) == ''){
                 if (data){
                     if (block_obj.isHidden()){
                         block_obj.show();
@@ -188,14 +192,26 @@ Layer.prototype.handling_block = function(data, block_obj){
                         block_obj.hide();
                     }
                 }
-            }
             
             break;
         }
         default: {
             block_obj.innerHTML = data;
         }
+    }*/
+    
+    if (data == '1'){
+        if (block_obj.isHidden()){
+            block_obj.show();
+        }
+    }else if (data == '0'){
+        if (!block_obj.isHidden()){
+            block_obj.hide();
+        }
+    }else{
+        block_obj.innerHTML = data;
     }
+    
 }
 
 Layer.prototype.clear_row = function(row_obj){
@@ -218,7 +234,7 @@ Layer.prototype.set_active_row = function(num){
         
     this.active_row['row'].moveY(offset);
     
-    for (var j=0; j<this.row_blocks; j++){
+    for (var j=0; j<this.row_blocks.length; j++){
         this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row[this.row_blocks[j]+'_block']);
     }    
     
