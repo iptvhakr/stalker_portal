@@ -4,7 +4,7 @@ define("LANG", 'RU'); //RU, EN
 
 define("ENABLE_SUBSCRIPTION", 1);
 
-define("MAX_PAGE_ITEMS", 10);
+define("MAX_PAGE_ITEMS", 14);
 
 define("MAX_USER_REC_LENGTH", 86400);
 
