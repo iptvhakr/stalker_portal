@@ -83,7 +83,7 @@ function common_xpcom(){
         _debug('this.load()');
         _debug('params:', params);
         
-        context = context || window;
+        var context = context || window;
         
         JsHttpRequest.query(
             
