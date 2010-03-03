@@ -31,7 +31,19 @@ function _debug(){
 }
 
 /**
- * Custom prototype metods
+ * Module loader.
+ */
+
+function load_module(module){
+    var _script = document.createElement('script');
+    _script.type = "text/javascript";
+    _script.src  = module;
+    document.body.appendChild(_script);
+}
+
+
+/**
+ * Custom prototype metods.
  */
 
 HTMLElement.prototype.show = function(){
