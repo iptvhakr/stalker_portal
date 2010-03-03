@@ -15,7 +15,7 @@ function sidebar(parent){
     this.items   = [];
     this.cur_item_idx = 0;
     
-    this.bind();
+    //this.bind();
 }
 
 sidebar.prototype.show = function(){
@@ -38,7 +38,7 @@ sidebar.prototype.init = function(){
     
     this.dom_obj.appendChild(side_r);
     
-    this.parent.dom_obj.appendChild(side_r);
+    this.parent.dom_obj.appendChild(this.dom_obj);
     
     this.arrows = document.createElement('div');
     this.arrows.addClass('sidebar_arrows');
@@ -80,7 +80,7 @@ sidebar.prototype.init_items = function(alias, map){
         item = document.createElement('div');
         
         item.moveX(this.width);
-        item.innerHTML = map[i];
+        item.innerHTML = map[i].title;
         
         if (options && options.align){
             item.style.textAlign = options.align;
@@ -183,9 +183,9 @@ sidebar.prototype.render_items = function(item_idx){
     
     for (var i=0; i < 9; i++){
 
-        this.items[item_idx].map_dom_obj[i].innerHTML = this.items[item_idx].map[i];
+        this.items[item_idx].map_dom_obj[i].innerHTML = this.items[item_idx].map[i].title;
 
-        if (this.items[item_idx].map[i] == this.items[item_idx].selected){
+        if (this.items[item_idx].map[i].id == this.items[item_idx].selected){
             this.items[item_idx].map_dom_obj[i].setClass('selected_item');
         }else{
             this.items[item_idx].map_dom_obj[i].setClass('passive_item');
@@ -206,12 +206,12 @@ sidebar.prototype.create_separator = function(){
 sidebar.prototype.set_selected_item = function(){
     
     for(var i=0; i < 9; i++){
-        if (this.items[this.cur_item_idx].map[i] == this.items[this.cur_item_idx].selected){
+        if (this.items[this.cur_item_idx].map[i].id == this.items[this.cur_item_idx].selected){
             this.items[this.cur_item_idx].map_dom_obj[i].setClass('passive_item');
         }
     }
     
-    this.items[this.cur_item_idx].selected = this.items[this.cur_item_idx].map[4];
+    this.items[this.cur_item_idx].selected = this.items[this.cur_item_idx].map[4].id;
     this.items[this.cur_item_idx].map_dom_obj[4].setClass('selected_item');
     
     this.action();
@@ -220,10 +220,12 @@ sidebar.prototype.set_selected_item = function(){
 sidebar.prototype.action = function(){
             
     for (var i=0; i<this.items.length; i++){
-        parent.load_params[this.items[i].alias] = this.items[i].selected;
+        this.parent.load_params[this.items[i].alias] = this.items[i].selected;
     }
     
-    _debug(parent.load_params);
+    this.parent.load_data();
+    
+    _debug(this.parent.load_params);
 }
 
 sidebar.prototype.bind = function(){
