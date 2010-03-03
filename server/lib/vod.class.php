@@ -6,25 +6,20 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Vod
+class Vod extends AjaxResponse
 {
-    
-    private $db;
-    private $stb;
-    
-    private static $instance = NULL;
+    public static $instance = NULL;
     
     public static function getInstance(){
         if (self::$instance == NULL)
         {
-            self::$instance = new Vod();
+            self::$instance = new self;
         }
         return self::$instance;
     }
     
     public function __construct(){
-        $this->db  = Mysql::getInstance();
-        $this->stb = Stb::getInstance();
+        parent::__construct();
     }
     
     public function createLink(){
@@ -216,7 +211,7 @@ class Vod
         $fav_video_arr = $this->db->from('fav_vclub')->where(array('uid' => $this->stb->id))->get()->first();
         
         if (empty($fav_video_arr)){
-            return null;
+            return array();
         }
         
         $fav_video = unserialize($fav_video_arr['fav_video']);
@@ -305,7 +300,66 @@ class Vod
         return true;
     }
     
-     
+    private function getData(){
+        
+        $offset = $this->page * MAX_PAGE_ITEMS;
+        
+        $where = array('status' => 1);
+        
+        if (@$_REQUEST['hd']){
+            $where['hd'] = '1';
+        }else{
+            $where['hd<='] = '1';
+        }
+        
+        if (!$this->stb->isModerator()){
+            $where['accessed'] = '1';
+            
+            if ($this->stb->hd){
+                $where['disable_for_hd_devices'] = '0';
+            }
+        }
+        
+        return $this->db->from('video')->where($where)->limit(MAX_PAGE_ITEMS, $offset);
+    }
+    
+    public function getByName(){
+        
+        $result = $this->getData()->orderby('name');
+        
+        $this->setResponseData($result);
+        
+        return $this->getResponse('prepareData');
+    }
+    
+    public function prepareData(){
+        
+        $fav = $this->getFav();
+        
+        for ($i = 0; $i < count($this->response['data']); $i++){
+            
+            if ($this->response['data'][$i]['hd']){
+                $this->response['data'][$i]['sd'] = 0;
+            }else{
+                $this->response['data'][$i]['sd'] = 1;
+            }
+            
+            if ($this->response['data'][$i]['censored']){
+                $this->response['data'][$i]['lock'] = 1;
+            }else{
+                $this->response['data'][$i]['lock'] = 0;
+            }
+            
+            if (in_array($this->response['data'][$i]['id'], $fav)){
+                $this->response['data'][$i]['fav'] = 1;
+            }else{
+                $this->response['data'][$i]['fav'] = 0;
+            }
+        }
+        
+        return $this->response;
+    }
+    
 }
 
 ?>
