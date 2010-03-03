@@ -23,7 +23,7 @@ class DataLoader
         try {
             $this->context = $this->getContext();
             $this->method  = $this->getMethod();
-        
+            
         }catch (Exception $e){
             trigger_error($e->getMessage());
         }
