@@ -14,8 +14,6 @@ function sidebar(parent){
     this.arrows  = {};
     this.items   = [];
     this.cur_item_idx = 0;
-    
-    //this.bind();
 }
 
 sidebar.prototype.show = function(){
@@ -31,7 +29,7 @@ sidebar.prototype.hide = function(){
 sidebar.prototype.init = function(){
     
     this.dom_obj = document.createElement('div');
-    this.dom_obj.id = 'footer_sidepanel';
+    this.dom_obj.addClass('footer_sidepanel');
     
     var side_r = document.createElement('div');
     side_r.addClass('footer_sidepanel_r');
@@ -57,7 +55,7 @@ sidebar.prototype.init_items = function(alias, map){
         options = arguments[2];
     }
     
-    this.items.push({"alias": alias, "container": {}, "map" : [], "max_width" : 0, "map_dom_obj" : [], "selected" : ''});
+    this.items.push({"header" : options.header, "alias": alias, "container": {}, "map" : [], "max_width" : 0, "map_dom_obj" : [], "selected" : ''});
     
     var cur_idx = this.items.length-1;
     
@@ -190,7 +188,6 @@ sidebar.prototype.render_items = function(item_idx){
         }else{
             this.items[item_idx].map_dom_obj[i].setClass('passive_item');
         }
-        
     }
 }
 
@@ -221,6 +218,8 @@ sidebar.prototype.action = function(){
             
     for (var i=0; i<this.items.length; i++){
         this.parent.load_params[this.items[i].alias] = this.items[i].selected;
+        
+        this.parent.update_header_path([{"alias" : this.items[i].alias, "title" : this.items[i].header, "item" : this.items[this.cur_item_idx].map[4].title}]);
     }
     
     this.parent.load_data();
