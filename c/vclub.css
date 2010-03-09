@@ -1,0 +1,21 @@
+/* VCLUB */
+.ears_back{
+    position: absolute;
+    width: 40px;
+    height: 420px;
+    left: 0px;
+    top: 73px;
+    background-image: url("i/ears.png");
+    background-position: 0px 0px;
+}
+
+.ears_movie{
+    position: absolute;
+    width: 40px;
+    height: 420px;
+    left: 680px;
+    top: 73px;
+    background-image: url("i/ears.png");
+    background-position: -40px 0px;
+}
+/* END VCLUB */
