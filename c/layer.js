@@ -8,10 +8,12 @@ function Layer(){
     /*  required properties  */
     this.row_blocks  = [];
     this.load_params = {};
+    this.class_name = '';
     
     this.on = false;
     this.dom_obj = this.create_block();
-    $('vclub_page').appendChild(this.dom_obj);
+    document.body.appendChild(this.dom_obj);
+    
     this.total_rows  = 14;
     this.total_items = 0;
     this.total_pages = 0;
@@ -21,10 +23,14 @@ function Layer(){
     this.map = [];
     this.loading = false;
     this.total_vclub_items_obj = {};
+    this.buttons_bar = {};
+    this.left_ear = {};
+    this.right_ear = {};
+    this.header_path = {};
+    this.path_container = {};
+    this.header_path_map = [];
     
     this.sidebar = {};
-    
-    //this.bind();
 }
 
 Layer.prototype.show = function(){
@@ -38,6 +44,13 @@ Layer.prototype.hide = function(){
 }
 
 Layer.prototype.init = function(){
+    
+    if (!this.class_name){
+        this.class_name = 'layer_bg';
+    }
+    
+    this.dom_obj.addClass(this.class_name);
+    
     this.init_page_bar();
     this.init_list()
 }
@@ -175,30 +188,9 @@ Layer.prototype.fill_list = function(data){
     
     this.set_active_row(this.cur_row);
     this.loading = false;
-    
 }
 
 Layer.prototype.handling_block = function(data, block_obj){
-    
-    /*switch (typeof(data)){
-        case 'boolean': {
-            
-                if (data){
-                    if (block_obj.isHidden()){
-                        block_obj.show();
-                    }
-                }else{
-                    if (!block_obj.isHidden()){
-                        block_obj.hide();
-                    }
-                }
-            
-            break;
-        }
-        default: {
-            block_obj.innerHTML = data;
-        }
-    }*/
     
     if (data == '1'){
         if (block_obj.isHidden()){
@@ -211,7 +203,6 @@ Layer.prototype.handling_block = function(data, block_obj){
     }else{
         block_obj.innerHTML = data;
     }
-    
 }
 
 Layer.prototype.clear_row = function(row_obj){
@@ -306,6 +297,95 @@ Layer.prototype.bind = function(){
     this.shift_page.bind(key.PAGE_PREV, this, -1);
     this.shift_page.bind(key.PAGE_NEXT, this, 1);
     
-    this.sidebar_switcher.bind(key.BLUE, this);
 }
 
+Layer.prototype.init_color_buttons = function(map){
+    
+    this.buttons_bar = this.create_block('color_button_bar');
+    
+    var table = '<table width="660" height="40" border="0" cellpadding="0" cellspacing="0">';
+    table += '<tr>';
+    table += '<td valign="top"><img src="i/1x1.gif" align="left"><div class="footer_btn btn_red"></div><span class="footer_text">'+map[0].label+'</span></td>';
+    table += '<td valign="top"><img src="i/footer_bg2.png" align="left"><div class="footer_btn btn_green"></div><span class="footer_text">'+map[1].label+'</span></td>';
+    table += '<td valign="top"><img src="i/footer_bg2.png" align="left"><div class="footer_btn btn_yellow"></div><span class="footer_text">'+map[2].label+'</span></td>';
+    table += '<td valign="top"><img src="i/footer_bg2.png" align="left"><div class="footer_btn btn_blue"></div><span class="footer_text">'+map[3].label+'</span></td>';
+    table += '</tr>';
+    table += '</table>';
+    
+    if (typeof(map[0].cmd) == 'function'){
+        map[0].cmd.bind(key.RED, this);
+    }
+    
+    if (typeof(map[1].cmd) == 'function'){
+        map[1].cmd.bind(key.GREEN, this);
+    }
+    
+    if (typeof(map[2].cmd) == 'function'){
+        map[2].cmd.bind(key.YELLOW, this);
+    }
+    
+    if (typeof(map[3].cmd) == 'function'){
+        map[3].cmd.bind(key.BLUE, this);
+    }
+    
+    this.buttons_bar.innerHTML = table;
+    
+    this.dom_obj.appendChild(this.buttons_bar);
+}
+
+Layer.prototype.init_left_ear = function(class_name){
+    
+    this.left_ear = this.create_block();
+    
+    if (class_name){
+        this.left_ear.addClass(class_name);
+    }
+    
+    this.dom_obj.appendChild(this.left_ear);
+}
+
+Layer.prototype.init_right_ear = function(class_name){
+    
+    this.right_ear = this.create_block();
+    
+    if (class_name){
+        this.right_ear.addClass(class_name);
+    }
+    
+    this.dom_obj.appendChild(this.right_ear);
+}
+
+Layer.prototype.init_header_path = function(begin){
+    
+    this.header_path = this.create_block('mb_header_first text24_white');
+    this.path_container = document.createElement('span');
+    //this.path_container
+    this.header_path.innerHTML = begin + ' / ';
+    this.header_path.appendChild(this.path_container);
+    this.dom_obj.appendChild(this.header_path);
+}
+
+Layer.prototype.update_header_path = function(map){
+    
+    var path = '';
+    
+    for(var i=0; i<map.length; i++){
+        
+        var idx = this.header_path_map.getIdxByVal('alias', map[i].alias);
+        
+        if (this.header_path_map.hasOwnProperty(idx)){
+            
+            this.header_path_map.splice(idx, 1);
+        }
+        
+        if (map[i].item != '*'){
+            this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].title});
+        }
+    }
+    
+    for (var i=0; i<this.header_path_map.length; i++){
+        path += '<span class="text20_white">'+this.header_path_map[i].title+'</span>';
+    }
+    
+    this.path_container.innerHTML = path;
+}
