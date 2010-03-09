@@ -14,7 +14,8 @@
             {"id" : 8, "title" : "БИЗНЕС"},
             {"id" : 9, "title" : "КУЛЬТУРА"},
             {"id" : 10, "title" : "НАШЕ"},
-            {"id" : 11, "title" : "ЗАРУБЕЖНОЕ"}]
+            {"id" : 11, "title" : "ЗАРУБЕЖНОЕ"},
+            {"id" : 12, "title" : "*"}]
     
     var vclub_constructor = function(){
         
@@ -37,9 +38,22 @@
     stb.key_lock = false;
     
     vclub.on = true;
+
+    var color_buttons = [
+        {"label" : "ОТОБРАЖЕНИЕ", "cmd" : ""},
+        {"label" : "СОРТИРОВКА", "cmd" : ""},
+        {"label" : "ПОИСК", "cmd" : ""},
+        {"label" : "ДОПОЛНИТЕЛЬНО", "cmd" : vclub.sidebar_switcher}
+    ];
+    
+    vclub.init_color_buttons(color_buttons);
+    vclub.init_left_ear('ears_back');
+    vclub.init_right_ear('ears_movie');
+    
+    vclub.init_header_path('ВИДЕО КЛУБ');
     
     vclub.init_sidebar();
-    vclub.sidebar.init_items("genre", genres);
+    vclub.sidebar.init_items("genre", genres, {"header" : "ПО ИМЕНИ"});
     vclub.sidebar.bind();
     
     
