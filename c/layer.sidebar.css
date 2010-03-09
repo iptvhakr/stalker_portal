@@ -1,0 +1,106 @@
+/* LAYER SIDEBAR */
+.footer_sidepanel{
+    position: absolute;
+    top: 173px;
+    left: 720px;
+    height: 352px;
+    width: 280px;
+    background: url("i/footer_sidepanel_l.png") left no-repeat;
+}
+
+.footer_sidepanel_r{
+    margin: 0 !important;
+    padding: 0 !important;
+    top: 0 !important;
+    right: 0;
+    width: 56px !important;
+    height: 352px !important;
+    background: url("i/footer_sidepanel_r.png") right no-repeat;
+}
+
+.footer_sidepanel div{
+    position: absolute;
+    top: 53px;
+    height: 25px;
+    font-size: 15px;
+    font-weight: bold;
+    color:#000000;
+    white-space: pre;
+}
+
+.selected_item{
+    color: #800 !important;
+}
+
+.passive_item{
+    
+}
+
+.active_item{
+    text-shadow: #fff 0 1px 0;
+}
+
+.active_bg_row{
+    top: 173px !important;
+    background: url("i/footer_sidepanel_act.png") repeat-x top;
+}
+
+.sidebar_arrows{
+    margin: 0 !important;
+    padding: 0 !important;
+    top: 42px !important;
+    left: 134px;
+    height: 284px !important;
+    width: 13px !important;
+    background: url("i/footer_sidepanel_arr.png");
+}
+
+.sidebar_line{
+    margin: 0 !important;
+    padding: 0 !important;
+    top: 37px !important;
+    left: 134px;
+    height: 293px !important;
+    width: 6px !important;
+    background: url("i/footer_sidepanel_line.png");
+}
+
+.items_container_active{
+    height: 0 !important;
+    width: 0 !important;
+    top: 0 !important;
+}
+
+.items_container_active div{
+    margin: 0 0 0 51px;
+    padding-left: 5px;
+    padding-top: 5px;
+}
+
+.items_container_passive{
+    height: 0 !important;
+    width: 0 !important;
+    top: 0 !important;
+}
+
+.items_container_passive div{
+    margin: 0 0 0 51px;
+    padding-left: 5px;
+    padding-top: 5px;
+    color: #000000 !important;
+    opacity: 0.4;
+}
+
+.items_container_passive .passive_item{
+    
+}
+
+.items_container_passive .selected_item{
+    color: #800 !important;
+    opacity: 0.4;
+}
+
+.items_container_passive .active_item{
+    background: url("i/footer_sidepanel_act.png") repeat-x bottom;
+}
+/* END LAYER SIDEBAR */
