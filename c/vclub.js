@@ -2,7 +2,7 @@
  * Video Club modile.
  */
 
-//(function(){
+(function(context){
 
     var genres = [{"id" : 1, "title" : "ИНФОРМАЦИОННЫЙ"},
             {"id" : 2, "title" : "РАЗВЛЕЧЕНИЯ"},
@@ -55,6 +55,8 @@
     vclub.init_sidebar();
     vclub.sidebar.init_items("genre", genres, {"header" : "ПО ИМЕНИ"});
     vclub.sidebar.bind();
+    vclub.hide();
     
+    context.vclub = vclub;
     
-//})()
+})(window.document)
