@@ -35,12 +35,26 @@ body{
 
 </style>
 
+<script type="text/javascript" src="global.js"></script>
+<script type="text/javascript" src="JsHttpRequest.js"></script>
+
+<script type="text/javascript" src="keydown.keycodes.js"></script>
+<script type="text/javascript" src="keydown.observer.js"></script>
+
+<script type="text/javascript" src="xpcom.common.js"></script>
+<script type="text/javascript" src="xpcom.webkit.js"></script>
+
+<script type="text/javascript" src="main_menu.js"></script>
+<script type="text/javascript" src="player.js"></script>
+
 <script language="JavaScript" type="text/javascript">
 
 var ver = '4.0.0';
 var debug = 1;
 var stb;
 var stbEvent;
+
+var module = {};
 
 window.onerror = function(msg, url, lno){
     _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
@@ -60,7 +74,7 @@ function init(){
     load_module('vclub');
     
     var map = [
-        {"title"    : "ТЕЛЕВИДЕНИЕ",
+        /*{"title"    : "ТЕЛЕВИДЕНИЕ",
          "cmd"      : "",
          "sub" : [
                           {
@@ -80,48 +94,7 @@ function init(){
                             "cmd"   : ""
                           }
                       ]
-        },
-        {"title"    : "ВИДЕОКЛУБ",
-         "cmd"      : "",
-         "sub" : [
-                          {
-                            "title" : "ВСЕ",
-                            "cmd"   : "main_menu.hide();vclub.show()"
-                          },
-                          {
-                            "title" : "ДОКУМЕНТАЛЬНЫЙ",
-                            "cmd"   : {"func" : _debug, "args" : ["test cmd"]}
-                          },
-                          {
-                            "title" : "БОЕВИК",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ДЕТСКИЙ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ДРАМА",
-                            "cmd"   : "_debug('ДРАМА')"
-                          },
-                          {
-                            "title" : "КОМЕДИЯ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ВЕСТЕРН",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "МУЛЬТФИЛЬМ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ФАНТАСТИКА",
-                            "cmd"   : ""
-                          },
-                      ]
-        },
+        },*/
         {"title"    : "КАРАОКЕ",
          "cmd"      : "",
          "sub" : [
@@ -179,8 +152,8 @@ function init(){
         }else if (stb.player.on){
             stb.player.stop();
             main_menu.show();
-        }else if (vclub.on){
-            vclub.hide();
+        }else if (module.vclub && module.vclub.on){
+            module.vclub.hide();
             main_menu.show();
         }
         
@@ -226,7 +199,7 @@ function event_callback(event){
 
 </script>
 
-<script type="text/javascript" src="global.js"></script>
+<!--<script type="text/javascript" src="global.js"></script>
 <script type="text/javascript" src="JsHttpRequest.js"></script>
 
 <script type="text/javascript" src="keydown.keycodes.js"></script>
@@ -236,7 +209,7 @@ function event_callback(event){
 <script type="text/javascript" src="xpcom.webkit.js"></script>
 
 <script type="text/javascript" src="main_menu.js"></script>
-<script type="text/javascript" src="player.js"></script>
+<script type="text/javascript" src="player.js"></script>-->
 
 </head>
 <body>
