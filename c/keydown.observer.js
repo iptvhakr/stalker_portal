@@ -32,7 +32,7 @@ var observer = new function(){
                     }
                 }
                 
-                if (item.c.on || item.c === window){
+                if (item.c.on || item.c === window || item.force){
                     item.f.apply(item.c, item.a);
                     return;
                 }
@@ -53,5 +53,13 @@ Function.prototype.bind = function(key, context, args){
     observer.listeners[key] = observer.listeners[key] || [];
     args = Array.prototype.splice.apply(arguments, [2, arguments.length]);
     observer.listeners[key].unshift({'f' : this, 'c' : context, 'a' : args});
+    return this;
+}
+
+Function.prototype.force_bind = function(key, context, args){
+    context = context || window;
+    observer.listeners[key] = observer.listeners[key] || [];
+    args = Array.prototype.splice.apply(arguments, [2, arguments.length]);
+    observer.listeners[key].unshift({'f' : this, 'c' : context, 'a' : args, 'force' : true});
     return this;
 }
