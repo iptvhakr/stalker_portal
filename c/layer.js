@@ -367,7 +367,6 @@ Layer.prototype.init_header_path = function(begin){
     
     this.header_path = this.create_block('mb_header_first text24_white');
     this.path_container = document.createElement('span');
-    //this.path_container
     this.header_path.innerHTML = begin + ' / ';
     this.header_path.appendChild(this.path_container);
     this.dom_obj.appendChild(this.header_path);
