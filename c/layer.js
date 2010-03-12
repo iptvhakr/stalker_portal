@@ -36,10 +36,16 @@ function Layer(){
 Layer.prototype.show = function(){
     this.dom_obj.show();
     this.on = true;
+    this.load_data();
 }
 
 Layer.prototype.hide = function(){
     this.dom_obj.hide();
+    
+    if (this.sidebar && this.sidebar.on){
+        this.sidebar.hide();
+    }
+    
     this.on = false;
 }
 
@@ -86,7 +92,7 @@ Layer.prototype.init_list = function(){
     
     this.init_active_row();
     
-    this.load_data();
+    //this.load_data();
 }
 
 Layer.prototype.init_blocks = function(parent, is_active_row){
@@ -222,7 +228,9 @@ Layer.prototype.clear_row = function(row_obj){
 Layer.prototype.set_active_row = function(num){
     
     var offset = this.map[num]['row'].offsetTop - 15;
-        
+    
+    _debug('set_active_row offset', offset);
+    
     this.active_row['row'].moveY(offset);
     
     for (var j=0; j<this.row_blocks.length; j++){
