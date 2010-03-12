@@ -27,6 +27,7 @@ function player(){
 }
 
 player.prototype.init = function(){
+    _debug('player.init');
     try{
         stb.InitPlayer();
         stb.SetTopWin(0);
@@ -109,7 +110,14 @@ player.prototype.define_media_type = function(cmd){
     }
 }
 
+player.prototype.play_last = function(){
+    _debug('player.play_last');
+    
+    this.play(this.cur_media_item);
+}
+
 player.prototype.play = function(item){
+    _debug('player.play');
     
     var cmd;
     
@@ -136,7 +144,7 @@ player.prototype.play = function(item){
     
 }
 
-player.prototype.create_link = function(type,uri){
+player.prototype.create_link = function(type, uri){
     
     stb.load(
 
@@ -154,6 +162,7 @@ player.prototype.create_link = function(type,uri){
 }
 
 player.prototype.play_now = function(uri){
+    _debug('player.play_now');
     
     this.start_time = Date.parse(new Date())/1000;
 
@@ -167,6 +176,8 @@ player.prototype.play_now = function(uri){
 }
 
 player.prototype.stop = function(){
+    _debug('player.stop');
+    
     this.need_show_info = 0;
     
     this.on = false;
@@ -177,7 +188,8 @@ player.prototype.stop = function(){
 }
 
 player.prototype.pause = function(){
-        
+    _debug('player.pause');
+       
     if (this.paused){
         try{
             stb.Continue();
@@ -204,12 +216,46 @@ player.prototype.show_info = function(item){
 
 player.prototype.switch_channel = function(dir){
     
+    _debug('switch_channel', dir);
+    
     if (!this.is_tv){
         return;
     }
     
     if (dir > 0){
         
+        if (stb.user.fav_itv_on){
+            
+            if (this.f_ch_idx < this.fav_channels.length-1){
+                this.f_ch_idx++;
+            }else{
+                this.f_ch_idx = 0;
+            }
+            
+            _debug('this.f_ch_idx:', this.f_ch_idx);
+            
+            this.show_info(this.fav_channels[this.f_ch_idx]);
+            this.play(this.fav_channels[this.f_ch_idx]);
+            
+        }else{
+            
+            if (this.ch_idx < this.channels.length-1){
+                this.ch_idx++;
+            }else{
+                this.ch_idx = 0;
+            }
+            
+            _debug('this.ch_idx:', this.ch_idx);
+            
+            try{
+                this.show_info(this.channels[this.ch_idx]);
+                this.play(this.channels[this.ch_idx]);
+            }catch(e){
+                _debug(e);
+            }
+        }
+        
+    }else{
         if (stb.user.fav_itv_on){
             
             if (this.f_ch_idx > 0){
@@ -220,26 +266,35 @@ player.prototype.switch_channel = function(dir){
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
             
-            this.show_info(this.fav_channels[f_ch_idx]);
-            this.play(this.fav_channels[f_ch_idx].cmd);
+            this.show_info(this.fav_channels[this.f_ch_idx]);
+            this.play(this.fav_channels[this.f_ch_idx]);
             
         }else{
             
             if (this.ch_idx > 0){
-                this.ch_idx--
+                this.ch_idx--;
             }else{
-                this.ch_idx = this.channels.length-1
+                this.ch_idx = this.channels.length-1;
             }
             
             _debug('this.ch_idx:', this.ch_idx);
             
-            this.show_info(this.channels[ch_idx]);
-            this.play(this.channels[ch_idx].cmd);
+            try{
+                this.show_info(this.channels[this.ch_idx]);
+                this.play(this.channels[this.ch_idx]);
+            }catch(e){
+                _debug(e);
+            }
         }
-        
-    }else{
-        
     }
+}
+
+player.prototype.bind = function(){
+    
+    var self = this;
+    
+    this.switch_channel.bind(key.UP, self, 1);
+    this.switch_channel.bind(key.DOWN, self, -1);
 }
 /*
  * END Player
