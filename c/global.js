@@ -35,12 +35,48 @@ function _debug(){
  */
 
 function load_module(module){
+    
     var _script = document.createElement('script');
     _script.type = "text/javascript";
-    _script.src  = module;
-    document.body.appendChild(_script);
+    _script.src  = module + ".js";
+    
+    var _style = document.createElement('link');
+    _style.type = "text/css";
+    _style.rel = "stylesheet";
+    _style.href = module + ".css";
+    
+    document.getElementsByTagName("head")[0].appendChild(_script);
+    document.getElementsByTagName("head")[0].appendChild(_style);
 }
 
+/**
+ * DOM element creating functions
+ */
+
+function create_dom_element(type, class_name, parent){
+            
+    var dom_element = document.createElement(type);
+    
+    if (class_name){
+        dom_element.addClass(class_name);
+    }
+    
+    if (parent){
+        parent.appendChild(dom_element);
+    }
+    
+    return dom_element;
+}
+
+function create_inline_element(class_name, parent){
+    
+    return create_dom_element('span', class_name, parent);
+}
+
+function create_block_element(class_name, parent){
+                
+    return create_dom_element('div', class_name, parent);
+}
 
 /**
  * Custom prototype metods.
@@ -237,4 +273,12 @@ Array.prototype.inArray = function (value){
         }
     }
     return false;
-};
+}
+
+Math.__proto__.isEven = function(x){
+    return !(x % 2);
+}
+
+Math.__proto__.isOdd = function(x){
+    return !Math.isEven(x);
+}
