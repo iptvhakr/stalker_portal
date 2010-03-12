@@ -31,6 +31,7 @@ try{
     common_xpcom.prototype = new webkit_xpcom();
     
     stb = new common_xpcom();
+    //stb.init();
     
 }catch(e){
     _debug(e)
