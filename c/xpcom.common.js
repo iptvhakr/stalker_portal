@@ -31,6 +31,7 @@ function common_xpcom(){
         _debug('stb.init');
         
         this.player = new player();
+        this.player.bind();
         this.get_stb_params();
         this.get_server_params();
         this.get_user_profile();
@@ -103,7 +104,6 @@ function common_xpcom(){
             
             true
         );
-        
     }
     
     this.preload_images = function(){
