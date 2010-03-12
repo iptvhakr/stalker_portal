@@ -4,6 +4,36 @@
 <title>stalker_portal</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="reset.css" type="text/css" />
+<link rel="stylesheet" href="main_menu.css" type="text/css" />
+
+<style type="text/css">
+
+/* GLOBAL STYLES */
+body{
+    font-family: "Myriad Pro";
+}
+
+.text24_white{
+    font-size: 24px;
+    color: #FFF;
+}
+
+.text20_white{
+    font-size: 20px;
+    color: #FFF;
+}
+
+.text14_white{
+    font-size: 14px;
+    color: #FFF;
+}
+
+.bold{
+    font-weight:bold;
+}
+/* END GLOBAL STYLES */
+
+</style>
 
 <script language="JavaScript" type="text/javascript">
 
@@ -24,25 +54,149 @@ window.onload = init;
  */
 function init(){
     _debug('init');
+    
+    load_module('layer');
+    load_module('layer.sidebar');
+    load_module('vclub');
+    
+    var map = [
+        {"title"    : "ТЕЛЕВИДЕНИЕ",
+         "cmd"      : "",
+         "sub" : [
+                          {
+                            "title" : "СПОРТ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "РАЗВЛЕЧЕНИЕ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ТОП",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "НОВОСТИ",
+                            "cmd"   : ""
+                          }
+                      ]
+        },
+        {"title"    : "ВИДЕОКЛУБ",
+         "cmd"      : "",
+         "sub" : [
+                          {
+                            "title" : "ВСЕ",
+                            "cmd"   : "main_menu.hide();vclub.show()"
+                          },
+                          {
+                            "title" : "ДОКУМЕНТАЛЬНЫЙ",
+                            "cmd"   : {"func" : _debug, "args" : ["test cmd"]}
+                          },
+                          {
+                            "title" : "БОЕВИК",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ДЕТСКИЙ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ДРАМА",
+                            "cmd"   : "_debug('ДРАМА')"
+                          },
+                          {
+                            "title" : "КОМЕДИЯ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ВЕСТЕРН",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "МУЛЬТФИЛЬМ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ФАНТАСТИКА",
+                            "cmd"   : ""
+                          },
+                      ]
+        },
+        {"title"    : "КАРАОКЕ",
+         "cmd"      : "",
+         "sub" : [
+                          {
+                            "title" : "НАШЕ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ЗАРУБЕЖНОЕ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ХИТЫ 80-х",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ХИТЫ 90-х",
+                            "cmd"   : ""
+                          },
+                      ]
+        },
+        {"title"    : "НАСТРОЙКИ",
+         "cmd"      : "",
+         "sub" : [
+                          {
+                            "title" : "ОБЩЕЕ",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ВИДЕОВЫХОД",
+                            "cmd"   : ""
+                          },
+                          {
+                            "title" : "ЛИЧНЫЙ КАБИНЕТ",
+                            "cmd"   : ""
+                          },
+                      ]
+        }
+    ];
+    
+    stb.init();
+    
     try{
-        
-        var g_stb;
-        
-        if (typeof(gSTB) == 'undefined'){
-            g_stb = {};
-        }else{
-            g_stb = gSTB;
+        main_menu.init(map);
+    }catch(e){
+        _debug(e);
+    }
+    
+    /* LAYER MANAGEMENT */
+    (function(){
+            
+        if (main_menu.on){
+            main_menu.hide();
+            stb.player.play_last();
+        }else if (stb.player.on){
+            stb.player.stop();
+            main_menu.show();
+        }else if (vclub.on){
+            vclub.hide();
+            main_menu.show();
         }
         
-        webkit_xpcom.prototype = g_stb;
-        common_xpcom.prototype = new webkit_xpcom();
+    }).bind(key.EXIT);
+    
+    (function(){
         
-        stb = new common_xpcom();
+        if (stb.player.on){
+            stb.player.stop();
+            main_menu.show();
+        }
         
-        stb.init();
-    }catch(e){
-        _debug(e)
-    }
+    }).bind(key.MENU);
+    
+    /* END LAYER MANAGEMENT */
+    
 }
 
 var stbEvent = {
@@ -70,102 +224,19 @@ function event_callback(event){
     }
 }
 
-/**
- * Layer constructor.
- * @constructor
- */
-function Layer(){
-    
-    this.name = 'Layer';
-    this.on = false;
-    
-    this.cur_row = 0;
-    this.prev_row = 1;
-    this.cur_page = 0;
-    this.total_pages = 0;
-    
-    this.con_menu_action = [];
-    this.con_menu_on = false;
-    this.con_menu_cur_row = 0;
-    this.con_menu_prev_row = 0;
-    
-    this.col_ids = [];
-    
-    this.layer_dom_obj = $('layer_'+this.name);
-    
-    this.shift_row.bind(key.UP,   this, -1);
-    this.shift_row.bind(key.DOWN, this,  1);
-    
-    this.shift_page.bind(key.PAGE_PREV, this, -1);
-    this.shift_page.bind(key.PAGE_NEXT, this,  1);
-}
-
-Layer.prototype.show = function(){
-    _debug(this.name +' show');
-    
-    this.layer_dom_obj.show();
-    this.on = true;
-}
-
-Layer.prototype.hide = function(){
-    _debug(this.name + ' hide');
-    
-    this.layer_dom_obj.hide();
-    this.on = false;
-}
-
-Layer.prototype.shift_row = function(dir){
-    _debug(this.name + ' shift_row ' + dir);
-    
-}
-
-Layer.prototype.shift_page = function(dir){
-    _debug(this.name + ' shift_page ' + dir);
-    
-}
-
-Layer.prototype.set_active_row = function(){
-    _debug(this.name + ' set_active_row');
-    
-}
-
-Layer.prototype.set_passive_row = function(){
-    _debug(this.name + ' set_passive_row');
-    
-}
-
-Layer.prototype.set_passive_all_rows = function(){
-    _debug(this.name + ' set_passive_all_rows');
-    
-}
-
-Layer.prototype.load = function(p){
-    _debug(this.name + ' load ' + p);
-    
-}
-
-Layer.prototype.fill_rows = function(arr){
-    _debug(this.name, 'fill_rows', arr);
-    
-}
-
-Layer.prototype.del_rows = function(arr){
-    _debug(this.name + ' del_rows ');
-    
-}
-/*
- * END Layer
- */
-
 </script>
 
 <script type="text/javascript" src="global.js"></script>
 <script type="text/javascript" src="JsHttpRequest.js"></script>
-<script type="text/javascript" src="keycodes.keydown.js"></script>
-<script type="text/javascript" src="observer.keydown.js"></script>
+
+<script type="text/javascript" src="keydown.keycodes.js"></script>
+<script type="text/javascript" src="keydown.observer.js"></script>
+
+<script type="text/javascript" src="xpcom.common.js"></script>
+<script type="text/javascript" src="xpcom.webkit.js"></script>
+
+<script type="text/javascript" src="main_menu.js"></script>
 <script type="text/javascript" src="player.js"></script>
-<script type="text/javascript" src="common.xpcom.js"></script>
-<script type="text/javascript" src="webkit.xpcom.js"></script>
 
 </head>
 <body>
