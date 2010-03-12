@@ -57,6 +57,19 @@
     vclub.sidebar.bind();
     vclub.hide();
     
-    context.vclub = vclub;
+    module.vclub = vclub;
     
-})(window.document)
+    main_menu.add('ВИДЕОКЛУБ', 
+        [
+            {
+            "title" : "ВСЕ",
+            "cmd"   : function(){main_menu.hide(); module.vclub.show()}
+            },
+            {
+            "title" : "ДОКУМЕНТАЛЬНЫЙ",
+            "cmd"   : function(){main_menu.hide(); module.vclub.show()}
+            }
+        ]
+    );
+    
+})()
