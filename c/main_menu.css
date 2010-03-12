@@ -1,0 +1,163 @@
+/* MAIN MENU */
+.main_menu
+{
+    position:absolute;
+    left: 0;
+    top: 0;
+    width: 720px;
+    height: 576px;
+    background-image: url("i/bg.png");
+}
+
+.main_menu div
+{
+    font: 30px "Arial";
+	color: #808d9c;
+}
+
+.main_menu_hor
+{
+    position:absolute;
+    width:720px;
+    height:55px;
+    bottom:83px;
+    background-image: url("i/mm_menu_hor.png");
+}
+
+.main_menu_hor div
+{
+    position:absolute;
+    height: 35px;
+    white-space: pre;
+    margin-top: 9px;
+}
+
+.main_menu_hor_left
+{
+    position: absolute;
+    width: 150px;
+    height: 55px;
+    bottom: 83px;
+    left: 0px;
+    background-image: url("i/mm_hor_left.png");
+}
+
+.main_menu_hor_right
+{
+    position: absolute;
+    width: 150px;
+    height: 55px;
+    bottom: 83px;
+    left: 570px;
+    background-image: url("i/mm_hor_right.png");
+}
+
+.main_menu_vert_container
+{
+    position: absolute;
+    bottom: 128px;
+    left: 250px;
+    background: url("i/mm_menu_vert.png") top right;
+}
+
+.main_menu_vert
+{
+    position: absolute;
+    bottom: 128px;
+    left: 250px;
+}
+
+.main_menu_vert div
+{
+    position: fixed;
+    top: -40px;
+    height:35px;
+    white-space: pre;
+    margin: 0 2px;
+    padding: 0 15px;
+    -webkit-border-top-left-radius: 1px;    
+}
+
+.main_menu_vert_trans
+{
+    position:absolute;
+    height:0;
+    width:400px;
+    bottom:128px;
+    left:250px;
+    background: url("i/mm_vert_trans.png") no-repeat top left;
+}
+
+.sub_menu_punct_alpha1
+{
+    color: #0f3c66 !important;
+}
+
+.sub_menu_punct_alpha2
+{
+    color: #3c5a78 !important;
+}
+
+.sub_menu_punct
+{
+    color: #808899 !important;
+}
+
+.sub_menu_active
+{
+    color: #00152d !important;
+    background-color: #667b8e;
+}
+
+.main_menu_active
+{
+    color: #ffffff !important;
+}
+
+.main_menu_passive
+{
+    color: #808d9c !important;
+}
+
+.main_menu_passive img{
+    display: none;
+}
+
+.main_menu_date_bar
+{
+    position: absolute;
+    width: 720px;
+    top: 29px;
+    text-align: right;
+}
+
+.main_menu_date
+{
+    font-family: "Trebuchet ms" bold;
+    font-size: 15px;
+    color: #99a8b5;
+    text-transform: uppercase;
+}
+
+.main_menu_time
+{
+    font-weight: bold;
+    font-size: 21px;
+    color: #ccd6de;
+    margin-left: 12px;
+    margin-right: 60px;
+}
+
+.main_menu_cur_weather
+{
+    position: absolute;
+    color: #ccd6de !important;
+    text-shadow: #000000 2px -2px 0;
+    top: 60px;
+    right: 10px;
+    width: 156px;
+    height: 40px;
+    padding-top: 90px;
+    background: url("i/weather.png") no-repeat;
+}
+/* END MAIN MENU */
