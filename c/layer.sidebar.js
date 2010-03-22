@@ -9,15 +9,16 @@ function sidebar(parent){
     this.parent = parent;
     
     this.dom_obj = {};
-    this.width   = 0;
+    this.main_container = {};
     
     this.arrows  = {};
-    this.items   = [];
-    this.cur_item_idx = 0;
+    this.lists   = [];
+    
+    this.cur_list_idx = 0;
 }
 
 sidebar.prototype.show = function(){
-    this.dom_obj.moveX(720-this.width-96);
+    this.dom_obj.moveX(720-this.dom_obj.clientWidth);
     this.on = true;
 }
 
@@ -26,167 +27,192 @@ sidebar.prototype.hide = function(){
     this.on = false;
 }
 
+/*sidebar.prototype.reset = function(){
+    _debug('reset');
+    //this.clear();
+}*/
+
 sidebar.prototype.init = function(){
     
-    this.dom_obj = document.createElement('div');
-    this.dom_obj.addClass('footer_sidepanel');
+    this.dom_obj = create_block_element('footer_sidepanel', this.parent.dom_obj);
     
-    var side_r = document.createElement('div');
-    side_r.addClass('footer_sidepanel_r');
+    create_block_element('footer_sidepanel_r', this.dom_obj);
     
-    this.dom_obj.appendChild(side_r);
+    this.arrows = create_block_element('sidebar_arrows', this.dom_obj);
     
-    this.parent.dom_obj.appendChild(this.dom_obj);
+    var container = create_block_element('sidepanel_container', this.dom_obj);
     
-    this.arrows = document.createElement('div');
-    this.arrows.addClass('sidebar_arrows');
-    this.dom_obj.appendChild(this.arrows);
+    this.main_container = document.createElement('ul');
+    this.main_container.addClass('t_row');
+    
+    container.appendChild(this.main_container);
 }
 
-sidebar.prototype.init_items = function(alias, map){
+sidebar.prototype.init_items = function(alias){
     
     var item;
-    var left_offset = 0;
-    var container_class = 'items_container_active';
+    var items = [];
+    var list = document.createElement('ul');
     
     var options = {};
     
-    if (arguments.length = 3){
-        options = arguments[2];
+    if (arguments.length = 2){
+        options = arguments[1];
     }
     
-    this.items.push({"header" : options.header, "alias": alias, "container": {}, "map" : [], "max_width" : 0, "map_dom_obj" : [], "selected" : ''});
-    
-    var cur_idx = this.items.length-1;
-    
-    if (cur_idx > 0){
-        container_class = 'items_container_passive'
-    }
-    
-    this.items[cur_idx].map = map;
-    
-    this.items[cur_idx].container = document.createElement('div');
-    this.items[cur_idx].container.addClass(container_class);
-    this.dom_obj.appendChild(this.items[cur_idx].container);
-    
-    var active_bg_row = document.createElement('div');
-    active_bg_row.addClass('active_bg_row');
-    this.items[cur_idx].container.appendChild(active_bg_row);
-    
-    for (var i=0; i<map.length; i++){
+    for (var i = 0; i < 9; i++){
+        item = document.createElement('li');
         
-        item = document.createElement('div');
+        if (i == 4){
+            item.setAttribute("rel", "active");
+        }
         
-        item.moveX(this.width);
-        item.innerHTML = map[i].title;
+        items.push(item);
+        list.appendChild(item);
         
         if (options && options.align){
             item.style.textAlign = options.align;
         }
         
-        this.items[cur_idx].map_dom_obj[this.items[cur_idx].map_dom_obj.length] = item;
-        
-        this.items[cur_idx].container.appendChild(item);
-        
-        if (i < 9){
-            if (i > 0){
-                offset = this.items[cur_idx].map_dom_obj[i-1].offsetTop + this.items[cur_idx].map_dom_obj[i-1].clientHeight;
-            }else{
-                offset = 53;
-            }
-            this.items[cur_idx].map_dom_obj[i].moveY(offset);
-        }else{
-            this.items[cur_idx].map_dom_obj[i].moveY(400);
-        }
-        
-        if (i == 4){
-            item.addClass('active_item');
-        }
-        
-        if (item.clientWidth > this.items[cur_idx].max_width){
-            this.items[cur_idx].max_width = item.clientWidth;
+        if (options && options.width){
+            item.style.width = options.width + 'px';
         }
     }
     
-    if (cur_idx > 0){
-        var separator = this.create_separator();
-        separator.moveX(this.width + 45 + 6);
-        this.dom_obj.appendChild(separator);
+    if (this.lists.length > 0){
         
-        container_class = 'items_container_passive'
+        this.main_container.appendChild(this.create_separator());
+        list.addClass('items_container_passive');
+    }else{
+        list.addClass('items_container_active');
     }
     
-    if (cur_idx == 0){
-        this.arrows.moveX(this.items[cur_idx].max_width/2 + 45 + this.width);
+    var cell = document.createElement('li');
+    
+    cell.appendChild(list);
+    
+    this.main_container.appendChild(cell);
+    
+    this.lists.push({"header": options.header,"alias" : alias, "dom_obj" : list, "items" : items, "selected" : '*'});
+}
+
+sidebar.prototype.fill_items = function(alias, map){
+    
+    var idx = this.lists.getIdxByVal("alias", alias);
+    
+    if (idx === null){
+        return;
     }
     
-    for (var i=0; i<map.length; i++){
-        this.items[cur_idx].map_dom_obj[i].style.width = this.items[cur_idx].max_width + 'px';
+    if (map.length > 0){
+        for (var j=1; j<=4; j++){
+            map.unshift(map.pop());
+        }
     }
     
-    active_bg_row.style.width = this.items[cur_idx].max_width + 'px';
-    active_bg_row.moveX(this.width);
+    this.lists[idx].map = map;
     
-    this.dom_obj.style.width = this.width + this.items[cur_idx].max_width + 102 + 'px';
+    this.render_items(idx);
     
-    this.width += this.items[cur_idx].max_width + 6;
-    
-    this.render_items(cur_idx);
 }
 
 sidebar.prototype.vshift = function(dir){
+
+    _debug('vshift', dir);
     
     if (dir > 0){
-        this.items[this.cur_item_idx].map.push(this.items[this.cur_item_idx].map.shift());
+        this.lists[this.cur_list_idx].map.push(this.lists[this.cur_list_idx].map.shift());
     }else{
-        var menu_length = this.items[this.cur_item_idx].map.length;
-        this.items[this.cur_item_idx].map.unshift(this.items[this.cur_item_idx].map[menu_length-1]);
-        this.items[this.cur_item_idx].map.splice(menu_length, 1);
+        var menu_length = this.lists[this.cur_list_idx].map.length;
+        this.lists[this.cur_list_idx].map.unshift(this.lists[this.cur_list_idx].map[menu_length-1]);
+        this.lists[this.cur_list_idx].map.splice(menu_length, 1);
     }
     
-    this.render_items(this.cur_item_idx);
+    this.render_items(this.cur_list_idx);
+}
+
+sidebar.prototype.shift_page = function(dir){
+
+    _debug('shift_page', dir);
+    
+    
+    if (this.lists[this.cur_list_idx].map.length <= 9){
+        return;
+    }
+    
+    if (dir > 0){
+        
+        for (var i=0; i<9; i++){
+            this.lists[this.cur_list_idx].map.push(this.lists[this.cur_list_idx].map.shift());
+        }
+        
+    }else{
+        var menu_length = this.lists[this.cur_list_idx].map.length;
+        
+        for (var i=0; i<9; i++){
+            this.lists[this.cur_list_idx].map.unshift(this.lists[this.cur_list_idx].map[menu_length-1]);
+            this.lists[this.cur_list_idx].map.splice(menu_length, 1);
+        }
+    }
+    
+    this.render_items(this.cur_list_idx);
 }
 
 sidebar.prototype.hshift = function(dir){
     
+    _debug('hshift', dir);
+    
     if (dir > 0){
-        if (this.cur_item_idx < this.items.length - 1){
-            this.cur_item_idx++;
+        if (this.cur_list_idx < this.lists.length - 1){
+            this.cur_list_idx++;
         }
     }else{
-        if (this.cur_item_idx > 0){
-            this.cur_item_idx--;
+        if (this.cur_list_idx > 0){
+            this.cur_list_idx--;
         }
     }
     
-    this.set_active_item();
+    this.set_active_list();
 }
 
-sidebar.prototype.set_active_item = function(){
-    var offset = 0;
-            
-    for (var i=0; i<this.items.length; i++){
+sidebar.prototype.set_active_list = function(){
+    
+    for (var i=0; i<this.lists.length; i++){
         
-        if (i != this.cur_item_idx){
-            this.items[i].container.setClass('items_container_passive');
-            offset += this.items[i].max_width;
+        if (i != this.cur_list_idx){
+            this.lists[i].dom_obj.setClass('items_container_passive');
         }else{
-            this.items[i].container.setClass('items_container_active');
-            this.arrows.moveX(this.items[this.cur_item_idx].max_width/2 + 46 + (this.items.length-1)*6 + offset);
+            this.lists[i].dom_obj.setClass('items_container_active');
+            this.arrows.moveX(this.lists[i].dom_obj.clientWidth/2 - 6 + this.lists[i].dom_obj.offsetLeft);
         }
     }
 }
 
 sidebar.prototype.render_items = function(item_idx){
     
+    _debug('render_items item_idx', item_idx);
+    
     for (var i=0; i < 9; i++){
 
-        this.items[item_idx].map_dom_obj[i].innerHTML = this.items[item_idx].map[i].title;
-
-        if (this.items[item_idx].map[i].id == this.items[item_idx].selected){
-            this.items[item_idx].map_dom_obj[i].setClass('selected_item');
-        }else{
-            this.items[item_idx].map_dom_obj[i].setClass('passive_item');
+        try{
+            
+            if (!this.lists[item_idx].map[i]){
+                
+                this.lists[item_idx].items[i].innerHTML = '';
+                
+                continue;
+            }
+        
+            this.lists[item_idx].items[i].innerHTML = this.lists[item_idx].map[i].title;
+    
+            if (this.lists[item_idx].map[i].id == this.lists[item_idx].selected){
+                this.lists[item_idx].items[i].setClass('selected_item');
+            }else{
+                this.lists[item_idx].items[i].setClass('passive_item');
+            }
+            
+        }catch(e){
+            _debug(e);
         }
     }
 }
@@ -194,45 +220,65 @@ sidebar.prototype.render_items = function(item_idx){
 sidebar.prototype.create_separator = function(){
     
     var separator = document.createElement('div');
-    separator.addClass('sidebar_line');
+    separator.addClass('separator');
     this.dom_obj.appendChild(separator);
     
     return separator;
 }
 
 sidebar.prototype.set_selected_item = function(){
+    _debug('set_selected_item');
     
-    for(var i=0; i < 9; i++){
-        if (this.items[this.cur_item_idx].map[i].id == this.items[this.cur_item_idx].selected){
-            this.items[this.cur_item_idx].map_dom_obj[i].setClass('passive_item');
+    try{
+        
+        for(var i=0; i < 9; i++){
+            
+            if (!this.lists[this.cur_list_idx].map[i]){
+                continue;
+            }
+            
+            if (this.lists[this.cur_list_idx].map[i].id == this.lists[this.cur_list_idx].selected){
+                this.lists[this.cur_list_idx].items[i].setClass('passive_item');
+            }
         }
+        
+        this.lists[this.cur_list_idx].selected = this.lists[this.cur_list_idx].map[4].id;
+        this.lists[this.cur_list_idx].items[4].setClass('selected_item');
+    
+    }catch(e){
+        _debug(e)
     }
-    
-    this.items[this.cur_item_idx].selected = this.items[this.cur_item_idx].map[4].id;
-    this.items[this.cur_item_idx].map_dom_obj[4].setClass('selected_item');
-    
+        
     this.action();
 }
 
 sidebar.prototype.action = function(){
+    _debug('action');
             
-    for (var i=0; i<this.items.length; i++){
-        this.parent.load_params[this.items[i].alias] = this.items[i].selected;
+    for (var i=0; i<this.lists.length; i++){
+        this.parent.load_params[this.lists[i].alias] = this.lists[i].selected;
         
-        this.parent.update_header_path([{"alias" : this.items[i].alias, "title" : this.items[i].header, "item" : this.items[this.cur_item_idx].map[4].title}]);
+        this.parent.reset();
+        
+        this.parent.update_header_path([{"alias" : this.lists[i].alias, "title" : this.lists[i].header, "item" : this.lists[i].map[4].title}]);
     }
     
     this.parent.load_data();
     
-    _debug(this.parent.load_params);
+    //_debug(this.parent.load_params);
 }
 
 sidebar.prototype.bind = function(){
     this.vshift.bind(key.UP, this, -1);
     this.vshift.bind(key.DOWN, this, 1);
     
+    this.shift_page.bind(key.PAGE_PREV, this, -1);
+    this.shift_page.bind(key.PAGE_NEXT, this, 1);
+    
     this.hshift.bind(key.LEFT, this, -1);
     this.hshift.bind(key.RIGHT, this, 1);
     
     this.set_selected_item.bind(key.OK, this);
+    
+    this.hide.bind(key.EXIT, this);
 }
