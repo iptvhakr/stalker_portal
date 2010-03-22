@@ -15,21 +15,25 @@ body{
 
 .text24_white{
     font-size: 24px;
-    color: #FFF;
+    color: #fff;
 }
 
 .text20_white{
     font-size: 20px;
-    color: #FFF;
+    color: #fff;
 }
 
 .text14_white{
     font-size: 14px;
-    color: #FFF;
+    color: #fff;
 }
 
 .bold{
     font-weight:bold;
+}
+
+.uppercase{
+    text-transform:uppercase;
 }
 /* END GLOBAL STYLES */
 
@@ -71,30 +75,11 @@ function init(){
     
     load_module('layer');
     load_module('layer.sidebar');
+    load_module('layer.sidebar');
+    load_module('layer.bottom_menu');
     load_module('vclub');
     
     var map = [
-        /*{"title"    : "ТЕЛЕВИДЕНИЕ",
-         "cmd"      : "",
-         "sub" : [
-                          {
-                            "title" : "СПОРТ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "РАЗВЛЕЧЕНИЕ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ТОП",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "НОВОСТИ",
-                            "cmd"   : ""
-                          }
-                      ]
-        },*/
         {"title"    : "КАРАОКЕ",
          "cmd"      : "",
          "sub" : [
