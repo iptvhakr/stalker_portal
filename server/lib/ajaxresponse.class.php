@@ -20,7 +20,17 @@ class AjaxResponse
                     'data'           => array(),
                 );
     
+    protected $all_abc = array(
+        'RU' => array('*','А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'),
+        'EN' => array('*','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','W','Z')
+    );
+    
+    protected $abc = array();
+    
     protected function __construct(){
+        
+        $this->abc = $this->all_abc[LANG];
+        
         $this->db  = Mysql::getInstance();
         $this->stb = Stb::getInstance();
         
