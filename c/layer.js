@@ -40,13 +40,24 @@ Layer.prototype.show = function(){
 }
 
 Layer.prototype.hide = function(){
-    this.dom_obj.hide();
+    
+    this.reset();
+    
+    this.sidebar && this.sidebar.reset && this.sidebar.reset();
     
     if (this.sidebar && this.sidebar.on){
+        this.sidebar.reset();
         this.sidebar.hide();
     }
     
+    this.dom_obj.hide();
+    
     this.on = false;
+}
+
+Layer.prototype.reset = function(){
+    this.cur_row = 0;
+    this.cur_page = 1;
 }
 
 Layer.prototype.init = function(){
@@ -169,7 +180,13 @@ Layer.prototype.load_data = function(){
 }
 
 Layer.prototype.set_total_items = function(count){
-    var str = 'СТР <span class="text20_white bold">'+this.cur_page+'</span> ИЗ <span class="text20_white bold">'+this.total_pages+'</span>.';
+    
+    var str = '';
+    
+    if (this.total_pages != 0){
+        str += 'СТР <span class="text20_white bold">'+this.cur_page+'</span> ИЗ <span class="text20_white bold">'+this.total_pages+'</span>.';
+    }
+    
     str += ' НАЙДЕНО <span class="text20_white bold">'+count+'</span> ЗАПИСЕЙ.';
     this.total_vclub_items_obj.innerHTML = str;
 }
@@ -217,15 +234,29 @@ Layer.prototype.clear_row = function(row_obj){
         if (!row_obj.childNodes[i].isHidden()){
 
             if (row_obj.childNodes[i].innerHTML){
-                row_obj.childNodes[i].innerHTML = '';
+                row_obj.childNodes[i].innerHTML = '&nbsp;';
+            }else{
+                row_obj.childNodes[i].hide();
             }
-            
-            row_obj.childNodes[i].hide();
         }
     }
 }
 
 Layer.prototype.set_active_row = function(num){
+    
+    _debug('set_active_row', num);
+    
+    if (num == 0){
+        if (!this.data_items[num]){
+            if (!this.active_row['row'].isHidden()){
+                this.active_row['row'].hide()
+            }
+        }else{
+            if (this.active_row['row'].isHidden()){
+                this.active_row['row'].show()
+            }
+        }
+    }
     
     var offset = this.map[num]['row'].offsetTop - 15;
     
@@ -386,12 +417,12 @@ Layer.prototype.update_header_path = function(map){
         }
         
         if (map[i].item != '*'){
-            this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].title});
+            this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].item + ' /'});
         }
     }
     
     for (var i=0; i<this.header_path_map.length; i++){
-        path += '<span class="text20_white">'+this.header_path_map[i].title+'</span>';
+        path += '<span class="text20_white uppercase">'+this.header_path_map[i].title+'</span>';
     }
     
     this.path_container.innerHTML = path;
