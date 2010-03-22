@@ -18,4 +18,5 @@ function __autoload($class_name) {
     $class = 'lib/'.strtolower($class_name).'.class.php';
     require_once $class;
 }
+
 ?>
