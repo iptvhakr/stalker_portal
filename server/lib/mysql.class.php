@@ -126,15 +126,22 @@ class Mysql
     
     public function where($key, $type = 'AND ', $value = null, $quote = true){
         
+        if (empty($key)){
+            return $this;
+        }
+        
         if (!is_array($key)){
             $keys = array($key => $value);
         }else{
             $keys = $key;
         }
         
+        $where = array();
+        
         foreach ($keys as $key => $value){
             
-            $prefix = (count($this->where) == 0) ? '' : $type;
+            //$prefix = (count($this->where) == 0) ? '' : $type;
+            $prefix = (count($where) == 0) ? '' : $type;
             
             if ($quote === -1){
                 $value = '';
@@ -160,8 +167,28 @@ class Mysql
                 }
             }
             
-            $this->where[] = $prefix.$key.$value;
+            //$this->where[] = $prefix.$key.$value;
+            
+            
+            /*if (empty($where)){
+                $where .= ' AND ('.$prefix.$key.$value.'';
+            }*/
+            
+            $where[] = $prefix.$key.$value;
         }
+        
+        $where_str = '('.implode(' ', $where).')';
+        
+        
+        if (count($this->where) != 0){
+            //$where = "AND '('.$where.')";
+            
+            $where_str = ' AND '.$where_str;
+            
+        }
+        
+        /*$this->where[] = '('.$where.')';*/
+        $this->where[] = $where_str;
         
         return $this;
     }
@@ -190,7 +217,11 @@ class Mysql
         return $this;
     }
     
-    public function like($field, $match){
+    public function like($field, $match = ''){
+        
+        if (empty($field)){
+            return $this;
+        }
         
         $fields = is_array($field) ? $field : array($field => $match);
         
@@ -204,14 +235,14 @@ class Mysql
                     
                     $prefix = (count($this->where) == 0) ? '' : ' AND';
                     
-                    $match = '%'.str_replace('%', '\\%', $match).'%';
+                    //$match = '%'.str_replace('%', '\\%', $match).'%';
                     
                     $this->where[] = $prefix.' '.$field.' LIKE \''.$match.'\'';
             }
             
         }
 
-        return $this; 
+        return $this;
     }
     
     public function limit($limit, $offset = null){
