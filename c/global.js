@@ -14,8 +14,13 @@ function _debug(){
     if (debug){
         
         var text = '';
+        
         for (var i = 0; i < arguments.length; i++){
-            if (arguments[i].message && arguments[i].name){
+            if (arguments[i] === null){
+                text += ' null';
+            }else if (typeof(arguments[i]) === "undefined"){
+                text += ' undefined';
+            }else if (arguments[i].message && arguments[i].name){
                 text += ' '+arguments[i];
             }else{
                 text += ' '+arguments[i].toSource();
@@ -150,6 +155,14 @@ HTMLElement.prototype.setClass = function(class_name){
     }
 }
 
+HTMLElement.prototype.delClass = function(){
+    try{
+        this.className = '';
+    }catch(e){
+        _debug(e);
+    }
+}
+
 HTMLElement.prototype.addClass = function(class_name){
     try{
         if (!this.className){
@@ -213,13 +226,15 @@ if (typeof Object.prototype.toSource != 'function'){
             var res = '{';
             var i=0;
             for(var j in this) {
-                if(j != 'toSource') {
-                    if(i == 0) {
-                        res += j + ':' + this[j].toSource(1);
-                    } else {
-                        res += ', ' + j + ':' + this[j].toSource(1);
+                if (this.hasOwnProperty(j)){
+                    if(j != 'toSource') {
+                        if(i == 0) {
+                            res += j + ':' + this[j].toSource(1);
+                        } else {
+                            res += ', ' + j + ':' + this[j].toSource(1);
+                        }
+                        i++;
                     }
-                    i++;
                 }
             }
             res += '}';
@@ -231,6 +246,27 @@ if (typeof Object.prototype.toSource != 'function'){
         }
     }
     
+}
+
+Object.prototype.clone = function() {  
+    
+    var newObj = (this instanceof Array) ? [] : {};  
+    
+    for (i in this) {
+        
+        if (this.hasOwnProperty(i)){
+            //_debug(i);
+            
+            if (i == 'clone') continue;  
+            
+            if (this[i] && typeof this[i] == "object") {  
+                newObj[i] = this[i].clone();  
+            }else{
+                newObj[i] = this[i];
+            }
+        }
+    }
+    return newObj;
 }
 
 Array.prototype.getIdxById = function(id){
