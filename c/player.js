@@ -246,13 +246,9 @@ player.prototype.switch_channel = function(dir){
             }
             
             _debug('this.ch_idx:', this.ch_idx);
-            
-            try{
-                this.show_info(this.channels[this.ch_idx]);
-                this.play(this.channels[this.ch_idx]);
-            }catch(e){
-                _debug(e);
-            }
+        
+            this.show_info(this.channels[this.ch_idx]);
+            this.play(this.channels[this.ch_idx]);
         }
         
     }else{
@@ -279,12 +275,8 @@ player.prototype.switch_channel = function(dir){
             
             _debug('this.ch_idx:', this.ch_idx);
             
-            try{
-                this.show_info(this.channels[this.ch_idx]);
-                this.play(this.channels[this.ch_idx]);
-            }catch(e){
-                _debug(e);
-            }
+            this.show_info(this.channels[this.ch_idx]);
+            this.play(this.channels[this.ch_idx]);
         }
     }
 }
