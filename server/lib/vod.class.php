@@ -307,20 +307,49 @@ class Vod extends AjaxResponse
         $where = array('status' => 1);
         
         if (@$_REQUEST['hd']){
-            $where['hd'] = '1';
+            $where['hd'] = 1;
         }else{
-            $where['hd<='] = '1';
+            $where['hd<='] = 1;
         }
         
         if (!$this->stb->isModerator()){
-            $where['accessed'] = '1';
+            $where['accessed'] = 1;
             
             if ($this->stb->hd){
-                $where['disable_for_hd_devices'] = '0';
+                $where['disable_for_hd_devices'] = 0;
             }
         }
         
-        return $this->db->from('video')->where($where)->limit(MAX_PAGE_ITEMS, $offset);
+        if (@$_REQUEST['years'] && @$_REQUEST['years'] !== '*'){
+            $where['year'] = $_REQUEST['years'];
+        }
+        
+        if (@$_REQUEST['category'] && @$_REQUEST['category'] !== '*'){
+            $where['category_id'] = intval($_REQUEST['category']);
+        }
+        
+        $like = array();
+        
+        if (@$_REQUEST['abc'] && @$_REQUEST['abc'] !== '*'){
+            
+            $letter = $_REQUEST['abc'];
+            
+            $like = array('name' => $letter.'%');
+        }
+        
+        $where_genre = array();
+        
+        if (@$_REQUEST['genre'] && @$_REQUEST['genre'] !== '*'){
+            
+            $genre = intval($_REQUEST['genre']);
+            
+            $where_genre['cat_genre_id_1'] = $genre;
+            $where_genre['cat_genre_id_2'] = $genre;
+            $where_genre['cat_genre_id_3'] = $genre;
+            $where_genre['cat_genre_id_4'] = $genre;
+        }
+        
+        return $this->db->from('video')->where($where)->where($where_genre, 'OR ')->like($like)->limit(MAX_PAGE_ITEMS, $offset);
     }
     
     public function getByName(){
@@ -360,6 +389,78 @@ class Vod extends AjaxResponse
         return $this->response;
     }
     
+    public function getCategories(){
+        
+        $categories = $this->db
+                        ->select('id, category_name as title, category_alias as alias')
+                        ->from("media_category")
+                        ->get()
+                        ->all();
+                        
+        array_unshift($categories, array('id' => '*', 'title' => 'Все', 'alias' => '*'));
+        
+        return $categories;
+    }
+    
+    public function getGenresByCategoryAlias($cat_alias = ''){
+        
+        if (!$cat_alias){
+            $cat_alias = @$_REQUEST['cat_alias'];
+        }
+        
+        $where = array();
+        
+        if ($cat_alias != '*'){
+            $where['category_alias'] = $cat_alias;
+        }
+        
+        $genres = $this->db
+                        ->select('id, title')
+                        ->from("cat_genre")
+                        ->where($where)
+                        ->get()
+                        ->all();
+                        
+        array_unshift($genres, array('id' => '*', 'title' => '*'));
+        
+        return $genres;
+    }
+    
+    public function getYears(){
+        
+        $where = array('year>' => '1900');
+        
+        if (@$_REQUEST['category'] && @$_REQUEST['category'] !== '*'){
+            $where['category_id'] = $_REQUEST['category'];
+        }
+        
+        $years = $this->db
+                        ->select('year as id, year as title')
+                        ->from('video')
+                        ->where($where)
+                        ->groupby('year')
+                        ->orderby('year')
+                        ->get()
+                        ->all();
+        
+        array_unshift($years, array('id' => '*', 'title' => '*'));
+        
+        return $years;
+    }
+    
+    public function getAbc(){
+        
+        $abc = array();
+        
+        foreach ($this->abc as $item){
+            $abc[] = array(
+                        'id'    => $item,
+                        'title' => $item
+                     );
+        }
+        
+        return $abc;
+    }
 }
 
 ?>
