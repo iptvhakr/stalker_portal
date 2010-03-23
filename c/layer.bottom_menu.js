@@ -103,8 +103,16 @@ bottom_menu.prototype.set_passive_row = function(){
 bottom_menu.prototype.action = function(){
     _debug('bottom_menu.action');
     
+    _debug('this.items', this.items);
+    _debug('this.items[this.cur_row_idx].cmd', this.items[this.cur_row_idx].cmd);
+    
     try{
-        this.items[this.cur_row_idx].cmd();
+        this.items[this.cur_row_idx].cmd.call(this);
+        
+        this.parent.update_header_path([{"alias" : "sortby", "item" : this.items[this.cur_row_idx].label}]);
+        
+        this.parent.reset();
+        this.parent.load_data();
     }catch(e){
         _debug(e);
     }
