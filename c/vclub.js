@@ -13,7 +13,7 @@
         
         this.load_params = {
             'type'   : 'vod',
-            'action' : 'get_by_name'
+            'action' : 'get_ordered_list'
         };
         
         this.superclass = Layer.prototype;
@@ -137,10 +137,10 @@
     
     vclub.init_sort_menu(
         [
-            {"label" : "по имени", "cmd" : function(){}},
-            {"label" : "по добавлению", "cmd" : function(){}},
-            {"label" : "по популярности", "cmd" : function(){}},
-            {"label" : "только избранное", "cmd" : function(){}}
+            {"label" : "по имени", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'}},
+            {"label" : "по добавлению", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'}},
+            {"label" : "по популярности", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'}},
+            {"label" : "только избранное", "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true}}
         ],
         {
             "offset_x" : 217
