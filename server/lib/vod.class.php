@@ -352,9 +352,32 @@ class Vod extends AjaxResponse
         return $this->db->from('video')->where($where)->where($where_genre, 'OR ')->like($like)->limit(MAX_PAGE_ITEMS, $offset);
     }
     
-    public function getByName(){
+    public function getOrderedList(){
+        $fav = $this->getFav();
         
-        $result = $this->getData()->orderby('name');
+        $result = $this->getData();
+        
+        if (@$_REQUEST['sortby']){
+            $sortby = $_REQUEST['sortby'];
+            
+            if ($sortby == 'name'){
+                $result = $result->orderby('name');
+            }elseif ($sortby == 'added'){
+                $result = $result->orderby('added', 'DESC');
+            }elseif ($sortby == 'top'){
+                $result->select('*, (count_first_0_5+count_second_0_5) as top')->orderby('top', 'DESC');
+            }
+            
+        }else{
+            $result = $result->orderby('name');
+        }
+        
+        if (@$_REQUEST['fav']){
+            //var_dump($fav);
+            //$fav = implode(",", $fav);
+            //var_dump($fav);
+            $result = $result->in('id', $fav);
+        }
         
         $this->setResponseData($result);
         
