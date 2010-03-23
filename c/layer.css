@@ -157,6 +157,9 @@
     position: absolute;
     left: 190px;
     top:37px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .mb_header_info{
