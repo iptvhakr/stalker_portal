@@ -93,7 +93,7 @@ sidebar.prototype.init_items = function(alias){
     
     this.main_container.appendChild(cell);
     
-    this.lists.push({"header": options.header,"alias" : alias, "dom_obj" : list, "items" : items, "selected" : '*'});
+    this.lists.push({"header": options.header,"alias" : alias, "dom_obj" : list, "items" : items, "selected" : "*", "selected_title" : "*"});
 }
 
 sidebar.prototype.fill_items = function(alias, map){
@@ -243,6 +243,7 @@ sidebar.prototype.set_selected_item = function(){
         }
         
         this.lists[this.cur_list_idx].selected = this.lists[this.cur_list_idx].map[4].id;
+        this.lists[this.cur_list_idx].selected_title = this.lists[this.cur_list_idx].map[4].title;
         this.lists[this.cur_list_idx].items[4].setClass('selected_item');
     
     }catch(e){
@@ -260,12 +261,11 @@ sidebar.prototype.action = function(){
         
         this.parent.reset();
         
-        this.parent.update_header_path([{"alias" : this.lists[i].alias, "title" : this.lists[i].header, "item" : this.lists[i].map[4].title}]);
+        //this.parent.update_header_path([{"alias" : this.lists[i].alias, "title" : this.lists[i].header, "item" : this.lists[i].map[4].title}]);
+        this.parent.update_header_path([{"alias" : this.lists[i].alias, "title" : this.lists[i].header, "item" : this.lists[i].selected_title}]);
     }
     
     this.parent.load_data();
-    
-    //_debug(this.parent.load_params);
 }
 
 sidebar.prototype.bind = function(){
