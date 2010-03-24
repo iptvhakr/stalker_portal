@@ -84,12 +84,14 @@
             
             this.load_params['category'] = category.id;
             
-            this.superclass.show.apply(this);
-            
             try{
-                vclub.load_abc();
-                vclub.load_genres(category.alias);
-                vclub.load_years(category.id);
+                this.sort_menu.action();
+                
+                this.superclass.show.apply(this);
+                
+                this.load_abc();
+                this.load_genres(category.alias);
+                this.load_years(category.id);
             }catch(e){
                 _debug(e);
             }
@@ -148,6 +150,9 @@
     );
    
     vclub.init_header_path('ВИДЕО КЛУБ');
+    
+    vclub.sidebar.dependency = [vclub.sort_menu];
+    vclub.sort_menu.dependency = [vclub.sidebar];
     
     vclub.hide();
     
