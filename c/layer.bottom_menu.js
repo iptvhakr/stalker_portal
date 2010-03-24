@@ -7,6 +7,7 @@ function bottom_menu(parent, options){
     
     this.on = false;
     this.parent = parent;
+    this.dependency = [];
     
     this.dom_obj = {};
     this.main_container = {};
@@ -21,11 +22,19 @@ function bottom_menu(parent, options){
         if (options.offset_x){
             this.offset_x = options.offset_x;
         }
+        
+        if (options.dependency){
+            this.dependency = options.dependency;
+        }
     }
 }
 
 bottom_menu.prototype.show = function(){
     _debug('bottom_menu.show');
+    
+    for (var i=0; i<this.dependency.length; i++){
+        this.dependency[i].on && this.dependency[i].hide && this.dependency[i].hide();
+    }
     
     this.dom_obj.moveY(576 - this.dom_obj.clientHeight - 36);
     this.on = true;
@@ -111,8 +120,11 @@ bottom_menu.prototype.action = function(){
         
         this.parent.update_header_path([{"alias" : "sortby", "item" : this.items[this.cur_row_idx].label}]);
         
-        this.parent.reset();
-        this.parent.load_data();
+        if (this.parent.on){
+            this.parent.reset();
+            this.parent.load_data();
+        }
+        
     }catch(e){
         _debug(e);
     }
