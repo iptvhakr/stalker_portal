@@ -43,6 +43,8 @@ Layer.prototype.hide = function(){
     
     this.reset();
     
+    this.load_params = this.load_params_pattern.clone();
+    
     this.sidebar && this.sidebar.reset && this.sidebar.reset();
     
     if (this.sidebar && this.sidebar.on){
@@ -55,12 +57,14 @@ Layer.prototype.hide = function(){
     this.on = false;
 }
 
-Layer.prototype.reset = function(){
+Layer.prototype.reset = function(){    
     this.cur_row = 0;
     this.cur_page = 1;
 }
 
 Layer.prototype.init = function(){
+    
+    this.load_params_pattern = this.load_params.clone();
     
     if (!this.class_name){
         this.class_name = 'layer_bg';
@@ -137,8 +141,8 @@ Layer.prototype.init_active_row = function(){
     this.dom_obj.appendChild(active_row);
 }
 
-Layer.prototype.init_sidebar = function(){
-    this.sidebar = new sidebar(this);
+Layer.prototype.init_sidebar = function(options){
+    this.sidebar = new sidebar(this, options);
     this.sidebar.init();
 }
 
