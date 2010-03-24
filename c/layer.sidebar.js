@@ -3,10 +3,11 @@
  * @constructor
  */
 
-function sidebar(parent){
+function sidebar(parent, options){
     
     this.on = false;
     this.parent = parent;
+    this.dependency = [];
     
     this.dom_obj = {};
     this.main_container = {};
@@ -15,9 +16,18 @@ function sidebar(parent){
     this.lists   = [];
     
     this.cur_list_idx = 0;
+    
+    if (options && options.dependency){
+        this.dependency = options.dependency;
+    }
 }
 
 sidebar.prototype.show = function(){
+    
+    for (var i=0; i<this.dependency.length; i++){
+        this.dependency[i].on && this.dependency[i].hide && this.dependency[i].hide();
+    }
+    
     this.dom_obj.moveX(720-this.dom_obj.clientWidth);
     this.on = true;
 }
@@ -27,10 +37,17 @@ sidebar.prototype.hide = function(){
     this.on = false;
 }
 
-/*sidebar.prototype.reset = function(){
-    _debug('reset');
-    //this.clear();
-}*/
+sidebar.prototype.reset = function(){
+    _debug('sidebar.reset');
+    for (var i=0; i<this.lists.length; i++){
+        this.lists[i].selected = '*';
+        this.lists[i].selected_title = '*';
+        this.parent.update_header_path([{"alias" : this.lists[i].alias, "item" : this.lists[i].selected_title}]);
+    }
+    
+    this.cur_list_idx = 0;
+    this.set_active_list();
+}
 
 sidebar.prototype.init = function(){
     
