@@ -217,7 +217,7 @@ class Mysql
         return $this;
     }
     
-    public function like($field, $match = ''){
+    /*public function like($field, $match = ''){
         
         if (empty($field)){
             return $this;
@@ -230,17 +230,42 @@ class Mysql
             $matches = is_array($match_item) ? $match_item : array($match_item);
             
             foreach ($matches as $match){
+                
+                $match = $this->escape_str($match);
+                
+                $prefix = (count($this->where) == 0) ? '' : ' AND';
                     
-                    $match = $this->escape_str($match);
+                //$match = '%'.str_replace('%', '\\%', $match).'%';
                     
-                    $prefix = (count($this->where) == 0) ? '' : ' AND';
-                    
-                    //$match = '%'.str_replace('%', '\\%', $match).'%';
-                    
-                    $this->where[] = $prefix.' '.$field.' LIKE \''.$match.'\'';
+                $this->where[] = $prefix.' '.$field.' LIKE \''.$match.'\'';
             }
-            
         }
+
+        return $this;
+    }*/
+    
+    public function like($fields, $type = 'AND '){
+        
+        if (empty($fields)){
+            return $this;
+        }
+        
+        $like = array();
+        
+        foreach ($fields as $field => $match){
+            
+            $prefix = (count($like) == 0) ? '' : $type;
+            
+            $like[] = $prefix.' '.$field.' LIKE \''.$match.'\'';
+        }
+        
+        $where_str = '('.implode(' ', $like).')';
+        
+        if (count($this->where) != 0){
+            $where_str = ' AND '.$where_str;
+        }
+        
+        $this->where[] = $where_str;
 
         return $this;
     }
