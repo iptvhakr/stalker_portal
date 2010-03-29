@@ -349,7 +349,20 @@ class Vod extends AjaxResponse
             $where_genre['cat_genre_id_4'] = $genre;
         }
         
-        return $this->db->from('video')->where($where)->where($where_genre, 'OR ')->like($like)->limit(MAX_PAGE_ITEMS, $offset);
+        $search = array();
+        
+        if (@$_REQUEST['search']){
+            
+            $letters = $_REQUEST['search'];
+            
+            $search['name']     = '%'.$letters.'%';
+            $search['o_name']   = '%'.$letters.'%';
+            $search['actors']   = '%'.$letters.'%';
+            $search['director'] = '%'.$letters.'%';
+            $search['year']     = '%'.$letters.'%';
+        }
+        
+        return $this->db->from('video')->where($where)->where($where_genre, 'OR ')->like($like)->like($search, 'OR ')->limit(MAX_PAGE_ITEMS, $offset);
     }
     
     public function getOrderedList(){
