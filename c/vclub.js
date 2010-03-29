@@ -22,6 +22,8 @@
         
         this.sort_menu = {};
         
+        this.search_box = {};
+        
         this.load_genres = function(alias){
             
             alias = alias || '';
@@ -97,6 +99,16 @@
             }
         };
         
+        this.hide = function(){
+            
+            _debug('vclub.hide');
+            
+            this.search_box && this.search_box.reset && this.search_box.reset();
+            
+            this.superclass.hide.apply(this);
+            
+        };
+        
         this.init_sort_menu = function(map, options){
             this.sort_menu = new bottom_menu(this, options);
             this.sort_menu.init(map);
@@ -108,6 +120,20 @@
                 this.sort_menu.hide();
             }else{
                 this.sort_menu.show();
+            }
+        };
+        
+        this.init_search_box = function(options){
+            this.search_box = new search_box(this, options);
+            this.search_box.init();
+            this.search_box.bind();
+        };
+        
+        this.search_box_switcher = function(){
+            if (this.search_box && this.search_box.on){
+                this.search_box.hide();
+            }else{
+                this.search_box.show();
             }
         };
     }
@@ -125,7 +151,7 @@
     vclub.init_color_buttons([
         {"label" : "ОТОБРАЖЕНИЕ", "cmd" : ""},
         {"label" : "СОРТИРОВКА", "cmd" : vclub.sort_menu_switcher},
-        {"label" : "ПОИСК", "cmd" : ""},
+        {"label" : "ПОИСК", "cmd" : vclub.search_box_switcher},
         {"label" : "ВЫБОРКА", "cmd" : vclub.sidebar_switcher}
     ]);
     
@@ -148,11 +174,18 @@
             "offset_x" : 217
         }
     );
+    
+    vclub.init_search_box(
+        {
+            "offset_x" : 323
+        }
+    );
    
     vclub.init_header_path('ВИДЕО КЛУБ');
     
-    vclub.sidebar.dependency = [vclub.sort_menu];
-    vclub.sort_menu.dependency = [vclub.sidebar];
+    vclub.sidebar.dependency = [vclub.sort_menu, vclub.search_box];
+    vclub.sort_menu.dependency = [vclub.sidebar, vclub.search_box];
+    vclub.search_box.dependency = [vclub.sidebar, vclub.sort_menu];
     
     vclub.hide();
     
