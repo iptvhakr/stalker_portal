@@ -420,7 +420,7 @@ Layer.prototype.update_header_path = function(map){
             this.header_path_map.splice(idx, 1);
         }
         
-        if (map[i].item != '*'){
+        if (map[i].item != '*' && map[i].item != ''){
             this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].item + ' /'});
         }
     }
