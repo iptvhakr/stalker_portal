@@ -362,7 +362,15 @@ class Vod extends AjaxResponse
             $search['year']     = '%'.$letters.'%';
         }
         
-        return $this->db->from('video')->where($where)->where($where_genre, 'OR ')->like($like)->like($search, 'OR ')->limit(MAX_PAGE_ITEMS, $offset);
+        return $this->db
+                        ->select('video.*, screenshots.id as screenshot_id')
+                        ->from('video')
+                        ->join('screenshots', 'video.id', 'screenshots.media_id', 'LEFT')
+                        ->where($where)
+                        ->where($where_genre, 'OR ')
+                        ->like($like)
+                        ->like($search, 'OR ')
+                        ->limit(MAX_PAGE_ITEMS, $offset);
     }
     
     public function getOrderedList(){
@@ -420,6 +428,10 @@ class Vod extends AjaxResponse
             }else{
                 $this->response['data'][$i]['fav'] = 0;
             }
+            
+            $this->response['data'][$i]['screenshot_uri'] = $this->getImgUri($this->response['data'][$i]['screenshot_id']);
+            
+            $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
         }
         
         return $this->response;
@@ -496,6 +508,12 @@ class Vod extends AjaxResponse
         }
         
         return $abc;
+    }
+    
+    public function getGenresStrByItem($item){
+        
+        return implode(', ', $this->db->from('cat_genre')->in('id', array($item['cat_genre_id_1'], $item['cat_genre_id_2'], $item['cat_genre_id_3'], $item['cat_genre_id_4']))->get()->all('title'));
+        
     }
 }
 
