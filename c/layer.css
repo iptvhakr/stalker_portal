@@ -49,12 +49,21 @@
     font-size: 20px;
     text-shadow: #122946 0 -1px 0;
     margin-top: 3px;
+    margin-right: 5px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.blue_row_bg{
+.wide_container{
+    
+}
+
+.short_container{
+    
+}
+
+.wide_container .blue_row_bg{
     position: absolute;
     left: 49px;
     top: 72px;
@@ -63,12 +72,32 @@
     background-image: url("i/mb_table.png");
 }
 
-.active_row_bg{
+.short_container .blue_row_bg{
+    position: absolute;
+    left: 49px;
+    top: 72px;
+    width: 283px;
+    height: 30px;
+    background-image: url("i/mb_table.png");
+    background-position: 0 -120px;
+}
+
+.wide_container .active_row_bg{
     position: absolute;
     width: 650px;
     height: 54px;
     left: 36px;
     background: url("i/mb_table_act.png") left top no-repeat;
+    padding: 5px 0 0 13px;
+}
+
+.short_container .active_row_bg{
+    position: absolute;
+    width: 310px;
+    height: 54px;
+    left: 36px;
+    background: url("i/mb_table_act.png");
+    background-position: 0 -118px;
     padding: 5px 0 0 13px;
 }
 
