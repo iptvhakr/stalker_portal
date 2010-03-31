@@ -12,6 +12,10 @@ function bottom_menu(parent, options){
     this.dom_obj = {};
     this.main_container = {};
     
+    this.need_reset_load_data = true;
+    
+    this.need_update_header = true;
+    
     this.cur_row_idx = 0;
     
     this.items = [];
@@ -25,6 +29,14 @@ function bottom_menu(parent, options){
         
         if (options.dependency){
             this.dependency = options.dependency;
+        }
+        
+        if (typeof(options.need_reset_load_data) != "undefined"){
+            this.need_reset_load_data = options.need_reset_load_data;
+        }
+        
+        if (typeof(options.need_update_header) != "undefined"){
+            this.need_update_header = options.need_update_header;
         }
     }
 }
@@ -118,9 +130,11 @@ bottom_menu.prototype.action = function(){
     try{
         this.items[this.cur_row_idx].cmd.call(this);
         
-        this.parent.update_header_path([{"alias" : "sortby", "item" : this.items[this.cur_row_idx].label}]);
+        if (this.need_update_header){
+            this.parent.update_header_path([{"alias" : "sortby", "item" : this.items[this.cur_row_idx].label}]);
+        }
         
-        if (this.parent.on){
+        if (this.parent.on && this.need_reset_load_data){
             this.parent.reset();
             this.parent.load_data();
         }
