@@ -29,6 +29,10 @@ function Layer(){
     this.header_path = {};
     this.path_container = {};
     this.header_path_map = [];
+    this.main_container = {};
+    this.shift_row_callback;
+    
+    this.cur_view = 'wide';
     
     this.sidebar = {};
 }
@@ -73,7 +77,7 @@ Layer.prototype.init = function(){
     this.dom_obj.addClass(this.class_name);
     
     this.init_page_bar();
-    this.init_list()
+    this.init_list();
 }
 
 Layer.prototype.init_page_bar = function(){
@@ -91,6 +95,8 @@ Layer.prototype.init_list = function(){
     
     this.init_page_bar();
     
+    this.main_container = create_block_element('wide_container', this.dom_obj)
+    
     for (var i=0; i<this.total_rows; i++){
         item = this.create_block('blue_row_bg');
         
@@ -102,12 +108,28 @@ Layer.prototype.init_list = function(){
         this.map[i] = this.init_blocks(item);
         
         this.map[i]['row'] = item;
-        this.dom_obj.appendChild(item);
+        this.main_container.appendChild(item);
     }
     
     this.init_active_row();
+}
+
+Layer.prototype.set_wide_container = function(){
+    _debug('set_wide_container');
     
-    //this.load_data();
+    this.cur_view = 'wide';
+    this.main_container.setClass('wide_container');
+    
+    this.info_box && this.info_box.hide && this.info_box.hide();
+}
+
+Layer.prototype.set_short_container = function(){
+    _debug('set_short_container');
+    
+    this.cur_view = 'short';
+    this.main_container.setClass('short_container');
+    
+    this.info_box && this.info_box.show && this.info_box.show();
 }
 
 Layer.prototype.init_blocks = function(parent, is_active_row){
@@ -138,7 +160,7 @@ Layer.prototype.init_active_row = function(){
     
     this.active_row['row'] = active_row;
     
-    this.dom_obj.appendChild(active_row);
+    this.main_container.appendChild(active_row);
 }
 
 Layer.prototype.init_sidebar = function(options){
@@ -274,6 +296,10 @@ Layer.prototype.set_active_row = function(num){
     
     if (this.active_row['row'].isHidden()){
         this.active_row['row'].show()
+    }
+    
+    if (this.shift_row_callback && this.cur_view == 'short'){
+        this.shift_row_callback.call(this, this.data_items[num]);
     }
 }
 
