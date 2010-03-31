@@ -18,4 +18,15 @@
     background-image: url("i/ears.png");
     background-position: -40px 0px;
 }
+
+.vclub_info_box{
+    position: absolute;
+    display: none;
+    background: url("i/mb_prev_bg.png");
+    height: 256px;
+    width: 320px;
+    top: 69px;
+    left:345px;
+    padding:5px;
+}
 /* END VCLUB */
