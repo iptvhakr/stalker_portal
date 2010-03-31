@@ -61,6 +61,14 @@ class AjaxResponse
         
         return $this->response;
     }
+    
+    protected function getImgUri($id){
+    
+        $dir_name = ceil($id/FILES_IN_DIR);
+        $dir_path = IMG_URI.$dir_name;
+        $dir_path .= '/'.$id.'.jpg';
+        return $dir_path;
+    }
 }
 
 ?>
