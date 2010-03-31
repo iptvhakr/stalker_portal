@@ -24,6 +24,11 @@
         
         this.search_box = {};
         
+        this.view_menu = {};
+        
+        this.row_callback_timer;
+        this.row_callback_timeout = 1000;
+        
         this.load_genres = function(alias){
             
             alias = alias || '';
@@ -106,7 +111,6 @@
             this.search_box && this.search_box.reset && this.search_box.reset();
             
             this.superclass.hide.apply(this);
-            
         };
         
         this.init_sort_menu = function(map, options){
@@ -136,6 +140,58 @@
                 this.search_box.show();
             }
         };
+        
+        this.init_view_menu = function(map, options){
+            this.view_menu = new bottom_menu(this, options);
+            this.view_menu.init(map);
+            this.view_menu.bind();
+        };
+        
+        this.view_switcher = function(){
+            if (this.view_menu && this.view_menu.on){
+                this.view_menu.hide();
+            }else{
+                this.view_menu.show();
+            }
+        };
+        
+        this.fill_short_info = function(item){
+            _debug('fill_short_info');
+            
+            //item.name
+            //item.o_name
+            //item.year
+            //item.director
+            //item.screenshot_uri
+            
+            this.info_box.innerHTML = '<img src="' + item.screenshot_uri + '"><br>' + item.name + '<br>' + item.o_name + '<br>' + item.year + '<br>' + item.time + '<br>' + item.director + '<br>' + item.genres_str;
+        };
+        
+        this.init_short_info = function(){
+            this.info_box = create_block_element('vclub_info_box', this.main_container);
+        };
+        
+        this.shift_row_callback = function(item){
+            
+            window.clearTimeout(this.row_callback_timer);
+            
+            var self = this;
+            
+            this.row_callback_timer = window.setTimeout(function(){
+                
+                self.fill_short_info(item);
+                
+            },
+            this.row_callback_timeout);
+        };
+        
+        this.set_short_container = function(){
+            
+            this.superclass.set_short_container.apply(this);
+            
+            this.fill_short_info(this.data_items[this.cur_row]);
+            
+        };
     }
     
     vclub_constructor.prototype = new Layer();
@@ -145,11 +201,13 @@
     vclub.bind();
     vclub.init();
     
+    vclub.init_short_info();
+    
     vclub.init_left_ear('ears_back');
     vclub.init_right_ear('ears_movie');
     
     vclub.init_color_buttons([
-        {"label" : "ОТОБРАЖЕНИЕ", "cmd" : ""},
+        {"label" : "ОТОБРАЖЕНИЕ", "cmd" : vclub.view_switcher},
         {"label" : "СОРТИРОВКА", "cmd" : vclub.sort_menu_switcher},
         {"label" : "ПОИСК", "cmd" : vclub.search_box_switcher},
         {"label" : "ВЫБОРКА", "cmd" : vclub.sidebar_switcher}
@@ -180,12 +238,25 @@
             "offset_x" : 323
         }
     );
+    
+    vclub.init_view_menu(
+        [
+            {"label" : "список", "cmd" : function(){this.parent.set_wide_container()}},
+            {"label" : "список с инфо", "cmd" : function(){this.parent.set_short_container()}}
+        ],
+        {
+            "offset_x" : 27,
+            "need_reset_load_data" : false,
+            "need_update_header"   : false
+        }
+    );
    
     vclub.init_header_path('ВИДЕО КЛУБ');
     
-    vclub.sidebar.dependency = [vclub.sort_menu, vclub.search_box];
-    vclub.sort_menu.dependency = [vclub.sidebar, vclub.search_box];
-    vclub.search_box.dependency = [vclub.sidebar, vclub.sort_menu];
+    vclub.sidebar.dependency    = [vclub.sort_menu, vclub.search_box, vclub.view_menu];
+    vclub.sort_menu.dependency  = [vclub.sidebar, vclub.search_box, vclub.view_menu];
+    vclub.search_box.dependency = [vclub.sidebar, vclub.sort_menu, vclub.view_menu];
+    vclub.view_menu.dependency  = [vclub.sidebar, vclub.sort_menu, vclub.search_box]
     
     vclub.hide();
     
