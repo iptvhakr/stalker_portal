@@ -96,7 +96,7 @@ class Mysql
         
         if (!empty($type)){
             
-            $type = strtolower(trim($type));
+            $type = strtoupper(trim($type));
             
             if (!in_array($type, array('LEFT', 'RIGHT', 'OUTER', 'INNER'))){
                 $type = '';
