@@ -21,12 +21,100 @@
 
 .vclub_info_box{
     position: absolute;
-    display: none;
-    background: url("i/mb_prev_bg.png");
-    height: 256px;
-    width: 320px;
-    top: 69px;
-    left:345px;
-    padding:5px;
+    width: 242px;
+    height: 100px;
+    top: 64px;
+    left: 419px;
+    padding: 5px;
+    line-height: 20px;
+    color: #fff;
+    font-size:18px;
 }
+
+.vclub_info_box span{
+    color: #cfeafe;
+    font-size: 18px;
+}
+
+.vclub_screenshot_box{
+    position: absolute;
+    background: url("i/mb_prev_bg.png");
+    height: 322px;
+    width: 242px;
+    top: 173px;
+    left: 419px;
+    padding: 5px;
+}
+
+.today_block{
+    position: absolute;
+    right: 2px;
+    top: 0; 
+    
+    width: 139px;
+    height: 25px;
+    background-image: url("i/mb_table.png");
+    background-position: 147px -30px;
+    padding: 3px 0 0 6px;
+    color: #122f59;
+    /*float: right;
+    margin: 0px 0 0 4px;*/
+}
+
+.yestarday_block{
+    position: absolute;
+    right: 2px;
+    top: 0;
+
+    width: 139px;
+    height: 25px;
+    background-image: url("i/mb_table.png");
+    background-position: 147px -60px;
+    padding: 3px 0 0 6px;
+    color: #fff;
+    /*float: right;
+    margin: 0px 0 0 4px;*/
+}
+
+.week_and_more_block{
+    position: absolute;
+    right: 2px;
+    top: 0;
+
+    width: 139px;
+    height: 25px;
+    background-image: url("i/mb_table.png");
+    background-position: 147px -90px;
+    padding: 3px 0 0 6px;
+    color: #fff;
+    /*float: right;
+    margin: 0px 0 0 4px;*/
+}
+
+.active_today_block, .active_yestarday_block, .active_week_and_more_block{
+    position: absolute;
+    right: 23px;
+    top: 4px;
+
+    width: 148px;
+    height: 32px;
+    background-image: url("i/mb_table_act.png");
+    background-position: 163px -63px;
+    padding: 11px 0 0 6px;
+    color: #000;
+}
+
+
+
+/*.wide_container .blue_row_bg[rel="day"]{
+    background-position: 0px -30px;
+}
+
+.wide_container .blue_row_bg[rel="week"]{
+    background-position: 0px -60px;
+}
+
+.wide_container .blue_row_bg[rel="month"]{
+    background-position: 0px -60px;
+}*/
 /* END VCLUB */
