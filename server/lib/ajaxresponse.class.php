@@ -25,11 +25,31 @@ class AjaxResponse
         'EN' => array('*','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','W','Z')
     );
     
+    protected $all_months = array(
+        'RU' => array(
+                    'январь',
+                    'февраль',
+                    'март',
+                    'апрель',
+                    'май',
+                    'июнь',
+                    'июль',
+                    'август',
+                    'сентябрь',
+                    'октябрь',
+                    'ноябрь',
+                    'декабрь'
+                ),
+        'EN' => array()
+    );
+    
     protected $abc = array();
+    protected $months = array();
     
     protected function __construct(){
         
         $this->abc = $this->all_abc[LANG];
+        $this->months = $this->all_months[LANG];
         
         $this->db  = Mysql::getInstance();
         $this->stb = Stb::getInstance();
