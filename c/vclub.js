@@ -9,7 +9,7 @@
     /* VCLUB */
     function vclub_constructor(){
             
-        this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'name'];
+        this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'name', 'today', 'yestarday', 'week_and_more'];
         
         this.load_params = {
             'type'   : 'vod',
@@ -163,12 +163,17 @@
             //item.year
             //item.director
             //item.screenshot_uri
+            //item.genres_str
             
-            this.info_box.innerHTML = '<img src="' + item.screenshot_uri + '"><br>' + item.name + '<br>' + item.o_name + '<br>' + item.year + '<br>' + item.time + '<br>' + item.director + '<br>' + item.genres_str;
+            this.short_info_box.innerHTML = '<span>Жанр: </span>' + item.genres_str + '<br><span>Год: </span>' + item.year + ' <span>Время: </span>' + item.time + ' мин.<br><span>Режиссер: </span>' + item.director;
+            this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '" width="240" height="320">';
         };
         
         this.init_short_info = function(){
-            this.info_box = create_block_element('vclub_info_box', this.main_container);
+            this.info_box = create_block_element('', this.main_container);
+            
+            this.short_info_box = create_block_element('vclub_info_box', this.info_box);
+            this.screenshot_box = create_block_element('vclub_screenshot_box', this.info_box);
         };
         
         this.shift_row_callback = function(item){
@@ -185,12 +190,61 @@
             this.row_callback_timeout);
         };
         
-        this.set_short_container = function(){
+        this.set_middle_container = function(){
             
-            this.superclass.set_short_container.apply(this);
+            this.superclass.set_middle_container.apply(this);
             
             this.fill_short_info(this.data_items[this.cur_row]);
             
+        };
+        
+        this.handling_block = function(data, row_items, block_name){
+        
+            var passive_blocks = ['today_block', 'yestarday_block', 'week_and_more_block'];
+            var active_blocks  = ['active_today_block', 'active_yestarday_block', 'active_week_and_more_block'];
+            
+            var block_obj = row_items[block_name+'_block']
+        
+            if (data == '1'){
+                if (block_obj.isHidden()){
+                    block_obj.show();
+                }
+            }else if (data == '0' || typeof(data) == "undefined"){
+                if (!block_obj.isHidden()){
+                    block_obj.hide();
+                    
+                    if (passive_blocks.indexOf(block_obj.className) >= 0){
+                        row_items['name_block'].style.marginRight = '0';
+                    }else if (active_blocks.indexOf(block_obj.className) >= 0){
+                        row_items['name_block'].style.marginRight = '25px';
+                    }
+                }
+            }else{
+                if (block_obj.isHidden()){
+                    block_obj.show();
+                    
+                    if (passive_blocks.indexOf(block_obj.className) >= 0){
+                        row_items['name_block'].style.marginRight = '150px';
+                    }else if (active_blocks.indexOf(block_obj.className) >= 0){
+                        row_items['name_block'].style.marginRight = '175px';
+                    }
+                    
+                }
+                block_obj.innerHTML = data;
+            }
+        };
+        
+        this.init_info = function(){
+            this.info = new vclub_info();
+            this.info.init();
+            this.info.show.bind(key.LEFT, this);
+            this.info.bind();
+            
+            var color_buttons = this.buttons_bar.cloneNode(true);
+            
+            color_buttons.addClass('disabled_all_buttons');
+            
+            this.info.dom_obj.appendChild(color_buttons);
         };
     }
     
@@ -202,6 +256,8 @@
     vclub.init();
     
     vclub.init_short_info();
+    
+    vclub.set_wide_container();
     
     vclub.init_left_ear('ears_back');
     vclub.init_right_ear('ears_movie');
@@ -242,7 +298,7 @@
     vclub.init_view_menu(
         [
             {"label" : "список", "cmd" : function(){this.parent.set_wide_container()}},
-            {"label" : "список с инфо", "cmd" : function(){this.parent.set_short_container()}}
+            {"label" : "список с инфо", "cmd" : function(){this.parent.set_middle_container()}}
         ],
         {
             "offset_x" : 27,
