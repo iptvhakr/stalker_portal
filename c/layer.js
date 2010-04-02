@@ -95,7 +95,7 @@ Layer.prototype.init_list = function(){
     
     this.init_page_bar();
     
-    this.main_container = create_block_element('wide_container', this.dom_obj)
+    this.main_container = create_block_element('wide_container', this.dom_obj);
     
     for (var i=0; i<this.total_rows; i++){
         item = this.create_block('blue_row_bg');
@@ -121,6 +121,15 @@ Layer.prototype.set_wide_container = function(){
     this.main_container.setClass('wide_container');
     
     this.info_box && this.info_box.hide && this.info_box.hide();
+}
+
+Layer.prototype.set_middle_container = function(){
+    _debug('set_middle_container');
+    
+    this.cur_view = 'middle';
+    this.main_container.setClass('middle_container');
+    
+    this.info_box && this.info_box.show && this.info_box.show();
 }
 
 Layer.prototype.set_short_container = function(){
@@ -225,7 +234,7 @@ Layer.prototype.fill_list = function(data){
     for (var i=0; i<data.length; i++){
         
         for (var j=0; j<this.row_blocks.length; j++){
-            this.handling_block(data[i][this.row_blocks[j]], this.map[i][this.row_blocks[j]+'_block']);
+            this.handling_block(data[i][this.row_blocks[j]], this.map[i], this.row_blocks[j]);
         }
     }
     
@@ -239,17 +248,22 @@ Layer.prototype.fill_list = function(data){
     this.loading = false;
 }
 
-Layer.prototype.handling_block = function(data, block_obj){
+Layer.prototype.handling_block = function(data, row_items, block_name){
+    
+    var block_obj = row_items[block_name+'_block']
     
     if (data == '1'){
         if (block_obj.isHidden()){
             block_obj.show();
         }
-    }else if (data == '0'){
+    }else if (data == '0' || typeof(data) == "undefined"){
         if (!block_obj.isHidden()){
             block_obj.hide();
         }
     }else{
+        if (block_obj.isHidden()){
+            block_obj.show();
+        }
         block_obj.innerHTML = data;
     }
 }
@@ -291,14 +305,14 @@ Layer.prototype.set_active_row = function(num){
     this.active_row['row'].moveY(offset);
     
     for (var j=0; j<this.row_blocks.length; j++){
-        this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row[this.row_blocks[j]+'_block']);
+        this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
     }    
     
     if (this.active_row['row'].isHidden()){
         this.active_row['row'].show()
     }
     
-    if (this.shift_row_callback && this.cur_view == 'short'){
+    if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
         this.shift_row_callback.call(this, this.data_items[num]);
     }
 }
