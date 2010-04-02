@@ -386,7 +386,7 @@ class Vod extends AjaxResponse
             }elseif ($sortby == 'added'){
                 $result = $result->orderby('added', 'DESC');
             }elseif ($sortby == 'top'){
-                $result->select('*, (count_first_0_5+count_second_0_5) as top')->orderby('top', 'DESC');
+                $result->select('(count_first_0_5+count_second_0_5) as top')->orderby('top', 'DESC');
             }
             
         }else{
@@ -397,7 +397,7 @@ class Vod extends AjaxResponse
             //var_dump($fav);
             //$fav = implode(",", $fav);
             //var_dump($fav);
-            $result = $result->in('id', $fav);
+            $result = $result->in('video.id', $fav);
         }
         
         $this->setResponseData($result);
@@ -432,9 +432,48 @@ class Vod extends AjaxResponse
             $this->response['data'][$i]['screenshot_uri'] = $this->getImgUri($this->response['data'][$i]['screenshot_id']);
             
             $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
+            
+            
+            if (@$_REQUEST['sortby'] && @$_REQUEST['sortby'] == 'added'){
+                $this->response['data'][$i] = array_merge($this->response['data'][$i], $this->getAddedArr($this->response['data'][$i]['added']));
+            }
         }
         
         return $this->response;
+    }
+    
+    private function getAddedArr($datetime){
+        
+        $added_time = strtotime($datetime);
+        
+        $added_arr = array(
+            //'str'       => '',
+            //'bg_level'  => ''
+        );
+        
+        $this_mm = date("m");
+        $this_dd = date("d");
+        $this_yy = date("Y");
+        
+        if ($added_time > mktime(0,0,0, $this_mm, $this_dd, $this_yy)){
+            /*$added_arr['str'] = 'сегодня';
+            $added_arr['bg_level'] =  1;*/
+            $added_arr['today'] = 'сегодня';
+        }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy)){
+            /*$added_arr['str'] = 'вчера';
+            $added_arr['bg_level'] =  2;*/
+            $added_arr['yestarday'] = 'вчера';
+        }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-7, $this_yy)){
+            /*$added_arr['str'] = 'последние 7 дней';
+            $added_arr['bg_level'] =  3;*/
+            $added_arr['week_and_more'] = 'последние 7 дней';
+        }else{
+            /*$added_arr['str'] = $this->months[date("Y", $added_time)].' '.date("Y", $added_time);
+            $added_arr['bg_level'] =  3;*/
+            $added_arr['week_and_more'] = $this->months[date("n", $added_time) - 1].' '.date("Y", $added_time);
+        }
+        
+        return $added_arr;
     }
     
     public function getCategories(){
