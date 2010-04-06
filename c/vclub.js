@@ -235,16 +235,30 @@
         };
         
         this.init_info = function(){
-            this.info = new vclub_info();
+            this.info = new vclub_info(this);
             this.info.init();
             this.info.show.bind(key.LEFT, this);
             this.info.bind();
             
+            this.full_info_switch.bind(key.RIGHT, this);
+
             var color_buttons = this.buttons_bar.cloneNode(true);
             
             color_buttons.addClass('disabled_all_buttons');
             
             this.info.dom_obj.appendChild(color_buttons);
+        };
+        
+        this.full_info_switch = function(){
+            _debug('full_info_switch');
+            
+            if (this.info && this.info.on){
+                this.on = true;
+                this.info.hide();
+            }else{
+                this.on = false;
+                this.info.show(this.data_items[this.cur_row]);
+            }
         };
     }
     
@@ -268,6 +282,8 @@
         {"label" : "ПОИСК", "cmd" : vclub.search_box_switcher},
         {"label" : "ВЫБОРКА", "cmd" : vclub.sidebar_switcher}
     ]);
+    
+    vclub.init_info();
     
     vclub.init_sidebar();
     
