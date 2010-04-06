@@ -1,0 +1,74 @@
+/* VCLUB INFO */
+.mb_main_filminfo{
+    position: absolute;
+    width: 622px;
+    height: 420px;
+    left: 49px;
+    top: 72px;
+}
+
+.mb_filminfo_name{
+    width:622px;
+}
+
+.mb_filminfo_fullinfo{
+    float: left;
+    width: 365px;
+    height: 358px;
+    padding-left: 5px;
+    overflow: hidden;
+}
+
+.mb_filminfo_fullinfo span{
+    color: #cfeafe;
+}
+
+.hr_filminfo{
+    background: url("i/hr_filminfo.png") center no-repeat;
+    margin: 5px 0px;
+    width: 100%;
+    height: 2px;
+}
+
+.mb_filminfo_prev{
+    float: right;
+    background: url("i/mb_prev_bg.png");
+    height: 322px;
+    width: 242px;
+    padding: 5px;
+    margin-top: 15px;
+}
+
+.mb_scroll{
+    float: right;
+    width:22px;
+}
+
+.mb_scroll_t{
+    background: url("i/mb_scroll_bg.png") top no-repeat;
+    width: 22px;
+    height: 350px;
+}
+
+.mb_scroll_b{
+    background: url("i/mb_scroll_bg.png") bottom no-repeat;
+    width: 22px;
+    height: 10px;
+}
+
+.mb_scroll_c{
+    position: absolute;
+    background: url("i/mb_scroll.png");
+    height: 30px;
+    width: 10px;
+    margin: 6px 6px 0 6px;
+}
+
+.mb_filminfo_trans{
+    background: url("i/mb_filminfo_trans.png") bottom left;
+    height: 35px;
+    width: 347px;
+    position: absolute;
+    bottom: 0px;
+}
+/* END VCLUB INFO */
