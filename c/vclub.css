@@ -104,17 +104,7 @@
     color: #000;
 }
 
-
-
-/*.wide_container .blue_row_bg[rel="day"]{
-    background-position: 0px -30px;
+.disabled_all_buttons .footer_text{
+    color: #606060;
 }
-
-.wide_container .blue_row_bg[rel="week"]{
-    background-position: 0px -60px;
-}
-
-.wide_container .blue_row_bg[rel="month"]{
-    background-position: 0px -60px;
-}*/
 /* END VCLUB */
