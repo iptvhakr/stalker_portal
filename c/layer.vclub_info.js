@@ -76,7 +76,7 @@ vclub_info.prototype.fill = function(item){
                      '<div class="hr_filminfo"></div>' + 
                      '<span>Режиссер:</span> ' + item.director + '<br>' +
                      '<span>В ролях:</span> ' + item.actors + 
-                     '<div class="hr_filminfo"></div>' + item.description + '<br><br><br><br>';
+                     '<div class="hr_filminfo"></div>' + item.description + '<br><br>';
     
     this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'" width="240" height="320">';
 }
