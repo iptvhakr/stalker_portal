@@ -13,10 +13,14 @@
 
 .mb_filminfo_fullinfo{
     float: left;
-    width: 365px;
+}
+
+.mb_hidden_overflow{
+    float: left;
+    overflow: hidden;
+    width: 343px;
     height: 358px;
     padding-left: 5px;
-    overflow: hidden;
 }
 
 .mb_filminfo_fullinfo span{
@@ -38,32 +42,6 @@
     padding: 5px;
     margin-top: 15px;
 }
-
-.mb_scroll{
-    float: right;
-    width:22px;
-}
-
-.mb_scroll_t{
-    background: url("i/mb_scroll_bg.png") top no-repeat;
-    width: 22px;
-    height: 350px;
-}
-
-.mb_scroll_b{
-    background: url("i/mb_scroll_bg.png") bottom no-repeat;
-    width: 22px;
-    height: 10px;
-}
-
-.mb_scroll_c{
-    position: absolute;
-    background: url("i/mb_scroll.png");
-    height: 30px;
-    width: 10px;
-    margin: 6px 6px 0 6px;
-}
-
 .mb_filminfo_trans{
     background: url("i/mb_filminfo_trans.png") bottom left;
     height: 35px;
