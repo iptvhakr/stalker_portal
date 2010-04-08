@@ -69,7 +69,7 @@ body{
 <script type="text/javascript" src="main_menu.js"></script>
 <script type="text/javascript" src="player.js"></script>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 
 var ver = '4.0.0';
 var debug = 1;
@@ -94,9 +94,22 @@ function init(){
     load_module('layer');
     load_module('layer.sidebar');
     load_module('layer.search_box');
-    load_module('layer.bottom_menu');
+    /*load_module('layer.bottom_menu');
+    load_module('layer.scrollbar');
     load_module('layer.vclub_info');
-    load_module('vclub');
+    load_module('vclub');*/
+    
+    /*window.setInterval(function(){_debug('test')}, 1000);
+    
+    window.setTimeout(function(){document.body.appendChild(document.createElement('span'));_debug('insert');}, 7000);*/
+    
+    window.setTimeout(function(){
+        load_module('layer.bottom_menu');
+        load_module('layer.scrollbar');
+        load_module('layer.vclub_info');
+        load_module('vclub');
+    },
+    3000);
     
     var map = [
         {"title"    : "КАРАОКЕ",
@@ -138,15 +151,17 @@ function init(){
                       ]
         }
     ];
-    
+    _debug('step 10');
     stb.init();
+    
+    _debug('step 11');
     
     try{
         main_menu.init(map);
     }catch(e){
         _debug(e);
     }
-    
+    _debug('step 12');
     /* LAYER MANAGEMENT */
     (function(){
             
@@ -162,7 +177,7 @@ function init(){
         }
         
     }).bind(key.EXIT);
-    
+    _debug('step 13');
     (function(){
         
         if (stb.player.on){
@@ -171,7 +186,7 @@ function init(){
         }
         
     }).bind(key.MENU);
-    
+    _debug('step 14');
     /* END LAYER MANAGEMENT */
     
 }
