@@ -1,8 +1,8 @@
 /**
  * Video Club modile.
  */
-
-//(function(context){
+_debug('1!!!!!!!!!!!!!!');
+(function(){
     
     stb.ajax_loader = 'http://bb2.sandbox/stalker_portal/server/load.php'
     
@@ -261,21 +261,21 @@
             }
         };
     }
-    
+    _debug('step 1');
     vclub_constructor.prototype = new Layer();
-    
+    _debug('step 2');
     var vclub = new vclub_constructor();
-    
+    _debug('step 3');
     vclub.bind();
     vclub.init();
-    
+    _debug('step 4');
     vclub.init_short_info();
-    
+    _debug('step 5');
     vclub.set_wide_container();
-    
+    _debug('step 6');
     vclub.init_left_ear('ears_back');
     vclub.init_right_ear('ears_movie');
-    
+    _debug('step 7');
     vclub.init_color_buttons([
         {"label" : "ОТОБРАЖЕНИЕ", "cmd" : vclub.view_switcher},
         {"label" : "СОРТИРОВКА", "cmd" : vclub.sort_menu_switcher},
@@ -374,4 +374,5 @@
         this
     )
     
-//})()
+})();
+_debug('2!!!!!!!!!!!!!!');
