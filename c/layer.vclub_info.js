@@ -16,6 +16,8 @@ function vclub_info(parent){
     this.film_title = {};
     this.full_info  = {};
     this.film_cover = {};
+    
+    this.scrollbar  = {};
 }
 
 vclub_info.prototype.show = function(item){
@@ -36,6 +38,8 @@ vclub_info.prototype.hide = function(){
     this.reset();
     this.dom_obj.hide();
     this.on = false;
+    
+    this.scrollbar && this.scrollbar.reset && this.scrollbar.reset();
 }
 
 vclub_info.prototype.reset = function(){
@@ -55,8 +59,14 @@ vclub_info.prototype.init = function(){
     this.main_container = create_block_element('mb_main_filminfo', this.dom_obj);
     
     this.film_title = create_block_element('mb_filminfo_name text25_white shadow_dark2', this.main_container);
+
+    var info_container  = create_block_element('mb_filminfo_fullinfo text15_white align_justify', this.main_container);
+
+    this.full_info = create_block_element('mb_hidden_overflow', info_container);
     
-    this.full_info  = create_block_element('mb_filminfo_fullinfo text15_white align_justify', this.main_container);
+    this.scrollbar = new scrollbar(info_container, this.full_info, {"height" : 350});
+    
+    info_container.insertBefore(this.scrollbar.dom_obj, this.full_info);
     
     create_block_element('mb_filminfo_trans', this.main_container);
     
@@ -98,6 +108,8 @@ vclub_info.prototype.shift = function(dir){
     
     _debug('top after: ', top);
     _debug('this.full_info.scrollTop: ', this.full_info.scrollTop);
+    
+    this.scrollbar.refresh();
 }
 
 vclub_info.prototype.shift_page = function(dir){
@@ -108,6 +120,8 @@ vclub_info.prototype.shift_page = function(dir){
     }else{
         this.full_info.scrollTop = this.full_info.scrollTop - 200;
     }
+    
+    this.scrollbar.refresh();
 }
 
 vclub_info.prototype.bind = function(){
