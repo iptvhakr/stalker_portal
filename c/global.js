@@ -41,17 +41,28 @@ function _debug(){
 
 function load_module(module){
     
-    var _script = document.createElement('script');
-    _script.type = "text/javascript";
-    _script.src  = module + ".js";
+    _debug('load_module', module);
     
-    var _style = document.createElement('link');
-    _style.type = "text/css";
-    _style.rel = "stylesheet";
-    _style.href = module + ".css";
-    
-    document.getElementsByTagName("head")[0].appendChild(_script);
-    document.getElementsByTagName("head")[0].appendChild(_style);
+    try{
+        
+        var head = document.getElementsByTagName("head")[0];
+        
+        var _script = document.createElement('script');
+        _script.type = "text/javascript";
+        _script.src  = module + ".js";
+        
+        var _style = document.createElement('link');
+        _style.type = "text/css";
+        _style.rel = "stylesheet";
+        _style.href = module + ".css";
+        
+        head.appendChild(_script);
+        _debug('append', _script.src);
+        head.appendChild(_style);
+        _debug('append', _style.href);
+    }catch(e){
+        _debug(e);
+    }
 }
 
 /**
