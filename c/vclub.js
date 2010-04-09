@@ -85,7 +85,7 @@ _debug('1!!!!!!!!!!!!!!');
             )
         };
         
-        this.show = function(category){
+        this._show = function(category){
             
             _debug('vclub.show');
             
@@ -94,7 +94,7 @@ _debug('1!!!!!!!!!!!!!!');
             try{
                 this.sort_menu.action();
                 
-                this.superclass.show.apply(this);
+                this.superclass.show.call(this);
                 
                 this.load_abc();
                 this.load_genres(category.alias);
@@ -104,13 +104,34 @@ _debug('1!!!!!!!!!!!!!!');
             }
         };
         
-        this.hide = function(){
+        /*this.show = function(category){
+            
+            _debug('vclub.show');
+            
+            this.load_params['category'] = category.id;
+            
+            try{
+                this.sort_menu.action();
+                
+                this.superclass.show.call(this);
+                
+                this.load_abc();
+                this.load_genres(category.alias);
+                this.load_years(category.id);
+            }catch(e){
+                _debug(e);
+            }
+        };*/
+        
+        this.hide = function(do_not_reset){
             
             _debug('vclub.hide');
             
-            this.search_box && this.search_box.reset && this.search_box.reset();
+            if(!do_not_reset){
+                this.search_box && this.search_box.reset && this.search_box.reset();
+            }
             
-            this.superclass.hide.apply(this);
+            this.superclass.hide.call(this, do_not_reset);
         };
         
         this.init_sort_menu = function(map, options){
@@ -237,7 +258,6 @@ _debug('1!!!!!!!!!!!!!!');
         this.init_info = function(){
             this.info = new vclub_info(this);
             this.info.init();
-            this.info.show.bind(key.LEFT, this);
             this.info.bind();
             
             this.full_info_switch.bind(key.RIGHT, this);
@@ -260,22 +280,43 @@ _debug('1!!!!!!!!!!!!!!');
                 this.info.show(this.data_items[this.cur_row]);
             }
         };
+        
+        this.bind = function(){
+            this.superclass.bind.apply(this);
+            
+            this.play.bind(key.OK, this);
+            
+            (function(){
+                this.hide();
+                main_menu.show();
+            }).bind(key.EXIT, this);
+        };
+        
+        this.play = function(){
+            _debug('vclub.play');
+            
+            this.hide(true);
+            
+            stb.player.prev_layer = this;
+            
+            stb.player.play(this.data_items[this.cur_row]);
+        };
     }
-    _debug('step 1');
+    
     vclub_constructor.prototype = new Layer();
-    _debug('step 2');
+
     var vclub = new vclub_constructor();
-    _debug('step 3');
+    
     vclub.bind();
     vclub.init();
-    _debug('step 4');
+    
     vclub.init_short_info();
-    _debug('step 5');
+    
     vclub.set_wide_container();
-    _debug('step 6');
+    
     vclub.init_left_ear('ears_back');
     vclub.init_right_ear('ears_movie');
-    _debug('step 7');
+    
     vclub.init_color_buttons([
         {"label" : "ОТОБРАЖЕНИЕ", "cmd" : vclub.view_switcher},
         {"label" : "СОРТИРОВКА", "cmd" : vclub.sort_menu_switcher},
@@ -360,7 +401,7 @@ _debug('1!!!!!!!!!!!!!!');
                             _debug('alias', category.alias);
                         
                             main_menu.hide();
-                            module.vclub.show(category);
+                            module.vclub._show(category);
                         }
                         
                     })(categories[i]),
