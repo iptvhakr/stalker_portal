@@ -24,7 +24,7 @@ class Vod extends AjaxResponse
     
     public function createLink(){
         
-        preg_match("/auto \/media\/(\d+).mpg$/", $_REQUEST['cmd'], $tmp_arr);
+        preg_match("/\/media\/(\d+).mpg$/", $_REQUEST['cmd'], $tmp_arr);
             
         $media_id = $tmp_arr[1];
         
@@ -433,6 +433,7 @@ class Vod extends AjaxResponse
             
             $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
             
+            $this->response['data'][$i]['cmd'] = '/media/'.$this->response['data'][$i]['id'].'.mpg';
             
             if (@$_REQUEST['sortby'] && @$_REQUEST['sortby'] == 'added'){
                 $this->response['data'][$i] = array_merge($this->response['data'][$i], $this->getAddedArr($this->response['data'][$i]['added']));
