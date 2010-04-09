@@ -208,6 +208,8 @@ function common_xpcom(){
             set_updated_places(this.user['updated'])
             epg_loader.start()*/
             
+            this.mount_home_dir(this.user['storages']);
+            
             this.load_channels();
             this.load_fav_channels();
             this.load_fav_itv();
@@ -218,6 +220,26 @@ function common_xpcom(){
             //cut_off()
         }
         //run_watchdog();
+    }
+    
+    this.mount_home_dir = function(storages){
+        _debug('stb.mount_home_dir: ', storages);
+        this.storages = storages;
+        
+        for(var i in storages){
+            if (storages.hasOwnProperty(i)){
+                stb.ExecAction('make_dir /media/'+storages[i]['storage_name']);
+                
+                var mount_cmd = '"'+storages[i]['storage_ip']+':'+storages[i]['nfs_home_path']+stb.mac+'" /media/'+storages[i]['storage_name'];
+                _debug('mount_cmd: '+mount_cmd);
+            
+                try{
+                    stb.ExecAction('mount_dir '+mount_cmd);
+                }catch(e){
+                    _debug(e);
+                }
+            }
+        }
     }
     
     this.show_image_version = function(){
