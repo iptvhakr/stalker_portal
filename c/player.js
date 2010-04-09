@@ -23,6 +23,8 @@ function player(){
     
     this.is_tv = false;
     
+    this.prev_layer = {};
+    
     this.init();
 }
 
@@ -38,9 +40,38 @@ player.prototype.init = function(){
         stb.SetLoop(0);
         stb.SetMicVolume(100);
         
-        stbEvent.onEvent = event_callback;
+        stbEvent.onEvent = (function(self){
+            return function(){
+                self.event_callback.apply(self, arguments);
+            }
+        })(this);
     }catch(e){
         _debug(e);
+    }
+}
+
+player.prototype.event_callback = function(event){
+    _debug('event: ', event);
+    
+    var event = parseInt(event);
+    
+    switch(event){
+        case 1: // End of stream
+        {
+            try{
+                this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
+                this.stop();
+            }catch(e){
+                _debug(e);
+            }
+            
+            break;
+        }
+        case 4: // Playback started
+        {
+            
+            break;
+        }
     }
 }
 
@@ -134,12 +165,16 @@ player.prototype.play = function(item){
         cmd = item;
     }
     
+    _debug('cmd: ', cmd);
+    
     this.media_type = this.define_media_type(cmd);
+    
+    _debug('player.media_type: ', this.media_type);
     
     if (this.media_type == 'stream'){
         this.play_now(cmd);
     }else{
-        this.create_link(item);
+        this.create_link('vod', cmd);
     }
     
 }
@@ -156,8 +191,12 @@ player.prototype.create_link = function(type, uri){
         },
         
         function(result){
+            _debug('create_link callback: ', result);
             
-        }
+            this.play_now(result.cmd);
+        },
+        
+        this
     )
 }
 
@@ -172,11 +211,13 @@ player.prototype.play_now = function(uri){
     
     try{
         stb.Play(uri);
-    }catch(e){}
+    }catch(e){_debug(e)}
 }
 
 player.prototype.stop = function(){
     _debug('player.stop');
+    
+    this.prev_layer = {};
     
     this.need_show_info = 0;
     
@@ -281,12 +322,22 @@ player.prototype.switch_channel = function(dir){
     }
 }
 
+player.prototype.show_prev_layer = function(){
+    _debug('player.show_prev_layer');
+    
+    this.prev_layer.show.call(this.prev_layer, true);
+    
+    this.stop();
+}
+
 player.prototype.bind = function(){
     
     var self = this;
     
     this.switch_channel.bind(key.UP, self, 1);
     this.switch_channel.bind(key.DOWN, self, -1);
+    
+    this.show_prev_layer.bind(key.EXIT, self);
 }
 /*
  * END Player
