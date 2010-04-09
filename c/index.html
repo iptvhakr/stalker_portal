@@ -109,7 +109,7 @@ function init(){
         load_module('layer.vclub_info');
         load_module('vclub');
     },
-    3000);
+    6500);
     
     var map = [
         {"title"    : "КАРАОКЕ",
@@ -151,33 +151,15 @@ function init(){
                       ]
         }
     ];
-    _debug('step 10');
+    
     stb.init();
-    
-    _debug('step 11');
-    
+
     try{
         main_menu.init(map);
     }catch(e){
         _debug(e);
     }
-    _debug('step 12');
-    /* LAYER MANAGEMENT */
-    (function(){
-            
-        if (main_menu.on){
-            main_menu.hide();
-            stb.player.play_last();
-        }else if (stb.player.on){
-            stb.player.stop();
-            main_menu.show();
-        }else if (module.vclub && module.vclub.on){
-            module.vclub.hide();
-            main_menu.show();
-        }
-        
-    }).bind(key.EXIT);
-    _debug('step 13');
+    
     (function(){
         
         if (stb.player.on){
@@ -186,7 +168,7 @@ function init(){
         }
         
     }).bind(key.MENU);
-    _debug('step 14');
+
     /* END LAYER MANAGEMENT */
     
 }
@@ -194,26 +176,6 @@ function init(){
 var stbEvent = {
     onEvent : function(data){},
     event : 0
-}
-
-/**
- * Callback for player events.
- */
-function event_callback(event){
-    _debug('event:',event)
-    
-    switch(event){
-        case 1: // End of stream
-        {
-            stb.player.stop();
-            break;
-        }
-        case 4: // Playback started
-        {
-            
-            break;
-        }
-    }
 }
 
 </script>
