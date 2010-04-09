@@ -37,23 +37,31 @@ function Layer(){
     this.sidebar = {};
 }
 
-Layer.prototype.show = function(){
+Layer.prototype.show = function(do_not_load){
+    _debug('layer.show');
+    
     this.dom_obj.show();
     this.on = true;
-    this.load_data();
+    
+    if (!do_not_load){
+        this.load_data();
+    }
 }
 
-Layer.prototype.hide = function(){
+Layer.prototype.hide = function(do_not_reset){
+    _debug('layer.hide');
     
-    this.reset();
-    
-    this.load_params = this.load_params_pattern.clone();
-    
-    this.sidebar && this.sidebar.reset && this.sidebar.reset();
-    
-    if (this.sidebar && this.sidebar.on){
-        this.sidebar.reset();
-        this.sidebar.hide();
+    if (!do_not_reset){
+        this.reset();
+        
+        this.load_params = this.load_params_pattern.clone();
+        
+        this.sidebar && this.sidebar.reset && this.sidebar.reset();
+        
+        if (this.sidebar && this.sidebar.on){
+            this.sidebar.reset();
+            this.sidebar.hide();
+        }
     }
     
     this.dom_obj.hide();
