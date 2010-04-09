@@ -36,6 +36,12 @@ var main_menu = {
         this.vshift.bind(key.DOWN, main_menu, 1);
         this.action.bind(key.OK, main_menu);
         
+        
+        (function(){
+            this.hide();
+            stb.player.play_last();
+        }).bind(key.EXIT, this);
+        
         this.map = map;
         
         this.dom_obj = create_block_element('main_menu', document.body);
