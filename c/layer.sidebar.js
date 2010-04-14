@@ -16,10 +16,6 @@ function sidebar(parent, options){
     this.lists   = [];
     
     this.cur_list_idx = 0;
-    
-    if (options && options.dependency){
-        this.dependency = options.dependency;
-    }
 }
 
 sidebar.prototype.show = function(){
