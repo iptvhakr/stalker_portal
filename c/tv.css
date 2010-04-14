@@ -1,0 +1,19 @@
+/* TV */
+.tv_timetable{
+    position: absolute;
+    width: 320px;
+    top: 340px;
+    left: 345px;
+    padding: 5px;
+}
+
+.tv_prev_window{
+    position: absolute;
+    background: url("i/tv_prev_bg.png");
+    height: 256px;
+    width: 320px;
+    top: 69px;
+    left: 345px;
+    padding: 5px;
+}
+/* END TV */
