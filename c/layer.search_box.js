@@ -32,10 +32,6 @@ function search_box(parent, options){
         if (options.offset_x){
             this.offset_x = options.offset_x;
         }
-        
-        if (options.dependency){
-            this.dependency = options.dependency;
-        }
     }
     
     this.lang_map = [
