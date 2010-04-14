@@ -223,6 +223,7 @@ Layer.prototype.load_data = function(){
 }
 
 Layer.prototype.set_total_items = function(count){
+    _debug('Layer.set_total_items: ', count);
     
     var str = '';
     
@@ -235,6 +236,7 @@ Layer.prototype.set_total_items = function(count){
 }
 
 Layer.prototype.fill_list = function(data){
+    _debug('Layer.fill_list');
     
     this.total_items = data.length;
     this.data_items = data;
@@ -260,11 +262,11 @@ Layer.prototype.handling_block = function(data, row_items, block_name){
     
     var block_obj = row_items[block_name+'_block']
     
-    if (data == '1'){
+    if (data === 1){
         if (block_obj.isHidden()){
             block_obj.show();
         }
-    }else if (data == '0' || typeof(data) == "undefined"){
+    }else if (data === 0 || typeof(data) == "undefined"){
         if (!block_obj.isHidden()){
             block_obj.hide();
         }
@@ -283,6 +285,7 @@ Layer.prototype.clear_row = function(row_obj){
 
             if (row_obj.childNodes[i].innerHTML){
                 row_obj.childNodes[i].innerHTML = '&nbsp;';
+                row_obj.childNodes[i].hide();
             }else{
                 row_obj.childNodes[i].hide();
             }
