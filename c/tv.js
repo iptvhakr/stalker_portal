@@ -28,6 +28,7 @@
             
             this.load_params['genre'] = genre.id;
             
+            this.sort_menu.action();
             this.superclass.show.call(this);
         }
         
@@ -79,6 +80,33 @@
                 this.view_menu.show();
             }
         };
+        
+        this.init_short_info = function(){
+            this.info_box = create_block_element('', this.main_container);
+            
+            this.short_info_box = create_block_element('tv_timetable', this.info_box);
+            this.preview_box = create_block_element('tv_prev_window', this.info_box);
+        };
+        
+        this.fill_short_info = function(item){
+            _debug('fill_short_info');
+            
+            this.short_info_box.innerHTML = '';
+        };
+        
+        this.shift_row_callback = function(item){
+            
+            window.clearTimeout(this.row_callback_timer);
+            
+            var self = this;
+            
+            this.row_callback_timer = window.setTimeout(function(){
+                
+                self.fill_short_info(item);
+                
+            },
+            this.row_callback_timeout);
+        };
     }
     
     tv_constructor.prototype = new Layer();
@@ -87,6 +115,8 @@
     
     tv.bind();
     tv.init();
+    
+    tv.init_short_info();
     
     tv.set_wide_container();
     
@@ -113,7 +143,7 @@
     tv.init_view_menu(
         [
             {"label" : "список", "cmd" : function(){this.parent.set_wide_container()}},
-            {"label" : "список с инфо", "cmd" : function(){this.parent.set_middle_container()}}
+            {"label" : "список с инфо", "cmd" : function(){this.parent.set_short_container()}}
         ],
         {
             "offset_x" : 27,
