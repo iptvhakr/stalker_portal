@@ -6,13 +6,9 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Itv
+class Itv extends AjaxResponse
 {
-    
-    private $db;
-    private $stb;
-    
-    private static $instance = NULL;
+    public static $instance = NULL;
     
     public static function getInstance(){
         if (self::$instance == NULL)
@@ -22,9 +18,8 @@ class Itv
         return self::$instance;
     }
     
-    private function __construct(){
-        $this->db  = Mysql::getInstance();
-        $this->stb = Stb::getInstance();
+    public function __construct(){
+        parent::__construct();
     }
     
     public function setPlayed(){
@@ -185,8 +180,112 @@ class Itv
     public function getFavItvIds(){
         
         return $this->getFav();
-        
     }
     
+    public function getGenres(){
+        
+        $genres = $this->db->from('tv_genre')->get()->all();
+        
+        array_unshift($genres, array('id' => '*', 'title' => 'Все'));
+        
+        return $genres;
+    }
+    
+    private function getData(){
+        
+        $offset = $this->page * MAX_PAGE_ITEMS;
+        
+        $where = array();
+        
+        if (!$this->stb->isModerator()){
+            $where['status'] = 1;
+        }
+        
+        if (@$_REQUEST['hd']){
+            $where['hd'] = 1;
+        }else{
+            $where['hd<='] = 1;
+        }
+        
+        if (@$_REQUEST['genre'] && @$_REQUEST['genre'] !== '*'){
+            
+            $genre = intval($_REQUEST['genre']);
+            
+            $where['tv_genre_id'] = $genre;
+        }
+        
+        return $this->db
+                        ->from('itv')
+                        ->where($where)
+                        ->limit(MAX_PAGE_ITEMS, $offset);
+    }
+    
+    public function getOrderedList(){
+        $fav = $this->getFav();
+        
+        $result = $this->getData();
+        
+        if (@$_REQUEST['sortby']){
+            $sortby = $_REQUEST['sortby'];
+            
+            if ($sortby == 'name'){
+                $result = $result->orderby('name');
+            }elseif ($sortby == 'number'){
+                $result = $result->orderby('number');
+            }
+            
+        }else{
+            $result = $result->orderby('number');
+        }
+        
+        if (@$_REQUEST['fav']){
+            $result = $result->in('itv.id', $fav);
+        }
+        
+        $this->setResponseData($result);
+        
+        return $this->getResponse('prepareData');
+    }
+    
+    public function prepareData(){
+        $fav = $this->getFav();
+        
+        for ($i = 0; $i < count($this->response['data']); $i++){
+            
+            //$this->response['data'][$i]['number'] = intval($this->response['data'][$i]['number']);
+            
+            if ($this->response['data'][$i]['censored']){
+                $this->response['data'][$i]['lock'] = 1;
+            }else{
+                $this->response['data'][$i]['lock'] = 0;
+            }
+            
+            if (in_array($this->response['data'][$i]['id'], $fav)){
+                $this->response['data'][$i]['fav'] = 1;
+            }else{
+                $this->response['data'][$i]['fav'] = 0;
+            }
+            
+            if (@$_REQUEST['fav']){
+                $this->response['data'][$i]['number'] = strval($i+1);
+            }
+            
+            $this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
+            
+        }
+
+        return $this->response;
+    }
+    
+    private function getGenreById($id){
+        
+        $genre = $this->db->from('tv_genre')->where(array('id' => $id))->get()->first();
+        
+        if (empty($genre)){
+            return '';
+        }
+        
+        return $genre['title'];
+    }
 }
 ?>
