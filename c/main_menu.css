@@ -30,6 +30,7 @@
     height: 35px;
     white-space: pre;
     margin-top: 9px;
+    text-transform: uppercase;
 }
 
 .main_menu_hor_left
@@ -75,7 +76,8 @@
     white-space: pre;
     margin: 0 2px;
     padding: 0 15px;
-    -webkit-border-top-left-radius: 1px;    
+    -webkit-border-top-left-radius: 1px;
+    text-transform: uppercase; 
 }
 
 .main_menu_vert_trans
