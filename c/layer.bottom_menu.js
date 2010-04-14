@@ -26,11 +26,7 @@ function bottom_menu(parent, options){
         if (options.offset_x){
             this.offset_x = options.offset_x;
         }
-        
-        if (options.dependency){
-            this.dependency = options.dependency;
-        }
-        
+
         if (typeof(options.need_reset_load_data) != "undefined"){
             this.need_reset_load_data = options.need_reset_load_data;
         }
