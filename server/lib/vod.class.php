@@ -417,6 +417,8 @@ class Vod extends AjaxResponse
                 $this->response['data'][$i]['sd'] = 1;
             }
             
+            $this->response['data'][$i]['hd'] = intval($this->response['data'][$i]['hd']);
+            
             if ($this->response['data'][$i]['censored']){
                 $this->response['data'][$i]['lock'] = 1;
             }else{
@@ -457,20 +459,12 @@ class Vod extends AjaxResponse
         $this_yy = date("Y");
         
         if ($added_time > mktime(0,0,0, $this_mm, $this_dd, $this_yy)){
-            /*$added_arr['str'] = 'сегодня';
-            $added_arr['bg_level'] =  1;*/
             $added_arr['today'] = 'сегодня';
         }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy)){
-            /*$added_arr['str'] = 'вчера';
-            $added_arr['bg_level'] =  2;*/
             $added_arr['yestarday'] = 'вчера';
         }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-7, $this_yy)){
-            /*$added_arr['str'] = 'последние 7 дней';
-            $added_arr['bg_level'] =  3;*/
             $added_arr['week_and_more'] = 'последние 7 дней';
         }else{
-            /*$added_arr['str'] = $this->months[date("Y", $added_time)].' '.date("Y", $added_time);
-            $added_arr['bg_level'] =  3;*/
             $added_arr['week_and_more'] = $this->months[date("n", $added_time) - 1].' '.date("Y", $added_time);
         }
         
@@ -553,7 +547,6 @@ class Vod extends AjaxResponse
     public function getGenresStrByItem($item){
         
         return implode(', ', $this->db->from('cat_genre')->in('id', array($item['cat_genre_id_1'], $item['cat_genre_id_2'], $item['cat_genre_id_3'], $item['cat_genre_id_4']))->get()->all('title'));
-        
     }
 }
 
