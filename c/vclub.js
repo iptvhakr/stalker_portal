@@ -226,11 +226,11 @@ _debug('1!!!!!!!!!!!!!!');
             
             var block_obj = row_items[block_name+'_block']
         
-            if (data == '1'){
+            if (data === 1){
                 if (block_obj.isHidden()){
                     block_obj.show();
                 }
-            }else if (data == '0' || typeof(data) == "undefined"){
+            }else if (data === 0 || typeof(data) == "undefined"){
                 if (!block_obj.isHidden()){
                     block_obj.hide();
                     
@@ -289,7 +289,7 @@ _debug('1!!!!!!!!!!!!!!');
             (function(){
                 this.hide();
                 main_menu.show();
-            }).bind(key.EXIT, this);
+            }).bind(key.EXIT, this).bind(key.LEFT, this);
         };
         
         this.play = function(){
@@ -369,7 +369,7 @@ _debug('1!!!!!!!!!!!!!!');
     vclub.sidebar.dependency    = [vclub.sort_menu, vclub.search_box, vclub.view_menu];
     vclub.sort_menu.dependency  = [vclub.sidebar, vclub.search_box, vclub.view_menu];
     vclub.search_box.dependency = [vclub.sidebar, vclub.sort_menu, vclub.view_menu];
-    vclub.view_menu.dependency  = [vclub.sidebar, vclub.sort_menu, vclub.search_box]
+    vclub.view_menu.dependency  = [vclub.sidebar, vclub.sort_menu, vclub.search_box];
     
     vclub.hide();
     
