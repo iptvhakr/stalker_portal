@@ -204,6 +204,10 @@ class JsHttpRequest
         if (is_null($a)) return 'null';
         if ($a === false) return 'false';
         if ($a === true) return 'true';
+        
+        // Return Integer as int
+        if (is_int($a)) return $a;
+        
         if (is_scalar($a)) {
             if (is_float($a)) {
                 // Always use "." for floats.
@@ -398,7 +402,7 @@ class JsHttpRequest
      */
     function _toUtf8_callback(&$v, $k, $fromEnc)
     {
-        if ($v === null || is_bool($v)) return;
+        if ($v === null || is_bool($v) || is_int($v)) return;
         if ($this->_toUtfFailed || !is_scalar($v) || strpbrk($k, $this->_nonAsciiChars) !== false) {
             $this->_toUtfFailed = true;
         } else {
