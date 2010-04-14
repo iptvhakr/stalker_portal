@@ -55,6 +55,21 @@
     text-overflow: ellipsis;
 }
 
+.number_block{
+    background-image: url("i/mb_icons.png");
+    background-position: -92px 0px;
+    width: 34px;
+    height: 21px;
+    float: left;
+    margin: 4px 0 0 4px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+    font-size: 18px;
+    text-align: center;
+    white-space: pre;
+    overflow: hidden;
+}
+
 .wide_container{
     
 }
@@ -161,11 +176,27 @@
     font-size: 22px;
     color: #002864;
     text-shadow: #fff 0 1px 0;
-    margin-top:8px;
+    margin-top: 8px;
     margin-right: 25px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.active_number_block{
+    width: 34px;
+    height: 31px;
+    background-image: url("i/mb_icons.png");
+    background-position: -92px -21px;
+    margin: 6px 2px 0 0;
+    float:left;
+    margin-top: 8px;
+    font-size: 22px;
+    color: #fff;
+    text-shadow: #122946 0 -1px 0;
+    text-align: center;
+    white-space: pre;
+    overflow: hidden;
 }
 
 
