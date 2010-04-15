@@ -48,8 +48,8 @@
     color: #fff;
     font-size: 20px;
     text-shadow: #122946 0 -1px 0;
-    margin-top: 3px;
-    margin-right: 5px;
+    margin: 3px 0 0 3px;
+    padding-left: 3px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -185,18 +185,18 @@
 
 .active_number_block{
     width: 34px;
-    height: 31px;
+    height: 29px;
     background-image: url("i/mb_icons.png");
     background-position: -92px -21px;
     margin: 6px 2px 0 0;
     float:left;
-    margin-top: 8px;
     font-size: 22px;
     color: #fff;
     text-shadow: #122946 0 -1px 0;
     text-align: center;
     white-space: pre;
     overflow: hidden;
+    padding-top: 2px;
 }
 
 
