@@ -339,6 +339,25 @@ player.prototype.bind = function(){
     
     this.show_prev_layer.bind(key.EXIT, self);
 }
+
+player.prototype.save_fav_ids = function(){
+    _debug('player.save_fav');
+    
+    stb.load(
+
+        {
+            'type'   : 'itv',
+            'action' : 'set_fav',
+            'fav_ch' : this.fav_channels_ids
+        },
+        
+        function(result){
+            _debug('fav_saved', result);
+        },
+        
+        this
+    )
+}
 /*
  * END Player
  */
