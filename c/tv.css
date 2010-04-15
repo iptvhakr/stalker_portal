@@ -5,6 +5,14 @@
     top: 340px;
     left: 345px;
     padding: 5px;
+    font-size: 18px;
+    color: #fff;
+    overflow: hidden;
+    height: 150px;
+}
+
+.tv_timetable span{
+    color: #cfeafe;
 }
 
 .tv_prev_window{
