@@ -24,6 +24,7 @@ function common_xpcom(){
         {alias: 'exp', mode: 0x00}
     ];
     this.player;
+    this.video_mode = 1080;
     
     //this.menu_clock = new main_menu_clock();
     
@@ -49,6 +50,8 @@ function common_xpcom(){
     this.get_stb_params = function (){
         
         try{
+            
+            this.video_mode = stb.RDir('vmode');
             
             this.mac = stb.RDir('MACAddress').toUpperCase().clearnl();
             
@@ -337,7 +340,7 @@ function common_xpcom(){
             
             {
                 'type'   : 'itv',
-                'action' : 'get_fav_itv_ids',
+                'action' : 'get_fav_ids',
             },
             
             function(result){
