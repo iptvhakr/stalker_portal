@@ -91,7 +91,6 @@ class Itv extends AjaxResponse
         if (is_array($fav_ch)){
             $fav_ch_str = base64_encode(serialize($fav_ch));
             
-            //$fav_itv_arr = $this->db->getFirstData('fav_itv', array('uid' => $uid));
             $fav_itv_arr = $this->db->from('fav_itv')->where(array('uid' => $uid))->get()->first();
             
             if (empty($fav_itv_arr)){
@@ -177,9 +176,23 @@ class Itv extends AjaxResponse
         
     }
     
-    public function getFavItvIds(){
+    public function getFavIds(){
         
-        return $this->getFav();
+        //return $this->getFav();
+        $fav = $this->getFav();
+        $fav_str = implode(",", $fav);
+        
+        var_dump($fav_str);
+        
+        $fav_ids = $this->db
+                            ->from('itv')
+                            ->in('id', $fav)
+                            ->where(array('status' => 1))
+                            ->orderby('field(id,'.$fav_str.')')
+                            ->get()
+                            ->all('id');
+                            
+        return $fav_ids;
     }
     
     public function getGenres(){
@@ -250,6 +263,8 @@ class Itv extends AjaxResponse
     public function prepareData(){
         $fav = $this->getFav();
         
+        $epg = new Epg();
+        
         for ($i = 0; $i < count($this->response['data']); $i++){
             
             //$this->response['data'][$i]['number'] = intval($this->response['data'][$i]['number']);
@@ -271,6 +286,8 @@ class Itv extends AjaxResponse
             }
             
             $this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
+            
+            $this->response['data'][$i]['epg'] = $epg->getCurProgramAndFiveNext($this->response['data'][$i]['id']);
             
         }
 
