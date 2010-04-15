@@ -248,5 +248,42 @@ class Epg
         }
     }
     
+    public function getCurProgramAndFewNext($ch_id, $num_programs){
+        
+        
+        $cur_prog_id = $this->db->from('epg')
+                           ->where(
+                               array(
+                                   'ch_id'  => $ch_id,
+                                   'time>=' => $this->day_begin_datetime,
+                                   'time<'  => $this->now_datetime
+                               ))
+                           ->orderby('time', 'desc')
+                           ->get()
+                           ->first('id');
+                           
+        if (!empty($cur_prog_id)){
+            
+            return $this->db->from('epg')
+                                        ->select('*, TIME_FORMAT(`time`,"%H:%i") as t_time')
+                                        ->where(
+                                            array(
+                                                'ch_id' => $ch_id,
+                                                'id>='  => $cur_prog_id
+                                            ))
+                                        ->orderby('time')
+                                        ->limit($num_programs)
+                                        ->get()
+                                        ->all();
+            
+        }
+        
+        return array();
+    }
+    
+    public function getCurProgramAndFiveNext($ch_id){
+        
+        return $this->getCurProgramAndFewNext($ch_id, 5);
+    }
 }
 ?>
