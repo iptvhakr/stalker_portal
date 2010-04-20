@@ -30,6 +30,8 @@
         this.row_callback_timer;
         this.row_callback_timeout = 100;
         
+        this.fav_manage_mode = false;
+        
         this._show = function(genre){
             
             _debug('tv._show');
@@ -58,6 +60,11 @@
             _debug('tv.hide', do_not_reset);
             
             try{
+                
+                if (this.fav_manage_mode){
+                    stb.player.save_fav_ids();
+                }
+                
                 this.superclass.hide.call(this, do_not_reset);
             
                 _debug('SetTopWin');
@@ -230,6 +237,10 @@
         this.add_del_fav = function(){
             _debug('tv.add_del_fav');
             
+            if (this.load_params.fav == true){
+                return;
+            }
+            
             if(this.data_items[this.cur_row].fav){
                 this.del_from_fav();
             }else{
@@ -237,7 +248,91 @@
             }
         };
         
+        this.set_active_row = function(num){
+            
+            this.superclass.set_active_row.call(this, num);
+            
+            this.handling_block(this.data_items[num].number, this.active_row, 'number');
+        };
         
+        this.shift_row = function(dir){
+            
+            if (this.fav_manage_mode){
+                var cur_row_data = this.data_items[this.cur_row];
+                var cur_row_num  = this.cur_row;
+                var cur_number   = cur_row_data.number;
+                var cur_item_id  = cur_row_data.id;
+                
+                var cur_row_fav_idx = stb.player.fav_channels_ids.indexOf(cur_item_id);
+                
+                _debug('stb.player.fav_channels_ids before', stb.player.fav_channels_ids);
+                
+            }
+            
+            this.superclass.shift_row.call(this, dir);
+            
+            if (this.fav_manage_mode){
+    
+                var next_row_data = this.data_items[this.cur_row];
+                var next_number   = next_row_data.number;
+                var next_item_id  = this.data_items[this.cur_row].id;
+                
+                _debug('cur_number', cur_number);
+                
+                _debug('next_row_data.number before', next_row_data.number);
+                
+                next_row_data.number = cur_number;
+                cur_row_data.number  = next_number;
+                
+                _debug('next_row_data.number after', next_row_data.number);
+                
+                var next_row_fav_idx = stb.player.fav_channels_ids.indexOf(next_item_id);
+                
+                stb.player.fav_channels_ids[cur_row_fav_idx]  = next_item_id;
+                stb.player.fav_channels_ids[next_row_fav_idx] = cur_item_id;
+                
+                this.data_items[this.cur_row] = cur_row_data;
+                this.data_items[cur_row_num] = next_row_data;
+                
+                _debug('stb.player.fav_channels_ids after', stb.player.fav_channels_ids);
+                
+                for (var j=0; j<this.row_blocks.length; j++){
+                    this.handling_block(cur_row_data[this.row_blocks[j]], this.map[this.cur_row], this.row_blocks[j]);
+                    
+                    this.handling_block(next_row_data[this.row_blocks[j]], this.map[cur_row_num], this.row_blocks[j]);
+                }
+            }
+        };
+        
+        this.shift_page = function(dir){
+            
+            if (this.fav_manage_mode){
+                stb.player.save_fav_ids();
+            }
+            
+            this.superclass.shift_page.call(this, dir);
+        };
+        
+        this.switch_fav_manage_mode = function(){
+            _debug('tv.switch_fav_manage_mode');
+            
+            if (this.load_params.fav != true){
+                return;
+            }
+            
+            _debug('typeof(tv.fav_manage_mode)', typeof(this.fav_manage_mode));
+            _debug('tv.fav_manage_mode before', this.fav_manage_mode);
+            
+            if (this.fav_manage_mode){
+                stb.player.save_fav_ids();
+            }else{
+                
+            }
+            
+            this.fav_manage_mode = !this.fav_manage_mode;
+            
+            _debug('tv.fav_manage_mode after', this.fav_manage_mode);
+        };
     }
     
     tv_constructor.prototype = new Layer();
@@ -257,14 +352,36 @@
         {"label" : "ОТОБРАЖЕНИЕ", "cmd" : tv.view_switcher},
         {"label" : "СОРТИРОВКА", "cmd" : tv.sort_menu_switcher},
         {"label" : "ИЗБРАННОЕ", "cmd" : tv.add_del_fav},
-        {"label" : "", "cmd" : ''}
+        {"label" : "ДВИГАТЬ", "cmd" : tv.switch_fav_manage_mode}
     ]);
+    
+    /*var idx = tv.color_buttons.getIdxByVal('color', 'blue');
+    tv.color_buttons[idx].text_obj.addClass('disable_color_btn_text');*/
     
     tv.init_sort_menu(
         [
-            {"label" : "по номеру", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'number'}},
-            {"label" : "по имени", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'}},
-            {"label" : "только избранное", "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true}}
+            {"label" : "по номеру", "cmd" : function(){
+                this.parent.load_params.fav = false;
+                this.parent.load_params.sortby = 'number';
+            
+                var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
+                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
+            }},
+            {"label" : "по имени", "cmd" : function(){
+                this.parent.load_params.fav = false;
+                this.parent.load_params.sortby = 'name';
+                
+                var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
+                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
+            }},
+            {"label" : "только избранное", "cmd" : function(){
+                this.parent.load_params.sortby = 'fav';
+                this.parent.load_params.fav = true
+                
+                var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
+                this.parent.color_buttons[idx].text_obj.delClass();
+                
+            }}
         ],
         {
             "offset_x" : 217
