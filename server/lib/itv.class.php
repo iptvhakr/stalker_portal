@@ -235,6 +235,7 @@ class Itv extends AjaxResponse
     
     public function getOrderedList(){
         $fav = $this->getFav();
+        $fav_str = implode(",", $fav);
         
         $result = $this->getData();
         
@@ -245,6 +246,8 @@ class Itv extends AjaxResponse
                 $result = $result->orderby('name');
             }elseif ($sortby == 'number'){
                 $result = $result->orderby('number');
+            }elseif ($sortby == 'fav'){
+                $result = $result->orderby('field(id,'.$fav_str.')');
             }
             
         }else{
@@ -282,7 +285,7 @@ class Itv extends AjaxResponse
             }
             
             if (@$_REQUEST['fav']){
-                $this->response['data'][$i]['number'] = strval($i+1);
+                $this->response['data'][$i]['number'] = strval(($i+1) + (MAX_PAGE_ITEMS * ($this->page)));
             }
             
             $this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
