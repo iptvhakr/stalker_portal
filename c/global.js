@@ -254,6 +254,8 @@ if (typeof Object.prototype.toSource != 'function'){
             } else {
                 return '(' + res + ')';
             }
+        }else if(con == Boolean){
+            return this;
         }
     }
     
