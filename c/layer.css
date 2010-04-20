@@ -218,19 +218,27 @@
 }
 
 .btn_red{
+    background: url("i/footer_btn.png") right no-repeat;
     background-position: 0px 0px;
 }
 
 .btn_green{
+    background: url("i/footer_btn.png") right no-repeat;
     background-position: -24px 0px;
 }
 
 .btn_yellow{
+    background: url("i/footer_btn.png") right no-repeat;
     background-position: -48px 0px;
 }
 
 .btn_blue{
+    background: url("i/footer_btn.png") right no-repeat;
     background-position: -72px 0px;
+}
+
+.disable_color_btn_text{
+    color: #707070 !important;
 }
 
 .mb_header_first{
@@ -256,4 +264,37 @@
     top: 515px;
     padding-left: 30px;
 }
+
+.color_button_bar table{
+    width: 660px;
+    height: 40px;
+    border: 0;
+    border-collapse:collapse;
+}
+
+.color_button_bar td{
+    vertical-align: top;
+}
+
+.color_button_bar img{
+    float: left;
+}
+
+.color_button_bar div{
+    /*background: url("i/footer_btn.png") right no-repeat;*/
+    width: 24px;
+    height: 24px;
+    float:left;
+    margin: 11px 0 0 7px;
+}
+
+.color_button_bar span{
+    font-size: 15px;
+    color: #001a33;
+    text-shadow: #fff 0 1px 0;
+    float: left;
+    margin: 13px 0 0 8px;
+    font-weight: bold;
+}
+
 /* END LAYER */
