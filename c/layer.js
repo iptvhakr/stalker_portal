@@ -35,6 +35,13 @@ function Layer(){
     this.cur_view = 'wide';
     
     this.sidebar = {};
+    
+    this.color_buttons = [
+        {"color" : "red"},
+        {"color" : "green"},
+        {"color" : "yellow"},
+        {"color" : "blue"}
+    ];
 }
 
 Layer.prototype.show = function(do_not_load){
@@ -315,16 +322,18 @@ Layer.prototype.set_active_row = function(num){
     
     this.active_row['row'].moveY(offset);
     
-    for (var j=0; j<this.row_blocks.length; j++){
-        this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
-    }    
-    
     if (this.active_row['row'].isHidden()){
         this.active_row['row'].show()
     }
     
-    if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
-        this.shift_row_callback.call(this, this.data_items[num]);
+    if(!this.fav_manage_mode){
+        for (var j=0; j<this.row_blocks.length; j++){
+            this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
+        }    
+        
+        if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
+            this.shift_row_callback.call(this, this.data_items[num]);
+        }
     }
 }
 
@@ -397,14 +406,51 @@ Layer.prototype.init_color_buttons = function(map){
     
     this.buttons_bar = this.create_block('color_button_bar');
     
-    var table = '<table width="660" height="40" border="0" cellpadding="0" cellspacing="0">';
+    /*var table = '<table>';
     table += '<tr>';
-    table += '<td valign="top"><img src="i/1x1.gif" align="left"><div class="footer_btn btn_red"></div><span class="footer_text">'+map[0].label+'</span></td>';
-    table += '<td valign="top"><img src="i/footer_bg2.png" align="left"><div class="footer_btn btn_green"></div><span class="footer_text">'+map[1].label+'</span></td>';
-    table += '<td valign="top"><img src="i/footer_bg2.png" align="left"><div class="footer_btn btn_yellow"></div><span class="footer_text">'+map[2].label+'</span></td>';
-    table += '<td valign="top"><img src="i/footer_bg2.png" align="left"><div class="footer_btn btn_blue"></div><span class="footer_text">'+map[3].label+'</span></td>';
+    table += '<td><img src="i/1x1.gif"><div class="btn_red"></div><span class="footer_text">'+map[0].label+'</span></td>';
+    table += '<td><img src="i/footer_bg2.png"><div class="btn_green"></div><span class="footer_text">'+map[1].label+'</span></td>';
+    table += '<td><img src="i/footer_bg2.png"><div class="btn_yellow"></div><span class="footer_text">'+map[2].label+'</span></td>';
+    table += '<td><img src="i/footer_bg2.png"><div class="btn_blue"></div><span class="footer_text">'+map[3].label+'</span></td>';
     table += '</tr>';
-    table += '</table>';
+    table += '</table>';*/
+    
+    /*var table = '<table>';
+    table += '<tr>';
+    table += '<td><img src="i/1x1.gif"><div class="btn_red"></div><span>'+map[0].label+'</span></td>';
+    table += '<td><img src="i/footer_bg2.png"><div class="btn_green"></div><span>'+map[1].label+'</span></td>';
+    table += '<td><img src="i/footer_bg2.png"><div class="btn_yellow"></div><span>'+map[2].label+'</span></td>';
+    table += '<td><img src="i/footer_bg2.png"><div class="btn_blue"></div><span>'+map[3].label+'</span></td>';
+    table += '</tr>';
+    table += '</table>';*/
+    
+    var table = document.createElement('table');
+    this.buttons_bar.appendChild(table);
+    
+    var row = document.createElement('tr');
+    table.appendChild(row);
+    
+    for (var i=0; i<=3; i++){
+        
+        var cell = document.createElement('td');
+        row.appendChild(cell);
+        
+        var separator = document.createElement('img');
+        
+        if (i == 0){
+            separator.src = 'i/1x1.gif';
+        }else{
+            separator.src = 'i/footer_bg2.png';
+        }
+        
+        cell.appendChild(separator);
+        
+        this.color_buttons[i].img_obj = create_block_element('btn_'+this.color_buttons[i].color, cell);
+        
+        this.color_buttons[i].text_obj = create_inline_element('', cell);
+        
+        this.color_buttons[i].text_obj.innerHTML = map[i].label;
+    }
     
     if (typeof(map[0].cmd) == 'function'){
         map[0].cmd.bind(key.RED, this);
@@ -422,7 +468,8 @@ Layer.prototype.init_color_buttons = function(map){
         map[3].cmd.bind(key.BLUE, this);
     }
     
-    this.buttons_bar.innerHTML = table;
+    //this.buttons_bar.innerHTML = table;
+    this.buttons_bar.appendChild(table);
     
     this.dom_obj.appendChild(this.buttons_bar);
 }
