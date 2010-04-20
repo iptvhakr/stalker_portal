@@ -363,29 +363,21 @@ abstract class Master
      */
     private function setStorageCache($storages){
         
+        $this->db->update('storage_cache',
+                                  array(
+                                      'status'  => 0,
+                                      'changed' => '0000-00-00 00:00:00',
+                                  ),
+                                  array(
+                                      'media_id'   => $this->media_id,
+                                      'media_type' => $this->media_type,
+                                  ));
+        
         if (!empty($storages)){
             
             foreach ($storages as $name => $data){
                 
                 $storage_data = serialize($data);
-                /*$sql = 'insert into storage_cache (
-                                            cache_key, 
-                                            media_type, 
-                                            media_id, 
-                                            storage_name, 
-                                            storage_data, 
-                                            status, 
-                                            changed)
-                                 values ("'.$this->getCacheKey($name).'", 
-                                         "'.$this->media_type.'",
-                                         "'.$this->media_id.'",
-                                         "'.$name.'",
-                                         "'.mysql_real_escape_string($storage_data).'", 
-                                            1, 
-                                            NOW())
-                                on duplicate key
-                        update storage_data="'.mysql_real_escape_string($storage_data).'", status=1, changed=NOW()';
-                $this->db->executeQuery($sql);*/
                 
                 $cache_key = $this->getCacheKey($name);
                 
@@ -417,9 +409,27 @@ abstract class Master
                                       array('cache_key' => $cache_key));
                     
                 }
-                                      
             }
         }
+        
+        /*$records_in_cache = $this->db
+                                      ->from('storage_cache')
+                                      ->where(array(
+                                         'media_type' => $this->media_type,
+                                         'media_id'   => $this->media_id,
+                                         'status'     => 1,
+                                      ))
+                                      ->get()
+                                      ->all();
+        
+        foreach ($records_in_cache as $record){
+            if (!key_exists($record['storage_name'], $storages)){
+                $this->db->update('storage_cache',
+                                  array('status' => 0),
+                                  array('id'     => $record['id']));
+            }
+        }*/
+        
     }
     
     /**
