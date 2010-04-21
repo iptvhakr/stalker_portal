@@ -19,6 +19,10 @@ var observer = new function(){
         
         var code = e.keyCode || e.which;
         
+        if (e.shiftKey){
+            code += 1000;
+        }
+        
         _debug('code:', code);
         
         if (this.listeners.hasOwnProperty(code)){
