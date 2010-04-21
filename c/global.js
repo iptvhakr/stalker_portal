@@ -77,6 +77,8 @@ function create_dom_element(type, class_name, parent){
         dom_element.addClass(class_name);
     }
     
+    var parent = parent || document.body
+    
     if (parent){
         parent.appendChild(dom_element);
     }
