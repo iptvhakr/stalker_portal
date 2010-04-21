@@ -55,13 +55,12 @@ class Itv extends AjaxResponse
         return 0;
     }
     
-    public function setLastId($id){
+    public function setLastId($id = 0){
         
         if (!$id){
             $id = intval($_REQUEST['id']);
         }
         
-        //$last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->stb->mac));
         $last_id_arr = $this->db->from('last_id')
                                 ->where(array('ident' => $this->stb->mac))
                                 ->get()
