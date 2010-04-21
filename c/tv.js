@@ -62,7 +62,7 @@
             try{
                 
                 if (this.fav_manage_mode){
-                    stb.player.save_fav_ids();
+                    this.switch_fav_manage_mode();
                 }
                 
                 this.superclass.hide.call(this, do_not_reset);
@@ -105,6 +105,11 @@
         };
         
         this.sort_menu_switcher = function(){
+            
+            if (this.fav_manage_mode){
+                return;
+            }
+            
             if (this.sort_menu && this.sort_menu.on){
                 this.sort_menu.hide();
             }else{
@@ -119,6 +124,11 @@
         };
         
         this.view_switcher = function(){
+            
+            if (this.fav_manage_mode){
+                return;
+            }
+            
             if (this.view_menu && this.view_menu.on){
                 this.view_menu.hide();
             }else{
@@ -237,6 +247,10 @@
         this.add_del_fav = function(){
             _debug('tv.add_del_fav');
             
+            if (this.fav_manage_mode){
+                return;
+            }
+            
             if (this.load_params.fav == true){
                 return;
             }
@@ -258,7 +272,9 @@
         this.shift_row = function(dir){
             
             if (this.fav_manage_mode){
-                var cur_row_data = this.data_items[this.cur_row];
+                var cur_data_items = this.data_items.clone();
+                //var cur_row_data = this.data_items[this.cur_row].clone();
+                var cur_row_data = this.data_items[this.cur_row]
                 var cur_row_num  = this.cur_row;
                 var cur_number   = cur_row_data.number;
                 var cur_item_id  = cur_row_data.id;
@@ -293,7 +309,7 @@
                 
                 this.data_items[this.cur_row] = cur_row_data;
                 this.data_items[cur_row_num] = next_row_data;
-                
+                                
                 _debug('stb.player.fav_channels_ids after', stb.player.fav_channels_ids);
                 
                 for (var j=0; j<this.row_blocks.length; j++){
@@ -316,7 +332,7 @@
         this.switch_fav_manage_mode = function(){
             _debug('tv.switch_fav_manage_mode');
             
-            if (this.load_params.fav != true){
+            if (this.load_params.fav != true || this.cur_view != 'wide'){
                 return;
             }
             
@@ -325,8 +341,17 @@
             
             if (this.fav_manage_mode){
                 stb.player.save_fav_ids();
-            }else{
+                this.active_row['row'].setClass('active_row_bg');
                 
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.delClass();
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.delClass();
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.delClass();
+            }else{
+                this.active_row['row'].setClass('moved_active_row_bg');
+                
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
             }
             
             this.fav_manage_mode = !this.fav_manage_mode;
@@ -354,9 +379,6 @@
         {"label" : "ИЗБРАННОЕ", "cmd" : tv.add_del_fav},
         {"label" : "ДВИГАТЬ", "cmd" : tv.switch_fav_manage_mode}
     ]);
-    
-    /*var idx = tv.color_buttons.getIdxByVal('color', 'blue');
-    tv.color_buttons[idx].text_obj.addClass('disable_color_btn_text');*/
     
     tv.init_sort_menu(
         [
