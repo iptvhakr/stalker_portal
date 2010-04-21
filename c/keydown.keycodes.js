@@ -15,8 +15,8 @@ var key = {
     NUM0  : 48,
     MENU  : 122,
     BACK  : 8,
-    CHANNEL  : 9,
-    /*CHANNEL_NEXT  : ,*/
+    CHANNEL_PREV  : 1009,
+    CHANNEL_NEXT  : 9,
     EXIT  : 27,
     REFRESH  : 116,
     UP    : 38,
