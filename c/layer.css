@@ -116,6 +116,16 @@
     padding: 5px 0 0 13px;
 }
 
+.wide_container .moved_active_row_bg{
+    position: absolute;
+    width: 650px;
+    height: 54px;
+    left: 36px;
+    background: url("i/mb_table_act.png") no-repeat;
+    background-position: 0 -236px;
+    padding: 5px 0 0 13px;
+}
+
 .middle_container .active_row_bg{
     position: absolute;
     width: 380px;
@@ -298,3 +308,42 @@
 }
 
 /* END LAYER */
+
+/* PLAYER */
+
+.osd_info{
+    position: absolute;
+    height: 150px;
+    bottom: 0px;
+    left: 0;
+    background: url("i/osd_bg.png");
+}
+
+.osd_info_title{
+    width: 655px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: #000 0 1px 0;
+    white-space: pre;
+	overflow: hidden;
+	margin: 15px 0 0 65px;
+}
+
+.osd_info_epg{
+    font-size: 20px;
+    color: #fff;
+    margin: 5px 0 0 65px;
+}
+
+.pause{
+    position: absolute;
+    right: 95px;
+    top: 50px; 
+    background: url("i/pause_btn.png");
+    background-position: 0px 41px;
+    height: 41px;
+    width: 47px;
+}
+
+/* END PLAYER */
