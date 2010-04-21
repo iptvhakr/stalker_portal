@@ -16,16 +16,19 @@ function player(){
     
     this.start_time;
     this.cur_media_item;
-    this.paused = false;
     this.need_show_info = 0;
     
-    this.pause_dom_obj = $('pause');
+    this.pause = {"on" : false};
     
     this.is_tv = false;
     
     this.prev_layer = {};
     
+    this.info = {"on" : false, "hide_timer" : 2000};
+    
     this.init();
+    this.init_pause();
+    this.init_show_info();
 }
 
 player.prototype.init = function(){
@@ -173,6 +176,11 @@ player.prototype.play = function(item){
     
     if (this.media_type == 'stream'){
         this.play_now(cmd);
+        
+        if (this.is_tv){
+            this.send_last_tv_id(item.id);
+        }
+        
     }else{
         this.create_link('vod', cmd);
     }
@@ -223,39 +231,95 @@ player.prototype.stop = function(){
     
     this.on = false;
     
+    if(this.pause.on){
+        this.disable_pause();
+    }
+    
     try{
         stb.Stop();
     }catch(e){}
 }
 
-player.prototype.pause = function(){
-    _debug('player.pause');
-       
-    if (this.paused){
-        try{
-            stb.Continue();
-        }catch(e){};
-        this.paused = false;
-        this.pause_dom_obj.hide();
+player.prototype.init_pause = function(){
+    this.pause.dom_obj = create_block_element('pause');
+    this.pause.dom_obj.hide();
+}
+
+player.prototype.pause_switch = function(){
+    _debug('player.pause_switch');
+    
+    if (this.is_tv){
+        return;
+    }
+    
+    if (this.pause.on){
+        this.disable_pause();
     }else{
         try{
             stb.Pause();
         }catch(e){};
-        this.paused = true;
-        this.pause_dom_obj.show();
+        this.pause.on = true;
+        this.pause.dom_obj.show();
     }
-        
+}
+
+player.prototype.disable_pause = function(){
+    try{
+        stb.Continue();
+    }catch(e){};
+    this.pause.on = false;
+    this.pause.dom_obj.hide();
 }
 
 player.prototype.show_info_after_play = function(){
     this.need_show_info = 1;
 }
 
-player.prototype.show_info = function(item){
+player.prototype.init_show_info = function(){
     
+    this.info.dom_obj = create_block_element("osd_info");
+    
+    this.info.title = create_block_element("osd_info_title", this.info['dom_obj']);
+    
+    this.info.epg   = create_block_element("osd_info_epg", this.info['dom_obj']);
+    
+    this.info.dom_obj.hide();
 }
 
-player.prototype.switch_channel = function(dir){
+player.prototype.show_info = function(item){
+    _debug('show_info');
+    
+    try{
+        if(this.info.on){
+            window.clearTimeout(this.info.hide_timeout);
+        }else{
+            this.info.dom_obj.show();
+            this.info.on = true;
+        }
+        
+        var title = '';
+        
+        if (item.hasOwnProperty('number')){
+            title = item.number + '. ';
+        }
+        
+        title += item.name
+        
+        this.info.title.innerHTML = title;
+        
+        var self = this;
+        
+        this.info.hide_timeout = window.setTimeout(function(){
+            self.info.dom_obj.hide();
+            self.info.on = false
+        },
+        this.info.hide_timer);
+    }catch(e){
+        _debug(e);
+    }
+}
+
+player.prototype.switch_channel = function(dir, show_info){
     
     _debug('switch_channel', dir);
     
@@ -275,7 +339,10 @@ player.prototype.switch_channel = function(dir){
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
             
-            this.show_info(this.fav_channels[this.f_ch_idx]);
+            if (show_info){
+                this.show_info(this.fav_channels[this.f_ch_idx]);
+            }
+            
             this.play(this.fav_channels[this.f_ch_idx]);
             
         }else{
@@ -287,8 +354,11 @@ player.prototype.switch_channel = function(dir){
             }
             
             _debug('this.ch_idx:', this.ch_idx);
-        
-            this.show_info(this.channels[this.ch_idx]);
+            
+            if (show_info){
+                this.show_info(this.channels[this.ch_idx]);
+            }
+            
             this.play(this.channels[this.ch_idx]);
         }
         
@@ -303,7 +373,9 @@ player.prototype.switch_channel = function(dir){
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
             
-            this.show_info(this.fav_channels[this.f_ch_idx]);
+            if (show_info){
+                this.show_info(this.fav_channels[this.f_ch_idx]);
+            }
             this.play(this.fav_channels[this.f_ch_idx]);
             
         }else{
@@ -316,10 +388,29 @@ player.prototype.switch_channel = function(dir){
             
             _debug('this.ch_idx:', this.ch_idx);
             
-            this.show_info(this.channels[this.ch_idx]);
+            if (show_info){
+                this.show_info(this.channels[this.ch_idx]);
+            }
             this.play(this.channels[this.ch_idx]);
         }
     }
+}
+
+player.prototype.send_last_tv_id = function(id){
+    _debug('send_last_tv_id', id);
+    
+    stb.load(
+
+        {
+            'type'   : 'itv',
+            'action' : 'set_last_id',
+            'id'     : id
+        },
+        
+        function(result){
+            _debug('last_tv_id saved', result);
+        }
+    )
 }
 
 player.prototype.show_prev_layer = function(){
@@ -336,6 +427,11 @@ player.prototype.bind = function(){
     
     this.switch_channel.bind(key.UP, self, 1);
     this.switch_channel.bind(key.DOWN, self, -1);
+    
+    this.switch_channel.bind(key.CHANNEL_NEXT, self, 1, true);
+    this.switch_channel.bind(key.CHANNEL_PREV, self, -1, true);
+    
+    this.pause_switch.bind(key.PAUSE, this);
     
     this.show_prev_layer.bind(key.EXIT, self);
 }
