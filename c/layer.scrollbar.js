@@ -64,3 +64,5 @@ scrollbar.prototype.refresh = function(){
     
     this.scroll_button.style.top = top + 'px';
 }
+
+loader.next();
