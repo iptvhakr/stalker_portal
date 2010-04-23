@@ -149,3 +149,5 @@ bottom_menu.prototype.bind = function(){
     
     this.action.bind(key.OK, this);
 }
+
+loader.next();
