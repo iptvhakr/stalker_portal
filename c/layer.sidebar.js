@@ -295,3 +295,5 @@ sidebar.prototype.bind = function(){
     
     this.hide.bind(key.EXIT, this);
 }
+
+loader.next();
