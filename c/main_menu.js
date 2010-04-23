@@ -285,15 +285,20 @@ var main_menu = {
             }
         }
         
-        if (isNaN(parseInt(this.map[1].sub[0]['sub_punct_obj'].style.width))){
+        if (this.map[1].sub[0] && isNaN(parseInt(this.map[1].sub[0]['sub_punct_obj'].style.width))){
             for (var j=0; j<this.map[1].sub.length; j++){
                 this.map[1].sub[j]['sub_punct_obj'].style.width = max_container_width-30 + 'px';
             }
         }
         
-        this.vert_container.style.height = total_items*this.map[1].sub[0]['sub_punct_obj'].clientHeight + 'px';
-        this.vert_container.style.width = 4 + max_container_width + 'px';
-        this.vert_trans.style.height = total_items*this.map[1].sub[0]['sub_punct_obj'].clientHeight + 'px';
+        if (this.map[1].sub[0]){
+            this.vert_container.style.height = total_items*this.map[1].sub[0]['sub_punct_obj'].clientHeight + 'px';
+            this.vert_container.style.width = 4 + max_container_width + 'px';
+            this.vert_trans.style.height = total_items*this.map[1].sub[0]['sub_punct_obj'].clientHeight + 'px';
+        }else{
+            this.vert_container.style.height = 0;
+            this.vert_trans.style.height = 0;
+        }
     },
     
     reconstruct_sub : function(){
@@ -323,18 +328,20 @@ var main_menu = {
     },
     
     action : function(){
-        _debug(this.map[1].sub[this.active_sub].cmd);
+        //_debug(this.map[1].sub[this.active_sub].cmd);
         
-        if (typeof(this.map[1].sub[this.active_sub].cmd) == 'object'){
+        if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'object'){
             
             var context = this.map[1].sub[this.active_sub].cmd.context || window;
             
             this.map[1].sub[this.active_sub].cmd.func.apply(context, this.map[1].sub[this.active_sub].cmd.args);
             
-        }else if (typeof(this.map[1].sub[this.active_sub].cmd) == 'function'){
+        }else if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'function'){
             this.map[1].sub[this.active_sub].cmd();
-        }else{
+        }else if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'string'){
             eval(this.map[1].sub[this.active_sub].cmd);
+        }else{
+            this.map[1].cmd();
         }
     },
     
@@ -362,12 +369,16 @@ var main_menu = {
         _debug('end clear_menu');
     },
     
-    add : function(title, sub){
+    add : function(title, sub, cmd){
+        
+        var cmd = cmd || '';
+        
+        var sub = sub || [];
         
         this.map.push(
             {
                 "title" : title,
-                "cmd"   : '',
+                "cmd"   : cmd,
                 "sub"   : sub
             }
         );
