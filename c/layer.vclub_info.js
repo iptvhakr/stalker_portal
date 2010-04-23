@@ -135,3 +135,5 @@ vclub_info.prototype.bind = function(){
     this.shift_page.bind(key.PAGE_PREV, this, -1);
     this.shift_page.bind(key.PAGE_NEXT, this, 1);
 }
+
+loader.next();
