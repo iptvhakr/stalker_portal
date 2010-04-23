@@ -45,5 +45,7 @@ var key = {
     REC   : 87,
     INFO  : 89,
     FRAME : 117,
-    NULL  : 76
+    NULL  : 76,
+    USB_UNMOUNTED : 2081,
+    USB_MOUNTED   : 2080
 }
