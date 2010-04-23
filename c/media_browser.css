@@ -1,0 +1,13 @@
+.dir_block{
+    width: 24px;
+    height: 21px;
+    float: left;
+    margin: 4px 0 0 4px;
+}
+
+.active_dir_block{
+    width: 24px;
+    height: 31px;
+    margin: 6px 2px 0 0;
+    float:left;
+}
