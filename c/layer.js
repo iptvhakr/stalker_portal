@@ -303,37 +303,38 @@ Layer.prototype.clear_row = function(row_obj){
 Layer.prototype.set_active_row = function(num){
     
     _debug('set_active_row', num);
-    
-    if (num == 0){
-        if (!this.data_items[num]){
-            if (!this.active_row['row'].isHidden()){
-                this.active_row['row'].hide()
-            }
-        }else{
-            if (this.active_row['row'].isHidden()){
-                this.active_row['row'].show()
+    try{
+        if (num == 0){
+            if (!this.data_items[num]){
+                if (!this.active_row['row'].isHidden()){
+                    this.active_row['row'].hide();
+                }
+            }else{
+                if (this.active_row['row'].isHidden()){
+                    this.active_row['row'].show();
+                }
             }
         }
-    }
-    
-    var offset = this.map[num]['row'].offsetTop - 15;
-    
-    _debug('set_active_row offset', offset);
-    
-    this.active_row['row'].moveY(offset);
-    
-    if (this.active_row['row'].isHidden()){
-        this.active_row['row'].show()
-    }
-    
-    if(!this.fav_manage_mode){
-        for (var j=0; j<this.row_blocks.length; j++){
-            this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
-        }    
         
-        if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
-            this.shift_row_callback.call(this, this.data_items[num]);
+        var offset = this.map[num]['row'].offsetTop - 15;
+        
+        this.active_row['row'].moveY(offset);
+        
+        if (this.active_row['row'].isHidden()){
+            this.active_row['row'].show();
         }
+        
+        if(!this.fav_manage_mode){
+            for (var j=0; j<this.row_blocks.length; j++){
+                this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
+            }    
+            
+            if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
+                this.shift_row_callback.call(this, this.data_items[num]);
+            }
+        }
+    }catch(e){
+        _debug(e);
     }
 }
 
@@ -352,16 +353,16 @@ Layer.prototype.shift_row = function(dir){
             this.cur_row++;
             this.set_active_row(this.cur_row);
         }else{
-            this.shift_page(1);
             this.set_passive_row();
+            this.shift_page(1);
         }
     }else{
         if (this.cur_row > 0){
             this.cur_row--;
             this.set_active_row(this.cur_row);
         }else{
-            this.shift_page(-1);
             this.set_passive_row();
+            this.shift_page(-1);
         }
     }
 }
@@ -529,3 +530,5 @@ Layer.prototype.update_header_path = function(map){
     
     this.path_container.innerHTML = path;
 }
+
+loader.next();
