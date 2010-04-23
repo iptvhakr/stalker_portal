@@ -214,7 +214,7 @@ player.prototype.play_now = function(uri){
     this.start_time = Date.parse(new Date())/1000;
 
     if (this.need_show_info){
-        this.show_info(cur_media_item);
+        this.show_info(this.cur_media_item);
     }
     
     try{
@@ -453,6 +453,27 @@ player.prototype.save_fav_ids = function(){
         
         this
     )
+}
+
+player.prototype.get_file_type = function(item){
+    
+    var cmd = '';
+    
+    if (typeof(item) == 'object'){
+        cmd = item.cmd;
+    }else{
+        cmd = item;
+    }
+    
+    var p = /^(.*)\.(\S+)$/
+    
+    var ext = ['mp3', 'ac3', 'mov', 'vob', 'wav'];
+
+    if (ext.indexOf(cmd.replace(p, "$2")) != -1){
+        return 'audio';
+    }else{
+        return 'video';
+    }
 }
 /*
  * END Player
