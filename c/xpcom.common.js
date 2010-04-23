@@ -26,6 +26,8 @@ function common_xpcom(){
     this.player;
     this.video_mode = 1080;
     
+    this.notice;
+    
     //this.menu_clock = new main_menu_clock();
     
     this.init = function(){
@@ -36,6 +38,8 @@ function common_xpcom(){
         this.get_stb_params();
         this.get_server_params();
         this.get_user_profile();
+        
+        this.notice = new _alert();
     }
     
     this.get_server_params = function(){
