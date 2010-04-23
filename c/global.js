@@ -39,7 +39,7 @@ function _debug(){
  * Module loader.
  */
 
-function load_module(module){
+/*function load_module(module){
     
     _debug('load_module', module);
     
@@ -63,7 +63,7 @@ function load_module(module){
     }catch(e){
         _debug(e);
     }
-}
+}*/
 
 /**
  * DOM element creating functions
@@ -332,4 +332,27 @@ Math.__proto__.isEven = function(x){
 
 Math.__proto__.isOdd = function(x){
     return !Math.isEven(x);
+}
+
+function empty(val){
+    
+    var type = typeof(val);
+    
+    if (type == 'string' && val == ''){
+        return true;
+    }else if (type == 'undefined'){
+        return true;
+    }else{
+        if (type == 'object'){
+            for(var p in val){
+                if (val.hasOwnProperty(p)){
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+    }
+    
+    return false;
 }
