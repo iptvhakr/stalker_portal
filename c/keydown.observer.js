@@ -23,6 +23,10 @@ var observer = new function(){
             code += 1000;
         }
         
+        if (e.altKey){
+            code += 2000;
+        }
+        
         _debug('code:', code);
         
         if (this.listeners.hasOwnProperty(code)){
