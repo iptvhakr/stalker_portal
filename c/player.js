@@ -181,6 +181,8 @@ player.prototype.play = function(item){
             this.send_last_tv_id(item.id);
         }
         
+    }else if (cmd.indexOf('usbdisk') > 0){
+        this.play_now(cmd);
     }else{
         this.create_link('vod', cmd);
     }
@@ -416,9 +418,13 @@ player.prototype.send_last_tv_id = function(id){
 player.prototype.show_prev_layer = function(){
     _debug('player.show_prev_layer');
     
-    this.prev_layer.show.call(this.prev_layer, true);
-    
-    this.stop();
+    try{
+        this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
+        
+        this.stop();
+    }catch(e){
+        _debug(e);
+    }
 }
 
 player.prototype.bind = function(){
@@ -433,7 +439,7 @@ player.prototype.bind = function(){
     
     this.pause_switch.bind(key.PAUSE, this);
     
-    this.show_prev_layer.bind(key.EXIT, self);
+    this.show_prev_layer.bind(key.EXIT, self).bind(key.STOP, self);
 }
 
 player.prototype.save_fav_ids = function(){
@@ -468,12 +474,18 @@ player.prototype.get_file_type = function(item){
     var p = /^(.*)\.(\S+)$/
     
     var ext = ['mp3', 'ac3', 'mov', 'vob', 'wav'];
-
+    
+    var type = 'video';
+    
     if (ext.indexOf(cmd.replace(p, "$2")) != -1){
-        return 'audio';
-    }else{
-        return 'video';
+        type = 'audio';
     }
+    
+    _debug('file_type', type);
+    
+    return type;
+    
+    
 }
 /*
  * END Player
