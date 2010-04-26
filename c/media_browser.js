@@ -39,7 +39,7 @@
             (function(){
                 self.drive_umounted();
             }).bind(key.USB_UNMOUNTED);
-            
+
             this.check_mounted();
         };
         
@@ -47,6 +47,13 @@
             _debug('media_browser.hide', do_not_reset);
             
             try{
+                
+                if (this.on){
+                    if (stb.player.on){
+                        stb.player.stop();
+                    }
+                }
+                
                 this.superclass.hide.call(this, do_not_reset);
                 
                 if (!do_not_reset){
@@ -54,6 +61,7 @@
                     
                     this.reset();
                 }
+                
             }catch(e){
                 _debug(e);
             }
@@ -89,7 +97,7 @@
                 
                 for (var i=0; i < files.length; i++){
                     if (!empty(files[i])){
-                        new_files.push({"name" : files[i].name, "cmd" : (path + files[i].name), "size" : files[i].size});
+                        new_files.push({"name" : files[i].name, "cmd" : ("auto " + path + files[i].name), "size" : files[i].size});
                     }
                 }
                 
@@ -185,17 +193,15 @@
             
             stb.notice.show('USB устройство отключено');
             
-            /*if (this.hidden || (this.on && this.is_audio)){
+            if (this.on){
                 
-                if (player_on){
-                    stop()
-                    hide_black()
-                    stb.SetDefaultFlicker(1)
+                if (stb.player.on){
+                    stb.player.stop();
                 }
                 
                 this.hide();
-                show_club();
-            }*/
+                main_menu.show();
+            }
         }
         
         this.action = function(){
@@ -224,8 +230,8 @@
                 this.hide(true);
             }
             
-            stb.player.show_info(item);
-            stb.player.play_now(item.cmd);
+            stb.player.need_show_info = 1;
+            stb.player.play(item);
         }
         
         this.out_dir = function(){
@@ -264,9 +270,20 @@
             this.action.bind(key.OK, this);
             
             (function(){
+                
+                if (stb.player.on && this.is_audio){
+                    stb.player.stop();
+                    return;
+                }
+                
                 this.hide();
                 main_menu.show();
-            }).bind(key.EXIT, this).bind(key.LEFT, this);
+            }).bind(key.EXIT, this);
+            
+            (function(){
+                this.hide();
+                main_menu.show();
+            }).bind(key.LEFT, this);
         };
     }
     
