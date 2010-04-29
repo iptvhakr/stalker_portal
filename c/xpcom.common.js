@@ -191,7 +191,7 @@ function common_xpcom(){
 
             this.preload_images();
             
-            this.player.volume_bar.set_volume(parseInt(this.user['volume']));
+            this.player.volume.set_level(parseInt(this.user['volume']));
             
             this.user.fav_itv_on = parseInt(this.user.fav_itv_on);
             
@@ -385,7 +385,7 @@ function common_xpcom(){
                 var channel = this.player.channels[this.player.ch_idx];
             }
             
-            this.player.show_info(channel);
+            this.player.need_show_info = 1;
             this.player.play(channel);
             
             this.key_lock = false;
