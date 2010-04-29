@@ -311,30 +311,79 @@
 
 /* PLAYER */
 
+/* OSD */
+
 .osd_info{
     position: absolute;
     height: 150px;
+    width: 720px;
+    overflow: hidden;
     bottom: 0px;
     left: 0;
     background: url("i/osd_bg.png");
 }
 
+
 .osd_info_title{
-    width: 655px;
+    position: absolute;
+    top: 14px;
+    left: 46px;
+    width: 626px;
     font-size: 25px;
     font-weight: bold;
     color: #fff;
     text-shadow: #000 0 1px 0;
     white-space: pre;
 	overflow: hidden;
-	margin: 15px 0 0 65px;
+    text-overflow: ellipsis;
+}
+
+.pos_bar{
+    position: absolute;
+    height: 22px;
+    width: 632px;
+    top: 40px;
+    left: 44px;
+    background: url("i/osd_line.png");
+}
+
+.pos_button{
+    position: absolute;
+    width: 30px;
+    height: 10px;
+    background: url("i/osd_line_pos.png");
+    margin: 6px 0 0 6px;
+    left: 0;
+}
+
+.pos_time{
+    position: absolute;
+    top: 68px;
+    right: 48px;
+    font-size: 20px;
+    color: #fff;
+    text-shadow: #000 0 1px 0;
+}
+
+.pos_series{
+    position: absolute;
+    top: 68px;
+    left: 46px;
+    font-size: 20px;
+    color: #fff;
+    text-shadow: #000 0 1px 0;
 }
 
 .osd_info_epg{
+    position: absolute;
+    top: 42px;
+    left: 46px;
     font-size: 20px;
     color: #fff;
-    margin: 5px 0 0 65px;
+    text-shadow: #000 0 1px 0;
 }
+
+/* END OSD */
 
 .pause{
     position: absolute;
@@ -345,5 +394,36 @@
     height: 41px;
     width: 47px;
 }
+/* VOLUME */
+.volume{
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    height: 41px;
+    list-style: none;
+    width: 455px;
+}
+
+.volume_icon{
+    background: url("i/vol_1.png") right;
+    width: 45px;
+    height: 41px;
+    float: left;
+}
+
+.mute_icon{
+    background: url("i/vol_1.png") left;
+    width: 47px;
+    height: 41px;
+    float: left;
+}
+
+.volume_bar{
+    background: url("i/vol_2.png") right;
+    width: 286px;
+    height: 41px;
+    float: left;
+}
+/* END VOLUME */
 
 /* END PLAYER */
