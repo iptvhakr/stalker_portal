@@ -22,13 +22,24 @@ function player(){
     
     this.is_tv = false;
     
+    this.cur_media_length = 0;
+    this.cur_pos_time = 0;
+    this.new_pos_time = 0;
+    this.pos_step = 0;
+    this.prev_move_pos_dir = 0;
+    this.next_step = 0;
+    this.diff_pos = 0;
+    
+    this.last_state = 0;
+    
     this.prev_layer = {};
     
-    this.info = {"on" : false, "hide_timer" : 2000};
+    this.info = {"on" : false, "hide_timer" : 4000};
     
     this.init();
     this.init_pause();
     this.init_show_info();
+    this.volume.init();
 }
 
 player.prototype.init = function(){
@@ -58,6 +69,8 @@ player.prototype.event_callback = function(event){
     
     var event = parseInt(event);
     
+    this.last_state = event;
+    
     switch(event){
         case 1: // End of stream
         {
@@ -73,42 +86,214 @@ player.prototype.event_callback = function(event){
         case 4: // Playback started
         {
             
+            this.cur_media_length = stb.GetMediaLen();
+            _debug('player.cur_media_length', this.cur_media_length);
+            this.cur_pos_time = stb.GetPosTime();
+            _debug('player.cur_pos_time', this.cur_pos_time);
+            
+            if (this.info.on){
+                this.set_pos_button_to_cur_time();
+            }
+            
             break;
         }
     }
 }
 
-player.prototype.volume_bar = new function(){
-    this.volume = 100;
-    this.volume_bar_dom_obj = $('volume_bar');
+player.prototype.volume = new function(){
+    this.on = false;
+    this.level = 100;
+    this.step  = 5;
+    this.dom_obj = {};
+    this.mute = {"on" : false};
+    this.hide_to = 3000;
     
-    this.set_volume = function(v){
-        this.volume = v;
-        stb.SetVolume(this.volume);
+    this.init = function(){
+        _debug('volume.init');
+        
+        this.dom_obj = document.createElement('ul');
+        this.dom_obj.setClass('volume');
+        
+        this.icon = document.createElement('li');
+        this.icon.setClass('volume_icon');
+        this.dom_obj.appendChild(this.icon);
+        
+        this.bar = document.createElement('li');
+        this.bar.setClass('volume_bar');
+        this.dom_obj.appendChild(this.bar);
+        
+        document.body.appendChild(this.dom_obj);
+        this.dom_obj.hide();
+    }
+    
+    this.set_level = function(v){
+        _debug('volume.set_level', v);
+
+        this.level = v;
+        
+        try{
+            stb.SetVolume(this.level);
+        }catch(e){
+            _debug(e);
+        }
+        
+        if (this.level == 0){
+            if (!this.mute.on){
+                this.show_mute();
+            }
+        }else{
+            if (this.mute.on){
+                this.hide_mute();
+            }
+        }
+        
+        this.update_bar();
     }
     
     this.show = function(){
-        this.volume_bar_dom_obj.show();
+        _debug('volume.show');
+        
+        this.dom_obj.show();
+        this.on = true;
+        
+        this.t_hide();
+    }
+    
+    this.t_hide = function(){
+        _debug('volume.t_hide');
+        
+        window.clearTimeout(this.hide_timer);
+        
+        var self = this;
+        
+        this.hide_timer = window.setTimeout(function(){
+            
+            self.hide();
+            
+        }, this.hide_to);
     }
     
     this.hide = function(){
-        this.volume_bar_dom_obj.hide();
+        _debug('volume.hide');
+        
+        this.dom_obj.hide();
+        this.on = false;
+        this.save();
+    }
+    
+    this.control = function(dir){
+        _debug('volume.control', dir);
+        
+        if (!this.on){
+            this.show();
+        }else{
+            this.t_hide();
+        }
+        
+        try{
+            if (dir>0){
+                if (this.level < 100){
+                    this.level += this.step;
+                }
+            }else{
+                if (this.level > 0){
+                    this.level -= this.step;
+                }
+            }
+            
+            if (this.level > 100){
+                this.level = 100;
+            }else if (this.level < 0){
+                this.level = 0;
+            }
+            
+            this.set_level(this.level);
+        }catch(e){
+            _debug(e);
+        }
+    }
+    
+    this.show_mute = function(){
+        _debug('volume.show_mute');
+        
+        try{
+            stb.SetVolume(0);
+        }catch(e){
+            _debug(e);
+        }
+        
+        this.icon.setClass('mute_icon');
+        
+        if (!this.on){
+            this.show();
+        }
+        
+        window.clearTimeout(this.hide_timer);
+        
+        this.bar.style.width = 0;
+        this.mute.on = true;
+    }
+    
+    this.hide_mute = function(){
+        _debug('volume.hide_mute');
+        
+        try{
+            stb.SetVolume(this.level);
+        }catch(e){
+            _debug(e);
+        }
+        
+        this.icon.setClass('volume_icon');
+        this.update_bar();
+        this.mute.on = false;
+        
+        if (!this.on){
+            this.show();
+        }else{
+            this.t_hide();
+        }
+    }
+    
+    this.mute_switch = function(){
+        _debug('volume.mute_switch');
+        
+        if (this.mute.on){
+            this.hide_mute();
+        }else{
+            this.show_mute();
+        }
+    }
+    
+    this.update_bar = function(){
+        _debug('volume.update_bar');
+        
+        var width = 14*this.level/this.step;
+        
+        if (width > 0){
+            width += 6;
+        }
+        
+        _debug('bar width', width);
+        
+        this.bar.style.width = width + 'px';
     }
     
     this.save = function(){
+        _debug('volume.save');
+        
         stb.load(
 
             {
                 'type'   : 'stb',
                 'action' : 'set_volume',
-                'vol'    : this.volume
+                'vol'    : this.level
             },
             
             function(result){
-
+                
             }
 
-        );
+        )
     }
 }
 
@@ -285,13 +470,56 @@ player.prototype.init_show_info = function(){
     
     this.info.epg   = create_block_element("osd_info_epg", this.info['dom_obj']);
     
+    this.info.video_container = create_block_element("", this.info['dom_obj']);
+    
+    var pos_bar = create_block_element("pos_bar", this.info.video_container);
+    
+    this.info.pos_button = create_block_element("pos_button", pos_bar);
+    
+    this.info.pos_time = create_block_element("pos_time", this.info.video_container);
+    
+    this.info.pos_series = create_block_element("pos_series", this.info.video_container);
+    
+    this.info.epg.hide();
+    this.info.video_container.hide();
+    
     this.info.dom_obj.hide();
 }
 
 player.prototype.show_info = function(item){
     _debug('show_info');
     
+    var item = item || this.cur_media_item;
+    
     try{
+        
+        if(this.media_type == 'stream'){
+            if (this.info.epg.isHidden()){
+                this.info.epg.show();
+            }
+            
+            if (!this.info.video_container.isHidden()){
+                this.info.video_container.hide();
+            }
+        }else{
+            
+            _debug('this.info.epg.isHidden()', this.info.epg.isHidden());
+            
+            if (!this.info.epg.isHidden()){
+                this.info.epg.hide();
+            }
+            
+            _debug('this.info.video_container.isHidden()', this.info.video_container.isHidden());
+            
+            if (this.last_state == 4){
+                this.set_pos_button_to_cur_time();
+            }
+            
+            if (this.info.video_container.isHidden()){
+                this.info.video_container.show();
+            }
+        }
+        
         if(this.info.on){
             window.clearTimeout(this.info.hide_timeout);
         }else{
@@ -419,7 +647,11 @@ player.prototype.show_prev_layer = function(){
     _debug('player.show_prev_layer');
     
     try{
-        this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
+        if(this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true)){
+            
+        }else{
+            //main_menu.show();
+        }
         
         this.stop();
     }catch(e){
@@ -439,7 +671,42 @@ player.prototype.bind = function(){
     
     this.pause_switch.bind(key.PAUSE, this);
     
-    this.show_prev_layer.bind(key.EXIT, self).bind(key.STOP, self);
+    (function(){
+        if (this.info.on){
+            this.set_pos_and_play(true);
+        }else{
+            this.show_prev_layer();
+        }
+    }).bind(key.EXIT, this);
+    
+    this.show_prev_layer.bind(key.STOP, self);
+    
+    this.show_info.bind(key.INFO, self);
+    
+    this.move_pos.bind(key.FFWD, this, 1).bind(key.RIGHT, this, 1);
+    this.move_pos.bind(key.REW, this, -1).bind(key.LEFT, this, -1);
+    
+    this.set_pos_and_play.bind(key.OK, this);
+    
+    (function(){
+        if (this.on){
+            this.volume.control(1);
+        }
+    }).bind(key.VOL_UP, this);
+    
+    (function(){
+        if (this.on){
+            this.volume.control(-1);
+        }
+    }).bind(key.VOL_DOWN, this);
+    
+    
+    (function(){
+        if (this.on){
+            this.volume.mute_switch();
+        }
+    }).bind(key.MUTE, this);
+    
 }
 
 player.prototype.save_fav_ids = function(){
@@ -484,9 +751,173 @@ player.prototype.get_file_type = function(item){
     _debug('file_type', type);
     
     return type;
-    
-    
 }
+
+player.prototype.set_pos_button_to_cur_time = function(){
+    _debug('player.set_pos_button_to_cur_time');
+    
+    try{
+        this.cur_pos_time = stb.GetPosTime();
+        
+        _debug('this.cur_pos_time', this.cur_pos_time);
+    
+        this.set_pos_button(this.cur_pos_time);
+    }catch(e){
+        _debug(e);
+    }
+}
+
+player.prototype.set_pos_button = function(to_time){
+    _debug('player.set_pos_button', to_time);
+    
+    this.new_pos_time = to_time;
+    
+    try{
+        
+        if (to_time > this.cur_media_length){
+            to_time = this.cur_media_length;
+        }else if (to_time < 0){
+            to_time = 0;
+        }
+        
+        this.update_current_time(to_time);
+        
+        var to_pos = Math.round(590*to_time/this.cur_media_length);
+        _debug('to_pos', to_pos);
+        
+        this.info.pos_button.moveX(to_pos);
+    }catch(e){
+        _debug(e);
+    }
+}
+
+player.prototype.set_pos_and_play = function(reset){
+    _debug('set_pos_and_play');
+    
+    if(!this.info.on){
+        return;
+    }
+    
+    window.clearTimeout(this.info.hide_timeout);
+    
+    try{
+        if (!reset){
+            stb.SetPosTime(this.new_pos_time);
+        }
+    }catch(e){
+        _debug(e);
+    }finally{
+        this.disable_pause();
+        this.info.dom_obj.hide();
+        this.info.on = false;
+        
+        this.pos_step = 10;
+        this.diff_pos = 0;
+    }
+}
+
+player.prototype.move_pos = function(dir){
+    _debug('player.move_pos', dir);
+    
+    _debug('this.info.on', this.info.on);
+    _debug('this.is_tv', this.is_tv);
+    
+    if (this.is_tv){
+        return;
+    }
+    
+    if (!this.info.on){
+        //this.set_pos_button_to_cur_time();
+        //this.info.dom_obj.show();
+        this.show_info();
+    }
+    
+    window.clearTimeout(this.info.hide_timeout);
+    
+    var self = this;
+    
+    this.info.hide_timeout = window.setTimeout(function(){
+        self.set_pos_and_play();
+    }, 4000);
+    
+    if (!this.pause.on){
+        try{
+            stb.Pause();
+        }catch(e){
+            _debug(e);
+        };
+        this.pause.on = true;
+    }
+    
+    if (this.prev_move_pos_dir != dir){
+        this.pos_step = 10;
+    }
+    
+    this.prev_move_pos_dir = dir;
+    
+    if (dir>0){
+        this.pos_step = 2*this.pos_step;
+        this.next_step = this.pos_step;
+    }else{
+        this.pos_step = 2*this.pos_step;
+        this.next_step = -this.pos_step;
+    }
+    
+    _debug('this.next_step', this.next_step);
+    
+    if ((this.diff_pos+this.next_step+this.cur_pos_time) > this.cur_media_length){
+        this.diff_pos = this.cur_media_length - this.cur_pos_time;
+    }else if ((this.diff_pos+this.next_step+this.cur_pos_time) < 0){
+        this.diff_pos = -this.cur_pos_time;
+    }
+    
+    this.diff_pos += this.next_step;
+    
+    _debug('this.diff_pos', this.diff_pos);
+    
+    var new_pos_time = this.cur_pos_time + this.diff_pos;
+    
+    _debug('new_pos_time', new_pos_time);
+    
+    if (new_pos_time > this.cur_media_length){
+        new_pos_time = this.cur_media_length;
+    }else if (new_pos_time < 0){
+        new_pos_time = 0;
+    }
+    
+    try{
+        this.set_pos_button(new_pos_time);
+    }catch(e){
+        _debug(e);
+    }
+}
+
+player.prototype.update_current_time = function(cur_time){
+    _debug('player.update_current_time', cur_time);
+    
+    this.info.pos_time.innerHTML = this.sec_to_human_time(cur_time) + '/' + this.sec_to_human_time(this.cur_media_length);
+}
+
+player.prototype.sec_to_human_time = function(seconds){
+    var hh = Math.floor(seconds/3600);
+    var mm = Math.floor((seconds - 3600*hh)/60);
+    var ss = seconds - hh*3600 - mm*60;
+    
+    if (hh<10){
+        hh = '0'+hh;
+    }
+    
+    if(mm<10){
+        mm = '0'+mm;
+    }
+    
+    if(ss<10){
+        ss = '0'+ss;
+    }
+    
+    return hh+':'+mm+':'+ss;
+}
+
 /*
  * END Player
  */
