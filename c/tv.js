@@ -94,6 +94,7 @@
             stb.player.prev_layer = this;
             
             if (!stb.player.on){
+                stb.player.need_show_info = 1;
                 stb.player.play(this.data_items[this.cur_row]);
             }
         };
