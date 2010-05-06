@@ -29,6 +29,9 @@ _debug('1!!!!!!!!!!!!!!');
         this.row_callback_timer;
         this.row_callback_timeout = 1000;
         
+        this.password_input = new password_input({"parent" : this});
+        this.password_input.bind();
+        
         this.load_genres = function(alias){
             
             alias = alias || '';
@@ -284,12 +287,30 @@ _debug('1!!!!!!!!!!!!!!');
         this.bind = function(){
             this.superclass.bind.apply(this);
             
-            this.play.bind(key.OK, this);
+            this.check_for_play.bind(key.OK, this);
             
             (function(){
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this);
+        };
+        
+        this.check_for_play = function(){
+            _debug('vclub.check_for_play');
+            
+            _debug('lock', this.data_items[this.cur_row].lock);
+            
+            if (this.data_items[this.cur_row].lock){
+                var self = this;
+                
+                this.password_input.callback = function(){
+                    self.play();
+                }
+                
+                this.password_input.show();
+            }else{
+                this.play();
+            }
         };
         
         this.play = function(){
