@@ -1,5 +1,6 @@
 /**
  * Alert.
+ * @constructor
  */
 
 function _alert(){
