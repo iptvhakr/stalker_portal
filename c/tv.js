@@ -32,6 +32,9 @@
         
         this.fav_manage_mode = false;
         
+        this.password_input = new password_input({"parent" : this});
+        this.password_input.bind();
+        
         this._show = function(genre){
             
             _debug('tv._show');
@@ -78,12 +81,30 @@
         this.bind = function(){
             this.superclass.bind.apply(this);
             
-            this.play.bind(key.OK, this);
+            this.check_for_play.bind(key.OK, this);
             
             (function(){
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this);
+        };
+        
+        this.check_for_play = function(){
+            _debug('tv.check_for_play');
+            
+            _debug('lock', this.data_items[this.cur_row].lock);
+            
+            if (this.data_items[this.cur_row].lock){
+                var self = this;
+                
+                this.password_input.callback = function(){
+                    self.play();
+                }
+                
+                this.password_input.show();
+            }else{
+                this.play();
+            }
         };
         
         this.play = function(){
