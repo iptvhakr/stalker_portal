@@ -18,10 +18,10 @@ function common_xpcom(){
     this.channels_inited = 0;
     this.aspect_idx = 0;
     this.aspect_array = [
-        {alias: 'fit', mode: 0x10},
-        {alias: 'big', mode: 0x40},
-        {alias: 'opt', mode: 0x50},
-        {alias: 'exp', mode: 0x00}
+        {"alias": "fit", "mode": 0x10},
+        {"alias": "big", "mode": 0x40},
+        {"alias": "opt", "mode": 0x50},
+        {"alias": "exp", "mode": 0x00}
     ];
     this.player;
     this.video_mode = 1080;
@@ -38,6 +38,7 @@ function common_xpcom(){
         this.get_stb_params();
         this.get_server_params();
         this.get_user_profile();
+        this.epg_loader.start();
         
         this.notice = new _alert();
     }
@@ -390,6 +391,89 @@ function common_xpcom(){
             
             this.key_lock = false;
             this.channels_inited = 1;
+        }
+    }
+    
+    this.epg_loader = {
+    
+        timeout  : 21600000, // 6h
+        timer_id : 0,
+        epg : [],
+        
+        start : function(){
+            _debug('epg_loader.start');
+            
+            this.load();
+            this.timer_id = window.setInterval(this.load, this.timeout);
+        },
+        
+        stop : function(){
+            _debug('epg_loader.stop');
+            
+            window.clearInterval(this.timer_id);
+        },
+        
+        load : function(){
+            _debug('epg_loader.load');
+            
+            stb.load(
+                {
+                    "type"   : "itv",
+                    "action" : "get_epg_info",
+                },
+                
+                function(result){
+                    this.set_epg(result);
+                },
+                
+                this
+            )
+        },
+        
+        set_epg : function(data){
+            _debug('epg_loader.set_epg', data);
+            this.epg = data;
+            
+            //_debug('set_epg', this.epg);
+        },
+        
+        get_epg : function(ch_id){
+            _debug('epg_loader.get_epg', ch_id);
+            
+            var now = Date.parse(new Date())/1000;
+            var result = '';
+            
+            _debug('now', now);
+            
+            try{
+                if (typeof(this.epg[ch_id]) == 'object' && this.epg[ch_id].length > 0){
+                    _debug('this.epg[ch_id].length: '+this.epg[ch_id].length);
+                    for (var i=0; i < this.epg[ch_id].length; i++){
+                        _debug('i', i);
+                        if (this.epg[ch_id][i]['start_timestamp'] < now){
+                            _debug('continue');
+                            continue;
+                        }else if (this.epg[ch_id][i]['start_timestamp'] == now){
+                            result = this.epg[ch_id][i].time + ' ' + this.epg[ch_id][i].name;
+                            if (typeof(this.epg[ch_id][i+1]) == 'object'){
+                                result += '<br>'+this.epg[ch_id][i+1].t_time + ' ' + this.epg[ch_id][i+1].name;
+                            }
+                            return result;
+                        }else{
+                            if (typeof(this.epg[ch_id][i-1]) == 'object'){
+                                result = this.epg[ch_id][i-1].t_time + ' ' + this.epg[ch_id][i-1].name;
+                                if (typeof(this.epg[ch_id][i]) == 'object'){
+                                    result += '<br>'+this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
+                                }
+                                return result;
+                            }
+                        }
+                    }
+                }
+            }catch(e){
+                _debug(e);
+            }
+            return '';
         }
     }
 }
