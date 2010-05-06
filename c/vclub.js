@@ -316,10 +316,27 @@ _debug('1!!!!!!!!!!!!!!');
         this.play = function(){
             _debug('vclub.play');
             
-            this.hide(true);
+            var self = this;
             
-            stb.player.prev_layer = this;
-            stb.player.need_show_info = 1;
+            stb.player.on_create_link = function(result){
+                _debug('vclub.on_create_link', result);
+                
+                if (result.error == 'limit'){
+                    stb.notice.show('Количество подключений ограничено.<br>Попробуйте позже');
+                }else if(result.error == 'nothing_to_play'){
+                    stb.notice.show('Файл отсутствует');
+                }else if(result.error == 'link_fault'){
+                    stb.notice.show('Ошибка сервера');
+                }else{
+                    
+                    self.hide(true);
+                    
+                    stb.player.prev_layer = self;
+                    stb.player.need_show_info = 1;
+                    stb.player.play_now(result.cmd);
+                }
+            }
+            
             stb.player.play(this.data_items[this.cur_row]);
         };
     }
