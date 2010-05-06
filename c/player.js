@@ -38,6 +38,8 @@ function player(){
     
     this.quick_ch_switch = {"on" : false, "hide_to" : 3000};
     
+    this.on_create_link = function(){};
+    
     this.init();
     this.init_pause();
     this.init_show_info();
@@ -396,7 +398,8 @@ player.prototype.create_link = function(type, uri, series_number){
         function(result){
             _debug('create_link callback: ', result);
             
-            this.play_now(result.cmd);
+            //this.play_now(result.cmd);
+            this.on_create_link && this.on_create_link(result);
         },
         
         this
@@ -423,6 +426,8 @@ player.prototype.stop = function(){
     this.prev_layer = {};
     
     this.need_show_info = 0;
+    
+    this.on_create_link = function(){};
     
     this.on = false;
     
