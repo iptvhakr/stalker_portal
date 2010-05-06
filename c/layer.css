@@ -426,4 +426,26 @@
 }
 /* END VOLUME */
 
+/* QUICK CHANNEL SWITCH */
+.quick_ch_switch{
+    position:absolute;
+    width: 239px;
+    height: 196px;
+    left: 240px;
+    top: 190px;
+    background: url("i/input_channel_bg.png");
+}
+
+.quick_ch_input{
+    position:absolute;
+    top: 72px;
+    left: 75px;
+    font: 45px trebuchet ms, Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: #048;
+    width: 89px;
+    height: 40px;
+}
+/* END QUICK CHANNEL SWITCH */
+
 /* END PLAYER */
