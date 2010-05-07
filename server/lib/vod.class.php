@@ -431,6 +431,8 @@ class Vod extends AjaxResponse
                 $this->response['data'][$i]['fav'] = 0;
             }
             
+            $this->response['data'][$i]['series'] = unserialize($this->response['data'][$i]['series']);
+            
             $this->response['data'][$i]['screenshot_uri'] = $this->getImgUri($this->response['data'][$i]['screenshot_id']);
             
             $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
