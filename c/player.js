@@ -375,7 +375,7 @@ player.prototype.play = function(item){
         this.play_now(cmd);
     }else{
         
-        var series_number = item.series_number || "";
+        var series_number = item.cur_series || 0;
         
         this.create_link('vod', cmd, series_number);
     }
@@ -506,7 +506,7 @@ player.prototype.show_info = function(item){
     
     try{
         
-        if(this.media_type == 'stream'){
+        if(this.is_tv){
             if (this.info.epg.isHidden()){
                 this.info.epg.show();
             }
@@ -514,6 +514,10 @@ player.prototype.show_info = function(item){
             if (!this.info.video_container.isHidden()){
                 this.info.video_container.hide();
             }
+            
+            _debug('stb.epg_loader.get_epg(item.id)', stb.epg_loader.get_epg(item.id));
+            
+            this.info.epg.innerHTML = stb.epg_loader.get_epg(item.id);
         }else{
             
             _debug('this.info.epg.isHidden()', this.info.epg.isHidden());
@@ -552,6 +556,12 @@ player.prototype.show_info = function(item){
         
         if (this.is_tv){
             this.info.epg.innerHTML = stb.epg_loader.get_epg(item.id);
+        }
+        
+        if (item.cur_series){
+            this.info.pos_series.innerHTML = item.cur_series + ' серия';
+        }else{
+            this.info.pos_series.innerHTML = '';
         }
         
         var self = this;
