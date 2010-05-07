@@ -404,7 +404,8 @@ function common_xpcom(){
             _debug('epg_loader.start');
             
             this.load();
-            this.timer_id = window.setInterval(this.load, this.timeout);
+            var self = this;
+            this.timer_id = window.setInterval(function(){self.load()}, this.timeout);
         },
         
         stop : function(){
@@ -423,7 +424,7 @@ function common_xpcom(){
                 },
                 
                 function(result){
-                    this.set_epg(result);
+                    this.set_epg(result.data);
                 },
                 
                 this
@@ -433,12 +434,15 @@ function common_xpcom(){
         set_epg : function(data){
             _debug('epg_loader.set_epg', data);
             this.epg = data;
-            
-            //_debug('set_epg', this.epg);
+            _debug('typeof(this.epg)', typeof(this.epg));
         },
         
         get_epg : function(ch_id){
             _debug('epg_loader.get_epg', ch_id);
+            
+            var ch_id = ''+ch_id;
+            
+            _debug('typeof(ch_id)', typeof(ch_id));
             
             var now = Date.parse(new Date())/1000;
             var result = '';
