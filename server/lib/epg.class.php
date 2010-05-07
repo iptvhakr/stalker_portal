@@ -285,5 +285,64 @@ class Epg
         
         return $this->getCurProgramAndFewNext($ch_id, 5);
     }
+    
+    public function getEpgInfo(){
+        
+        $itv = Itv::getInstance();
+        
+        $data = array();
+        
+        $now_datetime = date("Y-m-d H:i:s");
+        $day_begin_datetime = date("Y-m-d 00:00:00");
+        
+        //$all_ch_str = join(',', $itv->getAllUserChannelsIds());
+        
+        /*$sql = 'select *,MAX(UNIX_TIMESTAMP(time)) as start_timestamp, MAX(time) as time from epg where ch_id in ('.$all_ch_str.') and time>="'.$day_begin_datetime.'" and time<="'.$now_datetime.'" group by ch_id';
+        
+        $rs  = $db->executeQuery($sql);
+        $cur_program_arr = $rs->getAllValues();*/
+        
+        $db = clone $this->db;
+        
+        $cur_program_arr = $db
+                              ->from('epg')
+                              ->select('*, MAX(UNIX_TIMESTAMP(time)) as start_timestamp, MAX(time) as time')
+                              ->in('ch_id', $itv->getAllUserChannelsIds())
+                              ->where(array(
+                                  'time>=' => $day_begin_datetime,
+                                  'time<=' => $now_datetime
+                              ))
+                              ->groupby('ch_id')
+                              ->get()
+                              ->all();
+        
+        $result = array();
+        
+        foreach ($cur_program_arr as $cur_program){
+            
+            $period_end = date("Y-m-d H:i:s", ($cur_program['start_timestamp'] + 9*3600));
+            
+            /*$sql = 'select *,UNIX_TIMESTAMP(time) as start_timestamp, TIME_FORMAT(time,"%H:%i") as t_time from epg where ch_id='.$cur_program['ch_id'].' and time>="'.$cur_program['time'].'" and time<="'.$period_end.'" order by time';
+            $rs  = $db->executeQuery($sql);*/
+            
+            
+            
+            $result[$cur_program['ch_id']] = $db
+                                                ->from('epg')
+                                                ->select('*, UNIX_TIMESTAMP(time) as start_timestamp, TIME_FORMAT(time,"%H:%i") as t_time')
+                                                ->where(array(
+                                                    'ch_id'  => $cur_program['ch_id'],
+                                                    'time>=' => $cur_program['time'],
+                                                    'time<=' => $period_end
+                                                ))
+                                                ->orderby('time')
+                                                ->get()
+                                                ->all();
+            //$data['data'][$cur_program['ch_id']] = $rs->getAllValues();
+        }
+        
+        return $result;
+        //return $data;
+    }
 }
 ?>
