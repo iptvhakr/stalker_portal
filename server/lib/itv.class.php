@@ -306,5 +306,62 @@ class Itv extends AjaxResponse
         
         return $genre['title'];
     }
+    
+    public function getEpgInfo(){
+        $epg = new Epg();
+        
+        $response = array('data' => $epg->getEpgInfo());
+        return $response;
+    }
+    
+    public function getAllUserChannelsIds(){
+        
+        return array_unique(array_merge($this->getSubscriptionChannelsIds(), $this->getBonusChannelsIds(), $this->getBaseChannelsIds()));
+    }
+
+    public function getSubscriptionChannelsIds(){
+        
+        $db = clone $this->db;
+        
+        $sub_ch = $db->from('itv_subscription')->where(array('uid' => $this->stb->id))->get()->first('sub_ch');
+        
+        if (empty($sub_ch)){
+            return array();
+        }
+        
+        $sub_ch_arr = unserialize(base64_decode($sub_ch));
+        
+        if (!is_array($sub_ch_arr)){
+            return array();
+        }
+        
+        return $sub_ch_arr;
+    }
+    
+    public function getBonusChannelsIds(){
+        
+        $db = clone $this->db;
+        
+        $bonus_ch = $db->from('itv_subscription')->where(array('uid' => $this->stb->id))->get()->first('bonus_ch');
+        
+        if (empty($bonus_ch)){
+            return array();
+        }
+        
+        $bonus_ch_arr = unserialize(base64_decode($bonus_ch));
+        
+        if (!is_array($bonus_ch_arr)){
+            return array();
+        }
+        
+        return $bonus_ch_arr;
+    }
+
+    public function getBaseChannelsIds(){
+        
+        $db = clone $this->db;
+        
+        return $db->from('itv')->where(array('base_ch' => 1))->get()->all('id');
+    }
 }
 ?>
