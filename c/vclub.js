@@ -32,6 +32,9 @@ _debug('1!!!!!!!!!!!!!!');
         this.password_input = new password_input({"parent" : this});
         this.password_input.bind();
         
+        this.series_switch = new series_switch({"parent" : this});
+        this.series_switch.bind();
+        
         this.load_genres = function(alias){
             
             alias = alias || '';
@@ -287,7 +290,7 @@ _debug('1!!!!!!!!!!!!!!');
         this.bind = function(){
             this.superclass.bind.apply(this);
             
-            this.check_for_play.bind(key.OK, this);
+            this.check_for_pass.bind(key.OK, this);
             
             (function(){
                 this.hide();
@@ -295,7 +298,7 @@ _debug('1!!!!!!!!!!!!!!');
             }).bind(key.EXIT, this).bind(key.LEFT, this);
         };
         
-        this.check_for_play = function(){
+        this.check_for_pass = function(){
             _debug('vclub.check_for_play');
             
             _debug('lock', this.data_items[this.cur_row].lock);
@@ -304,10 +307,29 @@ _debug('1!!!!!!!!!!!!!!');
                 var self = this;
                 
                 this.password_input.callback = function(){
-                    self.play();
+                    self.check_for_series();
                 }
                 
                 this.password_input.show();
+            }else{
+                this.check_for_series();
+            }
+        };
+        
+        this.check_for_series = function(){
+            _debug('vclub.check_for_series');
+            
+            if (this.data_items[this.cur_row].series.length > 0){
+                
+                var self = this;
+                
+                this.series_switch.callback = function(series){
+                    _debug('series', series);
+                    self.data_items[self.cur_row].cur_series = series;
+                    self.play();
+                }
+                
+                this.series_switch.show(this.data_items[this.cur_row].series, this.data_items[this.cur_row].cur_series);
             }else{
                 this.play();
             }
