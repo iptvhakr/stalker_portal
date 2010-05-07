@@ -174,6 +174,15 @@ class Stb
         return true;
     }
     
+    public function setAspect(){
+        $aspect = intval($_REQUEST['aspect']);
+        
+        $this->db->update('users', array('aspect' => $aspect), array('mac' => $this->mac));
+        $this->params['aspect'] = $aspect;
+        
+        return true;
+    }
+    
     public function setFavItvStatus(){
         
         $fav_itv_on = intval($_REQUEST['fav_itv_on']);
