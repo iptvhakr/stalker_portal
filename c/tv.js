@@ -14,8 +14,8 @@
         };
         
         this.preview_pos_map = [
-            {"mode" : 576, "xsize" : 320, "ysize" : 256, "x" : 350, "y" : 74},
-            {"mode" : 720, "xsize" : 569, "ysize" : 320, "x" : 622, "y" : 93},
+            {"mode" : 576,  "xsize" : 320, "ysize" : 256, "x" : 350, "y" : 74},
+            {"mode" : 720,  "xsize" : 569, "ysize" : 320, "x" : 622, "y" : 93},
             {"mode" : 1080, "xsize" : 854, "ysize" : 480, "x" : 933, "y" : 139}
         ];
         
@@ -26,6 +26,7 @@
         this.sort_menu = {};
         
         this.view_menu = {};
+        this.genres    = [];
         
         this.row_callback_timer;
         this.row_callback_timeout = 100;
@@ -37,7 +38,9 @@
         
         this._show = function(genre){
             
-            _debug('tv._show');
+            _debug('tv._show', genre);
+            
+            var genre = genre || this.genres[0];
             
             this.load_params['genre'] = genre.id;
             
@@ -466,6 +469,8 @@
             _debug('callback genres');
             
             var genres = result;
+            
+            module.tv.genres = genres;
             
             var map = [];
     
