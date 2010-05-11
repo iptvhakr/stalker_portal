@@ -674,10 +674,13 @@ player.prototype.show_prev_layer = function(){
     _debug('player.show_prev_layer');
     
     try{
-        if(this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true)){
-            
+        if(this.prev_layer && this.prev_layer.show){
+            this.prev_layer.show.call(this.prev_layer, true);
         }else{
-            //main_menu.show();
+            if (this.is_tv){
+                //module.tv.cur_page = 0;
+                module.tv._show();
+            }
         }
         
         this.stop();
