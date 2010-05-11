@@ -12,6 +12,7 @@ class AjaxResponse
     protected $db;
     protected $stb;
     protected $page = 0;
+    protected $load_last_page = false;
     protected $response = array(
                     'total_items'    => 0,
                     'max_page_items' => MAX_PAGE_ITEMS,
@@ -55,6 +56,10 @@ class AjaxResponse
         $this->stb = Stb::getInstance();
         
         $this->page = @intval($_REQUEST['p']);
+        
+        if ($this->page == 0){
+            $this->load_last_page = true;
+        }
         
         if ($this->page > 0){
             $this->page--;
