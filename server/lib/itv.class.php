@@ -205,6 +205,8 @@ class Itv extends AjaxResponse
     
     private function getData(){
         
+        
+        
         $offset = $this->page * MAX_PAGE_ITEMS;
         
         $where = array();
