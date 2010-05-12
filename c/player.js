@@ -116,18 +116,15 @@ player.prototype.volume = new function(){
     this.init = function(){
         _debug('volume.init');
         
-        this.dom_obj = document.createElement('ul');
-        this.dom_obj.setClass('volume');
+        this.dom_obj = create_block_element('volume');
         
-        this.icon = document.createElement('li');
-        this.icon.setClass('volume_icon');
-        this.dom_obj.appendChild(this.icon);
+        this.container = create_block_element('volume_bar', this.dom_obj);
+
+        this.bar = create_block_element('volume_progress', this.container);
         
-        this.bar = document.createElement('li');
-        this.bar.setClass('volume_bar');
-        this.dom_obj.appendChild(this.bar);
+        this.mute.dom_obj = create_block_element('volume_off', this.dom_obj);
+        this.mute.dom_obj.hide();
         
-        document.body.appendChild(this.dom_obj);
         this.dom_obj.hide();
     }
     
@@ -227,7 +224,7 @@ player.prototype.volume = new function(){
             _debug(e);
         }
         
-        this.icon.setClass('mute_icon');
+        this.mute.dom_obj.show();
         
         if (!this.on){
             this.show();
@@ -235,7 +232,7 @@ player.prototype.volume = new function(){
         
         window.clearTimeout(this.hide_timer);
         
-        this.bar.style.width = 0;
+        this.container.hide();
         this.mute.on = true;
     }
     
@@ -248,7 +245,9 @@ player.prototype.volume = new function(){
             _debug(e);
         }
         
-        this.icon.setClass('volume_icon');
+        this.mute.dom_obj.hide();
+        this.container.show();
+        
         this.update_bar();
         this.mute.on = false;
         
@@ -272,10 +271,13 @@ player.prototype.volume = new function(){
     this.update_bar = function(){
         _debug('volume.update_bar');
         
-        var width = 14*this.level/this.step;
+        //var width = 14*this.level/this.step;
+        var width = 10*((this.level/this.step) - 1);
         
         if (width > 0){
-            width += 6;
+            width += 5;
+        }else{
+            width = 10;
         }
         
         _debug('bar width', width);
