@@ -397,32 +397,33 @@
 /* VOLUME */
 .volume{
     position: absolute;
-    top: 50px;
-    left: 50px;
-    height: 41px;
-    list-style: none;
-    width: 455px;
-}
-
-.volume_icon{
-    background: url("i/vol_1.png") right;
-    width: 45px;
-    height: 41px;
-    float: left;
-}
-
-.mute_icon{
-    background: url("i/vol_1.png") left;
-    width: 47px;
-    height: 41px;
-    float: left;
+    left: 70px;
+	top: 70px;
 }
 
 .volume_bar{
-    background: url("i/vol_2.png") right;
-    width: 286px;
-    height: 41px;
-    float: left;
+	position: absolute;
+	width: 255px;
+	height: 41px;
+	background-image: url("i/volume_bg.png");
+	left: 0;
+	top: 0;
+}
+
+.volume_progress{
+	position: absolute;
+	height: 41px;
+	left: 52px;
+	background: url("i/volume_bar.png") right no-repeat;
+}
+
+.volume_off{
+	position: absolute;
+	width: 47px;
+	height: 41px;
+	left: 0;
+	top: 0;
+	background: url("i/volume_off.png");
 }
 /* END VOLUME */
 
