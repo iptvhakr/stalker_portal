@@ -3,6 +3,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../conf_serv.php";
 include "../getid3/getid3.php";
 include "../lib/func.php";
@@ -21,6 +22,21 @@ echo '</pre>';
 
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
+
+if (@$_POST['save']){
+    
+    $stb_groups = new StbGroup();
+    $member = $stb_groups->getMemberByUid(intval($_GET['id']));
+    
+    if (empty($member)){
+        $stb_groups->addMember(array('mac' => Middleware::normalizeMac($_POST['mac']), 'uid' => Middleware::getUidByMac($_POST['mac']), 'stb_group_id' => $_POST['group_id']));
+    }else{
+        $stb_groups->setMember(array('stb_group_id' => $_POST['group_id']), $member['id']);
+    }
+    
+    header("Location: profile.php?id=".@$_GET['id']);
+    exit;
+}
 
 
 if (@$_GET['video_out']){
@@ -273,12 +289,55 @@ if (is_array($fav_ch_arr)){
         <td>
         </td>
     </tr>
+    
+    <tr>
+        <td class="other" width="150">
+        <form method="POST">
+        <table>
+            <tr>
+                <td>
+                Группа: <select name="group_id">
+                    <option value="0">--------</option>
+                    <?
+ 
+                    $stb_groups = new StbGroup();
+                    $all_groups = $stb_groups->getAll();
+                    
+                    $member = $stb_groups->getMemberByUid(intval($_GET['id']));
+                    
+                    var_dump($member);
+                    
+                    foreach ($all_groups as $group){
+                        $selected = '';
+                        
+                        if (!empty($member) && $member['stb_group_id'] == $group['id']){
+                            $selected = 'selected';
+                        }
+                        
+                        echo '<option value="'.$group['id'].'" '.$selected.'>'.$group['name'].'</option>';
+                    }
+                    ?>
+                </select>
+                <input type="hidden" name="mac" value="<?echo $mac?>"></input>
+                <input type="submit" name="save" value="Сохранить"></input>
+                </td>
+            </tr>
+        </table>
+        </form>
+        </td>
+        <td>
+        </td>
+    </tr>
+    
     <?} ?>
     <tr>
         <td class="other" width="150">
         <table>
             <tr>
                 <td><a href="userlog.php?id=<?echo $id?>">Логи</a></td>
+            </tr>
+            <tr>
+                <td><a href="events.php?mac=<?echo $mac?>">События</a></td>
             </tr>
         </table>
         </td>
