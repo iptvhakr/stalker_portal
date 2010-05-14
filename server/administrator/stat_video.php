@@ -131,6 +131,15 @@ function page_bar(){
     return $page_bar;
 }
 
+function count_storages($id){
+    $db = Database::getInstance(DB_NAME);
+    
+    $sql = "select count(*) as count from storage_cache where status=1 and media_type='vclub' and media_id=".$id;
+    $rs = $db->executeQuery($sql);
+    $count = $rs->getValueByName(0, 'count');
+    return $count;
+}
+
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
@@ -197,6 +206,7 @@ echo "<td class='list'><b>Название</b></td>\n";
 echo "<td class='list'><b>Просмотров</b></td>\n";
 echo "<td class='list'><b>Просмотров всего</b></td>\n";
 echo "<td class='list'><b>Последний просмотр</b></td>\n";
+echo "<td class='list'><b>На скольких хранилищах</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     
@@ -208,6 +218,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['counter']."</td>\n";
     echo "<td class='list'>".$arr['count']."</td>\n";
     echo "<td class='list'>".$arr['last_played']."</td>\n";
+    echo "<td class='list'>".count_storages($arr['id'])."</td>\n";
     echo "</tr>\n";
 }
 echo "</table>\n";
