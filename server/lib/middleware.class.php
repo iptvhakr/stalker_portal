@@ -21,7 +21,7 @@ class Middleware
     }
     
     /**
-     * Return user id by mac
+     * Return users ids by mac
      *
      * @param string $mac
      * @return int|false user id or error
