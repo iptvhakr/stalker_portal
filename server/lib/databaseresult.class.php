@@ -26,6 +26,11 @@ abstract class DatabaseResult
         return $this->insert_id;
     }
     
+    public function result(){
+	    
+	    return $this->result;
+	}
+	
     public function get($name = null){
         
         $row = $this->current();
@@ -57,6 +62,5 @@ abstract class DatabaseResult
 	    $this->current_row = 0;
 	    return $this;
 	}
-	
 }
 ?>
