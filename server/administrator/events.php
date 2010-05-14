@@ -4,6 +4,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
 
@@ -45,7 +46,30 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
         
         $user_list = Middleware::getUidByMac(@$_POST['mac']);
 
-        $user_list == array($user_list);
+        $user_list = array($user_list);
+        
+    }elseif (@$_POST['user_list_type'] == 'by_pattern'){
+        
+        if (@$_POST['pattern'] == 'mag100'){
+            $user_list = Middleware::getUidsByPattern(array('hd' => 0));
+        }else if (@$_POST['pattern'] == 'mag200'){
+            $user_list = Middleware::getUidsByPattern(array('hd' => 1));
+        }else{
+            $user_list = array();
+        }
+        
+        $event->setUserListById($user_list);
+        
+    }elseif (@$_POST['user_list_type'] == 'by_group'){
+        
+        if (intval($_POST['group_id']) > 0){
+            $stb_groups = new StbGroup();
+            $user_list = $stb_groups->getAllMemberUidsByGroupId($_POST['group_id']);
+        }else{
+            $user_list = array();
+        }
+        
+        $event->setUserListById($user_list);
         
     }elseif (@$_POST['user_list_type'] == 'by_user_list'){
         if (@$_FILES['user_list']){
@@ -229,17 +253,35 @@ function check_event(){
 }
 
 function change_form(obj){
-    var mac_row_obj = document.getElementById('mac_row')
-    var user_list_row_obj = document.getElementById('user_list_row')
+    var mac_row_obj = document.getElementById('mac_row');
+    var user_list_row_obj = document.getElementById('user_list_row');
+    var pattern_row = document.getElementById('pattern_row');
+    var group_row   = document.getElementById('group_row');
     if (obj.value == 'to_single'){
-        mac_row_obj.style.display = ''
-        user_list_row_obj.style.display = 'none'
+        mac_row_obj.style.display = '';
+        pattern_row.style.display = 'none';
+        user_list_row_obj.style.display = 'none';
+        group_row.style.display = 'none';
     }else if (obj.value == 'to_all'){
-        mac_row_obj.style.display = 'none'
-        user_list_row_obj.style.display = 'none'
+        group_row.style.display = 'none';
+        mac_row_obj.style.display = 'none';
+        pattern_row.style.display = 'none';
+        user_list_row_obj.style.display = 'none';
     }else if (obj.value == 'by_user_list'){
-        mac_row_obj.style.display = 'none'
-        user_list_row_obj.style.display = ''
+        group_row.style.display = 'none';
+        mac_row_obj.style.display = 'none';
+        pattern_row.style.display = 'none';
+        user_list_row_obj.style.display = '';
+    }else if (obj.value == 'by_pattern'){
+        group_row.style.display = 'none';
+        mac_row_obj.style.display = 'none';
+        user_list_row_obj.style.display = 'none';
+        pattern_row.style.display = '';
+    }else if (obj.value == 'by_group'){
+        mac_row_obj.style.display = 'none';
+        user_list_row_obj.style.display = 'none';
+        pattern_row.style.display = 'none';
+        group_row.style.display = '';
     }
 }
 
@@ -259,6 +301,8 @@ function fill_msg(){
         <input type="radio" name="user_list_type" id="to_single" value="to_single" onchange="change_form(this)" checked="checked"><label for="to_single">Одному</label><br/>
         <input type="radio" name="user_list_type" id="to_all" value="to_all" onchange="change_form(this)"><label for="to_all">Всем</label><br/>
         <input type="radio" name="user_list_type" id="by_user_list" value="by_user_list" onchange="change_form(this)"><label for="by_user_list">По списку</label><br/>
+        <input type="radio" name="user_list_type" id="by_pattern" value="by_pattern" onchange="change_form(this)"><label for="by_pattern">По шаблону</label><br/>
+        <input type="radio" name="user_list_type" id="by_group" value="by_group" onchange="change_form(this)"><label for="by_group">Группе</label><br/>
     </td>
 </tr>
 <tr id="mac_row">
@@ -275,6 +319,37 @@ function fill_msg(){
     </td>
     <td>
         <input name="user_list" type="file">
+    </td>
+</tr>
+<tr id="pattern_row" style="display:none">
+    <td align="right">
+        Шаблон:
+    </td>
+    <td>
+        <select name="pattern">
+            <option value="mag100">MAG100</option>
+            <option value="mag200">MAG200</option>
+        </select>
+    </td>
+</tr>
+<tr id="group_row" style="display:none">
+    <td align="right">
+        Группы:
+    </td>
+    <td>
+        <select name="group_id">
+            <option value="0">--------</option>
+            <?
+            
+            $stb_groups = new StbGroup();
+            $all_groups = $stb_groups->getAll();
+            
+            foreach ($all_groups as $group){
+                echo '<option value="'.$group['id'].'">'.$group['name'].'</option>';
+            }
+            
+            ?>
+        </select>
     </td>
 </tr>
 <tr>
