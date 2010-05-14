@@ -407,7 +407,7 @@ $MAX_PAGE_ITEMS = 30;
 
 $where = '';
 if ($search){
-    $where = 'where name like "%'.$search.'%" or path like "%'.$search.'%"';
+    $where = 'where name like "%'.$search.'%" or o_name like "%'.$search.'%" or path like "%'.$search.'%"';
 }
 if (@$_GET['letter']) {
 	//$where = 'where name like "'.urldecode($letter).'%"';
@@ -608,26 +608,7 @@ while(@$rs->next()){
         echo "</a>";
     }
     echo "</td>\n";
-    
-    /*if (check_access(array(1))){
-        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик качества звука?\")){document.location=\"add_video.php?reset_sound_vote=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."\"}'>";
-    }
-    echo "<span style='color:green;font-weight:bold'>".$arr['vote_sound_good']."</span> / <span style='color:red;font-weight:bold'>".$arr['vote_sound_bad']."</span>";
-    if (check_access(array(1))){
-        echo "</a>";
-    }
-    echo "</td>\n";
-    
-    echo "<td class='list' align='center'>";
-    if (check_access(array(1))){
-        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик качества видео?\")){document.location=\"add_video.php?reset_video_vote=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."\"}'>";
-    }
-    echo "<span style='color:green;font-weight:bold'>".$arr['vote_video_good']."</span> / <span style='color:red;font-weight:bold'>".$arr['vote_video_bad']."</span>";
-    if (check_access(array(1))){
-        echo "</a>";
-    }
-    echo "</td>\n";*/
-    
+
     echo "<td class='list'>";
     if (check_access(array(1, 2))){
         echo "<a href='?edit=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."&#form'>edit</a>&nbsp;&nbsp;\n";
@@ -642,10 +623,12 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['added']."</td>\n";
     echo "</tr>\n";
     ?>
+    
     <tr style="display:none;" id="info_<?echo $arr['id']?>" bgcolor="#f2f2f2">
     <td>
         &nbsp;
     </td>
+    
     <td colspan="10">
     <table cellpadding="0" cellspacing="0">
       <tr>
@@ -669,6 +652,7 @@ while(@$rs->next()){
     </table>
     </td>
     </tr>
+    
     <?
 }
 echo "</table>\n";
