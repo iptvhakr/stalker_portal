@@ -112,7 +112,7 @@ function rename_incoming_dir($old_name, $new_name){
 }
 
 function check_db_user_login($login, $pass){
-    global $db;
+    $db = new Database(DB_NAME);
     
     $query = "select * from administrators where login='$login'";
     $rs=$db->executeQuery($query);
@@ -129,7 +129,7 @@ function check_db_user_login($login, $pass){
 }
 
 function check_session_user_login(){
-    global $db;
+    $db = new Database(DB_NAME);
     
     $login = @$_SESSION['login'];
     $pass  = @$_SESSION['pass'];
