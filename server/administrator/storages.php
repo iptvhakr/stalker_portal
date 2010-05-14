@@ -142,7 +142,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="master_log.php">Логи</a> | <a href="?reset_all_cache=1" onclick="if(confirm('Вы действительно хотите сбросить весь кеш?')){return true}else{return false}">Сбросить кеш</a> | <a href="cache_refresh.php" onclick="if(confirm('Вы действительно хотите обновить весь кеш? Эта операция займет какое-то время.')){return true}else{return false}">Обновить кеш</a>
+        <a href="index.php"><< Назад</a> | <a href="master_log.php">Логи</a> | <a href="?reset_all_cache=1" onclick="if(confirm('Вы действительно хотите сбросить весь кеш?')){return true}else{return false}">Сбросить кеш</a> | <a href="cache_refresh.php" onclick="if(confirm('Вы действительно хотите обновить весь кеш? Эта операция займет какое-то время.')){return true}else{return false}">Обновить кеш</a> | <a href="unique_video.php">Уникальные фильмы</a> | <a href="video_search.php">Поиск по хранилищам</a>
     </td>
 </tr>
 <tr>
