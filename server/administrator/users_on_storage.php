@@ -78,11 +78,11 @@ a:hover{
     <td width="100%" align="left" valign="bottom">
         <a href="index.php"><< Назад</a>
         <?
-            if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
+            /*if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
                 ?>
                  | <a href="#" onclick='if(confirm("Внимание: Определение уникальных фильмов на <? echo $storage_name ?> займет некоторое время и нагрузит все стораджи!!! Вы уверены?!")){document.location="unique_video.php?storage=<? echo $storage_name ?>"}'>Уникальные фильмы на <? echo $storage_name ?></a>
                 <?
-            }
+            }*/
         ?>
     </td>
 </tr>
