@@ -29,7 +29,7 @@
         this.genres    = [];
         
         this.row_callback_timer;
-        this.row_callback_timeout = 100;
+        this.row_callback_timeout = 300;
         
         this.fav_manage_mode = false;
         
