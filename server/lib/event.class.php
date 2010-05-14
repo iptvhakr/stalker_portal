@@ -108,7 +108,8 @@ class Event extends HTTPPush
             //return $db->executeQuery('select * from events where uid='.$uid.' and ended=0 and eventtime>NOW() order by priority, addtime')->getAllValues();
             return $db->from('events')
                       ->where(array('uid' => $uid, 'ended' => 0, 'eventtime>' => 'NOW()'))
-                      ->orderby(array('priority', 'addtime'))
+                      ->orderby('priority')
+                      ->orderby('addtime')
                       ->get()
                       ->all();
         }
