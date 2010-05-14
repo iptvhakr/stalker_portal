@@ -1010,3 +1010,20 @@ CREATE TABLE `epg_setting`(
     PRIMARY KEY (`id`),
     UNIQUE KEY (`uri`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `stb_groups`;
+CREATE TABLE `stb_groups`(
+    `id` int NOT NULL auto_increment,
+    `name` varchar(255) NOT NULL default '',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `stb_in_group`;
+CREATE TABLE `stb_in_group`(
+    `id` int NOT NULL auto_increment,
+    `stb_group_id` int NOT NULL default 0,
+    `uid` int NOT NULL default 0,
+    `mac` varchar(64) NOT NULL default '',
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
