@@ -61,7 +61,7 @@ class Stb
         }
     }
     
-    public function getIdByMAC($mac){
+    /*public function getIdByMAC($mac){
         
         //$user = $this->db->getFirstData('users', array('mac' => $mac));
         $user = $this->db->from('users')
@@ -74,9 +74,9 @@ class Stb
         }
         
         return false;
-    }
+    }*/
     
-    private function getAllMACs(){
+    /*private function getAllMACs(){
         //$users = $this->db->getData('users');
         
         $users = $this->db->get('users')->all();
@@ -86,7 +86,7 @@ class Stb
             $arr[$user['mac']] = intval($user['id']);
         }
         return $arr;
-    }
+    }*/
     
     public function getProfile(){
         
