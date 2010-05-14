@@ -542,6 +542,7 @@ class Mysql
     }
     
     private function escape($value){
+        
         if(is_int($value)){
             
             return $value;
