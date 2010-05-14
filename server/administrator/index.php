@@ -3,6 +3,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
 include "./lib/tasks.php";
@@ -116,7 +117,7 @@ a:hover{
   </tr>
 
   <tr>
-    <td></td>
+    <td><div align="center"><a href="ad.php">РЕКЛАМА</a></div></td>
     <td>&nbsp;</td>
     <td align="center"><?
     if (check_access(array(1,2))){
