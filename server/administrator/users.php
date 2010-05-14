@@ -3,6 +3,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
 
@@ -95,7 +96,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="all_userlog.php">Все логи</a> | <a href="today_user_status_report.php" target="_blank">Отчет</a> | <a href="subscribe_import.php">Импорт подписок</a>
+        <a href="index.php"><< Назад</a> | <a href="stbgroups.php">Группы приставок</a> | <a href="all_userlog.php">Все логи</a> | <a href="today_user_status_report.php" target="_blank">Отчет</a> | <a href="subscribe_import.php">Импорт подписок</a>
     </td>
 </tr>
 <tr>
@@ -195,6 +196,7 @@ function get_cur_media($media_id){
         5 => 'Радио',
         6 => 'Мои Записи',
         7 => 'Записи',
+        9 => 'ad',
         20 => 'Инфопортал',
         21 => 'Инфопортал',
         22 => 'Инфопортал',
@@ -436,6 +438,10 @@ switch (@$_GET['sort_by']){
             add_where($where, " keep_alive>'$now_time' and now_playing_type=2 order by id");
             break;
         }
+    case 'ad':{
+            add_where($where, " keep_alive>'$now_time' and now_playing_type=9 order by id");
+            break;
+        }
     case 'karaoke':{
             add_where($where, " keep_alive>'$now_time' and now_playing_type=3 order by id");
             break;
@@ -541,6 +547,7 @@ function sort_page(){
                 <option value="game_page" <? if (@$_GET['sort_by'] == 'game_page') echo 'selected' ?>>game_page
                 <option value="horoscope_page" <? if (@$_GET['sort_by'] == 'horoscope_page') echo 'selected' ?>>horoscope_page
                 <option value="course_page" <? if (@$_GET['sort_by'] == 'course_page') echo 'selected' ?>>course_page
+                <option value="ad" <? if (@$_GET['sort_by'] == 'ad') echo 'selected' ?>>ad
             </select>
             <br>
             <br>
@@ -596,6 +603,12 @@ while(@$rs->next()){
     
     $arr=$rs->getCurrentValuesAsHash();
     
+    $now_playing_content = $arr['now_playing_content'];
+    
+    if ($arr['now_playing_type'] == 2){
+        $now_playing_content = '['.$arr['storage_name'].'] '.$now_playing_content;
+    }
+    
     echo "<tr>";
     //echo "<td class='list'>".$arr['id']."</td>\n";
     echo "<td class='list'>".$i."</td>\n";
@@ -603,7 +616,7 @@ while(@$rs->next()){
     echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
     echo "<td class='list'><a href='events.php?mac=".$arr['mac']."'>".$arr['ip']."</a></td>\n";
     echo "<td class='list'>".get_cur_media($arr['now_playing_type'])."</td>\n";
-    echo "<td class='list'>".$arr['now_playing_content']."</td>\n";
+    echo "<td class='list'>".$now_playing_content."</td>\n";
     echo "<td class='list'>".get_last_time($arr['now_playing_start'])."</td>\n";
     echo "<td class='list'><b>".check_keep_alive_txt($arr['keep_alive'])."</b></td>\n";
     //echo "<td class='list'>".get_video_out($arr['video_out'], $arr['id'])."</b></td>\n";
