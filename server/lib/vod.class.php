@@ -334,7 +334,7 @@ class Vod extends AjaxResponse
             
             $letter = $_REQUEST['abc'];
             
-            $like = array('name' => $letter.'%');
+            $like = array('video.name' => $letter.'%');
         }
         
         $where_genre = array();
@@ -355,7 +355,7 @@ class Vod extends AjaxResponse
             
             $letters = $_REQUEST['search'];
             
-            $search['name']     = '%'.$letters.'%';
+            $search['video.name']     = '%'.$letters.'%';
             $search['o_name']   = '%'.$letters.'%';
             $search['actors']   = '%'.$letters.'%';
             $search['director'] = '%'.$letters.'%';
