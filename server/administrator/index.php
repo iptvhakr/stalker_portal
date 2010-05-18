@@ -115,9 +115,15 @@ a:hover{
     <td>&nbsp;</td>
     <td align="center"></td>
   </tr>
-
+  
   <tr>
     <td><div align="center"><a href="ad.php">РЕКЛАМА</a></div></td>
+    <td>&nbsp;</td>
+    <td align="center"></td>
+  </tr>
+
+  <tr>
+    <td><div align="center"><a href="playlists.php">ПЛЕЙЛИСТЫ</a></div></td>
     <td>&nbsp;</td>
     <td align="center"><?
     if (check_access(array(1,2))){
