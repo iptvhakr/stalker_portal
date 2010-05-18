@@ -78,7 +78,7 @@ class AjaxResponse
         $this->setResponse('data', $query->get()->all());
     }
     
-    protected function getResponse($callback){
+    protected function getResponse($callback = ''){
         
         if ($callback && is_callable(array($this, $callback))){
             return call_user_func(array($this, $callback));
