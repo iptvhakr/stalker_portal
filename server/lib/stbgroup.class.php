@@ -32,6 +32,11 @@ class StbGroup
         return $this->db->from('stb_groups')->get()->all();
     }
     
+    public function getGroupIdByUid($uid){
+        
+        return $this->db->from('stb_in_group')->where(array('uid' => intval($uid)))->get()->first('stb_group_id');
+    }
+    
     /**
      * Return group by group id.
      *
