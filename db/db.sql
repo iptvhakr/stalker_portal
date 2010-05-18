@@ -1027,3 +1027,21 @@ CREATE TABLE `stb_in_group`(
     `mac` varchar(64) NOT NULL default '',
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `playlists`;
+CREATE TABLE `playlists`(
+    `id` int NOT NULL auto_increment,
+    `name` varchar(255) NOT NULL default '',
+    `group_id` int NOT NULL default 0,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE `playlist_members`;
+CREATE TABLE `playlist_members`(
+    `id` int NOT NULL auto_increment,
+    `playlist_id` int NOT NULL default 0,
+    `time` int NOT NULL default -1, /* minutes from day beginning */
+    `video_id` int NOT NULL default 0,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
