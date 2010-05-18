@@ -41,6 +41,9 @@ function common_xpcom(){
         this.epg_loader.start();
         
         this.notice = new _alert();
+        
+        this.watchdog = new watchdog();
+        this.watchdog.run();
     }
     
     this.get_server_params = function(){
