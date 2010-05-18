@@ -305,8 +305,6 @@ if (is_array($fav_ch_arr)){
                     
                     $member = $stb_groups->getMemberByUid(intval($_GET['id']));
                     
-                    var_dump($member);
-                    
                     foreach ($all_groups as $group){
                         $selected = '';
                         
