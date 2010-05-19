@@ -28,6 +28,8 @@ function common_xpcom(){
     
     this.notice;
     
+    this.cur_off_on = false;
+    
     //this.menu_clock = new main_menu_clock();
     
     this.init = function(){
@@ -43,7 +45,11 @@ function common_xpcom(){
         this.notice = new _alert();
         
         this.watchdog = new watchdog();
-        this.watchdog.run();
+        
+        this.cut_off_dom_obj = create_block_element('cut_off');
+        var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
+        text_msg.innerHTML = 'Ваша приставка отключена.<br/> т. 740-0-740';
+        this.cut_off_dom_obj.hide();
     }
     
     this.get_server_params = function(){
@@ -228,9 +234,10 @@ function common_xpcom(){
                 _debug(e);
             }
         }else if(this.user['status'] == 1){
-            //cut_off()
+            this.cut_off();
         }
-        //run_watchdog();
+        
+        this.watchdog.run();
     }
     
     this.mount_home_dir = function(storages){
@@ -481,6 +488,30 @@ function common_xpcom(){
                 _debug(e);
             }
             return '';
+        }
+    }
+    
+    this.cut_off = function(){
+        _debug('stb.cut_off');
+        
+        _log('cut_off()');
+        
+        this.key_lock = true;
+        
+        this.player.stop();
+        
+        stb.SetDefaultFlicker(1)
+        
+        this.cut_off_dom_obj.show();
+        
+        this.cut_off_on = true;
+    }
+    
+    this.cut_on = function(){
+        _debug('stb.cut_on');
+        
+        if (this.cut_off_on){
+            stb.ExecAction('reboot');
         }
     }
 }
