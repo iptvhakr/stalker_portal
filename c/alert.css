@@ -1,7 +1,7 @@
 /* ALERT */
 
 .mb_info{
-    z-index: 1000;
+    z-index: 100;
     position: fixed;
 	left: 0px;
 	top: 0px;
