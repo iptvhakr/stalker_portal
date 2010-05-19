@@ -14,7 +14,8 @@ class Watchdog extends AjaxResponse
     
     public function getEvents(){
         
-        $this->db->update(array(
+        $this->db->update('users',
+                         array(
                             'keep_alive' => 'NOW()',
                             'ip' => $this->stb->ip,
                             'now_playing_type' => intval($_REQUEST['data']['cur_play_type']),
@@ -63,8 +64,8 @@ class Watchdog extends AjaxResponse
         $res['data']['updated']['anec'] = intval($updated_places['anec']);
         $res['data']['updated']['vclub'] = intval($updated_places['vclub']);
         
-        $ad = new Advertising();
-        $res['data']['main_ad'] = $ad->getMainMini();
+        //$ad = new Advertising();
+        //$res['data']['main_ad'] = $ad->getMainMini();
         
         return $res;
     }
