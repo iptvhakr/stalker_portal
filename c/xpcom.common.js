@@ -23,15 +23,15 @@ function common_xpcom(){
         {"alias": "opt", "mode": 0x50},
         {"alias": "exp", "mode": 0x00}
     ];
-    this.player;
-    this.video_mode = 1080;
     
-    this.notice;
+    this.video_mode = 1080;
     
     this.cur_off_on = false;
     
-    //this.menu_clock = new main_menu_clock();
+    this.cur_place = '';
     
+    //this.menu_clock = new main_menu_clock();
+
     this.init = function(){
         _debug('stb.init');
         
@@ -43,6 +43,9 @@ function common_xpcom(){
         this.epg_loader.start();
         
         this.notice = new _alert();
+        
+        this.msg = new _alert('info');
+        this.msg.bind();
         
         this.watchdog = new watchdog();
         
@@ -513,5 +516,61 @@ function common_xpcom(){
         if (this.cut_off_on){
             stb.ExecAction('reboot');
         }
+    }
+    
+    this.set_cur_place = function(place){
+        this.cur_place = place;
+    }
+    
+    this.reset_cur_place = function(place){
+        this.cur_place = '';
+    }
+    
+    this.get_current_place = function(){
+        
+        var cur_place_num = 0
+        
+        _debug('stb.player.media_type', this.player.media_type);
+        _debug('stb.cur_place', this.cur_place);
+        
+        if(this.player.media_type == 'stream'){ // TV
+                if (this.cur_place == 'tv'){
+                    cur_place_num = 1;
+                }else if(this.cur_place == 'radio'){ // Radio
+                    cur_place_num = 5;
+                }else{
+                    cur_place_num = 1;
+                }
+        }else if(this.player.media_type == 'file'){
+            if (this.player.on){
+                if (this.cur_place == 'vclub'){ // Video Club
+                    cur_place_num = 2;
+                }else if(this.cur_place == 'karaoke'){ // Karaoke
+                    cur_place_num = 3;
+                }else if(this.cur_place == 'audio_club'){ // Audio Club
+                    cur_place_num = 4;
+                }else if(this.cur_place == 'video_clips'){ // Video Clips
+                    cur_place_num = 8;
+                }else if(cur_place == 'ad'){
+                    cur_place_num = 9;
+                }
+            }
+        }else{
+            if (this.cur_place == 'city_info'){
+                cur_place_num = 20;
+            }else if(this.cur_place == 'anec_page'){
+                cur_place_num = 21;
+            }else if(this.cur_place == 'weather_page'){
+                cur_place_num = 22;
+            }else if(this.cur_place == 'game_page'){
+                cur_place_num = 23;
+            }else if(this.cur_place == 'horoscope_page'){
+                cur_place_num = 24;
+            }else if(this.cur_place == 'course_page'){
+                cur_place_num = 25;
+            }
+        }
+        
+        return cur_place_num
     }
 }
