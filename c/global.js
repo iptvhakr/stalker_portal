@@ -35,29 +35,23 @@ function _debug(){
     }
 }
 
-function _log(action, param, type){
-    /*var tmp_type;
-    var cur_place_num = 0;
-    
-    if (typeof(type) == 'undefined'){
-        tmp_type = 0
-    }else{
-        tmp_type = cur_place_num
-    }
+function _log(action, param){
+
+    var param = param || '';
     
     stb.load(
         {
             "type"   : "stb",
             "action" : "log",
             "real_action" : action,
-            "tmp_type" : tmp_type,
-            "param"  : param
+            "param"  : param,
+            "tmp_type" : stb.get_current_place()
         },
         
         function(result){
             
         }
-    )*/
+    )
 }
 
 /**
