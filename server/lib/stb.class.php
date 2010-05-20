@@ -271,5 +271,228 @@ class Stb
                            ));
         return true;
     }
+    
+    public function log(){
+        
+        $action = strval($_REQUEST['real_action']);
+        $param  = strval($_REQUEST['param']);
+        $type   = $_REQUEST['tmp_type'];
+        
+        $this->db->insert('user_log',
+                            array(
+                                'mac'    => $this->mac,
+                                'action' => $action,
+                                'param'  => $param,
+                                'time'   => 'NOW()',
+                                'type'   => $type
+                            ));
+        
+        $update_data = array();
+                            
+        if ($action == 'play'){
+            $update_data['now_playing_start'] = 'NOW()';
+
+            switch ($type){
+                case 1: // TV
+                    
+                    $ch_name = $this->db->from('itv')->where(array('cmd' => $param, 'status' => 1))->get()->first('name');
+                    
+                    if (empty($ch_name)){
+                        $ch_name = $param;
+                    }
+                    
+                    $update_data['now_playing_content'] = $ch_name;
+                    
+                    break;
+                case 2: // Video Club
+                    
+                    preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+                    
+                    $storage  = $tmp_arr[1];
+                    $media_id = intval($tmp_arr[2]);
+                    
+                    $video = $this->db->from('video')->where(array('id' => $media_id))->get()->first();
+                    
+                    $update_data['storage_name'] = $storage;
+                    
+                    if (!empty($video)){
+                        
+                        $update_data['now_playing_content'] = $video['name'];
+                        $update_data['hd_content']          = $video['hd'];
+                    }else{
+                        $update_data['now_playing_content'] = $param;
+                    }
+                    
+                    break;
+                case 3: // Karaoke
+                    
+                    preg_match("/(\d+).mpg$/", $param, $tmp_arr);
+                    $karaoke_id = intval($tmp_arr[1]);
+                    
+                    $karaoke = $this->db->from('karaoke')->where(array('id' => $karaoke_id))->get->first();
+                    
+                    if (!empty($karaoke)){
+                        $update_data['now_playing_content'] = $karaoke['name'];
+                    }else{
+                        $update_data['now_playing_content'] = $param;
+                    }
+                    
+                    break;
+                case 4: // Audio Club
+                    
+                    preg_match("/(\d+).mp3$/", $param, $tmp_arr);
+                    $audio_id = intval($tmp_arr[1]);
+                    
+                    $audio = $this->db->from('audio')->where(array('id' => $audio_id))->get()->first();
+                    
+                    if (!empty($audio)){
+                        $update_data['now_playing_content'] = $audio['name'];
+                    }else{
+                        $update_data['now_playing_content'] = $param;
+                    }
+                    
+                    break;
+                case 5: // Radio
+                
+                    $radio = $this->db->from('radio')->where(array('cmd' => $param, 'status' => 1))->get()->first();
+                    
+                    if (!empty($radio)){
+                        $update_data['now_playing_content'] = $radio['name'];
+                    }else{
+                        $update_data['now_playing_content'] = $param;
+                    }
+                    
+                    break;
+                case 6: // My Records
+                
+                    /*$my_record_name = '';
+                    
+                    preg_match("/\/(\d+).mpg/", $param, $tmp_arr);
+                    $my_record_id = $tmp_arr[1];
+                    
+                    $sql = "select t_start,itv.name from users_rec, itv where users_rec.ch_id=itv.id and users_rec.id=$my_record_id";
+                    $rs = $db->executeQuery($sql);
+                    
+                    if ($rs->getRowCount() == 1){
+                        $my_record_name = $rs->getValueByName(0, 't_start').' '.$rs->getValueByName(0, 'name');
+                    }else{
+                        $my_record_name = $param;
+                    }
+                    
+                    $_sql .= ", now_playing_content='$my_record_name'";
+                    break;*/
+                case 7: // Shared Records
+                    /*$shared_record_name = '';
+                    
+                    preg_match("/(\d+).mpg$/", $param, $tmp_arr);
+                    $shared_record_id = $tmp_arr[1];
+                    
+                    $sql = "select * from video_records where id=$shared_record_id";
+                    $rs = $db->executeQuery($sql);
+                    
+                    if ($rs->getRowCount() == 1){
+                        $shared_record_name = $rs->getValueByName(0, 'descr');
+                    }else{
+                        $shared_record_name = $param;
+                    }
+                    
+                    $_sql .= ", now_playing_content='$shared_record_name'";*/
+                    break;
+                case 8: // Video clips
+                    /*$video_name = '';
+                    
+                    preg_match("/(\d+).mpg$/", $param, $tmp_arr);
+                    $media_id = $tmp_arr[1];
+                    
+                    $sql = "select * from video_clips where id=$media_id";
+                    $rs = $db->executeQuery($sql);
+                    
+                    if ($rs->getRowCount() == 1){
+                        $video_name = $rs->getValueByName(0, 'name');
+                    }else{
+                        $video_name = $param;
+                    }
+                    
+                    $_sql .= ", now_playing_content='$video_name'";
+                    break;*/
+                default:
+                    $update_data['now_playing_content'] = 'unknown media '.$param;
+            }
+        }
+        
+        if ($action == 'infoportal'){
+            $update_data['now_playing_start'] = 'NOW()';
+
+            $info_arr = array(
+                20 => 'city_info',
+                21 => 'anec_page',
+                22 => 'weather_page',
+                23 => 'game_page',
+                24 => 'horoscope_page',
+                25 => 'course_page'
+            );
+            
+            if (@$info_arr[$type]){
+                $info_name = $info_arr[$type];
+            }else{
+                $info_name = 'unknown';
+            }
+            
+            $update_data['now_playing_content'] = $info_name;
+        }
+        
+        if ($action == 'stop' || $action == 'close_infoportal'){
+            
+            $update_data['now_playing_content'] = '';
+            $update_data['storage_name'] = '';
+            $update_data['hd_content'] = '';
+            
+            $type = 0;
+        }
+        
+        if ($action == 'pause'){
+            
+            $this->db->insert('vclub_paused',
+                              array(
+                                  'uid' => $this->id,
+                                  'mac' => $this->mac,
+                                  'pause_time' => 'NOW()'
+                              ));
+        }
+        
+        if ($action == 'continue' || $action == 'stop' || $action == 'set_pos()' || $action == 'play'){
+            
+            $this->db->delete('vclub_paused',
+                              array(
+                                  'mac' => $this->mac
+                              ));
+        }
+        
+        if ($action == 'readed_anec'){
+            
+            return $this->db->insert('readed_anec',
+                              array(
+                                  'mac'    => $this->mac,
+                                  'readed' => 'NOW()'
+                              ));
+        }
+        
+        if ($action == 'loading_fail'){
+            
+            return $this->db->insert('loading_fail',
+                                     array(
+                                         'mac'   => $this->mac,
+                                         'added' => 'NOW()'
+                                     ));
+        }
+        
+        $update_data['last_active'] = 'NOW()';
+        $update_data['keep_alive']  = 'NOW()';
+        $update_data['now_playing_type']  = $type;
+        
+        $this->db->update('users', $update_data, array('mac' => $this->mac));
+        
+        return 1;
+    }
 }
 ?>
