@@ -4,11 +4,13 @@
 _debug('1!!!!!!!!!!!!!!');
 (function(){
     
-    stb.ajax_loader = 'http://bb2.sandbox/stalker_portal/server/load.php'
+    //stb.ajax_loader = 'http://bb2.sandbox/stalker_portal/server/load.php'
     
     /* VCLUB */
     function vclub_constructor(){
-            
+        
+        this.layer_name = 'vclub';
+        
         this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'name', 'today', 'yestarday', 'week_and_more'];
         
         this.load_params = {
