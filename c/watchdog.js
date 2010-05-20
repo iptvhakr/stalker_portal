@@ -26,8 +26,10 @@ watchdog.prototype.send_request = function(){
     var cur_play_type = 0
     
     if (!stb.player.pause.on){
-        //cur_play_type = stb.get_current_place();
+        cur_play_type = stb.get_current_place();
     }
+    
+    _debug('cur_play_type', cur_play_type);
     
     stb.load(
         {
@@ -65,8 +67,17 @@ watchdog.prototype.parse_result = function(data){
             {
                 this.event_active_id = data.id
                 
-                //show_full_incoming_message(event_msg);
+                var self = this;
+                
+                stb.msg.set_callback(
+                    function(){
+                        self.send_confirm();
+                    });
+                
+                stb.msg.show(data.msg);
+                
                 this.reboot_after_ok = data.reboot_after_ok;
+                
                 break
             }
             case 'update_channels':
@@ -104,12 +115,20 @@ watchdog.prototype.parse_result = function(data){
             }
             case 'show_menu': // reset paused
             {
-                
+                keydown_observer.emulate_key(key.MENU);
                 break
             }
             case 'play_channel':
             {
+                keydown_observer.emulate_key(key.MENU);
                 
+                stb.user.fav_itv_on = 0;
+                var ch_idx = stb.player.channels.getIdxByNumber(parseInt(data.msg));
+                
+                stb.player.ch_idx = ch_idx || 0;
+                stb.player.cur_media_item = stb.player.channels[stb.player.ch_idx];
+                
+                keydown_observer.emulate_key(key.EXIT);
                 break
             }
         }
@@ -126,7 +145,7 @@ watchdog.prototype.send_confirm = function(){
     },
     
     function(result){
-        
+        _debug(result);
     });
     
     this.event_active_id = 0;
