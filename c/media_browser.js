@@ -7,6 +7,8 @@
     /* MEDIA BROWSER */
     function media_browser_constructor(){
         
+        this.layer_name = 'media_browser';
+        
         this.row_blocks  = ["dir", "name"];
         this.mounted = false;
         this.cur_dir_list = [];
