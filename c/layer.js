@@ -6,6 +6,7 @@
 function Layer(){
     
     /*  required properties  */
+    this.layer_name = '';
     this.row_blocks  = [];
     this.load_params = {};
     this.class_name = '';
@@ -53,6 +54,8 @@ Layer.prototype.show = function(do_not_load){
     if (!do_not_load){
         this.load_data();
     }
+    
+    stb.set_cur_place(this.layer_name);
 }
 
 Layer.prototype.hide = function(do_not_reset){
