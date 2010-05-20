@@ -6,6 +6,9 @@
 
     /* TV */
     function tv_constructor(){
+        
+        this.layer_name = 'tv';
+        
         this.row_blocks  = ['number', 'fav', 'lock', 'name'];
         
         this.load_params = {
