@@ -411,6 +411,8 @@ player.prototype.create_link = function(type, uri, series_number){
 player.prototype.play_now = function(uri){
     _debug('player.play_now');
     
+    _log('play', uri);
+    
     this.start_time = Date.parse(new Date())/1000;
 
     if (this.need_show_info){
@@ -440,6 +442,8 @@ player.prototype.stop = function(){
     try{
         stb.Stop();
     }catch(e){}
+    
+    _log('stop');
 }
 
 player.prototype.init_pause = function(){
