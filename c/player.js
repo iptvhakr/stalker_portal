@@ -32,6 +32,8 @@ function player(){
     
     this.last_state = 0;
     
+    this.send_last_tv_id_to = 1800000;
+    
     this.prev_layer = {};
     
     this.info = {"on" : false, "hide_timer" : 4000};
@@ -39,6 +41,7 @@ function player(){
     this.quick_ch_switch = {"on" : false, "hide_to" : 3000};
     
     this.on_create_link = function(){};
+    this.last_storage_id = 0;
     
     this.init();
     this.init_pause();
@@ -80,8 +83,27 @@ player.prototype.event_callback = function(event){
         case 1: // End of stream
         {
             try{
-                this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
-                this.stop();
+                //this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
+                
+                if (this.media_type == 'stream'){
+                    _debug('stream error');
+                    
+                    var self = this;
+                    
+                    this.replay_channel_timer = window.setTimeout(
+                        function(){
+                            self.play_last();
+                        },
+                        1000
+                    );
+                }else{
+                    if(this.prev_layer && this.prev_layer.show){
+                        this.prev_layer.show.call(this.prev_layer, true);
+                    }
+                    
+                    this.stop();
+                }
+                
             }catch(e){
                 _debug(e);
             }
@@ -98,6 +120,28 @@ player.prototype.event_callback = function(event){
             
             if (this.info.on){
                 this.set_pos_button_to_cur_time();
+            }
+            
+            if (this.is_tv){
+                this.send_last_tv_id(this.cur_media_item.id);
+            }
+            
+            window.clearTimeout(this.send_played_video_timer);
+            
+            if (stb.cur_place == 'vclub'){
+                
+                var time_send_played = (this.cur_media_length*0.7)*1000
+                _debug('time_send_played,', time_send_played);
+                
+                var self = this;
+                
+                this.send_played_video_timer = window.setTimeout(
+                    function(){
+                        self.send_played_video(self.cur_media_item.id);
+                    },
+                    
+                    time_send_played
+                )
             }
             
             break;
@@ -370,7 +414,7 @@ player.prototype.play = function(item){
         this.play_now(cmd);
         
         if (this.is_tv){
-            this.send_last_tv_id(item.id);
+            //this.send_last_tv_id(item.id);
         }
         
     }else if (cmd.indexOf('usbdisk') > 0){
@@ -381,7 +425,6 @@ player.prototype.play = function(item){
         
         this.create_link('vod', cmd, series_number);
     }
-    
 }
 
 player.prototype.create_link = function(type, uri, series_number){
@@ -398,9 +441,13 @@ player.prototype.create_link = function(type, uri, series_number){
         },
         
         function(result){
+            
             _debug('create_link callback: ', result);
             
-            //this.play_now(result.cmd);
+            this.last_storage_id = result.storage_id;
+            
+            _debug('this.last_storage_id', this.last_storage_id);
+            
             this.on_create_link && this.on_create_link(result);
         },
         
@@ -442,6 +489,10 @@ player.prototype.stop = function(){
     try{
         stb.Stop();
     }catch(e){}
+    
+    window.clearTimeout(this.send_played_itv_timer);
+    window.clearTimeout(this.send_played_video_timer);
+    window.clearTimeout(this.replay_channel_timer);
     
     _log('stop');
 }
@@ -662,18 +713,64 @@ player.prototype.switch_channel = function(dir, show_info){
 player.prototype.send_last_tv_id = function(id){
     _debug('send_last_tv_id', id);
     
+    var self = this;
+    
+    window.clearTimeout(this.send_played_itv_timer);
+    
+    this.send_played_itv_timer = window.setTimeout(
+
+        function(){
+            self.send_played_itv(id);
+        },
+        
+        this.send_last_tv_id_to
+    );
+    
     stb.load(
 
         {
-            'type'   : 'itv',
-            'action' : 'set_last_id',
-            'id'     : id
+            "type"   : "itv",
+            "action" : "set_last_id",
+            "id"     : id
         },
         
         function(result){
             _debug('last_tv_id saved', result);
         }
     )
+}
+
+player.prototype.send_played_itv = function(id){
+    
+    stb.load(
+        {
+            "type"   : "itv",
+            "action" : "set_played",
+            "itv_id" : id,
+        },
+        
+        function(result){
+            
+        }
+    );
+}
+
+player.prototype.send_played_video = function(id){
+    _debug('player.send_played_video', id);
+    
+    stb.load(
+        {
+            "type"       : "vod",
+            "action"     : "set_played",
+            "video_id"   : id,
+            "storage_id" : this.last_storage_id
+        },
+        
+        function(result){
+            
+        }
+    );
+    
 }
 
 player.prototype.show_prev_layer = function(){
