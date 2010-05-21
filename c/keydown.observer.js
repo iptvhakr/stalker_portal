@@ -36,6 +36,7 @@ var keydown_observer = new function(){
         
         var item;
         var priority_item;
+        var normal_item;
         
         if (this.listeners.hasOwnProperty(code)){
             for(var i=0; i<this.listeners[code].length; i++){
@@ -52,11 +53,13 @@ var keydown_observer = new function(){
                     priority_item = item;
                     break;
                 } else if (item.c.on || item.c === window){
-                    normal_item = item;
+                    if (!normal_item){
+                        normal_item = item;
+                    }
                 }
             }
             
-            if (priority_item){
+            if (priority_item){                
                 priority_item.f.apply(priority_item.c, priority_item.a);
             }else if (normal_item){
                 normal_item.f.apply(normal_item.c, normal_item.a);
