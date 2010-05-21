@@ -95,10 +95,14 @@ bottom_menu.prototype.shift_row = function(dir){
     if (dir > 0){
         if (this.cur_row_idx < this.items.length - 1){
             this.cur_row_idx++;
+        }else{
+            this.cur_row_idx = 0;
         }
     }else{
         if (this.cur_row_idx > 0){
             this.cur_row_idx--;
+        }else{
+            this.cur_row_idx = this.items.length - 1;
         }
     }
     
@@ -135,6 +139,7 @@ bottom_menu.prototype.action = function(){
             this.parent.load_data();
         }
         
+        this.hide();
     }catch(e){
         _debug(e);
     }
