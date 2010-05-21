@@ -37,6 +37,8 @@ function Layer(){
     
     this.sidebar = {};
     
+    this.page_dir = 1;
+    
     this.color_buttons = [
         {"color" : "red"},
         {"color" : "green"},
@@ -82,6 +84,7 @@ Layer.prototype.hide = function(do_not_reset){
 Layer.prototype.reset = function(){    
     this.cur_row = 0;
     this.cur_page = 1;
+    this.page_dir = 1;
 }
 
 Layer.prototype.init = function(){
@@ -264,6 +267,12 @@ Layer.prototype.fill_list = function(data){
         }
     }
     
+    if (this.page_dir > 0){
+        this.cur_row = 0;
+    }else{
+        this.cur_row = this.total_items-1;
+    }
+    
     this.set_active_row(this.cur_row);
     this.loading = false;
 }
@@ -328,12 +337,18 @@ Layer.prototype.set_active_row = function(num){
         }
         
         if(!this.fav_manage_mode){
-            for (var j=0; j<this.row_blocks.length; j++){
-                this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
-            }    
             
-            if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
-                this.shift_row_callback.call(this, this.data_items[num]);
+            if (this.data_items.length != 0){
+            
+                for (var j=0; j<this.row_blocks.length; j++){
+                    this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
+                }    
+                
+                if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
+                    this.shift_row_callback.call(this, this.data_items[num]);
+                }
+            }else{
+                this.active_row['row'].hide();
             }
         }
     }catch(e){
@@ -372,15 +387,21 @@ Layer.prototype.shift_row = function(dir){
 
 Layer.prototype.shift_page = function(dir){
 
+    this.page_dir = dir;
+    
     if (dir > 0){
         if (this.cur_page < this.total_pages){
             this.cur_page++;
-            this.cur_row = 0;
+            //this.cur_row = 0;
+        }else{
+            this.cur_page = 1;
         }
     }else{
         if (this.cur_page > 1){
             this.cur_page--;
-            this.cur_row = this.total_rows-1;
+            //this.cur_row = this.total_rows-1;
+        }else{
+            this.cur_page = this.total_pages;
         }
     }
     
