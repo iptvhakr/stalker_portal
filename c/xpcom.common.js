@@ -15,7 +15,7 @@ function common_xpcom(){
     this.storages = {};
     this.player;
     this.key_lock = true;
-    this.channels_inited = 0;
+    
     this.aspect_idx = 0;
     this.aspect_array = [
         {"alias": "fit", "mode": 0x10},
@@ -30,6 +30,8 @@ function common_xpcom(){
     
     this.cur_place = '';
     
+    this.load_step = Math.ceil(50/4);
+
     //this.menu_clock = new main_menu_clock();
 
     this.init = function(){
@@ -185,6 +187,8 @@ function common_xpcom(){
     
     this.user_init = function(user_data){
         
+        stb.loader.add_pos(this.load_step, 'call stb.user_init');
+        
         this.user = user_data;
         
         _debug('this.user:', user_data)
@@ -246,6 +250,8 @@ function common_xpcom(){
     this.mount_home_dir = function(storages){
         _debug('stb.mount_home_dir: ', storages);
         this.storages = storages;
+        
+        stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
         
         for(var i in storages){
             if (storages.hasOwnProperty(i)){
@@ -325,6 +331,9 @@ function common_xpcom(){
             
             function(result){
                 _debug('all_channels', result);
+                
+                stb.loader.add_pos(this.load_step, 'channels loaded');
+                
                 this.player.channels = result || [];
                 this.channels_loaded();
             },
@@ -344,6 +353,9 @@ function common_xpcom(){
             
             function(result){
                 _debug('all_fav_channels', result);
+                
+                stb.loader.add_pos(this.load_step, 'fav_channels loaded');
+                
                 this.player.fav_channels = result || [];
                 this.channels_loaded();
             },
@@ -376,7 +388,7 @@ function common_xpcom(){
     
     this.channels_loaded = function(){
         
-        if (this.channels_inited){
+        /*if (this.channels_inited){
             return;
         }
         
@@ -404,7 +416,7 @@ function common_xpcom(){
             
             this.key_lock = false;
             this.channels_inited = 1;
-        }
+        }*/
     }
     
     this.epg_loader = {
