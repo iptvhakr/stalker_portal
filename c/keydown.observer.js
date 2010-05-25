@@ -17,12 +17,12 @@ var keydown_observer = new function(){
     
     this.fire = function(e){
         
-        if (stb && stb.key_lock === true){
+        var code = e.keyCode || e.which;
+        
+        if (stb && stb.key_lock === true && code != key.FRAME){
             _debug('key locked');
             return;
         }
-        
-        var code = e.keyCode || e.which;
         
         if (e.shiftKey){
             code += 1000;
