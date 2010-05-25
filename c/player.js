@@ -825,6 +825,10 @@ player.prototype.show_prev_layer = function(){
             }
         }
         
+        if (this.prev_layer && this.prev_layer.cur_view == 'short'){
+            return;
+        }
+        
         this.stop();
     }catch(e){
         _debug(e);
@@ -862,10 +866,10 @@ player.prototype.bind = function(){
         
         if (this.info.on){
             this.set_pos_and_play();
-        }
-        
-        if (this.quick_ch_switch.on){
+        }else  if (this.quick_ch_switch.on){
             this.hide_quick_ch_switch();
+        }else  if (this.prev_layer && this.prev_layer.cur_view == 'short'){
+            this.show_prev_layer();
         }
         
     }).bind(key.OK, this);
