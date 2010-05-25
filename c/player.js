@@ -386,6 +386,46 @@ player.prototype.play_last = function(){
     this.play(this.cur_media_item);
 }
 
+player.prototype.first_play = function(){
+    
+    if (this.channels_inited){
+        return;
+    }
+    
+    if (typeof(this.channels) != 'undefined' &&
+        typeof(this.fav_channels) != 'undefined' &&
+        typeof(this.fav_channels_ids) != 'undefined'){
+        
+            
+        if (stb.user.fav_itv_on){
+            
+            this.f_ch_idx = this.fav_channels.getIdxById(stb.user.last_itv_id);
+            
+            if (this.f_ch_idx === null){
+                this.f_ch_idx = 0;
+            }
+            
+            var channel = this.fav_channels[this.f_ch_idx];
+            
+        }else{
+            
+            this.ch_idx = this.channels.getIdxById(stb.user.last_itv_id);
+            
+            if (this.ch_idx === null){
+                this.ch_idx = 0;
+            }
+            
+            var channel = this.channels[this.ch_idx];
+        }
+        
+        this.need_show_info = 1;
+        this.play(channel);
+        
+        stb.key_lock = false;
+        this.channels_inited = true;
+    }
+}
+
 player.prototype.play = function(item){
     _debug('player.play');
     
@@ -411,14 +451,13 @@ player.prototype.play = function(item){
     _debug('player.media_type: ', this.media_type);
     
     if (this.media_type == 'stream'){
-        this.play_now(cmd);
         
-        if (this.is_tv){
-            //this.send_last_tv_id(item.id);
-        }
+        this.play_now(cmd);
         
     }else if (cmd.indexOf('usbdisk') > 0){
+        
         this.play_now(cmd);
+        
     }else{
         
         var series_number = item.cur_series || 0;
