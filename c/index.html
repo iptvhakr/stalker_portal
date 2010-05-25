@@ -57,6 +57,7 @@ body{
 
 </style>
 
+<link type="text/css" rel="stylesheet" href="load_bar.css"></link>
 <link type="text/css" rel="stylesheet" href="alert.css"></link>
 
 <script type="text/javascript" src="global.js"></script>
@@ -70,6 +71,7 @@ body{
 
 <script type="text/javascript" src="watchdog.js"></script>
 
+<script type="text/javascript" src="load_bar.js"></script>
 <script type="text/javascript" src="xpcom.common.js"></script>
 <script type="text/javascript" src="xpcom.webkit.js"></script>
 
@@ -99,6 +101,8 @@ var loader = {
     chain : [],
     cur_idx : -1,
     head : document.getElementsByTagName("head")[0],
+    max_load_percent : 50,
+    step : 0,
     
     add : function(modules){
         _debug('loader.add');
@@ -106,6 +110,9 @@ var loader = {
         var modules = modules || [];
         
         this.chain = modules;
+        
+        this.step = Math.ceil(this.max_load_percent/this.chain.length);
+        
         this.next();
     },
     
@@ -120,6 +127,8 @@ var loader = {
     
     append : function(module){
         _debug('loader.append');
+        
+        stb.loader.add_pos(this.step, 'append '+module);
         
         var _script = document.createElement('script');
         _script.type = "text/javascript";
@@ -142,6 +151,15 @@ var loader = {
  */
 function init(){
     _debug('init');
+    
+    stb.loader = new load_bar();
+    stb.loader.bind();
+    
+    stb.loader.set_callback(
+        function(){
+            stb.player.first_play();
+        }
+    );
     
     //load_module('_alert');
     
