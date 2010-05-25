@@ -51,9 +51,29 @@
             
             this.sort_menu.action();
             
-            this.superclass.show.call(this);
+            this.show();
+            
+            /*try{
+                _debug('tv.cur_view', this.cur_view);
+                
+                if (this.cur_view == 'short'){
+                    stb.SetTopWin(1);
+                    stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y);
+                }else{
+                    stb.SetTopWin(0);
+                }
+            }catch(e){
+                _debug(e);
+            }*/
+        }
+        
+        this.show = function(do_not_load){
+            
+            this.superclass.show.call(this, do_not_load);
             
             try{
+                _debug('tv.cur_view', this.cur_view);
+                
                 if (this.cur_view == 'short'){
                     stb.SetTopWin(1);
                     stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y);
@@ -63,6 +83,7 @@
             }catch(e){
                 _debug(e);
             }
+            
         }
         
         this.hide = function(do_not_reset){
@@ -77,6 +98,7 @@
                 this.superclass.hide.call(this, do_not_reset);
             
                 _debug('SetTopWin');
+                stb.player.stop();
                 stb.SetTopWin(0);
                 stb.SetPIG(1, -1, -1, -1);
             }catch(e){
