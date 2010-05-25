@@ -231,6 +231,8 @@ CREATE TABLE `user_log`(
     `param` varchar(128) NOT NULL default '', 
     
     `time` datetime,
+    
+    `type` tinyint(4) default '0',
     PRIMARY KEY (`id`)
 );
 
