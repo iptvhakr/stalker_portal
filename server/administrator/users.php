@@ -96,7 +96,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="stbgroups.php">Группы приставок</a> | <a href="all_userlog.php">Все логи</a> | <a href="today_user_status_report.php" target="_blank">Отчет</a> | <a href="subscribe_import.php">Импорт подписок</a>
+        <a href="index.php"><< Назад</a> | <a href="testers.php">Тестировщики</a> | <a href="stbgroups.php">Группы приставок</a> | <a href="all_userlog.php">Все логи</a> | <a href="today_user_status_report.php" target="_blank">Отчет</a> | <a href="subscribe_import.php">Импорт подписок</a>
     </td>
 </tr>
 <tr>
