@@ -4,6 +4,8 @@ set_time_limit(0);
 session_start();
 
 ob_start();
+
+include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
 
@@ -43,6 +45,9 @@ while(@$rs->next()){
 
 $error = 'Обновлено '.$updated_video.' видео и '.$updated_karaoke.' караоке';
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
 ?>
 <html>
 <head>
