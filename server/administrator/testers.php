@@ -2,6 +2,7 @@
 session_start();
 
 ob_start();
+
 include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
@@ -66,6 +67,9 @@ if (@$_GET['edit'] && !empty($id)){
 
 $testers = $db->from('testers')->get()->all();
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
 ?>
 <html>
 <head>
@@ -181,5 +185,6 @@ a:hover{
     </td>
 </tr>
 </table>
+
 </body>
 </html>
