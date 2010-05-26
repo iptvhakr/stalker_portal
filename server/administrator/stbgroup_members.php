@@ -62,6 +62,9 @@ if (@$_GET['edit'] && !empty($id)){
 
 $members = $stb_groups->getAllMembersByGroupId($_GET['group_id']);
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
 ?>
 <html>
 <head>
