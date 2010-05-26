@@ -101,7 +101,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href=".php"><< Назад</a>
+        <a href="index.php"><< Назад</a>
     </td>
 </tr>
 <tr>
