@@ -89,6 +89,10 @@ function time_to_hhmm($time){
     return $hh.':'.$mm;
 }
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
+
 ?>
 <html>
 <head>
