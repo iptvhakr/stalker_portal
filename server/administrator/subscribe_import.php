@@ -3,6 +3,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../conf_serv.php";
 include "../getid3/getid3.php";
 include "../lib/func.php";
