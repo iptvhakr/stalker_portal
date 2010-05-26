@@ -2,6 +2,8 @@
 session_start();
 
 ob_start();
+
+include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
 
@@ -68,6 +70,9 @@ if (isset($_GET['update_epg'])){
 
 $settings = $db->executeQuery('select * from epg_setting')->getAllValues();
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
 ?>
 <html>
 <head>
