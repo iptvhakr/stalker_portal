@@ -132,7 +132,7 @@ a:hover{
     <table class='list' cellpadding='3' cellspacing='0'>
         <tr>
             <td>#</td>
-            <td>mac</td>
+            <td>MAC</td>
             <td>&nbsp;</td>
         </tr>
         <? 
