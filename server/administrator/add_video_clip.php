@@ -4,6 +4,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
 
