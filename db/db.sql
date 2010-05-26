@@ -1053,5 +1053,6 @@ CREATE TABLE `testers`(
     `id` int NOT NULL auto_increment,
     `mac` varchar(64) NOT NULL default '',
     `status` tinyint default 1,
+    UNIQUE KEY (`mac`),
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
