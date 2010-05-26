@@ -54,6 +54,9 @@ if (@$_GET['edit'] && !empty($id)){
 
 $groups = $stb_groups->getAll();
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
 ?>
 <html>
 <head>
