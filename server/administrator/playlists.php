@@ -54,6 +54,9 @@ if (@$_GET['edit'] && !empty($id)){
 
 $playlists = $playlist->getAll();
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
 ?>
 <html>
 <head>
