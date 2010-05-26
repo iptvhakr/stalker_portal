@@ -146,6 +146,9 @@ $uid = Middleware::getUidByMac($mac);
 
 $events = Event::getAllNotEndedEvents($uid);
 
+$debug = '<!--'.ob_get_contents().'-->';
+ob_clean();
+echo $debug;
 ?>
 <html>
 <head>
