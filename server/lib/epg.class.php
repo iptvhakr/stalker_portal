@@ -88,9 +88,9 @@ class Epg
                     
                     $this->cleanEpgByDate($start_ts, $itv_id);
                     
-                    if (!key_exists($itv_id, $data_arr)){
-                        $data_arr[$itv_id][] = array();
-                    }
+                    //if (!key_exists($itv_id, $data_arr)){
+                        //$data_arr[$itv_id][] = array();
+                    //}
                     
                     $data_arr[$itv_id][] = array(
                                                 'ch_id' => $itv_id,
