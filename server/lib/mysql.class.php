@@ -476,7 +476,7 @@ class Mysql
     
     public function query($sql){
         
-        echo $sql."\n";
+        echo "/* ".$sql." */\n";
         
         if (QUERY_CACHE && $this->allow_caching){
             
