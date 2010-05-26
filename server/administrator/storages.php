@@ -2,6 +2,7 @@
 session_start();
 
 ob_start();
+include "../common.php";
 include "../conf_serv.php";
 include "../lib/func.php";
 
@@ -187,7 +188,7 @@ a:hover{
                 echo '<a href="?status='.$new_status.'&id='.$storage['id'].'" style="color:'.$color.'" onclick="if(confirm(\'Вы действительно хотите изменить статус хранилища '.$storage['storage_name'].'?\')){return true}else{return false}">'.$status_str.'</a>&nbsp;';
                 echo '<a href="?reset_cache=1&id='.$storage['id'].'" style="color:grey" onclick="if(confirm(\'Вы действительно хотите сбросить кеш хранилища '.$storage['storage_name'].'?\')){return true}else{return false}">сбросить кеш</a>&nbsp;';
                 echo '<a href="?edit=1&id='.$storage['id'].'">edit</a>&nbsp;';
-                echo '<a href="?del=1&id='.$storage['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить хранилище '.$storage['storage_name'].' из базы удалить?\')){return true}else{return false}">del</a>';
+                echo '<a href="?del=1&id='.$storage['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить хранилище '.$storage['storage_name'].' из базы?\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
            }?>
