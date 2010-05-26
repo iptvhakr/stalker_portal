@@ -3,6 +3,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../conf_serv.php";
 include "../getid3/getid3.php";
 include "../lib/func.php";
@@ -108,7 +109,7 @@ function page_bar(){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$where = '';
+
 /*if ($search){
     $where = 'where name like "%'.$search.'%"';
 }
@@ -116,16 +117,20 @@ if (@$_GET['letter']) {
 	$where = 'where name like "'.$letter.'%"';
 }*/
 
-$query = "select * from itv $where";
+$from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
+
+$query = "select itv_id, name, count(played_itv.id) as counter from played_itv,itv where played_itv.itv_id=itv.id and  playtime>'$from_time' group by itv_id";
+//echo $query;
+
 $rs = $db->executeQuery($query);
 $total_items = $rs->getRowCount();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-$from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
 
-$query = "select itv_id, name, count(played_itv.id) as counter from played_itv,itv where played_itv.itv_id=itv.id and  playtime>'$from_time' group by itv_id order by counter desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
+
+$query = $query." order by counter desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
 $rs = $db->executeQuery($query);
 
