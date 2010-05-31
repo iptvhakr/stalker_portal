@@ -52,20 +52,7 @@
             this.sort_menu.action();
             
             this.show();
-            
-            /*try{
-                _debug('tv.cur_view', this.cur_view);
-                
-                if (this.cur_view == 'short'){
-                    stb.SetTopWin(1);
-                    stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y);
-                }else{
-                    stb.SetTopWin(0);
-                }
-            }catch(e){
-                _debug(e);
-            }*/
-        }
+        };
         
         this.show = function(do_not_load){
             
@@ -83,8 +70,7 @@
             }catch(e){
                 _debug(e);
             }
-            
-        }
+        };
         
         this.hide = function(do_not_reset){
             _debug('tv.hide', do_not_reset);
