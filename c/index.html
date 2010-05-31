@@ -161,26 +161,6 @@ function init(){
         }
     );
     
-    //load_module('_alert');
-    
-    /*load_module('layer');
-    load_module('layer.sidebar');
-    load_module('layer.search_box');*/
-    
-    /*window.setInterval(function(){_debug('test')}, 1000);
-    
-    window.setTimeout(function(){document.body.appendChild(document.createElement('span'));_debug('insert');}, 7000);*/
-    
-    /*window.setTimeout(function(){
-        load_module('layer.bottom_menu');
-        load_module('layer.scrollbar');
-        load_module('layer.vclub_info');
-        load_module('vclub');
-        load_module('tv');
-        load_module('media_browser');
-    },
-    8000);*/
-    
     loader.add([
         "layer",
         "layer.sidebar",
@@ -195,46 +175,26 @@ function init(){
         "media_browser"
     ])
     
-    var map = [
-        {"title"    : "КАРАОКЕ",
+    
+    /*{"title"    : "НАСТРОЙКИ",
          "cmd"      : "",
          "sub" : [
-                          {
-                            "title" : "НАШЕ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ЗАРУБЕЖНОЕ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ХИТЫ 80-х",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ХИТЫ 90-х",
-                            "cmd"   : ""
-                          },
-                      ]
-        },
-        {"title"    : "НАСТРОЙКИ",
-         "cmd"      : "",
-         "sub" : [
-                          {
-                            "title" : "ОБЩЕЕ",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ВИДЕОВЫХОД",
-                            "cmd"   : ""
-                          },
-                          {
-                            "title" : "ЛИЧНЫЙ КАБИНЕТ",
-                            "cmd"   : ""
-                          },
-                      ]
-        }
-    ];
+                      {
+                        "title" : "ОБЩЕЕ",
+                        "cmd"   : ""
+                      },
+                      {
+                        "title" : "ВИДЕОВЫХОД",
+                        "cmd"   : ""
+                      },
+                      {
+                        "title" : "ЛИЧНЫЙ КАБИНЕТ",
+                        "cmd"   : ""
+                      },
+                 ]
+    }*/
+    
+    var map = [];
     
     stb.init();
 
@@ -263,18 +223,6 @@ var stbEvent = {
 }
 
 </script>
-
-<!--<script type="text/javascript" src="global.js"></script>
-<script type="text/javascript" src="JsHttpRequest.js"></script>
-
-<script type="text/javascript" src="keydown.keycodes.js"></script>
-<script type="text/javascript" src="keydown.observer.js"></script>
-
-<script type="text/javascript" src="xpcom.common.js"></script>
-<script type="text/javascript" src="xpcom.webkit.js"></script>
-
-<script type="text/javascript" src="main_menu.js"></script>
-<script type="text/javascript" src="player.js"></script>-->
 
 </head>
 <body>
