@@ -68,58 +68,6 @@ var main_menu = {
         
         this.build();
         
-        /*for(var i=0; i<this.map.length; i++){
-            var menu_item = create_block_element();
-            menu_item.id = 'menu_item_'+(i+1);
-            menu_item.innerHTML = this.map[i]['title']+"<br/>";
-            
-            //var img = document.createElement('img');
-            //img.src = 'i/menu_item_img_'+(i+1)+'.png';
-            //menu_item.appendChild(img);
-            
-            if(typeof(this.menu_offset[i]) == 'number'){
-                menu_item.moveX(this.menu_offset[i]);
-            }else{
-                menu_item.moveX(0);
-            }
-            
-            if (i == 1){
-                menu_item.setClass('main_menu_active');
-            }
-            
-            this.map[i]['dom_obj'] = menu_item;
-            this.map[i]['dom_obj_id'] = menu_item.id;
-            this.hor_menu_obj.appendChild(menu_item);
-          
-            var sub_menu = document.createElement('div');
-            sub_menu.id = 'sub_menu_'+(i+1);
-            this.map[i]['sub_obj'] = sub_menu;
-            this.map[i]['sub_obj_id'] = sub_menu.id;
-            sub_menu.setClass('main_menu_vert');
-
-            if (i == 2){
-                sub_menu.show();
-            }else{
-                sub_menu.hide();
-            }
-            
-            this.dom_obj.insertBefore(sub_menu, this.vert_trans);
-            
-            for (var j=0; j<this.map[i].sub.length; j++){
-                var sub_menu_item = document.createElement('div');
-                sub_menu_item.innerHTML = this.map[i].sub[j].title;
-                
-                this.map[i].sub[j]['sub_punct_obj'] = sub_menu_item;
-                
-                if (this.map[i].sub[j].hasOwnProperty('cut')){
-                    sub_menu_item.style.borderBottom = '2px solid #667b8e';
-                }
-                
-                sub_menu.appendChild(sub_menu_item);
-            }
-        }*/
-        //this.render();
-        //document.setTimeout(function(){main_menu.hide()}, 5000);
         main_menu.hide()
     },
     
@@ -234,11 +182,15 @@ var main_menu = {
     
     vshift : function(dir){
         if (dir > 0){
-            this.map[1].sub.push(this.map[1].sub.shift());
+            if (this.map[1].sub.length > 0){
+                this.map[1].sub.push(this.map[1].sub.shift());
+            }
         }else{
             var menu_length = this.map[1].sub.length;
-            this.map[1].sub.unshift(this.map[1].sub[menu_length-1]);
-            this.map[1].sub.splice(menu_length, 1);
+            if (menu_length > 0){
+                this.map[1].sub.unshift(this.map[1].sub[menu_length-1]);
+                this.map[1].sub.splice(menu_length, 1);
+            }
         }
         this.render_sub();
     },
