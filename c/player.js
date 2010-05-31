@@ -820,7 +820,6 @@ player.prototype.show_prev_layer = function(){
             this.prev_layer.show.call(this.prev_layer, true);
         }else{
             if (this.is_tv){
-                //module.tv.cur_page = 0;
                 module.tv._show();
             }
         }
