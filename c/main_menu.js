@@ -327,6 +327,12 @@ var main_menu = {
         
         var sub = sub || [];
         
+        if (sub.length > 0){
+            for (var k=1; k<=3; k++){
+                sub.unshift(sub.pop());
+            }
+        }
+        
         this.map.push(
             {
                 "title" : title,
