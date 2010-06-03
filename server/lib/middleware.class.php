@@ -50,6 +50,8 @@ class Middleware
     public static function normalizeMac($mac){
         $mac = iconv("WINDOWS-1251","UTF-8", $mac);
         
+        $mac = strtoupper($mac);
+        
         $pattern = array('А', 'В', 'С', 'Е'); // ru
         $replace = array('A', 'B', 'C', 'E'); // en
         
