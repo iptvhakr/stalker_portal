@@ -61,7 +61,7 @@ CREATE TABLE `video`(
     `last_played` date,
     
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `genre`;
 CREATE TABLE `genre`(
@@ -113,7 +113,7 @@ CREATE TABLE `itv`(
     `bonus_ch` tinyint default 0, /* 1 - bonus channel */
     PRIMARY KEY (`id`),
     UNIQUE KEY (`name`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `tv_genre`;
 CREATE TABLE `tv_genre`(
@@ -122,7 +122,7 @@ CREATE TABLE `tv_genre`(
 
     PRIMARY KEY (`id`),
     UNIQUE KEY (`title`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 insert into tv_genre (title) VALUES ('информационный');
 insert into tv_genre (title) VALUES ('развлечения');
@@ -142,7 +142,7 @@ CREATE TABLE `last_id`(
     `last_id` int unsigned NOT NULL default 0,
     UNIQUE KEY (`ident`),
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `screenshots`;
 CREATE TABLE `screenshots`(
@@ -153,7 +153,7 @@ CREATE TABLE `screenshots`(
     `path` varchar(255) NOT NULL default '',
     `media_id` varchar(255) NOT NULL default '',
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `epg`;
 CREATE TABLE `epg`(
@@ -163,7 +163,7 @@ CREATE TABLE `epg`(
     `name` varchar(128) NOT NULL default '',
     `descr` varchar(255) NOT NULL default '',
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `karaoke`;
 CREATE TABLE `karaoke`(
@@ -200,7 +200,7 @@ CREATE TABLE `karaoke`(
     
     `count` int NOT NULL default 0, 
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `karaoke_genre`;
 CREATE TABLE `karaoke_genre`(
@@ -209,7 +209,7 @@ CREATE TABLE `karaoke_genre`(
 
     PRIMARY KEY (`id`),
     UNIQUE KEY (`title`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 insert into `karaoke_genre` (title) VALUES ('Поп');
 insert into `karaoke_genre` (title) VALUES ('Рок');
@@ -234,7 +234,7 @@ CREATE TABLE `user_log`(
     
     `type` tinyint(4) default '0',
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `users`;
 CREATE TABLE `users`(
@@ -288,7 +288,7 @@ CREATE TABLE `users`(
     `last_active` datetime,
     `keep_alive` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `moderators`;
 CREATE TABLE `moderators` (
@@ -298,7 +298,7 @@ CREATE TABLE `moderators` (
     `status` tinyint default 1,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`mac`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `vclub_news`;
 CREATE TABLE `vclub_news`(
@@ -307,7 +307,7 @@ CREATE TABLE `vclub_news`(
     `msg` text NOT NULL default '',
     `added` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `events`;
 CREATE TABLE `events`(
@@ -332,7 +332,7 @@ CREATE TABLE `events`(
     `addtime` datetime,
     `eventtime` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `fav_itv`;
 CREATE TABLE `fav_itv`(
@@ -341,7 +341,7 @@ CREATE TABLE `fav_itv`(
     `fav_ch` text NOT NULL default '',
     `addtime` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `audio`;
 CREATE TABLE `audio`(
@@ -357,7 +357,7 @@ CREATE TABLE `audio`(
     `status` tinyint default 0,
     `addtime` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `singer`;
 CREATE TABLE `singer`(
@@ -368,7 +368,7 @@ CREATE TABLE `singer`(
     `addtime` datetime,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`singer`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `album`;
 CREATE TABLE `album`(
@@ -378,7 +378,7 @@ CREATE TABLE `album`(
     `year` int NOT NULL default 0,
     `addtime` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `playlist`;
 CREATE TABLE `playlist`(
@@ -388,7 +388,7 @@ CREATE TABLE `playlist`(
     `addtime` datetime,
     `edittime` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `radio`;
 CREATE TABLE `radio`(
@@ -400,7 +400,7 @@ CREATE TABLE `radio`(
     `status` tinyint unsigned NOT NULL default 1,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`name`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `fav_vclub`;
 CREATE TABLE `fav_vclub`(
@@ -410,7 +410,7 @@ CREATE TABLE `fav_vclub`(
     `addtime` datetime,
     `edittime` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `administrators`;
 CREATE TABLE `administrators`(
@@ -424,7 +424,7 @@ CREATE TABLE `administrators`(
     
     PRIMARY KEY (`id`),
     UNIQUE KEY (`login`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `video_log`;
 CREATE TABLE `video_log`(
@@ -435,7 +435,7 @@ CREATE TABLE `video_log`(
     `actiontime` datetime,
     
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 DROP TABLE `played_video`;
@@ -447,7 +447,7 @@ CREATE TABLE `played_video`(
     `playtime` datetime,
     
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `played_itv`;
 CREATE TABLE `played_itv`(
@@ -457,7 +457,7 @@ CREATE TABLE `played_itv`(
     `playtime` datetime,
     
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `start_play_itv`;
 CREATE TABLE `start_play_itv`(
@@ -467,7 +467,7 @@ CREATE TABLE `start_play_itv`(
     `starttime` datetime,
     
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `start_play_video`;
 CREATE TABLE `start_play_video`(
@@ -477,7 +477,7 @@ CREATE TABLE `start_play_video`(
     `starttime` datetime,
     
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `start_play_karaoke`;
 CREATE TABLE `start_play_karaoke`(
@@ -487,7 +487,7 @@ CREATE TABLE `start_play_karaoke`(
     `starttime` datetime,
     
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `video_records`;
 CREATE TABLE `video_records`(
@@ -498,7 +498,7 @@ CREATE TABLE `video_records`(
     `accessed` tinyint default 0, /* 0-off, 1-on */
     `addtime` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `rec_files`;
 CREATE TABLE `rec_files`(
@@ -511,7 +511,7 @@ CREATE TABLE `rec_files`(
     `length` int NOT NULL default 0,
     `ended`  tinyint default 0, /* 0-not ended, 1-ended */
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `users_rec`;
 CREATE TABLE `users_rec`(
@@ -527,7 +527,7 @@ CREATE TABLE `users_rec`(
     `length` int NOT NULL default 0,
     `ended`  tinyint default 0, /* 0-not ended, 1-ended */
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `moderator_tasks`;
 CREATE TABLE `moderator_tasks`(
@@ -543,7 +543,7 @@ CREATE TABLE `moderator_tasks`(
     `archived` tinyint default 0,
     `archived_time` datetime default 0,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `moderators_history`;
 CREATE TABLE `moderators_history`(
@@ -557,7 +557,7 @@ CREATE TABLE `moderators_history`(
     `reply_to` int NOT NULL default 0,
     `read_time` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `tasks_archive`;
 CREATE TABLE `tasks_archive`(
@@ -566,7 +566,7 @@ CREATE TABLE `tasks_archive`(
     `year` int NOT NULL default 0,
     `month` tinyint default 0,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `daily_played_video`;
 CREATE TABLE `daily_played_video`(
@@ -575,7 +575,7 @@ CREATE TABLE `daily_played_video`(
     `count` int NOT NULL default 0,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`date`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `itv_subscription`;
 CREATE TABLE `itv_subscription`(
@@ -586,14 +586,14 @@ CREATE TABLE `itv_subscription`(
     `addtime` datetime,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`uid`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `operators`;
 CREATE TABLE `operators`(
     `id` int NOT NULL auto_increment,
     `name` varchar(128) NOT NULL default '',
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `operators_ip`;
 CREATE TABLE `operators_ip`(
@@ -603,7 +603,7 @@ CREATE TABLE `operators_ip`(
     `long_ip_from` int unsigned NOT NULL default 0,
     `long_ip_to` int unsigned NOT NULL default 0,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `storages`;
 CREATE TABLE `storages`(
@@ -615,7 +615,7 @@ CREATE TABLE `storages`(
     `status` tinyint default 1,
     UNIQUE KEY (`storage_name`),
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `stream_error`;
 CREATE TABLE `stream_error`(
@@ -624,7 +624,7 @@ CREATE TABLE `stream_error`(
     `mac` varchar(128) NOT NULL default '',
     `error_time` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `karaoke_archive`;
 CREATE TABLE `karaoke_archive`(
@@ -633,7 +633,7 @@ CREATE TABLE `karaoke_archive`(
     `year` int NOT NULL default 0,
     `month` tinyint default 0,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `permitted_video`;
 CREATE TABLE `permitted_video`(
@@ -643,7 +643,7 @@ CREATE TABLE `permitted_video`(
     `genre` tinyint default 0,
     `added` datetime NOT NULL default 0,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `video_clips`;
 CREATE TABLE `video_clips`(
@@ -669,7 +669,7 @@ CREATE TABLE `video_clips`(
     `reason` varchar(255) NOT NULL default '',
 
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `video_clip_genres`;
 CREATE TABLE `video_clip_genres`(
@@ -678,7 +678,7 @@ CREATE TABLE `video_clip_genres`(
 
     PRIMARY KEY (`id`),
     UNIQUE KEY (`title`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `vclub_paused`;
 CREATE TABLE `vclub_paused`(
@@ -687,7 +687,7 @@ CREATE TABLE `vclub_paused`(
     `mac` varchar(128) NOT NULL default '',
     `pause_time` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `storage_deny`;
 CREATE TABLE `storage_deny`(
@@ -696,7 +696,7 @@ CREATE TABLE `storage_deny`(
     `counter` int NOT NULL default 0,
     `updated` datetime,
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `rss_cache_weather`;
 CREATE TABLE `rss_cache_weather`(
@@ -708,7 +708,7 @@ CREATE TABLE `rss_cache_weather`(
     INDEX(`crc`),
     UNIQUE KEY (`crc`),
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `rss_cache_horoscope`;
 CREATE TABLE `rss_cache_horoscope`(
@@ -720,7 +720,7 @@ CREATE TABLE `rss_cache_horoscope`(
     INDEX(`crc`),
     UNIQUE KEY (`crc`),
     PRIMARY KEY (`id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `media_category`;
 CREATE TABLE `media_category`(
