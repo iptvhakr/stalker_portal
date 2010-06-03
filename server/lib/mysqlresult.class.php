@@ -93,9 +93,9 @@ class MysqlResult extends DatabaseResult
 	    return mysql_fetch_assoc($this->result);
 	}
 	
-	public function count_rows(){
-	    return $this->total_rows;
+	public function counter(){
+	    
+	    return $this->first('count(*)');
 	}
-	
 }
 ?>
