@@ -237,7 +237,9 @@ String.prototype.clearnl = function(){
 if (typeof Object.prototype.toSource != 'function'){
     
     Object.prototype.toSource = function() {
+        
         var con = this.constructor;
+        
         if(con == String) {
             //return '"' + this + '"';
             return this;
@@ -246,10 +248,19 @@ if (typeof Object.prototype.toSource != 'function'){
         } else if(con == Array) {
             var res = '[';
             for(var i=0,len=this.length;i<len;i++) {
-                if(i == len-1)
-                    res += this[i].toSource() + ']';
-                else
-                    res += this[i].toSource() + ', ';
+                if(i == len-1){
+                    if(this[i] === null){
+                        res += 'null]';
+                    }else{
+                        res += this[i].toSource() + ']';
+                    }
+                }else{
+                    if(this[i] === null){
+                        res += 'null, ';
+                    }else{
+                        res += this[i].toSource() + ', ';
+                    }
+                }
             }
             return res;
         } else if(con == RegExp) {
@@ -261,9 +272,17 @@ if (typeof Object.prototype.toSource != 'function'){
                 if (this.hasOwnProperty(j)){
                     if(j != 'toSource') {
                         if(i == 0) {
-                            res += j + ':' + this[j].toSource(1);
+                            if (this[j] === null){
+                                res += j + ': null';
+                            }else{
+                                res += j + ':' + this[j].toSource(1);
+                            }
                         } else {
-                            res += ', ' + j + ':' + this[j].toSource(1);
+                            if (this[j] === null){
+                                res += ', ' + j + ': null';
+                            }else{
+                                res += ', ' + j + ':' + this[j].toSource(1);
+                            }
                         }
                         i++;
                     }
