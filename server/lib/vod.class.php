@@ -382,15 +382,15 @@ class Vod extends AjaxResponse
             $sortby = $_REQUEST['sortby'];
             
             if ($sortby == 'name'){
-                $result = $result->orderby('name');
+                $result = $result->orderby('video.name');
             }elseif ($sortby == 'added'){
-                $result = $result->orderby('added', 'DESC');
+                $result = $result->orderby('video.added', 'DESC');
             }elseif ($sortby == 'top'){
                 $result->select('(count_first_0_5+count_second_0_5) as top')->orderby('top', 'DESC');
             }
             
         }else{
-            $result = $result->orderby('name');
+            $result = $result->orderby('video.name');
         }
         
         if (@$_REQUEST['fav']){
