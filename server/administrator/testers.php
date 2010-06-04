@@ -15,9 +15,9 @@ $db = Mysql::getInstance();
 
 moderator_access();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
-    exit;
-}
+//if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
+//    exit;
+//}
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
