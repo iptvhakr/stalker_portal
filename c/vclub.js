@@ -398,10 +398,11 @@ _debug('1!!!!!!!!!!!!!!');
     
     vclub.init_sort_menu(
         [
-            {"label" : "по имени", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'}},
-            {"label" : "по добавлению", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'}},
-            {"label" : "по популярности", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'}},
-            {"label" : "только избранное", "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true}}
+            {"label" : "по имени", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false}},
+            {"label" : "по добавлению", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false}},
+            {"label" : "по популярности", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false}},
+            {"label" : "только HD", "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true}},
+            {"label" : "только избранное", "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false}}
         ],
         {
             "offset_x" : 217
