@@ -59,9 +59,9 @@ vclub_info.prototype.init = function(){
     this.main_container = create_block_element('mb_main_filminfo', this.dom_obj);
     
     this.film_title = create_block_element('mb_filminfo_name text25_white shadow_dark2', this.main_container);
-
+    
     var info_container  = create_block_element('mb_filminfo_fullinfo text15_white align_justify', this.main_container);
-
+    
     this.full_info = create_block_element('mb_hidden_overflow', info_container);
     
     this.scrollbar = new scrollbar(info_container, this.full_info, {"height" : 350});
@@ -126,8 +126,13 @@ vclub_info.prototype.shift_page = function(dir){
 
 vclub_info.prototype.bind = function(){
     
-    this.hide.bind(key.EXIT, this);
-    this.hide.bind(key.LEFT, this);
+    this.hide.bind(key.EXIT, this).bind(key.LEFT, this);
+    
+    (function(){
+        this.hide();
+        this.parent.hide();
+        main_menu.show();
+    }).bind(key.MENU, this);
     
     this.shift.bind(key.UP, this, -1);
     this.shift.bind(key.DOWN, this, 1);
