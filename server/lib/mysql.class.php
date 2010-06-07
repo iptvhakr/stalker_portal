@@ -290,6 +290,13 @@ class Mysql
         return $this;
     }
     
+    public function noorderby(){
+        
+        $this->orderby = array();
+        
+        return $this;
+    }
+    
     public function count(){
         
         $this->select = array('count(*)');
