@@ -71,7 +71,7 @@ Layer.prototype.hide = function(do_not_reset){
         this.sidebar && this.sidebar.reset && this.sidebar.reset();
         
         if (this.sidebar && this.sidebar.on){
-            this.sidebar.reset();
+            //this.sidebar.reset();
             this.sidebar.hide();
         }
     }
