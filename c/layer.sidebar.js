@@ -13,12 +13,14 @@ function sidebar(parent, options){
     this.main_container = {};
     
     this.arrows  = {};
+    
     this.lists   = [];
     
     this.cur_list_idx = 0;
 }
 
 sidebar.prototype.show = function(){
+    _debug('sidebar.show');
     
     for (var i=0; i<this.dependency.length; i++){
         this.dependency[i].on && this.dependency[i].hide && this.dependency[i].hide();
@@ -29,12 +31,15 @@ sidebar.prototype.show = function(){
 }
 
 sidebar.prototype.hide = function(){
+    _debug('sidebar.hide');
+    
     this.dom_obj.moveX(720);
     this.on = false;
 }
 
 sidebar.prototype.reset = function(){
     _debug('sidebar.reset');
+    
     for (var i=0; i<this.lists.length; i++){
         this.lists[i].selected = '*';
         this.lists[i].selected_title = '*';
@@ -43,6 +48,41 @@ sidebar.prototype.reset = function(){
     
     this.cur_list_idx = 0;
     this.set_active_list();
+}
+
+sidebar.prototype.full_reset = function(){
+    _debug('sidebar.full_reset');
+    
+    this.reset();
+    
+    try{
+        for (var i=0; i<this.lists.length; i++){
+            //_debug('i', i);
+            
+            for (var j=0; j<this.lists[i].map.length; j++){
+                //_debug('j', j);
+                
+                this.lists[i].map.unshift(this.lists[i].map.pop());
+                
+                if (this.lists[i].map[0].title == '*'){
+                    //_debug('*');
+                    
+                    for (var k=1; k<=4; k++){
+                        this.lists[i].map.unshift(this.lists[i].map.pop());
+                    }
+                    
+                    
+                    this.render_items(i);
+                    break;
+                }
+                
+            }
+        }
+        
+        this.action();
+    }catch(e){
+        _debug(e);
+    }
 }
 
 sidebar.prototype.init = function(){
@@ -126,7 +166,6 @@ sidebar.prototype.fill_items = function(alias, map){
     this.lists[idx].map = map;
     
     this.render_items(idx);
-    
 }
 
 sidebar.prototype.vshift = function(dir){
@@ -274,7 +313,6 @@ sidebar.prototype.action = function(){
         
         this.parent.reset();
         
-        //this.parent.update_header_path([{"alias" : this.lists[i].alias, "title" : this.lists[i].header, "item" : this.lists[i].map[4].title}]);
         this.parent.update_header_path([{"alias" : this.lists[i].alias, "title" : this.lists[i].header, "item" : this.lists[i].selected_title}]);
     }
     
@@ -294,6 +332,8 @@ sidebar.prototype.bind = function(){
     this.set_selected_item.bind(key.OK, this);
     
     this.hide.bind(key.EXIT, this);
+    
+    this.full_reset.bind(key.NUM0, this)
 }
 
 loader.next();
