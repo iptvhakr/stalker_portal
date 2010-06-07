@@ -280,7 +280,7 @@
                 
                 this.hide();
                 main_menu.show();
-            }).bind(key.EXIT, this);
+            }).bind(key.EXIT, this).bind(key.MENU, this);;
             
             (function(){
                 this.hide();
