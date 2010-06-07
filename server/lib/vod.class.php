@@ -394,10 +394,11 @@ class Vod extends AjaxResponse
         }
         
         if (@$_REQUEST['fav']){
-            //var_dump($fav);
-            //$fav = implode(",", $fav);
-            //var_dump($fav);
             $result = $result->in('video.id', $fav);
+        }
+        
+        if (@$_REQUEST['hd']){
+            $result = $result->where(array('hd' => 1));
         }
         
         $this->setResponseData($result);
