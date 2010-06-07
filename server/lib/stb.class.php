@@ -12,7 +12,7 @@ class Stb
     public $mac = '';
     public $ip;
     public $hd  = 0;
-    private $is_moderator = 0;
+    private $is_moderator = false;
     private $params = array();
     private $db;
     
@@ -38,6 +38,10 @@ class Stb
         
         $this->db = Mysql::getInstance();
         $this->getStbParams();
+        
+        if ($this->db->from('moderators')->where(array('mac' => $this->mac))->get()->count() == 1){
+            $this->is_moderator = true;
+        }
     }
     
     public function setId($id){
