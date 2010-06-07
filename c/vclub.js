@@ -297,7 +297,7 @@ _debug('1!!!!!!!!!!!!!!');
             (function(){
                 this.hide();
                 main_menu.show();
-            }).bind(key.EXIT, this).bind(key.LEFT, this);
+            }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
         };
         
         this.check_for_pass = function(){
