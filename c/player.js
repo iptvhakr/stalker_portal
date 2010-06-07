@@ -1027,8 +1027,6 @@ player.prototype.move_pos = function(dir){
     }
     
     if (!this.info.on){
-        //this.set_pos_button_to_cur_time();
-        //this.info.dom_obj.show();
         this.show_info();
     }
     
@@ -1051,17 +1049,11 @@ player.prototype.move_pos = function(dir){
     
     if (this.prev_move_pos_dir != dir){
         this.pos_step = 10;
+        this.next_step = 0;
     }
     
     this.prev_move_pos_dir = dir;
     
-    if (dir>0){
-        this.pos_step = 2*this.pos_step;
-        this.next_step = this.pos_step;
-    }else{
-        this.pos_step = 2*this.pos_step;
-        this.next_step = -this.pos_step;
-    }
     
     _debug('this.next_step', this.next_step);
     
@@ -1069,21 +1061,21 @@ player.prototype.move_pos = function(dir){
         this.diff_pos = this.cur_media_length - this.cur_pos_time;
     }else if ((this.diff_pos+this.next_step+this.cur_pos_time) < 0){
         this.diff_pos = -this.cur_pos_time;
+    }else{
+        this.next_step += this.pos_step;
     }
     
-    this.diff_pos += this.next_step;
+    if (dir>0){
+        this.diff_pos += this.next_step;
+    }else{
+        this.diff_pos -= this.next_step;
+    }
     
     _debug('this.diff_pos', this.diff_pos);
     
     var new_pos_time = this.cur_pos_time + this.diff_pos;
     
     _debug('new_pos_time', new_pos_time);
-    
-    if (new_pos_time > this.cur_media_length){
-        new_pos_time = this.cur_media_length;
-    }else if (new_pos_time < 0){
-        new_pos_time = 0;
-    }
     
     try{
         this.set_pos_button(new_pos_time);
