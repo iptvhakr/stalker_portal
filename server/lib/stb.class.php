@@ -28,7 +28,11 @@ class Stb
     
     private function __construct(){
         
-        $this->mac = @trim(urldecode($_COOKIE['mac']));
+        if (!empty($_COOKIE['mac'])){
+            $this->mac = @trim(urldecode($_COOKIE['mac']));
+        }else if (!empty($_REQUEST['mac'])){
+            $this->mac = @trim(urldecode($_REQUEST['mac']));
+        }
         
         if (@$_SERVER['HTTP_X_REAL_IP']){
             $this->ip = $_SERVER['HTTP_X_REAL_IP'];
