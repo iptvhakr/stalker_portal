@@ -139,6 +139,10 @@ _debug('1!!!!!!!!!!!!!!');
                 this.search_box && this.search_box.reset && this.search_box.reset();
             }
             
+            this.search_box.on && this.search_box.hide && this.search_box.hide();
+            this.sort_menu.on && this.sort_menu.hide && this.sort_menu.hide();
+            this.view_menu.on && this.view_menu.hide && this.view_menu.hide();
+            
             this.superclass.hide.call(this, do_not_reset);
         };
         
@@ -268,7 +272,7 @@ _debug('1!!!!!!!!!!!!!!');
             this.info.init();
             this.info.bind();
             
-            this.full_info_switch.bind(key.RIGHT, this);
+            this.full_info_switch.bind(key.RIGHT, this).bind(key.INFO, this);
 
             var color_buttons = this.buttons_bar.cloneNode(true);
             
