@@ -81,7 +81,9 @@ Layer.prototype.hide = function(do_not_reset){
     this.on = false;
 }
 
-Layer.prototype.reset = function(){    
+Layer.prototype.reset = function(){
+    _debug('Layer.reset');
+    
     this.cur_row = 0;
     this.cur_page = 1;
     this.page_dir = 1;
@@ -216,6 +218,7 @@ Layer.prototype.create_block = function(class_name, is_active){
 }
 
 Layer.prototype.load_data = function(){
+    _debug('Layer.load_data');
     
     this.load_params['p'] = this.cur_page;
     
@@ -424,6 +427,11 @@ Layer.prototype.bind = function(){
     
     this.shift_page.bind(key.PAGE_PREV, this, -1);
     this.shift_page.bind(key.PAGE_NEXT, this, 1);
+    
+    (function(){
+        this.hide();
+        main_menu.show();
+    }).bind(key.MENU, this).bind(key.EXIT, this).bind(key.LEFT, this);
 }
 
 Layer.prototype.init_color_buttons = function(map){
@@ -449,7 +457,7 @@ Layer.prototype.init_color_buttons = function(map){
     table += '</table>';*/
     
     var table = document.createElement('table');
-    this.buttons_bar.appendChild(table);
+    //this.buttons_bar.appendChild(table);
     
     var row = document.createElement('tr');
     table.appendChild(row);
@@ -491,8 +499,7 @@ Layer.prototype.init_color_buttons = function(map){
     if (typeof(map[3].cmd) == 'function'){
         map[3].cmd.bind(key.BLUE, this);
     }
-    
-    //this.buttons_bar.innerHTML = table;
+       
     this.buttons_bar.appendChild(table);
     
     this.dom_obj.appendChild(this.buttons_bar);
