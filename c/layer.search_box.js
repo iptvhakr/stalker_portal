@@ -697,7 +697,7 @@ search_box.prototype.vshift = function(dir){
 }
 
 search_box.prototype.action = function(type){
-    _debug('search_box.action');
+    _debug('search_box.action', type);
     
     if (type == 'del'){
         this.del();
@@ -707,12 +707,18 @@ search_box.prototype.action = function(type){
     
     this.parent.load_params.search = this.search_input.innerHTML;
     
-    if (this.parent.on && (this.search_input.innerHTML.length >= 3 || this.search_input.innerHTML.length == 0)){
-        
-        this.parent.update_header_path([{"alias" : "search", "item" : this.search_input.innerHTML}]);
-        
-        this.parent.reset();
-        this.parent.load_data();
+    _debug('this.search_input.innerHTML.length', this.search_input.innerHTML.length);
+    
+    try{
+        if (this.parent.on && (this.search_input.innerHTML.length >= 3 || this.search_input.innerHTML.length == 0)){
+            
+            this.parent.update_header_path([{"alias" : "search", "item" : this.search_input.innerHTML}]);
+            
+            this.parent.reset();
+            this.parent.load_data();
+        }
+    }catch(e){
+        _debug(e);
     }
 }
 
@@ -746,7 +752,7 @@ search_box.prototype.bind = function(){
     this.hshift.bind(key.LEFT, this, -1);
     this.hshift.bind(key.RIGHT, this, 1);
     
-    this.action.bind(key.BACK, this, 'del');
+    this.action.bind(key.BACK, this, 'del').bind(key.NUM0, this, 'del');
     
     this.action.bind(key.OK, this);
     
