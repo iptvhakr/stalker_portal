@@ -103,29 +103,34 @@ function common_xpcom(){
     }
     
     this.load = function(params, callback, context){
-        _debug('this.load()');
+        _debug('stb.load()');
         _debug('params:', params);
         
         var context = context || window;
         
-        JsHttpRequest.query(
-            
-            this.ajax_loader,
-            
-            params,
-            
-            function(result, errors){
-                _debug('callback');
-                _debug(errors);
-                try{
-                    callback.call(context, result);
-                }catch(e){
-                    _debug(e);
-                }
-            },
-            
-            true
-        );
+        
+        try{
+            JsHttpRequest.query(
+                
+                this.ajax_loader,
+                
+                params,
+                
+                function(result, errors){
+                    _debug('callback');
+                    _debug(errors);
+                    try{
+                        callback.call(context, result);
+                    }catch(e){
+                        _debug(e);
+                    }
+                },
+                
+                true
+            );
+        }catch(e){
+            _debug(e);
+        }
     }
     
     this.preload_images = function(){
