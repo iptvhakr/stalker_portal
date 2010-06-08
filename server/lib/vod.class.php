@@ -8,7 +8,7 @@
 
 class Vod extends AjaxResponse
 {
-    public static $instance = NULL;
+    private static $instance = NULL;
     
     public static function getInstance(){
         if (self::$instance == NULL)
@@ -351,7 +351,7 @@ class Vod extends AjaxResponse
         
         $search = array();
         
-        if (@$_REQUEST['search']){
+        if (!empty($_REQUEST['search'])){
             
             $letters = $_REQUEST['search'];
             
