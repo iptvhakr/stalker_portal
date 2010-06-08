@@ -43,6 +43,9 @@ function player(){
     this.on_create_link = function(){};
     this.last_storage_id = 0;
     
+    this.hist_ch_idx = [0,0];
+    this.hist_f_ch_idx = [0,0];
+    
     this.init();
     this.init_pause();
     this.init_show_info();
@@ -454,10 +457,25 @@ player.prototype.play = function(item){
         
         this.play_now(cmd);
         
+        if (this.is_tv){
+            if (stb.user.fav_itv_on){
+                this.hist_f_ch_idx.push(item);
+                this.hist_f_ch_idx.shift();
+                _debug('this.hist_f_ch_idx', this.hist_f_ch_idx);
+            }else{
+                this.hist_ch_idx.push(item);
+                this.hist_ch_idx.shift();
+                _debug('this.hist_ch_idx', this.hist_ch_idx);                
+            }
+        }
+        
     }else if (cmd.indexOf('usbdisk') > 0){
         
         this.play_now(cmd);
         
+    }else if (stb.cur_place == 'karaoke'){
+        
+        this.create_link('karaoke', cmd);
     }else{
         
         var series_number = item.cur_series || 0;
@@ -903,7 +921,13 @@ player.prototype.bind = function(){
     this.show_quick_ch_switch.bind(key.NUM9, this, 9);
     this.show_quick_ch_switch.bind(key.NUM0, this, 0);
     
-    this.del_quick_go_ch.bind(key.BACK, this);
+    (function(){
+        if (this.quick_ch_switch.on){
+            this.del_quick_go_ch();
+        }else{
+            this.hist_back();
+        }
+    }).bind(key.BACK, this);
     
     this.change_aspect.bind(key.FRAME, this);
     
@@ -1253,6 +1277,23 @@ player.prototype.change_aspect = function(){
         
         this
     )
+}
+
+player.prototype.hist_back = function(){
+    
+    this.need_show_info = 1;
+    
+    var item;
+    
+    if (stb.user.fav_itv_on){
+        item = this.hist_f_ch_idx[0];
+    }else{
+        item = this.hist_ch_idx[0];
+    }
+    
+    if (!empty(item)){
+        this.play(item);
+    }
 }
 
 /*
