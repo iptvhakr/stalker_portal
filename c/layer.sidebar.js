@@ -150,6 +150,7 @@ sidebar.prototype.init_items = function(alias){
 }
 
 sidebar.prototype.fill_items = function(alias, map){
+    _debug('sidebar.fill_items', alias, map);
     
     var idx = this.lists.getIdxByVal("alias", alias);
     
