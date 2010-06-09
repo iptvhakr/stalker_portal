@@ -7,11 +7,14 @@
     width: 720px;
     height: 576px;
     background-image: url("i/bg.png");
+    font-family: "Myriad Pro Cond", sans-serif;
+    /*font-family: "Myriad Pro", sans-serif;*/
 }
 
 .main_menu div
 {
-    font: 30px "Arial";
+    /*font: 30px "Arial";*/
+    font-size: 30px;
 	color: #808d9c;
 }
 
