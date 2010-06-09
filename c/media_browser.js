@@ -280,12 +280,12 @@
                 
                 this.hide();
                 main_menu.show();
-            }).bind(key.EXIT, this).bind(key.MENU, this);;
+            }).bind(key.EXIT, this);
             
             (function(){
                 this.hide();
                 main_menu.show();
-            }).bind(key.LEFT, this);
+            }).bind(key.LEFT, this).bind(key.MENU, this);
         };
     }
     
