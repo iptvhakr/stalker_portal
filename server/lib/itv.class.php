@@ -13,7 +13,7 @@ class Itv extends AjaxResponse
     public static function getInstance(){
         if (self::$instance == NULL)
         {
-            self::$instance = new Itv();
+            self::$instance = new self;
         }
         return self::$instance;
     }
@@ -204,8 +204,6 @@ class Itv extends AjaxResponse
     }
     
     private function getData(){
-        
-        
         
         $offset = $this->page * MAX_PAGE_ITEMS;
         
