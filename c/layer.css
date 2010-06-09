@@ -258,6 +258,7 @@
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-family: "Myriad Pro Cond", sans-serif;
 }
 
 .mb_header_info{
@@ -321,6 +322,7 @@
     bottom: 0px;
     left: 0;
     background: url("i/osd_bg.png");
+    z-index: 100;
 }
 
 
@@ -399,6 +401,7 @@
     position: absolute;
     left: 70px;
 	top: 70px;
+	z-index: 2;
 }
 
 .volume_bar{
