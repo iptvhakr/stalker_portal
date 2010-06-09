@@ -16,6 +16,7 @@ function player(){
     
     this.start_time;
     this.cur_media_item;
+    this.cur_tv_item;
     this.need_show_info = 0;
     
     this.pause = {"on" : false};
@@ -126,7 +127,7 @@ player.prototype.event_callback = function(event){
             }
             
             if (this.is_tv){
-                this.send_last_tv_id(this.cur_media_item.id);
+                this.send_last_tv_id(this.cur_tv_item.id);
             }
             
             window.clearTimeout(this.send_played_video_timer);
@@ -372,8 +373,12 @@ player.prototype.define_media_type = function(cmd){
     
     if (cmd.indexOf('://') > 0){
         
-        if (cmd.indexOf('udp://') || cmd.indexOf('rtp://')){
+        _debug('stb.cur_place', stb.cur_place);
+        
+        if ((cmd.indexOf('udp://') || cmd.indexOf('rtp://')) && stb.cur_place != 'radio'){
             this.is_tv = true;
+        }else{
+            this.is_tv = false;
         }
         
         return 'stream';
@@ -386,7 +391,7 @@ player.prototype.define_media_type = function(cmd){
 player.prototype.play_last = function(){
     _debug('player.play_last');
     
-    this.play(this.cur_media_item);
+    this.play(this.cur_tv_item);
 }
 
 player.prototype.first_play = function(){
@@ -450,6 +455,10 @@ player.prototype.play = function(item){
     _debug('cmd: ', cmd);
     
     this.media_type = this.define_media_type(cmd);
+    
+    if (this.is_tv){
+        this.cur_tv_item = item;
+    }
     
     _debug('player.media_type: ', this.media_type);
     
@@ -620,7 +629,16 @@ player.prototype.show_info = function(item){
     
     try{
         
-        if(this.is_tv){
+        if (stb.cur_place == 'radio'){
+            if (!this.info.epg.isHidden()){
+                this.info.epg.hide();
+            }
+            
+            if (!this.info.video_container.isHidden()){
+                this.info.video_container.hide();
+            }
+            
+        }else if(this.is_tv){
             if (this.info.epg.isHidden()){
                 this.info.epg.show();
             }
@@ -664,11 +682,11 @@ player.prototype.show_info = function(item){
             title = item.number + '. ';
         }
         
-        title += item.name
+        title += item.name;
         
         this.info.title.innerHTML = title;
         
-        if (this.is_tv){
+        if (!this.info.epg.isHidden()){
             this.info.epg.innerHTML = stb.epg_loader.get_epg(item.id);
         }
         
@@ -682,7 +700,7 @@ player.prototype.show_info = function(item){
         
         this.info.hide_timeout = window.setTimeout(function(){
             self.info.dom_obj.hide();
-            self.info.on = false
+            self.info.on = false;
         },
         this.info.hide_timer);
     }catch(e){
