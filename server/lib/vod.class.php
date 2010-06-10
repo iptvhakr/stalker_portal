@@ -133,6 +133,9 @@ class Vod extends AjaxResponse
                                array(
                                     'count' => $today_record['count'] + 1,
                                     'date'  => date('Y-m-d')
+                               ),
+                               array(
+                                    'id' => $today_record['id']
                                ));
             
         }
