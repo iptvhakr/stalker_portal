@@ -289,8 +289,17 @@ class Itv extends AjaxResponse
             
             $this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
             
-            $this->response['data'][$i]['epg'] = $epg->getCurProgramAndFiveNext($this->response['data'][$i]['id']);
+            $next_five_epg = $epg->getCurProgramAndFiveNext($this->response['data'][$i]['id']);
             
+            $cur_playing = '[Расписание отсутствует]';
+            
+            if (!empty($next_five_epg)){
+                $cur_playing = $next_five_epg[0]['t_time'].' '.$next_five_epg[0]['name'];
+            }
+            
+            $this->response['data'][$i]['cur_playing'] = $cur_playing;
+            
+            $this->response['data'][$i]['epg'] = $next_five_epg;
         }
 
         return $this->response;
