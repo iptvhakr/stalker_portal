@@ -36,7 +36,7 @@ function _debug(){
 }
 
 function _log(action, param){
-
+    
     var param = param || '';
     
     stb.load(
