@@ -561,7 +561,8 @@ player.prototype.stop = function(){
     }catch(e){}
     
     if (this.media_type == 'file'){
-        stb.Umount();
+        //stb.Umount();
+        this.umount_timer = window.setTimeout(function(){stb.Umount()}, 500);
     }
     
     window.clearTimeout(this.send_played_itv_timer);
