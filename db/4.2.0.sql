@@ -1,0 +1,1 @@
+ALTER TABLE `epg` ADD INDEX `epg_ch_id_time` (`ch_id`, `time`);
