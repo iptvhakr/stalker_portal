@@ -526,12 +526,12 @@ player.prototype.create_link = function(type, uri, series_number){
 }
 
 player.prototype.play_now = function(uri){
-    _debug('player.play_now');
+    _debug('player.play_now', uri);
     
     _log('play', uri);
     
     this.start_time = Date.parse(new Date())/1000;
-
+    
     if (this.need_show_info){
         this.show_info(this.cur_media_item);
     }
