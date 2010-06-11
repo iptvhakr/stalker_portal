@@ -595,8 +595,10 @@ function common_xpcom(){
                     cur_place_num = 4;
                 }else if(this.cur_place == 'video_clips'){ // Video Clips
                     cur_place_num = 8;
-                }else if(cur_place == 'ad'){
+                }else if(this.cur_place == 'ad'){
                     cur_place_num = 9;
+                }else if(this.cur_place == 'media_browser'){
+                    cur_place_num = 10;
                 }
             }
         }else{
