@@ -237,7 +237,9 @@ function common_xpcom(){
             set_updated_places(this.user['updated'])
             epg_loader.start()*/
             
-            this.mount_home_dir(this.user['storages']);
+            //this.mount_home_dir(this.user['storages']);
+            this.storages = this.user['storages'];
+            stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
             
             this.load_channels();
             this.load_fav_channels();
@@ -274,8 +276,33 @@ function common_xpcom(){
         }
     }
     
-    this.show_image_version = function(){
-        $('ver').innerHTML = $('ver').innerHTML + '(' + this.get_image_version() + ')';
+    this.Mount = function(link_cmd){
+        _debug('stb.Mount', link_cmd);
+        
+        this.mounted_storage = link_cmd.replace( /[\s\S]*\/media\/(\S+)\/(\S+)/ , "$1");
+        
+        _debug('stb.mounted_storage', this.mounted_storage);
+        try{
+            gSTB.ExecAction('make_dir /media/'+this.mounted_storage);
+            var mount_cmd = '"' + this.storages[this.mounted_storage]['storage_ip'] + ':' + this.storages[this.mounted_storage]['nfs_home_path'] + this.mac + '" /media/' + this.mounted_storage;
+            gSTB.ExecAction('mount_dir '+mount_cmd);
+        }catch(e){
+            _debug(e);
+        }
+    }
+    
+    this.Umount = function(){
+        _debug('stb.Umount()');
+        _debug('stb.mounted_storage', this.mounted_storage);
+        
+        if (this.mounted_storage){
+            try{
+                gSTB.ExecAction('umount_dir /media/'+this.mounted_storage);
+                this.mounted_storage = '';
+            }catch(e){
+                _debug(e);
+            }
+        }
     }
     
     this.get_image_version = function(){
