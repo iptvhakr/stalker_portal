@@ -18,6 +18,7 @@ var main_menu = {
         this.dom_obj.show();
         this.on = true;
         this.render();
+        stb.set_cur_place('main_menu');
     },
     
     hide : function(){
@@ -53,6 +54,9 @@ var main_menu = {
         this.main_menu_time = create_inline_element('main_menu_time' ,this.main_menu_date_bar);
         
         this.cur_weather = create_block_element('main_menu_cur_weather', this.dom_obj);
+        
+        var main_menu_ver = create_block_element('main_menu_ver', this.dom_obj);
+        main_menu_ver.innerHTML = ver + ' (' + stb.get_image_version() + ')';
         
         this.vert_container = create_block_element('main_menu_vert_container', this.dom_obj);
         
