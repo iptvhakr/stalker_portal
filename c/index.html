@@ -79,16 +79,23 @@
 
 <script type="text/javascript">
 
-var ver = '4.0.0';
-var debug = 1;
+var ver = '4.2.0 b';
+var debug = 0;
 var stb;
 var stbEvent;
+var _GET = {};
 
 var module = {};
 
 window.onerror = function(msg, url, lno){
     _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
     return true;
+}
+
+get_params();
+
+if (_GET.hasOwnProperty('debug')){
+    debug = 1;
 }
 
 window.onload = init;
