@@ -1,4 +1,97 @@
 /* TV */
+
+#tv .name_block{
+    color: #fff;
+    font-size: 20px;
+    text-shadow: #122946 0 -1px 0;
+    margin: 3px 0 0 3px;
+    padding-left: 3px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*float: left;*/
+    /*width: 209px;*/
+}
+
+#tv .active_name_block{
+    font-size: 22px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+    /*margin-top: 8px;
+    margin-right: 25px;*/
+    margin: 0 0 0 0;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+    width: 290px;
+    height: 22px;
+}
+
+#tv .short_container .active_name_block{
+    width: auto;
+    margin-top: 8px;
+}
+
+#tv .wide_container .blue_row_bg{
+    position: absolute;
+    left: 49px;
+    top: 72px;
+    /*width: 622px;*/
+    width: 253px;
+    height: 30px;
+    background-image: url("i/mb_table.png");
+    background-position: 0 -180px;
+    padding-right: 370px;
+}
+
+.cur_playing_block{
+    /*color: #fff;
+    font-size: 20px;
+    text-shadow: #122946 0 -1px 0;*/
+    font-size: 17px;
+    color: #bbc4d2;
+    margin: 0px 0 0 3px;
+    padding-left: 5px;
+    padding-top: 5px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /*float: right;*/
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 360px;
+    /*width: 312px;*/
+    /*float: left;*/
+    /*background-image: url("i/mb_table.png");
+    background-position: -253px -180px;
+    height: 30px;*/
+}
+
+.short_container .cur_playing_block{
+    display: none;
+}
+
+.short_container .active_cur_playing_block{
+    display: none;
+}
+
+.active_cur_playing_block{
+    /*font-size: 22px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;*/
+    font-size: 18px;
+    color: #284b82;
+    /*margin-top: 8px;
+    margin-right: 25px;*/
+    white-space: pre;
+    overflow: hidden;
+    width: 500px;
+    float: left;
+    text-overflow: ellipsis;
+}
+
 .tv_timetable{
     position: absolute;
     width: 320px;
