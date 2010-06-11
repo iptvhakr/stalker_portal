@@ -132,6 +132,8 @@ player.prototype.event_callback = function(event){
             
             window.clearTimeout(this.send_played_video_timer);
             
+            _debug('stb.cur_place', stb.cur_place);
+            
             if (stb.cur_place == 'vclub'){
                 
                 var time_send_played = (this.cur_media_length*0.7)*1000
@@ -514,6 +516,8 @@ player.prototype.create_link = function(type, uri, series_number){
             
             _debug('this.last_storage_id', this.last_storage_id);
             
+            stb.Mount(result.cmd);
+            
             this.on_create_link && this.on_create_link(result);
         },
         
@@ -555,6 +559,10 @@ player.prototype.stop = function(){
     try{
         stb.Stop();
     }catch(e){}
+    
+    if (this.media_type == 'file'){
+        stb.Umount();
+    }
     
     window.clearTimeout(this.send_played_itv_timer);
     window.clearTimeout(this.send_played_video_timer);
