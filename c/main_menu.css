@@ -153,6 +153,15 @@
     margin-right: 60px;
 }
 
+.main_menu_ver
+{
+    position: absolute;
+    right: 60px;
+    top: 520px;
+    font-size: 21px  !important;
+    color: #ccd6de  !important;
+}
+
 .main_menu_cur_weather
 {
     position: absolute;
