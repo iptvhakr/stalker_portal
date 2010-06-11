@@ -99,6 +99,8 @@ Layer.prototype.init = function(){
     
     this.dom_obj.addClass(this.class_name);
     
+    this.dom_obj.id = this.layer_name;
+    
     this.init_page_bar();
     this.init_list();
 }
