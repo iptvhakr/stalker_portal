@@ -79,7 +79,7 @@
 
 <script type="text/javascript">
 
-var ver = '4.2.0 b';
+var ver = '4.2.0';
 var debug = 0;
 var stb;
 var stbEvent;
@@ -200,12 +200,10 @@ function init(){
                  ]
     }*/
     
-    var map = [];
-    
     stb.init();
 
     try{
-        main_menu.init(map);
+        main_menu.init();
     }catch(e){
         _debug(e);
     }
