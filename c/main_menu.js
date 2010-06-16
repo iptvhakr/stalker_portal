@@ -2,16 +2,10 @@ var main_menu = {
     
     on : true,
     map : [],
-    menu_offset : [100,250,400],
-    hide_sub_t : 0,
-    active_sub : 0,
+    cells : [],
     dom_obj : {},
-    hor_menu_obj : {},
-    vert_trans : {},
-    cur_weather : {},
-    main_menu_date_bar : {},
-    main_menu_date : {},
-    main_menu_time : {},
+    date : {},
+    time : {},
     
     show : function(){
         _debug('main_menu.show');
@@ -19,6 +13,7 @@ var main_menu = {
         this.on = true;
         this.render();
         stb.set_cur_place('main_menu');
+        stb.clock.show();
     },
     
     hide : function(){
@@ -27,7 +22,7 @@ var main_menu = {
         this.on = false;
     },
     
-    init : function(map){
+    init : function(){
         _debug('main_menu.init');
         
         this.hshift.bind(key.LEFT, main_menu, -1);
@@ -43,111 +38,118 @@ var main_menu = {
             stb.player.play_last();
         }).bind(key.EXIT, this);
         
-        this.map = map;
-        
         this.dom_obj = create_block_element('main_menu', document.body);
         
         this.main_menu_date_bar = create_block_element('main_menu_date_bar', this.dom_obj);
         
-        this.main_menu_date = create_inline_element('main_menu_date' ,this.main_menu_date_bar);
+        this.date = create_inline_element('main_menu_date' ,this.main_menu_date_bar);
         
-        this.main_menu_time = create_inline_element('main_menu_time' ,this.main_menu_date_bar);
+        this.time = create_inline_element('main_menu_time' ,this.main_menu_date_bar);
         
-        this.cur_weather = create_block_element('main_menu_cur_weather', this.dom_obj);
+        //this.cur_weather = create_block_element('main_menu_cur_weather', this.dom_obj);
         
         var main_menu_ver = create_block_element('main_menu_ver', this.dom_obj);
         main_menu_ver.innerHTML = ver + ' (' + stb.get_image_version() + ')';
         
-        this.vert_container = create_block_element('main_menu_vert_container', this.dom_obj);
+        var mm_menu_hor = create_block_element('mm_menu_hor', this.dom_obj);
         
-        this.vert_trans = create_block_element('main_menu_vert_trans', this.dom_obj);
+        var cell;
         
-        this.reconstruct_sub();
+        for (var i=0; i<=2; i++){
+            
+            var style_class = 'menu_hor_cell';
+            
+            if (i == 1){
+                style_class = 'menu_hor_cell_act';
+            }
+            
+            cell = create_block_element(style_class, mm_menu_hor);
+            
+            this.cells.push({"img_dom_obj" : create_block_element('menu_hor_cell_img', cell), "title_dom_obj" : create_inline_element('', cell)});
+        }
         
-        this.hor_menu_obj = create_block_element('main_menu_hor', this.dom_obj);
+        create_block_element('mm_hor_left', this.dom_obj);
+        create_block_element('mm_hor_right', this.dom_obj);
         
-        create_block_element('main_menu_hor_left', this.dom_obj);
+        this.empty_vert_menu = create_block_element('mm_menu_vert_empty', this.dom_obj);
+        this.empty_vert_menu.hide();
         
-        create_block_element('main_menu_hor_right', this.dom_obj);
+        this.mm_menu_vert = create_block_element('mm_menu_vert', this.dom_obj);
+        this.vert_body = create_block_element('mm_menu_vert_body', this.mm_menu_vert);
         
-        this.build();
+        //this.vert_container = create_block_element('mm_vert_container', this.vert_body);
+        
+        create_block_element('mm_menu_vert_bottom', this.mm_menu_vert);
+        
+        
+        //this.build();
         
         main_menu.hide()
     },
     
     build : function(){
+        _debug('main_menu.build');
         
         this.clear_menu();
         
+        var sub_menu_item;
+        
         for(var i=0; i<this.map.length; i++){
-            var menu_item = create_block_element();
-            menu_item.id = 'menu_item_'+(i+1);
-            menu_item.innerHTML = this.map[i]['title']+"<br/>";
             
-            /*var img = document.createElement('img');
-            img.src = 'i/menu_item_img_'+(i+1)+'.png';
-            menu_item.appendChild(img);*/
-            
-            if(typeof(this.menu_offset[i]) == 'number'){
-                menu_item.moveX(this.menu_offset[i]);
-            }else{
-                menu_item.moveX(0);
+            if (i<3){
+                this.cells[i].img_dom_obj.style.background = 'url('+this.map[i].img+')';
+                this.cells[i].title_dom_obj.innerHTML = this.map[i].title;
             }
             
-            if (i == 1){
-                menu_item.setClass('main_menu_active');
+            this.map[i].sub_obj = create_block_element('mm_vert_container', this.vert_body);
+            this.map[i].sub_items_dom_obj = [];
+            
+            var total_items = 6;
+            
+            if (this.map[i].sub.length < 6){
+                total_items = this.map[1].sub.length;
             }
             
-            this.map[i]['dom_obj'] = menu_item;
-            this.map[i]['dom_obj_id'] = menu_item.id;
-            this.hor_menu_obj.appendChild(menu_item);
-          
-            var sub_menu = document.createElement('div');
-            sub_menu.id = 'sub_menu_'+(i+1);
-            this.map[i]['sub_obj'] = sub_menu;
-            this.map[i]['sub_obj_id'] = sub_menu.id;
-            sub_menu.setClass('main_menu_vert');
-
-            if (i == 2){
-                sub_menu.show();
-            }else{
-                sub_menu.hide();
-            }
+            this.map[i].active_sub = Math.ceil(total_items/2)-1;
             
-            this.dom_obj.insertBefore(sub_menu, this.vert_trans);
+            /*if (this.map[i].sub.length > 0){
+                for (var k=0; k<this.map[i].active_sub; k++){
+                    this.map[i].sub.unshift(this.map[i].sub.pop());
+                }
+            }*/
             
             for (var j=0; j<this.map[i].sub.length; j++){
-                var sub_menu_item = document.createElement('div');
-                sub_menu_item.innerHTML = this.map[i].sub[j].title;
-                
-                this.map[i].sub[j]['sub_punct_obj'] = sub_menu_item;
-                
-                if (this.map[i].sub[j].hasOwnProperty('cut')){
-                    sub_menu_item.style.borderBottom = '2px solid #667b8e';
+                if (j<6){
+                    sub_menu_item = create_block_element('', this.map[i].sub_obj);
+                    sub_menu_item.innerHTML = this.map[i].sub[j].title;
+                    this.map[i].sub_items_dom_obj.push(sub_menu_item);
+                    
+                    if (j == this.map[i].active_sub){
+                        sub_menu_item.setClass('active');
+                    }
                 }
+            }
+            
+            if (i != 1){
+                this.map[i].sub_obj.hide();
                 
-                sub_menu.appendChild(sub_menu_item);
+                if (this.map[i].sub.length > 0){
+                    this.sub_menu_show();
+                }else{
+                    this.sub_menu_hide();
+                }
             }
         }
+        
+        this.active_sub = this.map[1].active_sub;
     },
     
     render : function(){
+        _debug('main_menu.render');
         
-        var offset = 250 - this.map[0]['dom_obj'].clientWidth - 20;
-        
-        this.map[0]['dom_obj'].moveX(offset);
-        this.map[0]['dom_obj'].setClass('main_menu_passive');
-        
-        this.map[1]['dom_obj'].moveX(250);
-        this.map[1]['dom_obj'].setClass('main_menu_active');
-        
-        offset = 250 + this.map[1]['dom_obj'].clientWidth + 20;
-        
-        this.map[2]['dom_obj'].moveX(offset);
-        this.map[2]['dom_obj'].setClass('main_menu_passive');
-        
-        for(var i=3; i<this.map.length; i++){
-            this.map[i]['dom_obj'].moveX(-200);
+        for (var i=0; i<=2; i++){
+            this.cells[i].img_dom_obj.style.background = 'url('+this.map[i].img+')';
+            this.cells[i].title_dom_obj.innerHTML = this.map[i].title;
         }
         
         var self = this;
@@ -156,23 +158,29 @@ var main_menu = {
             window.clearTimeout(this.hide_sub_t);
         }
         
-        this.hide_sub_t = window.setTimeout(function(){self.show_sub()}, 500);
+        //this.hide_sub_t = window.setTimeout(function(){self.map[1].sub_obj.show()}, 500);
+        this.hide_sub_t = window.setTimeout(function(){self.sub_menu_show()}, 500);
+        
     },
     
-    show_sub : function(){
-        
-        for (var i=0; i<this.map.length; i++){
-            if (!this.map[i].sub_obj.isHidden()){
-                this.map[i].sub_obj.hide();
-            }
+    sub_menu_hide : function(){
+        this.map[1].sub_obj.hide();
+        this.mm_menu_vert.hide();
+        this.empty_vert_menu.show();
+    },
+    
+    sub_menu_show : function(){
+        if (this.map.hasOwnProperty(1) && this.map[1].sub.length > 0){
+            this.map[1] && this.map[1].sub_obj && this.map[1].sub_obj.show();
+            this.mm_menu_vert.show();
+            this.empty_vert_menu.hide();
         }
-        
-        this.map[1].sub_obj.show();
-        
-        this.render_sub();
     },
     
     hshift : function(dir){
+        
+        //this.map[1].sub_obj.hide();
+        this.sub_menu_hide();
         
         if (dir > 0){
             this.map.push(this.map.shift());
@@ -201,90 +209,30 @@ var main_menu = {
     
     render_sub : function(){
         
-        var offset = 0;
-        var total_items = 0;
-        var max_container_width = 0;
-        
-        if (this.map[1].sub.length < 7){
-            total_items = this.map[1].sub.length;
+        /*if (this.map[1].sub.length < 6){
+            var total_items = this.map[1].sub.length;
         }else{
-            total_items = 7;
+            var total_items = 6;
         }
         
-        this.active_sub = Math.ceil(total_items/2)-1;
+        this.active_sub = Math.ceil(total_items/2)-1;*/
+        
+        this.active_sub = this.map[1].active_sub;
         
         for (var i=0; i<this.map[1].sub.length; i++){
             
-            if (i<7){
-                
-                if (i==0){
-                    this.map[1].sub[i]['sub_punct_obj'].setClass('sub_menu_punct_alpha1');
-                }else if (i==1){
-                    this.map[1].sub[i]['sub_punct_obj'].setClass('sub_menu_punct_alpha2');
-                }else{
-                    this.map[1].sub[i]['sub_punct_obj'].setClass('sub_menu_punct');
-                }
-                
-                if (i == this.active_sub){
-                    this.map[1].sub[i]['sub_punct_obj'].setClass('sub_menu_active');
-                }
-                
-                if (this.map[1].sub[i]['sub_punct_obj'].clientWidth > max_container_width){
-                    max_container_width = this.map[1].sub[i]['sub_punct_obj'].clientWidth;
-                }
-                
-                offset = this.map[1].sub_obj.offsetTop - (total_items-i)*this.map[1].sub[i]['sub_punct_obj'].clientHeight;
-                
-                this.map[1].sub[i]['sub_punct_obj'].moveY(offset);
-            }else{
-                this.map[1].sub[i]['sub_punct_obj'].moveY(-100);
-            }
-        }
-        
-        if (this.map[1].sub[0] && isNaN(parseInt(this.map[1].sub[0]['sub_punct_obj'].style.width))){
-            for (var j=0; j<this.map[1].sub.length; j++){
-                this.map[1].sub[j]['sub_punct_obj'].style.width = max_container_width-30 + 'px';
-            }
-        }
-        
-        if (this.map[1].sub[0]){
-            this.vert_container.style.height = total_items*this.map[1].sub[0]['sub_punct_obj'].clientHeight + 'px';
-            this.vert_container.style.width = 4 + max_container_width + 'px';
-            this.vert_trans.style.height = total_items*this.map[1].sub[0]['sub_punct_obj'].clientHeight + 'px';
-        }else{
-            this.vert_container.style.height = 0;
-            this.vert_trans.style.height = 0;
-        }
-    },
-    
-    reconstruct_sub : function(){
-        
-        var shift_items_count = 0;
-        
-        for(var i=0; i<this.map.length; i++){
-            
-            if (this.map[i].sub.length > 0){
-                this.map[i].sub[this.map[i].sub.length-1]['cut'] = 1;
+            if (i<6){
+                this.map[1].sub_items_dom_obj[i].innerHTML = this.map[1].sub[i].title;
             }
             
-            if(this.map[i].sub.length < 7){
-                shift_items_count = Math.floor(this.map[i].sub.length / 2)
-                
-                if (Math.isEven(this.map[i].sub.length)){
-                    shift_items_count --;
-                }
-            }else{
-                shift_items_count = 3;
-            }
-            
-            for (var j=1; j<=shift_items_count; j++){
-                this.map[i].sub.unshift(this.map[i].sub.pop());
-            }
+            /*if (i == this.active_sub){
+                this.map[1].sub_items_dom_obj[i].setClass('active');
+            }*/
         }
     },
     
     action : function(){
-        //_debug(this.map[1].sub[this.active_sub].cmd);
+        _debug('main_menu.action');
         
         if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'object'){
             
@@ -302,22 +250,19 @@ var main_menu = {
     },
     
     clear_menu : function(){
-        
         _debug('clear_menu');
-        _debug('nodes', this.hor_menu_obj.childNodes.length);
         
         try{
-            var length = this.hor_menu_obj.childNodes.length;
-            
-        for(var i=0; i<length; i++){
-            this.hor_menu_obj.removeChild(this.hor_menu_obj.lastChild);
-        }
-        
-        for (var i=0; i<this.map.length; i++){
-            if (this.map && this.map[i] && this.map[i]['sub_obj']){
-                this.map[i]['sub_obj'].parentNode.removeChild(this.map[i]['sub_obj']);
+            for (var i=0; i<=2; i++){
+                this.cells[i].img_dom_obj.style.background = '';
+                this.cells[i].title_dom_obj.innerHTML = '';
             }
-        }
+            
+            var length = this.vert_body.childNodes.length;
+            
+            for(var i=0; i<length; i++){
+                this.vert_body.removeChild(this.vert_body.lastChild);
+            }
         }catch(e){
             _debug(e);
         }
@@ -325,14 +270,16 @@ var main_menu = {
         _debug('end clear_menu');
     },
     
-    add : function(title, sub, cmd){
+    add : function(title, sub, img, cmd){
         
         var cmd = cmd || '';
         
         var sub = sub || [];
         
+        var img = img || '';
+        
         if (sub.length > 0){
-            for (var k=1; k<=3; k++){
+            for (var k=1; k<3; k++){
                 sub.unshift(sub.pop());
             }
         }
@@ -340,6 +287,7 @@ var main_menu = {
         this.map.push(
             {
                 "title" : title,
+                "img"   : img,
                 "cmd"   : cmd,
                 "sub"   : sub
             }
