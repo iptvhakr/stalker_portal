@@ -1,177 +1,142 @@
 /* MAIN MENU */
-.main_menu
-{
+.main_menu{
     position:absolute;
     left: 0;
     top: 0;
     width: 720px;
     height: 576px;
     background-image: url("i/bg.png");
-    font-family: "Myriad Pro Cond", sans-serif;
-    /*font-family: "Myriad Pro", sans-serif;*/
 }
 
-.main_menu div
-{
-    /*font: 30px "Arial";*/
-    font-size: 30px;
-	color: #808d9c;
-}
-
-.main_menu_hor
-{
-    position:absolute;
-    width:720px;
-    height:55px;
-    bottom:83px;
-    background-image: url("i/mm_menu_hor.png");
-}
-
-.main_menu_hor div
-{
-    position:absolute;
-    height: 35px;
-    white-space: pre;
-    margin-top: 9px;
-    text-transform: uppercase;
-}
-
-.main_menu_hor_left
-{
-    position: absolute;
-    width: 150px;
-    height: 55px;
-    bottom: 83px;
-    left: 0px;
-    background-image: url("i/mm_hor_left.png");
-}
-
-.main_menu_hor_right
-{
-    position: absolute;
-    width: 150px;
-    height: 55px;
-    bottom: 83px;
-    left: 570px;
-    background-image: url("i/mm_hor_right.png");
-}
-
-.main_menu_vert_container
-{
-    position: absolute;
-    bottom: 128px;
-    left: 250px;
-    background: url("i/mm_menu_vert.png") top right;
-}
-
-.main_menu_vert
-{
-    position: absolute;
-    bottom: 128px;
-    left: 250px;
-}
-
-.main_menu_vert div
-{
-    position: fixed;
-    top: -40px;
-    height:35px;
-    white-space: pre;
-    margin: 0 2px;
-    padding: 0 15px;
-    -webkit-border-top-left-radius: 1px;
-    text-transform: uppercase; 
-}
-
-.main_menu_vert_trans
-{
-    position:absolute;
-    height:0;
-    width:400px;
-    bottom:128px;
-    left:250px;
-    background: url("i/mm_vert_trans.png") no-repeat top left;
-}
-
-.sub_menu_punct_alpha1
-{
-    color: #0f3c66 !important;
-}
-
-.sub_menu_punct_alpha2
-{
-    color: #3c5a78 !important;
-}
-
-.sub_menu_punct
-{
-    color: #808899 !important;
-}
-
-.sub_menu_active
-{
-    color: #00152d !important;
-    background-color: #667b8e;
-}
-
-.main_menu_active
-{
-    color: #ffffff !important;
-}
-
-.main_menu_passive
-{
-    color: #808d9c !important;
-}
-
-.main_menu_passive img{
-    display: none;
-}
-
-.main_menu_date_bar
-{
-    position: absolute;
-    width: 720px;
-    top: 29px;
-    text-align: right;
-}
-
-.main_menu_date
-{
+.main_menu_date{
     font-family: "Trebuchet ms" bold;
     font-size: 15px;
     color: #99a8b5;
-    text-transform: uppercase;
 }
 
-.main_menu_time
-{
+.main_menu_time{
     font-weight: bold;
     font-size: 21px;
     color: #ccd6de;
     margin-left: 12px;
-    margin-right: 60px;
+    margin-right: 65px;
+}
+
+.main_menu_date_bar{
+    position: absolute;
+    width: 360px;
+    top: 38px;
+    right: 0;
+}
+
+.mm_menu_hor{
+    position: absolute;
+    width: 720px;
+    height: 162px;
+    bottom: 40px;
+    padding: 0px 30px 0px 30px;
+}
+
+.mm_hor_left{
+    position: absolute;
+    width: 220px;
+    height: 162px;
+    bottom: 40px;
+    left: 0px;
+    background: url(i/mm_hor_left.png);
+}
+
+.mm_hor_right{
+    position: absolute;
+    width: 220px;
+    height: 162px;
+    bottom: 40px;
+    left: 500px;
+    background: url(i/mm_hor_right.png);
+}
+
+.menu_hor_cell{
+    float: left;
+    width: 220px;
+    height: 162px;
+    font: 35px "Myriad Pro Cond";
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.menu_hor_cell_act{
+    float: left;
+    width: 220px;
+    height: 162px;
+    font: 35px "Myriad Pro Cond";
+    color: #fff;
+    text-shadow: #122946 1px 1px 0;
+    text-transform: uppercase;
+    text-align: center;
+    background: url(i/mm_hor_bg1.png) no-repeat;
+}
+
+.menu_hor_cell_img{
+    width: 200px;
+    height: 120px;
+    margin: 0px 10px 0px 10px;
+}
+
+.mm_menu_vert_empty{
+    position: absolute;
+    background: url(i/mm_hor_bg2.png) no-repeat;
+    width: 220px;
+    height: 15px;
+    bottom: 202px;
+    left: 250px;
+}
+
+.mm_menu_vert{
+    position: absolute;
+    width: 260px;
+    bottom: 202px;
+    left: 230px;
+}
+
+.mm_menu_vert_bottom{
+    height: 17px;
+    width: 260px;
+    background: url(i/mm_hor_bg3.png) bottom;
+}
+
+.mm_menu_vert_body{
+    width: 260px;
+    background: url(i/mm_hor_bg3.png) top;
+    padding-top: 16px;
+}
+
+.mm_menu_vert_body .mm_vert_container div{
+    height: 30px;
+    width: 230px;
+    font: 20px "Myriad Pro";
+    color: #ffffff;
+    text-transform: uppercase;
+    text-shadow: #1f3c62 0px -1px 0;
+    background: url(i/mm_vert_cell.png) bottom left;
+    margin-left: 8px;
+    padding-left: 14px;
+    padding-top: 8px;
+}
+
+.mm_menu_vert_body .mm_vert_container .active{
+    color: #002864;
+    text-shadow: #ffffff 0px 1px 0;
+    background: url(i/mm_vert_cell.png) top left;
+    padding-top: 8px;
 }
 
 .main_menu_ver
 {
     position: absolute;
     right: 60px;
-    top: 520px;
-    font-size: 21px  !important;
+    top: 540px;
+    font-size: 18px  !important;
     color: #ccd6de  !important;
-}
-
-.main_menu_cur_weather
-{
-    position: absolute;
-    color: #ccd6de !important;
-    text-shadow: #000000 2px -2px 0;
-    top: 60px;
-    right: 10px;
-    width: 156px;
-    height: 40px;
-    padding-top: 90px;
-    background: url("i/weather.png") no-repeat;
 }
 /* END MAIN MENU */
