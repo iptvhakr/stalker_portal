@@ -1192,7 +1192,6 @@ player.prototype.show_quick_ch_switch = function(num){
         }
     }
     
-    
     this.t_hide_quick_ch_switch();
 }
 
