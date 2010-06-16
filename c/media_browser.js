@@ -308,7 +308,7 @@
     
     /* END MEDIA BROWSER */
     
-    main_menu.add('USB Устройство', [], function(){
+    main_menu.add('USB Устройство', [], 'i/mm_ico_usb.png', function(){
         if (module.media_browser.is_drive_mounted()){
             main_menu.hide();
             module.media_browser.show();
