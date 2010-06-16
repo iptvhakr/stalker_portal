@@ -903,8 +903,8 @@ player.prototype.bind = function(){
     
     this.show_info.bind(key.INFO, self);
     
-    this.move_pos.bind(key.FFWD, this, 1).bind(key.RIGHT, this, 1);
-    this.move_pos.bind(key.REW, this, -1).bind(key.LEFT, this, -1);
+    this.move_pos.bind(key.FFWD, this, 1);
+    this.move_pos.bind(key.REW, this, -1);
     
     (function(){
         
@@ -922,13 +922,13 @@ player.prototype.bind = function(){
         if (this.on){
             this.volume.control(1);
         }
-    }).bind(key.VOL_UP, this);
+    }).bind(key.VOL_UP, this).bind(key.RIGHT, this, 1);;
     
     (function(){
         if (this.on){
             this.volume.control(-1);
         }
-    }).bind(key.VOL_DOWN, this);
+    }).bind(key.VOL_DOWN, this).bind(key.LEFT, this, -1);
     
     
     (function(){
@@ -940,7 +940,7 @@ player.prototype.bind = function(){
     this.show_quick_ch_switch.bind(key.NUM1, this, 1);
     this.show_quick_ch_switch.bind(key.NUM2, this, 2);
     this.show_quick_ch_switch.bind(key.NUM3, this, 3);
-    this.show_quick_ch_switch.bind(key.NUM4, this, 3);
+    this.show_quick_ch_switch.bind(key.NUM4, this, 4);
     this.show_quick_ch_switch.bind(key.NUM5, this, 5);
     this.show_quick_ch_switch.bind(key.NUM6, this, 6);
     this.show_quick_ch_switch.bind(key.NUM7, this, 7);
@@ -1062,8 +1062,9 @@ player.prototype.set_pos_and_play = function(reset){
         this.info.dom_obj.hide();
         this.info.on = false;
         
-        this.pos_step = 10;
-        this.diff_pos = 0;
+        this.pos_step  = 10;
+        this.diff_pos  = 0;
+        this.next_step = 0;
     }
 }
 
