@@ -78,7 +78,7 @@
     
     /* Integrate karaoke in main menu */
     
-    main_menu.add('РАДИО', [], function(){
+    main_menu.add('РАДИО', [], 'i/mm_ico_radio.png', function(){
         main_menu.hide();
         module.radio.show();
     });
