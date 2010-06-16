@@ -55,6 +55,8 @@ function common_xpcom(){
         var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
         text_msg.innerHTML = 'Ваша приставка отключена.<br/> т. 740-0-740';
         this.cut_off_dom_obj.hide();
+        
+        this.clock.start();
     }
     
     this.get_server_params = function(){
@@ -618,5 +620,71 @@ function common_xpcom(){
         }
         
         return cur_place_num
+    }
+    
+    this.clock = {
+        
+        month_arr : ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ', 'АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ'],
+        day_arr   : ['ВОСКРЕСЕНЬЕ', 'ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА'],
+        
+        start : function(){
+            _debug('clock.start()');
+            
+            this.tick();
+            
+            var self = this;
+            
+            try{
+                this.t_clock = window.setInterval(function(){self.tick()}, 30000);
+            }catch(e){
+                _debug(e);
+            }
+        },
+        
+        stop : function(){
+            _debug('clock.stop');
+            
+            _debug('self.t_clock', this.t_clock)
+            
+            var self = this;
+            
+            try{
+                window.clearInterval(self.t_clock);
+            }catch(e){
+                _debug(e);
+            }
+        },
+        
+        tick : function(){
+            
+            this.current_date = new Date()
+            
+            this.year  = this.current_date.getFullYear();
+            
+            this.month = this.current_date.getMonth();
+            
+            this.date  = this.current_date.getDate();
+            
+            this.day   = this.current_date.getDay();
+            
+            this.hours = this.current_date.getHours();
+            if (this.hours<10){
+                this.hours = '0'+this.hours;
+            }
+            
+            this.minutes = this.current_date.getMinutes();
+            if (this.minutes<10){
+                this.minutes = '0'+this.minutes;
+            }
+            
+            this.show();
+        },
+        
+        show : function(){
+            if (main_menu){
+                main_menu.time.innerHTML = this.hours + ':' + this.minutes;
+                main_menu.date.innerHTML = this.day_arr[this.day] + ', ' + this.date + ' ' + this.month_arr[this.month] + ', ' + this.year + 'г.';
+            }
+        }
     }
 }
