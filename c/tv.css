@@ -70,11 +70,11 @@
 }
 
 .short_container .cur_playing_block{
-    display: none;
+    display: none !important;
 }
 
 .short_container .active_cur_playing_block{
-    display: none;
+    display: none !important;
 }
 
 .active_cur_playing_block{
