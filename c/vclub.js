@@ -477,7 +477,7 @@ _debug('1!!!!!!!!!!!!!!');
                 );
             }
             
-            main_menu.add('ВИДЕОКЛУБ', map);
+            main_menu.add('ВИДЕОКЛУБ', map, 'i/mm_ico_video.png');
         },
         this
     )
