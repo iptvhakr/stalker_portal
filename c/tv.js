@@ -129,6 +129,12 @@
             stb.player.prev_layer = this;
             
             if (!stb.player.on){
+                /*if (this.cur_view == 'short'){
+                    stb.player.need_show_info = 0;
+                }else{
+                    stb.player.need_show_info = 1;
+                }*/
+                
                 stb.player.need_show_info = 1;
                 stb.player.play(this.data_items[this.cur_row]);
             }
@@ -178,6 +184,8 @@
                 stb.player.stop();
             }
             
+            //stb.player.need_show_info = 1;
+            
             this.superclass.set_wide_container.apply(this);
 
             try{
@@ -191,6 +199,8 @@
         this.set_short_container = function(){
             
             this.superclass.set_short_container.apply(this);
+            
+            //stb.player.need_show_info = 0;
             
             try{
                 _debug('this.preview_pos', this.preview_pos);
@@ -222,6 +232,7 @@
             this.short_info_box.innerHTML = epg;
             
             try{
+                stb.player.need_show_info = 0;
                 stb.player.play(item);
             }catch(e){
                 _debug(e);
@@ -505,7 +516,7 @@
                 );
             }
             
-            main_menu.add('ТВ', map);
+            main_menu.add('ТВ', map, 'i/mm_ico_tv.png');
         }
     )
 
