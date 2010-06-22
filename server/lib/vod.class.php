@@ -554,6 +554,11 @@ class Vod extends AjaxResponse
         
         return implode(', ', $this->db->from('cat_genre')->in('id', array($item['cat_genre_id_1'], $item['cat_genre_id_2'], $item['cat_genre_id_3'], $item['cat_genre_id_4']))->get()->all('title'));
     }
+    
+    public function setClaim(){
+        
+        return $this->setClaimGlobal('vclub');
+    }
 }
 
 ?>
