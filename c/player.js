@@ -52,6 +52,10 @@ function player(){
     this.init_show_info();
     this.init_quick_ch_switch();
     this.volume.init();
+    
+    /*this.context_menu = new context_menu();
+    this.context_menu.set_x_offset(100);
+    this.context_menu.set_y_offset(100);*/
 }
 
 player.prototype.init = function(){
@@ -148,6 +152,19 @@ player.prototype.event_callback = function(event){
                     
                     time_send_played
                 )
+            }
+            try{
+                this.audio_pid.get_all();
+                
+                _debug('test');
+                _debug('typeof this.subtitle_pid', typeof(this.subtitle_pid));
+                _debug('typeof this.subtitle_pid.get_all', typeof(this.subtitle_pid.get_all));
+                
+                this.subtitle_pid.get_all();
+                
+                this.build_con_menu();
+            }catch(e){
+                _debug(e);
             }
             
             break;
@@ -536,6 +553,8 @@ player.prototype.play_now = function(uri){
         this.show_info(this.cur_media_item);
     }
     
+    this.init_con_menu();
+    
     try{
         stb.Play(uri);
     }catch(e){_debug(e)}
@@ -914,6 +933,8 @@ player.prototype.bind = function(){
             this.hide_quick_ch_switch();
         }else  if (this.prev_layer && this.prev_layer.cur_view == 'short'){
             this.show_prev_layer();
+        }else{
+            this.con_menu && this.con_menu.show && this.con_menu.show();
         }
         
     }).bind(key.OK, this);
@@ -1323,6 +1344,272 @@ player.prototype.hist_back = function(){
     }
 }
 
+player.prototype.audio_pid = {
+    
+    all_pids : [],
+    cur_pid : 0,
+    cur_pid_idx : 0,
+    
+    get_all : function(){
+        _debug('audio_pid.get_all');
+    
+        var audio_pids = stb.GetAudioPIDs();
+        
+        _debug('audio_pids str', audio_pids);
+        
+        audio_pids = eval('(' + audio_pids + ')');
+        
+        _debug('audio_pids obj', audio_pids);
+        
+        this.cur_pid = stb.GetAudioPID();
+        
+        _debug('cur_pid', this.cur_pid);
+        
+        this.cur_pid_idx = audio_pids.getIdxByVal('pid', this.cur_pid);
+        
+        if (this.cur_pid_idx !== null){
+            audio_pids[this.cur_pid_idx].selected = true;
+        }
+        
+        this.all_pids = audio_pids;
+    },
+    
+    set : function(pid){
+        _debug('audio_pid.set', pid);
+    
+        this.all_pids[this.cur_pid_idx].selected = false;
+        this.cur_pid = pid;
+        this.cur_pid_idx = this.all_pids.getIdxByVal('pid', this.cur_pid);
+        
+        stb.SetAudioPID(pid);
+    },
+    
+    get_for_menu : function(){
+        _debug('audio_pid.get_for_menu');
+    
+        var lang;
+        var title;
+        var map = [];
+        
+        for (var i=0; i<this.all_pids.length; i++){
+            
+            if (this.all_pids[i].lang[1] != ''){
+                lang = ' - ' + this.all_pids[i].lang[1];
+            }else if (this.all_pids[i].lang[0] != ''){
+                lang = ' - ' + this.all_pids[i].lang[0];
+            }else{
+                lang = '';
+            }
+            
+            title = 'Дорожка ' + (i+1) + lang;
+            
+            map.push({"title" : title, "cmd" : (function(pid){return function(){stb.player.audio_pid.set(pid)}})(this.all_pids[i].pid), "active" : !!this.all_pids[i].selected});
+        }
+        
+        _debug('map', map);
+        
+        return map;
+    }
+}
+
+player.prototype.subtitle_pid = {
+    
+    all_pids : [],
+    cur_pid : 0,
+    cur_pid_idx : 0,
+    
+    get_all : function(){
+        _debug('subtitle_pid.get_all');
+    
+        var subtitle_pids = stb.GetSubtitlePIDs();
+        
+        _debug('subtitle_pids str', subtitle_pids);
+        
+        subtitle_pids = eval('(' + subtitle_pids + ')');
+        
+        this.cur_pid = stb.GetSubtitlePID();
+        
+        _debug('cur_pid', this.cur_pid);
+        
+        this.cur_pid_idx = subtitle_pids.getIdxByVal('pid', this.cur_pid);
+        
+        _debug('this.cur_pid_idx', this.cur_pid_idx);
+        
+        if (this.cur_pid_idx !== null){
+            subtitle_pids[this.cur_pid_idx].selected = true;
+        }
+        
+        this.all_pids = subtitle_pids;
+    },
+    
+    set : function(){
+        _debug('subtitle_pid.set', pid);
+    
+        stb.SetSubtitles(true);
+        
+        this.all_pids[this.cur_pid_idx].selected = false;
+        this.cur_pid = pid;
+        this.cur_pid_idx = this.all_pids.getIdxByVal('pid', this.cur_pid);
+        
+        stb.SetSubtitlePID(pid);
+    },
+    
+    get_for_menu : function(){
+        _debug('subtitle_pid.get_for_menu');
+    
+        var lang;
+        var title;
+        var map = [];
+        
+        map.push({'title' : 'Отключить', 'cmd' : function(){stb.SetSubtitles(false)}, 'active' : true});
+        
+        for (var i=0; i<this.all_pids.length; i++){
+            
+            if (this.all_pids[i].lang[1] != ''){
+                lang = ' - ' + this.all_pids[i].lang[1];
+            }else if (this.all_pids[i].lang[0] != ''){
+                lang = ' - ' + this.all_pids[i].lang[0];
+            }else{
+                lang = '';
+            }
+            
+            title = 'Титры ' + (i+1) + lang;
+        
+            map.push({'title' : title, 'cmd' : (function(pid){return function(){stb.player.subtitle_pid.set(pid)}})(this.all_pids[i].pid), 'active' : this.all_pids[i].selected});
+        }
+        
+        return map;
+    }
+}
+
+player.prototype.init_con_menu = function(){
+    _debug('player.init_con_menu');
+    
+    var map = [
+            {
+                "title" : "Пожаловаться",
+                "cmd"   : [
+                    {
+                        "cmd"   : function(){stb.player.send_claim('sound')},
+                        "title" : "на звук",
+                    },
+                    {
+                        "cmd"   : function(){stb.player.send_claim('video')},
+                        "title" : "на изображение",
+                    }
+                  ]
+            }
+        ];
+
+    this.con_menu = new context_menu(map);
+    this.con_menu.bind();
+    this.con_menu.set_x_offset(100);
+    this.con_menu.set_y_offset(100);
+}
+
+player.prototype.build_con_menu = function(){
+    _debug('player.build_con_menu');
+    
+    if (this.con_menu.map.length > 1){
+        return;
+    }
+    
+    this.con_menu.map.unshift(
+        {
+            "title" : "Субтитры",
+            "type"  : "switch",
+            "cmd"   : this.subtitle_pid.get_for_menu()
+        }
+    )
+        
+    this.con_menu.map.unshift(
+        {
+            "title" : "Аудио",
+            "type"  : "switch",
+            "cmd"   : this.audio_pid.get_for_menu()
+        }
+    );
+    
+    _debug('this.con_menu.map', this.con_menu.map);
+    
+    if (this.con_menu.on){
+        this.con_menu.hide();
+        this.con_menu.destroy_container();
+        this.con_menu = new context_menu(this.con_menu.map);
+        this.con_menu.bind();
+        this.con_menu.set_x_offset(100);
+        this.con_menu.set_y_offset(100);
+        this.con_menu.show();
+    }else{
+        this.con_menu.destroy_container();
+        this.con_menu = new context_menu(this.con_menu.map);
+        this.con_menu.bind();
+        this.con_menu.set_x_offset(100);
+        this.con_menu.set_y_offset(100);
+    }
+}
+
+player.prototype.send_claim = function(type){
+    _debug('player.send_claim', type);
+    
+    if (this.is_tv){
+        this.itv_claim(type);
+    }else if(stb.cur_place == 'vclub'){
+        this.video_claim(type);
+    }else if(stb.cur_place == 'karaoke'){
+        this.karaoke_claim(type);
+    }
+    
+    stb.notice.show('Спасибо, Ваше мнение будет учтено');
+}
+
+player.prototype.video_claim = function(type){
+    _debug('player.video_claim', type);
+    
+    stb.load(
+        {
+            "type"      : "vod",
+            "action"    : "set_claim",
+            "id"        : this.cur_media_item.id,
+            "real_type" : type
+        },
+        function(result){
+            
+        }
+    );
+}
+
+player.prototype.itv_claim = function(type){
+    _debug('player.itv_claim', type);
+    
+    stb.load(
+        {
+            "type"      : "itv",
+            "action"    : "set_claim",
+            "id"        : this.cur_media_item.id,
+            "real_type" : type
+        },
+        function(result){
+            
+        }
+    );
+}
+
+player.prototype.karaoke_claim = function(type){
+    _debug('player.karaoke_claim', type);
+    
+    stb.load(
+        {
+            "type"      : "karaoke",
+            "action"    : "set_claim",
+            "id"        : this.cur_media_item.id,
+            "real_type" : type
+        },
+        function(result){
+            
+        }
+    );
+}
 /*
  * END Player
  */
