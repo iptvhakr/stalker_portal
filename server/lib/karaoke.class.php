@@ -125,6 +125,11 @@ class Karaoke extends AjaxResponse
         
         return $abc;
     }
+    
+    public function setClaim(){
+        
+        return $this->setClaimGlobal('vclub');
+    }
 }
 
 ?>
