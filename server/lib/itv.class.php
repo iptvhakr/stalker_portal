@@ -372,5 +372,11 @@ class Itv extends AjaxResponse
         
         return $db->from('itv')->where(array('base_ch' => 1))->get()->all('id');
     }
+    
+    public function setClaim(){
+        
+        return $this->setClaimGlobal('itv');
+        
+    }
 }
 ?>
