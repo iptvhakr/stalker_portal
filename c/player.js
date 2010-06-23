@@ -53,9 +53,10 @@ function player(){
     this.init_quick_ch_switch();
     this.volume.init();
     
-    /*this.context_menu = new context_menu();
-    this.context_menu.set_x_offset(100);
-    this.context_menu.set_y_offset(100);*/
+    this.con_menu = new context_menu();
+    this.con_menu.bind();
+    this.con_menu.set_x_offset(100);
+    this.con_menu.set_y_offset(100);
 }
 
 player.prototype.init = function(){
@@ -1501,10 +1502,13 @@ player.prototype.init_con_menu = function(){
             }
         ];
 
-    this.con_menu = new context_menu(map);
+    
+    this.con_menu.construct(map);
+        
+    /*this.con_menu = new context_menu(map);
     this.con_menu.bind();
     this.con_menu.set_x_offset(100);
-    this.con_menu.set_y_offset(100);
+    this.con_menu.set_y_offset(100);*/
 }
 
 player.prototype.build_con_menu = function(){
@@ -1534,18 +1538,24 @@ player.prototype.build_con_menu = function(){
     
     if (this.con_menu.on){
         this.con_menu.hide();
-        this.con_menu.destroy_container();
+        
+        /*this.con_menu.destroy_container();
         this.con_menu = new context_menu(this.con_menu.map);
         this.con_menu.bind();
         this.con_menu.set_x_offset(100);
-        this.con_menu.set_y_offset(100);
+        this.con_menu.set_y_offset(100);*/
+        
+        this.con_menu.construct(this.con_menu.map);
         this.con_menu.show();
     }else{
-        this.con_menu.destroy_container();
+        
+        this.con_menu.construct(this.con_menu.map);
+        
+        /*this.con_menu.destroy_container();
         this.con_menu = new context_menu(this.con_menu.map);
         this.con_menu.bind();
         this.con_menu.set_x_offset(100);
-        this.con_menu.set_y_offset(100);
+        this.con_menu.set_y_offset(100);*/
     }
 }
 
