@@ -14,7 +14,7 @@ function context_menu(map){
         }
     }
     
-    this.construct_menu(this.map);
+    //this.construct(this.map);
 }
 
 context_menu.prototype.destroy_container = function(){
@@ -23,7 +23,9 @@ context_menu.prototype.destroy_container = function(){
     _debug('remove DOM element - container');
     
     try{
-        this.container.parentNode.removeChild(this.container);
+        if (this.container){
+            this.container.parentNode.removeChild(this.container);
+        }
     }catch(e){
         _debug(e);
     }
@@ -33,23 +35,29 @@ context_menu.prototype.reset = function(){
     _debug('context_menu.reset');
     
     if (this.on){
-        this.hide();
+        //this.hide();
     }
     
     this.destroy_container();
     
-    delete this.map;
+    //delete this.map;
     this.menu_windows = [];
 }
 
 context_menu.prototype.show = function(){
     _debug('context_menu.show');
     
-    if (this.map.length > 0){
-        this.on = true;
-        this.container.show();
-        this.container.style.height = 0;
-        this.set_active_row();
+    _debug('this.map.length', this.map.length);
+    
+    try{
+        if (this.map.length > 0){
+            this.on = true;
+            this.container.show();
+            this.container.style.height = 0;
+            this.set_active_row();
+        }
+    }catch(e){
+        _debug(e);
     }
 }
 
@@ -90,14 +98,20 @@ context_menu.prototype.hide = function(){
  * @param {Object}
  *
  */
-context_menu.prototype.construct_menu = function(map){
-    _debug('context_menu.construct_menu', map);
+context_menu.prototype.construct = function(map){
+    _debug('context_menu.construct', map);
     
-    if (!this.container){
-        
+    this.map = map || [];
+    
+    this.reset();
+    
+    //if (!this.container){
+        _debug('test 1');
         this.container = create_block_element('context_menu_container', this.parent);
+        _debug('test 2');
         this.container.hide();
-    }
+        _debug('test 3');
+    //}
     
     var dom_obj = create_block_element('con_menu_main_active', this.container);
     
@@ -126,7 +140,7 @@ context_menu.prototype.construct_menu = function(map){
     var main_container_table = document.createElement("table");
     main_container_table.setClass('con_menu_container');
     main_center_td.appendChild(main_container_table);
-    
+    _debug('test 4');
     for (var i=0; i<map.length; i++){
         var container_tr = document.createElement("tr");
         map[i].dom_obj = document.createElement("td");
@@ -145,7 +159,7 @@ context_menu.prototype.construct_menu = function(map){
             map[i].sub_dom_obj = this.construct_sub_menu(i, map[i].cmd, map[i].type);
         }
     }
-    
+    _debug('test 5');
     this.cur_win = {
         "win_idx"  : this.menu_windows.length,
         "parent_win" : -1,
@@ -160,7 +174,7 @@ context_menu.prototype.construct_menu = function(map){
     this.menu_windows.push(this.cur_win);
     
     main_table.appendChild(main_center_tr);
-    
+    _debug('test 6');
     var main_center_right_cell = document.createElement("td");
     main_center_right_cell.setClass('v_menu1_center_r');
     main_center_right_cell.innerHTML = '&nbsp;';
@@ -183,6 +197,7 @@ context_menu.prototype.construct_menu = function(map){
     /* END MAIN MENU BOTTOM ROW */
     
     dom_obj.appendChild(main_table);
+    _debug('test 7');
 }
 
 context_menu.prototype.construct_sub_menu = function(from_row, map_item, type){
