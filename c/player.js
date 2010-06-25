@@ -411,6 +411,8 @@ player.prototype.define_media_type = function(cmd){
 player.prototype.play_last = function(){
     _debug('player.play_last');
     
+    this.prev_layer = module.tv;
+    
     this.play(this.cur_tv_item);
 }
 
@@ -933,6 +935,11 @@ player.prototype.bind = function(){
             this.show_prev_layer();
         }
     }).bind(key.EXIT, this);
+    
+    (function(){
+        this.prev_layer && this.prev_layer.hide && this.prev_layer.hide();
+        this.play_last();
+    }).bind(key.TV);
     
     this.show_prev_layer.bind(key.STOP, self);
     
