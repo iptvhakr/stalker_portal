@@ -55,6 +55,8 @@ Layer.prototype.show = function(do_not_load){
     
     if (!do_not_load){
         this.load_data();
+    }else{
+        this.set_active_row(this.cur_row);
     }
     
     stb.set_cur_place(this.layer_name);
@@ -75,6 +77,9 @@ Layer.prototype.hide = function(do_not_reset){
             this.sidebar.hide();
         }
     }
+    
+    
+    this.set_passive_row();
     
     this.dom_obj.hide();
     
@@ -222,6 +227,8 @@ Layer.prototype.create_block = function(class_name, is_active){
 Layer.prototype.load_data = function(){
     _debug('Layer.load_data');
     
+    this.set_passive_row();
+    
     this.load_params['p'] = this.cur_page;
     
     stb.load(
@@ -230,7 +237,15 @@ Layer.prototype.load_data = function(){
         
         function(result){
             _debug('callback run');
+            _debug('result', result);
+            this.result = result;
             this.total_pages = Math.ceil(result.total_items/result.max_page_items);
+            
+            if (result.selected_item !=0 || result.cur_page !=0){
+                this.cur_row  = result.selected_item-1;
+                this.cur_page = result.cur_page;
+            }
+            
             this.set_total_items(result.total_items);
             
             this.fill_list(result.data);
@@ -272,10 +287,12 @@ Layer.prototype.fill_list = function(data){
         }
     }
     
-    if (this.page_dir > 0){
-        this.cur_row = 0;
-    }else{
-        this.cur_row = this.total_items-1;
+    if (this.result.selected_item ==0 && this.result.cur_page ==0){
+        if (this.page_dir > 0){
+            this.cur_row = 0;
+        }else{
+            this.cur_row = this.total_items-1;
+        }
     }
     
     this.set_active_row(this.cur_row);
@@ -396,18 +413,18 @@ Layer.prototype.shift_page = function(dir){
     
     if (dir > 0){
         if (this.cur_page < this.total_pages){
-            this.cur_page++;
-            //this.cur_row = 0;
+            this.cur_page++;   
         }else{
             this.cur_page = 1;
         }
+        //this.cur_row = 0;
     }else{
         if (this.cur_page > 1){
             this.cur_page--;
-            //this.cur_row = this.total_rows-1;
         }else{
             this.cur_page = this.total_pages;
         }
+        //this.cur_row = this.total_rows-1;
     }
     
     this.load_data();
