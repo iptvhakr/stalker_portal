@@ -60,6 +60,7 @@ Layer.prototype.show = function(do_not_load){
     }
     
     stb.set_cur_place(this.layer_name);
+    stb.set_cur_layer(this);
 }
 
 Layer.prototype.hide = function(do_not_reset){
