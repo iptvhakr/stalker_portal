@@ -586,6 +586,10 @@ function common_xpcom(){
         this.cur_place = '';
     }
     
+    this.set_cur_layer = function(obj){
+        this.cur_layer = obj;
+    }
+    
     this.get_current_place = function(){
         
         var cur_place_num = 0
