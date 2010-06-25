@@ -143,6 +143,10 @@ _debug('1!!!!!!!!!!!!!!');
             this.sort_menu.on && this.sort_menu.hide && this.sort_menu.hide();
             this.view_menu.on && this.view_menu.hide && this.view_menu.hide();
             
+            this.info.on && this.info.hide && this.info.hide();
+            this.password_input.on && this.password_input.hide && this.password_input.hide();
+            this.series_switch.on && this.series_switch.hide && this.series_switch.hide();
+            
             this.superclass.hide.call(this, do_not_reset);
         };
         
