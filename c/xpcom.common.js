@@ -424,7 +424,7 @@ function common_xpcom(){
             function(result){
                 _debug('fav_itv_ids', result);
                 this.player.fav_channels_ids = result || [];
-                if (this.player.fav_channels_ids.length > 0){
+                if (this.player.fav_channels_ids.length == 0){
                     this.user.fav_itv_on = 0;
                 }
                 this.channels_loaded();
