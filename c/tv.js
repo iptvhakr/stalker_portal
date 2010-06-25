@@ -56,7 +56,10 @@
         
         this.show = function(do_not_load){
             
-            this.superclass.show.call(this, do_not_load);
+            this.cur_page = 0;
+            
+            //this.superclass.show.call(this, do_not_load);
+            this.superclass.show.call(this, false);
             
             try{
                 _debug('tv.cur_view', this.cur_view);
@@ -74,6 +77,8 @@
         
         this.hide = function(do_not_reset){
             _debug('tv.hide', do_not_reset);
+            
+            this.cur_page = 0;
             
             try{
                 
@@ -431,13 +436,17 @@
         [
             {"label" : "по номеру", "cmd" : function(){
                 this.parent.load_params.fav = false;
+                stb.user.fav_itv_on = 0;
+                stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'number';
-            
+                
                 var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
                 this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
             }},
             {"label" : "по имени", "cmd" : function(){
                 this.parent.load_params.fav = false;
+                stb.user.fav_itv_on = 0;
+                stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'name';
                 
                 var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
@@ -445,6 +454,8 @@
             }},
             {"label" : "только избранное", "cmd" : function(){
                 this.parent.load_params.sortby = 'fav';
+                stb.user.fav_itv_on = 1;
+                stb.player.set_fav_status();
                 this.parent.load_params.fav = true
                 
                 var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
@@ -470,6 +481,16 @@
     );
     
     tv.sort_menu.dependency  = [tv.view_menu];
+    
+    _debug('stb.user.fav_itv_on', stb.user.fav_itv_on);
+    
+    if(stb.user.fav_itv_on){
+        tv.sort_menu.set_passive_row();
+        tv.sort_menu.cur_row_idx = 2;
+        tv.sort_menu.set_active_row();
+        tv.sort_menu.action();
+    }
+    
     tv.view_menu.dependency  = [tv.sort_menu];
     
     tv.init_header_path('ТВ');
@@ -521,5 +542,4 @@
     )
 
 })();
-
 loader.next();
