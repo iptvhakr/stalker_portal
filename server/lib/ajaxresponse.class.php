@@ -13,6 +13,8 @@ class AjaxResponse
     protected $stb;
     protected $page = 0;
     protected $load_last_page = false;
+    protected $cur_page = 0;
+    protected $selected_item = 0;
     protected $response = array(
                     'total_items'    => 0,
                     'max_page_items' => MAX_PAGE_ITEMS,
@@ -75,6 +77,8 @@ class AjaxResponse
         $query_rows = clone $query;
         
         $this->setResponse('total_items', $query_rows->nolimit()->noorderby()->count()->get()->counter());
+        $this->setResponse('cur_page', $this->cur_page);
+        $this->setResponse('selected_item', $this->selected_item);
         $this->setResponse('data', $query->get()->all());
     }
     
