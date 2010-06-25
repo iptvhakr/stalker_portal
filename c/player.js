@@ -488,10 +488,16 @@ player.prototype.play = function(item){
         
         if (this.is_tv){
             if (stb.user.fav_itv_on){
+                
+                this.f_ch_idx = this.fav_channels.getIdxByVal('number', item.number);
+                
                 this.hist_f_ch_idx.push(item);
                 this.hist_f_ch_idx.shift();
                 _debug('this.hist_f_ch_idx', this.hist_f_ch_idx);
             }else{
+                
+                this.ch_idx = this.channels.getIdxByVal('number', item.number);
+                
                 this.hist_ch_idx.push(item);
                 this.hist_ch_idx.shift();
                 _debug('this.hist_ch_idx', this.hist_ch_idx);                
@@ -909,7 +915,16 @@ player.prototype.bind = function(){
     this.switch_channel.bind(key.CHANNEL_NEXT, self, 1, true);
     this.switch_channel.bind(key.CHANNEL_PREV, self, -1, true);
     
-    this.pause_switch.bind(key.PAUSE, this);
+    (function(){
+        
+        if (this.info.on){
+            this.set_pos_and_play();
+        }else{
+            this.pause_switch();
+        }
+        
+    }).bind(key.PAUSE, this);
+    
     
     (function(){
         if (this.info.on){
@@ -1075,6 +1090,7 @@ player.prototype.set_pos_and_play = function(reset){
     
     try{
         if (!reset){
+            _debug('stb.SetPosTime', this.new_pos_time);
             stb.SetPosTime(this.new_pos_time);
         }
     }catch(e){
@@ -1620,6 +1636,22 @@ player.prototype.karaoke_claim = function(type){
         }
     );
 }
+
+player.prototype.set_fav_status = function(){
+    _debug('player.save_fav_status');
+    
+    stb.load(
+        {
+            "type"       : "itv",
+            "action"     : "set_fav_status",
+            "fav_itv_on" : stb.user.fav_itv_on
+        },
+        function(result){
+            
+        }
+    );
+}
+
 /*
  * END Player
  */
