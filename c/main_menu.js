@@ -14,6 +14,7 @@ var main_menu = {
         this.render();
         stb.set_cur_place('main_menu');
         stb.clock.show();
+        stb.set_cur_layer(this);
     },
     
     hide : function(){
