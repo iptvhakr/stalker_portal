@@ -86,6 +86,11 @@
                     this.switch_fav_manage_mode();
                 }
                 
+                this.sort_menu.on && this.sort_menu.hide && this.sort_menu.hide();
+                this.view_menu.on && this.view_menu.hide && this.view_menu.hide();
+                
+                this.password_input.on && this.password_input.hide && this.password_input.hide();
+                
                 this.superclass.hide.call(this, do_not_reset);
             
                 _debug('SetTopWin');
