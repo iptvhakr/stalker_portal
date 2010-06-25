@@ -167,12 +167,17 @@ class Itv extends AjaxResponse
         
         $fav_ids = $this->getFav();
         
-        return $this->getChannels()
-                    ->in('id' , $fav_ids)
-                    ->orderby('number')
-                    ->get()
-                    ->all();
+        $fav_channels = $this->getChannels()
+                                            ->in('id' , $fav_ids)
+                                            ->orderby('field(id,'.implode(",", $fav_ids).')')
+                                            ->get()
+                                            ->all();
         
+        for ($i=0; $i<count($fav_channels); $i++){
+            $fav_channels[$i]['number'] = $i+1;
+        }
+        
+        return $fav_channels;        
     }
     
     public function getFavIds(){
@@ -181,7 +186,7 @@ class Itv extends AjaxResponse
         $fav = $this->getFav();
         $fav_str = implode(",", $fav);
         
-        var_dump($fav_str);
+        //var_dump($fav_str);
         
         $fav_ids = $this->db
                             ->from('itv')
@@ -203,9 +208,66 @@ class Itv extends AjaxResponse
         return $genres;
     }
     
+    private function getOffset($where = array()){
+        //$db = clone $this->db;
+        
+        if (!$this->load_last_page){
+            return $this->page * MAX_PAGE_ITEMS;
+        }
+        
+        $fav = $this->getFav();
+        
+        $last_id = $this->getLastId();
+        
+        $tv_number = $this->db->from('itv')->where(array('id' => $last_id))->get()->first('number');
+        
+        /*if (!empty($tv_number)){
+            
+        }*/
+        $ch_idx = 0;
+        
+        if(@$_REQUEST['fav']){
+            
+            if (in_array($last_id, $fav)){
+                
+                $ch_tmp_idx = array_search($last_id, $fav);
+                
+                if ($ch_tmp_idx >= 0){
+                    $fav = array_slice($fav, 0, $ch_tmp_idx+1);
+                }
+            }
+            
+            $ch_idx = $this->db->from('itv')->where($where)->in('itv.id', $fav)->get()->count();
+        }else{
+            
+            $ch_idx = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number))->get()->count();
+        }
+        
+        //$this->cur_page = ceil($ch_idx/MAX_PAGE_ITEMS);
+        
+        //$this->selected_item = $ch_idx - floor($ch_idx/MAX_PAGE_ITEMS)*MAX_PAGE_ITEMS;
+        if ($ch_idx > 0){
+            $this->cur_page = ceil($ch_idx/MAX_PAGE_ITEMS);
+            $this->page = $this->cur_page-1;
+            $this->selected_item = $ch_idx - ($this->cur_page-1)*MAX_PAGE_ITEMS;
+        }
+        
+        /*if ($this->selected_item == 0){
+            $this->selected_item = 14;
+        }*/
+        
+        $page_offset = ($this->cur_page-1)*MAX_PAGE_ITEMS;
+        
+        if ($page_offset < 0){
+            $page_offset = 0;
+        }
+        
+        return $page_offset;
+    }
+    
     private function getData(){
         
-        $offset = $this->page * MAX_PAGE_ITEMS;
+        //$offset = $this->page * MAX_PAGE_ITEMS;
         
         $where = array();
         
@@ -225,6 +287,8 @@ class Itv extends AjaxResponse
             
             $where['tv_genre_id'] = $genre;
         }
+        
+        $offset = $this->getOffset($where);
         
         return $this->db
                         ->from('itv')
@@ -377,6 +441,17 @@ class Itv extends AjaxResponse
         
         return $this->setClaimGlobal('itv');
         
+    }
+    
+    public function setFavStatus(){
+        
+        return $this->db->update('users',
+                                 array(
+                                     'fav_itv_on' => @intval($_REQUEST['fav_itv_on'])
+                                 ),
+                                 array(
+                                     'id' => $this->stb->id
+                                 ));
     }
 }
 ?>
