@@ -361,6 +361,10 @@ _debug('1!!!!!!!!!!!!!!');
                     stb.notice.show('Ошибка сервера');
                 }else{
                     
+                    if (this.info.on){
+                        this.info.hide();
+                    }
+                    
                     self.hide(true);
                     
                     stb.player.prev_layer = self;
