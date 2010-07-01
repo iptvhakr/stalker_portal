@@ -116,7 +116,8 @@ function common_xpcom(){
         try{
             JsHttpRequest.query(
                 
-                this.ajax_loader,
+                //this.ajax_loader,
+                'GET '+this.ajax_loader,
                 
                 params,
                 
