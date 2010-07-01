@@ -543,8 +543,11 @@
             }
             
             main_menu.add('ТВ', map, 'i/mm_ico_tv.png');
+            
+            loader.next();
         }
     )
 
 })();
-loader.next();
+
+//loader.next();
