@@ -40,6 +40,9 @@ vclub_info.prototype.hide = function(){
     this.on = false;
     
     this.scrollbar && this.scrollbar.reset && this.scrollbar.reset();
+    
+    this.parent.password_input.on && this.parent.password_input.hide && this.parent.password_input.hide();
+    this.parent.series_switch.on && this.parent.series_switch.hide && this.parent.series_switch.hide();
 }
 
 vclub_info.prototype.reset = function(){
@@ -126,7 +129,25 @@ vclub_info.prototype.shift_page = function(dir){
 
 vclub_info.prototype.bind = function(){
     
-    this.hide.bind(key.EXIT, this).bind(key.LEFT, this);
+    //this.hide.bind(key.LEFT, this);
+    
+    (function(){
+        if (this.parent.series_switch.on){
+            this.parent.series_switch.shift.call(this.parent.series_switch, -1);
+        }else{
+            this.hide();
+        }
+    }).bind(key.LEFT, this);
+    
+    (function(){
+        if (this.parent.password_input.on){
+            this.parent.password_input.hide();
+        }else if(this.parent.series_switch.on){
+            this.parent.series_switch.hide();
+        }else{
+            this.hide();
+        }
+    }).bind(key.EXIT, this);
     
     (function(){
         this.hide();
@@ -139,6 +160,20 @@ vclub_info.prototype.bind = function(){
     
     this.shift_page.bind(key.PAGE_PREV, this, -1);
     this.shift_page.bind(key.PAGE_NEXT, this, 1);
+    
+    this.action.bind(key.OK, this);
+}
+
+vclub_info.prototype.action = function(){
+    _debug('vclub_info.action');
+    
+    if (this.parent.password_input.on){
+        this.parent.password_input.check.call(this.parent.password_input);
+    }else if(this.parent.series_switch.on){
+        this.parent.series_switch.set.call(this.parent.series_switch);
+    }else{
+        this.parent.check_for_pass.call(this.parent);
+    }
 }
 
 loader.next();
