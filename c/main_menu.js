@@ -33,6 +33,8 @@ var main_menu = {
         this.vshift.bind(key.DOWN, main_menu, 1);
         this.action.bind(key.OK, main_menu);
         
+        this.page_shift.bind(key.PAGE_PREV, main_menu, -1);
+        this.page_shift.bind(key.PAGE_NEXT, main_menu, 1);
         
         (function(){
             this.hide();
@@ -113,12 +115,6 @@ var main_menu = {
             
             this.map[i].active_sub = Math.ceil(total_items/2)-1;
             
-            /*if (this.map[i].sub.length > 0){
-                for (var k=0; k<this.map[i].active_sub; k++){
-                    this.map[i].sub.unshift(this.map[i].sub.pop());
-                }
-            }*/
-            
             for (var j=0; j<this.map[i].sub.length; j++){
                 if (j<6){
                     sub_menu_item = create_block_element('', this.map[i].sub_obj);
@@ -142,7 +138,9 @@ var main_menu = {
             }
         }
         
-        this.active_sub = this.map[1].active_sub;
+        if(this.map[1]){
+            this.active_sub = this.map[1].active_sub;
+        }        
     },
     
     render : function(){
@@ -208,6 +206,25 @@ var main_menu = {
         this.render_sub();
     },
     
+    page_shift : function(dir){
+        if (dir){
+            if (this.map[1].sub.length > 0){
+                for (var i=0; i<=6; i++){
+                    this.map[1].sub.push(this.map[1].sub.shift());
+                }
+            }
+        }else{
+            var menu_length = this.map[1].sub.length;
+            if (menu_length > 0){
+                for (var i=0; i<=6; i++){
+                    this.map[1].sub.unshift(this.map[1].sub[menu_length-1]);
+                    this.map[1].sub.splice(menu_length, 1);
+                }
+            }
+        }
+        this.render_sub();
+    },
+    
     render_sub : function(){
         
         /*if (this.map[1].sub.length < 6){
@@ -234,6 +251,8 @@ var main_menu = {
     
     action : function(){
         _debug('main_menu.action');
+        
+        _debug('this.active_sub', this.active_sub);
         
         if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'object'){
             
