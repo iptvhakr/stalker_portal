@@ -1,6 +1,7 @@
 /* SERIES SWITCH */
 .series_switch{
     position: absolute;
+    z-index: 100;
     width: 334px;
     height: 222px;
     left: 192px;
