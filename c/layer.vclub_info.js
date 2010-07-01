@@ -60,7 +60,7 @@ vclub_info.prototype.init = function(){
     
     this.film_title = create_block_element('mb_filminfo_name text25_white shadow_dark2', this.main_container);
     
-    var info_container  = create_block_element('mb_filminfo_fullinfo text15_white align_justify', this.main_container);
+    var info_container  = create_block_element('mb_filminfo_fullinfo text18_white align_justify', this.main_container);
     
     this.full_info = create_block_element('mb_hidden_overflow', info_container);
     
