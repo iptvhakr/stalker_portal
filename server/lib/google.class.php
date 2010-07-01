@@ -77,26 +77,15 @@ class Google
                       );
             
             if ($result->count() == 1){
-                /*$sql = "update $this->cache_table set content='$content', updated=NOW(), url='$this->gapi_url', crc=MD5('$content')";
-                $rs = $this->db->executeQuery($sql);*/
                 
-                $this->db->update($this->cache_table,
-                                  $data);
+                $this->db->update($this->cache_table, $data);
+            }else{                
                 
-            }else{
-                /*$sql = "insert into $this->cache_table (content, updated, url, crc) value ('$content', NOW(), '".$this->gapi_url."', MD5('$content'))";
-                $rs = $this->db->executeQuery($sql);*/
-                
-                $this->db->insert($this->cache_table,
-                                  $data);
-                
+                $this->db->insert($this->cache_table, $data);
             }
             
         }else{
             if ($result->count() == 1){
-                /*$sql = "update $this->cache_table set updated=NOW()";
-                $rs = $this->db->executeQuery($sql);*/
-                
                 $this->db->update($this->cache_table, array('updated' => 'NOW()'));
                 
             }
