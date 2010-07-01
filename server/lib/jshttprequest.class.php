@@ -166,8 +166,9 @@ class JsHttpRequest
         preg_match('/^(\S*)(?:\s+(\S*))$/', $enc, $p);
         $this->SCRIPT_ENCODING    = strtolower(!empty($p[1])? $p[1] : $enc);
         $this->SCRIPT_DECODE_MODE = !empty($p[2])? $p[2] : '';
+        // COMMENTED by alex
         // Manually parse QUERY_STRING because of damned Unicode's %uXXXX.
-        $this->_correctSuperglobals();
+        //$this->_correctSuperglobals();
     }
 
     
