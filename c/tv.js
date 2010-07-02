@@ -31,6 +31,10 @@
         this.view_menu = {};
         this.genres    = [];
         
+        //this.last_ch_id = 0;
+        
+        this.quick_ch_switch = {"on" : false, "hide_to" : 3000};
+        
         this.row_callback_timer;
         this.row_callback_timeout = 300;
         
@@ -55,10 +59,23 @@
         };
         
         this.show = function(do_not_load){
+            _debug('tv.show', do_not_load);
             
             this.cur_page = 0;
             
             //this.superclass.show.call(this, do_not_load);
+            //this.superclass.show.call(this, false);
+            
+            //_debug('this.last_ch_id', this.last_ch_id);
+            //_debug('stb.player.cur_media_item.id', stb.player.cur_media_item.id);
+            //_debug('this.cur_view', this.cur_view);
+            
+            /*if ((this.cur_view == 'short') && (this.last_ch_id == stb.player.cur_media_item.id)){
+                this.superclass.show.call(this, true);
+            }else{
+                this.superclass.show.call(this, false);
+            }*/
+            
             this.superclass.show.call(this, false);
             
             try{
@@ -94,7 +111,12 @@
                 this.superclass.hide.call(this, do_not_reset);
             
                 _debug('SetTopWin');
-                stb.player.stop();
+                
+                if (!do_not_reset){
+                    stb.player.stop();
+                    //this.last_ch_id = 0;
+                }
+                
                 stb.SetTopWin(0);
                 stb.SetPIG(1, -1, -1, -1);
             }catch(e){
@@ -105,12 +127,49 @@
         this.bind = function(){
             this.superclass.bind.apply(this);
             
-            this.check_for_play.bind(key.OK, this);
+            //this.check_for_play.bind(key.OK, this);
+            
+            (function(){
+        
+                if (this.quick_ch_switch.on){
+                    this.hide_quick_ch_switch();
+                }else{
+                    this.check_for_play();
+                }
+                
+            }).bind(key.OK, this);
             
             (function(){
                 this.hide();
                 main_menu.show();
-            }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
+            }).bind(key.LEFT, this).bind(key.MENU, this);
+            
+            (function(){
+                if (this.quick_ch_switch.on){
+                    this.cancel_quick_ch_switch();
+                }else{
+                    this.hide();
+                    main_menu.show();
+                }
+            }).bind(key.EXIT, this);
+            
+            this.show_quick_ch_switch.bind(key.NUM1, this, 1);
+            this.show_quick_ch_switch.bind(key.NUM2, this, 2);
+            this.show_quick_ch_switch.bind(key.NUM3, this, 3);
+            this.show_quick_ch_switch.bind(key.NUM4, this, 4);
+            this.show_quick_ch_switch.bind(key.NUM5, this, 5);
+            this.show_quick_ch_switch.bind(key.NUM6, this, 6);
+            this.show_quick_ch_switch.bind(key.NUM7, this, 7);
+            this.show_quick_ch_switch.bind(key.NUM8, this, 8);
+            this.show_quick_ch_switch.bind(key.NUM9, this, 9);
+            this.show_quick_ch_switch.bind(key.NUM0, this, 0);
+            
+            (function(){
+                if (this.quick_ch_switch.on){
+                    this.del_quick_go_ch();
+                }
+            }).bind(key.BACK, this);
+            
         };
         
         this.check_for_play = function(){
@@ -145,8 +204,14 @@
                     stb.player.need_show_info = 1;
                 }*/
                 
-                stb.player.need_show_info = 1;
-                stb.player.play(this.data_items[this.cur_row]);
+                //this.last_ch_id = this.data_items[this.cur_row].id;
+                
+                if (this.cur_view != 'short'){
+                    stb.player.need_show_info = 1;
+                    stb.player.play(this.data_items[this.cur_row]);
+                }else{
+                    //this.show_info(this.cur_media_item);
+                }
             }
         };
         
@@ -207,6 +272,7 @@
         };
         
         this.set_short_container = function(){
+            _debug('tv.set_short_container');
             
             this.superclass.set_short_container.apply(this);
             
@@ -231,7 +297,7 @@
         };
         
         this.fill_short_info = function(item){
-            _debug('fill_short_info');
+            _debug('tv.fill_short_info');
             
             var epg = '';
             
@@ -242,6 +308,8 @@
             this.short_info_box.innerHTML = epg;
             
             try{
+                //this.last_ch_id = this.data_items[this.cur_row].id;
+                
                 stb.player.need_show_info = 0;
                 stb.player.play(item);
             }catch(e){
@@ -250,6 +318,10 @@
         };
         
         this.shift_row_callback = function(item){
+            
+            if(this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
+                return;
+            }
             
             window.clearTimeout(this.row_callback_timer);
             
@@ -415,6 +487,139 @@
             
             _debug('tv.fav_manage_mode after', this.fav_manage_mode);
         };
+        
+        
+        
+        this.init_quick_ch_switch = function(){
+            _debug('tv.init_quick_ch_switch');
+            
+            this.quick_ch_switch.dom_obj = create_block_element('quick_ch_switch');
+            
+            this.quick_ch_switch.dom_obj.moveY(300);
+            
+            this.quick_ch_switch.input = create_block_element('quick_ch_input', this.quick_ch_switch.dom_obj);
+            
+            this.quick_ch_switch.dom_obj.hide();
+        };
+        
+        this.show_quick_ch_switch = function(num){
+            _debug('tv.show_quick_ch_switch');
+            
+            if (!this.quick_ch_switch.on){
+                this.quick_ch_switch.dom_obj.show();
+                this.quick_ch_switch.on = true;
+            }
+            
+            if (this.quick_ch_switch.input.innerHTML.length < 3){
+                if (this.quick_ch_switch.input.innerHTML.length == 0 && num == 0){
+                    
+                }else{
+                    this.quick_ch_switch.input.innerHTML = this.quick_ch_switch.input.innerHTML + '' + num;
+                }
+            }
+            
+            this.t_hide_quick_ch_switch();
+        };
+        
+        this.quick_go_to_ch = function(){
+            _debug('tv.quick_go_to_ch');
+            
+            var ch_num = parseInt(this.quick_ch_switch.input.innerHTML);
+            
+            var item = {};
+            
+            if (stb.user.fav_itv_on){
+                
+                stb.player.f_ch_idx = stb.player.fav_channels.getIdxByVal('number', ch_num);
+                
+                if (stb.player.f_ch_idx >= 0){
+                    
+                }else{
+                    stb.player.f_ch_idx = 0;
+                }
+                
+                item = stb.player.fav_channels[stb.player.f_ch_idx];
+                
+            }else{
+                
+                stb.player.ch_idx = stb.player.channels.getIdxByVal('number', ch_num);
+                
+                if (stb.player.ch_idx >= 0){
+                    
+                }else{
+                    stb.player.ch_idx = 0;
+                }
+                
+                item = stb.player.channels[stb.player.ch_idx];
+                
+            }
+            
+            if (!empty(item)){
+                if (this.cur_view == 'short'){
+                    //this.last_ch_id = this.data_items[this.cur_row].id;
+                    
+                    //stb.player.need_show_info = 1;
+                    stb.player.play(item);
+                }else{
+                    stb.player.send_last_tv_id(item.id);
+                }
+                
+                //stb.player.send_last_tv_id()
+                this.cur_page = 0;
+                this.load_data();
+            }
+        };
+        
+        this.del_quick_go_ch = function(){
+            _debug('tv.del_quick_go_ch');
+            
+            if (!this.quick_ch_switch.on){
+                return;
+            }
+            
+            this.t_hide_quick_ch_switch();
+            
+            this.quick_ch_switch.input.innerHTML = this.quick_ch_switch.input.innerHTML.substr(0, this.quick_ch_switch.input.innerHTML.length - 1);
+            
+            this.quick_ch_switch.input.innerHTML = ch_hum;
+        };
+        
+        this.t_hide_quick_ch_switch = function(){
+            _debug('tv.t_hide_quick_ch_switch');
+            
+            window.clearTimeout(this.quick_ch_switch.hide_timer);
+            
+            var self = this;
+            
+            this.quick_ch_switch.hide_timer = window.setTimeout(function(){
+                
+                self.hide_quick_ch_switch();
+                
+            }, this.quick_ch_switch.hide_to);
+        };
+        
+        this.hide_quick_ch_switch = function(){
+            _debug('tv.hide_quick_ch_switch');
+            
+            if (!this.quick_ch_switch.on){
+                return;
+            }
+            
+            this.quick_go_to_ch();
+            
+            this.cancel_quick_ch_switch();
+        };
+        
+        this.cancel_quick_ch_switch = function(){
+            _debug('tv.cancel_quick_ch_switch');
+            
+            window.clearTimeout(this.quick_ch_switch.hide_timer);
+            
+            this.quick_ch_switch.dom_obj.hide();
+            this.quick_ch_switch.on = false;
+            
+            this.quick_ch_switch.input.innerHTML = '';
+        };
     }
     
     tv_constructor.prototype = new Layer();
@@ -425,6 +630,8 @@
     tv.init();
     
     tv.init_short_info();
+    
+    tv.init_quick_ch_switch();
     
     tv.set_wide_container();
     
