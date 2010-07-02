@@ -48,7 +48,7 @@ function Layer(){
 }
 
 Layer.prototype.show = function(do_not_load){
-    _debug('layer.show');
+    _debug('layer.show', do_not_load);
     
     this.dom_obj.show();
     this.on = true;
@@ -78,7 +78,6 @@ Layer.prototype.hide = function(do_not_reset){
             this.sidebar.hide();
         }
     }
-    
     
     this.set_passive_row();
     
