@@ -131,9 +131,9 @@ player.prototype.event_callback = function(event){
                 this.set_pos_button_to_cur_time();
             }
             
-            if (this.is_tv){
+            /*if (this.is_tv){
                 this.send_last_tv_id(this.cur_tv_item.id);
-            }
+            }*/
             
             window.clearTimeout(this.send_played_video_timer);
             
@@ -489,6 +489,9 @@ player.prototype.play = function(item){
         this.play_now(cmd);
         
         if (this.is_tv){
+            
+            this.send_last_tv_id(this.cur_tv_item.id);
+            
             if (stb.user.fav_itv_on){
                 
                 this.f_ch_idx = this.fav_channels.getIdxByVal('number', item.number);
