@@ -934,6 +934,8 @@ player.prototype.bind = function(){
     (function(){
         if (this.info.on){
             this.set_pos_and_play(true);
+        }else if(this.quick_ch_switch.on){
+            this.cancel_quick_ch_switch();
         }else{
             this.show_prev_layer();
         }
@@ -1319,6 +1321,17 @@ player.prototype.hide_quick_ch_switch = function(){
     
     this.quick_go_to_ch();
     
+    this.quick_ch_switch.dom_obj.hide();
+    this.quick_ch_switch.on = false;
+    
+    this.quick_ch_switch.input.innerHTML = '';
+}
+
+player.prototype.cancel_quick_ch_switch = function(){
+    _debug('player.cancel_quick_ch_switch');
+    
+    window.clearTimeout(this.quick_ch_switch.hide_timer);
+            
     this.quick_ch_switch.dom_obj.hide();
     this.quick_ch_switch.on = false;
     
