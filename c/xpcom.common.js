@@ -336,7 +336,7 @@ function common_xpcom(){
 
             var short_ver = full_ver.replace(pattern, "$1");
             
-            if (short_ver.length < 10){
+            if (short_ver.length < 30){
                 ver = short_ver.clearnl();
             }
             
