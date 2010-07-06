@@ -557,7 +557,7 @@ class Mysql
     
     private function escape($value){
         
-        if(is_int($value)){
+        if(is_int($value) || strpos($value, '+')){
             
             return $value;
         //}elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && !strpos($value, '+')){
