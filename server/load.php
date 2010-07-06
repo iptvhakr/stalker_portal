@@ -31,5 +31,11 @@ if (isset($_GET['JsHttpRequest'])){
 
 $db = Database::getInstance(DB_NAME);
 
-echo "generated in: ".round(microtime(1) - $start_time, 3)."s; query counter: ".($db->query_counter+$counter)."; ".$debug->getErrorStr();
+$log = Log::getInstance();
+
+$generated_in = round(microtime(1) - $start_time, 3);
+
+$log->savePageGenerationTime($generated_in);
+
+echo "generated in: ".$generated_in."s; query counter: ".($db->query_counter+$counter)."; ".$debug->getErrorStr();
 ?>
