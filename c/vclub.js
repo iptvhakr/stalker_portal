@@ -486,6 +486,8 @@ _debug('1!!!!!!!!!!!!!!');
             }
             
             main_menu.add('ВИДЕОКЛУБ', map, 'i/mm_ico_video.png');
+            
+            loader.next();
         },
         this
     )
@@ -493,4 +495,4 @@ _debug('1!!!!!!!!!!!!!!');
 })();
 _debug('2!!!!!!!!!!!!!!');
 
-loader.next();
+//loader.next();
