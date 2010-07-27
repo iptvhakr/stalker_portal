@@ -123,10 +123,12 @@ watchdog.prototype.parse_result = function(data){
                 keydown_observer.emulate_key(key.MENU);
                 
                 stb.user.fav_itv_on = 0;
+                
                 var ch_idx = stb.player.channels.getIdxByNumber(parseInt(data.msg));
                 
                 stb.player.ch_idx = ch_idx || 0;
                 stb.player.cur_media_item = stb.player.channels[stb.player.ch_idx];
+                stb.player.cur_tv_item = stb.player.channels[stb.player.ch_idx];
                 
                 keydown_observer.emulate_key(key.EXIT);
                 break
