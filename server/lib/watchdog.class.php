@@ -55,8 +55,11 @@ class Watchdog extends AjaxResponse
          */
         $res['data']['additional_services_on'] = $this->stb->additional_services_on;
         
-        $cur_weather = new Curweather();
-        $res['data']['cur_weather'] = $cur_weather->getData();
+        $weather = new Weatherco();
+        $res['data']['cur_weather'] = $weather->getCurrent();
+        
+        //$cur_weather = new Curweather();
+        //$res['data']['cur_weather'] = $cur_weather->getData();
         
         $updated_places = $this->db->from('updated_places')->where(array('uid' => $this->stb->id))->get()->first();
         
