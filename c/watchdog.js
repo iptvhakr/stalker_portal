@@ -53,10 +53,12 @@ watchdog.prototype.parse_result = function(data){
     
     _debug('watchdog.parse_result', data);
     
+    module.curweather.set(data.cur_weather);
+    
     if (typeof(data.id) != 'undefined'){
         
         _debug('data.id', data.id);
-        
+
         switch(data.event){
             case 'reboot':
             {
