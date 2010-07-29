@@ -11,3 +11,4 @@ MAILTO=alex
 01 * * * * /var/www/stalker_portal/server/tasks/update_day_weather.sh
 10 0,2,6 * * * /var/www/stalker_portal/server/tasks/update_horoscope.sh
 01 7,9,12,16,19,21 * * * /var/www/stalker_portal/server/tasks/update_course.sh
+01,30 * * * * /var/www/stalker_portal/server/tasks/update_weatherco.sh
