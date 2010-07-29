@@ -8,6 +8,7 @@ require_once "./lib/config.php";
 require_once "./lib/subsys/php.php";
 require_once "./lib/func.php";
 require_once "./conf_serv.php";
+require_once "./common.php";
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 /* TEST */
 echo "<pre>";
@@ -39,9 +40,12 @@ $db = Mysql::getInstance();
 ->get()
 ->first_row());*/
 
-var_dump(
-$db->where(array('id<=' => 5))->orderby('login', 'desc')->get('administrators')->all()
-);
+//var_dump(
+//$db->where(array('id<=' => 5))->orderby('login', 'desc')->get('administrators')->all()
+//);
+
+$weather = new Weatherco();
+var_dump($weather->getCurrent());
 
 /*var_dump(
 $db->update('administrators', array('name' => 'name'),array('id' => 1))
