@@ -80,20 +80,12 @@ class Widget
             
             if ($result->count() == 1){
                 
-                /*$sql = "update $this->cache_table set content='$content', updated=NOW(), url='$this->rss_url', crc=MD5('$content')";
-                $rs = $this->db->executeQuery($sql);*/
-                
                 $this->db->update($this->cache_table,
                                   $data);
-                
             }else{
-                
-                /*$sql = "insert into $this->cache_table (content, updated, url, crc) value ('$content', NOW(), '".$this->rss_url."', MD5('$content'))";
-                $rs = $this->db->executeQuery($sql);*/
-                
+
                 $this->db->insert($this->cache_table,
                                   $data);
-                
             }
         }
     }
