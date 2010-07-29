@@ -15,6 +15,8 @@ var main_menu = {
         stb.set_cur_place('main_menu');
         stb.clock.show();
         stb.set_cur_layer(this);
+        
+        module.curweather && module.curweather.current && module.curweather.render();
     },
     
     hide : function(){
