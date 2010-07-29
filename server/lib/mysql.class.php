@@ -437,7 +437,7 @@ class Mysql
         return $result;
     }
     
-    public function update($table, $values, $where){
+    public function update($table, $values, $where = array()){
         
         $this->from[] = $table;
         
@@ -449,7 +449,11 @@ class Mysql
             $valstr[] = $key.'='.$this->escape($val);
         }
         
-        $sql = 'UPDATE '.$table.' SET '.implode(', ', $valstr).' WHERE '.implode(' ', $this->where);
+        $sql = 'UPDATE '.$table.' SET '.implode(', ', $valstr);
+        
+        if(!empty($where)){
+            $sql .= ' WHERE '.implode(' ', $this->where);
+        }
         
         $result = $this->query($sql);
         
