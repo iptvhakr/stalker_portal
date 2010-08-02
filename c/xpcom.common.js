@@ -15,6 +15,7 @@ function common_xpcom(){
     this.storages = {};
     this.player;
     this.key_lock = true;
+    this.power_off = false;
     
     this.aspect_idx = 0;
     this.aspect_array = [
