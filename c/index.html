@@ -235,6 +235,20 @@ function init(){
         stb.player.play_last();
         
     }).bind(key.TV);
+    
+    (function(){
+        
+        if(stb.power_off){
+            stb.StandBy(0);
+            stb.power_off = false;
+            keydown_observer.emulate_key(key.MENU);
+        }else{
+            keydown_observer.emulate_key(key.MENU);
+            stb.StandBy(1);
+            stb.power_off = true;
+        }
+        
+    }).bind(key.POWER);
 
     /* END LAYER MANAGEMENT */
     
