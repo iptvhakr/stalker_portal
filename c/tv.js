@@ -607,6 +607,8 @@
             
             this.quick_go_to_ch();
             
+            this.fill_short_info(this.data_items[this.cur_row]);
+            
             this.cancel_quick_ch_switch();
         };
         
