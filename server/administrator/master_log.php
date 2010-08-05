@@ -114,11 +114,7 @@ a:hover{
 </table>
 <table border="0" align="center" width="620">
 <tr>
-<td style="display:none">
-<form action="" method="GET">
-<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по mac</font>
-</form>
-</td>
+
 </tr>
 </table>
 <?
