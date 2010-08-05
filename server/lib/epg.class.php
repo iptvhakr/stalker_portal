@@ -8,15 +8,15 @@
 
 class Epg
 {
-    public $db;
-    public $cleaned_epg = array();
-    public $day_begin_datetime;
-    public $now_datetime;
-    public $cur_program_id;
-    public $cur_program_idx;
-    public $cur_program_page;
-    public $cur_program_row;
-    public $correction_time = 0; // minutes
+    private $db;
+    private $cleaned_epg = array();
+    private $day_begin_datetime;
+    private $now_datetime;
+    private $cur_program_id;
+    private $cur_program_idx;
+    private $cur_program_page;
+    private $cur_program_row;
+    private $correction_time = 0; // minutes
     private $settings = array();
     
     public function __construct(){
@@ -27,6 +27,12 @@ class Epg
         $this->settings = $this->getSettings();
     }
     
+    /**
+     * Update EPG from all EPG setting records.
+     *
+     * @param bool $force
+     * @return string
+     */
     public function updateEpg($force = false){
         
         $result = '';
@@ -39,6 +45,13 @@ class Epg
         return $result;
     }
     
+    /**
+     * Update EPG from one DB setting record.
+     *
+     * @param array $setting
+     * @param bool $force
+     * @return string Update result.
+     */
     public function updateEpgBySetting($setting, $force = false){
         
         $str = "From {$setting['uri']}\n";
@@ -88,10 +101,6 @@ class Epg
                     
                     $this->cleanEpgByDate($start_ts, $itv_id);
                     
-                    //if (!key_exists($itv_id, $data_arr)){
-                        //$data_arr[$itv_id][] = array();
-                    //}
-                    
                     $data_arr[$itv_id][] = array(
                                                 'ch_id' => $itv_id,
                                                 'time'  => $mysql_start,
@@ -130,16 +139,27 @@ class Epg
         return $str;
     }
     
+    /**
+     * Return all EPG setting records.
+     *
+     * @return array
+     */
     private function getSettings(){
         
         return $this->db->from('epg_setting')->get()->all();
     }
     
+    /**
+     * Update EPG settings.
+     *
+     * @param array $setting
+     * @return MysqlResult
+     */
     private function setSettings($setting){
         
         if (isset($setting['id'])){
-            //$sql = "update epg_setting set uri='{$setting['uri']}', etag='{$setting['etag']}', updated=NOW() where id=".$setting['id'];
-            $this->db->update('epg_setting',
+            
+            return $this->db->update('epg_setting',
                               array(
                                 'uri'     => $setting['uri'],
                                 'etag'    => $setting['etag'],
@@ -147,18 +167,20 @@ class Epg
                               ),
                               array('id' => $setting['id']));
         }else{
-            //$sql = "insert into epg_setting (uri) values ('{$setting['uri']}')";
-            $this->db->insert('epg_setting',
+            
+            return $this->db->insert('epg_setting',
                               array(
                                 'uri' => $setting['uri']
                               ));
         }
     }
     
+    /**
+     * Return array of xmltv_id=>ch_ids.
+     *
+     * @return array Array(xmltv_id => array(id, id, ...,id))
+     */
     private function getITVids(){
-        
-        /*$sql = "select * from itv where xmltv_id!=''";
-        $rs = $this->db->executeQuery($sql);*/
         
         $valid_channels = $this->db->from('itv')->where(array('xmltv_id!=' => ''))->get()->all();
         
@@ -171,17 +193,16 @@ class Epg
             $ids[$channel['xmltv_id']][] = $channel['id'];
         }
         
-        /*while(@$rs->next()){
-            $xmltv_id = $rs->getCurrentValueByName('xmltv_id');
-            if (!key_exists($xmltv_id,$ids)){
-                $ids[$xmltv_id] = array();
-            }
-            $ids[$xmltv_id][] = $rs->getCurrentValueByName('id');
-        }*/
-        
         return $ids;
     }
     
+    /**
+     * Delete program for channel using date.
+     *
+     * @param string $date
+     * @param int $itv_id
+     * @return MysqlResult
+     */
     private function cleanEpgByDate($date, $itv_id){
         
         $date = date("Y-m-d", $date);
@@ -196,9 +217,6 @@ class Epg
         if (!@$this->cleaned_epg[$itv_id][$date]){
             $this->cleaned_epg[$itv_id] = array($date => 1);
             
-            /*$sql = "delete from epg where ch_id=$itv_id and time>='$from' and time<'$to'";
-            $this->db->executeQuery($sql);*/
-            
             $this->db->delete('epg',
                               array(
                                   'ch_id'  => $itv_id,
@@ -208,20 +226,31 @@ class Epg
         }
     }
     
+    /**
+     * Return current program page.
+     *
+     * @return int
+     */
     public function getCurProgramPage(){
         return $this->cur_program_page;
     }
     
+    /**
+     * Return current program index in list.
+     *
+     * @return int
+     */
     public function getCurProgramIdx(){
         return $this->cur_program_idx;
     }
     
+    /**
+     * Find current program.
+     *
+     * @param int $ch_id
+     */
     public function getCurProgram($ch_id){
         $ch_id = intval($ch_id);
-        
-        
-        /*$sql = 'select * from epg where ch_id='.$ch_id.' and time>="'.$this->day_begin_datetime.'" and time<"'.$this->now_datetime.'" order by time desc';
-        $rs = $this->db->executeQuery($sql);*/
         
         $result = $this->db->from('epg')
                            ->where(
@@ -233,7 +262,7 @@ class Epg
                            ->orderby('time', 'desc')
                            ->get();
         
-        //echo $this->cur_program_idx;
+        
         $this->cur_program_idx = intval($result->count());
         $this->cur_program_id  = intval($result->get('id'));
         if ($this->cur_program_id > 0){
@@ -248,6 +277,13 @@ class Epg
         }
     }
     
+    /**
+     * Return current program and $num_programs next.
+     *
+     * @param int $ch_id
+     * @param int $num_programs
+     * @return array
+     */
     public function getCurProgramAndFewNext($ch_id, $num_programs){
         
         
@@ -281,11 +317,22 @@ class Epg
         return array();
     }
     
+    /**
+     * Return current program and 5 next.
+     *
+     * @param int $ch_id
+     * @return array
+     */
     public function getCurProgramAndFiveNext($ch_id){
         
         return $this->getCurProgramAndFewNext($ch_id, 5);
     }
     
+    /**
+     * Returns an array of programs on channels 9 hours.
+     *
+     * @return array
+     */
     public function getEpgInfo(){
         
         $itv = Itv::getInstance();
@@ -294,13 +341,6 @@ class Epg
         
         $now_datetime = date("Y-m-d H:i:s");
         $day_begin_datetime = date("Y-m-d 00:00:00");
-        
-        //$all_ch_str = join(',', $itv->getAllUserChannelsIds());
-        
-        /*$sql = 'select *,MAX(UNIX_TIMESTAMP(time)) as start_timestamp, MAX(time) as time from epg where ch_id in ('.$all_ch_str.') and time>="'.$day_begin_datetime.'" and time<="'.$now_datetime.'" group by ch_id';
-        
-        $rs  = $db->executeQuery($sql);
-        $cur_program_arr = $rs->getAllValues();*/
         
         $db = clone $this->db;
         
@@ -322,11 +362,6 @@ class Epg
             
             $period_end = date("Y-m-d H:i:s", ($cur_program['start_timestamp'] + 9*3600));
             
-            /*$sql = 'select *,UNIX_TIMESTAMP(time) as start_timestamp, TIME_FORMAT(time,"%H:%i") as t_time from epg where ch_id='.$cur_program['ch_id'].' and time>="'.$cur_program['time'].'" and time<="'.$period_end.'" order by time';
-            $rs  = $db->executeQuery($sql);*/
-            
-            
-            
             $result[$cur_program['ch_id']] = $db
                                                 ->from('epg')
                                                 ->select('*, UNIX_TIMESTAMP(time) as start_timestamp, TIME_FORMAT(time,"%H:%i") as t_time')
@@ -338,11 +373,9 @@ class Epg
                                                 ->orderby('time')
                                                 ->get()
                                                 ->all();
-            //$data['data'][$cur_program['ch_id']] = $rs->getAllValues();
         }
         
         return $result;
-        //return $data;
     }
 }
 ?>
