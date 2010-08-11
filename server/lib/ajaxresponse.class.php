@@ -68,10 +68,21 @@ class AjaxResponse
         }
     }
     
+    /**
+     * Append data to response.
+     *
+     * @param string $key
+     * @param mixed $value
+     */
     protected function setResponse($key, $value){
         $this->response[$key] = $value;
     }
     
+    /**
+     * Add main response fields.
+     *
+     * @param Mysql $query
+     */
     protected function setResponseData(Mysql $query){
         
         $query_rows = clone $query;
@@ -82,6 +93,12 @@ class AjaxResponse
         $this->setResponse('data', $query->get()->all());
     }
     
+    /**
+     * Apply callback on responce.
+     *
+     * @param string $callback
+     * @return array
+     */
     protected function getResponse($callback = ''){
         
         if ($callback && is_callable(array($this, $callback))){
@@ -91,6 +108,12 @@ class AjaxResponse
         return $this->response;
     }
     
+    /**
+     * Return image dir using image id.
+     *
+     * @param int $id
+     * @return string
+     */
     protected function getImgUri($id){
     
         $dir_name = ceil($id/FILES_IN_DIR);
@@ -99,6 +122,11 @@ class AjaxResponse
         return $dir_path;
     }
     
+    /**
+     * Main claim method.
+     *
+     * @param string $media_type
+     */
     protected function setClaimGlobal($media_type){
         
         $id   = intval($_REQUEST['id']);
