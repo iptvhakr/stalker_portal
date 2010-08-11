@@ -42,7 +42,6 @@ class Itv extends AjaxResponse
     
     public function getLastId(){
         
-        //$last_id_arr = $this->db->getFirstData('last_id', array('ident' => $this->stb->mac));
         $last_id_arr = $this->db->from('last_id')
                                 ->where(array('ident' => $this->stb->mac))
                                 ->get()
@@ -118,7 +117,6 @@ class Itv extends AjaxResponse
             $uid = $this->stb->id;
         }
         
-        //$fav_itv_ids_arr = $this->db->getFirstData('fav_itv', array('uid' => $uid));
         $fav_itv_ids_arr = $this->db->from('fav_itv')->where(array('uid' => $uid))->get()->first();
         
         if (!empty($fav_itv_ids_arr)){
@@ -182,11 +180,8 @@ class Itv extends AjaxResponse
     
     public function getFavIds(){
         
-        //return $this->getFav();
         $fav = $this->getFav();
         $fav_str = implode(",", $fav);
-        
-        //var_dump($fav_str);
         
         $fav_ids = $this->db
                             ->from('itv')
@@ -209,7 +204,6 @@ class Itv extends AjaxResponse
     }
     
     private function getOffset($where = array()){
-        //$db = clone $this->db;
         
         if (!$this->load_last_page){
             return $this->page * MAX_PAGE_ITEMS;
@@ -221,9 +215,6 @@ class Itv extends AjaxResponse
         
         $tv_number = $this->db->from('itv')->where(array('id' => $last_id))->get()->first('number');
         
-        /*if (!empty($tv_number)){
-            
-        }*/
         $ch_idx = 0;
         
         if(@$_REQUEST['fav']){
@@ -243,18 +234,11 @@ class Itv extends AjaxResponse
             $ch_idx = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number))->get()->count();
         }
         
-        //$this->cur_page = ceil($ch_idx/MAX_PAGE_ITEMS);
-        
-        //$this->selected_item = $ch_idx - floor($ch_idx/MAX_PAGE_ITEMS)*MAX_PAGE_ITEMS;
         if ($ch_idx > 0){
             $this->cur_page = ceil($ch_idx/MAX_PAGE_ITEMS);
             $this->page = $this->cur_page-1;
             $this->selected_item = $ch_idx - ($this->cur_page-1)*MAX_PAGE_ITEMS;
         }
-        
-        /*if ($this->selected_item == 0){
-            $this->selected_item = 14;
-        }*/
         
         $page_offset = ($this->cur_page-1)*MAX_PAGE_ITEMS;
         
@@ -266,8 +250,6 @@ class Itv extends AjaxResponse
     }
     
     private function getData(){
-        
-        //$offset = $this->page * MAX_PAGE_ITEMS;
         
         $where = array();
         
@@ -321,6 +303,8 @@ class Itv extends AjaxResponse
             $result = $result->in('itv.id', $fav);
         }
         
+        
+        
         $this->setResponseData($result);
         
         return $this->getResponse('prepareData');
@@ -332,8 +316,6 @@ class Itv extends AjaxResponse
         $epg = new Epg();
         
         for ($i = 0; $i < count($this->response['data']); $i++){
-            
-            //$this->response['data'][$i]['number'] = intval($this->response['data'][$i]['number']);
             
             if ($this->response['data'][$i]['censored']){
                 $this->response['data'][$i]['lock'] = 1;
