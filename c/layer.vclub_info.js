@@ -55,7 +55,7 @@ vclub_info.prototype.reset = function(){
 
 vclub_info.prototype.init = function(){
     
-    this.dom_obj.innerHTML = '<div class="mb_header_first text24_white">ВИДЕО КЛУБ / <span class="text20_white uppercase">информация о фильме</span></div>';
+    this.dom_obj.innerHTML = '<div class="mb_header_first text24_white">' + word['vclub_title'] + ' / <span class="text20_white uppercase">' + word['vclub_info'] + '</span></div>';
     
     create_block_element('ears_back', this.dom_obj);
     
@@ -83,12 +83,12 @@ vclub_info.prototype.fill = function(item){
     
     this.film_title.innerHTML = item.name + ' / ' + item.o_name;
     
-    this.full_info.innerHTML = '<span>Год выпуска:</span> ' + item.year + '<br>' + 
-                     '<span>Жанр:</span> ' + item.genres_str + '<br>' + 
-                     '<span>Продолжительность:</span> ' + item.time + ' мин.' +
+    this.full_info.innerHTML = '<span>' + word['vclub_year'] + ':</span> ' + item.year + '<br>' + 
+                     '<span>' + word['vclub_genre'] + ':</span> ' + item.genres_str + '<br>' + 
+                     '<span>' + word['vclub_length'] + ':</span> ' + item.time + ' ' + word['vclub_minutes'] + '.' +
                      '<div class="hr_filminfo"></div>' + 
-                     '<span>Режиссер:</span> ' + item.director + '<br>' +
-                     '<span>В ролях:</span> ' + item.actors + 
+                     '<span>' + word['vclub_director'] + ':</span> ' + item.director + '<br>' +
+                     '<span>' + word['vclub_cast'] + ':</span> ' + item.actors + 
                      '<div class="hr_filminfo"></div>' + item.description + '<br><br>';
     
     this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'" width="240" height="320">';
