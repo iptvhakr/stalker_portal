@@ -731,7 +731,7 @@ player.prototype.show_info = function(item){
         }
         
         if (item.cur_series){
-            this.info.pos_series.innerHTML = item.cur_series + ' серия';
+            this.info.pos_series.innerHTML = item.cur_series + ' ' + word['player_series'];
         }else{
             this.info.pos_series.innerHTML = '';
         }
@@ -1441,7 +1441,7 @@ player.prototype.audio_pid = {
                 lang = '';
             }
             
-            title = 'Дорожка ' + (i+1) + lang;
+            title = word['player_track'] + ' ' + (i+1) + lang;
             
             map.push({"title" : title, "cmd" : (function(pid){return function(){stb.player.audio_pid.set(pid)}})(this.all_pids[i].pid), "active" : !!this.all_pids[i].selected});
         }
@@ -1501,7 +1501,7 @@ player.prototype.subtitle_pid = {
         var title;
         var map = [];
         
-        map.push({'title' : 'Отключить', 'cmd' : function(){stb.SetSubtitles(false)}, 'active' : true});
+        map.push({'title' : word['player_off'], 'cmd' : function(){stb.SetSubtitles(false)}, 'active' : true});
         
         for (var i=0; i<this.all_pids.length; i++){
             
@@ -1513,7 +1513,7 @@ player.prototype.subtitle_pid = {
                 lang = '';
             }
             
-            title = 'Титры ' + (i+1) + lang;
+            title = word['player_subtitle'] + (i+1) + lang;
         
             map.push({'title' : title, 'cmd' : (function(pid){return function(){stb.player.subtitle_pid.set(pid)}})(this.all_pids[i].pid), 'active' : this.all_pids[i].selected});
         }
@@ -1527,15 +1527,15 @@ player.prototype.init_con_menu = function(){
     
     var map = [
             {
-                "title" : "Пожаловаться",
+                "title" : word['player_claim'],
                 "cmd"   : [
                     {
                         "cmd"   : function(){stb.player.send_claim('sound')},
-                        "title" : "на звук",
+                        "title" : word['player_on_sound'],
                     },
                     {
                         "cmd"   : function(){stb.player.send_claim('video')},
-                        "title" : "на изображение",
+                        "title" : word['player_on_video'],
                     }
                   ]
             }
@@ -1559,7 +1559,7 @@ player.prototype.build_con_menu = function(){
     
     this.con_menu.map.unshift(
         {
-            "title" : "Субтитры",
+            "title" : word['player_subtitle'],
             "type"  : "switch",
             "cmd"   : this.subtitle_pid.get_for_menu()
         }
@@ -1567,7 +1567,7 @@ player.prototype.build_con_menu = function(){
         
     this.con_menu.map.unshift(
         {
-            "title" : "Аудио",
+            "title" : word['player_audio'],
             "type"  : "switch",
             "cmd"   : this.audio_pid.get_for_menu()
         }
@@ -1609,7 +1609,7 @@ player.prototype.send_claim = function(type){
         this.karaoke_claim(type);
     }
     
-    stb.notice.show('Спасибо, Ваше мнение будет учтено');
+    stb.notice.show(word['player_ty']);
 }
 
 player.prototype.video_claim = function(type){
