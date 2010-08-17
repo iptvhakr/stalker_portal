@@ -202,7 +202,7 @@ _debug('1!!!!!!!!!!!!!!');
             //item.screenshot_uri
             //item.genres_str
             
-            this.short_info_box.innerHTML = '<span>Жанр: </span>' + item.genres_str + '<br><span>Год: </span>' + item.year + ' <span>Время: </span>' + item.time + ' мин.<br><span>Режиссер: </span>' + item.director;
+            this.short_info_box.innerHTML = '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str + '<br><span>' + word['vclub_year'] + ': </span>' + item.year + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br><span>' + word['vclub_director'] + ': </span>' + item.director;
             this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '" width="240" height="320">';
         };
         
@@ -354,11 +354,11 @@ _debug('1!!!!!!!!!!!!!!');
                 _debug('vclub.on_create_link', result);
                 
                 if (result.error == 'limit'){
-                    stb.notice.show('Количество подключений ограничено.<br>Попробуйте позже');
+                    stb.notice.show(word['player_limit_notice']);
                 }else if(result.error == 'nothing_to_play'){
-                    stb.notice.show('Файл отсутствует');
+                    stb.notice.show(word['player_file_missing']);
                 }else if(result.error == 'link_fault'){
-                    stb.notice.show('Ошибка сервера');
+                    stb.notice.show(word['player_server_error']);
                 }else{
                     
                     if (this.info.on){
@@ -392,29 +392,29 @@ _debug('1!!!!!!!!!!!!!!');
     vclub.init_right_ear('ears_movie');
     
     vclub.init_color_buttons([
-        {"label" : "ОТОБРАЖЕНИЕ", "cmd" : vclub.view_switcher},
-        {"label" : "СОРТИРОВКА", "cmd" : vclub.sort_menu_switcher},
-        {"label" : "ПОИСК", "cmd" : vclub.search_box_switcher},
-        {"label" : "ВЫБОРКА", "cmd" : vclub.sidebar_switcher}
+        {"label" : word['vclub_view'], "cmd" : vclub.view_switcher},
+        {"label" : word['vclub_sort'], "cmd" : vclub.sort_menu_switcher},
+        {"label" : word['vclub_search'], "cmd" : vclub.search_box_switcher},
+        {"label" : word['vclub_sampling'], "cmd" : vclub.sidebar_switcher}
     ]);
     
     vclub.init_info();
     
     vclub.init_sidebar();
     
-    vclub.sidebar.init_items("abc", {"header" : "ПО БУКВЕ", "width" : 26, "align" : "center"});
-    vclub.sidebar.init_items("genre",  {"header" : "ПО ЖАНРУ", "width" : 95});
-    vclub.sidebar.init_items("years",  {"header" : "ПО ГОДУ", "width" : 35});
+    vclub.sidebar.init_items("abc", {"header" : word['vclub_by_letter'], "width" : 26, "align" : "center"});
+    vclub.sidebar.init_items("genre",  {"header" : word['vclub_by_genre'], "width" : 95});
+    vclub.sidebar.init_items("years",  {"header" : word['vclub_by_year'], "width" : 35});
     
     vclub.sidebar.bind();
     
     vclub.init_sort_menu(
         [
-            {"label" : "по имени", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false}},
-            {"label" : "по добавлению", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false}},
-            {"label" : "по популярности", "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false}},
-            {"label" : "только HD", "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true}},
-            {"label" : "только избранное", "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false}}
+            {"label" : word['vclub_by_title'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false}},
+            {"label" : word['vclub_by_addtime'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false}},
+            {"label" : word['vclub_top'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false}},
+            {"label" : word['vclub_only_hd'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true}},
+            {"label" : word['vclub_only_favorite'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false}}
         ],
         {
             "offset_x" : 217
@@ -429,8 +429,8 @@ _debug('1!!!!!!!!!!!!!!');
     
     vclub.init_view_menu(
         [
-            {"label" : "список", "cmd" : function(){this.parent.set_wide_container()}},
-            {"label" : "список с инфо", "cmd" : function(){this.parent.set_middle_container()}}
+            {"label" : word['vclub_list'], "cmd" : function(){this.parent.set_wide_container()}},
+            {"label" : word['vclub_list_w_info'], "cmd" : function(){this.parent.set_middle_container()}}
         ],
         {
             "offset_x" : 27,
@@ -439,7 +439,7 @@ _debug('1!!!!!!!!!!!!!!');
         }
     );
    
-    vclub.init_header_path('ВИДЕО КЛУБ');
+    vclub.init_header_path(word['vclub_title']);
     
     vclub.sidebar.dependency    = [vclub.sort_menu, vclub.search_box, vclub.view_menu];
     vclub.sort_menu.dependency  = [vclub.sidebar, vclub.search_box, vclub.view_menu];
@@ -485,7 +485,7 @@ _debug('1!!!!!!!!!!!!!!');
                 );
             }
             
-            main_menu.add('ВИДЕОКЛУБ', map, 'i/mm_ico_video.png');
+            main_menu.add(word['vclub_title'], map, 'i/mm_ico_video.png');
             
             loader.next();
         },
