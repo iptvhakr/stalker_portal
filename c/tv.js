@@ -640,15 +640,15 @@
     tv.init_left_ear('ears_back');
     
     tv.init_color_buttons([
-        {"label" : "ОТОБРАЖЕНИЕ", "cmd" : tv.view_switcher},
-        {"label" : "СОРТИРОВКА", "cmd" : tv.sort_menu_switcher},
-        {"label" : "ИЗБРАННОЕ", "cmd" : tv.add_del_fav},
-        {"label" : "ДВИГАТЬ", "cmd" : tv.switch_fav_manage_mode}
+        {"label" : word['tv_view'], "cmd" : tv.view_switcher},
+        {"label" : word['tv_sort'], "cmd" : tv.sort_menu_switcher},
+        {"label" : word['tv_favorite'], "cmd" : tv.add_del_fav},
+        {"label" : word['tv_move'], "cmd" : tv.switch_fav_manage_mode}
     ]);
     
     tv.init_sort_menu(
         [
-            {"label" : "по номеру", "cmd" : function(){
+            {"label" : word['tv_by_number'], "cmd" : function(){
                 this.parent.load_params.fav = false;
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
@@ -657,7 +657,7 @@
                 var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
                 this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
             }},
-            {"label" : "по имени", "cmd" : function(){
+            {"label" : word['tv_by_title'], "cmd" : function(){
                 this.parent.load_params.fav = false;
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
@@ -666,7 +666,7 @@
                 var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
                 this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
             }},
-            {"label" : "только избранное", "cmd" : function(){
+            {"label" : word['tv_only_favorite'], "cmd" : function(){
                 this.parent.load_params.sortby = 'fav';
                 stb.user.fav_itv_on = 1;
                 stb.player.set_fav_status();
@@ -684,8 +684,8 @@
     
     tv.init_view_menu(
         [
-            {"label" : "список", "cmd" : function(){this.parent.set_wide_container()}},
-            {"label" : "список с инфо", "cmd" : function(){this.parent.set_short_container()}}
+            {"label" : word['tv_list'], "cmd" : function(){this.parent.set_wide_container()}},
+            {"label" : word['tv_list_w_info'], "cmd" : function(){this.parent.set_short_container()}}
         ],
         {
             "offset_x" : 27,
@@ -707,7 +707,7 @@
     
     tv.view_menu.dependency  = [tv.sort_menu];
     
-    tv.init_header_path('ТВ');
+    tv.init_header_path(word['tv_title']);
     
     tv.hide();
     
@@ -751,7 +751,7 @@
                 );
             }
             
-            main_menu.add('ТВ', map, 'i/mm_ico_tv.png');
+            main_menu.add(word['tv_title'], map, 'i/mm_ico_tv.png');
             
             loader.next();
         }
