@@ -110,11 +110,11 @@
                 _debug('karaoke.on_create_link', result);
                 
                 if (result.error == 'limit'){
-                    stb.notice.show('Количество подключений ограничено.<br>Попробуйте позже');
+                    stb.notice.show(word['player_limit_notice']);
                 }else if(result.error == 'nothing_to_play'){
-                    stb.notice.show('Файл отсутствует');
+                    stb.notice.show(word['player_file_missing']);
                 }else if(result.error == 'link_fault'){
-                    stb.notice.show('Ошибка сервера');
+                    stb.notice.show(word['player_server_error']);
                 }else{
                     
                     self.hide(true);
@@ -139,24 +139,24 @@
     karaoke.init_left_ear('ears_back');
     
     karaoke.init_color_buttons([
-        {"label" : "ОТОБРАЖЕНИЕ", "cmd" : (function(){})},
-        {"label" : "СОРТИРОВКА", "cmd" : karaoke.sort_menu_switcher},
-        {"label" : "ПОИСК", "cmd" : karaoke.search_box_switcher},
-        {"label" : "ВЫБОРКА", "cmd" : karaoke.sidebar_switcher}
+        {"label" : word['karaoke_view'], "cmd" : (function(){})},
+        {"label" : word['karaoke_sort'], "cmd" : karaoke.sort_menu_switcher},
+        {"label" : word['karaoke_search'], "cmd" : karaoke.search_box_switcher},
+        {"label" : word['karaoke_sampling'], "cmd" : karaoke.sidebar_switcher}
     ]);
     
     karaoke.color_buttons[karaoke.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
     
     karaoke.init_sidebar();
     
-    karaoke.sidebar.init_items("abc", {"header" : "ПО БУКВЕ", "width" : 26, "align" : "center"});
+    karaoke.sidebar.init_items("abc", {"header" : word['karaoke_by_letter'], "width" : 26, "align" : "center"});
     
     karaoke.sidebar.bind();
     
     karaoke.init_sort_menu(
         [
-            {"label" : "по исполнителю", "cmd" : function(){this.parent.load_params.sortby = 'singer'}},
-            {"label" : "по названию", "cmd" : function(){this.parent.load_params.sortby = 'name'}}
+            {"label" : word['karaoke_by_performer'], "cmd" : function(){this.parent.load_params.sortby = 'singer'}},
+            {"label" : word['karaoke_by_title'], "cmd" : function(){this.parent.load_params.sortby = 'name'}}
         ],
         {
             "offset_x" : 217
@@ -169,7 +169,7 @@
         }
     );
     
-    karaoke.init_header_path('КАРАОКЕ');
+    karaoke.init_header_path(word['karaoke_title']);
     
     karaoke.sidebar.dependency    = [karaoke.sort_menu, karaoke.search_box];
     karaoke.sort_menu.dependency  = [karaoke.sidebar, karaoke.search_box];
