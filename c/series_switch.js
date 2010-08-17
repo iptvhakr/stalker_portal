@@ -25,7 +25,7 @@ series_switch.prototype.init = function(){
     this.dom_obj = create_block_element('series_switch');
     this.series_box  = create_block_element('series_switch_input', this.dom_obj);
     var series_switch_title = create_block_element('series_switch_title', this.dom_obj);
-    series_switch_title.innerHTML = 'СЕРИЯ';
+    series_switch_title.innerHTML = word['player_series_uc'];
     
     this.hide();
 }
