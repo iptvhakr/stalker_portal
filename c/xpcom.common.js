@@ -56,7 +56,7 @@ function common_xpcom(){
         
         this.cut_off_dom_obj = create_block_element('cut_off');
         var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
-        text_msg.innerHTML = 'Ваша приставка отключена.<br/> т. 740-0-740';
+        text_msg.innerHTML = word['cut_off_msg'];
         this.cut_off_dom_obj.hide();
         
         this.clock.start();
@@ -644,8 +644,8 @@ function common_xpcom(){
     
     this.clock = {
         
-        month_arr : ['ЯНВАРЯ', 'ФЕВРАЛЯ', 'МАРТА', 'АПРЕЛЯ', 'МАЯ', 'ИЮНЯ', 'ИЮЛЯ', 'АВГУСТА', 'СЕНТЯБРЯ', 'ОКТЯБРЯ', 'НОЯБРЯ', 'ДЕКАБРЯ'],
-        day_arr   : ['ВОСКРЕСЕНЬЕ', 'ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА'],
+        month_arr : word['month_arr'],
+        day_arr   : word['week_arr'],
         
         start : function(){
             _debug('clock.start()');
@@ -703,7 +703,7 @@ function common_xpcom(){
         show : function(){
             if (main_menu){
                 main_menu.time.innerHTML = this.hours + ':' + this.minutes;
-                main_menu.date.innerHTML = this.day_arr[this.day] + ', ' + this.date + ' ' + this.month_arr[this.month] + ', ' + this.year + 'г.';
+                main_menu.date.innerHTML = this.day_arr[this.day] + ', ' + this.date + ' ' + this.month_arr[this.month] + ', ' + this.year + word['year'] + '.';
             }
         }
     }
