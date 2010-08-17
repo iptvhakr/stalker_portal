@@ -68,7 +68,7 @@
     
     radio.init_left_ear('ears_back');
     
-    radio.init_header_path('РАДИО');
+    radio.init_header_path(word['radio_title']);
     
     radio.hide();
     
@@ -78,7 +78,7 @@
     
     /* Integrate karaoke in main menu */
     
-    main_menu.add('РАДИО', [], 'i/mm_ico_radio.png', function(){
+    main_menu.add(word['radio_title'], [], 'i/mm_ico_radio.png', function(){
         main_menu.hide();
         module.radio.show();
     });
