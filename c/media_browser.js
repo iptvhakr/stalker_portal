@@ -175,7 +175,7 @@
             this.mounted = true;
             this.load_data();
             
-            stb.notice.show('USB устройство подключено');
+            stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_connected']);
         };
         
         this.is_drive_mounted = function(){
@@ -193,7 +193,7 @@
             
             this.mounted = false;
             
-            stb.notice.show('USB устройство отключено');
+            stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_disconnected']);
             
             if (this.on){
                 
@@ -300,7 +300,7 @@
     
     media_browser.init_left_ear('ears_back');
     
-    media_browser.init_header_path('USB Устройство');
+    media_browser.init_header_path(word['mbrowser_title']);
     
     media_browser.hide();
     
@@ -308,12 +308,12 @@
     
     /* END MEDIA BROWSER */
     
-    main_menu.add('USB Устройство', [], 'i/mm_ico_usb.png', function(){
+    main_menu.add(word['mbrowser_title'], [], 'i/mm_ico_usb.png', function(){
         if (module.media_browser.is_drive_mounted()){
             main_menu.hide();
             module.media_browser.show();
         }else{
-            stb.notice.show('USB устройство не найдено');
+            stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_not_found']);
         }
     });
     
