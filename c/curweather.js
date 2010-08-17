@@ -29,10 +29,10 @@
             var cur = '<img src="i/weather/' + this.current.pict + '"/><br>';
             cur += this.current.t +'&deg; C<br>';
             cur += this.current.cloud_str + '<br>';
-            cur += 'Комфорт: ' + this.current.t_flik +'&deg; C<br>';
-            cur += 'Давление: ' + this.current.p + ' мм. рт.ст.<br>';
-            cur += 'Ветер: '+ this.current.w_rumb_str + ', ' + this.current.w + ' м/с<br>';
-            cur += 'Влажность: '+ this.current.h + '%<br>';
+            cur += word['weather_comfort'] + ': ' + this.current.t_flik +'&deg; C<br>';
+            cur += word['weather_pressure'] + ': ' + this.current.p + ' ' + word['weather_mmhg'] +'<br>';
+            cur += word['weather_wind'] + ': '+ this.current.w_rumb_str + ', ' + this.current.w + ' ' + word['weather_speed'] + '<br>';
+            cur += word['weather_humidity'] + ': '+ this.current.h + '%<br>';
             
             this.dom_obj.innerHTML = cur;
         }
