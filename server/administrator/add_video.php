@@ -21,7 +21,7 @@ if (!$_SERVER['QUERY_STRING']){
     unset($_SESSION['upload']);
 }
 
-if (@$_SESSION['media_id'] != @$_GET['id']){
+if (@$_SESSION['media_id'] != @$_GET['id'] && !empty($_GET['id'])){
     unset($_SESSION['upload']);
 }
 
@@ -117,10 +117,14 @@ if (count(@$_POST) > 0){
                                                                '".$_FILES['screenshot']['type']."', 
                                                                '".IMG_PATH."'
                                                                )";
-                    echo $insert_upload;
+                    //echo $insert_upload;
                     $rs=$db->executeQuery($insert_upload);
                 
                     $upload_id = mysql_insert_id();
+                    
+                    if (empty($_SESSION['upload'])){
+                        $_SESSION['upload'] = array();
+                    }
                     
                     $_SESSION['upload'][] = $upload_id;
                     
@@ -234,13 +238,15 @@ if (count(@$_POST) > 0){
                                                 )";
                     //echo $query;
                     $rs = $db->executeQuery($query);
-                    add_video_log('add', $rs->getLastInsertId());
                     
                     if(@$_SESSION['upload']){
                         $query = 'UPDATE screenshots SET media_id=\''.mysql_insert_id().'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
                         $rs=$db->executeQuery($query);
                         unset($_SESSION['upload']);
                     }
+                    
+                    add_video_log('add', $rs->getLastInsertId());
+
                     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
                     exit;
                 }
@@ -691,6 +697,7 @@ if (@$_GET['edit']){
         }
     }
     $query = "select * from screenshots where media_id=".intval(@$_GET['id']);
+    //echo $query;
     $rs=$db->executeQuery($query);
     while(@$rs->next()){
         $arr=$rs->getCurrentValuesAsHash();
