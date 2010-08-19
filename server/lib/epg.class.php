@@ -377,5 +377,9 @@ class Epg
         
         return $result;
     }
+    
+    public function getDataTable(){
+        
+    }
 }
 ?>
