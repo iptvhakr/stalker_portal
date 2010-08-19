@@ -54,6 +54,8 @@ Layer.prototype.show = function(do_not_load){
     this.on = true;
     
     if (!do_not_load){
+        
+        
         this.load_data();
     }else{
         this.set_active_row(this.cur_row);
@@ -74,7 +76,6 @@ Layer.prototype.hide = function(do_not_reset){
         this.sidebar && this.sidebar.reset && this.sidebar.reset();
         
         if (this.sidebar && this.sidebar.on){
-            //this.sidebar.reset();
             this.sidebar.hide();
         }
     }
@@ -238,6 +239,7 @@ Layer.prototype.load_data = function(){
         function(result){
             _debug('callback run');
             _debug('result', result);
+            
             this.result = result;
             this.total_pages = Math.ceil(result.total_items/result.max_page_items);
             
@@ -261,10 +263,10 @@ Layer.prototype.set_total_items = function(count){
     var str = '';
     
     if (this.total_pages != 0){
-        str += 'СТР <span class="text20_white bold">'+this.cur_page+'</span> ИЗ <span class="text20_white bold">'+this.total_pages+'</span>.';
+        str += word['layer_page'] + ' <span class="text20_white bold">'+this.cur_page+'</span> ' + word['layer_from'] + ' <span class="text20_white bold">'+this.total_pages+'</span>.';
     }
     
-    str += ' НАЙДЕНО <span class="text20_white bold">'+count+'</span> ЗАПИСЕЙ.';
+    str += ' ' + word['layer_found'] + ' <span class="text20_white bold">'+count+'</span> ' + word['layer_records'] + '.';
     this.total_vclub_items_obj.innerHTML = str;
 }
 
@@ -315,6 +317,7 @@ Layer.prototype.handling_block = function(data, row_items, block_name){
         if (block_obj.isHidden()){
             block_obj.show();
         }
+        
         block_obj.innerHTML = data;
     }
 }
@@ -457,26 +460,7 @@ Layer.prototype.init_color_buttons = function(map){
     
     this.buttons_bar = this.create_block('color_button_bar');
     
-    /*var table = '<table>';
-    table += '<tr>';
-    table += '<td><img src="i/1x1.gif"><div class="btn_red"></div><span class="footer_text">'+map[0].label+'</span></td>';
-    table += '<td><img src="i/footer_bg2.png"><div class="btn_green"></div><span class="footer_text">'+map[1].label+'</span></td>';
-    table += '<td><img src="i/footer_bg2.png"><div class="btn_yellow"></div><span class="footer_text">'+map[2].label+'</span></td>';
-    table += '<td><img src="i/footer_bg2.png"><div class="btn_blue"></div><span class="footer_text">'+map[3].label+'</span></td>';
-    table += '</tr>';
-    table += '</table>';*/
-    
-    /*var table = '<table>';
-    table += '<tr>';
-    table += '<td><img src="i/1x1.gif"><div class="btn_red"></div><span>'+map[0].label+'</span></td>';
-    table += '<td><img src="i/footer_bg2.png"><div class="btn_green"></div><span>'+map[1].label+'</span></td>';
-    table += '<td><img src="i/footer_bg2.png"><div class="btn_yellow"></div><span>'+map[2].label+'</span></td>';
-    table += '<td><img src="i/footer_bg2.png"><div class="btn_blue"></div><span>'+map[3].label+'</span></td>';
-    table += '</tr>';
-    table += '</table>';*/
-    
     var table = document.createElement('table');
-    //this.buttons_bar.appendChild(table);
     
     var row = document.createElement('tr');
     table.appendChild(row);
