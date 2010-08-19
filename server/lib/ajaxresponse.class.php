@@ -43,7 +43,20 @@ class AjaxResponse
                     'ноябрь',
                     'декабрь'
                 ),
-        'EN' => array()
+        'EN' => array(
+                    'january',
+                    'february',
+                    'march',
+                    'april',
+                    'may',
+                    'june',
+                    'july',
+                    'august',
+                    'september',
+                    'october',
+                    'november',
+                    'december'
+                )
     );
     
     protected $abc = array();
