@@ -9,7 +9,7 @@ include "../common.php";
 require_once "../lib/func.php";
 require_once "../conf_serv.php";
 
-$JsHttpRequest =& new Subsys_JsHttpRequest_Php("utf-8");
+$JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
 
 // Формируем результат прямо в виде PHP-массива!
 $_RESULT = get_data(); 
