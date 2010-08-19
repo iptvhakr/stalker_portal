@@ -412,7 +412,7 @@ player.prototype.play_last = function(){
     _debug('player.play_last');
     
     this.prev_layer = module.tv;
-    
+    this.show_info_after_play();
     this.play(this.cur_tv_item);
 }
 
