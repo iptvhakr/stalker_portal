@@ -53,7 +53,7 @@ watchdog.prototype.parse_result = function(data){
     
     _debug('watchdog.parse_result', data);
     
-    module.curweather.set(data.cur_weather);
+    module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
     
     if (typeof(data.id) != 'undefined'){
         
