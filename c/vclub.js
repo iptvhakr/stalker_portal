@@ -350,27 +350,43 @@ _debug('1!!!!!!!!!!!!!!');
             
             var self = this;
             
-            stb.player.on_create_link = function(result){
-                _debug('vclub.on_create_link', result);
-                
-                if (result.error == 'limit'){
-                    stb.notice.show(word['player_limit_notice']);
-                }else if(result.error == 'nothing_to_play'){
-                    stb.notice.show(word['player_file_missing']);
-                }else if(result.error == 'link_fault'){
-                    stb.notice.show(word['player_server_error']);
-                }else{
+            _debug('cmd', this.data_items[this.cur_row].cmd);
+            _debug('indexOf', this.data_items[this.cur_row].cmd.indexOf('://'));
+            
+            if (this.data_items[this.cur_row].cmd.indexOf('://') < 0){
+            
+                stb.player.on_create_link = function(result){
+                    _debug('vclub.on_create_link', result);
                     
-                    if (this.info.on){
-                        this.info.hide();
+                    if (result.error == 'limit'){
+                        stb.notice.show(word['player_limit_notice']);
+                    }else if(result.error == 'nothing_to_play'){
+                        stb.notice.show(word['player_file_missing']);
+                    }else if(result.error == 'link_fault'){
+                        stb.notice.show(word['player_server_error']);
+                    }else{
+                        
+                        if (this.info.on){
+                            this.info.hide();
+                        }
+                        
+                        self.hide(true);
+                        
+                        stb.player.prev_layer = self;
+                        stb.player.need_show_info = 1;
+                        stb.player.play_now(result.cmd);
                     }
-                    
-                    self.hide(true);
-                    
-                    stb.player.prev_layer = self;
-                    stb.player.need_show_info = 1;
-                    stb.player.play_now(result.cmd);
                 }
+            }else{
+                if (this.info.on){
+                        this.info.hide();
+                }
+                
+                self.hide(true);
+                
+                stb.player.prev_layer = self;
+                stb.player.need_show_info = 1;
+                //stb.player.play(this.data_items[this.cur_row]);
             }
             
             stb.player.play(this.data_items[this.cur_row]);
