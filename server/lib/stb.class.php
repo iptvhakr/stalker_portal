@@ -43,7 +43,7 @@ class Stb
         $this->db = Mysql::getInstance();
         $this->getStbParams();
         
-        if ($this->db->from('moderators')->where(array('mac' => $this->mac))->get()->count() == 1){
+        if ($this->db->from('moderators')->where(array('mac' => $this->mac, 'status' => 1))->get()->count() == 1){
             $this->is_moderator = true;
         }
     }
@@ -120,6 +120,9 @@ class Stb
         $profile['last_itv_id'] = $itv->getLastId();
         
         $profile['updated'] = $this->getUpdatedPlaces();
+        
+        $profile['rtsp_type']  = RTSP_TYPE;
+        $profile['rtsp_flags'] = RTSP_FLAGS;
         
         return $profile;
     }
