@@ -59,13 +59,27 @@ class AjaxResponse
                 )
     );
     
+    protected $all_title_arr = array(
+        'RU' => 'Все',
+        'EN' => 'All'
+    );
+    
+    protected $no_ch_info_arr = array(
+        'RU' => '[Расписание отсутствует]',
+        'EN' => '[No channel info]'
+    );
+    
     protected $abc = array();
     protected $months = array();
+    protected $all_title = '';
+    protected $no_ch_info = '';
     
     protected function __construct(){
         
         $this->abc = $this->all_abc[LANG];
         $this->months = $this->all_months[LANG];
+        $this->all_title = $this->all_title_arr[LANG];
+        $this->no_ch_info = $this->no_ch_info_arr[LANG];
         
         $this->db  = Mysql::getInstance();
         $this->stb = Stb::getInstance();
