@@ -9,6 +9,7 @@
 abstract class Master
 {
     private $storages;
+    private $moderator_storages;
     private $clients;
     private $stb;
     protected $media_id;
@@ -17,11 +18,15 @@ abstract class Master
     private $cache_expire_h = MASTER_CACHE_EXPIRE;
     protected $db;
     protected $media_type;
+    protected $media_params;
+    protected $rtsp_url;
+    protected $db_table;
     
     public function __construct(){
         $this->db = Mysql::getInstance();
         $this->stb = Stb::getInstance();
         $this->storages = $this->getAllActiveStorages();
+        $this->moderator_storages = $this->getModeratorStorages();
         $this->clients = $this->getClients();
     }
     
@@ -36,10 +41,6 @@ abstract class Master
         
         $this->initMedia($media_id);
         
-        $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, !$from_cache);
-        
-        $default_error = 'nothing_to_play';
-        
         $res = array(
             'id'         => 0,
             'cmd'        => '',
@@ -47,6 +48,19 @@ abstract class Master
             'load'       => '',
             'error'      => ''
         );
+        
+        if (!empty($this->rtsp_url)){
+            
+            $res['id']  = $this->media_id;
+            $res['cmd'] = $this->rtsp_url;
+            
+            return $res;
+            
+        }
+        
+        $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, !$from_cache);
+        
+        $default_error = 'nothing_to_play';
         
         foreach ($good_storages as $name => $storage){
             if ($storage['load'] < 1){
@@ -130,7 +144,39 @@ abstract class Master
      * @return array active storages
      */
     public function getStoragesForStb(){
-        return $this->storages;
+        
+        //return $this->storages;
+        
+        $storages = array();
+        
+        $where = array('status' => 1);
+        
+        if (!$this->stb->isModerator()){
+            $where['for_moderator'] = 0;
+        }
+        
+        $data = $this->db->from('storages')->where($where)->get()->all();
+        
+        foreach ($data as $idx => $storage){
+            $storages[$storage['storage_name']] = $storage;
+        }
+        return $storages;
+        
+    }
+    
+    /**
+     * Return moderators storages
+     *
+     * @return array storages names
+     */
+    private function getModeratorStorages(){
+        
+        $storages = $this->db->from('storages')->where(array('status' => 1, 'for_moderator' => 1))->get()->all();
+        
+        foreach ($data as $idx => $storage){
+            $storages[$storage['storage_name']] = $storage;
+        }
+        return $storages;
     }
     
     /**
@@ -139,12 +185,17 @@ abstract class Master
      * @param int $media_id
      */
     private function initMedia($media_id){
+        
         if (empty($this->media_id)){
             $this->media_id = $media_id;
         }
         
+        if (empty($this->media_params)){
+            $this->media_params = $this->getMediaParams($this->media_id);
+        }
+        
         if (empty($this->media_name)){
-            $this->media_name = $this->getMediaNameById($this->media_id);
+            $this->media_name = $this->getMediaName();
         }
     }
     
@@ -154,6 +205,7 @@ abstract class Master
      * @return array active storages
      */
     private function getAllActiveStorages(){
+        
         $storages = array();
         
         $data = $this->db->from('storages')->where(array('status' => 1))->get()->all();
@@ -170,6 +222,7 @@ abstract class Master
      * @param string $storage_name
      */
     private function checkHomeDir($storage_name){
+        
         try {
             $this->clients[$storage_name]->checkHomeDir($this->stb->mac);
         }catch (SoapFault $exception){
@@ -188,6 +241,11 @@ abstract class Master
         $cache = array();
         
         $this->initMedia($media_id);
+        
+        if ($this->stb->isModerator()){
+            $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name);
+            return $good_storages;
+        }
         
         if (!$force_net){
             $cache = $this->getAllGoodStoragesForMediaFromCache();
@@ -210,15 +268,22 @@ abstract class Master
      * Get all good for media by id interviewing all good storages
      *
      * @param int $media_id
+     * @param bool $force_moderator default = false
      * @return array good storages from net
      */
-    public function getAllGoodStoragesForMediaFromNet($media_id){
+    public function getAllGoodStoragesForMediaFromNet($media_id, $force_moderator = false){
         
         $this->initMedia($media_id);
         
         $good_storages = array();
         
-        foreach ($this->storages as $name => $storage){
+        if ($this->stb->isModerator() || $force_moderator){
+            $storages = $this->storages;
+        }else{
+            $storages = array_diff($this->storages, $this->moderator_storages);
+        }
+        
+        foreach ($storages as $name => $storage){
             
             $raw = $this->checkMediaDir($name, $this->media_name);
             
@@ -235,7 +300,11 @@ abstract class Master
             }
         }
         $this->checkMD5Sum($good_storages);
-        $this->setStorageCache($good_storages);
+        
+        if (!$this->stb->isModerator()){
+            $this->setStorageCache($good_storages);
+        }
+        
         return $good_storages;
     }
     
@@ -525,12 +594,33 @@ abstract class Master
     }
     
     /**
-     * Return media name by id
+     * Return media name
      *
-     * @param int $media_id
      * @return string
      */
-    abstract protected function getMediaNameById($media_id);
+    abstract protected function getMediaName();
+    
+    /**
+     * Return media params from db
+     *
+     * @param int $media_id
+     * @return array
+     */
+    protected function getMediaParams($media_id){
+        
+        $media_params = $this->db->from($this->db_table)
+                                  ->where(array('id' => $media_id))
+                                  ->get()
+                                  ->first();
+        
+        if (!empty($media_params)){
+            if (!empty($media_params['rtsp_url'])){
+                $this->rtsp_url = $media_params['rtsp_url'];
+            }
+        }
+        
+        return $media_params;
+    }
     
     /**
      * Increment counter of storage deny
