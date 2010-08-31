@@ -27,6 +27,10 @@ define("PORTAL_URI", '/stalker_portal/');
 
 define("MASTER_CACHE_EXPIRE", 365); // hours
 
+// RTSP
+define("RTSP_TYPE", 4);
+define("RTSP_FLAGS", 0);
+
 if (OS_UNIX){
     define("PORTAL_PATH", '/var/www/stalker_portal/');
     define("IMG_PATH", '/var/www/stalker_portal/screenshots/');
