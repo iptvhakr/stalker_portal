@@ -441,7 +441,11 @@ class Vod extends AjaxResponse
             
             $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
             
-            $this->response['data'][$i]['cmd'] = '/media/'.$this->response['data'][$i]['id'].'.mpg';
+            if (!empty($this->response['data'][$i]['rtsp_url'])){
+                $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'];
+            }else{
+                $this->response['data'][$i]['cmd'] = '/media/'.$this->response['data'][$i]['id'].'.mpg';
+            }
             
             if (@$_REQUEST['sortby'] && @$_REQUEST['sortby'] == 'added'){
                 $this->response['data'][$i] = array_merge($this->response['data'][$i], $this->getAddedArr($this->response['data'][$i]['added']));
@@ -485,7 +489,7 @@ class Vod extends AjaxResponse
                         ->get()
                         ->all();
                         
-        array_unshift($categories, array('id' => '*', 'title' => 'Все', 'alias' => '*'));
+        array_unshift($categories, array('id' => '*', 'title' => $this->all_title, 'alias' => '*'));
         
         return $categories;
     }
