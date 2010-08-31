@@ -28,12 +28,14 @@ if (@$_POST['add']){
                 storage_name, 
                 storage_ip, 
                 nfs_home_path, 
-                max_online) 
+                max_online,
+                for_moderator) 
             values (
                 "'.@$_POST['storage_name'].'",
                 "'.@$_POST['storage_ip'].'",
                 "'.@$_POST['nfs_home_path'].'",
-                "'.@$_POST['max_online'].'"
+                "'.@$_POST['max_online'].'",
+                "'.@intval($_POST['for_moderator']).'"
             )';
     $db->executeQuery($sql);
     header("Location: storages.php");
@@ -48,7 +50,8 @@ if (!empty($id)){
                     storage_name="'.@$_POST['storage_name'].'",
                     storage_ip="'.@$_POST['storage_ip'].'",
                     nfs_home_path="'.@$_POST['nfs_home_path'].'",
-                    max_online="'.@$_POST['max_online'].'"
+                    max_online="'.@$_POST['max_online'].'",
+                    for_moderator="'.@intval($_POST['for_moderator']).'"
                 where id='.intval($_GET['id']);
         $db->executeQuery($sql);
         header("Location: storages.php");
@@ -170,7 +173,13 @@ a:hover{
             <td>&nbsp;</td>
         </tr>
         <? foreach ($storages as $storage){
-                echo '<tr>';
+                echo '<tr ';
+                
+                if ($storage['for_moderator']){
+                    echo 'style="background-color: #ffecec;"';
+                }
+                
+                echo '>';
                 echo '<td>'.$storage['id'].'</td>';
                 echo '<td>'.$storage['storage_name'].'</td>';
                 echo '<td>'.$storage['storage_ip'].'</td>';
@@ -217,6 +226,10 @@ a:hover{
                 <tr>
                     <td>Max online</td>
                     <td><input type="text" name="max_online" value="<?echo @$edit_storage['max_online']?>"></input></td>
+                </tr>
+                <tr>
+                    <td>Только модераторы</td>
+                    <td><input type="checkbox" name="for_moderator" value="1" <? if(@$edit_storage['for_moderator']){ echo 'checked="checked"'; } ?>></input></td>
                 </tr>
                 <tr>
                     <td></td>
