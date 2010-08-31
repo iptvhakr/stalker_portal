@@ -9,8 +9,11 @@
 class KaraokeMaster extends Master
 {
     public function __construct(){
-        parent::__construct();
+        
         $this->media_type = 'karaoke';
+        $this->db_table = 'video';
+        
+        parent::__construct();
     }
     
     protected function getMediaNameById($media_id){
