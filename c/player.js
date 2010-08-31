@@ -70,6 +70,7 @@ player.prototype.init = function(){
         stb.SetDefaultFlicker(1);
         stb.SetLoop(0);
         stb.SetMicVolume(100);
+        stb.SetupRTSP(stb.user.rtsp_type, stb.user.rtsp_flags);
         
         stbEvent.onEvent = (function(self){
             return function(){
@@ -395,7 +396,7 @@ player.prototype.define_media_type = function(cmd){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('udp://') || cmd.indexOf('rtp://')) && stb.cur_place != 'radio'){
+        if ((cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0) && stb.cur_place != 'radio'){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -756,6 +757,12 @@ player.prototype.switch_channel = function(dir, show_info){
         return;
     }
     
+    if (show_info){
+        this.need_show_info = 1;
+    }else{
+        this.need_show_info = 0;
+    }
+    
     if (dir > 0){
         
         if (stb.user.fav_itv_on){
@@ -768,9 +775,9 @@ player.prototype.switch_channel = function(dir, show_info){
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
             
-            if (show_info){
+            /*if (show_info){
                 this.show_info(this.fav_channels[this.f_ch_idx]);
-            }
+            }*/
             
             this.play(this.fav_channels[this.f_ch_idx]);
             
@@ -784,9 +791,9 @@ player.prototype.switch_channel = function(dir, show_info){
             
             _debug('this.ch_idx:', this.ch_idx);
             
-            if (show_info){
+            /*if (show_info){
                 this.show_info(this.channels[this.ch_idx]);
-            }
+            }*/
             
             this.play(this.channels[this.ch_idx]);
         }
@@ -802,9 +809,9 @@ player.prototype.switch_channel = function(dir, show_info){
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
             
-            if (show_info){
+            /*if (show_info){
                 this.show_info(this.fav_channels[this.f_ch_idx]);
-            }
+            }*/
             this.play(this.fav_channels[this.f_ch_idx]);
             
         }else{
@@ -817,9 +824,9 @@ player.prototype.switch_channel = function(dir, show_info){
             
             _debug('this.ch_idx:', this.ch_idx);
             
-            if (show_info){
+            /*if (show_info){
                 this.show_info(this.channels[this.ch_idx]);
-            }
+            }*/
             this.play(this.channels[this.ch_idx]);
         }
     }
