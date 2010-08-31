@@ -17,6 +17,7 @@ CREATE TABLE `video`(
     `time` varchar(64) NOT NULL default '', 
     `file` varchar(128) NOT NULL default '', 
     `path` varchar(255) NOT NULL default '', 
+    `rtsp_url` varchar(255) NOT NULL default '', 
     `censored` tinyint default 0, /* 0-off, 1-on */
     `hd` tinyint default 0,
     `series` text NOT NULL default '', 
@@ -613,6 +614,7 @@ CREATE TABLE `storages`(
     `nfs_home_path` varchar(128) NOT NULL default '',
     `max_online` int NOT NULL default 0,
     `status` tinyint default 1,
+    `for_moderator` tinyint default 0,
     UNIQUE KEY (`storage_name`),
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
