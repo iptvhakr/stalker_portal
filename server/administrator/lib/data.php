@@ -60,10 +60,18 @@ function get_data(){
                     $sql = "select * from video where id=$media_id";
                     $rs  = $db->executeQuery($sql);
                     $path = $rs->getValueByName(0, 'path');
+                    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
+                    
+                    if (!empty($rtsp_url)){
+                        
+                        $result['data'] = array();
+                        return $result;
+                    }
+                    
                     $sql = '';
                     
                     $master = new VideoMaster();
-                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id);
+                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
                     
                     if(count($good_storages) > 0){
                         set_video_status($media_id, 1);
