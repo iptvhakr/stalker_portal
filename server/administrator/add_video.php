@@ -1424,10 +1424,10 @@ function fill_category(){
         
         <tr>
            <td align="right" valign="top">
-           RTSP URL: 
+           RTSP/HTTP URL: 
            </td>
            <td>
-            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>">
+            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>"> (включая солюшн)
            </td>
         </tr> 
         
