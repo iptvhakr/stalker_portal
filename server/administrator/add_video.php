@@ -59,6 +59,7 @@ if (isset($_GET['accessed']) && @$_GET['id']){
     $name = mysql_escape_string($video['name']);
     $o_name = mysql_escape_string($video['o_name']);
     $director = mysql_escape_string($video['director']);
+    
     $year = $video['year'];
     
     if ($_GET['accessed'] == 1){
@@ -164,6 +165,8 @@ if (count(@$_POST) > 0){
             
             $category_id = @$_POST['category_id'] ? @intval($_POST['category_id']) : 0;
             
+            $rtsp_url = @trim($_POST['rtsp_url']);
+            
             if (@$_GET['save']){
                 $trans_name = transliterate(@urldecode($_POST['name']));
                 
@@ -199,6 +202,7 @@ if (count(@$_POST) > 0){
                                                  censored,
                                                  hd,
                                                  path,
+                                                 rtsp_url,
                                                  time,
                                                  description,
                                                  genre_id_1,
@@ -220,6 +224,7 @@ if (count(@$_POST) > 0){
                                                 '".$censored."',
                                                 '".$hd."',
                                                 '".$trans_name."',
+                                                '".$rtsp_url."',
                                                 '".@$_POST['time']."',
                                                 '".mysql_escape_string(@$_POST['description'])."',
                                                 '".$genre_id_1."',
@@ -263,6 +268,7 @@ if (count(@$_POST) > 0){
                                                o_name='".@$_POST['o_name']."', 
                                                censored='".$censored."', 
                                                hd='".$hd."', 
+                                               rtsp_url='".$rtsp_url."', 
                                                time='".@$_POST['time']."', 
                                                description='".@$_POST['description']."', 
                                                genre_id_1='".$genre_id_1."',  
@@ -599,7 +605,12 @@ while(@$rs->next()){
     echo "<tr>";
     echo "<td class='list'><a href='videolog.php?id={$arr['id']}'>".$arr['id']."</a></td>\n";
     //echo "<td class='list'>".get_path_color($arr['path'])."</td>\n";
-    echo "<td class='list'><a href='javascript://' onclick='open_info({$arr['id']})'>".get_path_color($arr['id'], $arr['path'])."</a></td>\n";
+    echo "<td class='list'><a href='javascript://' ";
+    
+    if (empty($arr['rtsp_url'])){
+        echo "onclick='open_info({$arr['id']})'";
+    }
+    echo ">".get_path_color($arr['id'], $arr['path'])."</a></td>\n";
     echo "<td class='list'>".$arr['name']."</td>\n";
     echo "<td class='list'>".$arr['o_name']."</td>\n";
     echo "<td class='list'>".$arr['censored']."</td>\n";
@@ -688,6 +699,7 @@ if (@$_GET['edit']){
         $year     = $arr['year'];
         $path     = $arr['path'];
         $hd       = $arr['hd'];
+        $rtsp_url = $arr['rtsp_url'];
         $readonly = 'readonly';
         if ($censored){
             $checked = 'checked';
@@ -735,6 +747,13 @@ function check_video_status($id){
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
+    
+    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
+    
+    if (!empty($rtsp_url)){
+        return 2;
+    }
+    
     return $rs->getValueByName(0, 'status');
 }
 
@@ -743,10 +762,15 @@ function count_series($series){
 }
 
 function get_path_color($id, $path){
-    if (check_video_status($id)){
-            $color = 'green';
-        }else{
-            $color = 'red';
+    
+    $color_status = check_video_status($id);
+    
+    if ($color_status == 1){
+        $color = 'green';
+    }else if ($color_status == 0){
+        $color = 'red';
+    }else if ($color_status == 2){
+        $color = 'blue';
     }
     return "<span id='path_$id' style='color:$color'>$path</font>";
 }
@@ -1397,6 +1421,16 @@ function fill_category(){
             <span id="org_name_chk"></span>
            </td>
         </tr> 
+        
+        <tr>
+           <td align="right" valign="top">
+           RTSP URL: 
+           </td>
+           <td>
+            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>">
+           </td>
+        </tr> 
+        
         <tr>
            <td align="right" valign="top">
            Ограничение по возрасту: 
