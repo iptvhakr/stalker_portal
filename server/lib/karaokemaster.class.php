@@ -16,8 +16,8 @@ class KaraokeMaster extends Master
         parent::__construct();
     }
     
-    protected function getMediaNameById($media_id){
-        return $media_id.'.mpg';
+    protected function getMediaNameById(){
+        return $this->media_id.'.mpg';
     }
 }
 
