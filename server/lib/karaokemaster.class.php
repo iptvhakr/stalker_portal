@@ -11,7 +11,7 @@ class KaraokeMaster extends Master
     public function __construct(){
         
         $this->media_type = 'karaoke';
-        $this->db_table = 'video';
+        $this->db_table = 'karaoke';
         
         parent::__construct();
     }
