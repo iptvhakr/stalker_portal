@@ -469,11 +469,11 @@ class Vod extends AjaxResponse
         $this_yy = date("Y");
         
         if ($added_time > mktime(0,0,0, $this_mm, $this_dd, $this_yy)){
-            $added_arr['today'] = 'сегодня';
+            $added_arr['today'] = System::word('vod_today');
         }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy)){
-            $added_arr['yestarday'] = 'вчера';
+            $added_arr['yesterday'] = System::word('vod_yesterday');
         }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-7, $this_yy)){
-            $added_arr['week_and_more'] = 'последние 7 дней';
+            $added_arr['week_and_more'] = System::word('vod_last_week');
         }else{
             $added_arr['week_and_more'] = $this->months[date("n", $added_time) - 1].' '.date("Y", $added_time);
         }
