@@ -20,29 +20,27 @@
         this.dir_hist = [{"path" : "/media/usbdisk/", "page" : 1, "row" : 1}];
         
         this.init = function(){
-            this.superclass.init.call(this);
             
-            try{
-                stb.SetListFilesExt('.mpg .mkv .avi .ts .mp4 .wmv .mp3 .ac3 .mov .vob .wav');
-            }catch(e){
-                _debug(e);
-            }
+            this.superclass.init.call(this);
             
             var self = this;
             
-            (function(){
-                try{
-                    self.drive_mounted();
-                }catch(e){
-                    _debug(e);
-                }
-            }).bind(key.USB_MOUNTED);
+            stb.usbdisk.add_onmount_callback(function(){
+                self.load_data();
+            });
             
-            (function(){
-                self.drive_umounted();
-            }).bind(key.USB_UNMOUNTED);
-
-            this.check_mounted();
+            stb.usbdisk.add_onumount_callback(function(){
+                if (self.on){
+                    
+                    if (stb.player.on){
+                        stb.player.stop();
+                    }
+                    
+                    self.hide();
+                    main_menu.show();
+                }
+            });
+            
         };
         
         this.hide = function(do_not_reset){
@@ -81,25 +79,24 @@
             var path = this.compile_path();
             
             try{
-                var txt = stb.ListDir(path);
                 
-                _debug(txt);
+                stb.usbdisk.read_dir(path);
                 
-                eval(txt);
+                //_debug(txt);
                 
                 var new_dirs = [];
                 
-                for (var i=0; i < dirs.length; i++){
-                    if (!empty(dirs[i])){
-                        new_dirs.push({"name" : dirs[i].substring(0, dirs[i].length - 1), "dir" : 1})
+                for (var i=0; i < stb.usbdisk.dirs.length; i++){
+                    if (!empty(stb.usbdisk.dirs[i])){
+                        new_dirs.push({"name" : stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1), "dir" : 1})
                     }
                 }
                 
                 var new_files = [];
                 
-                for (var i=0; i < files.length; i++){
-                    if (!empty(files[i])){
-                        new_files.push({"name" : files[i].name, "cmd" : ("auto " + path + files[i].name), "size" : files[i].size});
+                for (var i=0; i < stb.usbdisk.files.length; i++){
+                    if (!empty(stb.usbdisk.files[i])){
+                        new_files.push({"name" : stb.usbdisk.files[i].name, "cmd" : ("auto " + path + stb.usbdisk.files[i].name), "size" : stb.usbdisk.files[i].size});
                     }
                 }
                 
@@ -145,66 +142,6 @@
             
             return path;
         };
-        
-        this.check_mounted = function(){
-            _debug('media_browser.check_mounted');
-            
-            try{
-                var txt = stb.ListDir(this.compile_path());
-                
-                eval(txt);
-                
-                var list = dirs.concat(files);
-                
-                for (var i=0; i < list.length; i++){
-                    if (!empty(list[i])){
-                        this.drive_mounted();
-                        return;
-                    }
-                }
-            }catch(e){
-                _debug(e);
-            }
-            
-            return;  
-        };
-        
-        this.drive_mounted = function(){
-            _debug('media_browser.drive_mounted');
-            
-            this.mounted = true;
-            this.load_data();
-            
-            stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_connected']);
-        };
-        
-        this.is_drive_mounted = function(){
-            _debug('media_browser.is_drive_mounted');
-            
-            if (this.mounted){
-                return true;
-            }
-            
-            return false;
-        }
-        
-        this.drive_umounted = function(){
-            _debug('media_browser.drive_umounted');
-            
-            this.mounted = false;
-            
-            stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_disconnected']);
-            
-            if (this.on){
-                
-                if (stb.player.on){
-                    stb.player.stop();
-                }
-                
-                this.hide();
-                main_menu.show();
-            }
-        }
         
         this.action = function(){
             
@@ -309,7 +246,7 @@
     /* END MEDIA BROWSER */
     
     main_menu.add(word['mbrowser_title'], [], 'i/mm_ico_usb.png', function(){
-        if (module.media_browser.is_drive_mounted()){
+        if (stb.usbdisk.is_drive_mounted()){
             main_menu.hide();
             module.media_browser.show();
         }else{
