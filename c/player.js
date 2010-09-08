@@ -70,7 +70,7 @@ player.prototype.init = function(){
         stb.SetDefaultFlicker(1);
         stb.SetLoop(0);
         stb.SetMicVolume(100);
-        stb.SetupRTSP(stb.user.rtsp_type, stb.user.rtsp_flags);
+        stb.SetupRTSP(parseInt(stb.user.rtsp_type), parseInt(stb.user.rtsp_flags));
         
         stbEvent.onEvent = (function(self){
             return function(){
@@ -1014,6 +1014,17 @@ player.prototype.bind = function(){
     
     this.change_aspect.bind(key.FRAME, this);
     
+    (function(){
+        if (stb.pvr.has_active_rec){
+            
+        }else{
+            if (this.ch_idx == stb.pvr.current_ch_id){
+                stb.pvr.stop_rec();
+            }else{
+                stb.pvr.start_rec(this.cur_tv_item);
+            }
+        }
+    }).bind(key.REC, this);
 }
 
 player.prototype.save_fav_ids = function(){
