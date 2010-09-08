@@ -54,6 +54,8 @@ function common_xpcom(){
         
         this.watchdog = new watchdog();
         
+        this.usbdisk = new usbdisk();
+        
         this.cut_off_dom_obj = create_block_element('cut_off');
         var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
         text_msg.innerHTML = word['cut_off_msg'];
