@@ -4,11 +4,14 @@ putenv("TZ=Europe/Zaporozhye");
 
 $start_time = microtime(1);
 
-require_once "./lib/config.php";
-require_once "./lib/subsys/php.php";
-require_once "./lib/func.php";
-require_once "./conf_serv.php";
-require_once "./common.php";
+require_once "common.php";
+require_once "lib/config.php";
+require_once "lib/subsys/php.php";
+require_once "lib/data.php";
+require_once "lib/func.php";
+require_once "conf_serv.php";
+require_once "lang/".LANG.".php";
+
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 /* TEST */
 echo "<pre>";
@@ -31,8 +34,6 @@ echo "<pre>";
 //$event->setUserListById(1500);
 //$event->sendMsg('test');
 
-$db = Mysql::getInstance();
-
 /*var_dump($db->select(array('itv.*','tv_genre.title as genres_name'))
 ->from(array('itv'))
 ->join('tv_genre', 'itv.tv_genre_id', 'tv_genre.id', 'INNER')
@@ -44,12 +45,16 @@ $db = Mysql::getInstance();
 //$db->where(array('id<=' => 5))->orderby('login', 'desc')->get('administrators')->all()
 //);
 
-$weather = new Weatherco();
-var_dump($weather->getCurrent());
+//$weather = new Weatherco();
+//var_dump($weather->getCurrent());
 
 /*var_dump(
 $db->update('administrators', array('name' => 'name'),array('id' => 1))
 );*/
+
+$stb = Stb::getInstance();
+
+var_dump($stb->getProfile());
 
 echo "</pre>";
 /**/
