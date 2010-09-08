@@ -1,6 +1,6 @@
 <?php
 
-define("LANG", 'RU'); //RU, EN
+define("LANG", 'ru'); //ru, en
 
 define("ENABLE_SUBSCRIPTION", 1);
 
