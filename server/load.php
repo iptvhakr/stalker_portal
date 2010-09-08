@@ -14,6 +14,9 @@ require_once "lib/subsys/php.php";
 require_once "lib/data.php";
 require_once "lib/func.php";
 require_once "conf_serv.php";
+require_once "lang/".LANG.".php";
+
+System::set_words($words);
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
