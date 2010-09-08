@@ -169,7 +169,6 @@
                     this.del_quick_go_ch();
                 }
             }).bind(key.BACK, this);
-            
         };
         
         this.check_for_play = function(){
