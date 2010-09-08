@@ -271,7 +271,7 @@ Layer.prototype.set_total_items = function(count){
 }
 
 Layer.prototype.fill_list = function(data){
-    _debug('Layer.fill_list');
+    _debug('Layer.fill_list', data);
     
     this.total_items = data.length;
     this.data_items = data;
@@ -289,7 +289,7 @@ Layer.prototype.fill_list = function(data){
         }
     }
     
-    if (this.result.selected_item ==0 && this.result.cur_page ==0){
+    if (this.result && this.result.selected_item && this.result.cur_page && this.result.selected_item == 0 && this.result.cur_page ==0){
         if (this.page_dir > 0){
             this.cur_row = 0;
         }else{
@@ -298,6 +298,7 @@ Layer.prototype.fill_list = function(data){
     }
     
     this.set_active_row(this.cur_row);
+    
     this.loading = false;
 }
 
