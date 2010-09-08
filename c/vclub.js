@@ -11,7 +11,7 @@ _debug('1!!!!!!!!!!!!!!');
         
         this.layer_name = 'vclub';
         
-        this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'name', 'today', 'yestarday', 'week_and_more'];
+        this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'name', 'today', 'yesterday', 'week_and_more'];
         
         this.load_params = {
             'type'   : 'vod',
@@ -237,8 +237,8 @@ _debug('1!!!!!!!!!!!!!!');
         
         this.handling_block = function(data, row_items, block_name){
         
-            var passive_blocks = ['today_block', 'yestarday_block', 'week_and_more_block'];
-            var active_blocks  = ['active_today_block', 'active_yestarday_block', 'active_week_and_more_block'];
+            var passive_blocks = ['today_block', 'yesterday_block', 'week_and_more_block'];
+            var active_blocks  = ['active_today_block', 'active_yesterday_block', 'active_week_and_more_block'];
             
             var block_obj = row_items[block_name+'_block']
         
