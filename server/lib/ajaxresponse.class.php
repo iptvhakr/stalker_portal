@@ -23,52 +23,6 @@ class AjaxResponse
                     'data'           => array(),
                 );
     
-    protected $all_abc = array(
-        'RU' => array('*','А','Б','В','Г','Д','Е','Ё','Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х','Ц','Ч','Ш','Щ','Ъ','Ы','Ь','Э','Ю','Я'),
-        'EN' => array('*','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','W','Z')
-    );
-    
-    protected $all_months = array(
-        'RU' => array(
-                    'январь',
-                    'февраль',
-                    'март',
-                    'апрель',
-                    'май',
-                    'июнь',
-                    'июль',
-                    'август',
-                    'сентябрь',
-                    'октябрь',
-                    'ноябрь',
-                    'декабрь'
-                ),
-        'EN' => array(
-                    'january',
-                    'february',
-                    'march',
-                    'april',
-                    'may',
-                    'june',
-                    'july',
-                    'august',
-                    'september',
-                    'october',
-                    'november',
-                    'december'
-                )
-    );
-    
-    protected $all_title_arr = array(
-        'RU' => 'Все',
-        'EN' => 'All'
-    );
-    
-    protected $no_ch_info_arr = array(
-        'RU' => '[Расписание отсутствует]',
-        'EN' => '[No channel info]'
-    );
-    
     protected $abc = array();
     protected $months = array();
     protected $all_title = '';
@@ -76,10 +30,10 @@ class AjaxResponse
     
     protected function __construct(){
         
-        $this->abc = $this->all_abc[LANG];
-        $this->months = $this->all_months[LANG];
-        $this->all_title = $this->all_title_arr[LANG];
-        $this->no_ch_info = $this->no_ch_info_arr[LANG];
+        $this->abc = System::word('all_abc');
+        $this->months =  System::word('all_months');
+        $this->all_title =  System::word('all_title');
+        $this->no_ch_info =  System::word('no_ch_info');
         
         $this->db  = Mysql::getInstance();
         $this->stb = Stb::getInstance();
