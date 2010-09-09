@@ -511,6 +511,7 @@ CREATE TABLE `rec_files`(
     `vtrack`  varchar(32) NOT NULL default '',
     `length` int NOT NULL default 0,
     `ended`  tinyint default 0, /* 0-not ended, 1-ended */
+    `uid` int NOT NULL default 0,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
