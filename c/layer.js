@@ -289,7 +289,7 @@ Layer.prototype.fill_list = function(data){
         }
     }
     
-    if (this.result && this.result.selected_item && this.result.cur_page && this.result.selected_item == 0 && this.result.cur_page ==0){
+    if (this.result && this.result.hasOwnProperty("selected_item") && this.result.hasOwnProperty("cur_page") && this.result.selected_item == 0 && this.result.cur_page == 0){
         if (this.page_dir > 0){
             this.cur_row = 0;
         }else{
