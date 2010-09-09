@@ -91,3 +91,6 @@ word['cut_off_msg'] = 'Your STB is blocked.<br/> Call the provider';
 word['month_arr'] = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
 word['week_arr'] = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 word['year'] = '';
+
+// pvr
+word['records_title'] = 'RECORDS';
