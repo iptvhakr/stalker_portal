@@ -978,7 +978,9 @@ player.prototype.bind = function(){
     
     (function(){
         
-        this.con_menu && this.con_menu.show && this.con_menu.show();
+        if (!module.tv.on){
+            this.con_menu && this.con_menu.show && this.con_menu.show();
+        }
         
     }).bind(key.NULL, this);
     
