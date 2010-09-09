@@ -1,7 +1,7 @@
 function context_menu(map){
     _debug('context_menu');
     
-    this.on = 0;
+    this.on = false;
     this.map = map || [];
     this.container;
     this.parent = document.body;
