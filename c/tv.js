@@ -84,6 +84,8 @@
                 if (this.cur_view == 'short'){
                     stb.SetTopWin(1);
                     stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y);
+                    stb.player.need_show_info = 0;
+                    stb.player.play(item);
                 }else{
                     stb.SetTopWin(0);
                 }
@@ -258,8 +260,6 @@
                 stb.player.stop();
             }
             
-            //stb.player.need_show_info = 1;
-            
             this.superclass.set_wide_container.apply(this);
 
             try{
@@ -275,8 +275,6 @@
             
             this.superclass.set_short_container.apply(this);
             
-            //stb.player.need_show_info = 0;
-            
             try{
                 _debug('this.preview_pos', this.preview_pos);
                 stb.SetTopWin(1);
@@ -285,7 +283,7 @@
                 _debug(e);
             }
             
-            this.fill_short_info(this.data_items[this.cur_row]);
+            //this.fill_short_info(this.data_items[this.cur_row]);
         };
         
         this.init_short_info = function(){
@@ -293,6 +291,16 @@
             
             this.short_info_box = create_block_element('tv_timetable', this.info_box);
             this.preview_box = create_block_element('tv_prev_window', this.info_box);
+        };
+        
+        this.fill_list = function(data){
+            _debug('tv.fill_list');
+            
+            this.superclass.fill_list.call(this, data);
+            
+            if (this.cur_view == 'short'){
+                this.fill_short_info(this.data_items[this.cur_row])
+            }
         };
         
         this.fill_short_info = function(item){
@@ -309,8 +317,8 @@
             try{
                 //this.last_ch_id = this.data_items[this.cur_row].id;
                 
-                stb.player.need_show_info = 0;
-                stb.player.play(item);
+                //stb.player.need_show_info = 0;
+                //stb.player.play(item);
             }catch(e){
                 _debug(e);
             }
@@ -329,6 +337,9 @@
             this.row_callback_timer = window.setTimeout(function(){
                 
                 self.fill_short_info(item);
+                
+                stb.player.need_show_info = 0;
+                stb.player.play(item);
                 
             },
             this.row_callback_timeout);
@@ -634,7 +645,8 @@
     
     tv.init_quick_ch_switch();
     
-    tv.set_wide_container();
+    //tv.set_wide_container();
+    tv.set_short_container();
     
     tv.init_left_ear('ears_back');
     
@@ -683,8 +695,8 @@
     
     tv.init_view_menu(
         [
-            {"label" : word['tv_list'], "cmd" : function(){this.parent.set_wide_container()}},
-            {"label" : word['tv_list_w_info'], "cmd" : function(){this.parent.set_short_container()}}
+            {"label" : word['tv_list_w_info'], "cmd" : function(){this.parent.set_short_container()}},
+            {"label" : word['tv_list'], "cmd" : function(){this.parent.set_wide_container()}}
         ],
         {
             "offset_x" : 27,
