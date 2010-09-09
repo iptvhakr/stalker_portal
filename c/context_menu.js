@@ -313,7 +313,7 @@ context_menu.prototype.bind = function(){
     
     this.goto_main_menu.bind(key.LEFT, this);
     
-    this.hide.bind(key.EXIT, this);
+    this.hide.bind(key.EXIT, this).bind(key.NULL, this);
 }
 
 context_menu.prototype.goto_sub_menu = function(){
