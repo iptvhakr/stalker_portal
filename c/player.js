@@ -921,8 +921,8 @@ player.prototype.bind = function(){
     
     var self = this;
     
-    this.switch_channel.bind(key.UP, self, 1);
-    this.switch_channel.bind(key.DOWN, self, -1);
+    this.switch_channel.bind(key.UP, self, 1, true);
+    this.switch_channel.bind(key.DOWN, self, -1, true);
     
     this.switch_channel.bind(key.CHANNEL_NEXT, self, 1, true);
     this.switch_channel.bind(key.CHANNEL_PREV, self, -1, true);
@@ -968,11 +968,20 @@ player.prototype.bind = function(){
             this.hide_quick_ch_switch();
         }else  if (this.prev_layer && this.prev_layer.cur_view == 'short'){
             this.show_prev_layer();
-        }else{
+        }else if (this.is_tv){
+            module.tv._show();
+        }/*else{
             this.con_menu && this.con_menu.show && this.con_menu.show();
-        }
+        }*/
         
     }).bind(key.OK, this);
+    
+    (function(){
+        
+        this.con_menu && this.con_menu.show && this.con_menu.show();
+        
+    }).bind(key.NULL, this);
+    
     
     (function(){
         if (this.on){
