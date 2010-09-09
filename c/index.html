@@ -224,6 +224,11 @@ function init(){
     (function(){
         
         if (stb.player.on){
+            
+            if (stb.player.con_menu.on){
+                stb.player.con_menu.hide();
+            }
+            
             stb.player.stop();
             main_menu.show();
         }
