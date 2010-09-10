@@ -73,6 +73,9 @@ class Pvr extends AjaxResponse
             
             $this->response['data'][$i]['t_start'] = $this->convertDatetimeToHuman($this->response['data'][$i]['t_start_ts']);
             
+            $this->response['data'][$i]['cmd'] = 'auto /media/usbdisk/'.$this->response['data'][$i]['id'].'.ts';
+            
+            $this->response['data'][$i]['name'] = $this->response['data'][$i]['t_start'].' '.$this->response['data'][$i]['ch_name'];
         }
         
         return $this->response['data'];
