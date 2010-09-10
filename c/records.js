@@ -37,7 +37,7 @@
         }
         
         this.hide = function(do_not_reset){
-            _debug('media_browser.hide', do_not_reset);
+            _debug('records.hide', do_not_reset);
             
             try{
                 
@@ -49,7 +49,9 @@
                 
                 this.superclass.hide.call(this, do_not_reset);
                 
-                this.reset();
+                if (!do_not_reset){
+                    this.reset();
+                }
                 
             }catch(e){
                 _debug(e);
@@ -57,12 +59,15 @@
         };
         
         this.reset = function(){
+            _debug('records.reset');
+            
             this.cur_row  = 0;
             this.cur_page = 1;
             this.total_pages = 1;
         };
         
         this.load_data = function(){
+            _debug('records.load_data');
             
             var list = stb.pvr.get_rec_list();
             
@@ -81,11 +86,13 @@
         };
         
         this.action = function(){
+            _debug('records.action');
             
             stb.player.prev_layer = this;
             this.hide(true);
             
             stb.player.need_show_info = 1;
+            
             stb.player.play(this.data_items[this.cur_row]);
         };
         
