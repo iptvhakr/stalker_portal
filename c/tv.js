@@ -36,7 +36,7 @@
         this.quick_ch_switch = {"on" : false, "hide_to" : 3000};
         
         this.row_callback_timer;
-        this.row_callback_timeout = 300;
+        this.row_callback_timeout = 500;
         
         this.fav_manage_mode = false;
         
