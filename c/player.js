@@ -44,6 +44,8 @@ function player(){
     this.on_create_link = function(){};
     this.last_storage_id = 0;
     
+    this.event5_counter = 0;
+    
     this.hist_ch_idx = [0,0];
     this.hist_f_ch_idx = [0,0];
     
@@ -170,6 +172,30 @@ player.prototype.event_callback = function(event){
             }
             
             break;
+        }
+        case 5: // Not found
+        {
+            
+            this.event5_counter++;
+            
+            var self = this;
+            
+            stb.remount_storages(
+            
+                function(){
+                    if (self.event5_counter == 1){
+                        self.play(self.cur_media_item);
+                    }else{
+                        if(self.prev_layer && self.prev_layer.show){
+                            self.prev_layer.show.call(self.prev_layer, true);
+                        }
+                        
+                        self.stop();
+                        
+                        stb.notice.show(word['player_server_unavailable']);
+                    }  
+                }
+            );
         }
     }
 }
@@ -577,6 +603,8 @@ player.prototype.stop = function(){
     _debug('player.stop');
     
     this.prev_layer = {};
+    
+    this.event5_counter = 0;
     
     this.need_show_info = 0;
     
