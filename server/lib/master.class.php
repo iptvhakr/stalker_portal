@@ -171,7 +171,9 @@ abstract class Master
      */
     private function getModeratorStorages(){
         
-        $storages = $this->db->from('storages')->where(array('status' => 1, 'for_moderator' => 1))->get()->all();
+        $data = $this->db->from('storages')->where(array('status' => 1, 'for_moderator' => 1))->get()->all();
+        
+        $storages = array();
         
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;
