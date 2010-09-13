@@ -106,7 +106,11 @@ class Karaoke extends AjaxResponse
         
         for ($i = 0; $i < count($this->response['data']); $i++){
             
-            $this->response['data'][$i]['cmd'] = '/media/'.$this->response['data'][$i]['id'].'.mpg';
+            if (empty($this->response['data'][$i]['rtsp_url'])){
+                $this->response['data'][$i]['cmd'] = '/media/'.$this->response['data'][$i]['id'].'.mpg';
+            }else{
+                $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'];
+            }
         }
         
         return $this->response;
