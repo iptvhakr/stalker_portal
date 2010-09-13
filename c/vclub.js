@@ -378,10 +378,10 @@ _debug('1!!!!!!!!!!!!!!');
                 }
             }else{
                 if (this.info.on){
-                        this.info.hide();
+                    this.info.hide();
                 }
                 
-                self.hide(true);
+                this.hide(true);
                 
                 stb.player.prev_layer = self;
                 stb.player.need_show_info = 1;
