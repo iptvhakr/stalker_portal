@@ -34,6 +34,7 @@ word['mbrowser_not_found'] = 'not found';
 word['player_limit_notice'] = 'The number of connections is limited. <br> Try again later';
 word['player_file_missing'] = 'File missing';
 word['player_server_error'] = 'Server error';
+word['player_server_unavailable'] = 'Server unavailable';
 word['player_series'] = 'part';
 word['player_series_uc'] = 'PART';
 word['player_track'] = 'Track';
