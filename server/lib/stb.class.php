@@ -69,6 +69,12 @@ class Stb
         }
     }
     
+    public function getStorages(){
+
+        $master = new VideoMaster();
+        return $master->getStoragesForStb();
+    }
+    
     /*public function getIdByMAC($mac){
         
         //$user = $this->db->getFirstData('users', array('mac' => $mac));
