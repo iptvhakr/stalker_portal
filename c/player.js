@@ -97,7 +97,7 @@ player.prototype.event_callback = function(event){
             try{
                 //this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
                 
-                if (this.media_type == 'stream'){
+                if (this.media_type == 'stream' && this.is_tv){
                     _debug('stream error');
                     
                     var self = this;
@@ -176,26 +176,41 @@ player.prototype.event_callback = function(event){
         case 5: // Not found
         {
             
-            this.event5_counter++;
-            
             var self = this;
             
-            stb.remount_storages(
-            
-                function(){
-                    if (self.event5_counter == 1){
-                        self.play(self.cur_media_item);
-                    }else{
-                        if(self.prev_layer && self.prev_layer.show){
-                            self.prev_layer.show.call(self.prev_layer, true);
-                        }
-                        
-                        self.stop();
-                        
-                        stb.notice.show(word['player_server_unavailable']);
-                    }  
+            if (this.media_type == 'stream'){
+                
+                if(self.prev_layer && self.prev_layer.show){
+                    self.prev_layer.show.call(self.prev_layer, true);
                 }
-            );
+                
+                self.stop();
+                
+                stb.notice.show(word['player_file_missing']);
+                
+            }else{
+            
+                this.event5_counter++;
+    
+                var self = this;
+                
+                stb.remount_storages(
+                
+                    function(){
+                        if (self.event5_counter == 1){
+                            self.play(self.cur_media_item);
+                        }else{
+                            if(self.prev_layer && self.prev_layer.show){
+                                self.prev_layer.show.call(self.prev_layer, true);
+                            }
+                            
+                            self.stop();
+                            
+                            stb.notice.show(word['player_server_unavailable']);
+                        }  
+                    }
+                )
+            }
         }
     }
 }
@@ -542,7 +557,7 @@ player.prototype.play = function(item){
         
     }else if (stb.cur_place == 'karaoke'){
         
-        this.create_link('karaoke', cmd);
+        this.create_link('karaoke', cmd, 0);
     }else{
         
         var series_number = item.cur_series || 0;
@@ -554,6 +569,8 @@ player.prototype.play = function(item){
 player.prototype.create_link = function(type, uri, series_number){
     
     var series_number = series_number || "";
+    
+    _debug('player.create_link', type, uri, series_number);
     
     stb.load(
 
@@ -629,6 +646,7 @@ player.prototype.stop = function(){
     window.clearTimeout(this.send_played_video_timer);
     window.clearTimeout(this.replay_channel_timer);
     
+    this.hide_info();
     _log('stop');
 }
 
@@ -775,6 +793,12 @@ player.prototype.show_info = function(item){
     }catch(e){
         _debug(e);
     }
+}
+
+player.prototype.hide_info = function(){
+    window.clearTimeout(this.info.hide_timeout);
+    this.info.dom_obj.hide();
+    this.info.on = false;
 }
 
 player.prototype.switch_channel = function(dir, show_info){
