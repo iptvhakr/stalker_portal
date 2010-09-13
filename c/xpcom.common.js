@@ -296,6 +296,29 @@ function common_xpcom(){
         }
     }
     
+    this.remount_storages = function(callback){
+        _debug('stb.remount_storages');
+        
+        stb.load(
+            {
+                "type"   : "stb",
+                "action" : "get_storages",
+            },
+            
+            function(result){
+                _debug('storages', result);
+                
+                this.user['storages'] = result;
+                
+                this.mount_home_dir(this.user['storages']);
+                
+                callback();
+            },
+            
+            this
+        );
+    }
+    
     this.Mount = function(link_cmd){
         /*_debug('stb.Mount', link_cmd);
         
