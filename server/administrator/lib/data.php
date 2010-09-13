@@ -113,7 +113,7 @@ function get_data(){
                     $media_id = intval($data);
 
                     $master = new KaraokeMaster();
-                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id);
+                    $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
                     
                     if(count($good_storages) > 0){
                         set_karaoke_status($media_id, 1);
