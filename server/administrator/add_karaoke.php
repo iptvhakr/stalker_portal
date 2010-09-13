@@ -89,11 +89,14 @@ $type = '';
 
 if (!$error){
     
+    $rtsp_url = @trim($_POST['rtsp_url']);
+    
     if (@$_GET['save']){
     
         if(@$_GET['name']){
             $datetime = date("Y-m-d H:i:s");
             $query = "insert into karaoke (name,
+                                           rtsp_url,
                                            genre_id,
                                            singer,
                                            author,
@@ -101,6 +104,7 @@ if (!$error){
                                            add_by
                                            ) 
                                   values ('".@$_GET['name']."',
+                                           '".$rtsp_url."',
                                            '".@$_POST['genre_id']."',
                                            '".@$_POST['singer']."',
                                            '".@$_POST['author']."',
@@ -124,6 +128,7 @@ if (!$error){
         if(@$_GET['name']){
 
             $query = "update karaoke set name='".$_GET['name']."', 
+                                       rtsp_url='".$rtsp_url."',  
                                        genre_id='".@$_POST['genre_id']."',  
                                        singer='".@$_POST['singer']."',
                                        author='".@$_POST['author']."'
@@ -483,7 +488,13 @@ while(@$rs->next()){
     $arr=$rs->getCurrentValuesAsHash();
     
     echo "<tr>\n";
-    echo "<td class='list'><a href='javascript://' onclick='open_info({$arr['id']})'>".check_file($arr['id'])."</a></td>";
+    echo "<td class='list'><a href='javascript://'";
+    
+    if (empty($arr['rtsp_url'])){
+        echo " onclick='open_info({$arr['id']})'";
+    }
+    
+    echo ">".check_file($arr['id'])."</a></td>";
     echo "<td class='list'>".$arr['name']."</td>";
     echo "<td class='list'>".$arr['singer']."</td>";
     echo "<td class='list'>".$arr['login']."</td>";
@@ -559,6 +570,7 @@ if (@$_GET['edit']){
         $singer   = $arr['singer'];
         $author   = $arr['author'];
         $year     = $arr['year'];
+        $rtsp_url = $arr['rtsp_url'];
     }
     //unset($_SESSION['upload']);
     $query = "select * from screenshots where media_id=".intval(@$_GET['id']);
@@ -574,12 +586,17 @@ function check_file($id){
     $fname = $id.".mpg";
     //if (file_exists(KARAOKE_STORAGE_DIR.$fname)){
     //var_dump(get_status($id));
-    if (get_status($id) == 1){
+    
+    $color_status = get_status($id);
+    
+    if ($color_status == 1){
         $color = 'green';
         set_status($id, 1);
-    }else{
+    }else if ($color_status == 0){
         $color = 'red';
         set_status($id, 0);
+    }else if ($color_status == 2){
+        $color = 'blue';
     }
     return "<font id='path_$id' color='$color'>$fname</font>";
 }
@@ -592,13 +609,19 @@ function set_status($id, $val){
     }
 }
 
-function get_status($id){
+function get_status($id = 0){
     global $db;
-    if ($id){
-        $query = "select * from karaoke where id='$id'";
-        $rs=$db->executeQuery($query);
-	return $rs->getValueByName(0, 'status');
+    
+    $query = "select * from karaoke where id='$id'";
+    $rs=$db->executeQuery($query);
+    
+    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
+    
+    if (!empty($rtsp_url)){
+        return 2;
     }
+    
+    return $rs->getValueByName(0, 'status');
 }
 
 function get_genres(){
@@ -762,14 +785,14 @@ function save(){
             <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
            </td>
         </tr>
-        <!--<tr>
-           <td align="right">
-            Автор: 
+        <tr>
+           <td align="right" valign="top">
+           RTSP/HTTP URL: 
            </td>
            <td>
-            <input type="text" size="40" name="author" id="author" value="<? //echo @$author ?>">
+            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>"> (включая солюшн)
            </td>
-        </tr>-->
+        </tr> 
         <tr>
            <td align="right">
             Исполнитель: 
