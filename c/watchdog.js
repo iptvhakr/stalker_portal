@@ -63,11 +63,11 @@ watchdog.prototype.parse_result = function(data){
             case 'reboot':
             {
                 stb.ExecAction('reboot');
-                break
+                break;
             }
             case 'send_msg':
             {
-                this.event_active_id = data.id
+                this.event_active_id = data.id;
                 
                 var self = this;
                 
@@ -80,14 +80,14 @@ watchdog.prototype.parse_result = function(data){
                 
                 this.reboot_after_ok = data.reboot_after_ok;
                 
-                break
+                break;
             }
             case 'update_channels':
             {
                 stb.load_channels();
                 stb.load_fav_channels();
                 stb.load_fav_itv();
-                break
+                break;
             }
             case 'update_subscription':
             {
@@ -98,27 +98,27 @@ watchdog.prototype.parse_result = function(data){
                     stb.load_fav_channels();
                     stb.load_fav_itv();
                 }
-                break
+                break;
             }
             case 'cut_off':
             {
                 stb.cut_off();
-                break
+                break;
             }
             case 'cut_on':
             {
                 stb.cut_on();
-                break
+                break;
             }
             case 'mount_all_storages':
             {
                 stb.mount_home_dir(data.msg);
-                break
+                break;
             }
             case 'show_menu': // reset paused
             {
                 keydown_observer.emulate_key(key.MENU);
-                break
+                break;
             }
             case 'play_channel':
             {
@@ -133,7 +133,7 @@ watchdog.prototype.parse_result = function(data){
                 stb.player.cur_tv_item = stb.player.channels[stb.player.ch_idx];
                 
                 keydown_observer.emulate_key(key.EXIT);
-                break
+                break;
             }
         }
     }
