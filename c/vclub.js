@@ -365,9 +365,8 @@ _debug('1!!!!!!!!!!!!!!');
                     }else if(result.error == 'link_fault'){
                         stb.notice.show(word['player_server_error']);
                     }else{
-                        
-                        if (this.info.on){
-                            this.info.hide();
+                        if (self.info.on){
+                            self.info.hide();
                         }
                         
                         self.hide(true);
