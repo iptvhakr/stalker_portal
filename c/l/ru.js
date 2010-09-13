@@ -34,6 +34,7 @@ word['mbrowser_not_found'] = 'не найдено';
 word['player_limit_notice'] = 'Количество подключений ограничено.<br>Попробуйте позже';
 word['player_file_missing'] = 'Файл отсутствует';
 word['player_server_error'] = 'Ошибка сервера';
+word['player_server_unavailable'] = 'Сервер недоступен';
 word['player_series'] = 'серия';
 word['player_series_uc'] = 'СЕРИЯ';
 word['player_track'] = 'Дорожка';
