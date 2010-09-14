@@ -235,7 +235,7 @@
     
     media_browser.set_wide_container();
     
-    media_browser.init_left_ear('ears_back');
+    media_browser.init_left_ear(word['ears_back']);
     
     media_browser.init_header_path(word['mbrowser_title']);
     
