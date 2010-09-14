@@ -648,7 +648,7 @@
     //tv.set_wide_container();
     tv.set_short_container();
     
-    tv.init_left_ear('ears_back');
+    tv.init_left_ear(word['ears_back']);
     
     tv.init_color_buttons([
         {"label" : word['tv_view'], "cmd" : tv.view_switcher},
