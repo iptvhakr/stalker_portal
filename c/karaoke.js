@@ -147,7 +147,7 @@
     karaoke.bind();
     karaoke.init();
     
-    karaoke.init_left_ear('ears_back');
+    karaoke.init_left_ear(word['ears_back']);
     
     karaoke.init_color_buttons([
         {"label" : word['karaoke_view'], "cmd" : (function(){})},
