@@ -403,8 +403,8 @@ _debug('1!!!!!!!!!!!!!!');
     
     vclub.set_wide_container();
     
-    vclub.init_left_ear('ears_back');
-    vclub.init_right_ear('ears_movie');
+    vclub.init_left_ear(word['ears_back']);
+    vclub.init_right_ear(word['ears_about_movie']);
     
     vclub.init_color_buttons([
         {"label" : word['vclub_view'], "cmd" : vclub.view_switcher},
