@@ -120,7 +120,7 @@
     
     records.set_wide_container();
     
-    records.init_left_ear('ears_back');
+    records.init_left_ear(word['ears_back']);
     
     records.init_header_path(word['records_title']);
     
