@@ -509,26 +509,44 @@ Layer.prototype.init_color_buttons = function(map){
     this.dom_obj.appendChild(this.buttons_bar);
 }
 
-Layer.prototype.init_left_ear = function(class_name){
+Layer.prototype.init_left_ear = function(txt){
     
-    this.left_ear = this.create_block();
     
-    if (class_name){
-        this.left_ear.addClass(class_name);
-    }
+    var ears_left_container = create_block_element('ears_left_container');
     
-    this.dom_obj.appendChild(this.left_ear);
+    this.left_ear = create_block_element('ears_left');
+    
+    var left_arrow = create_block_element('ears_arrow_left');
+    var text_element = create_block_element();
+    text_element.innerHTML = txt;
+    
+    this.left_ear.appendChild(left_arrow);
+    this.left_ear.appendChild(text_element);
+    this.left_ear.appendChild(left_arrow.cloneNode(true));
+    
+    ears_left_container.appendChild(this.left_ear);
+    
+    this.dom_obj.appendChild(ears_left_container);
 }
 
-Layer.prototype.init_right_ear = function(class_name){
+Layer.prototype.init_right_ear = function(txt){
     
-    this.right_ear = this.create_block();
     
-    if (class_name){
-        this.right_ear.addClass(class_name);
-    }
+    var ears_right_container = create_block_element('ears_right_container');
     
-    this.dom_obj.appendChild(this.right_ear);
+    this.right_ear = create_block_element('ears_right');
+    
+    var right_arrow = create_block_element('ears_arrow_right');
+    var text_element = create_block_element();
+    text_element.innerHTML = txt;
+    
+    this.right_ear.appendChild(right_arrow);
+    this.right_ear.appendChild(text_element);
+    this.right_ear.appendChild(right_arrow.cloneNode(true));
+    
+    ears_right_container.appendChild(this.right_ear);
+    
+    this.dom_obj.appendChild(ears_right_container);
 }
 
 Layer.prototype.init_header_path = function(begin){
