@@ -470,3 +470,61 @@
 }
 
 /* END PLAYER */
+
+/* EARS */
+.ears_left_container{
+    position: absolute;
+    left: 0;
+    top: 73px;
+}
+
+.ears_left{
+    width: 40px;
+    height: 420px;
+    background-image: url("i/ears.png");
+    background-position: 0px 0px;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.ears_left div{
+    margin-left: 20px;
+    font: 18px Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+.ears_right_container{
+    position: absolute;
+    left: 680px;
+    top: 73px;
+}
+
+.ears_right{
+    width: 40px;
+    height: 420px;
+    background-image: url("i/ears.png");
+    background-position: -40px 0px;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.ears_right div{
+    margin-left: 8px;
+    font: 18px Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+.ears_arrow_left{
+    width: 15px;
+    height: 18px;
+    background-image: url("i/ears_arrow_l.png");
+    margin: 15px 0;
+}
+
+.ears_arrow_right{
+    width: 15px;
+    height: 18px;
+    background-image: url("i/ears_arrow_r.png");
+    margin: 15px 0;
+}
+/* END EARS */
