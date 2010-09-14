@@ -66,7 +66,7 @@
     radio.bind();
     radio.init();
     
-    radio.init_left_ear('ears_back');
+    radio.init_left_ear(word['ears_back']);
     
     radio.init_header_path(word['radio_title']);
     
