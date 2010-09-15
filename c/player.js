@@ -1078,13 +1078,15 @@ player.prototype.bind = function(){
     this.change_aspect.bind(key.FRAME, this);
     
     (function(){
-        if (stb.pvr.has_active_rec){
-            
-        }else{
-            if (this.ch_idx == stb.pvr.current_ch_id){
-                stb.pvr.stop_rec();
+        if (stb.pvr){
+            if (stb.pvr.has_active_rec){
+                
             }else{
-                stb.pvr.start_rec(this.cur_tv_item);
+                if (this.ch_idx == stb.pvr.current_ch_id){
+                    stb.pvr.stop_rec();
+                }else{
+                    stb.pvr.start_rec(this.cur_tv_item);
+                }
             }
         }
     }).bind(key.REC, this);
