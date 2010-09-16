@@ -590,7 +590,7 @@ function common_xpcom(){
         
         this.player.stop();
         
-        stb.SetDefaultFlicker(1)
+        stb.SetDefaultFlicker(1);
         
         this.cut_off_dom_obj.show();
         
@@ -619,7 +619,7 @@ function common_xpcom(){
     
     this.get_current_place = function(){
         
-        var cur_place_num = 0
+        var cur_place_num = 0;
         
         _debug('stb.player.media_type', this.player.media_type);
         _debug('stb.cur_place', this.cur_place);
@@ -664,7 +664,7 @@ function common_xpcom(){
             }
         }
         
-        return cur_place_num
+        return cur_place_num;
     }
     
     this.clock = {
@@ -702,7 +702,7 @@ function common_xpcom(){
         
         tick : function(){
             
-            this.current_date = new Date()
+            this.current_date = new Date();
             
             this.year  = this.current_date.getFullYear();
             
