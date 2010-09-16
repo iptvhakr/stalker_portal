@@ -24,9 +24,10 @@ class Vod extends AjaxResponse
     
     public function createLink(){
         
-        preg_match("/\/media\/(\d+).mpg$/", $_REQUEST['cmd'], $tmp_arr);
+        preg_match("/\/media\/(\d+).mpg(.*)/", $_REQUEST['cmd'], $tmp_arr);
             
         $media_id = $tmp_arr[1];
+        $params   = $tmp_arr[2];
         
         $master = new VideoMaster();
         
@@ -35,6 +36,8 @@ class Vod extends AjaxResponse
         }catch (Exception $e){
             trigger_error($e->getMessage());
         }
+        
+        $res['cmd'] = $res['cmd'].$params;
         
         var_dump($res);
         
@@ -390,6 +393,8 @@ class Vod extends AjaxResponse
                 $result = $result->orderby('video.added', 'DESC');
             }elseif ($sortby == 'top'){
                 $result->select('(count_first_0_5+count_second_0_5) as top')->orderby('top', 'DESC');
+            }elseif ($sortby == 'last_ended'){
+                $result = $result->orderby('vclub_not_ended.added', 'DESC');
             }
             
         }else{
@@ -402,6 +407,13 @@ class Vod extends AjaxResponse
         
         if (@$_REQUEST['hd']){
             $result = $result->where(array('hd' => 1));
+        }
+        
+        if (@$_REQUEST['not_ended']){
+            $result = $result->from('vclub_not_ended')
+                             ->select('vclub_not_ended.series as cur_series, vclub_not_ended.end_time as position')
+                             ->where('video.id=vclub_not_ended.video_id', 'AND ', null, -1)
+                             ->where(array('vclub_not_ended.uid' => $this->stb->id));
         }
         
         $this->setResponseData($result);
