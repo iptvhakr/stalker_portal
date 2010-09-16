@@ -28,6 +28,8 @@ _debug('1!!!!!!!!!!!!!!');
         
         this.view_menu = {};
         
+        this.other_menu = {};
+        
         this.row_callback_timer;
         this.row_callback_timeout = 1000;
         
@@ -142,6 +144,7 @@ _debug('1!!!!!!!!!!!!!!');
             this.search_box.on && this.search_box.hide && this.search_box.hide();
             this.sort_menu.on && this.sort_menu.hide && this.sort_menu.hide();
             this.view_menu.on && this.view_menu.hide && this.view_menu.hide();
+            this.other_menu.on && this.other_menu.hide && this.other_menu.hide();
             
             this.info.on && this.info.hide && this.info.hide();
             this.password_input.on && this.password_input.hide && this.password_input.hide();
@@ -189,6 +192,20 @@ _debug('1!!!!!!!!!!!!!!');
                 this.view_menu.hide();
             }else{
                 this.view_menu.show();
+            }
+        };
+        
+        this.init_other_menu = function(map, options){
+            this.other_menu = new bottom_menu(this, options);
+            this.other_menu.init(map);
+            this.other_menu.bind();
+        };
+        
+        this.other_switcher = function(){
+            if (this.other_menu && this.other_menu.on){
+                this.other_menu.hide();
+            }else{
+                this.other_menu.show();
             }
         };
         
@@ -390,6 +407,96 @@ _debug('1!!!!!!!!!!!!!!');
             
             stb.player.play(this.data_items[this.cur_row]);
         };
+        
+        this.set_not_ended = function(video_id, series, end_time){
+            _debug('vclub.set_not_ended', video_id, series, end_time);
+            
+            this.data_items[this.cur_row].position = end_time;
+            
+            stb.load(
+                {
+                    "type"     : "vod",
+                    "action"   : "set_not_ended",
+                    "video_id" : video_id,
+                    "series"   : series,
+                    "end_time" : end_time
+                },
+                
+                function(result){
+                    
+                },
+                
+                this
+            )
+        };
+        
+        this.add_to_fav = function(){
+            _debug('vclub.add_to_fav');
+            
+            this.data_items[this.cur_row].fav = 1;
+            
+            this.map[this.cur_row].fav_block.show();
+            this.active_row.fav_block.show();
+            
+            this.set_fav(this.data_items[this.cur_row].id);
+        };
+        
+        this.del_from_fav = function(){
+            _debug('vclub.del_from_fav');
+            
+            this.data_items[this.cur_row].fav = 0;
+            
+            this.map[this.cur_row].fav_block.hide();
+            this.active_row.fav_block.hide();
+            
+            this.del_fav(this.data_items[this.cur_row].id);
+        };
+        
+        this.add_del_fav = function(){
+            _debug('vclub.add_del_fav');
+            
+            if (this.load_params.fav == true){
+                return;
+            }
+            
+            if(this.data_items[this.cur_row].fav){
+                this.del_from_fav();
+            }else{
+                this.add_to_fav();
+            }
+        };
+        
+        this.set_fav = function(id){
+            _debug('vclub.set_fav', id);
+            
+            stb.load(
+                {
+                    "type"     : "vod",
+                    "action"   : "set_fav",
+                    "video_id" : id
+                },
+                
+                function(result){
+                    
+                }
+            )
+        };
+        
+        this.del_fav = function(id){
+            _debug('vclub.del_fav', id);
+            
+            stb.load(
+                {
+                    "type"     : "vod",
+                    "action"   : "del_fav",
+                    "video_id" : id
+                },
+                
+                function(result){
+                    
+                }
+            )
+        };
     }
     
     vclub_constructor.prototype = new Layer();
@@ -409,8 +516,8 @@ _debug('1!!!!!!!!!!!!!!');
     vclub.init_color_buttons([
         {"label" : word['vclub_view'], "cmd" : vclub.view_switcher},
         {"label" : word['vclub_sort'], "cmd" : vclub.sort_menu_switcher},
-        {"label" : word['vclub_search'], "cmd" : vclub.search_box_switcher},
-        {"label" : word['vclub_sampling'], "cmd" : vclub.sidebar_switcher}
+        {"label" : word['vclub_fav'],  "cmd" : vclub.add_del_fav},
+        {"label" : word['vclub_other'], "cmd" : vclub.other_switcher}
     ]);
     
     vclub.init_info();
@@ -425,11 +532,12 @@ _debug('1!!!!!!!!!!!!!!');
     
     vclub.init_sort_menu(
         [
-            {"label" : word['vclub_by_title'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false}},
-            {"label" : word['vclub_by_addtime'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false}},
-            {"label" : word['vclub_top'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false}},
-            {"label" : word['vclub_only_hd'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true}},
-            {"label" : word['vclub_only_favorite'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false}}
+            {"label" : word['vclub_by_title'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+            {"label" : word['vclub_by_addtime'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+            {"label" : word['vclub_top'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+            {"label" : word['vclub_only_hd'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true; this.parent.load_params.not_ended = false}},
+            {"label" : word['vclub_only_favorite'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+            {"label" : word['vclub_not_ended'], "cmd" : function(){this.parent.load_params.sortby = 'last_ended'; this.parent.load_params.fav = false; this.parent.load_params.hd = false; this.parent.load_params.not_ended = true}}
         ],
         {
             "offset_x" : 217
@@ -453,13 +561,25 @@ _debug('1!!!!!!!!!!!!!!');
             "need_update_header"   : false
         }
     );
+    
+    vclub.init_other_menu(
+        [
+            {"label" : word['vclub_search_box'], "cmd" : function(){this.parent.search_box_switcher()}},
+            {"label" : word['vclub_query_box'],  "cmd" : function(){this.parent.sidebar_switcher()}}
+        ],
+        {
+            "offset_x" : 520,
+            "need_reset_load_data" : false
+        }
+    );
    
     vclub.init_header_path(word['vclub_title']);
     
-    vclub.sidebar.dependency    = [vclub.sort_menu, vclub.search_box, vclub.view_menu];
-    vclub.sort_menu.dependency  = [vclub.sidebar, vclub.search_box, vclub.view_menu];
-    vclub.search_box.dependency = [vclub.sidebar, vclub.sort_menu, vclub.view_menu];
-    vclub.view_menu.dependency  = [vclub.sidebar, vclub.sort_menu, vclub.search_box];
+    vclub.sidebar.dependency    = [vclub.sort_menu, vclub.search_box, vclub.view_menu, vclub.other_menu];
+    vclub.sort_menu.dependency  = [vclub.sidebar, vclub.search_box, vclub.view_menu, vclub.other_menu];
+    vclub.search_box.dependency = [vclub.sidebar, vclub.sort_menu, vclub.view_menu, vclub.other_menu];
+    vclub.view_menu.dependency  = [vclub.sidebar, vclub.sort_menu, vclub.search_box, vclub.other_menu];
+    vclub.other_menu.dependency  = [vclub.sidebar, vclub.sort_menu, vclub.search_box, vclub.view_menu];
     
     vclub.hide();
     
