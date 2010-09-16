@@ -46,6 +46,8 @@ function player(){
     
     this.event5_counter = 0;
     
+    this.play_auto_ended = false;
+    
     this.hist_ch_idx = [0,0];
     this.hist_f_ch_idx = [0,0];
     
@@ -96,6 +98,8 @@ player.prototype.event_callback = function(event){
         {
             try{
                 //this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
+                
+                this.play_auto_ended = true;
                 
                 if (this.media_type == 'stream' && this.is_tv){
                     _debug('stream error');
@@ -516,6 +520,10 @@ player.prototype.play = function(item){
         cmd = item;
     }
     
+    if (item.hasOwnProperty('position')){
+        cmd += ' position:'+item.position;
+    }
+    
     _debug('cmd: ', cmd);
     
     this.media_type = this.define_media_type(cmd);
@@ -641,6 +649,16 @@ player.prototype.stop = function(){
         //stb.Umount();
         this.umount_timer = window.setTimeout(function(){stb.Umount()}, 500);
     }
+    
+    if (stb.cur_place == 'vclub' && !this.play_auto_ended){
+        
+        var cur_series = this.cur_media_item.cur_series || 0;
+        var end_time = stb.GetPosTime();
+        
+        module && module.vclub && module.vclub.set_not_ended && module.vclub.set_not_ended(this.cur_media_item.id, cur_series, end_time);
+    }
+    
+    this.play_auto_ended = false;
     
     window.clearTimeout(this.send_played_itv_timer);
     window.clearTimeout(this.send_played_video_timer);
@@ -777,7 +795,7 @@ player.prototype.show_info = function(item){
             this.info.epg.innerHTML = stb.epg_loader.get_epg(item.id);
         }
         
-        if (item.cur_series){
+        if (item.cur_series && parseInt(item.cur_series) > 0){
             this.info.pos_series.innerHTML = item.cur_series + ' ' + word['player_series'];
         }else{
             this.info.pos_series.innerHTML = '';
