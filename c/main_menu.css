@@ -18,15 +18,16 @@
     font-weight: bold;
     font-size: 21px;
     color: #ccd6de;
-    margin-left: 12px;
+    margin-left: 8px;
     /*margin-right: 65px;*/
 }
 
 .main_menu_date_bar{
     position: absolute;
-    width: 360px;
+    width: 364px;
     top: 38px;
     right: 0;
+    font-family: "Myriad Pro Cond";
 }
 
 .mm_menu_hor{
