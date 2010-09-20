@@ -136,4 +136,6 @@ $words['records_title'] = 'ЗАПИСИ';
 $words['ears_back'] = 'Н<br>А<br>З<br>А<br>Д';
 $words['ears_about_movie'] = 'О<br><br>Ф<br>И<br>Л<br>Ь<br>М<br>Е';
 $words['ears_tv_guide'] = 'Т<br>В<br><br>Г<br>И<br>Д';
+
+$words['settings_title'] = 'НАСТРОЙКИ';
 ?>
