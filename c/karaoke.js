@@ -15,7 +15,7 @@
             "action" : "get_ordered_list"
         };
         
-        this.superclass = Layer.prototype;
+        this.superclass = ListLayer.prototype;
         
         this.sort_menu = {};
         
@@ -140,7 +140,7 @@
         };
     }
     
-    karaoke_constructor.prototype = new Layer();
+    karaoke_constructor.prototype = new ListLayer();
 
     var karaoke = new karaoke_constructor();
     
