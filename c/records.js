@@ -11,7 +11,7 @@
         
         this.row_blocks = ['t_start', 'ch_name', 'length'];
         
-        this.superclass = Layer.prototype;
+        this.superclass = ListLayer.prototype;
         
         this.init = function(){
             
@@ -111,7 +111,7 @@
     
     stb.pvr = new pvr();
     
-    records_constructor.prototype = new Layer();
+    records_constructor.prototype = new ListLayer();
     
     var records = new records_constructor();
     
