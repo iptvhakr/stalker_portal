@@ -16,7 +16,7 @@
             'action' : 'get_ordered_list'
         };
         
-        this.superclass = Layer.prototype;
+        this.superclass = ListLayer.prototype;
         
         this.hide = function(do_not_reset){
             _debug('radio.hide');
@@ -59,7 +59,7 @@
         };
     }
     
-    radio_constructor.prototype = new Layer();
+    radio_constructor.prototype = new ListLayer();
     
     var radio = new radio_constructor();
     
