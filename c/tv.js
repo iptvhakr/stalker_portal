@@ -498,8 +498,6 @@
             _debug('tv.fav_manage_mode after', this.fav_manage_mode);
         };
         
-        
-        
         this.init_quick_ch_switch = function(){
             _debug('tv.init_quick_ch_switch');
             
