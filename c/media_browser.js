@@ -15,7 +15,7 @@
         this.data_items   = [];
         this.is_audio = false;
         
-        this.superclass = Layer.prototype;
+        this.superclass = ListLayer.prototype;
         
         this.dir_hist = [{"path" : "/media/usbdisk/", "page" : 1, "row" : 1}];
         
@@ -226,7 +226,7 @@
         };
     }
     
-    media_browser_constructor.prototype = new Layer();
+    media_browser_constructor.prototype = new ListLayer();
     
     var media_browser = new media_browser_constructor();
     
