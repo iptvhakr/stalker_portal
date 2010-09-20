@@ -18,7 +18,7 @@ _debug('1!!!!!!!!!!!!!!');
             'action' : 'get_ordered_list'
         };
         
-        this.superclass = Layer.prototype;
+        this.superclass = ListLayer.prototype;
         
         this.category_alias = '';
         
@@ -499,7 +499,7 @@ _debug('1!!!!!!!!!!!!!!');
         };
     }
     
-    vclub_constructor.prototype = new Layer();
+    vclub_constructor.prototype = new ListLayer();
 
     var vclub = new vclub_constructor();
         
