@@ -502,7 +502,7 @@ _debug('1!!!!!!!!!!!!!!');
     vclub_constructor.prototype = new Layer();
 
     var vclub = new vclub_constructor();
-    
+        
     vclub.bind();
     vclub.init();
     
