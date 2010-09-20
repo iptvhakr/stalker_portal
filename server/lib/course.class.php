@@ -60,9 +60,6 @@ class Course
         
         $content = base64_encode(serialize($arr));
         
-        /*$sql = "select * from $this->cache_table";
-        $rs = $this->db->executeQuery($sql);*/
-        
         $result = $this->db->from($this->cache_table)->get();
         $crc = $result->get('crc');
         
@@ -78,16 +75,10 @@ class Course
             
             if ($result->count() == 1){
                 
-                //$sql = "update $this->cache_table set content='$content', updated=NOW(), url='$this->content_url', crc=MD5('$content')";
-                //$rs = $this->db->executeQuery($sql);
-                
                 $this->db->update($this->cache_table,
                                   $data);
                 
             }else{
-                
-                //$sql = "insert into $this->cache_table (content, updated, url, crc) value ('$content', NOW(), '".$this->content_url."', MD5('$content'))";
-                //$rs = $this->db->executeQuery($sql);
                 
                 $this->db->insert($this->cache_table,
                                   $data);
