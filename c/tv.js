@@ -24,7 +24,7 @@
         
         this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
         
-        this.superclass = Layer.prototype;
+        this.superclass = ListLayer.prototype;
         
         this.sort_menu = {};
         
@@ -632,7 +632,7 @@
         };
     }
     
-    tv_constructor.prototype = new Layer();
+    tv_constructor.prototype = new ListLayer();
     
     var tv = new tv_constructor();
     
