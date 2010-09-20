@@ -136,4 +136,6 @@ $words['records_title'] = 'RECORDS';
 $words['ears_back'] = 'B<br>A<br>C<br>K';
 $words['ears_about_movie'] = 'A<br>B<br>O<br>U<br>T<br><br>M<br>O<br>V<br>I<br>E';
 $words['ears_tv_guide'] = 'T<br>V<br><br>G<br>U<br>I<br>D<br>E';
+
+$words['settings_title'] = 'SETTINGS';
 ?>
