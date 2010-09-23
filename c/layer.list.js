@@ -108,13 +108,15 @@ ListLayer.prototype.init = function(){
     
     this.load_params_pattern = this.load_params.clone();
     
-    if (!this.class_name){
+    /*if (!this.class_name){
         this.class_name = 'layer_bg';
     }
     
     this.dom_obj.addClass(this.class_name);
     
-    this.dom_obj.id = this.layer_name;
+    this.dom_obj.id = this.layer_name;*/
+    
+    this.base_layer.init.call(this);
     
     this.init_page_bar();
     this.init_list();
