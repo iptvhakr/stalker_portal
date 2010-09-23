@@ -138,4 +138,15 @@ $words['ears_about_movie'] = 'A<br>B<br>O<br>U<br>T<br><br>M<br>O<br>V<br>I<br>E
 $words['ears_tv_guide'] = 'T<br>V<br><br>G<br>U<br>I<br>D<br>E';
 
 $words['settings_title'] = 'SETTINGS';
+$words['parent_settings_cancel'] = 'CANCEL';
+$words['parent_settings_save'] = 'SAVE';
+$words['parent_settings_old_pass'] = 'Current password';
+$words['parent_settings_title'] = 'PARENT PASSWORD';
+$words['parent_settings_new_pass'] = 'New password';
+$words['parent_settings_repeat_new_pass'] = 'Repeat new password';
+
+$words['settings_saved'] = 'Settings saved';
+$words['settings_check_error'] = 'Error filling fields';
+
+$words['empty'] = 'EMPTY';
 ?>
