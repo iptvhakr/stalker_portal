@@ -1,0 +1,95 @@
+.setting_table{
+    position:absolute;
+    left: 50px;
+    top: 73px;
+    font-size: 18px;
+    color: #fff;
+    text-shadow: #122946 0 -1px 0;
+    background-image: url("i/25alfa_20.png");
+    height: 400px;
+    width: 610px;
+    padding: 20px 0 0 0;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+}
+
+.setting_table > dl{
+    clear: left;
+    margin: 0 0 15px 0;
+}
+
+.setting_table > dl > dt{
+    float: left;
+    width: 300px;
+    text-align: right;
+    margin: 0 15px 0 0;
+}
+
+.setting_table > dl > dd{
+    text-align: left;
+    margin: 0 0 0 315px;
+}
+
+.setting_table > dl > dd dl{
+    clear: left;
+    margin: 0 0 15px 0;
+}
+
+.setting_table > dl > dd dl > dt{
+    float: left;
+    width: 15px;
+    text-align: right;
+    margin: 0 15px 0 0;
+}
+
+.setting_table > dl > dd dl > dd{
+    text-align: left;
+    margin: 0 0 0 20px;
+}
+
+.setting_table input{
+    border: 2px solid;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+}
+
+.setting_table .active_input{
+    border-color: #d8a903 !important;
+}
+
+.setting_table .passive_input{
+    border-color: #004 !important;
+}
+
+#radio_btn{
+    width: 14px;
+    height: 14px;
+    border: 2px solid #00a;
+    background-color: #fff;
+    -webkit-border-radius: 14px;
+    -moz-border-radius: 14px;
+    margin: 5px 0 0 0;
+}
+
+#radio_btn .checked{
+    width: 10px;
+    height: 10px;
+    background-color: #0a0;
+    -webkit-border-radius: 14px;
+    -moz-border-radius: 14px;
+    margin: 2px 0 0 2px;
+}
+
+#checkbox_btn{
+    width: 14px;
+    height: 14px;
+    border: 2px solid #00a;
+    background-color: #fff;
+}
+
+#checkbox_btn .checked{
+    width: 10px;
+    height: 10px;
+    background-color: #0a0;
+    margin: 2px 0 0 2px;
+}
