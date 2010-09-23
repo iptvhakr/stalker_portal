@@ -12,6 +12,13 @@ function BaseLayer(){
     /*this.dom_obj = this.create_block();
     document.body.appendChild(this.dom_obj);*/
     this.dom_obj = {};
+    
+    this.color_buttons = [
+        {"color" : "red"},
+        {"color" : "green"},
+        {"color" : "yellow"},
+        {"color" : "blue"}
+    ];
 }
 
 BaseLayer.prototype.show = function(){
@@ -30,6 +37,18 @@ BaseLayer.prototype.hide = function(){
     this.dom_obj.hide();
     
     this.on = false;
+}
+
+BaseLayer.prototype.init = function(){
+    _debug('BaseLayer.init');
+    
+    if (!this.class_name){
+        this.class_name = 'layer_bg';
+    }
+    
+    this.dom_obj.addClass(this.class_name);
+    
+    this.dom_obj.id = this.layer_name;
 }
 
 BaseLayer.prototype.create_block = function(class_name, is_active){
