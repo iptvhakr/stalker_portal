@@ -27,6 +27,17 @@ define("PORTAL_URI", '/stalker_portal/');
 
 define("MASTER_CACHE_EXPIRE", 365); // hours
 
+$modules = array(
+    "vclub",
+    "tv",
+    "media_browser",
+    "karaoke",
+    "radio",
+    "curweather",
+    "records",
+    "settings",
+);
+
 // RTSP
 define("RTSP_TYPE", 4);
 define("RTSP_FLAGS", 0);
