@@ -137,5 +137,18 @@ $words['ears_back'] = 'Н<br>А<br>З<br>А<br>Д';
 $words['ears_about_movie'] = 'О<br><br>Ф<br>И<br>Л<br>Ь<br>М<br>Е';
 $words['ears_tv_guide'] = 'Т<br>В<br><br>Г<br>И<br>Д';
 
+
+// settings
 $words['settings_title'] = 'НАСТРОЙКИ';
+$words['parent_settings_cancel'] = 'ОТМЕНА';
+$words['parent_settings_save'] = 'СОХРАНИТЬ';
+$words['parent_settings_old_pass'] = 'Текущий пароль';
+$words['parent_settings_title'] = 'РОДИТЕЛЬСКИЙ ПАРОЛЬ';
+$words['parent_settings_new_pass'] = 'Новый пароль';
+$words['parent_settings_repeat_new_pass'] = 'Повтор нового пароля';
+
+$words['settings_saved'] = 'Настройки сохранены';
+$words['settings_check_error'] = 'Ошибка заполнения полей';
+
+$words['empty'] = 'ПУСТО';
 ?>
