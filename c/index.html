@@ -64,6 +64,7 @@
 <link type="text/css" rel="stylesheet" href="context_menu.css"></link>
 
 <script type="text/javascript" src="../server/api/lang.php"></script>
+<script type="text/javascript" src="../server/api/get_modules.php"></script>
 
 <script type="text/javascript" src="version.js"></script>
 
@@ -175,7 +176,7 @@ function init(){
         }
     );
     
-    loader.add([
+    var base_modules = [
         "layer.base",
         "layer.list",
         "layer.setting",
@@ -187,16 +188,13 @@ function init(){
         "layer.vclub_info",
         "password_input",
         "series_switch",
-        "vclub",
-        "tv",
-        "media_browser",
-        "karaoke",
-        "radio",
-        "curweather",
-        "records",
-        "settings"
-    ])
+    ]
     
+    var all_modules = base_modules.concat(ext_modules);
+    
+    _debug('all_modules', all_modules);
+    
+    loader.add(all_modules);
     
     /*{"title"    : "НАСТРОЙКИ",
          "cmd"      : "",
