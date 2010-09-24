@@ -57,7 +57,24 @@ vclub_info.prototype.init = function(){
     
     this.dom_obj.innerHTML = '<div class="mb_header_first text24_white">' + word['vclub_title'] + ' / <span class="text20_white uppercase">' + word['vclub_info'] + '</span></div>';
     
-    create_block_element('ears_back', this.dom_obj);
+    //create_block_element('ears_back', this.dom_obj);
+    
+    var ears_left_container = create_block_element('ears_left_container');
+    
+    this.left_ear = create_block_element('ears_left');
+    
+    var left_arrow = create_block_element('ears_arrow_left');
+    var text_element = create_block_element();
+    text_element.innerHTML = word['ears_back'];
+    
+    this.left_ear.appendChild(left_arrow);
+    this.left_ear.appendChild(text_element);
+    this.left_ear.appendChild(left_arrow.cloneNode(true));
+    
+    ears_left_container.appendChild(this.left_ear);
+    
+    this.dom_obj.appendChild(ears_left_container);
+    
     
     this.main_container = create_block_element('mb_main_filminfo', this.dom_obj);
     
