@@ -27,19 +27,45 @@ class Course
         $content = file_get_contents($this->content_url);
         if ($content){
             preg_match("/<SPAN class='h5'>([\d,\.]+)<\/SPAN>/",$content,$arr);
-            $result['title'] = 'Курс валют Национального банка Украины на '.$arr[1];
+            $result['title'] = System::word('course_title').$arr[1];
+            $result['on_date'] = $arr[1];
             $result['data'] = array();
             $idx = 0;
             
-            foreach ($this->codes as $code){            
-                preg_match("/<td align=\"Center\">$code<\/td><td align=\"Center\">([\S]+)<\/td><td align=\"Center\">([\d]+)<\/td><td align=\"Left\">(.*)<\/td><td align=\"Right\">([\d,\.]+)<\/td>/",$content,$arr2);                
-                $result['data'][$idx] = array();
-                $result['data'][$idx]['currency'] = $arr2[2].' '.$arr2[1];
-                $result['data'][$idx]['value'] = $arr2[4];
-                $idx++;
+            $old_data = $this->getDataFromDBCache();
+            
+            if (!key_exists('on_date', $old_data) || $result['on_date'] != $old_data['on_date']){
+            //if (1){
+            
+                foreach ($this->codes as $code){            
+                    preg_match("/<td align=\"Center\">$code<\/td><td align=\"Center\">([\S]+)<\/td><td align=\"Center\">([\d]+)<\/td><td align=\"Left\">(.*)<\/td><td align=\"Right\">([\d,\.]+)<\/td>/",$content,$arr2);                
+                    $result['data'][$idx] = array();
+                    $result['data'][$idx]['code'] = $code;
+                    $result['data'][$idx]['currency'] = $arr2[2].' '.$arr2[1];
+                    $result['data'][$idx]['value'] = $arr2[4];
+                    
+                    $result['data'][$idx]['diff'] = 0;
+                    $result['data'][$idx]['trend'] = 0;
+                    
+                    if (is_array($old_data) && key_exists('data', $old_data) && key_exists($idx, $old_data['data'])){
+                    
+                        $result['data'][$idx]['diff'] = $result['data'][$idx]['value'] - $old_data['data'][$idx]['value'];
+                        
+                        if ($result['data'][$idx]['diff'] > 0){
+                            $result['data'][$idx]['trend'] = 1;
+                        }else if ($result['data'][$idx]['diff'] < 0){
+                            $result['data'][$idx]['trend'] = -1;
+                        }
+                    }
+                    
+                    $idx++;
+                }
+                
+                $this->setDataDBCache($result);
+            }else{
+                $result = $old_data;
             }
         }
-        $this->setDataDBCache($result);
         return $result;
     }
     
@@ -47,7 +73,7 @@ class Course
         
         $content = $this->db->from($this->cache_table)->get()->first('content');
                 
-        $content = unserialize(base64_decode($rs->getValueByName(0, 'content')));
+        $content = unserialize(System::base64_decode($content));
         
         if (is_array($content)){
             return $content;
@@ -58,7 +84,7 @@ class Course
     
     private function setDataDBCache($arr){
         
-        $content = base64_encode(serialize($arr));
+        $content = System::base64_encode(serialize($arr));
         
         $result = $this->db->from($this->cache_table)->get();
         $crc = $result->get('crc');
