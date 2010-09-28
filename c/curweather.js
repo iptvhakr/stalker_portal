@@ -1,5 +1,6 @@
 /**
- *
+ * Current weather widget.
+ * Displayed in the main menu.
  */
 
 (function(){
@@ -46,5 +47,3 @@
     loader.next();
     
 })();
-
-loader.next();
