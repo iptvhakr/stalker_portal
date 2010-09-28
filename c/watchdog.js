@@ -41,7 +41,9 @@ watchdog.prototype.send_request = function(){
         
         function(result){
             try{
+                
                 self.parse_result(result.data);
+                
             }catch(e){
                 _debug(e);
             }
@@ -54,6 +56,8 @@ watchdog.prototype.parse_result = function(data){
     _debug('watchdog.parse_result', data);
     
     module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
+    
+    module.course && module.course.set && module.course.set(data.course);
     
     if (typeof(data.id) != 'undefined'){
         
