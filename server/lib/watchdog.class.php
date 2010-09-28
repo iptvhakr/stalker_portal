@@ -58,6 +58,9 @@ class Watchdog extends AjaxResponse
         $weather = new Weatherco();
         $res['data']['cur_weather'] = $weather->getCurrent();
         
+        $course = new Course();
+        $res['data']['course'] = $course->getData();
+        
         //$cur_weather = new Curweather();
         //$res['data']['cur_weather'] = $cur_weather->getData();
         
