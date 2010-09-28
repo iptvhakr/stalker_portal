@@ -112,7 +112,7 @@ var main_menu = {
             var total_items = 6;
             
             if (this.map[i].sub.length < 6){
-                total_items = this.map[1].sub.length;
+                total_items = this.map[i].sub.length;
             }
             
             this.map[i].active_sub = Math.ceil(total_items/2)-1;
@@ -142,7 +142,9 @@ var main_menu = {
         
         if(this.map[1]){
             this.active_sub = this.map[1].active_sub;
-        }        
+        }
+        
+        _debug('this.active_sub', this.active_sub); 
     },
     
     render : function(){
@@ -165,14 +167,18 @@ var main_menu = {
     },
     
     sub_menu_hide : function(){
-        this.map[1].sub_obj.hide();
-        this.mm_menu_vert.hide();
-        this.empty_vert_menu.show();
+        
+        if(this.map[1] && this.map[1].sub_obj && this.map[1].sub_obj.hide){
+            this.map[1].sub_obj.hide();
+            this.mm_menu_vert.hide();
+            this.empty_vert_menu.show();
+        }
     },
     
     sub_menu_show : function(){
         if (this.map.hasOwnProperty(1) && this.map[1].sub.length > 0){
             this.map[1] && this.map[1].sub_obj && this.map[1].sub_obj.show();
+            this.active_sub = this.map[1].active_sub;
             this.mm_menu_vert.show();
             this.empty_vert_menu.hide();
         }
@@ -237,7 +243,9 @@ var main_menu = {
         
         this.active_sub = Math.ceil(total_items/2)-1;*/
         
-        this.active_sub = this.map[1].active_sub;
+        //this.active_sub = this.map[1].active_sub;
+        
+        _debug('this.active_sub', this.active_sub);
         
         for (var i=0; i<this.map[1].sub.length; i++){
             
