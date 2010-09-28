@@ -59,8 +59,6 @@
                 
                 ul.appendChild(trend);
                 
-                //item['trend_dom_obj'] = trend;
-                
                 this.map.push(item);
                 
                 this.dom_obj.appendChild(ul);
