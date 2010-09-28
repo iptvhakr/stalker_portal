@@ -151,4 +151,6 @@ $words['settings_saved'] = 'Настройки сохранены';
 $words['settings_check_error'] = 'Ошибка заполнения полей';
 
 $words['empty'] = 'ПУСТО';
+
+$words['course_title'] = 'Курс НБУ на ';
 ?>
