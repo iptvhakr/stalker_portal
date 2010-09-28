@@ -96,6 +96,12 @@ function common_xpcom(){
             _debug(e);
         }
         
+        if (debug){
+            if (_GET['mac']){
+                this.mac = _GET['mac'];
+            }
+        }
+        
         this.set_cookie('mac', this.mac);
         
         _debug('this.mac:', this.mac);
@@ -245,7 +251,11 @@ function common_xpcom(){
                 this.aspect_idx = 0;
             }
             
-            stb.SetAspect(this.user['aspect']);
+            try{
+                stb.SetAspect(this.user['aspect']);
+            }catch(e){
+                _debug(e);
+            }
             
             /*
             mount_home_dir(this.user['storages'])
