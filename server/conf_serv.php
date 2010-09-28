@@ -36,6 +36,7 @@ $modules = array(
     "curweather",
     "records",
     "settings",
+    "course.nbu",
 );
 
 // RTSP
