@@ -149,4 +149,6 @@ $words['settings_saved'] = 'Settings saved';
 $words['settings_check_error'] = 'Error filling fields';
 
 $words['empty'] = 'EMPTY';
+
+$words['course_title'] = 'Exchange rate on ';
 ?>
