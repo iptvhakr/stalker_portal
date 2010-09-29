@@ -707,6 +707,8 @@ player.prototype.init_show_info = function(){
     
     this.info.dom_obj = create_block_element("osd_info");
     
+    this.info.clock = create_block_element("osd_info_clock", this.info['dom_obj']);
+    
     this.info.title = create_block_element("osd_info_title", this.info['dom_obj']);
     
     this.info.epg   = create_block_element("osd_info_epg", this.info['dom_obj']);
@@ -780,6 +782,8 @@ player.prototype.show_info = function(item){
             this.info.dom_obj.show();
             this.info.on = true;
         }
+        
+        stb.clock.show();
         
         var title = '';
         
