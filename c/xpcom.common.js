@@ -740,6 +740,10 @@ function common_xpcom(){
                 main_menu.time.innerHTML = this.hours + ':' + this.minutes;
                 main_menu.date.innerHTML = this.day_arr[this.day] + ', ' + this.date + ' ' + this.month_arr[this.month] + ', ' + this.year + word['year'] + '.';
             }
+            
+            if (stb.player.info.on){
+                stb.player.info.clock.innerHTML = this.hours + ':' + this.minutes;
+            }
         }
     }
 }
