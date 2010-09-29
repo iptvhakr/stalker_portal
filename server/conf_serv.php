@@ -20,6 +20,8 @@ define("HOROSCOPE_RSS",  'http://www.hyrax.ru/cgi-bin/bn_xml.cgi');
 define("GAPI_CUR_WEATHER",  'http://www.google.com/ig/api?hl=ru&weather=Odessa,,,46430000,30770000&oe=utf8');
 define("GISMETEO_XML",  'http://informer.gismeteo.ru/xml/33837_1.xml');
 
+define("WEATHERCO_CITY_ID", 25); // see: http://xml.weather.co.ua/1.2/country/ and http://xml.weather.co.ua/1.2/city/?country=804
+
 define("IMG_URI",  '/stalker_portal/screenshots/');
 define("FILES_IN_DIR", 100);
 
