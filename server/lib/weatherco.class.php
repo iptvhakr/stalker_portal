@@ -5,13 +5,16 @@ class Weatherco
 
     private $db;
     private $cache_table = 'weatherco_cache';
-    private $xml_url = 'http://xml.weather.co.ua/1.2/forecast/25?dayf=1&lang=ru&userid=infomir.com.ua';
+    private $xml_url = '';
     private $current = array();
     private $forecast = array();
     private $cache = array();
     
     public function __construct(){
+        
         $this->db = Mysql::getInstance();
+        
+        $this->xml_url = 'http://xml.weather.co.ua/1.2/forecast/'.WEATHERCO_CITY_ID.'?dayf=1&lang=ru&userid=infomir.com.ua';
     }
     
     private function getFromNet(){
