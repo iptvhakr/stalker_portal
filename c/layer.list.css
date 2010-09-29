@@ -325,11 +325,19 @@
     z-index: 100;
 }
 
+.osd_info_clock{
+    position: absolute;
+    top: 19px;
+    left: 20px;
+    font-size: 18px;
+    color: #99A8B5;
+    font-family: "Myriad Pro Cond";
+}
 
 .osd_info_title{
     position: absolute;
     top: 14px;
-    left: 46px;
+    left: 56px;
     width: 626px;
     font-size: 25px;
     font-weight: bold;
