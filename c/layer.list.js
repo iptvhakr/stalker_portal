@@ -89,6 +89,10 @@ ListLayer.prototype.hide = function(do_not_reset){
 ListLayer.prototype.reset = function(){
     _debug('ListLayer.reset');
     
+    for (var j=0; j<this.total_rows; j++){
+        this.clear_row(this.map[j].row);
+    }
+    
     this.cur_row = 0;
     this.cur_page = 1;
     this.page_dir = 1;
