@@ -89,13 +89,22 @@ ListLayer.prototype.hide = function(do_not_reset){
 ListLayer.prototype.reset = function(){
     _debug('ListLayer.reset');
     
+    this.cur_row = 0;
+    this.cur_page = 1;
+    this.page_dir = 1;
+    this.total_pages = 0;
+
+    this.clear_list();
+}
+
+ListLayer.prototype.clear_list = function(){
+    _debug('ListLayer.clear_list');
+    
     for (var j=0; j<this.total_rows; j++){
         this.clear_row(this.map[j].row);
     }
     
-    this.cur_row = 0;
-    this.cur_page = 1;
-    this.page_dir = 1;
+    this.set_total_items(-1);
 }
 
 ListLayer.prototype.init = function(){
@@ -210,6 +219,8 @@ ListLayer.prototype.load_data = function(){
     
     this.set_passive_row();
     
+    this.clear_list();
+    
     this.load_params['p'] = this.cur_page;
     
     stb.load(
@@ -242,11 +253,16 @@ ListLayer.prototype.set_total_items = function(count){
     
     var str = '';
     
-    if (this.total_pages != 0){
+    if (this.total_pages != 0 && count >= 0){
         str += word['layer_page'] + ' <span class="text20_white bold">'+this.cur_page+'</span> ' + word['layer_from'] + ' <span class="text20_white bold">'+this.total_pages+'</span>.';
     }
     
-    str += ' ' + word['layer_found'] + ' <span class="text20_white bold">'+count+'</span> ' + word['layer_records'] + '.';
+    if (count >= 0){
+        str += ' ' + word['layer_found'] + ' <span class="text20_white bold">'+count+'</span> ' + word['layer_records'] + '.';
+    }else{
+        str += ' ' + word['layer_loading'];
+    }
+    
     this.total_vclub_items_obj.innerHTML = str;
 }
 
