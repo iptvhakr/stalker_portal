@@ -54,6 +54,7 @@ $words['layer_page'] = 'СТР';
 $words['layer_from'] = 'ИЗ';
 $words['layer_found'] = 'НАЙДЕНО';
 $words['layer_records'] = 'ЗАПИСЕЙ';
+$words['layer_loading'] = 'ЗАГРУЗКА...';
 
 // media browser
 $words['mbrowser_title'] = 'USB Устройство';
