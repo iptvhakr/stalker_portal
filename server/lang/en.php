@@ -54,6 +54,7 @@ $words['layer_page'] = 'PAGE';
 $words['layer_from'] = 'FROM';
 $words['layer_found'] = 'FOUND';
 $words['layer_records'] = 'RECORDS';
+$words['layer_loading'] = 'LOADING...';
 
 // media browser
 $words['mbrowser_title'] = 'USB Device';
