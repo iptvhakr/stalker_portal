@@ -133,7 +133,7 @@ SettingLayer.prototype.bind = function(){
     (function(){
         this.hide();
         main_menu.show();
-    }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);;
+    }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
     
     this.save.bind(key.OK, this);
 }
