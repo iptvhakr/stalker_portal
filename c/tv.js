@@ -126,6 +126,14 @@
             }
         };
         
+        this.clear_list = function(){
+            _debug('tv.clear_list');
+            
+            this.superclass.clear_list.call(this);
+            
+            this.short_info_box.innerHTML = '';
+        }
+        
         this.bind = function(){
             this.superclass.bind.apply(this);
             
@@ -283,7 +291,19 @@
                 _debug(e);
             }
             
-            //this.fill_short_info(this.data_items[this.cur_row]);
+            this.fill_short_info(this.data_items[this.cur_row]);
+            
+            if (this.data_items && this.data_items[this.cur_row]){
+                stb.player.need_show_info = 0;
+                stb.player.play(this.data_items[this.cur_row]);
+            }
+            
+            // set active list w/ info item
+            if (this.view_menu && this.view_menu.set_passive_row){
+                this.view_menu.set_passive_row();
+                this.view_menu.cur_row_idx = 0;
+                this.view_menu.set_active_row();
+            }            
         };
         
         this.init_short_info = function(){
@@ -308,8 +328,20 @@
             
             var epg = '';
             
-            for (var i=0; i<item.epg.length; i++){
-                epg += '<span>' + item.epg[i].t_time + ' - </span>' + item.epg[i].name + '<br>';
+            if (item && item.epg){
+                
+                var class_name = '';
+                
+                for (var i=0; i<item.epg.length; i++){
+                    
+                    if (i == 0){
+                        class_name = 'current';
+                    }else{
+                        class_name = '';
+                    }
+                    
+                    epg += '<span class="time">' + item.epg[i].t_time + ' - </span><span class="' + class_name + '">' + item.epg[i].name + '</span><br>';
+                }
             }
             
             this.short_info_box.innerHTML = epg;
