@@ -64,13 +64,18 @@ class Gismeteo
                 $precipitation = $this->precipitation_arr[$precipitation_id];
                 $phenomena = $cloudiness.', '.$precipitation;
                 
-                $pressure = strval($item->PRESSURE->attributes()->min).'..'.strval($item->PRESSURE->attributes()->max).' мм рт.ст.';
+                $pressure = strval($item->PRESSURE->attributes()->min).'..'.strval($item->PRESSURE->attributes()->max);
+                $pressure_str = $pressure.' мм рт.ст.';
                 
-                $wind = $this->direction_arr[strval($item->WIND->attributes()->direction)].',<br> '.strval($item->WIND->attributes()->min).'-'.strval($item->WIND->attributes()->max).' м/с';
+                $wind = $this->direction_arr[strval($item->WIND->attributes()->direction)].', '.strval($item->WIND->attributes()->min).'-'.strval($item->WIND->attributes()->max);
+                $wind_str = $wind.' м/с';
                 
                 $gis_arr[$i]['title'] = $title;
                 $gis_arr[$i]['temperature'] = $temperature;
-                $gis_arr[$i]['description'] = $phenomena.',<br>давление '.$pressure.', ветер '.$wind;
+                $gis_arr[$i]['phenomena']   = $phenomena;
+                $gis_arr[$i]['pressure']    = $pressure;
+                $gis_arr[$i]['wind']        = $wind;
+                $gis_arr[$i]['description'] = $phenomena.',<br>давление '.$pressure_str.', ветер '.$wind_str;
                 if ($tod_id == 0 || $tod_id == 3){
                     $img_1 = 'w_moon.png';
                 }else{
@@ -94,7 +99,7 @@ class Gismeteo
         
         $content = $this->db->from($this->cache_table)->get()->first('content');
         
-        $content = unserialize(base64_decode($content));
+        $content = unserialize(System::base64_decode($content));
         
         if (is_array($content)){
             return $content;
@@ -105,7 +110,7 @@ class Gismeteo
     
     private function setDataDBCache($arr){
         
-        $content = base64_encode(serialize($arr));
+        $content = System::base64_encode(serialize($arr));
         
         /*$sql = "select * from $this->cache_table";
         $rs = $this->db->executeQuery($sql);*/
