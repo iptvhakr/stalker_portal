@@ -152,4 +152,12 @@ $words['settings_check_error'] = 'Error filling fields';
 $words['empty'] = 'EMPTY';
 
 $words['course_title'] = 'Exchange rate on ';
+
+$words['dayweather_title'] = 'WEATHER';
+$words['dayweather_pressure'] = 'pres.:';
+$words['dayweather_mmhg'] = 'mm Hg';
+$words['dayweather_wind'] = 'wind:';
+$words['dayweather_speed'] = 'm/s';
+
+$words['infoportal_title'] = 'INFOPORTAL';
 ?>
