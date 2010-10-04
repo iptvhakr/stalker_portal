@@ -27,7 +27,7 @@
         render : function(){
             _debug('curweather.render');
             
-            var cur = '<div class="curweather_img"><img src="i/weather/' + this.current.pict + '"/></div>';
+            var cur = '<div class="curweather_img"><img src="i/' + this.current.pict + '"/></div>';
             cur += '<div class="curweather_descr">' + this.current.t +'&deg; C<br>';
             cur += this.current.cloud_str + '<br>';
             cur += '<span class="curweather_title">' + word['weather_comfort'] + ':</span> ' + this.current.t_flik +'&deg; C<br>';
