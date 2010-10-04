@@ -38,8 +38,16 @@ class Weatherco
                 $item['hour'] = strval($day->attributes()->hour);
                 
                 foreach ($day as $field => $val){
-
-                    if ($val->count() > 0){
+                    
+                    $doc = new DOMDocument();
+                    $str = $val->asXML();
+                    $doc->loadXML($str);
+                    $val_count = $doc->getElementsByTagName($val)->length; 
+                    
+                    var_dump($val_count);
+                    
+                    //if ($val->count() > 0){ // work if php>=5.3.0
+                    if ($val_count > 0){  // dont work?
                         $child = array();
                         foreach ($val as $child_name => $child_val){
                             $child[$child_name] = strval($child_val);
