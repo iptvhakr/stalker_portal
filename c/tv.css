@@ -104,8 +104,12 @@
     height: 150px;
 }
 
-.tv_timetable span{
+.tv_timetable .time{
     color: #cfeafe;
+}
+
+.tv_timetable .current{
+    color: #99a8b5;
 }
 
 .tv_prev_window{
