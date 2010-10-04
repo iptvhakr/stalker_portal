@@ -49,7 +49,7 @@ class Course
                     
                     if (is_array($old_data) && key_exists('data', $old_data) && key_exists($idx, $old_data['data'])){
                     
-                        $result['data'][$idx]['diff'] = $result['data'][$idx]['value'] - $old_data['data'][$idx]['value'];
+                        $result['data'][$idx]['diff'] = round(($result['data'][$idx]['value'] - $old_data['data'][$idx]['value']), 4);
                         
                         if ($result['data'][$idx]['diff'] > 0){
                             $result['data'][$idx]['trend'] = 1;
