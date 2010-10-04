@@ -154,4 +154,13 @@ $words['settings_check_error'] = 'Ошибка заполнения полей';
 $words['empty'] = 'ПУСТО';
 
 $words['course_title'] = 'Курс НБУ на ';
+
+$words['dayweather_title'] = 'ПОГОДА';
+$words['dayweather_pressure'] = 'давл.:';
+$words['dayweather_mmhg'] = 'мм рт.ст.';
+$words['dayweather_wind'] = 'ветер:';
+$words['dayweather_speed'] = 'м/с';
+
+
+$words['infoportal_title'] = 'ИНФОПОРТАЛ';
 ?>
