@@ -178,6 +178,13 @@ class Weatherco
             
         }
         
+        if (key_exists('pict', $arr)){
+            
+            preg_match("/(.*)\.gif/", $arr['pict'], $match);
+            
+            $arr['pict'] = $match[1].'.png';
+        }
+        
         return $arr;
     }
 }
