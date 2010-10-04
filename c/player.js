@@ -1043,6 +1043,7 @@ player.prototype.bind = function(){
         }else  if (this.prev_layer && this.prev_layer.cur_view == 'short'){
             this.show_prev_layer();
         }else if (this.is_tv){
+            module.tv.set_short_container();
             module.tv._show();
         }/*else{
             this.con_menu && this.con_menu.show && this.con_menu.show();
