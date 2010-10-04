@@ -35,10 +35,12 @@ $modules = array(
     "media_browser",
     "karaoke",
     "radio",
-    "curweather",
+    "weather.current",
     "records",
     "settings",
     "course.nbu",
+    "weather.day",
+    "infoportal",
 );
 
 // RTSP
