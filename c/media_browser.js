@@ -88,7 +88,7 @@
                 
                 for (var i=0; i < stb.usbdisk.dirs.length; i++){
                     if (!empty(stb.usbdisk.dirs[i])){
-                        new_dirs.push({"name" : stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1), "dir" : 1})
+                        new_dirs.push({"name" : stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1), "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]})
                     }
                 }
                 
@@ -150,7 +150,7 @@
                 if (this.data_items[this.cur_row].name == '..'){
                     this.out_dir();
                 }else{
-                    this.in_dir(this.data_items[this.cur_row].name);
+                    this.in_dir(this.data_items[this.cur_row].dir_name);
                 }
             }else{
                 this.play(this.data_items[this.cur_row])
@@ -168,6 +168,8 @@
                 stb.player.prev_layer = this;
                 this.hide(true);
             }
+            
+            _debug('this.dir_hist', this.dir_hist);
             
             stb.player.need_show_info = 1;
             stb.player.play(item);
@@ -189,7 +191,7 @@
         };
         
         this.in_dir = function(dir){
-            _debug('in_dir');
+            _debug('in_dir', dir);
             
             this.dir_hist[this.dir_hist.length - 1].page = this.cur_page;
             this.dir_hist[this.dir_hist.length - 1].row  = this.cur_row;
@@ -223,6 +225,8 @@
                 this.hide();
                 main_menu.show();
             }).bind(key.LEFT, this).bind(key.MENU, this);
+            
+            this.out_dir.bind(key.BACK, this);
         };
     }
     
