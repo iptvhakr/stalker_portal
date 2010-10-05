@@ -185,7 +185,7 @@ class Vod extends AjaxResponse
 
         $fav_video = $this->getFav();
         
-        if (!is_array($fav_video)){
+        if (empty($fav_video)){
             $this->db->insert('fav_vclub',
                                array(
                                     'uid'       => $this->stb->id,
