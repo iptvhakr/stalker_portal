@@ -632,12 +632,24 @@ abstract class Master
     private function incrementStorageDeny($storage_name){
         
         //$this->db->executeQuery('update storage_deny set counter=counter+1, updated=NOW() where name="'.$storage_name.'"');
-        $this->db->update('storage_deny',
-                          array(
-                              'counter' => 'counter+1',
-                              'updated' => 'NOW()'
-                          ),
-                          array('name' => $storage_name));
+        
+        $storage = $this->db->from('storage_deny')->where(array('name' => $storage_name))->get()->first();
+        
+        if (empty($storage)){
+            $this->db->insert('storage_deny',
+                              array(
+                                  'name'    => $storage_name,
+                                  'counter' => 1,
+                                  'updated' => 'NOW()'
+                              ));
+        }else{
+            $this->db->update('storage_deny',
+                              array(
+                                  'counter' => $storage['counter'] + 1,
+                                  'updated' => 'NOW()'
+                              ),
+                              array('name' => $storage_name));
+        }
         
     }
     
