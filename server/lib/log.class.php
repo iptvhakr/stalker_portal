@@ -43,8 +43,10 @@ class Log
             $default_row = '0ms';
         }
         
+        $item = $this->db->from('generation_time')->where(array('time' => $default_row))->get()->first();
+        
         $this->db->update('generation_time',
-                          array('counter' => 'counter+1'),
+                          array('counter' => $item['counter'] + 1),
                           array('time' => $default_row));
         
     }
