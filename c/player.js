@@ -436,6 +436,7 @@ player.prototype.seek_bar = new function(){
 }
 
 player.prototype.define_media_type = function(cmd){
+    _debug('player.define_media_type', cmd);
     
     if (cmd.indexOf('://') > 0){
         
@@ -1094,7 +1095,9 @@ player.prototype.bind = function(){
         if (this.quick_ch_switch.on){
             this.del_quick_go_ch();
         }else{
-            this.hist_back();
+            if (this.is_tv){
+                this.hist_back();
+            }
         }
     }).bind(key.BACK, this);
     
@@ -1261,7 +1264,6 @@ player.prototype.move_pos = function(dir){
     }
     
     this.prev_move_pos_dir = dir;
-    
     
     _debug('this.next_step', this.next_step);
     
