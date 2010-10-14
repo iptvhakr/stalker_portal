@@ -57,6 +57,8 @@ function player(){
     this.init_quick_ch_switch();
     this.volume.init();
     
+    this.send_last_tv_id_callback = function(){};
+    
     this.con_menu = new context_menu();
     this.con_menu.bind();
     this.con_menu.set_x_offset(100);
@@ -933,7 +935,15 @@ player.prototype.send_last_tv_id = function(id){
         
         function(result){
             _debug('last_tv_id saved', result);
-        }
+            
+            _debug('typeof this.send_last_tv_id_callback', typeof(this.send_last_tv_id_callback));
+            
+            this.send_last_tv_id_callback();
+            
+            this.send_last_tv_id_callback = function(){};
+        },
+        
+        this
     )
 }
 
