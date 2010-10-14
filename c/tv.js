@@ -545,6 +545,10 @@
         this.show_quick_ch_switch = function(num){
             _debug('tv.show_quick_ch_switch');
             
+            if (this.cur_view != 'short'){
+                return;
+            }
+            
             if (!this.quick_ch_switch.on){
                 this.quick_ch_switch.dom_obj.show();
                 this.quick_ch_switch.on = true;
@@ -596,17 +600,19 @@
             
             if (!empty(item)){
                 if (this.cur_view == 'short'){
-                    //this.last_ch_id = this.data_items[this.cur_row].id;
                     
-                    //stb.player.need_show_info = 1;
+                    var self = this;
+                    
+                    stb.player.send_last_tv_id_callback = function(){self.load_data.apply(self)};
+                    
                     stb.player.play(item);
                 }else{
                     stb.player.send_last_tv_id(item.id);
                 }
                 
-                //stb.player.send_last_tv_id()
+                
                 this.cur_page = 0;
-                this.load_data();
+                //this.load_data();
             }
         };
         
