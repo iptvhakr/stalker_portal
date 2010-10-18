@@ -37,8 +37,8 @@ class Course
             if (!key_exists('on_date', $old_data) || $result['on_date'] != $old_data['on_date']){
             //if (1){
             
-                foreach ($this->codes as $code){            
-                    preg_match("/<td align=\"Center\">$code<\/td><td align=\"Center\">([\S]+)<\/td><td align=\"Center\">([\d]+)<\/td><td align=\"Left\">(.*)<\/td><td align=\"Right\">([\d,\.]+)<\/td>/",$content,$arr2);                
+                foreach ($this->codes as $code){
+                    preg_match("/<td align=\"Center\">$code<\/td><td align=\"Center\">([\S]+)<\/td><td align=\"Center\">([\d]+)<\/td><td align=\"Left\">(.*)<\/td><td align=\"Right\">([\d,\.]+)<\/td>/",$content,$arr2);
                     $result['data'][$idx] = array();
                     $result['data'][$idx]['code'] = $code;
                     $result['data'][$idx]['currency'] = $arr2[2].' '.$arr2[1];
