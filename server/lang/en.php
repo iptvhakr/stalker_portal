@@ -160,4 +160,10 @@ $words['dayweather_wind'] = 'wind:';
 $words['dayweather_speed'] = 'm/s';
 
 $words['infoportal_title'] = 'INFOPORTAL';
+
+$words['cityinfo_title'] = 'CITY INFO';
+$words['cityinfo_main'] = 'emergency';
+$words['cityinfo_help'] = 'help';
+$words['cityinfo_other'] = 'other';
+$words['cityinfo_sort'] = 'VIEW';
 ?>
