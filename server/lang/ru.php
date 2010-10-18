@@ -161,6 +161,11 @@ $words['dayweather_mmhg'] = 'мм рт.ст.';
 $words['dayweather_wind'] = 'ветер:';
 $words['dayweather_speed'] = 'м/с';
 
-
 $words['infoportal_title'] = 'ИНФОПОРТАЛ';
+
+$words['cityinfo_title'] = 'ГОРОДСКАЯ СПРАВКА';
+$words['cityinfo_main'] = 'экстренные';
+$words['cityinfo_help'] = 'справочные';
+$words['cityinfo_other'] = 'разное';
+$words['cityinfo_sort'] = 'СЛУЖБЫ';
 ?>
