@@ -44,7 +44,7 @@
     margin-top: 3px;
 }
 
-.name_block{
+.name_block, .title_block{
     color: #fff;
     font-size: 20px;
     text-shadow: #122946 0 -1px 0;
@@ -182,7 +182,7 @@
     float:left;
 }
 
-.active_name_block{
+.active_name_block, .active_title_block{
     font-size: 22px;
     color: #002864;
     text-shadow: #fff 0 1px 0;
