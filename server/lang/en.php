@@ -166,4 +166,6 @@ $words['cityinfo_main'] = 'emergency';
 $words['cityinfo_help'] = 'help';
 $words['cityinfo_other'] = 'other';
 $words['cityinfo_sort'] = 'VIEW';
+
+$words['horoscope_title'] = 'HOROSCOPE';
 ?>
