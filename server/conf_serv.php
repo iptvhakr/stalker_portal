@@ -41,6 +41,7 @@ $modules = array(
     "course.nbu",
     "weather.day",
     "cityinfo",
+    "horoscope",
     "infoportal",
 );
 
