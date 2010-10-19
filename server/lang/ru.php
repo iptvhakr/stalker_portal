@@ -168,4 +168,6 @@ $words['cityinfo_main'] = 'экстренные';
 $words['cityinfo_help'] = 'справочные';
 $words['cityinfo_other'] = 'разное';
 $words['cityinfo_sort'] = 'СЛУЖБЫ';
+
+$words['horoscope_title'] = 'ГОРОСКОП';
 ?>
