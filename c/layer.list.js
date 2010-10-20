@@ -219,7 +219,8 @@ ListLayer.prototype.load_data = function(){
     
     this.set_passive_row();
     
-    this.clear_list();
+    //this.clear_list();
+    this.set_total_items(-1);
     
     this.load_params['p'] = this.cur_page;
     
