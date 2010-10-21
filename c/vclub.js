@@ -517,7 +517,7 @@ _debug('1!!!!!!!!!!!!!!');
         {"label" : word['vclub_view'], "cmd" : vclub.view_switcher},
         {"label" : word['vclub_sort'], "cmd" : vclub.sort_menu_switcher},
         {"label" : word['vclub_fav'],  "cmd" : vclub.add_del_fav},
-        {"label" : word['vclub_other'], "cmd" : vclub.other_switcher}
+        {"label" : word['vclub_find'], "cmd" : vclub.other_switcher}
     ]);
     
     vclub.init_info();
@@ -532,8 +532,8 @@ _debug('1!!!!!!!!!!!!!!');
     
     vclub.init_sort_menu(
         [
-            {"label" : word['vclub_by_title'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
             {"label" : word['vclub_by_addtime'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+            {"label" : word['vclub_by_title'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
             {"label" : word['vclub_top'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
             {"label" : word['vclub_only_hd'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true; this.parent.load_params.not_ended = false}},
             {"label" : word['vclub_only_favorite'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
