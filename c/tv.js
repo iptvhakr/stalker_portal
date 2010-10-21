@@ -114,6 +114,10 @@
             
                 _debug('SetTopWin');
                 
+                if (this.quick_ch_switch.on){
+                    this.cancel_quick_ch_switch();
+                }
+                
                 if (!do_not_reset){
                     stb.player.stop();
                     //this.last_ch_id = 0;
@@ -627,7 +631,7 @@
             
             this.quick_ch_switch.input.innerHTML = this.quick_ch_switch.input.innerHTML.substr(0, this.quick_ch_switch.input.innerHTML.length - 1);
             
-            this.quick_ch_switch.input.innerHTML = ch_hum;
+            //this.quick_ch_switch.input.innerHTML = ch_hum;
         };
         
         this.t_hide_quick_ch_switch = function(){
