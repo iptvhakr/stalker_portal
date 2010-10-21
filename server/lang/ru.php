@@ -170,4 +170,13 @@ $words['cityinfo_other'] = 'разное';
 $words['cityinfo_sort'] = 'СЛУЖБЫ';
 
 $words['horoscope_title'] = 'ГОРОСКОП';
+
+$words['anecdote_title'] = 'АНЕКДОТЫ';
+
+$words['anecdote_goto'] = 'ПЕРЕХОД';
+$words['anecdote_like'] = 'НРАВИТСЯ';
+$words['anecdote_bookmark'] = 'ЗАКЛАДКА';
+$words['anecdote_to_bookmark'] = 'К ЗАКЛАДКЕ';
+
+$words['anecdote_pagebar_title'] = 'АНЕКДОТ';
 ?>
