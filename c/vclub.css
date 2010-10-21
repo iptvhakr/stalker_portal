@@ -21,19 +21,20 @@
 
 .vclub_info_box{
     position: absolute;
-    width: 242px;
-    height: 100px;
-    top: 64px;
-    left: 419px;
-    padding: 5px;
-    line-height: 20px;
+    width: 254px;
+    height: 102px;
+    top: 70px;
+    left: 418px;
+    line-height: 18px;
     color: #fff;
-    font-size:18px;
+    font-size: 16px;
+    overflow: hidden;
 }
 
 .vclub_info_box span{
     color: #cfeafe;
-    font-size: 18px;
+    font-size: 16px;
+    font-family: "Myriad Pro Cond";
 }
 
 .vclub_screenshot_box{
@@ -104,7 +105,7 @@
     color: #000;
 }
 
-.disabled_all_buttons .footer_text{
-    color: #606060;
+.disabled_all_buttons span{
+    color: #707070 !important;
 }
 /* END VCLUB */
