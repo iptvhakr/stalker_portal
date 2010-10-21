@@ -644,6 +644,10 @@ player.prototype.stop = function(){
         this.disable_pause();
     }
     
+    if(this.quick_ch_switch.on){
+        this.cancel_quick_ch_switch();
+    }
+    
     try{
         stb.Stop();
     }catch(e){}
