@@ -42,6 +42,7 @@ $modules = array(
     "weather.day",
     "cityinfo",
     "horoscope",
+    "anecdote",
     "infoportal",
 );
 
