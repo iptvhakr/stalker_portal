@@ -109,6 +109,7 @@ $words['vclub_search'] = 'SEARCH';
 $words['vclub_fav'] = 'FAVORITE';
 $words['vclub_sampling'] = 'PICKING';
 $words['vclub_other'] = 'OTHER';
+$words['vclub_find'] = 'FIND';
 $words['vclub_by_letter'] = 'BY LETTER';
 $words['vclub_by_genre'] = 'BY GENRE';
 $words['vclub_by_year'] = 'BY YEAR';
