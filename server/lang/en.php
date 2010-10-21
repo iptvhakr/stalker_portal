@@ -168,4 +168,13 @@ $words['cityinfo_other'] = 'other';
 $words['cityinfo_sort'] = 'VIEW';
 
 $words['horoscope_title'] = 'HOROSCOPE';
+
+$words['anecdote_title'] = 'JOKES';
+
+$words['anecdote_goto'] = 'GOTO';
+$words['anecdote_like'] = 'LIKE';
+$words['anecdote_bookmark'] = 'BOOKMARK';
+$words['anecdote_to_bookmark'] = 'TO BOOKMARK';
+
+$words['anecdote_pagebar_title'] = 'JOKE';
 ?>
