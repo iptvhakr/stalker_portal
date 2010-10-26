@@ -99,7 +99,7 @@
     left: 345px;
     padding: 5px;
     font-size: 18px;
-    color: #fff;
+    color: #99a8b5;
     overflow: hidden;
     height: 150px;
 }
@@ -109,7 +109,7 @@
 }
 
 .tv_timetable .current{
-    color: #99a8b5;
+    color: #fff;
 }
 
 .tv_prev_window{
