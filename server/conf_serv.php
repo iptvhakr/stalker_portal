@@ -43,6 +43,7 @@ $modules = array(
     "cityinfo",
     "horoscope",
     "anecdote",
+    "game.mastermind",
     "infoportal",
 );
 
