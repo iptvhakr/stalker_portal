@@ -178,4 +178,11 @@ $words['anecdote_bookmark'] = 'BOOKMARK';
 $words['anecdote_to_bookmark'] = 'TO BOOKMARK';
 
 $words['anecdote_pagebar_title'] = 'JOKE';
+
+$words['mastermind_title'] = 'MASTERMIND';
+$words['mastermind_rules'] = 'RULES';
+$words['mastermind_rating'] = 'RATING';
+$words['mastermind_bull'] = 'B';
+$words['mastermind_cow'] = 'C';
+$words['mastermind_rules_text'] = 'Your task is to guess the number of unduplicated four digits, the first of them - not zero. Every your guess will be compared with the number put forth a STB. If you guessed a digit, but it is not in place, then it is a COW (C). If you guessed, and a number, and its location, this BULL (B).<br><br><table width="100%" cellpadding="3" cellspacing="3"><tr><td width="100" style="color:#ffffff;">&larr; &rarr;</td><td style="color:#3f81cc;">Moving the cursor</td></tr><tr><td style="color:#ffffff;">0-9</td><td style="color:#3f81cc;">Enter numbers into cells</td></tr><tr><td style="color:#ffffff;">OK</td><td style="color:#3f81cc;">Confirmation of the step</td></tr><tr><td style="color:#ffffff;">Page +/-</td><td style="color:#3f81cc;">Moving through the pages of history moves</td></tr></table>';
 ?>
