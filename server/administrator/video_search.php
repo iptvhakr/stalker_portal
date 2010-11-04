@@ -420,7 +420,7 @@ $sortby = '';
 
 if (!empty($_GET['sortby'])){
     
-    $sortby = 'order by '.$_GET['sortby'];
+    $sortby = 'order by '.$_GET['sortby'].', path';
 }
 
 $sql = "select video.id as video_id, video.id as video_id, path, count(storage_cache.id) as on_storages, (count_first_0_5+count_second_0_5) as month_counter, count, last_played from video left join storage_cache on video.id=storage_cache.media_id and storage_cache.status=1 and storage_cache.media_type='vclub' where video.id in ($on_storage_ids_str) group by video.id having on_storages=".(@intval($_GET['total_storages'])+1).' '.$sortby;
