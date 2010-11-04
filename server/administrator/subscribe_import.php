@@ -209,6 +209,12 @@ function get_service_id_map(){
         $service_id = $rs->getCurrentValueByName('service_id');
         if (strlen($service_id)==5){
             $arr[$service_id]=$rs->getCurrentValueByName('id');
+        }elseif (strlen($service_id) == 11){
+            $arr = explode(' ', $service_id);
+            
+            foreach ($arr as $id){
+                $arr[$id]=$rs->getCurrentValueByName('id');
+            }
         }
     }
     return $arr;
