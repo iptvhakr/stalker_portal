@@ -180,4 +180,11 @@ $words['anecdote_bookmark'] = 'ЗАКЛАДКА';
 $words['anecdote_to_bookmark'] = 'К ЗАКЛАДКЕ';
 
 $words['anecdote_pagebar_title'] = 'АНЕКДОТ';
+
+$words['mastermind_title'] = 'ИГРА БЫКИ И КОРОВЫ';
+$words['mastermind_rules'] = 'ПРАВИЛА ИГРЫ';
+$words['mastermind_rating'] = 'РЕЙТИНГ';
+$words['mastermind_bull'] = 'Б';
+$words['mastermind_cow'] = 'К';
+$words['mastermind_rules_text'] = 'Ваша задача отгадать число из четырех неповторяющихся цифр, причем первая из них - не ноль. Каждое Ваше предположение будет сравниваться с числом, которое загадала приставка. Если Вы отгадали цифру, но она стоит не на своем месте, то это КОРОВА (К). Если Вы отгадали и цифру, и её место, то это БЫК (Б).<br><br><table width="100%" cellpadding="3" cellspacing="3"><tr><td width="100" style="color:#ffffff;">&larr; &rarr;</td><td style="color:#3f81cc;">Перемещение курсора</td></tr><tr><td style="color:#ffffff;">0-9</td><td style="color:#3f81cc;">Ввод цифр в ячейки</td></tr><tr><td style="color:#ffffff;">ОК</td><td style="color:#3f81cc;">Подтверждение хода</td></tr><tr><td style="color:#ffffff;">Page +/-</td><td style="color:#3f81cc;">Перемещение по страницам истории ходов</td></tr></table>';
 ?>
