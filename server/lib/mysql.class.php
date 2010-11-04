@@ -297,6 +297,13 @@ class Mysql
         return $this;
     }
     
+    public function nogroupby(){
+        
+        $this->groupby = array();
+        
+        return $this;
+    }
+    
     public function count(){
         
         $this->select = array('count(*)');
