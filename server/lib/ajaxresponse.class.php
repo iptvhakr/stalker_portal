@@ -68,7 +68,7 @@ class AjaxResponse
         
         $query_rows = clone $query;
         
-        $this->setResponse('total_items', $query_rows->nolimit()->noorderby()->count()->get()->counter());
+        $this->setResponse('total_items', $query_rows->nolimit()->nogroupby()->noorderby()->count()->get()->counter());
         $this->setResponse('cur_page', $this->cur_page);
         $this->setResponse('selected_item', $this->selected_item);
         $this->setResponse('data', $query->get()->all());
