@@ -327,9 +327,9 @@
 
 .osd_info_clock{
     position: absolute;
-    top: 19px;
-    left: 20px;
-    font-size: 18px;
+    top: 18px;
+    left: 21px;
+    font-size: 20px;
     color: #99A8B5;
     font-family: "Myriad Pro Cond";
 }
@@ -337,7 +337,7 @@
 .osd_info_title{
     position: absolute;
     top: 14px;
-    left: 56px;
+    left: 60px;
     width: 626px;
     font-size: 25px;
     font-weight: bold;
