@@ -734,6 +734,10 @@ function common_xpcom(){
             if (stb.player.info.on){
                 stb.player.info.clock.innerHTML = this.hours + ':' + this.minutes;
             }
+            
+            if (module && module.tv && module.tv.on && module.tv.clock_box){
+                module.tv.clock_box.innerHTML = this.hours + ':' + this.minutes;
+            }
         }
     }
 }
