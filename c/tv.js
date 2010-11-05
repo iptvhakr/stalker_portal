@@ -78,6 +78,8 @@
             
             this.superclass.show.call(this, false);
             
+            stb.clock.show();
+            
             try{
                 _debug('tv.cur_view', this.cur_view);
                 
@@ -308,8 +310,6 @@
                 this.view_menu.cur_row_idx = 0;
                 this.view_menu.set_active_row();
             }
-            
-            stb.clock.show();
         };
         
         this.init_short_info = function(){
