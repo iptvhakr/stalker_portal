@@ -121,4 +121,15 @@
     left: 345px;
     padding: 5px;
 }
+
+.tv_clock{
+    position: absolute;
+    top: 48px;
+    right: 50px;
+    width: 100px;
+    font-size: 20px;
+    color: #99A8B5;
+    font-family: "Myriad Pro Cond";
+    text-align:right;
+}
 /* END TV */
