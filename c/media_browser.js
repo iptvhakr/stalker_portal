@@ -186,6 +186,8 @@
                 this.cur_row  = this.dir_hist[this.dir_hist.length - 1].row;
                 this.cur_page = this.dir_hist[this.dir_hist.length - 1].page;
                 
+                this.change_level = true;
+                
                 this.load_data();
             }
         };
@@ -201,6 +203,8 @@
             this.dir_hist.push(hist_item);
             
             this.reset();
+            
+            this.change_level = true;
             
             this.load_data();
         };
@@ -227,6 +231,24 @@
             }).bind(key.LEFT, this).bind(key.MENU, this);
             
             this.out_dir.bind(key.BACK, this);
+        };
+        
+        this.fill_list = function(data){
+            
+            this.data_items = data;
+            
+            if (!this.change_level){
+                
+                if (this.page_dir > 0){
+                    this.cur_row = 0;
+                }else{
+                    this.cur_row = this.data_items.length - 1;
+                }
+            }
+            
+            this.change_level = false;
+            
+            this.superclass.fill_list.call(this, data);
         };
     }
     
