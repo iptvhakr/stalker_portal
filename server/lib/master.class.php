@@ -289,6 +289,10 @@ abstract class Master
             
             $raw = $this->checkMediaDir($name, $this->media_name);
             
+            if (count($raw['files']) > 1 && empty($raw['series'])){
+                continue;
+            }
+            
             if (count($raw['files']) > 0){
                 
                 $raw['first_media'] = $raw['files'][0]['name'];
