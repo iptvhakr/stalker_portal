@@ -257,19 +257,9 @@ function common_xpcom(){
                 _debug(e);
             }
             
-            /*
-            mount_home_dir(this.user['storages'])
-            
-            get_media_cats()
-            
-            cur_weather = this.user['cur_weather']
-            
-            set_updated_places(this.user['updated'])
-            epg_loader.start()*/
-            
-            this.mount_home_dir(this.user['storages']);
-            //this.storages = this.user['storages'];
-            //stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
+            //this.mount_home_dir(this.user['storages']);
+            this.storages = this.user['storages'];
+            stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
             
             this.load_channels();
             this.load_fav_channels();
@@ -330,9 +320,9 @@ function common_xpcom(){
     }
     
     this.Mount = function(link_cmd){
-        /*_debug('stb.Mount', link_cmd);
+        _debug('stb.Mount', link_cmd);
         
-        this.mounted_storage = link_cmd.replace( /[\s\S]*\/media\/(\S+)\/(\S+)/ , "$1");
+        this.mounted_storage = link_cmd.replace(/[\s\S]*\/media\/(.*)\/(.*)/ , "$1");
         
         _debug('stb.mounted_storage', this.mounted_storage);
         try{
@@ -341,11 +331,11 @@ function common_xpcom(){
             gSTB.ExecAction('mount_dir '+mount_cmd);
         }catch(e){
             _debug(e);
-        }*/
+        }
     }
     
     this.Umount = function(){
-        /*_debug('stb.Umount()');
+        _debug('stb.Umount()');
         _debug('stb.mounted_storage', this.mounted_storage);
         
         if (this.mounted_storage){
@@ -355,7 +345,7 @@ function common_xpcom(){
             }catch(e){
                 _debug(e);
             }
-        }*/
+        }
     }
     
     this.get_image_version = function(){
