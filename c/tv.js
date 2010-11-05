@@ -307,7 +307,9 @@
                 this.view_menu.set_passive_row();
                 this.view_menu.cur_row_idx = 0;
                 this.view_menu.set_active_row();
-            }            
+            }
+            
+            stb.clock.show();
         };
         
         this.init_short_info = function(){
@@ -315,6 +317,7 @@
             
             this.short_info_box = create_block_element('tv_timetable', this.info_box);
             this.preview_box = create_block_element('tv_prev_window', this.info_box);
+            this.clock_box = create_block_element('tv_clock', this.info_box);
         };
         
         this.fill_list = function(data){
