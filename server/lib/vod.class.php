@@ -90,7 +90,7 @@ class Vod extends AjaxResponse
         $video_id   = intval($_REQUEST['video_id']);
         $storage_id = intval($_REQUEST['storage_id']);
         
-        if ($day <= date("j")){
+        if (date("j") <= 15){
             $field_name = 'count_first_0_5';
         }else{
             $field_name = 'count_second_0_5';
