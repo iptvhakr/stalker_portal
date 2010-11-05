@@ -30,7 +30,10 @@
             });
             
             stb.usbdisk.add_onumount_callback(function(){
-                if (self.on){
+                _debug('media_browser onunmount');
+                _debug('self.on', self.on);
+                
+                if (stb.player.prev_layer == self || self.on){
                     
                     if (stb.player.on){
                         stb.player.stop();
