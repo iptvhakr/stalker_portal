@@ -523,7 +523,7 @@ player.prototype.play = function(item){
         cmd = item;
     }
     
-    if (item.hasOwnProperty('position')){
+    if (item.hasOwnProperty('position') && parseInt(item.position) > 0){
         cmd += ' position:'+item.position;
     }
     
