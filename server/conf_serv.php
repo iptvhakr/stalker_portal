@@ -36,7 +36,7 @@ $modules = array(
     "karaoke",
     "radio",
     "weather.current",
-    "records",
+    //"records",
     "settings",
     "course.nbu",
     "weather.day",
