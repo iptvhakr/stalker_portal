@@ -622,7 +622,7 @@ _debug('1!!!!!!!!!!!!!!');
                 );
             }
             
-            main_menu.add(word['vclub_title'], map, 'i/mm_ico_video.png');
+            main_menu.add(word['vclub_title'], map, 'i/mm_ico_video.png', '', module.vclub);
             
             loader.next();
         },
