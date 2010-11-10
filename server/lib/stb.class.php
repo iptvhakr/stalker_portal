@@ -141,8 +141,10 @@ class Stb
         $uid = $this->db->insert('users', array(
                     'mac'  => $this->mac,
                     'name' => substr($this->mac, 12, 16)
-                ));
+                ))->insert_id();
                 
+        $this->getStbParams();        
+        
         $this->setId($uid);
             
         $this->db->insert('updated_places', array('uid' => $this->id));
