@@ -281,7 +281,9 @@
         }else{
             stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_not_found']);
         }
-    });
+    },
+    module.media_browser
+    );
     
 })();
 
