@@ -86,8 +86,8 @@
                 if (this.cur_view == 'short'){
                     stb.SetTopWin(1);
                     stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y);
-                    stb.player.need_show_info = 0;
-                    stb.player.play(item);
+                    //stb.player.need_show_info = 0;
+                    //stb.player.play(item);
                 }else{
                     stb.SetTopWin(0);
                 }
@@ -191,6 +191,11 @@
             _debug('tv.check_for_play');
             
             _debug('lock', this.data_items[this.cur_row].lock);
+            
+            if(!this.data_items[this.cur_row].open){
+                stb.notice.show(word['msg_channel_not_available']);
+                return;
+            }
             
             if (this.data_items[this.cur_row].lock){
                 var self = this;
@@ -335,7 +340,9 @@
             
             var epg = '';
             
-            if (item && item.epg){
+            if (item && !item.open){
+                epg += '<span class="current">' + word['msg_channel_not_available'] + '</span>';
+            }else if (item && item.epg){
                 
                 var class_name = '';
                 
@@ -377,8 +384,13 @@
                 
                 self.fill_short_info(item);
                 
-                stb.player.need_show_info = 0;
-                stb.player.play(item);
+                if (item.open){
+                
+                    stb.player.need_show_info = 0;
+                    stb.player.play(item);
+                }else{
+                    stb.player.stop();
+                }
                 
             },
             this.row_callback_timeout);
@@ -805,7 +817,7 @@
                 );
             }
             
-            main_menu.add(word['tv_title'], map, 'i/mm_ico_tv.png');
+            main_menu.add(word['tv_title'], map, 'i/mm_ico_tv.png', '', module.tv);
             
             loader.next();
         }
