@@ -67,7 +67,8 @@
     main_menu.add(word['settings_title'], [], 'i/mm_ico_setting.png', function(){
         main_menu.hide();
         module.parent_settings.show();
-    });
+    },
+    module.parent_settings);
     
 })();
 
