@@ -167,6 +167,8 @@ if (count(@$_POST) > 0){
             
             $rtsp_url = @trim($_POST['rtsp_url']);
             
+            $status = $rtsp_url? 1 : 0;
+            
             if (@$_GET['save']){
                 $trans_name = transliterate(@urldecode($_POST['name']));
                 
@@ -217,6 +219,7 @@ if (count(@$_POST) > 0){
                                                  director,
                                                  actors,
                                                  added,
+                                                 status,
                                                  year
                                                  ) 
                                         values ('".$name."',
@@ -239,6 +242,7 @@ if (count(@$_POST) > 0){
                                                 '".$director."',
                                                 '".mysql_escape_string(@$_POST['actors'])."',
                                                 '".$datetime."',
+                                                $status,
                                                 '".$year."'
                                                 )";
                     //echo $query;
@@ -282,6 +286,7 @@ if (count(@$_POST) > 0){
                                                category_id='".$category_id."', 
                                                director='".@$_POST['director']."', 
                                                actors='".@$_POST['actors']."', 
+                                               status=$status,
                                                year='".@$_POST['year']."'
                                             where id=".intval(@$_GET['id']);
                     
@@ -1351,7 +1356,7 @@ function fill_genres(num){
                 selected = false
             }
         }catch(e){}
-        genre_id_obj.options[i+1] = new Option(all_genres[i].title, all_genres[i].id, selected)
+        genre_id_obj.options[i+1] = new Option(all_genres[i].title, all_genres[i].id, selected, selected)
     }
 }
 
@@ -1369,7 +1374,7 @@ function fill_cat_genres(num){
                 selected = false
             }
         }catch(e){}
-        cat_genre_id_obj.options[i+1] = new Option(all_cat_genres[i].title, all_cat_genres[i].id, selected)
+        cat_genre_id_obj.options[i+1] = new Option(all_cat_genres[i].title, all_cat_genres[i].id, selected, selected)
     }
 }
 
@@ -1385,7 +1390,7 @@ function fill_category(){
                 selected = false
             }
         }catch(e){}
-        category_id_obj.options[i+1] = new Option(all_categories[i].name, all_categories[i].id, selected)
+        category_id_obj.options[i+1] = new Option(all_categories[i].name, all_categories[i].id, selected, selected)
     }
 }
 
