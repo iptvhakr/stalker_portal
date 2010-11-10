@@ -16,6 +16,9 @@ class Stb
     private $params = array();
     private $db;
     
+    private static $all_modules = array();
+    private static $disabled_modules = array();
+    
     private static $instance = NULL;
     
     public static function getInstance(){
@@ -142,7 +145,7 @@ class Stb
                 
         $this->setId($uid);
             
-        $this->insertData('updated_places', array('uid' => $this->id));
+        $this->db->insert('updated_places', array('uid' => $this->id));
     }
     
     public function isModerator(){
@@ -510,6 +513,19 @@ class Stb
         $this->db->update('users', $update_data, array('mac' => $this->mac));
         
         return 1;
+    }
+    
+    public function getModules(){
+
+        return array(
+            'all_modules'      => self::$all_modules,
+            'disabled_modules' => self::$disabled_modules);
+    }
+    
+    public static function setModules($all, $disabled){
+        
+        self::$all_modules = $all;
+        self::$disabled_modules = $disabled;
     }
 }
 ?>
