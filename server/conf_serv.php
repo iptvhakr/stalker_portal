@@ -29,16 +29,27 @@ define("PORTAL_URI", '/stalker_portal/');
 
 define("MASTER_CACHE_EXPIRE", 365); // hours
 
-$modules = array(
-    "vclub",
-    "tv",
+$_ALL_MODULES = array(
     "media_browser",
+    "tv",
+    "vclub",
     "karaoke",
     "radio",
     "weather.current",
     //"records",
     "settings",
     "course.nbu",
+    "weather.day",
+    "cityinfo",
+    "horoscope",
+    "anecdote",
+    "game.mastermind",
+    "infoportal",
+);
+
+$_DISABLED_MODULES = array(
+    "vclub",
+    "karaoke",
     "weather.day",
     "cityinfo",
     "horoscope",
