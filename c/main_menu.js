@@ -144,7 +144,7 @@ var main_menu = {
             this.active_sub = this.map[1].active_sub;
         }
         
-        _debug('this.active_sub', this.active_sub); 
+        _debug('this.active_sub', this.active_sub);
     },
     
     render : function(){
@@ -264,6 +264,11 @@ var main_menu = {
         
         _debug('this.active_sub', this.active_sub);
         
+        if (stb.is_disabled_module(this.map[1].module)){
+            stb.notice.show(word['msg_service_off']);
+            return;
+        }
+        
         if (this.map[1].sub && this.map[1].sub[this.active_sub] && typeof(this.map[1].sub[this.active_sub].cmd) == 'object'){
             
             var context = this.map[1].sub[this.active_sub].cmd.context || window;
@@ -300,7 +305,7 @@ var main_menu = {
         _debug('end clear_menu');
     },
     
-    add : function(title, sub, img, cmd){
+    add : function(title, sub, img, cmd, module){
         
         var cmd = cmd || '';
         
@@ -316,10 +321,11 @@ var main_menu = {
         
         this.map.push(
             {
-                "title" : title,
-                "img"   : img,
-                "cmd"   : cmd,
-                "sub"   : sub
+                "title"    : title,
+                "img"      : img,
+                "cmd"      : cmd,
+                "sub"      : sub,
+                "module"   : module
             }
         );
         
