@@ -197,7 +197,8 @@
     main_menu.add('КАРАОКЕ', [], 'i/mm_ico_karaoke.png', function(){
             main_menu.hide();
             module.karaoke._show();
-    });
+    },
+    module.karaoke);
     
 })();
 
