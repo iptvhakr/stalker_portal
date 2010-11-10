@@ -81,7 +81,8 @@
     main_menu.add(word['radio_title'], [], 'i/mm_ico_radio.png', function(){
         main_menu.hide();
         module.radio.show();
-    });
+    },
+    module.radio);
     
 })();
 
