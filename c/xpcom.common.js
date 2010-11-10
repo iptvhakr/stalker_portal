@@ -16,6 +16,7 @@ function common_xpcom(){
     this.player;
     this.key_lock = true;
     this.power_off = false;
+    this.additional_services_on = 0;
     
     this.aspect_idx = 0;
     this.aspect_array = [
@@ -32,6 +33,20 @@ function common_xpcom(){
     this.cur_place = '';
     
     this.load_step = Math.ceil(50/4);
+    
+    this.base_modules = [
+        "layer.base",
+        "layer.list",
+        "layer.setting",
+        "layer.input",
+        "layer.sidebar",
+        "layer.search_box",
+        "layer.bottom_menu",
+        "layer.scrollbar",
+        "layer.vclub_info",
+        "password_input",
+        "series_switch",
+    ];
 
     //this.menu_clock = new main_menu_clock();
 
@@ -71,6 +86,53 @@ function common_xpcom(){
         this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+document.URL.replace(pattern, "$2")+'/server/load.php';
         
         _debug('stb.ajax_loader:', this.ajax_loader);
+    }
+    
+    this.get_modules = function(){
+        _debug('stb.get_modules');
+        
+        this.load(
+            
+            {
+                "type"   : "stb",
+                "action" : "get_modules"
+            },
+            
+            function(result){
+                _debug('stb.get_modules callback', result);
+                var all_modules = result.all_modules;
+                this.disabled_modules = result.disabled_modules;
+                
+                this.all_modules = this.base_modules.concat(all_modules);
+                _debug('all_modules', this.all_modules);
+                loader.add(this.all_modules);
+            },
+            
+            this
+        );
+    }
+    
+    this.is_disabled_module = function(module){
+        _debug('stb.is_disabled_module');
+        _debug('module.layer_name', module.layer_name);
+        
+        _debug('this.additional_services_on', this.additional_services_on);
+        
+        if (this.additional_services_on){
+            return false;
+        }
+        
+        if (this.disabled_modules.indexOf(module.layer_name) >= 0){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    this.check_additional_services = function(param){
+        _debug('check_additional_services', param);
+        
+        this.additional_services_on = parseInt(param);
     }
     
     this.get_stb_params = function (){
@@ -257,6 +319,8 @@ function common_xpcom(){
                 _debug(e);
             }
             
+            this.get_modules();
+            
             //this.mount_home_dir(this.user['storages']);
             this.storages = this.user['storages'];
             stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
@@ -264,6 +328,7 @@ function common_xpcom(){
             this.load_channels();
             this.load_fav_channels();
             this.load_fav_itv();
+            
             }catch(e){
                 _debug(e);
             }
@@ -409,7 +474,7 @@ function common_xpcom(){
                 
                 stb.loader.add_pos(this.load_step, 'channels loaded');
                 
-                this.player.channels = result || [];
+                this.player.channels = result.data || [];
                 this.channels_loaded();
             },
             
@@ -431,7 +496,7 @@ function common_xpcom(){
                 
                 stb.loader.add_pos(this.load_step, 'fav_channels loaded');
                 
-                this.player.fav_channels = result || [];
+                this.player.fav_channels = result.data || [];
                 this.channels_loaded();
             },
             
