@@ -59,6 +59,8 @@ watchdog.prototype.parse_result = function(data){
     
     module.course && module.course.set && module.course.set(data.course);
     
+    stb.check_additional_services(data.additional_services_on);
+    
     if (typeof(data.id) != 'undefined'){
         
         _debug('data.id', data.id);
