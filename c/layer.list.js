@@ -278,6 +278,14 @@ ListLayer.prototype.fill_list = function(data){
         for (var j=0; j<this.row_blocks.length; j++){
             this.handling_block(data[i][this.row_blocks[j]], this.map[i], this.row_blocks[j]);
         }
+        
+        _debug('data[i]', data[i]);
+        
+        if (data[i].hasOwnProperty('open') && !data[i].open){
+            this.map[i]['row'].setAttribute('rel', 'close');
+        }else{
+            this.map[i]['row'].setAttribute('rel', '');
+        }
     }
     
     if (i < this.total_rows){
@@ -357,6 +365,17 @@ ListLayer.prototype.set_active_row = function(num){
         
         if (this.active_row['row'].isHidden()){
             this.active_row['row'].show();
+        }
+        
+        _debug('this.data_items[num]', this.data_items[num]);
+        
+        if (this.data_items[num]){
+        
+            if (this.data_items[num].hasOwnProperty('open') && !this.data_items[num].open){
+                this.active_row['row'].setAttribute('rel', 'close');
+            }else{
+                this.active_row['row'].setAttribute('rel', '');
+            }
         }
         
         if(!this.fav_manage_mode){
