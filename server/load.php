@@ -17,6 +17,7 @@ require_once "conf_serv.php";
 require_once "lang/".LANG.".php";
 
 System::set_words($words);
+Stb::setModules($_ALL_MODULES, $_DISABLED_MODULES);
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
