@@ -55,6 +55,10 @@
     text-overflow: ellipsis;
 }
 
+.blue_row_bg[rel="close"] .name_block{
+    color: #99A8B5 !important;
+}
+
 .number_block{
     background-image: url("i/mb_icons.png");
     background-position: -92px 0px;
@@ -191,6 +195,10 @@
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.active_row_bg[rel="close"] .active_name_block{
+    color: #808080 !important;
 }
 
 .active_number_block{
