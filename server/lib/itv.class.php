@@ -10,6 +10,8 @@ class Itv extends AjaxResponse
 {
     public static $instance = NULL;
     
+    private $all_user_channels_ids;
+    
     public static function getInstance(){
         if (self::$instance == NULL)
         {
@@ -154,10 +156,14 @@ class Itv extends AjaxResponse
     
     public function getAllChannels(){
         
-        return $this->getChannels()
-                    ->orderby('number')
-                    ->get()
-                    ->all();
+        $result = $this->getChannels()
+                    ->orderby('number');
+                    //->get()
+                    //->all();
+                    
+        $this->setResponseData($result);
+        
+        return $this->getResponse('prepareData');
         
     }
     
@@ -167,15 +173,19 @@ class Itv extends AjaxResponse
         
         $fav_channels = $this->getChannels()
                                             ->in('id' , $fav_ids)
-                                            ->orderby('field(id,'.implode(",", $fav_ids).')')
-                                            ->get()
-                                            ->all();
+                                            ->orderby('field(id,'.implode(",", $fav_ids).')');
+                                            //->get()
+                                            //->all();
         
-        for ($i=0; $i<count($fav_channels); $i++){
+        /*for ($i=0; $i<count($fav_channels); $i++){
             $fav_channels[$i]['number'] = $i+1;
         }
         
-        return $fav_channels;        
+        return $fav_channels;   */
+        
+        $this->setResponseData($fav_channels);
+        
+        return $this->getResponse('prepareData');
     }
     
     public function getFavIds(){
@@ -303,8 +313,6 @@ class Itv extends AjaxResponse
             $result = $result->in('itv.id', $fav);
         }
         
-        
-        
         $this->setResponseData($result);
         
         return $this->getResponse('prepareData');
@@ -346,6 +354,18 @@ class Itv extends AjaxResponse
             $this->response['data'][$i]['cur_playing'] = $cur_playing;
             
             $this->response['data'][$i]['epg'] = $next_five_epg;
+            
+            $this->response['data'][$i]['open'] = 1;
+            
+            if (ENABLE_SUBSCRIPTION){
+                
+                if (in_array($this->response['data'][$i]['id'], $this->getAllUserChannelsIds())){
+                    $this->response['data'][$i]['open'] = 1;
+                }else{
+                    $this->response['data'][$i]['open'] = 0;
+                    $this->response['data'][$i]['cmd'] = 'udp://wtf?';
+                }
+            }
         }
 
         return $this->response;
@@ -371,7 +391,12 @@ class Itv extends AjaxResponse
     
     public function getAllUserChannelsIds(){
         
-        return array_unique(array_merge($this->getSubscriptionChannelsIds(), $this->getBonusChannelsIds(), $this->getBaseChannelsIds()));
+        if (empty($this->all_user_channels_ids)){
+        
+            $this->all_user_channels_ids = array_unique(array_merge($this->getSubscriptionChannelsIds(), $this->getBonusChannelsIds(), $this->getBaseChannelsIds()));
+        }
+        
+        return $this->all_user_channels_ids;
     }
 
     public function getSubscriptionChannelsIds(){
