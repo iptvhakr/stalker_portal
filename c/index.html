@@ -64,7 +64,7 @@
 <link type="text/css" rel="stylesheet" href="context_menu.css"></link>
 
 <script type="text/javascript" src="../server/api/lang.php"></script>
-<script type="text/javascript" src="../server/api/get_modules.php"></script>
+<!--script type="text/javascript" src="../server/api/get_modules.php"></script-->
 
 <script type="text/javascript" src="version.js"></script>
 
@@ -124,6 +124,14 @@ var loader = {
         
         var modules = modules || [];
         
+        this.cur_idx = -1;
+        
+        for (var i=0; i<modules.length; i++){
+            if (this.chain.indexOf(modules[i]) >= 0){
+                modules.splice(i, 1);
+            }
+        }
+        
         this.chain = modules;
         
         this.step = Math.ceil(this.max_load_percent/this.chain.length);
@@ -176,7 +184,7 @@ function init(){
         }
     );
     
-    var base_modules = [
+    /*var base_modules = [
         "layer.base",
         "layer.list",
         "layer.setting",
@@ -188,13 +196,13 @@ function init(){
         "layer.vclub_info",
         "password_input",
         "series_switch",
-    ]
+    ]*/
     
-    var all_modules = base_modules.concat(ext_modules);
+    //var all_modules = base_modules.concat(ext_modules);
     
-    _debug('all_modules', all_modules);
+    //_debug('all_modules', all_modules);
     
-    loader.add(all_modules);
+    //loader.add(all_modules);
     
     stb.init();
 
