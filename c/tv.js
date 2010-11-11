@@ -371,6 +371,7 @@
         };
         
         this.shift_row_callback = function(item){
+            _debug('tv.shift_row_callback');
             
             if(this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
                 return;
@@ -381,6 +382,10 @@
             var self = this;
             
             this.row_callback_timer = window.setTimeout(function(){
+                
+                if (!self.on){
+                    return;
+                }
                 
                 self.fill_short_info(item);
                 
