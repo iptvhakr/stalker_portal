@@ -432,6 +432,9 @@ $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 if (@$_GET['view'] != 'text'){
     $sql .= " limit $page_offset, $MAX_PAGE_ITEMS";
+    $i = $page*$MAX_PAGE_ITEMS + 1;
+}else{
+    $i = 1;
 }
 
 //echo $sql."<br>";
@@ -439,7 +442,7 @@ $rs  = $db->executeQuery($sql);
 
 $page = @intval($_GET['page']);
 
-$i = $page*$MAX_PAGE_ITEMS + 1;
+//$i = $page*$MAX_PAGE_ITEMS + 1;
 
 if (@$_GET['view'] != 'text'){
     echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
