@@ -118,7 +118,8 @@ watchdog.prototype.parse_result = function(data){
             }
             case 'mount_all_storages':
             {
-                stb.mount_home_dir(data.msg);
+                //stb.mount_home_dir(data.msg);
+                stb.set_storages(data.msg);
                 break;
             }
             case 'show_menu': // reset paused
