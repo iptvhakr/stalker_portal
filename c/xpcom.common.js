@@ -309,6 +309,8 @@ function common_xpcom(){
             
             this.aspect_idx = this.aspect_array.getIdxByVal('mode', this.user['aspect']);
             
+            this.check_additional_services(this.user['additional_services_on']);
+            
             if (this.aspect_idx == null){
                 this.aspect_idx = 0;
             }
@@ -322,7 +324,7 @@ function common_xpcom(){
             this.get_modules();
             
             //this.mount_home_dir(this.user['storages']);
-            this.storages = this.user['storages'];
+            this.set_storages(this.user['storages']);
             stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
             
             this.load_channels();
@@ -341,7 +343,8 @@ function common_xpcom(){
     
     this.mount_home_dir = function(storages){
         _debug('stb.mount_home_dir: ', storages);
-        this.storages = storages;
+        
+        this.set_storages(storages);
         
         stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
         
@@ -361,6 +364,12 @@ function common_xpcom(){
         }
     }
     
+    this.set_storages = function(storages){
+        _debug('stb.set_storages', storages);
+        
+        this.storages = this.user['storages'] = storages;
+    }
+    
     this.remount_storages = function(callback){
         _debug('stb.remount_storages');
         
@@ -373,9 +382,9 @@ function common_xpcom(){
             function(result){
                 _debug('storages', result);
                 
-                this.user['storages'] = result;
+                this.set_storages(result);
                 
-                this.mount_home_dir(this.user['storages']);
+                //this.mount_home_dir(this.user['storages']);
                 
                 callback();
             },
