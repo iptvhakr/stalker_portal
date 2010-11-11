@@ -197,7 +197,7 @@ player.prototype.event_callback = function(event){
             }else{
             
                 this.event5_counter++;
-    
+                
                 var self = this;
                 
                 stb.remount_storages(
