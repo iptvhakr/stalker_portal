@@ -145,12 +145,17 @@ $words['settings_title'] = 'НАСТРОЙКИ';
 $words['parent_settings_cancel'] = 'ОТМЕНА';
 $words['parent_settings_save'] = 'СОХРАНИТЬ';
 $words['parent_settings_old_pass'] = 'Текущий пароль';
-$words['parent_settings_title'] = 'РОДИТЕЛЬСКИЙ ПАРОЛЬ';
+$words['parent_settings_title'] = 'РОДИТЕЛЬСКИЕ НАСТРОЙКИ';
+$words['parent_settings_title_short'] = 'РОДИТЕЛЬСКИЕ';
 $words['parent_settings_new_pass'] = 'Новый пароль';
 $words['parent_settings_repeat_new_pass'] = 'Повтор нового пароля';
 
 $words['settings_saved'] = 'Настройки сохранены';
+$words['settings_saved_reboot'] = 'Настройки сохранены.<br>Приставка будет перезагружена.';
 $words['settings_check_error'] = 'Ошибка заполнения полей';
+
+$words['localization_settings_title'] = 'ЛОКАЛИЗАЦИЯ';
+$words['localization_label'] = 'Язык интерфейса';
 
 $words['empty'] = 'ПУСТО';
 
