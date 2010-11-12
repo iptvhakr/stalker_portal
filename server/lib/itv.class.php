@@ -171,9 +171,15 @@ class Itv extends AjaxResponse
         
         $fav_ids = $this->getFav();
         
+        $fav_str = implode(",", $fav_ids);
+        
+        if (empty($fav_str)){
+            $fav_str = 'null';
+        }
+        
         $fav_channels = $this->getChannels()
                                             ->in('id' , $fav_ids)
-                                            ->orderby('field(id,'.implode(",", $fav_ids).')');
+                                            ->orderby('field(id,'.$fav_str.')');
                                             //->get()
                                             //->all();
         
@@ -192,6 +198,10 @@ class Itv extends AjaxResponse
         
         $fav = $this->getFav();
         $fav_str = implode(",", $fav);
+        
+        if (empty($fav_str)){
+            $fav_str = 'null';
+        }
         
         $fav_ids = $this->db
                             ->from('itv')
@@ -291,6 +301,10 @@ class Itv extends AjaxResponse
     public function getOrderedList(){
         $fav = $this->getFav();
         $fav_str = implode(",", $fav);
+        
+        if (empty($fav_str)){
+            $fav_str = 'null';
+        }
         
         $result = $this->getData();
         
