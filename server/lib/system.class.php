@@ -53,6 +53,15 @@ class System
         
         return null;
     }
+    
+    /**
+     * Returns all words.
+     *
+     * @return array $words
+     */
+    public static function get_all_words(){
+        return self::$words;
+    }
 }
 
 ?>
