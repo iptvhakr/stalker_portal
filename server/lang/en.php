@@ -149,7 +149,7 @@ $words['parent_settings_new_pass'] = 'New password';
 $words['parent_settings_repeat_new_pass'] = 'Repeat new password';
 
 $words['settings_saved'] = 'Settings saved';
-$words['settings_saved_reboot'] = 'Settings saved.<br>The STB will be rebooted.';
+$words['settings_saved_reboot'] = 'Settings saved.<br>The STB will be rebooted. Press OK.';
 $words['settings_check_error'] = 'Error filling fields';
 
 $words['localization_settings_title'] = 'LOCALIZATION';
