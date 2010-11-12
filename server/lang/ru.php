@@ -151,7 +151,7 @@ $words['parent_settings_new_pass'] = 'Новый пароль';
 $words['parent_settings_repeat_new_pass'] = 'Повтор нового пароля';
 
 $words['settings_saved'] = 'Настройки сохранены';
-$words['settings_saved_reboot'] = 'Настройки сохранены.<br>Приставка будет перезагружена.';
+$words['settings_saved_reboot'] = 'Настройки сохранены.<br>Приставка будет перезагружена. Нажмите OK.';
 $words['settings_check_error'] = 'Ошибка заполнения полей';
 
 $words['localization_settings_title'] = 'ЛОКАЛИЗАЦИЯ';
