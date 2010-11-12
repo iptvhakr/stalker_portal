@@ -17,7 +17,7 @@ function webkit_xpcom(){
 
 var stb;
 
-try{
+//try{
         
     var g_stb;
     
@@ -33,6 +33,6 @@ try{
     stb = new common_xpcom();
     //stb.init();
     
-}catch(e){
-    _debug(e)
-}
+//}catch(e){
+//    _debug(e)
+//}
