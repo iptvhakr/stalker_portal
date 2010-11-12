@@ -30,13 +30,13 @@ class AjaxResponse
     
     protected function __construct(){
         
+        $this->db  = Mysql::getInstance();
+        $this->stb = Stb::getInstance();
+        
         $this->abc = System::word('all_abc');
         $this->months =  System::word('all_months');
         $this->all_title =  System::word('all_title');
         $this->no_ch_info =  System::word('no_ch_info');
-        
-        $this->db  = Mysql::getInstance();
-        $this->stb = Stb::getInstance();
         
         $this->page = @intval($_REQUEST['p']);
         
