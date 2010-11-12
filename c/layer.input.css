@@ -33,6 +33,7 @@
 .setting_table > dl > dd dl{
     clear: left;
     margin: 0 0 15px 0;
+    width: 200px;
 }
 
 .setting_table > dl > dd dl > dt{
