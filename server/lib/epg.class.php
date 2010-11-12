@@ -380,6 +380,11 @@ class Epg
     
     public function getDataTable(){
         
+        $ch_id = intval($_REQUEST['ch_id']);
+        $from  = $_REQUEST['from'];
+        $to    = $_REQUEST['to'];
+        
+        
     }
 }
 ?>
