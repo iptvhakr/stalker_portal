@@ -265,7 +265,7 @@ var main_menu = {
         _debug('this.active_sub', this.active_sub);
         
         if (stb.is_disabled_module(this.map[1].module)){
-            stb.notice.show(word['msg_service_off']);
+            stb.notice.show(get_word('msg_service_off'));
             return;
         }
         
