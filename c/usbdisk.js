@@ -39,7 +39,7 @@ usbdisk.prototype.drive_mounted = function(){
     
     this.mounted = true;
     
-    stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_connected']);
+    stb.notice.show(get_word('mbrowser_title') + ' ' + get_word('mbrowser_connected'));
     
     var self = this;
     
@@ -51,7 +51,7 @@ usbdisk.prototype.drive_umounted = function(){
     
     this.mounted = false;
     
-    stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_disconnected']);
+    stb.notice.show(get_word('mbrowser_title') + ' ' + get_word('mbrowser_disconnected'));
     
     this.fire_onumount_callbacks();
 }
