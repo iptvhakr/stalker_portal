@@ -143,12 +143,17 @@ $words['settings_title'] = 'SETTINGS';
 $words['parent_settings_cancel'] = 'CANCEL';
 $words['parent_settings_save'] = 'SAVE';
 $words['parent_settings_old_pass'] = 'Current password';
-$words['parent_settings_title'] = 'PARENT PASSWORD';
+$words['parent_settings_title'] = 'PARENTAL SETTINGS';
+$words['parent_settings_title_short'] = 'PARENTAL';
 $words['parent_settings_new_pass'] = 'New password';
 $words['parent_settings_repeat_new_pass'] = 'Repeat new password';
 
 $words['settings_saved'] = 'Settings saved';
+$words['settings_saved_reboot'] = 'Settings saved.<br>The STB will be rebooted.';
 $words['settings_check_error'] = 'Error filling fields';
+
+$words['localization_settings_title'] = 'LOCALIZATION';
+$words['localization_label'] = 'Language of the interface';
 
 $words['empty'] = 'EMPTY';
 
