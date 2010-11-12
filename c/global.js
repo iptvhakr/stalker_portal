@@ -21,7 +21,7 @@ function _debug(){
             }else if (typeof(arguments[i]) === "undefined"){
                 text += ' undefined';
             }else if (arguments[i].message && arguments[i].name){
-                text += ' '+arguments[i];
+                text += ' '+arguments[i].name+' '+arguments[i].message;
             }else{
                 text += ' '+arguments[i].toSource();
             }
@@ -411,4 +411,8 @@ function get_params(){
             }
         }
     }
+}
+
+function get_word(alias){
+    return word[alias];
 }
