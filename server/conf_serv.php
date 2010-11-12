@@ -2,6 +2,8 @@
 
 define("LANG", 'ru'); //ru, en
 
+$_ALLOWED_LANG = array('ru', 'en');
+
 define("ENABLE_SUBSCRIPTION", 1);
 
 define("MAX_PAGE_ITEMS", 14);
@@ -37,6 +39,8 @@ $_ALL_MODULES = array(
     "radio",
     "weather.current",
     //"records",
+    "settings.parent",
+    "settings.localization",
     "settings",
     "course.nbu",
     "weather.day",
