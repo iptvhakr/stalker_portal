@@ -18,6 +18,7 @@ class Stb
     
     private static $all_modules = array();
     private static $disabled_modules = array();
+    private static $allowed_languages;
     
     private static $instance = NULL;
     
@@ -66,9 +67,14 @@ class Stb
         
         if (!empty($user)){
             $this->params = $user;
-            $this->id  = $user['id'];
-            $this->hd  = $user['hd'];
+            $this->id    = $user['id'];
+            $this->hd    = $user['hd'];
+            $this->lang  = empty($user['lang'])? LANG : $user['lang'];
             $this->additional_services_on = $user['additional_services_on'];
+            
+            require_once "lang/".$this->lang.".php";
+            
+            System::set_words($words);
         }
     }
     
@@ -148,6 +154,10 @@ class Stb
         $this->setId($uid);
             
         $this->db->insert('updated_places', array('uid' => $this->id));
+    }
+    
+    public function getLocalization(){
+        return System::get_all_words();
     }
     
     public function isModerator(){
@@ -528,6 +538,36 @@ class Stb
         
         self::$all_modules = $all;
         self::$disabled_modules = $disabled;
+    }
+    
+    public static function setAllowedLanguages($languages){
+        
+        self::$allowed_languages = $languages;
+    }
+    
+    public function getLanguages(){
+        $languages = self::$allowed_languages;
+        
+        $result = array('options' => array());
+        
+        foreach ($languages as $lang){
+            $selected = ($this->lang == $lang)? 1 : 0;
+            $result['options'][] = array('label' => $lang, 'value' => $lang, 'selected' => $selected);
+        }
+        
+        return $result;
+    }
+    
+    public function setDefaultLang(){
+        
+        $default_lang = $_REQUEST['default_lang'];
+        
+        if (in_array($default_lang, self::$allowed_languages)){
+            
+            return $this->db->update('users', array('lang' => $default_lang), array('id' => $this->id));
+        }
+        
+        return false;
     }
 }
 ?>
