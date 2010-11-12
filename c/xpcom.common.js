@@ -57,8 +57,8 @@ function common_xpcom(){
         
         this.player = new player();
         this.player.bind();
-        this.get_stb_params();
         this.get_server_params();
+        this.get_stb_params();
         this.get_user_profile();
         this.epg_loader.start();
         
@@ -73,10 +73,10 @@ function common_xpcom(){
         
         this.cut_off_dom_obj = create_block_element('cut_off');
         var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
-        text_msg.innerHTML = word['cut_off_msg'];
+        text_msg.innerHTML = get_word('cut_off_msg');
         this.cut_off_dom_obj.hide();
         
-        this.clock.start();
+        //this.clock.start();
     }
     
     this.get_server_params = function(){
@@ -166,6 +166,8 @@ function common_xpcom(){
         
         this.set_cookie('mac', this.mac);
         
+        //this.get_localization();
+        
         _debug('this.mac:', this.mac);
         _debug('this.ip:', this.ip);
         _debug('this.type:', this.type);
@@ -175,6 +177,25 @@ function common_xpcom(){
     
     this.set_cookie = function(name, val){
         document.cookie = name + '=' + escape(val) + '; path=/;'
+    }
+    
+    this.get_localization = function(){
+        _debug('stb.get_localization');
+        
+        this.load(
+            {
+                "type"   : "stb",
+                "action" : "get_localization"
+            },
+            
+            function(result){
+                
+                word = result;
+                this.clock.start();
+            },
+            
+            this
+        )
     }
     
     this.load = function(params, callback, context){
@@ -298,6 +319,8 @@ function common_xpcom(){
             if (!this.check_graphic_res()){
                 return;
             }
+            
+            this.get_localization();
 
             this.preload_images();
             
@@ -314,7 +337,7 @@ function common_xpcom(){
             if (this.aspect_idx == null){
                 this.aspect_idx = 0;
             }
-            
+
             try{
                 stb.SetAspect(this.user['aspect']);
             }catch(e){
@@ -743,8 +766,8 @@ function common_xpcom(){
     
     this.clock = {
         
-        month_arr : word['month_arr'],
-        day_arr   : word['week_arr'],
+        //month_arr : word['month_arr'],
+        //day_arr   : word['week_arr'],
         
         start : function(){
             _debug('clock.start()');
@@ -800,12 +823,12 @@ function common_xpcom(){
         },
         
         show : function(){
-            if (main_menu){
+            if (main_menu && main_menu.time && main_menu.date && main_menu.on){
                 main_menu.time.innerHTML = this.hours + ':' + this.minutes;
-                main_menu.date.innerHTML = this.day_arr[this.day] + ', ' + this.date + ' ' + this.month_arr[this.month] + ', ' + this.year + word['year'] + '.';
+                main_menu.date.innerHTML = get_word('week_arr')[this.day] + ', ' + this.date + ' ' + get_word('month_arr')[this.month] + ', ' + this.year + get_word('year') + '.';
             }
             
-            if (stb.player.info.on){
+            if (stb.player && stb.player.info && stb.player.info.on && stb.player.info.clock){
                 stb.player.info.clock.innerHTML = this.hours + ':' + this.minutes;
             }
             
