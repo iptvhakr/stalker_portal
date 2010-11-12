@@ -23,6 +23,8 @@ function SettingLayer(){
     this.save_params = {};
     
     this.base_layer = BaseLayer.prototype;
+    
+    this.save_callback = function(){};
 }
 
 SettingLayer.prototype = new BaseLayer();
@@ -47,9 +49,9 @@ SettingLayer.prototype.add_control = function(obj){
     _debug('SettingLayer.add_control', obj);
     
     if (this.controls.length == 0){
-        obj.input.setClass('active_input');
+        obj && obj.input && obj.input.setClass && obj.input.setClass('active_input');
     }else{
-        obj.input.setClass('passive_input');
+        obj && obj.input && obj.input.setClass && obj.input.setClass('passive_input');
     }
     
     this.controls.push(obj);
@@ -81,6 +83,15 @@ SettingLayer.prototype.set_passive_input = function(){
 
 SettingLayer.prototype.shift = function(dir){
     _debug('SettingLayer.shift', dir);
+    
+    if (this.controls[this.cur_control_idx] instanceof OptionInput){
+        if(this.controls[this.cur_control_idx].shift.call(this.controls[this.cur_control_idx], dir)){
+            _debug('SettingLayer.shift  return');
+            return;
+        }
+    }
+    
+    _debug('shift SettingLayer');
     
     this.set_passive_input();
     
@@ -135,7 +146,15 @@ SettingLayer.prototype.bind = function(){
         main_menu.show();
     }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
     
-    this.save.bind(key.OK, this);
+    (function(){
+        
+        if (this.controls[this.cur_control_idx] instanceof OptionInput){
+            this.controls[this.cur_control_idx].set_checked();
+        }else{
+            this.save();
+        }
+        
+    }).bind(key.OK, this);
 }
 
 SettingLayer.prototype.cancel = function(){
@@ -157,15 +176,15 @@ SettingLayer.prototype.save = function(){
         }
     }
     
-    //_debug('this.save_params', this.save_params);
-    
     stb.load(
         this.save_params,
         
         function(result){
             _debug(result);
             
-            stb.notice.show(word['settings_saved']);
+            //stb.notice.show(word['settings_saved']);
+            
+            this.save_callback && this.save_callback();
         },
         
         this
