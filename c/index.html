@@ -63,9 +63,6 @@
 <link type="text/css" rel="stylesheet" href="alert.css"></link>
 <link type="text/css" rel="stylesheet" href="context_menu.css"></link>
 
-<script type="text/javascript" src="../server/api/lang.php"></script>
-<!--script type="text/javascript" src="../server/api/get_modules.php"></script-->
-
 <script type="text/javascript" src="version.js"></script>
 
 <script type="text/javascript" src="global.js"></script>
@@ -97,6 +94,7 @@ var stbEvent;
 var _GET = {};
 
 var module = {};
+var word = {};
 
 window.onerror = function(msg, url, lno){
     _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
