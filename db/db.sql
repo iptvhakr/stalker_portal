@@ -261,6 +261,8 @@ CREATE TABLE `users`(
     `ip` varchar(128) NOT NULL default '',
     `version` varchar(255) NOT NULL default '',
     
+    `lang` varchar(32) NOT NULL default '',
+    
     `status` tinyint default 0,
     
     `hd` tinyint default 0,
