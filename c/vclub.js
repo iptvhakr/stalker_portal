@@ -411,7 +411,7 @@ _debug('1!!!!!!!!!!!!!!');
         this.set_not_ended = function(video_id, series, end_time){
             _debug('vclub.set_not_ended', video_id, series, end_time);
             
-            if (empty(this.data_items[this.cur_row].series)){
+            if (this.load_params.not_ended && empty(this.data_items[this.cur_row].series)){
                 this.data_items[this.cur_row].position = end_time;
             }
             
