@@ -161,6 +161,8 @@ CREATE TABLE `epg`(
     `id` int NOT NULL auto_increment, 
     `ch_id` int NOT NULL default 0,
     `time` datetime,
+    `time_to` datetime,
+    `duration` int NOT NULL default 0,
     `name` varchar(128) NOT NULL default '',
     `descr` varchar(255) NOT NULL default '',
     PRIMARY KEY (`id`)
