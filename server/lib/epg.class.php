@@ -374,26 +374,8 @@ class Epg
      */
     public function getEpgInfo(){
         
-        //$itv = Itv::getInstance();
+        /*$db = clone $this->db;
         
-        $data = array();
-        
-        $now_datetime = date("Y-m-d H:i:s");
-        $day_begin_datetime = date("Y-m-d 00:00:00");
-        
-        $db = clone $this->db;
-        
-        /*$cur_program_arr = $db
-                              ->from('epg')
-                              ->select('*, MAX(UNIX_TIMESTAMP(time)) as start_timestamp, MAX(time) as time')
-                              ->in('ch_id', $itv->getAllUserChannelsIds())
-                              ->where(array(
-                                  'time>=' => $day_begin_datetime,
-                                  'time<=' => $now_datetime
-                              ))
-                              ->groupby('ch_id')
-                              ->get()
-                              ->all();*/
         $cur_program_arr = $db
                               ->from('epg')
                               ->select('*, UNIX_TIMESTAMP(time) as start_timestamp')
@@ -424,20 +406,91 @@ class Epg
                                                 ->all();
         }
         
+        return $result;*/
+        
+        return $this->getEpgForChannelsOnPeriod(array());
+    }
+    
+    private function getEpgForChannelsOnPeriod($channels_ids = array(), $from ='', $to = ''){
+        
+        $db = clone $this->db;
+        
+        if (empty($channels_ids)){
+            $channels_ids = Itv::getInstance()->getAllUserChannelsIds();
+        }
+        
+        if (empty($from)){
+            $from = 'NOW()';
+        }
+        
+        if (empty($to)){
+            $to = date("Y-m-d H:i:s", (time() + 9*3600));
+        }
+        
+        $result = array();
+        
+        foreach ($channels_ids as $ch_id){
+            
+            $result[$ch_id] = $db
+                                 ->from('epg')
+                                 ->select('*, UNIX_TIMESTAMP(time) as start_timestamp, UNIX_TIMESTAMP(time_to) as stop_timestamp, TIME_FORMAT(time,"%H:%i") as t_time')
+                                 ->where(array(
+                                     'ch_id'     => $ch_id,
+                                     'time_to>'  =>  $from,
+                                     'time_to<'  =>  $to,
+                                 ))
+                                 ->orderby('time')
+                                 ->get()
+                                 ->all();
+        }
+        
         return $result;
     }
     
     public function getDataTable(){
         
-        $page  = $_REQUEST['p'];
+        $page  = intval($_REQUEST['p']);
         $ch_id = intval($_REQUEST['ch_id']);
         $from  = $_REQUEST['from'];
         $to    = $_REQUEST['to'];
         
+        $page_items = 10;
+        
         $user_channels = Itv::getInstance()->getAllUserChannelsIds();
+        $ch_idx = array_search($ch_id, $user_channels);
         
+        if ($ch_idx === false){
+            $ch_idx = 0;
+        }
         
+        if ($page == 0){
+            $page = ceil($ch_idx/$page_items);
+            
+            if ($page == 0){
+                $page == 1;
+            }
+        }
         
+        $display_channels = array_slice($user_channels, $page_items*($page-1), $page_items);
+        
+        /*
+         * @todo: uncomment this line if php>=5.3.0
+         * $channels = Itv::getInstance()->getChannelsByIds($display_channels);
+         */
+        
+        $raw_epg = $this->getEpgForChannelsOnPeriod($display_channels, $from, $to);
+        
+        $result = array();
+        
+        foreach ($raw_epg as $ch_id => $epg){
+            
+            $result[] = array(
+                              'ch_id' => $ch_id,
+                              'name'  => Itv::getChannelNameById($ch_id), //@todo: in future for php>=5.3.0 use - array_filter($channels, function($element) use ($ch_id){return ($element['id'] == $ch_id)}),
+                              'epg'   => $epg);
+        }
+        
+        return $result;
     }
 }
 ?>
