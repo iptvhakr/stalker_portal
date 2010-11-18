@@ -79,7 +79,20 @@ class Epg
             return 'Файл не изменился';
         }
         
-        $xml = simplexml_load_file($setting['uri']);
+        if (preg_match("/\.gz$/", $setting['uri'])){
+
+            $handle = gzopen($setting['uri'], 'r');
+            
+            $contents = gzread($handle, 30000000);
+            
+            gzclose($handle);
+            
+            $xml = simplexml_load_string($contents);
+            
+        }else{
+            $xml = simplexml_load_file($setting['uri']);
+        }
+        
         $ids_arr = $this->getITVids();
         
         $insert_data = array();
@@ -93,9 +106,16 @@ class Epg
                 
                 $start_ts = strtotime(strval($programme->attributes()->start)) + $this->correction_time*60;
                 
-                $mysql_start = date("Y-m-d H:i:s",$start_ts);
+                $mysql_start = date("Y-m-d H:i:s", $start_ts);
+                
+                $stop_ts = strtotime(strval($programme->attributes()->stop)) + $this->correction_time*60;
+                
+                $mysql_stop  = date("Y-m-d H:i:s", $stop_ts);
+                
+                $duration = $stop_ts - $start_ts;
 
-                $title = addslashes($programme->title);
+                //$title = addslashes($programme->title);
+                $title = strval($programme->title);
                 
                 foreach ($itv_id_arr as $itv_id){
                     
@@ -104,6 +124,8 @@ class Epg
                     $data_arr[$itv_id][] = array(
                                                 'ch_id' => $itv_id,
                                                 'time'  => $mysql_start,
+                                                'time_to'  => $mysql_stop,
+                                                'duration' => $duration,
                                                 'name'  => $title
                                                 );
                     
@@ -248,11 +270,13 @@ class Epg
      * Find current program.
      *
      * @param int $ch_id
+     * @return array|null $program
      */
     public function getCurProgram($ch_id){
+        
         $ch_id = intval($ch_id);
         
-        $result = $this->db->from('epg')
+        /*$result = $this->db->from('epg')
                            ->where(
                                array(
                                    'ch_id'  => $ch_id,
@@ -274,7 +298,19 @@ class Epg
         }else{
             $this->cur_program_page = 0;
             $this->cur_program_row  = 0;
-        }
+        }*/
+        
+        $program = $this->db
+                            ->from('epg')
+                            ->where(array(
+                                'ch_id'    => $ch_id,
+                                'time<='   => 'NOW()',
+                                'time_to>' => 'NOW()'
+                            ))
+                            ->get()
+                            ->first();
+        
+        return $program;
     }
     
     /**
@@ -287,7 +323,7 @@ class Epg
     public function getCurProgramAndFewNext($ch_id, $num_programs){
         
         
-        $cur_prog_id = $this->db->from('epg')
+        /*$cur_prog_id = $this->db->from('epg')
                            ->where(
                                array(
                                    'ch_id'  => $ch_id,
@@ -297,15 +333,18 @@ class Epg
                            ->orderby('time', 'desc')
                            ->get()
                            ->first('id');
+        */
+        
+        $cur_program = $this->getCurProgram($ch_id);
                            
-        if (!empty($cur_prog_id)){
+        if (!empty($cur_program['id'])){
             
             return $this->db->from('epg')
                                         ->select('*, TIME_FORMAT(`time`,"%H:%i") as t_time')
                                         ->where(
                                             array(
                                                 'ch_id' => $ch_id,
-                                                'id>='  => $cur_prog_id
+                                                'time>='  => $cur_program['time']
                                             ))
                                         ->orderby('time')
                                         ->limit($num_programs)
@@ -329,13 +368,13 @@ class Epg
     }
     
     /**
-     * Returns an array of programs on channels 9 hours.
+     * Returns an array of programs on channels for next 9 hours.
      *
      * @return array
      */
     public function getEpgInfo(){
         
-        $itv = Itv::getInstance();
+        //$itv = Itv::getInstance();
         
         $data = array();
         
@@ -344,7 +383,7 @@ class Epg
         
         $db = clone $this->db;
         
-        $cur_program_arr = $db
+        /*$cur_program_arr = $db
                               ->from('epg')
                               ->select('*, MAX(UNIX_TIMESTAMP(time)) as start_timestamp, MAX(time) as time')
                               ->in('ch_id', $itv->getAllUserChannelsIds())
@@ -353,6 +392,16 @@ class Epg
                                   'time<=' => $now_datetime
                               ))
                               ->groupby('ch_id')
+                              ->get()
+                              ->all();*/
+        $cur_program_arr = $db
+                              ->from('epg')
+                              ->select('*, UNIX_TIMESTAMP(time) as start_timestamp')
+                              ->in('ch_id', Itv::getInstance()->getAllUserChannelsIds())
+                              ->where(array(
+                                  'time<='   => 'NOW()',
+                                  'time_to>' => 'NOW()'
+                              ))
                               ->get()
                               ->all();
         
@@ -380,9 +429,13 @@ class Epg
     
     public function getDataTable(){
         
+        $page  = $_REQUEST['p'];
         $ch_id = intval($_REQUEST['ch_id']);
         $from  = $_REQUEST['from'];
         $to    = $_REQUEST['to'];
+        
+        $user_channels = Itv::getInstance()->getAllUserChannelsIds();
+        
         
         
     }
