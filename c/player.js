@@ -1206,6 +1206,10 @@ player.prototype.set_pos_button = function(to_time){
     
     this.new_pos_time = to_time;
     
+    if (this.new_pos_time < 0){
+        this.new_pos_time = 0;
+    }
+    
     try{
         
         if (to_time > this.cur_media_length){
