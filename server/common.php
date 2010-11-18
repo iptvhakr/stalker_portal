@@ -1,5 +1,5 @@
 <?php
-putenv("TZ=Europe/Zaporozhye");
+date_default_timezone_set('Europe/Zaporozhye');
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
