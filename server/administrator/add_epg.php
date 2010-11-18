@@ -41,26 +41,64 @@ if (!$error){
         $query = "delete from epg where ch_id=".$_GET['id']." and time > '".$time_from."' and time < '".$time_to."'";
         $rs=$db->executeQuery($query);
         
-        
         $tmp_epg = preg_split("/\n/", stripslashes(trim($epg)));
         
+        $date = $yy.'-'.$mm.'-'.$dd;
+        
         for ($i=0; $i<count($tmp_epg); $i++){
+            
             $epg_line = trim($tmp_epg[$i]);
-            preg_match("/(\d+):(\d+)[\s\t]*([\S\s]+)/", $epg_line, $tmp_line);
-            if (@$tmp_line[1] && $tmp_line[2] && $tmp_line[3]){
-                //$time = mktime($tmp_line[1],$tmp_line[2],0,$_GET['mm'],$_GET['dd'],$_GET['yy']);
-                $time = $yy.'-'.$mm.'-'.$dd.' '.$tmp_line[1].':'.$tmp_line[2].':00';
-                //echo $time;
-                $name = addslashes($tmp_line[3]);
-                //$query = "insert into epg (ch_id,time,name,descr) values ('".$_GET['id']."', '".$time."', '".$name."', '') ch_id=".$_GET['id'];
-                $query = "insert into epg (ch_id,time,name) values ('".$_GET['id']."', '".$time."', '".$name."')";
-                //echo $query;
-                $rs=$db->executeQuery($query);
+            
+            $line_arr = get_line($date, $tmp_epg, $i);
+            
+            if (empty($line_arr)){
+                continue;
             }
+            
+            $query = "insert into epg (ch_id, name, time, time_to, duration) values ('".$_GET['id']."', '".mysql_real_escape_string($line_arr['name'])."', '".$line_arr['time']."', '".$line_arr['time_to']."', '".$line_arr['duration']."')";
+                
+            $rs=$db->executeQuery($query);
         }
+        
         header("Location: add_epg.php?id=".$_GET['id']."&mm=".$_GET['mm']."&dd=".$_GET['dd']."&yy=".$_GET['yy']."&saved=1");
         exit;
     }
+}
+
+function get_line($date, $epg_lines, $line_num){
+    
+    $epg_line = @trim($epg_lines[$line_num]);
+    
+    preg_match("/(\d+):(\d+)[\s\t]*([\S\s]+)/", $epg_line, $tmp_line);
+    
+    if (@$tmp_line[1] && $tmp_line[2] && $tmp_line[3]){
+
+        $result = array();
+               
+        $time = $date.' '.$tmp_line[1].':'.$tmp_line[2].':00';
+        
+        $result['time'] = $time;
+        
+        $result['name'] = addslashes($tmp_line[3]);
+        
+        $next_line = get_line($date, $epg_lines, $line_num+1);
+        
+        if (!empty($next_line)){
+            
+            $time_to = $next_line['time'];
+            
+            $result['time_to'] = $time_to;
+            
+            $result['duration'] = strtotime($time_to) - strtotime($time);
+        }else{
+            $result['time_to'] = 0;
+            $result['duration'] = 0;
+        }
+        
+        return $result;
+    }
+    
+    return false;
 }
 
 function construct_oprion($id = 0){
