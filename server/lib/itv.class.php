@@ -140,13 +140,14 @@ class Itv extends AjaxResponse
                  ->where(array('status' => 1));
     }
     
-    public function getChannels(){
+    public function getChannels($include_censored = false){
         
-        $query = $this->db->from('itv')
-                        ->where(array(
-                            'censored' => 0
-                        ));
+        $query = $this->db->from('itv');
         
+        if (!$include_censored){
+            $query->where(array('censored' => 0));
+        }
+                        
         if (!$this->stb->isModerator()){
             $query->where(array('status' => 1));
         }
@@ -473,6 +474,16 @@ class Itv extends AjaxResponse
                                  array(
                                      'id' => $this->stb->id
                                  ));
+    }
+    
+    public function getChannelsByIds($ids){
+        
+        return $this->getChannels(true)->in('id', $ids)->get()->all();
+    }
+    
+    public static function getChannelNameById($id){
+        
+        return Mysql::getInstance()->from('itv')->where(array('id' => $id))->get()->first('name');
     }
 }
 ?>
