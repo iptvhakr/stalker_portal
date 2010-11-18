@@ -11,7 +11,7 @@ class Mysql
     private $link;
     
     private $charset = 'utf8';
-    private $num_queries = 0;
+    private static $num_queries = 0;
     private $cache_hits = 0;
     
     private $cache;
@@ -513,7 +513,7 @@ class Mysql
                 $key = $this->get_cache_key($sql);
                 
                 if(($result = $this->cache->get($key)) === false){
-                    $this->num_queries++;
+                    self::$num_queries++;
                     
                     $result = new MysqlResult(mysql_query($sql, $this->link), $sql, $this->link);
                     
@@ -537,7 +537,7 @@ class Mysql
         
         $this->enable_caching();
         
-        $this->num_queries++;
+        self::$num_queries++;
         
         return new MysqlResult(mysql_query($sql, $this->link), $sql, $this->link);
     }
@@ -588,8 +588,8 @@ class Mysql
 		return (bool) preg_match('/[<>!=]|\sIS(?:\s+NOT\s+)?\b|BETWEEN/i', trim($str));
 	}
 	
-	public function get_num_queries(){
-	    return $this->num_queries;
+	public static function get_num_queries(){
+	    return self::$num_queries;
 	}
 	
 	public function get_cache_hits(){
