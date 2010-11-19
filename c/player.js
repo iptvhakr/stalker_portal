@@ -1387,11 +1387,15 @@ player.prototype.quick_go_to_ch = function(){
     
     var ch_num = parseInt(this.quick_ch_switch.input.innerHTML);
     
+    _debug('ch_num', ch_num);
+    
     var item = {};
     
     if (stb.user.fav_itv_on){
         
         this.f_ch_idx = this.fav_channels.getIdxByVal('number', ch_num);
+        
+        _debug('this.f_ch_idx', this.f_ch_idx);
         
         if (this.f_ch_idx >= 0){
             
@@ -1401,9 +1405,13 @@ player.prototype.quick_go_to_ch = function(){
         
         item = this.fav_channels[this.f_ch_idx];
         
+        _debug('item', item);
+        
     }else{
         
         this.ch_idx = this.channels.getIdxByVal('number', ch_num);
+        
+        _debug('this.ch_idx', this.ch_idx);
         
         if (this.ch_idx >= 0){
             
@@ -1413,6 +1421,7 @@ player.prototype.quick_go_to_ch = function(){
         
         item = this.channels[this.ch_idx];
         
+        _debug('item', item);
     }
     
     if (!empty(item)){
