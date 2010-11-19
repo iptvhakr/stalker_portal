@@ -415,6 +415,10 @@
             this.map[this.cur_row].fav_block.show();
             this.active_row.fav_block.show();
             
+            this.data_items[this.cur_row].number = stb.player.fav_channels.length + 1;
+            
+            stb.player.fav_channels.push(this.data_items[this.cur_row]);
+            
             stb.player.save_fav_ids();
         };
         
@@ -435,6 +439,12 @@
             
             this.map[this.cur_row].fav_block.hide();
             this.active_row.fav_block.hide();
+            
+            var fav_ch_idx = stb.player.fav_channels.getIdxByVal('id', this.data_items[this.cur_row].id);
+            
+            if (fav_ch_idx !== null){
+                stb.player.fav_channels.splice(fav_ch_idx, 1);
+            }
             
             stb.player.save_fav_ids();
         };
@@ -594,11 +604,15 @@
             
             var ch_num = parseInt(this.quick_ch_switch.input.innerHTML);
             
+            _debug('ch_num', ch_num);
+            
             var item = {};
             
             if (stb.user.fav_itv_on){
                 
                 stb.player.f_ch_idx = stb.player.fav_channels.getIdxByVal('number', ch_num);
+                
+                _debug('stb.player.f_ch_idx', stb.player.f_ch_idx);
                 
                 if (stb.player.f_ch_idx >= 0){
                     
@@ -606,11 +620,17 @@
                     stb.player.f_ch_idx = 0;
                 }
                 
+                _debug('stb.player.f_ch_idx', stb.player.f_ch_idx);
+                
                 item = stb.player.fav_channels[stb.player.f_ch_idx];
+                
+                _debug('item', item);
                 
             }else{
                 
                 stb.player.ch_idx = stb.player.channels.getIdxByVal('number', ch_num);
+                
+                _debug('stb.player.ch_idx', stb.player.ch_idx);
                 
                 if (stb.player.ch_idx >= 0){
                     
@@ -618,8 +638,11 @@
                     stb.player.ch_idx = 0;
                 }
                 
+                _debug('stb.player.ch_idx', stb.player.ch_idx);
+                
                 item = stb.player.channels[stb.player.ch_idx];
                 
+                _debug('item', item);
             }
             
             if (!empty(item)){
@@ -628,7 +651,7 @@
                     var self = this;
                     
                     stb.player.send_last_tv_id_callback = function(){self.load_data.apply(self)};
-                    
+                    stb.player.need_show_info = 0;
                     stb.player.play(item);
                 }else{
                     stb.player.send_last_tv_id(item.id);
