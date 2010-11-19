@@ -521,6 +521,7 @@ function common_xpcom(){
             {
                 'type'  : 'itv',
                 'action': 'get_all_fav_channels',
+                'fav'   : 1
             },
             
             function(result){
