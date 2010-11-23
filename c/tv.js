@@ -213,9 +213,18 @@
         this.play = function(){
             _debug('tv.play');
             
-            this.hide(true);
+            _debug('this.data_items[this.cur_row]', this.data_items[this.cur_row]);
+            _debug('empty(this.data_items[this.cur_row]', empty(this.data_items[this.cur_row]));
             
-            stb.player.prev_layer = this;
+            if (empty(this.data_items[this.cur_row])){
+                return;
+            }
+            
+            /*this.hide(true);
+            
+            stb.player.prev_layer = this;*/
+            
+            _debug('stb.player.on', stb.player.on);
             
             if (!stb.player.on){
                 /*if (this.cur_view == 'short'){
@@ -227,10 +236,20 @@
                 //this.last_ch_id = this.data_items[this.cur_row].id;
                 
                 if (this.cur_view != 'short'){
+                    this.hide(true);
+            
+                    stb.player.prev_layer = this;
+                    
                     stb.player.need_show_info = 1;
                     stb.player.play(this.data_items[this.cur_row]);
                 }else{
                     //this.show_info(this.cur_media_item);
+                }
+            }else{
+                if (this.cur_view == 'short'){
+                    this.hide(true);
+                
+                    stb.player.prev_layer = this;
                 }
             }
         };
