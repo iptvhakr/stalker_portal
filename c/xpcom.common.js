@@ -214,7 +214,7 @@ function common_xpcom(){
                 params,
                 
                 function(result, errors){
-                    _debug('callback');
+                    _debug('stb.load callback');
                     _debug(errors);
                     try{
                         callback.call(context, result);
