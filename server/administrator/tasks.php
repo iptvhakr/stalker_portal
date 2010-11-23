@@ -1,4 +1,5 @@
 <?php
+$start_time = microtime(1);
 session_start();
 
 ob_start();
@@ -118,11 +119,23 @@ while(@$rs->next()){
             <td><b>Сообщения</b></td>
         </tr>
         <?
-        $sql_open = "select * from moderator_tasks 
+        /*$sql_open = "select * from moderator_tasks 
                         where 
                             moderator_tasks.ended=0
                             and archived=0
-                            and moderator_tasks.to_usr={$arr['id']}";
+                            and moderator_tasks.to_usr={$arr['id']}";*/
+        
+        /*$sql_open = "select moderator_tasks.*, video.name as name 
+                        from moderator_tasks 
+                        inner join 
+                            video
+                            on media_id=video.id 
+                        where
+                            moderator_tasks.ended=0
+                            and archived=0
+                            and moderator_tasks.to_usr={$arr['id']}";*/
+        
+        $sql_open = "select moderator_tasks.*, count(moderators_history.id) as counter, video.name as name from moderator_tasks inner join video on media_id=video.id left join moderators_history on task_id=moderator_tasks.id where moderator_tasks.ended=0 and archived=0 and moderator_tasks.to_usr={$arr['id']} group by moderators_history.task_id";
         
         $rs_open = $db->executeQuery($sql_open);
         $num = 1;
@@ -137,9 +150,10 @@ while(@$rs->next()){
             }
             echo " >";
             echo "<td>".$num.".</td>";
-            echo "<td>".get_media_name_by_id($arr_open['media_id'])."</td>";
+            echo "<td>".$arr_open['name']."</td>";
             echo "<td>".$arr_open['start_time']."</td>";
-            echo "<td>".get_count_all_msgs($arr_open['id']).' / <a href="msgs.php?task='.$arr_open['id'].'" class="msgs"><b>'.get_count_unreaded_msgs($arr_open['id'])."</b></a></td>";
+            //echo "<td>".get_count_all_msgs($arr_open['id']).' / <a href="msgs.php?task='.$arr_open['id'].'" class="msgs"><b>'.get_count_unreaded_msgs($arr_open['id'])."</b></a></td>";
+            echo "<td>".$arr_open['counter'].' / <a href="msgs.php?task='.$arr_open['id'].'" class="msgs"><b>'.get_count_unreaded_msgs($arr_open['id'])."</b></a></td>";
             echo "</tr>";
             $num++;
         }
@@ -196,7 +210,10 @@ while(@$rs->next()){
 <td>
 <?
 if (check_access(array(1))){
-$sql = "select * from moderator_tasks where ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
+//$sql = "select * from moderator_tasks where ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
+//$sql = "select moderator_tasks.*, video.name as name from moderator_tasks inner join video on media_id=video.id where ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
+$sql = "select moderator_tasks.*, video.name as name, administrators.login as login from administrators,moderator_tasks inner join video on media_id=video.id where administrators.id=moderator_tasks.to_usr and  ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
+
 $rs=$db->executeQuery($sql);
 if ($rs->getRowCount() > 0){
     
@@ -216,8 +233,8 @@ if ($rs->getRowCount() > 0){
         echo "<tr>";
         echo "<td>".$num."</td>";
         //echo "<td><a href='msgs.php?task={$arr['id']}'>".get_media_name_by_id($arr['media_id'])."</a></td>";
-        echo "<td>".get_media_name_by_id($arr['media_id'])."</td>";
-        echo "<td>".get_moderator_login_by_id($arr['to_usr'])."</td>";
+        echo "<td>".$arr['name']."</td>";
+        echo "<td>".$arr['login']."</td>";
         echo "<td>".$arr['start_time']."</td>";
         echo '<td><a href="reject_task.php?id='.$arr['id'].'&send_to='.$arr['media_id'].'">отклонить</a></td>';
         echo "</tr>";
@@ -232,3 +249,7 @@ echo "<br>";
 </td>
 </tr>
 </table>
+<?
+echo 'queries: '.$db->query_counter.'<br>';
+echo 'generated in: '.round(microtime(1) - $start_time, 3).'s';
+?>
