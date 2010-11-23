@@ -228,6 +228,11 @@ function init(){
         
         stb.cur_layer && stb.cur_layer.hide && stb.cur_layer.hide();
         
+        if (module && module.tv){
+            stb.set_cur_place(module.tv.layer_name);
+            stb.set_cur_layer(module.tv);
+        }
+        
         stb.player.play_last();
         
     }).bind(key.TV);
