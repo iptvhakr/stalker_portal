@@ -709,6 +709,11 @@ player.prototype.disable_pause = function(){
     try{
         stb.Continue();
     }catch(e){};
+    this.hide_pause();
+}
+
+player.prototype.hide_pause = function(){
+    _debug('player.hide_pause');
     this.pause.on = false;
     this.pause.dom_obj.hide();
 }
@@ -1066,7 +1071,7 @@ player.prototype.bind = function(){
             this.set_pos_and_play();
         }else  if (this.quick_ch_switch.on){
             this.hide_quick_ch_switch();
-        }else  if (this.prev_layer && this.prev_layer.cur_view == 'short'){
+        }else  if (this.prev_layer && this.prev_layer.cur_view == 'short' && !this.is_tv){
             this.show_prev_layer();
         }else if (this.is_tv){
             module.tv.set_short_container();
