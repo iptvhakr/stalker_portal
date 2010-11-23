@@ -150,6 +150,8 @@ _debug('1!!!!!!!!!!!!!!');
             this.password_input.on && this.password_input.hide && this.password_input.hide();
             this.series_switch.on && this.series_switch.hide && this.series_switch.hide();
             
+            stb.player.pause && stb.player.pause.on && stb.player.hide_pause();
+            
             this.superclass.hide.call(this, do_not_reset);
         };
         
