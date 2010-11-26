@@ -274,12 +274,16 @@ if (typeof Object.prototype.toSource != 'function'){
                         if(i == 0) {
                             if (this[j] === null){
                                 res += j + ': null';
+                            }else if (typeof(this[j]) == 'undefined'){
+                                res += ', ' + j + ': undefined';
                             }else{
                                 res += j + ':' + this[j].toSource(1);
                             }
                         } else {
                             if (this[j] === null){
                                 res += ', ' + j + ': null';
+                            }else if (typeof(this[j]) == 'undefined'){
+                                res += ', ' + j + ': undefined';
                             }else{
                                 res += ', ' + j + ':' + this[j].toSource(1);
                             }
