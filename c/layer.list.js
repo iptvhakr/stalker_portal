@@ -16,6 +16,8 @@ function ListLayer(){
     this.dom_obj = this.create_block();
     document.body.appendChild(this.dom_obj);
     
+    this.active_row_offset = 15;
+    
     this.total_rows  = 14;
     this.total_items = 0;
     this.total_pages = 0;
@@ -224,6 +226,8 @@ ListLayer.prototype.load_data = function(){
     
     this.load_params['p'] = this.cur_page;
     
+    this.loading = true;
+    
     stb.load(
 
         this.load_params,
@@ -359,7 +363,7 @@ ListLayer.prototype.set_active_row = function(num){
             }
         }
         
-        var offset = this.map[num]['row'].offsetTop - 15;
+        var offset = this.map[num]['row'].offsetTop - this.active_row_offset;
         
         this.active_row['row'].moveY(offset);
         
