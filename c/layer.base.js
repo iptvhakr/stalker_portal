@@ -96,6 +96,10 @@ BaseLayer.prototype.init_color_buttons = function(map){
         this.color_buttons[i].text_obj = create_inline_element('', cell);
         
         this.color_buttons[i].text_obj.innerHTML = map[i].label;
+        
+        if (typeof(map[i].cmd) !== 'function'){
+            this.color_buttons[i].text_obj.setClass('disable_color_btn_text');
+        }
     }
     
     if (typeof(map[0].cmd) == 'function'){
