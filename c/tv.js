@@ -63,19 +63,6 @@
             
             this.cur_page = 0;
             
-            //this.superclass.show.call(this, do_not_load);
-            //this.superclass.show.call(this, false);
-            
-            //_debug('this.last_ch_id', this.last_ch_id);
-            //_debug('stb.player.cur_media_item.id', stb.player.cur_media_item.id);
-            //_debug('this.cur_view', this.cur_view);
-            
-            /*if ((this.cur_view == 'short') && (this.last_ch_id == stb.player.cur_media_item.id)){
-                this.superclass.show.call(this, true);
-            }else{
-                this.superclass.show.call(this, false);
-            }*/
-            
             this.superclass.show.call(this, false);
             
             stb.clock.show();
@@ -86,8 +73,6 @@
                 if (this.cur_view == 'short'){
                     stb.SetTopWin(1);
                     stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y);
-                    //stb.player.need_show_info = 0;
-                    //stb.player.play(item);
                 }else{
                     stb.SetTopWin(0);
                 }
@@ -100,6 +85,8 @@
             _debug('tv.hide', do_not_reset);
             
             this.cur_page = 0;
+            
+            this.short_epg_loader.stop();
             
             try{
                 
@@ -159,6 +146,18 @@
                 this.hide();
                 main_menu.show();
             }).bind(key.LEFT, this).bind(key.MENU, this);
+            
+            (function(){
+                if (module.epg){
+                    
+                    if (stb.player.on){
+                        stb.player.stop();
+                    }
+                    
+                    module.epg.ch_id = this.data_items[this.cur_row].id;
+                    module.epg.show();
+                }
+            }).bind(key.RIGHT, this);
             
             (function(){
                 if (this.quick_ch_switch.on){
@@ -323,7 +322,9 @@
             
             this.fill_short_info(this.data_items[this.cur_row]);
             
-            if (this.data_items && this.data_items[this.cur_row]){
+            _debug('this.loading', this.loading);
+            
+            if (this.data_items && this.data_items[this.cur_row] && !this.loading){
                 stb.player.need_show_info = 0;
                 stb.player.play(this.data_items[this.cur_row]);
             }
@@ -357,40 +358,41 @@
         this.fill_short_info = function(item){
             _debug('tv.fill_short_info');
             
-            var epg = '';
-            
             if (item && !item.open){
-                epg += '<span class="current">' + word['msg_channel_not_available'] + '</span>';
+                this.short_info_box.innerHTML = '<span class="current">' + word['msg_channel_not_available'] + '</span>';
             }else if (item && item.epg){
                 
-                var class_name = '';
+                this.fill_short_epg(item.epg);
+            }
+            
+            this.short_epg_loader.start();
+        };
+        
+        this.fill_short_epg = function(epg){
+            
+            var class_name = '';
+            var txt = '';
+            
+            for (var i=0; i<epg.length; i++){
                 
-                for (var i=0; i<item.epg.length; i++){
-                    
-                    if (i == 0){
-                        class_name = 'current';
-                    }else{
-                        class_name = '';
-                    }
-                    
-                    epg += '<span class="time">' + item.epg[i].t_time + ' - </span><span class="' + class_name + '">' + item.epg[i].name + '</span><br>';
+                if (i == 0){
+                    class_name = 'current';
+                }else{
+                    class_name = '';
                 }
-            }
-            
-            this.short_info_box.innerHTML = epg;
-            
-            try{
-                //this.last_ch_id = this.data_items[this.cur_row].id;
                 
-                //stb.player.need_show_info = 0;
-                //stb.player.play(item);
-            }catch(e){
-                _debug(e);
+                txt += '<span class="time">' + epg[i].t_time + ' - </span><span class="' + class_name + '">' + epg[i].name + '</span><br>';
             }
+            
+            this.short_info_box.innerHTML = txt;
         };
         
         this.shift_row_callback = function(item){
-            _debug('tv.shift_row_callback');
+            _debug('tv.shift_row_callback', item);
+            
+            if (empty(item)){
+                return;
+            }
             
             if(this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
                 return;
@@ -487,6 +489,9 @@
         };
         
         this.set_active_row = function(num){
+            _debug('tv.set_active_row');
+            
+            this.short_epg_loader.stop();
             
             this.superclass.set_active_row.call(this, num);
             
@@ -734,6 +739,58 @@
             
             this.quick_ch_switch.input.innerHTML = '';
         };
+        
+        this.short_epg_loader = {
+            
+            parent : {},
+            
+            start : function(){
+                _debug('tv.short_epg_loader.start');
+                
+                var self = this;
+                
+                this.load();
+                
+                window.clearInterval(this.timer);
+                
+                this.timer = window.setInterval(function(){self.load()}, 5*60*1000);
+            },
+            
+            stop : function(){
+                _debug('tv.short_epg_loader.stop');
+                
+                window.clearInterval(this.timer);
+            },
+            
+            load : function(){
+                _debug('tv.short_epg_loader.load');
+                
+                if (this.parent && this.parent.data_items && this.parent.cur_row){
+                
+                    stb.load(
+                        {
+                            "type"   : "itv",
+                            "action" : "get_short_epg",
+                            "ch_id"  : this.parent.data_items[this.parent.cur_row].id
+                        },
+                        
+                        function(result){
+                            _debug('tv.short_epg_loader.load callback');
+                            
+                            this.fill(result);
+                        },
+                        
+                        this
+                    )
+                }
+            },
+            
+            fill : function(data){
+                _debug('tv.short_epg_loader.fill', data);
+                
+                this.parent.fill_short_epg(data);
+            }
+        };
     }
     
     tv_constructor.prototype = new ListLayer();
@@ -747,10 +804,13 @@
     
     tv.init_quick_ch_switch();
     
+    tv.short_epg_loader.parent = tv;
+    
     //tv.set_wide_container();
     tv.set_short_container();
     
     tv.init_left_ear(word['ears_back']);
+    tv.init_right_ear(word['ears_tv_guide']);
     
     tv.init_color_buttons([
         {"label" : word['tv_view'], "cmd" : tv.view_switcher},
