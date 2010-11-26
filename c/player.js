@@ -15,7 +15,7 @@ function player(){
     this.fav_channels_ids;
     
     this.start_time;
-    this.cur_media_item;
+    this.cur_media_item = {};
     this.cur_tv_item;
     this.need_show_info = 0;
     
@@ -466,6 +466,7 @@ player.prototype.play_last = function(){
 }
 
 player.prototype.first_play = function(){
+    _debug('player.first_play');
     
     if (this.channels_inited){
         return;
@@ -498,6 +499,10 @@ player.prototype.first_play = function(){
         }
         
         this.need_show_info = 1;
+        
+        stb.set_cur_place(module.tv.layer_name);
+        stb.set_cur_layer(module.tv);
+        
         this.play(channel);
         
         stb.key_lock = false;
@@ -537,6 +542,7 @@ player.prototype.play = function(item){
     }
     
     _debug('player.media_type: ', this.media_type);
+    _debug('player.is_tv: ', this.is_tv);
     
     if (this.media_type == 'stream'){
         
@@ -1074,8 +1080,9 @@ player.prototype.bind = function(){
         }else  if (this.prev_layer && this.prev_layer.cur_view == 'short' && !this.is_tv){
             this.show_prev_layer();
         }else if (this.is_tv){
-            module.tv.set_short_container();
             module.tv._show();
+            module.tv.set_short_container();
+            //module.tv._show();
         }/*else{
             this.con_menu && this.con_menu.show && this.con_menu.show();
         }*/
