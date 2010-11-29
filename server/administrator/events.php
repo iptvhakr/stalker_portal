@@ -4,8 +4,8 @@ session_start();
 
 ob_start();
 
-include "../common.php";
 include "../conf_serv.php";
+include "../common.php";
 include "../lib/func.php";
 
 $error = '';
