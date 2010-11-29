@@ -348,6 +348,8 @@
         this.fill_list = function(data){
             _debug('tv.fill_list');
             
+            this.load_params['from_ch_id'] = 0;
+            
             this.superclass.fill_list.call(this, data);
             
             if (this.cur_view == 'short'){
