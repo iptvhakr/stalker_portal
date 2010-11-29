@@ -6,8 +6,8 @@
 <?php
 set_time_limit(0);
 
-include "../common.php";
 include "../conf_serv.php";
+include "../common.php";
 
 $epg = new Epg();
 
