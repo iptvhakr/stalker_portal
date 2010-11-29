@@ -8,12 +8,13 @@ header("Last-Modified: Thu, 01 Jan 1970 00:00:00 GMT");
 header("Pragma: no-cache");
 header("Cache-Control: max-age=0, no-cache, must-revalidate");
 
+require_once "conf_serv.php";
 require_once "common.php";
 require_once "lib/config.php";
 require_once "lib/subsys/php.php";
 require_once "lib/data.php";
 require_once "lib/func.php";
-require_once "conf_serv.php";
+//require_once "conf_serv.php";
 //require_once "lang/".LANG.".php";
 
 //System::set_words($words);
