@@ -195,4 +195,9 @@ $words['mastermind_rules_text'] = 'Ваша задача отгадать чис
 
 $words['msg_service_off'] = 'Услуга отключена';
 $words['msg_channel_not_available'] = 'Канал недоступен';
+
+$words['epg_title'] = 'ТВ Гид';
+$words['epg_record'] = 'ЗАПИСАТЬ';
+$words['epg_remind'] = 'НАПОМНИТЬ';
+
 ?>
