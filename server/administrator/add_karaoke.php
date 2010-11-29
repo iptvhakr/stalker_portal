@@ -4,8 +4,8 @@ session_start();
 
 ob_start();
 
-include "../common.php";
 include "../conf_serv.php";
+include "../common.php";
 include "../lib/func.php";
 
 $error = '';
@@ -91,6 +91,8 @@ if (!$error){
     
     $rtsp_url = @trim($_POST['rtsp_url']);
     
+    $status = $rtsp_url? 1 : 0;
+    
     if (@$_GET['save']){
     
         if(@$_GET['name']){
@@ -101,6 +103,7 @@ if (!$error){
                                            singer,
                                            author,
                                            added,
+                                           status,
                                            add_by
                                            ) 
                                   values ('".@$_GET['name']."',
@@ -109,6 +112,7 @@ if (!$error){
                                            '".@$_POST['singer']."',
                                            '".@$_POST['author']."',
                                            '".$datetime."',
+                                           $status,
                                            ".@$_SESSION['uid']."
                                            )";
             //echo $query;
@@ -131,6 +135,7 @@ if (!$error){
                                        rtsp_url='".$rtsp_url."',  
                                        genre_id='".@$_POST['genre_id']."',  
                                        singer='".@$_POST['singer']."',
+                                       status=$status,
                                        author='".@$_POST['author']."'
                                     where id=".intval(@$_GET['id']);
             
