@@ -193,4 +193,8 @@ $words['mastermind_rules_text'] = 'Your task is to guess the number of unduplica
 
 $words['msg_service_off'] = 'Service is disabled';
 $words['msg_channel_not_available'] = 'Сhannel is not available';
+
+$words['epg_title'] = 'TV Guide';
+$words['epg_record'] = 'RECORD';
+$words['epg_remind'] = 'REMIND';
 ?>
