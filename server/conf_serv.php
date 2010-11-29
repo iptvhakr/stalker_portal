@@ -2,6 +2,8 @@
 
 define("LANG", 'ru'); //ru, en
 
+define("TIMEZONE", 'Europe/Kiev'); // see: http://ua.php.net/manual/en/timezones.php
+
 $_ALLOWED_LANG = array('ru', 'en');
 
 define("ENABLE_SUBSCRIPTION", 1);
@@ -34,6 +36,7 @@ define("MASTER_CACHE_EXPIRE", 365); // hours
 $_ALL_MODULES = array(
     "media_browser",
     "tv",
+    "epg",
     "vclub",
     "karaoke",
     "radio",
@@ -66,18 +69,10 @@ $_DISABLED_MODULES = array(
 define("RTSP_TYPE", 4);
 define("RTSP_FLAGS", 0);
 
-if (OS_UNIX){
-    define("PORTAL_PATH", '/var/www/stalker_portal/');
-    define("IMG_PATH", '/var/www/stalker_portal/screenshots/');
-    define("DB_NAME", 'stalker_db');
-    define("MYSQL_USER", 'stalker');
-    define("MYSQL_PASS", '1');
-}else{
-    define("PORTAL_PATH", 'd:\\projects\\stalker_portal\\current\\');
-    define("IMG_PATH", 'd:\\media\\screenshots\\');
-    define("DB_NAME", 'stalker_db_mirror');
-    define("MYSQL_USER", 'root');
-    define("MYSQL_PASS", '1');
-}
+define("PORTAL_PATH", '/var/www/stalker_portal/');
+define("IMG_PATH", '/var/www/stalker_portal/screenshots/');
+define("DB_NAME", 'stalker_db');
+define("MYSQL_USER", 'stalker');
+define("MYSQL_PASS", '1');
 
 ?>
