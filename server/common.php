@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('Europe/Zaporozhye');
+date_default_timezone_set(TIMEZONE);
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
