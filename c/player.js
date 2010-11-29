@@ -502,6 +502,7 @@ player.prototype.first_play = function(){
         
         stb.set_cur_place(module.tv.layer_name);
         stb.set_cur_layer(module.tv);
+        stb.player.prev_layer = module.tv;
         
         this.play(channel);
         
