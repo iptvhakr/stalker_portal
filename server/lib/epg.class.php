@@ -340,7 +340,7 @@ class Epg
         if (!empty($cur_program['id'])){
             
             return $this->db->from('epg')
-                                        ->select('*, TIME_FORMAT(`time`,"%H:%i") as t_time')
+                                        ->select('*, TIME_FORMAT(`time`,"%H:%i") as t_time, TIME_FORMAT(`time_to`,"%H:%i") as t_time_to')
                                         ->where(
                                             array(
                                                 'ch_id' => $ch_id,
@@ -420,12 +420,17 @@ class Epg
         }
         
         if (empty($from)){
-            $from = 'NOW()';
+            //$from = 'NOW()';
+            $from = date("Y-m-d H:i:s");
         }
+        
+        $from_ts = strtotime($from);
         
         if (empty($to)){
             $to = date("Y-m-d H:i:s", (time() + 9*3600));
         }
+        
+        $to_ts = strtotime($to);
         
         $result = array();
         
@@ -433,15 +438,41 @@ class Epg
             
             $result[$ch_id] = $db
                                  ->from('epg')
-                                 ->select('*, UNIX_TIMESTAMP(time) as start_timestamp, UNIX_TIMESTAMP(time_to) as stop_timestamp, TIME_FORMAT(time,"%H:%i") as t_time')
+                                 ->select('*, UNIX_TIMESTAMP(time) as start_timestamp, UNIX_TIMESTAMP(time_to) as stop_timestamp, TIME_FORMAT(time,"%H:%i") as t_time, TIME_FORMAT(time_to,"%H:%i") as t_time_to')
                                  ->where(array(
                                      'ch_id'     => $ch_id,
                                      'time_to>'  =>  $from,
-                                     'time_to<'  =>  $to,
+                                     'time<'     =>  $to,
                                  ))
                                  ->orderby('time')
                                  ->get()
                                  ->all();
+        }
+        
+        $week_day_arr = System::word('week_arr');
+        
+        foreach ($result as $ch_id => $epg){
+            
+            for ($i = 0; $i < count($epg); $i++){
+                
+                $epg[$i]['display_duration'] = $epg[$i]['duration'];
+                $epg[$i]['larr'] = 0;
+                $epg[$i]['rarr'] = 0;
+                
+                if ($epg[$i]['start_timestamp'] < $from_ts){
+                    $epg[$i]['larr'] = 1;
+                    $epg[$i]['display_duration'] = $epg[$i]['duration'] - ($from_ts - $epg[$i]['start_timestamp']);
+                }
+                
+                if ($epg[$i]['stop_timestamp'] > $to_ts){
+                    $epg[$i]['rarr'] = 1;
+                    $epg[$i]['display_duration'] = $epg[$i]['duration'] - ($epg[$i]['stop_timestamp'] - $to_ts);
+                }
+                
+                $epg[$i]['on_date'] = $week_day_arr[date("w", $epg[$i]['start_timestamp'])].' '.date("d.m.Y", $epg[$i]['start_timestamp']);
+            }
+            
+            $result[$ch_id] = $epg;
         }
         
         return $result;
@@ -455,9 +486,26 @@ class Epg
         $to    = $_REQUEST['to'];
         
         $page_items = 10;
+
+        $all_user_ids = Itv::getInstance()->getAllUserChannelsIds();
         
-        $user_channels = Itv::getInstance()->getAllUserChannelsIds();
-        $ch_idx = array_search($ch_id, $user_channels);
+        $channel = Itv::getChannelById($ch_id);
+        
+        $total_channels = Itv::getInstance()
+                                   ->getChannels()
+                                   ->orderby('number')
+                                   ->in('id', $all_user_ids)
+                                   ->get()
+                                   ->count();
+        
+        $ch_idx = Itv::getInstance()
+                                   ->getChannels()
+                                   ->orderby('number')
+                                   ->in('id', $all_user_ids)
+                                   ->where(array('number<=' => $channel['number']))
+                                   ->get()
+                                   ->count();
+        
         
         if ($ch_idx === false){
             $ch_idx = 0;
@@ -471,26 +519,52 @@ class Epg
             }
         }
         
-        $display_channels = array_slice($user_channels, $page_items*($page-1), $page_items);
+        $user_channels = Itv::getInstance()
+                                   ->getChannels()
+                                   ->orderby('number')
+                                   ->in('id', $all_user_ids)
+                                   ->limit($page_items, ($page-1)*$page_items)
+                                   ->get()
+                                   ->all();
         
-        /*
-         * @todo: uncomment this line if php>=5.3.0
-         * $channels = Itv::getInstance()->getChannelsByIds($display_channels);
-         */
+        $display_channels_ids = array_map(function($element){return $element['id'];}, $user_channels);
         
-        $raw_epg = $this->getEpgForChannelsOnPeriod($display_channels, $from, $to);
+        $raw_epg = $this->getEpgForChannelsOnPeriod($display_channels_ids, $from, $to);
         
         $result = array();
         
         foreach ($raw_epg as $ch_id => $epg){
             
+            $channel = $user_channels[array_search($ch_id, $display_channels_ids)];
+            
             $result[] = array(
-                              'ch_id' => $ch_id,
-                              'name'  => Itv::getChannelNameById($ch_id), //@todo: in future for php>=5.3.0 use - array_filter($channels, function($element) use ($ch_id){return ($element['id'] == $ch_id)}),
-                              'epg'   => $epg);
+                              'ch_id'  => $ch_id,
+                              //'name'  => Itv::getChannelNameById($ch_id), //@todo: in future for php>=5.3.0 use - array_filter($channels, function($element) use ($ch_id){return ($element['id'] == $ch_id)}),
+                              'name'   => $channel['name'],
+                              'number' => $channel['number'],
+                              'epg_container' => 1,
+                              'epg'    => $epg);
         }
         
-        return $result;
+        $time_marks = array();
+        
+        $from_ts = strtotime($from);
+        $to_ts   = strtotime($to);
+        
+        $time_marks[] = date("H:i", $from_ts);
+        $time_marks[] = date("H:i", $from_ts+1800);
+        $time_marks[] = date("H:i", $from_ts+2*1800);
+        $time_marks[] = date("H:i", $from_ts+3*1800);
+        
+        
+        return array('total_items'    => $total_channels,
+                     'max_page_items' => $page_items,
+                     'cur_page'       => $page, // $page?
+                     'selected_item'  => $ch_idx,
+                     'time_marks'     => $time_marks,
+                     'from_ts'        => $from_ts,
+                     'to_ts'          => $to_ts,
+                     'data'           => $result);
     }
 }
 ?>
