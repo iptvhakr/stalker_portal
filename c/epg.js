@@ -182,9 +182,10 @@
             }).bind(key.MENU, this);
             
             (function(){
+                this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
                 this.parent.show(true);
                 this.hide();
-            }).bind(key.EXIT, this);
+            }).bind(key.EXIT, this).bind(key.OK, this);
             
             this.horizontal_shift.bind(key.VOL_UP, this, 1);
             this.horizontal_shift.bind(key.VOL_DOWN, this, -1);
