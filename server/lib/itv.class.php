@@ -70,7 +70,7 @@ class Itv extends AjaxResponse
         if (!empty($last_id_arr) && key_exists('last_id', $last_id_arr)){
             $this->db->update('last_id', array('last_id' => $id), array('ident' => $this->stb->mac));
         }else{
-            $this->db->insert('last_id', array('last_id' => $id));
+            $this->db->insert('last_id', array('last_id' => $id, 'ident' => $this->stb->mac));
         }
         
         return true;
@@ -484,6 +484,20 @@ class Itv extends AjaxResponse
     public static function getChannelNameById($id){
         
         return Mysql::getInstance()->from('itv')->where(array('id' => $id))->get()->first('name');
+    }
+    
+    public static function getChannelById($id){
+        
+        return Mysql::getInstance()->from('itv')->where(array('id' => $id))->get()->first();
+    }
+    
+    public function getShortEpg(){
+        
+        $ch_id = intval($_REQUEST['ch_id']);
+        
+        $epg = new Epg();
+        
+        return $epg->getCurProgramAndFiveNext($ch_id);
     }
 }
 ?>
