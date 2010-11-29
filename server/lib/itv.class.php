@@ -232,7 +232,11 @@ class Itv extends AjaxResponse
         
         $fav = $this->getFav();
         
-        $last_id = $this->getLastId();
+        if (!empty($_REQUEST['from_ch_id']) && intval($_REQUEST['from_ch_id'])>0){
+            $last_id = intval($_REQUEST['from_ch_id']);
+        }else{
+            $last_id = $this->getLastId();
+        }
         
         $tv_number = $this->db->from('itv')->where(array('id' => $last_id))->get()->first('number');
         
