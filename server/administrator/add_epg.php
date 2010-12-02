@@ -57,6 +57,8 @@ if (!$error){
             
             $query = "insert into epg (ch_id, name, time, time_to, duration) values ('".$_GET['id']."', '".mysql_real_escape_string($line_arr['name'])."', '".$line_arr['time']."', '".$line_arr['time_to']."', '".$line_arr['duration']."')";
                 
+            //var_dump($query);
+            
             $rs=$db->executeQuery($query);
         }
         
@@ -79,7 +81,8 @@ function get_line($date, $epg_lines, $line_num){
         
         $result['time'] = $time;
         
-        $result['name'] = addslashes($tmp_line[3]);
+        //$result['name'] = addslashes($tmp_line[3]);
+        $result['name'] = $tmp_line[3];
         
         $next_line = get_line($date, $epg_lines, $line_num+1);
         
