@@ -118,6 +118,8 @@
         this.show = function(){
             _debug('epg.show');
             
+            this.cur_page = 0;
+            
             this.parent.on = false;
             
             this.set_date_period();
