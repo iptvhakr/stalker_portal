@@ -72,7 +72,8 @@ if (!$error){
                                         tv_genre_id, 
                                         status,
                                         xmltv_id,
-                                        service_id
+                                        service_id,
+                                        volume_correction
                                         ) 
                                 values ('".@$_POST['name']."', 
                                         '".@$_POST['number']."', 
@@ -86,7 +87,8 @@ if (!$error){
                                         '".@$_POST['tv_genre_id']."', 
                                         1,
                                         '".@$_POST['xmltv_id']."',
-                                        '".trim($_POST['service_id'])."'
+                                        '".trim($_POST['service_id'])."',
+                                        ".intval($_POST['volume_correction'])."
                                         )";
             echo $query;
             $rs=$db->executeQuery($query);
@@ -115,7 +117,8 @@ if (!$error){
                                 descr='".$_POST['descr']."', 
                                 tv_genre_id='".$_POST['tv_genre_id']."',
                                 xmltv_id='".$_POST['xmltv_id']."',
-                                service_id='".trim($_POST['service_id'])."'
+                                service_id='".trim($_POST['service_id'])."',
+                                volume_correction=".intval($_POST['volume_correction'])."
                             where id=".intval(@$_GET['id']);
             //echo $query;
             $rs=$db->executeQuery($query);
@@ -307,6 +310,7 @@ if (@$_GET['edit']){
         $hd       = $arr['hd'];
         $xmltv_id = $arr['xmltv_id'];
         $service_id = $arr['service_id'];
+        $volume_correction = $arr['volume_correction'];
         if ($censored){
             $checked = 'checked';
         }
@@ -471,6 +475,14 @@ function popup(src){
            </td>
            <td>
             <input id="service_id" name="service_id" size="50" type="text" value="<? echo @$service_id ?>">
+           </td>
+        </tr>
+        <tr>
+           <td align="right">
+            Коррекция звука (-20...20): 
+           </td>
+           <td>
+            <input id="service_id" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
            </td>
         </tr>
         <!--<tr>
