@@ -21,6 +21,7 @@ CREATE TABLE `video`(
     `censored` tinyint default 0, /* 0-off, 1-on */
     `hd` tinyint default 0,
     `series` text NOT NULL default '', 
+    `volume_correction` int NOT NULL default 0,
     
     `category_id` int NOT NULL default 0,
     
@@ -112,6 +113,7 @@ CREATE TABLE `itv`(
     `xmltv_id` varchar(128) NOT NULL default '',
     `service_id` varchar(32) NOT NULL default '',
     `bonus_ch` tinyint default 0, /* 1 - bonus channel */
+    `volume_correction` int NOT NULL default 0,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
