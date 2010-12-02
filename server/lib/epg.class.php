@@ -524,6 +524,8 @@ class Epg
             }
         }
         
+        $ch_idx = $ch_idx - ($page-1)*$page_items;
+        
         $user_channels = Itv::getInstance()
                                    ->getChannels()
                                    ->orderby('number')
@@ -532,7 +534,13 @@ class Epg
                                    ->get()
                                    ->all();
         
-        $display_channels_ids = array_map(function($element){return $element['id'];}, $user_channels);
+        //$display_channels_ids = array_map(function($element){return $element['id'];}, $user_channels);
+        
+        $display_channels_ids = array();
+        
+        foreach ($user_channels as $element){
+            $display_channels_ids[] = $element['id'];
+        }
         
         $raw_epg = $this->getEpgForChannelsOnPeriod($display_channels_ids, $from, $to);
         
