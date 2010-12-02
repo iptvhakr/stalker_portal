@@ -579,7 +579,7 @@ player.prototype.first_play = function(){
 }
 
 player.prototype.play = function(item){
-    _debug('player.play');
+    _debug('player.play', item);
     
     var cmd;
     
@@ -597,7 +597,7 @@ player.prototype.play = function(item){
         cmd = item;
     }
     
-    if (item.hasOwnProperty('position') && parseInt(item.position) > 0){
+    if (item.hasOwnProperty && item.hasOwnProperty('position') && parseInt(item.position) > 0){
         cmd += ' position:'+item.position;
     }
     
