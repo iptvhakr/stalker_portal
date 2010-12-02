@@ -220,7 +220,8 @@ if (count(@$_POST) > 0){
                                                  actors,
                                                  added,
                                                  status,
-                                                 year
+                                                 year,
+                                                 volume_correction
                                                  ) 
                                         values ('".$name."',
                                                 '".$o_name."',
@@ -243,7 +244,8 @@ if (count(@$_POST) > 0){
                                                 '".mysql_escape_string(@$_POST['actors'])."',
                                                 '".$datetime."',
                                                 $status,
-                                                '".$year."'
+                                                '".$year."',
+                                                ".intval($_POST['volume_correction'])."
                                                 )";
                     //echo $query;
                     $rs = $db->executeQuery($query);
@@ -287,7 +289,8 @@ if (count(@$_POST) > 0){
                                                director='".@$_POST['director']."', 
                                                actors='".@$_POST['actors']."', 
                                                status=$status,
-                                               year='".@$_POST['year']."'
+                                               year='".@$_POST['year']."',
+                                               volume_correction=".intval($_POST['volume_correction'])."
                                             where id=".intval(@$_GET['id']);
                     
                     $rs=$db->executeQuery($query);
@@ -705,6 +708,7 @@ if (@$_GET['edit']){
         $path     = $arr['path'];
         $hd       = $arr['hd'];
         $rtsp_url = $arr['rtsp_url'];
+        $volume_correction = $arr['volume_correction'];
         $readonly = 'readonly';
         if ($censored){
             $checked = 'checked';
@@ -1578,6 +1582,14 @@ function fill_category(){
            </td>
            <td>
             <textarea id="description" name="description" rows="10" cols="30"><? echo @$description ?></textarea>
+           </td>
+        </tr>
+        <tr>
+           <td align="right">
+            Коррекция звука (-20...20): 
+           </td>
+           <td>
+            <input id="service_id" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
            </td>
         </tr>   
         <tr>
