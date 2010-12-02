@@ -128,6 +128,14 @@ player.prototype.event_callback = function(event){
             
             break;
         }
+        case 2: // Receive information about stream
+        {
+            if (this.cur_media_item.hasOwnProperty('volume_correction')){
+                this.volume.correct_level(this.cur_media_item.volume_correction);
+            }else{
+                this.volume.correct_level(0);
+            }
+        }
         case 4: // Playback started
         {
             
@@ -228,6 +236,7 @@ player.prototype.volume = new function(){
     this.dom_obj = {};
     this.mute = {"on" : false};
     this.hide_to = 3000;
+    this.correction = 0;
     
     this.init = function(){
         _debug('volume.init');
@@ -247,15 +256,35 @@ player.prototype.volume = new function(){
     this.set_level = function(v){
         _debug('volume.set_level', v);
 
+        if (v > 100){
+            v = 100;
+        }else if (v < 0){
+            v = 0;
+        }
+        
         this.level = v;
         
+        var final_level = this.level + this.correction;
+        
+        _debug('final_level', final_level);
+        
+        if (final_level > 100){
+            this.correction = 100 - this.level;
+            final_level = 100;
+        }else if (final_level < 0){
+            this.correction = 0 - this.level;
+            final_level = 0;
+        }
+        
+        _debug('this.correction', this.correction);
+        
         try{
-            stb.SetVolume(this.level);
+            stb.SetVolume(final_level);
         }catch(e){
             _debug(e);
         }
         
-        if (this.level == 0){
+        if (final_level == 0){
             if (!this.mute.on){
                 this.show_mute();
             }
@@ -265,7 +294,45 @@ player.prototype.volume = new function(){
             }
         }
         
-        this.update_bar();
+        _debug('final_level', final_level);
+        
+        this.update_bar(final_level);
+    }
+    
+    this.correct_level = function(c){
+        _debug('volume.correct_level', c);
+        
+        if (!c){
+            c = 0;
+        }
+        
+        this.correction = c*this.step;
+        
+        var level = this.level + this.correction;
+        
+        _debug('this.level', this.level);
+        _debug('this.correction', this.correction);
+        _debug('level', level);
+        
+        if (level > 100){
+            level = 100;
+            this.correction = 100 - this.level;
+        }else if (level < 0){
+            level = 0;
+            this.correction = 0 - this.level;
+        }
+        
+        _debug('this.correction', this.correction);
+        _debug('this.level', this.level);
+        _debug('level', level);
+        
+        try{
+            stb.SetVolume(level);
+        }catch(e){
+            _debug(e);
+        }
+        
+        this.update_bar(level);
     }
     
     this.show = function(){
@@ -364,7 +431,7 @@ player.prototype.volume = new function(){
         this.mute.dom_obj.hide();
         this.container.show();
         
-        this.update_bar();
+        this.update_bar(this.level);
         this.mute.on = false;
         
         if (!this.on){
@@ -384,11 +451,11 @@ player.prototype.volume = new function(){
         }
     }
     
-    this.update_bar = function(){
-        _debug('volume.update_bar');
+    this.update_bar = function(level){
+        _debug('volume.update_bar', level);
         
         //var width = 14*this.level/this.step;
-        var width = 10*((this.level/this.step) - 1);
+        var width = 10*((level/this.step) - 1);
         
         if (width > 0){
             width += 5;
