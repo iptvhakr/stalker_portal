@@ -305,8 +305,13 @@ class Epg
                             ->where(array(
                                 'ch_id'    => $ch_id,
                                 'time<='   => 'NOW()',
-                                'time_to>' => 'NOW()'
+                                //'time_to>' => 'NOW()'
                             ))
+                            ->where(array(
+                                'time_to is' => null,
+                                'time_to>' => 'NOW()'
+                            ), 'OR ')
+                            ->orderby('time', 'DESC')
                             ->get()
                             ->first();
         
