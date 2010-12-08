@@ -64,6 +64,13 @@ load_bar.prototype.hide = function(){
     this.callback && this.callback();
 }
 
+load_bar.prototype.stop = function(){
+    _debug('load_bar.stop');
+    
+    this.dom_obj.hide();
+    this.on = false;
+}
+
 load_bar.prototype.show_log = function(){
     _debug('load_bar.show_log');
     
