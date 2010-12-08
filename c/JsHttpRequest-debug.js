@@ -78,7 +78,11 @@ function JsHttpRequest() {
             ) {
                 url += (url.indexOf('?') >= 0? '&' : '?') + session_name + "=" + this.escape(RegExp.$1);
             }
-        } catch (e) {}
+        } catch (e) {_debug(e)}
+        
+        _debug('open method', method)
+        _debug('open url', url)
+        
         // Store open arguments to hash.
         _openArgs = {
             method:     (method || '').toUpperCase(),
@@ -410,7 +414,8 @@ JsHttpRequest.query = function(url, content, onready, nocache) {
         }
     }
     req.open(null, url, true);
-    req.send(content);
+    var d = req.send(content);
+    _debug('query end', d);
 }
 
 
@@ -482,10 +487,10 @@ JsHttpRequest.LOADERS.xml = { loader: function(req) {
         // Try to obtain a loader.
         var xr = null;
         if (window.XMLHttpRequest) {
-            try { xr = new XMLHttpRequest() } catch(e) {}
+            try { xr = new XMLHttpRequest() } catch(e) {_debug(e)}
         } else if (window.ActiveXObject) {
-            try { xr = new ActiveXObject("Microsoft.XMLHTTP") } catch(e) {}
-            if (!xr) try { xr = new ActiveXObject("Msxml2.XMLHTTP") } catch (e) {}
+            try { xr = new ActiveXObject("Microsoft.XMLHTTP") } catch(e) {_debug(e)}
+            if (!xr) try { xr = new ActiveXObject("Msxml2.XMLHTTP") } catch (e) {_debug(e)}
         }
         if (!xr) return ['xml_no'];
         
@@ -518,7 +523,7 @@ JsHttpRequest.LOADERS.xml = { loader: function(req) {
                 // But xr.readyState equals to 4 in this case. Stupid behaviour. :-(
                 req.status = xr.status;
                 req.responseText = xr.responseText;
-            } catch (e) {}
+            } catch (e) {_debug(e)}
             if (!req.status) return;
             try {
                 // Damned Opera returned empty responseText when Status is not 200.
