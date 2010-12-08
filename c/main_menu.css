@@ -141,3 +141,20 @@
     color: #ccd6de  !important;
 }
 /* END MAIN MENU */
+
+.cut_off{
+    position:absolute;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    width: 720px;
+    height: 576px;
+    background-image: url("i/bg2.png");
+}
+
+.cut_off_text{
+    margin-top: 200px;
+    text-align: center;
+    font: 45px trebuchet ms, Arial, Helvetica, sans-serif;
+    color: #fff;
+}
