@@ -72,8 +72,6 @@ function common_xpcom(){
         this.usbdisk = new usbdisk();
         
         this.cut_off_dom_obj = create_block_element('cut_off');
-        var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
-        text_msg.innerHTML = get_word('cut_off_msg');
         this.cut_off_dom_obj.hide();
         
         //this.clock.start();
@@ -192,6 +190,8 @@ function common_xpcom(){
                 
                 word = result;
                 this.clock.start();
+                
+                this.user_init(this.profile);
             },
             
             this
@@ -265,7 +265,11 @@ function common_xpcom(){
             
             function(result){
                 if (result != null){
-                    this.user_init(result);
+                    this.profile = result;
+                    //this.user_init(result);
+                    this.get_localization();
+                    
+                    
                 }
             },
             
@@ -320,7 +324,7 @@ function common_xpcom(){
                 return;
             }
             
-            this.get_localization();
+            //this.get_localization();
 
             this.preload_images();
             
@@ -358,6 +362,7 @@ function common_xpcom(){
                 _debug(e);
             }
         }else if(this.user['status'] == 1){
+            stb.loader.stop();
             this.cut_off();
         }
         
@@ -689,6 +694,9 @@ function common_xpcom(){
         this.player.stop();
         
         stb.SetDefaultFlicker(1);
+        
+        var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
+        text_msg.innerHTML = get_word('cut_off_msg');
         
         this.cut_off_dom_obj.show();
         
