@@ -57,18 +57,23 @@ class Epg
         $str = "From {$setting['uri']}\n";
         
         if (strpos($setting['uri'], 'http') === 0){
+            $etag = '';
+            $headers = get_headers($setting['uri'], 1);
             
-            $headers = get_headers($setting['uri']);
+            if ($headers === false){
+                return "\nИсточник ".$setting['uri']." недоступен\n";
+            }
+            
+            if (!preg_match("/200 OK/", $headers[0])){
+                return "\nИсточник ".$setting['uri']." недоступен\n";
+            }
             
             foreach ($headers as $header){
                 
-                if (preg_match('/^ETag: "(.*)"/', $header, $matches)){
-                    if (!empty($matches[1])){
-                        
-                        $etag = $matches[1];
-                        
-                        break;
-                    }
+                if (!empty($headers['ETag'])){
+                    $etag = $headers['ETag'];
+                    
+                    break;
                 }
             }
         }else{
@@ -76,7 +81,7 @@ class Epg
         }
         
         if ($setting['etag'] == $etag && !$force){
-            return 'Файл не изменился';
+            return "Источник ".$setting['uri']." не изменился\n";
         }
         
         if (preg_match("/\.gz$/", $setting['uri'])){
@@ -154,9 +159,12 @@ class Epg
             $total++;
         }
         
+        $setting['etag'] = $etag;
+        $this->setSettings($setting);
+        
         $str = "Обновлено $done каналов из $total, $err ошибок \n";
-        $str .= "<b>Ошибки :</b>".$xml_ids_err."\n";
-        $str .= "<b>Успешно :</b>".$xml_ids_done."\n";
+        $str .= "<b>Ошибки: </b>\n".($err? $xml_ids_err : $err)."\n";
+        $str .= "<b>Успешно: </b>\n".$xml_ids_done."\n";
         
         return $str;
     }
