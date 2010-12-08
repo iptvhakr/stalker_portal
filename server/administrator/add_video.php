@@ -598,6 +598,7 @@ echo "<td class='list'><b>Каталог</b></td>\n";
 echo "<td class='list'><b>Название фильма</b></td>\n";
 echo "<td class='list'><b>Оригинальное название</b></td>\n";
 echo "<td class='list'><b>Ограничение</b></td>\n";
+echo "<td class='list'><b>Коррекция звука</b></td>\n";
 echo "<td class='list'><b>Длительность, мин</b></td>\n";
 echo "<td class='list'><b>Серии</b></td>\n";
 echo "<td class='list'><b>Жалобы на звук/видео</b></td>\n";
@@ -622,6 +623,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['name']."</td>\n";
     echo "<td class='list'>".$arr['o_name']."</td>\n";
     echo "<td class='list'>".$arr['censored']."</td>\n";
+    echo "<td class='list'>".$arr['volume_correction']."</td>\n";
     echo "<td class='list'>".$arr['time']."</td>\n";
     echo "<td class='list'><span id='series_{$arr['id']}'>".count_series($arr['series'])."</span></td>\n";
     echo "<td class='list' align='center'>";
