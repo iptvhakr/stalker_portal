@@ -233,6 +233,7 @@ echo "<td class='list'><b>Имя</b></td>";
 echo "<td class='list'><b>Адрес</b></td>";
 //echo "<td class='list'><b>Описание</b></td>";
 echo "<td class='list'><b>Жанр</b></td>";
+echo "<td class='list'><b>Коррекция звука</b></td>";
 echo "<td class='list'><b>Жалобы на<br>звук/видео</b></td>\n";
 echo "<td class='list'><b>&nbsp;</b></td>";
 echo "</tr>";
@@ -267,6 +268,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['cmd']."</td>";
     //echo "<td class='list'>".$arr['descr']."</td>";
     echo "<td class='list'>".$arr['genres_name']."</td>";
+    echo "<td class='list'>".$arr['volume_correction']."</td>";
     
     echo "<td class='list' align='center'>\n";
     if (check_access(array(1))){
