@@ -89,9 +89,9 @@ if (@$_FILES['userfile']){
                             $result[$stb_id] = array();
                         }
                         $result[$stb_id][] = intval($service_id_map[$ch]);
-                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274'){
+                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389'){
                         $result[$stb_id] = $all_payed_ch;
-                        if ($ch == '00203' || $ch == '00021' || $ch == '00274'){
+                        if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389'){
                             $add_services_on[] = $stb_id;
                         }
                     }else if($ch == '00100'){
