@@ -327,7 +327,9 @@ player.prototype.volume = new function(){
         _debug('level', level);
         
         try{
-            stb.SetVolume(level);
+            if (!this.mute.on){
+                stb.SetVolume(level);
+            }
         }catch(e){
             _debug(e);
         }
@@ -1221,6 +1223,8 @@ player.prototype.bind = function(){
             }
         }
     }).bind(key.REC, this);
+    
+    this.volume.set_level.bind(key.REFRESH, this.volume, 50);
 }
 
 player.prototype.save_fav_ids = function(){
