@@ -91,7 +91,7 @@ if (@$_FILES['userfile']){
                         $result[$stb_id][] = intval($service_id_map[$ch]);
                     }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389'){
                         $result[$stb_id] = $all_payed_ch;
-                        if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389'){
+                        if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389' || $ch == '00381' || $ch == '00382'){
                             $add_services_on[] = $stb_id;
                         }
                     }else if($ch == '00100'){
@@ -210,9 +210,9 @@ function get_service_id_map(){
         if (strlen($service_id)==5){
             $arr[$service_id]=$rs->getCurrentValueByName('id');
         }elseif (strlen($service_id) == 11){
-            $arr = explode(' ', $service_id);
+            $ids = explode(' ', $service_id);
             
-            foreach ($arr as $id){
+            foreach ($ids as $id){
                 $arr[$id]=$rs->getCurrentValueByName('id');
             }
         }
