@@ -256,11 +256,11 @@ player.prototype.volume = new function(){
     this.set_level = function(v){
         _debug('volume.set_level', v);
 
-        if (v > 100){
+        /*if (v > 100){
             v = 100;
         }else if (v < 0){
             v = 0;
-        }
+        }*/
         
         this.level = v;
         
@@ -269,13 +269,16 @@ player.prototype.volume = new function(){
         _debug('final_level', final_level);
         
         if (final_level > 100){
+            this.level = 100;
             this.correction = 100 - this.level;
             final_level = 100;
         }else if (final_level < 0){
+            this.level = 0;
             this.correction = 0 - this.level;
             final_level = 0;
         }
         
+        _debug('this.level', this.level);
         _debug('this.correction', this.correction);
         
         try{
@@ -379,20 +382,20 @@ player.prototype.volume = new function(){
         
         try{
             if (dir>0){
-                if (this.level < 100){
+                //if (this.level < 100){
                     this.level += this.step;
-                }
+                //}
             }else{
-                if (this.level > 0){
+                //if (this.level > 0){
                     this.level -= this.step;
-                }
+                //}
             }
             
-            if (this.level > 100){
+            /*if (this.level > 100){
                 this.level = 100;
             }else if (this.level < 0){
                 this.level = 0;
-            }
+            }*/
             
             this.set_level(this.level);
         }catch(e){
