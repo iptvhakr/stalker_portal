@@ -347,7 +347,8 @@ CREATE TABLE `fav_itv`(
     `uid` int NOT NULL default 0,
     `fav_ch` text NOT NULL default '',
     `addtime` datetime,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `audio`;
@@ -416,7 +417,8 @@ CREATE TABLE `fav_vclub`(
     `fav_video` text NOT NULL default '',
     `addtime` datetime,
     `edittime` datetime,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`uid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 DROP TABLE `administrators`;
@@ -1080,5 +1082,16 @@ CREATE TABLE `weatherco_cache`(
     `forecast` text,
     `url` varchar(128),
     `updated` datetime,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `tv_reminder`;
+CREATE TABLE `tv_reminder`(
+    `id` int NOT NULL auto_increment,
+    `mac` varchar(64) NOT NULL default '',
+    `ch_id` int NOT NULL default 0,
+    `tv_program_id` int NOT NULL default 0,
+    `fire_time` datetime,
+    `added` datetime,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
