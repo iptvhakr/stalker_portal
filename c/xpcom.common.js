@@ -330,6 +330,8 @@ function common_xpcom(){
             
             this.player.volume.set_level(parseInt(this.user['volume']));
             
+            this.player.setup_rtsp(this.user['rtsp_type'], this.user['rtsp_flags']);
+            
             this.user.fav_itv_on = parseInt(this.user.fav_itv_on);
             
             this.user['aspect'] = parseInt(this.user['aspect']);
