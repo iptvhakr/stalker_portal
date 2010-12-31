@@ -265,6 +265,8 @@ if (typeof Object.prototype.toSource != 'function'){
             return res;
         } else if(con == RegExp) {
             return this;
+        } else if(con == Function) {
+            return "[function]";
         } else if(con == Object) {
             var res = '{';
             var i=0;
@@ -385,7 +387,9 @@ function empty(val){
     }else if (type == 'undefined'){
         return true;
     }else{
-        if (type == 'object'){
+        if (!val){
+            return true;
+        }else if (type == 'object'){
             for(var p in val){
                 if (val.hasOwnProperty(p)){
                     return false;
