@@ -197,4 +197,12 @@ $words['msg_channel_not_available'] = 'Сhannel is not available';
 $words['epg_title'] = 'TV Guide';
 $words['epg_record'] = 'RECORD';
 $words['epg_remind'] = 'REMIND';
+$words['epg_memo']   = 'Memo';
+$words['epg_goto_ch']   = 'Goto channel';
+$words['epg_close_msg']   = 'Close';
+$words['epg_on_ch']   = 'on channel';
+$words['epg_now_begins']   = 'now begins';
+$words['epg_on_time'] = 'in';
+$words['epg_started'] = 'started';
+
 ?>
