@@ -17,7 +17,7 @@
         this.save_callback = function(){
             _debug('save_callback');
             stb.msg.set_callback(function(){stb.ExecAction('reboot')});
-            stb.msg.show(word['settings_saved_reboot']);
+            stb.msg.push(word['settings_saved_reboot']);
         };
         
         this.load_default = function(){
