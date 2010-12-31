@@ -277,7 +277,7 @@
                         self.start_game();
                     });
             
-            stb.msg.show('Победа!!! Время: ' + time + 'c. Очки: ' + points + '. Чтобы начать заново нажмите ОК');
+            stb.msg.push('Победа!!! Время: ' + time + 'c. Очки: ' + points + '. Чтобы начать заново нажмите ОК');
             
             this.save_win(this.step, time);
         };
