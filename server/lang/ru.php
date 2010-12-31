@@ -199,5 +199,11 @@ $words['msg_channel_not_available'] = 'Канал недоступен';
 $words['epg_title'] = 'ТВ Гид';
 $words['epg_record'] = 'ЗАПИСАТЬ';
 $words['epg_remind'] = 'НАПОМНИТЬ';
-
+$words['epg_memo']   = 'Напоминание';
+$words['epg_goto_ch']   = 'Перейти на канал';
+$words['epg_close_msg']   = 'Закрыть окно';
+$words['epg_on_ch']   = 'на канале';
+$words['epg_now_begins']   = 'сейчас начинается';
+$words['epg_on_time'] = 'в';
+$words['epg_started'] = 'началось';
 ?>
