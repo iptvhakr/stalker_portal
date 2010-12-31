@@ -90,7 +90,6 @@
 
 var debug = 0;
 var stb;
-var stbEvent;
 var _GET = {};
 
 var module = {};
@@ -151,19 +150,18 @@ var loader = {
         
         stb.loader.add_pos(this.step, 'append '+module);
         
-        var _script = document.createElement('script');
-        _script.type = "text/javascript";
-        _script.src  = module + ".js";
-        
         var _style = document.createElement('link');
         _style.type = "text/css";
         _style.rel = "stylesheet";
         _style.href = module + ".css";
-        
-        this.head.appendChild(_script);
-        _debug('append', _script.src);
         this.head.appendChild(_style);
         _debug('append', _style.href);
+        
+        var _script = document.createElement('script');
+        _script.type = "text/javascript";
+        _script.src  = module + ".js";
+        this.head.appendChild(_script);
+        _debug('append', _script.src);
     },
 };
 
@@ -253,11 +251,6 @@ function init(){
 
     /* END LAYER MANAGEMENT */
     
-}
-
-var stbEvent = {
-    onEvent : function(data){},
-    event : 0
 }
 
 </script>
