@@ -22,6 +22,7 @@ function ListLayer(){
     this.total_items = 0;
     this.total_pages = 0;
     this.cur_row = 0;
+    this.prev_row = 0;
     this.cur_page = 1;
     this.data_items  = [];
     this.map = [];
@@ -128,6 +129,7 @@ ListLayer.prototype.init_page_bar = function(){
 }
 
 ListLayer.prototype.init_list = function(){
+    _debug('ListLayer.init_list');
     
     var item;
     var offset;
@@ -411,6 +413,8 @@ ListLayer.prototype.shift_row = function(dir){
     if (this.loading){
         return;
     }
+    
+    this.prev_row = this.cur_row;
     
     if (dir > 0){
         if (this.cur_row < this.total_items - 1){
