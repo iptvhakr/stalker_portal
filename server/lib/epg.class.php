@@ -451,18 +451,21 @@ class Epg
             
             $result[$ch_id] = $db
                                  ->from('epg')
-                                 ->select('*, UNIX_TIMESTAMP(time) as start_timestamp, UNIX_TIMESTAMP(time_to) as stop_timestamp, TIME_FORMAT(time,"%H:%i") as t_time, TIME_FORMAT(time_to,"%H:%i") as t_time_to')
+                                 ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
                                  ->where(array(
-                                     'ch_id'     => $ch_id,
-                                     'time_to>'  =>  $from,
-                                     'time<'     =>  $to,
+                                     'epg.ch_id'     => $ch_id,
+                                     'epg.time_to>'  =>  $from,
+                                     'epg.time<'     =>  $to,
                                  ))
-                                 ->orderby('time')
+                                 ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
+                                 ->orderby('epg.time')
                                  ->get()
                                  ->all();
         }
         
         $week_day_arr = System::word('week_arr');
+        
+        $now_ts = time();
         
         foreach ($result as $ch_id => $epg){
             
@@ -482,6 +485,10 @@ class Epg
                     $epg[$i]['display_duration'] = $epg[$i]['duration'] - ($epg[$i]['stop_timestamp'] - $to_ts);
                 }
                 
+                if ($epg[$i]['start_timestamp'] < $now_ts){
+                    $epg[$i]['mark_memo'] = null;
+                }
+                
                 $epg[$i]['on_date'] = $week_day_arr[date("w", $epg[$i]['start_timestamp'])].' '.date("d.m.Y", $epg[$i]['start_timestamp']);
             }
             
@@ -497,6 +504,7 @@ class Epg
         $ch_id = intval($_REQUEST['ch_id']);
         $from  = $_REQUEST['from'];
         $to    = $_REQUEST['to'];
+        $default_page = false;
         
         $page_items = 10;
 
@@ -525,6 +533,9 @@ class Epg
         }
         
         if ($page == 0){
+            
+            $default_page = true;
+            
             $page = ceil($ch_idx/$page_items);
             
             if ($page == 0){
@@ -577,6 +588,10 @@ class Epg
         $time_marks[] = date("H:i", $from_ts+2*1800);
         $time_marks[] = date("H:i", $from_ts+3*1800);
         
+        if (!$default_page){
+            $ch_idx = 0;
+            $page = 0;
+        }
         
         return array('total_items'    => $total_channels,
                      'max_page_items' => $page_items,
@@ -586,6 +601,11 @@ class Epg
                      'from_ts'        => $from_ts,
                      'to_ts'          => $to_ts,
                      'data'           => $result);
+    }
+    
+    public static function getById($id){
+        
+        return Mysql::getInstance()->from('epg')->where(array('id' => $id))->get()->first();
     }
 }
 ?>
