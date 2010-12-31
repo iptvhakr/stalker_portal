@@ -9,7 +9,7 @@
     background-position: 0 -36px;
 }
 
-#epg .active_row_bg{
+#epg .active_row_bg, #epg .blue_row_bg[active="active"]{
     position: absolute;
     left: 49px;
     top: 92px;
@@ -30,8 +30,14 @@
     margin: 3px 6px 0 3px;
 }
 
-#epg .active_name_block{
+#epg .active_name_block, #epg .blue_row_bg[active="active"] .name_block{
     padding-left: 3px;
+}
+
+#epg .blue_row_bg[active="active"] .name_block{
+    font-size: 22px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
 }
 
 #epg .epg_container_block{
@@ -40,11 +46,21 @@
     float: left;
 }
 
-#epg .active_number_block{
-    margin: 2px 0 0 4px;
+#epg .active_number_block, #epg .blue_row_bg[active="active"] .number_block{
+    margin: 1px 0 0 4px;
 }
 
-#epg .active_epg_container_block{
+#epg .blue_row_bg[active="active"] .number_block{
+    width: 34px;
+    height: 29px;
+    background-image: url("i/mb_icons.png");
+    background-position: -92px -21px;
+    color: #fff;
+    text-shadow: #122946 0 -1px 0;
+    padding-top: 2px;
+}
+
+#epg .active_epg_container_block, #epg .blue_row_bg[active="active"] .epg_container_block{
     width: 449px;
     text-overflow: ellipsis;
     float: left;
@@ -57,18 +73,42 @@
     overflow: hidden;
     text-overflow: ellipsis;
     height: 34px;
+    position: relative;
+}
+
+#epg .program .marks{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+#epg .program .marks div{
+    float: left;
+    margin-right: 2px; 
+}
+
+#epg .program .marks .mark_memo{
+    height: 5px;
+    width: 5px;
+    background-color: #0c0;
+}
+
+#epg .program .marks .mark_rec{
+    height: 5px;
+    width: 5px;
+    background-color: #c00;
 }
 
 #epg .blue_row_bg .program{
     color: #bcc7d6;
 }
 
-#epg .active_row_bg .program{
+#epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
     color: #284b82;
 }
 
 #epg .program_txt{
-    padding: 4px 2px 0 2px;
+    padding: 6px 2px 0 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:pre;
@@ -92,7 +132,7 @@
     background-position: 0 -36px;
 }
 
-#epg .active_row_bg .program .larr{
+#epg .active_row_bg .program .larr, #epg .blue_row_bg[active="active"] .program .larr{
     background-position: 0 -1px;
 }
 
@@ -107,7 +147,7 @@
     background-position: 10px -36px;
 }
 
-#epg .active_row_bg .program .rarr{
+#epg .active_row_bg .program .rarr, #epg .blue_row_bg[active="active"] .program .rarr{
     background-position: 10px -1px;
 }
 
@@ -117,7 +157,7 @@
     color: #000;
 }
 
-.active_epg_container_block > .program:last-child{
+.active_epg_container_block > .program:last-child, .epg_container_block > .program:last-child{
     -webkit-border-top-right-radius: 7px;
     -webkit-border-bottom-right-radius: 7px;
     -moz-border-radius-topright: 7px;
