@@ -34,6 +34,8 @@
         
         this.time_marks = [];
         
+        this.marks_map = [];
+        
         this.live_line = {
             
             on : false,
@@ -161,6 +163,12 @@
             this.time_marks.push(mark4);
         }
         
+/*        this.init_list = function(){
+            _debug('epg.init_list');
+            
+            this.superclass.init_list.call(this);
+        }*/
+        
         this.reset = function(){
             _debug('epg.reset');
             
@@ -234,6 +242,11 @@
             
             _debug('this.ch_id', this.ch_id);
             
+            this.set_passive_cell();
+            this.set_passive_row();
+            
+            this.marks_map = [];
+            
             this.live_line.stop();
             
             this.load_params['ch_id'] = this.ch_id;
@@ -276,13 +289,27 @@
             
             this.set_passive_cell();
             
-            this.superclass.set_active_row.call(this, num);
+            this.set_passive_row();
             
-            this.post_handling_epg_block(this.active_row, this.data_items[num].epg, true)
+            this.active_row = this.map[num];
+            
+            this.active_row.row.setAttribute('active', 'active');
+            
+            //this.set_passive_cell();
+            
+            //this.superclass.set_active_row.call(this, num);
+            //this.post_handling_epg_block(this.active_row, this.data_items[num].epg, true)
             
             this.ch_id = this.data_items[num].ch_id;
             
             this.set_active_cell();
+        }
+        
+        this.set_passive_row = function(){
+            _debug('epg.set_passive_row', this.prev_row);
+            
+            this.map[this.prev_row].row.setAttribute('active', '');
+            this.map[this.cur_row].row.setAttribute('active', '');
         }
         
         this.post_handling_epg_block = function(item, epg, is_active_row){
@@ -307,6 +334,8 @@
                 this.active_row['epg_cell'] = [];
             }
             
+            item['epg_cell'] = [];
+            
             for (var j=0; j<epg_length; j++){
                 
                 var block = create_block_element('program', item['epg_container_block']);
@@ -323,9 +352,11 @@
                 
                 block.style.width = program_width+'px';
                 
-                if (is_active_row){
+                /*if (is_active_row){
                     this.active_row['epg_cell'].push({"cell" : block, "data" : epg[j]});
-                }
+                }*/
+                
+                item['epg_cell'].push({"cell" : block, "data" : epg[j]});
                 
                 if (epg[j]['larr']){
                     create_block_element('larr', block);
@@ -338,6 +369,28 @@
                 var txt_block = create_block_element('program_txt', block);
                 
                 txt_block.innerHTML = epg[j]['name'];
+                
+                var marks = create_block_element('marks', block);
+                
+                var mark_memo = create_block_element('mark_memo', marks);
+                
+                if (epg[j]['mark_memo']){
+                    mark_memo.show();
+                }else{
+                    mark_memo.hide();
+                }
+                
+                var mark_rec = create_block_element('mark_rec', marks);
+                
+                if (epg[j]['mark_rec']){
+                    mark_rec.show();
+                }else{
+                    mark_rec.hide();
+                }
+                
+                if (!is_active_row){
+                    this.marks_map.push({"program_id" : epg[j]['id'], "mark_memo" : mark_memo, "mark_rec" : mark_rec});
+                }
                 
                 if (j < epg_length-1){
                     create_block_element('program_separator', item['epg_container_block']);
@@ -462,6 +515,242 @@
                 this.on_date.innerHTML = '';
             }
         }
+        
+        this.reminder = {
+        
+            memos : [],
+            
+            get_list : function(){
+                _debug('epg.reminder.get_list');
+                
+                stb.load(
+                    {
+                        "type"   : "tvreminder",
+                        "action" : "get_all_active"
+                    },
+                    
+                    function (result){
+                        
+                        if (!result){
+                            return;
+                        }
+                        
+                        this.memos = result;
+                        
+                        var timestamp = (new Date().getTime())/1000;
+                        
+                        var self = this;
+                        
+                        for (var i=0; i<this.memos.length; i++){
+                            
+                            var diff = (this.memos[i].fire_ts - timestamp);
+                            
+                            if (diff > 0){
+                                
+                                this.memos[i]['timer'] = window.setTimeout((function(context, memo){
+                                    
+                                    return function(){
+                                        stb.msg.push(function(){
+                                            _debug('return show_notification');
+                                            return context.show_notification.call(context, memo)
+                                        });
+                                    }
+                                    
+                                })(this, this.memos[i]), diff*1000);
+                                //})(this, this.memos[i]), 30000);
+                                
+                            }
+                        }
+                    },
+                    
+                    this
+                )
+            },
+            
+            add_del : function(){
+                _debug('add_del');
+                
+                var program_id = this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col].id;
+                
+                _debug('this.memos', this.memos);
+                
+                var memo_idx = this.memos.getIdxByVal('tv_program_id', program_id);
+                
+                if (memo_idx !== null){
+                    this.del(memo_idx);
+                }else{
+                    this.add();
+                }
+            },
+            
+            add : function(){
+                _debug('epg.reminder.add');
+                
+                var ch_id      = this.parent.data_items[this.parent.cur_row].ch_id;
+                var program_id = this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col].id;
+                var fire_ts    = this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col].start_timestamp;
+                
+                _debug('ch_id', ch_id);
+                _debug('program_id', program_id);
+                _debug('fire_ts', fire_ts);
+                
+                stb.load(
+                    {
+                        "type"        : "tvreminder",
+                        "action"      : "add",
+                        "ch_id"       : ch_id,
+                        "program_id"  : program_id
+                    },
+                    
+                    function(result){
+                        _debug('epg.reminder.add result', result);
+                        
+                        if (empty(result)){
+                            return;
+                        }
+                        
+                        var memo = result;
+                        
+                        var timestamp = (new Date().getTime())/1000;
+                        
+                        var diff = (fire_ts - timestamp);
+                            
+                        _debug('diff', diff);
+                        
+                        if (diff > 0){
+                            
+                            var mark_idx = this.parent.marks_map.getIdxByVal('program_id', program_id);
+                        
+                            if (mark_idx !== null){
+                                this.parent.marks_map[mark_idx].mark_memo.show();
+                                
+                                this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col].mark_memo = 1;
+                                this.parent.set_active_row(this.parent.cur_row);
+                            }
+                            
+                            memo.timer = window.setTimeout((function(context, memo){
+                                    
+                                return function(){
+                                    stb.msg.push(function(){return context.show_notification.call(context, memo)});
+                                }
+                                
+                            })(this, memo), diff*1000);
+                            //})(this, memo), 1000);
+                            
+                            
+                            this.memos.push(memo);
+                            
+                            _debug('this.memos', this.memos);
+                        }
+                        
+                    },
+                    
+                    this
+                )
+            },
+            
+            del : function(memo_idx){
+                _debug('epg.reminder.del');
+                
+                var memo = this.memos[memo_idx];
+                
+                var program_id = memo.tv_program_id;
+                
+                stb.load(
+                    {
+                        "type"        : "tvreminder",
+                        "action"      : "del",
+                        "program_id"  : program_id
+                    },
+                    
+                    function(result){
+                        _debug('epg.reminder.del result', result);
+                    },
+                    
+                    this
+                )
+                
+                var mark_idx = this.parent.marks_map.getIdxByVal('program_id', program_id);
+                        
+                if (mark_idx !== null){
+                    this.parent.marks_map[mark_idx].mark_memo.hide();
+                    
+                    this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col].mark_memo = 0;
+                    this.parent.set_active_row(this.parent.cur_row);
+                }
+                
+                window.clearTimeout(memo.timer);
+                
+                this.memos.splice(memo_idx, 1);
+                
+                _debug('this.memos', this.memos);
+            },
+            
+            show_notification : function(memo){
+                _debug('epg.reminder.show_notification', memo);
+                
+                var timestamp = (new Date().getTime())/1000;
+                
+                var msg = word['epg_memo'] + ' - ' + word['epg_on_ch'] + ' ' + memo['itv_name'] + ' ';
+                
+                if ((timestamp - memo.fire_ts) > 60){
+                    msg += word['epg_on_time'] + ' ' + memo['t_fire_time'] + ' ' + word['epg_started'] + ' ';
+                }else{
+                    msg += word['epg_now_begins'] + ' ';
+                }
+                
+                msg += memo['program_name'];
+                
+                msg += '<br>OK - ' + word['epg_goto_ch'];
+                
+                _debug('msg', msg);
+                
+                stb.msg.set_confirm_callback(function(){
+                    _debug('stb.msg ok callback');
+                    
+                    var fav_ch_idx = null;
+                    
+                    if (stb.user.fav_itv_on){
+                        fav_ch_idx = stb.player.fav_channels.getIdxByVal('id', parseInt(memo['ch_id']));
+                    }
+                    
+                    _debug('fav_ch_idx', fav_ch_idx);
+                    
+                    if (fav_ch_idx === null){
+                        
+                        var ch_idx = stb.player.channels.getIdxByVal('id', parseInt(memo['ch_id']));
+                        
+                        if (ch_idx !== null){
+                            
+                            _debug('ch_idx', ch_idx);
+                            
+                            stb.user.fav_itv_on = 0;
+                            
+                            stb.player.ch_idx = ch_idx;
+                            stb.player.cur_media_item = stb.player.channels[stb.player.ch_idx];
+                            stb.player.cur_tv_item = stb.player.channels[stb.player.ch_idx];
+                            
+                            keydown_observer.emulate_key(key.MENU);
+                            keydown_observer.emulate_key(key.EXIT);
+                        }
+                        
+                    }else{
+                        
+                        stb.player.f_ch_idx = fav_ch_idx;
+                        
+                        _debug('stb.player.f_ch_idx', stb.player.f_ch_idx);
+                        
+                        stb.player.cur_media_item = stb.player.fav_channels[stb.player.f_ch_idx];
+                        stb.player.cur_tv_item = stb.player.fav_channels[stb.player.f_ch_idx];
+                        
+                        keydown_observer.emulate_key(key.MENU);
+                        keydown_observer.emulate_key(key.EXIT);
+                    }
+                })
+                
+                return msg;
+            },
+        }
     }
     
     epg_constructor.prototype = new ListLayer();
@@ -469,6 +758,9 @@
     var epg = new epg_constructor();
     
     epg.parent = module.tv;
+    
+    epg.reminder.parent = epg;
+    epg.reminder.get_list();
     
     epg.bind();
     epg.init();
@@ -478,7 +770,7 @@
     
     epg.init_color_buttons([
         {"label" : word['epg_record'], "cmd" : ''},
-        {"label" : word['epg_remind'], "cmd" : ''},
+        {"label" : word['epg_remind'], "cmd" : function(){epg.reminder.add_del()}},
         {"label" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', "cmd" : ''},
         {"label" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', "cmd" : ''}
     ]);
