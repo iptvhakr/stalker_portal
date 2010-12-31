@@ -82,7 +82,7 @@ watchdog.prototype.parse_result = function(data){
                         self.send_confirm();
                     });
                 
-                stb.msg.show(data.msg);
+                stb.msg.push(data.msg);
                 
                 this.reboot_after_ok = data.reboot_after_ok;
                 
