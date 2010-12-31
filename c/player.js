@@ -2,6 +2,12 @@
  * Player constructor
  * @constructor
  */
+
+var stbEvent = {
+    onEvent : function(data){},
+    event : 0
+}
+
 function player(){
     
     var self = this;
@@ -76,13 +82,22 @@ player.prototype.init = function(){
         stb.SetDefaultFlicker(1);
         stb.SetLoop(0);
         stb.SetMicVolume(100);
-        stb.SetupRTSP(parseInt(stb.user.rtsp_type), parseInt(stb.user.rtsp_flags));
         
         stbEvent.onEvent = (function(self){
             return function(){
                 self.event_callback.apply(self, arguments);
             }
         })(this);
+        
+    }catch(e){
+        _debug(e);
+    }
+}
+
+player.prototype.setup_rtsp = function(rtsp_type, rtsp_flags){
+    _debug('player.prototype.setup_rtsp', rtsp_type, rtsp_flags);
+    try{
+        stb.SetupRTSP(parseInt(rtsp_type), parseInt(rtsp_flags));
     }catch(e){
         _debug(e);
     }
@@ -130,14 +145,22 @@ player.prototype.event_callback = function(event){
         }
         case 2: // Receive information about stream
         {
-            if (this.cur_media_item.hasOwnProperty('volume_correction')){
-                this.volume.correct_level(this.cur_media_item.volume_correction);
+            /*if (this.cur_media_item.hasOwnProperty('volume_correction')){
+                this.volume.correct_level(parseInt(this.cur_media_item.volume_correction));
             }else{
                 this.volume.correct_level(0);
-            }
+            }*/
+            
+            break;
         }
         case 4: // Playback started
         {
+            
+            if (this.cur_media_item.hasOwnProperty('volume_correction')){
+                this.volume.correct_level(parseInt(this.cur_media_item.volume_correction));
+            }else{
+                this.volume.correct_level(0);
+            }
             
             this.cur_media_length = stb.GetMediaLen();
             _debug('player.cur_media_length', this.cur_media_length);
@@ -328,6 +351,8 @@ player.prototype.volume = new function(){
         _debug('this.correction', this.correction);
         _debug('this.level', this.level);
         _debug('level', level);
+        
+        _debug('this.mute.on', this.mute.on);
         
         try{
             if (!this.mute.on){
@@ -721,6 +746,8 @@ player.prototype.stop = function(){
     this.event5_counter = 0;
     
     this.need_show_info = 0;
+    
+    this.cur_media_length = 0;
     
     this.on_create_link = function(){};
     
