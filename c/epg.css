@@ -84,13 +84,14 @@
 
 #epg .program .marks div{
     float: left;
-    margin-right: 2px; 
+    margin: 1px 0 0 1px;
 }
 
 #epg .program .marks .mark_memo{
-    height: 5px;
-    width: 5px;
-    background-color: #0c0;
+    height: 8px;
+    width: 8px;
+    /*background-color: #0c0;*/
+    background-image: url("i/epg_green_mark.png");
 }
 
 #epg .program .marks .mark_rec{
