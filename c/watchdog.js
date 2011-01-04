@@ -73,6 +73,10 @@ watchdog.prototype.parse_result = function(data){
             }
             case 'send_msg':
             {
+                if (this.event_active_id == data.id){
+                    return;
+                }
+                
                 this.event_active_id = data.id;
                 
                 var self = this;
