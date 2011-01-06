@@ -77,6 +77,8 @@ $words['player_on_sound'] = 'на звук';
 $words['player_on_video'] = 'на изображение';
 $words['player_audio'] = 'Аудио';
 $words['player_ty'] = 'Спасибо, Ваше мнение будет учтено';
+$words['series_by_one_play'] = 'одну серию';
+$words['series_continuously_play'] = 'непрерывно';
 
 // radio
 $words['radio_title'] = 'РАДИО';
@@ -138,7 +140,6 @@ $words['records_title'] = 'ЗАПИСИ';
 $words['ears_back'] = 'Н<br>А<br>З<br>А<br>Д';
 $words['ears_about_movie'] = 'О<br><br>Ф<br>И<br>Л<br>Ь<br>М<br>Е';
 $words['ears_tv_guide'] = 'Т<br>В<br><br>Г<br>И<br>Д';
-
 
 // settings
 $words['settings_title'] = 'НАСТРОЙКИ';
@@ -206,4 +207,5 @@ $words['epg_on_ch']   = 'на канале';
 $words['epg_now_begins']   = 'сейчас начинается';
 $words['epg_on_time'] = 'в';
 $words['epg_started'] = 'началось';
+
 ?>
