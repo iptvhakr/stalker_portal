@@ -17,6 +17,7 @@ if (@$_GET['del']){
     $query = "delete from anec where id=".intval(@$_GET['id']);
     $rs=$db->executeQuery($query);
     header("Location: anecdote.php");
+    exit();
 }
 if (!$error){
     
@@ -40,6 +41,7 @@ if (!$error){
             $db->executeQuery($sql);
             
             header("Location: anecdote.php");
+            exit();
         }
         else{
             $error = 'Ошибка: необходимо заполнить все поля';
@@ -57,6 +59,7 @@ if (!$error){
                             where id=".intval(@$_GET['id']);
             $rs=$db->executeQuery($query);
             header("Location: anecdote.php");
+            exit();
         }
         else{
             $error = 'Ошибка: необходимо заполнить все поля';
