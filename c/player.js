@@ -65,6 +65,8 @@ function player(){
     
     this.send_last_tv_id_callback = function(){};
     
+    this.play_continuously = false;
+    
     this.con_menu = new context_menu();
     this.con_menu.bind();
     this.con_menu.set_x_offset(100);
@@ -130,6 +132,33 @@ player.prototype.event_callback = function(event){
                         1000
                     );
                 }else{
+                    
+                    if (this.play_continuously){
+                        
+                        _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
+                        _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
+                        _debug('this.cur_media_item.hasOwnProperty(series)', this.cur_media_item.hasOwnProperty('series'));
+                        
+                        if (this.cur_media_item.hasOwnProperty('series')){
+                            
+                            _debug('this.cur_media_item.cur_series + 1', this.cur_media_item.cur_series + 1);
+                            
+                            if ((parseInt(this.cur_media_item.cur_series) + 1) <= this.cur_media_item.series.length){
+                                this.cur_media_item.cur_series++;
+                                
+                                _debug('this.cur_media_item.cur_series after', this.cur_media_item.cur_series);
+                                
+                                this.play(this.cur_media_item);
+                                
+                                break;
+                            }
+                        }
+                        
+                        //this.cur_media_item.series;
+                        //this.cur_media_item.cur_series;
+                        
+                    }
+                    
                     if(this.prev_layer && this.prev_layer.show){
                         this.prev_layer.show.call(this.prev_layer, true);
                     }
