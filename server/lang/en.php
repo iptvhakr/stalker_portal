@@ -77,6 +77,8 @@ $words['player_on_sound'] = 'on sound';
 $words['player_on_video'] = 'on video';
 $words['player_audio'] = 'Audio';
 $words['player_ty'] = 'Thank you, your opinion will be taken into account';
+$words['series_by_one_play'] = 'one series';
+$words['series_continuously_play'] = 'continuously';
 
 // radio
 $words['radio_title'] = 'RADIO';
@@ -139,6 +141,7 @@ $words['ears_back'] = 'B<br>A<br>C<br>K';
 $words['ears_about_movie'] = 'A<br>B<br>O<br>U<br>T<br><br>M<br>O<br>V<br>I<br>E';
 $words['ears_tv_guide'] = 'T<br>V<br><br>G<br>U<br>I<br>D<br>E';
 
+// settings
 $words['settings_title'] = 'SETTINGS';
 $words['parent_settings_cancel'] = 'CANCEL';
 $words['parent_settings_save'] = 'SAVE';
