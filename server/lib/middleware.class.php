@@ -42,6 +42,26 @@ class Middleware
     }
     
     /**
+     * Return user id by pattern
+     *
+     * @param string $pattern
+     * @return array users id's
+     */
+    public static function getUidsByPattern($pattern){
+        
+        if (!empty($pattern) && is_array($pattern)){
+            
+            $where = $pattern;
+            
+            $ids = Mysql::getInstance()->from('users')->where($where)->get()->all('id');
+            return $ids;
+        }
+        
+        return array();
+    }
+
+    
+    /**
      * Clean perhaps "dirty" mac address
      *
      * @param string $mac 
