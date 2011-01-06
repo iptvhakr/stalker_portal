@@ -191,8 +191,8 @@ if (count(@$_POST) > 0){
                     $year = @$_POST['year'];
                     
                     // disable this video in SD for hd devices
-                    $sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year'";
-                    $db->executeQuery($sql);
+                    //$sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year'";
+                    //$db->executeQuery($sql);
                     
                     $master = new VideoMaster();
                     $master->createMediaDir($trans_name);
@@ -223,8 +223,8 @@ if (count(@$_POST) > 0){
                                                  year,
                                                  volume_correction
                                                  ) 
-                                        values ('".$name."',
-                                                '".$o_name."',
+                                        values ('".mysql_escape_string($name)."',
+                                                '".mysql_escape_string($o_name)."',
                                                 '".$censored."',
                                                 '".$hd."',
                                                 '".$trans_name."',
@@ -270,8 +270,8 @@ if (count(@$_POST) > 0){
                 
                 
                 if(@$_GET['name']){
-                    $query = "update video set name='".$_POST['name']."', 
-                                               o_name='".@$_POST['o_name']."', 
+                    $query = "update video set name='".mysql_escape_string($_POST['name'])."', 
+                                               o_name='".mysql_escape_string($_POST['o_name'])."', 
                                                censored='".$censored."', 
                                                hd='".$hd."', 
                                                rtsp_url='".$rtsp_url."', 
