@@ -1093,5 +1093,6 @@ CREATE TABLE `tv_reminder`(
     `tv_program_id` int NOT NULL default 0,
     `fire_time` datetime,
     `added` datetime,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    INDEX `tv_program_id` (`tv_program_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
