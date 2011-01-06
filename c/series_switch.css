@@ -30,4 +30,14 @@
     font-weight: bold;
     text-align: center
 }
+
+.series_switch .continuously{
+    position: absolute;
+    top: 129px;
+    width: 100%;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    text-align: center
+}
 /* END SERIES SWITCH */
