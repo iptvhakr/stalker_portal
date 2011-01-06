@@ -523,6 +523,8 @@ search_box.prototype.reset = function(){
     
     this.search_input.innerHTML = '';
     
+    this.parent.load_params.search = '';
+    
     this.set_passive_cell();
     
     this.cur_row  = 2;
