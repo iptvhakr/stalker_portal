@@ -24,8 +24,11 @@ series_switch.prototype.init = function(){
     
     this.dom_obj = create_block_element('series_switch');
     this.series_box  = create_block_element('series_switch_input', this.dom_obj);
-    var series_switch_title = create_block_element('series_switch_title', this.dom_obj);
-    series_switch_title.innerHTML = word['player_series_uc'];
+    //var series_switch_title = create_block_element('series_switch_title', this.dom_obj);
+    //series_switch_title.innerHTML = word['player_series_uc'];
+    
+    this.continuously_box  = create_block_element('continuously', this.dom_obj);
+    this.continuously_box.innerHTML = word['series_by_one_play'];
     
     this.hide();
 }
@@ -98,10 +101,25 @@ series_switch.prototype.shift = function(dir){
     this.update_series_box();
 }
 
+series_switch.prototype.vshift = function(dir){
+    _debug('series_switch.vshift', dir);
+    
+    if (stb && stb.player && stb.player.hasOwnProperty('play_continuously')){
+    
+        if (stb.player.play_continuously === true){
+            stb.player.play_continuously = false;
+            this.continuously_box.innerHTML = word['series_by_one_play'];
+        }else{
+            stb.player.play_continuously = true;
+            this.continuously_box.innerHTML = word['series_continuously_play'];
+        }
+    }
+}
+
 series_switch.prototype.update_series_box = function(){
     _debug('series_switch.update_series_box');
     
-    this.series_box.innerHTML = this.series[this.cur_idx];
+    this.series_box.innerHTML = this.series[this.cur_idx] + ' / ' + this.series.length;
 }
 
 series_switch.prototype.bind = function(){
@@ -109,6 +127,9 @@ series_switch.prototype.bind = function(){
     
     this.shift.bind(key.RIGHT, this, 1);
     this.shift.bind(key.LEFT, this, -1);
+    
+    this.vshift.bind(key.DOWN, this, 1);
+    this.vshift.bind(key.UP, this, -1);
     
     this.set.bind(key.OK, this);
     
