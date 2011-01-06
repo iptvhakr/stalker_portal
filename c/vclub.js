@@ -179,6 +179,7 @@ _debug('1!!!!!!!!!!!!!!');
             if (this.search_box && this.search_box.on){
                 this.search_box.hide();
             }else{
+                this.sidebar && this.sidebar.full_reset && this.sidebar.full_reset();
                 this.search_box.show();
             }
         };
@@ -500,6 +501,17 @@ _debug('1!!!!!!!!!!!!!!');
                     
                 }
             )
+        };
+        
+        this.sidebar_switcher = function(){
+            _debug('vclub.sidebar_switcher');
+            
+            if (this.sidebar && !this.sidebar.on){
+                this.search_box && this.search_box.reset && this.search_box.reset();
+                this.load_data();
+            }
+            
+            this.superclass.sidebar_switcher.call(this);
         };
     }
     
