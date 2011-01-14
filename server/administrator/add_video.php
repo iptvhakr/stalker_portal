@@ -223,14 +223,14 @@ if (count(@$_POST) > 0){
                                                  year,
                                                  volume_correction
                                                  ) 
-                                        values ('".mysql_escape_string($name)."',
-                                                '".mysql_escape_string($o_name)."',
+                                        values ('".mysql_real_escape_string($name)."',
+                                                '".mysql_real_escape_string($o_name)."',
                                                 '".$censored."',
                                                 '".$hd."',
                                                 '".$trans_name."',
                                                 '".$rtsp_url."',
                                                 '".@$_POST['time']."',
-                                                '".mysql_escape_string(@$_POST['description'])."',
+                                                '".mysql_real_escape_string(@$_POST['description'])."',
                                                 '".$genre_id_1."',
                                                 '".$genre_id_2."',
                                                 '".$genre_id_3."',
@@ -241,7 +241,7 @@ if (count(@$_POST) > 0){
                                                 '".$cat_genre_id_4."',
                                                 '".$category_id."',
                                                 '".$director."',
-                                                '".mysql_escape_string(@$_POST['actors'])."',
+                                                '".mysql_real_escape_string(@$_POST['actors'])."',
                                                 '".$datetime."',
                                                 $status,
                                                 '".$year."',
@@ -270,13 +270,13 @@ if (count(@$_POST) > 0){
                 
                 
                 if(@$_GET['name']){
-                    $query = "update video set name='".mysql_escape_string($_POST['name'])."', 
-                                               o_name='".mysql_escape_string($_POST['o_name'])."', 
+                    $query = "update video set name='".mysql_real_escape_string($_POST['name'])."', 
+                                               o_name='".mysql_real_escape_string($_POST['o_name'])."', 
                                                censored='".$censored."', 
                                                hd='".$hd."', 
                                                rtsp_url='".$rtsp_url."', 
                                                time='".@$_POST['time']."', 
-                                               description='".@$_POST['description']."', 
+                                               description='".@mysql_real_escape_string($_POST['description'])."', 
                                                genre_id_1='".$genre_id_1."',  
                                                genre_id_2='".$genre_id_2."', 
                                                genre_id_3='".$genre_id_3."', 
@@ -287,12 +287,12 @@ if (count(@$_POST) > 0){
                                                cat_genre_id_4='".$cat_genre_id_4."', 
                                                category_id='".$category_id."', 
                                                director='".@$_POST['director']."', 
-                                               actors='".@$_POST['actors']."', 
+                                               actors='".@mysql_real_escape_string($_POST['actors'])."', 
                                                status=$status,
                                                year='".@$_POST['year']."',
                                                volume_correction=".intval($_POST['volume_correction'])."
                                             where id=".intval(@$_GET['id']);
-                    
+                    //echo $query;
                     $rs=$db->executeQuery($query);
                     add_video_log('edit', intval(@$_GET['id']));
                     $query = 'UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
