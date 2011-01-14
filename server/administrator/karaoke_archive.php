@@ -112,6 +112,11 @@ if (@$_GET['id']){
     $archive_id = intval($_GET['id']);
     
     $sql = "select * from administrators where access=2";
+    
+    if (!check_access(array(1))){
+        $sql .= " and login='".$_SESSION['login']."'";
+    }
+    
     $rs=$db->executeQuery($sql);
     
     
