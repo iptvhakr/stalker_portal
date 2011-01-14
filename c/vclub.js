@@ -460,9 +460,9 @@ _debug('1!!!!!!!!!!!!!!');
         this.add_del_fav = function(){
             _debug('vclub.add_del_fav');
             
-            if (this.load_params.fav == true){
-                return;
-            }
+            //if (this.load_params.fav == true){
+            //    return;
+            //}
             
             if(this.data_items[this.cur_row].fav){
                 this.del_from_fav();
