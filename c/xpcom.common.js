@@ -325,6 +325,8 @@ function common_xpcom(){
             }
             
             //this.get_localization();
+            
+            this.usbdisk.init();
 
             this.preload_images();
             
