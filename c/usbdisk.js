@@ -17,8 +17,28 @@ function usbdisk(){
         _debug(e);
     }
     
-    var self = this;
+    /*var self = this;
             
+    (function(){
+        try{
+            self.drive_mounted();
+        }catch(e){
+            _debug(e);
+        }
+    }).bind(key.USB_MOUNTED);
+    
+    (function(){
+        self.drive_umounted();
+    }).bind(key.USB_UNMOUNTED);
+
+    this.check_mounted();*/
+}
+
+usbdisk.prototype.init = function(){
+    _debug('usbdisk.init');
+    
+    var self = this;
+    
     (function(){
         try{
             self.drive_mounted();
