@@ -433,6 +433,11 @@ class Mysql
             
             $value_str = '('.implode(', ', $values).')';
             
+            /*
+            //@TODO: check for sql query size and split if size > max_allowed_packet
+            if (mb_strlen($value_str, '8bit') + 1000 > $this->get_max_allowed_packet()){
+                
+            }*/
         }
         
         $sql = 'INSERT INTO '.$table.' ('.implode(', ', $fields).') value '.$value_str;
@@ -632,6 +637,11 @@ class Mysql
 	
 	private function disable_caching(){
 	    $this->allow_caching = false;
+	}
+	
+	private function get_max_allowed_packet(){
+	    
+	    return $this->query("SHOW VARIABLES like 'max_allowed_packet'")->get('Value');
 	}
 }
 ?>
