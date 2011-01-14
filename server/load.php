@@ -14,10 +14,7 @@ require_once "lib/config.php";
 require_once "lib/subsys/php.php";
 require_once "lib/data.php";
 require_once "lib/func.php";
-//require_once "conf_serv.php";
-//require_once "lang/".LANG.".php";
 
-//System::set_words($words);
 Stb::setModules($_ALL_MODULES, $_DISABLED_MODULES);
 Stb::setAllowedLanguages($_ALLOWED_LANG);
 
@@ -25,10 +22,9 @@ set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
 if (isset($_GET['JsHttpRequest'])){
     $JsHttpRequest = new JsHttpRequest("utf-8");
+    Stb::getInstance();
     $loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
     $GLOBALS['_RESULT'] = $loader->getResult();
-    //$mysql = Mysql::getInstance();
-    //$counter = $mysql->get_num_queries();
 }else{
     $JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
     $_RESULT = get_data();
