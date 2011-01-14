@@ -603,6 +603,56 @@ class Epg
                      'data'           => $result);
     }
     
+    public function getDataTableForSingleChannel(){
+        
+        $page  = intval($_REQUEST['p']);
+        $ch_id = intval($_REQUEST['ch_id']);
+        $default_page = false;
+        
+        $page_items = 14;
+        
+        if ($page == 0){
+            
+            $default_page = true;
+            
+            //$page = ceil($ch_idx/$page_items);
+            
+            if ($page == 0){
+                $page == 1;
+            }
+        }
+    }
+    
+    public function getWeek(){
+        
+        $cur_num_day = date('w');
+        
+        $week_short_arr = System::word('week_short_arr');
+        
+        $month_arr = System::word('month_arr');
+        
+        $year  = date("Y");
+        $month = date("m");
+        $day   = date("d");
+        
+        $week_days = array();
+        
+        for ($i=0; $i<=6; $i++){
+            $w_day   = date("d", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year));
+            $w_month = date("n", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year))-1;
+            $week_days[$i]['f_human'] = $week_short_arr[$i].' '.$w_day.$month_arr[$w_month];
+            $week_days[$i]['f_mysql'] = date("Y-m-d", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year));
+            $week_days[$i]['today'] = 0;
+            if ($cur_num_day == $i){
+                $week_days[$i]['today'] = 1;
+            }
+        }
+        
+        array_push($week_days, array_shift($week_days));
+        
+        return $week_days;
+    }
+    
     public static function getById($id){
         
         return Mysql::getInstance()->from('epg')->where(array('id' => $id))->get()->first();
