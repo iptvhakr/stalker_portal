@@ -161,13 +161,7 @@
             var mark4 = create_block_element('time_mark', this.dom_obj);
             mark4.style.right = '38px';
             this.time_marks.push(mark4);
-        }
-        
-/*        this.init_list = function(){
-            _debug('epg.init_list');
-            
-            this.superclass.init_list.call(this);
-        }*/
+        };
         
         this.reset = function(){
             _debug('epg.reset');
@@ -175,7 +169,7 @@
             this.minutes_offset = 0;
             
             this.superclass.reset.call(this);
-        }
+        };
         
         this.bind = function(){
             
