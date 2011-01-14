@@ -137,6 +137,11 @@ function get_closed_karaoke($uid){
 }
 
 $sql = "select * from administrators where access=2";
+
+if (!check_access(array(1))){
+    $sql .= " and login='".$_SESSION['login']."'";
+}
+
 $rs  = $db->executeQuery($sql);
 
 while(@$rs->next()){
