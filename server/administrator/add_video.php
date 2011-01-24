@@ -223,8 +223,8 @@ if (count(@$_POST) > 0){
                                                  year,
                                                  volume_correction
                                                  ) 
-                                        values ('".mysql_real_escape_string($name)."',
-                                                '".mysql_real_escape_string($o_name)."',
+                                        values ('".trim(mysql_real_escape_string($name))."',
+                                                '".trim(mysql_real_escape_string($o_name))."',
                                                 '".$censored."',
                                                 '".$hd."',
                                                 '".$trans_name."',
@@ -270,8 +270,8 @@ if (count(@$_POST) > 0){
                 
                 
                 if(@$_GET['name']){
-                    $query = "update video set name='".mysql_real_escape_string($_POST['name'])."', 
-                                               o_name='".mysql_real_escape_string($_POST['o_name'])."', 
+                    $query = "update video set name='".trim(mysql_real_escape_string($_POST['name']))."', 
+                                               o_name='".trim(mysql_real_escape_string($_POST['o_name']))."', 
                                                censored='".$censored."', 
                                                hd='".$hd."', 
                                                rtsp_url='".$rtsp_url."', 
