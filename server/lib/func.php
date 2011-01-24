@@ -44,6 +44,8 @@ function transliterate($st) {
         "abvgdegziyklmnoprstufieABVGDEGZIYKLMNOPRSTUFIE"
    );*/
    
+   $st = trim($st);
+   
    $st = strtr($st, array(
         'а' => 'a',
         'б' => 'b',
