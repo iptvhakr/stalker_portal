@@ -128,7 +128,7 @@ $words['vclub_list_w_info'] = 'list + info';
 $words['vclub_title'] = 'VIDEOCLUB';
 
 // common
-$words['cut_off_msg'] = 'Your STB is blocked.<br/> Call the provider';
+$words['cut_off_msg'] = 'Your STB is blocked.<br/> Call the provider.';
 $words['month_arr'] = array('JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER');
 $words['week_arr'] = array('SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY');
 $words['week_short_arr'] = array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
