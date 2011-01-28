@@ -159,6 +159,14 @@ $words['settings_check_error'] = 'Ошибка заполнения полей';
 $words['localization_settings_title'] = 'ЛОКАЛИЗАЦИЯ';
 $words['localization_label'] = 'Язык интерфейса';
 
+$words['settings_software_update'] = 'ОБНОВЛЕНИЕ ПО';
+$words['update_settings_cancel'] = 'ОТМЕНА';
+$words['update_settings_start_update'] = 'НАЧАТЬ ОБНОВЛЕНИЕ';
+$words['update_from_http'] = 'Используя HTTP';
+$words['update_from_usb'] = 'Используя USB';
+$words['update_source'] = 'Источник';
+$words['update_method_select'] = 'Выбор метода';
+
 $words['empty'] = 'ПУСТО';
 
 $words['course_title'] = 'Курс НБУ на ';
