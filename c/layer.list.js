@@ -107,6 +107,8 @@ ListLayer.prototype.clear_list = function(){
         this.clear_row(this.map[j].row);
     }
     
+    this.data_items = [];
+    
     this.set_total_items(-1);
 }
 
@@ -409,7 +411,7 @@ ListLayer.prototype.set_passive_row = function(){
 }
 
 ListLayer.prototype.shift_row = function(dir){
-    
+    _debug('this.loading', this.loading);
     if (this.loading){
         return;
     }
