@@ -416,6 +416,8 @@ JsHttpRequest.query = function(url, content, onready, nocache) {
     req.open(null, url, true);
     var d = req.send(content);
     _debug('query end', d);
+    
+    return req;
 }
 
 
