@@ -424,7 +424,7 @@ class Epg
         return $this->getEpgForChannelsOnPeriod(array());
     }
     
-    private function getEpgForChannelsOnPeriod($channels_ids = array(), $from ='', $to = ''){
+    private function getEpgForChannelsOnPeriod($channels_ids = array(), $from ='', $to = '', $limit = 0, $offset = 0){
         
         $db = clone $this->db;
         
@@ -449,18 +449,22 @@ class Epg
         
         foreach ($channels_ids as $ch_id){
             
-            $result[$ch_id] = $db
-                                 ->from('epg')
-                                 ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
-                                 ->where(array(
-                                     'epg.ch_id'     => $ch_id,
-                                     'epg.time_to>'  =>  $from,
-                                     'epg.time<'     =>  $to,
-                                 ))
-                                 ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
-                                 ->orderby('epg.time')
-                                 ->get()
-                                 ->all();
+            $program = $db
+                         ->from('epg')
+                         ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
+                         ->where(array(
+                             'epg.ch_id'     =>  $ch_id,
+                             'epg.time_to>'  =>  $from,
+                             'epg.time<'     =>  $to,
+                         ))
+                         ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
+                         ->orderby('epg.time');
+             
+            if ($limit){
+                $program = $program->limit($limit, $offset);
+            }
+            
+            $result[$ch_id] = $program->get()->all();
         }
         
         $week_day_arr = System::word('week_arr');
@@ -625,9 +629,11 @@ class Epg
     
     public function getWeek(){
         
-        $cur_num_day = date('w');
+        $cur_num_day = date('N')-1;
         
         $week_short_arr = System::word('week_short_arr');
+        
+        array_push($week_short_arr, array_shift($week_short_arr));
         
         $month_arr = System::word('month_arr');
         
@@ -637,18 +643,20 @@ class Epg
         
         $week_days = array();
         
+        //var_dump($cur_num_day);
+        
         for ($i=0; $i<=6; $i++){
             $w_day   = date("d", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year));
             $w_month = date("n", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year))-1;
-            $week_days[$i]['f_human'] = $week_short_arr[$i].' '.$w_day.$month_arr[$w_month];
+            $week_days[$i]['f_human'] = $week_short_arr[$i].' '.$w_day.' '.$month_arr[$w_month];
             $week_days[$i]['f_mysql'] = date("Y-m-d", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year));
-            $week_days[$i]['today'] = 0;
-            if ($cur_num_day == $i){
+            if (intval($cur_num_day) === $i){
+                var_dump($cur_num_day, $i);
                 $week_days[$i]['today'] = 1;
+            }else{
+                $week_days[$i]['today'] = 0;
             }
         }
-        
-        array_push($week_days, array_shift($week_days));
         
         return $week_days;
     }
@@ -656,6 +664,106 @@ class Epg
     public static function getById($id){
         
         return Mysql::getInstance()->from('epg')->where(array('id' => $id))->get()->first();
+    }
+    
+    public function getSimpleDataTable(){
+        
+        $ch_id = intval($_REQUEST['ch_id']);
+        $date  = $_REQUEST['date'];
+        $page  = intval($_REQUEST['p']);
+        
+        $default_page = false;
+        
+        $page_items = 10;
+        
+        $from = $date.' 00:00:00';
+        $to   = $date.' 23:59:59';
+        
+        //$epg = $this->getEpgForChannelsOnPeriod(array($ch_id), $from, $to);
+        
+        
+        $program = Mysql::getInstance()
+                     ->from('epg')
+                     ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
+                     ->where(array(
+                         'epg.ch_id'     =>  $ch_id,
+                         'epg.time>='    =>  $from,
+                         'epg.time<='     =>  $to,
+                     ))
+                     ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
+                     ->orderby('epg.time')
+                     ->get()
+                     ->all();
+        
+        
+        $total_items = count($program);
+        
+        $ch_idx = Mysql::getInstance()
+                     ->from('epg')
+                     ->count()
+                     ->where(array(
+                         'epg.ch_id'     =>  $ch_id,
+                         'epg.time>='    =>  $from,
+                         'epg.time<'     =>  'NOW()',
+                     ))
+                     ->get()
+                     ->counter();
+                     
+        var_dump($ch_idx, date('Y-m-d'));
+        
+        if ($page == 0){
+            
+            $default_page = true;
+            
+            $page = ceil($ch_idx/$page_items);
+            
+            if ($page == 0){
+                $page = 1;
+            }
+            
+            if ($date != date('Y-m-d')){
+                $page = 1;
+                $default_page = false;
+            }
+        }
+        
+        $program = array_slice($program, ($page-1)*$page_items, $page_items);
+        
+        $now = time();
+        
+        for ($i=0; $i<count($program); $i++){
+            if ($program[$i]['stop_timestamp'] < $now){
+                $program[$i]['open'] = 0;
+            }else{
+                $program[$i]['open'] = 1;
+            }
+            
+            if ($program[$i]['start_timestamp'] < $now){
+                $program[$i]['mark_memo'] = null;
+            }
+            
+            if ($program[$i]['mark_memo']){
+                $program[$i]['mark_memo'] = 1;
+            }else{
+                $program[$i]['mark_memo'] = 0;
+            }
+        }
+        
+        if ($default_page){
+            $cur_page = $page;
+            $selected_item = $ch_idx - ($page-1)*$page_items;
+        }else{
+            $cur_page = $page;
+            $selected_item = 1;
+        }
+        
+        return array(
+                        'total_items'    => $total_items,
+                        'selected_item'  => $selected_item,
+                        'cur_page'       => $cur_page,
+                        'max_page_items' => $page_items,
+                        'data'           => $program
+                    );
     }
 }
 ?>
