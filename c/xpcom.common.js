@@ -206,7 +206,7 @@ function common_xpcom(){
         
         
         try{
-            JsHttpRequest.query(
+            return JsHttpRequest.query(
                 
                 //this.ajax_loader,
                 'GET '+this.ajax_loader,
