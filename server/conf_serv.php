@@ -36,7 +36,9 @@ define("MASTER_CACHE_EXPIRE", 365); // hours
 $_ALL_MODULES = array(
     "media_browser",
     "tv",
+    "epg.reminder",
     "epg",
+    "epg.simple",
     "vclub",
     "karaoke",
     "radio",
@@ -44,6 +46,7 @@ $_ALL_MODULES = array(
     //"records",
     "settings.parent",
     "settings.localization",
+    "settings.update",
     "settings",
     "course.nbu",
     "weather.day",
