@@ -148,8 +148,23 @@
             }).bind(key.LEFT, this).bind(key.MENU, this);
             
             (function(){
-                if (module.epg){
+                if (module.epg_simple){
                     
+                    if (stb.player.on){
+                        stb.player.stop();
+                    }
+                    
+                    //module.epg.ch_id = this.data_items[this.cur_row].id;
+                    //module.epg.show();
+                    
+                    module.epg_simple.ch_id   = this.data_items[this.cur_row].id;
+                    module.epg_simple.ch_name = this.data_items[this.cur_row].name;
+                    module.epg_simple.show();
+                }
+            }).bind(key.RIGHT, this);
+            
+            (function(){
+                if (module.epg){
                     if (stb.player.on){
                         stb.player.stop();
                     }
@@ -157,7 +172,7 @@
                     module.epg.ch_id = this.data_items[this.cur_row].id;
                     module.epg.show();
                 }
-            }).bind(key.RIGHT, this);
+            }).bind(key.INFO, this);
             
             (function(){
                 if (this.quick_ch_switch.on){
@@ -184,6 +199,10 @@
                     this.del_quick_go_ch();
                 }
             }).bind(key.BACK, this);
+            
+            
+            this.shift_row.bind(key.CHANNEL_PREV, this, -1);
+            this.shift_row.bind(key.CHANNEL_NEXT, this, 1);
         };
         
         this.check_for_play = function(){
