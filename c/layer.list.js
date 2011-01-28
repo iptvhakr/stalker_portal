@@ -50,6 +50,8 @@ function ListLayer(){
         {"color" : "blue"}
     ];
     
+    this.loader = {};
+    
     this.base_layer = BaseLayer.prototype;
 }
 
@@ -232,13 +234,22 @@ ListLayer.prototype.load_data = function(){
     
     this.loading = true;
     
-    stb.load(
+    _debug('typeof(this.loader)', typeof(this.loader));
+    _debug('this.loader.abort', this.loader.abort);
+    
+    this.loader && this.loader.abort && this.loader.abort();
+    
+    this.break_filling_list = true;
+    
+    this.loader = stb.load(
 
         this.load_params,
         
         function(result){
             _debug('callback run');
             _debug('result', result);
+            
+            this.break_filling_list = false;
             
             this.result = result;
             this.total_pages = Math.ceil(result.total_items/result.max_page_items);
@@ -282,6 +293,10 @@ ListLayer.prototype.fill_list = function(data){
     this.data_items = data;
     
     for (var i=0; i<data.length; i++){
+        
+        if (this.break_filling_list){
+            return;
+        }
         
         for (var j=0; j<this.row_blocks.length; j++){
             this.handling_block(data[i][this.row_blocks[j]], this.map[i], this.row_blocks[j]);
