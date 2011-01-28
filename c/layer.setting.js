@@ -72,11 +72,19 @@ SettingLayer.prototype.reset = function(){
 SettingLayer.prototype.set_active_input = function(){
     _debug('SettingLayer.set_active_input');
     
+    if (empty(this.controls)){
+        return;
+    }
+    
     this.controls[this.cur_control_idx].input.setClass('active_input');
 }
 
 SettingLayer.prototype.set_passive_input = function(){
     _debug('SettingLayer.set_passive_input');
+    
+    if (empty(this.controls)){
+        return;
+    }
     
     this.controls[this.cur_control_idx].input.setClass('passive_input');
 }
