@@ -292,6 +292,7 @@ _36(req.responseJS,req.responseText);
 };
 req.open(null,url,true);
 req.send(_35);
+return req;
 };
 JsHttpRequest.dataReady=function(d){
 var th=this.PENDING[d.id];
