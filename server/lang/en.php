@@ -159,6 +159,14 @@ $words['settings_check_error'] = 'Error filling fields';
 $words['localization_settings_title'] = 'LOCALIZATION';
 $words['localization_label'] = 'Language of the interface';
 
+$words['settings_software_update'] = 'SOFTWARE UPDATE';
+$words['update_settings_cancel'] = 'CANCEL';
+$words['update_settings_start_update'] = 'START UPDATE';
+$words['update_from_http'] = 'From HTTP';
+$words['update_from_usb'] = 'From USB';
+$words['update_source'] = 'Source';
+$words['update_method_select'] = 'Method select';
+
 $words['empty'] = 'EMPTY';
 
 $words['course_title'] = 'Exchange rate on ';
