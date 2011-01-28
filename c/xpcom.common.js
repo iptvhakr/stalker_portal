@@ -147,7 +147,7 @@ function common_xpcom(){
             
             this.version = 'PORTAL version: '+ver+'; '+stb.Version();
             
-            if (this.type == 'MAG200'){
+            if (this.type == 'MAG200' || this.type == 'MAG250'){
                 this.hd = 1;
             }else{
                 this.hd = 0;
