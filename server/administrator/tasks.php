@@ -116,6 +116,7 @@ while(@$rs->next()){
             <td><b>#</b></td>
             <td><b>Видео</b></td>
             <td><b>Дата открытия</b></td>
+            <td><b>Статус</b></td>
             <td><b>Сообщения</b></td>
         </tr>
         <?
@@ -135,7 +136,7 @@ while(@$rs->next()){
                             and archived=0
                             and moderator_tasks.to_usr={$arr['id']}";*/
         
-        $sql_open = "select moderator_tasks.*, count(moderators_history.id) as counter, video.name as name from moderator_tasks inner join video on media_id=video.id left join moderators_history on task_id=moderator_tasks.id where moderator_tasks.ended=0 and archived=0 and moderator_tasks.to_usr={$arr['id']} group by moderators_history.task_id";
+        $sql_open = "select moderator_tasks.*, count(moderators_history.id) as counter, video.name as name, video.accessed as accessed from moderator_tasks inner join video on media_id=video.id left join moderators_history on task_id=moderator_tasks.id where moderator_tasks.ended=0 and archived=0 and moderator_tasks.to_usr={$arr['id']} group by moderators_history.task_id";
         
         $rs_open = $db->executeQuery($sql_open);
         $num = 1;
@@ -153,6 +154,7 @@ while(@$rs->next()){
             echo "<td>".$arr_open['name']."</td>";
             echo "<td>".$arr_open['start_time']."</td>";
             //echo "<td>".get_count_all_msgs($arr_open['id']).' / <a href="msgs.php?task='.$arr_open['id'].'" class="msgs"><b>'.get_count_unreaded_msgs($arr_open['id'])."</b></a></td>";
+            echo "<td>".($arr_open['accessed'] ? '<b style="color:#f00">on</b>' : '<b style="color:#008000">on</b>') ."</td>";
             echo "<td>".$arr_open['counter'].' / <a href="msgs.php?task='.$arr_open['id'].'" class="msgs"><b>'.get_count_unreaded_msgs($arr_open['id'])."</b></a></td>";
             echo "</tr>";
             $num++;
