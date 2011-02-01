@@ -213,7 +213,7 @@ HTMLElement.prototype.addClass = function(class_name){
 HTMLElement.prototype.removeClass = function(class_name){
     try{
         if (this.className.indexOf(class_name) >= 0){
-            this.className.replace(/(class_name)/g, '').replace(/((\s)+)/g, ' ');
+            this.className = this.className.replace(eval('/('+class_name+')/g'), '').replace(/((\s)+)/g, ' ');
         }
     }catch(e){
         _debug(e);
@@ -223,7 +223,7 @@ HTMLElement.prototype.removeClass = function(class_name){
 HTMLElement.prototype.replaceClass = function(from, to){
     try{
         if (this.className.indexOf(from) >= 0 ){
-            this.className.replace(/(from)/g, to);
+            this.className = this.className.replace(eval('/('+from+')/g'), to);
         }
     }catch(e){
         _debug(e);
