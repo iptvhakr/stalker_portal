@@ -945,6 +945,7 @@
                 );
             }
             
+            
             main_menu.add(word['tv_title'], map, 'i/mm_ico_tv.png', '', module.tv);
             
             loader.next();
