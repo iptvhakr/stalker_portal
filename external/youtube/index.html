@@ -1,0 +1,239 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <title>Infomir Youtube</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="css/player.css" />
+        <script type="text/javascript" src="js/objs.js"></script>
+        <script type="text/javascript" src="js/egSTB.js"></script>
+        <script type="text/javascript" src="js/base-funcs.js"></script>
+        <script type="text/javascript" src="js/date.difference.js"></script>
+        <script type="text/javascript" src="js/key-processing.js"></script>
+        <script type="text/javascript" src="js/common.js"></script>
+        <script type="text/javascript" src="js/jsdeferred.js"></script>
+        <script type="text/javascript" src="js/variables.js"></script>
+        <style type="text/css">
+#loading { width:100%; height:100%; background-color:rgba(0, 0, 0, 0.7); position:absolute; top:0; left:0; z-index:2010; }
+#loading .render { position:absolute; z-index:2002; top:50%; left:50%; margin:-24px 0 0 -80px; height:48px; width:160px; background:#000; text-align:center; padding:10px; border-width:1px; border-style:double; border-color:#999; border-radius: 4px; -webkit-border-radius:4px; }
+#loading .render img { display:block; float:left; width:48px; height:48px; }
+#loading .render span { color:#fff; font-size:18px; display:block; float:left; width:110px; line-height:48px; }
+        </style>
+    </head>
+    <body onselectstart="return false">
+        <div id="shell">
+            <div id="bg"></div>
+<!-- Header -->
+            <div id="mb_header_yt">
+                <div class="header_yt">
+                    <div class="t18b f_category_outer" id="search_block"><div id="search_block_inner"><span id="f_search"></span>:&nbsp;&nbsp;<span class="un_cats yt_category"><span id="search_query_line"></span></span></div></div>
+                    <div class="t18b f_quality_outer"><span id="f_mode"></span>:&nbsp;&nbsp;<img src="img/1x1.gif" id="mode" alt="" /></div>
+                    <div style="clear:both;height:5px;"></div>
+                    <div class="t18b f_category_outer"><span id="f_category"></span>:&nbsp;&nbsp;<span class="un_cats yt_category" id="cur_cat"><span id="cats_all"></span></span></div>
+                    <div class="t18b f_quality_outer"><span id="f_quality"></span>:&nbsp;&nbsp;<span class="un_cats yt_category" id="quality"></span></div>
+                </div>
+            </div>
+<!-- End Header -->
+<!-- categorias -->
+            <div id="category" style="display:none;">
+                <ul class="modalmenu_yt">
+                    <li class="top"><span class="t18w shadow_b" id="cat_0"></span></li>
+                    <li class="act"><span class="t20b shadow_w" id="cat_1"></span></li>
+                    <li class="top"><span class="t18w shadow_b" id="cat_2"></span></li>
+                    <li class="top"><span class="t18w shadow_b" id="cat_3"></span></li>
+                    <li class="top"><span class="t18w shadow_b" id="cat_4"></span></li>
+                    <li class="top"><span class="t18w shadow_b" id="cat_5"></span></li>
+                    <li class="top"><span class="t18w shadow_b" id="cat_6"></span></li>
+                </ul>
+            </div>
+<!-- End categorias -->
+<!-- Main@affect -->
+            <div id="frame"></div>
+<!-- End Main@affect -->
+<!-- Footer -->
+            <div id="footer_yt">
+                <div class="footer_yt_buttons">
+                    <span class="footer_btn_yt btn_red_yt"></span><span class="footer_text"><span id="f_category2"></span></span>
+                    <span class="footer_btn_yt btn_green_yt">
+                        <div id="menu_video_like">
+                            <div class="top"></div>
+                            <div class="body">
+                                <ul>
+                                    <li><span id="vl_suggestion"></span></li>
+                                    <li><span id="vl_favorites"></span></li>
+                                    <li><span id="vl_uploads"></span></li>
+                                    <li><span id="vl_playlists"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </span>
+                    <span class="footer_text"><span id="f_videolike2"></span></span>
+                    <span class="footer_btn_yt btn_yellow_yt"></span><span class="footer_text"><span id="f_search2"></span></span>
+                    <span class="footer_btn_yt btn_blue_yt">
+                        <div id="footer_menu_settings">
+                            <div class="top"></div>
+                            <div class="body">
+                                <ul>
+                                    <li id="menuPlayModes"><div class="l1"><span id="f_m_modes"></span></div>
+                                        <div id="subMenuPlayModes" class="submenu">
+                                            <div class="top"></div>
+                                            <div class="body">
+                                                <ul>
+                                                    <li id="menuPMsingle"><div></div><strong><b></b></strong></li>
+                                                    <li id="menuPMrepeat"><div></div><strong><b></b></strong></li>
+                                                    <li id="menuPMlist"><div></div><strong><b></b></strong></li>
+                                                    <li id="menuPMrandom"><div></div><strong><b></b></strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li id="menuQuality"><div class="l1"><span id="f_m_quality"></span></div>
+                                        <div id="subMenuQuality" class="submenu">
+                                            <div class="top"></div>
+                                            <div class="body">
+                                                <ul>
+                                                    <li id="menuPMlow"><strong id="f_m_q_low"></strong></li>
+                                                    <li id="menuPMmiddle"><strong id="f_m_q_middle"></strong></li>
+                                                    <li id="menuPMhigh"><strong id="f_m_q_high"></strong></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </span>
+                    <span class="footer_text"><span id="f_settings2"></span></span>
+
+                    <div id="arrows">
+                        <div class="arrow left" ><div id="arrow_left"  class="arrow"></div></div>
+                        <div class="arrow right"><div id="arrow_right" class="arrow"></div></div>
+                    </div>
+                </div>
+            </div>
+<!-- End Footer -->
+<!-- Modal Search -->
+            <div id="yt_search_bg" style="display:none;">
+                <div id="yt_searchbox1">
+                    <div class="yt_search_logo"></div>
+                    <div class="yt_search_name">
+                        <span class="text17_black bold" id="as_main_field_search"></span>
+                    </div>
+                    <div class="yt_search">
+                        <div class="left_input input_440">
+                            <input name="textfield" type="text" id="as_query_search" class="yt_input_440" />
+                            <div class="right_input"></div>
+                        </div>
+                        <div class="btn_ok"></div>
+                    </div>
+                    <div class="yt_search_line2">
+                        <div id="btn_small_red"></div>
+                        <span class="text17_black" style="float:left;margin-top: 5px;" id="as_field_cat"></span>
+                        <div class="yt_search_color">
+                            <div class="left_combo input_380" id="as_cat"></div>
+                            <div class="right_combo"></div>
+<!-- begin Comobox Cats -->
+                            <div class="combo_drop">
+                                <div class="combo_drop_box">
+                                    <ul class="as_cats_menu">
+                                        <li id="as_cat_0" class="t18w shadow_b"></li>
+                                        <li id="as_cat_1" class="act_cat t20b shadow_b"></li>
+                                        <li id="as_cat_2" class="t18w shadow_b"></li>
+                                        <li id="as_cat_3" class="t18w shadow_b"></li>
+                                        <li id="as_cat_4" class="t18w shadow_b"></li>
+                                        <li id="as_cat_5" class="t18w shadow_b"></li>
+                                        <li id="as_cat_6" class="t18w shadow_b"></li>
+                                    </ul>
+                                </div>
+                            </div>
+<!-- end Comobox Cats -->
+                        </div>
+                    </div>
+                    <div class="yt_search_line3">
+                        <div id="btn_small_green"></div>
+                        <span class="text17_black" style="float:left;" id="as_field_time"></span>
+                        <div class="yt_search_color">
+                            <div class="left_combo input_110" id="as_time"></div>
+                            <div class="right_combo"></div>
+                        </div>
+                        <div id="btn_small_yellow"></div>
+                        <span class="text17_black" style="float:left;" id="as_field_orderby"></span>
+                        <div class="yt_search_color">
+                            <div class="left_combo input_140" id="as_orderby"></div>
+                            <div class="right_combo"></div>
+                        </div>
+                    </div>
+                    <div class="yt_searchbox0"></div>
+                </div>
+                <div id="yt_searchbox2">
+                    <div class="yt_search_logo"></div>
+                    <div class="yt_search_name">
+                        <span class="text17_black bold" id="as_main_field_users_video"></span>
+                    </div>
+                    <div class="yt_search">
+                        <div class="left_input input_440">
+                            <input name="textfield" type="text" id="as_query_users_video" class="yt_input_440" />
+                            <div class="right_input"></div>
+                        </div>
+                        <div class="btn_ok"></div>
+                    </div>
+                    <div class="yt_search_line2"
+                         ><div id="btn_small_red"></div>
+                        <span class="text17_black" style="float:left;" id="as_field_data"></span>
+                        <div class="yt_search_color">
+                            <div class="left_combo input_140" id="as_data"></div>
+                            <div class="right_combo"></div>
+                        </div>
+                    </div>
+                    <div class="yt_searchbox0"></div>
+                </div>
+
+                <div id="yt_searchbox3">
+                    <div class="yt_search_logo"></div>
+                    <div class="yt_search_name">
+                        <span class="text17_black bold" id="as_main_field_playlists_search"></span>
+                    </div>
+                    <div class="yt_search">
+                        <div class="left_input input_440">
+                            <input name="textfield" type="text" id="as_query_playlists_search" class="yt_input_440" />
+                            <div class="right_input"></div>
+                        </div>
+                        <div class="btn_ok"></div>
+                    </div>
+                    <div class="yt_searchbox0"></div>
+                </div>
+            </div>
+<!-- End Modal Search -->
+        </div>
+<!-- Player -->
+        <div id="main" style="display: none;">
+            <div id="filename">Some name gq</div>
+            <div id="playModeInPlayer" class="single"></div>
+            <div id="time_act">00:00:00</div>
+            <div id="time_total">/ 00:00:00</div>
+            <div id="interval_above"><a href="#" class="interval_above"></a></div>
+            <div id="interval_input">30 sec</div>
+            <div id="interval_less"><a href="#" class="interval_less"></a></div>
+            <div id="rewind"><a href="#" class="rewind"></a></div>
+            <div id="scrollbar"><div id="conditiion"></div></div>
+            <div id="forward"><a href="#" class="forward"></a></div>
+        </div>
+<!-- End Player -->
+<!-- Volume@affect -->
+        <div id="mute" style="display:none;"></div>
+        <div id="playingStatus" style="display:none;"></div>
+        <div id="volumeForm" style="display:none;">
+            <div id="volume_bar"><div id="volume_right"></div></div>
+            <div id="volume_num">100%</div>
+        </div>
+<!-- End Volume@affect -->
+<!-- aspectRatio@affect -->
+        <div id="screenAspect"></div>
+<!-- End aspectRatio@affect -->
+<!-- Loading@affect -->
+        <div id="loading">
+            <div class="render"><img src="img/loading.gif" /><span><span id="loading2"></span></span></div>
+        </div>
+<!-- End Loading@affect -->
+    </body>
+</html>
