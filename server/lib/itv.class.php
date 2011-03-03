@@ -255,8 +255,23 @@ class Itv extends AjaxResponse
             
             $ch_idx = $this->db->from('itv')->where($where)->in('itv.id', $fav)->get()->count();
         }else{
-            
-            $ch_idx = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number))->get()->count();
+
+            $sortby = $_REQUEST['sortby'];
+
+            if ($sortby == 'name'){
+                //$ch_idx = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number))->get()->count();
+                $chs = $this->db->from('itv')->where($where)->orderby('name')->get()->all();
+
+                foreach ($chs as $ch){
+                    $ch_idx++;
+                    if ($ch['id'] == $last_id){
+                        break;
+                    }
+                }
+
+            }else{
+                $ch_idx = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number))->get()->count();
+            }
         }
         
         if ($ch_idx > 0){
