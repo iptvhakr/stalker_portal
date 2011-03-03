@@ -16,7 +16,8 @@ CREATE TABLE `video`(
     `cost` int NOT NULL default 0, 
     `time` varchar(64) NOT NULL default '', 
     `file` varchar(128) NOT NULL default '', 
-    `path` varchar(255) NOT NULL default '', 
+    `path` varchar(255) NOT NULL default '',
+    `protocol` varchar(64) NOT NULL default 'nfs',
     `rtsp_url` varchar(255) NOT NULL default '', 
     `censored` tinyint default 0, /* 0-off, 1-on */
     `hd` tinyint default 0,
