@@ -18,6 +18,7 @@ abstract class Master
     private $cache_expire_h = MASTER_CACHE_EXPIRE;
     protected $db;
     protected $media_type;
+    protected $media_protocol;
     protected $media_params;
     protected $rtsp_url;
     protected $db_table;
@@ -89,8 +90,14 @@ abstract class Master
                 
                 preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
                 $ext = $arr[2];
+
+                if ($this->media_protocol == 'http'){
+                    $res['cmd'] = 'ffrt http://'.NFS_PROXY.'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                }else{
+                    $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                }
                 
-                $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                //$res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
                 $res['id']   = $this->media_id;
                 $res['load'] = $storage['load'];
                 $res['storage_id'] = $this->storages[$name]['id'];
@@ -114,7 +121,7 @@ abstract class Master
     }
     
     /**
-     * Wrapper for srorage method, that creates directory for media my name
+     * Wrapper for storage method, that creates directory for media my name
      *
      * @param string $media_name
      */
@@ -352,7 +359,7 @@ abstract class Master
      */
     public function stopMD5Sum($storage_name, $media_name){
         try {
-            $this->clients[$name]->stopMD5Sum($media_name);
+            $this->clients[$storage_name]->stopMD5Sum($media_name);
         }catch (SoapFault $exception){
             $this->parseException($exception);
         }
@@ -622,6 +629,10 @@ abstract class Master
         if (!empty($media_params)){
             if (!empty($media_params['rtsp_url'])){
                 $this->rtsp_url = $media_params['rtsp_url'];
+            }
+
+            if (!empty($media_params['protocol'])){
+                $this->media_protocol = $media_params['protocol'];
             }
         }
         
