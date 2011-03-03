@@ -18,7 +18,7 @@ class Watchdog extends AjaxResponse
                          array(
                             'keep_alive' => 'NOW()',
                             'ip' => $this->stb->ip,
-                            'now_playing_type' => intval($_REQUEST['data']['cur_play_type']),
+                            'now_playing_type' => intval($_REQUEST['cur_play_type']),
                          ),
                          array(
                             'mac' => $this->stb->mac
