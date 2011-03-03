@@ -1,5 +1,5 @@
 /**
- * Karaoke modile.
+ * Karaoke module.
  */
 (function(){
     
