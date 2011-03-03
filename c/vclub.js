@@ -1,7 +1,6 @@
 /**
- * Video Club modile.
+ * Video Club module.
  */
-_debug('1!!!!!!!!!!!!!!');
 (function(){
     
     //stb.ajax_loader = 'http://bb2.sandbox/stalker_portal/server/load.php'
@@ -630,7 +629,7 @@ _debug('1!!!!!!!!!!!!!!');
                             module.vclub._show(category);
                         }
                         
-                    })(categories[i]),
+                    })(categories[i])
                 }
                 
                 );
@@ -644,6 +643,3 @@ _debug('1!!!!!!!!!!!!!!');
     )
     
 })();
-_debug('2!!!!!!!!!!!!!!');
-
-//loader.next();
