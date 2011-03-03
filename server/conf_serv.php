@@ -18,6 +18,8 @@ define("MYSQL_HOST", 'localhost');
 define("QUERY_CACHE", false);
 define("MEMCACHE_HOST", 'localhost');
 
+define("NFS_PROXY", 'localhost');
+
 define("OS_UNIX", 1);
 
 define("HOROSCOPE_RSS",  'http://www.hyrax.ru/cgi-bin/bn_xml.cgi');
@@ -40,6 +42,7 @@ $_ALL_MODULES = array(
     "epg",
     "epg.simple",
     "vclub",
+    "youtube",
     "karaoke",
     "radio",
     "weather.current",
