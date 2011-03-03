@@ -48,8 +48,6 @@ function common_xpcom(){
         "series_switch"
     ];
 
-    //this.menu_clock = new main_menu_clock();
-
     this.init = function(){
         _debug('stb.init');
 
@@ -81,7 +79,11 @@ function common_xpcom(){
 
         var pattern = /http:\/\/([\w\.\-]*)\/([\w\/]+)*\/([\w\/]+)\/(.)*/;
 
-        this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+document.URL.replace(pattern, "$2")+'/server/load.php';
+        this.portal_path = document.URL.replace(pattern, "$2");
+
+        _debug('stb.portal_path:', this.portal_path);
+
+        this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+this.portal_path+'/server/load.php';
 
         _debug('stb.ajax_loader:', this.ajax_loader);
     }
@@ -624,6 +626,93 @@ function common_xpcom(){
         }*/
     };
 
+    this.epg_loader = {
+
+        timeout  : 21600000, // 6h
+        timer_id : 0,
+        epg : [],
+
+        start : function(){
+            _debug('epg_loader.start');
+
+            this.load();
+            var self = this;
+            this.timer_id = window.setInterval(function(){self.load()}, this.timeout);
+        },
+
+        stop : function(){
+            _debug('epg_loader.stop');
+
+            window.clearInterval(this.timer_id);
+        },
+
+        load : function(){
+            _debug('epg_loader.load');
+
+            stb.load(
+                {
+                    "type"   : "itv",
+                    "action" : "get_epg_info"
+                },
+
+                function(result){
+                    this.set_epg(result.data);
+                },
+
+                this
+            )
+        },
+
+        set_epg : function(data){
+            _debug('epg_loader.set_epg', data);
+            this.epg = data;
+            _debug('typeof(this.epg)', typeof(this.epg));
+        },
+
+        get_epg : function(ch_id){
+            _debug('epg_loader.get_epg', ch_id);
+
+            var ch_id = ''+ch_id;
+
+            _debug('typeof(ch_id)', typeof(ch_id));
+
+            var now = Date.parse(new Date())/1000;
+            var result = '';
+
+            _debug('now', now);
+
+            try{
+                if (typeof(this.epg[ch_id]) == 'object' && this.epg[ch_id].length > 0){
+                    _debug('this.epg[ch_id].length: '+this.epg[ch_id].length);
+                    for (var i=0; i < this.epg[ch_id].length; i++){
+                        _debug('i', i);
+                        if (this.epg[ch_id][i]['start_timestamp'] < now){
+                            _debug('continue');
+                            continue;
+                        }else if (this.epg[ch_id][i]['start_timestamp'] == now){
+                            result = this.epg[ch_id][i].time + ' ' + this.epg[ch_id][i].name;
+                            if (typeof(this.epg[ch_id][i+1]) == 'object'){
+                                result += '<br>'+this.epg[ch_id][i+1].t_time + ' ' + this.epg[ch_id][i+1].name;
+                            }
+                            return result;
+                        }else{
+                            if (typeof(this.epg[ch_id][i-1]) == 'object'){
+                                result = this.epg[ch_id][i-1].t_time + ' ' + this.epg[ch_id][i-1].name;
+                                if (typeof(this.epg[ch_id][i]) == 'object'){
+                                    result += '<br>'+this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
+                                }
+                                return result;
+                            }
+                        }
+                    }
+                }
+            }catch(e){
+                _debug(e);
+            }
+            return '';
+        }
+    }
+
     this.cut_off = function(){
         _debug('stb.cut_off');
 
@@ -671,6 +760,7 @@ function common_xpcom(){
         _debug('stb.cur_place', this.cur_place);
 
         if(this.player.media_type == 'stream'){ // TV
+            if (this.player.on){
                 if (this.cur_place == 'tv'){
                     cur_place_num = 1;
                 }else if(this.cur_place == 'radio'){ // Radio
@@ -678,6 +768,7 @@ function common_xpcom(){
                 }else{
                     cur_place_num = 1;
                 }
+            }
         }else if(this.player.media_type == 'file'){
             if (this.player.on){
                 if (this.cur_place == 'vclub'){ // Video Club
