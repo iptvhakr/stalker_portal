@@ -92,7 +92,7 @@ abstract class Master
                 $ext = $arr[2];
 
                 if ($this->media_protocol == 'http'){
-                    $res['cmd'] = 'ffrt http://'.NFS_PROXY.'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                    $res['cmd'] = 'ffmpeg http://'.NFS_PROXY.'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
                 }else{
                     $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
                 }
