@@ -164,8 +164,14 @@ if (count(@$_POST) > 0){
             $cat_genre_id_4 = @$_POST['cat_genre_id_4'] ? @$_POST['cat_genre_id_4'] : 0;
             
             $category_id = @$_POST['category_id'] ? @intval($_POST['category_id']) : 0;
-            
-            $rtsp_url = @trim($_POST['rtsp_url']);
+
+            $protocol = $_POST['protocol'];
+
+            if ($protocol == 'custom'){
+                $rtsp_url = @trim($_POST['rtsp_url']);
+            }else{
+                $rtsp_url = '';
+            }
             
             $status = $rtsp_url? 1 : 0;
             
@@ -204,6 +210,7 @@ if (count(@$_POST) > 0){
                                                  censored,
                                                  hd,
                                                  path,
+                                                 protocol,
                                                  rtsp_url,
                                                  time,
                                                  description,
@@ -228,6 +235,7 @@ if (count(@$_POST) > 0){
                                                 '".$censored."',
                                                 '".$hd."',
                                                 '".$trans_name."',
+                                                '".$protocol."',
                                                 '".$rtsp_url."',
                                                 '".@$_POST['time']."',
                                                 '".mysql_real_escape_string(@$_POST['description'])."',
@@ -274,8 +282,9 @@ if (count(@$_POST) > 0){
                                                o_name='".trim(mysql_real_escape_string($_POST['o_name']))."', 
                                                censored='".$censored."', 
                                                hd='".$hd."', 
-                                               rtsp_url='".$rtsp_url."', 
-                                               time='".@$_POST['time']."', 
+                                               protocol='".$protocol."',
+                                               rtsp_url='".$rtsp_url."',
+                                               time='".@$_POST['time']."',
                                                description='".@mysql_real_escape_string($_POST['description'])."', 
                                                genre_id_1='".$genre_id_1."',  
                                                genre_id_2='".$genre_id_2."', 
@@ -710,6 +719,7 @@ if (@$_GET['edit']){
         $path     = $arr['path'];
         $hd       = $arr['hd'];
         $rtsp_url = $arr['rtsp_url'];
+        $protocol = $arr['protocol'];
         $volume_correction = $arr['volume_correction'];
         $readonly = 'readonly';
         if ($censored){
@@ -783,7 +793,7 @@ function get_path_color($id, $path){
     }else if ($color_status == 2){
         $color = 'blue';
     }
-    return "<span id='path_$id' style='color:$color'>$path</font>";
+    return "<span id='path_$id' style='color:".$color."'>$path</span>";
 }
 
 function get_path($id){
@@ -1040,8 +1050,8 @@ function urlencode(str)
 function change_list(){
     var opt_sort = document.getElementById('sort_opt')
     var sort_vote = document.getElementById('sort_vote')
-    var url = 'add_video.php?status='+opt_sort.options[opt_sort.selectedIndex].value+'&vote='+sort_vote.options[sort_vote.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'\''."\n";?>
-    document.location = url
+    var url = 'add_video.php?status='+opt_sort.options[opt_sort.selectedIndex].value+'&vote='+sort_vote.options[sort_vote.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'\''."\n";?>;
+    document.location = url;
 }
 
 function md5sum(obj, status, media_name, storage_name){
@@ -1094,7 +1104,7 @@ function display_info(arr, id){
                  table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>'
                  table +='<td class="list2"><b><a href="#" onclick="document.getElementById(\'files_'+id+'_'+arr[i]['storage_name']+'\').style.display=\'\';return false;"><font color="green">'+arr[i]['path']+'</font></a></b></td>'
                  table +='<td class="list2">'+arr[i]['series']+'</td>'
-                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a><sub></td>'
+                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a></sub></td>'
             table +='</tr>'
             
             table +='<tr style="display:none" id="files_'+id+'_'+arr[i]['storage_name']+'">'
@@ -1400,6 +1410,18 @@ function fill_category(){
     }
 }
 
+function check_protocol(){
+
+    var protocol_obj = document.getElementById('protocol');
+    var rtsp_url_block = document.getElementById('rtsp_url_block');
+    
+    if (protocol_obj.options[protocol_obj.selectedIndex].value == 'custom'){
+        rtsp_url_block.style.display = '';
+    }else{
+        rtsp_url_block.style.display = 'none';
+    }
+}
+
 </script>
 <br>
 <table align="center" class='list'>
@@ -1431,9 +1453,22 @@ function fill_category(){
             <input name="o_name" id="o_name" type="text" onblur="" size="40" value="<? echo @$o_name ?>">
             <span id="org_name_chk"></span>
            </td>
-        </tr> 
-        
+        </tr>
+
         <tr>
+           <td align="right" valign="top">
+           Протокол: 
+           </td>
+           <td>
+             <select name="protocol" id="protocol" onchange="check_protocol()">
+                 <option value="nfs" <?if ($protocol == 'nfs'){ echo 'selected';}?>>NFS</option>
+                 <option value="http" <?if ($protocol == 'http'){ echo 'selected';}?>>HTTP</option>
+                 <option value="custom" <?if ($protocol == 'custom'){ echo 'selected';}?>>Custom URL</option>
+             </select>
+           </td>
+        </tr>
+        
+        <tr id="rtsp_url_block" <?if ($protocol != 'custom'){ echo 'style="display:none"';}?>>
            <td align="right" valign="top">
            RTSP/HTTP URL: 
            </td>
