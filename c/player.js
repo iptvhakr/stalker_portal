@@ -739,8 +739,10 @@ player.prototype.create_link = function(type, uri, series_number){
             this.last_storage_id = result.storage_id;
             
             _debug('this.last_storage_id', this.last_storage_id);
-            
-            stb.Mount(result.cmd);
+
+            if (result.cmd && result.cmd.indexOf('http://') === -1){
+                stb.Mount(result.cmd);
+            }
             
             this.on_create_link && this.on_create_link(result);
         },
@@ -1108,7 +1110,7 @@ player.prototype.send_played_itv = function(id){
         {
             "type"   : "itv",
             "action" : "set_played",
-            "itv_id" : id,
+            "itv_id" : id
         },
         
         function(result){
@@ -1820,11 +1822,11 @@ player.prototype.init_con_menu = function(){
                 "cmd"   : [
                     {
                         "cmd"   : function(){stb.player.send_claim('sound')},
-                        "title" : get_word('player_on_sound'),
+                        "title" : get_word('player_on_sound')
                     },
                     {
                         "cmd"   : function(){stb.player.send_claim('video')},
-                        "title" : get_word('player_on_video'),
+                        "title" : get_word('player_on_video')
                     }
                   ]
             }
