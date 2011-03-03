@@ -1,5 +1,5 @@
 /**
- * TV modile.
+ * TV module.
  */
 
 (function(){
@@ -940,7 +940,7 @@
                                 module.tv._show(genre);
                             }
                             
-                        })(genres[i]),
+                        })(genres[i])
                     }
                 );
             }
