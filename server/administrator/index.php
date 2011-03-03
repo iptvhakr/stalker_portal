@@ -292,7 +292,7 @@ $cur_infoportal = get_cur_infoportal($db);
 <br>
 
 
-<? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || @$_SESSION['login'] == 'zx' || check_access()){ ?>
+<? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || @$_SESSION['login'] == 'zx' || @$_SESSION['login'] == 'vitaxa' || check_access()){ ?>
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
 
 <? if (@$_SESSION['login'] != 'zx'){ ?>
