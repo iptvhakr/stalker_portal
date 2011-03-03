@@ -513,11 +513,10 @@ function add_where(&$where, $str){
     }
 }
 ?>
-<script>
+<script type="text/javascript">
 function sort_page(){
-    opt_sort = document.getElementById('sort_by')
-    url = 'users.php?sort_by='+opt_sort.options[opt_sort.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&yy='.@$_GET['yy'].'&mm='.@$_GET['mm'].'&dd='.@$_GET['dd'].'&hh='.@$_GET['hh'].'&ii='.@$_GET['ii'].'\';'?>
-    document.location = url
+    var opt_sort = document.getElementById('sort_by');
+    document.location = 'users.php?sort_by='+opt_sort.options[opt_sort.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&yy='.@$_GET['yy'].'&mm='.@$_GET['mm'].'&dd='.@$_GET['dd'].'&hh='.@$_GET['hh'].'&ii='.@$_GET['ii'].'\';'?>;
 }
 </script>
 <table border="0" align="center" width="620">
