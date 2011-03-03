@@ -297,9 +297,15 @@ function get_data(){
                     break;
                 case 2: // Video Club
                     $video_name = '';
-                    
-                    preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
-                    
+
+                    if (strpos($param, 'http://') !== false){
+                        preg_match("/\/([\S\s]+)\/\/[\S\s]+\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+                    }else{
+                        preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+                    }
+
+                    //preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+
                     $storage  = $tmp_arr[1];
                     $media_id = $tmp_arr[2];
                     
