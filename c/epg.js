@@ -114,7 +114,7 @@
                 _debug('epg.live_line.stop');
                 
                 window.clearTimeout(this.timer);
-            },
+            }
         };
         
         this.show = function(){
