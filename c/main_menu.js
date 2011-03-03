@@ -330,5 +330,5 @@ var main_menu = {
         );
         
         this.build();
-    },
+    }
 }
