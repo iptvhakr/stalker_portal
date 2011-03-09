@@ -17,8 +17,9 @@
         
         this.superclass = ListLayer.prototype;
         
-        this.dir_hist = [{"path" : "/media/usbdisk/", "page" : 1, "row" : 1}];
-        
+        //this.dir_hist = [{"path" : "/media/usbdisk/", "page" : 1, "row" : 1}];
+        this.dir_hist = [{"path" : "/media/", "page" : 1, "row" : 1}];
+
         this.init = function(){
             
             this.superclass.init.call(this);
@@ -86,6 +87,15 @@
                 stb.usbdisk.read_dir(path);
                 
                 //_debug(txt);
+
+                _debug('stb.storages', stb.storages);
+                _debug('stb.usbdisk.dirs', stb.usbdisk.dirs);
+
+                if (this.dir_hist.length == 1){
+                    stb.usbdisk.dirs = stb.usbdisk.dirs.filter(function(el){return !stb.storages.hasOwnProperty(el.substr(0, el.length-1))});
+                }
+
+                _debug('stb.usbdisk.dirs 2', stb.usbdisk.dirs);
                 
                 var new_dirs = [];
                 
@@ -176,7 +186,7 @@
             
             stb.player.need_show_info = 1;
             stb.player.play(item);
-        }
+        };
         
         this.out_dir = function(){
             _debug('out_dir');
@@ -275,12 +285,12 @@
     /* END MEDIA BROWSER */
     
     main_menu.add(word['mbrowser_title'], [], 'i/mm_ico_usb.png', function(){
-        if (stb.usbdisk.is_drive_mounted()){
+        //if (stb.usbdisk.is_drive_mounted()){
             main_menu.hide();
             module.media_browser.show();
-        }else{
-            stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_not_found']);
-        }
+        //}else{
+        //    stb.notice.show(word['mbrowser_title'] + ' ' + word['mbrowser_not_found']);
+        //}
     },
     module.media_browser
     );
