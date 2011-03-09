@@ -32,6 +32,12 @@ if (!$error){
     }else{
         $censored = 0;
     }
+
+    if (@$_POST['use_http_tmp_link'] == 'on'){
+        $use_http_tmp_link = 1;
+    }else{
+        $use_http_tmp_link = 0;
+    }
     
     if (@$_POST['base_ch'] == 'on'){
         $base_ch = 1;
@@ -62,6 +68,7 @@ if (!$error){
             $query = "insert into itv (
                                         name,
                                         number,
+                                        use_http_tmp_link,
                                         censored,
                                         base_ch,
                                         bonus_ch,
@@ -77,6 +84,7 @@ if (!$error){
                                         ) 
                                 values ('".@$_POST['name']."', 
                                         '".@$_POST['number']."', 
+                                        '".$use_http_tmp_link."',
                                         '".$censored."',
                                         '".$base_ch."',
                                         '".$bonus_ch."',
@@ -108,8 +116,9 @@ if (!$error){
             $query = "update itv 
                                 set name='".$_POST['name']."', 
                                 cmd='".$_GET['cmd']."', 
-                                censored='".$censored."', 
-                                base_ch='".$base_ch."', 
+                                use_http_tmp_link='".$use_http_tmp_link."',
+                                censored='".$censored."',
+                                base_ch='".$base_ch."',
                                 bonus_ch='".$bonus_ch."', 
                                 hd='".$hd."', 
                                 cost='".$_POST['cost']."', 
@@ -313,6 +322,12 @@ if (@$_GET['edit']){
         $xmltv_id = $arr['xmltv_id'];
         $service_id = $arr['service_id'];
         $volume_correction = $arr['volume_correction'];
+        $use_http_tmp_link = $arr['use_http_tmp_link'];
+
+        if ($use_http_tmp_link){
+            $checked_http_tmp_link = 'checked';
+        }
+
         if ($censored){
             $checked = 'checked';
         }
@@ -406,7 +421,15 @@ function popup(src){
         </tr>
         <tr>
            <td align="right" valign="top">
-           Ограничение по возрасту: 
+           Временная HTTP ссылка:
+           </td>
+           <td>
+            <input name="use_http_tmp_link" id="use_http_tmp_link" type="checkbox" <? echo @$checked_http_tmp_link ?> >
+           </td>
+        </tr>
+        <tr>
+           <td align="right" valign="top">
+           Ограничение по возрасту:
            </td>
            <td>
             <input name="censored" id="censored" type="checkbox" <? echo @$checked ?> >
@@ -484,7 +507,7 @@ function popup(src){
             Коррекция звука (-20...20): 
            </td>
            <td>
-            <input id="service_id" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
+            <input id="volume_correction" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
            </td>
         </tr>
         <!--<tr>
