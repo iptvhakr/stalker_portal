@@ -259,7 +259,7 @@
                     stb.player.prev_layer = this;
                     
                     stb.player.need_show_info = 1;
-                    stb.player.play(this.data_items[this.cur_row]);
+                    this._play_now(this.data_items[this.cur_row]);
                 }else{
                     //this.show_info(this.cur_media_item);
                 }
@@ -345,7 +345,7 @@
             
             if (this.data_items && this.data_items[this.cur_row] && !this.loading){
                 stb.player.need_show_info = 0;
-                stb.player.play(this.data_items[this.cur_row]);
+                this._play_now(this.data_items[this.cur_row]);
             }
             
             // set active list w/ info item
@@ -434,13 +434,44 @@
                 if (item.open){
                 
                     stb.player.need_show_info = 0;
-                    stb.player.play(item);
+                    self._play_now(item);
                 }else{
                     stb.player.stop();
                 }
                 
             },
             this.row_callback_timeout);
+        };
+
+        this._play_now = function(item){
+            _debug('tv._play_now', item);
+
+            if (parseInt(item.use_http_tmp_link) == 1){
+
+                stb.player.on_create_link = function(result){
+                    _debug('tv.on_create_link', result);
+
+                    if (result.error == 'limit'){
+                        stb.notice.show(word['player_limit_notice']);
+                    }else if(result.error == 'nothing_to_play'){
+                        stb.notice.show(word['player_file_missing']);
+                    }else if(result.error == 'link_fault'){
+                        stb.notice.show(word['player_server_error']);
+                    }else{
+                        //if (self.info.on){
+                        //    self.info.hide();
+                        //}
+
+                        //self.hide(true);
+
+                        //stb.player.prev_layer = self;
+                        //stb.player.need_show_info = 1;
+                        stb.player.play_now(result.cmd);
+                    }
+                }
+            }
+            
+            stb.player.play(item);
         };
         
         this.add_to_fav = function(){
@@ -697,7 +728,7 @@
                     
                     stb.player.send_last_tv_id_callback = function(){self.load_data.apply(self)};
                     stb.player.need_show_info = 0;
-                    stb.player.play(item);
+                    this._play_now(item);
                 }else{
                     stb.player.send_last_tv_id(item.id);
                 }
