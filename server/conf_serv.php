@@ -20,6 +20,8 @@ define("MEMCACHE_HOST", 'localhost');
 
 define("NFS_PROXY", 'localhost');
 
+define("STREAM_PROXY", 'localhost');
+
 define("OS_UNIX", 1);
 
 define("HOROSCOPE_RSS",  'http://www.hyrax.ru/cgi-bin/bn_xml.cgi');
