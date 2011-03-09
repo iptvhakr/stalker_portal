@@ -142,7 +142,7 @@
 
 .short_container .active_row_bg{
     position: absolute;
-    width: 310px;
+    width: 300px;
     height: 54px;
     left: 36px;
     background: url("i/mb_table_act.png");
