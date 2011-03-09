@@ -384,9 +384,8 @@
             }else if (item && item.epg){
                 
                 this.fill_short_epg(item.epg);
+                this.short_epg_loader.start();
             }
-            
-            this.short_epg_loader.start();
         };
         
         this.fill_short_epg = function(epg){
