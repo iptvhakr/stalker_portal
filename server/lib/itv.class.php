@@ -23,6 +23,77 @@ class Itv extends AjaxResponse
     public function __construct(){
         parent::__construct();
     }
+
+    public function createLink(){
+
+        $cmd = '';
+
+        preg_match("/\/ch\/(\d+)$/", $_REQUEST['cmd'], $tmp_arr);
+
+        if (empty($tmp_arr)){
+            $error = 'nothing_to_play';
+        }
+
+        $media_id = intval($tmp_arr[1]);
+
+        $channel = self::getChannelById($media_id);
+
+        var_dump($media_id, $channel);
+
+        if (empty($channel)){
+            $error = 'nothing_to_play';
+        }
+
+        preg_match("/http:\/\/(.*?)\/(.*)$/", $channel['cmd'], $tmp_url_arr);
+
+        if (empty($tmp_url_arr)){
+            $error = 'nothing_to_play';
+        }else{
+            $redirect_host = $tmp_url_arr[1];
+            $redirect_uri  = $tmp_url_arr[2];
+            $redirect_url = '/get/'.$redirect_host.'/'.$redirect_uri;
+
+            $link_result = $this->createTemporaryLink($redirect_url);
+
+            var_dump($redirect_url, $link_result);
+
+            if (!$link_result){
+                $error = 'link_fault';
+            }else{
+                $cmd = 'ffrt http://'.STREAM_PROXY.'/ch/'.$link_result;
+            }
+        }
+
+        $res = array(
+            'id'    => $media_id,
+            'cmd'   => empty($error) ? $cmd : '',
+            'error' => empty($error) ? '' : $error
+        );
+
+        var_dump($res);
+
+        return $res;
+    }
+
+    private function createTemporaryLink($url){
+
+        $key = md5($url.time());
+
+        $cache = Cache::getInstance();
+
+        $result = $cache->set($key, $url, 0, 15);
+
+        if ($result){
+            return $key;
+        }else{
+            return $result;
+        }
+    }
+
+    public static function checkTemporaryLink($key){
+
+        return Cache::getInstance()->get($key);
+    }
     
     public function setPlayed(){
         $itv_id = intval($_REQUEST['itv_id']);
@@ -390,6 +461,10 @@ class Itv extends AjaxResponse
             $this->response['data'][$i]['epg'] = $next_five_epg;
             
             $this->response['data'][$i]['open'] = 1;
+
+            if($this->response['data'][$i]['use_http_tmp_link']){
+                $this->response['data'][$i]['cmd'] = 'rtp udp://ch/'.$this->response['data'][$i]['id'];
+            }
             
             if (ENABLE_SUBSCRIPTION){
                 
