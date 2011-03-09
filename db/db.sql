@@ -115,6 +115,7 @@ CREATE TABLE `itv`(
     `service_id` varchar(32) NOT NULL default '',
     `bonus_ch` tinyint default 0, /* 1 - bonus channel */
     `volume_correction` int NOT NULL default 0,
+    `use_http_tmp_link` tinyint default 0, 
     PRIMARY KEY (`id`),
     UNIQUE KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
