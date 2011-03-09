@@ -279,7 +279,7 @@ player.prototype.event_callback = function(event){
             }
         }
     }
-}
+};
 
 player.prototype.volume = new function(){
     this.on = false;
@@ -303,7 +303,7 @@ player.prototype.volume = new function(){
         this.mute.dom_obj.hide();
         
         this.dom_obj.hide();
-    }
+    };
     
     this.set_level = function(v){
         _debug('volume.set_level', v);
@@ -352,7 +352,7 @@ player.prototype.volume = new function(){
         _debug('final_level', final_level);
         
         this.update_bar(final_level);
-    }
+    };
     
     this.correct_level = function(c){
         _debug('volume.correct_level', c);
@@ -392,7 +392,7 @@ player.prototype.volume = new function(){
         }
         
         this.update_bar(level);
-    }
+    };
     
     this.show = function(){
         _debug('volume.show');
@@ -401,7 +401,7 @@ player.prototype.volume = new function(){
         this.on = true;
         
         this.t_hide();
-    }
+    };
     
     this.t_hide = function(){
         _debug('volume.t_hide');
@@ -415,7 +415,7 @@ player.prototype.volume = new function(){
             self.hide();
             
         }, this.hide_to);
-    }
+    };
     
     this.hide = function(){
         _debug('volume.hide');
@@ -423,7 +423,7 @@ player.prototype.volume = new function(){
         this.dom_obj.hide();
         this.on = false;
         this.save();
-    }
+    };
     
     this.control = function(dir){
         _debug('volume.control', dir);
@@ -455,7 +455,7 @@ player.prototype.volume = new function(){
         }catch(e){
             _debug(e);
         }
-    }
+    };
     
     this.show_mute = function(){
         _debug('volume.show_mute');
@@ -476,7 +476,7 @@ player.prototype.volume = new function(){
         
         this.container.hide();
         this.mute.on = true;
-    }
+    };
     
     this.hide_mute = function(){
         _debug('volume.hide_mute');
@@ -498,7 +498,7 @@ player.prototype.volume = new function(){
         }else{
             this.t_hide();
         }
-    }
+    };
     
     this.mute_switch = function(){
         _debug('volume.mute_switch');
@@ -508,7 +508,7 @@ player.prototype.volume = new function(){
         }else{
             this.show_mute();
         }
-    }
+    };
     
     this.update_bar = function(level){
         _debug('volume.update_bar', level);
@@ -525,7 +525,7 @@ player.prototype.volume = new function(){
         _debug('bar width', width);
         
         this.bar.style.width = width + 'px';
-    }
+    };
     
     this.save = function(){
         _debug('volume.save');
@@ -544,7 +544,7 @@ player.prototype.volume = new function(){
 
         )
     }
-}
+};
 
 player.prototype.seek_bar = new function(){
     
@@ -552,16 +552,16 @@ player.prototype.seek_bar = new function(){
     
     this.show = function(){
         this.seek_bar_dom_obj.show();
-    }
+    };
     
     this.hide = function(){
         this.seek_bar_dom_obj.hide();
-    }
+    };
     
     this.set_pos = function(){
         
     }
-}
+};
 
 player.prototype.define_media_type = function(cmd){
     _debug('player.define_media_type', cmd);
@@ -581,7 +581,7 @@ player.prototype.define_media_type = function(cmd){
         this.is_tv = false;
         return 'file';
     }
-}
+};
 
 player.prototype.play_last = function(){
     _debug('player.play_last');
@@ -589,7 +589,7 @@ player.prototype.play_last = function(){
     this.prev_layer = module.tv;
     this.show_info_after_play();
     this.play(this.cur_tv_item);
-}
+};
 
 player.prototype.first_play = function(){
     _debug('player.first_play');
@@ -635,7 +635,7 @@ player.prototype.first_play = function(){
         stb.key_lock = false;
         this.channels_inited = true;
     }
-}
+};
 
 player.prototype.play = function(item){
     _debug('player.play', item);
@@ -678,7 +678,12 @@ player.prototype.play = function(item){
             stb.Stop();
             this.show_info(this.cur_media_item);
         }else{
-            this.play_now(cmd);
+
+            if (parseInt(item.use_http_tmp_link) == 1){
+                this.create_link('itv', cmd, 0);
+            }else{
+                this.play_now(cmd);
+            }
             
             if (this.is_tv){
                 
@@ -715,11 +720,11 @@ player.prototype.play = function(item){
         
         this.create_link('vod', cmd, series_number);
     }
-}
+};
 
 player.prototype.create_link = function(type, uri, series_number){
     
-    var series_number = series_number || "";
+    series_number = series_number || "";
     
     _debug('player.create_link', type, uri, series_number);
     
@@ -733,15 +738,19 @@ player.prototype.create_link = function(type, uri, series_number){
         },
         
         function(result){
-            
-            _debug('create_link callback: ', result);
-            
-            this.last_storage_id = result.storage_id;
-            
-            _debug('this.last_storage_id', this.last_storage_id);
 
-            if (result.cmd && result.cmd.indexOf('http://') === -1){
-                stb.Mount(result.cmd);
+            _debug('player.create_link callback type', type);
+
+            if (type !== 'itv'){
+                _debug('create_link callback: ', result);
+
+                this.last_storage_id = result.storage_id;
+
+                _debug('this.last_storage_id', this.last_storage_id);
+
+                if (result.cmd && result.cmd.indexOf('http://') === -1){
+                    stb.Mount(result.cmd);
+                }
             }
             
             this.on_create_link && this.on_create_link(result);
@@ -749,7 +758,7 @@ player.prototype.create_link = function(type, uri, series_number){
         
         this
     )
-}
+};
 
 player.prototype.play_now = function(uri){
     _debug('player.play_now', uri);
@@ -996,6 +1005,8 @@ player.prototype.switch_channel = function(dir, show_info){
     }else{
         this.need_show_info = 0;
     }
+
+    var item = {};
     
     if (dir > 0){
         
@@ -1009,11 +1020,7 @@ player.prototype.switch_channel = function(dir, show_info){
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
             
-            /*if (show_info){
-                this.show_info(this.fav_channels[this.f_ch_idx]);
-            }*/
-            
-            this.play(this.fav_channels[this.f_ch_idx]);
+            item = this.fav_channels[this.f_ch_idx];
             
         }else{
             
@@ -1025,11 +1032,7 @@ player.prototype.switch_channel = function(dir, show_info){
             
             _debug('this.ch_idx:', this.ch_idx);
             
-            /*if (show_info){
-                this.show_info(this.channels[this.ch_idx]);
-            }*/
-            
-            this.play(this.channels[this.ch_idx]);
+            item = this.channels[this.ch_idx];
         }
         
     }else{
@@ -1042,11 +1045,8 @@ player.prototype.switch_channel = function(dir, show_info){
             }
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
-            
-            /*if (show_info){
-                this.show_info(this.fav_channels[this.f_ch_idx]);
-            }*/
-            this.play(this.fav_channels[this.f_ch_idx]);
+
+            item = this.fav_channels[this.f_ch_idx];
             
         }else{
             
@@ -1058,13 +1058,28 @@ player.prototype.switch_channel = function(dir, show_info){
             
             _debug('this.ch_idx:', this.ch_idx);
             
-            /*if (show_info){
-                this.show_info(this.channels[this.ch_idx]);
-            }*/
-            this.play(this.channels[this.ch_idx]);
+            item = this.channels[this.ch_idx];
         }
     }
-}
+
+    if (parseInt(item.use_http_tmp_link) == 1){
+        this.on_create_link = function(result){
+            _debug('player.tv.on_create_link', result);
+
+            if (result.error == 'limit'){
+                stb.notice.show(word['player_limit_notice']);
+            }else if(result.error == 'nothing_to_play'){
+                stb.notice.show(word['player_file_missing']);
+            }else if(result.error == 'link_fault'){
+                stb.notice.show(word['player_server_error']);
+            }else{
+                stb.player.play_now(result.cmd);
+            }
+        }
+    }
+
+    this.play(item);
+};
 
 player.prototype.send_last_tv_id = function(id){
     _debug('send_last_tv_id', id);
