@@ -57,7 +57,7 @@ $words['layer_records'] = 'ЗАПИСЕЙ';
 $words['layer_loading'] = 'ЗАГРУЗКА...';
 
 // media browser
-$words['mbrowser_title'] = 'USB Устройство';
+$words['mbrowser_title'] = 'Медиа Браузер';
 $words['mbrowser_connected'] = 'подключено';
 $words['mbrowser_disconnected'] = 'отключено';
 $words['mbrowser_not_found'] = 'не найдено';
