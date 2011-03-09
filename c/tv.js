@@ -220,7 +220,7 @@
                 
                 this.password_input.callback = function(){
                     self.play();
-                }
+                };
                 
                 this.password_input.show();
             }else{
