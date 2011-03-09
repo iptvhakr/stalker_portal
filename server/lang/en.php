@@ -57,7 +57,7 @@ $words['layer_records'] = 'RECORDS';
 $words['layer_loading'] = 'LOADING...';
 
 // media browser
-$words['mbrowser_title'] = 'USB Device';
+$words['mbrowser_title'] = 'Media Browser';
 $words['mbrowser_connected'] = 'connected';
 $words['mbrowser_disconnected'] = 'disconnected';
 $words['mbrowser_not_found'] = 'not found';
