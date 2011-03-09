@@ -680,6 +680,21 @@ player.prototype.play = function(item){
         }else{
 
             if (parseInt(item.use_http_tmp_link) == 1){
+
+                stb.player.on_create_link = function(result){
+                    _debug('tv.on_create_link', result);
+
+                    /*if (result.error == 'limit'){
+                        stb.notice.show(word['player_limit_notice']);
+                    }else if(result.error == 'nothing_to_play'){
+                        stb.notice.show(word['player_file_missing']);
+                    }else if(result.error == 'link_fault'){
+                        stb.notice.show(word['player_server_error']);
+                    }else{*/
+                        stb.player.play_now(result.cmd);
+                    //}
+                };
+
                 this.create_link('itv', cmd, 0);
             }else{
                 this.play_now(cmd);
