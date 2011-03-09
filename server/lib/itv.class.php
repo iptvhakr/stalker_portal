@@ -463,7 +463,7 @@ class Itv extends AjaxResponse
             $this->response['data'][$i]['open'] = 1;
 
             if($this->response['data'][$i]['use_http_tmp_link']){
-                $this->response['data'][$i]['cmd'] = 'rtp udp://ch/'.$this->response['data'][$i]['id'];
+                $this->response['data'][$i]['cmd'] = 'ffrt http://'.STREAM_PROXY.'/ch/'.$this->response['data'][$i]['id'];
             }
             
             if (ENABLE_SUBSCRIPTION){
