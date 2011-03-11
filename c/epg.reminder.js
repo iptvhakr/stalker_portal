@@ -141,7 +141,7 @@
                 },
                 
                 this
-            )
+            );
             
             this.hide_mark(program_id);
             
@@ -212,7 +212,7 @@
                     keydown_observer.emulate_key(key.MENU);
                     keydown_observer.emulate_key(key.EXIT);
                 }
-            })
+            });
             
             return msg;
         },
@@ -253,8 +253,8 @@
                 this.get_item().mark_memo = 0;
                 this.parent.set_active_row(this.parent.cur_row);
             }
-        },
-    }
+        }
+    };
     
     module.epg_reminder = reminder;
     module.epg_reminder.get_list();
