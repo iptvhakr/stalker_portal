@@ -179,6 +179,7 @@ CREATE TABLE `karaoke`(
     `name` varchar(128) NOT NULL default '', 
     `fname` varchar(128) NOT NULL default '', 
     `description` text,
+    `protocol` varchar(64) NOT NULL default 'nfs',
     `rtsp_url` varchar(255) NOT NULL default '',
     `pic` varchar(128) NOT NULL default '', 
     `cost` int NOT NULL default 0, 
