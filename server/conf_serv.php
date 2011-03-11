@@ -24,7 +24,7 @@ define("STREAM_PROXY", 'localhost');
 
 define("OS_UNIX", 1);
 
-define("HOROSCOPE_RSS",  'http://www.hyrax.ru/cgi-bin/bn_xml.cgi');
+define("HOROSCOPE_RSS",  'http://www.hyrax.ru/cgi-bin/bn_xml5.cgi');
 define("GAPI_CUR_WEATHER",  'http://www.google.com/ig/api?hl=ru&weather=Odessa,,,46430000,30770000&oe=utf8');
 define("GISMETEO_XML",  'http://informer.gismeteo.ru/xml/33837_1.xml');
 
