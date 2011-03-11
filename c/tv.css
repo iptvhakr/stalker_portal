@@ -91,22 +91,43 @@
     width: 580px;
     float: left;
     text-overflow: ellipsis;
+    margin: -5px 0 0 0;
 }
 
 .tv_timetable{
     position: absolute;
-    width: 320px;
+    width: 334px;
     top: 340px;
-    left: 345px;
-    padding: 5px;
+    left: 341px;
+    padding: 5px 0 0;
     font-size: 18px;
     color: #99a8b5;
     overflow: hidden;
     height: 150px;
 }
 
+.tv_timetable .mark_memo{
+    background-image: url("i/epg_green_mark.png");
+    height: 8px;
+    width: 8px;
+    position: relative;
+    /*left: 3px;*/
+    top: 5px;
+    float: left;
+}
+
+.tv_timetable .dummy_mark_memo{
+    height: 8px;
+    width: 8px;
+    position: relative;
+    /*left: 3px;*/
+    top: 5px;
+    float: left;
+}
+
 .tv_timetable .time{
     color: #cfeafe;
+    font-family: "Myriad Pro Cond";
 }
 
 .tv_timetable .current{
