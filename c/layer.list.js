@@ -69,7 +69,7 @@ ListLayer.prototype.show = function(do_not_load){
     }else{
         this.set_active_row(this.cur_row);
     }
-}
+};
 
 ListLayer.prototype.hide = function(do_not_reset){
     _debug('ListLayer.hide');
@@ -89,7 +89,7 @@ ListLayer.prototype.hide = function(do_not_reset){
     this.base_layer.hide.call(this);
     
     this.set_passive_row();
-}
+};
 
 ListLayer.prototype.reset = function(){
     _debug('ListLayer.reset');
@@ -100,7 +100,7 @@ ListLayer.prototype.reset = function(){
     this.total_pages = 0;
 
     this.clear_list();
-}
+};
 
 ListLayer.prototype.clear_list = function(){
     _debug('ListLayer.clear_list');
@@ -112,7 +112,7 @@ ListLayer.prototype.clear_list = function(){
     this.data_items = [];
     
     this.set_total_items(-1);
-}
+};
 
 ListLayer.prototype.init = function(){
     
@@ -122,7 +122,7 @@ ListLayer.prototype.init = function(){
     
     this.init_page_bar();
     this.init_list();
-}
+};
 
 ListLayer.prototype.init_page_bar = function(){
     
@@ -130,7 +130,7 @@ ListLayer.prototype.init_page_bar = function(){
     this.total_vclub_items_obj.addClass('mb_header_info text14_white');
     
     this.dom_obj.appendChild(this.total_vclub_items_obj);
-}
+};
 
 ListLayer.prototype.init_list = function(){
     _debug('ListLayer.init_list');
@@ -157,7 +157,7 @@ ListLayer.prototype.init_list = function(){
     }
     
     this.init_active_row();
-}
+};
 
 ListLayer.prototype.set_wide_container = function(){
     _debug('set_wide_container');
@@ -166,7 +166,7 @@ ListLayer.prototype.set_wide_container = function(){
     this.main_container.setClass('wide_container');
     
     this.info_box && this.info_box.hide && this.info_box.hide();
-}
+};
 
 ListLayer.prototype.set_middle_container = function(){
     _debug('set_middle_container');
@@ -175,7 +175,7 @@ ListLayer.prototype.set_middle_container = function(){
     this.main_container.setClass('middle_container');
     
     this.info_box && this.info_box.show && this.info_box.show();
-}
+};
 
 ListLayer.prototype.set_short_container = function(){
     _debug('set_short_container');
@@ -184,7 +184,7 @@ ListLayer.prototype.set_short_container = function(){
     this.main_container.setClass('short_container');
     
     this.info_box && this.info_box.show && this.info_box.show();
-}
+};
 
 ListLayer.prototype.init_blocks = function(parent, is_active_row){
     
@@ -201,7 +201,7 @@ ListLayer.prototype.init_blocks = function(parent, is_active_row){
     }
     
     return block_map;
-}
+};
 
 ListLayer.prototype.init_active_row = function(){
     
@@ -215,12 +215,12 @@ ListLayer.prototype.init_active_row = function(){
     this.active_row['row'] = active_row;
     
     this.main_container.appendChild(active_row);
-}
+};
 
 ListLayer.prototype.init_sidebar = function(options){
     this.sidebar = new sidebar(this, options);
     this.sidebar.init();
-}
+};
 
 ListLayer.prototype.load_data = function(){
     _debug('ListLayer.load_data');
@@ -266,7 +266,7 @@ ListLayer.prototype.load_data = function(){
         
         this
     )
-}
+};
 
 ListLayer.prototype.set_total_items = function(count){
     _debug('ListLayer.set_total_items: ', count);
@@ -284,7 +284,7 @@ ListLayer.prototype.set_total_items = function(count){
     }
     
     this.total_vclub_items_obj.innerHTML = str;
-}
+};
 
 ListLayer.prototype.fill_list = function(data){
     _debug('ListLayer.fill_list', data);
@@ -328,7 +328,7 @@ ListLayer.prototype.fill_list = function(data){
     this.set_active_row(this.cur_row);
     
     this.loading = false;
-}
+};
 
 ListLayer.prototype.handling_block = function(data, row_items, block_name){
     
@@ -349,7 +349,7 @@ ListLayer.prototype.handling_block = function(data, row_items, block_name){
         
         block_obj.innerHTML = data;
     }
-}
+};
 
 ListLayer.prototype.clear_row = function(row_obj){
     
@@ -364,7 +364,7 @@ ListLayer.prototype.clear_row = function(row_obj){
             }
         }
     }
-}
+};
 
 ListLayer.prototype.set_active_row = function(num){
     
@@ -419,11 +419,11 @@ ListLayer.prototype.set_active_row = function(num){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 ListLayer.prototype.set_passive_row = function(){
     this.active_row['row'].hide();
-}
+};
 
 ListLayer.prototype.shift_row = function(dir){
     _debug('this.loading', this.loading);
@@ -450,7 +450,7 @@ ListLayer.prototype.shift_row = function(dir){
             this.shift_page(-1);
         }
     }
-}
+};
 
 ListLayer.prototype.shift_page = function(dir){
 
@@ -471,7 +471,7 @@ ListLayer.prototype.shift_page = function(dir){
     }
     
     this.load_data();
-}
+};
 
 ListLayer.prototype.sidebar_switcher = function(){
 
@@ -480,7 +480,7 @@ ListLayer.prototype.sidebar_switcher = function(){
     }else{
         this.sidebar.show();
     }
-}
+};
 
 ListLayer.prototype.bind = function(){
     
@@ -494,6 +494,6 @@ ListLayer.prototype.bind = function(){
         this.hide();
         main_menu.show();
     }).bind(key.MENU, this).bind(key.EXIT, this).bind(key.LEFT, this);
-}
+};
 
 loader.next();
