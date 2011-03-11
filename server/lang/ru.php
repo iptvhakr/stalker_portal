@@ -21,7 +21,7 @@ $words['all_months'] = array(
                 
 $words['all_title'] = 'Все';
 
-$words['no_ch_info'] = '[Расписание отсутствует]';
+$words['no_ch_info'] = '[телепрограмма отсутствует]';
 
 $words['vod_today'] = 'сегодня';
 $words['vod_yesterday'] = 'вчера';
