@@ -90,7 +90,15 @@ $type = '';
 if (!$error){
     
     $rtsp_url = @trim($_POST['rtsp_url']);
-    
+
+    $protocol = @$_POST['protocol'];
+
+    if ($protocol == 'custom'){
+        $rtsp_url = @trim($_POST['rtsp_url']);
+    }else{
+        $rtsp_url = '';
+    }
+
     $status = $rtsp_url? 1 : 0;
     
     if (@$_GET['save']){
@@ -98,6 +106,7 @@ if (!$error){
         if(@$_GET['name']){
             $datetime = date("Y-m-d H:i:s");
             $query = "insert into karaoke (name,
+                                           protocol,
                                            rtsp_url,
                                            genre_id,
                                            singer,
@@ -107,6 +116,7 @@ if (!$error){
                                            add_by
                                            ) 
                                   values ('".@$_GET['name']."',
+                                           '".$protocol."',
                                            '".$rtsp_url."',
                                            '".@$_POST['genre_id']."',
                                            '".@$_POST['singer']."',
@@ -132,8 +142,9 @@ if (!$error){
         if(@$_GET['name']){
 
             $query = "update karaoke set name='".$_GET['name']."', 
-                                       rtsp_url='".$rtsp_url."',  
-                                       genre_id='".@$_POST['genre_id']."',  
+                                       protocol='".$protocol."',
+                                       rtsp_url='".$rtsp_url."',
+                                       genre_id='".@$_POST['genre_id']."',
                                        singer='".@$_POST['singer']."',
                                        status=$status,
                                        author='".@$_POST['author']."'
@@ -576,6 +587,7 @@ if (@$_GET['edit']){
         $author   = $arr['author'];
         $year     = $arr['year'];
         $rtsp_url = $arr['rtsp_url'];
+        $protocol = $arr['protocol'];
     }
     //unset($_SESSION['upload']);
     $query = "select * from screenshots where media_id=".intval(@$_GET['id']);
@@ -661,20 +673,19 @@ if(@$_SESSION['upload']){
 }
 
 ?>
-<script>
+<script type="text/javascript">
 function change_list(){
-    var opt_sort = document.getElementById('sort_opt')
-    var url = 'add_karaoke.php?status='+opt_sort.options[opt_sort.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'\''."\n";?>
-    document.location = url
+    var opt_sort = document.getElementById('sort_opt');
+    document.location = 'add_karaoke.php?status='+opt_sort.options[opt_sort.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'\''."\n";?>;
 }
 
 function open_info(id){
-    var info_display = document.getElementById('info_'+id).style.display
+    var info_display = document.getElementById('info_'+id).style.display;
     if (info_display == 'none'){
-        document.getElementById('info_'+id).style.display = ''
+        document.getElementById('info_'+id).style.display = '';
         doLoad('karaoke_info', id)
     }else{
-        document.getElementById('info_'+id).style.display = 'none'
+        document.getElementById('info_'+id).style.display = 'none';
         document.getElementById('storages_content_'+id).innerHTML = '';
     }
 }
@@ -768,6 +779,19 @@ function save(){
     //document.location=action
     form_.submit()
 }
+
+function check_protocol(){
+
+    var protocol_obj = document.getElementById('protocol');
+    var rtsp_url_block = document.getElementById('rtsp_url_block');
+
+    if (protocol_obj.options[protocol_obj.selectedIndex].value == 'custom'){
+        rtsp_url_block.style.display = '';
+    }else{
+        rtsp_url_block.style.display = 'none';
+    }
+}
+
 </script>
 <br>
 <table align="center" class='list'>
@@ -791,6 +815,18 @@ function save(){
            </td>
         </tr>
         <tr>
+           <td align="right" valign="top">
+           Протокол:
+           </td>
+           <td>
+             <select name="protocol" id="protocol" onchange="check_protocol()">
+                 <option value="nfs" <?if ($protocol == 'nfs'){ echo 'selected';}?>>NFS</option>
+                 <option value="http" <?if ($protocol == 'http'){ echo 'selected';}?>>HTTP</option>
+                 <option value="custom" <?if ($protocol == 'custom'){ echo 'selected';}?>>Custom URL</option>
+             </select>
+           </td>
+        </tr>
+        <tr id="rtsp_url_block" <?if ($protocol != 'custom'){ echo 'style="display:none"';}?>>
            <td align="right" valign="top">
            RTSP/HTTP URL: 
            </td>
