@@ -64,6 +64,8 @@
         
         this.show = function(){
             _debug('epg_simple.show');
+
+            this.parent.on = false;
             
             this.superclass.show.call(this, 1);
             
@@ -83,7 +85,7 @@
             this.set_passive_row();
             
             this.superclass.hide.call(this, do_not_reset);
-        }
+        };
         
         this.bind = function(){
             _debug('epg_simple.bind');
