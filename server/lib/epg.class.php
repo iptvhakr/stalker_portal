@@ -284,30 +284,6 @@ class Epg
         
         $ch_id = intval($ch_id);
         
-        /*$result = $this->db->from('epg')
-                           ->where(
-                               array(
-                                   'ch_id'  => $ch_id,
-                                   'time>=' => $this->day_begin_datetime,
-                                   'time<'  => $this->now_datetime
-                               ))
-                           ->orderby('time', 'desc')
-                           ->get();
-        
-        
-        $this->cur_program_idx = intval($result->count());
-        $this->cur_program_id  = intval($result->get('id'));
-        if ($this->cur_program_id > 0){
-            $this->cur_program_page = ceil($this->cur_program_idx/MAX_PAGE_ITEMS);
-            $this->cur_program_row = $this->cur_program_idx - floor($this->cur_program_idx/MAX_PAGE_ITEMS)*MAX_PAGE_ITEMS;
-            if ($this->cur_program_row == 0){
-                $this->cur_program_row = 10;
-            }
-        }else{
-            $this->cur_program_page = 0;
-            $this->cur_program_row  = 0;
-        }*/
-        
         $program = $this->db
                             ->from('epg')
                             ->where(array(
@@ -335,31 +311,19 @@ class Epg
      */
     public function getCurProgramAndFewNext($ch_id, $num_programs){
         
-        
-        /*$cur_prog_id = $this->db->from('epg')
-                           ->where(
-                               array(
-                                   'ch_id'  => $ch_id,
-                                   'time>=' => $this->day_begin_datetime,
-                                   'time<'  => $this->now_datetime
-                               ))
-                           ->orderby('time', 'desc')
-                           ->get()
-                           ->first('id');
-        */
-        
         $cur_program = $this->getCurProgram($ch_id);
                            
         if (!empty($cur_program['id'])){
             
             return $this->db->from('epg')
-                                        ->select('*, TIME_FORMAT(`time`,"%H:%i") as t_time, TIME_FORMAT(`time_to`,"%H:%i") as t_time_to')
+                                        ->select('epg.*, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
                                         ->where(
                                             array(
-                                                'ch_id' => $ch_id,
-                                                'time>='  => $cur_program['time']
+                                                'epg.ch_id' => $ch_id,
+                                                'epg.time>='  => $cur_program['time']
                                             ))
-                                        ->orderby('time')
+                                        ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
+                                        ->orderby('epg.time')
                                         ->limit($num_programs)
                                         ->get()
                                         ->all();
@@ -386,40 +350,6 @@ class Epg
      * @return array
      */
     public function getEpgInfo(){
-        
-        /*$db = clone $this->db;
-        
-        $cur_program_arr = $db
-                              ->from('epg')
-                              ->select('*, UNIX_TIMESTAMP(time) as start_timestamp')
-                              ->in('ch_id', Itv::getInstance()->getAllUserChannelsIds())
-                              ->where(array(
-                                  'time<='   => 'NOW()',
-                                  'time_to>' => 'NOW()'
-                              ))
-                              ->get()
-                              ->all();
-        
-        $result = array();
-        
-        foreach ($cur_program_arr as $cur_program){
-            
-            $period_end = date("Y-m-d H:i:s", ($cur_program['start_timestamp'] + 9*3600));
-            
-            $result[$cur_program['ch_id']] = $db
-                                                ->from('epg')
-                                                ->select('*, UNIX_TIMESTAMP(time) as start_timestamp, TIME_FORMAT(time,"%H:%i") as t_time')
-                                                ->where(array(
-                                                    'ch_id'  => $cur_program['ch_id'],
-                                                    'time>=' => $cur_program['time'],
-                                                    'time<=' => $period_end
-                                                ))
-                                                ->orderby('time')
-                                                ->get()
-                                                ->all();
-        }
-        
-        return $result;*/
         
         return $this->getEpgForChannelsOnPeriod(array());
     }
