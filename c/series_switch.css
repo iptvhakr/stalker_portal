@@ -16,9 +16,11 @@
     width: 89px;
     height: 44px;
     background: url("i/input_channel.png") center;
-    font: 36px "Myriad Pro Cond";
+    font: 34px "Myriad Pro Cond";
     text-align: center;
     color: #048;
+    overflow: hidden;
+    white-space: pre;
 }
 
 .series_switch_title{
