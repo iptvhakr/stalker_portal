@@ -24,6 +24,33 @@ class Itv extends AjaxResponse
         parent::__construct();
     }
 
+    /**
+     * nginx.conf
+     *
+     * location / {
+     *
+     *   rewrite ^/ch/(.*) /stalker_portal/server/api/chk_tmp_tv_link.php?key=$1 last;
+     *
+     *   proxy_set_header Host tv.infomir.com.ua;
+     *   proxy_set_header X-Real-IP $remote_addr;
+     *   proxy_pass http://tv.infomir.com.ua:88/;
+     *}
+     *
+     *location ~* ^/get/(.*?)/(.*) {
+     *   internal;
+     *
+     *   set $upstream_uri       $2;
+     *   set $upstream_host      $1;
+     *
+     *   set $upstream_url http://$upstream_host/$upstream_uri;
+     *
+     *   proxy_set_header Host $upstream_host;
+     *   proxy_set_header X-Real-IP $remote_addr;
+     *   proxy_pass $upstream_url;
+     *}
+     * 
+     * @return array
+     */
     public function createLink(){
 
         $cmd = '';
@@ -44,7 +71,7 @@ class Itv extends AjaxResponse
             $error = 'nothing_to_play';
         }
 
-        preg_match("/http:\/\/(.*?)\/(.*)$/", $channel['cmd'], $tmp_url_arr);
+        preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
 
         if (empty($tmp_url_arr)){
             $error = 'nothing_to_play';
