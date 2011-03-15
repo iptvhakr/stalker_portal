@@ -6,7 +6,7 @@
 var stbEvent = {
     onEvent : function(data){},
     event : 0
-}
+};
 
 function player(){
     
@@ -66,6 +66,8 @@ function player(){
     this.send_last_tv_id_callback = function(){};
     
     this.play_continuously = false;
+
+    this.pos_by_numbers_input = '';
     
     this.con_menu = new context_menu();
     this.con_menu.bind();
@@ -94,7 +96,7 @@ player.prototype.init = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 player.prototype.setup_rtsp = function(rtsp_type, rtsp_flags){
     _debug('player.prototype.setup_rtsp', rtsp_type, rtsp_flags);
@@ -103,12 +105,12 @@ player.prototype.setup_rtsp = function(rtsp_type, rtsp_flags){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 player.prototype.event_callback = function(event){
     _debug('event: ', event);
     
-    var event = parseInt(event);
+    event = parseInt(event);
     
     this.last_state = event;
     
@@ -791,7 +793,7 @@ player.prototype.play_now = function(uri){
     try{
         stb.Play(uri);
     }catch(e){_debug(e)}
-}
+};
 
 player.prototype.stop = function(){
     _debug('player.stop');
@@ -803,6 +805,8 @@ player.prototype.stop = function(){
     this.need_show_info = 0;
     
     this.cur_media_length = 0;
+
+    this.set_pos_button(0);
     
     this.on_create_link = function(){};
     
@@ -841,12 +845,12 @@ player.prototype.stop = function(){
     
     this.hide_info();
     _log('stop');
-}
+};
 
 player.prototype.init_pause = function(){
     this.pause.dom_obj = create_block_element('pause');
     this.pause.dom_obj.hide();
-}
+};
 
 player.prototype.pause_switch = function(){
     _debug('player.pause_switch');
@@ -860,28 +864,28 @@ player.prototype.pause_switch = function(){
     }else{
         try{
             stb.Pause();
-        }catch(e){};
+        }catch(e){}
         this.pause.on = true;
         this.pause.dom_obj.show();
     }
-}
+};
 
 player.prototype.disable_pause = function(){
     try{
         stb.Continue();
     }catch(e){};
     this.hide_pause();
-}
+};
 
 player.prototype.hide_pause = function(){
     _debug('player.hide_pause');
     this.pause.on = false;
     this.pause.dom_obj.hide();
-}
+};
 
 player.prototype.show_info_after_play = function(){
     this.need_show_info = 1;
-}
+};
 
 player.prototype.init_show_info = function(){
     
@@ -899,15 +903,24 @@ player.prototype.init_show_info = function(){
     
     this.info.pos_button = create_block_element("pos_button", pos_bar);
     
-    this.info.pos_time = create_block_element("pos_time", this.info.video_container);
-    
+    //this.info.pos_time = create_block_element("pos_time", this.info.video_container);
+
+    var pos_time_bar =  create_block_element("pos_time", this.info.video_container);
+
+    this.info.cur_pos_time = create_block_element("cur_pos_time", pos_time_bar);
+
+    var pos_time_separator = create_block_element("pos_time_separator", pos_time_bar);
+    pos_time_separator.innerHTML = '/';
+
+    this.info.total_pos_time = create_block_element("total_pos_time", pos_time_bar);
+
     this.info.pos_series = create_block_element("pos_series", this.info.video_container);
     
     this.info.epg.hide();
     this.info.video_container.hide();
     
     this.info.dom_obj.hide();
-}
+};
 
 player.prototype.show_info = function(item){
     _debug('show_info');
@@ -999,13 +1012,16 @@ player.prototype.show_info = function(item){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 player.prototype.hide_info = function(){
+
+    this.reset_pos_by_numbers();
+
     window.clearTimeout(this.info.hide_timeout);
     this.info.dom_obj.hide();
     this.info.on = false;
-}
+};
 
 player.prototype.switch_channel = function(dir, show_info){
     
@@ -1132,7 +1148,7 @@ player.prototype.send_last_tv_id = function(id){
         
         this
     )
-}
+};
 
 player.prototype.send_played_itv = function(id){
     
@@ -1147,7 +1163,7 @@ player.prototype.send_played_itv = function(id){
             
         }
     );
-}
+};
 
 player.prototype.send_played_video = function(id){
     _debug('player.send_played_video', id);
@@ -1165,7 +1181,7 @@ player.prototype.send_played_video = function(id){
         }
     );
     
-}
+};
 
 player.prototype.show_prev_layer = function(){
     _debug('player.show_prev_layer');
@@ -1187,7 +1203,7 @@ player.prototype.show_prev_layer = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 player.prototype.bind = function(){
     
@@ -1277,19 +1293,26 @@ player.prototype.bind = function(){
             this.volume.mute_switch();
         }
     }).bind(key.MUTE, this);
-    
-    this.show_quick_ch_switch.bind(key.NUM1, this, 1);
-    this.show_quick_ch_switch.bind(key.NUM2, this, 2);
-    this.show_quick_ch_switch.bind(key.NUM3, this, 3);
-    this.show_quick_ch_switch.bind(key.NUM4, this, 4);
-    this.show_quick_ch_switch.bind(key.NUM5, this, 5);
-    this.show_quick_ch_switch.bind(key.NUM6, this, 6);
-    this.show_quick_ch_switch.bind(key.NUM7, this, 7);
-    this.show_quick_ch_switch.bind(key.NUM8, this, 8);
-    this.show_quick_ch_switch.bind(key.NUM9, this, 9);
-    this.show_quick_ch_switch.bind(key.NUM0, this, 0);
+
+    this.numpad_key_handler.bind(key.NUM1, this, 1);
+    this.numpad_key_handler.bind(key.NUM2, this, 2);
+    this.numpad_key_handler.bind(key.NUM3, this, 3);
+    this.numpad_key_handler.bind(key.NUM4, this, 4);
+    this.numpad_key_handler.bind(key.NUM5, this, 5);
+    this.numpad_key_handler.bind(key.NUM6, this, 6);
+    this.numpad_key_handler.bind(key.NUM7, this, 7);
+    this.numpad_key_handler.bind(key.NUM8, this, 8);
+    this.numpad_key_handler.bind(key.NUM9, this, 9);
+    this.numpad_key_handler.bind(key.NUM0, this, 0);
     
     (function(){
+
+        if (this.info.on){
+            if (this.pos_by_numbers_input != ''){
+                this.pos_by_numbers_back_key_handler();
+            }
+        }
+
         if (this.quick_ch_switch.on){
             this.del_quick_go_ch();
         }else{
@@ -1316,7 +1339,83 @@ player.prototype.bind = function(){
     }).bind(key.REC, this);
     
     this.volume.set_level.bind(key.REFRESH, this.volume, 50);
-}
+};
+
+player.prototype.numpad_key_handler = function(num){
+    _debug('player.numpad_key_handler', num);
+
+    if (stb.cur_place == 'radio'){
+        return;
+    }
+
+    if (this.is_tv){
+        this.show_quick_ch_switch(num)
+    }else{
+        this.change_pos_by_numbers(num)
+    }
+};
+
+player.prototype.change_pos_by_numbers = function(num){
+    _debug('player.change_pos_by_numbers', num);
+
+    this.processing_pos_input();
+
+    this.pos_by_numbers_input += num.toString();
+
+    var new_pos_time = this.human_time_to_sec(this.pos_by_numbers_input);
+    this.set_pos_button(new_pos_time);
+    this.update_current_time(new_pos_time);
+};
+
+player.prototype.pos_by_numbers_back_key_handler = function(){
+    _debug('player.pos_by_numbers_back_key_handler');
+
+    this.processing_pos_input();
+
+    this.pos_by_numbers_input = this.pos_by_numbers_input.substr(0, this.pos_by_numbers_input.length - 1);
+
+    var new_pos_time = this.human_time_to_sec(this.pos_by_numbers_input);
+    this.set_pos_button(new_pos_time);
+    this.update_current_time(new_pos_time);
+};
+
+player.prototype.processing_pos_input = function(){
+    _debug('player.processing_pos_input');
+
+    if (!this.info.on){
+        this.show_info();
+    }
+
+    if (this.pos_by_numbers_input == ''){
+        this.update_current_time(0);
+
+        this.info.cur_pos_time.setAttribute('active', 'active');
+    }
+
+    window.clearTimeout(this.info.hide_timeout);
+
+    var self = this;
+
+    this.info.hide_timeout = window.setTimeout(function(){
+        self.set_pos_and_play();
+    }, 4000);
+
+    if (!this.pause.on){
+        try{
+            stb.Pause();
+        }catch(e){
+            _debug(e);
+        }
+        this.pause.on = true;
+    }
+};
+
+player.prototype.reset_pos_by_numbers = function(){
+    _debug('player.reset_pos_by_numbers');
+
+    this.pos_by_numbers_input = '';
+    this.info.cur_pos_time.setAttribute('active', '');
+};
 
 player.prototype.save_fav_ids = function(){
     _debug('player.save_fav');
@@ -1335,7 +1434,7 @@ player.prototype.save_fav_ids = function(){
         
         this
     )
-}
+};
 
 player.prototype.get_file_type = function(item){
     
@@ -1360,7 +1459,7 @@ player.prototype.get_file_type = function(item){
     _debug('file_type', type);
     
     return type;
-}
+};
 
 player.prototype.set_pos_button_to_cur_time = function(){
     _debug('player.set_pos_button_to_cur_time');
@@ -1374,7 +1473,7 @@ player.prototype.set_pos_button_to_cur_time = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 player.prototype.set_pos_button = function(to_time){
     _debug('player.set_pos_button', to_time);
@@ -1394,15 +1493,20 @@ player.prototype.set_pos_button = function(to_time){
         }
         
         this.update_current_time(to_time);
+
+        var to_pos = 0;
+
+        if (this.cur_media_length != 0){
+            to_pos = Math.round(590*to_time/this.cur_media_length);
+        }
         
-        var to_pos = Math.round(590*to_time/this.cur_media_length);
         _debug('to_pos', to_pos);
         
         this.info.pos_button.moveX(to_pos);
     }catch(e){
         _debug(e);
-    }
-}
+   }
+};
 
 player.prototype.set_pos_and_play = function(reset){
     _debug('set_pos_and_play');
@@ -1422,20 +1526,23 @@ player.prototype.set_pos_and_play = function(reset){
         _debug(e);
     }finally{
         this.disable_pause();
-        this.info.dom_obj.hide();
-        this.info.on = false;
+        //this.info.dom_obj.hide();
+        //this.info.on = false;
+        this.hide_info();
         
         this.pos_step  = 10;
         this.diff_pos  = 0;
         this.next_step = 0;
     }
-}
+};
 
 player.prototype.move_pos = function(dir){
     _debug('player.move_pos', dir);
     
     _debug('this.info.on', this.info.on);
     _debug('this.is_tv', this.is_tv);
+
+    this.reset_pos_by_numbers();
     
     if (this.is_tv){
         return;
@@ -1458,7 +1565,7 @@ player.prototype.move_pos = function(dir){
             stb.Pause();
         }catch(e){
             _debug(e);
-        };
+        }
         this.pause.on = true;
     }
     
@@ -1496,13 +1603,15 @@ player.prototype.move_pos = function(dir){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 player.prototype.update_current_time = function(cur_time){
     _debug('player.update_current_time', cur_time);
     
-    this.info.pos_time.innerHTML = this.sec_to_human_time(cur_time) + '/' + this.sec_to_human_time(this.cur_media_length);
-}
+    //this.info.pos_time.innerHTML = this.sec_to_human_time(cur_time) + '/' + this.sec_to_human_time(this.cur_media_length);
+    this.info.cur_pos_time.innerHTML   = this.sec_to_human_time(cur_time);
+    this.info.total_pos_time.innerHTML = this.sec_to_human_time(this.cur_media_length);
+};
 
 player.prototype.sec_to_human_time = function(seconds){
     var hh = Math.floor(seconds/3600);
@@ -1522,7 +1631,28 @@ player.prototype.sec_to_human_time = function(seconds){
     }
     
     return hh+':'+mm+':'+ss;
-}
+};
+
+player.prototype.human_time_to_sec = function(time){
+    _debug('player.human_time_to_sec', time);
+
+    if(!time){
+        return 0;
+    }
+
+    return time.toString().split('').reverse().reduce(function(prev, cur, i, arr){
+
+        cur = parseInt(cur, 10);
+
+        if((i % 2)){
+            cur = cur * 10
+        }
+
+        cur = cur * Math.pow(60, Math.floor(i/2));
+
+        return parseInt(prev, 10) + cur;
+    })
+};
 
 player.prototype.init_quick_ch_switch = function(){
     _debug('player.init_quick_ch_switch');
@@ -1532,7 +1662,7 @@ player.prototype.init_quick_ch_switch = function(){
     this.quick_ch_switch.input = create_block_element('quick_ch_input', this.quick_ch_switch.dom_obj);
     
     this.quick_ch_switch.dom_obj.hide();
-}
+};
 
 player.prototype.show_quick_ch_switch = function(num){
     _debug('player.show_quick_ch_switch');
@@ -1555,7 +1685,7 @@ player.prototype.show_quick_ch_switch = function(num){
     }
     
     this.t_hide_quick_ch_switch();
-}
+};
 
 player.prototype.quick_go_to_ch = function(){
     _debug('player.quick_go_to_ch');
@@ -1603,7 +1733,7 @@ player.prototype.quick_go_to_ch = function(){
         stb.player.need_show_info = 1;
         stb.player.play(item);
     }
-}
+};
 
 player.prototype.del_quick_go_ch = function(){
     _debug('player.del_quick_go_ch');
@@ -1617,7 +1747,7 @@ player.prototype.del_quick_go_ch = function(){
     this.quick_ch_switch.input.innerHTML = this.quick_ch_switch.input.innerHTML.substr(0, this.quick_ch_switch.input.innerHTML.length - 1);
     
     this.quick_ch_switch.input.innerHTML = ch_hum;
-}
+};
 
 player.prototype.t_hide_quick_ch_switch = function(){
     _debug('player.t_hide_quick_ch_switch');
@@ -1631,7 +1761,7 @@ player.prototype.t_hide_quick_ch_switch = function(){
         self.hide_quick_ch_switch();
         
     }, this.quick_ch_switch.hide_to);
-}
+};
 
 player.prototype.hide_quick_ch_switch = function(){
     _debug('player.hide_quick_ch_switch');
@@ -1646,7 +1776,7 @@ player.prototype.hide_quick_ch_switch = function(){
     this.quick_ch_switch.on = false;
     
     this.quick_ch_switch.input.innerHTML = '';
-}
+};
 
 player.prototype.cancel_quick_ch_switch = function(){
     _debug('player.cancel_quick_ch_switch');
@@ -1657,7 +1787,7 @@ player.prototype.cancel_quick_ch_switch = function(){
     this.quick_ch_switch.on = false;
     
     this.quick_ch_switch.input.innerHTML = '';
-}
+};
 
 player.prototype.change_aspect = function(){
     _debug('player.change_aspect');
@@ -1686,7 +1816,7 @@ player.prototype.change_aspect = function(){
         
         this
     )
-}
+};
 
 player.prototype.hist_back = function(){
     
@@ -1703,7 +1833,7 @@ player.prototype.hist_back = function(){
     if (!empty(item)){
         this.play(item);
     }
-}
+};
 
 player.prototype.audio_pid = {
     
@@ -1771,7 +1901,7 @@ player.prototype.audio_pid = {
         
         return map;
     }
-}
+};
 
 player.prototype.subtitle_pid = {
     
@@ -1841,7 +1971,7 @@ player.prototype.subtitle_pid = {
         
         return map;
     }
-}
+};
 
 player.prototype.init_con_menu = function(){
     _debug('player.init_con_menu');
@@ -1869,7 +1999,7 @@ player.prototype.init_con_menu = function(){
     this.con_menu.bind();
     this.con_menu.set_x_offset(100);
     this.con_menu.set_y_offset(100);*/
-}
+};
 
 player.prototype.build_con_menu = function(){
     _debug('player.build_con_menu');
@@ -1884,7 +2014,7 @@ player.prototype.build_con_menu = function(){
             "type"  : "switch",
             "cmd"   : this.subtitle_pid.get_for_menu()
         }
-    )
+    );
         
     this.con_menu.map.unshift(
         {
@@ -1917,7 +2047,7 @@ player.prototype.build_con_menu = function(){
         this.con_menu.set_x_offset(100);
         this.con_menu.set_y_offset(100);*/
     }
-}
+};
 
 player.prototype.send_claim = function(type){
     _debug('player.send_claim', type);
@@ -1931,7 +2061,7 @@ player.prototype.send_claim = function(type){
     }
     
     stb.notice.show(get_word('player_ty'));
-}
+};
 
 player.prototype.video_claim = function(type){
     _debug('player.video_claim', type);
@@ -1947,7 +2077,7 @@ player.prototype.video_claim = function(type){
             
         }
     );
-}
+};
 
 player.prototype.itv_claim = function(type){
     _debug('player.itv_claim', type);
@@ -1963,7 +2093,7 @@ player.prototype.itv_claim = function(type){
             
         }
     );
-}
+};
 
 player.prototype.karaoke_claim = function(type){
     _debug('player.karaoke_claim', type);
@@ -1979,7 +2109,7 @@ player.prototype.karaoke_claim = function(type){
             
         }
     );
-}
+};
 
 player.prototype.set_fav_status = function(){
     _debug('player.save_fav_status');
@@ -1994,7 +2124,7 @@ player.prototype.set_fav_status = function(){
             
         }
     );
-}
+};
 
 /*
  * END Player
