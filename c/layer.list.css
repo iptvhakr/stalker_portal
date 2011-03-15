@@ -383,6 +383,29 @@
     text-shadow: #000 0 1px 0;
 }
 
+.cur_pos_time, .total_pos_time{
+    border: 1px solid transparent;
+    float: left;
+    margin: 0 1px;
+    padding: 0 1px;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    vertical-align: middle;
+}
+
+.total_pos_time{
+    float: right;
+}
+
+.cur_pos_time[active="active"]{
+    border: 1px solid #fff;
+}
+
+.pos_time_separator{
+    float: left;
+}
+
 .pos_series{
     position: absolute;
     top: 68px;
