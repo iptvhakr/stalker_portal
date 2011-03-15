@@ -62,6 +62,8 @@ $words['mbrowser_connected'] = 'подключено';
 $words['mbrowser_disconnected'] = 'отключено';
 $words['mbrowser_not_found'] = 'не найдено';
 
+$words['usb_drive'] = 'USB устройство';
+
 // player
 $words['player_limit_notice'] = 'Количество подключений ограничено.<br>Попробуйте позже';
 $words['player_file_missing'] = 'Файл отсутствует';
