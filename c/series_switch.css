@@ -14,13 +14,14 @@
     top: 83px;
     left: 123px;
     width: 89px;
-    height: 44px;
+    height: 40px;
     background: url("i/input_channel.png") center;
     font: 34px "Myriad Pro Cond";
     text-align: center;
     color: #048;
     overflow: hidden;
     white-space: pre;
+    padding: 4px 0 0 0;
 }
 
 .series_switch_title{
