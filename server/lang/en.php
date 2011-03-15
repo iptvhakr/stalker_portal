@@ -62,6 +62,8 @@ $words['mbrowser_connected'] = 'connected';
 $words['mbrowser_disconnected'] = 'disconnected';
 $words['mbrowser_not_found'] = 'not found';
 
+$words['usb_drive'] = 'USB drive';
+
 // player
 $words['player_limit_notice'] = 'The number of connections is limited. <br> Try again later';
 $words['player_file_missing'] = 'File missing';
