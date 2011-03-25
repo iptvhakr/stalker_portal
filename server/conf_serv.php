@@ -1,10 +1,16 @@
 <?php
 
-define("LANG", 'ru'); //ru, en
-
 define("TIMEZONE", 'Europe/Kiev'); // see: http://ua.php.net/manual/en/timezones.php
 
-$_ALLOWED_LANG = array('ru', 'en');
+/*define("LANG", 'ru'); //ru, en
+$_ALLOWED_LANG = array('ru', 'en');*/
+
+$_ALLOWED_LOCALES = array(
+    'Русский' => 'ru_RU.utf8',
+    'English' => 'en_GB.utf8'
+);
+
+define("DEFAULT_LOCALE", 'ru_RU.utf8');
 
 define("ENABLE_SUBSCRIPTION", 1);
 
@@ -54,7 +60,8 @@ $_ALL_MODULES = array(
     "settings.update",
     "settings",
     "course.nbu",
-    "weather.day",
+    //"weather.day",
+    "weather.weatherco.day",
     "cityinfo",
     "horoscope",
     "anecdote",
