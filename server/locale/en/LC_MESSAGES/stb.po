@@ -1,0 +1,1448 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: stalker_portal\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-03-24 15:37+0200\n"
+"PO-Revision-Date: 2011-03-24 15:38+0200\n"
+"Last-Translator: alex <zhurbitsky@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;dgettext\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Country: UKRAINE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SearchPath-0: ../../..\n"
+
+#: ../../../lang/stb.php:39
+msgid "Comfort"
+msgstr ""
+
+#: ../../../lang/stb.php:40
+msgid "Pressure"
+msgstr ""
+
+#: ../../../lang/stb.php:41
+#: ../../../lang/stb.php:186
+msgid "mm Hg"
+msgstr ""
+
+#: ../../../lang/stb.php:42
+msgid "Wind"
+msgstr ""
+
+#: ../../../lang/stb.php:43
+#: ../../../lang/stb.php:188
+msgid "m/s"
+msgstr ""
+
+#: ../../../lang/stb.php:44
+msgid "Humidity"
+msgstr ""
+
+#: ../../../lang/stb.php:47
+#: ../../../lang/stb.php:97
+#: ../../../lang/stb.php:118
+#: ../../../lang/stb.php:196
+msgid "VIEW"
+msgstr ""
+
+#: ../../../lang/stb.php:48
+#: ../../../lang/stb.php:98
+#: ../../../lang/stb.php:119
+msgid "SORT"
+msgstr ""
+
+#: ../../../lang/stb.php:49
+#: ../../../lang/stb.php:120
+msgid "SEARCH"
+msgstr ""
+
+#: ../../../lang/stb.php:50
+msgid "PICKING"
+msgstr ""
+
+#: ../../../lang/stb.php:51
+#: ../../../lang/stb.php:124
+msgid "BY LETTER"
+msgstr ""
+
+#: ../../../lang/stb.php:52
+msgid "BY NAME"
+msgstr ""
+
+#: ../../../lang/stb.php:53
+msgid "BY TITLE"
+msgstr ""
+
+#: ../../../lang/stb.php:54
+msgid "KARAOKE"
+msgstr ""
+
+#: ../../../lang/stb.php:57
+msgid "PAGE"
+msgstr ""
+
+#: ../../../lang/stb.php:58
+msgid "FROM"
+msgstr ""
+
+#: ../../../lang/stb.php:59
+msgid "FOUND"
+msgstr ""
+
+#: ../../../lang/stb.php:60
+#: ../../../lang/stb.php:148
+msgid "RECORDS"
+msgstr ""
+
+#: ../../../lang/stb.php:61
+msgid "LOADING..."
+msgstr ""
+
+#: ../../../lang/stb.php:64
+msgid "Media Browser"
+msgstr ""
+
+#: ../../../lang/stb.php:65
+msgid "connected"
+msgstr ""
+
+#: ../../../lang/stb.php:66
+msgid "disconnected"
+msgstr ""
+
+#: ../../../lang/stb.php:67
+msgid "not found"
+msgstr ""
+
+#: ../../../lang/stb.php:69
+msgid "USB drive"
+msgstr ""
+
+#: ../../../lang/stb.php:72
+msgid "The number of connections is limited. <br> Try again later"
+msgstr ""
+
+#: ../../../lang/stb.php:73
+msgid "File missing"
+msgstr ""
+
+#: ../../../lang/stb.php:74
+msgid "Server error"
+msgstr ""
+
+#: ../../../lang/stb.php:75
+msgid "Server unavailable"
+msgstr ""
+
+#: ../../../lang/stb.php:76
+msgid "part"
+msgstr ""
+
+#: ../../../lang/stb.php:77
+msgid "Track"
+msgstr ""
+
+#: ../../../lang/stb.php:78
+msgid "Off"
+msgstr ""
+
+#: ../../../lang/stb.php:79
+msgid "Subtitles"
+msgstr ""
+
+#: ../../../lang/stb.php:80
+msgid "Complain"
+msgstr ""
+
+#: ../../../lang/stb.php:81
+msgid "on sound"
+msgstr ""
+
+#: ../../../lang/stb.php:82
+msgid "on video"
+msgstr ""
+
+#: ../../../lang/stb.php:83
+msgid "Audio"
+msgstr ""
+
+#: ../../../lang/stb.php:84
+msgid "Thank you, your opinion will be taken into account"
+msgstr ""
+
+#: ../../../lang/stb.php:85
+msgid "one series"
+msgstr ""
+
+#: ../../../lang/stb.php:86
+msgid "continuously"
+msgstr ""
+
+#: ../../../lang/stb.php:88
+msgid "fit on"
+msgstr ""
+
+#: ../../../lang/stb.php:89
+msgid "zoom"
+msgstr ""
+
+#: ../../../lang/stb.php:90
+msgid "optimal"
+msgstr ""
+
+#: ../../../lang/stb.php:91
+msgid "stretch"
+msgstr ""
+
+#: ../../../lang/stb.php:94
+msgid "RADIO"
+msgstr ""
+
+#: ../../../lang/stb.php:99
+#: ../../../lang/stb.php:121
+msgid "FAVORITE"
+msgstr ""
+
+#: ../../../lang/stb.php:100
+msgid "MOVE"
+msgstr ""
+
+#: ../../../lang/stb.php:101
+msgid "by number"
+msgstr ""
+
+#: ../../../lang/stb.php:102
+#: ../../../lang/stb.php:129
+msgid "by title"
+msgstr ""
+
+#: ../../../lang/stb.php:103
+msgid "only favorite"
+msgstr ""
+
+#: ../../../lang/stb.php:104
+#: ../../../lang/stb.php:135
+msgid "list"
+msgstr ""
+
+#: ../../../lang/stb.php:105
+#: ../../../lang/stb.php:136
+msgid "list + info"
+msgstr ""
+
+#: ../../../lang/stb.php:106
+msgid "TV"
+msgstr ""
+
+#: ../../../lang/stb.php:109
+msgid "information about the movie"
+msgstr ""
+
+#: ../../../lang/stb.php:110
+msgid "Year"
+msgstr ""
+
+#: ../../../lang/stb.php:111
+msgid "Genre"
+msgstr ""
+
+#: ../../../lang/stb.php:112
+msgid "Length"
+msgstr ""
+
+#: ../../../lang/stb.php:113
+msgid "min"
+msgstr ""
+
+#: ../../../lang/stb.php:114
+msgid "Director"
+msgstr ""
+
+#: ../../../lang/stb.php:115
+msgid "Cast"
+msgstr ""
+
+#: ../../../lang/stb.php:122
+msgid "OTHER"
+msgstr ""
+
+#: ../../../lang/stb.php:123
+msgid "FIND"
+msgstr ""
+
+#: ../../../lang/stb.php:125
+msgid "BY GENRE"
+msgstr ""
+
+#: ../../../lang/stb.php:126
+msgid "BY YEAR"
+msgstr ""
+
+#: ../../../lang/stb.php:127
+msgid "search"
+msgstr ""
+
+#: ../../../lang/stb.php:128
+msgid "picking"
+msgstr ""
+
+#: ../../../lang/stb.php:130
+msgid "by addtime"
+msgstr ""
+
+#: ../../../lang/stb.php:131
+msgid "rating"
+msgstr ""
+
+#: ../../../lang/stb.php:132
+msgid "HD only"
+msgstr ""
+
+#: ../../../lang/stb.php:133
+msgid "favorite only"
+msgstr ""
+
+#: ../../../lang/stb.php:134
+msgid "not ended"
+msgstr ""
+
+#: ../../../lang/stb.php:137
+msgid "VIDEOCLUB"
+msgstr ""
+
+#: ../../../lang/stb.php:140
+msgid "Your STB is blocked.<br/> Call the provider."
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "JANUARY"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "FEBRUARY"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "MARCH"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "APRIL"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "MAY"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "JUNE"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "JULY"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "AUGUST"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "SEPTEMBER"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "OCTOBER"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "NOVEMBER"
+msgstr ""
+
+#: ../../../lang/stb.php:141
+msgid "DECEMBER"
+msgstr ""
+
+#: ../../../lang/stb.php:142
+msgid "SUNDAY"
+msgstr ""
+
+#: ../../../lang/stb.php:142
+msgid "MONDAY"
+msgstr ""
+
+#: ../../../lang/stb.php:142
+msgid "TUESDAY"
+msgstr ""
+
+#: ../../../lang/stb.php:142
+msgid "WEDNESDAY"
+msgstr ""
+
+#: ../../../lang/stb.php:142
+msgid "THURSDAY"
+msgstr ""
+
+#: ../../../lang/stb.php:142
+msgid "FRIDAY"
+msgstr ""
+
+#: ../../../lang/stb.php:142
+msgid "SATURDAY"
+msgstr ""
+
+#: ../../../lang/stb.php:151
+msgid "BACK"
+msgstr ""
+
+#: ../../../lang/stb.php:152
+msgid "ABOUT MOVIE"
+msgstr ""
+
+#: ../../../lang/stb.php:153
+msgid "TV GUIDE"
+msgstr ""
+
+#: ../../../lang/stb.php:156
+msgid "SETTINGS"
+msgstr ""
+
+#: ../../../lang/stb.php:157
+#: ../../../lang/stb.php:173
+msgid "CANCEL"
+msgstr ""
+
+#: ../../../lang/stb.php:158
+msgid "SAVE"
+msgstr ""
+
+#: ../../../lang/stb.php:159
+msgid "Current password"
+msgstr ""
+
+#: ../../../lang/stb.php:160
+msgid "PARENTAL SETTINGS"
+msgstr ""
+
+#: ../../../lang/stb.php:161
+msgid "PARENTAL"
+msgstr ""
+
+#: ../../../lang/stb.php:162
+msgid "New password"
+msgstr ""
+
+#: ../../../lang/stb.php:163
+msgid "Repeat new password"
+msgstr ""
+
+#: ../../../lang/stb.php:165
+msgid "Settings saved"
+msgstr ""
+
+#: ../../../lang/stb.php:166
+msgid "Settings saved.<br>The STB will be rebooted. Press OK."
+msgstr ""
+
+#: ../../../lang/stb.php:167
+msgid "Error filling fields"
+msgstr ""
+
+#: ../../../lang/stb.php:169
+msgid "LOCALIZATION"
+msgstr ""
+
+#: ../../../lang/stb.php:170
+msgid "Language of the interface"
+msgstr ""
+
+#: ../../../lang/stb.php:172
+msgid "SOFTWARE UPDATE"
+msgstr ""
+
+#: ../../../lang/stb.php:174
+msgid "START UPDATE"
+msgstr ""
+
+#: ../../../lang/stb.php:175
+msgid "From HTTP"
+msgstr ""
+
+#: ../../../lang/stb.php:176
+msgid "From USB"
+msgstr ""
+
+#: ../../../lang/stb.php:177
+msgid "Source"
+msgstr ""
+
+#: ../../../lang/stb.php:178
+msgid "Method select"
+msgstr ""
+
+#: ../../../lang/stb.php:180
+msgid "EMPTY"
+msgstr ""
+
+#: ../../../lang/stb.php:182
+msgid "Exchange rate on"
+msgstr ""
+
+#: ../../../lang/stb.php:184
+msgid "WEATHER"
+msgstr ""
+
+#: ../../../lang/stb.php:185
+msgid "pres.:"
+msgstr ""
+
+#: ../../../lang/stb.php:187
+msgid "wind:"
+msgstr ""
+
+#: ../../../lang/stb.php:190
+msgid "INFOPORTAL"
+msgstr ""
+
+#: ../../../lang/stb.php:192
+msgid "CITY INFO"
+msgstr ""
+
+#: ../../../lang/stb.php:193
+msgid "emergency"
+msgstr ""
+
+#: ../../../lang/stb.php:194
+msgid "help"
+msgstr ""
+
+#: ../../../lang/stb.php:195
+msgid "other"
+msgstr ""
+
+#: ../../../lang/stb.php:198
+msgid "HOROSCOPE"
+msgstr ""
+
+#: ../../../lang/stb.php:200
+msgid "JOKES"
+msgstr ""
+
+#: ../../../lang/stb.php:202
+msgid "GOTO"
+msgstr ""
+
+#: ../../../lang/stb.php:203
+msgid "LIKE"
+msgstr ""
+
+#: ../../../lang/stb.php:204
+msgid "BOOKMARK"
+msgstr ""
+
+#: ../../../lang/stb.php:205
+msgid "TO BOOKMARK"
+msgstr ""
+
+#: ../../../lang/stb.php:207
+msgid "JOKE"
+msgstr ""
+
+#: ../../../lang/stb.php:209
+msgid "MASTERMIND"
+msgstr ""
+
+#: ../../../lang/stb.php:210
+msgid "RULES"
+msgstr ""
+
+#: ../../../lang/stb.php:211
+msgid "RATING"
+msgstr ""
+
+#. / Short Bull
+#: ../../../lang/stb.php:213
+msgid "B"
+msgstr ""
+
+#: ../../../lang/stb.php:215
+msgid "C"
+msgstr ""
+
+#: ../../../lang/stb.php:217
+msgid "Your task is to guess the number of unduplicated four digits, the first of them - not zero. Every your guess will be compared with the number put forth a STB. If you guessed a digit, but it is not in place, then it is a COW (C). If you guessed, and a number, and its location, this BULL (B)."
+msgstr ""
+
+#: ../../../lang/stb.php:218
+msgid "Moving the cursor"
+msgstr ""
+
+#: ../../../lang/stb.php:219
+msgid "Enter numbers into cells"
+msgstr ""
+
+#: ../../../lang/stb.php:220
+msgid "Confirmation of the step"
+msgstr ""
+
+#: ../../../lang/stb.php:222
+msgid "Moving through the pages of history moves"
+msgstr ""
+
+#: ../../../lang/stb.php:224
+msgid "Service is disabled"
+msgstr ""
+
+#: ../../../lang/stb.php:225
+msgid "Сhannel is not available"
+msgstr ""
+
+#: ../../../lang/stb.php:227
+msgid "TV Guide"
+msgstr ""
+
+#: ../../../lang/stb.php:228
+msgid "RECORD"
+msgstr ""
+
+#: ../../../lang/stb.php:229
+msgid "REMIND"
+msgstr ""
+
+#: ../../../lang/stb.php:230
+msgid "Memo"
+msgstr ""
+
+#: ../../../lang/stb.php:231
+msgid "Goto channel"
+msgstr ""
+
+#: ../../../lang/stb.php:232
+msgid "Close"
+msgstr ""
+
+#: ../../../lang/stb.php:233
+msgid "on channel"
+msgstr ""
+
+#: ../../../lang/stb.php:234
+msgid "now begins"
+msgstr ""
+
+#: ../../../lang/stb.php:235
+msgid "in"
+msgstr ""
+
+#: ../../../lang/stb.php:236
+msgid "started"
+msgstr ""
+
+#. / TRANSLATORS: Search box languages. Comma separated.
+#: ../../../lang/stb.php:239
+msgid "search_box_languages"
+msgstr "en"
+
+#. / TRANSLATORS: {0} - day, {1} - date, {2} - month, {3} - year.
+#: ../../../lang/stb.php:242
+msgid "date_format"
+msgstr "{0}, {2} {1}, {3}"
+
+#. / TRANSLATORS: {0} - hours, {1} - minutes, {2} am/pm hour, {3} am/pm mark.
+#: ../../../lang/stb.php:245
+msgid "time_format"
+msgstr "{2}:{1} {3}"
+
+#. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_1l"
+msgstr "A"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_2l"
+msgstr "B"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_3l"
+msgstr "C"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_4l"
+msgstr "D"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_5l"
+msgstr "E"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_6l"
+msgstr "F"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_7l"
+msgstr "G"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_8l"
+msgstr "H"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_9l"
+msgstr "I"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_10l"
+msgstr "G"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_11l"
+msgstr "K"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_12l"
+msgstr "L"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_13l"
+msgstr "M"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_14l"
+msgstr "N"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_15l"
+msgstr "O"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_16l"
+msgstr "P"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_17l"
+msgstr "Q"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_18l"
+msgstr "R"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_19l"
+msgstr "S"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_20l"
+msgstr "T"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_21l"
+msgstr "U"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_22l"
+msgstr "V"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_23l"
+msgstr "W"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_24l"
+msgstr "X"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_25l"
+msgstr "W"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_26l"
+msgstr "Z"
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_27l"
+msgstr "."
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_28l"
+msgstr "."
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_29l"
+msgstr "."
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_30l"
+msgstr "."
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_31l"
+msgstr "."
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_32l"
+msgstr "."
+
+#: ../../../lib/ajaxresponse.class.php:39
+msgid "ABC_33l"
+msgstr "."
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "january"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "february"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "march"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "april"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "may"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "june"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "july"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "august"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "september"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "october"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "november"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "december"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:45
+msgid "All"
+msgstr ""
+
+#: ../../../lib/ajaxresponse.class.php:48
+msgid "[No channel info]"
+msgstr ""
+
+#: ../../../lib/epg.class.php:566
+msgid "Sun"
+msgstr ""
+
+#: ../../../lib/epg.class.php:566
+msgid "Mon"
+msgstr ""
+
+#: ../../../lib/epg.class.php:566
+msgid "Tue"
+msgstr ""
+
+#: ../../../lib/epg.class.php:566
+msgid "Wed"
+msgstr ""
+
+#: ../../../lib/epg.class.php:566
+msgid "Thu"
+msgstr ""
+
+#: ../../../lib/epg.class.php:566
+msgid "Fri"
+msgstr ""
+
+#: ../../../lib/epg.class.php:566
+msgid "Sat"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:29
+msgid "Night"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:29
+msgid "Morning"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:29
+msgid "Day"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:29
+msgid "Evening"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Jan"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Feb"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Mar"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Apr"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "May"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Jun"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Jul"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Aug"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Sep"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Oct"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Nov"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Dec"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "clear"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "partly cloudy"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "cloudy"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "overcast"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "rain"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "rainfall"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "snow"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "thunderstorm"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "no data"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "w/o precipitation"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "N"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "NE"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "E"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "SE"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "S"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "SW"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "W"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "NW"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:85
+msgid "pressure"
+msgstr ""
+
+#: ../../../lib/gismeteo.class.php:85
+msgid "wind"
+msgstr ""
+
+#. / Hours
+#: ../../../lib/pvr.class.php:97
+msgid "h"
+msgstr ""
+
+#. / Minutes
+#: ../../../lib/pvr.class.php:103
+msgid "m"
+msgstr ""
+
+#. / Seconds
+#: ../../../lib/pvr.class.php:109
+msgid "s"
+msgstr ""
+
+#: ../../../lib/pvr.class.php:125
+#: ../../../lib/vod.class.php:520
+msgid "today"
+msgstr ""
+
+#: ../../../lib/pvr.class.php:128
+#: ../../../lib/vod.class.php:523
+msgid "yesterday"
+msgstr ""
+
+#. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
+#: ../../../lib/vod.class.php:465
+#, php-format
+msgid "video_name_format"
+msgstr "%2$s"
+
+#: ../../../lib/vod.class.php:526
+msgid "last week"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:155
+msgid "Clear"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:156
+msgid "Partly Cloudy"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:157
+msgid "Cloudy"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:158
+msgid "Overcast"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:159
+msgid "Little rain"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:160
+msgid "Rain"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:161
+msgid "Thunderstorm"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:162
+msgid "Hail"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:163
+msgid "Sleet"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:164
+msgid "Snow"
+msgstr ""
+
+#: ../../../lib/weatherco.class.php:165
+msgid "Snowfall"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:9
+msgid "biography"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:10
+msgid "action"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:11
+msgid "western"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:12
+msgid "military"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:13
+msgid "detective"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:14
+#: ../../../tools/misctranslations.php:96
+msgid "children's"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:15
+msgid "house/country"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:16
+msgid "drama"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:17
+msgid "foreign"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:18
+msgid "health"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:19
+msgid "art"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:20
+msgid "historical"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:21
+msgid "history"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:22
+msgid "yoga"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:23
+msgid "catastrophe"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:24
+msgid "comedy"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:25
+msgid "criminal"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:26
+msgid "cookery"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:27
+msgid "melodrama"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:28
+msgid "mysticism"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:29
+msgid "musical"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:30
+#: ../../../tools/misctranslations.php:98
+msgid "science"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:31
+msgid "ours"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:32
+msgid "teach"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:33
+msgid "hunting"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:34
+msgid "adventure"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:35
+msgid "nature"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:36
+msgid "travels"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:37
+msgid "fishing"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:38
+msgid "series"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:39
+msgid "sketch-show"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:40
+msgid "sport"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:41
+msgid "dancing"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:42
+msgid "show"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:43
+msgid "technique"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:44
+msgid "thriller"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:45
+msgid "horror"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:46
+msgid "fiction"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:47
+msgid "aerobics"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:48
+msgid "fantasy"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:49
+msgid "erotica"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:50
+msgid "humourist"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:55
+msgid "Cartoon"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:56
+msgid "Ours cinema"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:57
+msgid "World cinema"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:58
+#: ../../../tools/misctranslations.php:69
+msgid "Documentary"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:59
+#: ../../../tools/misctranslations.php:75
+msgid "Humour"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:60
+msgid "Hobbies"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:61
+msgid "Our Serial"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:62
+msgid "Foreign Serial"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:67
+msgid "Action"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:68
+msgid "Detective"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:70
+msgid "Drama"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:71
+msgid "Historical"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:72
+msgid "Clips"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:73
+msgid "Comedy"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:74
+msgid "Melodrama"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:76
+msgid "Adventures"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:77
+msgid "Thriller"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:78
+msgid "Horrors"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:79
+msgid "Fiction"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:80
+msgid "Erotica"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:81
+msgid "Fantasy"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:82
+msgid "Animation"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:83
+msgid "Childrens"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:84
+msgid "Musical"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:85
+msgid "Western"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:86
+msgid "Serial"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:87
+msgid "Sports"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:88
+msgid "Teach"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:89
+msgid "Information"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:94
+msgid "information"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:95
+msgid "entertainments"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:97
+msgid "cinema"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:99
+msgid "sports"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:100
+msgid "music"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:101
+msgid "business"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:102
+msgid "culture"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:103
+msgid "for adults"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:108
+msgid "Pop"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:109
+msgid "Rock"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:110
+msgid "Chanson"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:111
+msgid "From cartoon films"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:112
+msgid "Nurseries"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:113
+msgid "National"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:114
+msgid "Jazz"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:115
+msgid "From films"
+msgstr ""
+
