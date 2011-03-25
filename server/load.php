@@ -10,26 +10,21 @@ header("Cache-Control: max-age=0, no-cache, must-revalidate");
 
 require_once "conf_serv.php";
 require_once "common.php";
-require_once "lib/config.php";
+//require_once "lib/config.php";
 require_once "lib/subsys/php.php";
-require_once "lib/data.php";
-require_once "lib/func.php";
+//require_once "lib/data.php";
+//require_once "lib/func.php";
 
 Stb::setModules($_ALL_MODULES, $_DISABLED_MODULES);
-Stb::setAllowedLanguages($_ALLOWED_LANG);
+//Stb::setAllowedLanguages($_ALLOWED_LANG);
+Stb::setAllowedLocales($_ALLOWED_LOCALES);
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
-if (isset($_GET['JsHttpRequest'])){
-    $JsHttpRequest = new JsHttpRequest("utf-8");
-    Stb::getInstance();
-    $loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
-    $GLOBALS['_RESULT'] = $loader->getResult();
-}else{
-    $JsHttpRequest = new Subsys_JsHttpRequest_Php("utf-8");
-    $_RESULT = get_data();
-    $counter = 0;
-}
+$JsHttpRequest = new JsHttpRequest("utf-8");
+Stb::getInstance();
+$loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
+$GLOBALS['_RESULT'] = $loader->getResult();
 
 //$db = Database::getInstance(DB_NAME);
 
