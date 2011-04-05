@@ -1,9 +1,6 @@
 <?php
 
-define("TIMEZONE", 'Europe/Kiev'); // see: http://ua.php.net/manual/en/timezones.php
-
-/*define("LANG", 'ru'); //ru, en
-$_ALLOWED_LANG = array('ru', 'en');*/
+define("DEFAULT_TIMEZONE", 'Europe/Kiev'); // see: http://ua.php.net/manual/en/timezones.php
 
 $_ALLOWED_LOCALES = array(
     'Русский' => 'ru_RU.utf8',
