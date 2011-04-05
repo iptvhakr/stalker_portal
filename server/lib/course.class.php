@@ -27,7 +27,8 @@ class Course
         $content = file_get_contents($this->content_url);
         if ($content){
             preg_match("/<SPAN class='h5'>([\d,\.]+)<\/SPAN>/",$content,$arr);
-            $result['title'] = System::word('course_title').$arr[1];
+            //$result['title'] = System::word('course_title').$arr[1];
+            $result['title'] = _('Exchange rate on').' '.$arr[1];
             $result['on_date'] = $arr[1];
             $result['data'] = array();
             $idx = 0;
