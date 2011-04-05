@@ -19,12 +19,12 @@
         this.sources = [
             {
                 "title" : word['update_from_http'],
-                "uri"   : stb.RDir('getenv update_url').clearnl()
+                "uri"   : (function(){ try{ return stb.RDir('getenv update_url').clearnl()}catch(e){_debug(e)}})()
             },
             {
                 "title" : word['update_from_usb'],
                 "uri"   : "/media/usbdisk/mag200/imageupdate"
-            },
+            }
         ];
         
         this.show = function(){
