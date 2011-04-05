@@ -15,10 +15,18 @@ class Stb
     private $is_moderator = false;
     private $params = array();
     private $db;
-    
+    public $lang;
+    private $locale;
+    private $country_id;
+    public $city_id;
+    public $timezone;
+    private $stb_lang;
+    public $additional_services_on = 0;
+
     private static $all_modules = array();
     private static $disabled_modules = array();
     private static $allowed_languages;
+    private static $allowed_locales;
     
     private static $instance = NULL;
     
@@ -37,6 +45,16 @@ class Stb
         }else if (!empty($_REQUEST['mac'])){
             $this->mac = @trim(urldecode($_REQUEST['mac']));
         }
+
+        if (!empty($_COOKIE['stb_lang'])){
+            $this->stb_lang = @trim(urldecode($_COOKIE['stb_lang']));
+        }
+
+        if (!empty($_COOKIE['timezone'])){
+            $this->timezone = @trim(urldecode($_COOKIE['timezone']));
+        }
+
+        //var_dump($_COOKIE, $this->stb_lang);
         
         if (@$_SERVER['HTTP_X_REAL_IP']){
             $this->ip = $_SERVER['HTTP_X_REAL_IP'];
@@ -59,7 +77,6 @@ class Stb
     
     public function getStbParams(){
 
-        //$user = $this->db->getFirstData('users', array('mac' => $this->mac));
         $user = $this->db->from('users')
                          ->where(array('mac' => $this->mac))
                          ->get()
@@ -69,12 +86,56 @@ class Stb
             $this->params = $user;
             $this->id    = $user['id'];
             $this->hd    = $user['hd'];
-            $this->lang  = empty($user['lang'])? LANG : $user['lang'];
+
+            $this->locale     = (empty($user['locale']) && defined('DEFAULT_LOCALE')) ? DEFAULT_LOCALE : $user['locale'];
+
+            $this->city_id    = intval($user['city_id']);
+
+            $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
+
+            $this->timezone   = (empty($this->timezone) && defined('DEFAULT_TIMEZONE')) ? DEFAULT_TIMEZONE : $this->timezone;
+
+            date_default_timezone_set($this->timezone);
+
+            $date = new DateTime();
+            $offset = $date->format('P');
+            Mysql::getInstance()->set_timezone($offset);
+
+            $stb_lang = $this->stb_lang;
+
+            if (!empty($this->stb_lang) && strlen($this->stb_lang) >= 2){
+                $preferred_locales = array_filter(self::$allowed_locales,
+                    function ($e) use ($stb_lang){
+                        if (strpos($e, $stb_lang) === 0){
+                            return true;
+                        }
+                    }
+                );
+
+                if (!empty($preferred_locales)){
+
+                    $preferred_locales = array_values($preferred_locales);
+
+                    $this->locale = $preferred_locales[0];
+                }
+            }
+
             $this->additional_services_on = $user['additional_services_on'];
-            
-            require_once "lang/".$this->lang.".php";
-            
-            System::set_words($words);
+
+            setlocale(LC_MESSAGES, $this->locale);
+            putenv('LC_MESSAGES='.$this->locale);
+
+            if (!function_exists('bindtextdomain')){
+                throw new ErrorException("php-gettext extension not installed.");
+            }
+
+            if (!function_exists('locale_accept_from_http')){
+                throw new ErrorException("php-intl extension not installed.");
+            }
+
+            bindtextdomain('stb', PROJECT_PATH.'/locale');
+            textdomain('stb');
+            bind_textdomain_codeset('stb', 'UTF-8');
         }
     }
     
@@ -138,7 +199,9 @@ class Stb
         
         $profile['rtsp_type']  = RTSP_TYPE;
         $profile['rtsp_flags'] = RTSP_FLAGS;
-        
+
+        $profile['locale'] = $this->locale;
+
         return $profile;
     }
     
@@ -550,8 +613,13 @@ class Stb
         
         self::$allowed_languages = $languages;
     }
+
+    public static function setAllowedLocales($locales){
+
+        self::$allowed_locales = $locales;
+    }
     
-    public function getLanguages(){
+    /*public function getLanguages(){
         $languages = self::$allowed_languages;
         
         $result = array('options' => array());
@@ -562,18 +630,79 @@ class Stb
         }
         
         return $result;
-    }
-    
-    public function setDefaultLang(){
-        
-        $default_lang = $_REQUEST['default_lang'];
-        
-        if (in_array($default_lang, self::$allowed_languages)){
-            
-            return $this->db->update('users', array('lang' => $default_lang), array('id' => $this->id));
+    }*/
+
+    public function getLocales(){
+
+        $result = array('options' => array());
+
+        foreach (self::$allowed_locales as $label => $locale){
+            $selected = ($this->locale == $locale)? 1 : 0;
+            $result['options'][] = array('label' => $label, 'value' => $locale, 'selected' => $selected);
         }
-        
+
+        return $result;
+    }
+
+    public function setLocale(){
+        $locale  = $_REQUEST['locale'];
+        $city_id = intval($_REQUEST['city']);
+
+        if (in_array($locale, self::$allowed_locales)){
+
+            return $this->db->update('users', array('locale' => $locale, 'city_id' => $city_id), array('id' => $this->id));
+        }
+
         return false;
+    }
+
+    public function getCountries(){
+
+        $result = array('options' => array());
+
+        $countries = Mysql::getInstance()->from('countries')->orderby('name_en')->get()->all();
+
+        foreach ($countries as $country){
+            $selected = ($this->country_id == $country['id'])? 1 : 0;
+            $result['options'][] = array('label' => $country['name_en'], 'value' => $country['id'], 'selected' => $selected);
+        }
+
+        return $result;
+    }
+
+    public function getCities(){
+
+        $country_id = intval($_REQUEST['country_id']);
+
+        $result = array('options' => array());
+
+        /// TRANSLATORS: don't translate this.
+        $cities = Mysql::getInstance()->from('cities')->where(array('country_id' => $country_id))->orderby(_('city_name_field'))->get()->all();
+
+        foreach ($cities as $city){
+            $selected = ($this->city_id == $city['id'])? 1 : 0;
+            $city_name = empty($city[_('city_name_field')]) ? $city['name_en'] : $city[_('city_name_field')];
+            $result['options'][] = array('label' => $city_name , 'value' => $city['id'], 'timezone' => $city['timezone'], 'selected' => $selected);
+        }
+
+        return $result;
+    }
+
+    public function getTimezones(){
+
+        $result = array('options' => array());
+
+        $timezones = Mysql::getInstance()->from('cities')->groupby('timezone')->orderby('timezone')->get()->all('timezone');
+
+        foreach ($timezones as $timezone){
+
+            if (empty($timezone)) continue;
+            
+            $selected = ($this->timezone == $timezone)? 1 : 0;
+            $result['options'][] = array('label' => $timezone, 'value' => $timezone, 'selected' => $selected);
+        }
+
+        return $result;
     }
 }
 ?>
