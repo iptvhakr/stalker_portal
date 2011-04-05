@@ -7,6 +7,15 @@ include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
+$locale = 'ru_RU.utf8';
+
+setlocale(LC_MESSAGES, $locale);
+putenv('LC_MESSAGES='.$locale);
+
+bindtextdomain('stb', PROJECT_PATH.'/locale');
+textdomain('stb');
+bind_textdomain_codeset('stb', 'UTF-8');
+
 $error = '';
 
 $db = Database::getInstance(DB_NAME);
@@ -363,7 +372,7 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<script language="JavaScript" src="js.js"></script>
+<script type="text/javascript" src="js.js"></script>
 <title>
 Редактирование списка файлов ВИДЕО КЛУБА
 </title>
@@ -868,7 +877,7 @@ function get_genres(){
             $selected = 'selected';
         }
         //$option .= "<option value={$arr['id']} $selected>{$arr['title']}\n";
-        $str .= "{ id : ".$arr['id'].", title : '".$arr['title']."'},"; 
+        $str .= "{ id : ".$arr['id'].", title : '"._($arr['title'])."'},";
     }
     $str = substr($str, 0, strlen($str)-1);
     $str .= " ]";
@@ -929,7 +938,7 @@ function get_categories(){
             $selected = 'selected';
         }
         //$option .= "<option value={$arr['id']} $selected>{$arr['title']}\n";
-        $str .= "{ id : ".$arr['id'].", name : '".$arr['category_name']."'},"; 
+        $str .= "{ id : ".$arr['id'].", name : '"._($arr['category_name'])."'},";
     }
     $str = substr($str, 0, strlen($str)-1);
     $str .= " ]";
@@ -1461,14 +1470,14 @@ function check_protocol(){
            </td>
            <td>
              <select name="protocol" id="protocol" onchange="check_protocol()">
-                 <option value="nfs" <?if ($protocol == 'nfs'){ echo 'selected';}?>>NFS</option>
-                 <option value="http" <?if ($protocol == 'http'){ echo 'selected';}?>>HTTP</option>
-                 <option value="custom" <?if ($protocol == 'custom'){ echo 'selected';}?>>Custom URL</option>
+                 <option value="nfs" <?if (@$protocol == 'nfs'){ echo 'selected';}?>>NFS</option>
+                 <option value="http" <?if (@$protocol == 'http'){ echo 'selected';}?>>HTTP</option>
+                 <option value="custom" <?if (@$protocol == 'custom'){ echo 'selected';}?>>Custom URL</option>
              </select>
            </td>
         </tr>
         
-        <tr id="rtsp_url_block" <?if ($protocol != 'custom'){ echo 'style="display:none"';}?>>
+        <tr id="rtsp_url_block" <?if (@$protocol != 'custom'){ echo 'style="display:none"';}?>>
            <td align="right" valign="top">
            RTSP/HTTP URL: 
            </td>
