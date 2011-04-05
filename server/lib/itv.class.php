@@ -316,8 +316,10 @@ class Itv extends AjaxResponse
     public function getGenres(){
         
         $genres = $this->db->from('tv_genre')->get()->all();
-        
+
         array_unshift($genres, array('id' => '*', 'title' => $this->all_title));
+
+        $genres = array_map(function($item){$item['title'] = _($item['title']); return $item;}, $genres);
         
         return $genres;
     }
