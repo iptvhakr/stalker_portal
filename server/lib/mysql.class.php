@@ -26,10 +26,14 @@ class Mysql
     private $groupby = array();
     private $limit   = false;
     private $offset  = false;
-    
+    public static $timezone;
     
     private static $instance = NULL;
     
+    /**
+     * @static
+     * @return Mysql
+     */
     public static function getInstance(){
         if (self::$instance == NULL)
         {
@@ -57,6 +61,13 @@ class Mysql
 
         if (!mysql_set_charset($charset)){
             throw new Exception('Error: '.mysql_error($this->link));
+        }
+    }
+
+    public function set_timezone($timezone){
+        if (!empty($timezone)){
+            self::$timezone = $timezone;
+            return $this->query('SET time_zone="'.$timezone.'"');
         }
     }
     
@@ -192,11 +203,11 @@ class Mysql
         
         return $this;
     }
-    
-    public function in($field, $values, $not = false){
+
+    private function prepare_in($field, $values, $not = false){
         
         $escaped_values = array();
-        
+
         foreach ($values as $value){
             if (is_numeric($value)){
                 $escaped_values []= $value;
@@ -209,11 +220,36 @@ class Mysql
         }else{
             $values = 'null';
         }
-        
+
         $where = $field.' '.($not === true ? 'not ' : '').'in ('.$values.')';
+
+        return $where;
+    }
+    
+    public function in($field, $values, $not = false){
+
+        $this->where($this->prepare_in($field, $values, $not), 'AND ', '', -1);
         
-        $this->where($where, 'and ', '', -1);
-        
+        return $this;
+    }
+
+    public function group_in($fields, $type){
+
+        $where = array();
+
+        foreach($fields as $field => $values){
+            $where[] = $this->prepare_in($field, $values);
+        }
+
+        $where_str = '('.implode(' '.$type.' ', $where).')';
+
+        if (count($this->where) != 0){
+            $where_str = ' AND '.$where_str;
+
+        }
+
+        $this->where[] = $where_str;
+
         return $this;
     }
     
