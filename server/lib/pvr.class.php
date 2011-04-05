@@ -92,15 +92,21 @@ class Pvr extends AjaxResponse
         $result = '';
         
         if ($hh > 0){
-            $result .= $hh.System::word('records_time_h').' ';
+            //$result .= $hh.System::word('records_time_h').' ';
+            /// Hours
+            $result .= $hh._('h').' ';
         }
         
         if ($mm > 0){
-            $result .= $mm.System::word('records_time_m').' ';
+            //$result .= $mm.System::word('records_time_m').' ';
+            /// Minutes
+            $result .= $mm._('m').' ';
         }
         
         if ($ss > 0){
-            $result .= $ss.System::word('records_time_s').' ';
+            //$result .= $ss.System::word('records_time_s').' ';
+            /// Seconds
+            $result .= $ss._('s').' ';
         }
         
         return $result;
@@ -115,9 +121,11 @@ class Pvr extends AjaxResponse
         $human_date = '';
         
         if ($datetime > mktime(0,0,0, $this_mm, $this_dd, $this_yy)){
-            $human_date = System::word('vod_today').', '.date("H:i", $datetime);
-        }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy)){
-            $human_date = System::word('vod_yesterday').', '.date("H:i", $datetime);
+            //$human_date = System::word('vod_today').', '.date("H:i", $datetime);
+            $human_date = _('today').', '.date("H:i", $datetime);
+        }elseif ($datetime > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy)){
+            //$human_date = System::word('vod_yesterday').', '.date("H:i", $datetime);
+            $human_date = _('yesterday').', '.date("H:i", $datetime);
         }else{
             $human_date = date("d.m.Y H:i", $datetime);
         }
