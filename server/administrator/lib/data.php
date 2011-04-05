@@ -213,7 +213,7 @@ function get_data(){
                 {
                     $arr[] = array(
                         'id'     => $rs->getCurrentValueByName('id'),
-                        'title'  => $rs->getCurrentValueByName('title'),
+                        'title'  => _($rs->getCurrentValueByName('title')),
                     );
                     break;
                 }
