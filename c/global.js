@@ -424,3 +424,10 @@ function get_params(){
 function get_word(alias){
     return word[alias];
 }
+
+String.prototype.format = function() {
+    var args = arguments;
+    return this.replace(/{(\d+)}/g, function(match, number) {
+        return typeof args[number] != 'undefined' ? args[number]: '{' + number + '}';
+    });
+};
