@@ -48,4 +48,4 @@ var key = {
     NULL  : 2076,
     USB_UNMOUNTED : 2081,
     USB_MOUNTED   : 2080
-}
+};
