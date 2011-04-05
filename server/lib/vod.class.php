@@ -349,7 +349,7 @@ class Vod extends AjaxResponse
         
         $where_genre = array();
         
-        if (@$_REQUEST['genre'] && @$_REQUEST['genre'] !== '*'){
+        if (@$_REQUEST['genre'] && @$_REQUEST['genre'] !== '*' && $_REQUEST['category'] !== '*'){
             
             $genre = intval($_REQUEST['genre']);
             
@@ -357,6 +357,13 @@ class Vod extends AjaxResponse
             $where_genre['cat_genre_id_2'] = $genre;
             $where_genre['cat_genre_id_3'] = $genre;
             $where_genre['cat_genre_id_4'] = $genre;
+        }
+
+        if (@$_REQUEST['category'] == '*' && @$_REQUEST['genre'] !== '*'){
+            
+            $genre_title = $this->db->from('cat_genre')->where(array('id' => intval($_REQUEST['genre'])))->get()->first('title');
+
+            $genres_ids = $this->db->from('cat_genre')->where(array('title' => $genre_title))->get()->all('id');
         }
         
         $search = array();
@@ -372,15 +379,32 @@ class Vod extends AjaxResponse
             $search['year']     = '%'.$letters.'%';
         }
         
-        return $this->db
+        $data = $this->db
                         ->select('video.*, screenshots.id as screenshot_id')
                         ->from('video')
                         ->join('screenshots', 'video.id', 'screenshots.media_id', 'LEFT')
                         ->where($where)
-                        ->where($where_genre, 'OR ')
-                        ->like($like)
-                        ->like($search, 'OR ')
-                        ->limit(MAX_PAGE_ITEMS, $offset);
+                        ->where($where_genre, 'OR ');
+
+        if (!empty($genres_ids) && is_array($genres_ids)){
+            /*$data = $data->in('cat_genre_id_1', $genres_ids)
+                         ->in('cat_genre_id_2', $genres_ids)
+                         ->in('cat_genre_id_3', $genres_ids)
+                         ->in('cat_genre_id_4', $genres_ids);*/
+
+            $data = $data->group_in(array(
+                                        'cat_genre_id_1' => $genres_ids,
+                                        'cat_genre_id_2' => $genres_ids,
+                                        'cat_genre_id_3' => $genres_ids,
+                                        'cat_genre_id_4' => $genres_ids,
+                                    ), 'OR');
+        }
+
+        $data = $data->like($like)
+                     ->like($search, 'OR ')
+                     ->limit(MAX_PAGE_ITEMS, $offset);
+
+        return $data;
     }
     
     public function getOrderedList(){
@@ -436,6 +460,9 @@ class Vod extends AjaxResponse
             }else{
                 $this->response['data'][$i]['sd'] = 1;
             }
+
+            /// TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
+            $this->response['data'][$i]['name'] = sprintf(_('video_name_format'), $this->response['data'][$i]['name'], $this->response['data'][$i]['o_name']);
             
             $this->response['data'][$i]['hd'] = intval($this->response['data'][$i]['hd']);
             
@@ -489,11 +516,14 @@ class Vod extends AjaxResponse
         $this_yy = date("Y");
         
         if ($added_time > mktime(0,0,0, $this_mm, $this_dd, $this_yy)){
-            $added_arr['today'] = System::word('vod_today');
+            //$added_arr['today'] = System::word('vod_today');
+            $added_arr['today'] = _('today');
         }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy)){
-            $added_arr['yesterday'] = System::word('vod_yesterday');
+            //$added_arr['yesterday'] = System::word('vod_yesterday');
+            $added_arr['yesterday'] = _('yesterday');
         }elseif ($added_time > mktime(0,0,0, $this_mm, $this_dd-7, $this_yy)){
-            $added_arr['week_and_more'] = System::word('vod_last_week');
+            //$added_arr['week_and_more'] = System::word('vod_last_week');
+            $added_arr['week_and_more'] = _('last week');
         }else{
             $added_arr['week_and_more'] = $this->months[date("n", $added_time) - 1].' '.date("Y", $added_time);
         }
@@ -510,6 +540,8 @@ class Vod extends AjaxResponse
                         ->all();
                         
         array_unshift($categories, array('id' => '*', 'title' => $this->all_title, 'alias' => '*'));
+
+        $categories = array_map(function($item){$item['title'] = _($item['title']); return $item;}, $categories);
         
         return $categories;
     }
@@ -530,10 +562,14 @@ class Vod extends AjaxResponse
                         ->select('id, title')
                         ->from("cat_genre")
                         ->where($where)
+                        ->groupby('title')
+                        ->orderby('title')
                         ->get()
                         ->all();
                         
         array_unshift($genres, array('id' => '*', 'title' => '*'));
+
+        $genres = array_map(function($item){$item['title'] = _($item['title']); return $item;}, $genres);
         
         return $genres;
     }
@@ -576,7 +612,7 @@ class Vod extends AjaxResponse
     
     public function getGenresStrByItem($item){
         
-        return implode(', ', $this->db->from('cat_genre')->in('id', array($item['cat_genre_id_1'], $item['cat_genre_id_2'], $item['cat_genre_id_3'], $item['cat_genre_id_4']))->get()->all('title'));
+        return implode(', ', array_map(function($item){return _($item);}, $this->db->from('cat_genre')->in('id', array($item['cat_genre_id_1'], $item['cat_genre_id_2'], $item['cat_genre_id_3'], $item['cat_genre_id_4']))->get()->all('title')));
     }
     
     public function setClaim(){
