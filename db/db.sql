@@ -164,8 +164,8 @@ DROP TABLE `epg`;
 CREATE TABLE `epg`(
     `id` int NOT NULL auto_increment, 
     `ch_id` int NOT NULL default 0,
-    `time` datetime,
-    `time_to` datetime,
+    `time` timestamp not null,
+    `time_to` timestamp not null,
     `duration` int NOT NULL default 0,
     `name` varchar(128) NOT NULL default '',
     `descr` varchar(255) NOT NULL default '',
@@ -269,14 +269,17 @@ CREATE TABLE `users`(
     `version` varchar(255) NOT NULL default '',
     
     `lang` varchar(32) NOT NULL default '',
-    
+
+    `locale` varchar(32) NOT NULL default '',
+    `city_id` int NOT NULL default 0,
+
     `status` tinyint default 0,
     
     `hd` tinyint default 0,
     `main_notify` tinyint default 1,
     `fav_itv_on` tinyint default 0,
     
-    `now_playing_start` datetime not null,
+    `now_playing_start` timestamp default 0,
     `now_playing_type` tinyint default 0,
     `now_playing_content` varchar(255) NOT NULL default '',
     
@@ -284,8 +287,8 @@ CREATE TABLE `users`(
     
     /*`lang` varchar(32) NOT NULL default 'ru',*/
     
-    `time_last_play_tv` datetime not null,
-    `time_last_play_video` datetime not null,
+    `time_last_play_tv` timestamp default 0,
+    `time_last_play_video` timestamp default 0,
     
     `operator_id` int NOT NULL default 0,
     
@@ -293,10 +296,10 @@ CREATE TABLE `users`(
     `hd_content` tinyint default 0,
     `image_version` varchar(255) NOT NULL default '',
     
-    `last_change_status` datetime,
-    `last_start` datetime,
-    `last_active` datetime,
-    `keep_alive` datetime,
+    `last_change_status` timestamp default 0,
+    `last_start` timestamp default 0,
+    `last_active` timestamp default 0,
+    `keep_alive` timestamp default 0,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -340,7 +343,7 @@ CREATE TABLE `events`(
     `priority` tinyint default 2, /* 1-system events, 2-system message */
     
     `addtime` datetime,
-    `eventtime` datetime,
+    `eventtime` timestamp default 0,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -456,7 +459,7 @@ CREATE TABLE `played_video`(
     `video_id` int NOT NULL default 0,
     `storage` int NOT NULL default 0,
     `uid` int NOT NULL default 0,
-    `playtime` datetime,
+    `playtime` timestamp not null,
     
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -516,8 +519,8 @@ DROP TABLE `rec_files`;
 CREATE TABLE `rec_files`(
     `id` int NOT NULL auto_increment,
     `ch_id` int NOT NULL default 0,
-    `t_start` datetime,
-    `t_stop`  datetime,
+    `t_start` timestamp not null,
+    `t_stop`  timestamp default 0,
     `atrack`  varchar(32) NOT NULL default '',
     `vtrack`  varchar(32) NOT NULL default '',
     `length` int NOT NULL default 0,
@@ -532,9 +535,9 @@ CREATE TABLE `users_rec`(
     `ch_id` int NOT NULL default 0,
     `uid` int NOT NULL default 0,
     `file_id` int NOT NULL default 0,
-    `t_start` datetime,
-    `t_stop`  datetime,
-    `end_record`  datetime,
+    `t_start` timestamp not null,
+    `t_stop`  timestamp default 0,
+    `end_record`  timestamp default 0,
     `atrack`  varchar(32) NOT NULL default '',
     `vtrack`  varchar(32) NOT NULL default '',
     `length` int NOT NULL default 0,
@@ -636,7 +639,7 @@ CREATE TABLE `stream_error`(
     `id` int NOT NULL auto_increment,
     `ch_id` int NOT NULL default 0,
     `mac` varchar(128) NOT NULL default '',
-    `error_time` datetime,
+    `error_time` timestamp not null,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -699,7 +702,7 @@ CREATE TABLE `vclub_paused`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
     `mac` varchar(128) NOT NULL default '',
-    `pause_time` datetime,
+    `pause_time` timestamp not null,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -812,7 +815,7 @@ CREATE TABLE `loading_fail`(
     `id` int NOT NULL auto_increment,
     `mac` varchar(64) NOT NULL default '',
     `ff_crash` int NOT NULL default 0,
-    `added` datetime,
+    `added` timestamp not null,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -859,7 +862,7 @@ CREATE TABLE `mastermind_wins`(
     `tries` int NOT NULL default 0,
     `total_time` int NOT NULL default 0,
     `points` int NOT NULL default 0,
-    `added` datetime,
+    `added` timestamp not null,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -935,7 +938,7 @@ CREATE TABLE `stb_played_video`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
     `video_id` int NOT NULL default 0,
-    `playtime` datetime,
+    `playtime` timestamp default null,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -998,7 +1001,7 @@ CREATE TABLE `media_claims_log`(
     `media_id` int NOT NULL default 0,
     `type` varchar(128) NOT NULL default '',
     `uid` int NOT NULL default 0,
-    `added` datetime,
+    `added` timestamp not null,
     PRIMARY KEY (`id`),
     INDEX(`added`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -1081,10 +1084,11 @@ INSERT INTO `generation_time` (`time`) values ('0ms'), ('100ms'), ('200ms'), ('3
 
 CREATE TABLE `weatherco_cache`(
     `id` int NOT NULL auto_increment,
+    `city_id` int NOT NULL default 0,
     `current` text,
     `forecast` text,
-    `url` varchar(128),
     `updated` datetime,
+    UNIQUE KEY (`city_id`),
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -1094,8 +1098,34 @@ CREATE TABLE `tv_reminder`(
     `mac` varchar(64) NOT NULL default '',
     `ch_id` int NOT NULL default 0,
     `tv_program_id` int NOT NULL default 0,
-    `fire_time` datetime,
+    `fire_time` timestamp not null,
     `added` datetime,
     PRIMARY KEY (`id`),
     INDEX `tv_program_id` (`tv_program_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `countries`;
+CREATE TABLE `countries`(
+    `id` int NOT NULL,
+    `iso2` varchar(8) NOT NULL default '',
+    `iso3` varchar(8) NOT NULL default '',
+    `name` varchar(64) NOT NULL default '',
+    `name_en` varchar(64) NOT NULL default '',
+    `region` varchar(64) NOT NULL default '',
+    `region_id` int NOT NULL default 0,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `cities`;
+CREATE TABLE `cities`(
+    `id` int NOT NULL,
+    `name` varchar(64) NOT NULL default '',
+    `name_en` varchar(64) NOT NULL default '',
+    `region` varchar(64) NOT NULL default '',
+    `country` varchar(64) NOT NULL default '',
+    `country_id` int NOT NULL default 0,
+    `timezone` varchar(64) NOT NULL default '',
+    PRIMARY KEY (`id`),
+    INDEX `country_id` (`country_id`),
+    INDEX `timezone` (`timezone`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
