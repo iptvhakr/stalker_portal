@@ -6,26 +6,43 @@
     
     /* SETTINGS */
     
-    function localization_settings_constructor(){
+    function LocalizationSettingsConstructor(){
         
         this.layer_name = 'localization_settings';
         
-        this.save_params = {"type" : "stb", "action" : "set_default_lang"};
+        this.save_params = {"type" : "stb", "action" : "set_locale"};
         
         this.superclass = SettingLayer.prototype;
         
-        this.save_callback = function(){
-            _debug('save_callback');
+        this.save_callback = function(result){
+            _debug('save_callback', result);
+
             stb.msg.set_callback(function(){stb.ExecAction('reboot')});
             stb.msg.push(word['settings_saved_reboot']);
+
+            var lang = this.save_params.locale.substr(0, 2);
+
+            _debug('lang', lang);
+
+            stb.RDir('setenv language ' + lang);
+
+            var timezone = this.save_params.timezone;
+
+            _debug('timezone', timezone);
+
+            if (timezone != stb.timezone){
+                stb.ExecAction('timezone ' + timezone);
+                stb.RDir('setenv timezone_conf_int');
+            }
         };
         
         this.load_default = function(){
             _debug('localization_settings.load_default');
             
-            //this.set_default({});
-            
             this.controls[0].set_default();
+            this.controls[1].set_default();
+            this.controls[2].set_default();
+            this.controls[3].set_default();
         };
         
         this.load_map = function(){
@@ -34,21 +51,109 @@
             stb.load(
                 {
                     "type"   : "stb",
-                    "action" : "get_languages"
+                    "action" : "get_locales"
                 },
                 
                 function(result){
-                    _debug('localization_settings.load_map callback', result);
+                    _debug('localization_settings.load_map get_locales callback', result);
                     
-                    this.map = result;
+                    this.locales = result;
                     
-                    this.add_control(new OptionInput(this, {"name" : "default_lang", "label" : word['localization_label'], "map" : this.map}));
+                    this.add_control(new OptionInput(this, {"name" : "locale", "label" : word['localization_label'], "map" : this.locales}));
+
+                    this._load_countries();
                 },
                 
                 this
-            )
+            );
+        };
+
+        this._load_countries = function(){
+             _debug('localization_settings._load_countries');
             
-        }
+            stb.load(
+                {
+                    "type"   : "stb",
+                    "action" : "get_countries"
+                },
+
+                function(result){
+                    _debug('localization_settings.load_map get_countries callback', result);
+
+                    this.countries = result;
+
+                    this.country_option = this.add_control(new OptionInput(this, {"name" : "country", "label" : word['country_label'], "map" : this.countries}));
+
+                    this.city_option = this.add_control(new OptionInput(this, {"name" : "city", "label" : word['city_label'], "map" : []}));
+
+                    //this.timezone_option = this.add_control(new OptionInput(this, {"name" : "timezone", "label" : word['timezone_label'], "map" : []}));
+
+                    this._load_timezones();
+
+                    var self = this;
+
+                    this.country_option.onchange = function(){
+
+                        stb.load(
+                            {
+                                "type"       : "stb",
+                                "action"     : "get_cities",
+                                "country_id" : self.country_option.get_value()
+                            },
+
+                            function(result){
+                                _debug('get_cities callback');
+                                
+                                self.city_option.fill(result);
+                            },
+
+                            self
+                        );
+                    }
+                },
+
+                this
+            );
+        };
+
+        this._load_timezones = function(){
+            _debug('localization_settings._load_timezones');
+
+            stb.load(
+                {
+                    "type"   : "stb",
+                    "action" : "get_timezones"
+                },
+
+                function(result){
+                    _debug('_load_timezones callback');
+                    
+                    result = result || [];
+                    
+                    this.timezone_option = this.add_control(new OptionInput(this, {"name" : "timezone", "label" : word['timezone_label'], "map" : result}));
+
+                    var self = this;
+
+                    this.city_option.onchange = function(){
+                        _debug('this.city_option.onchange');
+
+                        var selected = self.city_option.get_selected();
+
+                        _debug('selected', selected);
+
+                        if (!selected || !selected.timezone){
+                            return
+                        }
+
+                        _debug('selected.timezone', selected.timezone);
+
+                        self.timezone_option.set_selected_by_value(selected.timezone);
+                    }
+                },
+
+                this
+            );
+        };
         
         this.save = function(){
             _debug('localization_settings.save');
@@ -59,19 +164,17 @@
         }
     }
     
-    localization_settings_constructor.prototype = new SettingLayer();
+    LocalizationSettingsConstructor.prototype = new SettingLayer();
     
-    var localization_settings = new localization_settings_constructor();
+    var localization_settings = new LocalizationSettingsConstructor();
     
     localization_settings.init();
     
     localization_settings.load_map();
     
-    //localization_settings.add_control(new OptionInput(localization_settings, {"name" : "default_lang", "label" : word['localization_label']}));
-    
     localization_settings.bind();
     
-    localization_settings.init_left_ear(word['ears_back']);
+    //localization_settings.init_left_ear(word['ears_back']);
     
     localization_settings.init_color_buttons([
         {"label" : word['parent_settings_cancel'], "cmd" : localization_settings.cancel},
@@ -103,6 +206,6 @@
         }
     })
     
-})()
+})();
 
 loader.next();
