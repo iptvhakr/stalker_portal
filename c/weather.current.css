@@ -11,6 +11,14 @@
     -webkit-border-radius: 10px;
 }
 
+.curweather_block .city{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-family: "Myriad Pro Cond", sans-serif;
+    color: #99a8b5;
+}
+
 .curweather_block .curweather_img{
     position: absolute;
     top : 5px;
@@ -24,6 +32,6 @@
 
 
 .curweather_block .curweather_title{
-    font-family: "Myriad Pro Cond";
+    font-family: "Myriad Pro Cond", sans-serif;
     color: #99a8b5;
 }
