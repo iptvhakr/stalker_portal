@@ -8,7 +8,9 @@ function BaseLayer(){
     this.layer_name = '';
     
     this.on = false;
-    
+
+    this.header_path_map = [];
+
     /*this.dom_obj = this.create_block();
     document.body.appendChild(this.dom_obj);*/
     this.dom_obj = {};
