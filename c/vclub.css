@@ -82,12 +82,15 @@
     right: 2px;
     top: 0;
 
-    width: 139px;
+    /*width: 135px;*/
+    width: 94px;
     height: 25px;
     background-image: url("i/mb_table.png");
-    background-position: 147px -90px;
+    background-position: 102px -90px;
     padding: 3px 0 0 6px;
     color: #fff;
+    font-family: "Myriad Pro Cond", sans-serif;
+    overflow: hidden;
     /*float: right;
     margin: 0px 0 0 4px;*/
 }
@@ -97,12 +100,15 @@
     right: 23px;
     top: 4px;
 
-    width: 148px;
+    /*width: 148px;*/
+    width: 101px;
     height: 32px;
     background-image: url("i/mb_table_act.png");
-    background-position: 163px -63px;
-    padding: 11px 0 0 6px;
+    background-position: 118px -63px;
+    padding: 11px 0 0 8px;
     color: #000;
+    font-family: "Myriad Pro Cond", sans-serif;
+    overflow: hidden;
 }
 
 .disabled_all_buttons span{
