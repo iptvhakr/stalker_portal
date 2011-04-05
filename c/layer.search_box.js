@@ -10,6 +10,7 @@ function search_box(parent, options){
     this.dependency = [];
     
     this.languages = ['ru', 'en'];
+    
     this.layers = [];
     
     this.offset_x = 190;
@@ -40,227 +41,227 @@ function search_box(parent, options){
                 {
                     "letter" : "1",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("1")},
+                    "cmd"    : function(){this.add("1")}
                 },
                 {
                     "letter" : "2",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("2")},
+                    "cmd"    : function(){this.add("2")}
                 },
                 {
                     "letter" : "3",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("3")},
+                    "cmd"    : function(){this.add("3")}
                 },
                 {
                     "letter" : "4",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("4")},
+                    "cmd"    : function(){this.add("4")}
                 },
                 {
                     "letter" : "5",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("5")},
+                    "cmd"    : function(){this.add("5")}
                 },
                 {
                     "letter" : "6",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("6")},
+                    "cmd"    : function(){this.add("6")}
                 },
                 {
                     "letter" : "7",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("7")},
+                    "cmd"    : function(){this.add("7")}
                 },
                 {
                     "letter" : "8",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("8")},
+                    "cmd"    : function(){this.add("8")}
                 },
                 {
                     "letter" : "9",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("9")},
+                    "cmd"    : function(){this.add("9")}
                 },
                 {
                     "letter" : "0",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("0")},
+                    "cmd"    : function(){this.add("0")}
                 },
                 {
                     "letter" : "&larr;",
                     "cells"  : 2,
-                    "cmd"    : function(){this.del()},
+                    "cmd"    : function(){this.del()}
                 },
                 {
                     "letter" : "Й",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Й")},
+                    "cmd"    : function(){this.add("Й")}
                 },
                 {
                     "letter" : "Ц",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ц")},
+                    "cmd"    : function(){this.add("Ц")}
                 },
                 {
                     "letter" : "У",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("У")},
+                    "cmd"    : function(){this.add("У")}
                 },
                 {
                     "letter" : "К",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("К")},
+                    "cmd"    : function(){this.add("К")}
                 },
                 {
                     "letter" : "Е",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Е")},
+                    "cmd"    : function(){this.add("Е")}
                 },
                 {
                     "letter" : "Н",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Н")},
+                    "cmd"    : function(){this.add("Н")}
                 },
                 {
                     "letter" : "Г",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Г")},
+                    "cmd"    : function(){this.add("Г")}
                 },
                 {
                     "letter" : "Ш",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ш")},
+                    "cmd"    : function(){this.add("Ш")}
                 },
                 {
                     "letter" : "Щ",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Щ")},
+                    "cmd"    : function(){this.add("Щ")}
                 },
                 {
                     "letter" : "З",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("З")},
+                    "cmd"    : function(){this.add("З")}
                 },
                 {
                     "letter" : "Х",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Х")},
+                    "cmd"    : function(){this.add("Х")}
                 },
                 {
                     "letter" : "Ъ",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ъ")},
+                    "cmd"    : function(){this.add("Ъ")}
                 },
                 {
                     "letter" : "Ф",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ф")},
+                    "cmd"    : function(){this.add("Ф")}
                 },
                 {
                     "letter" : "Ы",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ы")},
+                    "cmd"    : function(){this.add("Ы")}
                 },
                 {
                     "letter" : "В",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("В")},
+                    "cmd"    : function(){this.add("В")}
                 },
                 {
                     "letter" : "А",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("А")},
+                    "cmd"    : function(){this.add("А")}
                 },
                 {
                     "letter" : "П",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("П")},
+                    "cmd"    : function(){this.add("П")}
                 },
                 {
                     "letter" : "Р",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Р")},
+                    "cmd"    : function(){this.add("Р")}
                 },
                 {
                     "letter" : "О",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("О")},
+                    "cmd"    : function(){this.add("О")}
                 },
                 {
                     "letter" : "Л",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Л")},
+                    "cmd"    : function(){this.add("Л")}
                 },
                 {
                     "letter" : "Д",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Д")},
+                    "cmd"    : function(){this.add("Д")}
                 },
                 {
                     "letter" : "Ж",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ж")},
+                    "cmd"    : function(){this.add("Ж")}
                 },
                 {
                     "letter" : "English",
                     "cells"  : 2,
-                    "cmd"    : function(){this.change_lang()},
+                    "cmd"    : function(){this.change_lang()}
                 },
                 {
                     "letter" : "Я",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Я")},
+                    "cmd"    : function(){this.add("Я")}
                 },
                 {
                     "letter" : "Ч",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ч")},
+                    "cmd"    : function(){this.add("Ч")}
                 },
                 {
                     "letter" : "С",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("С")},
+                    "cmd"    : function(){this.add("С")}
                 },
                 {
                     "letter" : "М",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("М")},
+                    "cmd"    : function(){this.add("М")}
                 },
                 {
                     "letter" : "И",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("И")},
+                    "cmd"    : function(){this.add("И")}
                 },
                 {
                     "letter" : "Т",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Т")},
+                    "cmd"    : function(){this.add("Т")}
                 },
                 {
                     "letter" : "Ь",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ь")},
+                    "cmd"    : function(){this.add("Ь")}
                 },
                 {
                     "letter" : "Б",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Б")},
+                    "cmd"    : function(){this.add("Б")}
                 },
                 {
                     "letter" : "Ю",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Ю")},
+                    "cmd"    : function(){this.add("Ю")}
                 },
                 {
                     "letter" : "Э",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Э")},
+                    "cmd"    : function(){this.add("Э")}
                 },
                 {
                     "letter" : "Пробел",
                     "cells"  : 2,
-                    "cmd"    : function(){this.add(" ")},
+                    "cmd"    : function(){this.add(" ")}
                 }
             ]
         },
@@ -270,227 +271,227 @@ function search_box(parent, options){
                 {
                     "letter" : "1",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("1")},
+                    "cmd"    : function(){this.add("1")}
                 },
                 {
                     "letter" : "2",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("2")},
+                    "cmd"    : function(){this.add("2")}
                 },
                 {
                     "letter" : "3",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("3")},
+                    "cmd"    : function(){this.add("3")}
                 },
                 {
                     "letter" : "4",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("4")},
+                    "cmd"    : function(){this.add("4")}
                 },
                 {
                     "letter" : "5",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("5")},
+                    "cmd"    : function(){this.add("5")}
                 },
                 {
                     "letter" : "6",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("6")},
+                    "cmd"    : function(){this.add("6")}
                 },
                 {
                     "letter" : "7",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("7")},
+                    "cmd"    : function(){this.add("7")}
                 },
                 {
                     "letter" : "8",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("8")},
+                    "cmd"    : function(){this.add("8")}
                 },
                 {
                     "letter" : "9",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("9")},
+                    "cmd"    : function(){this.add("9")}
                 },
                 {
                     "letter" : "0",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("0")},
+                    "cmd"    : function(){this.add("0")}
                 },
                 {
                     "letter" : "&larr;",
                     "cells"  : 2,
-                    "cmd"    : function(){this.del()},
+                    "cmd"    : function(){this.del()}
                 },
                 {
                     "letter" : "Q",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Q")},
+                    "cmd"    : function(){this.add("Q")}
                 },
                 {
                     "letter" : "W",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("W")},
+                    "cmd"    : function(){this.add("W")}
                 },
                 {
                     "letter" : "E",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("E")},
+                    "cmd"    : function(){this.add("E")}
                 },
                 {
                     "letter" : "R",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("R")},
+                    "cmd"    : function(){this.add("R")}
                 },
                 {
                     "letter" : "T",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("T")},
+                    "cmd"    : function(){this.add("T")}
                 },
                 {
                     "letter" : "Y",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Y")},
+                    "cmd"    : function(){this.add("Y")}
                 },
                 {
                     "letter" : "U",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("U")},
+                    "cmd"    : function(){this.add("U")}
                 },
                 {
                     "letter" : "I",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("I")},
+                    "cmd"    : function(){this.add("I")}
                 },
                 {
                     "letter" : "O",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("O")},
+                    "cmd"    : function(){this.add("O")}
                 },
                 {
                     "letter" : "P",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("P")},
+                    "cmd"    : function(){this.add("P")}
                 },
                 {
                     "letter" : "_",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("_")},
+                    "cmd"    : function(){this.add("_")}
                 },
                 {
                     "letter" : "-",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("-")},
+                    "cmd"    : function(){this.add("-")}
                 },
                 {
                     "letter" : "A",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("A")},
+                    "cmd"    : function(){this.add("A")}
                 },
                 {
                     "letter" : "S",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("S")},
+                    "cmd"    : function(){this.add("S")}
                 },
                 {
                     "letter" : "D",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("D")},
+                    "cmd"    : function(){this.add("D")}
                 },
                 {
                     "letter" : "F",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("F")},
+                    "cmd"    : function(){this.add("F")}
                 },
                 {
                     "letter" : "G",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("G")},
+                    "cmd"    : function(){this.add("G")}
                 },
                 {
                     "letter" : "H",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("H")},
+                    "cmd"    : function(){this.add("H")}
                 },
                 {
                     "letter" : "J",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("J")},
+                    "cmd"    : function(){this.add("J")}
                 },
                 {
                     "letter" : "K",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("K")},
+                    "cmd"    : function(){this.add("K")}
                 },
                 {
                     "letter" : "L",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("L")},
+                    "cmd"    : function(){this.add("L")}
                 },
                 {
                     "letter" : ":",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add(":")},
+                    "cmd"    : function(){this.add(":")}
                 },
                 {
-                    "letter" : "Русский",
+                    "letter" : (function(self){if (self.languages.indexOf('ru') >= 0){ return "Русский"} return '';})(this),
                     "cells"  : 2,
-                    "cmd"    : function(){this.change_lang()},
+                    "cmd"    : (function(self){if (self.languages.indexOf('ru') >= 0){return function(){self.change_lang()}}})(this)
                 },
                 {
                     "letter" : "Z",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("Z")},
+                    "cmd"    : function(){this.add("Z")}
                 },
                 {
                     "letter" : "X",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("X")},
+                    "cmd"    : function(){this.add("X")}
                 },
                 {
                     "letter" : "C",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("C")},
+                    "cmd"    : function(){this.add("C")}
                 },
                 {
                     "letter" : "V",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("V")},
+                    "cmd"    : function(){this.add("V")}
                 },
                 {
                     "letter" : "B",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("B")},
+                    "cmd"    : function(){this.add("B")}
                 },
                 {
                     "letter" : "N",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("N")},
+                    "cmd"    : function(){this.add("N")}
                 },
                 {
                     "letter" : "M",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add("M")},
+                    "cmd"    : function(){this.add("M")}
                 },
                 {
                     "letter" : ",",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add(",")},
+                    "cmd"    : function(){this.add(",")}
                 },
                 {
                     "letter" : ".",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add(".")},
+                    "cmd"    : function(){this.add(".")}
                 },
                 {
                     "letter" : ";",
                     "cells"  : 1,
-                    "cmd"    : function(){this.add(";")},
+                    "cmd"    : function(){this.add(";")}
                 },
                 {
                     "letter" : "Space",
                     "cells"  : 2,
-                    "cmd"    : function(){this.add(" ")},
+                    "cmd"    : function(){this.add(" ")}
                 }
             ]
         }
@@ -507,14 +508,14 @@ search_box.prototype.show = function(){
     
     this.dom_obj.moveY(576 - this.dom_obj.clientHeight - 36);
     this.on = true;
-}
+};
 
 search_box.prototype.hide = function(){
     _debug('search_box.hide');
     
     this.dom_obj.moveY(576);
     this.on = false;
-}
+};
 
 search_box.prototype.reset = function(){
     _debug('search_box.reset');
@@ -531,7 +532,7 @@ search_box.prototype.reset = function(){
     this.cur_cell = 3;
     
     this.set_active_cell();
-}
+};
 
 search_box.prototype.init = function(){
     _debug('search_box.init');
@@ -610,19 +611,19 @@ search_box.prototype.init = function(){
     this.set_active_cell();
     
     this.hide();
-}
+};
 
 search_box.prototype.add = function(symbol){
     _debug('search_box.add', symbol);
     
     this.search_input.innerHTML = this.search_input.innerHTML + '' + symbol;
-}
+};
 
 search_box.prototype.del = function(){
     _debug('search_box.del');
     
     this.search_input.innerHTML = this.search_input.innerHTML.substring(0, this.search_input.innerHTML.length - 1);
-}
+};
 
 search_box.prototype.change_lang = function(){
     _debug('search_box.change_lang');
@@ -642,7 +643,7 @@ search_box.prototype.change_lang = function(){
     this.layers[this.cur_layer_idx].dom_obj.show();
     
     this.set_active_cell();
-}
+};
 
 search_box.prototype.hshift = function(dir){
     _debug('search_box.hshift', dir);
@@ -664,7 +665,7 @@ search_box.prototype.hshift = function(dir){
     }
     
     this.set_active_cell();
-}
+};
 
 search_box.prototype.vshift = function(dir){
     _debug('search_box.vshift', dir);
@@ -696,15 +697,17 @@ search_box.prototype.vshift = function(dir){
     }
     
     this.set_active_cell();
-}
+};
 
 search_box.prototype.action = function(type){
     _debug('search_box.action', type);
     
     if (type == 'del'){
         this.del();
+    }else if (!this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].cmd){
+        return;
     }else{
-        this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].cmd.call(this);
+        this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].cmd && this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].cmd.call(this);
     }
     
     this.parent.load_params.search = this.search_input.innerHTML;
@@ -722,7 +725,7 @@ search_box.prototype.action = function(type){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 search_box.prototype.set_active_cell = function(){
     _debug('search_box.set_active_cell');
@@ -733,7 +736,7 @@ search_box.prototype.set_active_cell = function(){
     this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell] &&
     this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].dom_obj &&
     this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].dom_obj.setClass('search_active_cell');
-}
+};
 
 search_box.prototype.set_passive_cell = function(){
     _debug('search_box.set_passive_cell');
@@ -744,7 +747,7 @@ search_box.prototype.set_passive_cell = function(){
     this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell] &&
     this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].dom_obj &&
     this.layers[this.cur_layer_idx].items[this.cur_row][this.cur_cell].dom_obj.delClass();
-}
+};
 
 search_box.prototype.bind = function(){
     
@@ -759,6 +762,6 @@ search_box.prototype.bind = function(){
     this.action.bind(key.OK, this);
     
     this.hide.bind(key.EXIT, this);
-}
+};
 
 loader.next();
