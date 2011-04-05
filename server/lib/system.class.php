@@ -4,7 +4,7 @@ class System
 {
     
     
-    private static $words = array();
+    //private static $words = array();
     
     /**
      * Encodes data whith MIME base64 safe for url.
@@ -34,10 +34,10 @@ class System
      *
      * @param array $words_arr
      */
-    public static function set_words($words_arr){
+    /*public static function set_words($words_arr){
         
         self::$words = $words_arr;
-    }
+    }*/
     
     /**
      * Returns a string according to the localization.
@@ -45,14 +45,14 @@ class System
      * @param string $alias
      * @return string | null
      */
-    public static function word($alias){
+    /*public static function word($alias){
         
         if (key_exists($alias, self::$words)){
             return self::$words[$alias];
         }
         
         return null;
-    }
+    }*/
     
     /**
      * Returns all words.
@@ -60,7 +60,10 @@ class System
      * @return array $words
      */
     public static function get_all_words(){
-        return self::$words;
+
+        require_once "lang/stb.php";
+
+        return $words;
     }
 }
 
