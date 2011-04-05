@@ -7,7 +7,6 @@
     
     var curweather = {
         
-        //current : {},
         dom_obj : {},
         
         init : function(){
@@ -26,8 +25,27 @@
         
         render : function(){
             _debug('curweather.render');
+
+            if (!this.current){
+                this.dom_obj.innerHTML = '<div class="curweather_descr"><span class="curweather_title">' + word['current_weather_unavailable'] + '</span></div>';
+
+                var self = this;
+
+                if (!this.dom_obj.isHidden()){
+                    window.setTimeout(function(){
+                        self.dom_obj.hide();
+                    }, 60000);
+                }
+
+                return;
+            }
+
+            if (this.dom_obj.isHidden()){
+                this.dom_obj.show();
+            }
             
             var cur = '<div class="curweather_img"><img src="i/' + this.current.pict + '"/></div>';
+            cur += '<div class="city">' + this.current.city + '</div>';
             cur += '<div class="curweather_descr">' + this.current.t +'&deg; C<br>';
             cur += this.current.cloud_str + '<br>';
             cur += '<span class="curweather_title">' + word['weather_comfort'] + ':</span> ' + this.current.t_flik +'&deg; C<br>';
@@ -39,7 +57,7 @@
             this.dom_obj.innerHTML = cur;
         }
         
-    }
+    };
     
     curweather.init();
     
