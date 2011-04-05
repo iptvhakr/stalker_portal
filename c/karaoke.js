@@ -176,7 +176,8 @@
     
     karaoke.init_search_box(
         {
-            "offset_x" : 323
+            "offset_x" : 323,
+            "languages" : get_word('search_box_languages')
         }
     );
     
@@ -194,7 +195,7 @@
     
     /* Integrate karaoke in main menu */
     
-    main_menu.add('КАРАОКЕ', [], 'i/mm_ico_karaoke.png', function(){
+    main_menu.add(get_word('karaoke_title'), [], 'i/mm_ico_karaoke.png', function(){
             main_menu.hide();
             module.karaoke._show();
     },
