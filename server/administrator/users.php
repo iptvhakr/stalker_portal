@@ -197,6 +197,7 @@ function get_cur_media($media_id){
         6 => 'Мои Записи',
         7 => 'Записи',
         9 => 'ad',
+        10 => 'Медиа Браузер',
         20 => 'Инфопортал',
         21 => 'Инфопортал',
         22 => 'Инфопортал',
@@ -205,7 +206,7 @@ function get_cur_media($media_id){
         25 => 'Инфопортал'
     );
     
-    if ($media[$media_id]){
+    if (!empty($media[$media_id])){
         return $media[$media_id];
     }else{
         return 'media_id: '.$media_id;
