@@ -5,14 +5,37 @@
 function webkit_xpcom(){
     
     this.StandBy = function(par){
-        gSTB.StandBy(par)
-        panel = '.200'
-        if (par){
-            panel = '....'
+
+        gSTB.StandBy(par);
+    };
+
+    this.setFrontPanel = function(num, use_colon){
+        _debug('stb.setFrontPanel', num, use_colon);
+
+        num = num.toString();
+
+        var panel = ['.','.','.','.'].map(function(val, idx, arr){
+
+            if (num.length < arr.length - idx){
+                return val;
+            }else{
+                return num[num.length - arr.length + idx];
+            }
+        }).join('');
+
+        try{
+
+            gSTB.ExecAction('front_panel caption ' + panel);
+
+            if (use_colon){
+                gSTB.ExecAction('front_panel colon-on');
+            }else{
+                gSTB.ExecAction('front_panel colon-off');
+            }
+        }catch(e){
+            
         }
-        _debug('front_panel caption', panel)
-        gSTB.ExecAction('front_panel caption ' + panel)
-    }
+    };
 }
 
 var stb;
