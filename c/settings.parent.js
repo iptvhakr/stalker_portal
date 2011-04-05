@@ -31,7 +31,7 @@
                 stb.notice.show(word['settings_check_error']);
             }
         };
-    };
+    }
     
     parent_settings_constructor.prototype = new SettingLayer();
     
