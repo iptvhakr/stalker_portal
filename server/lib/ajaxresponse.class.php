@@ -33,11 +33,20 @@ class AjaxResponse
         $this->db  = Mysql::getInstance();
         $this->stb = Stb::getInstance();
         
-        $this->abc = System::word('all_abc');
-        $this->months =  System::word('all_months');
-        $this->all_title =  System::word('all_title');
-        $this->no_ch_info =  System::word('no_ch_info');
-        
+        //$this->abc = System::word('all_abc');
+
+        /// TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
+        $this->abc = array_filter(array('*',_('ABC_1l'),_('ABC_2l'),_('ABC_3l'),_('ABC_4l'),_('ABC_5l'),_('ABC_6l'),_('ABC_7l'),_('ABC_8l'),_('ABC_9l'),_('ABC_10l'),_('ABC_11l'),_('ABC_12l'),_('ABC_13l'),_('ABC_14l'),_('ABC_15l'),_('ABC_16l'),_('ABC_17l'),_('ABC_18l'),_('ABC_19l'),_('ABC_20l'),_('ABC_21l'),_('ABC_22l'),_('ABC_23l'),_('ABC_24l'),_('ABC_25l'),_('ABC_26l'),_('ABC_27l'),_('ABC_28l'),_('ABC_29l'),_('ABC_30l'),_('ABC_31l'),_('ABC_32l'),_('ABC_33l')), function($e){return $e != '.';});
+
+        //$this->months =  System::word('all_months');
+        $this->months =  array(_('january'),_('february'),_('march'),_('april'),_('may'),_('june'),_('july'),_('august'),_('september'),_('october'),_('november'),_('december'));
+
+        //$this->all_title =  System::word('all_title');
+        $this->all_title = _('All');
+
+        //$this->no_ch_info = System::word('no_ch_info');
+        $this->no_ch_info = _('[No channel info]');
+
         $this->page = @intval($_REQUEST['p']);
         
         if ($this->page == 0){
