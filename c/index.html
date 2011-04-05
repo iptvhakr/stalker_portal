@@ -59,9 +59,9 @@
 
 </style>
 
-<link type="text/css" rel="stylesheet" href="load_bar.css"></link>
-<link type="text/css" rel="stylesheet" href="alert.css"></link>
-<link type="text/css" rel="stylesheet" href="context_menu.css"></link>
+<link type="text/css" rel="stylesheet" href="load_bar.css"/>
+<link type="text/css" rel="stylesheet" href="alert.css"/>
+<link type="text/css" rel="stylesheet" href="context_menu.css"/>
 
 <script type="text/javascript" src="version.js"></script>
 
@@ -98,7 +98,7 @@ var word = {};
 window.onerror = function(msg, url, lno){
     _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
     return true;
-}
+};
 
 get_params();
 
@@ -119,7 +119,7 @@ var loader = {
     add : function(modules){
         _debug('loader.add');
         
-        var modules = modules || [];
+        modules = modules || [];
         
         this.cur_idx = -1;
         
@@ -162,7 +162,7 @@ var loader = {
         _script.src  = module + ".js";
         this.head.appendChild(_script);
         _debug('append', _script.src);
-    },
+    }
 };
 
 /**
@@ -239,15 +239,7 @@ function init(){
     
     (function(){
         
-        if(stb.power_off){
-            stb.StandBy(0);
-            stb.power_off = false;
-            keydown_observer.emulate_key(key.MENU);
-        }else{
-            keydown_observer.emulate_key(key.MENU);
-            stb.StandBy(1);
-            stb.power_off = true;
-        }
+        stb.switchPower();
         
     }).bind(key.POWER);
 
@@ -259,7 +251,7 @@ function init(){
 
 </head>
 <body>
-<img src="i/loading_bg.gif" width="0" height="0"></img>
-<img src="i/loading.png" width="0" height="0"></img>
+<img src="i/loading_bg.gif" width="0" height="0"/>
+<img src="i/loading.png" width="0" height="0"/>
 </body>
 </html>
