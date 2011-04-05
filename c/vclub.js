@@ -169,6 +169,8 @@
         };
         
         this.init_search_box = function(options){
+            _debug('vclub.init_search_box', options);
+            
             this.search_box = new search_box(this, options);
             this.search_box.init();
             this.search_box.bind();
@@ -259,7 +261,7 @@
             var passive_blocks = ['today_block', 'yesterday_block', 'week_and_more_block'];
             var active_blocks  = ['active_today_block', 'active_yesterday_block', 'active_week_and_more_block'];
             
-            var block_obj = row_items[block_name+'_block']
+            var block_obj = row_items[block_name+'_block'];
         
             if (data === 1){
                 if (block_obj.isHidden()){
@@ -269,7 +271,7 @@
                 if (!block_obj.isHidden()){
                     block_obj.hide();
                     
-                    if (passive_blocks.indexOf(block_obj.className) >= 0){
+                    if (passive_blocks.indexOf(block_obj.className) >= 0 || passive_blocks.indexOf(block_obj.className) == -1){
                         row_items['name_block'].style.marginRight = '0';
                     }else if (active_blocks.indexOf(block_obj.className) >= 0){
                         row_items['name_block'].style.marginRight = '25px';
@@ -280,11 +282,20 @@
                     block_obj.show();
                     
                     if (passive_blocks.indexOf(block_obj.className) >= 0){
-                        row_items['name_block'].style.marginRight = '150px';
+                        row_items['name_block'].style.marginRight = '103px';
                     }else if (active_blocks.indexOf(block_obj.className) >= 0){
-                        row_items['name_block'].style.marginRight = '175px';
+                        row_items['name_block'].style.marginRight = '130px';
+                    }else if (passive_blocks.indexOf(block_obj.className) == -1){
+                        row_items['name_block'].style.marginRight = '0';
                     }
-                    
+                }else{
+                    if (passive_blocks.indexOf(block_obj.className) >= 0){
+                        row_items['name_block'].style.marginRight = '103px';
+                    }else if (active_blocks.indexOf(block_obj.className) >= 0){
+                        row_items['name_block'].style.marginRight = '130px';
+                    }else if (passive_blocks.indexOf(block_obj.className) == -1){
+                        row_items['name_block'].style.marginRight = '0';
+                    }
                 }
                 block_obj.innerHTML = data;
             }
@@ -561,7 +572,8 @@
     
     vclub.init_search_box(
         {
-            "offset_x" : 323
+            "offset_x"  : 323,
+            "languages" : get_word('search_box_languages')
         }
     );
     
