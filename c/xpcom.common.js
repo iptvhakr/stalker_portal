@@ -73,7 +73,7 @@ function common_xpcom(){
         this.cut_off_dom_obj.hide();
 
         //this.clock.start();
-    }
+    };
 
     this.get_server_params = function(){
 
@@ -86,7 +86,7 @@ function common_xpcom(){
         this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+this.portal_path+'/server/load.php';
 
         _debug('stb.ajax_loader:', this.ajax_loader);
-    }
+    };
 
     this.get_modules = function(){
         _debug('stb.get_modules');
@@ -110,7 +110,7 @@ function common_xpcom(){
 
             this
         );
-    }
+    };
 
     this.is_disabled_module = function(module){
         _debug('stb.is_disabled_module');
@@ -127,13 +127,13 @@ function common_xpcom(){
         }
 
         return false;
-    }
+    };
 
     this.check_additional_services = function(param){
         _debug('check_additional_services', param);
 
         this.additional_services_on = parseInt(param, 10);
-    }
+    };
 
     this.get_stb_params = function (){
 
@@ -146,6 +146,10 @@ function common_xpcom(){
             this.ip  = stb.RDir('IPAddress').clearnl();
 
             this.type = stb.RDir('Model').clearnl();
+
+            this.stb_lang = stb.RDir('getenv language').clearnl();
+            
+            this.timezone = stb.RDir('getenv timezone_conf').clearnl();
 
             this.version = 'PORTAL version: '+ver+'; '+stb.Version();
 
@@ -165,19 +169,23 @@ function common_xpcom(){
         }
 
         this.set_cookie('mac', this.mac);
+        this.set_cookie('stb_lang', this.stb_lang);
+        this.set_cookie('timezone', this.timezone);
 
         //this.get_localization();
 
         _debug('this.mac:', this.mac);
+        _debug('this.stb_lang:', this.stb_lang);
+        _debug('this.timezone:', this.timezone);
         _debug('this.ip:', this.ip);
         _debug('this.type:', this.type);
         _debug('this.version:', this.version);
         _debug('this.hd:',this.hd);
-    }
+    };
 
     this.set_cookie = function(name, val){
         document.cookie = name + '=' + escape(val) + '; path=/;'
-    }
+    };
 
     this.get_localization = function(){
         _debug('stb.get_localization');
@@ -198,7 +206,7 @@ function common_xpcom(){
 
             this
         )
-    }
+    };
 
     /**
      * Ajax wrapper.
@@ -218,6 +226,7 @@ function common_xpcom(){
         }
 
         try{
+
             return JsHttpRequest.query(
 
                 //this.ajax_loader,
@@ -240,7 +249,7 @@ function common_xpcom(){
         }catch(e){
             _debug(e);
         }
-    }
+    };
 
     this.preload_images = function(){
 
@@ -261,7 +270,7 @@ function common_xpcom(){
                 }
             }
         );
-    }
+    };
 
     this.get_user_profile = function(){
         _debug('this.get_user_profile');
@@ -287,7 +296,7 @@ function common_xpcom(){
 
             this
         )
-    }
+    };
 
     this.get_user_browser = function(){
         var ua = navigator.userAgent.toLowerCase();
@@ -299,7 +308,7 @@ function common_xpcom(){
         }else{
             return "na"
         }
-    }
+    };
 
     this.check_image_version = function(){
         if (this.type == 'MAG200'){
@@ -313,7 +322,7 @@ function common_xpcom(){
             }
         }
         return 1;
-    }
+    };
 
     this.user_init = function(user_data){
 
@@ -349,6 +358,8 @@ function common_xpcom(){
             this.user.fav_itv_on = parseInt(this.user.fav_itv_on, 10);
 
             this.user['aspect'] = parseInt(this.user['aspect'], 10);
+
+            this.locale = this.user.locale;
 
             this.aspect_idx = this.aspect_array.getIdxByVal('mode', this.user['aspect']);
 
@@ -396,7 +407,7 @@ function common_xpcom(){
         }
 
         this.watchdog.run();
-    }
+    };
 
     this.mount_home_dir = function(storages){
         _debug('stb.mount_home_dir: ', storages);
@@ -419,13 +430,13 @@ function common_xpcom(){
                 }
             }
         }
-    }
+    };
 
     this.set_storages = function(storages){
         _debug('stb.set_storages', storages);
 
         this.storages = this.user['storages'] = storages;
-    }
+    };
 
     this.remount_storages = function(callback){
         _debug('stb.remount_storages');
@@ -448,7 +459,7 @@ function common_xpcom(){
 
             this
         );
-    }
+    };
 
     this.Mount = function(link_cmd){
         _debug('stb.Mount', link_cmd);
@@ -463,7 +474,7 @@ function common_xpcom(){
         }catch(e){
             _debug(e);
         }
-    }
+    };
 
     this.Umount = function(){
         _debug('stb.Umount()');
@@ -477,7 +488,23 @@ function common_xpcom(){
                 _debug(e);
             }
         }
-    }
+    };
+
+    this.switchPower = function(){
+        _debug('stb.switchPower()');
+
+        if(this.power_off){
+            this.StandBy(0);
+            this.power_off = false;
+            keydown_observer.emulate_key(key.MENU);
+            this.clock && this.clock.show && this.clock.show();
+        }else{
+            keydown_observer.emulate_key(key.MENU);
+            this.StandBy(1);
+            this.power_off = true;
+            this.setFrontPanel('');
+        }
+    };
 
     this.get_image_version = function(){
         _debug('check_graphic_res');
@@ -711,7 +738,7 @@ function common_xpcom(){
             }
             return '';
         }
-    }
+    };
 
     this.cut_off = function(){
         _debug('stb.cut_off');
@@ -730,7 +757,7 @@ function common_xpcom(){
         this.cut_off_dom_obj.show();
 
         this.cut_off_on = true;
-    }
+    };
 
     this.cut_on = function(){
         _debug('stb.cut_on');
@@ -738,19 +765,19 @@ function common_xpcom(){
         if (this.cut_off_on){
             stb.ExecAction('reboot');
         }
-    }
+    };
 
     this.set_cur_place = function(place){
         this.cur_place = place;
-    }
+    };
 
     this.reset_cur_place = function(place){
         this.cur_place = '';
-    }
+    };
 
     this.set_cur_layer = function(obj){
         this.cur_layer = obj;
-    }
+    };
 
     this.get_current_place = function(){
 
@@ -802,12 +829,9 @@ function common_xpcom(){
         }
 
         return cur_place_num;
-    }
+    };
 
     this.clock = {
-
-        //month_arr : word['month_arr'],
-        //day_arr   : word['week_arr'],
 
         start : function(){
             _debug('clock.start()');
@@ -826,7 +850,7 @@ function common_xpcom(){
         stop : function(){
             _debug('clock.stop');
 
-            _debug('self.t_clock', this.t_clock)
+            _debug('self.t_clock', this.t_clock);
 
             var self = this;
 
@@ -850,9 +874,27 @@ function common_xpcom(){
             this.day   = this.current_date.getDay();
 
             this.hours = this.current_date.getHours();
-            if (this.hours<10){
-                this.hours = '0'+this.hours;
+
+            if (this.hours > 11){
+                this.ap_mark = 'PM';
+            }else{
+                this.ap_mark = 'AM';
             }
+
+            if (this.hours > 12){
+                this.ap_hours = this.hours - 12;
+            }else{
+                this.ap_hours = this.hours;
+            }
+
+            if (this.ap_hours == 12){
+                this.ap_hours = 0
+            }
+
+
+            /*if (this.hours<10){
+                this.hours = '0'+this.hours;
+            }*/
 
             this.minutes = this.current_date.getMinutes();
             if (this.minutes<10){
@@ -864,16 +906,24 @@ function common_xpcom(){
 
         show : function(){
             if (main_menu && main_menu.time && main_menu.date && main_menu.on){
-                main_menu.time.innerHTML = this.hours + ':' + this.minutes;
-                main_menu.date.innerHTML = get_word('week_arr')[this.day] + ', ' + this.date + ' ' + get_word('month_arr')[this.month] + ', ' + this.year + get_word('year') + '.';
+                //main_menu.time.innerHTML = this.hours + ':' + this.minutes;
+                main_menu.time.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
+                //main_menu.date.innerHTML = get_word('week_arr')[this.day] + ', ' + this.date + ' ' + get_word('month_arr')[this.month] + ', ' + this.year + get_word('year') + '.';
+                main_menu.date.innerHTML = get_word('date_format').format(get_word('week_arr')[this.day], this.date, get_word('month_arr')[this.month], this.year);
             }
 
             if (stb.player && stb.player.info && stb.player.info.on && stb.player.info.clock){
-                stb.player.info.clock.innerHTML = this.hours + ':' + this.minutes;
+                //stb.player.info.clock.innerHTML = this.hours + ':' + this.minutes;
+                stb.player.info.clock.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
             }
 
             if (module && module.tv && module.tv.on && module.tv.clock_box){
-                module.tv.clock_box.innerHTML = this.hours + ':' + this.minutes;
+                //module.tv.clock_box.innerHTML = this.hours + ':' + this.minutes;
+                module.tv.clock_box.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
+            }
+
+            if (!stb.player.on || (stb.player.on && !stb.player.is_tv)){
+                stb.setFrontPanel(this.hours + '' + this.minutes, true);
             }
         }
     }
