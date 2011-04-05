@@ -115,7 +115,7 @@
     position: absolute;
     width: 650px;
     height: 54px;
-    left: 36px;
+    left: 34px;
     background: url("i/mb_table_act.png") left top no-repeat;
     padding: 5px 0 0 13px;
 }
@@ -124,7 +124,7 @@
     position: absolute;
     width: 650px;
     height: 54px;
-    left: 36px;
+    left: 34px;
     background: url("i/mb_table_act.png") no-repeat;
     background-position: 0 -236px;
     padding: 5px 0 0 13px;
@@ -134,7 +134,7 @@
     position: absolute;
     width: 380px;
     height: 54px;
-    left: 36px;
+    left: 34px;
     background: url("i/mb_table_act.png");
     background-position: 0 -177px;
     padding: 5px 0 0 13px;
@@ -144,7 +144,7 @@
     position: absolute;
     width: 300px;
     height: 54px;
-    left: 36px;
+    left: 34px;
     background: url("i/mb_table_act.png");
     background-position: 0 -118px;
     padding: 5px 0 0 13px;
@@ -334,18 +334,22 @@
 }
 
 .osd_info_clock{
-    position: absolute;
+   /* position: absolute;
     top: 18px;
-    left: 21px;
+    left: 21px;*/
+    margin: 18px 0 0 21px;
     font-size: 20px;
     color: #99A8B5;
-    font-family: "Myriad Pro Cond";
+    font-family: "Myriad Pro Cond", sans-serif;
+    float: left;
 }
 
 .osd_info_title{
-    position: absolute;
+    /*position: absolute;
     top: 14px;
-    left: 60px;
+    left: 60px;*/
+    margin: 14px 0 0 2px;
+    float: left;
     width: 626px;
     font-size: 25px;
     font-weight: bold;
@@ -552,3 +556,27 @@
     margin: 15px 0;
 }
 /* END EARS */
+
+.aspect_info_container{
+    position: absolute;
+    top: 112px;
+    left: 70px;
+}
+
+.aspect_block{
+    font-size: 22px;
+    color: #048;
+    text-shadow: #555 -1px -1px 2px !important;
+    background: url("i/aspect_bg.png") left;
+    height: 31px;
+    padding: 10px 0 0 25px;
+    font-weight: bold;
+    float: left;
+}
+
+.aspect_block_right{
+    background: url("i/aspect_bg.png") right;
+    width: 25px;
+    float: left;
+    height: 41px;
+}
