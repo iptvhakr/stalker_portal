@@ -7,6 +7,15 @@ include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
+$locale = 'ru_RU.utf8';
+
+setlocale(LC_MESSAGES, $locale);
+putenv('LC_MESSAGES='.$locale);
+
+bindtextdomain('stb', PROJECT_PATH.'/locale');
+textdomain('stb');
+bind_textdomain_codeset('stb', 'UTF-8');
+
 $error = '';
 
 $db = new Database(DB_NAME);
@@ -356,12 +365,12 @@ function get_genres(){
         if ($tv_genre_id == $arr['id']){
             $selected = 'selected';
         }
-        $option .= "<option value={$arr['id']} $selected>{$arr['title']}\n";
+        $option .= "<option value={$arr['id']} $selected>"._($arr['title'])."\n";
     }
     return $option;
 }
 ?>
-<script>
+<script type="text/javascript">
 function save(){
     form_ = document.getElementById('form_')
     
