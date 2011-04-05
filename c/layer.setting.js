@@ -54,9 +54,11 @@ SettingLayer.prototype.add_control = function(obj){
         obj && obj.input && obj.input.setClass && obj.input.setClass('passive_input');
     }
     
-    this.controls.push(obj);
-    
-    return this;
+    var length = this.controls.push(obj);
+
+    return this.controls[length - 1];
+
+    //return this;
 }
 
 SettingLayer.prototype.reset = function(){
@@ -76,8 +78,9 @@ SettingLayer.prototype.set_active_input = function(){
         return;
     }
     
-    this.controls[this.cur_control_idx].input.setClass('active_input');
-}
+    //this.controls[this.cur_control_idx].input.setClass('active_input');
+    this.controls[this.cur_control_idx].set_active.call(this.controls[this.cur_control_idx]);
+};
 
 SettingLayer.prototype.set_passive_input = function(){
     _debug('SettingLayer.set_passive_input');
@@ -86,21 +89,24 @@ SettingLayer.prototype.set_passive_input = function(){
         return;
     }
     
-    this.controls[this.cur_control_idx].input.setClass('passive_input');
-}
+    //this.controls[this.cur_control_idx].input.setClass('passive_input');
+    this.controls[this.cur_control_idx].set_passive.call(this.controls[this.cur_control_idx]);
+};
 
 SettingLayer.prototype.shift = function(dir){
     _debug('SettingLayer.shift', dir);
     
-    if (this.controls[this.cur_control_idx] instanceof OptionInput){
+    /*if (this.controls[this.cur_control_idx] instanceof OptionInput){
         if(this.controls[this.cur_control_idx].shift.call(this.controls[this.cur_control_idx], dir)){
             _debug('SettingLayer.shift  return');
             return;
         }
-    }
+    }*/
     
     _debug('shift SettingLayer');
-    
+
+    _debug('this.controls.length', this.controls.length);
+
     this.set_passive_input();
     
     if (dir > 0){
@@ -152,8 +158,35 @@ SettingLayer.prototype.bind = function(){
     (function(){
         this.hide();
         main_menu.show();
-    }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
-    
+    }).bind(key.EXIT, this).bind(key.MENU, this);
+
+    (function(){
+        if (this.left_ear){
+            this.hide();
+            main_menu.show();
+        }else if (this.controls && this.controls[this.cur_control_idx] instanceof OptionInput){
+            this.controls[this.cur_control_idx].shift.call(this.controls[this.cur_control_idx], -1);
+        }
+    }).bind(key.LEFT, this);
+
+    (function(){
+        if (this.controls && this.controls[this.cur_control_idx] instanceof OptionInput){
+            this.controls[this.cur_control_idx].shift.call(this.controls[this.cur_control_idx], 1);
+        }
+    }).bind(key.RIGHT, this);
+
+    (function(){
+        if (this.controls && this.controls[this.cur_control_idx] instanceof OptionInput){
+            this.controls[this.cur_control_idx].shift_page.call(this.controls[this.cur_control_idx], 1);
+        }
+    }).bind(key.PAGE_NEXT, this);
+
+    (function(){
+        if (this.controls && this.controls[this.cur_control_idx] instanceof OptionInput){
+            this.controls[this.cur_control_idx].shift_page.call(this.controls[this.cur_control_idx], -1);
+        }
+    }).bind(key.PAGE_PREV, this);
+
     (function(){
         
         if (this.controls[this.cur_control_idx] instanceof OptionInput){
@@ -163,7 +196,7 @@ SettingLayer.prototype.bind = function(){
         }
         
     }).bind(key.OK, this);
-}
+};
 
 SettingLayer.prototype.cancel = function(){
     _debug('SettingLayer.cancel');
@@ -180,7 +213,7 @@ SettingLayer.prototype.save = function(){
         
         for (var i=0; i<this.controls.length; i++){
         
-            this.save_params[this.controls[i].name] = this.controls[i].input.value;
+            this.save_params[this.controls[i].name] = this.controls[i].get_value();
         }
     }
     
@@ -192,7 +225,7 @@ SettingLayer.prototype.save = function(){
             
             //stb.notice.show(word['settings_saved']);
             
-            this.save_callback && this.save_callback();
+            this.save_callback && this.save_callback(result);
         },
         
         this
