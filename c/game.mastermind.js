@@ -401,7 +401,13 @@
         
         this.init = function(){
             this.container = create_block_element('mastermind_rules_txt', this.dom_obj);
-            this.container.innerHTML = word['mastermind_rules_text'];
+            var text = word['mastermind_rules_text'];
+            text += '<br><br><table width="100%" cellpadding="3" cellspacing="3"><tr><td width="100" style="color:#ffffff;">&larr; &rarr;</td><td style="color:#3f81cc;">' + word['mastermind_move_cursor'] + '</td></tr>';
+            text += '<tr><td style="color:#ffffff;">0-9</td><td style="color:#3f81cc;">' + word['mastermind_cell_numbers'] + '</td></tr>';
+            text += '<tr><td style="color:#ffffff;">OK</td><td style="color:#3f81cc;">' + word['mastermind_step_confirmation'] + '</td></tr>';
+            text += '<tr><td style="color:#ffffff;">' + word['mastermind_page'] + ' +/-</td><td style="color:#3f81cc;">' + word['mastermind_history_moves'] + '</td></tr></table>';
+
+            this.container.innerHTML = text;
         };
         
         this.show = function(){
