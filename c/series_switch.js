@@ -24,19 +24,17 @@ series_switch.prototype.init = function(){
     
     this.dom_obj = create_block_element('series_switch');
     this.series_box  = create_block_element('series_switch_input', this.dom_obj);
-    //var series_switch_title = create_block_element('series_switch_title', this.dom_obj);
-    //series_switch_title.innerHTML = word['player_series_uc'];
     
     this.continuously_box  = create_block_element('continuously', this.dom_obj);
     this.continuously_box.innerHTML = word['series_by_one_play'];
     
     this.hide();
-}
+};
 
 series_switch.prototype.show = function(series, cur_series){
     _debug('series_switch.show', series, cur_series);
     
-    var cur_series = cur_series || "1";
+    cur_series = cur_series || "1";
 
     this.series = series || [];
     
@@ -56,7 +54,7 @@ series_switch.prototype.show = function(series, cur_series){
     if (this.parent && this.parent.on){
         this.parent.on = false;
     }
-}
+};
 
 series_switch.prototype.hide = function(){
     _debug('series_switch.hide');
@@ -71,7 +69,7 @@ series_switch.prototype.hide = function(){
     if (this.parent){
         this.parent.on = true;
     }
-}
+};
 
 series_switch.prototype.set = function(){
     _debug('series_switch.set');
@@ -79,7 +77,7 @@ series_switch.prototype.set = function(){
     this.callback(this.series[this.cur_idx]);
     
     this.hide();
-}
+};
 
 series_switch.prototype.shift = function(dir){
     _debug('series_switch.shift', dir);
@@ -99,7 +97,7 @@ series_switch.prototype.shift = function(dir){
     }
     
     this.update_series_box();
-}
+};
 
 series_switch.prototype.vshift = function(dir){
     _debug('series_switch.vshift', dir);
@@ -114,13 +112,13 @@ series_switch.prototype.vshift = function(dir){
             this.continuously_box.innerHTML = word['series_continuously_play'];
         }
     }
-}
+};
 
 series_switch.prototype.update_series_box = function(){
     _debug('series_switch.update_series_box');
     
     this.series_box.innerHTML = this.series[this.cur_idx] + ' / ' + this.series.length;
-}
+};
 
 series_switch.prototype.bind = function(){
     _debug('series_switch.bind');
@@ -134,6 +132,6 @@ series_switch.prototype.bind = function(){
     this.set.bind(key.OK, this);
     
     this.hide.bind(key.EXIT, this);
-}
+};
 
 loader.next();
