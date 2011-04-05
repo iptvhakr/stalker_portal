@@ -16,8 +16,8 @@
             
             var title = create_inline_element('', this.dom_obj);
             title.setClass('course_title');
-            title.innerHTML = word['course_title'];
-            
+            title.innerHTML = word['course_title']+' ';
+
             this.date_obj = create_inline_element('', this.dom_obj);
             this.date_obj.setClass('course_date');
             
