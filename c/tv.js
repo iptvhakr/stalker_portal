@@ -488,7 +488,7 @@
         this._play_now = function(item){
             _debug('tv._play_now', item);
 
-            if(this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
+            if(item.id == stb.player.cur_media_item.id && stb.player.on){
                 return;
             }
 
