@@ -112,11 +112,11 @@ class Epg
                 $start_ts = strtotime(strval($programme->attributes()->start)) + $this->correction_time*60;
                 
                 $mysql_start = date("Y-m-d H:i:s", $start_ts);
-                
+
                 $stop_ts = strtotime(strval($programme->attributes()->stop)) + $this->correction_time*60;
                 
                 $mysql_stop  = date("Y-m-d H:i:s", $stop_ts);
-                
+
                 $duration = $stop_ts - $start_ts;
 
                 //$title = addslashes($programme->title);
@@ -236,10 +236,10 @@ class Epg
     private function cleanEpgByDate($date, $itv_id){
         
         $date = date("Y-m-d", $date);
-        
+
         $from = $date." 00:00:00";
         $to   = $date." 23:59:59";
-        
+
         if (!@$this->cleaned_epg[$itv_id]){
             $this->cleaned_epg[$itv_id] = array();
         }
@@ -397,8 +397,9 @@ class Epg
             $result[$ch_id] = $program->get()->all();
         }
         
-        $week_day_arr = System::word('week_arr');
-        
+        //$week_day_arr = System::word('week_arr');
+        $week_day_arr = array(_('SUNDAY'),_('MONDAY'),_('TUESDAY'),_('WEDNESDAY'),_('THURSDAY'),_('FRIDAY'),_('SATURDAY'));
+
         $now_ts = time();
         
         foreach ($result as $ch_id => $epg){
@@ -561,12 +562,14 @@ class Epg
         
         $cur_num_day = date('N')-1;
         
-        $week_short_arr = System::word('week_short_arr');
-        
+        //$week_short_arr = System::word('week_short_arr');
+        $week_short_arr = array(_('Sun'),_('Mon'),_('Tue'),_('Wed'),_('Thu'),_('Fri'),_('Sat'));
+
         array_push($week_short_arr, array_shift($week_short_arr));
         
-        $month_arr = System::word('month_arr');
-        
+        //$month_arr = System::word('month_arr');
+        $month_arr = array(_('JANUARY'),_('FEBRUARY'),_('MARCH'),_('APRIL'),_('MAY'),_('JUNE'),_('JULY'),_('AUGUST'),_('SEPTEMBER'),_('OCTOBER'),_('NOVEMBER'),_('DECEMBER'));
+
         $year  = date("Y");
         $month = date("m");
         $day   = date("d");
