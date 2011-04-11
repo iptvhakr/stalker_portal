@@ -27,7 +27,8 @@ class Mysql
     private $limit   = false;
     private $offset  = false;
     public static $timezone;
-    
+    public static $debug = false;
+
     private static $instance = NULL;
     
     /**
@@ -498,8 +499,8 @@ class Mysql
         }
         
         $sql = 'UPDATE '.$table.' SET '.implode(', ', $valstr);
-        
-        if(!empty($where)){
+
+        if(!empty($this->where)){
             $sql .= ' WHERE '.implode(' ', $this->where);
         }
         
@@ -541,8 +542,10 @@ class Mysql
     }
     
     public function query($sql){
-        
-        echo "/* ".$sql." */\n";
+
+        if (self::$debug){
+            echo "/* ".$sql." */\n";
+        }
         
         if (QUERY_CACHE && $this->allow_caching){
             
