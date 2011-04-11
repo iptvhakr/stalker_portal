@@ -17,7 +17,13 @@ define('PROJECT_PATH', dirname(__FILE__));
 ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.PROJECT_PATH);
 
 function __autoload($class_name) {
-    $class = 'lib/'.strtolower($class_name).'.class.php';
+
+    $class = PROJECT_PATH.'/lib/'.strtolower($class_name).'.class.php';
+
+    if (!file_exists($class)){
+        throw new Exception('Class file for "'.$class_name.'" not found');
+    }
+    
     require_once $class;
 }
 
