@@ -11,7 +11,11 @@ class Itv extends AjaxResponse
     public static $instance = NULL;
     
     private $all_user_channels_ids;
-    
+
+    /**
+     * @static
+     * @return Itv
+     */
     public static function getInstance(){
         if (self::$instance == NULL)
         {
@@ -531,13 +535,14 @@ class Itv extends AjaxResponse
         
         if (empty($this->all_user_channels_ids)){
         
-            $this->all_user_channels_ids = array_unique(array_merge($this->getSubscriptionChannelsIds(), $this->getBonusChannelsIds(), $this->getBaseChannelsIds()));
+            //$this->all_user_channels_ids = array_unique(array_merge($this->getSubscriptionChannelsIds(), $this->getBonusChannelsIds(), $this->getBaseChannelsIds()));
+            $this->all_user_channels_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($this->stb->mac), ItvSubscription::getBonusChannelsIds($this->stb->mac), $this->getBaseChannelsIds()));
         }
         
         return $this->all_user_channels_ids;
     }
 
-    public function getSubscriptionChannelsIds(){
+    /*public function getSubscriptionChannelsIds(){
         
         $db = clone $this->db;
         
@@ -554,9 +559,9 @@ class Itv extends AjaxResponse
         }
         
         return $sub_ch_arr;
-    }
+    }*/
     
-    public function getBonusChannelsIds(){
+    /*public function getBonusChannelsIds(){
         
         $db = clone $this->db;
         
@@ -573,7 +578,7 @@ class Itv extends AjaxResponse
         }
         
         return $bonus_ch_arr;
-    }
+    }*/
 
     public function getBaseChannelsIds(){
         
@@ -621,6 +626,21 @@ class Itv extends AjaxResponse
         $epg = new Epg();
         
         return $epg->getCurProgramAndFiveNext($ch_id);
+    }
+
+    public function getByIds($ids = array()){
+
+        Mysql::$debug = true;
+
+        $result = Mysql::getInstance()->from('itv');
+
+        if (!empty($ids)){
+            $result = $result->in('id', $ids);
+        }
+
+        $result = $result->get()->all();
+
+        return $result;
     }
 }
 ?>
