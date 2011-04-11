@@ -61,6 +61,7 @@ $words['aspect_fit'] = _('fit on');
 $words['aspect_big'] = _('zoom');
 $words['aspect_opt'] = _('optimal');
 $words['aspect_exp'] = _('stretch');
+$words['aspect_cmb'] = _('combined');
 
 // radio
 $words['radio_title'] = _('RADIO');
