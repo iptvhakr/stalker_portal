@@ -23,7 +23,8 @@ function common_xpcom(){
         {"alias": "fit", "mode": 0x10},
         {"alias": "big", "mode": 0x40},
         {"alias": "opt", "mode": 0x50},
-        {"alias": "exp", "mode": 0x00}
+        {"alias": "exp", "mode": 0x00},
+        {"alias": "cmb", "mode": 0x30}
     ];
 
     this.video_mode = 1080;
