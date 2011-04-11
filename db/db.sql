@@ -266,6 +266,7 @@ CREATE TABLE `users`(
     
     `mac` varchar(64) NOT NULL default '',
     `ip` varchar(128) NOT NULL default '',
+    `ls` int not null default 0,
     `version` varchar(255) NOT NULL default '',
     
     `lang` varchar(32) NOT NULL default '',
