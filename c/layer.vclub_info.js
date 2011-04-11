@@ -27,7 +27,7 @@ vclub_info.prototype.show = function(item){
     this.on = true;
     
     this.fill(item);
-}
+};
 
 vclub_info.prototype.hide = function(){
     _debug('vclub_info.hide');
@@ -43,7 +43,7 @@ vclub_info.prototype.hide = function(){
     
     this.parent.password_input.on && this.parent.password_input.hide && this.parent.password_input.hide();
     this.parent.series_switch.on && this.parent.series_switch.hide && this.parent.series_switch.hide();
-}
+};
 
 vclub_info.prototype.reset = function(){
     _debug('vclub_info.reset');
@@ -51,7 +51,7 @@ vclub_info.prototype.reset = function(){
     this.film_title.innerHTML = '';
     this.full_info.innerHTML  = '';
     this.film_cover.innerHTML = '';
-}
+};
 
 vclub_info.prototype.init = function(){
     
@@ -93,7 +93,7 @@ vclub_info.prototype.init = function(){
     this.film_cover = create_block_element('mb_filminfo_prev', this.main_container);
     
     this.hide();
-}
+};
 
 vclub_info.prototype.fill = function(item){
     _debug('vclub_info.fill');
@@ -102,14 +102,14 @@ vclub_info.prototype.fill = function(item){
     
     this.full_info.innerHTML = '<span>' + word['vclub_year'] + ':</span> ' + item.year + '<br>' + 
                      '<span>' + word['vclub_genre'] + ':</span> ' + item.genres_str + '<br>' + 
-                     '<span>' + word['vclub_length'] + ':</span> ' + item.time + ' ' + word['vclub_minutes'] + '.' +
+                     '<span>' + word['vclub_length'] + ':</span> ' + item.time + ' ' + (empty(item.series) ? (word['vclub_minutes'] + '.') : '') +
                      '<div class="hr_filminfo"></div>' + 
                      '<span>' + word['vclub_director'] + ':</span> ' + item.director + '<br>' +
                      '<span>' + word['vclub_cast'] + ':</span> ' + item.actors + 
                      '<div class="hr_filminfo"></div>' + item.description + '<br><br>';
     
     this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'" width="240" height="320">';
-}
+};
 
 vclub_info.prototype.shift = function(dir){
     _debug('vclub_info.shift', dir);
@@ -130,7 +130,7 @@ vclub_info.prototype.shift = function(dir){
     _debug('this.full_info.scrollTop: ', this.full_info.scrollTop);
     
     this.scrollbar.refresh();
-}
+};
 
 vclub_info.prototype.shift_page = function(dir){
     _debug('vclub_info.shift_page', dir);
@@ -142,11 +142,9 @@ vclub_info.prototype.shift_page = function(dir){
     }
     
     this.scrollbar.refresh();
-}
+};
 
 vclub_info.prototype.bind = function(){
-    
-    //this.hide.bind(key.LEFT, this);
     
     (function(){
         if (this.parent.series_switch.on){
@@ -179,7 +177,7 @@ vclub_info.prototype.bind = function(){
     this.shift_page.bind(key.PAGE_NEXT, this, 1);
     
     this.action.bind(key.OK, this);
-}
+};
 
 vclub_info.prototype.action = function(){
     _debug('vclub_info.action');
@@ -191,6 +189,6 @@ vclub_info.prototype.action = function(){
     }else{
         this.parent.check_for_pass.call(this.parent);
     }
-}
+};
 
 loader.next();
