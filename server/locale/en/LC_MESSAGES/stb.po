@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-29 14:27+0200\n"
-"PO-Revision-Date: 2011-03-29 14:28+0200\n"
+"POT-Creation-Date: 2011-04-06 14:09+0200\n"
+"PO-Revision-Date: 2011-04-06 14:09+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,658 +15,662 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-SearchPath-0: ../../..\n"
 
-#: ../../../lang/stb.php:39
+#: ../../../lang/stb.php:10
 msgid "Comfort"
 msgstr ""
 
-#: ../../../lang/stb.php:40
+#: ../../../lang/stb.php:11
 msgid "Pressure"
 msgstr ""
 
-#: ../../../lang/stb.php:41
-#: ../../../lang/stb.php:189
+#: ../../../lang/stb.php:12
+#: ../../../lang/stb.php:161
 msgid "mm Hg"
 msgstr ""
 
-#: ../../../lang/stb.php:42
+#: ../../../lang/stb.php:13
 msgid "Wind"
 msgstr ""
 
-#: ../../../lang/stb.php:43
-#: ../../../lang/stb.php:191
+#: ../../../lang/stb.php:14
+#: ../../../lang/stb.php:163
 msgid "m/s"
 msgstr ""
 
-#: ../../../lang/stb.php:44
+#: ../../../lang/stb.php:15
 msgid "Humidity"
 msgstr ""
 
-#: ../../../lang/stb.php:45
+#: ../../../lang/stb.php:16
 msgid "Current weather unavailable"
 msgstr ""
 
-#: ../../../lang/stb.php:48
-#: ../../../lang/stb.php:98
-#: ../../../lang/stb.php:119
-#: ../../../lang/stb.php:199
+#: ../../../lang/stb.php:19
+#: ../../../lang/stb.php:70
+#: ../../../lang/stb.php:91
+#: ../../../lang/stb.php:171
 msgid "VIEW"
 msgstr ""
 
-#: ../../../lang/stb.php:49
-#: ../../../lang/stb.php:99
-#: ../../../lang/stb.php:120
+#: ../../../lang/stb.php:20
+#: ../../../lang/stb.php:71
+#: ../../../lang/stb.php:92
 msgid "SORT"
 msgstr ""
 
-#: ../../../lang/stb.php:50
-#: ../../../lang/stb.php:121
+#: ../../../lang/stb.php:21
+#: ../../../lang/stb.php:93
 msgid "SEARCH"
 msgstr ""
 
-#: ../../../lang/stb.php:51
+#: ../../../lang/stb.php:22
 msgid "PICKING"
 msgstr ""
 
-#: ../../../lang/stb.php:52
-#: ../../../lang/stb.php:125
+#: ../../../lang/stb.php:23
+#: ../../../lang/stb.php:97
 msgid "BY LETTER"
 msgstr ""
 
-#: ../../../lang/stb.php:53
+#: ../../../lang/stb.php:24
 msgid "BY NAME"
 msgstr ""
 
-#: ../../../lang/stb.php:54
+#: ../../../lang/stb.php:25
 msgid "BY TITLE"
 msgstr ""
 
-#: ../../../lang/stb.php:55
+#: ../../../lang/stb.php:26
 msgid "KARAOKE"
 msgstr ""
 
-#: ../../../lang/stb.php:58
+#: ../../../lang/stb.php:29
 msgid "PAGE"
 msgstr ""
 
-#: ../../../lang/stb.php:59
+#: ../../../lang/stb.php:30
 msgid "FROM"
 msgstr ""
 
-#: ../../../lang/stb.php:60
+#: ../../../lang/stb.php:31
 msgid "FOUND"
 msgstr ""
 
-#: ../../../lang/stb.php:61
-#: ../../../lang/stb.php:149
+#: ../../../lang/stb.php:32
+#: ../../../lang/stb.php:121
 msgid "RECORDS"
 msgstr ""
 
-#: ../../../lang/stb.php:62
+#: ../../../lang/stb.php:33
 msgid "LOADING..."
 msgstr ""
 
-#: ../../../lang/stb.php:65
+#: ../../../lang/stb.php:36
 msgid "Media Browser"
 msgstr ""
 
-#: ../../../lang/stb.php:66
+#: ../../../lang/stb.php:37
 msgid "connected"
 msgstr ""
 
-#: ../../../lang/stb.php:67
+#: ../../../lang/stb.php:38
 msgid "disconnected"
 msgstr ""
 
-#: ../../../lang/stb.php:68
+#: ../../../lang/stb.php:39
 msgid "not found"
 msgstr ""
 
-#: ../../../lang/stb.php:70
+#: ../../../lang/stb.php:41
 msgid "USB drive"
 msgstr ""
 
-#: ../../../lang/stb.php:73
+#: ../../../lang/stb.php:44
 msgid "The number of connections is limited. <br> Try again later"
 msgstr ""
 
-#: ../../../lang/stb.php:74
+#: ../../../lang/stb.php:45
 msgid "File missing"
 msgstr ""
 
-#: ../../../lang/stb.php:75
+#: ../../../lang/stb.php:46
 msgid "Server error"
 msgstr ""
 
-#: ../../../lang/stb.php:76
+#: ../../../lang/stb.php:47
 msgid "Server unavailable"
 msgstr ""
 
-#: ../../../lang/stb.php:77
+#: ../../../lang/stb.php:48
 msgid "part"
 msgstr ""
 
-#: ../../../lang/stb.php:78
+#: ../../../lang/stb.php:49
 msgid "Track"
 msgstr ""
 
-#: ../../../lang/stb.php:79
+#: ../../../lang/stb.php:50
 msgid "Off"
 msgstr ""
 
-#: ../../../lang/stb.php:80
+#: ../../../lang/stb.php:51
 msgid "Subtitles"
 msgstr ""
 
-#: ../../../lang/stb.php:81
+#: ../../../lang/stb.php:52
 msgid "Complain"
 msgstr ""
 
-#: ../../../lang/stb.php:82
+#: ../../../lang/stb.php:53
 msgid "on sound"
 msgstr ""
 
-#: ../../../lang/stb.php:83
+#: ../../../lang/stb.php:54
 msgid "on video"
 msgstr ""
 
-#: ../../../lang/stb.php:84
+#: ../../../lang/stb.php:55
 msgid "Audio"
 msgstr ""
 
-#: ../../../lang/stb.php:85
+#: ../../../lang/stb.php:56
 msgid "Thank you, your opinion will be taken into account"
 msgstr ""
 
-#: ../../../lang/stb.php:86
+#: ../../../lang/stb.php:57
 msgid "one series"
 msgstr ""
 
-#: ../../../lang/stb.php:87
+#: ../../../lang/stb.php:58
 msgid "continuously"
 msgstr ""
 
-#: ../../../lang/stb.php:89
+#: ../../../lang/stb.php:60
 msgid "fit on"
 msgstr ""
 
-#: ../../../lang/stb.php:90
+#: ../../../lang/stb.php:61
 msgid "zoom"
 msgstr ""
 
-#: ../../../lang/stb.php:91
+#: ../../../lang/stb.php:62
 msgid "optimal"
 msgstr ""
 
-#: ../../../lang/stb.php:92
+#: ../../../lang/stb.php:63
 msgid "stretch"
 msgstr ""
 
-#: ../../../lang/stb.php:95
+#: ../../../lang/stb.php:64
+msgid "combined"
+msgstr ""
+
+#: ../../../lang/stb.php:67
 msgid "RADIO"
 msgstr ""
 
-#: ../../../lang/stb.php:100
-#: ../../../lang/stb.php:122
+#: ../../../lang/stb.php:72
+#: ../../../lang/stb.php:94
 msgid "FAVORITE"
 msgstr ""
 
-#: ../../../lang/stb.php:101
+#: ../../../lang/stb.php:73
 msgid "MOVE"
 msgstr ""
 
-#: ../../../lang/stb.php:102
+#: ../../../lang/stb.php:74
 msgid "by number"
 msgstr ""
 
-#: ../../../lang/stb.php:103
-#: ../../../lang/stb.php:130
+#: ../../../lang/stb.php:75
+#: ../../../lang/stb.php:102
 msgid "by title"
 msgstr ""
 
-#: ../../../lang/stb.php:104
+#: ../../../lang/stb.php:76
 msgid "only favorite"
 msgstr ""
 
-#: ../../../lang/stb.php:105
-#: ../../../lang/stb.php:136
+#: ../../../lang/stb.php:77
+#: ../../../lang/stb.php:108
 msgid "list"
 msgstr ""
 
-#: ../../../lang/stb.php:106
-#: ../../../lang/stb.php:137
+#: ../../../lang/stb.php:78
+#: ../../../lang/stb.php:109
 msgid "list + info"
 msgstr ""
 
-#: ../../../lang/stb.php:107
+#: ../../../lang/stb.php:79
 msgid "TV"
 msgstr ""
 
-#: ../../../lang/stb.php:110
+#: ../../../lang/stb.php:82
 msgid "information about the movie"
 msgstr ""
 
-#: ../../../lang/stb.php:111
+#: ../../../lang/stb.php:83
 msgid "Year"
 msgstr ""
 
-#: ../../../lang/stb.php:112
+#: ../../../lang/stb.php:84
 msgid "Genre"
 msgstr ""
 
-#: ../../../lang/stb.php:113
+#: ../../../lang/stb.php:85
 msgid "Length"
 msgstr ""
 
-#: ../../../lang/stb.php:114
+#: ../../../lang/stb.php:86
 msgid "min"
 msgstr ""
 
-#: ../../../lang/stb.php:115
+#: ../../../lang/stb.php:87
 msgid "Director"
 msgstr ""
 
-#: ../../../lang/stb.php:116
+#: ../../../lang/stb.php:88
 msgid "Cast"
 msgstr ""
 
-#: ../../../lang/stb.php:123
+#: ../../../lang/stb.php:95
 msgid "OTHER"
 msgstr ""
 
-#: ../../../lang/stb.php:124
+#: ../../../lang/stb.php:96
 msgid "FIND"
 msgstr ""
 
-#: ../../../lang/stb.php:126
+#: ../../../lang/stb.php:98
 msgid "BY GENRE"
 msgstr ""
 
-#: ../../../lang/stb.php:127
+#: ../../../lang/stb.php:99
 msgid "BY YEAR"
 msgstr ""
 
-#: ../../../lang/stb.php:128
+#: ../../../lang/stb.php:100
 msgid "search"
 msgstr ""
 
-#: ../../../lang/stb.php:129
+#: ../../../lang/stb.php:101
 msgid "picking"
 msgstr ""
 
-#: ../../../lang/stb.php:131
+#: ../../../lang/stb.php:103
 msgid "by addtime"
 msgstr ""
 
-#: ../../../lang/stb.php:132
+#: ../../../lang/stb.php:104
 msgid "rating"
 msgstr ""
 
-#: ../../../lang/stb.php:133
+#: ../../../lang/stb.php:105
 msgid "HD only"
 msgstr ""
 
-#: ../../../lang/stb.php:134
+#: ../../../lang/stb.php:106
 msgid "favorite only"
 msgstr ""
 
-#: ../../../lang/stb.php:135
+#: ../../../lang/stb.php:107
 msgid "not ended"
 msgstr ""
 
-#: ../../../lang/stb.php:138
+#: ../../../lang/stb.php:110
 msgid "VIDEOCLUB"
 msgstr ""
 
-#: ../../../lang/stb.php:141
+#: ../../../lang/stb.php:113
 msgid "Your STB is blocked.<br/> Call the provider."
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "JANUARY"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "FEBRUARY"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "MARCH"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "APRIL"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "MAY"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "JUNE"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "JULY"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "AUGUST"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "SEPTEMBER"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "OCTOBER"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "NOVEMBER"
 msgstr ""
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:114
 msgid "DECEMBER"
 msgstr ""
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:115
 msgid "SUNDAY"
 msgstr ""
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:115
 msgid "MONDAY"
 msgstr ""
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:115
 msgid "TUESDAY"
 msgstr ""
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:115
 msgid "WEDNESDAY"
 msgstr ""
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:115
 msgid "THURSDAY"
 msgstr ""
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:115
 msgid "FRIDAY"
 msgstr ""
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:115
 msgid "SATURDAY"
 msgstr ""
 
-#: ../../../lang/stb.php:152
+#: ../../../lang/stb.php:124
 msgid "BACK"
 msgstr ""
 
-#: ../../../lang/stb.php:153
+#: ../../../lang/stb.php:125
 msgid "ABOUT MOVIE"
 msgstr ""
 
-#: ../../../lang/stb.php:154
+#: ../../../lang/stb.php:126
 msgid "TV GUIDE"
 msgstr ""
 
-#: ../../../lang/stb.php:157
+#: ../../../lang/stb.php:129
 msgid "SETTINGS"
 msgstr ""
 
-#: ../../../lang/stb.php:158
-#: ../../../lang/stb.php:176
+#: ../../../lang/stb.php:130
+#: ../../../lang/stb.php:148
 msgid "CANCEL"
 msgstr ""
 
-#: ../../../lang/stb.php:159
+#: ../../../lang/stb.php:131
 msgid "SAVE"
 msgstr ""
 
-#: ../../../lang/stb.php:160
+#: ../../../lang/stb.php:132
 msgid "Current password"
 msgstr ""
 
-#: ../../../lang/stb.php:161
+#: ../../../lang/stb.php:133
 msgid "PARENTAL SETTINGS"
 msgstr ""
 
-#: ../../../lang/stb.php:162
+#: ../../../lang/stb.php:134
 msgid "PARENTAL"
 msgstr ""
 
-#: ../../../lang/stb.php:163
+#: ../../../lang/stb.php:135
 msgid "New password"
 msgstr ""
 
-#: ../../../lang/stb.php:164
+#: ../../../lang/stb.php:136
 msgid "Repeat new password"
 msgstr ""
 
-#: ../../../lang/stb.php:166
+#: ../../../lang/stb.php:138
 msgid "Settings saved"
 msgstr ""
 
-#: ../../../lang/stb.php:167
+#: ../../../lang/stb.php:139
 msgid "Settings saved.<br>The STB will be rebooted. Press OK."
 msgstr ""
 
-#: ../../../lang/stb.php:168
+#: ../../../lang/stb.php:140
 msgid "Error filling fields"
 msgstr ""
 
-#: ../../../lang/stb.php:170
+#: ../../../lang/stb.php:142
 msgid "LOCALIZATION"
 msgstr ""
 
-#: ../../../lang/stb.php:171
+#: ../../../lang/stb.php:143
 msgid "Language of the interface"
 msgstr ""
 
-#: ../../../lang/stb.php:172
+#: ../../../lang/stb.php:144
 msgid "Country"
 msgstr ""
 
-#: ../../../lang/stb.php:173
+#: ../../../lang/stb.php:145
 msgid "City"
 msgstr ""
 
-#: ../../../lang/stb.php:175
+#: ../../../lang/stb.php:147
 msgid "SOFTWARE UPDATE"
 msgstr ""
 
-#: ../../../lang/stb.php:177
+#: ../../../lang/stb.php:149
 msgid "START UPDATE"
 msgstr ""
 
-#: ../../../lang/stb.php:178
+#: ../../../lang/stb.php:150
 msgid "From HTTP"
 msgstr ""
 
-#: ../../../lang/stb.php:179
+#: ../../../lang/stb.php:151
 msgid "From USB"
 msgstr ""
 
-#: ../../../lang/stb.php:180
+#: ../../../lang/stb.php:152
 msgid "Source"
 msgstr ""
 
-#: ../../../lang/stb.php:181
+#: ../../../lang/stb.php:153
 msgid "Method select"
 msgstr ""
 
-#: ../../../lang/stb.php:183
+#: ../../../lang/stb.php:155
 msgid "EMPTY"
 msgstr ""
 
-#: ../../../lang/stb.php:185
+#: ../../../lang/stb.php:157
 msgid "Exchange rate on"
 msgstr ""
 
-#: ../../../lang/stb.php:187
+#: ../../../lang/stb.php:159
 msgid "WEATHER"
 msgstr ""
 
-#: ../../../lang/stb.php:188
+#: ../../../lang/stb.php:160
 msgid "pres.:"
 msgstr ""
 
-#: ../../../lang/stb.php:190
+#: ../../../lang/stb.php:162
 msgid "wind:"
 msgstr ""
 
-#: ../../../lang/stb.php:193
+#: ../../../lang/stb.php:165
 msgid "INFOPORTAL"
 msgstr ""
 
-#: ../../../lang/stb.php:195
+#: ../../../lang/stb.php:167
 msgid "CITY INFO"
 msgstr ""
 
-#: ../../../lang/stb.php:196
+#: ../../../lang/stb.php:168
 msgid "emergency"
 msgstr ""
 
-#: ../../../lang/stb.php:197
+#: ../../../lang/stb.php:169
 msgid "help"
 msgstr ""
 
-#: ../../../lang/stb.php:198
+#: ../../../lang/stb.php:170
 msgid "other"
 msgstr ""
 
-#: ../../../lang/stb.php:201
+#: ../../../lang/stb.php:173
 msgid "HOROSCOPE"
 msgstr ""
 
-#: ../../../lang/stb.php:203
+#: ../../../lang/stb.php:175
 msgid "JOKES"
 msgstr ""
 
-#: ../../../lang/stb.php:205
+#: ../../../lang/stb.php:177
 msgid "GOTO"
 msgstr ""
 
-#: ../../../lang/stb.php:206
+#: ../../../lang/stb.php:178
 msgid "LIKE"
 msgstr ""
 
-#: ../../../lang/stb.php:207
+#: ../../../lang/stb.php:179
 msgid "BOOKMARK"
 msgstr ""
 
-#: ../../../lang/stb.php:208
+#: ../../../lang/stb.php:180
 msgid "TO BOOKMARK"
 msgstr ""
 
-#: ../../../lang/stb.php:210
+#: ../../../lang/stb.php:182
 msgid "JOKE"
 msgstr ""
 
-#: ../../../lang/stb.php:212
+#: ../../../lang/stb.php:184
 msgid "MASTERMIND"
 msgstr ""
 
-#: ../../../lang/stb.php:213
+#: ../../../lang/stb.php:185
 msgid "RULES"
 msgstr ""
 
-#: ../../../lang/stb.php:214
+#: ../../../lang/stb.php:186
 msgid "RATING"
 msgstr ""
 
 #. / Short Bull
-#: ../../../lang/stb.php:216
+#: ../../../lang/stb.php:188
 msgid "B"
 msgstr ""
 
-#: ../../../lang/stb.php:218
+#: ../../../lang/stb.php:190
 msgid "C"
 msgstr ""
 
-#: ../../../lang/stb.php:220
+#: ../../../lang/stb.php:192
 msgid "Your task is to guess the number of unduplicated four digits, the first of them - not zero. Every your guess will be compared with the number put forth a STB. If you guessed a digit, but it is not in place, then it is a COW (C). If you guessed, and a number, and its location, this BULL (B)."
 msgstr ""
 
-#: ../../../lang/stb.php:221
+#: ../../../lang/stb.php:193
 msgid "Moving the cursor"
 msgstr ""
 
-#: ../../../lang/stb.php:222
+#: ../../../lang/stb.php:194
 msgid "Enter numbers into cells"
 msgstr ""
 
-#: ../../../lang/stb.php:223
+#: ../../../lang/stb.php:195
 msgid "Confirmation of the step"
 msgstr ""
 
-#: ../../../lang/stb.php:225
+#: ../../../lang/stb.php:197
 msgid "Moving through the pages of history moves"
 msgstr ""
 
-#: ../../../lang/stb.php:227
+#: ../../../lang/stb.php:199
 msgid "Service is disabled"
 msgstr ""
 
-#: ../../../lang/stb.php:228
+#: ../../../lang/stb.php:200
 msgid "Сhannel is not available"
 msgstr ""
 
-#: ../../../lang/stb.php:230
+#: ../../../lang/stb.php:202
 msgid "TV Guide"
 msgstr ""
 
-#: ../../../lang/stb.php:231
+#: ../../../lang/stb.php:203
 msgid "RECORD"
 msgstr ""
 
-#: ../../../lang/stb.php:232
+#: ../../../lang/stb.php:204
 msgid "REMIND"
 msgstr ""
 
-#: ../../../lang/stb.php:233
+#: ../../../lang/stb.php:205
 msgid "Memo"
 msgstr ""
 
-#: ../../../lang/stb.php:234
+#: ../../../lang/stb.php:206
 msgid "Goto channel"
 msgstr ""
 
-#: ../../../lang/stb.php:235
+#: ../../../lang/stb.php:207
 msgid "Close"
 msgstr ""
 
-#: ../../../lang/stb.php:236
+#: ../../../lang/stb.php:208
 msgid "on channel"
 msgstr ""
 
-#: ../../../lang/stb.php:237
+#: ../../../lang/stb.php:209
 msgid "now begins"
 msgstr ""
 
-#: ../../../lang/stb.php:238
+#: ../../../lang/stb.php:210
 msgid "in"
 msgstr ""
 
-#: ../../../lang/stb.php:239
+#: ../../../lang/stb.php:211
 msgid "started"
 msgstr ""
 
 #. / TRANSLATORS: Search box languages. Comma separated without spaces.
-#: ../../../lang/stb.php:242
+#: ../../../lang/stb.php:214
 msgid "search_box_languages"
 msgstr "en"
 
 #. / TRANSLATORS: {0} - day, {1} - date, {2} - month, {3} - year.
-#: ../../../lang/stb.php:245
+#: ../../../lang/stb.php:217
 msgid "date_format"
 msgstr "{0}, {2} {1}, {3}"
 
 #. / TRANSLATORS: {0} - hours, {1} - minutes, {2} am/pm hour, {3} am/pm mark.
-#: ../../../lang/stb.php:248
+#: ../../../lang/stb.php:220
 msgid "time_format"
 msgstr "{2}:{1} {3}"
 
-#: ../../../lang/stb.php:250
+#: ../../../lang/stb.php:222
 msgid "Timezone"
 msgstr ""
 
@@ -1025,8 +1029,8 @@ msgid "yesterday"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:663
-#: ../../../lib/stb.class.php:667
+#: ../../../lib/stb.class.php:680
+#: ../../../lib/stb.class.php:684
 #: ../../../lib/weatherco.class.php:118
 #: ../../../lib/weatherco.class.php:138
 msgid "city_name_field"
