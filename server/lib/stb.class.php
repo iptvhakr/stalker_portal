@@ -29,7 +29,11 @@ class Stb
     private static $allowed_locales;
     
     private static $instance = NULL;
-    
+
+    /**
+     * @static
+     * @return Stb
+     */
     public static function getInstance(){
         if (self::$instance == NULL)
         {
@@ -145,38 +149,13 @@ class Stb
         return $master->getStoragesForStb();
     }
     
-    /*public function getIdByMAC($mac){
-        
-        //$user = $this->db->getFirstData('users', array('mac' => $mac));
-        $user = $this->db->from('users')
-                         ->where(array('mac' => $mac))
-                         ->get()
-                         ->first();
-        
-        if(!empty($user) && key_exists('id', $user)){
-            return $user['id'];
-        }
-        
-        return false;
-    }*/
-    
-    /*private function getAllMACs(){
-        //$users = $this->db->getData('users');
-        
-        $users = $this->db->get('users')->all();
-        
-        $arr = array();
-        foreach ($users as $user){
-            $arr[$user['mac']] = intval($user['id']);
-        }
-        return $arr;
-    }*/
-    
     public function getProfile(){
         
         if (!$this->id){
             $this->createProfile();
         }
+
+        $this->getInfoFromOss();
         
         $this->db->update('users', array(
                 'last_start' => 'NOW()',
@@ -484,36 +463,36 @@ class Stb
                     break;*/
                 case 7: // Shared Records
                     /*$shared_record_name = '';
-                    
+
                     preg_match("/(\d+).mpg$/", $param, $tmp_arr);
                     $shared_record_id = $tmp_arr[1];
-                    
+
                     $sql = "select * from video_records where id=$shared_record_id";
                     $rs = $db->executeQuery($sql);
-                    
+
                     if ($rs->getRowCount() == 1){
                         $shared_record_name = $rs->getValueByName(0, 'descr');
                     }else{
                         $shared_record_name = $param;
                     }
-                    
+
                     $_sql .= ", now_playing_content='$shared_record_name'";*/
                     break;
                 case 8: // Video clips
                     /*$video_name = '';
-                    
+
                     preg_match("/(\d+).mpg$/", $param, $tmp_arr);
                     $media_id = $tmp_arr[1];
-                    
+
                     $sql = "select * from video_clips where id=$media_id";
                     $rs = $db->executeQuery($sql);
-                    
+
                     if ($rs->getRowCount() == 1){
                         $video_name = $rs->getValueByName(0, 'name');
                     }else{
                         $video_name = $param;
                     }
-                    
+
                     $_sql .= ", now_playing_content='$video_name'";
                     break;*/
                 default:
@@ -618,19 +597,6 @@ class Stb
 
         self::$allowed_locales = $locales;
     }
-    
-    /*public function getLanguages(){
-        $languages = self::$allowed_languages;
-        
-        $result = array('options' => array());
-        
-        foreach ($languages as $lang){
-            $selected = ($this->lang == $lang)? 1 : 0;
-            $result['options'][] = array('label' => $lang, 'value' => $lang, 'selected' => $selected);
-        }
-        
-        return $result;
-    }*/
 
     public function getLocales(){
 
@@ -703,6 +669,68 @@ class Stb
         }
 
         return $result;
+    }
+
+    public function getByUids($uids = array()){
+
+        $result = Mysql::getInstance()->from('users');
+
+        if (!empty($uids)){
+            $result = $result->in('id', $uids);
+        }
+
+        $result = $result->get()->all();
+
+        return $result;
+    }
+
+    public function updateByUids($uids = array(), $data){
+
+        if (empty($data)){
+            return false;
+        }
+
+        $result = Mysql::getInstance();
+
+        if (!empty($uids)){
+            $result = $result->in('id', $uids);
+        }
+
+        $result = $result->update('users', $data);
+
+        if (!$result){
+            return false;
+        }
+
+        return $this->getByUids($uids);
+    }
+
+    private function getInfoFromOss(){
+
+        if (!defined('OSS_URL')){
+            return false;
+        }
+        
+        $data = file_get_contents(OSS_URL.'?mac='.$this->mac);
+
+        if (!$data){
+            return false;
+        }
+
+        $data = json_decode($data);
+
+        if (key_exists('ls', $data)){
+            Mysql::getInstance()->update('users', array('ls' => $data['ls']), array('id' => $this->id));
+        }
+    }
+
+    public static function getUidByLs($ls){
+
+        if (!is_array($ls)){
+            $ls = array($ls);
+        }
+
+        return Mysql::getInstance()->from('users')->in('ls', $ls)->get()->all('id');
     }
 }
 ?>
