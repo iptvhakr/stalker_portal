@@ -2,9 +2,9 @@
 
 class ItvSubscription
 {
-    public static function getBonusChannelsIds($mac){
+    public static function getBonusChannelsIds($uid){
         
-        $bonus_ch = Mysql::getInstance()->from('itv_subscription')->where(array('mac' => $mac))->get()->first('bonus_ch');
+        $bonus_ch = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first('bonus_ch');
 
         if (empty($bonus_ch)){
             return array();
@@ -19,9 +19,9 @@ class ItvSubscription
         return $bonus_ch_arr;
     }
 
-    public static function getSubscriptionChannelsIds($mac){
+    public static function getSubscriptionChannelsIds($uid){
 
-        $sub_ch = Mysql::getInstance()->from('itv_subscription')->where(array('mac' => $mac))->get()->first('sub_ch');
+        $sub_ch = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first('sub_ch');
 
         if (empty($sub_ch)){
             return array();
@@ -100,6 +100,5 @@ class ItvSubscription
         return self::getByUids($uids);
     }
 }
-
 
 ?>
