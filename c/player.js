@@ -214,7 +214,7 @@ player.prototype.event_callback = function(event){
             
             if (stb.cur_place == 'vclub'){
                 
-                var time_send_played = (this.cur_media_length*0.7)*1000
+                var time_send_played = (this.cur_media_length*0.7) * 1000;
                 _debug('time_send_played,', time_send_played);
                 
                 var self = this;
@@ -249,20 +249,30 @@ player.prototype.event_callback = function(event){
             var self = this;
             
             if (this.media_type == 'stream'){
-                
-                if(self.prev_layer && self.prev_layer.show){
-                    self.prev_layer.show.call(self.prev_layer, true);
+
+                if (this.proto == 'http' && this.is_tv){
+
+                    this.replay_channel_timer = window.setTimeout(
+                        function(){
+                            self.play_last();
+                        },
+                        5000
+                    );
+
+                }else{
+
+                    if(self.prev_layer && self.prev_layer.show){
+                        self.prev_layer.show.call(self.prev_layer, true);
+                    }
+
+                    self.stop();
+
+                    stb.notice.show(get_word('player_file_missing'));
                 }
-                
-                self.stop();
-                
-                stb.notice.show(get_word('player_file_missing'));
                 
             }else{
             
                 this.event5_counter++;
-                
-                var self = this;
                 
                 stb.remount_storages(
                 
@@ -569,7 +579,7 @@ player.prototype.seek_bar = new function(){
 
 player.prototype.define_media_type = function(cmd){
     _debug('player.define_media_type', cmd);
-    
+
     if (cmd.indexOf('://') > 0){
         
         _debug('stb.cur_place', stb.cur_place);
@@ -579,10 +589,15 @@ player.prototype.define_media_type = function(cmd){
         }else{
             this.is_tv = false;
         }
+
+        this.proto = cmd.match(/(\S*):\/\//)[1];
         
         return 'stream';
     }else{
+        
         this.is_tv = false;
+        this.proto = 'file';
+
         return 'file';
     }
 };
@@ -667,6 +682,8 @@ player.prototype.play = function(item){
     _debug('cmd: ', cmd);
     
     this.media_type = this.define_media_type(cmd);
+
+    _debug('player.proto', this.proto);
     
     if (this.is_tv){
         this.cur_tv_item = item;
