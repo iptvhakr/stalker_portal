@@ -536,7 +536,7 @@ class Itv extends AjaxResponse
         if (empty($this->all_user_channels_ids)){
         
             //$this->all_user_channels_ids = array_unique(array_merge($this->getSubscriptionChannelsIds(), $this->getBonusChannelsIds(), $this->getBaseChannelsIds()));
-            $this->all_user_channels_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($this->stb->mac), ItvSubscription::getBonusChannelsIds($this->stb->mac), $this->getBaseChannelsIds()));
+            $this->all_user_channels_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($this->stb->id), ItvSubscription::getBonusChannelsIds($this->stb->id), $this->getBaseChannelsIds()));
         }
         
         return $this->all_user_channels_ids;
@@ -630,7 +630,7 @@ class Itv extends AjaxResponse
 
     public function getByIds($ids = array()){
 
-        Mysql::$debug = true;
+        //Mysql::$debug = true;
 
         $result = Mysql::getInstance()->from('itv');
 
