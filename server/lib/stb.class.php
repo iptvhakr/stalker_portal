@@ -72,6 +72,11 @@ class Stb
         if ($this->db->from('moderators')->where(array('mac' => $this->mac, 'status' => 1))->get()->count() == 1){
             $this->is_moderator = true;
         }
+
+        //if ($this->is_moderator && !empty($_COOKIE['debug'])){
+        if (!empty($_COOKIE['debug'])){
+            Mysql::$debug = true;
+        }
     }
     
     public function setId($id){
@@ -93,7 +98,7 @@ class Stb
 
             $this->locale     = (empty($user['locale']) && defined('DEFAULT_LOCALE')) ? DEFAULT_LOCALE : $user['locale'];
 
-            $this->city_id    = intval($user['city_id']);
+            $this->city_id = (empty($user['city_id']) && defined('DEFAULT_CITY_ID')) ? DEFAULT_CITY_ID : intval($user['city_id']);
 
             $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
 
@@ -710,14 +715,22 @@ class Stb
         if (!defined('OSS_URL')){
             return false;
         }
+
+        if (OSS_URL == ''){
+            return false;
+        }
         
-        $data = file_get_contents(OSS_URL.'?mac='.$this->mac);
+        $data = file_get_contents(OSS_URL.'?mac='.$this->mac.'&uid='.$this->id);
 
         if (!$data){
             return false;
         }
 
         $data = json_decode($data);
+
+        if (empty($data)){
+            return false;
+        }
 
         if (key_exists('ls', $data)){
             Mysql::getInstance()->update('users', array('ls' => $data['ls']), array('id' => $this->id));
@@ -731,6 +744,15 @@ class Stb
         }
 
         return Mysql::getInstance()->from('users')->in('ls', $ls)->get()->all('id');
+    }
+
+    public static function getUidByMacs($mac){
+
+        if (!is_array($mac)){
+            $mac = array($mac);
+        }
+
+        return Mysql::getInstance()->from('users')->in('mac', $mac)->get()->all('id');
     }
 }
 ?>
