@@ -6,6 +6,7 @@ class RESTRequest extends APIRequest
     private $resource;
     private $identifiers;
     private $put;
+    private static $use_mac_identifiers = false;
 
     public function __construct(){
         $this->init();
@@ -66,8 +67,17 @@ class RESTRequest extends APIRequest
         return $this->identifiers;
     }
 
+    public static function useMacIdentifiers(){
+        return self::$use_mac_identifiers = true;
+    }
+
     public function getConvertedIdentifiers(){
-        return Stb::getUidByLs($this->identifiers);
+
+        if (self::$use_mac_identifiers){
+            return Stb::getUidByMacs($this->identifiers);
+        }else{
+            return Stb::getUidByLs($this->identifiers);
+        }
     }
 
     public function getPut(){
