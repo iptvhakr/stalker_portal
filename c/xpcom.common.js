@@ -167,6 +167,8 @@ function common_xpcom(){
             if (_GET['mac']){
                 this.mac = _GET['mac'];
             }
+
+            this.set_cookie('debug', 1);
         }
 
         this.set_cookie('mac', this.mac);
