@@ -680,9 +680,9 @@ class Stb
 
         $result = Mysql::getInstance()->from('users');
 
-        if (!empty($uids)){
-            $result = $result->in('id', $uids);
-        }
+        //if (!empty($uids)){
+        $result = $result->in('id', $uids);
+        //}
 
         $result = $result->get()->all();
 
@@ -697,9 +697,9 @@ class Stb
 
         $result = Mysql::getInstance();
 
-        if (!empty($uids)){
-            $result = $result->in('id', $uids);
-        }
+        //if (!empty($uids)){
+        $result = $result->in('id', $uids);
+        //}
 
         $result = $result->update('users', $data);
 
@@ -739,11 +739,18 @@ class Stb
 
     public static function getUidByLs($ls){
 
-        if (!is_array($ls)){
-            $ls = array($ls);
+        $result = Mysql::getInstance()->from('users');
+
+        if ($ls !== null){
+
+            if (!is_array($ls)){
+                $ls = array($ls);
+            }
+
+            $result = $result->in('ls', $ls);
         }
 
-        return Mysql::getInstance()->from('users')->in('ls', $ls)->get()->all('id');
+        return $result->get()->all('id');
     }
 
     public static function getUidByMacs($mac){
