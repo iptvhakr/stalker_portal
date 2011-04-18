@@ -11,8 +11,8 @@
 
 function get_save_folder($id){
     
-    $dir_name = ceil($id/FILES_IN_DIR);
-    $dir_path = IMG_PATH.$dir_name;
+    $dir_name = ceil($id/100);
+    $dir_path = PROJECT_PATH.'/screenshots/'.$dir_name;
     //echo '$dir_path: '.$dir_path;
     if (!is_dir($dir_path)){
         umask(0);
@@ -27,13 +27,13 @@ function get_save_folder($id){
     
 }
 
-function get_img_uri($id){
+/*function get_img_uri($id){
     
-    $dir_name = ceil($id/FILES_IN_DIR);
+    $dir_name = ceil($id/100);
     $dir_path = IMG_URI.$dir_name;
     $dir_path .= '/'.$id.'.jpg';
     return $dir_path;
-}
+}*/
 
 function transliterate($st) {
    //var_dump($st);
@@ -104,17 +104,17 @@ function transliterate($st) {
    return $st;
 }
 
-function rename_incoming_dir($old_name, $new_name){
+/*function rename_incoming_dir($old_name, $new_name){
     echo 'rename_incoming_dir '.$old_name. ' -> '.$new_name;
     if ($old_name == ''){
         return create_incoming_dir($new_name);
     }else if($old_name != $new_name){
         return rename(INCOMING_DIR.$old_name, INCOMING_DIR.$new_name);
     }
-}
+}*/
 
 function check_db_user_login($login, $pass){
-    $db = new Database(DB_NAME);
+    $db = new Database();
     
     $query = "select * from administrators where login='$login'";
     $rs=$db->executeQuery($query);
@@ -131,7 +131,7 @@ function check_db_user_login($login, $pass){
 }
 
 function check_session_user_login(){
-    $db = new Database(DB_NAME);
+    $db = new Database();
     
     $login = @$_SESSION['login'];
     $pass  = @$_SESSION['pass'];
@@ -149,16 +149,15 @@ function check_session_user_login(){
     }
 }
 
-function check_moderator_login(){
+/*function check_moderator_login(){
     if (@$_SESSION['adm_login'] != MODERATOR_LOGIN && @$_SESSION['adm_password'] != MODERATOR_PASSWORD){        
         return 0;
     }else{
         return 1;
     }
-}
+}*/
 
 function moderator_access(){
-    //if(!check_moderator_login()){
     if(!check_session_user_login()){
         header("Location: login.php");
         exit();
@@ -339,11 +338,11 @@ function datetime2timestamp($datetime){
     return @mktime($arr[4], $arr[5], $arr[6], $arr[2], $arr[3], $arr[1]);
 }
 
-function xmltvdatetime2datetime($datetime){
+/*function xmltvdatetime2datetime($datetime){
     $date  = substr($datetime, 0,4)."-".substr($datetime, 4,2)."-".substr($datetime, 6,2);
     $date .= " ".substr($datetime,8,2).":".substr($datetime,10,2).":".substr($datetime,12,2);
     return $date;
-}
+}*/
 
 function get_str_lang($str){
     $lang = 0;
@@ -358,7 +357,7 @@ function get_str_lang($str){
     return $lang;
 }
 
-function get_first_mpg($path){
+/*function get_first_mpg($path){
     if ($handle = @opendir($path)) {
         while (false !== ($file = readdir($handle))) {
             if ($file != "." && $file != ".." && preg_match("/([\S\s]+).mpg$/", $file)) { 
@@ -369,15 +368,17 @@ function get_first_mpg($path){
     }
     @closedir($handle); 
     return 0;
-}
+}*/
 
-function js_redirect($to, $delay){
+function js_redirect($to, $msg = '', $delay = 2){
    ?>   
     <html>
     <head>
-    <meta HTTP-EQUIV="refresh" content="<?echo $delay?>; URL=<?echo $to?>">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="refresh" content="<?echo $delay?>; URL=<?echo $to?>">
     </head>
     <body>
+    <? echo $msg ?>
     </body>
     </html>
     <?
@@ -403,7 +404,7 @@ function check_keep_alive_txt($time){
 }
 
 function get_sub_channels($id = 0){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     if ($id == 0){
         $id = intval(@$_GET['id']);
@@ -420,7 +421,7 @@ function get_sub_channels($id = 0){
 }
 
 function get_bonus_channels($id = 0){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     if ($id == 0){
         $id = intval(@$_GET['id']);
@@ -436,8 +437,8 @@ function get_bonus_channels($id = 0){
     }
 }
 
-function get_base_ch(){
-    $db = Database::getInstance(DB_NAME);
+/*function get_base_ch(){
+    $db = Database::getInstance();
     
     $sql = "select * from itv where base_ch=1";
     $rs = $db->executeQuery($sql);
@@ -453,7 +454,7 @@ function get_all_subscription_and_base_ch($uid){
     
     $total_subscription = array_merge($sub_ch, $bonus_ch, $base_ch);
     return $total_subscription;
-}
+}*/
 
 function kop2grn($kops){
     $grn = floor($kops/100);
@@ -464,8 +465,8 @@ function kop2grn($kops){
     return $grn.'.'.$kop;
 }
 
-function get_operator_id_by_stb_ip($ip){
-    $db = Database::getInstance(DB_NAME);
+/*function get_operator_id_by_stb_ip($ip){
+    $db = Database::getInstance();
     
     $long_ip = long2ip($ip);
     $sql = "select * from operators_ip 
@@ -482,9 +483,9 @@ function get_operator_id_by_stb_ip($ip){
         $operator_id = 1;
     }
     return $operator_id;
-}
+}*/
 
-function get_ip_range($ip_n_mask){
+/*function get_ip_range($ip_n_mask){
     $mask = 0xFFFFFFFF;
     
     $ip = explode("/", $ip_n_mask);
@@ -496,14 +497,14 @@ function get_ip_range($ip_n_mask){
     $long_ip = ip2long($ip[0]);
     
     $ip_range = array();
-    $ip_range['from'] = long2ip($lip&$mask);
-    $ip_range['to']   = long2ip(($lip&$mask)+(~$mask));
+    $ip_range['from'] = long2ip($long_ip&$mask);
+    $ip_range['to']   = long2ip(($long_ip&$mask)+(~$mask));
     return $ip_range;
-}
+}*/
 
 /*
 function save_series($arr, $path){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     sort($arr);
     $query = "update video set series='".serialize($arr)."' where path='$path'";
@@ -512,13 +513,13 @@ function save_series($arr, $path){
 */
 
 function set_video_status($id, $val){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $query = "update video set status=$val where id=$id";
     $rs=$db->executeQuery($query);
 }
 
 function set_karaoke_status($id, $val){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $query = "update karaoke set status=$val where id=$id";
     $rs=$db->executeQuery($query);
 }
@@ -538,16 +539,16 @@ function get_storage_use($db, $in_param = ''){
     return $status;
 }
 
-function get_anec_rating($id){
-    $db = Database::getInstance(DB_NAME);
+/*function get_anec_rating($id){
+    $db = Database::getInstance();
     $sql = "select count(*) as count from anec_rating where anec_id=$id";
     $rs1 = $db->executeQuery($sql);
     $rating = @intval($rs1->getValueByName(0, 'count'));
     return $rating;
-}
+}*/
 
-function get_anec_voted($id, $stb_id){
-    $db = Database::getInstance(DB_NAME);
+/*function get_anec_voted($id, $stb_id){
+    $db = Database::getInstance();
     $sql = "select count(*) as count from anec_rating where uid=$stb_id and anec_id=$id";
     $rs1 = $db->executeQuery($sql);
     if (@intval($rs1->getValueByName(0, 'count')) == 1){
@@ -555,7 +556,7 @@ function get_anec_voted($id, $stb_id){
     }else{
         return 0;
     }
-}
+}*/
 
 /*function normalize_mac($mac){
     $pattern = array('А', 'В', 'С', 'Е'); // ru
