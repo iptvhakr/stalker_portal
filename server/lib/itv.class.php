@@ -91,7 +91,7 @@ class Itv extends AjaxResponse
             if (!$link_result){
                 $error = 'link_fault';
             }else{
-                $cmd = 'ffrt http://'.STREAM_PROXY.'/ch/'.$link_result;
+                $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result;
             }
         }
 
@@ -331,7 +331,7 @@ class Itv extends AjaxResponse
     private function getOffset($where = array()){
         
         if (!$this->load_last_page){
-            return $this->page * MAX_PAGE_ITEMS;
+            return $this->page * self::max_page_items;
         }
         
         $fav = $this->getFav();
@@ -379,12 +379,12 @@ class Itv extends AjaxResponse
         }
         
         if ($ch_idx > 0){
-            $this->cur_page = ceil($ch_idx/MAX_PAGE_ITEMS);
+            $this->cur_page = ceil($ch_idx/self::max_page_items);
             $this->page = $this->cur_page-1;
-            $this->selected_item = $ch_idx - ($this->cur_page-1)*MAX_PAGE_ITEMS;
+            $this->selected_item = $ch_idx - ($this->cur_page-1)*self::max_page_items;
         }
         
-        $page_offset = ($this->cur_page-1)*MAX_PAGE_ITEMS;
+        $page_offset = ($this->cur_page-1)*self::max_page_items;
         
         if ($page_offset < 0){
             $page_offset = 0;
@@ -419,7 +419,7 @@ class Itv extends AjaxResponse
         return $this->db
                         ->from('itv')
                         ->where($where)
-                        ->limit(MAX_PAGE_ITEMS, $offset);
+                        ->limit(self::max_page_items, $offset);
     }
     
     public function getOrderedList(){
@@ -476,7 +476,7 @@ class Itv extends AjaxResponse
             }
             
             if (@$_REQUEST['fav']){
-                $this->response['data'][$i]['number'] = strval(($i+1) + (MAX_PAGE_ITEMS * ($this->page)));
+                $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)));
             }
             
             $this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
@@ -496,10 +496,10 @@ class Itv extends AjaxResponse
             $this->response['data'][$i]['open'] = 1;
 
             if($this->response['data'][$i]['use_http_tmp_link']){
-                $this->response['data'][$i]['cmd'] = 'ffrt http://'.STREAM_PROXY.'/ch/'.$this->response['data'][$i]['id'];
+                $this->response['data'][$i]['cmd'] = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$this->response['data'][$i]['id'];
             }
             
-            if (ENABLE_SUBSCRIPTION){
+            if (Config::get('enable_subscription')){
                 
                 if (in_array($this->response['data'][$i]['id'], $this->getAllUserChannelsIds())){
                     $this->response['data'][$i]['open'] = 1;
@@ -535,50 +535,11 @@ class Itv extends AjaxResponse
         
         if (empty($this->all_user_channels_ids)){
         
-            //$this->all_user_channels_ids = array_unique(array_merge($this->getSubscriptionChannelsIds(), $this->getBonusChannelsIds(), $this->getBaseChannelsIds()));
             $this->all_user_channels_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($this->stb->id), ItvSubscription::getBonusChannelsIds($this->stb->id), $this->getBaseChannelsIds()));
         }
         
         return $this->all_user_channels_ids;
     }
-
-    /*public function getSubscriptionChannelsIds(){
-        
-        $db = clone $this->db;
-        
-        $sub_ch = $db->from('itv_subscription')->where(array('uid' => $this->stb->id))->get()->first('sub_ch');
-        
-        if (empty($sub_ch)){
-            return array();
-        }
-        
-        $sub_ch_arr = unserialize(base64_decode($sub_ch));
-        
-        if (!is_array($sub_ch_arr)){
-            return array();
-        }
-        
-        return $sub_ch_arr;
-    }*/
-    
-    /*public function getBonusChannelsIds(){
-        
-        $db = clone $this->db;
-        
-        $bonus_ch = $db->from('itv_subscription')->where(array('uid' => $this->stb->id))->get()->first('bonus_ch');
-        
-        if (empty($bonus_ch)){
-            return array();
-        }
-        
-        $bonus_ch_arr = unserialize(base64_decode($bonus_ch));
-        
-        if (!is_array($bonus_ch_arr)){
-            return array();
-        }
-        
-        return $bonus_ch_arr;
-    }*/
 
     public function getBaseChannelsIds(){
         
