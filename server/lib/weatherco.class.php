@@ -228,7 +228,7 @@ class Weatherco
             8 => '_8_rain_swon.png',
             9 => '_9_snow.png ',
             10 => '_10_heavy_snow.png',
-            255 => '_255_NA.png',
+            25 => '_255_NA.png',
         );
 
         $pictures_night = array(
