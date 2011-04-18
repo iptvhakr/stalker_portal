@@ -1,5 +1,4 @@
 <?php
-include "../conf_serv.php";
 include "../lib/func.php";
 
 $db = new Database('stalker_tmp');

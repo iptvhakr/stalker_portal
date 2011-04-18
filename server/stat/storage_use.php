@@ -2,10 +2,9 @@
 /*
     online, offline
 */
-include "../conf_serv.php";
 include "../lib/func.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 echo get_storage_use($db);
 

@@ -2,10 +2,9 @@
 /*
     online, offline
 */
-include "../conf_serv.php";
 include "../lib/func.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 $in_param = $_GET['in_param'];
 
 $sql = "select * from storage_deny where name='$in_param'";
