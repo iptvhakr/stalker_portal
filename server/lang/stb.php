@@ -143,6 +143,7 @@ $words['localization_settings_title'] = _('LOCALIZATION');
 $words['localization_label'] = _('Language of the interface');
 $words['country_label'] = _('Country');
 $words['city_label'] = _('City');
+$words['localization_page_button_info'] = _('Use PAGE-/+ buttons to move through several menu items');
 
 $words['settings_software_update'] = _('SOFTWARE UPDATE');
 $words['update_settings_cancel'] = _('CANCEL');
