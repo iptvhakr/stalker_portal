@@ -14,7 +14,11 @@ class Cache
     private $use_custom_caching = false;
     
     private static $instance = NULL;
-    
+
+    /**
+     * @static
+     * @return Cache
+     */
     public static function getInstance(){
         if (self::$instance == NULL)
         {
@@ -27,7 +31,7 @@ class Cache
 
         $this->backend = new Memcache;
         
-        $this->backend->connect(MEMCACHE_HOST, 11211);
+        $this->backend->connect(Config::get('memcache_host'), 11211);
     }
 
     public function useCustomCaching($val){
