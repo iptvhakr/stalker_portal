@@ -1,11 +1,8 @@
 <?php
-/*
 
-*/
-include "../conf_serv.php";
 include "../lib/func.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 $mac = $_GET['mac'];
 $ch  = $_GET['ch'];

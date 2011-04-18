@@ -1,11 +1,10 @@
 <?php
 
-include "../conf_serv.php";
 include "../lib/func.php";
 
 set_time_limit(0);
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 $sql = "select * from moderator_tasks where ended=1";
 $rs=$db->executeQuery($sql);

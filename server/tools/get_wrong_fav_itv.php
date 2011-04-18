@@ -1,9 +1,8 @@
 <?php
 
-include "../conf_serv.php";
 include "../lib/func.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 $sql = "select users.mac, fav_itv.* from fav_itv, users where fav_itv.uid=users.id";
 $rs=$db->executeQuery($sql);
