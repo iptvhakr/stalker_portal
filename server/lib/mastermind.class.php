@@ -47,7 +47,7 @@ class Mastermind extends AjaxResponse
     private function getOffset($where = array()){
         
         if (!$this->load_last_page){
-            return $this->page * MAX_PAGE_ITEMS;
+            return $this->page * self::max_page_items;
         }
         
         $uid_points = $this->db->select('SUM(points) as sum_points')->from('mastermind_wins')->where(array('uid' => $this->stb->id))->get()->first('sum_points');
@@ -77,16 +77,16 @@ class Mastermind extends AjaxResponse
                 }
             }
             
-            $this->cur_page = ceil($n/MAX_PAGE_ITEMS);
+            $this->cur_page = ceil($n/self::max_page_items);
             $this->page = $this->cur_page-1;
-            $this->selected_item = $n - ($this->cur_page-1)*MAX_PAGE_ITEMS;
+            $this->selected_item = $n - ($this->cur_page-1)*self::max_page_items;
             
         }else{
             $this->page = 0;
             $this->cur_page = 1;
         }
         
-        $page_offset = ($this->cur_page-1)*MAX_PAGE_ITEMS;
+        $page_offset = ($this->cur_page-1)*self::max_page_items;
         
         if ($page_offset < 0){
             $page_offset = 0;
@@ -110,7 +110,7 @@ class Mastermind extends AjaxResponse
                         ->orderby('sum_points', 'desc')
                         ->orderby('min_tries')
                         ->orderby('min_time')
-                        ->limit(MAX_PAGE_ITEMS, $offset);
+                        ->limit(self::max_page_items, $offset);
         
     }
     
@@ -127,7 +127,7 @@ class Mastermind extends AjaxResponse
     
     public function prepareData(){
         
-        $place = ($this->page) * MAX_PAGE_ITEMS + 1;
+        $place = ($this->page) * self::max_page_items + 1;
         
         for ($i = 0; $i < count($this->response['data']); $i++){
             
