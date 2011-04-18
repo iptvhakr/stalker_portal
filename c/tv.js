@@ -47,7 +47,7 @@
             
             _debug('tv._show', genre);
             
-            var genre = genre || this.genres[0];
+            genre = genre || this.genres[0];
             
             this.load_params['genre'] = genre.id;
             
@@ -60,14 +60,20 @@
         
         this.show = function(do_not_load){
             _debug('tv.show', do_not_load);
-            
-            this.cur_page = 0;
 
             if(this.data_items && this.data_items[this.cur_row] && this.data_items[this.cur_row].id && stb.player.cur_media_item && this.data_items[this.cur_row].id == stb.player.cur_media_item.id){
                 do_not_load = true;
             }else{
                 do_not_load = false;
             }
+
+            _debug('do_not_load', do_not_load);
+
+            if (!do_not_load){
+                this.cur_page = 0;
+            }
+
+            _debug('this.cur_page', this.cur_page);
             
             this.superclass.show.call(this, do_not_load);
             
@@ -89,8 +95,10 @@
         
         this.hide = function(do_not_reset){
             _debug('tv.hide', do_not_reset);
-            
-            this.cur_page = 0;
+
+            if (!do_not_reset){
+                this.cur_page = 0;
+            }
             
             this.short_epg_loader.stop();
             
