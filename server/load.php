@@ -8,12 +8,7 @@ header("Last-Modified: Thu, 01 Jan 1970 00:00:00 GMT");
 header("Pragma: no-cache");
 header("Cache-Control: max-age=0, no-cache, must-revalidate");
 
-require_once "conf_serv.php";
 require_once "common.php";
-require_once "lib/subsys/php.php";
-
-Stb::setModules($_ALL_MODULES, $_DISABLED_MODULES);
-Stb::setAllowedLocales($_ALLOWED_LOCALES);
 
 set_error_handler(array($debug = Debug::getInstance(), 'parsePHPError'));
 
