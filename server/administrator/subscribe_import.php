@@ -3,9 +3,7 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
-include "../getid3/getid3.php";
 include "../lib/func.php";
 
 if (!check_access(array(3))){
@@ -14,7 +12,7 @@ if (!check_access(array(3))){
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -201,7 +199,7 @@ if (@$_FILES['userfile']){
 }*/
 
 function get_service_id_map(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $arr = array();
     $sql = "select * from itv";
     $rs = $db->executeQuery($sql);
@@ -221,7 +219,7 @@ function get_service_id_map(){
 }
 
 function get_subscription_map(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $arr = array();
     $sql = "select * from itv_subscription";
     $rs = $db->executeQuery($sql);
@@ -232,7 +230,7 @@ function get_subscription_map(){
 }
 
 function get_stb_id_map(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $arr = array();
     $sql = "select * from users";
     $rs = $db->executeQuery($sql);
@@ -243,7 +241,7 @@ function get_stb_id_map(){
 }
 
 function get_all_ch_bonus(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $arr = array();
     $sql = "select * from itv where bonus_ch=1 and base_ch=0";
     $rs = $db->executeQuery($sql);
@@ -254,7 +252,7 @@ function get_all_ch_bonus(){
 }
 
 function get_base_channels(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $arr = array();
     $sql = "select * from itv where base_ch=1";
     $rs = $db->executeQuery($sql);
@@ -265,7 +263,7 @@ function get_base_channels(){
 }
 
 function get_all_payed_ch(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $arr = array();
     $sql = "select * from itv where base_ch=0";
     $rs = $db->executeQuery($sql);
@@ -276,7 +274,7 @@ function get_all_payed_ch(){
 }
 
 function get_all_payed_ch_100(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $arr = array();
     $sql = "select * from itv where base_ch=0 and id!=178 and id!=179";
     $rs = $db->executeQuery($sql);

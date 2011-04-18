@@ -4,13 +4,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -235,7 +234,7 @@ function get_video_clip_accessed($id){
 }
 
 function get_done_video_clip($id){
-	$db = Database::getInstance(DB_NAME);
+	$db = Database::getInstance();
 	
 	$query = "select * from video_clips where id=$id";
     $rs=$db->executeQuery($query);

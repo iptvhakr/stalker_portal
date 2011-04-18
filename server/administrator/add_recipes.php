@@ -3,13 +3,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -141,7 +140,7 @@ a:hover{
 <?
 
 function get_cats(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from recipe_cats order by title";
     $rs=$db->executeQuery($query);
@@ -157,7 +156,7 @@ function get_cats(){
 }
 
 function get_selected_cats(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $genre_id = array();
     $str = '';

@@ -3,14 +3,13 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -88,7 +87,7 @@ a:hover{
 <?
 
 function get_total_tasks($uid){
-    $db  = Database::getInstance(DB_NAME);
+    $db  = Database::getInstance();
     
     $sql = "select * from moderator_tasks where to_usr=$uid and archived=0";
     $rs  = $db->executeQuery($sql);
@@ -96,7 +95,7 @@ function get_total_tasks($uid){
 }
 
 function get_open_tasks($uid){
-    $db  = Database::getInstance(DB_NAME);
+    $db  = Database::getInstance();
     
     $sql = "select * from moderator_tasks where ended=0 and to_usr=$uid and archived=0";
     $rs  = $db->executeQuery($sql);
@@ -104,7 +103,7 @@ function get_open_tasks($uid){
 }
 
 function get_closed_tasks($uid){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $sql = "select * from moderator_tasks where ended=1 and to_usr=$uid and archived=0";
     $rs  = $db->executeQuery($sql);
@@ -112,7 +111,7 @@ function get_closed_tasks($uid){
 }
 
 function get_rejected_tasks($uid){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $sql = "select * from moderator_tasks where rejected=1 and to_usr=$uid and archived=0";
     $rs  = $db->executeQuery($sql);

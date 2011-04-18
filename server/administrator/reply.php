@@ -3,15 +3,13 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
-include "../getid3/getid3.php";
 include "../lib/func.php";
 include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -38,8 +36,7 @@ if (count($_POST) > 0){
                 ";
     $rs=$db->executeQuery($sql);
     if (!$db->getLastError()){
-        echo 'сообщение отправлено';
-        js_redirect('tasks.php', 2);
+        js_redirect('tasks.php', 'сообщение отправлено');
     }else{
         echo 'ошибка';
     }

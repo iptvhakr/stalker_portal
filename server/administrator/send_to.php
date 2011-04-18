@@ -3,15 +3,13 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
-include "../getid3/getid3.php";
 include "../lib/func.php";
 include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -54,8 +52,7 @@ if (count($_POST) > 0){
                 ";
     $rs=$db->executeQuery($sql);
     if (!$db->getLastError()){
-        echo 'задание отправлено';
-        js_redirect('add_video.php', 2);
+        js_redirect('add_video.php', 'задание отправлено');
     }else{
         echo 'ошибка';
     }

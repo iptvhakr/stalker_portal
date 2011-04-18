@@ -4,7 +4,7 @@ session_start();
 function get_data(){
     $get = @$_GET['get'];
     $data = @$_POST['data'];
-    $db = new Database(DB_NAME);
+    $db = new Database();
     $arr = array();
     
     if ($data){

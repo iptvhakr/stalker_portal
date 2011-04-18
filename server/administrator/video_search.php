@@ -3,13 +3,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -198,7 +197,7 @@ function display_info(arr, id){
                  table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>'
                  table +='<td class="list2"><b><a href="#" onclick="document.getElementById(\'files_'+id+'_'+arr[i]['storage_name']+'\').style.display=\'\';return false;"><font color="green">'+arr[i]['path']+'</font></a></b></td>'
                  table +='<td class="list2">'+arr[i]['series']+'</td>'
-                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a><sub></td>'
+                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a></sub></td>'
             table +='</tr>'
             
             table +='<tr style="display:none" id="files_'+id+'_'+arr[i]['storage_name']+'">'
@@ -389,11 +388,11 @@ function get_path_color($id, $path){
         }else{
             $color = 'red';
     }
-    return "<span id='path_$id' style='color:$color'>$path</font>";
+    return "<span id='path_$id' style='color:$color'>$path</span>";
 }
 
 function check_video_status($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);

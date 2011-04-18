@@ -3,14 +3,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
-include "../getid3/getid3.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -95,7 +93,7 @@ function count_rate($sarr){
 }
 
 function get_status($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
@@ -133,7 +131,7 @@ function page_bar(){
 }
 
 function count_storages($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $sql = "select count(*) as count from storage_cache where status=1 and media_type='vclub' and media_id=".$id;
     $rs = $db->executeQuery($sql);
@@ -186,9 +184,9 @@ $rs = $db->executeQuery($query);
    <td>
    <script>
    function sort_page(){
-      opt_sort = document.getElementById('sort_by')
-      url = 'stat_video.php?sort_by='+opt_sort.options[opt_sort.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&page='.@$_GET['page'].'\';'?>
-      document.location = url
+      opt_sort = document.getElementById('sort_by');
+      url = 'stat_video.php?sort_by='+opt_sort.options[opt_sort.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&page='.@$_GET['page'].'\';'?>;
+      document.location = url;
    }
    </script>
    Сортировать по 

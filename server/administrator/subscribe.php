@@ -3,7 +3,6 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
@@ -13,7 +12,7 @@ if (!check_access(array(3))){
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -55,8 +54,7 @@ if (@$_GET['save']){
         $event->setUserListById($uid);
         $event->sendMsg('Каналы обновлены согласно подписке.');
         
-        echo 'Подписка сохранена';
-        js_redirect('profile.php?id='.$uid, 2);
+        js_redirect('profile.php?id='.$uid, 'Подписка сохранена');
     }else{
         echo 'ошибка';
     }

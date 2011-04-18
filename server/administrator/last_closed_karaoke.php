@@ -3,15 +3,13 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
-include "../getid3/getid3.php";
 include "../lib/func.php";
 include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -129,7 +127,7 @@ function get_karaoke_accessed($id){
 }
 
 function get_done_karaoke($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from karaoke where id=$id";
     $rs=$db->executeQuery($query);

@@ -3,14 +3,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
-include "../getid3/getid3.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = Database::getInstance(DB_NAME);
+$db = Database::getInstance();
 
 moderator_access();
 

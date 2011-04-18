@@ -3,12 +3,11 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 include "./lib/tasks.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 ?>

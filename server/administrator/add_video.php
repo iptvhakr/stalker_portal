@@ -3,7 +3,6 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
@@ -18,7 +17,7 @@ bind_textdomain_codeset('stb', 'UTF-8');
 
 $error = '';
 
-$db = Database::getInstance(DB_NAME);
+$db = Database::getInstance();
 
 moderator_access();
 
@@ -119,13 +118,11 @@ if (count(@$_POST) > 0){
                
                     $insert_upload = "INSERT INTO screenshots (name,
                                                                size,
-                                                               type,
-                                                               path
+                                                               type
                                                                )
                                                        VALUES ('".$_FILES['screenshot']['name']."', 
                                                                '".$_FILES['screenshot']['size']."', 
-                                                               '".$_FILES['screenshot']['type']."', 
-                                                               '".IMG_PATH."'
+                                                               '".$_FILES['screenshot']['type']."'
                                                                )";
                     //echo $insert_upload;
                     $rs=$db->executeQuery($insert_upload);
@@ -428,7 +425,7 @@ function page_bar(){
 }
 
 function send_button($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $sql = "select * from moderator_tasks where ended=0 and media_id=$id";
     $rs = $db->executeQuery($sql);
@@ -748,7 +745,7 @@ if (@$_GET['edit']){
 }
 
 function add_video_log($action, $video_id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     $moderator_id = $_SESSION['uid'];
     $query = "insert into video_log (action, video_id, moderator_id, actiontime) values ('$action', $video_id, $moderator_id, NOW())";
     $rs=$db->executeQuery($query);
@@ -773,7 +770,7 @@ function del_incoming_path($path){
 }
 
 function check_video_status($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
@@ -806,7 +803,7 @@ function get_path_color($id, $path){
 }
 
 function get_path($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
@@ -819,7 +816,7 @@ function get_path($id){
 }
 
 /*function set_status($path, $val){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     if ($path != ''){
         $query = "update video set status=$val where path='$path'";
         $rs=$db->executeQuery($query);
@@ -827,7 +824,7 @@ function get_path($id){
 }*/
 
 function set_accessed($id, $val){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     if ($id){
         $query = "update video set accessed=$val,added=NOW()  where id='$id'";
         $rs=$db->executeQuery($query);
@@ -835,7 +832,7 @@ function set_accessed($id, $val){
 }
 
 function get_accessed($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
@@ -863,7 +860,7 @@ function get_accessed_color($id){
 }
 
 function get_genres(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     global $genre_id;
     
     $query = "select * from genre order by title";
@@ -885,7 +882,7 @@ function get_genres(){
 }
 
 function get_selected_genres(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $genre_id = array();
     $str = '';
@@ -924,7 +921,7 @@ function get_selected_genres(){
 }
 
 function get_categories(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     global $category_id;
     
     $query = "select * from media_category order by num";
@@ -946,7 +943,7 @@ function get_categories(){
 }
 
 function get_selected_cat_genres(){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $cat_genre_id = array();
     $str = '';

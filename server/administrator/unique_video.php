@@ -3,13 +3,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -392,11 +391,11 @@ function get_path_color($id, $path){
         }else{
             $color = 'red';
     }
-    return "<span id='path_$id' style='color:$color'>$path</font>";
+    return "<span id='path_$id' style='color:$color'>$path</span>";
 }
 
 function check_video_status($id){
-    $db = Database::getInstance(DB_NAME);
+    $db = Database::getInstance();
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);

@@ -3,13 +3,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -201,7 +200,9 @@ function construct_DD(){
     }else{
         $day = $_GET['dd'];
     }
-    
+
+    $dd = '';
+
     for ($i=1;$i<=31;$i++){
         if ($i == $day) {
             $dd .= "<option value='".$i."' selected>".$i."</option>";	
@@ -365,19 +366,19 @@ function parse_param($action, $param, $type){
 }
 
 ?>
-<script>
+<script type="text/javascript">
 function load_log(){
-    yy = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value
-    mm = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value
-    dd = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value
+    yy = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value;
+    mm = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value;
+    dd = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value;
     if (dd < 10){
         dd = '0'+dd
     }
     if (mm < 10){
         mm = '0'+mm
     }
-    action = 'userlog.php?id='+<?echo $id?>+'&yy='+yy+'&mm='+mm+'&dd='+dd
-    document.location=action
+    action = 'userlog.php?id=' + <?echo $id?> + '&yy='+yy+'&mm='+mm+'&dd='+dd;
+    document.location=action;
 }
 </script>
 <table border="0" align="center" width="620">

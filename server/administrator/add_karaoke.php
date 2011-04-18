@@ -4,13 +4,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -39,13 +38,11 @@ if (isset($_FILES['screenshot'])){
        
             $insert_upload = 'INSERT INTO screenshots (name,
                                                        size,
-                                                       type,
-                                                       path
+                                                       type
                                                        )
                                                VALUES (\''.$_FILES['screenshot']['name'].'\', 
                                                        \''.$_FILES['screenshot']['size'].'\', 
-                                                       \''.$_FILES['screenshot']['type'].'\', 
-                                                       \''.IMG_PATH.'\'
+                                                       \''.$_FILES['screenshot']['type'].'\'
                                                        )';
             //echo $insert_upload;
             $rs=$db->executeQuery($insert_upload);
@@ -331,7 +328,7 @@ function get_karaoke_accessed($id){
 }
 
 function get_done_karaoke($id){
-	$db = Database::getInstance(DB_NAME);
+	$db = Database::getInstance();
 	
 	$query = "select * from karaoke where id=$id";
     $rs=$db->executeQuery($query);
