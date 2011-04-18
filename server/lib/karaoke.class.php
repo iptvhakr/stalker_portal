@@ -43,7 +43,7 @@ class Karaoke extends AjaxResponse
     
     private function getData(){
         
-        $offset = $this->page * MAX_PAGE_ITEMS;
+        $offset = $this->page * self::max_page_items;
         
         $where = array('status' => 1);
         
@@ -77,7 +77,7 @@ class Karaoke extends AjaxResponse
                         ->where($where)
                         ->like($like)
                         ->like($search, 'OR ')
-                        ->limit(MAX_PAGE_ITEMS, $offset);
+                        ->limit(self::max_page_items, $offset);
     }
     
     public function getOrderedList(){
