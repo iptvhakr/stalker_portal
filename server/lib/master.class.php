@@ -15,7 +15,7 @@ abstract class Master
     protected $media_id;
     private $media_name;
     private $from_cache;
-    private $cache_expire_h = MASTER_CACHE_EXPIRE;
+    private $cache_expire_h = 365;
     protected $db;
     protected $media_type;
     protected $media_protocol;
@@ -29,6 +29,7 @@ abstract class Master
         $this->storages = $this->getAllActiveStorages();
         $this->moderator_storages = $this->getModeratorStorages();
         $this->clients = $this->getClients();
+        $this->cache_expire_h = Config::get('master_cache_expire');
     }
     
     /**
@@ -92,7 +93,7 @@ abstract class Master
                 $ext = $arr[2];
 
                 if ($this->media_protocol == 'http'){
-                    $res['cmd'] = 'ffmpeg http://'.NFS_PROXY.'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                    $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
                 }else{
                     $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
                 }
@@ -676,7 +677,7 @@ abstract class Master
     private function getClients(){
         $clients = array();
         foreach ($this->storages as $name => $storage){
-            $clients[$name] = new SoapClient('http://localhost'.PORTAL_URI.'server/storage/storage.wsdl.php?id='.$this->storages[$name]['id']);
+            $clients[$name] = new SoapClient('http://localhost'.Config::get('portal_url').'server/storage/storage.wsdl.php?id='.$this->storages[$name]['id']);
         }
         return $clients;
     }
