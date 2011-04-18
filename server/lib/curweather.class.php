@@ -4,13 +4,14 @@
  * 
  * @package stalker_portal
  * @author zhurbitsky@gmail.com
+ * @deprecated
  */
 
 class Curweather extends Google
 {
     public $gapi_name   = 'cur_weather';
     public $gapi_module = 'weather';
-    public $gapi_url = GAPI_CUR_WEATHER;
+    public $gapi_url = 'http://www.google.com/ig/api?hl=ru&weather=Odessa,,,46430000,30770000&oe=utf8';
     public $cache_expire = 600;
     public $gapi_field = 'current_conditions';
     
