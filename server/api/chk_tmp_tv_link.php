@@ -1,6 +1,5 @@
 <?php
 
-include "../conf_serv.php";
 include "../common.php";
 
 $result = Itv::checkTemporaryLink($_GET['key']);
