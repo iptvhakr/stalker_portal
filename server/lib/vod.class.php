@@ -312,7 +312,7 @@ class Vod extends AjaxResponse
     
     private function getData(){
         
-        $offset = $this->page * MAX_PAGE_ITEMS;
+        $offset = $this->page * self::max_page_items;
         
         $where = array('status' => 1);
         
@@ -402,7 +402,7 @@ class Vod extends AjaxResponse
 
         $data = $data->like($like)
                      ->like($search, 'OR ')
-                     ->limit(MAX_PAGE_ITEMS, $offset);
+                     ->limit(self::max_page_items, $offset);
 
         return $data;
     }
