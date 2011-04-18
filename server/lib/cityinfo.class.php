@@ -24,7 +24,7 @@ class Cityinfo extends AjaxResponse
     
     private function getData(){
         
-        $offset = $this->page * MAX_PAGE_ITEMS;
+        $offset = $this->page * self::max_page_items;
         
         $part = $_REQUEST['part'];
         
@@ -38,7 +38,7 @@ class Cityinfo extends AjaxResponse
         
         return $this->db
                         ->from($table)
-                        ->limit(MAX_PAGE_ITEMS, $offset);
+                        ->limit(self::max_page_items, $offset);
     }
     
     public function getOrderedList(){
