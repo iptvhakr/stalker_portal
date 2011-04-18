@@ -45,14 +45,18 @@ class Mysql
     
     private function __construct(){
         
-        $this->link = mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
-        
-        if (QUERY_CACHE){
+        $this->link = mysql_connect(Config::get('mysql_host'), Config::get('mysql_user'), Config::get('mysql_pass'));
+
+        if (!$this->link){
+            throw new MysqlException('Cannot connect to database');
+        }
+
+        if (Config::get('query_cache') && $this->allow_caching){
             $this->cache = Cache::getInstance();
         }
         
         if ($this->link){
-            mysql_select_db(DB_NAME);
+            mysql_select_db(Config::get('db_name'));
         }
         
         $this->set_charset($this->charset);
@@ -547,7 +551,7 @@ class Mysql
             echo "/* ".$sql." */\n";
         }
         
-        if (QUERY_CACHE && $this->allow_caching){
+        if (Config::get('query_cache') && $this->allow_caching){
             
             $tags = $this->get_tags(get_object_vars($this));
             
@@ -683,4 +687,7 @@ class Mysql
 	    return $this->query("SHOW VARIABLES like 'max_allowed_packet'")->get('Value');
 	}
 }
+
+class MysqlException extends Exception {}
+
 ?>
