@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Radio extends AjaxResponse 
+class Radio extends AjaxResponse
 {
     public static $instance = NULL;
     
@@ -24,7 +24,7 @@ class Radio extends AjaxResponse
     
     private function getData(){
         
-        $offset = $this->page * MAX_PAGE_ITEMS;
+        $offset = $this->page * self::max_page_items;
         
         $where = array();
         
@@ -35,7 +35,7 @@ class Radio extends AjaxResponse
         return $this->db
                         ->from('radio')
                         ->where($where)
-                        ->limit(MAX_PAGE_ITEMS, $offset);
+                        ->limit(self::max_page_items, $offset);
     }
     
     public function getOrderedList(){
