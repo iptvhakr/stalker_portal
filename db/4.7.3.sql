@@ -1,0 +1,1 @@
+alter table screenshots drop path;
