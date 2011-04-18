@@ -332,7 +332,7 @@ ListLayer.prototype.fill_list = function(data){
 
 ListLayer.prototype.handling_block = function(data, row_items, block_name){
     
-    var block_obj = row_items[block_name+'_block']
+    var block_obj = row_items[block_name+'_block'];
     
     if (data === 1){
         if (block_obj.isHidden()){
