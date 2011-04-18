@@ -2,10 +2,9 @@
 /*
     
 */
-include "../conf_serv.php";
 include "../common.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 $from_ts = time() - 7*24*60*60;
 $from_date = date("Y-m-d H:i:s", $from_ts); 

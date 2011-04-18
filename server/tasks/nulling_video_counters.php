@@ -2,10 +2,9 @@
 /*
     
 */
-include "../conf_serv.php";
 include "../common.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 $day = date("j");
 

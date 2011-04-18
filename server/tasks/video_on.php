@@ -1,9 +1,8 @@
 <?php
 
-include "../conf_serv.php";
 include "../common.php";
 
-$db = new Database(DB_NAME); 
+$db = new Database();
 
 $data = array(
     '2009-08-03' => array(2215, 2298, 2289),

@@ -5,10 +5,9 @@
 
 set_time_limit(0);
 
-include "../conf_serv.php";
 include "../common.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 $updated_video = 0;
 $updated_karaoke = 0;

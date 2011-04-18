@@ -4,10 +4,9 @@
 */
 error_reporting(E_ALL);
 
-include "../conf_serv.php";
 include "../common.php";
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 $now_timestamp = time() - 86400;
 
