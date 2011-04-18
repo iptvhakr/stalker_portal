@@ -30,22 +30,22 @@ class Database
     
     static private $instance = NULL;
     
-    static function getInstance($dbName){
+    static function getInstance(){
         if (self::$instance == NULL)
         {
-            self::$instance = new Database($dbName);
+            self::$instance = new Database();
         }
         return self::$instance;
     }
     
-    public function __construct($dbName){
+    public function __construct(){
         $this->debug = Debug::getInstance();
         
-        if(!mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS)){
+        if(!mysql_connect(Config::get('mysql_host'), Config::get('mysql_user'), Config::get('mysql_pass'))){
             $this->_log("Error: mysql_connect");
             //exit;
         }
-        if(!mysql_select_db($dbName)){
+        if(!mysql_select_db(Config::get('db_name'))){
             $this->_log("Error: mysql_select_db");
         }
         $this->setCharset();
