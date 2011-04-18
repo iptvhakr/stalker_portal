@@ -12,7 +12,7 @@ class Advertising
     private $db;
     
     public function __construct(){
-        $this->db = Database::getInstance(DB_NAME);
+        $this->db = Database::getInstance();
     }
     
     public function getMain(){
