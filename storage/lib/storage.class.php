@@ -70,7 +70,7 @@ class Storage
                             $media_file = substr($media_file, 1, strlen($media_file));
                         }
                         
-                        if (strpos($media_file, "/") >= 0){
+                        if (strpos($media_file, "/") !== false){
                             preg_match("/([^\/]*)\.(".$this->media_ext_str.")$/i", $media_file, $file_arr);
                             $media_file = $file_arr[0];
                         }
