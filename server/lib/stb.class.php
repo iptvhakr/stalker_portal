@@ -23,10 +23,10 @@ class Stb
     private $stb_lang;
     public $additional_services_on = 0;
 
-    private static $all_modules = array();
-    private static $disabled_modules = array();
+    //private static $all_modules = array();
+    //private static $disabled_modules = array();
     private static $allowed_languages;
-    private static $allowed_locales;
+    //private static $allowed_locales;
     
     private static $instance = NULL;
 
@@ -96,13 +96,13 @@ class Stb
             $this->id    = $user['id'];
             $this->hd    = $user['hd'];
 
-            $this->locale     = (empty($user['locale']) && defined('DEFAULT_LOCALE')) ? DEFAULT_LOCALE : $user['locale'];
+            $this->locale     = (empty($user['locale']) && Config::exist('default_locale')) ? Config::get('default_locale') : $user['locale'];
 
-            $this->city_id = (empty($user['city_id']) && defined('DEFAULT_CITY_ID')) ? DEFAULT_CITY_ID : intval($user['city_id']);
+            $this->city_id = (empty($user['city_id']) && Config::exist('default_city_id')) ? Config::get('default_city_id') : intval($user['city_id']);
 
             $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
 
-            $this->timezone   = (empty($this->timezone) && defined('DEFAULT_TIMEZONE')) ? DEFAULT_TIMEZONE : $this->timezone;
+            $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
 
             date_default_timezone_set($this->timezone);
 
@@ -113,7 +113,7 @@ class Stb
             $stb_lang = $this->stb_lang;
 
             if (!empty($this->stb_lang) && strlen($this->stb_lang) >= 2){
-                $preferred_locales = array_filter(self::$allowed_locales,
+                $preferred_locales = array_filter(Config::get('allowed_locales'),
                     function ($e) use ($stb_lang){
                         if (strpos($e, $stb_lang) === 0){
                             return true;
@@ -181,8 +181,8 @@ class Stb
         
         $profile['updated'] = $this->getUpdatedPlaces();
         
-        $profile['rtsp_type']  = RTSP_TYPE;
-        $profile['rtsp_flags'] = RTSP_FLAGS;
+        $profile['rtsp_type']  = Config::get('rtsp_type');
+        $profile['rtsp_flags'] = Config::get('rtsp_flags');
 
         $profile['locale'] = $this->locale;
 
@@ -212,9 +212,10 @@ class Stb
     }
     
     public function getPreloadImages(){
-        $dir = PORTAL_PATH.'/c/i/';
-        $files = array();
         
+        $dir = PROJECT_PATH.'/../c/i/';
+        $files = array();
+
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
@@ -583,31 +584,32 @@ class Stb
     public function getModules(){
 
         return array(
-            'all_modules'      => self::$all_modules,
-            'disabled_modules' => self::$disabled_modules);
+            'all_modules'      => Config::get('all_modules'),
+            'disabled_modules' => Config::get('disabled_modules')
+            );
     }
     
-    public static function setModules($all, $disabled){
+    /*public static function setModules($all, $disabled){
         
         self::$all_modules = $all;
         self::$disabled_modules = $disabled;
-    }
+    }*/
     
     public static function setAllowedLanguages($languages){
         
         self::$allowed_languages = $languages;
     }
 
-    public static function setAllowedLocales($locales){
+    /*public static function setAllowedLocales($locales){
 
         self::$allowed_locales = $locales;
-    }
+    }*/
 
     public function getLocales(){
 
         $result = array('options' => array());
 
-        foreach (self::$allowed_locales as $label => $locale){
+        foreach (Config::get('allowed_locales') as $label => $locale){
             $selected = ($this->locale == $locale)? 1 : 0;
             $result['options'][] = array('label' => $label, 'value' => $locale, 'selected' => $selected);
         }
@@ -619,7 +621,7 @@ class Stb
         $locale  = $_REQUEST['locale'];
         $city_id = intval($_REQUEST['city']);
 
-        if (in_array($locale, self::$allowed_locales)){
+        if (in_array($locale, Config::get('allowed_locales'))){
 
             return $this->db->update('users', array('locale' => $locale, 'city_id' => $city_id), array('id' => $this->id));
         }
@@ -712,15 +714,15 @@ class Stb
 
     private function getInfoFromOss(){
 
-        if (!defined('OSS_URL')){
+        if (!Config::exist('oss_url')){
             return false;
         }
 
-        if (OSS_URL == ''){
+        if (Config::get('oss_url') == ''){
             return false;
         }
         
-        $data = file_get_contents(OSS_URL.'?mac='.$this->mac.'&uid='.$this->id);
+        $data = file_get_contents(Config::get('oss_url').'?mac='.$this->mac.'&uid='.$this->id);
 
         if (!$data){
             return false;
