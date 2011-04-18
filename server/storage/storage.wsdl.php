@@ -1,11 +1,10 @@
 <? 
 include "../common.php";
-include "../conf_serv.php";
 include "../lib/func.php";
 
 echo "<?xml version='1.0' encoding='UTF-8'?>";
 $storage_id = intval(@$_GET['id']);
-$db = Database::getInstance(DB_NAME);
+$db = Database::getInstance();
 
 $sql = "select * from storages where id=$storage_id";
 $rs = $db->executeQuery($sql);
