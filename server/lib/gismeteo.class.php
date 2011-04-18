@@ -4,6 +4,7 @@
  * 
  * @package stalker_portal
  * @author zhurbitsky@gmail.com
+ * @deprecated since version 4.7.1
  */
 
 class Gismeteo
@@ -11,7 +12,7 @@ class Gismeteo
     private $db;
     private $cache_table = 'gismeteo_day_weather';
     //private $cache_expire = 3600;
-    public  $xml_url = GISMETEO_XML;
+    public  $xml_url = 'http://informer.gismeteo.ru/xml/33837_1.xml';
     private $weekday_arr = array();
     private $tod_arr = array();
     private $month_arr = array();
