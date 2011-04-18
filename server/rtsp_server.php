@@ -353,7 +353,7 @@ class RTSPServer {
                     $pool[$key]->user_addr = $ipaddress;
                     $pool[$key]->rtp_addr = $ipaddress;
                     
-                    $pool[$key]->db = new Database("db");
+                    $pool[$key]->db = new Database();
                 }
 
                 if ($tmp = @socket_read($pool[$key]->socket, 1024)) {
