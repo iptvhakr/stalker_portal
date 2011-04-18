@@ -3,14 +3,12 @@ session_start();
 
 ob_start();
 
-include "../conf_serv.php";
 include "../common.php";
-include "../getid3/getid3.php";
 include "../lib/func.php";
 
 $error = '';
 
-$db = new Database(DB_NAME);
+$db = new Database();
 
 moderator_access();
 
@@ -40,13 +38,11 @@ if (isset($_FILES['screenshot'])){
        
             $insert_upload = 'INSERT INTO screenshots (name,
                                                        size,
-                                                       type,
-                                                       path
+                                                       type
                                                        )
                                                VALUES (\''.$_FILES['screenshot']['name'].'\', 
                                                        \''.$_FILES['screenshot']['size'].'\', 
-                                                       \''.$_FILES['screenshot']['type'].'\', 
-                                                       \''.IMG_PATH.'\'
+                                                       \''.$_FILES['screenshot']['type'].'\'
                                                        )';
 
             $rs=$db->executeQuery($insert_upload);
