@@ -161,6 +161,15 @@
             this.get_input_value('default_lang');
             this.superclass.save.apply(this);
             
+        };
+
+        this.init = function(){
+            _debug('localization_settings.init');
+
+            this.superclass.init.apply(this);
+
+            var page_info = create_block_element('page_button_info', this.dom_obj);
+            page_info.innerHTML = get_word('localization_page_button_info');
         }
     }
     
