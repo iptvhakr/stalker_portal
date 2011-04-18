@@ -261,7 +261,7 @@ player.prototype.event_callback = function(event){
 
                 }else{
 
-                    if(self.prev_layer && self.prev_layer.show){
+                    if(self.prev_layer && self.prev_layer.show && !self.prev_layer.on){
                         self.prev_layer.show.call(self.prev_layer, true);
                     }
 
@@ -664,7 +664,9 @@ player.prototype.play = function(item){
     this.on = true;
     
     this.cur_media_item = item;
-    
+
+    window.clearTimeout(this.replay_channel_timer);
+
     if (typeof(item) == 'object'){
         if (!item.hasOwnProperty('cmd')){
             return;
@@ -828,6 +830,8 @@ player.prototype.stop = function(){
     this.cur_media_length = 0;
 
     this.set_pos_button(0);
+
+    window.clearTimeout(this.replay_channel_timer);
     
     this.on_create_link = function(){};
     
