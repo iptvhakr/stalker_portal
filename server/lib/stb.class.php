@@ -186,6 +186,8 @@ class Stb
 
         $profile['locale'] = $this->locale;
 
+        $profile['display_menu_after_loading'] = Config::get('display_menu_after_loading');
+
         return $profile;
     }
     
