@@ -49,7 +49,7 @@ TextInput.prototype = new BaseInput();
 TextInput.prototype.build = function(){
     _debug('TextInput.build');
     
-    var dl = document.createElement('dl');
+    /*var dl = document.createElement('dl');
     
     var dt = document.createElement('dt');
     dt.innerHTML = this.label;
@@ -59,26 +59,37 @@ TextInput.prototype.build = function(){
     this.input = document.createElement('input');
     this.input.type  = this.type;
     this.input.value = this.default_val;
-    this.input.disabled = "disabled";
+    //this.input.disabled = "disabled";
     
     dd.appendChild(this.input);
     
     dl.appendChild(dt);
     dl.appendChild(dd);
     
-    this.parent.container.appendChild(dl);
+    this.parent.container.appendChild(dl);*/
+
+    var container = create_block_element('text_input_container', this.parent.container);
+
+    var label = create_block_element('text_input_label', container);
+    label.innerHTML = this.label;
+
+    this.input = document.createElement('input');
+    this.input.type  = this.type;
+    this.input.value = this.default_val;
+
+    container.appendChild(this.input);
 };
 
 TextInput.prototype.add = function(symbol){
     _debug('TextInput.add', symbol);
     
-    this.input.value = this.input.value + '' + symbol;
+    //this.input.value = this.input.value + '' + symbol;
 };
 
 TextInput.prototype.del = function(){
     _debug('TextInput.del');
     
-    this.input.value = this.input.value.substr(0 ,this.input.value.length-1)
+    //this.input.value = this.input.value.substr(0 ,this.input.value.length-1)
 };
 
 TextInput.prototype.reset = function(){
@@ -89,14 +100,16 @@ TextInput.prototype.reset = function(){
 
 TextInput.prototype.set_active = function(){
     _debug('TextInput.set_active');
-
+    
     this.input.setClass('active_input');
+    this.input.focus();
 };
 
 TextInput.prototype.set_passive = function(){
     _debug('TextInput.set_passive');
-
+    
     this.input.setClass('passive_input');
+    this.input.blur();
 };
 
 TextInput.prototype.get_value = function(){
