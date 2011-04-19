@@ -151,6 +151,8 @@ function common_xpcom(){
             this.stb_lang = stb.RDir('getenv language').clearnl();
             
             this.timezone = stb.RDir('getenv timezone_conf').clearnl();
+            
+            this.ntp_server = stb.RDir('getenv ntpurl').clearnl();
 
             this.version = 'PORTAL version: '+ver+'; '+stb.Version();
 
@@ -180,6 +182,7 @@ function common_xpcom(){
         _debug('this.mac:', this.mac);
         _debug('this.stb_lang:', this.stb_lang);
         _debug('this.timezone:', this.timezone);
+        _debug('this.ntp_server:', this.ntp_server);
         _debug('this.ip:', this.ip);
         _debug('this.type:', this.type);
         _debug('this.version:', this.version);
@@ -410,6 +413,22 @@ function common_xpcom(){
         }
 
         this.watchdog.run();
+    };
+
+    this.post_loading_handle = function(){
+        _debug('stb.post_loading_handle');
+
+        _debug('this.user[display_menu_after_loading]', this.user['display_menu_after_loading']);
+
+        this.key_lock = false;
+
+        this.player.init_first_channel();
+
+        if (this.user['display_menu_after_loading']){
+            main_menu.show();
+        }else{
+            this.player.first_play();
+        }
     };
 
     this.mount_home_dir = function(storages){
