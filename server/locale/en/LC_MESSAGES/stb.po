@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-13 18:42+0200\n"
-"PO-Revision-Date: 2011-04-13 18:42+0200\n"
+"POT-Creation-Date: 2011-04-18 16:56+0200\n"
+"PO-Revision-Date: 2011-04-18 16:56+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -678,136 +678,140 @@ msgstr "{2}:{1} {3}"
 msgid "Timezone"
 msgstr ""
 
+#: ../../../lang/stb.php:224
+msgid "NTP Server"
+msgstr ""
+
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_1l"
 msgstr "A"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_2l"
 msgstr "B"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_3l"
 msgstr "C"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_4l"
 msgstr "D"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_5l"
 msgstr "E"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_6l"
 msgstr "F"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_7l"
 msgstr "G"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_8l"
 msgstr "H"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_9l"
 msgstr "I"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_10l"
 msgstr "G"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_11l"
 msgstr "K"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_12l"
 msgstr "L"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_13l"
 msgstr "M"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_14l"
 msgstr "N"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_15l"
 msgstr "O"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_16l"
 msgstr "P"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_17l"
 msgstr "Q"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_18l"
 msgstr "R"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_19l"
 msgstr "S"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_20l"
 msgstr "T"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_21l"
 msgstr "U"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_22l"
 msgstr "V"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_23l"
 msgstr "W"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_24l"
 msgstr "X"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_25l"
 msgstr "W"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_26l"
 msgstr "Z"
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_27l"
 msgstr "."
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_28l"
 msgstr "."
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_29l"
 msgstr "."
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_30l"
 msgstr "."
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_31l"
 msgstr "."
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_32l"
 msgstr "."
 
-#: ../../../lib/ajaxresponse.class.php:39
+#: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_33l"
 msgstr "."
 
@@ -859,41 +863,41 @@ msgstr ""
 msgid "december"
 msgstr ""
 
-#: ../../../lib/ajaxresponse.class.php:45
+#: ../../../lib/ajaxresponse.class.php:44
 msgid "All"
 msgstr ""
 
-#: ../../../lib/ajaxresponse.class.php:48
+#: ../../../lib/ajaxresponse.class.php:46
 msgid "[No channel info]"
 msgstr ""
 
 #: ../../../lib/epg.class.php:566
-#: ../../../lib/gismeteo.class.php:28
+#: ../../../lib/gismeteo.class.php:29
 msgid "Sun"
 msgstr ""
 
 #: ../../../lib/epg.class.php:566
-#: ../../../lib/gismeteo.class.php:28
+#: ../../../lib/gismeteo.class.php:29
 msgid "Mon"
 msgstr ""
 
 #: ../../../lib/epg.class.php:566
-#: ../../../lib/gismeteo.class.php:28
+#: ../../../lib/gismeteo.class.php:29
 msgid "Tue"
 msgstr ""
 
 #: ../../../lib/epg.class.php:566
-#: ../../../lib/gismeteo.class.php:28
+#: ../../../lib/gismeteo.class.php:29
 msgid "Wed"
 msgstr ""
 
 #: ../../../lib/epg.class.php:566
-#: ../../../lib/gismeteo.class.php:28
+#: ../../../lib/gismeteo.class.php:29
 msgid "Thu"
 msgstr ""
 
 #: ../../../lib/epg.class.php:566
-#: ../../../lib/gismeteo.class.php:28
+#: ../../../lib/gismeteo.class.php:29
 msgid "Fri"
 msgstr ""
 
@@ -901,115 +905,115 @@ msgstr ""
 msgid "Sat"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:29
+#: ../../../lib/gismeteo.class.php:30
 msgid "Night"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:29
+#: ../../../lib/gismeteo.class.php:30
 msgid "Morning"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:29
+#: ../../../lib/gismeteo.class.php:30
 msgid "Day"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:29
+#: ../../../lib/gismeteo.class.php:30
 msgid "Evening"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Jan"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Feb"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Mar"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Apr"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "May"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Jun"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Jul"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Aug"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Sep"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Oct"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Nov"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:30
+#: ../../../lib/gismeteo.class.php:31
 msgid "Dec"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:31
+#: ../../../lib/gismeteo.class.php:32
 msgid "clear"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:31
+#: ../../../lib/gismeteo.class.php:32
 msgid "partly cloudy"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:31
+#: ../../../lib/gismeteo.class.php:32
 msgid "cloudy"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:31
+#: ../../../lib/gismeteo.class.php:32
 msgid "overcast"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:32
+#: ../../../lib/gismeteo.class.php:33
 msgid "rain"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:32
+#: ../../../lib/gismeteo.class.php:33
 msgid "rainfall"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:32
+#: ../../../lib/gismeteo.class.php:33
 msgid "snow"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:32
+#: ../../../lib/gismeteo.class.php:33
 msgid "thunderstorm"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:32
+#: ../../../lib/gismeteo.class.php:33
 msgid "no data"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:32
+#: ../../../lib/gismeteo.class.php:33
 msgid "w/o precipitation"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:106
+#: ../../../lib/gismeteo.class.php:107
 msgid "pressure"
 msgstr ""
 
-#: ../../../lib/gismeteo.class.php:106
+#: ../../../lib/gismeteo.class.php:107
 msgid "wind"
 msgstr ""
 
@@ -1037,8 +1041,8 @@ msgid "yesterday"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:651
-#: ../../../lib/stb.class.php:655
+#: ../../../lib/stb.class.php:653
+#: ../../../lib/stb.class.php:657
 msgid "city_name_field"
 msgstr "name_en"
 
