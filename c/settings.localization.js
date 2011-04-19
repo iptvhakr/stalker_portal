@@ -31,8 +31,16 @@
             _debug('timezone', timezone);
 
             if (timezone != stb.timezone){
+                stb.timezone = timezone;
                 stb.ExecAction('timezone ' + timezone);
                 stb.RDir('setenv timezone_conf_int');
+            }
+
+            _debug('ntp_server', this.save_params.ntp_server);
+            
+            if(stb.timezone.ntp_server != this.save_params.ntp_server){
+                stb.timezone.ntp_server = this.save_params.ntp_server;
+                stb.RDir('setenv ntpurl ' + this.save_params.ntp_server);
             }
         };
         
@@ -131,6 +139,8 @@
                     result = result || [];
                     
                     this.timezone_option = this.add_control(new OptionInput(this, {"name" : "timezone", "label" : word['timezone_label'], "map" : result}));
+
+                    this.add_control(new TextInput(this, {"name" : "ntp_server", "label" : word['ntp_server'], "default_val" : stb.ntp_server}));
 
                     var self = this;
 
