@@ -221,4 +221,5 @@ $words['date_format'] = _('date_format');
 $words['time_format'] = _('time_format');
 
 $words['timezone_label'] = _('Timezone');
+$words['ntp_server'] = _('NTP Server');
 ?>
