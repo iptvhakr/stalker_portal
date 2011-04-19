@@ -32,18 +32,20 @@ SettingLayer.prototype = new BaseLayer();
 SettingLayer.prototype.show = function(){
     _debug('SettingLayer.show');
     
-    this.reset();
+    //this.reset();
     
     this.load_default();
     
     this.base_layer.show.call(this);
-}
+
+    this.reset();
+};
 
 SettingLayer.prototype.hide = function(){
     _debug('SettingLayer.hide');
     
     this.base_layer.hide.call(this);
-}
+};
 
 SettingLayer.prototype.add_control = function(obj){
     _debug('SettingLayer.add_control', obj);
@@ -59,7 +61,7 @@ SettingLayer.prototype.add_control = function(obj){
     return this.controls[length - 1];
 
     //return this;
-}
+};
 
 SettingLayer.prototype.reset = function(){
     _debug('SettingLayer.reset');
@@ -69,7 +71,7 @@ SettingLayer.prototype.reset = function(){
     this.cur_control_idx = 0;
     
     this.set_active_input();
-}
+};
 
 SettingLayer.prototype.set_active_input = function(){
     _debug('SettingLayer.set_active_input');
@@ -124,18 +126,18 @@ SettingLayer.prototype.shift = function(dir){
     }
     
     this.set_active_input();
-}
+};
 
 SettingLayer.prototype.add_symbol = function(symbol){
     _debug('SettingLayer.add_symbol', symbol);
     
     this.controls[this.cur_control_idx].add(symbol);
-}
+};
 
 SettingLayer.prototype.del_symbol = function(){
     _debug('SettingLayer.del_symbol');
     this.controls[this.cur_control_idx].del();
-}
+};
 
 SettingLayer.prototype.bind = function(){
     
@@ -191,6 +193,8 @@ SettingLayer.prototype.bind = function(){
         
         if (this.controls[this.cur_control_idx] instanceof OptionInput){
             this.controls[this.cur_control_idx].set_checked();
+        }else if (this.controls[this.cur_control_idx] instanceof TextInput){
+            stb.ShowVirtualKeyboard();
         }else{
             this.save();
         }
@@ -204,7 +208,7 @@ SettingLayer.prototype.cancel = function(){
     this.reset();
 
     this.load_default();
-}
+};
 
 SettingLayer.prototype.save = function(){
     _debug('SettingLayer.save');
@@ -230,7 +234,7 @@ SettingLayer.prototype.save = function(){
         
         this
     )
-}
+};
 
 SettingLayer.prototype.load_default = function(){
     _debug('SettingLayer.load_default');
@@ -248,7 +252,7 @@ SettingLayer.prototype.load_default = function(){
             this
         )
     }
-}
+};
 
 SettingLayer.prototype.set_default = function(params){
     _debug('SettingLayer.set_default', params);
@@ -261,7 +265,7 @@ SettingLayer.prototype.set_default = function(params){
             this.controls[i].reset();
         }
     }
-}
+};
 
 SettingLayer.prototype.get_input_value = function(name){
     
@@ -272,6 +276,6 @@ SettingLayer.prototype.get_input_value = function(name){
     }else{
         return null;
     }
-}
+};
 
 loader.next();
