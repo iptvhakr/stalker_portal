@@ -610,50 +610,49 @@ player.prototype.play_last = function(){
     this.play(this.cur_tv_item);
 };
 
-player.prototype.first_play = function(){
-    _debug('player.first_play');
-    
-    if (this.channels_inited){
-        return;
-    }
-    
+player.prototype.init_first_channel = function(){
+    _debug('player.init_first_channel');
+
     if (typeof(this.channels) != 'undefined' &&
         typeof(this.fav_channels) != 'undefined' &&
         typeof(this.fav_channels_ids) != 'undefined'){
-        
-            
+
+
         if (stb.user.fav_itv_on){
-            
+
             this.f_ch_idx = this.fav_channels.getIdxById(stb.user.last_itv_id);
-            
+
             if (this.f_ch_idx === null){
                 this.f_ch_idx = 0;
             }
-            
+
             var channel = this.fav_channels[this.f_ch_idx];
-            
+
         }else{
-            
+
             this.ch_idx = this.channels.getIdxById(stb.user.last_itv_id);
-            
+
             if (this.ch_idx === null){
                 this.ch_idx = 0;
             }
-            
-            var channel = this.channels[this.ch_idx];
+
+            channel = this.channels[this.ch_idx];
         }
-        
-        this.need_show_info = 1;
-        
-        stb.set_cur_place(module.tv.layer_name);
-        stb.set_cur_layer(module.tv);
-        stb.player.prev_layer = module.tv;
-        
-        this.play(channel);
-        
-        stb.key_lock = false;
-        this.channels_inited = true;
+
+        this.cur_media_item = this.cur_tv_item = channel;
     }
+};
+
+player.prototype.first_play = function(){
+    _debug('player.first_play');
+
+    this.need_show_info = 1;
+
+    stb.set_cur_place(module.tv.layer_name);
+    stb.set_cur_layer(module.tv);
+    stb.player.prev_layer = module.tv;
+
+    this.play(this.cur_tv_item);
 };
 
 player.prototype.play = function(item){
