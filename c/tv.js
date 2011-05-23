@@ -332,8 +332,11 @@
             
             this.superclass.set_wide_container.apply(this);
 
-            var idx = this.color_buttons.getIdxByVal('color', 'blue');
-            this.color_buttons[idx].text_obj && this.color_buttons[idx].text_obj.delClass();
+            /*var idx = this.color_buttons.getIdxByVal('color', 'blue');
+            this.color_buttons[idx].text_obj && this.color_buttons[idx].text_obj.delClass();*/
+            if (this.load_params.fav){
+                this.color_buttons.get('blue').enable();
+            }
 
             try{
                 stb.SetTopWin(0);
@@ -348,8 +351,10 @@
             
             this.superclass.set_short_container.apply(this);
 
-            var idx = this.color_buttons.getIdxByVal('color', 'blue');
-            this.color_buttons[idx].text_obj && this.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
+            /*var idx = this.color_buttons.getIdxByVal('color', 'blue');
+            this.color_buttons[idx].text_obj && this.color_buttons[idx].text_obj.setClass('disable_color_btn_text');*/
+
+            this.color_buttons && this.color_buttons.get('blue').disable();
             
             try{
                 _debug('this.preview_pos', this.preview_pos);
@@ -482,9 +487,18 @@
                 self.fill_short_info(item);
                 
                 if (item.open){
-                
-                    stb.player.need_show_info = 0;
-                    self._play_now(item);
+
+                    if (item.lock){
+                        self.password_input.callback = function(){
+                            stb.player.need_show_info = 0;
+                            self._play_now(item);
+                        };
+
+                        self.password_input.show();
+                    }else{
+                   stb.player.need_show_info = 0;
+                        self._play_now(item);
+                    }
                 }else{
                     stb.player.stop();
                 }
@@ -680,15 +694,22 @@
                 stb.player.save_fav_ids();
                 this.active_row['row'].setClass('active_row_bg');
                 
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.delClass();
+                /*this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.delClass();
                 this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.delClass();
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.delClass();
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.delClass();*/
+                this.color_buttons.get('red')   .enable();
+                this.color_buttons.get('green') .enable();
+                this.color_buttons.get('yellow').enable();
             }else{
                 this.active_row['row'].setClass('moved_active_row_bg');
                 
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
+                /*this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
                 this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
+                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');*/
+
+                this.color_buttons.get('red')   .disable();
+                this.color_buttons.get('green') .disable();
+                this.color_buttons.get('yellow').disable();
             }
             
             this.fav_manage_mode = !this.fav_manage_mode;
@@ -935,8 +956,9 @@
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'number';
                 
-                var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
+                /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
+                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');*/
+                this.parent.color_buttons.get('blue').disable();
             }},
             {"label" : word['tv_by_title'], "cmd" : function(){
                 this.parent.load_params.fav = false;
@@ -944,8 +966,9 @@
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'name';
                 
-                var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
+                /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
+                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');*/
+                this.parent.color_buttons.get('blue').disable();
             }},
             {"label" : word['tv_only_favorite'], "cmd" : function(){
                 this.parent.load_params.sortby = 'fav';
@@ -953,12 +976,14 @@
                 stb.player.set_fav_status();
                 this.parent.load_params.fav = true;
 
-                if (this.cur_view == 'wide'){
-                    var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                    this.parent.color_buttons[idx].text_obj.delClass();
+                if (this.parent.cur_view == 'wide'){
+                    /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
+                    this.parent.color_buttons[idx].text_obj.delClass();*/
+                    this.parent.color_buttons.get('blue').enable();
                 }else{
-                    var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                    this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');
+                    /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
+                    this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');*/
+                    this.parent.color_buttons.get('blue').disable();
                 }
                 
             }}
