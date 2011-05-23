@@ -77,8 +77,8 @@
 
 #epg .program .marks{
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
 }
 
 #epg .program .marks div{
@@ -94,8 +94,8 @@
 }
 
 #epg .program .marks .mark_rec{
-    height: 5px;
-    width: 5px;
+    height: 8px;
+    width: 8px;
     background-color: #c00;
 }
 
