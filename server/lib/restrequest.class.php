@@ -52,7 +52,7 @@ class RESTRequest extends APIRequest
 
         $this->action = $methods_map[$method];
 
-        parse_str(file_get_contents("php://input"),$this->put);
+        parse_str(file_get_contents("php://input"), $this->put);
     }
 
     public function getAction(){
