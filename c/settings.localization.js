@@ -202,8 +202,10 @@
         {"label" : word['empty'], "cmd" : ''}
     ]);
     
-    localization_settings.color_buttons[localization_settings.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
-    localization_settings.color_buttons[localization_settings.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
+    //localization_settings.color_buttons[localization_settings.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
+    //localization_settings.color_buttons[localization_settings.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
+    //localization_settings.color_buttons.get('yellow').disable();
+    //localization_settings.color_buttons.get('blue')  .disable();
     
     localization_settings.init_header_path(word['localization_settings_title']);
     
