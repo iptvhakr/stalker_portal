@@ -8,12 +8,13 @@
 
 abstract class Master
 {
-    private $storages;
+    protected $storages;
     private $moderator_storages;
-    private $clients;
-    private $stb;
+    protected $clients;
+    protected $stb;
     protected $media_id;
-    private $media_name;
+    protected $media_name;
+    protected $media_path;
     private $from_cache;
     private $cache_expire_h = 365;
     protected $db;
@@ -57,7 +58,6 @@ abstract class Master
             $res['cmd'] = $this->rtsp_url;
             
             return $res;
-            
         }
         
         $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, !$from_cache);
@@ -76,8 +76,9 @@ abstract class Master
                 }
                 
                 try {
-                    $this->clients[$name]->createLink($this->stb->mac, $this->media_name, $file, $this->media_id, $this->media_type);
-                }catch (SoapFault $exception){
+                    //$this->clients[$name]->createLink($this->stb->mac, $this->media_name, $file, $this->media_id, (($this->media_protocol == 'http') ? 'http_' : '') . $this->media_type);
+                    $this->clients[$name]->resource($this->media_type)->create(array('media_name' => $this->getMediaPath($file), 'media_id' => $this->media_id, 'proto' => $this->media_protocol));
+                }catch (Exception $exception){
                     $default_error = 'link_fault';
                     $this->parseException($exception);
                     
@@ -92,7 +93,7 @@ abstract class Master
                 preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
                 $ext = $arr[2];
 
-                if ($this->media_protocol == 'http'){
+                if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
                     $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
                 }else{
                     $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
@@ -129,8 +130,8 @@ abstract class Master
     public function createMediaDir($media_name){
         foreach ($this->storages as $name => $storage){
             try {
-                $this->clients[$name]->createDir($media_name);
-            }catch (SoapFault $exception){
+                $this->clients[$name]->resource($this->media_type)->update(array('media_name' => $media_name));
+            }catch (Exception $exception){
                 $this->parseException($exception);
             }
         }
@@ -140,11 +141,11 @@ abstract class Master
      * Check stb home directory on all active storages
      *
      */
-    public function checkAllHomeDirs(){
+    /*public function checkAllHomeDirs(){
         foreach ($this->storages as $name => $storage){
             $this->checkHomeDir($name);
         }
-    }
+    }*/
     
     /**
      * Return active storages array
@@ -214,7 +215,7 @@ abstract class Master
      *
      * @return array active storages
      */
-    private function getAllActiveStorages(){
+    protected function getAllActiveStorages(){
         
         $storages = array();
         
@@ -231,14 +232,14 @@ abstract class Master
      *
      * @param string $storage_name
      */
-    private function checkHomeDir($storage_name){
+    /*private function checkHomeDir($storage_name){
         
         try {
             $this->clients[$storage_name]->checkHomeDir($this->stb->mac);
-        }catch (SoapFault $exception){
+        }catch (Exception $exception){
             $this->parseException($exception);
         }
-    }
+    }*/
     
     /**
      * Get all good storages for media by id from cache(if they valid), or from network
@@ -307,7 +308,7 @@ abstract class Master
                 
                 $this->saveSeries($raw['series']);
                 
-                $raw['load'] = $this->getStorageLoad($name);
+                $raw['load'] = $this->getStorageLoad($storage);
                 
                 $good_storages[$name] = $raw;
                 
@@ -345,8 +346,9 @@ abstract class Master
      */
     public function startMD5Sum($storage_name, $media_name){
         try {
-            $this->clients[$storage_name]->startMD5Sum($media_name);
-        }catch (SoapFault $exception){
+            //$this->clients[$storage_name]->startMD5Sum($media_name);
+            $this->clients[$storage_name]->resource($this->media_type.'_md5_checker')->create(array('media_name' => $media_name));
+        }catch (Exception $exception){
             $this->parseException($exception);
             throw new Exception($exception->getMessage());
         }
@@ -360,8 +362,9 @@ abstract class Master
      */
     public function stopMD5Sum($storage_name, $media_name){
         try {
-            $this->clients[$storage_name]->stopMD5Sum($media_name);
-        }catch (SoapFault $exception){
+            //$this->clients[$storage_name]->stopMD5Sum($media_name);
+            $this->clients[$storage_name]->resource($this->media_type.'_md5_checker')->ids($media_name)->delete();
+        }catch (Exception $exception){
             $this->parseException($exception);
         }
     }
@@ -392,9 +395,7 @@ abstract class Master
      * @param string $txt
      */
     private function addToLog($txt){
-        /*$sql = 'insert into master_log (log_txt, added) values ("'.mysql_real_escape_string(trim($txt)).'", NOW())';
-        $this->db->executeQuery($sql);*/
-        
+
         $this->db->insert('master_log',
                           array(
                               'log_txt' => trim($txt),
@@ -414,9 +415,6 @@ abstract class Master
         
         foreach ($this->getAllCacheKeys() as $key){
         
-            /*$sql = 'select * from storage_cache where cache_key="'.$key.'" and status=1 and UNIX_TIMESTAMP(changed)>'.(time() - $this->cache_expire_h*3600);
-            $storage_cache = $this->db->executeQuery($sql)->getAllValues();*/
-            
             $storage_cache = $this->db->from('storage_cache')
                                       ->where(array(
                                           'cache_key'                => $key,
@@ -431,7 +429,7 @@ abstract class Master
                 $storage_data = unserialize($storage_cache['storage_data']);
                 if (is_array($storage_data) && !empty($storage_data)){
                     $cache[$storage_cache['storage_name']] = $storage_data;
-                    $cache[$storage_cache['storage_name']]['load'] = $this->getStorageLoad($storage_cache['storage_name']);
+                    $cache[$storage_cache['storage_name']]['load'] = $this->getStorageLoad($this->storages[$storage_cache['storage_name']]);
                 }
             }
             
@@ -494,25 +492,6 @@ abstract class Master
                 }
             }
         }
-        
-        /*$records_in_cache = $this->db
-                                      ->from('storage_cache')
-                                      ->where(array(
-                                         'media_type' => $this->media_type,
-                                         'media_id'   => $this->media_id,
-                                         'status'     => 1,
-                                      ))
-                                      ->get()
-                                      ->all();
-        
-        foreach ($records_in_cache as $record){
-            if (!key_exists($record['storage_name'], $storages)){
-                $this->db->update('storage_cache',
-                                  array('status' => 0),
-                                  array('id'     => $record['id']));
-            }
-        }*/
-        
     }
     
     /**
@@ -547,8 +526,9 @@ abstract class Master
      */
     protected function checkMediaDir($storage_name, $media_name){
         try {
-            return $this->clients[$storage_name]->checkDir($media_name, $this->media_type);
-        }catch (SoapFault $exception){
+            //return $this->clients[$storage_name]->checkDir($media_name, $this->media_type);
+            return $this->clients[$storage_name]->resource($this->media_type)->ids($media_name)->get();
+        }catch (Exception $exception){
             $this->parseException($exception);
         }
     }
@@ -556,12 +536,12 @@ abstract class Master
     /**
      * Calculates storage load
      *
-     * @param string $storage_name
+     * @param array $storage_name
      * @return int storage load
      */
-    protected function getStorageLoad($storage_name){
-        if ($this->storages[$storage_name]['max_online'] > 0){
-            return $this->getStorageOnline($storage_name) / $this->storages[$storage_name]['max_online'];
+    protected function getStorageLoad($storage){
+        if ($storage['max_online'] > 0){
+            return $this->getStorageOnline($storage['storage_name']) / $storage['max_online'];
         }
         return 1;
     }
@@ -573,9 +553,6 @@ abstract class Master
      * @return int sessions online
      */
     protected function getStorageOnline($storage_name){
-        
-        /*$sql = 'select count(*) as sd_online from users where now_playing_type=2 and hd_content=0 and storage_name="'.$storage_name.'" and UNIX_TIMESTAMP(keep_alive)>'.(time() - 120);
-        $sd_online = $this->db->executeQuery($sql)->getValueByName(0, 'sd_online');*/
         
         $sd_online = $this->db->select('count(*) as sd_online')
                               ->from('users')
@@ -589,9 +566,6 @@ abstract class Master
                               ->get()
                               ->first('sd_online');
         
-        /*$sql = 'select count(*) as hd_online from users where now_playing_type=2 and hd_content=1 and storage_name="'.$storage_name.'" and UNIX_TIMESTAMP(keep_alive)>'.(time() - 120);
-        $hd_online = $this->db->executeQuery($sql)->getValueByName(0, 'hd_online');*/
-        
         $hd_online = $this->db->select('count(*) as hd_online')
                               ->from('users')
                               ->where(
@@ -602,9 +576,11 @@ abstract class Master
                                       'UNIX_TIMESTAMP(keep_alive)>' => time() - 120,
                                   ))
                               ->get()
-                              ->first('hd_online'); 
+                              ->first('hd_online');
+
+        $rec_online = Mysql::getInstance()->from('rec_files')->where(array('storage_name' => $storage_name, 'ended' => 0))->get()->count();
         
-        return $sd_online + 3*$hd_online;
+        return $sd_online + 3*$hd_online + $rec_online;
     }
     
     /**
@@ -613,6 +589,16 @@ abstract class Master
      * @return string
      */
     abstract protected function getMediaName();
+
+    /**
+     * Return media path
+     *
+     * @param string $file
+     * @return string
+     */
+    protected function getMediaPath($file){
+        return $this->media_name;
+    }
     
     /**
      * Return media params from db
@@ -647,8 +633,6 @@ abstract class Master
      */
     private function incrementStorageDeny($storage_name){
         
-        //$this->db->executeQuery('update storage_deny set counter=counter+1, updated=NOW() where name="'.$storage_name.'"');
-        
         $storage = $this->db->from('storage_deny')->where(array('name' => $storage_name))->get()->first();
         
         if (empty($storage)){
@@ -672,12 +656,21 @@ abstract class Master
     /**
      * Get soap clients for all good storages
      *
-     * @return array soap clients for all good storages
+     * @return array SoapClient for all good storages
      */
     private function getClients(){
         $clients = array();
+
+        RESTClient::$from = $this->stb->mac;
+
         foreach ($this->storages as $name => $storage){
-            $clients[$name] = new SoapClient('http://localhost'.Config::get('portal_url').'server/storage/storage.wsdl.php?id='.$this->storages[$name]['id']);
+            //$clients[$name] = new SoapClient('http://localhost'.Config::get('portal_url').'server/storage/storage.wsdl.php?id='.$this->storages[$name]['id']);
+            /*$clients[$name] = new SoapClient(null, array('location' => 'http://'.$storage['storage_ip'].'/stalker_portal/storage/storage.php',
+                                                         'uri' => 'urn:storage',
+                                                         'soap_version' => SOAP_1_1
+                                                   ));*/
+
+            $clients[$name] = new RESTClient('http://'.$storage['storage_ip'].'/stalker_portal/storage/rest.php?q=');
         }
         return $clients;
     }
@@ -714,9 +707,9 @@ abstract class Master
     /**
      * Parse exception, add exception message to output and to master log
      *
-     * @param SoapFault $exception
+     * @param Exception $exception
      */
-    private function parseException($exception){
+    protected function parseException($exception){
         //trigger_error($exception->getMessage()."\n".$exception->getTraceAsString(), E_USER_ERROR);
         echo $exception->getMessage()."\n".$exception->getTraceAsString();
         $this->addToLog($exception->getMessage());
