@@ -32,7 +32,7 @@ function TextInput(parent, options){
     this.options = options;
     
     if (options){
-        for (prop in options){
+        for (var prop in options){
             if (options.hasOwnProperty(prop)){
                 this[prop] = options[prop]
             }
@@ -48,25 +48,6 @@ TextInput.prototype = new BaseInput();
 
 TextInput.prototype.build = function(){
     _debug('TextInput.build');
-    
-    /*var dl = document.createElement('dl');
-    
-    var dt = document.createElement('dt');
-    dt.innerHTML = this.label;
-    
-    var dd = document.createElement('dd');
-    
-    this.input = document.createElement('input');
-    this.input.type  = this.type;
-    this.input.value = this.default_val;
-    //this.input.disabled = "disabled";
-    
-    dd.appendChild(this.input);
-    
-    dl.appendChild(dt);
-    dl.appendChild(dd);
-    
-    this.parent.container.appendChild(dl);*/
 
     var container = create_block_element('text_input_container', this.parent.container);
 
@@ -131,7 +112,7 @@ function OptionInput(parent, options){
     this.options = options;
     
     if (options){
-        for (prop in options){
+        for (var prop in options){
             if (options.hasOwnProperty(prop)){
                 this[prop] = options[prop]
             }
@@ -154,7 +135,7 @@ function OptionInput(parent, options){
     
     this.map = this.map || [];
 
-    this.map.options = this.map.options || [];
+    //this.map.options = this.map.options || [];
 
     this.onchange = function(){};
     this.onselect = function(){};
@@ -183,7 +164,7 @@ OptionInput.prototype.build = function(){
     this.rarr = create_block_element('rarr', container);
     this.rarr.innerHTML = '&rsaquo;';
 
-    var idx = this.map.options.getIdxByVal('selected', 1);
+    var idx = this.map.getIdxByVal('selected', 1);
 
     if (idx !== null){
         this.default_checked_idx = this.cur_idx = idx;
@@ -221,7 +202,7 @@ OptionInput.prototype.fill = function(data){
     
     this.map = data;
 
-    var idx = this.map.options.getIdxByVal('selected', 1);
+    var idx = this.map.getIdxByVal('selected', 1);
 
     if (idx !== null){
         this.default_checked_idx = this.cur_idx = idx;
@@ -246,13 +227,13 @@ OptionInput.prototype._set_option = function(idx){
 
     _debug('this.cur_idx', this.cur_idx);
 
-    if (this.map.options[this.cur_idx]){
-        this.option.innerHTML = this.map.options[this.cur_idx].label || this.map.options[this.cur_idx].value || '...';
+    if (this.map[this.cur_idx] !== undefined){
+        this.option.innerHTML = this.map[this.cur_idx].label || this.map[this.cur_idx].value || '...';
     }else{
         this.option.innerHTML = '...';
     }
 
-    if (this.cur_idx == this.map.options.length - 1 || this.map.options.length == 0){
+    if (this.cur_idx == this.map.length - 1 || this.map.length == 0){
         this.rarr.style.visibility = 'hidden';
     }else{
         this.rarr.style.visibility = 'visible';
@@ -268,13 +249,13 @@ OptionInput.prototype._set_option = function(idx){
 OptionInput.prototype.get_value = function(){
     _debug('OptionInput.get_value');
 
-    return this.map.options[this.cur_idx].value;
+    return this.map[this.cur_idx].value;
 };
 
 OptionInput.prototype.get_selected = function(){
     _debug('OptionInput.get_value');
 
-    return this.map.options[this.cur_idx];
+    return this.map[this.cur_idx];
 };
 
 OptionInput.prototype.set_selected_by_value = function(value){
@@ -284,7 +265,7 @@ OptionInput.prototype.set_selected_by_value = function(value){
     //    return;
     //}
 
-    var idx = this.map.options.getIdxByVal('value', value);
+    var idx = this.map.getIdxByVal('value', value);
 
     if (idx !== null){
         return this._set_option(idx);
@@ -297,7 +278,7 @@ OptionInput.prototype.shift = function(dir){
     _debug('OptionInput.shift', dir);
 
     _debug('this.cur_idx', this.cur_idx);
-    _debug('this.map.options.length', this.map.options.length);
+    _debug('this.map.length', this.map.length);
 
     window.clearTimeout(this.onselect_timer);
     var self = this;
@@ -305,7 +286,7 @@ OptionInput.prototype.shift = function(dir){
 
     if (dir > 0){
 
-        if (this.cur_idx < this.map.options.length - 1){
+        if (this.cur_idx < this.map.length - 1){
             this.cur_idx++;
         }else{
             return false;
@@ -332,10 +313,10 @@ OptionInput.prototype.shift_page = function(dir){
     this.onselect_timer = window.setTimeout(function(){self.onselect()}, 500);
 
     if (dir > 0){
-        if (this.cur_idx < this.map.options.length - 11){
+        if (this.cur_idx < this.map.length - 11){
             this.cur_idx = this.cur_idx + 10;
         }else{
-            this.cur_idx = this.map.options.length - 1;
+            this.cur_idx = this.map.length - 1;
         }
     }else{
         if (this.cur_idx > 10){
@@ -348,6 +329,158 @@ OptionInput.prototype.shift_page = function(dir){
     this._set_option(this.cur_idx);
 
     return true;
+};
+
+/**
+ * Visual value picker constructor.
+ * @constructor
+ */
+
+function VisualValuePickerInput(parent, options){
+    
+    this.parent   = parent;
+    this.options  = options;
+    this.onchange = function(){};
+    
+    if (options){
+        for (var prop in options){
+            if (options.hasOwnProperty(prop)){
+                this[prop] = options[prop]
+            }
+        }
+    }
+
+    this.min_val     = this.min_val     || 0;
+    this.max_val     = this.max_val     || 0;
+    this.step        = this.step        || 1;
+    this.default_val = this.default_val || this.min_val;
+
+    this.value = this.default_val;
+
+    this.build();
+}
+
+VisualValuePickerInput.prototype = new BaseInput();
+
+VisualValuePickerInput.prototype.build = function(){
+    _debug('VisualValuePickerInput.build');
+
+    var container = create_block_element('visual_value_picker_container', this.parent.container);
+
+    var label = create_block_element('label', container);
+    label.innerHTML = this.label;
+
+    this.larr = create_block_element('larr', container);
+    this.larr.innerHTML = '&lsaquo;';
+
+    this.bar_container = create_block_element('bar_container', container);
+
+    this.bar    = create_block_element('bar',    this.bar_container);
+    this.runner = create_block_element('runner', this.bar_container);
+
+    this.rarr = create_block_element('rarr', container);
+    this.rarr.innerHTML = '&rsaquo;';
+
+    _debug('this.bar.offsetWidth', this.bar.offsetWidth);
+    _debug('this.runner.offsetWidth', this.runner.offsetWidth);
+
+    this.max_runner_offset = this.bar.offsetWidth - this.runner.offsetWidth;
+
+    _debug('this.max_runner_offset', this.max_runner_offset);
+
+    if (this.hint_title){
+        this.hint_container = create_block_element('hint', container);
+        create_inline_element(null, this.hint_container).innerHTML = this.hint_title + ': ';
+        this.hint_text = create_inline_element('hint_text', this.hint_container);
+        this.hint_text.innerHTML = this.default_val;
+    }
+
+    this.set_default();
+};
+
+VisualValuePickerInput.prototype.set_active = function(){
+    _debug('VisualValuePickerInput.set_active');
+
+    this.bar_container.setAttribute('active', 'active');
+};
+
+VisualValuePickerInput.prototype.set_passive = function(){
+    _debug('VisualValuePickerInput.set_passive');
+
+    this.bar_container.setAttribute('active', '');
+};
+
+VisualValuePickerInput.prototype.set_default = function(){
+    _debug('VisualValuePickerInput.set_passive');
+
+    this._set_val(this.default_val);
+};
+
+VisualValuePickerInput.prototype.saved = function(){
+    _debug('VisualValuePickerInput.saved');
+
+    this.default_val = this.get_value();
+};
+
+VisualValuePickerInput.prototype.shift = function(dir){
+    _debug('VisualValuePickerInput.shift', dir);
+
+    _debug('this.value', this.value);
+    _debug('this.step', this.step);
+
+    if (dir > 0){
+        if ((this.value + this.step) < this.max_val){
+            this.value += this.step;
+        }else{
+            this.value = this.max_val;
+        }
+    }else{
+        if ((this.value - this.step) > this.min_val){
+            this.value -= this.step;
+        }else{
+            this.value = this.min_val;
+        }
+    }
+
+    this._set_val(this.value);
+};
+
+VisualValuePickerInput.prototype._set_val = function(val){
+    _debug('VisualValuePickerInput.set_val', val);
+
+    this.value = val;
+
+    var offset_left = ((this.value - this.min_val) * this.max_runner_offset) / this.max_val;
+
+    _debug('offset_left', offset_left);
+
+    if (offset_left > (this.bar.offsetWidth - this.runner.offsetWidth)){
+        offset_left = this.bar.offsetWidth - this.runner.offsetWidth;
+    }
+
+    _debug('offset_left', offset_left);
+
+    this.runner.moveX(offset_left);
+
+    if (this.value == this.max_val){
+        this.rarr.style.visibility = 'hidden';
+    }else{
+        this.rarr.style.visibility = 'visible';
+    }
+
+    if (this.value == this.min_val){
+        this.larr.style.visibility = 'hidden';
+    }else{
+        this.larr.style.visibility = 'visible';
+    }
+
+    this.onchange();
+};
+
+VisualValuePickerInput.prototype.get_value = function(){
+    _debug('VisualValuePickerInput.get_value');
+
+    return this.value
 };
 
 loader.next();
