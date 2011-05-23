@@ -15,12 +15,17 @@ function BaseLayer(){
     document.body.appendChild(this.dom_obj);*/
     this.dom_obj = {};
     
-    this.color_buttons = [
+    /*this.color_buttons = [
         {"color" : "red"},
         {"color" : "green"},
         {"color" : "yellow"},
         {"color" : "blue"}
-    ];
+    ];*/
+
+    //this.color_buttons_map = {};
+    //this.buttons = {};
+
+    //this.color_buttons.parent = this;
 }
 
 BaseLayer.prototype.show = function(){
@@ -31,7 +36,7 @@ BaseLayer.prototype.show = function(){
     
     stb.set_cur_place(this.layer_name);
     stb.set_cur_layer(this);
-}
+};
 
 BaseLayer.prototype.hide = function(){
     _debug('BaseLayer.hide');
@@ -39,7 +44,7 @@ BaseLayer.prototype.hide = function(){
     this.dom_obj.hide();
     
     this.on = false;
-}
+};
 
 BaseLayer.prototype.init = function(){
     _debug('BaseLayer.init');
@@ -51,7 +56,7 @@ BaseLayer.prototype.init = function(){
     this.dom_obj.addClass(this.class_name);
     
     this.dom_obj.id = this.layer_name;
-}
+};
 
 BaseLayer.prototype.create_block = function(class_name, is_active){
     
@@ -68,9 +73,9 @@ BaseLayer.prototype.create_block = function(class_name, is_active){
     }
     
     return block;
-}
+};
 
-BaseLayer.prototype.init_color_buttons = function(map){
+/*BaseLayer.prototype.init_color_buttons = function(map){
     this.buttons_bar = this.create_block('color_button_bar');
     
     var table = document.createElement('table');
@@ -123,6 +128,255 @@ BaseLayer.prototype.init_color_buttons = function(map){
     this.buttons_bar.appendChild(table);
     
     this.dom_obj.appendChild(this.buttons_bar);
+};*/
+
+/*
+BaseLayer.prototype.color_buttons = {
+
+    buttons_bar : {},
+
+    color_map : [
+        {"color" : "red"},
+        {"color" : "green"},
+        {"color" : "yellow"},
+        {"color" : "blue"}
+    ],
+
+    //buttons : {},
+
+    init : function(map){
+        this.buttons_bar = create_block_element('color_button_bar');
+
+        var table = document.createElement('table');
+
+        var row = document.createElement('tr');
+        table.appendChild(row);
+
+        for (var i=0; i<=3; i++){
+
+            var cell = document.createElement('td');
+            row.appendChild(cell);
+
+            var separator = document.createElement('img');
+
+            if (i == 0){
+                separator.src = 'i/1x1.gif';
+            }else{
+                separator.src = 'i/footer_bg2.png';
+            }
+
+            cell.appendChild(separator);
+
+            var color = this.color_map[i].color;
+
+            this.parent.buttons[color] = new ColorButton(color, cell);
+            this.parent.buttons[color].setText(map[i].label);
+
+            if (typeof(map[i].cmd) !== 'function'){
+                this.parent.buttons[color].disable();
+            }else{
+
+                (function(){
+                    _debug(this.parent.buttons[color]);
+                    if (!this.parent.buttons[color].disabled){
+                        map[0].cmd();
+                    }
+                }).bind(key[color.toUpperCase()], this);
+            }
+        }
+
+        this.buttons_bar.appendChild(table);
+
+        this.parent_dom_obj.appendChild(this.buttons_bar);
+    },
+
+    get : function(color){
+        _debug('color_buttons.get', color);
+
+        var button = this.parent.buttons[color];
+
+        _debug('button', button);
+
+        if (!button || !button.hasOwnProperty('enable')){
+            _debug('return dummy');
+
+            return {
+                enable  : function(){},
+                disable : function(){},
+                setText : function(){}
+            };
+        }
+
+        return button;
+    },
+
+    disableAll : function(){
+        this.buttons_bar.addClass('disabled_all_buttons');
+    },
+
+    enableAll : function(){
+        this.buttons_bar.delClass('disabled_all_buttons');
+    }
+};
+
+*/
+
+BaseLayer.prototype.init_color_buttons = function(map, target){
+    this.color_buttons = new ColorButtonsBar(map, this.dom_obj, target);
+    
+    this.color_buttons.bind.call(this);
+};
+
+function ColorButtonsBar(map, parent_dom_obj, target){
+
+    this.buttons_bar = {};
+    this.map         = map;
+    this.target      = target;
+
+    this.parent_dom_obj = parent_dom_obj;
+
+    this.color_map = [
+        {"color" : "red"},
+        {"color" : "green"},
+        {"color" : "yellow"},
+        {"color" : "blue"}
+    ],
+
+    this.buttons = {};
+    
+    this.init(map);
+}
+
+ColorButtonsBar.prototype.init = function(map){
+    this.buttons_bar = create_block_element('color_button_bar');
+
+    var table = document.createElement('table');
+
+    var row = document.createElement('tr');
+    table.appendChild(row);
+
+    for (var i=0; i<=3; i++){
+
+        var cell = document.createElement('td');
+        row.appendChild(cell);
+
+        var separator = document.createElement('img');
+
+        if (i == 0){
+            separator.src = 'i/1x1.gif';
+        }else{
+            separator.src = 'i/footer_bg2.png';
+        }
+
+        cell.appendChild(separator);
+
+        var color = this.color_map[i].color;
+
+        this.buttons[color] = new ColorButton(color, cell);
+        this.buttons[color].setText(map[i].label);
+
+        if (typeof(map[i].cmd) !== 'function'){
+            this.buttons[color].disable();
+        }/*else{
+
+            (function(){
+                _debug(this.buttons[color]);
+                if (!this.buttons[color].disabled){
+                    map[0].cmd();
+                }
+            }).bind(key[color.toUpperCase()], this);
+        }*/
+    }
+
+    this.buttons_bar.appendChild(table);
+
+    this.parent_dom_obj.appendChild(this.buttons_bar);
+};
+
+ColorButtonsBar.prototype.bind = function(){
+
+    (function(){
+        _debug(this.color_buttons.buttons['red']);
+        if (!this.color_buttons.buttons['red'].disabled){
+            this.color_buttons.map[0].cmd.call(this);
+        }
+    }).bind(key.RED, this);
+
+    (function(){
+        _debug(this.color_buttons.buttons['green']);
+        if (!this.color_buttons.buttons['green'].disabled){
+            this.color_buttons.map[1].cmd.call(this);
+        }
+    }).bind(key.GREEN, this);
+
+    (function(){
+        _debug(this.color_buttons.buttons['yellow']);
+        if (!this.color_buttons.buttons['yellow'].disabled){
+            this.color_buttons.map[2].cmd.call(this);
+        }
+    }).bind(key.YELLOW, this);
+
+    (function(){
+        _debug(this.color_buttons.buttons['blue']);
+        if (!this.color_buttons.buttons['blue'].disabled){
+            this.color_buttons.map[3].cmd.call(this);
+        }
+    }).bind(key.BLUE, this);
+};
+
+ColorButtonsBar.prototype.get = function(color){
+    _debug('color_buttons.get', color);
+
+    var button = this.buttons[color];
+
+    _debug('button', button);
+
+    if (!button || !button.hasOwnProperty('enable')){
+        _debug('return dummy');
+
+        return {
+            enable  : function(){},
+            disable : function(){},
+            setText : function(){}
+        };
+    }
+
+    return button;
+};
+
+ColorButtonsBar.prototype.disableAll = function(){
+    this.buttons_bar.addClass('disabled_all_buttons');
+};
+
+ColorButtonsBar.prototype.enableAll = function(){
+    this.buttons_bar.delClass('disabled_all_buttons');
+};
+
+
+function ColorButton(color, parent){
+
+    this.disabled = false;
+    this.color    = color;
+
+    this.img_obj  = create_block_element('btn_'+color, parent);
+    this.text_obj = create_inline_element('', parent);
+
+    this.enable = function(){
+        _debug('enable');
+        this.disabled = false;
+        this.text_obj.delClass();
+    };
+
+    this.disable = function (){
+        _debug('disable');
+        this.disabled = true;
+        this.text_obj.setClass('disable_color_btn_text');
+    };
+
+    this.setText = function(txt){
+        _debug('setText', txt);
+        this.text_obj.innerHTML = txt;
+    }
 }
 
 BaseLayer.prototype.init_left_ear = function(txt){
@@ -142,7 +396,7 @@ BaseLayer.prototype.init_left_ear = function(txt){
     ears_left_container.appendChild(this.left_ear);
     
     this.dom_obj.appendChild(ears_left_container);
-}
+};
 
 BaseLayer.prototype.init_right_ear = function(txt){
     
@@ -161,7 +415,7 @@ BaseLayer.prototype.init_right_ear = function(txt){
     ears_right_container.appendChild(this.right_ear);
     
     this.dom_obj.appendChild(ears_right_container);
-}
+};
 
 BaseLayer.prototype.init_header_path = function(begin){
     
@@ -170,13 +424,14 @@ BaseLayer.prototype.init_header_path = function(begin){
     this.header_path.innerHTML = begin + ' / ';
     this.header_path.appendChild(this.path_container);
     this.dom_obj.appendChild(this.header_path);
-}
+};
 
 BaseLayer.prototype.update_header_path = function(map){
     
     var path = '';
+    var i;
     
-    for(var i=0; i<map.length; i++){
+    for(i=0; i<map.length; i++){
         
         var idx = this.header_path_map.getIdxByVal('alias', map[i].alias);
         
@@ -190,11 +445,11 @@ BaseLayer.prototype.update_header_path = function(map){
         }
     }
     
-    for (var i=0; i<this.header_path_map.length; i++){
+    for (i=0; i<this.header_path_map.length; i++){
         path += '<span class="text20_white uppercase">'+this.header_path_map[i].title+'</span>';
     }
     
     this.path_container.innerHTML = path;
-}
+};
 
 loader.next();
