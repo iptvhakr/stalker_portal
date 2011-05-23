@@ -5,7 +5,7 @@
 (function(){
     
     /* RECORDS */
-    function records_constructor(){
+    function RecordsConstructor(){
         
         this.layer_name = 'records';
         
@@ -34,7 +34,7 @@
                     main_menu.show();
                 }
             });
-        }
+        };
         
         this.hide = function(do_not_reset){
             _debug('records.hide', do_not_reset);
@@ -109,11 +109,11 @@
         };
     }
     
-    stb.pvr = new pvr();
+    stb.pvr = new Pvr();
     
-    records_constructor.prototype = new ListLayer();
+    RecordsConstructor.prototype = new ListLayer();
     
-    var records = new records_constructor();
+    var records = new RecordsConstructor();
     
     records.bind();
     records.init();
