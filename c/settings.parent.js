@@ -54,8 +54,8 @@
         {"label" : word['empty'], "cmd" : ''}
     ]);
     
-    parent_settings.color_buttons[parent_settings.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
-    parent_settings.color_buttons[parent_settings.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
+    //parent_settings.color_buttons[parent_settings.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
+    //parent_settings.color_buttons[parent_settings.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
     
     parent_settings.init_header_path(word['parent_settings_title']);
     
