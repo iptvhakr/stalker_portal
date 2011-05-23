@@ -138,6 +138,7 @@ $words['parent_settings_repeat_new_pass'] = _('Repeat new password');
 $words['settings_saved'] = _('Settings saved');
 $words['settings_saved_reboot'] = _('Settings saved.<br>The STB will be rebooted. Press OK.');
 $words['settings_check_error'] = _('Error filling fields');
+$words['settings_saving_error'] = _('Saving error');
 
 $words['localization_settings_title'] = _('LOCALIZATION');
 $words['localization_label'] = _('Language of the interface');
@@ -198,7 +199,7 @@ $words['mastermind_page'] = 'Page';
 $words['mastermind_history_moves'] = _('Moving through the pages of history moves');
 
 $words['msg_service_off'] = _('Service is disabled');
-$words['msg_channel_not_available'] = _('Сhannel is not available');
+$words['msg_channel_not_available'] = _('Channel is not available');
 
 $words['epg_title']  = _('TV Guide');
 $words['epg_record'] = _('RECORD');
@@ -222,4 +223,26 @@ $words['time_format'] = _('time_format');
 
 $words['timezone_label'] = _('Timezone');
 $words['ntp_server'] = _('NTP Server');
+
+$words['remote_pvr_del'] = _('DELETE');
+$words['remote_pvr_stop'] = _('STOP');
+$words['remote_pvr_del_confirm'] = _('Do you really want to delete this record?');
+$words['remote_pvr_stop_confirm'] = _('Do you really want to stop this record?');
+
+$words['alert_confirm'] = _('Confirm');
+$words['alert_cancel'] = _('Cancel');
+
+$words['recorder_server_error'] = _('Server error. Try again later.');
+$words['record_duration'] = _('RECORDING DURATION');
+
+$words['playback_settings_buffer_size'] = _('Buffer size');
+$words['playback_settings_time'] = _('Time, sec');
+$words['playback_settings_title'] = _('PLAYBACK');
+$words['playback_settings_cancel'] = _('CANCEL');
+$words['playback_settings_save'] = _('SAVE');
+
+$words['audio_out'] = _('Audio out');
+$words['audio_out_analog'] = _('Analog only');
+$words['audio_out_analog_spdif'] = _('Analog and S/PDIF 2-channel PCM');
+$words['audio_out_spdif'] = _('S/PDIF raw or 2-channel PCM');
 ?>
