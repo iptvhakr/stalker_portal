@@ -43,13 +43,16 @@ function ListLayer(){
     
     this.page_dir = 1;
     
-    this.color_buttons = [
+    /*this.color_buttons = [
         {"color" : "red"},
         {"color" : "green"},
         {"color" : "yellow"},
         {"color" : "blue"}
-    ];
-    
+    ];*/
+
+    //this.color_buttons_map = {};
+    //this.buttons = {};
+
     this.loader = {};
     
     this.base_layer = BaseLayer.prototype;
