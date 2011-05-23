@@ -24,7 +24,11 @@ class VideoMaster extends Master
         }
         
         return '';
+    }
+
+    protected function getMediaPath($file_name){
         
+        return $this->media_name.'/'.$file_name;
     }
     
     protected function saveSeries($series_arr){
