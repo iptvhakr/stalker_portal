@@ -508,6 +508,8 @@ class Itv extends AjaxResponse
                     $this->response['data'][$i]['cmd'] = 'udp://wtf?';
                 }
             }
+
+            $this->response['data'][$i]['mc_cmd'] = empty($this->response['data'][$i]['mc_cmd']) ? '' : '1';
         }
 
         return $this->response;
