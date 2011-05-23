@@ -13,10 +13,10 @@ var keydown_observer = new function(){
     this.emulate_key = function(key_code){
         
         this.fire({"keyCode" : key_code});
-    }
+    };
     
     this.fire = function(e){
-        
+
         var code = e.keyCode || e.which;
         
         if (stb && stb.key_lock === true && code != key.FRAME){
@@ -67,7 +67,7 @@ var keydown_observer = new function(){
             
         }
     }
-}
+};
 
 /**
  * Binding function to key.
@@ -82,7 +82,7 @@ Function.prototype.bind = function(key, context, args){
     args = Array.prototype.splice.apply(arguments, [2, arguments.length]);
     keydown_observer.listeners[key].unshift({"f" : this, "c" : context, "a" : args});
     return this;
-}
+};
 
 Function.prototype.priority_bind = function(key, context, args){
     context = context || window;
@@ -90,4 +90,4 @@ Function.prototype.priority_bind = function(key, context, args){
     args = Array.prototype.splice.apply(arguments, [2, arguments.length]);
     keydown_observer.listeners[key].unshift({"f" : this, "c" : context, "a" : args, "priority" : true});
     return this;
-}
+};
