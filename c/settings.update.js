@@ -4,7 +4,11 @@
 
 (function(){
     
-    if (stb.type != 'MAG250'){
+    /*if (stb.type != 'MAG250'){
+        return;
+    }*/
+
+    if (stb.firmware_version < 203){
         return;
     }
     
@@ -122,8 +126,8 @@
         {"label" : word['empty'], "cmd" : ''}
     ]);
     
-    update_settings.color_buttons[update_settings.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
-    update_settings.color_buttons[update_settings.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
+    //update_settings.color_buttons[update_settings.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');
+    //update_settings.color_buttons[update_settings.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
     
     update_settings.init_header_path(word['settings_software_update']);
     
