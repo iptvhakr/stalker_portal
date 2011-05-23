@@ -99,9 +99,11 @@
             this.fill_page_bar();
             
             if (parseInt(this.resp.data.voted) > 0){
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');
+                //this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');
+                this.color_buttons.get('green').disable();
             }else{
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.delClass();
+                //this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.delClass();
+                this.color_buttons.get('green').enable();
             }
             
             this.anecdote_date.innerHTML = this.resp.data['added'];
@@ -231,8 +233,9 @@
                 return;
             }
             
-            this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');
-            
+            //this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');
+            this.color_buttons.get('green').disable();
+
             stb.load(
                 {
                     "type"    : "anecdote",
@@ -268,10 +271,13 @@
                     this.bookmark_page = parseInt(result) - 1;
                     
                     if (this.bookmark_page >= 0){
-                        this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.delClass();
-                        this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.innerHTML = word['anecdote_to_bookmark'] + ' <sup>' + (this.bookmark_page + 1) + '</sup>';
+                        //this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.delClass();
+                        //this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.innerHTML = word['anecdote_to_bookmark'] + ' <sup>' + (this.bookmark_page + 1) + '</sup>';
+                        this.color_buttons.get('blue').enable();
+                        this.color_buttons.get('blue').setText( word['anecdote_to_bookmark'] + ' <sup>' + (this.bookmark_page + 1) + '</sup>');
                     }else{
-                        this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
+                        //this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.setClass('disable_color_btn_text');
+                        this.color_buttons.get('blue').disable();
                     }
                 },
                 
@@ -294,8 +300,10 @@
                 function(result){
                     _debug('anecdote.set_bookmark result', result);
                     
-                    this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.delClass();
-                    this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.innerHTML = word['anecdote_to_bookmark'] + ' <sup>' + (this.bookmark_page + 1) + '</sup>';
+                    //this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.delClass();
+                    //this.color_buttons[this.color_buttons.getIdxByVal('color', 'blue')].text_obj.innerHTML = word['anecdote_to_bookmark'] + ' <sup>' + (this.bookmark_page + 1) + '</sup>';
+                    this.color_buttons.get('blue').enable();
+                    this.color_buttons.get('blue').setText(word['anecdote_to_bookmark'] + ' <sup>' + (this.bookmark_page + 1) + '</sup>');
                 },
                 
                 this
