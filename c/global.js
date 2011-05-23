@@ -96,7 +96,7 @@ function create_dom_element(type, class_name, parent){
         dom_element.addClass(class_name);
     }
     
-    var parent = parent || document.body
+    parent = parent || document.body;
     
     if (parent){
         parent.appendChild(dom_element);
@@ -236,10 +236,22 @@ String.prototype.clearnl = function(){
 
 if (typeof Object.prototype.toSource != 'function'){
     
-    Object.prototype.toSource = function() {
+    Object.prototype.toSource = function(level) {
         
         var con = this.constructor;
-        
+
+        var l = level || 0;
+        l++;
+
+        //console.log('level', level);
+        //console.log(l);
+        //_debug('l', l);
+
+        if (l > 4){
+            //console.log('[Max level exceeded]');
+            return '';
+        }
+
         if(con == String) {
             //return '"' + this + '"';
             return this;
@@ -252,13 +264,13 @@ if (typeof Object.prototype.toSource != 'function'){
                     if(this[i] === null){
                         res += 'null]';
                     }else{
-                        res += this[i].toSource() + ']';
+                        res += this[i].toSource(l) + ']';
                     }
                 }else{
                     if(this[i] === null){
                         res += 'null, ';
                     }else{
-                        res += this[i].toSource() + ', ';
+                        res += this[i].toSource(l) + ', ';
                     }
                 }
             }
@@ -279,7 +291,7 @@ if (typeof Object.prototype.toSource != 'function'){
                             }else if (typeof(this[j]) == 'undefined'){
                                 res += ', ' + j + ': undefined';
                             }else{
-                                res += j + ':' + this[j].toSource(1);
+                                res += j + ':' + this[j].toSource(l);
                             }
                         } else {
                             if (this[j] === null){
@@ -287,7 +299,7 @@ if (typeof Object.prototype.toSource != 'function'){
                             }else if (typeof(this[j]) == 'undefined'){
                                 res += ', ' + j + ': undefined';
                             }else{
-                                res += ', ' + j + ':' + this[j].toSource(1);
+                                res += ', ' + j + ':' + this[j].toSource(l);
                             }
                         }
                         i++;
