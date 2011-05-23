@@ -42,7 +42,9 @@ class DataLoader
     
     private function getContext(){
      
-        $class = ucfirst($this->type);
+        $class = implode(array_map(function($part){
+            return ucfirst($part);
+        },explode('_', $this->type)));
         
         if (!class_exists($class)){
             throw new Exception('Class "'.$class.'" not exist');
