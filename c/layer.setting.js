@@ -166,13 +166,13 @@ SettingLayer.prototype.bind = function(){
         if (this.left_ear){
             this.hide();
             main_menu.show();
-        }else if (this.controls && this.controls[this.cur_control_idx] instanceof OptionInput){
+        }else if (this.controls && (this.controls[this.cur_control_idx] instanceof OptionInput || this.controls[this.cur_control_idx] instanceof VisualValuePickerInput)){
             this.controls[this.cur_control_idx].shift.call(this.controls[this.cur_control_idx], -1);
         }
     }).bind(key.LEFT, this);
 
     (function(){
-        if (this.controls && this.controls[this.cur_control_idx] instanceof OptionInput){
+        if (this.controls && (this.controls[this.cur_control_idx] instanceof OptionInput || this.controls[this.cur_control_idx] instanceof VisualValuePickerInput)){
             this.controls[this.cur_control_idx].shift.call(this.controls[this.cur_control_idx], 1);
         }
     }).bind(key.RIGHT, this);
