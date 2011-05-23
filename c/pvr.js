@@ -2,7 +2,7 @@
  * Personal video recorder constructor.
  * @constructor
  */
-function pvr(){
+function Pvr(){
     
     this.has_active_rec = false;
     this.current_ch_id = 0;
@@ -21,7 +21,7 @@ function pvr(){
     });
 }
 
-pvr.prototype.start_rec = function(ch_item){
+Pvr.prototype.start_rec = function(ch_item){
     _debug('pvr.start_rec', ch_item);
     
     stb.load(
@@ -44,9 +44,9 @@ pvr.prototype.start_rec = function(ch_item){
         
         this
     );
-}
+};
 
-pvr.prototype.stop_rec = function(){
+Pvr.prototype.stop_rec = function(){
     _debug('pvr.stop_rec');
     
     //stb.RecordStop();
@@ -54,16 +54,16 @@ pvr.prototype.stop_rec = function(){
     this.init_rec_list();
     
     this.reset();
-}
+};
 
-pvr.prototype.reset = function(){
+Pvr.prototype.reset = function(){
     _debug('pvr.reset');
     
     this.has_active_rec = false;
     this.record_id = 0;
-}
+};
 
-pvr.prototype.get_current_time = function(){
+Pvr.prototype.get_current_time = function(){
     _debug('pvr.get_current_time');
     
     if (!this.has_active_rec){
@@ -73,16 +73,16 @@ pvr.prototype.get_current_time = function(){
     var current_time = new Date().getTime()/1000;
     
     return current_time - this.start_time;
-}
+};
 
-pvr.prototype.init_rec_list = function(){
+Pvr.prototype.init_rec_list = function(){
     _debug('pvr.init_rec_list');
     
     var id_list = [];
     
     stb.usbdisk.read_dir("/media/usbdisk/");
     
-    var pattern = /(\d+)\.ts/i
+    var pattern = /(\d+)\.ts/i;
     
     for (var i=0; i<stb.usbdisk.files.length; i++){
         
@@ -117,11 +117,11 @@ pvr.prototype.init_rec_list = function(){
         
         this
     );
-}
+};
 
-pvr.prototype.get_rec_list = function(){
+Pvr.prototype.get_rec_list = function(){
     _debug('pvr.get_rec_list');
     
     return this.data_list;
-}
+};
 
