@@ -390,7 +390,7 @@
                     create_block_element('program_separator', item['epg_container_block']);
                 }
             }
-        }
+        };
         
         this.clear_program_container = function(item, block_name){
             _debug('epg.clear_program_container', item, block_name);
