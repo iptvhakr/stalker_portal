@@ -1,17 +1,14 @@
-<? 
+<?
+/**
+ * @deprecated since version 4.7.3
+ */
 include "../common.php";
-include "../lib/func.php";
 
 echo "<?xml version='1.0' encoding='UTF-8'?>";
-$storage_id = intval(@$_GET['id']);
-$db = Database::getInstance();
 
-$sql = "select * from storages where id=$storage_id";
-$rs = $db->executeQuery($sql);
-$storage_ip = $rs->getValueByName(0, 'storage_ip');
+$storage_ip = Mysql::getInstance()->from('storages')->where(array('id' => intval(@$_GET['id'])))->get()->first('storage_ip');
 
 ?>
-
 <definitions name="master" targetNamespace="urn:master" xmlns:typens="urn:master" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
 	<message name="__construct"/>
 	<message name="__constructResponse"/>
@@ -52,6 +49,19 @@ $storage_ip = $rs->getValueByName(0, 'storage_ip');
 		<part name="media" type="xsd:string"/>
 	</message>
 	<message name="stopMD5SumResponse"/>
+    <message name="startRecording">
+		<part name="url" type="xsd:string"/>
+		<part name="ch_id" type="xsd:integer"/>
+	</message>
+    <message name="startRecordingResponse">
+		<part name="startRecordingReturn" type="xsd:string"/>
+	</message>
+    <message name="stopRecording">
+		<part name="ch_id1" type="xsd:integer"/>
+	</message>
+    <message name="stopRecordingResponse">
+		<part name="stopRecordingReturn" type="xsd:boolean"/>
+	</message>
 	<portType name="StoragePortType">
 		<operation name="__construct">
 			<input message="typens:__construct"/>
@@ -73,7 +83,7 @@ $storage_ip = $rs->getValueByName(0, 'storage_ip');
 		</operation>
 		<operation name="createDir">
 			<documentation>
-				Create direstory for video
+				Create directory for video
 			</documentation>
 			<input message="typens:createDir"/>
 			<output message="typens:createDirResponse"/>
@@ -98,6 +108,20 @@ $storage_ip = $rs->getValueByName(0, 'storage_ip');
 			</documentation>
 			<input message="typens:stopMD5Sum"/>
 			<output message="typens:stopMD5SumResponse"/>
+		</operation>
+        <operation name="startRecording">
+			<documentation>
+				Start stream recording
+			</documentation>
+			<input message="typens:startRecording"/>
+			<output message="typens:startRecordingResponse"/>
+		</operation>
+        <operation name="stopRecording">
+			<documentation>
+				Stop stream recording
+			</documentation>
+			<input message="typens:stopRecording"/>
+			<output message="typens:stopRecordingResponse"/>
 		</operation>
 	</portType>
 	<binding name="StorageBinding" type="typens:StoragePortType">
@@ -157,6 +181,24 @@ $storage_ip = $rs->getValueByName(0, 'storage_ip');
 			</output>
 		</operation>
 		<operation name="stopMD5Sum">
+			<soap:operation soapAction="urn:StorageAction"/>
+			<input>
+				<soap:body namespace="urn:master" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:master" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+        <operation name="startRecording">
+			<soap:operation soapAction="urn:StorageAction"/>
+			<input>
+				<soap:body namespace="urn:master" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body namespace="urn:master" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+        <operation name="stopRecording">
 			<soap:operation soapAction="urn:StorageAction"/>
 			<input>
 				<soap:body namespace="urn:master" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
