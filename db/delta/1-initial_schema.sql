@@ -1,5 +1,9 @@
 SET NAMES 'utf8';
 
+CREATE DATABASE IF NOT EXISTS `stalker_db`;
+
+USE
+
 CREATE TABLE IF NOT EXISTS `video`(
     `id` int NOT NULL auto_increment,
     `owner` varchar(64) NOT NULL default '',
@@ -96,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `itv`(
     `bonus_ch` tinyint default 0, /* 1 - bonus channel */
     `volume_correction` int NOT NULL default 0,
     `use_http_tmp_link` tinyint default 0,
+    `mc_cmd` varchar(128) NOT NULL default '',
     PRIMARY KEY (`id`),
     UNIQUE KEY `name` (`name`),
     KEY `status` (`status`),
@@ -207,6 +212,9 @@ CREATE TABLE IF NOT EXISTS `users`(
     `aspect` int NOT NULL default 16,
     `video_out` varchar(64) NOT NULL default 'rca',
     `volume` varchar(64) NOT NULL default '100',
+    `playback_buffer_bytes` int NOT NULL default 0,
+    `playback_buffer_size` int NOT NULL default 0,
+    `audio_out` int NOT NULL default 0,
     `mac` varchar(64) NOT NULL default '',
     `ip` varchar(128) NOT NULL default '',
     `ls` int not null default 0,
@@ -227,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `users`(
     `operator_id` int NOT NULL default 0,
     `storage_name` varchar(255) NOT NULL default '',
     `hd_content` tinyint default 0,
-    `image_version` varchar(255) NOT NULL default '',
+    `image_version` varchar(255) NOT NULL default '0',
     `last_change_status` timestamp default 0,
     `last_start` timestamp default 0,
     `last_active` timestamp default 0,
@@ -355,6 +363,8 @@ CREATE TABLE IF NOT EXISTS `administrators`(
     UNIQUE KEY (`login`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+INSERT INTO `administrators` (`login`, `pass`, `access`) values ('admin', md5('1'), 0);
+
 CREATE TABLE IF NOT EXISTS `video_log`(
     `id` int NOT NULL auto_increment,
     `moderator_id` int NOT NULL default 0,
@@ -394,12 +404,15 @@ CREATE TABLE IF NOT EXISTS `video_records`(
 CREATE TABLE IF NOT EXISTS `rec_files`(
     `id` int NOT NULL auto_increment,
     `ch_id` int NOT NULL default 0,
-    `t_start` timestamp not null,
+    `t_start` timestamp default 0,
     `t_stop`  timestamp default 0,
     `atrack`  varchar(32) NOT NULL default '',
     `vtrack`  varchar(32) NOT NULL default '',
     `length` int NOT NULL default 0,
     `ended`  tinyint default 0, /* 0-not ended, 1-ended */
+    `storage_name` varchar(128) NOT NULL default '',
+    `file_name` varchar(128) NOT NULL default '',
+    `local` tinyint default 0,
     `uid` int NOT NULL default 0,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -407,9 +420,11 @@ CREATE TABLE IF NOT EXISTS `rec_files`(
 CREATE TABLE IF NOT EXISTS `users_rec`(
     `id` int NOT NULL auto_increment,
     `ch_id` int NOT NULL default 0,
+    `program` varchar(64) NOT NULL default '',
+    `program_id` int NOT NULL default 0,
     `uid` int NOT NULL default 0,
     `file_id` int NOT NULL default 0,
-    `t_start` timestamp not null,
+    `t_start` timestamp default 0,
     `t_stop` timestamp default 0,
     `end_record` timestamp default 0,
     `atrack` varchar(32) NOT NULL default '',
@@ -417,6 +432,20 @@ CREATE TABLE IF NOT EXISTS `users_rec`(
     `length` int NOT NULL default 0,
     `last_play` datetime default 0,
     `ended` tinyint default 0, /* 0-not ended, 1-ended */
+    `started` tinyint default 0,
+    PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `pvr`(
+    `id` int NOT NULL auto_increment,
+    `ch_id` int NOT NULL default 0,
+    `t_start` timestamp default 0,
+    `t_stop`  timestamp default 0,
+    `atrack`  varchar(32) NOT NULL default '',
+    `vtrack`  varchar(32) NOT NULL default '',
+    `length` int NOT NULL default 0,
+    `ended`  tinyint default 0, /* 0-not ended, 1-ended */
+    `uid` int NOT NULL default 0,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -484,6 +513,7 @@ CREATE TABLE IF NOT EXISTS `storages`(
     `max_online` int NOT NULL default 0,
     `status` tinyint default 1,
     `for_moderator` tinyint default 0,
+    `for_records` tinyint default 0,
     UNIQUE KEY (`storage_name`),
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
