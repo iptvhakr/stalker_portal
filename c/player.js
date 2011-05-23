@@ -27,6 +27,25 @@ function player(){
     
     this.pause = {"on" : false};
     
+    this.rec = {"on" : false,
+
+                "dom_obj" : {},
+        
+                "show" : function(){
+                    this.on = true;
+                    this.dom_obj.show();
+                },
+        
+                "hide" : function(){
+                    this.on = false;
+                    this.dom_obj.hide();
+                },
+
+                "set_seconds" : function(seconds){
+                    this.label.innerHTML = seconds;
+                }
+                };
+
     this.is_tv = false;
     
     this.cur_media_length = 0;
@@ -59,6 +78,7 @@ function player(){
     
     this.init();
     this.init_pause();
+    this.init_rec();
     this.init_show_info();
     this.init_quick_ch_switch();
     this.volume.init();
@@ -692,6 +712,8 @@ player.prototype.play = function(item){
     
     _debug('player.media_type: ', this.media_type);
     _debug('player.is_tv: ', this.is_tv);
+
+    this.on_play && this.on_play(this.cur_media_item['id']);
     
     if (this.media_type == 'stream'){
         
@@ -701,7 +723,9 @@ player.prototype.play = function(item){
             this.show_info(this.cur_media_item);
         }else{
 
-            stb.setFrontPanel(item.number);
+            if (this.is_tv){
+                stb.setFrontPanel(item.number);
+            }
 
             if (parseInt(item.use_http_tmp_link) == 1){
 
@@ -753,6 +777,11 @@ player.prototype.play = function(item){
     }else if (stb.cur_place == 'karaoke'){
         
         this.create_link('karaoke', cmd, 0);
+
+    }else if (stb.cur_place == 'remote_pvr'){
+        
+        this.create_link('remote_pvr', cmd, 0);
+        
     }else{
         
         var series_number = item.cur_series || 0;
@@ -874,6 +903,13 @@ player.prototype.stop = function(){
 player.prototype.init_pause = function(){
     this.pause.dom_obj = create_block_element('pause');
     this.pause.dom_obj.hide();
+};
+
+player.prototype.init_rec = function(){
+    this.rec.dom_obj = create_block_element('rec_container');
+    create_block_element('rec_left',this.rec.dom_obj);
+    this.rec.label = create_block_element('rec_main',this.rec.dom_obj);
+    this.rec.dom_obj.hide();
 };
 
 player.prototype.pause_switch = function(){
@@ -1264,8 +1300,14 @@ player.prototype.bind = function(){
         this.prev_layer && this.prev_layer.hide && this.prev_layer.hide();
         this.play_last();
     }).bind(key.TV);
-    
-    this.show_prev_layer.bind(key.STOP, self);
+
+    (function(){
+        if (this.is_tv && module.remote_pvr){
+            module.remote_pvr.stop_channel_rec(this.cur_tv_item);
+        }
+    }).bind(key.STOP, self);
+
+    //this.show_prev_layer.bind(key.STOP, self);
     
     this.show_info.bind(key.INFO, self);
     
@@ -1303,7 +1345,7 @@ player.prototype.bind = function(){
         if (this.on){
             this.volume.control(1);
         }
-    }).bind(key.VOL_UP, this).bind(key.RIGHT, this, 1);;
+    }).bind(key.VOL_UP, this).bind(key.RIGHT, this, 1);
     
     (function(){
         if (this.on){
@@ -1349,7 +1391,7 @@ player.prototype.bind = function(){
     this.change_aspect.bind(key.FRAME, this);
     
     (function(){
-        if (stb.pvr){
+        /*if (stb.pvr){
             if (stb.pvr.has_active_rec){
                 
             }else{
@@ -1359,7 +1401,13 @@ player.prototype.bind = function(){
                     stb.pvr.start_rec(this.cur_tv_item);
                 }
             }
+        }*/
+        // TEST
+        if (this.is_tv && module.remote_pvr){
+
+            module.remote_pvr.rec_switch(this.cur_tv_item);
         }
+
     }).bind(key.REC, this);
     
     this.volume.set_level.bind(key.REFRESH, this.volume, 50);
