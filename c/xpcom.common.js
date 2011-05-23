@@ -46,7 +46,8 @@ function common_xpcom(){
         "layer.scrollbar",
         "layer.vclub_info",
         "password_input",
-        "series_switch"
+        "series_switch",
+        "duration_input"
     ];
 
     this.init = function(){
@@ -65,6 +66,9 @@ function common_xpcom(){
 
         this.msg = new _alert('info');
         this.msg.bind();
+
+        this.confirm = new _alert('confirm');
+        this.confirm.bind();
 
         this.watchdog = new watchdog();
 
@@ -319,6 +323,7 @@ function common_xpcom(){
     this.check_image_version = function(){
         if (this.type == 'MAG200'){
             var cur_version = stb.RDir('ImageVersion').clearnl();
+            this.firmware_version = cur_version;
             _debug('cur_version:', cur_version);
             _debug('stb.user.image_version:', stb.user['image_version']);
             if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0'){
@@ -363,7 +368,8 @@ function common_xpcom(){
 
             this.user.fav_itv_on = parseInt(this.user.fav_itv_on, 10);
 
-            this.user['aspect'] = parseInt(this.user['aspect'], 10);
+            this.user['aspect']    = parseInt(this.user['aspect'],    10);
+            this.user['audio_out'] = parseInt(this.user['audio_out'], 10);
 
             this.locale = this.user.locale;
 
@@ -390,6 +396,9 @@ function common_xpcom(){
                 _debug('stb.GetSaturation after', stb.GetSaturation());
 
                 stb.SetAspect(this.user['aspect']);
+
+                stb.SetBufferSize(this.user['playback_buffer_size'], this.user['playback_buffer_bytes']);
+                stb.SetupSPdif(this.user['audio_out']);
             }catch(e){
                 _debug(e);
             }
@@ -863,7 +872,8 @@ function common_xpcom(){
             var self = this;
 
             try{
-                this.t_clock = window.setInterval(function(){self.tick()}, 30000);
+                this.t_clock   = window.setInterval(function(){self.tick()}, 30000);
+                this.t_clock_s = window.setInterval(function(){self.tick_s()}, 1000);
             }catch(e){
                 _debug(e);
             }
@@ -878,9 +888,14 @@ function common_xpcom(){
 
             try{
                 window.clearInterval(self.t_clock);
+                window.clearInterval(self.t_clock_s);
             }catch(e){
                 _debug(e);
             }
+        },
+
+        tick_s : function(){
+            this.timestamp = Math.round(new Date().getTime() / 1000);
         },
 
         tick : function(){
@@ -913,11 +928,6 @@ function common_xpcom(){
                 this.ap_hours = 0
             }
 
-
-            /*if (this.hours<10){
-                this.hours = '0'+this.hours;
-            }*/
-
             this.minutes = this.current_date.getMinutes();
             if (this.minutes<10){
                 this.minutes = '0'+this.minutes;
@@ -928,19 +938,15 @@ function common_xpcom(){
 
         show : function(){
             if (main_menu && main_menu.time && main_menu.date && main_menu.on){
-                //main_menu.time.innerHTML = this.hours + ':' + this.minutes;
                 main_menu.time.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
-                //main_menu.date.innerHTML = get_word('week_arr')[this.day] + ', ' + this.date + ' ' + get_word('month_arr')[this.month] + ', ' + this.year + get_word('year') + '.';
                 main_menu.date.innerHTML = get_word('date_format').format(get_word('week_arr')[this.day], this.date, get_word('month_arr')[this.month], this.year);
             }
 
             if (stb.player && stb.player.info && stb.player.info.on && stb.player.info.clock){
-                //stb.player.info.clock.innerHTML = this.hours + ':' + this.minutes;
                 stb.player.info.clock.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
             }
 
             if (module && module.tv && module.tv.on && module.tv.clock_box){
-                //module.tv.clock_box.innerHTML = this.hours + ':' + this.minutes;
                 module.tv.clock_box.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
             }
 
