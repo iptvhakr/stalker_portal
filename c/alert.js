@@ -18,7 +18,6 @@ function _alert(type){
     this.txt_container = {};
     
     this.hide_timer = 2000;
-    this.hide_to;
     
     this.callback = function(){};
     this.cancel_callback = function(){};
@@ -78,16 +77,14 @@ _alert.prototype.init = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 _alert.prototype.show = function(txt){
     _debug('_alert.show', txt);
     
-    if (this.hide_to){
-        window.clearTimeout(this.hide_to);
-    }
-    
-    var txt = txt || 'empty';
+    window.clearTimeout(this.hide_to);
+
+    txt = txt || 'empty';
     
     this.txt_container.innerHTML = txt;
     
@@ -97,17 +94,17 @@ _alert.prototype.show = function(txt){
     if (this.type == 'alert'){
         this.t_hide();
     }
-}
+};
 
 _alert.prototype.push = function(msg){
     _debug('_alert.push');
-    
+
     this.queue.push(msg);
-    
+
     _debug('this.queue', this.queue);
     
-    this.t_queue_handler();
-}
+    this.queue_handler();
+};
 
 _alert.prototype.queue_handler = function(){
     _debug('_alert.queue_handler');
@@ -132,13 +129,36 @@ _alert.prototype.queue_handler = function(){
             this.show(content);
         }else if (typeof(msg) == 'string'){
             this.show(msg);
+        }else if (typeof(msg) == 'object'){
+            
+            if (msg.hasOwnProperty('confirm_callback')){
+                this.set_confirm_callback(msg.confirm_callback);
+            }
+
+            if (msg.hasOwnProperty('callback')){
+                this.set_callback(msg.callback);
+            }
+
+            if (msg.hasOwnProperty('cancel_callback')){
+                this.set_cancel_callback(msg.cancel_callback);
+            }
+
+            if (msg.hasOwnProperty('msg')){
+
+                if (this.type == 'confirm'){
+                    msg.msg += '<br/><br/>OK - ' + get_word('alert_confirm');
+                    msg.msg += '<br/>EXIT - ' + get_word('alert_cancel');
+                }
+
+                this.show(msg.msg);
+            }
         }
         
         this.queue.splice(0, 1);
         
         _debug('this.queue before', this.queue);
     }
-}
+};
 
 _alert.prototype.t_queue_handler = function(){
     _debug('_alert.t_queue_handler');
@@ -146,7 +166,7 @@ _alert.prototype.t_queue_handler = function(){
     var self = this;
     
     window.setTimeout(function(){self.queue_handler()}, 2000);
-}
+};
 
 _alert.prototype.t_hide = function(){
     _debug('_alert.t_hide');
@@ -157,7 +177,7 @@ _alert.prototype.t_hide = function(){
         self.hide();
         
     }, this.hide_timer);
-}
+};
 
 _alert.prototype.hide = function(){
     _debug('_alert.hide');
@@ -169,25 +189,25 @@ _alert.prototype.hide = function(){
     this.callback = function(){};
     
     this.t_queue_handler();
-}
+};
 
 _alert.prototype.set_callback = function(callback){
     _debug('_alert.set_callback');
     
     this.callback = callback;
-}
+};
 
 _alert.prototype.set_cancel_callback = function(callback){
     _debug('_alert.set_cancel_callback');
     
     this.cancel_callback = callback;
-}
+};
 
 _alert.prototype.set_confirm_callback = function(callback){
     _debug('_alert.set_confirm_callback');
     
     this.confirm_callback = callback;
-}
+};
 
 _alert.prototype.bind = function(){
     
@@ -203,4 +223,4 @@ _alert.prototype.bind = function(){
         this.cancel_callback = function(){};
     }).priority_bind(key.EXIT, this);
     
-}
+};
