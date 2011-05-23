@@ -434,11 +434,38 @@
     position: absolute;
     right: 95px;
     top: 50px; 
-    background: url("i/pause_btn.png");
-    background-position: 0px 41px;
+    background: url("i/pause_btn.png") 0 41px;
+    /*background-position: 0 41px;*/
     height: 41px;
     width: 47px;
 }
+
+.rec_container{
+    position: absolute;
+    right: 95px;
+    top: 50px;
+    /*height: 41px;*/
+    /*width: 47px;*/
+}
+
+.rec_container .rec_left{
+    background: url("i/osd_rec.png") left no-repeat;
+    float: left;
+    width: 8px;
+    height: 41px;
+}
+
+.rec_container .rec_main{
+    background: url("i/osd_rec.png") right no-repeat;
+    float: left;
+    height: 33px;
+    padding: 8px 47px 0 0;
+    font-size: 22px;
+    text-shadow: #fff 0 1px 0;
+    color: #0064c8;
+}
+
+
 /* VOLUME */
 .volume{
     position: absolute;
