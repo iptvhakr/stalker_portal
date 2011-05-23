@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 16:56+0200\n"
-"PO-Revision-Date: 2011-04-18 16:57+0200\n"
+"POT-Creation-Date: 2011-05-23 12:29+0200\n"
+"PO-Revision-Date: 2011-05-23 13:19+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgid "Pressure"
 msgstr "Давление"
 
 #: ../../../lang/stb.php:12
-#: ../../../lang/stb.php:162
+#: ../../../lang/stb.php:163
 msgid "mm Hg"
 msgstr "мм. рт.ст."
 
@@ -33,7 +33,7 @@ msgid "Wind"
 msgstr "Ветер"
 
 #: ../../../lang/stb.php:14
-#: ../../../lang/stb.php:164
+#: ../../../lang/stb.php:165
 msgid "m/s"
 msgstr "м/с"
 
@@ -48,7 +48,7 @@ msgstr "Текущая погода недоступна"
 #: ../../../lang/stb.php:19
 #: ../../../lang/stb.php:70
 #: ../../../lang/stb.php:91
-#: ../../../lang/stb.php:172
+#: ../../../lang/stb.php:173
 msgid "VIEW"
 msgstr "ОТОБРАЖЕНИЕ"
 
@@ -99,7 +99,7 @@ msgstr "НАЙДЕНО"
 #: ../../../lang/stb.php:32
 #: ../../../lang/stb.php:121
 msgid "RECORDS"
-msgstr "ЗАПИСЕЙ"
+msgstr "ЗАПИСИ"
 
 #: ../../../lang/stb.php:33
 msgid "LOADING..."
@@ -418,11 +418,13 @@ msgid "SETTINGS"
 msgstr "НАСТРОЙКИ"
 
 #: ../../../lang/stb.php:130
-#: ../../../lang/stb.php:149
+#: ../../../lang/stb.php:150
+#: ../../../lang/stb.php:241
 msgid "CANCEL"
 msgstr "ОТМЕНА"
 
 #: ../../../lang/stb.php:131
+#: ../../../lang/stb.php:242
 msgid "SAVE"
 msgstr "СОХРАНИТЬ"
 
@@ -458,229 +460,293 @@ msgstr "Настройки сохранены.<br>Приставка будет 
 msgid "Error filling fields"
 msgstr "Ошибка заполнения полей"
 
-#: ../../../lang/stb.php:142
+#: ../../../lang/stb.php:141
+msgid "Saving error"
+msgstr "Ошибка при сохранении"
+
+#: ../../../lang/stb.php:143
 msgid "LOCALIZATION"
 msgstr "ЛОКАЛИЗАЦИЯ"
 
-#: ../../../lang/stb.php:143
+#: ../../../lang/stb.php:144
 msgid "Language of the interface"
 msgstr "Язык интерфейса"
 
-#: ../../../lang/stb.php:144
+#: ../../../lang/stb.php:145
 msgid "Country"
 msgstr "Страна"
 
-#: ../../../lang/stb.php:145
+#: ../../../lang/stb.php:146
 msgid "City"
 msgstr "Город"
 
-#: ../../../lang/stb.php:146
+#: ../../../lang/stb.php:147
 msgid "Use PAGE-/+ buttons to move through several menu items"
 msgstr "Кнопки PAGE-/+ для перемещения по нескольким пунктам"
 
-#: ../../../lang/stb.php:148
+#: ../../../lang/stb.php:149
 msgid "SOFTWARE UPDATE"
 msgstr "ОБНОВЛЕНИЕ ПО"
 
-#: ../../../lang/stb.php:150
+#: ../../../lang/stb.php:151
 msgid "START UPDATE"
 msgstr "НАЧАТЬ ОБНОВЛЕНИЕ"
 
-#: ../../../lang/stb.php:151
+#: ../../../lang/stb.php:152
 msgid "From HTTP"
 msgstr "Используя HTTP"
 
-#: ../../../lang/stb.php:152
+#: ../../../lang/stb.php:153
 msgid "From USB"
 msgstr "Используя USB"
 
-#: ../../../lang/stb.php:153
+#: ../../../lang/stb.php:154
 msgid "Source"
 msgstr "Источник"
 
-#: ../../../lang/stb.php:154
+#: ../../../lang/stb.php:155
 msgid "Method select"
 msgstr "Выбор метода"
 
-#: ../../../lang/stb.php:156
+#: ../../../lang/stb.php:157
 msgid "EMPTY"
 msgstr "ПУСТО"
 
-#: ../../../lang/stb.php:158
+#: ../../../lang/stb.php:159
 msgid "Exchange rate on"
 msgstr "Курс НБУ на"
 
-#: ../../../lang/stb.php:160
+#: ../../../lang/stb.php:161
 msgid "WEATHER"
 msgstr "ПОГОДА"
 
-#: ../../../lang/stb.php:161
+#: ../../../lang/stb.php:162
 msgid "pres.:"
 msgstr "давл.:"
 
-#: ../../../lang/stb.php:163
+#: ../../../lang/stb.php:164
 msgid "wind:"
 msgstr "ветер:"
 
-#: ../../../lang/stb.php:166
+#: ../../../lang/stb.php:167
 msgid "INFOPORTAL"
 msgstr "ИНФОПОРТАЛ"
 
-#: ../../../lang/stb.php:168
+#: ../../../lang/stb.php:169
 msgid "CITY INFO"
 msgstr "ГОРОДСКАЯ СПРАВКА"
 
-#: ../../../lang/stb.php:169
+#: ../../../lang/stb.php:170
 msgid "emergency"
 msgstr "экстренные"
 
-#: ../../../lang/stb.php:170
+#: ../../../lang/stb.php:171
 msgid "help"
 msgstr "справочные"
 
-#: ../../../lang/stb.php:171
+#: ../../../lang/stb.php:172
 msgid "other"
 msgstr "разные"
 
-#: ../../../lang/stb.php:174
+#: ../../../lang/stb.php:175
 msgid "HOROSCOPE"
 msgstr "ГОРОСКОП"
 
-#: ../../../lang/stb.php:176
+#: ../../../lang/stb.php:177
 msgid "JOKES"
 msgstr "АНЕКДОТЫ"
 
-#: ../../../lang/stb.php:178
+#: ../../../lang/stb.php:179
 msgid "GOTO"
 msgstr "ПЕРЕХОД"
 
-#: ../../../lang/stb.php:179
+#: ../../../lang/stb.php:180
 msgid "LIKE"
 msgstr "НРАВИТСЯ"
 
-#: ../../../lang/stb.php:180
+#: ../../../lang/stb.php:181
 msgid "BOOKMARK"
 msgstr "ЗАКЛАДКА"
 
-#: ../../../lang/stb.php:181
+#: ../../../lang/stb.php:182
 msgid "TO BOOKMARK"
 msgstr "К ЗАКЛАДКЕ"
 
-#: ../../../lang/stb.php:183
+#: ../../../lang/stb.php:184
 msgid "JOKE"
 msgstr "АНЕКДОТ"
 
-#: ../../../lang/stb.php:185
+#: ../../../lang/stb.php:186
 msgid "MASTERMIND"
 msgstr "ИГРА БЫКИ И КОРОВЫ"
 
-#: ../../../lang/stb.php:186
+#: ../../../lang/stb.php:187
 msgid "RULES"
 msgstr "ПРАВИЛА"
 
-#: ../../../lang/stb.php:187
+#: ../../../lang/stb.php:188
 msgid "RATING"
 msgstr "РЕЙТИНГ"
 
 #. / Short Bull
-#: ../../../lang/stb.php:189
+#: ../../../lang/stb.php:190
 msgid "B"
 msgstr "Б"
 
-#: ../../../lang/stb.php:191
+#: ../../../lang/stb.php:192
 msgid "C"
 msgstr "К"
 
-#: ../../../lang/stb.php:193
+#: ../../../lang/stb.php:194
 msgid "Your task is to guess the number of unduplicated four digits, the first of them - not zero. Every your guess will be compared with the number put forth a STB. If you guessed a digit, but it is not in place, then it is a COW (C). If you guessed, and a number, and its location, this BULL (B)."
 msgstr "Ваша задача отгадать число из четырех неповторяющихся цифр, причем первая из них - не ноль. Каждое Ваше предположение будет сравниваться с числом, которое загадала приставка. Если Вы отгадали цифру, но она стоит не на своем месте, то это КОРОВА (К). Если Вы отгадали и цифру, и её место, то это БЫК (Б)."
 
-#: ../../../lang/stb.php:194
+#: ../../../lang/stb.php:195
 msgid "Moving the cursor"
 msgstr "Перемещение курсора"
 
-#: ../../../lang/stb.php:195
+#: ../../../lang/stb.php:196
 msgid "Enter numbers into cells"
 msgstr "Ввод цифр в ячейки"
 
-#: ../../../lang/stb.php:196
+#: ../../../lang/stb.php:197
 msgid "Confirmation of the step"
 msgstr "Подтверждение хода"
 
-#: ../../../lang/stb.php:198
+#: ../../../lang/stb.php:199
 msgid "Moving through the pages of history moves"
 msgstr "Перемещение по страницам истории ходов"
 
-#: ../../../lang/stb.php:200
+#: ../../../lang/stb.php:201
 msgid "Service is disabled"
 msgstr "Услуга отключена"
 
-#: ../../../lang/stb.php:201
-msgid "Сhannel is not available"
+#: ../../../lang/stb.php:202
+msgid "Channel is not available"
 msgstr "Канал недоступен"
 
-#: ../../../lang/stb.php:203
+#: ../../../lang/stb.php:204
 msgid "TV Guide"
 msgstr "ТВ Гид"
 
-#: ../../../lang/stb.php:204
+#: ../../../lang/stb.php:205
 msgid "RECORD"
 msgstr "ЗАПИСАТЬ"
 
-#: ../../../lang/stb.php:205
+#: ../../../lang/stb.php:206
 msgid "REMIND"
 msgstr "НАПОМНИТЬ"
 
-#: ../../../lang/stb.php:206
+#: ../../../lang/stb.php:207
 msgid "Memo"
 msgstr "Напоминание"
 
-#: ../../../lang/stb.php:207
+#: ../../../lang/stb.php:208
 msgid "Goto channel"
 msgstr "Перейти на канал"
 
-#: ../../../lang/stb.php:208
+#: ../../../lang/stb.php:209
 msgid "Close"
 msgstr "Закрыть окно"
 
-#: ../../../lang/stb.php:209
+#: ../../../lang/stb.php:210
 msgid "on channel"
 msgstr "на канале"
 
-#: ../../../lang/stb.php:210
+#: ../../../lang/stb.php:211
 msgid "now begins"
 msgstr "сейчас начинается"
 
-#: ../../../lang/stb.php:211
+#: ../../../lang/stb.php:212
 msgid "in"
 msgstr "в"
 
-#: ../../../lang/stb.php:212
+#: ../../../lang/stb.php:213
 msgid "started"
 msgstr "началось"
 
 #. / TRANSLATORS: Search box languages. Comma separated without spaces.
-#: ../../../lang/stb.php:215
+#: ../../../lang/stb.php:216
 msgid "search_box_languages"
 msgstr "ru,en"
 
 #. / TRANSLATORS: {0} - day, {1} - date, {2} - month, {3} - year.
-#: ../../../lang/stb.php:218
+#: ../../../lang/stb.php:219
 msgid "date_format"
 msgstr "{0}, {1} {2}, {3}г."
 
 #. / TRANSLATORS: {0} - hours, {1} - minutes, {2} am/pm hour, {3} am/pm mark.
-#: ../../../lang/stb.php:221
+#: ../../../lang/stb.php:222
 msgid "time_format"
 msgstr "{0}:{1}"
 
-#: ../../../lang/stb.php:223
+#: ../../../lang/stb.php:224
 msgid "Timezone"
 msgstr "Часовой пояс"
 
-#: ../../../lang/stb.php:224
+#: ../../../lang/stb.php:225
 msgid "NTP Server"
 msgstr "NTP Сервер"
+
+#: ../../../lang/stb.php:227
+msgid "DELETE"
+msgstr "УДАЛИТЬ"
+
+#: ../../../lang/stb.php:228
+msgid "STOP"
+msgstr "ОСТАНОВИТЬ"
+
+#: ../../../lang/stb.php:229
+msgid "Do you really want to delete this record?"
+msgstr "Вы действительно хотите удалить эту запись?"
+
+#: ../../../lang/stb.php:230
+msgid "Do you really want to stop this record?"
+msgstr "Вы действительно хотите остановить эту запись?"
+
+#: ../../../lang/stb.php:232
+msgid "Confirm"
+msgstr "Подтверждение"
+
+#: ../../../lang/stb.php:233
+msgid "Cancel"
+msgstr "Отмена"
+
+#: ../../../lang/stb.php:235
+msgid "Server error. Try again later."
+msgstr "Ошибка сервера. Повторите попытку позже."
+
+#: ../../../lang/stb.php:236
+msgid "RECORDING DURATION"
+msgstr "ДЛИТЕЛЬНОСТЬ ЗАПИСИ, ч"
+
+#: ../../../lang/stb.php:238
+msgid "Buffer size"
+msgstr "Размер буфера"
+
+#: ../../../lang/stb.php:239
+msgid "Time, sec"
+msgstr "Время, с"
+
+#: ../../../lang/stb.php:240
+msgid "PLAYBACK"
+msgstr "ВОСПРОИЗВЕДЕНИЕ"
+
+#: ../../../lang/stb.php:244
+msgid "Audio out"
+msgstr "Аудио выходы"
+
+#: ../../../lang/stb.php:245
+msgid "Analog only"
+msgstr "Только аналоговые"
+
+#: ../../../lang/stb.php:246
+msgid "Analog and S/PDIF 2-channel PCM"
+msgstr "Аналоговые и 2-x канальный PCM в  S/PDIF"
+
+#: ../../../lang/stb.php:247
+msgid "S/PDIF raw or 2-channel PCM"
+msgstr "S/PDIF не декодированный (RAW) или S/PDIF PCM"
 
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
 #: ../../../lib/ajaxresponse.class.php:40
@@ -871,37 +937,37 @@ msgstr "Все"
 msgid "[No channel info]"
 msgstr "[телепрограмма отсутствует]"
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sun"
 msgstr "Вс"
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Mon"
 msgstr "Пн"
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Tue"
 msgstr "Вт"
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Wed"
 msgstr "Ср"
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Thu"
 msgstr "Чт"
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Fri"
 msgstr "Пт"
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 msgid "Sat"
 msgstr "Сб"
 
@@ -1017,34 +1083,54 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
+#: ../../../lib/remotepvr.class.php:68
+msgid "recording"
+msgstr "идет запись"
+
+#: ../../../lib/remotepvr.class.php:70
+msgid "scheduled"
+msgstr "запланировано"
+
+#. / TRANSLATORS: don't translate this.
+#: ../../../lib/stb.class.php:664
+#: ../../../lib/stb.class.php:668
+#: ../../../lib/weatherco.class.php:118
+#: ../../../lib/weatherco.class.php:138
+msgid "city_name_field"
+msgstr "name"
+
+#: ../../../lib/streamrecorder.class.php:106
+msgid "Starting recording"
+msgstr "Начинается запись"
+
+#: ../../../lib/streamrecorder.class.php:316
+msgid "Stopped recording"
+msgstr "Остановлена запись"
+
 #. / Hours
-#: ../../../lib/pvr.class.php:97
+#: ../../../lib/system.class.php:69
 msgid "h"
 msgstr "ч"
 
 #. / Minutes
-#: ../../../lib/pvr.class.php:103
+#: ../../../lib/system.class.php:74
 msgid "m"
 msgstr "м"
 
 #. / Seconds
-#: ../../../lib/pvr.class.php:109
+#: ../../../lib/system.class.php:79
 msgid "s"
 msgstr "с"
 
-#: ../../../lib/pvr.class.php:125
+#: ../../../lib/system.class.php:99
+#: ../../../lib/vod.class.php:520
 msgid "today"
 msgstr "сегодня"
 
-#: ../../../lib/pvr.class.php:128
+#: ../../../lib/system.class.php:101
+#: ../../../lib/vod.class.php:523
 msgid "yesterday"
 msgstr "вчера"
-
-#. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:653
-#: ../../../lib/stb.class.php:657
-msgid "city_name_field"
-msgstr "name"
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
 #: ../../../lib/vod.class.php:465
