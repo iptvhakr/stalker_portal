@@ -308,7 +308,7 @@
             
             this.full_info_switch.bind(key.RIGHT, this).bind(key.INFO, this);
 
-            var color_buttons = this.buttons_bar.cloneNode(true);
+            var color_buttons = this.color_buttons.buttons_bar.cloneNode(true);
             
             color_buttons.addClass('disabled_all_buttons');
             
