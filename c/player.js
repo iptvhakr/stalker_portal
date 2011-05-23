@@ -1338,7 +1338,7 @@ player.prototype.bind = function(){
             this.con_menu && this.con_menu.show && this.con_menu.show();
         }
         
-    }).bind(key.NULL, this);
+    }).bind(key.WEB, this);
     
     
     (function(){
