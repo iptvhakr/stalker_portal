@@ -28,13 +28,16 @@ if (@$_POST['add']){
                 storage_ip, 
                 nfs_home_path, 
                 max_online,
-                for_moderator) 
+                for_moderator,
+                for_records
+                )
             values (
                 "'.@$_POST['storage_name'].'",
                 "'.@$_POST['storage_ip'].'",
                 "'.@$_POST['nfs_home_path'].'",
                 "'.@$_POST['max_online'].'",
-                "'.@intval($_POST['for_moderator']).'"
+                "'.@intval($_POST['for_moderator']).'",
+                "'.@intval($_POST['for_records']).'"
             )';
     $db->executeQuery($sql);
     header("Location: storages.php");
@@ -50,7 +53,8 @@ if (!empty($id)){
                     storage_ip="'.@$_POST['storage_ip'].'",
                     nfs_home_path="'.@$_POST['nfs_home_path'].'",
                     max_online="'.@$_POST['max_online'].'",
-                    for_moderator="'.@intval($_POST['for_moderator']).'"
+                    for_moderator="'.@intval($_POST['for_moderator']).'",
+                    for_records="'.@intval($_POST['for_records']).'"
                 where id='.intval($_GET['id']);
         $db->executeQuery($sql);
         header("Location: storages.php");
@@ -212,27 +216,31 @@ a:hover{
             <table class="form">
                 <tr>
                     <td>Имя</td>
-                    <td><input type="text" name="storage_name" value="<?echo @$edit_storage['storage_name']?>"></input></td>
+                    <td><input type="text" name="storage_name" value="<?echo @$edit_storage['storage_name']?>"/></td>
                 </tr>
                 <tr>
                     <td>IP</td>
-                    <td><input type="text" name="storage_ip" value="<?echo @$edit_storage['storage_ip']?>"></input></td>
+                    <td><input type="text" name="storage_ip" value="<?echo @$edit_storage['storage_ip']?>"/></td>
                 </tr>
                 <tr>
                     <td>Домашняя директория</td>
-                    <td><input type="text" name="nfs_home_path" value="<?echo @$edit_storage['nfs_home_path']?>"></input></td>
+                    <td><input type="text" name="nfs_home_path" value="<?echo @$edit_storage['nfs_home_path']?>"/></td>
                 </tr>
                 <tr>
                     <td>Max online</td>
-                    <td><input type="text" name="max_online" value="<?echo @$edit_storage['max_online']?>"></input></td>
+                    <td><input type="text" name="max_online" value="<?echo @$edit_storage['max_online']?>"/></td>
+                </tr>
+                <tr>
+                    <td>Запись ТВ</td>
+                    <td><input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
                     <td>Только модераторы</td>
-                    <td><input type="checkbox" name="for_moderator" value="1" <? if(@$edit_storage['for_moderator']){ echo 'checked="checked"'; } ?>></input></td>
+                    <td><input type="checkbox" name="for_moderator" value="1" <? if(@$edit_storage['for_moderator']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"></input></td>
+                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"/></td>
                 </tr>
             </table>
         </form>
