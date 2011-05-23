@@ -68,10 +68,10 @@
     float: left;
 }
 
-.ico_issue{
+.ico_confirm{
     height: 80px;
     width: 70px;
-    background: url("i/ico_issue.png");
+    background: url("i/ico_confirm.png");
     float: left;
 }
 
@@ -89,14 +89,14 @@
     vertical-align:middle; 
 }
 
-.alert_container { 
+.confirm_container, .alert_container {
     position:relative; 
     vertical-align:middle; 
     display:table-cell; 
 }
 
 
-.alert_container table{
+.confirm_container table, .alert_container table{
     border: 0;
     border-collapse: collapse;
     margin: auto;
