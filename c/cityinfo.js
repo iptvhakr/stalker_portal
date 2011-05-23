@@ -85,10 +85,10 @@
         [
             {"label" : word['cityinfo_main'], "cmd" : function(){this.parent.load_params.part = 'main'}},
             {"label" : word['cityinfo_help'], "cmd" : function(){this.parent.load_params.part = 'help'}},
-            {"label" : word['cityinfo_other'], "cmd" : function(){this.parent.load_params.part = 'other'}},
+            {"label" : word['cityinfo_other'], "cmd" : function(){this.parent.load_params.part = 'other'}}
         ],
         {
-            "offset_x" : 27,
+            "offset_x" : 27
         }
     );
     
