@@ -74,7 +74,7 @@ class Stb
         }
 
         //if ($this->is_moderator && !empty($_COOKIE['debug'])){
-        if (!empty($_COOKIE['debug'])){
+        if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
             Mysql::$debug = true;
         }
     }
@@ -103,7 +103,7 @@ class Stb
             $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
 
             $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
-
+            
             date_default_timezone_set($this->timezone);
 
             $date = new DateTime();
@@ -171,7 +171,7 @@ class Stb
             array('id' => $this->id));
         
         $master = new VideoMaster();
-        $master->checkAllHomeDirs();
+        /*$master->checkAllHomeDirs();*/
         
         $profile = $this->params;
         $profile['storages'] = $master->getStoragesForStb();
@@ -417,7 +417,7 @@ class Stb
                     preg_match("/(\d+).mpg$/", $param, $tmp_arr);
                     $karaoke_id = intval($tmp_arr[1]);
                     
-                    $karaoke = $this->db->from('karaoke')->where(array('id' => $karaoke_id))->get->first();
+                    $karaoke = $this->db->from('karaoke')->where(array('id' => $karaoke_id))->get()->first();
                     
                     if (!empty($karaoke)){
                         $update_data['now_playing_content'] = $karaoke['name'];
@@ -609,11 +609,11 @@ class Stb
 
     public function getLocales(){
 
-        $result = array('options' => array());
+        $result = array();
 
         foreach (Config::get('allowed_locales') as $label => $locale){
             $selected = ($this->locale == $locale)? 1 : 0;
-            $result['options'][] = array('label' => $label, 'value' => $locale, 'selected' => $selected);
+            $result[] = array('label' => $label, 'value' => $locale, 'selected' => $selected);
         }
 
         return $result;
@@ -631,15 +631,29 @@ class Stb
         return false;
     }
 
+    public function setPlaybackSettings(){
+        $playback_buffer_bytes = intval($_REQUEST['playback_buffer_bytes']);
+        $playback_buffer_size  = intval($_REQUEST['playback_buffer_size']);
+        $audio_out             = intval($_REQUEST['audio_out']);
+
+        return Mysql::getInstance()->update('users',
+            array(
+                'playback_buffer_bytes' => $playback_buffer_bytes,
+                'playback_buffer_size'  => $playback_buffer_size,
+                'audio_out'             => $audio_out
+            ),
+            array('id' => $this->id));
+    }
+
     public function getCountries(){
 
-        $result = array('options' => array());
+        $result = array();
 
         $countries = Mysql::getInstance()->from('countries')->orderby('name_en')->get()->all();
 
         foreach ($countries as $country){
             $selected = ($this->country_id == $country['id'])? 1 : 0;
-            $result['options'][] = array('label' => $country['name_en'], 'value' => $country['id'], 'selected' => $selected);
+            $result[] = array('label' => $country['name_en'], 'value' => $country['id'], 'selected' => $selected);
         }
 
         return $result;
@@ -649,7 +663,7 @@ class Stb
 
         $country_id = intval($_REQUEST['country_id']);
 
-        $result = array('options' => array());
+        $result = array();
 
         /// TRANSLATORS: don't translate this.
         $cities = Mysql::getInstance()->from('cities')->where(array('country_id' => $country_id))->orderby(_('city_name_field'))->get()->all();
@@ -657,7 +671,7 @@ class Stb
         foreach ($cities as $city){
             $selected = ($this->city_id == $city['id'])? 1 : 0;
             $city_name = empty($city[_('city_name_field')]) ? $city['name_en'] : $city[_('city_name_field')];
-            $result['options'][] = array('label' => $city_name , 'value' => $city['id'], 'timezone' => $city['timezone'], 'selected' => $selected);
+            $result[] = array('label' => $city_name , 'value' => $city['id'], 'timezone' => $city['timezone'], 'selected' => $selected);
         }
 
         return $result;
@@ -665,7 +679,7 @@ class Stb
 
     public function getTimezones(){
 
-        $result = array('options' => array());
+        $result = array();
 
         $timezones = Mysql::getInstance()->from('cities')->groupby('timezone')->orderby('timezone')->get()->all('timezone');
 
@@ -674,7 +688,7 @@ class Stb
             if (empty($timezone)) continue;
             
             $selected = ($this->timezone == $timezone)? 1 : 0;
-            $result['options'][] = array('label' => $timezone, 'value' => $timezone, 'selected' => $selected);
+            $result[] = array('label' => $timezone, 'value' => $timezone, 'selected' => $selected);
         }
 
         return $result;
