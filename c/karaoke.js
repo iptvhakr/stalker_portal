@@ -156,8 +156,9 @@
         {"label" : word['karaoke_sampling'], "cmd" : karaoke.sidebar_switcher}
     ]);
     
-    karaoke.color_buttons[karaoke.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
-    
+    //karaoke.color_buttons[karaoke.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
+    karaoke.color_buttons.get('red').disable();
+
     karaoke.init_sidebar();
     
     karaoke.sidebar.init_items("abc", {"header" : word['karaoke_by_letter'], "width" : 26, "align" : "center"});
