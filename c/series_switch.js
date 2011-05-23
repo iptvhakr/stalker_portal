@@ -75,7 +75,7 @@ series_switch.prototype.set = function(){
     _debug('series_switch.set');
     
     this.callback(this.series[this.cur_idx]);
-    
+
     this.hide();
 };
 
