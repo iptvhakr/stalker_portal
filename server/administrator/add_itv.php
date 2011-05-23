@@ -83,7 +83,8 @@ if (!$error){
                                         hd,
                                         cost,
                                         cmd, 
-                                        descr, 
+                                        mc_cmd,
+                                        descr,
                                         tv_genre_id, 
                                         status,
                                         xmltv_id,
@@ -99,7 +100,8 @@ if (!$error){
                                         '".$hd."',
                                         '".@$_POST['cost']."',
                                         '".@$_GET['cmd']."', 
-                                        '".@$_POST['descr']."', 
+                                        '".@$_POST['mc_cmd']."',
+                                        '".@$_POST['descr']."',
                                         '".@$_POST['tv_genre_id']."', 
                                         1,
                                         '".@$_POST['xmltv_id']."',
@@ -124,6 +126,7 @@ if (!$error){
             $query = "update itv 
                                 set name='".$_POST['name']."', 
                                 cmd='".$_GET['cmd']."', 
+                                mc_cmd='".$_POST['mc_cmd']."',
                                 use_http_tmp_link='".$use_http_tmp_link."',
                                 censored='".$censored."',
                                 base_ch='".$base_ch."',
@@ -137,7 +140,7 @@ if (!$error){
                                 service_id='".trim($_POST['service_id'])."',
                                 volume_correction=".intval($_POST['volume_correction'])."
                             where id=".intval(@$_GET['id']);
-            //echo $query;
+            echo $query;
             $rs=$db->executeQuery($query);
             header("Location: add_itv.php");
             exit;
@@ -284,7 +287,7 @@ while(@$rs->next()){
     echo "<td class='list' style='color:#5588FF'><b>".$arr['name']."</b></td>";
     echo "<td class='list'>".$arr['cmd']."</td>";
     //echo "<td class='list'>".$arr['descr']."</td>";
-    echo "<td class='list'>".$arr['genres_name']."</td>";
+    echo "<td class='list'>"._($arr['genres_name'])."</td>";
     echo "<td class='list'>".$arr['volume_correction']."</td>";
     
     echo "<td class='list' align='center'>\n";
@@ -318,6 +321,7 @@ if (@$_GET['edit']){
         $name     = $arr['name'];
         $number   = $arr['number'];
         $cmd      = $arr['cmd'];
+        $mc_cmd   = $arr['mc_cmd'];
         $tv_genre_id = $arr['tv_genre_id'];
         $descr    = $arr['descr'];
         $status   = $arr['status'];
@@ -371,14 +375,14 @@ function get_genres(){
 ?>
 <script type="text/javascript">
 function save(){
-    form_ = document.getElementById('form_')
+    form_ = document.getElementById('form_');
     
-    name = document.getElementById('name').value
-    cmd = document.getElementById('cmd').value
-    id = document.getElementById('id').value
+    name = document.getElementById('name').value;
+    cmd = document.getElementById('cmd').value;
+    id = document.getElementById('id').value;
     //descr = document.getElementById('descr').value
     
-    action = 'add_itv.php?name='+name+'&cmd='+cmd+'&id='+id
+    action = 'add_itv.php?name='+name+'&cmd='+cmd+'&id='+id;
     //alert(action)
     if(document.getElementById('action').value == 'edit'){
         action += '&update=1'
@@ -388,8 +392,8 @@ function save(){
     }
     
     //alert(action)
-    form_.action = action
-    form_.method = 'POST'
+    form_.action = action;
+    form_.method = 'POST';
     //document.location=action
     form_.submit()
 }
@@ -492,6 +496,14 @@ function popup(src){
            </td>
            <td>
             <input id="cmd" name="cmd" size="50" type="text" value="<? echo @$cmd ?>">
+           </td>
+        </tr>
+        <tr>
+           <td align="right">
+            Адрес для записи (мультикаст):
+           </td>
+           <td>
+            <input id="mc_cmd" name="mc_cmd" size="50" type="text" value="<? echo @$mc_cmd ?>">
            </td>
         </tr>
         <tr>
