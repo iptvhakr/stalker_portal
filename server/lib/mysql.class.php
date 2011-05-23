@@ -621,7 +621,7 @@ class Mysql
             
             return $value;
         //}elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && !strpos($value, '+')){
-        }elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()'))){
+        }elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && strpos(strtoupper(trim($value)), 'UNIX_TIMESTAMP') === false){
             
             $value = "'".$this->escape_str($value)."'";
         }else{
