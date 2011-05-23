@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 16:56+0200\n"
-"PO-Revision-Date: 2011-04-18 16:56+0200\n"
+"POT-Creation-Date: 2011-05-23 12:29+0200\n"
+"PO-Revision-Date: 2011-05-23 12:29+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgid "Pressure"
 msgstr ""
 
 #: ../../../lang/stb.php:12
-#: ../../../lang/stb.php:162
+#: ../../../lang/stb.php:163
 msgid "mm Hg"
 msgstr ""
 
@@ -33,7 +33,7 @@ msgid "Wind"
 msgstr ""
 
 #: ../../../lang/stb.php:14
-#: ../../../lang/stb.php:164
+#: ../../../lang/stb.php:165
 msgid "m/s"
 msgstr ""
 
@@ -48,7 +48,7 @@ msgstr ""
 #: ../../../lang/stb.php:19
 #: ../../../lang/stb.php:70
 #: ../../../lang/stb.php:91
-#: ../../../lang/stb.php:172
+#: ../../../lang/stb.php:173
 msgid "VIEW"
 msgstr ""
 
@@ -90,7 +90,7 @@ msgstr ""
 
 #: ../../../lang/stb.php:30
 msgid "FROM"
-msgstr ""
+msgstr "OF"
 
 #: ../../../lang/stb.php:31
 msgid "FOUND"
@@ -418,11 +418,13 @@ msgid "SETTINGS"
 msgstr ""
 
 #: ../../../lang/stb.php:130
-#: ../../../lang/stb.php:149
+#: ../../../lang/stb.php:150
+#: ../../../lang/stb.php:241
 msgid "CANCEL"
 msgstr ""
 
 #: ../../../lang/stb.php:131
+#: ../../../lang/stb.php:242
 msgid "SAVE"
 msgstr ""
 
@@ -458,228 +460,292 @@ msgstr ""
 msgid "Error filling fields"
 msgstr ""
 
-#: ../../../lang/stb.php:142
-msgid "LOCALIZATION"
+#: ../../../lang/stb.php:141
+msgid "Saving error"
 msgstr ""
 
 #: ../../../lang/stb.php:143
-msgid "Language of the interface"
+msgid "LOCALIZATION"
 msgstr ""
 
 #: ../../../lang/stb.php:144
-msgid "Country"
+msgid "Language of the interface"
 msgstr ""
 
 #: ../../../lang/stb.php:145
-msgid "City"
+msgid "Country"
 msgstr ""
 
 #: ../../../lang/stb.php:146
+msgid "City"
+msgstr ""
+
+#: ../../../lang/stb.php:147
 msgid "Use PAGE-/+ buttons to move through several menu items"
 msgstr ""
 
-#: ../../../lang/stb.php:148
+#: ../../../lang/stb.php:149
 msgid "SOFTWARE UPDATE"
 msgstr ""
 
-#: ../../../lang/stb.php:150
+#: ../../../lang/stb.php:151
 msgid "START UPDATE"
 msgstr ""
 
-#: ../../../lang/stb.php:151
+#: ../../../lang/stb.php:152
 msgid "From HTTP"
 msgstr ""
 
-#: ../../../lang/stb.php:152
+#: ../../../lang/stb.php:153
 msgid "From USB"
 msgstr ""
 
-#: ../../../lang/stb.php:153
+#: ../../../lang/stb.php:154
 msgid "Source"
 msgstr ""
 
-#: ../../../lang/stb.php:154
+#: ../../../lang/stb.php:155
 msgid "Method select"
 msgstr ""
 
-#: ../../../lang/stb.php:156
+#: ../../../lang/stb.php:157
 msgid "EMPTY"
 msgstr ""
 
-#: ../../../lang/stb.php:158
+#: ../../../lang/stb.php:159
 msgid "Exchange rate on"
 msgstr ""
 
-#: ../../../lang/stb.php:160
+#: ../../../lang/stb.php:161
 msgid "WEATHER"
 msgstr ""
 
-#: ../../../lang/stb.php:161
+#: ../../../lang/stb.php:162
 msgid "pres.:"
 msgstr ""
 
-#: ../../../lang/stb.php:163
+#: ../../../lang/stb.php:164
 msgid "wind:"
 msgstr ""
 
-#: ../../../lang/stb.php:166
+#: ../../../lang/stb.php:167
 msgid "INFOPORTAL"
 msgstr ""
 
-#: ../../../lang/stb.php:168
+#: ../../../lang/stb.php:169
 msgid "CITY INFO"
 msgstr ""
 
-#: ../../../lang/stb.php:169
+#: ../../../lang/stb.php:170
 msgid "emergency"
 msgstr ""
 
-#: ../../../lang/stb.php:170
+#: ../../../lang/stb.php:171
 msgid "help"
 msgstr ""
 
-#: ../../../lang/stb.php:171
+#: ../../../lang/stb.php:172
 msgid "other"
 msgstr ""
 
-#: ../../../lang/stb.php:174
+#: ../../../lang/stb.php:175
 msgid "HOROSCOPE"
 msgstr ""
 
-#: ../../../lang/stb.php:176
+#: ../../../lang/stb.php:177
 msgid "JOKES"
 msgstr ""
 
-#: ../../../lang/stb.php:178
+#: ../../../lang/stb.php:179
 msgid "GOTO"
 msgstr ""
 
-#: ../../../lang/stb.php:179
+#: ../../../lang/stb.php:180
 msgid "LIKE"
 msgstr ""
 
-#: ../../../lang/stb.php:180
+#: ../../../lang/stb.php:181
 msgid "BOOKMARK"
 msgstr ""
 
-#: ../../../lang/stb.php:181
+#: ../../../lang/stb.php:182
 msgid "TO BOOKMARK"
 msgstr ""
 
-#: ../../../lang/stb.php:183
+#: ../../../lang/stb.php:184
 msgid "JOKE"
 msgstr ""
 
-#: ../../../lang/stb.php:185
+#: ../../../lang/stb.php:186
 msgid "MASTERMIND"
 msgstr ""
 
-#: ../../../lang/stb.php:186
+#: ../../../lang/stb.php:187
 msgid "RULES"
 msgstr ""
 
-#: ../../../lang/stb.php:187
+#: ../../../lang/stb.php:188
 msgid "RATING"
 msgstr ""
 
 #. / Short Bull
-#: ../../../lang/stb.php:189
+#: ../../../lang/stb.php:190
 msgid "B"
 msgstr ""
 
-#: ../../../lang/stb.php:191
+#: ../../../lang/stb.php:192
 msgid "C"
 msgstr ""
 
-#: ../../../lang/stb.php:193
+#: ../../../lang/stb.php:194
 msgid "Your task is to guess the number of unduplicated four digits, the first of them - not zero. Every your guess will be compared with the number put forth a STB. If you guessed a digit, but it is not in place, then it is a COW (C). If you guessed, and a number, and its location, this BULL (B)."
 msgstr ""
 
-#: ../../../lang/stb.php:194
+#: ../../../lang/stb.php:195
 msgid "Moving the cursor"
 msgstr ""
 
-#: ../../../lang/stb.php:195
+#: ../../../lang/stb.php:196
 msgid "Enter numbers into cells"
 msgstr ""
 
-#: ../../../lang/stb.php:196
+#: ../../../lang/stb.php:197
 msgid "Confirmation of the step"
 msgstr ""
 
-#: ../../../lang/stb.php:198
+#: ../../../lang/stb.php:199
 msgid "Moving through the pages of history moves"
 msgstr ""
 
-#: ../../../lang/stb.php:200
+#: ../../../lang/stb.php:201
 msgid "Service is disabled"
 msgstr ""
 
-#: ../../../lang/stb.php:201
-msgid "Сhannel is not available"
-msgstr ""
-
-#: ../../../lang/stb.php:203
-msgid "TV Guide"
+#: ../../../lang/stb.php:202
+msgid "Channel is not available"
 msgstr ""
 
 #: ../../../lang/stb.php:204
-msgid "RECORD"
+msgid "TV Guide"
 msgstr ""
 
 #: ../../../lang/stb.php:205
-msgid "REMIND"
+msgid "RECORD"
 msgstr ""
 
 #: ../../../lang/stb.php:206
-msgid "Memo"
+msgid "REMIND"
 msgstr ""
 
 #: ../../../lang/stb.php:207
-msgid "Goto channel"
+msgid "Memo"
 msgstr ""
 
 #: ../../../lang/stb.php:208
-msgid "Close"
+msgid "Goto channel"
 msgstr ""
 
 #: ../../../lang/stb.php:209
-msgid "on channel"
+msgid "Close"
 msgstr ""
 
 #: ../../../lang/stb.php:210
-msgid "now begins"
+msgid "on channel"
 msgstr ""
 
 #: ../../../lang/stb.php:211
-msgid "in"
+msgid "now begins"
 msgstr ""
 
 #: ../../../lang/stb.php:212
+msgid "in"
+msgstr ""
+
+#: ../../../lang/stb.php:213
 msgid "started"
 msgstr ""
 
 #. / TRANSLATORS: Search box languages. Comma separated without spaces.
-#: ../../../lang/stb.php:215
+#: ../../../lang/stb.php:216
 msgid "search_box_languages"
 msgstr "en"
 
 #. / TRANSLATORS: {0} - day, {1} - date, {2} - month, {3} - year.
-#: ../../../lang/stb.php:218
+#: ../../../lang/stb.php:219
 msgid "date_format"
 msgstr "{0}, {2} {1}, {3}"
 
 #. / TRANSLATORS: {0} - hours, {1} - minutes, {2} am/pm hour, {3} am/pm mark.
-#: ../../../lang/stb.php:221
+#: ../../../lang/stb.php:222
 msgid "time_format"
 msgstr "{2}:{1} {3}"
 
-#: ../../../lang/stb.php:223
+#: ../../../lang/stb.php:224
 msgid "Timezone"
 msgstr ""
 
-#: ../../../lang/stb.php:224
+#: ../../../lang/stb.php:225
 msgid "NTP Server"
+msgstr ""
+
+#: ../../../lang/stb.php:227
+msgid "DELETE"
+msgstr ""
+
+#: ../../../lang/stb.php:228
+msgid "STOP"
+msgstr ""
+
+#: ../../../lang/stb.php:229
+msgid "Do you really want to delete this record?"
+msgstr ""
+
+#: ../../../lang/stb.php:230
+msgid "Do you really want to stop this record?"
+msgstr ""
+
+#: ../../../lang/stb.php:232
+msgid "Confirm"
+msgstr ""
+
+#: ../../../lang/stb.php:233
+msgid "Cancel"
+msgstr ""
+
+#: ../../../lang/stb.php:235
+msgid "Server error. Try again later."
+msgstr ""
+
+#: ../../../lang/stb.php:236
+msgid "RECORDING DURATION"
+msgstr "RECORDING DURATION, h"
+
+#: ../../../lang/stb.php:238
+msgid "Buffer size"
+msgstr ""
+
+#: ../../../lang/stb.php:239
+msgid "Time, sec"
+msgstr ""
+
+#: ../../../lang/stb.php:240
+msgid "PLAYBACK"
+msgstr ""
+
+#: ../../../lang/stb.php:244
+msgid "Audio out"
+msgstr ""
+
+#: ../../../lang/stb.php:245
+msgid "Analog only"
+msgstr ""
+
+#: ../../../lang/stb.php:246
+msgid "Analog and S/PDIF 2-channel PCM"
+msgstr ""
+
+#: ../../../lang/stb.php:247
+msgid "S/PDIF raw or 2-channel PCM"
 msgstr ""
 
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
@@ -871,37 +937,37 @@ msgstr ""
 msgid "[No channel info]"
 msgstr ""
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sun"
 msgstr ""
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Mon"
 msgstr ""
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Tue"
 msgstr ""
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Wed"
 msgstr ""
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Thu"
 msgstr ""
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 #: ../../../lib/gismeteo.class.php:29
 msgid "Fri"
 msgstr ""
 
-#: ../../../lib/epg.class.php:566
+#: ../../../lib/epg.class.php:589
 msgid "Sat"
 msgstr ""
 
@@ -1017,34 +1083,54 @@ msgstr ""
 msgid "wind"
 msgstr ""
 
+#: ../../../lib/remotepvr.class.php:68
+msgid "recording"
+msgstr ""
+
+#: ../../../lib/remotepvr.class.php:70
+msgid "scheduled"
+msgstr ""
+
+#. / TRANSLATORS: don't translate this.
+#: ../../../lib/stb.class.php:664
+#: ../../../lib/stb.class.php:668
+#: ../../../lib/weatherco.class.php:118
+#: ../../../lib/weatherco.class.php:138
+msgid "city_name_field"
+msgstr "name_en"
+
+#: ../../../lib/streamrecorder.class.php:106
+msgid "Starting recording"
+msgstr ""
+
+#: ../../../lib/streamrecorder.class.php:316
+msgid "Stopped recording"
+msgstr ""
+
 #. / Hours
-#: ../../../lib/pvr.class.php:97
+#: ../../../lib/system.class.php:69
 msgid "h"
 msgstr ""
 
 #. / Minutes
-#: ../../../lib/pvr.class.php:103
+#: ../../../lib/system.class.php:74
 msgid "m"
 msgstr ""
 
 #. / Seconds
-#: ../../../lib/pvr.class.php:109
+#: ../../../lib/system.class.php:79
 msgid "s"
 msgstr ""
 
-#: ../../../lib/pvr.class.php:125
+#: ../../../lib/system.class.php:99
+#: ../../../lib/vod.class.php:520
 msgid "today"
 msgstr ""
 
-#: ../../../lib/pvr.class.php:128
+#: ../../../lib/system.class.php:101
+#: ../../../lib/vod.class.php:523
 msgid "yesterday"
 msgstr ""
-
-#. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:653
-#: ../../../lib/stb.class.php:657
-msgid "city_name_field"
-msgstr "name_en"
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
 #: ../../../lib/vod.class.php:465
