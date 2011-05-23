@@ -54,10 +54,19 @@
 #epg_simple .mark_memo_block{
     position: absolute;
     top: 1px;
-    left: 1px;
+    left: 9px;
     height: 8px;
     width: 8px;
     background-image: url("i/epg_green_mark.png");
+}
+
+#epg_simple .mark_rec_block{
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    height: 8px;
+    width: 8px;
+    background-image: url("i/epg_red_mark.png");
 }
 
 #epg_simple .blue_row_bg[rel="close"] .name_block{
