@@ -177,9 +177,8 @@
                 this.is_audio = true;
             }else{
                 this.is_audio = false;
-                
-                stb.player.prev_layer = this;
                 this.hide(true);
+                stb.player.prev_layer = this;
             }
             
             _debug('this.dir_hist', this.dir_hist);
