@@ -86,21 +86,21 @@ class System
      * Convert datetime to human readable date.
      *
      * @static
-     * @param int|string $datetime
+     * @param int|string timestamp $timestamp
      * @return string
      */
-    public static function convertDatetimeToHuman($datetime){
+    public static function convertDatetimeToHuman($timestamp){
 
         $this_mm = date("m");
         $this_dd = date("d");
         $this_yy = date("Y");
 
-        if ($datetime > mktime(0,0,0, $this_mm, $this_dd, $this_yy)){
-            $human_date = _('today').', '.date("H:i", $datetime);
-        }elseif ($datetime > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy)){
-            $human_date = _('yesterday').', '.date("H:i", $datetime);
+        if ($timestamp > mktime(0,0,0, $this_mm, $this_dd, $this_yy) && $timestamp < mktime(24,0,0, $this_mm, $this_dd, $this_yy)){
+            $human_date = _('today').', '.date("H:i", $timestamp);
+        }elseif ($timestamp > mktime(0,0,0, $this_mm, $this_dd-1, $this_yy) && $timestamp < mktime(24,0,0, $this_mm, $this_dd-1, $this_yy)){
+            $human_date = _('yesterday').', '.date("H:i", $timestamp);
         }else{
-            $human_date = date("d.m.Y H:i", $datetime);
+            $human_date = date("d.m.Y H:i", $timestamp);
         }
 
         return $human_date;
