@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-23 12:29+0200\n"
-"PO-Revision-Date: 2011-05-23 12:29+0200\n"
+"POT-Creation-Date: 2011-05-26 13:56+0200\n"
+"PO-Revision-Date: 2011-05-26 13:56+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -419,12 +419,12 @@ msgstr ""
 
 #: ../../../lang/stb.php:130
 #: ../../../lang/stb.php:150
-#: ../../../lang/stb.php:241
+#: ../../../lang/stb.php:245
 msgid "CANCEL"
 msgstr ""
 
 #: ../../../lang/stb.php:131
-#: ../../../lang/stb.php:242
+#: ../../../lang/stb.php:246
 msgid "SAVE"
 msgstr ""
 
@@ -721,30 +721,38 @@ msgid "RECORDING DURATION"
 msgstr "RECORDING DURATION, h"
 
 #: ../../../lang/stb.php:238
-msgid "Buffer size"
-msgstr ""
-
-#: ../../../lang/stb.php:239
-msgid "Time, sec"
+msgid "FREE, h"
 msgstr ""
 
 #: ../../../lang/stb.php:240
-msgid "PLAYBACK"
+msgid "Recording this channel is forbidden"
+msgstr ""
+
+#: ../../../lang/stb.php:242
+msgid "Buffer size"
+msgstr ""
+
+#: ../../../lang/stb.php:243
+msgid "Time, sec"
 msgstr ""
 
 #: ../../../lang/stb.php:244
+msgid "PLAYBACK"
+msgstr ""
+
+#: ../../../lang/stb.php:248
 msgid "Audio out"
 msgstr ""
 
-#: ../../../lang/stb.php:245
+#: ../../../lang/stb.php:249
 msgid "Analog only"
 msgstr ""
 
-#: ../../../lang/stb.php:246
+#: ../../../lang/stb.php:250
 msgid "Analog and S/PDIF 2-channel PCM"
 msgstr ""
 
-#: ../../../lang/stb.php:247
+#: ../../../lang/stb.php:251
 msgid "S/PDIF raw or 2-channel PCM"
 msgstr ""
 
@@ -937,37 +945,37 @@ msgstr ""
 msgid "[No channel info]"
 msgstr ""
 
-#: ../../../lib/epg.class.php:589
+#: ../../../lib/epg.class.php:608
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sun"
 msgstr ""
 
-#: ../../../lib/epg.class.php:589
+#: ../../../lib/epg.class.php:608
 #: ../../../lib/gismeteo.class.php:29
 msgid "Mon"
 msgstr ""
 
-#: ../../../lib/epg.class.php:589
+#: ../../../lib/epg.class.php:608
 #: ../../../lib/gismeteo.class.php:29
 msgid "Tue"
 msgstr ""
 
-#: ../../../lib/epg.class.php:589
+#: ../../../lib/epg.class.php:608
 #: ../../../lib/gismeteo.class.php:29
 msgid "Wed"
 msgstr ""
 
-#: ../../../lib/epg.class.php:589
+#: ../../../lib/epg.class.php:608
 #: ../../../lib/gismeteo.class.php:29
 msgid "Thu"
 msgstr ""
 
-#: ../../../lib/epg.class.php:589
+#: ../../../lib/epg.class.php:608
 #: ../../../lib/gismeteo.class.php:29
 msgid "Fri"
 msgstr ""
 
-#: ../../../lib/epg.class.php:589
+#: ../../../lib/epg.class.php:608
 msgid "Sat"
 msgstr ""
 
@@ -1083,27 +1091,27 @@ msgstr ""
 msgid "wind"
 msgstr ""
 
-#: ../../../lib/remotepvr.class.php:68
+#: ../../../lib/remotepvr.class.php:73
 msgid "recording"
 msgstr ""
 
-#: ../../../lib/remotepvr.class.php:70
+#: ../../../lib/remotepvr.class.php:75
 msgid "scheduled"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:664
-#: ../../../lib/stb.class.php:668
+#: ../../../lib/stb.class.php:670
+#: ../../../lib/stb.class.php:674
 #: ../../../lib/weatherco.class.php:118
 #: ../../../lib/weatherco.class.php:138
 msgid "city_name_field"
 msgstr "name_en"
 
-#: ../../../lib/streamrecorder.class.php:106
+#: ../../../lib/streamrecorder.class.php:114
 msgid "Starting recording"
 msgstr ""
 
-#: ../../../lib/streamrecorder.class.php:316
+#: ../../../lib/streamrecorder.class.php:359
 msgid "Stopped recording"
 msgstr ""
 
