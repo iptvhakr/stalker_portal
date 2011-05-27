@@ -96,7 +96,7 @@
 #epg .program .marks .mark_rec{
     height: 8px;
     width: 8px;
-    background-color: #c00;
+    background-image: url("i/epg_red_mark.png");
 }
 
 #epg .blue_row_bg .program{
