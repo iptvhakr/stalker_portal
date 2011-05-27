@@ -61,9 +61,9 @@ class Stb
         //var_dump($_COOKIE, $this->stb_lang);
         
         if (@$_SERVER['HTTP_X_REAL_IP']){
-            $this->ip = $_SERVER['HTTP_X_REAL_IP'];
+            $this->ip = @$_SERVER['HTTP_X_REAL_IP'];
         }else{
-            $this->ip = $_SERVER['REMOTE_ADDR'];
+            $this->ip = @$_SERVER['REMOTE_ADDR'];
         }
         
         $this->db = Mysql::getInstance();
@@ -187,6 +187,7 @@ class Stb
         $profile['locale'] = $this->locale;
 
         $profile['display_menu_after_loading'] = Config::get('display_menu_after_loading');
+        $profile['record_max_length']          = intval(Config::get('record_max_length'));
 
         return $profile;
     }
@@ -633,7 +634,7 @@ class Stb
 
     public function setPlaybackSettings(){
         $playback_buffer_bytes = intval($_REQUEST['playback_buffer_bytes']);
-        $playback_buffer_size  = intval($_REQUEST['playback_buffer_size']);
+        $playback_buffer_size  = intval($_REQUEST['playback_buffer_size']) * 1000;
         $audio_out             = intval($_REQUEST['audio_out']);
 
         return Mysql::getInstance()->update('users',
