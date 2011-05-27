@@ -41,6 +41,10 @@ class StreamRecorder extends Master
 
         $user_rec_id = $this->createUserRecord($channel, false, $epg['time']);
 
+        if (!$user_rec_id){
+            return false;
+        }
+
         $start_rec_task = array(
             'id'     => $user_rec_id,
             'job'    => 'start',
@@ -52,9 +56,9 @@ class StreamRecorder extends Master
 
         if ($start){
 
-            if (($epg['stop_ts'] - $epg['start_ts']) > Config::get('record_max_length') * 60){
+            /*if (($epg['stop_ts'] - $epg['start_ts']) > Config::get('record_max_length') * 60){
                 $epg['stop_ts'] = $epg['start_ts'] + Config::get('record_max_length') * 60;
-            }
+            }*/
 
             $stop_rec_task = array(
                 'id'     => $user_rec_id,
@@ -69,11 +73,15 @@ class StreamRecorder extends Master
                 $daemon = new RESTClient(Config::get('daemon_api_url'));
                 $daemon->resource('recorder_task')->ids($user_rec_id)->delete();
 
+                $this->deleteUserRecord($user_rec_id);
+
                 return false;
             }
 
             return $user_rec_id;
         }
+
+        $this->deleteUserRecord($user_rec_id);
 
         return false;
     }                       
@@ -85,6 +93,9 @@ class StreamRecorder extends Master
         $user_record = Mysql::getInstance()->from('users_rec')->where(array('id' => $user_rec_id))->get()->first();
 
         if ($user_record['ended']){
+
+            $this->deleteUserRecord($user_rec_id);
+
             return false;
         }
 
@@ -122,6 +133,12 @@ class StreamRecorder extends Master
 
     private function createUserRecord($channel, $auto_start = true, $start_time = 0){
 
+        $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
+
+        if ($rest_length <= 0){
+            return false;
+        }
+
         preg_match("/vtrack:(\d+)/", $channel['mc_cmd'], $vtrack_arr);
         preg_match("/atrack:(\d+)/", $channel['mc_cmd'], $atrack_arr);
 
@@ -154,9 +171,22 @@ class StreamRecorder extends Master
         }else{
             $program = $epg->getProgramByChannelAndTime($channel['id'], $start_time);
 
+            $length = strtotime($program['time_to']) - strtotime($program['time']);
+
+            if ($length < 0){
+                //$length = 0;
+                return false;
+            }
+
+            if ($rest_length - $length <= 0 ){
+                return false;
+            }
+
             $data['program']    = $program['name'];
             $data['program_id'] = $program['id'];
             $data['t_start']    = $start_time;
+            $data['length']     = $length;
+            $data['t_stop']     = date("Y-m-d H:i:s", strtotime($start_time) + $length);
         }
 
         $user_rec_id = Mysql::getInstance()->insert('users_rec', $data)->insert_id();
@@ -171,12 +201,24 @@ class StreamRecorder extends Master
         if (!$auto_start){
             return $user_rec_id;
         }else{
+
+            if ($rest_length/60 - Config::get('record_max_length') < 0){
+                $length = $rest_length;
+            }else{
+                $length = Config::get('record_max_length')*60;
+            }
             
             $stop_rec_task = array(
                 'id'     => $user_rec_id,
                 'job'    => 'stop',
-                'time'   => Config::get('record_max_length')*60 + time()
+                'time'   => $length + time()
             );
+
+            $t_start = Mysql::getInstance()->from('users_rec')->where(array('id' => $user_rec_id))->get()->first('t_start');
+
+            $t_stop = date("Y-m-d H:i:s", strtotime($t_start) + $length);
+
+            Mysql::getInstance()->update('users_rec', array('length' => $length, 't_stop' => $t_stop), array('id' => $user_rec_id));
 
             $daemon = new RESTClient(Config::get('daemon_api_url'));
             $daemon->resource('recorder_task')->create($stop_rec_task);
@@ -186,6 +228,11 @@ class StreamRecorder extends Master
         //}
 
         //return $user_rec_id;
+    }
+
+    private function deleteUserRecord($user_rec_id){
+
+        return Mysql::getInstance()->delete('users_rec', array('id' => $user_rec_id));
     }
 
     private function createFileRecord($user_rec_id){
@@ -291,7 +338,17 @@ class StreamRecorder extends Master
 
         $user_record = Mysql::getInstance()->select('*, UNIX_TIMESTAMP(t_start) as start_ts')->from('users_rec')->where(array('id' => $user_rec_id))->get()->first();
 
-        $stop_time = $user_record['start_ts'] + $duration_minutes*60;
+        $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
+
+        $rest_length += $user_record['length'];
+
+        if ($rest_length/60 - $duration_minutes <= 0){
+            $duration_minutes = $rest_length/60;
+        }
+
+        var_dump($rest_length, $duration_minutes);
+
+        $stop_time = intval($user_record['start_ts'] + $duration_minutes*60);
 
         $daemon = new RESTClient(Config::get('daemon_api_url'));
         $update_result = $daemon->resource('recorder_task')->ids($user_rec_id)->update(array('job' => 'stop', 'time' => $stop_time));
@@ -327,7 +384,8 @@ class StreamRecorder extends Master
         
         $user_record = Mysql::getInstance()->from('users_rec')->where(array('id' => $rec_id))->get()->first();
 
-        Mysql::getInstance()->delete('users_rec', array('id' => $rec_id));
+        //Mysql::getInstance()->delete('users_rec', array('id' => $rec_id));
+        $this->deleteUserRecord($rec_id);
 
         if (!$user_record['ended']){
             $daemon = new RESTClient(Config::get('daemon_api_url'));
@@ -396,6 +454,24 @@ class StreamRecorder extends Master
         }
 
         return $rec_ids;
+    }
+
+    private function getTotalUserRecordsLength($uid){
+
+        return Mysql::getInstance()->select('SUM(length) as total_length')->from('users_rec')->where(array('uid' => $uid))->get()->first('total_length');
+    }
+
+    public function checkTotalUserRecordsLength($uid){
+
+        //var_dump(Config::get('total_records_length')*60, $this->getTotalUserRecordsLength($uid));
+
+        $length = (int) (Config::get('total_records_length')*60 - $this->getTotalUserRecordsLength($uid));
+
+        if ($length < 0){
+            $length = 0;
+        }
+
+        return $length;
     }
 }
 
