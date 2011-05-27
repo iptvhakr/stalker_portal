@@ -11,6 +11,20 @@
 
             _debug('program', program);
 
+            var ch_id = this.get_ch_id();
+
+            _debug('ch_id', ch_id);
+
+            var ch_idx = stb.player.channels.getIdxById(ch_id);
+
+            var channel = stb.player.channels[ch_idx];
+
+            _debug('channel', channel);
+
+            if (!channel.mc_cmd){
+                return;
+            }
+
             if (program.mark_rec == 1){
                 if (program.rec_id){
                     this.del();
@@ -74,6 +88,12 @@
             _debug('epg_recorder.get_item');
             
             return this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col];
+        },
+
+        get_ch_id : function(){
+            _debug('epg_recorder.get_ch_id');
+
+            return this.parent.data_items[this.parent.cur_row].ch_id;
         },
 
         show_mark : function(program_id){
