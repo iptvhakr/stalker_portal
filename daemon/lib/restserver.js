@@ -1,6 +1,7 @@
 //require.paths.unshift(__dirname + '/lib');
-var events = require('events');
-var util = require('util');
+var events  = require('events');
+var util    = require('util');
+var console = require('console.js');
 
 var RESTServer = {
 
@@ -17,6 +18,7 @@ var RESTServer = {
             try{
                 var request = new RESTRequest(req);
             }catch(e){
+                console.error(e.message);
                 response.setError(e.message);
                 response.send();
                 return;
@@ -28,7 +30,7 @@ var RESTServer = {
                     var resolver = new RESTCommandResolver();
                     var command  = resolver.getCommand(request);
                 }catch(e){
-                    console.log(e.message);
+                    console.error(e.message);
                     console.trace();
                     response.setError(e.message);
                     response.send();
@@ -37,7 +39,7 @@ var RESTServer = {
 
                 command.execute(request, function(res, err){
                     if (err){
-                        console.log(err);
+                        console.error(err);
                         response.setError(err);
                     }
                     response.setBody(res);
