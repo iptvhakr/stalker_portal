@@ -123,8 +123,8 @@ DurationInputBox.prototype._convert_min_to_human_time = function(minutes){
 
 DurationInputBox.prototype.bind = function(){
     
-    this.shift.bind(key.RIGHT, this, -1).bind(key.UP, this,  -1);
-    this.shift.bind(key.LEFT,  this,  1).bind(key.DOWN, this, 1);
+    this.shift.bind(key.RIGHT, this,  1).bind(key.UP, this,    1);
+    this.shift.bind(key.LEFT,  this, -1).bind(key.DOWN, this, -1);
 
     this.set.bind (key.OK,   this);
     this.hide.bind(key.EXIT, this).bind(key.REC, this);
