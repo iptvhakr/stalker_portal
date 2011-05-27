@@ -38,6 +38,11 @@ class RemotePvr extends AjaxResponse
 
         $this->setResponseData($result);
 
+        $recorder = new StreamRecorder();
+        $rest_length = $recorder->checkTotalUserRecordsLength($this->stb->id);
+        
+        $this->response['records_rest_length'] = $rest_length;
+
         return $this->getResponse('prepareData');
     }
 
@@ -131,7 +136,7 @@ class RemotePvr extends AjaxResponse
 
     public function getRecordingChIds(){
 
-        return Mysql::getInstance()->select('id, ch_id, UNIX_TIMESTAMP(t_start) as t_start_ts')->from('users_rec')->where(array('uid' => $this->stb->id, 'ended' => 0, 'started' => 1))->get()->all();
+        return Mysql::getInstance()->select('id, ch_id, UNIX_TIMESTAMP(t_start) as t_start_ts, UNIX_TIMESTAMP(t_stop) as t_stop_ts')->from('users_rec')->where(array('uid' => $this->stb->id, 'ended' => 0, 'started' => 1))->get()->all();
     }
 
     public function delRec(){
