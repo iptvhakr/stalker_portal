@@ -425,6 +425,9 @@ class Epg
 
         $now_ts = time();
 
+        $recorder = new StreamRecorder();
+        $user_rec_ids = $recorder->getDeferredRecordIdsForUser(Stb::getInstance()->id);
+
         foreach ($result as $ch_id => $epg){
 
             for ($i = 0; $i < count($epg); $i++){
@@ -445,6 +448,13 @@ class Epg
 
                 if ($epg[$i]['start_timestamp'] < $now_ts){
                     $epg[$i]['mark_memo'] = null;
+                }
+
+                if (key_exists($epg[$i]['id'], $user_rec_ids)){
+                    $epg[$i]['mark_rec'] = 1;
+                    $epg[$i]['rec_id']   = $user_rec_ids[$epg[$i]['id']];
+                }else{
+                    $epg[$i]['mark_rec'] = 0;
                 }
 
                 $epg[$i]['on_date'] = $week_day_arr[date("w", $epg[$i]['start_timestamp'])].' '.date("d.m.Y", $epg[$i]['start_timestamp']);
@@ -523,13 +533,13 @@ class Epg
 
         $result = array();
 
-        foreach ($raw_epg as $ch_id => $epg){
+        foreach ($raw_epg as $id => $epg){
 
-            $channel = $user_channels[array_search($ch_id, $display_channels_ids)];
+            $channel = $user_channels[array_search($id, $display_channels_ids)];
 
             $result[] = array(
-                              'ch_id'  => $ch_id,
-                              //'name'  => Itv::getChannelNameById($ch_id), //@todo: in future for php>=5.3.0 use - array_filter($channels, function($element) use ($ch_id){return ($element['id'] == $ch_id)}),
+                              'ch_id'  => $id,
+                              //'name'  => Itv::getChannelNameById($id), //TODO: in future for php>=5.3.0 use - array_filter($channels, function($element) use ($id){return ($element['id'] == $id)}),
                               'name'   => $channel['name'],
                               'number' => $channel['number'],
                               'epg_container' => 1,
@@ -547,9 +557,18 @@ class Epg
         $time_marks[] = date("H:i", $from_ts+3*1800);
 
         if (!$default_page){
-            $ch_idx = 0;
-            $page = 0;
+            //$ch_idx = 0;
+            //$page = 0;
         }
+
+        if (!in_array($ch_id, $display_channels_ids)){
+            $ch_idx = 0;
+            $page   = 0;
+        }else{
+            $ch_idx = array_search($ch_id, $display_channels_ids) + 1;
+        }
+
+        var_dump($display_channels_ids, $ch_id, $ch_idx);
 
         return array('total_items'    => $total_channels,
                      'max_page_items' => $page_items,
