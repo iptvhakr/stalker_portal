@@ -18,7 +18,7 @@
 
         this.superclass = ListLayer.prototype;
 
-        this.duration_input = new DurationInputBox({"parent" : stb.player, "step" : 1});
+        this.duration_input = new DurationInputBox({"parent" : stb.player, "max_val" : stb.user['record_max_length']});
 
         this.init = function(){
             _debug('remote_pvr.init');
@@ -26,6 +26,11 @@
             this.superclass.init.call(this);
 
             this.load_recording_ch_ids();
+
+            var rest_length_block = create_block_element('rest_length_block', this.dom_obj);
+
+            create_inline_element('rest_length_title', rest_length_block).innerHTML = get_word('rest_length_title') + ': ';
+            this.rest_length = create_inline_element('rest_length', rest_length_block);
         };
 
         this.hide = function(do_not_reset){
@@ -118,6 +123,10 @@
             _debug('idx', idx);
             _debug('this.recording_ch_ids[idx]', this.recording_ch_ids[idx]);
 
+            if (idx === null){
+                return;
+            }
+
             var rec_id = this.recording_ch_ids[idx].id;
             var self = this;
 
@@ -136,6 +145,7 @@
             _debug('remote_pvr.rec_switch', ch);
 
             if (!ch['mc_cmd']){
+                stb.notice.show(get_word('channel_recording_restricted'))
                 return;
             }
 
@@ -184,15 +194,21 @@
 
                                         var stop_t = (stop_time - now) * 1000;
 
-                                        if (stop_t < 0) stop_t = 0;
-
+                                        _debug('now', now);
                                         _debug('stop_t', stop_t);
+
+                                        if (stop_t < 0) stop_t = 0;
 
                                         window.setTimeout(function(){
                                             _debug('delete rec');
                                             _debug('rec_id', rec_id);
                                             var idx = self.recording_ch_ids.getIdxByVal('id', rec_id);
                                             _debug('idx', idx);
+
+                                            if (idx === null){
+                                                return;
+                                            }
+
                                             if (stb.player.is_tv){
                                                 if (stb.player.cur_tv_item.id == self.recording_ch_ids[idx].ch_id){
                                                     self.hide_rec_icon();
@@ -259,7 +275,33 @@
 
                         this.recording_ch_ids = result;
 
+                        var record = this.recording_ch_ids[this.recording_ch_ids.getIdxByVal('ch_id', ch_id)];
+
+                        _debug('record', record);
+
                         this.show_rec_icon(this.recording_ch_ids[this.recording_ch_ids.getIdxByVal('ch_id', ch_id)]);
+
+                        var self = this;
+
+                        window.setTimeout(function(){
+                            _debug('delete rec');
+                            _debug('record.id', record.id);
+                            var idx = self.recording_ch_ids.getIdxByVal('id', record.id);
+                            _debug('idx', idx);
+
+                            if (idx === null){
+                                return;
+                            }
+
+                            if (stb.player.is_tv){
+                                if (stb.player.cur_tv_item.id == self.recording_ch_ids[idx].ch_id){
+                                    self.hide_rec_icon();
+                                }
+                            }
+                            _debug('self.recording_ch_ids before', self.recording_ch_ids);
+                            self.recording_ch_ids.splice(idx, 1);
+                            _debug('self.recording_ch_ids after', self.recording_ch_ids);
+                        }, record['t_stop_ts'] * 1000 - new Date().getTime());
                     }
                 },
                 this
@@ -411,6 +453,23 @@
             stb.player.rec.set_seconds(0);
         };
 
+        this.convert_sec_to_human_hours = function(sec){
+
+            var h = Math.floor(sec/3600);
+            var m = Math.ceil((sec - (h*3600)) / 60);
+            var time = '';
+
+            time += h+':';
+
+            if (m<10){
+                m = '0'+m;
+            }
+
+            time += m;
+
+            return time;
+        };
+
         this.convert_sec_to_human_time = function(sec){
             
             if (sec < 0 || isNaN(sec)){
@@ -478,7 +537,15 @@
                 },
                 this
             )
-        }
+        };
+
+        this.fill_list = function(data){
+            _debug('remote_pvr.fill_list');
+
+            this.rest_length.innerText = this.convert_sec_to_human_hours(this.result.records_rest_length);
+
+            this.superclass.fill_list.call(this, data);
+        };
     }
 
     RemotePvr.prototype = new ListLayer();
