@@ -8,36 +8,51 @@
 
     <target name="build" description="Empty task">
 	
-        <taskdef
-            name="dbdeploy"
-            classname="phing.tasks.ext.dbdeploy.DbDeployTask"/>
-
-        <property
-            name="progs.mysql"
-            value="/usr/bin/mysql" />
-
-        <property
-            name="build.dir" 
-            value="../" />
-
-        <property
-            name="build.dbdeploy.deployfile"
-            value="deploy/scripts/deploy-${DSTAMP}${TSTAMP}.sql" />
-
-        <property
-            name="build.dbdeploy.undofile"
-            value="deploy/scripts/undo-${DSTAMP}${TSTAMP}.sql" />
-
-        <dbdeploy
-            url="mysql:host=${mysql_host};dbname=${db_name}"
-            userid="${mysql_user}"
-            password="${mysql_pass}"
-            dir="${build.dir}/db/deltas"
-            outputfile="${build.dir}/${build.dbdeploy.deployfile}"
-            undooutputfile="${build.dir}/${build.dbdeploy.undofile}" />
-
-        <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}" dir="${build.dir}" checkreturn="true"/>
-        
+	<taskdef 
+	    name="dbdeploy" 
+	    classname="phing.tasks.ext.dbdeploy.DbDeployTask"/> 
+	
+	<property 
+	    name="progs.mysql" 
+	    value="/usr/bin/mysql" />
+	
+	<property 
+	    name="build.dir" 
+	    value="../" />
+	
+	<resolvepath propertyName="project_path" file="${build.dir}"/>
+	
+	<property 
+	    name="build.dbdeploy.deployfile" 
+	    value="deploy/scripts/deploy-${DSTAMP}${TSTAMP}.sql" />
+	
+	<property 
+	    name="build.dbdeploy.undofile" 
+	    value="deploy/scripts/undo-${DSTAMP}${TSTAMP}.sql" />
+	
+	<exec command="stop stalkerd"/>
+	
+	<copy file="./src/stalkerd.conf" tofile="/etc/init/stalkerd.conf" overwrite="true">
+	    <filterchain>
+		<replacetokens>
+		    <token key="STALKERD_INDEX_PATH" value="${project_path}/daemon/index.js" />
+		</replacetokens>
+	    </filterchain>
+	</copy>
+	
+	<exec command="start stalkerd"/>
+	
+	<copy file="./src/stalkerd" tofile="/etc/logrotate.d/stalkerd" overwrite="true" />
+	
+	<dbdeploy 
+	    url="mysql:host=${mysql_host};dbname=${db_name}" 
+	    userid="${mysql_user}" 
+	    password="${mysql_pass}" 
+	    dir="${build.dir}/db/deltas" 
+	    outputfile="${build.dir}/${build.dbdeploy.deployfile}" 
+	    undooutputfile="${build.dir}/${build.dbdeploy.undofile}" /> 
+	
+	<exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}" dir="${build.dir}" checkreturn="true"/>
     </target>
 
 </project>
