@@ -1,8 +1,9 @@
+--
 SET NAMES 'utf8';
 
 CREATE DATABASE IF NOT EXISTS `stalker_db`;
 
-USE
+USE `stalker_db`;
 
 CREATE TABLE IF NOT EXISTS `video`(
     `id` int NOT NULL auto_increment,
@@ -514,6 +515,7 @@ CREATE TABLE IF NOT EXISTS `storages`(
     `status` tinyint default 1,
     `for_moderator` tinyint default 0,
     `for_records` tinyint default 0,
+    `for_simple_storage` tinyint default 1,
     UNIQUE KEY (`storage_name`),
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -934,3 +936,4 @@ CREATE TABLE IF NOT EXISTS `cities`(
     KEY `country_id` (`country_id`),
     KEY `timezone` (`timezone`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+--//@UNDO
