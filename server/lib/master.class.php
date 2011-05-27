@@ -219,7 +219,7 @@ abstract class Master
         
         $storages = array();
         
-        $data = $this->db->from('storages')->where(array('status' => 1))->get()->all();
+        $data = $this->db->from('storages')->where(array('status' => 1, 'for_simple_storage' => 1))->get()->all();
         
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;
