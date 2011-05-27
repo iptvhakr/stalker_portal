@@ -1,7 +1,6 @@
 var RESTCommand = require('restcommand').RESTCommand;
 var RESTClient  = require('restclient').RESTClient;
-
-var util   = require('util');
+var util    = require('util');
 
 var stack  = [];
 var timers = [];
