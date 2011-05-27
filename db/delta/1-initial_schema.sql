@@ -1,10 +1,6 @@
 --
 SET NAMES 'utf8';
 
-CREATE DATABASE IF NOT EXISTS `stalker_db`;
-
-USE `stalker_db`;
-
 CREATE TABLE IF NOT EXISTS `video`(
     `id` int NOT NULL auto_increment,
     `owner` varchar(64) NOT NULL default '',
@@ -109,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `itv`(
     KEY `status_3` (`status`,`number`,`hd`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `itv` VALUES (1,'empty','empty','',1,7,64,0,7106,0,1,0,'empty','',0,0,0);
+INSERT INTO `itv` (`name`, `number`, `cmd`, `tv_genre_id`, `base_ch`) VALUES ('Test channel', 1, 'rtp rtp://239.1.1.1:1234', 1, 1);
 
 CREATE TABLE IF NOT EXISTS `tv_genre`(
     `id` int NOT NULL auto_increment,
@@ -125,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `last_id`(
     `ident` varchar(64) NOT NULL default '',
     `last_id` int unsigned NOT NULL default 0,
     UNIQUE KEY (`ident`),
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `screenshots`(
@@ -515,7 +511,6 @@ CREATE TABLE IF NOT EXISTS `storages`(
     `status` tinyint default 1,
     `for_moderator` tinyint default 0,
     `for_records` tinyint default 0,
-    `for_simple_storage` tinyint default 1,
     UNIQUE KEY (`storage_name`),
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -776,7 +771,7 @@ CREATE TABLE IF NOT EXISTS `stb_played_video`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
     `video_id` int NOT NULL default 0,
-    `playtime` timestamp default null,
+    `playtime` timestamp default 0,
     PRIMARY KEY (`id`),
     KEY `uid_video_id` (`uid`,`video_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
