@@ -173,6 +173,8 @@
                     
                     module.epg_simple.ch_id   = this.data_items[this.cur_row].id;
                     module.epg_simple.ch_name = this.data_items[this.cur_row].name;
+                    module.epg_simple.channel = this.data_items[this.cur_row];
+                    this.hide();
                     module.epg_simple.show();
                 }
             }).bind(key.RIGHT, this);
@@ -184,6 +186,7 @@
                     }
                     
                     module.epg.ch_id = this.data_items[this.cur_row].id;
+                    this.hide();
                     module.epg.show();
                 }
             }).bind(key.INFO, this);
