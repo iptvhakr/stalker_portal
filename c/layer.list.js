@@ -76,6 +76,8 @@ ListLayer.prototype.show = function(do_not_load){
 
 ListLayer.prototype.hide = function(do_not_reset){
     _debug('ListLayer.hide');
+
+    this.set_passive_row();
     
     if (!do_not_reset){
         this.reset();
@@ -90,8 +92,6 @@ ListLayer.prototype.hide = function(do_not_reset){
     }
     
     this.base_layer.hide.call(this);
-    
-    this.set_passive_row();
 };
 
 ListLayer.prototype.reset = function(){
