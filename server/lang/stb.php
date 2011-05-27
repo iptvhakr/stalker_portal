@@ -235,6 +235,10 @@ $words['alert_cancel'] = _('Cancel');
 $words['recorder_server_error'] = _('Server error. Try again later.');
 $words['record_duration'] = _('RECORDING DURATION');
 
+$words['rest_length_title'] = _('FREE, h');
+
+$words['channel_recording_restricted'] = _('Recording this channel is forbidden');
+
 $words['playback_settings_buffer_size'] = _('Buffer size');
 $words['playback_settings_time'] = _('Time, sec');
 $words['playback_settings_title'] = _('PLAYBACK');
