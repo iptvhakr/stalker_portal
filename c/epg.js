@@ -186,16 +186,92 @@
             }).bind(key.MENU, this);
             
             (function(){
+
+                if (!this.active_row['epg_cell'][this.cur_cell_col]){
+                    this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
+                    this.parent.data_items[this.parent.cur_row].id = 0;
+                    this.parent.show(true);
+                    this.hide();
+                    return;
+                }
+
+                if (this.active_row['epg_cell'][this.cur_cell_col].data.rec_id){
+                    this.play(this.active_row['epg_cell'][this.cur_cell_col].data.rec_id);
+                }else{
+
+                    var now = new Date().getTime() / 1000;
+
+                    if (now > this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp && now < this.active_row['epg_cell'][this.cur_cell_col].data.stop_timestamp){
+
+                        this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
+                        this.parent.data_items[this.parent.cur_row].id = 0;
+                        this.parent.show(true);
+                        this.hide();
+                    }
+                }
+            }).bind(key.OK, this);
+
+
+            (function(){
                 this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
                 this.parent.show(true);
                 this.hide();
-            }).bind(key.EXIT, this).bind(key.OK, this);
+            }).bind(key.EXIT, this);
             
             this.horizontal_shift.bind(key.VOL_UP, this, 1);
             this.horizontal_shift.bind(key.VOL_DOWN, this, -1);
             
             this.horizontal_cell_shift.bind(key.RIGHT, this, 1);
             this.horizontal_cell_shift.bind(key.LEFT, this, -1);
+        };
+
+        this.play = function(rec_id){
+            _debug('epg_simple.play', rec_id);
+
+            if (!module.remote_pvr){
+                return;
+            }
+
+            var idx = module.remote_pvr.recording_ch_ids.getIdxByVal('id', rec_id);
+
+            if ( module.remote_pvr.recording_ch_ids[idx] && !module.remote_pvr.recording_ch_ids[idx].started){
+                return;
+            }
+
+            this.active_row['epg_cell'][this.cur_cell_col].data.cmd  = 'auto /media/' + rec_id + '.mpg';
+            this.active_row['epg_cell'][this.cur_cell_col].data.name = this.channel.name + ' — ' + this.active_row['epg_cell'][this.cur_cell_col].data.name;
+
+            var self = this;
+
+            stb.player.on_create_link = function(result){
+                _debug('epg_simple.play.on_create_link', result);
+
+                if (result.error == 'limit'){
+                    stb.notice.show(word['player_limit_notice']);
+                }else if(result.error == 'nothing_to_play'){
+                    stb.notice.show(word['player_file_missing']);
+                }else if(result.error == 'link_fault'){
+                    stb.notice.show(word['player_server_error']);
+                }else{
+
+                    self.hide(true);
+
+                    stb.player.prev_layer = self;
+                    stb.player.need_show_info = 1;
+                    stb.player.play_now(result.cmd);
+                }
+            };
+
+            var channel = stb.player.channels[this.ch_id];
+
+            _debug('this.ch_id', this.ch_id);
+            _debug('channel', channel);
+
+            if (channel){
+                stb.player.cur_tv_item = channel;
+            }
+
+            stb.player.play(this.active_row['epg_cell'][this.cur_cell_col].data);
         };
         
         this.set_date_period = function(){
@@ -246,7 +322,7 @@
             this.load_params['ch_id'] = this.ch_id;
             
             this.superclass.load_data.call(this);
-        }
+        };
         
         this.fill_list = function(data){
             _debug('epg.fill_list');
@@ -294,17 +370,18 @@
             //this.superclass.set_active_row.call(this, num);
             //this.post_handling_epg_block(this.active_row, this.data_items[num].epg, true)
             
-            this.ch_id = this.data_items[num].ch_id;
-            
+            this.ch_id   = this.data_items[num].ch_id;
+            this.channel = stb.player.channels[stb.player.channels.getIdxById(this.ch_id)];
+
             this.set_active_cell();
-        }
+        };
         
         this.set_passive_row = function(){
             _debug('epg.set_passive_row', this.prev_row);
             
             this.map[this.prev_row].row.setAttribute('active', '');
             this.map[this.cur_row].row.setAttribute('active', '');
-        }
+        };
         
         this.post_handling_epg_block = function(item, epg, is_active_row){
             _debug('epg.post_handling_block', is_active_row);
@@ -469,10 +546,31 @@
             
             _debug('this.horiz_dir', this.horiz_dir);
             _debug('this.cur_cell_col', this.cur_cell_col);
+
+            var now = (new Date().getTime()) / 1000;
+
+            _debug('now', now);
             
             if (!empty(this.active_row['epg_cell']) && !empty(this.active_row['epg_cell'][this.cur_cell_col])){
-                
+
+                _debug('this.active_row[epg_cell][this.cur_cell_col]', this.active_row['epg_cell'][this.cur_cell_col]);
+
                 this.active_row['epg_cell'][this.cur_cell_col].cell.setAttribute('rel', 'active');
+
+                if (now > this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp){
+                    this.color_buttons.get('red')  .disable();
+                    this.color_buttons.get('green').disable();
+                }else{
+                    if (module.remote_pvr && this.channel.mc_cmd){
+                        this.color_buttons.get('red').enable();
+                    }else{
+                        this.color_buttons.get('red').disable();
+                    }
+                    this.color_buttons.get('green').enable();
+                }
+            }else{
+                this.color_buttons.get('red')  .disable();
+                this.color_buttons.get('green').disable();
             }
             
             this.fill_program_info();
@@ -529,13 +627,21 @@
             _debug('epg.reminder.get_ch_id');
             
             return this.parent.data_items[this.parent.cur_row].ch_id;
-        }
+        };
         
         epg.reminder.get_item = function(){
             _debug('epg.reminder.get_item');
             
             return this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col];
-        }
+        };
+    }
+
+    if (module.epg_recorder){
+        epg.recorder = function(){};
+
+        epg.recorder.prototype = module.epg_recorder;
+        epg.recorder = new epg.recorder;
+        epg.recorder.parent = epg;
     }
     
     epg.bind();
@@ -545,10 +651,10 @@
     epg.init_header_path(word['epg_title']);
     
     epg.init_color_buttons([
-        {"label" : word['epg_record'], "cmd" : ''},
-        {"label" : word['epg_remind'], "cmd" : (function(){if (epg.reminder){return function(){epg.reminder.add_del()}}else{return ''}})() },
-        {"label" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', "cmd" : ''},
-        {"label" : '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', "cmd" : ''}
+        {"label" : word['epg_record'], "cmd" : (function(){if (epg.recorder){return function(){epg.recorder.add_del()}}else{return ''}})()},
+        {"label" : word['epg_remind'], "cmd" : (function(){if (epg.reminder){return function(){epg.reminder.add_del()}}else{return ''}})()},
+        {"label" : word['empty'], "cmd" : ''},
+        {"label" : word['empty'], "cmd" : ''}
     ]);
     
     epg.hide();
