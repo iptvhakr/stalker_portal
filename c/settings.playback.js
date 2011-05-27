@@ -51,7 +51,7 @@
 
             stb.msg.push(word['settings_saved']);
 
-            stb.SetBufferSize(this.save_params.playback_buffer_size, this.save_params.playback_buffer_bytes);
+            stb.SetBufferSize(this.save_params.playback_buffer_size * 1000, this.save_params.playback_buffer_bytes);
             stb.SetupSPdif(this.save_params.audio_out);
         };
 
