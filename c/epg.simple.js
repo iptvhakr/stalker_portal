@@ -22,7 +22,8 @@
         
         this.ch_id = 0;
         this.ch_name = '';
-        
+        this.channel = {};
+
         this.week_days_map = [];
         
         this.epg_list_active = true;
@@ -63,20 +64,24 @@
         
         this.init_active_row = function(){};
         
-        this.show = function(){
+        this.show = function(do_not_load){
             _debug('epg_simple.show');
 
             this.parent.on = false;
             
             this.superclass.show.call(this, 1);
+
+            if (do_not_load){
+                return;
+            }
             
             this.update_header_path([{"alias" : "name", "item" : this.ch_name}]);
             
             this.epg_list_active = true;
             this.cur_page = 0;
             
-            this.load_params['ch_id'] = this.ch_id;
-            
+            this.load_params['ch_id'] = this.channel.id;
+
             this.load_week();
         };
         
@@ -118,11 +123,64 @@
             (function(){
                 if (!this.epg_list_active){
                     this.week_day_action();
+                }else{
+                    if (this.data_items[this.cur_row].rec_id){
+                        this.play(this.data_items[this.cur_row].rec_id);
+                    }
                 }
             }).bind(key.OK, this);
             
             this.horizontal_shift.bind(key.LEFT, this, -1);
             this.horizontal_shift.bind(key.RIGHT, this, 1);
+        };
+
+        this.play = function(rec_id){
+            _debug('epg_simple.play', rec_id);
+
+            if (!module.remote_pvr){
+                return;
+            }
+
+            var idx = module.remote_pvr.recording_ch_ids.getIdxByVal('id', rec_id);
+
+            if ( module.remote_pvr.recording_ch_ids[idx] && !module.remote_pvr.recording_ch_ids[idx].started){
+                return;
+            }
+
+            this.data_items[this.cur_row].cmd  = 'auto /media/' + rec_id + '.mpg';
+            this.data_items[this.cur_row].name = this.ch_name + ' — ' + this.data_items[this.cur_row].name;
+
+            var self = this;
+
+            stb.player.on_create_link = function(result){
+                _debug('epg_simple.play.on_create_link', result);
+
+                if (result.error == 'limit'){
+                    stb.notice.show(word['player_limit_notice']);
+                }else if(result.error == 'nothing_to_play'){
+                    stb.notice.show(word['player_file_missing']);
+                }else if(result.error == 'link_fault'){
+                    stb.notice.show(word['player_server_error']);
+                }else{
+
+                    self.hide(true);
+
+                    stb.player.prev_layer = self;
+                    stb.player.need_show_info = 1;
+                    stb.player.play_now(result.cmd);
+                }
+            };
+
+            var channel = stb.player.channels[this.ch_id];
+
+            _debug('this.ch_id', this.ch_id);
+            _debug('channel', channel);
+
+            if (channel){
+                stb.player.cur_tv_item = channel;
+            }
+
+            stb.player.play(this.data_items[this.cur_row]);
         };
         
         this.set_active_epg_list = function(){
@@ -221,16 +279,14 @@
             _debug('this.data_items[this.cur_row].start_timestamp', this.data_items[this.cur_row].start_timestamp);
 
             if (now > this.data_items[this.cur_row].start_timestamp){
-                /*this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');*/
                 this.color_buttons.get('red')  .disable();
                 this.color_buttons.get('green').disable();
             }else{
-                if (module.remote_pvr){
-                    //this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.delClass();
+                if (module.remote_pvr && this.channel.mc_cmd){
                     this.color_buttons.get('red').enable();
+                }else{
+                    this.color_buttons.get('red').disable();
                 }
-                //this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.delClass();
                 this.color_buttons.get('green').enable();
             }
         };
@@ -431,6 +487,12 @@
         epg_simple.recorder.prototype = module.epg_recorder;
         epg_simple.recorder = new epg_simple.recorder;
         epg_simple.recorder.parent = epg_simple;
+
+        epg_simple.recorder.get_ch_id = function(){
+            _debug('epg_simple.recorder.get_ch_id');
+
+            return this.parent.ch_id;
+        };
 
         epg_simple.recorder.get_item = function(){
             _debug('epg_simple.recorder.get_item');
