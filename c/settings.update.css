@@ -25,10 +25,12 @@
     margin: 50px 0 0 10px;
     color: #99A8B5;
     clear: both;
+    font-family: "Myriad Pro Cond", sans-serif;
 }
 
 #update_settings .source .uri{
     color: #fff;
+    font-family: "Myriad Pro",sans-serif;
 }
 
 #update_settings .method{
