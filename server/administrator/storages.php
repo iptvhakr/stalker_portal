@@ -29,7 +29,8 @@ if (@$_POST['add']){
                 nfs_home_path, 
                 max_online,
                 for_moderator,
-                for_records
+                for_records,
+                for_simple_storage
                 )
             values (
                 "'.@$_POST['storage_name'].'",
@@ -37,7 +38,8 @@ if (@$_POST['add']){
                 "'.@$_POST['nfs_home_path'].'",
                 "'.@$_POST['max_online'].'",
                 "'.@intval($_POST['for_moderator']).'",
-                "'.@intval($_POST['for_records']).'"
+                "'.@intval($_POST['for_records']).'",
+                "'.@intval($_POST['for_simple_storage']).'"
             )';
     $db->executeQuery($sql);
     header("Location: storages.php");
@@ -54,7 +56,8 @@ if (!empty($id)){
                     nfs_home_path="'.@$_POST['nfs_home_path'].'",
                     max_online="'.@$_POST['max_online'].'",
                     for_moderator="'.@intval($_POST['for_moderator']).'",
-                    for_records="'.@intval($_POST['for_records']).'"
+                    for_records="'.@intval($_POST['for_records']).'",
+                    for_simple_storage="'.@intval($_POST['for_simple_storage']).'"
                 where id='.intval($_GET['id']);
         $db->executeQuery($sql);
         header("Location: storages.php");
@@ -229,6 +232,10 @@ a:hover{
                 <tr>
                     <td>Max online</td>
                     <td><input type="text" name="max_online" value="<?echo @$edit_storage['max_online']?>"/></td>
+                </tr>
+                <tr>
+                    <td>Хранение контента</td>
+                    <td><input type="checkbox" name="for_simple_storage" value="1" <? if(@$edit_storage['for_simple_storage']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
                     <td>Запись ТВ</td>
