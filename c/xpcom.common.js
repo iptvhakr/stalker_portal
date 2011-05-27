@@ -398,6 +398,9 @@ function common_xpcom(){
                 stb.SetAspect(this.user['aspect']);
 
                 stb.SetBufferSize(this.user['playback_buffer_size'], this.user['playback_buffer_bytes']);
+
+                this.user['playback_buffer_size'] = this.user['playback_buffer_size'] / 1000;
+
                 stb.SetupSPdif(this.user['audio_out']);
             }catch(e){
                 _debug(e);
@@ -495,7 +498,14 @@ function common_xpcom(){
     this.Mount = function(link_cmd){
         _debug('stb.Mount', link_cmd);
 
-        this.mounted_storage = link_cmd.replace(/[\s\S]*\/media\/(.*)\/(.*)/ , "$1");
+        var mounted_storage = link_cmd.replace(/[\s\S]*\/media\/(.*)\/(.*)/ , "$1");
+
+        if (mounted_storage == this.mounted_storage){
+            _debug('clear Umount Timeout', mounted_storage);
+            window.clearTimeout(stb.player.umount_timer);
+        }
+
+        this.mounted_storage = mounted_storage;
 
         _debug('stb.mounted_storage', this.mounted_storage);
         try{
@@ -507,14 +517,14 @@ function common_xpcom(){
         }
     };
 
-    this.Umount = function(){
-        _debug('stb.Umount()');
-        _debug('stb.mounted_storage', this.mounted_storage);
+    this.Umount = function(storage){
+        _debug('stb.Umount', storage);
+        //_debug('stb.mounted_storage', this.mounted_storage);
 
-        if (this.mounted_storage){
+        if (storage){
             try{
-                gSTB.ExecAction('umount_dir /media/'+this.mounted_storage);
-                this.mounted_storage = '';
+                gSTB.ExecAction('umount_dir /media/'+storage);
+                //this.mounted_storage = '';
             }catch(e){
                 _debug(e);
             }
