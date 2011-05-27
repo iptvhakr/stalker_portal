@@ -778,7 +778,7 @@ player.prototype.play = function(item){
         
         this.create_link('karaoke', cmd, 0);
 
-    }else if (stb.cur_place == 'remote_pvr'){
+    }else if (stb.cur_place == 'remote_pvr' || stb.cur_place == 'epg_simple' || stb.cur_place == 'epg'){
         
         this.create_link('remote_pvr', cmd, 0);
         
@@ -875,11 +875,13 @@ player.prototype.stop = function(){
     
     try{
         stb.Stop();
+        _debug('stb.Stop()');
     }catch(e){}
     
     if (this.media_type == 'file'){
         //stb.Umount();
-        this.umount_timer = window.setTimeout(function(){stb.Umount()}, 500);
+        var storage = stb.mounted_storage;
+        this.umount_timer = window.setTimeout(function(){stb.Umount(storage)}, 10000);
     }
     
     if (stb.cur_place == 'vclub' && !this.play_auto_ended){
@@ -1303,7 +1305,11 @@ player.prototype.bind = function(){
 
     (function(){
         if (this.is_tv && module.remote_pvr){
-            module.remote_pvr.stop_channel_rec(this.cur_tv_item);
+            if (!module.tv.on){
+                module.remote_pvr.stop_channel_rec(this.cur_tv_item);
+            }
+        }else{
+            this.show_prev_layer();
         }
     }).bind(key.STOP, self);
 
@@ -1404,11 +1410,13 @@ player.prototype.bind = function(){
         }*/
         // TEST
         if (this.is_tv && module.remote_pvr){
-
-            module.remote_pvr.rec_switch(this.cur_tv_item);
+            _debug('module.tv.on', module.tv.on);
+            if (!module.tv.on){
+                module.remote_pvr.rec_switch(this.cur_tv_item);
+            }
         }
 
-    }).bind(key.REC, this);
+    }).bind(key.REC, this).bind(key.RED, this);
     
     this.volume.set_level.bind(key.REFRESH, this.volume, 50);
 };
