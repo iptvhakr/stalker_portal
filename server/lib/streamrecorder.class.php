@@ -221,7 +221,12 @@ class StreamRecorder extends Master
             Mysql::getInstance()->update('users_rec', array('length' => $length, 't_stop' => $t_stop), array('id' => $user_rec_id));
 
             $daemon = new RESTClient(Config::get('daemon_api_url'));
-            $daemon->resource('recorder_task')->create($stop_rec_task);
+            try{
+                $result = $daemon->resource('recorder_task')->create($stop_rec_task);
+            }catch (RESTClientException $e){
+                $this->deleteUserRecord($user_rec_id);
+                return false;
+            }
         }
 
         return $this->createFileRecord($user_rec_id);
@@ -346,12 +351,14 @@ class StreamRecorder extends Master
             $duration_minutes = $rest_length/60;
         }
 
-        var_dump($rest_length, $duration_minutes);
+        //var_dump($rest_length, $duration_minutes);
 
         $stop_time = intval($user_record['start_ts'] + $duration_minutes*60);
 
         $daemon = new RESTClient(Config::get('daemon_api_url'));
         $update_result = $daemon->resource('recorder_task')->ids($user_rec_id)->update(array('job' => 'stop', 'time' => $stop_time));
+
+        Mysql::getInstance()->update('users_rec', array('t_stop' => date("Y-m-d H:i:s", $stop_time), 'length' => $duration_minutes*60), array('id' => $user_rec_id));
 
         if ($update_result){
             return $stop_time;
