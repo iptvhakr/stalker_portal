@@ -25,7 +25,7 @@ class DataLoader
             $this->method  = $this->getMethod();
             
         }catch (Exception $e){
-            trigger_error($e->getMessage());
+            trigger_error($e->getTraceAsString());
         }
     }
     
@@ -36,7 +36,7 @@ class DataLoader
             return $result;
         
         }catch (Exception $e){
-            trigger_error($e->getMessage());
+            trigger_error($e->getTraceAsString());
         }
     }
     
