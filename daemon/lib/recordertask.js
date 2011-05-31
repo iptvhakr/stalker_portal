@@ -1,6 +1,16 @@
 var RESTCommand = require('restcommand').RESTCommand;
 var RESTClient  = require('restclient').RESTClient;
-var util    = require('util');
+var util        = require('util');
+var iniReader   = require('inireader').IniReader;
+var config      = new iniReader();
+
+config.load(__dirname + '/../../server/config.ini');
+
+try{
+    config.load(__dirname + '/../../server/custom.ini');
+}catch(e){
+    //console.error(e.message);
+}
 
 var stack  = [];
 var timers = [];
@@ -51,7 +61,7 @@ function RESTCommandRecorderTask(){
         console.log('timeout', timeout);
 
         var timer = setTimeout(function(){
-            new RESTClient("http://bb3.sandbox/current/api/")
+            new RESTClient(config.param('stalker_api_url'))
                 .resource("stream_recorder")
                 .identifiers(data.id)
                 .update({"action" : data.job})
@@ -123,7 +133,7 @@ function RESTCommandRecorderTask(){
             console.log('timeout', timeout);
 
             var timer = setTimeout(function(){
-                new RESTClient("http://bb3.sandbox/current/api/")
+                new RESTClient(config.param('stalker_api_url'))
                     .resource("stream_recorder")
                     .identifiers(identifiers)
                     .update({"action" : data.job})
@@ -166,7 +176,7 @@ function RESTCommandRecorderTask(){
 }
 
 function sync(){
-    new RESTClient("http://bb3.sandbox/current/api/")
+    new RESTClient(config.param('stalker_api_url'))
         .resource("stream_recorder")
         .get()
         .on('end',
@@ -185,7 +195,7 @@ function sync(){
 
                     if ((item.job == 'stop' && item.time < now) || item.job == 'start' && item.time < now){
 
-                        new RESTClient("http://bb3.sandbox/current/api/")
+                        new RESTClient(config.param('stalker_api_url'))
                             .resource("stream_recorder")
                             .identifiers(item.id)
                             .update({"action" : item.job})
