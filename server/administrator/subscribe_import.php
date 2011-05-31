@@ -87,13 +87,15 @@ if (@$_FILES['userfile']){
                             $result[$stb_id] = array();
                         }
                         $result[$stb_id][] = intval($service_id_map[$ch]);
-                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00466'){
+                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00466' || $ch == '00494'){
                         $result[$stb_id] = $all_payed_ch;
                         if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389' || $ch == '00381' || $ch == '00382' || $ch == '00426' || $ch == '00466'){
                             $add_services_on[] = $stb_id;
                         }
                     }else if($ch == '00100'){
                         $result[$stb_id] = $all_payed_ch_100;
+                    }else if($ch == '00493'){
+                        $result[$stb_id] = array(101, 264, 268, 266, 267, 265);
                     }else if($ch == '00160' || $ch == '00161' || $ch == '00162' || $ch == '00169' || $ch == '00170' || $ch == '00432' || $ch == '00433'){ // additional services on
                         $add_services_on[] = $stb_id;
                     }else{
