@@ -433,6 +433,8 @@
         this.show_rec_icon = function(record){
             _debug('remote_pvr.show_rec_icon');
 
+            window.clearInterval(this.tick_timer);
+
             stb.player.rec.set_seconds(this.convert_sec_to_human_time(record['t_start_ts'] - stb.clock.seconds));
 
             var self = this;
@@ -456,7 +458,7 @@
         this.convert_sec_to_human_hours = function(sec){
 
             var h = Math.floor(sec/3600);
-            var m = Math.ceil((sec - (h*3600)) / 60);
+            var m = Math.floor((sec - (h*3600)) / 60);
             var time = '';
 
             time += h+':';
