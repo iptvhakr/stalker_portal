@@ -58,6 +58,11 @@ if (@$_FILES['userfile']){
                 if (preg_match("/[а-я,А-Я]/",$mac)){
                     _log('mac "'.$mac.'", ЛС '.$ls.' содержит русские буквы ');
                 }
+
+                if(strpos($mac, 'ts') !== false){
+                    $mac = str_replace('ts', '', $mac);
+                    $ch  = '00203';
+                }
                 
                 $mac = Middleware::normalizeMac($mac);
                 
