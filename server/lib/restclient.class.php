@@ -76,7 +76,11 @@ class RESTClient
             $stream_params['content'] = $data_url;
         }
 
-        $json_result = file_get_contents($url, false, stream_context_create(array('http' => $stream_params)));
+        $json_result = @file_get_contents($url, false, stream_context_create(array('http' => $stream_params)));
+
+        if ($json_result === false){
+            throw new RESTClientConnectException('Error get contents from url: '.$url);
+        }
 
         $result = json_decode($json_result, true);
 
@@ -106,5 +110,6 @@ class RESTClient
 }
 
 class RESTClientException extends Exception{}
+class RESTClientConnectException extends RESTClientException{}
 
 ?>
