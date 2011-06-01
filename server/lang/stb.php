@@ -249,4 +249,6 @@ $words['audio_out'] = _('Audio out');
 $words['audio_out_analog'] = _('Analog only');
 $words['audio_out_analog_spdif'] = _('Analog and S/PDIF 2-channel PCM');
 $words['audio_out_spdif'] = _('S/PDIF raw or 2-channel PCM');
+
+$words['game'] = _('GAME');
 ?>
