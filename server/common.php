@@ -30,4 +30,21 @@ if (Config::exist('default_timezone')){
     date_default_timezone_set(Config::get('default_timezone'));
 }
 
+if (Config::exist('http_proxy')){
+
+    $default_context = array(
+        'http' => array(
+            'proxy'           => Config::get('http_proxy'),
+            'request_fulluri' => true
+        )
+    );
+
+    if (Config::exist('http_proxy_login') && Config::exist('http_proxy_password')){
+        $default_context['http']['header'] = "Proxy-Authorization: Basic ".base64_encode(Config::get('http_proxy_login').":".Config::get('http_proxy_password'))."\r\n";
+    }
+
+    stream_context_set_default($default_context);
+    libxml_set_streams_context(stream_context_create($default_context));
+}
+
 ?>
