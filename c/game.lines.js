@@ -8,7 +8,7 @@
     }
 
     module.infoportal_sub.push({
-        "title" : 'LINES',
+        "title" : get_word('game') + ' LINES',
         "cmd"   : function(){
             window.location = '/' + stb.portal_path + '/external/lines/index.html';
         }
