@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-26 13:56+0200\n"
-"PO-Revision-Date: 2011-05-26 13:57+0200\n"
+"POT-Creation-Date: 2011-06-01 17:58+0200\n"
+"PO-Revision-Date: 2011-06-01 17:58+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -756,6 +756,10 @@ msgstr "Аналоговые и 2-x канальный PCM в  S/PDIF"
 msgid "S/PDIF raw or 2-channel PCM"
 msgstr "S/PDIF не декодированный (RAW) или S/PDIF PCM"
 
+#: ../../../lang/stb.php:253
+msgid "GAME"
+msgstr "ИГРА"
+
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
 #: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_1l"
@@ -1107,11 +1111,11 @@ msgstr "запланировано"
 msgid "city_name_field"
 msgstr "name"
 
-#: ../../../lib/streamrecorder.class.php:114
+#: ../../../lib/streamrecorder.class.php:117
 msgid "Starting recording"
 msgstr "Начинается запись"
 
-#: ../../../lib/streamrecorder.class.php:359
+#: ../../../lib/streamrecorder.class.php:380
 msgid "Stopped recording"
 msgstr "Остановлена запись"
 
