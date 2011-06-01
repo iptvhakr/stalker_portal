@@ -40,6 +40,10 @@ class Config
 
     public static function exist($key){
 
+        if (empty(self::$settings)){
+            self::init();
+        }
+
         if (!key_exists($key, self::$settings)){
             return false;
         }
