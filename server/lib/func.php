@@ -12,7 +12,7 @@
 function get_save_folder($id){
     
     $dir_name = ceil($id/100);
-    $dir_path = PROJECT_PATH.'/screenshots/'.$dir_name;
+    $dir_path = realpath(PROJECT_PATH.'/../screenshots/').'/'.$dir_name;
     //echo '$dir_path: '.$dir_path;
     if (!is_dir($dir_path)){
         umask(0);
