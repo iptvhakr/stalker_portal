@@ -46,7 +46,13 @@ if (!$error){
     }else{
         $use_http_tmp_link = 0;
     }
-    
+
+    if (@$_POST['enable_tv_archive'] == 'on'){
+        $enable_tv_archive = 1;
+    }else{
+        $enable_tv_archive = 0;
+    }
+
     if (@$_POST['base_ch'] == 'on'){
         $base_ch = 1;
     }else{
@@ -84,6 +90,7 @@ if (!$error){
                                         cost,
                                         cmd, 
                                         mc_cmd,
+                                        enable_tv_archive,
                                         descr,
                                         tv_genre_id, 
                                         status,
@@ -101,6 +108,7 @@ if (!$error){
                                         '".@$_POST['cost']."',
                                         '".@$_GET['cmd']."', 
                                         '".@$_POST['mc_cmd']."',
+                                        '".$enable_tv_archive."',
                                         '".@$_POST['descr']."',
                                         '".@$_POST['tv_genre_id']."', 
                                         1,
@@ -111,6 +119,13 @@ if (!$error){
             echo $query;
             $rs=$db->executeQuery($query);
             //var_dump($rs);
+            $ch_id = $rs->getLastInsertId();
+
+            if ($enable_tv_archive){
+                $archive = new TvArchive();
+                $archive->createTask($ch_id);
+            }
+            
             header("Location: add_itv.php");
             exit;
         }
@@ -122,11 +137,27 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_GET['cmd'] && @$_GET['name']){
+
+            $ch_id = intval(@$_GET['id']);
+
+            $enabled_tv_archive = intval(Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first('enable_tv_archive'));
+
+            if ($enabled_tv_archive ^ $enable_tv_archive){
+
+                $archive = new TvArchive();
+
+                if ($enable_tv_archive){
+                    $archive->createTask($ch_id);
+                }else{
+                    $archive->deleteTask($ch_id);
+                }
+            }
             
             $query = "update itv 
                                 set name='".$_POST['name']."', 
                                 cmd='".$_GET['cmd']."', 
                                 mc_cmd='".$_POST['mc_cmd']."',
+                                enable_tv_archive='".$enable_tv_archive."',
                                 use_http_tmp_link='".$use_http_tmp_link."',
                                 censored='".$censored."',
                                 base_ch='".$base_ch."',
@@ -335,9 +366,14 @@ if (@$_GET['edit']){
         $service_id = $arr['service_id'];
         $volume_correction = $arr['volume_correction'];
         $use_http_tmp_link = $arr['use_http_tmp_link'];
+        $enable_tv_archive = $arr['enable_tv_archive'];
 
         if ($use_http_tmp_link){
             $checked_http_tmp_link = 'checked';
+        }
+
+        if ($enable_tv_archive){
+            $checked_enable_tv_archive = 'checked';
         }
 
         if ($censored){
@@ -504,6 +540,14 @@ function popup(src){
            </td>
            <td>
             <input id="mc_cmd" name="mc_cmd" size="50" type="text" value="<? echo @$mc_cmd ?>">
+           </td>
+        </tr>
+        <tr>
+           <td align="right">
+            Вести ТВ архив:
+           </td>
+           <td>
+            <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> >
            </td>
         </tr>
         <tr>
