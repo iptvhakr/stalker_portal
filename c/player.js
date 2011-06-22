@@ -830,17 +830,17 @@ player.prototype.create_link = function(type, uri, series_number){
 
 player.prototype.play_now = function(uri){
     _debug('player.play_now', uri);
-    
+
     _log('play', uri);
-    
+
     this.start_time = Date.parse(new Date())/1000;
-    
+
     if (this.need_show_info){
         this.show_info(this.cur_media_item);
     }
-    
+
     this.init_con_menu();
-    
+
     try{
         stb.Play(uri);
     }catch(e){_debug(e)}
@@ -1301,7 +1301,7 @@ player.prototype.bind = function(){
     (function(){
         this.prev_layer && this.prev_layer.hide && this.prev_layer.hide();
         this.play_last();
-    }).bind(key.TV);
+    }).bind(key.TV, this);
 
     (function(){
         if (this.is_tv && module.remote_pvr){
