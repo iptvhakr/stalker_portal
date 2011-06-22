@@ -23,7 +23,8 @@
         this.sources = [
             {
                 "title" : word['update_from_http'],
-                "uri"   : (function(){ try{ return stb.RDir('getenv update_url').clearnl()}catch(e){_debug(e)}})()
+                //"uri"   : (function(){ try{ return stb.RDir('getenv update_url').clearnl()}catch(e){_debug(e)}})()
+                "uri"   : 'http://mag.infomir.com.ua/' + stb.type.substr(3) + '/imageupdate'
             },
             {
                 "title" : word['update_from_usb'],
