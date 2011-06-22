@@ -5,7 +5,7 @@ class RESTRequest extends APIRequest
     private $action;
     private $resource;
     private $identifiers;
-    private $put;
+    private $data;
     private static $use_mac_identifiers = false;
 
     public function __construct(){
@@ -52,7 +52,7 @@ class RESTRequest extends APIRequest
 
         $this->action = $methods_map[$method];
 
-        parse_str(file_get_contents("php://input"), $this->put);
+        parse_str(file_get_contents("php://input"), $this->data);
     }
 
     public function getAction(){
@@ -81,7 +81,19 @@ class RESTRequest extends APIRequest
     }
 
     public function getPut(){
-        return $this->put;
+        return $this->data;
+    }
+
+    public function getData($key = ''){
+
+        if (!empty($key)){
+            if (!key_exists($key, $this->data)){
+                return null;
+            }
+            return $this->data[$key];
+        }
+
+        return $this->data;
     }
 }
 
