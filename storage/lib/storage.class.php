@@ -22,6 +22,11 @@ abstract class Storage{
 
     public function __construct(){
         $this->media_ext_str = join('|', $this->media_ext_arr);
+
+        if (empty($_SERVER['SERVER_ADDR']) && empty($_SERVER['SERVER_NAME'])){
+            return;
+        }
+
         $this->storage_name = ($_SERVER['SERVER_NAME'])? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
 
         $this->user = User::getInstance();
