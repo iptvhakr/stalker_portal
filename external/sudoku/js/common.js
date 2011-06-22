@@ -35,7 +35,7 @@ function init(){
         modes.emulate = false;
         stb = gSTB;
         stb.ExecAction("graphicres  " + graphicres_mode);
-        stb.EnableServiceButton(true);
+        /*stb.EnableServiceButton(true);*/
         cvDraw.vars.model = trim.all(stb.RDir("Model"));
     }
     catch(e){
