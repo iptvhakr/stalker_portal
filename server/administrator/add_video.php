@@ -64,9 +64,9 @@ if (isset($_GET['accessed']) && @$_GET['id']){
     $rs = $db->executeQuery($query);
     $video = $rs->getValuesByRow(0);
     
-    $name = mysql_escape_string($video['name']);
-    $o_name = mysql_escape_string($video['o_name']);
-    $director = mysql_escape_string($video['director']);
+    $name = mysql_real_escape_string($video['name']);
+    $o_name = mysql_real_escape_string($video['o_name']);
+    $director = mysql_real_escape_string($video['director']);
     
     $year = $video['year'];
     
