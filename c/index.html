@@ -82,6 +82,8 @@
 <script type="text/javascript" src="xpcom.common.js"></script>
 <script type="text/javascript" src="xpcom.webkit.js"></script>
 
+<script type="text/javascript" src="blocking.js"></script>
+
 <script type="text/javascript" src="main_menu.js"></script>
 <script type="text/javascript" src="context_menu.js"></script>
 <script type="text/javascript" src="player.js"></script>
@@ -92,7 +94,7 @@ var debug = 0;
 var stb;
 var _GET = {};
 
-var module = {};
+var module = module || {};
 var word = {};
 
 window.onerror = function(msg, url, lno){
@@ -105,6 +107,14 @@ get_params();
 if (_GET.hasOwnProperty('debug')){
     debug = 1;
 }
+
+if (_GET.hasOwnProperty('referrer')){
+    referrer = _GET['referrer'];
+}else{
+    referrer = '';
+}
+
+referrer = document.referrer ? document.referrer : referrer;
 
 window.onload = init;
 
@@ -233,8 +243,10 @@ function init(){
             stb.set_cur_place(module.tv.layer_name);
             stb.set_cur_layer(module.tv);
         }
-        
-        stb.player.play_last();
+
+        if (!module.blocking.on){
+            stb.player.play_last();
+        }
         
     }).bind(key.TV);
     
