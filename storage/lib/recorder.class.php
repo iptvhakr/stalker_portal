@@ -20,12 +20,18 @@ class Recorder extends Storage
         $ip   = $arr[1];
         $port = $arr[2];
 
-        if (strpos($url, 'rtp://') !== false){
+        /*if (strpos($url, 'rtp://') !== false){
             //exec('nohup dumprtp '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>error.log & echo $!', $out);
             exec('nohup dumprtp '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>/dev/null & echo $!', $out);
         }elseif(strpos($url, 'udp://') !== false){
             //exec('nohup udpdump '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>&1 & echo $!', $out);
             exec('nohup udpdump '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>/dev/null & echo $!', $out);
+        }else{
+            throw new DomainException('Not supported protocol');
+        }*/
+
+        if (strpos($url, 'rtp://') !== false || strpos($url, 'udp://') !== false){
+            exec('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' > '.RECORDS_DIR.$filename.' 2>/dev/null & echo $!', $out);
         }else{
             throw new DomainException('Not supported protocol');
         }
