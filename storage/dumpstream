@@ -1,0 +1,131 @@
+#!/usr/bin/python
+
+import socket
+import sys
+import time
+import struct
+import operator
+import datetime
+import argparse
+import signal
+import threading
+import os
+import httplib
+from urlparse import urlparse
+import urllib
+
+def main():
+
+    eseq  = 0
+    flag  = 0
+    f     = 0
+    prev_fname  = -1
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind((args.ip_address, args.port))
+    mreq = struct.pack(">4sl", socket.inet_aton(args.ip_address), socket.INADDR_ANY)
+    sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+
+    while True:
+        buf = sock.recv(1590)
+
+        if buf[0].encode('hex') == '47':
+            data = buf
+        else:
+            header_size = 12 + 4 * operator.and_(int(buf[0].encode('hex'), 16), 16)
+            seq = int((buf[2:4]).encode('hex'), 16)
+
+            if not flag:
+                eseq = seq
+                flag = 1
+            if eseq != seq:
+                sys.stderr.write('RTP: NETWORK CONGESTION - expected %d, received %d\n' % (eseq, seq))
+                eseq = seq
+
+            eseq += 1
+
+            if eseq > 65535:
+                eseq = 0
+
+            #sys.stderr.write(str(seq)+'\n')
+            #sys.stderr.write(buf[:32].encode('hex')+'\n')
+            data = buf[header_size:]
+
+        if args.save_directory:
+            fname = datetime.datetime.now().strftime(date_format)
+
+            if prev_fname != fname:
+                if f:
+                    f.close()
+                    async_rm_old_files()
+
+                    async_open_url(args.callback_url, {'start_time' : int(time.mktime((datetime.datetime.strptime(fname, date_format) - datetime.timedelta(hours=args.pieces_number)).timetuple()))})
+
+                    if args.callback_url:
+                        async_open_url(args.callback_url, {'end_time' : int(time.time())})
+
+                f = open(args.save_directory + fname +'.mpg', 'a')
+
+            prev_fname = fname
+            f.write(data)
+        else :
+            sys.stdout.write(data)
+
+class AsyncRmOldFiles(threading.Thread):
+    def __init__(self):
+        super(AsyncRmOldFiles, self).__init__()
+        self.from_time = int(time.mktime((datetime.datetime.now() - datetime.timedelta(hours=args.pieces_number)).timetuple()))
+    def run(self):
+        for file in os.listdir(args.save_directory):
+            if file.find('.mpg') == len(file)-4:
+                try:
+                    if self.from_time > int(time.mktime(datetime.datetime.strptime(file[:-4], date_format).timetuple())):
+                        rm_file = args.save_directory + '/' + file
+                        sys.stderr.write('Deleting ' + rm_file + '\n')
+                        os.remove(rm_file)
+                except ValueError:
+                    pass
+                except OSError as error:
+                    sys.stderr.write('Error deleting file '+ file + ' - ' + error)
+
+def async_rm_old_files():
+    AsyncRmOldFiles().start()
+
+def signal_handler(signal, frame):
+    sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
+
+class AsyncOpenUrl(threading.Thread):
+    def __init__(self, url, params):
+        super(AsyncOpenUrl, self).__init__()
+        self.url    = url
+        self.params = params
+    def run(self):
+        url    = urlparse(self.url)
+        params = urllib.urlencode(self.params)
+        sys.stderr.write('Sending ' + params + ' to callback url: ' + self.url + '\n')
+        conn   = httplib.HTTPConnection(url.netloc)
+        conn.request('PUT', url.path, params)
+        resp   = conn.getresponse()
+        data   = resp.read()
+        sys.stderr.write(data + '\n')
+        conn.close()
+
+def async_open_url(url, params):
+    AsyncOpenUrl(url, params).start()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Stream dump. Can work with rtp and udp streams.')
+    parser.add_argument('-a', '--ip_address', help='ip address', default='224.0.1.2')
+    parser.add_argument('-p', '--port', help='port', default=5004, type=int)
+    parser.add_argument('-d', '--save_directory', help='directory to save pieces')
+    parser.add_argument('-n', '--pieces_number', help='number of pieces', type=int)
+    parser.add_argument('-c', '--callback_url', help='callback url, use to send HTTP PUT with start_time/end_time params')
+    args = parser.parse_args()
+    #print args
+    date_format = '%Y%m%d-%H'
+    #date_format = '%Y%m%d-%M'
+    sys.stderr.write('Stream dump\n')
+    sys.stderr.write('Using %s:%d\n' % (args.ip_address, args.port))
+    main()
