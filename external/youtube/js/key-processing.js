@@ -30,6 +30,11 @@ function keyProcessing(e) {
                         player.stop();
                         loading.hide();
                     }
+
+                    console.log(document.referrer.length);
+                    console.log(document.referrer);
+                    console.log(pages.back);
+                        
                     if(document.referrer.length > 4) {
                         window.location = document.referrer;
                     } else {
