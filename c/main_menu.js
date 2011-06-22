@@ -39,6 +39,11 @@ var main_menu = {
         this.page_shift.bind(key.PAGE_NEXT, main_menu, 1);
         
         (function(){
+            _debug('window.referrer', window.referrer);
+            if (window.referrer){
+                window.location = window.referrer;
+                return;
+            }
             this.hide();
             stb.player.play_last();
         }).bind(key.EXIT, this);
