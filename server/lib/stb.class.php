@@ -189,6 +189,12 @@ class Stb
         $profile['display_menu_after_loading'] = Config::get('display_menu_after_loading');
         $profile['record_max_length']          = intval(Config::get('record_max_length'));
 
+        $profile['web_proxy_host']         = Config::exist('stb_http_proxy_host') ? Config::get('stb_http_proxy_host') : '';
+        $profile['web_proxy_port']         = Config::exist('stb_http_proxy_port') ? Config::get('stb_http_proxy_port') : '';
+        $profile['web_proxy_user']         = Config::exist('stb_http_proxy_user') ? Config::get('stb_http_proxy_user') : '';
+        $profile['web_proxy_pass']         = Config::exist('stb_http_proxy_pass') ? Config::get('stb_http_proxy_pass') : '';
+        $profile['web_proxy_exclude_list'] = Config::exist('stb_http_proxy_exclude_list') ? Config::get('stb_http_proxy_exclude_list') : '';
+
         return $profile;
     }
     
