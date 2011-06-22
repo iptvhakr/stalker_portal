@@ -681,7 +681,7 @@ abstract class Master
      * @param array $storages
      * @return array good storages sorted by load
      */
-    private function sortByLoad($storages){
+    protected function sortByLoad($storages){
         
         if (!empty($storages)){
         
