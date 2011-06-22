@@ -74,8 +74,8 @@ function common_xpcom(){
 
         this.usbdisk = new usbdisk();
 
-        this.cut_off_dom_obj = create_block_element('cut_off');
-        this.cut_off_dom_obj.hide();
+        /*this.cut_off_dom_obj = create_block_element('cut_off');
+        this.cut_off_dom_obj.hide()*/
 
         //this.clock.start();
     };
@@ -343,6 +343,10 @@ function common_xpcom(){
 
         _debug('this.user:', user_data)
 
+        if (!this.check_graphic_res()){
+            return;
+        }
+
         if (this.user['status'] == 0){
             try{
 
@@ -352,9 +356,9 @@ function common_xpcom(){
                 }
             }
 
-            if (!this.check_graphic_res()){
+            /*if (!this.check_graphic_res()){
                 return;
-            }
+            }*/
 
             //this.get_localization();
 
@@ -402,6 +406,13 @@ function common_xpcom(){
                 this.user['playback_buffer_size'] = this.user['playback_buffer_size'] / 1000;
 
                 stb.SetupSPdif(this.user['audio_out']);
+
+                stb.EnableServiceButton(false);
+
+                //stb.SetWebProxy(string proxy_addr,int proxy_port,string user_name,string passwd,string exclude_list);
+                if (this.user['web_proxy_host']){
+                    stb.SetWebProxy && stb.SetWebProxy(this.user['web_proxy_host'], this.user['web_proxy_port'], this.user['web_proxy_user'], this.user['web_proxy_pass'], this.user['web_proxy_exclude_list']);
+                }
             }catch(e){
                 _debug(e);
             }
@@ -422,6 +433,7 @@ function common_xpcom(){
         }else if(this.user['status'] == 1){
             stb.loader.stop();
             this.cut_off();
+            //module.blocking.show()
         }
 
         this.watchdog.run();
@@ -548,7 +560,7 @@ function common_xpcom(){
     };
 
     this.get_image_version = function(){
-        _debug('check_graphic_res');
+        _debug('get_image_version');
 
         var ver = '';
 
@@ -557,7 +569,7 @@ function common_xpcom(){
 
             _debug('full_ver:', full_ver);
 
-            var pattern = /ImageVersion:\s([^\s]*)\s(.*)/
+            var pattern = /ImageVersion:\s([^\s]*)\s(.*)/;
 
             var short_ver = full_ver.replace(pattern, "$1");
 
@@ -583,14 +595,37 @@ function common_xpcom(){
             _debug('gres:', gres);
 
             if (gres != '720'){
-                _debug('Reboot');
-                stb.ExecAction('graphicres 720');
-                stb.ExecAction('reboot');
-                return 0;
+
+                var res = {
+                    "r1280" : {
+                        "w" : 1280,
+                        "h" : 720
+                    },
+                    "r1920" : {
+                        "w" : 1920,
+                        "h" : 1080
+                    }
+                };
+
+                _debug('window.referrer', window.referrer);
+
+                if (window.referrer){
+                    window.resizeTo(720, 576);
+                    if (res["r"+gres]){
+                        _debug('window.moveTo', (res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
+                        window.moveTo((res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
+                    }
+                }else{
+                    _debug('Reboot');
+                    stb.ExecAction('graphicres 720');
+                    stb.ExecAction('reboot');
+                    return 0;
+                }
             }
         }catch(e){
             _debug(e);
         }
+        
         return 1;
     };
 
@@ -784,26 +819,32 @@ function common_xpcom(){
     this.cut_off = function(){
         _debug('stb.cut_off');
 
+        if (module.blocking.on){
+            return;
+        }
+
         _log('cut_off()');
 
-        this.key_lock = true;
+        this.key_lock = false;
 
         this.player.stop();
 
-        stb.SetDefaultFlicker(1);
+        if(this.cur_layer){
+            this.cur_layer.on = false;
+        }
 
-        var text_msg = create_block_element('cut_off_text', this.cut_off_dom_obj);
-        text_msg.innerHTML = get_word('cut_off_msg');
+        stb.SetDefaultFlicker && stb.SetDefaultFlicker(1);
 
-        this.cut_off_dom_obj.show();
+        /*var text_msg = create_block_element('cut_off_text', this.cut_off.dom_obj);
+        text_msg.innerHTML = get_word('cut_off_msg');*/
 
-        this.cut_off_on = true;
+        module.blocking.show();
     };
 
     this.cut_on = function(){
         _debug('stb.cut_on');
 
-        if (this.cut_off_on){
+        if (module.blocking.on){
             stb.ExecAction('reboot');
         }
     };
