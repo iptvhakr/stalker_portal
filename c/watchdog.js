@@ -17,7 +17,7 @@ watchdog.prototype.run = function(){
     window.setInterval(function(){
         self.send_request();
     }, this.request_timeout);
-}
+};
 
 watchdog.prototype.send_request = function(){
     
@@ -49,7 +49,7 @@ watchdog.prototype.send_request = function(){
             }
         }
     );
-}
+};
 
 watchdog.prototype.parse_result = function(data){
     
@@ -148,7 +148,7 @@ watchdog.prototype.parse_result = function(data){
             }
         }
     }
-}
+};
 
 watchdog.prototype.send_confirm = function(){
     
@@ -164,4 +164,4 @@ watchdog.prototype.send_confirm = function(){
     });
     
     this.event_active_id = 0;
-}
+};
