@@ -59,7 +59,7 @@ function init() {
     catch(e){}
     
     stb.ExecAction("graphicres " + graphicres_mode);
-    stb.EnableServiceButton(true);
+    /*stb.EnableServiceButton(true);*/
 
     var fileref = document.createElement("link");
     fileref.setAttribute("rel", "stylesheet");
