@@ -104,6 +104,11 @@ SettingLayer.prototype.shift = function(dir){
             return;
         }
     }*/
+
+    if (this.controls[this.cur_control_idx] instanceof OptionInput && this.controls[this.cur_control_idx].suggests_list && !this.controls[this.cur_control_idx].suggests_list.isHidden()){
+        this.controls[this.cur_control_idx].shift_suggests(dir);
+        return;
+    }
     
     _debug('shift SettingLayer');
 
@@ -136,7 +141,7 @@ SettingLayer.prototype.add_symbol = function(symbol){
 
 SettingLayer.prototype.del_symbol = function(){
     _debug('SettingLayer.del_symbol');
-    this.controls[this.cur_control_idx].del();
+    this.controls[this.cur_control_idx].del && this.controls[this.cur_control_idx].del();
 };
 
 SettingLayer.prototype.bind = function(){
@@ -192,7 +197,7 @@ SettingLayer.prototype.bind = function(){
     (function(){
         
         if (this.controls[this.cur_control_idx] instanceof OptionInput){
-            this.controls[this.cur_control_idx].set_checked();
+            this.controls[this.cur_control_idx].switch_suggest_box();
         }else if (this.controls[this.cur_control_idx] instanceof TextInput){
             stb.ShowVirtualKeyboard();
         }else{
