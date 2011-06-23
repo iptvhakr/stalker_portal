@@ -166,7 +166,14 @@ var player_cond = 0,
         byID('time_act').innerHTML = '00:00:00';    // zerring atual time
         byID('time_total').innerHTML = '/ ' + ((time_obj.hours<10)? "0" + time_obj.hours : time_obj.hours) + ':' + ((time_obj.minuts<10)? "0" + time_obj.minuts : time_obj.minuts) + ':' + ((time_obj.seconds<10)? "0" + time_obj.seconds : time_obj.seconds);
         byID('interval_input').innerHTML = lang.intervals[player.current_step]; // set lang interval
-        stb.Play('ffrt3 '+ url);            // device start
+        
+        if(proxy_enable==true){
+            stb.Play('ffrt3 '+ url, proxy_string);
+        } else {
+            stb.Play('ffrt3 '+ url);            // device start
+        }
+        
+        
         byID('mute').style.display = (this.muteStatus==1) ? 'block' : 'none';   // show/hide mute picture
     },
     /**
