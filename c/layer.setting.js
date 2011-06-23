@@ -163,9 +163,21 @@ SettingLayer.prototype.bind = function(){
     this.add_symbol.bind(key.NUM9, this, 9);
     
     (function(){
+        if (this.controls[this.cur_control_idx] instanceof OptionInput && this.controls[this.cur_control_idx].suggest_input_dom_obj && !this.controls[this.cur_control_idx].suggest_input_dom_obj.isHidden()){
+            this.controls[this.cur_control_idx].hide_suggest_input();
+        }else{
+            this.hide();
+            main_menu.show();
+        }
+    }).bind(key.EXIT, this)
+
+    (function(){
+        if (this.controls[this.cur_control_idx] instanceof OptionInput && this.controls[this.cur_control_idx].suggest_input_dom_obj && !this.controls[this.cur_control_idx].suggest_input_dom_obj.isHidden()){
+            this.controls[this.cur_control_idx].hide_suggest_input();
+        }
         this.hide();
         main_menu.show();
-    }).bind(key.EXIT, this).bind(key.MENU, this);
+    }).bind(key.MENU, this);
 
     (function(){
         if (this.left_ear){
