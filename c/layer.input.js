@@ -142,6 +142,7 @@ function OptionInput(parent, options){
 
     this.default_checked_idx = -1;
     this.cur_idx = 0;
+    this.active_suggest_idx = -1;
     
     this.build();
 }
@@ -181,6 +182,10 @@ OptionInput.prototype.set_active = function(){
 
 OptionInput.prototype.set_passive = function(){
     _debug('OptionInput.set_active', this.cur_idx);
+
+    if (this.suggest_input_dom_obj && !this.suggest_input_dom_obj.isHidden()){
+        this.suggest_input_dom_obj.hide()
+    }
 
     this.option.setAttribute('active', '');
 };
@@ -277,6 +282,8 @@ OptionInput.prototype.set_selected_by_value = function(value){
 OptionInput.prototype.shift = function(dir){
     _debug('OptionInput.shift', dir);
 
+    if (this.suggest_input_dom_obj && !this.suggest_input_dom_obj.isHidden()) return;
+
     _debug('this.cur_idx', this.cur_idx);
     _debug('this.map.length', this.map.length);
 
@@ -308,6 +315,8 @@ OptionInput.prototype.shift = function(dir){
 OptionInput.prototype.shift_page = function(dir){
     _debug('OptionInput.shift_page', dir);
 
+    if (this.suggest_input_dom_obj && !this.suggest_input_dom_obj.isHidden()) return;
+
     window.clearTimeout(this.onselect_timer);
     var self = this;
     this.onselect_timer = window.setTimeout(function(){self.onselect()}, 500);
@@ -329,6 +338,164 @@ OptionInput.prototype.shift_page = function(dir){
     this._set_option(this.cur_idx);
 
     return true;
+};
+
+OptionInput.prototype._create_suggest_box = function(){
+    _debug('OptionInput.prototype._create_suggest_box');
+
+    this.suggest_input_dom_obj = document.createElement('input');
+
+    this.suggest_input_dom_obj.style.width  = this.option.offsetWidth + 'px';
+    this.suggest_input_dom_obj.style.height = this.option.offsetHeight + 'px';
+    this.suggest_input_dom_obj.style.top    = this.option.offsetHeight - 2 + 'px';
+    this.suggest_input_dom_obj.style.left   = this.option.offsetLeft + 'px';
+    this.suggest_input_dom_obj.addClass('suggest_input');
+
+    var self = this;
+
+    this.suggest_input_dom_obj.onkeyup = function(){
+        _debug('this.value', this.value);
+        if (this.value == self.prev_value) return;
+        self._get_suggests(this.value);
+        self.prev_value = this.value;
+    };
+
+    //this.parent.container.appendChild(this.suggest_input_dom_obj);
+    this.option.parentNode.insertBefore(this.suggest_input_dom_obj, this.option.nextSibling);
+    this.suggest_input_dom_obj.hide()
+};
+
+OptionInput.prototype._get_suggests = function(search){
+    _debug('OptionInput.prototype._get_suggests', search);
+
+    if (!this.suggests_target){
+        return;
+    }
+
+    this.suggests_target.search = search;
+
+    stb.load(
+        this.suggests_target,
+
+        function(result){
+            this._show_suggests(result)
+        },
+            
+        this
+    )
+};
+
+OptionInput.prototype._clear_suggests = function(){
+    _debug('OptionInput.prototype._clear_suggests');
+
+    this.suggests_list && this.suggests_list.parentNode.removeChild(this.suggests_list);
+    this.suggests_list = null;
+};
+
+OptionInput.prototype._show_suggests = function(suggests){
+    _debug('OptionInput.prototype._show_suggests', suggests);
+
+    this._clear_suggests();
+
+    this.suggests_list = document.createElement('ul');
+    this.suggests_list.style.left   = this.option.offsetLeft + 'px';
+    //this.suggests_list.style.bottom = this.option.offsetHeight + 'px';
+    this.suggests_list.style.width = this.option.offsetWidth + 'px';
+    this.suggests_list.addClass('suggests_list');
+
+    var items = [];
+
+    for (var i=0; i < suggests.length; i++){
+        var item = document.createElement('li');
+        item.innerHTML = suggests[i].label;
+        item.setAttribute('value', suggests[i].value);
+        this.suggests_list.appendChild(item);
+        items.push(item);
+    }
+
+    this.active_suggest_idx = this.suggests_list.childNodes.length;
+
+    //this.parent.container.appendChild(this.suggests_list);
+    this.option.parentNode.insertBefore(this.suggests_list, this.option.nextSibling);
+};
+
+OptionInput.prototype.shift_suggests = function(dir){
+    _debug('OptionInput.shift_suggests', dir);
+
+    this._set_passive_suggest();
+
+    if (dir > 0){
+
+        if (this.active_suggest_idx < this.suggests_list.childNodes.length - 1){
+            this.active_suggest_idx++;
+        }else{
+            this.active_suggest_idx = 0;
+        }
+    }else{
+
+        if (this.active_suggest_idx > 0){
+            this.active_suggest_idx--;
+        }else{
+            this.active_suggest_idx = this.suggests_list.childNodes.length - 1;
+        }
+    }
+
+    this._set_active_suggest();
+};
+
+OptionInput.prototype._set_active_suggest = function(){
+    _debug('OptionInput._set_active_suggest', this.active_suggest_idx);
+
+    if (this.active_suggest_idx < 0 || this.active_suggest_idx > this.suggests_list.childNodes.length - 1) return;
+
+    this.suggests_list.childNodes[this.active_suggest_idx].setAttribute('active', 'active')
+};
+
+OptionInput.prototype._set_passive_suggest = function(){
+    _debug('OptionInput._set_passive_suggest', this.active_suggest_idx);
+
+    if (this.active_suggest_idx < 0 || this.active_suggest_idx > this.suggests_list.childNodes.length - 1) return;
+
+    this.suggests_list.childNodes[this.active_suggest_idx].setAttribute('active', '')
+};
+
+OptionInput.prototype.switch_suggest_box = function(){
+    _debug('OptionInput.show_suggest_box');
+
+    if (!this.suggests_target){
+        return false;
+    }
+
+    if (this.suggests_list && !this.suggests_list.isHidden()){
+
+        if (this.suggests_list.childNodes.length){
+
+            var label = this.suggests_list.childNodes[this.active_suggest_idx].innerHTML;
+            var value = this.suggests_list.childNodes[this.active_suggest_idx].getAttribute('value');
+
+            var idx = this.map.getIdxByVal('value', value);
+
+            this._set_option(idx);
+
+            this._clear_suggests();
+        }else{
+            this._clear_suggests();
+        }
+    }
+
+    if (!this.suggest_input_dom_obj){
+        this._create_suggest_box();
+    }
+
+    if (this.suggest_input_dom_obj.isHidden()){
+        this.suggest_input_dom_obj.value = '';
+        this.suggest_input_dom_obj.show();
+        this.suggest_input_dom_obj.focus();
+        stb.ShowVirtualKeyboard && stb.ShowVirtualKeyboard();
+    }else{
+        this.suggest_input_dom_obj.blur();
+        this.suggest_input_dom_obj.hide();
+    }
 };
 
 /**
