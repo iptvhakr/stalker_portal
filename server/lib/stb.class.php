@@ -666,6 +666,34 @@ class Stb
         return $result;
     }
 
+    public function searchCountries(){
+
+        $search = $_REQUEST['search'];
+
+        if (empty($search)){
+            return array();
+        }
+
+        $countries = Mysql::getInstance()
+            ->select('id, name_en')
+            ->from('countries')
+            ->like(array(
+                'name'    => $search.'%',
+                'name_en' => $search.'%'
+            ), 'OR ')
+            ->limit(3)
+            ->get()
+            ->all();
+
+        $result = array();
+
+        foreach ($countries as $country){
+            $result[] = array('label' => $country['name_en'], 'value' => $country['id']);
+        }
+
+        return $result;
+    }
+
     public function getCities(){
 
         $country_id = intval($_REQUEST['country_id']);
@@ -677,8 +705,39 @@ class Stb
 
         foreach ($cities as $city){
             $selected = ($this->city_id == $city['id'])? 1 : 0;
-            $city_name = empty($city[_('city_name_field')]) ? $city['name_en'] : $city[_('city_name_field')];
+            //$city_name = empty($city[_('city_name_field')]) ? $city['name_en'] : $city[_('city_name_field')];
+            $city_name = $city['name_en'];
             $result[] = array('label' => $city_name , 'value' => $city['id'], 'timezone' => $city['timezone'], 'selected' => $selected);
+        }
+
+        return $result;
+    }
+
+    public function searchCities(){
+
+        $search = $_REQUEST['search'];
+        $country_id = intval($_REQUEST['country_id']);
+
+        if (empty($search)){
+            return array();
+        }
+
+        $cities = Mysql::getInstance()
+            ->select('id, name_en')
+            ->from('cities')
+            ->where(array('country_id' => $country_id))
+            ->like(array(
+                'name'    => $search.'%',
+                'name_en' => $search.'%'
+            ), 'OR ')
+            ->limit(3)
+            ->get()
+            ->all();
+
+        $result = array();
+        
+        foreach ($cities as $city){
+            $result[] = array('label' => $city['name_en'] , 'value' => $city['id']);
         }
 
         return $result;
