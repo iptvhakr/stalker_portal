@@ -90,9 +90,23 @@
 
                     this.countries = result;
 
-                    this.country_option = this.add_control(new OptionInput(this, {"name" : "country", "label" : word['country_label'], "map" : this.countries}));
+                    this.country_option = this.add_control(new OptionInput(this,
+                        {
+                            "name"  : "country",
+                            "label" : word['country_label'],
+                            "map"   : this.countries,
+                            "suggests_target" : {"type" : "stb", "action" : "search_countries"}
+                        })
+                    );
 
-                    this.city_option = this.add_control(new OptionInput(this, {"name" : "city", "label" : word['city_label'], "map" : []}));
+                    this.city_option = this.add_control(new OptionInput(this,
+                        {
+                            "name"  : "city",
+                            "label" : word['city_label'],
+                            "map"   : [],
+                            "suggests_target" : {"type" : "stb", "action" : "search_cities"}
+                        })
+                    );
 
                     //this.timezone_option = this.add_control(new OptionInput(this, {"name" : "timezone", "label" : word['timezone_label'], "map" : []}));
 
@@ -102,17 +116,20 @@
 
                     this.country_option.onchange = function(){
 
+                        var country_id = self.country_option.get_value();
+
                         stb.load(
                             {
                                 "type"       : "stb",
                                 "action"     : "get_cities",
-                                "country_id" : self.country_option.get_value()
+                                "country_id" : country_id
                             },
 
                             function(result){
                                 _debug('get_cities callback');
                                 
                                 self.city_option.fill(result);
+                                self.city_option.suggests_target['country_id'] = country_id;
                             },
 
                             self
