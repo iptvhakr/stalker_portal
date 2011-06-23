@@ -416,7 +416,7 @@ function empty(val){
 }
 
 function get_params(){
-    var get = new String(window.location)
+    var get = new String(window.location);
     var x = get.indexOf('?');
     if (x!=-1){
         var l = get.length;
@@ -426,7 +426,7 @@ function get_params(){
         for(i in l){
             if (l.hasOwnProperty(i)){
                 get = l[i].split('=');
-                _GET[get[0]] = get[1]
+                _GET[get[0]] = get[1];
                 x++;
             }
         }
