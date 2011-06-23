@@ -33,6 +33,12 @@ catch(e){
 
 function init() {
     win = {"width":screen.width, "height":screen.height};
+    _GET['proxy'] = '';
+    get_params();
+    proxy_string = _GET['proxy'];
+    if(proxy_string.length>1) {
+        proxy_enable=true;
+    }
 /*
     win = { "width":720, "height":576 };
     win = { "width":1280, "height":720 };
