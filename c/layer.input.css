@@ -85,6 +85,7 @@
     margin: 0 0 40px 40px;
     width: 570px;
     clear: both;
+    position: relative;
 }
 
 .setting_table .option_container .option_label{
@@ -113,6 +114,33 @@
 
 .setting_table .option_container .option_value[active="active"]{
     background-color: #D8A903;
+}
+
+.setting_table .suggest_input{
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border: 0;
+    font-size: 18px;
+    /*padding: 1px 2px;*/
+    position: absolute;
+}
+
+.option_container .suggests_list{
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    position: absolute;
+    bottom: 2px;
+    list-style: none;
+    background: rgba(255, 255, 255, 0.8);
+    color: #000;
+}
+
+.option_container .suggests_list li{
+    padding: 1px 2px;
+}
+
+.option_container .suggests_list li[active="active"]{
+    background-color: #d8a903;
 }
 
 #checkbox_btn{
