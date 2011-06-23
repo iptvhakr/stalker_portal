@@ -184,7 +184,7 @@ OptionInput.prototype.set_passive = function(){
     _debug('OptionInput.set_active', this.cur_idx);
 
     if (this.suggest_input_dom_obj && !this.suggest_input_dom_obj.isHidden()){
-        this.suggest_input_dom_obj.hide()
+        this.hide_suggest_input();
     }
 
     this.option.setAttribute('active', '');
@@ -351,6 +351,11 @@ OptionInput.prototype._create_suggest_box = function(){
     this.suggest_input_dom_obj.style.left   = this.option.offsetLeft + 'px';
     this.suggest_input_dom_obj.addClass('suggest_input');
 
+    this.suggest_input_dom_obj.onfocus = function(){
+        _debug('onfocus');
+        window.setTimeout(function(){stb.ShowVirtualKeyboard && stb.ShowVirtualKeyboard()}, 10);
+    };
+
     var self = this;
 
     this.suggest_input_dom_obj.onkeyup = function(){
@@ -362,7 +367,18 @@ OptionInput.prototype._create_suggest_box = function(){
 
     //this.parent.container.appendChild(this.suggest_input_dom_obj);
     this.option.parentNode.insertBefore(this.suggest_input_dom_obj, this.option.nextSibling);
-    this.suggest_input_dom_obj.hide()
+    this.hide_suggest_input();
+};
+
+OptionInput.prototype.hide_suggest_input = function(){
+    _debug('OptionInput.prototype.hide_suggest_input');
+
+    this.suggest_input_dom_obj.blur();
+    this.suggest_input_dom_obj.hide();
+
+    if (this.suggests_list && !this.suggests_list.isHidden()){
+        this._clear_suggests();
+    }
 };
 
 OptionInput.prototype._get_suggests = function(search){
@@ -491,10 +507,8 @@ OptionInput.prototype.switch_suggest_box = function(){
         this.suggest_input_dom_obj.value = '';
         this.suggest_input_dom_obj.show();
         this.suggest_input_dom_obj.focus();
-        stb.ShowVirtualKeyboard && stb.ShowVirtualKeyboard();
     }else{
-        this.suggest_input_dom_obj.blur();
-        this.suggest_input_dom_obj.hide();
+        this.hide_suggest_input();
     }
 };
 
