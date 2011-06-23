@@ -366,3 +366,20 @@ function trim(str) {
 function trimSpaces(str) {
   return str.replace(/\s{2,}/g, ' ');
 }
+function get_params(){
+    var get = new String(window.location);
+    var x = get.indexOf('?');
+    if (x!=-1){
+        var l = get.length;
+        get = get.substr(x+1, l-x);
+        l = get.split('&');
+        x = 0;
+        for(i in l){
+            if (l.hasOwnProperty(i)){
+                get = l[i].split('=');
+                _GET[get[0]] = get[1];
+                x++;
+            }
+        }
+    }
+}
