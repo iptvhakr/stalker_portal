@@ -205,4 +205,7 @@ var pages={"back":"../services.html"},
         {"name":"favorites","url_pre":"http://gdata.youtube.com/feeds/api/users/","url_post":"/favorites?v=2&alt=jsonc"},
         {"name":"uploads","url_pre":"http://gdata.youtube.com/feeds/api/users/","url_post":"/uploads?v=2&alt=jsonc"},
         {"name":"playlists","url_pre":"http://gdata.youtube.com/feeds/api/users/","url_post":"/playlists?v=2&alt=jsonc"}
-    ];
+    ],
+    _GET=new Array(),
+    proxy_string='',
+    proxy_enable=false;
