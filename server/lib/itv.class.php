@@ -112,7 +112,7 @@ class Itv extends AjaxResponse
 
         $cache = Cache::getInstance();
 
-        $result = $cache->set($key, $url, 0, 15);
+        $result = $cache->set($key, $url, 0, 5);
 
         if ($result){
             return $key;
