@@ -358,12 +358,19 @@ OptionInput.prototype._create_suggest_box = function(){
 
     var self = this;
 
-    this.suggest_input_dom_obj.onkeyup = function(){
+    this.suggest_input_dom_obj.addEventListener('input', function(){
         _debug('this.value', this.value);
         if (this.value == self.prev_value) return;
         self._get_suggests(this.value);
         self.prev_value = this.value;
-    };
+    }, false);
+
+    /*this.suggest_input_dom_obj.onkeyup = function(){
+        _debug('this.value', this.value);
+        if (this.value == self.prev_value) return;
+        self._get_suggests(this.value);
+        self.prev_value = this.value;
+    };*/
 
     //this.parent.container.appendChild(this.suggest_input_dom_obj);
     this.option.parentNode.insertBefore(this.suggest_input_dom_obj, this.option.nextSibling);
