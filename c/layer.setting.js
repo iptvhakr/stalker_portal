@@ -136,7 +136,7 @@ SettingLayer.prototype.shift = function(dir){
 SettingLayer.prototype.add_symbol = function(symbol){
     _debug('SettingLayer.add_symbol', symbol);
     
-    this.controls[this.cur_control_idx].add(symbol);
+    this.controls[this.cur_control_idx].add && this.controls[this.cur_control_idx].add(symbol);
 };
 
 SettingLayer.prototype.del_symbol = function(){
