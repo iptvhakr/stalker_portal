@@ -169,7 +169,7 @@ SettingLayer.prototype.bind = function(){
             this.hide();
             main_menu.show();
         }
-    }).bind(key.EXIT, this)
+    }).bind(key.EXIT, this);
 
     (function(){
         if (this.controls[this.cur_control_idx] instanceof OptionInput && this.controls[this.cur_control_idx].suggest_input_dom_obj && !this.controls[this.cur_control_idx].suggest_input_dom_obj.isHidden()){
