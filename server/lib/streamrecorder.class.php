@@ -225,7 +225,9 @@ class StreamRecorder extends Master
                 $result = $daemon->resource('recorder_task')->create($stop_rec_task);
             }catch (RESTClientException $e){
                 $this->deleteUserRecord($user_rec_id);
-                return false;
+                echo $e->getMessage();
+                throw new Exception($e->getMessage());
+                //return false;
             }
         }
 
