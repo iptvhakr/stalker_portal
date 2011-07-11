@@ -43,7 +43,11 @@ class Stb
     }
     
     private function __construct(){
-        
+
+        if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
+            Mysql::$debug = true;
+        }
+
         if (!empty($_COOKIE['mac'])){
             $this->mac = @trim(urldecode($_COOKIE['mac']));
         }else if (!empty($_REQUEST['mac'])){
@@ -74,9 +78,9 @@ class Stb
         }
 
         //if ($this->is_moderator && !empty($_COOKIE['debug'])){
-        if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
+        /*if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
             Mysql::$debug = true;
-        }
+        }*/
     }
     
     public function setId($id){
