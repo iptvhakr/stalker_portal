@@ -79,7 +79,7 @@ class Course
         if (is_array($content)){
             return $content;
         }else{
-            return 0;
+            return array();
         }
     }
     
