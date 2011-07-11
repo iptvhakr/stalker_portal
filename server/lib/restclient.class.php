@@ -59,44 +59,46 @@ class RESTClient
 
         $url = $this->rest_server  . $this->resource . '/' . ((!empty($this->ids)) ? implode(',', $this->ids) : '');
 
-        $stream_params = array('method' => $this->method);
+        //$stream_params = array('method' => $this->method);
 
-        $headers  = "Connection: close\r\n";
-        $headers .= "X-From: ".self::$from."\r\n";
+        $headers = array();
 
-        //if (($this->method == 'POST' || $this->method == 'PUT') && !empty($this->data)){
+        $headers[] = "Connection: close";
+        $headers[] = "X-From: ".self::$from;
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
+
         if ($this->method == 'POST' || $this->method == 'PUT'){
 
-            $data_url = http_build_query($this->data);
-
-            $headers .= "Content-Type: application/x-www-form-urlencoded\r\n";
-            $headers .= "Content-Length: ".strlen($data_url)."\r\n";
-
-            $stream_params['header']  = $headers;
-            $stream_params['content'] = $data_url;
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->data));
         }
 
-        $json_result = @file_get_contents($url, false, stream_context_create(array('http' => $stream_params)));
+        $json_result = curl_exec($ch);
+
+        $this->reset();
 
         if ($json_result === false){
-            throw new RESTClientConnectException('Error get contents from url: '.$url);
+            throw new RESTClientConnectException('Error get contents from url: '.$url.'; Error: '.curl_error($ch));
         }
 
         $result = json_decode($json_result, true);
 
-        var_dump($json_result);
+        //var_dump($json_result);
 
         if (!empty($result['output'])){
             echo $result['output'];
         }
 
         if ($result === null){
-            throw new RESTClientException("Result cannot be decoded");
+            throw new RESTClientException("Result cannot be decoded. Result: ".$json_result);
         }
 
         if ($result['status'] != 'OK'){
 
-            $error = !empty($result['error']) ? $result['error'] : "No description of the error";
+            $error = !empty($result['error']) ? $result['error'] : "No description of the error. Result: ".$json_result;
 
             throw new RESTClientException($error);
         }
@@ -105,7 +107,10 @@ class RESTClient
     }
 
     private function reset(){
-        
+        $this->ids  = array();
+        $this->data = array();
+        $this->resource    = '';
+        $this->method      = '';
     }
 }
 
