@@ -5,29 +5,49 @@ function init(){
     VKBlock = true;
     win = {"width":screen.width, "height":screen.height};
 /*
+    win = { "width":720, "height":480 };
     win = { "width":720, "height":576 };
     win = { "width":1280, "height":720 };
     win = { "width":1920, "height":1280 };
 */
-
-    var graphicres_mode = "720";
-    switch(win.width) {
-        case 720:
+/* * * * * * * * * * * * */
+    var loc = new String(window.location);
+    //log('\n\nloc: ' + loc + '\nloc.substr(loc.indexOf(\'?\')+1): ' + loc.substr(loc.indexOf('?')+1)+'\nloc.substr(loc.indexOf(\'?\')+1): ' + loc.substr(loc.indexOf('?')+1).split('&')+'\n\n');
+    if(loc.indexOf('?')>=0) { // referrer в _GET
+        var parts = loc.substr(loc.indexOf('?')+1).split('&'),
+            _GET=new Object();
+        for(var key=0; key<parts.length;key++) {
+            var part = parts[key];
+            _GET[part.substr(0,part.indexOf('='))] = part.substr(part.indexOf('=')+1);
+        }
+        pages.referrer = Base64.decode(_GET['referrer']);
+    } else {
+        pages.referrer = document.referrer;//loc.substr(loc.indexOf('?'));
+    }
+/* * * * * * * * * * * * */
+    switch(win.height) {
+        case 480:
+            gs.actualSize =480;
+            graphicres_mode = "720";
+        break;
+        case 576:
             gs.actualSize =576;
             graphicres_mode = "720";
         break;
-        case 1280:
+        case 720:
             gs.actualSize =720;
             graphicres_mode = "1280";
         break;
-        case 1920:
+        case 1080:
             gs.actualSize =1080;
             graphicres_mode = "1920";
         break;
     }
     
-    byID('game').width = gs.size[gs.actualSize].scr.w
+    byID('game').width = gs.size[gs.actualSize].scr.w;
     byID('game').height = gs.size[gs.actualSize].scr.h;
+    
+    var graphicres_mode = "720";
     
     window.resizeTo(win.width, win.height);
     window.moveTo(0, 0);
@@ -35,7 +55,7 @@ function init(){
         modes.emulate = false;
         stb = gSTB;
         stb.ExecAction("graphicres  " + graphicres_mode);
-        /*stb.EnableServiceButton(true);*/
+        stb.EnableServiceButton(true);
         cvDraw.vars.model = trim.all(stb.RDir("Model"));
     }
     catch(e){
@@ -43,9 +63,6 @@ function init(){
         stb = egSTB;
     }
 
-    
-    log(cvDraw.vars.model);
-    
     var fileref = document.createElement("link");
     fileref.setAttribute("rel", "stylesheet");
     fileref.setAttribute("type", "text/css");
@@ -245,7 +262,7 @@ var cvDraw = {
         }*/
     },
     //  заполнение всей матрицы
-    "fillVariants":function(){
+    "fillVariants":function(){  
         log("fillVariants");
         var items = byID('game').getElementsByClassName('box'),
             y = 0,
@@ -284,7 +301,7 @@ var cvDraw = {
                         }
                     }
                     var _s = [1,2,3,4,5,6,7,8,9];
-                    for(var o=0;o<10;o++) {
+                    for(var o=0;o<9;o++) {
                         var tmp = false;
                         for(var h=0;h<str.length;h++) {
                             if(_s[o]==str[h]) {
@@ -406,7 +423,7 @@ var cvDraw = {
             id = (id<10) ? '0' + id : '' + id;
             var v_block = byID(byID('p_' + id).parentNode.id).getElementsByClassName('box');
             for(var u=0; u<v_block.length;u++) {
-                var d = parseInt(v_block[u].id.substr(2, 2));
+                var d = parseInt(v_block[u].id.substr(2, 2),10);
                 _x =d % gs.infoItems.x;
                 _y= Math.floor(d / gs.infoItems.x);
                 this.fillOne(x,y,set_num,_x,_y);
@@ -526,7 +543,30 @@ var cvDraw = {
             this.fillCellCand(gs.position.current.x, gs.position.current.y);
         } else {
             if(gs.items[gs.position.current.y][gs.position.current.x].changeble == true) {
-                this.fillVariantsXY(gs.position.current.x, gs.position.current.y, num);
+                var id = gs.infoItems.x * gs.position.current.y + gs.position.current.x;
+                id = (id<10) ? '0' + id : '' + id;
+                var arr = this.getArrToCell(gs.position.current.x, gs.position.current.y, byID('p_' + id).parentNode.id), // возможные варианты
+                    isset = false;
+                
+                for(var u = 0; u< arr.length;u++) {
+                    if(arr[u]==num) {
+                        isset = true;
+                    }
+                }
+                if(isset==true) {
+                    this.fillVariantsXY(gs.position.current.x, gs.position.current.y, num);
+                } else {
+                    byID('errorCell').style.margin = gs.position.current.y *  gs.size[gs.actualSize].cll.h + 'px 0 0 ' + gs.position.current.x * gs.size[gs.actualSize].cll.w +'px';
+                    byID('errorCell').style.display = 'block';
+                    setTimeout(
+                        function()
+                        {
+                            byID('errorCell').style.display = 'none';
+                        }, 
+                        1250
+                    );
+                }
+                
             }
             var counter=0, iteraciy=0;
             for(var y = 0; y < gs.infoItems.y; y++){

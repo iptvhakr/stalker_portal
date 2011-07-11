@@ -52,9 +52,16 @@ var key = {
                 cvDraw.PressOK();
             break;
             case keys.REFRESH:
-                window.location.reload(true);
+                var new_loc = new String(window.location).substr(0, new String(window.location).indexOf('?'));
+                window.location =  new_loc +'?referrer='+Base64.encode(pages.referrer);
             break;
-            case keys.EXIT:if(document.referrer.length > 4) {window.location = document.referrer;} else {window.location = pages.back;}break;
+            case keys.EXIT:
+                if(pages.referrer.length > 4) {
+                    window.location = pages.referrer;
+                } else {
+                    window.location = pages.back;
+                }
+            break;
         }
     }
 }

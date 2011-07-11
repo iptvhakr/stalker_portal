@@ -1,7 +1,7 @@
 window.onload = init;               // Initialization for event onLoad
 window.onkeydown = keyProcessing;   // Intercept events keydown and sent in into function keyProcessing (key-Processing.js)
 
-var debug = true;
+var debug = false;
 var emulate = false;
 var main_lang ="";
 var stb = new Object();
@@ -40,19 +40,21 @@ function init() {
         proxy_enable=true;
     }
 /*
+    win = { "width":720, "height":480 };
     win = { "width":720, "height":576 };
     win = { "width":1280, "height":720 };
     win = { "width":1920, "height":1280 };
 */
     var graphicres_mode = "720";
-    switch(win.width) {
-        case 1280:
+    switch(win.height) {
+        case 720:
             graphicres_mode = "1280";
         break;
-        case 1920:
+        case 1080:
             graphicres_mode = "1920";
         break;
-        case 720:
+        case 480:
+        case 576:
             graphicres_mode = "720";
         break;
     }
@@ -70,9 +72,9 @@ function init() {
     var fileref = document.createElement("link");
     fileref.setAttribute("rel", "stylesheet");
     fileref.setAttribute("type", "text/css");
-    fileref.setAttribute("href", 'css/screen' + win.width + '.css');    
+    fileref.setAttribute("href", 'css/screen_' + win.height + '.css');    
     document.getElementsByTagName("head")[0].appendChild(fileref);
-    log('CSS file imported: "css/screen' + win.width + '.css"');
+    log('CSS file imported: "css/screen_' + win.height + '.css"');
     
     main_lang = getEnvironmentValue('language');
     try{main_lang = main_lang.toLowerCase();}catch(e){ }

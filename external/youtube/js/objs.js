@@ -745,7 +745,7 @@ workWithItems = {
                     '           <img src="' + current.globalObj[i].img + '" class="prew" alt="" />' + "\n" +
                     '       </div>' + "\n" +
                     '       <p class="title">' + current.globalObj[i].title + '</p>' +  "\n" +//&hellip;((current.globalObj[i].title.length<=27)? current.globalObj[i].title : current.globalObj[i].title.substr(0, 27) + '…') + '</p>' +  "\n" +//&hellip;
-                    '       <p>&nbsp;' + time + '</p>' + "\n" + // + '<br />' + list.data.items[i].uploaded.split("T")[0]
+                    ((win.height==480)?'':'<p>&nbsp;' + time + '</p>' + "\n") +
                     '       <p>&nbsp;' + lang.views + viewsCount + '</p>' + "\n" +
                     '       <p>&nbsp;' + current.globalObj[i].category + '</p>' + "\n" +
                     '   </div>' + "\n" +

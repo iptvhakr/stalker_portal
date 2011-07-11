@@ -30,11 +30,6 @@ function keyProcessing(e) {
                         player.stop();
                         loading.hide();
                     }
-
-                    console.log(document.referrer.length);
-                    console.log(document.referrer);
-                    console.log(pages.back);
-                        
                     if(document.referrer.length > 4) {
                         window.location = document.referrer;
                     } else {
@@ -184,19 +179,19 @@ log("event to upload next");
                     }
                 break;
                 case keys.RED:
-                case keys.NUM1:
+                //case keys.NUM1:
                     settings.cats_show();
                 break;
                 case keys.GREEN:
-                case keys.NUM2:
-                    settings.video_like.show();
+                //case keys.NUM2:
+                    if(current.isPL!=true){settings.video_like.show();}
                 break;
                 case keys.YELLOW:
-                case keys.NUM3:
+                //case keys.NUM3:
                     search.show();
                 break;
-                case keys.NUM4:
                 case keys.BLUE:
+                //case keys.NUM4:
                     settings.options.show();
                 break;
             }
@@ -387,18 +382,12 @@ log("event to upload next");
                     search.pressOK();
                 break;
                 case keys.APP:
-                    search.showHideVirtualKeyboard();
+                    //search.pressVKB();
                 break;
                 case keys.RED:
                 case keys.GREEN:
                 case keys.YELLOW:
                     var color = code == keys.RED ? "red": code == keys.GREEN ? "green": "yellow";
-                    search.colorButtonPress(color);
-                break;
-                case keys.NUM1:
-                case keys.NUM2:
-                case keys.NUM3:
-                    var color = code == keys.NUM1 ? "red": code == keys.NUM2 ? "green": "yellow";
                     search.colorButtonPress(color);
                 break;
             }
