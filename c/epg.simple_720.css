@@ -1,0 +1,128 @@
+#epg_simple .blue_row_bg{
+    position: absolute;
+    left: 330px;
+    top: 92px;
+    width: 802px;
+    height: 45px;
+    background: url("i_720/tv_table.png") no-repeat -339px -44px;
+}
+
+#epg_simple .blue_row_bg[active="active"]{
+    background-position: -339px 1px;
+}
+
+#epg_simple .t_time_block{
+    background-image: url("i_720/mb_icons.png");
+    background-position: -112px 0;
+    width: 44px;
+    height: 29px;
+    float: left;
+    margin: 7px 0 0 4px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+    text-align: center;
+    white-space: pre;
+    overflow: hidden;
+    font-size: 24px;
+    font-family: "Myriad Pro Cond", serif;
+}
+
+#epg_simple .blue_row_bg[active="active"] .t_time_block{
+    width: 44px;
+    height: 33px;
+    background-image: url("i_720/mb_icons.png");
+    background-position: -112px -31px;
+    color: #fff;
+    text-shadow: #122946 0 -1px 0;
+    padding-top: 2px;
+    margin: 6px 0 0 4px;
+}
+
+#epg_simple .name_block{
+    color: #fff;
+    font-size: 26px;
+    text-shadow: #122946 0 -1px 0;
+    margin: 7px 0 0 3px;
+    padding-left: 3px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#epg_simple .mark_memo_block{
+    position: absolute;
+    top: 4px;
+    left: 9px;
+    height: 8px;
+    width: 8px;
+    background-image: url("i_720/epg_green_mark.png");
+}
+
+#epg_simple .mark_rec_block{
+    position: absolute;
+    top: 4px;
+    left: 1px;
+    height: 8px;
+    width: 8px;
+    background-image: url("i_720/epg_red_mark.png");
+}
+
+#epg_simple .blue_row_bg[rel="close"] .name_block{
+    color: #99A8B5 !important;
+}
+#epg_simple .blue_row_bg[active="active"][rel="close"] .name_block{
+    color: #808080 !important;
+}
+
+#epg_simple .blue_row_bg[active="active"] .name_block{
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+}
+
+#epg_simple .week{
+    position: absolute;
+    left: 146px;
+    top: 92px;
+    list-style: none;
+}
+
+#epg_simple .week li{
+    width: 172px;
+    height: 35px;
+    /*margin: 0 0 1px 0;*/
+    background-image: url("i_720/tv_table.png");
+    background-position: 0 -44px;
+    color: #fff;
+    font-size: 24px;
+    text-shadow: #122946 0 -1px 0;
+    padding: 10px 0 0 5px;
+}
+
+#epg_simple .week li[active="active"]{
+    background-position: 0 1px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+}
+
+#epg_simple .week li[rel="close"]{
+    color: #99A8B5 !important;
+}
+
+#epg_simple .week li[active="active"][rel="close"]{
+    color: #808080 !important;
+}
+
+#epg_simple .program_info{
+    position: absolute;
+    bottom: 77px;
+    left: 70px;
+    height: 100px;
+    width: 1140px;
+    font-size: 28px;
+    color: #fff;
+}
+
+#epg_simple .program_info .time{
+    color: #cfeafe;
+    font-weight: bold;
+}
