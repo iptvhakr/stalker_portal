@@ -75,152 +75,6 @@ BaseLayer.prototype.create_block = function(class_name, is_active){
     return block;
 };
 
-/*BaseLayer.prototype.init_color_buttons = function(map){
-    this.buttons_bar = this.create_block('color_button_bar');
-    
-    var table = document.createElement('table');
-    
-    var row = document.createElement('tr');
-    table.appendChild(row);
-    
-    for (var i=0; i<=3; i++){
-        
-        var cell = document.createElement('td');
-        row.appendChild(cell);
-        
-        var separator = document.createElement('img');
-        
-        if (i == 0){
-            separator.src = 'i/1x1.gif';
-        }else{
-            separator.src = 'i/footer_bg2.png';
-        }
-        
-        cell.appendChild(separator);
-        
-        this.color_buttons[i].img_obj = create_block_element('btn_'+this.color_buttons[i].color, cell);
-        
-        this.color_buttons[i].text_obj = create_inline_element('', cell);
-        
-        this.color_buttons[i].text_obj.innerHTML = map[i].label;
-        
-        if (typeof(map[i].cmd) !== 'function'){
-            this.color_buttons[i].text_obj.setClass('disable_color_btn_text');
-        }
-    }
-    
-    if (typeof(map[0].cmd) == 'function'){
-        map[0].cmd.bind(key.RED, this);
-    }
-    
-    if (typeof(map[1].cmd) == 'function'){
-        map[1].cmd.bind(key.GREEN, this);
-    }
-    
-    if (typeof(map[2].cmd) == 'function'){
-        map[2].cmd.bind(key.YELLOW, this);
-    }
-    
-    if (typeof(map[3].cmd) == 'function'){
-        map[3].cmd.bind(key.BLUE, this);
-    }
-       
-    this.buttons_bar.appendChild(table);
-    
-    this.dom_obj.appendChild(this.buttons_bar);
-};*/
-
-/*
-BaseLayer.prototype.color_buttons = {
-
-    buttons_bar : {},
-
-    color_map : [
-        {"color" : "red"},
-        {"color" : "green"},
-        {"color" : "yellow"},
-        {"color" : "blue"}
-    ],
-
-    //buttons : {},
-
-    init : function(map){
-        this.buttons_bar = create_block_element('color_button_bar');
-
-        var table = document.createElement('table');
-
-        var row = document.createElement('tr');
-        table.appendChild(row);
-
-        for (var i=0; i<=3; i++){
-
-            var cell = document.createElement('td');
-            row.appendChild(cell);
-
-            var separator = document.createElement('img');
-
-            if (i == 0){
-                separator.src = 'i/1x1.gif';
-            }else{
-                separator.src = 'i/footer_bg2.png';
-            }
-
-            cell.appendChild(separator);
-
-            var color = this.color_map[i].color;
-
-            this.parent.buttons[color] = new ColorButton(color, cell);
-            this.parent.buttons[color].setText(map[i].label);
-
-            if (typeof(map[i].cmd) !== 'function'){
-                this.parent.buttons[color].disable();
-            }else{
-
-                (function(){
-                    _debug(this.parent.buttons[color]);
-                    if (!this.parent.buttons[color].disabled){
-                        map[0].cmd();
-                    }
-                }).bind(key[color.toUpperCase()], this);
-            }
-        }
-
-        this.buttons_bar.appendChild(table);
-
-        this.parent_dom_obj.appendChild(this.buttons_bar);
-    },
-
-    get : function(color){
-        _debug('color_buttons.get', color);
-
-        var button = this.parent.buttons[color];
-
-        _debug('button', button);
-
-        if (!button || !button.hasOwnProperty('enable')){
-            _debug('return dummy');
-
-            return {
-                enable  : function(){},
-                disable : function(){},
-                setText : function(){}
-            };
-        }
-
-        return button;
-    },
-
-    disableAll : function(){
-        this.buttons_bar.addClass('disabled_all_buttons');
-    },
-
-    enableAll : function(){
-        this.buttons_bar.delClass('disabled_all_buttons');
-    }
-};
-
-*/
-
 BaseLayer.prototype.init_color_buttons = function(map, target){
     this.color_buttons = new ColorButtonsBar(map, this.dom_obj, target);
     
@@ -250,7 +104,8 @@ function ColorButtonsBar(map, parent_dom_obj, target){
 ColorButtonsBar.prototype.init = function(map){
     this.buttons_bar = create_block_element('color_button_bar');
 
-    var table = document.createElement('table');
+    var table  = document.createElement('table');
+    this.table = table;
 
     var row = document.createElement('tr');
     table.appendChild(row);
@@ -260,12 +115,12 @@ ColorButtonsBar.prototype.init = function(map){
         var cell = document.createElement('td');
         row.appendChild(cell);
 
-        var separator = document.createElement('img');
-
         if (i == 0){
-            separator.src = 'i/1x1.gif';
+            var separator = document.createElement('img');
+            separator.src = 'i' + img_prefix + '/1x1.gif';
         }else{
-            separator.src = 'i/footer_bg2.png';
+            var separator = document.createElement('div');
+            separator.addClass('separator');
         }
 
         cell.appendChild(separator);
@@ -357,6 +212,7 @@ function ColorButton(color, parent){
 
     this.disabled = false;
     this.color    = color;
+    this.cell     = parent;
 
     this.img_obj  = create_block_element('btn_'+color, parent);
     this.text_obj = create_inline_element('', parent);
@@ -419,7 +275,7 @@ BaseLayer.prototype.init_right_ear = function(txt){
 
 BaseLayer.prototype.init_header_path = function(begin){
     
-    this.header_path = this.create_block('mb_header_first text24_white');
+    this.header_path = this.create_block('mb_header_first');
     this.path_container = document.createElement('span');
     this.header_path.innerHTML = begin + ' / ';
     this.header_path.appendChild(this.path_container);
@@ -446,7 +302,7 @@ BaseLayer.prototype.update_header_path = function(map){
     }
     
     for (i=0; i<this.header_path_map.length; i++){
-        path += '<span class="text20_white uppercase">'+this.header_path_map[i].title+'</span>';
+        path += '<span>'+this.header_path_map[i].title+'</span>';
     }
     
     this.path_container.innerHTML = path;
