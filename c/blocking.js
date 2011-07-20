@@ -9,6 +9,13 @@
 
         init_layer : function(){
             if (!this.dom_obj){
+
+                var _style = document.createElement('link');
+                _style.type = "text/css";
+                _style.rel = "stylesheet";
+                _style.href = 'blocking' + (gmode ? '_'+gmode : '') +".css";
+                document.getElementsByTagName("head")[0].appendChild(_style);
+
                 this.dom_obj  = create_block_element('cut_off', document.body);
                 this.text_msg = create_block_element('cut_off_text', this.dom_obj);
                 this.hide();
