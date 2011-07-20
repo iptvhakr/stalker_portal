@@ -58,7 +58,7 @@ class Stb
             $this->stb_lang = @trim(urldecode($_COOKIE['stb_lang']));
         }
 
-        if (!empty($_COOKIE['timezone'])){
+        if (!empty($_COOKIE['timezone']) && $_COOKIE['timezone'] != 'undefined'){
             $this->timezone = @trim(urldecode($_COOKIE['timezone']));
         }
 
@@ -107,7 +107,7 @@ class Stb
             $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
 
             $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
-            
+
             date_default_timezone_set($this->timezone);
 
             $date = new DateTime();
@@ -225,15 +225,19 @@ class Stb
     }
     
     public function getPreloadImages(){
+
+        $gmode = $_REQUEST['gmode'];
+
+        $prefix = $gmode ? '_'.$gmode : '';
         
-        $dir = PROJECT_PATH.'/../c/i/';
+        $dir = PROJECT_PATH.'/../c/i'.$prefix.'/';
         $files = array();
 
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
                     if (is_file($dir.$file)){
-                        $files[] = 'i/'.$file;
+                        $files[] = 'i'.$prefix.'/'.$file;
                     }
                 }
                 closedir($dh);
