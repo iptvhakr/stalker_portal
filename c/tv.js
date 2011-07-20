@@ -19,7 +19,8 @@
         this.preview_pos_map = [
             {"mode" : 576,  "xsize" : 320, "ysize" : 256, "x" : 350, "y" : 74},
             {"mode" : 720,  "xsize" : 569, "ysize" : 320, "x" : 622, "y" : 93},
-            {"mode" : 1080, "xsize" : 854, "ysize" : 480, "x" : 933, "y" : 139}
+            {"mode" : 1080, "xsize" : 854, "ysize" : 480, "x" : 933, "y" : 139},
+            {"mode" : 480,  "xsize" : 320, "ysize" : 213, "x" : 350, "y" : 62}
         ];
         
         this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
@@ -461,6 +462,7 @@
         };
         
         this.shift_row_callback = function(item){
+            
             _debug('tv.shift_row_callback', item);
             
             if (empty(item)){
@@ -478,11 +480,11 @@
             window.clearTimeout(this.row_callback_timer);
             
             var self = this;
-            
+
+            _debug('before set timeout');
             this.row_callback_timer = window.setTimeout(function(){
 
                 _debug('row_callback');
-
                 if (!self.on){
                     return;
                 }
@@ -508,6 +510,9 @@
                 
             },
             this.row_callback_timeout);
+
+            _debug('this.row_callback_timeout', this.row_callback_timeout);
+            _debug('after set timeout');
         };
 
         this._play_now = function(item){
@@ -618,7 +623,7 @@
             
             this.superclass.set_active_row.call(this, num);
             
-            this.handling_block(this.data_items[num].number, this.active_row, 'number');
+            //this.handling_block(this.data_items[num].number, this.active_row, 'number');
         };
         
         this.shift_row = function(dir){
@@ -723,9 +728,9 @@
         this.init_quick_ch_switch = function(){
             _debug('tv.init_quick_ch_switch');
             
-            this.quick_ch_switch.dom_obj = create_block_element('quick_ch_switch');
+            this.quick_ch_switch.dom_obj = create_block_element('quick_ch_switch tv_preview_quick_ch_switch');
             
-            this.quick_ch_switch.dom_obj.moveY(300);
+            //this.quick_ch_switch.dom_obj.moveY(300);
             
             this.quick_ch_switch.input = create_block_element('quick_ch_input', this.quick_ch_switch.dom_obj);
             
@@ -958,9 +963,6 @@
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'number';
-                
-                /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');*/
                 this.parent.color_buttons.get('blue').disable();
             }},
             {"label" : word['tv_by_title'], "cmd" : function(){
@@ -968,9 +970,6 @@
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'name';
-                
-                /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');*/
                 this.parent.color_buttons.get('blue').disable();
             }},
             {"label" : word['tv_only_favorite'], "cmd" : function(){
@@ -980,19 +979,16 @@
                 this.parent.load_params.fav = true;
 
                 if (this.parent.cur_view == 'wide'){
-                    /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                    this.parent.color_buttons[idx].text_obj.delClass();*/
                     this.parent.color_buttons.get('blue').enable();
                 }else{
-                    /*var idx = this.parent.color_buttons.getIdxByVal('color', 'blue');
-                    this.parent.color_buttons[idx].text_obj.setClass('disable_color_btn_text');*/
                     this.parent.color_buttons.get('blue').disable();
                 }
                 
             }}
         ],
         {
-            "offset_x" : 217
+            "offset_x" : 217,
+            "color"    : "green"
         }
     );
     
@@ -1003,6 +999,7 @@
         ],
         {
             "offset_x" : 27,
+            "color"    : "red",
             "need_reset_load_data" : false,
             "need_update_header"   : false
         }
@@ -1066,7 +1063,7 @@
             }
             
             
-            main_menu.add(word['tv_title'], map, 'i/mm_ico_tv.png', '', module.tv);
+            main_menu.add(word['tv_title'], map, 'mm_ico_tv.png', '', module.tv);
             
             loader.next();
         }
