@@ -55,7 +55,7 @@ vclub_info.prototype.reset = function(){
 
 vclub_info.prototype.init = function(){
     
-    this.dom_obj.innerHTML = '<div class="mb_header_first text24_white">' + word['vclub_title'] + ' / <span class="text20_white uppercase">' + word['vclub_info'] + '</span></div>';
+    this.dom_obj.innerHTML = '<div class="mb_header_first">' + word['vclub_title'] + ' / <span>' + word['vclub_info'] + '</span></div>';
     
     //create_block_element('ears_back', this.dom_obj);
     
@@ -78,9 +78,9 @@ vclub_info.prototype.init = function(){
     
     this.main_container = create_block_element('mb_main_filminfo', this.dom_obj);
     
-    this.film_title = create_block_element('mb_filminfo_name text25_white shadow_dark2', this.main_container);
+    this.film_title = create_block_element('mb_filminfo_name', this.main_container);
     
-    var info_container  = create_block_element('mb_filminfo_fullinfo text18_white align_justify', this.main_container);
+    var info_container  = create_block_element('mb_filminfo_fullinfo', this.main_container);
     
     this.full_info = create_block_element('mb_hidden_overflow', info_container);
     
@@ -89,7 +89,7 @@ vclub_info.prototype.init = function(){
     info_container.insertBefore(this.scrollbar.dom_obj, this.full_info);
     
     create_block_element('mb_filminfo_trans', this.main_container);
-    
+
     this.film_cover = create_block_element('mb_filminfo_prev', this.main_container);
     
     this.hide();
@@ -106,7 +106,7 @@ vclub_info.prototype.fill = function(item){
                      '<div class="hr_filminfo"></div>' + 
                      '<span>' + word['vclub_director'] + ':</span> ' + item.director + '<br>' +
                      '<span>' + word['vclub_cast'] + ':</span> ' + item.actors + 
-                     '<div class="hr_filminfo"></div>' + item.description + '<br><br>';
+                     '<div class="hr_filminfo"></div>' + item.description;// + '<br><br>';
     
     this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'" width="240" height="320">';
 };
