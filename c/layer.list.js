@@ -130,7 +130,7 @@ ListLayer.prototype.init = function(){
 ListLayer.prototype.init_page_bar = function(){
     
     this.total_vclub_items_obj = this.create_block();
-    this.total_vclub_items_obj.addClass('mb_header_info text14_white');
+    this.total_vclub_items_obj.addClass('mb_header_info');
     
     this.dom_obj.appendChild(this.total_vclub_items_obj);
 };
@@ -154,7 +154,7 @@ ListLayer.prototype.init_list = function(){
         }
         
         this.map[i] = this.init_blocks(item);
-        
+
         this.map[i]['row'] = item;
         this.main_container.appendChild(item);
     }
@@ -214,7 +214,7 @@ ListLayer.prototype.init_active_row = function(){
     active_row.hide();
     
     this.active_row = this.init_blocks(active_row, true);
-    
+
     this.active_row['row'] = active_row;
     
     this.main_container.appendChild(active_row);
@@ -386,7 +386,7 @@ ListLayer.prototype.set_active_row = function(num){
         }
         
         var offset = this.map[num]['row'].offsetTop - this.active_row_offset;
-        
+
         this.active_row['row'].moveY(offset);
         
         if (this.active_row['row'].isHidden()){
@@ -410,7 +410,7 @@ ListLayer.prototype.set_active_row = function(num){
             
                 for (var j=0; j<this.row_blocks.length; j++){
                     this.handling_block(this.data_items[num][this.row_blocks[j]], this.active_row, this.row_blocks[j]);
-                }    
+                }
                 
                 if (this.shift_row_callback && (this.cur_view == 'middle' || this.cur_view == 'short')){
                     this.shift_row_callback.call(this, this.data_items[num]);
@@ -419,6 +419,8 @@ ListLayer.prototype.set_active_row = function(num){
                 this.active_row['row'].hide();
             }
         }
+
+        _debug('ListLayer.set_active_row end')
     }catch(e){
         _debug(e);
     }
