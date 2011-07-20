@@ -25,17 +25,20 @@ sidebar.prototype.show = function(){
     for (var i=0; i<this.dependency.length; i++){
         this.dependency[i].on && this.dependency[i].hide && this.dependency[i].hide();
     }
-    
-    this.dom_obj.moveX(720-this.dom_obj.clientWidth);
+
+    this.dom_obj.show();
+    this.dom_obj.moveX(this.parent.dom_obj.offsetWidth - this.dom_obj.offsetWidth);
     this.on = true;
-}
+    this.set_active_list();
+};
 
 sidebar.prototype.hide = function(){
     _debug('sidebar.hide');
-    
-    this.dom_obj.moveX(720);
+
+    this.dom_obj.hide();
+    this.dom_obj.moveX(this.parent.dom_obj.offsetWidth);
     this.on = false;
-}
+};
 
 sidebar.prototype.reset = function(){
     _debug('sidebar.reset');
@@ -48,7 +51,7 @@ sidebar.prototype.reset = function(){
     
     this.cur_list_idx = 0;
     this.set_active_list();
-}
+};
 
 sidebar.prototype.full_reset = function(){
     _debug('sidebar.full_reset');
@@ -83,7 +86,7 @@ sidebar.prototype.full_reset = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 sidebar.prototype.init = function(){
     
@@ -99,7 +102,9 @@ sidebar.prototype.init = function(){
     this.main_container.addClass('t_row');
     
     container.appendChild(this.main_container);
-}
+
+    this.hide();
+};
 
 sidebar.prototype.init_items = function(alias){
     
@@ -147,7 +152,7 @@ sidebar.prototype.init_items = function(alias){
     this.main_container.appendChild(cell);
     
     this.lists.push({"header": options.header,"alias" : alias, "dom_obj" : list, "items" : items, "selected" : "*", "selected_title" : "*"});
-}
+};
 
 sidebar.prototype.fill_items = function(alias, map){
     _debug('sidebar.fill_items', alias, map);
@@ -167,7 +172,7 @@ sidebar.prototype.fill_items = function(alias, map){
     this.lists[idx].map = map;
     
     this.render_items(idx);
-}
+};
 
 sidebar.prototype.vshift = function(dir){
 
@@ -182,7 +187,7 @@ sidebar.prototype.vshift = function(dir){
     }
     
     this.render_items(this.cur_list_idx);
-}
+};
 
 sidebar.prototype.shift_page = function(dir){
 
@@ -209,7 +214,7 @@ sidebar.prototype.shift_page = function(dir){
     }
     
     this.render_items(this.cur_list_idx);
-}
+};
 
 sidebar.prototype.hshift = function(dir){
     
@@ -226,7 +231,7 @@ sidebar.prototype.hshift = function(dir){
     }
     
     this.set_active_list();
-}
+};
 
 sidebar.prototype.set_active_list = function(){
     
@@ -239,7 +244,7 @@ sidebar.prototype.set_active_list = function(){
             this.arrows.moveX(this.lists[i].dom_obj.clientWidth/2 - 6 + this.lists[i].dom_obj.offsetLeft);
         }
     }
-}
+};
 
 sidebar.prototype.render_items = function(item_idx){
     
@@ -268,7 +273,7 @@ sidebar.prototype.render_items = function(item_idx){
             _debug(e);
         }
     }
-}
+};
 
 sidebar.prototype.create_separator = function(){
     
@@ -277,7 +282,7 @@ sidebar.prototype.create_separator = function(){
     this.dom_obj.appendChild(separator);
     
     return separator;
-}
+};
 
 sidebar.prototype.set_selected_item = function(){
     _debug('set_selected_item');
@@ -304,7 +309,7 @@ sidebar.prototype.set_selected_item = function(){
     }
         
     this.action();
-}
+};
 
 sidebar.prototype.action = function(){
     _debug('action');
@@ -318,7 +323,7 @@ sidebar.prototype.action = function(){
     }
     
     this.parent.load_data();
-}
+};
 
 sidebar.prototype.bind = function(){
     this.vshift.bind(key.UP, this, -1);
@@ -335,6 +340,6 @@ sidebar.prototype.bind = function(){
     this.hide.bind(key.EXIT, this);
     
     this.full_reset.bind(key.NUM0, this)
-}
+};
 
 loader.next();
