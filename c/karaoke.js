@@ -171,13 +171,15 @@
             {"label" : word['karaoke_by_title'], "cmd" : function(){this.parent.load_params.sortby = 'name'}}
         ],
         {
-            "offset_x" : 217
+            "offset_x" : 217,
+            "color"    : "green"
         }
     );
     
     karaoke.init_search_box(
         {
-            "offset_x" : 323,
+            "offset_x"  : 323,
+            "color"     : "yellow",
             "languages" : get_word('search_box_languages')
         }
     );
@@ -196,7 +198,7 @@
     
     /* Integrate karaoke in main menu */
     
-    main_menu.add(get_word('karaoke_title'), [], 'i/mm_ico_karaoke.png', function(){
+    main_menu.add(get_word('karaoke_title'), [], 'mm_ico_karaoke.png', function(){
             main_menu.hide();
             module.karaoke._show();
     },
