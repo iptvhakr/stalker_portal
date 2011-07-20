@@ -1,4 +1,10 @@
 /**
  * Empty.
  */
- 
+
+.color_button_bar .separator{
+    background: url(i/footer_bg2.png);
+    height: 40px;
+    width: 14px;
+    margin: 0;
+}
