@@ -66,6 +66,8 @@ var keydown_observer = new function(){
             }
             
         }
+
+        _debug('keydown exit');
     }
 };
 
