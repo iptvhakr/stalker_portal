@@ -3,7 +3,7 @@
  */
 (function(){
     
-    main_menu.add('YouTube', [], 'i/mm_ico_youtube.png', function(){
+    main_menu.add('YouTube', [], 'mm_ico_youtube.png', function(){
 
         var params = '';
 
