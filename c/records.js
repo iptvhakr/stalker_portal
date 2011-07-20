@@ -130,7 +130,7 @@
     
     /* END RECORDS */
     
-    main_menu.add(word['records_title'], [], 'i/mm_ico_usb.png', function(){
+    main_menu.add(word['records_title'], [], 'mm_ico_usb.png', function(){
         if (stb.usbdisk.is_drive_mounted()){
             main_menu.hide();
             module.records.show();
