@@ -146,8 +146,8 @@ _alert.prototype.queue_handler = function(){
             if (msg.hasOwnProperty('msg')){
 
                 if (this.type == 'confirm'){
-                    msg.msg += '<br/><br/>OK - ' + get_word('alert_confirm');
-                    msg.msg += '<br/>EXIT - ' + get_word('alert_cancel');
+                    msg.msg += '<br/><div style="clear:both;">OK - ' + get_word('alert_confirm');
+                    msg.msg += '<br/>EXIT - ' + get_word('alert_cancel') + '</div>';
                 }
 
                 this.show(msg.msg);
@@ -224,3 +224,7 @@ _alert.prototype.bind = function(){
     }).priority_bind(key.EXIT, this);
     
 };
+
+stb && stb.init_alerts && stb.init_alerts();
+
+loader.next();
