@@ -33,6 +33,10 @@ function search_box(parent, options){
         if (options.offset_x){
             this.offset_x = options.offset_x;
         }
+
+        if (options.color){
+            this.color = options.color;
+        }
     }
     
     this.lang_map = [
@@ -506,14 +510,30 @@ search_box.prototype.show = function(){
         this.dependency[i].on && this.dependency[i].hide && this.dependency[i].hide();
     }
     
-    this.dom_obj.moveY(576 - this.dom_obj.clientHeight - 36);
+    //this.dom_obj.moveY(576 - this.dom_obj.clientHeight - 36);
+    this.dom_obj.show();
+    this.dom_obj.moveY(this.parent.dom_obj.offsetHeight - this.dom_obj.clientHeight - this.parent.color_buttons.buttons_bar.offsetHeight);
+    if (this.color){
+        var button = this.parent.color_buttons.get(this.color).cell;
+
+        var offset_left = button.offsetLeft + this.parent.color_buttons.table.offsetLeft + button.offsetWidth/2 - this.dom_obj.offsetWidth/2 + 7;
+
+        if ((offset_left + this.dom_obj.offsetWidth) > this.parent.dom_obj.offsetWidth){
+            offset_left = this.parent.dom_obj.offsetWidth - this.dom_obj.offsetWidth;
+        }
+
+        this.dom_obj.moveX(offset_left);
+    }
+
     this.on = true;
 };
 
 search_box.prototype.hide = function(){
     _debug('search_box.hide');
     
-    this.dom_obj.moveY(576);
+    //this.dom_obj.moveY(576);
+    this.dom_obj.hide();
+    this.dom_obj.moveY(this.parent.dom_obj.offsetHeight);
     this.on = false;
 };
 
