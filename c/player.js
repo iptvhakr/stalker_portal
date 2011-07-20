@@ -91,10 +91,10 @@ function player(){
 
     this.pos_by_numbers_input = '';
     
-    this.con_menu = new context_menu();
+    /*this.con_menu = new context_menu();
     this.con_menu.bind();
     this.con_menu.set_x_offset(100);
-    this.con_menu.set_y_offset(100);
+    this.con_menu.set_y_offset(100);*/
 }
 
 player.prototype.init = function(){
@@ -962,6 +962,7 @@ player.prototype.init_show_info = function(){
     this.info.video_container = create_block_element("", this.info['dom_obj']);
     
     var pos_bar = create_block_element("pos_bar", this.info.video_container);
+    this.info.pos_bar = pos_bar;
     
     this.info.pos_button = create_block_element("pos_button", pos_bar);
     
@@ -1581,7 +1582,8 @@ player.prototype.set_pos_button = function(to_time){
         var to_pos = 0;
 
         if (this.cur_media_length != 0){
-            to_pos = Math.round(590*to_time/this.cur_media_length);
+            //to_pos = Math.round(590*to_time/this.cur_media_length);
+            to_pos = Math.round((this.info.pos_bar.offsetWidth - 42) * to_time / this.cur_media_length);
         }
         
         _debug('to_pos', to_pos);
@@ -2089,6 +2091,13 @@ player.prototype.subtitle_pid = {
 
 player.prototype.init_con_menu = function(){
     _debug('player.init_con_menu');
+
+    if (!this.con_menu){
+        this.con_menu = new context_menu();
+        this.con_menu.bind();
+        this.con_menu.set_x_offset(100);
+        this.con_menu.set_y_offset(100);
+    }
     
     var map = [
             {
