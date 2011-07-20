@@ -3,6 +3,7 @@ session_start();
 
 ob_start();
 
+include "../common.php";
 include "../lib/func.php";
 
 $error = '';
