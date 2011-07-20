@@ -88,7 +88,8 @@
             {"label" : word['cityinfo_other'], "cmd" : function(){this.parent.load_params.part = 'other'}}
         ],
         {
-            "offset_x" : 27
+            "offset_x" : 27,
+            "color"    : "red"
         }
     );
     
