@@ -36,6 +36,10 @@ function common_xpcom(){
     this.load_step = Math.ceil(50/4);
 
     this.base_modules = [
+        "reset",
+        "context_menu",
+        "main_menu",
+        "alert",
         "layer.base",
         "layer.list",
         "layer.setting",
@@ -62,13 +66,13 @@ function common_xpcom(){
         this.get_user_profile();
         this.epg_loader.start();
 
-        this.notice = new _alert();
+        /*this.notice = new _alert();
 
         this.msg = new _alert('info');
         this.msg.bind();
 
         this.confirm = new _alert('confirm');
-        this.confirm.bind();
+        this.confirm.bind();*/
 
         this.watchdog = new watchdog();
 
@@ -78,6 +82,16 @@ function common_xpcom(){
         this.cut_off_dom_obj.hide()*/
 
         //this.clock.start();
+    };
+
+    this.init_alerts = function(){
+        this.notice = new _alert();
+
+        this.msg = new _alert('info');
+        this.msg.bind();
+
+        this.confirm = new _alert('confirm');
+        this.confirm.bind();
     };
 
     this.get_server_params = function(){
@@ -209,9 +223,11 @@ function common_xpcom(){
             function(result){
 
                 word = result;
-                this.clock.start();
+                //this.clock.start();
 
                 this.user_init(this.profile);
+
+                this.clock.start();
             },
 
             this
@@ -267,7 +283,8 @@ function common_xpcom(){
 
             {
                 'type'   : 'stb',
-                'action' : 'get_preload_images'
+                'action' : 'get_preload_images',
+                'gmode'  : gmode
             },
 
             function(result){
@@ -341,7 +358,7 @@ function common_xpcom(){
 
         this.user = user_data;
 
-        _debug('this.user:', user_data)
+        _debug('this.user:', user_data);
 
         if (!this.check_graphic_res()){
             return;
@@ -594,39 +611,69 @@ function common_xpcom(){
 
             _debug('gres:', gres);
 
-            if (gres != '720'){
+            var res = {
+                "r720" :{
+                    "w"        : 720,
+                    "h"        : 576,
+                    "window_w" : 720,
+                    "window_h" : 576
+                },
+                "r1280" : {
+                    "w"        : 1280,
+                    "h"        : 720,
+                    "window_w" : 1280,
+                    "window_h" : 720
+                },
+                "r1920" : {
+                    "w"        : 1920,
+                    "h"        : 1080,
+                    "window_w" : 1280,
+                    "window_h" : 720
+                }
+            };
 
-                var res = {
-                    "r1280" : {
-                        "w" : 1280,
-                        "h" : 720
-                    },
-                    "r1920" : {
-                        "w" : 1920,
-                        "h" : 1080
-                    }
-                };
+            if (gres == '720'){
+            //if (res["r"+gres]){
+
+                _debug('window.moveTo', (res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
+                window.moveTo((res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
+
+                if (gres == 1920 && !window.referrer){
+                    stb.ExecAction('graphicres 1280');
+                }else{
+                    return 1;
+                }
+            }else{
+                stb.ExecAction('graphicres 720');
+            }
+
+            _debug('Reboot');
+            stb.ExecAction('reboot');
+            return 0;
+
+
+            /*if (gres != '720'){
 
                 _debug('window.referrer', window.referrer);
 
-                if (window.referrer){
-                    window.resizeTo(720, 576);
-                    if (res["r"+gres]){
-                        _debug('window.moveTo', (res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
-                        window.moveTo((res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
+                if (stb.type == 'MAG200'){
+                    if (window.referrer){
+                        window.resizeTo(720, 576);
+                        if (res["r"+gres]){
+                            _debug('window.moveTo', (res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
+                            window.moveTo((res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
+                        }
+                    }else{
+                        //_debug('Reboot');
+                        //stb.ExecAction('graphicres 720');
+                        //stb.ExecAction('reboot');
+                        //return 0;
                     }
-                }else{
-                    _debug('Reboot');
-                    stb.ExecAction('graphicres 720');
-                    stb.ExecAction('reboot');
-                    return 0;
                 }
-            }
+            }*/
         }catch(e){
             _debug(e);
         }
-        
-        return 1;
     };
 
     this.load_channels = function(){
@@ -988,7 +1035,7 @@ function common_xpcom(){
         },
 
         show : function(){
-            if (main_menu && main_menu.time && main_menu.date && main_menu.on){
+            if (typeof(main_menu) != 'undefined' && main_menu && main_menu.time && main_menu.date && main_menu.on){
                 main_menu.time.innerHTML = get_word('time_format').format(this.hours, this.minutes, this.ap_hours, this.ap_mark);
                 main_menu.date.innerHTML = get_word('date_format').format(get_word('week_arr')[this.day], this.date, get_word('month_arr')[this.month], this.year);
             }
