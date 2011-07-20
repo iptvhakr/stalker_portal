@@ -10,13 +10,13 @@ function scrollbar(parent, for_dom_obj, options){
     this.parent = parent;
     
     this.scroll_button = {};
-    this.height = 0;
+    this.height = for_dom_obj.offsetHeight - 35;
     
-    if (options){
+    /*if (options){
         if (options.height){
             this.height = options.height;
         }
-    }
+    }*/
     
     this.init();
 }
@@ -33,13 +33,13 @@ scrollbar.prototype.init = function(){
     this.scroll_button = create_block_element('mb_scroll_c', scroll_container);
     
     create_block_element('mb_scroll_b', this.dom_obj);
-}
+};
 
 scrollbar.prototype.reset = function(){
     _debug('scrollbar.reset');
     
     this.scroll_button.style.top = 6 + 'px';
-}
+};
 
 scrollbar.prototype.refresh = function(){
     _debug('scrollbar.refresh');
@@ -63,6 +63,6 @@ scrollbar.prototype.refresh = function(){
     _debug('top', top);
     
     this.scroll_button.style.top = top + 'px';
-}
+};
 
 loader.next();
