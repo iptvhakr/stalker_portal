@@ -103,9 +103,9 @@
                 
                 this.map[i].descr.innerHTML = descr;
                 
-                this.map[i].layer_1.src = 'i/' + data[i].img_1;
-                this.map[i].layer_2.src = 'i/' + data[i].img_2;
-                this.map[i].layer_3.src = 'i/' + data[i].img_3;
+                this.map[i].layer_1.src = 'i' + img_prefix + '/' + data[i].img_1;
+                this.map[i].layer_2.src = 'i' + img_prefix + '/' + data[i].img_2;
+                this.map[i].layer_3.src = 'i' + img_prefix + '/' + data[i].img_3;
                 
                 this.map[i].temp.innerHTML = data[i].temperature;
             }
