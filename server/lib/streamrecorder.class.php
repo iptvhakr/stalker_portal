@@ -264,6 +264,8 @@ class StreamRecorder extends Master
                 'vtrack'   => $user_rec['vtrack'],
             ))->insert_id();
 
+        var_dump($this->storages);
+
         foreach ($this->storages as $name => $storage){
 
             if ($storage['load'] < 1){
