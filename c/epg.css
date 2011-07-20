@@ -196,6 +196,22 @@
     color: #fff;
 }
 
+#epg .mark-1{
+    left: 230px;
+}
+
+#epg .mark-2{
+    left: 380px;
+}
+
+#epg .mark-3{
+    left: 530px;
+}
+
+#epg .mark-4{
+    right: 38px;
+}
+
 #epg .live_line_container{
     position: absolute;
     top: 92px;
