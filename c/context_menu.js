@@ -13,8 +13,6 @@ function context_menu(map){
             this.parent = arguments[1].parent;
         }
     }
-    
-    //this.construct(this.map);
 }
 
 context_menu.prototype.destroy_container = function(){
@@ -29,7 +27,7 @@ context_menu.prototype.destroy_container = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 context_menu.prototype.reset = function(){
     _debug('context_menu.reset');
@@ -42,7 +40,7 @@ context_menu.prototype.reset = function(){
     
     //delete this.map;
     this.menu_windows = [];
-}
+};
 
 context_menu.prototype.show = function(){
     _debug('context_menu.show');
@@ -59,7 +57,7 @@ context_menu.prototype.show = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 context_menu.prototype.hide = function(){
     _debug('context_menu.hide');
@@ -91,7 +89,7 @@ context_menu.prototype.hide = function(){
         _debug(e);
     }
     
-}
+};
 
 /**
  * @param {Array} map = [{'title' : String, 'cmd' : String | Array map, 'type' : 'switch|options'}]
@@ -113,6 +111,7 @@ context_menu.prototype.construct = function(map){
     var dom_obj = create_block_element('con_menu_main_active', this.container);
     
     var main_table = document.createElement("table");
+    this.main_table = main_table;
     
     /* MAIN MENU TOP ROW */
     var main_top_tr = document.createElement("tr");
@@ -166,7 +165,7 @@ context_menu.prototype.construct = function(map){
         "cur_row"  : 0,
         "prev_row" : 0,
         "map"      : map
-    }
+    };
     
     this.menu_windows.push(this.cur_win);
     
@@ -194,7 +193,7 @@ context_menu.prototype.construct = function(map){
     /* END MAIN MENU BOTTOM ROW */
     
     dom_obj.appendChild(main_table);
-}
+};
 
 context_menu.prototype.construct_sub_menu = function(from_row, map_item, type){
     
@@ -300,7 +299,7 @@ context_menu.prototype.construct_sub_menu = function(from_row, map_item, type){
     sub_menu.appendChild(sub_table);
     
     return sub_menu;
-}
+};
 
 context_menu.prototype.bind = function(){
     
@@ -314,7 +313,7 @@ context_menu.prototype.bind = function(){
     this.goto_main_menu.bind(key.LEFT, this);
     
     this.hide.bind(key.EXIT, this).bind(key.NULL, this);
-}
+};
 
 context_menu.prototype.goto_sub_menu = function(){
     if (this.cur_win.main){
@@ -326,7 +325,7 @@ context_menu.prototype.goto_sub_menu = function(){
         this.cur_win = this.menu_windows[idx];
         this.set_active_row();
     }
-}
+};
 
 context_menu.prototype.goto_main_menu = function(){
     if (!this.cur_win.main){
@@ -339,85 +338,13 @@ context_menu.prototype.goto_main_menu = function(){
         
         this.cur_win.dom_obj.setClass('con_menu_main_active');
     }
-}
-
-/*context_menu.prototype.open_sub_menu = function(){
-    _debug('context_menu.open_sub_menu');
-    
-    _debug('this.cur_win.win_idx', this.cur_win.win_idx);
-    _debug('this.cur_win.cur_row', this.cur_win.cur_row);
-    
-    for (var i = 0; i < this.menu_windows.length; i++){
-        
-        _debug('parent_win', this.menu_windows[i].parent_win);
-        _debug('from_row', this.menu_windows[i].from_row);
-        
-        if (this.menu_windows[i].parent_win == this.cur_win.win_idx &&  this.menu_windows[i].from_row == this.cur_win.cur_row){
-            
-            this.cur_win = this.menu_windows[i];
-            
-            _debug('show');
-            
-            if (this.options){
-                
-                var parent_ = this.menu_windows[this.menu_windows.getIdxByVal('win_idx', this.menu_windows[i].parent_win)];
-                
-                var left = parseInt(parent_.dom_obj.childNodes[parent_.cur_row].offsetParent.style.left) + parent_.dom_obj.childNodes[parent_.cur_row].clientWidth + 7;
-                
-                var top = parent_.dom_obj.childNodes[parent_.cur_row].clientHeight * (parent_.dom_obj.childNodes.length - parent_.cur_row) - parseInt(parent_.dom_obj.childNodes[parent_.cur_row].offsetParent.style.top) + 6 + 20;
-                
-                top = '-' + top + 'px';
-                
-                this.cur_win.dom_obj.style.left = left + 'px';
-                this.cur_win.dom_obj.style.top = top;
-            }
-            
-            this.cur_win.dom_obj.style.display = 'block';
-            
-            this.cur_win.cur_row = 0;
-            this.set_active_row();
-            
-            return;
-        }
-    }
-}*/
-
-/*context_menu.prototype.close_sub_menu = function(){
-    _debug('context_menu.close_sub_menu');
-    
-    if (this.cur_win.parent_win >= 0){
-    
-        this.cur_win.dom_obj.style.display = 'none';
-        this.set_passive_row();
-        
-        this.cur_win = this.menu_windows[this.menu_windows.getIdxByVal('win_idx', this.cur_win.parent_win)];
-    }else{
-        if (this.cur_win.win_idx == 0){
-            this.hide();
-        }
-    }
-}*/
+};
 
 context_menu.prototype.action = function(){
     _debug('context_menu.action');
     
-    /*for (var i = 0; i < this.menu_windows.length; i++){
-        if (this.menu_windows[i].parent_win == this.cur_win.win_idx &&  this.menu_windows[i].from_row == this.cur_win.cur_row){
-            
-            this.open_sub_menu();
-            return;
-        }
-    }*/
-    
     if (this.cur_win.type == 'switch'){
-        
-        /*if (this.cur_win.dom_obj.childNodes[this.cur_win.cur_row].childNodes.length == 1){
-            this.reset_switch(this.cur_win.cur_row);
-        }*/
-        //if (this.cur_win.map.length == 1){
-            //this.reset_switch(this.cur_win.cur_row);
-        //}
-        
+
         this.reset_switch(this.cur_win.cur_row);
         
     }else if(this.cur_win.type == 'options'){
@@ -432,25 +359,13 @@ context_menu.prototype.action = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 context_menu.prototype.set_active_option = function(row){
-    /*if (this.cur_win.dom_obj.childNodes[row].childNodes.length > 1){
-        this.cur_win.dom_obj.childNodes[row].removeChild(this.cur_win.dom_obj.childNodes[row].lastChild);
-    }else{
-        
-        var bull =  '<span style="float:right;margin-left:3px;margin-right:3px;">&bull;</span>';
-        
-        if (this.browser != 'webkit'){
-            bull = '<span>&bull;</span>';
-        }
-        
-        this.cur_win.dom_obj.childNodes[row].innerHTML = this.cur_win.dom_obj.childNodes[row].innerHTML + bull;
-    }*/
     
     this.cur_win.map[row].space.hide();
     this.cur_win.map[row].bull.show();
-}
+};
 
 context_menu.prototype.reset_switch = function(exept){
     for (var i = 0; i < this.cur_win.map.length; i++){
@@ -464,7 +379,7 @@ context_menu.prototype.reset_switch = function(exept){
         }
         
     }
-}
+};
 
 context_menu.prototype.shift_row = function(dir){
     _debug('context_menu.shift_row', dir);
@@ -486,7 +401,7 @@ context_menu.prototype.shift_row = function(dir){
     }
     
     this.set_active_row();
-}
+};
 
 context_menu.prototype.set_active_row = function(){
     _debug('context_menu.set_active_row');
@@ -497,13 +412,14 @@ context_menu.prototype.set_active_row = function(){
         
         if (this.cur_win.main){
             this.cur_win.map[this.cur_win.prev_row].sub_dom_obj.hide();
+            this.cur_win.map[this.cur_win.cur_row].sub_dom_obj.moveX(this.cur_win.dom_obj.childNodes[0].offsetWidth);
             this.cur_win.map[this.cur_win.cur_row].sub_dom_obj.show();
         }
         
     }catch(e){
         _debug(e)
     }
-}
+};
 
 context_menu.prototype.set_passive_row = function(){
     _debug('context_menu.set_passive_row');
@@ -513,7 +429,7 @@ context_menu.prototype.set_passive_row = function(){
     }catch(e){
         _debug(e)
     }
-}
+};
 
 context_menu.prototype.set_x_offset = function(x){
     _debug('context_menu.set_x_offset', x);
@@ -523,7 +439,7 @@ context_menu.prototype.set_x_offset = function(x){
     if(this.container){
         this.container.style.left = parseInt(x) + 'px';
     }
-}
+};
 
 context_menu.prototype.set_y_offset = function(y){
     _debug('context_menu.set_y_offset', y);
@@ -533,7 +449,7 @@ context_menu.prototype.set_y_offset = function(y){
     if(this.container){
         this.container.style.top = parseInt(y) + 'px';
     }
-}
+};
 
 context_menu.prototype.set_z_index = function(z){
     _debug('context_menu.set_z_index', z);
@@ -543,4 +459,6 @@ context_menu.prototype.set_z_index = function(z){
     if(this.container){
         this.container.style.zIndex = parseInt(z);
     }
-}
+};
+
+loader.next();
