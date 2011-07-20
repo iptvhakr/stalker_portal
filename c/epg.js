@@ -46,6 +46,7 @@
                 this.parent = parent;
                 
                 var container = create_block_element('live_line_container', this.parent.dom_obj);
+                this.container = container;
                 this.dom_obj = create_block_element('live_line', container);
                 
                 this.hide();
@@ -93,7 +94,7 @@
                 _debug('epg.live_line.set_pos');
                 
                 /* 447/90 = 5px */
-                var offset = 5*minute;
+                var offset = (this.container.offsetWidth/90)*minute;
                 
                 _debug('offset', offset);
                 
@@ -146,20 +147,20 @@
             
             this.on_date = create_block_element('on_date', this.dom_obj);
             
-            var mark1 = create_block_element('time_mark', this.dom_obj);
-            mark1.style.left = '230px';
+            var mark1 = create_block_element('time_mark mark-1', this.dom_obj);
+            //mark1.style.left = '230px';
             this.time_marks.push(mark1);
             
-            var mark2 = create_block_element('time_mark', this.dom_obj);
-            mark2.style.left = '380px';
+            var mark2 = create_block_element('time_mark mark-2', this.dom_obj);
+            //mark2.style.left = '380px';
             this.time_marks.push(mark2);
             
-            var mark3 = create_block_element('time_mark', this.dom_obj);
-            mark3.style.left = '530px';
+            var mark3 = create_block_element('time_mark mark-3', this.dom_obj);
+            //mark3.style.left = '530px';
             this.time_marks.push(mark3);
             
-            var mark4 = create_block_element('time_mark', this.dom_obj);
-            mark4.style.right = '38px';
+            var mark4 = create_block_element('time_mark mark-4', this.dom_obj);
+            //mark4.style.right = '38px';
             this.time_marks.push(mark4);
         };
         
@@ -386,8 +387,9 @@
         this.post_handling_epg_block = function(item, epg, is_active_row){
             _debug('epg.post_handling_block', is_active_row);
             
-            var total_container_width = 449;
-            
+            //var total_container_width = 449;
+            var total_container_width = this.map[this.cur_row].epg_container_block.offsetWidth;
+
             this.clear_program_container(item, 'epg_container_block');
                 
             var epg_length = epg.length;
@@ -410,6 +412,7 @@
             for (var j=0; j<epg_length; j++){
                 
                 var block = create_block_element('program', item['epg_container_block']);
+                //this.epg_container_block = block;
                 
                 var program_width = Math.floor(container_width * epg[j]['display_duration'] / 5400); // 90m = 5400s
                 _debug('program_width', program_width);
@@ -417,8 +420,7 @@
                 total_program_width += program_width;
                 
                 if (j == (epg_length-1)){
-                    var diff = container_width - total_program_width;
-                    program_width += diff;
+                    program_width += container_width - total_program_width;
                 }
                 
                 block.style.width = program_width+'px';
