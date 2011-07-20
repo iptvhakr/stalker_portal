@@ -552,7 +552,7 @@
     
     vclub.sidebar.init_items("abc", {"header" : word['vclub_by_letter'], "width" : 26, "align" : "center"});
     vclub.sidebar.init_items("genre",  {"header" : word['vclub_by_genre'], "width" : 95});
-    vclub.sidebar.init_items("years",  {"header" : word['vclub_by_year'], "width" : 35});
+    vclub.sidebar.init_items("years",  {"header" : word['vclub_by_year'], "width" : 45});
     
     vclub.sidebar.bind();
     
@@ -566,13 +566,15 @@
             {"label" : word['vclub_not_ended'], "cmd" : function(){this.parent.load_params.sortby = 'last_ended'; this.parent.load_params.fav = false; this.parent.load_params.hd = false; this.parent.load_params.not_ended = true}}
         ],
         {
-            "offset_x" : 217
+            "offset_x" : 217,
+            "color"    : "green"
         }
     );
     
     vclub.init_search_box(
         {
             "offset_x"  : 323,
+            "color"     : "blue",
             "languages" : get_word('search_box_languages')
         }
     );
@@ -584,6 +586,7 @@
         ],
         {
             "offset_x" : 27,
+            "color" : "red",
             "need_reset_load_data" : false,
             "need_update_header"   : false
         }
@@ -596,6 +599,7 @@
         ],
         {
             "offset_x" : 520,
+            "color"    : "blue",
             "need_reset_load_data" : false
         }
     );
@@ -647,7 +651,7 @@
                 );
             }
             
-            main_menu.add(word['vclub_title'], map, 'i/mm_ico_video.png', '', module.vclub);
+            main_menu.add(word['vclub_title'], map, 'mm_ico_video.png', '', module.vclub);
             
             loader.next();
         },
