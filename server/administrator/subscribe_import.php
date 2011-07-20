@@ -92,23 +92,18 @@ if (@$_FILES['userfile']){
                             $result[$stb_id] = array();
                         }
                         $result[$stb_id][] = intval($service_id_map[$ch]);
-                    }else if($ch == '00494' || $ch == '00466'){
-                        $result[$stb_id] = get_all_payed_ch_discovery();
-                        if ($ch == '00466'){
-                            $add_services_on[] = $stb_id;
-                        }
-                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426'){
-                        $result[$stb_id] = $all_payed_ch;
-                        if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389'){
+                    }else if($ch == '00494'){
+                        $result[$stb_id] = merge_services($result[$stb_id], get_all_payed_ch_discovery());
+                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00466'){
+                        $result[$stb_id] = merge_services($result[$stb_id], $all_payed_ch);
+                        if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389' || $ch == '00466'){
                             $add_services_on[] = $stb_id;
                         }
                     }else if($ch == '00100'){
-                        $result[$stb_id] = $all_payed_ch_100;
+                        $result[$stb_id] = merge_services($result[$stb_id], $all_payed_ch_100);
                     }else if($ch == '00493'){
-                        $result[$stb_id] = array_merge($result[$stb_id], array(270, 271, 272, 273, 274, 275));
-                    }/*else if($ch == '00494'){
-                        $result[$stb_id] = get_all_payed_ch_discovery();
-                    }*/else if($ch == '00160' || $ch == '00161' || $ch == '00162' || $ch == '00169' || $ch == '00170' || $ch == '00432' || $ch == '00433'){ // additional services on
+                        $result[$stb_id] = merge_services($result[$stb_id], array(270, 271, 272, 273, 274, 275));
+                    }else if($ch == '00160' || $ch == '00161' || $ch == '00162' || $ch == '00169' || $ch == '00170' || $ch == '00432' || $ch == '00433'){ // additional services on
                         $add_services_on[] = $stb_id;
                     }else{
                         if (!@key_exists($stb_id, $result)){
@@ -143,7 +138,7 @@ if (@$_FILES['userfile']){
         $db->executeQuery($sql);
     }
     
-    //var_dump($result);
+    //var_dump($result); exit;
     foreach ($result as $uid => $sub){
         
         if (count($sub) == 0){
@@ -212,6 +207,19 @@ if (@$_FILES['userfile']){
     return $mac;
 }*/
 
+function merge_services($list1, $list2){
+
+    if (empty($list1)){
+        $list1 = array();
+    }
+
+    if (empty($list2)){
+        $list2 = array();
+    }
+
+    return array_merge($list1, $list2);
+}
+
 function get_service_id_map(){
     $db = Database::getInstance();
     $arr = array();
@@ -279,7 +287,7 @@ function get_base_channels(){
 function get_all_payed_ch(){
     $db = Database::getInstance();
     $arr = array();
-    $sql = "select * from itv where base_ch=0 and id not in(270, 264, 268, 266, 267, 265)";
+    $sql = "select * from itv where base_ch=0 and id not in(270, 271, 272, 273, 274, 275)";
     $rs = $db->executeQuery($sql);
     while(@$rs->next()){
         $arr[] = intval($rs->getCurrentValueByName('id'));
@@ -301,7 +309,7 @@ function get_all_payed_ch_discovery(){
 function get_all_payed_ch_100(){
     $db = Database::getInstance();
     $arr = array();
-    $sql = "select * from itv where base_ch=0 and id not in(178, 179, 270, 264, 268, 266, 267, 265)";
+    $sql = "select * from itv where base_ch=0 and id not in(178, 179, 270, 271, 272, 273, 274, 275)";
     $rs = $db->executeQuery($sql);
     while(@$rs->next()){
         $arr[] = intval($rs->getCurrentValueByName('id'));
