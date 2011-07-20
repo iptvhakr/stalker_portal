@@ -21,6 +21,12 @@ function load_bar(){
 
 load_bar.prototype.init = function(){
 
+    var _style = document.createElement('link');
+    _style.type = "text/css";
+    _style.rel = "stylesheet";
+    _style.href = 'load_bar' + (gmode ? '_'+gmode : '') +".css";
+    document.getElementsByTagName("head")[0].appendChild(_style);
+
     this.dom_obj = create_block_element('loader');
     
     var loader_bar_bg = create_block_element('loader_bar_bg', this.dom_obj);
@@ -29,14 +35,14 @@ load_bar.prototype.init = function(){
     
     this.log_dom_obj = create_block_element('loader_log', this.dom_obj);
     this.log_dom_obj.hide();
-}
+};
 
 load_bar.prototype.show = function(){
     _debug('load_bar.show');
     
     this.dom_obj.show();
     this.on = true;
-}
+};
 
 load_bar.prototype.t_hide = function(){
     _debug('load_bar.t_hide');
@@ -53,7 +59,7 @@ load_bar.prototype.t_hide = function(){
         
         3000
     );
-}
+};
 
 load_bar.prototype.hide = function(){
     _debug('load_bar.hide');
@@ -62,28 +68,28 @@ load_bar.prototype.hide = function(){
     this.on = false;
     
     this.callback && this.callback();
-}
+};
 
 load_bar.prototype.stop = function(){
     _debug('load_bar.stop');
     
     this.dom_obj.hide();
     this.on = false;
-}
+};
 
 load_bar.prototype.show_log = function(){
     _debug('load_bar.show_log');
     
     this.log_dom_obj.show();
     this.log_on = true;
-}
+};
 
 load_bar.prototype.hide_log = function(){
     _debug('load_bar.hide_log');
     
     this.log_dom_obj.hide();
     this.log_on = false;
-}
+};
 
 load_bar.prototype.switch_log = function(){
     _debug('load_bar.switch_log');
@@ -93,7 +99,7 @@ load_bar.prototype.switch_log = function(){
     }else{
         this.show_log();
     }
-}
+};
 
 load_bar.prototype.add_log = function(txt){
     _debug('load_bar.add_log');
@@ -103,7 +109,7 @@ load_bar.prototype.add_log = function(txt){
     if (this.log_dom_obj.clientHeight < this.log_dom_obj.scrollHeight){
         this.log_dom_obj.scrollTop = this.log_dom_obj.scrollHeight - this.log_dom_obj.clientHeight;
     }
-}
+};
 
 load_bar.prototype.set_pos = function(percent, txt){
     _debug('load_bar.set_pos', percent);
@@ -121,7 +127,7 @@ load_bar.prototype.set_pos = function(percent, txt){
     if (percent >= 100){
         this.t_hide();
     }
-}
+};
 
 load_bar.prototype.add_pos = function(percent, txt){
     _debug('load_bar.add_pos', percent);
@@ -129,14 +135,14 @@ load_bar.prototype.add_pos = function(percent, txt){
     this.cur_pos = this.cur_pos + percent;
     
     this.set_pos(this.cur_pos, txt);
-}
+};
 
 load_bar.prototype.set_callback = function(fn){
     
     this.callback = fn;
-}
+};
 
 load_bar.prototype.bind = function(){
     
     this.switch_log.bind(key.FRAME, this);
-}
+};
