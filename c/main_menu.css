@@ -35,7 +35,7 @@
     width: 720px;
     height: 162px;
     bottom: 40px;
-    padding: 0px 30px 0px 30px;
+    padding: 0 30px 0 30px;
 }
 
 .mm_hor_left{
@@ -43,7 +43,7 @@
     width: 220px;
     height: 162px;
     bottom: 40px;
-    left: 0px;
+    left: 0;
     background: url(i/mm_hor_left.png);
 }
 
@@ -141,20 +141,3 @@
     color: #ccd6de  !important;
 }
 /* END MAIN MENU */
-
-.cut_off{
-    position:absolute;
-    left: 0;
-    top: 0;
-    z-index: 1000;
-    width: 720px;
-    height: 576px;
-    background-image: url("i/bg2.png");
-}
-
-.cut_off_text{
-    margin-top: 200px;
-    text-align: center;
-    font: 45px trebuchet ms, Arial, Helvetica, sans-serif;
-    color: #fff;
-}
