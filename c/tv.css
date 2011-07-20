@@ -154,4 +154,8 @@
     font-family: "Myriad Pro Cond";
     text-align:right;
 }
+
+.tv_preview_quick_ch_switch{
+    top: 300px;
+}
 /* END TV */
