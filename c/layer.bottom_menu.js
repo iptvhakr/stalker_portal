@@ -34,6 +34,10 @@ function bottom_menu(parent, options){
         if (typeof(options.need_update_header) != "undefined"){
             this.need_update_header = options.need_update_header;
         }
+
+        if (typeof(options.color) != "undefined"){
+            this.color = options.color;
+        }
     }
 }
 
@@ -44,16 +48,32 @@ bottom_menu.prototype.show = function(){
         this.dependency[i].on && this.dependency[i].hide && this.dependency[i].hide();
     }
     
-    this.dom_obj.moveY(576 - this.dom_obj.clientHeight - 36);
+    //this.dom_obj.moveY(576 - this.dom_obj.clientHeight - 36);
+    this.dom_obj.show();
+    //this.dom_obj.moveY(this.parent.dom_obj.offsetHeight - this.dom_obj.clientHeight - 36);
+    this.dom_obj.moveY(this.parent.dom_obj.offsetHeight - this.dom_obj.clientHeight - this.parent.color_buttons.buttons_bar.offsetHeight);
+    if (this.color){
+        var button = this.parent.color_buttons.get(this.color).cell;
+
+        var offset_left = button.offsetLeft + this.parent.color_buttons.table.offsetLeft + button.offsetWidth/2 - this.dom_obj.offsetWidth/2 + 7;
+
+        if ((offset_left + this.dom_obj.offsetWidth) > this.parent.dom_obj.offsetWidth){
+            offset_left = this.parent.dom_obj.offsetWidth - this.dom_obj.offsetWidth;
+        }
+
+        this.dom_obj.moveX(offset_left);
+    }
     this.on = true;
-}
+};
 
 bottom_menu.prototype.hide = function(){
     _debug('bottom_menu.hide');
     
-    this.dom_obj.moveY(576);
+    //this.dom_obj.moveY(576);
+    this.dom_obj.hide();
+    this.dom_obj.moveY(this.parent.dom_obj.offsetHeight);
     this.on = false;
-}
+};
 
 bottom_menu.prototype.init = function(map){
     _debug('bottom_menu.init');
@@ -85,7 +105,7 @@ bottom_menu.prototype.init = function(map){
     this.set_active_row();
     
     this.hide();
-}
+};
 
 bottom_menu.prototype.shift_row = function(dir){
     _debug('bottom_menu.shift_row', dir);
@@ -107,19 +127,19 @@ bottom_menu.prototype.shift_row = function(dir){
     }
     
     this.set_active_row();
-}
+};
 
 bottom_menu.prototype.set_active_row = function(){
     _debug('bottom_menu.set_active_row');
     
     this.items[this.cur_row_idx].dom_obj.setClass('bottom_menu_active_row');
-}
+};
 
 bottom_menu.prototype.set_passive_row = function(){
     _debug('bottom_menu.set_passive_row');
     
     this.items[this.cur_row_idx].dom_obj.delClass();
-}
+};
 
 bottom_menu.prototype.action = function(){
     _debug('bottom_menu.action');
@@ -143,7 +163,7 @@ bottom_menu.prototype.action = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 bottom_menu.prototype.bind = function(){
     
@@ -153,6 +173,6 @@ bottom_menu.prototype.bind = function(){
     this.hide.bind(key.EXIT, this);
     
     this.action.bind(key.OK, this);
-}
+};
 
 loader.next();
