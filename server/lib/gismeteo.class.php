@@ -26,7 +26,7 @@ class Gismeteo
         $this->db = Mysql::getInstance();
         $this->xml_url = $this->xml_url.'?'.time();
 
-        $this->weekday_arr = array('',_('Sun'),_('Mon'),_('Tue'),_('Wed'),_('Thu'),_('Fri'),('Sat'));
+        $this->weekday_arr = array('',_('Sun'),_('Mon'),_('Tue'),_('Wed'),_('Thu'),_('Fri'),_('Sat'));
         $this->tod_arr = array(_('Night'),_('Morning'),_('Day'),_('Evening'));
         $this->month_arr = array('',_('Jan'),_('Feb'),_('Mar'),_('Apr'),_('May'),_('Jun'),_('Jul'),_('Aug'),_('Sep'),_('Oct'),_('Nov'),_('Dec'));
         $this->cloudiness_arr = array(_('clear'),_('partly cloudy'),_('cloudy'),_('overcast'));
