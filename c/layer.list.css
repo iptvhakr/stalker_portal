@@ -61,9 +61,9 @@
 
 .number_block{
     background-image: url("i/mb_icons.png");
-    background-position: -92px 0px;
+    background-position: -92px 0;
     width: 34px;
-    height: 21px;
+    height: 20px;
     float: left;
     margin: 4px 0 0 4px;
     color: #002864;
@@ -72,6 +72,7 @@
     text-align: center;
     white-space: pre;
     overflow: hidden;
+    padding-top: 1px;
 }
 
 .wide_container{
@@ -203,18 +204,18 @@
 
 .active_number_block{
     width: 34px;
-    height: 29px;
+    height: 27px;
     background-image: url("i/mb_icons.png");
     background-position: -92px -21px;
     margin: 6px 2px 0 0;
     float:left;
-    font-size: 22px;
+    font-size: 20px;
     color: #fff;
     text-shadow: #122946 0 -1px 0;
     text-align: center;
     white-space: pre;
     overflow: hidden;
-    padding-top: 2px;
+    padding-top: 4px;
 }
 
 
@@ -262,17 +263,27 @@
 .mb_header_first{
     position: absolute;
     left: 190px;
-    top:37px;
+    top: 37px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
     font-family: "Myriad Pro Cond", sans-serif;
+    font-size: 24px;
+    color: #fff;
+}
+
+.mb_header_first span{
+    color: #fff;
+    font-size: 20px;
+    text-transform: uppercase;
 }
 
 .mb_header_info{
     position: absolute;
     left: 50px;
     top: 493px;
+    font-size: 14px;
+    color: #fff;
 }
 
 .color_button_bar{
@@ -293,6 +304,7 @@
 
 .color_button_bar td{
     vertical-align: top;
+    width: 25%;
 }
 
 .color_button_bar img{
@@ -314,6 +326,10 @@
     float: left;
     margin: 13px 0 0 8px;
     font-weight: bold;
+}
+
+.color_button_bar span sup{
+    line-height: 1px;
 }
 
 /* END LIST LAYER */
