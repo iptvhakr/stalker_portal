@@ -400,6 +400,11 @@
                         }
                         
                         self.hide(true);
+
+                        stb.player.on_stop = (function(player){return function(){
+                            _debug('player.on_stop');
+                            player.delete_link(result.cmd);
+                        }})(stb.player);
                         
                         stb.player.prev_layer = self;
                         stb.player.need_show_info = 1;
