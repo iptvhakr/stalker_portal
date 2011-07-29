@@ -68,9 +68,15 @@ if (_GET.hasOwnProperty('debug')){
 }
 
 if (_GET.hasOwnProperty('referrer')){
-    referrer = _GET['referrer'];
+    var referrer = _GET['referrer'];
 }else{
     referrer = '';
+}
+
+if (_GET.hasOwnProperty('default_module')){
+    var default_module = _GET['default_module'];
+}else{
+    default_module = '';
 }
 
 //referrer = document.referrer ? document.referrer : referrer;
