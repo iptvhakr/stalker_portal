@@ -94,6 +94,11 @@ class Cache
             return $this->realSet($key, $val, 0, $expire);
         }
     }
+    
+    public function del($key){
+
+        return $this->backend->delete($key, 0);
+    }
 
     public function setInvalidTags($tags){
         
