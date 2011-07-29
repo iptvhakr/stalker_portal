@@ -739,7 +739,8 @@ player.prototype.play = function(item){
                     }else if(result.error == 'link_fault'){
                         stb.notice.show(word['player_server_error']);
                     }else{*/
-                        stb.player.play_now(result.cmd);
+
+                    stb.player.play_now(result.cmd);
                     //}
                 };
 
@@ -828,6 +829,21 @@ player.prototype.create_link = function(type, uri, series_number){
     )
 };
 
+player.prototype.delete_link = function(uri){
+    _debug('player.delete_link', uri);
+
+    stb.load(
+        {
+            "type"   : "vod",
+            "action" : "del_link",
+            "item"   : uri
+        },
+        function(result){
+            _debug('del_link result', result);
+        }
+    )
+};
+
 player.prototype.play_now = function(uri){
     _debug('player.play_now', uri);
 
@@ -848,7 +864,10 @@ player.prototype.play_now = function(uri){
 
 player.prototype.stop = function(){
     _debug('player.stop');
-    
+
+    this.on_stop && this.on_stop();
+    this.on_stop = undefined;
+
     this.prev_layer = {};
     
     this.event5_counter = 0;
