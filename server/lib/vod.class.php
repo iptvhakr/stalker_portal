@@ -43,6 +43,26 @@ class Vod extends AjaxResponse
         
         return $res;
     }
+
+    public function delLink(){
+
+        $item = $_REQUEST['item'];
+
+        if (preg_match("/\/(\w+)$/", $item, $tmp_arr)){
+
+            $key = $tmp_arr[1];
+
+            var_dump($tmp_arr, strlen($key));
+
+            if (strlen($key) != 32){
+                return false;
+            }
+
+            return Cache::getInstance()->del($key);
+        }
+
+        return false;
+    }
     
     public function getMediaCats(){
         
