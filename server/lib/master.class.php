@@ -74,29 +74,55 @@ abstract class Master
                 }else{
                     $file = $storage['first_media'];
                 }
-                
-                try {
-                    //$this->clients[$name]->createLink($this->stb->mac, $this->media_name, $file, $this->media_id, (($this->media_protocol == 'http') ? 'http_' : '') . $this->media_type);
-                    $this->clients[$name]->resource($this->media_type)->create(array('media_name' => $this->getMediaPath($file), 'media_id' => $this->media_id, 'proto' => $this->media_protocol));
-                }catch (Exception $exception){
-                    $default_error = 'link_fault';
-                    $this->parseException($exception);
-                    
-                    if ($this->from_cache){
-                        
-                        return $this->play($media_id, $series_num, false);
-                    }else{
-                        continue;
-                    }
-                }
-                
+
                 preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
                 $ext = $arr[2];
 
-                if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
-                    $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                //var_dump($this->storages[$name]);
+
+                if ($this->storages[$name]['external'] == 0){
+
+                    try {
+                        //$this->clients[$name]->createLink($this->stb->mac, $this->media_name, $file, $this->media_id, (($this->media_protocol == 'http') ? 'http_' : '') . $this->media_type);
+                        $this->clients[$name]->resource($this->media_type)->create(array('media_name' => $this->getMediaPath($file), 'media_id' => $this->media_id, 'proto' => $this->media_protocol));
+                    }catch (Exception $exception){
+                        $default_error = 'link_fault';
+                        $this->parseException($exception);
+
+                        if ($this->from_cache){
+
+                            return $this->play($media_id, $series_num, false);
+                        }else{
+                            continue;
+                        }
+                    }
+                
+                    if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
+                        $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                    }else{
+                        $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                    }
+                    
                 }else{
-                    $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                    $redirect_url = '/media/'.$this->getMediaPath($file);
+
+                    $link_result = $this->createTemporaryLink($redirect_url);
+
+                    var_dump($redirect_url, $link_result);
+
+                    if (!$link_result){
+                        $default_error = 'link_fault';
+                        
+                        if ($this->from_cache){
+
+                            return $this->play($media_id, $series_num, false);
+                        }else{
+                            continue;
+                        }
+                    }else{
+                        $res['cmd']      = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/get/'.$link_result;
+                        $res['external'] = 1;
+                    }
                 }
                 
                 //$res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
@@ -119,7 +145,31 @@ abstract class Master
             $res['error'] = $default_error;
             return $res;
         }
+    }
 
+    private function createTemporaryLink($url){
+
+        $key = md5($url.time());
+
+        $cache = Cache::getInstance();
+
+        $result = $cache->set($key, $url, 0, 28800); // 8 hours
+
+        if ($result){
+            return $key;
+        }else{
+            return $result;
+        }
+    }
+
+    public static function checkTemporaryLink($key){
+
+        return Cache::getInstance()->get($key);
+    }
+    
+    public static function delTemporaryLink($key){
+
+        return Cache::getInstance()->del($key);
     }
     
     /**
@@ -301,6 +351,8 @@ abstract class Master
             if (count($raw['files']) > 1 && empty($raw['series'])){
                 continue;
             }
+
+            var_dump($raw, $name, $this->media_name);
             
             if (count($raw['files']) > 0){
                 
