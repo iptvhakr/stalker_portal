@@ -30,6 +30,7 @@ if (@$_POST['add']){
                 max_online,
                 for_moderator,
                 for_records,
+                external,
                 for_simple_storage
                 )
             values (
@@ -39,6 +40,7 @@ if (@$_POST['add']){
                 "'.@$_POST['max_online'].'",
                 "'.@intval($_POST['for_moderator']).'",
                 "'.@intval($_POST['for_records']).'",
+                "'.@intval($_POST['external']).'",
                 "'.@intval($_POST['for_simple_storage']).'"
             )';
     $db->executeQuery($sql);
@@ -57,6 +59,7 @@ if (!empty($id)){
                     max_online="'.@$_POST['max_online'].'",
                     for_moderator="'.@intval($_POST['for_moderator']).'",
                     for_records="'.@intval($_POST['for_records']).'",
+                    external="'.@intval($_POST['external']).'",
                     for_simple_storage="'.@intval($_POST['for_simple_storage']).'"
                 where id='.intval($_GET['id']);
         $db->executeQuery($sql);
@@ -240,6 +243,10 @@ a:hover{
                 <tr>
                     <td>Запись ТВ</td>
                     <td><input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?>/></td>
+                </tr>
+                <tr>
+                    <td>Внешнее</td>
+                    <td><input type="checkbox" name="external" value="1" <? if(@$edit_storage['external']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
                     <td>Только модераторы</td>
