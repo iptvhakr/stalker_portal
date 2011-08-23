@@ -181,6 +181,11 @@
             this.shift_page.bind(key.PAGE_NEXT, this, 1);
             
             (function(){
+
+                if (single_module){
+                    return;
+                }
+
                 this.hide();
                 this.parent.hide();
                 main_menu.show();
