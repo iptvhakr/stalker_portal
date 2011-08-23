@@ -97,6 +97,8 @@
         this._show = function(category){
             
             _debug('vclub.show');
+
+            category = category || this.categories[0];
             
             this.load_params['category'] = category.id;
             
@@ -333,6 +335,14 @@
             this.check_for_pass.bind(key.OK, this);
             
             (function(){
+
+                if (single_module == this.layer_name){
+                    if (window.referrer){
+                        window.location = window.referrer;
+                    }
+                    return;
+                }
+
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
@@ -541,7 +551,10 @@
     
     vclub.set_wide_container();
     
-    vclub.init_left_ear(word['ears_back']);
+    if (single_module != 'vclub'){
+        vclub.init_left_ear(word['ears_back']);
+    }
+
     vclub.init_right_ear(word['ears_about_movie']);
     
     vclub.init_color_buttons([
@@ -634,7 +647,9 @@
             var categories = result;
             
             var map = [];
-    
+
+            module.vclub.categories = categories;
+
             for(var i=0; i<categories.length; i++){
                 map.push(
                 

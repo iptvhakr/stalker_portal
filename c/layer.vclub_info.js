@@ -165,6 +165,11 @@ vclub_info.prototype.bind = function(){
     }).bind(key.EXIT, this);
     
     (function(){
+
+        if (single_module){
+            return;
+        }
+
         this.hide();
         this.parent.hide();
         main_menu.show();

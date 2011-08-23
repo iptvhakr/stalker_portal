@@ -158,6 +158,14 @@
             }).bind(key.OK, this);
             
             (function(){
+
+                if (single_module == this.layer_name){
+                    if (window.referrer){
+                        window.location = window.referrer;
+                    }
+                    return;
+                }
+
                 this.hide();
                 main_menu.show();
             }).bind(key.LEFT, this).bind(key.MENU, this);
@@ -196,6 +204,17 @@
                 if (this.quick_ch_switch.on){
                     this.cancel_quick_ch_switch();
                 }else{
+
+                    if (single_module == this.layer_name){
+                        if (window.referrer){
+                            window.location = window.referrer;
+                        }else{
+                            this.check_for_play();
+                        }
+
+                        return;
+                    }
+
                     this.hide();
                     main_menu.show();
                 }
@@ -945,8 +964,11 @@
     
     //tv.set_wide_container();
     tv.set_short_container();
-    
-    tv.init_left_ear(word['ears_back']);
+
+    if (single_module != 'tv'){
+        tv.init_left_ear(word['ears_back']);
+    }
+
     tv.init_right_ear(word['ears_tv_guide']);
     
     tv.init_color_buttons([

@@ -463,6 +463,11 @@ function common_xpcom(){
 
         this.key_lock = false;
 
+        if (single_module && module[single_module]){
+            module[single_module]._show();
+            return;
+        }
+
         this.player.init_first_channel();
 
         if (this.user['display_menu_after_loading']){
