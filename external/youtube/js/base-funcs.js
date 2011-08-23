@@ -319,6 +319,7 @@ function parseYoutubePage(html, playNow) {
     }
     temp1 =  temp1.substr(0, temp1.length - 3) + '"})';
 */
+/*
     var str = decodeURIComponent(/fmt_url_map=.*?&/.exec(html)).substr(12);
     str = str.substr(0, str.length - 1);
     str = decodeURIComponent(str);
@@ -335,6 +336,7 @@ function parseYoutubePage(html, playNow) {
         }
     }
     temp =  temp.substr(0, temp.length - 1) + '})';
+*/
 /*
     if(temp==temp1) {
         log("\n\nAll right!\n\n\n");
@@ -347,8 +349,28 @@ function parseYoutubePage(html, playNow) {
         log("\n\n");
     }
 */
+    var s = /\&amp\;url_encoded_fmt_stream_map=(.*?)\&amp\;/.exec(html);
+    
+    log('\n\n'+s.length+'\n\n');
+    log('\n\n'+s[1]+'\n\n');
+    var str = '({';
+    
+    var r = s[1].split('%2C');
+    for(var i=0;i<r.length;i++){
+        r[i] = r[i].replace('url%3D', '');
+        r[i] = decodeURIComponent(r[i]);
+        r[i] = decodeURIComponent(r[i]);
+        r[i] = decodeURIComponent(r[i]);
+        r[i] = unescape(r[i]);
+        r[i] = unescape(r[i]);
+        r[i] = unescape(r[i]);
+        var m = /itag\=(\d{1,})/.exec(r[i]);
+
+        str+=m[1]+':\''+r[i].split(';')[0]+'\',';
+    }
+    str =  str.substr(0, str.length - 1) + '})';
     if(!playNow || playNow == true) {
-        player.play(eval(temp));  // call player
+        player.play(eval(str));  // call player
     }
 }
 function trimLeft(str) {
