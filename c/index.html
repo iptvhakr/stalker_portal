@@ -73,13 +73,11 @@ if (_GET.hasOwnProperty('referrer')){
     referrer = '';
 }
 
-if (_GET.hasOwnProperty('default_module')){
-    var default_module = _GET['default_module'];
+if (_GET.hasOwnProperty('single_module')){
+    var single_module = _GET['single_module'];
 }else{
-    default_module = '';
+    single_module = '';
 }
-
-//referrer = document.referrer ? document.referrer : referrer;
 
 window.onload = init;
 
@@ -206,6 +204,13 @@ function init(){
             if (stb.player.con_menu.on){
                 stb.player.con_menu.hide();
             }
+
+            if(single_module){
+                if (stb.player.on){
+                    stb.player.show_prev_layer();
+                }
+                return;
+            }
             
             stb.player.prev_layer && stb.player.prev_layer.hide && stb.player.prev_layer.hide();
             
@@ -216,9 +221,13 @@ function init(){
     }).bind(key.MENU);
     
     (function(){
-        
+
+        if (single_module && single_module != 'tv'){
+            return;
+        }
+
         stb.cur_layer && stb.cur_layer.hide && stb.cur_layer.hide();
-        
+
         if (module && module.tv){
             stb.set_cur_place(module.tv.layer_name);
             stb.set_cur_layer(module.tv);
