@@ -110,6 +110,11 @@
             }).bind(key.MENU, this).bind(key.EXIT, this);*/
             
             (function(){
+
+                if (single_module){
+                    return;
+                }
+
                 this.hide();
                 this.parent.hide();
                 main_menu.show();
@@ -519,7 +524,7 @@
     epg_simple.init();
     
     epg_simple.init_header_path(word['epg_title']);
-    
+
     epg_simple.init_color_buttons([
         {"label" : word['epg_record'], "cmd" : (function(){if (epg_simple.recorder){return function(){epg_simple.recorder.add_del()}}else{return ''}})()},
         {"label" : word['epg_remind'], "cmd" : (function(){if (epg_simple.reminder){return function(){epg_simple.reminder.add_del()}}else{return ''}})()},
