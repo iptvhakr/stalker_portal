@@ -121,7 +121,8 @@
             }).bind(key.MENU, this);
             
             (function(){
-                this.parent.show(true);
+                //this.parent.show(true);
+                this.parent._show.call(this.parent, this.parent.genre);
                 this.hide();
             }).bind(key.EXIT, this);
             

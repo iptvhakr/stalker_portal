@@ -51,7 +51,9 @@
             genre = genre || this.genres[0];
             
             this.load_params['genre'] = genre.id;
-            
+
+            this.genre = genre;
+
             this.update_header_path([{"alias" : "genre", "item" : genre.title}]);
             
             this.sort_menu.action();
@@ -66,6 +68,9 @@
                 do_not_load = true;
             }else{
                 do_not_load = false;
+                if (this.genre && this.genre.hasOwnProperty('id')){
+                    this.load_params['genre'] = this.genre.id;
+                }
             }
 
             _debug('do_not_load', do_not_load);

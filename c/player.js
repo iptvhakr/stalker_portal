@@ -1350,6 +1350,7 @@ player.prototype.bind = function(){
             this.show_prev_layer();
         }else if (this.is_tv){
             module.tv._show();
+            //module.tv._show.call(module.tv, module.tv.genre);
             module.tv.set_short_container();
             //module.tv._show();
         }/*else{
