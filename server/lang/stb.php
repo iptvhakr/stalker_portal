@@ -251,4 +251,20 @@ $words['audio_out_analog_spdif'] = _('Analog and S/PDIF 2-channel PCM');
 $words['audio_out_spdif'] = _('S/PDIF raw or 2-channel PCM');
 
 $words['game'] = _('GAME');
+
+// Downloads
+$words['downloads_title'] = _('DOWNLOADS');
+$words['not_found_mounted_devices'] = _('Not found mounted devices');
+$words['downloads_add_download'] = _('Add download');
+$words['downloads_device'] = _('Device');
+$words['downloads_file_name'] = _('File name');
+$words['downloads_ok'] = _('Ok');
+$words['downloads_cancel'] = _('Cancel');
+$words['downloads_create'] = _('CREATE');
+$words['downloads_move_up'] = _('MOVE UP');
+$words['downloads_move_down'] = _('MOVE DOWN');
+$words['downloads_delete'] = _('DELETE');
+$words['downloads_record'] = _('RECORDING');
+$words['downloads_record_and_file'] = _('RECORDING AND FILE');
+
 ?>
