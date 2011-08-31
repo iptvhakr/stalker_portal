@@ -771,7 +771,7 @@ player.prototype.play = function(item){
             }
         }
         
-    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/av/') > 0){
+    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/av/') > 0){
         
         this.play_now(cmd);
         
