@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-01 17:58+0200\n"
-"PO-Revision-Date: 2011-06-01 17:58+0200\n"
+"POT-Creation-Date: 2011-08-31 17:05+0200\n"
+"PO-Revision-Date: 2011-08-31 17:05+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -689,6 +689,7 @@ msgid "NTP Server"
 msgstr ""
 
 #: ../../../lang/stb.php:227
+#: ../../../lang/stb.php:266
 msgid "DELETE"
 msgstr ""
 
@@ -709,6 +710,7 @@ msgid "Confirm"
 msgstr ""
 
 #: ../../../lang/stb.php:233
+#: ../../../lang/stb.php:262
 msgid "Cancel"
 msgstr ""
 
@@ -759,6 +761,52 @@ msgstr ""
 #: ../../../lang/stb.php:253
 msgid "GAME"
 msgstr ""
+
+#: ../../../lang/stb.php:256
+msgid "DOWNLOADS"
+msgstr ""
+
+#: ../../../lang/stb.php:257
+msgid "Not found mounted devices"
+msgstr ""
+
+#: ../../../lang/stb.php:258
+msgid "Add download"
+msgstr ""
+
+#: ../../../lang/stb.php:259
+msgid "Device"
+msgstr ""
+
+#: ../../../lang/stb.php:260
+msgid "File name"
+msgstr ""
+
+#: ../../../lang/stb.php:261
+msgid "Ok"
+msgstr ""
+
+#: ../../../lang/stb.php:263
+msgid "CREATE"
+msgstr ""
+
+#: ../../../lang/stb.php:264
+msgid "MOVE UP"
+msgstr ""
+
+#: ../../../lang/stb.php:265
+msgid "MOVE DOWN"
+msgstr ""
+
+#: ../../../lang/stb.php:267
+#, fuzzy
+msgid "RECORDING"
+msgstr "RECORDING DURATION, h"
+
+#: ../../../lang/stb.php:268
+#, fuzzy
+msgid "RECORDING AND FILE"
+msgstr "RECORDING DURATION, h"
 
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
 #: ../../../lib/ajaxresponse.class.php:40
@@ -980,6 +1028,7 @@ msgid "Fri"
 msgstr ""
 
 #: ../../../lib/epg.class.php:608
+#: ../../../lib/gismeteo.class.php:29
 msgid "Sat"
 msgstr ""
 
@@ -1104,8 +1153,7 @@ msgid "scheduled"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:670
-#: ../../../lib/stb.class.php:674
+#: ../../../lib/stb.class.php:713
 #: ../../../lib/weatherco.class.php:118
 #: ../../../lib/weatherco.class.php:138
 msgid "city_name_field"
@@ -1115,7 +1163,7 @@ msgstr "name_en"
 msgid "Starting recording"
 msgstr ""
 
-#: ../../../lib/streamrecorder.class.php:380
+#: ../../../lib/streamrecorder.class.php:384
 msgid "Stopped recording"
 msgstr ""
 
@@ -1135,22 +1183,22 @@ msgid "s"
 msgstr ""
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:520
+#: ../../../lib/vod.class.php:540
 msgid "today"
 msgstr ""
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:523
+#: ../../../lib/vod.class.php:543
 msgid "yesterday"
 msgstr ""
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
-#: ../../../lib/vod.class.php:465
+#: ../../../lib/vod.class.php:485
 #, php-format
 msgid "video_name_format"
 msgstr "%2$s"
 
-#: ../../../lib/vod.class.php:526
+#: ../../../lib/vod.class.php:546
 msgid "last week"
 msgstr ""
 
