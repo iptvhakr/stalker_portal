@@ -37,6 +37,9 @@
         
         this.series_switch = new series_switch({"parent" : this});
         this.series_switch.bind();
+
+        /*this.dialog = new downloads_dialog_constructor();
+        this.dialog.hide();*/
         
         this.load_genres = function(alias){
             
@@ -332,8 +335,9 @@
         this.bind = function(){
             this.superclass.bind.apply(this);
             
-            this.check_for_pass.bind(key.OK, this);
-            
+            this.check_for_pass.bind(key.OK, this, true);
+            this.check_for_pass.bind(key.REC, this, false);
+
             (function(){
 
                 if (single_module == this.layer_name){
@@ -348,8 +352,8 @@
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
         };
         
-        this.check_for_pass = function(){
-            _debug('vclub.check_for_play');
+        this.check_for_pass = function(play_url){
+            _debug('vclub.check_for_play', play_url);
             
             _debug('lock', this.data_items[this.cur_row].lock);
             
@@ -357,17 +361,17 @@
                 var self = this;
                 
                 this.password_input.callback = function(){
-                    self.check_for_series();
-                }
+                    self.check_for_series(play_url);
+                };
                 
                 this.password_input.show();
             }else{
-                this.check_for_series();
+                this.check_for_series(play_url);
             }
         };
         
-        this.check_for_series = function(){
-            _debug('vclub.check_for_series');
+        this.check_for_series = function(play_url){
+            _debug('vclub.check_for_series', play_url);
             
             if (this.data_items[this.cur_row].series.length > 0){
                 
@@ -376,17 +380,17 @@
                 this.series_switch.callback = function(series){
                     _debug('series', series);
                     self.data_items[self.cur_row].cur_series = series;
-                    self.play();
-                }
+                    self.play(play_url);
+                };
                 
                 this.series_switch.show(this.data_items[this.cur_row].series, this.data_items[this.cur_row].cur_series);
             }else{
-                this.play();
+                this.play(play_url);
             }
         };
         
-        this.play = function(){
-            _debug('vclub.play');
+        this.play = function(play_url){
+            _debug('vclub.play', play_url);
             
             var self = this;
             
@@ -405,35 +409,96 @@
                     }else if(result.error == 'link_fault'){
                         stb.notice.show(word['player_server_error']);
                     }else{
-                        if (self.info.on){
-                            self.info.hide();
-                        }
-                        
-                        self.hide(true);
 
-                        stb.player.on_stop = (function(player){return function(){
-                            _debug('player.on_stop');
-                            player.delete_link(result.cmd);
-                        }})(stb.player);
-                        
-                        stb.player.prev_layer = self;
-                        stb.player.need_show_info = 1;
-                        stb.player.play_now(result.cmd);
+                        if (play_url){
+
+                            if (self.info.on){
+                                self.info.hide();
+                            }
+
+                            self.hide(true);
+
+                            stb.player.on_stop = (function(player){return function(){
+                                _debug('player.on_stop');
+                                player.delete_link(result.cmd);
+                            }})(stb.player);
+
+                            stb.player.prev_layer = self;
+                            stb.player.need_show_info = 1;
+                            stb.player.play_now(result.cmd);
+                        }else{
+                            var url = /[\s]([^\s]*)$/.exec(result.cmd)[1];
+                            _debug('url: ', url);
+                            /*_debug('path: ', self.data_items[self.cur_row].path);
+                            var filename = self.data_items[self.cur_row].path+'.'+/\.(\w*)$/.exec(url)[1];
+                            _debug('file: ', filename);
+
+                            if (module.downloads){
+                                _debug('downloads');
+                                module.downloads.dialog.show({"parent" : self, "url" : url});
+                            }*/
+
+                            self.add_download.call(self, self.data_items[self.cur_row], url);
+                        }
                     }
                 }
             }else{
-                if (this.info.on){
-                    this.info.hide();
+
+                if (play_url){
+                    if (this.info.on){
+                        this.info.hide();
+                    }
+
+                    this.hide(true);
+
+                    stb.player.prev_layer = self;
+                    stb.player.need_show_info = 1;
+                    //stb.player.play(this.data_items[this.cur_row]);
+                }else{
+                    var url = /[\s]([^\s]*)$/.exec(this.data_items[this.cur_row].cmd)[1];
+                    _debug('url: ', url);
+                    /*_debug('path: ', this.data_items[this.cur_row].path);
+                    var filename = this.data_items[this.cur_row].path+'.'+/\.(\w*)$/.exec(url)[1];
+                    _debug('file: ', filename);
+
+                    if (module.downloads){
+                        _debug('downloads');
+                        module.downloads.dialog.show({"parent" : self, "url" : url});
+                    }*/
+                    self.add_download.call(self, self.data_items[self.cur_row], url);
+
+                    return;
                 }
-                
-                this.hide(true);
-                
-                stb.player.prev_layer = self;
-                stb.player.need_show_info = 1;
-                //stb.player.play(this.data_items[this.cur_row]);
             }
-            
+
             stb.player.play(this.data_items[this.cur_row]);
+        };
+
+        this.add_download = function(item, url){
+            _debug('vclub.add_download', item);
+            
+            _debug('path: ', this.data_items[this.cur_row].path);
+
+            var filename = this.data_items[this.cur_row].path;
+
+            if (this.data_items[this.cur_row].cur_series){
+                filename += '_E' + this.data_items[this.cur_row].cur_series;
+            }
+
+            var ext = /\.(\w*)$/.exec(url);
+
+            if (ext){
+                filename += '.'+ext[1];
+            }else{
+                filename = undefined;
+            }
+
+            _debug('filename: ', filename);
+
+            if (module.downloads){
+                _debug('downloads');
+                module.downloads.dialog.show({"parent" : self, "url" : url, "name" : filename});
+            }
         };
         
         this.set_not_ended = function(video_id, series, end_time){
