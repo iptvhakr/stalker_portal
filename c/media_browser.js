@@ -91,9 +91,36 @@
                 _debug('stb.storages', stb.storages);
                 _debug('stb.usbdisk.dirs', stb.usbdisk.dirs);
 
+                try{
+                    var storage_info = JSON.parse(stb.RDir('get_storage_info'));
+                }catch(e){
+                    _debug(e);
+                }
+
+                var devices = {};
+
+                if (storage_info){
+                    for (var i=0; i<storage_info.length; i++){
+                        devices['USB-' + storage_info[i].sn + '-' + storage_info[i].partitionNum] = storage_info[i].vendor
+                                + ' ' + storage_info[i].model
+                                + (storage_info[i].label ? '(' + storage_info[i].label + ')' : '')
+                                + (storage_info.length > 1 ? ' #' + storage_info[i].partitionNum : '');
+                    }
+                }
+
                 if (this.dir_hist.length == 1){
                     stb.usbdisk.dirs = stb.usbdisk.dirs.filter(function(el){return !stb.storages.hasOwnProperty(el.substr(0, el.length-1))});
                 }
+
+                /*if (devices.length > 0){
+                    stb.usbdisk.dirs = stb.usbdisk.dirs.map(function(item){
+                        if (devices.[item.substr(0, item.length-1)]){
+                            return devices[item.substr(0, item.length-1)];
+                        }
+
+                        return item;
+                    });
+                }*/
 
                 _debug('stb.usbdisk.dirs 2', stb.usbdisk.dirs);
                 
@@ -101,7 +128,20 @@
                 
                 for (var i=0; i < stb.usbdisk.dirs.length; i++){
                     if (!empty(stb.usbdisk.dirs[i])){
-                        new_dirs.push({"name" : stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1), "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]})
+
+                        if (devices[stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1)]){
+                            var name = devices[stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1)];
+                        }else{
+                            name = stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1);
+                        }
+
+                        if (name == 'av'){
+                            name = 'UPnP';
+                        }else if (name.indexOf('USB-') == 0){
+                            continue;
+                        }
+
+                        new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]})
                     }
                 }
                 
