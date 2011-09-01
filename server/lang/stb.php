@@ -265,6 +265,7 @@ $words['downloads_move_up'] = _('MOVE UP');
 $words['downloads_move_down'] = _('MOVE DOWN');
 $words['downloads_delete'] = _('DELETE');
 $words['downloads_record'] = _('RECORDING');
+$words['downloads_download'] = _('DOWNLOAD');
 $words['downloads_record_and_file'] = _('RECORDING AND FILE');
 
 ?>

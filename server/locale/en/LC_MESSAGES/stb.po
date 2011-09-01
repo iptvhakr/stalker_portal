@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-31 17:05+0200\n"
-"PO-Revision-Date: 2011-08-31 17:05+0200\n"
+"POT-Creation-Date: 2011-09-01 11:56+0200\n"
+"PO-Revision-Date: 2011-09-01 11:56+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -804,6 +804,10 @@ msgid "RECORDING"
 msgstr "RECORDING DURATION, h"
 
 #: ../../../lang/stb.php:268
+msgid "DOWNLOAD"
+msgstr ""
+
+#: ../../../lang/stb.php:269
 #, fuzzy
 msgid "RECORDING AND FILE"
 msgstr "RECORDING DURATION, h"
