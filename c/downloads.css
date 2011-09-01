@@ -28,7 +28,7 @@
 .active_row_bg .pb{border-color:#333;}
 .txt{margin-left:3px;}
 .active_row_bg .active_d_status_block{width:135px;line-height:30px;}
-#downloadsDialogCreate  {display:none;position:absolute;left:50%;top:50%;margin-left:-250px; margin-top:-125px; height:250px; width:484px; border-width:11px 13px 15px 13px; -webkit-border-image: url(i/downloads/modal_bg.png) 11 13 15 13 stretch stretch;}
+#downloadsDialogCreate  {z-index: 1;display:none;position:absolute;left:50%;top:50%;margin-left:-250px; margin-top:-125px; height:250px; width:484px; border-width:11px 13px 15px 13px; -webkit-border-image: url(i/downloads/modal_bg.png) 11 13 15 13 stretch stretch;}
 #downloadsDialogCreate  .header {position:absolute; width:480px; height:50px; font-size:30px; color:#002864;}
 #downloadsDialogCreate  .main {position:absolute; left:2px; bottom:10px; width:480px; height:190px;}
 #downloadsDialogCreate  .item {position:relative; height:0px; width:468px; margin-bottom:10px; border-width:20px 6px 20px 6px; -webkit-border-image: url(i/downloads/item_bg.png) 20 6 20 6 stretch stretch;}
