@@ -22,6 +22,12 @@ function vclub_info(parent){
 
 vclub_info.prototype.show = function(item){
     _debug('vclub_info.show');
+
+    if (!module.downloads){
+        this.color_buttons.get('red').disable();
+    }else{
+        this.color_buttons.get('red').enable();
+    }
     
     this.dom_obj.show();
     this.on = true;
@@ -181,10 +187,10 @@ vclub_info.prototype.bind = function(){
     this.shift_page.bind(key.PAGE_PREV, this, -1);
     this.shift_page.bind(key.PAGE_NEXT, this, 1);
     
-    this.action.bind(key.OK, this);
+    this.action.bind(key.OK, this, true);
 };
 
-vclub_info.prototype.action = function(){
+vclub_info.prototype.action = function(play_url){
     _debug('vclub_info.action');
     
     if (this.parent.password_input.on){
@@ -192,7 +198,7 @@ vclub_info.prototype.action = function(){
     }else if(this.parent.series_switch.on){
         this.parent.series_switch.set.call(this.parent.series_switch);
     }else{
-        this.parent.check_for_pass.call(this.parent);
+        this.parent.check_for_pass.call(this.parent, play_url);
     }
 };
 

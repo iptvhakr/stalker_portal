@@ -310,14 +310,27 @@
             this.info = new vclub_info(this);
             this.info.init();
             this.info.bind();
+
+            this.info.color_buttons = new ColorButtonsBar([
+                {"label" : word['downloads_download'], "cmd" : function(){
+                    if (module.downloads){
+                        this.action.call(this, false);
+                    }
+                }},
+                {"label" : '', "cmd" : ''},
+                {"label" : '', "cmd" : ''},
+                {"label" : '', "cmd" : ''}
+            ], this.info.dom_obj, undefined);
+
+            this.info.color_buttons.bind.call(this.info);
             
             this.full_info_switch.bind(key.RIGHT, this).bind(key.INFO, this);
 
-            var color_buttons = this.color_buttons.buttons_bar.cloneNode(true);
+            /*var color_buttons = this.color_buttons.buttons_bar.cloneNode(true);
             
             color_buttons.addClass('disabled_all_buttons');
             
-            this.info.dom_obj.appendChild(color_buttons);
+            this.info.dom_obj.appendChild(color_buttons);*/
         };
         
         this.full_info_switch = function(){
@@ -495,9 +508,11 @@
 
             _debug('filename: ', filename);
 
+            //var self = this;
+
             if (module.downloads){
                 _debug('downloads');
-                module.downloads.dialog.show({"parent" : self, "url" : url, "name" : filename});
+                module.downloads.dialog.show({"parent" : this, "url" : url, "name" : filename});
             }
         };
         
