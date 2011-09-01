@@ -678,6 +678,7 @@ function common_xpcom(){
             }*/
         }catch(e){
             _debug(e);
+            return 1;
         }
     };
 
