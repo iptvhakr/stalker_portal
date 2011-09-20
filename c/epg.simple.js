@@ -11,7 +11,7 @@
         
         this.total_rows  = 10;
         
-        this.row_blocks  = ['t_time', 'name', 'mark_memo', 'mark_rec'];
+        this.row_blocks  = ['t_time', 'name', 'mark_memo', 'mark_rec', 'mark_archive'];
         
         this.load_params = {
             "type"   : "epg",
@@ -132,6 +132,8 @@
                 }else{
                     if (this.data_items[this.cur_row].rec_id){
                         this.play(this.data_items[this.cur_row].rec_id);
+                    }else if(this.data_items[this.cur_row].mark_archive && this.tv_archive){
+                        this.tv_archive.play();
                     }
                 }
             }).bind(key.OK, this);
@@ -139,6 +141,42 @@
             this.horizontal_shift.bind(key.LEFT, this, -1);
             this.horizontal_shift.bind(key.RIGHT, this, 1);
         };
+
+        /*this.play_from_archive = function(){
+            _debug('epg_simple.play_from_archive');
+            _debug(this.data_items[this.cur_row]);
+
+            this.data_items[this.cur_row].cmd  = 'auto /media/' + this.data_items[this.cur_row].id + '.mpg';
+
+            if (!this.data_items[this.cur_row].hasOwnProperty('o_name')){
+                this.data_items[this.cur_row].o_name = this.data_items[this.cur_row].name;
+            }
+            
+            this.data_items[this.cur_row].name = this.ch_name + ' — ' + this.data_items[this.cur_row].o_name;
+
+            var self = this;
+
+            stb.player.on_create_link = function(result){
+                _debug('epg_simple.play_from_archive.on_create_link', result);
+
+                if (result.error == 'limit'){
+                    stb.notice.show(word['player_limit_notice']);
+                }else if(result.error == 'nothing_to_play'){
+                    stb.notice.show(word['player_file_missing']);
+                }else if(result.error == 'link_fault'){
+                    stb.notice.show(word['player_server_error']);
+                }else{
+
+                    self.hide(true);
+
+                    stb.player.prev_layer = self;
+                    stb.player.need_show_info = 1;
+                    stb.player.play_now(result.cmd);
+                }
+            };
+
+            stb.player.play(this.data_items[this.cur_row]);
+        };*/
 
         this.play = function(rec_id){
             _debug('epg_simple.play', rec_id);
@@ -242,17 +280,39 @@
                 if (this.cur_week_row < 6){
                     this.cur_week_row++;
                 }else{
-                    this.cur_week_row = 0;
+                    //this.cur_week_row = 0;
+                    this.shift_week_page(1);
                 }
             }else{
                 if (this.cur_week_row > 0){
                     this.cur_week_row--;
                 }else{
-                    this.cur_week_row = 6;
+                    //this.cur_week_row = 6;
+                    this.shift_week_page(-1);
                 }
             }
             
             this.set_active_week_row(this.cur_week_row);
+        };
+
+        this.shift_week_page = function(dir){
+            _debug('epg_simple.shift_week_page');
+
+            if (dir > 0){
+                if (this.cur_week_page < this.total_week_pages ){
+                    this.cur_week_page++;
+                    this.cur_week_row = 0;
+                    this.fill_week_page(this.cur_week_page);
+                    this.set_active_week_row(this.cur_week_row);
+                }
+            }else{
+                if (this.cur_week_page > 1){
+                    this.cur_week_page--;
+                    this.cur_week_row = 6;
+                    this.fill_week_page(this.cur_week_page);
+                    this.set_active_week_row(this.cur_week_row);
+                }
+            }
         };
         
         this.set_passive_row = function(){
@@ -342,7 +402,7 @@
             
                 if (!empty(self.data_items) && !empty(self.data_items[self.cur_row])){
                 
-                    self.program_info.innerHTML = '<span class="time">' + self.data_items[self.cur_row]['t_time'] + ' - ' + self.data_items[self.cur_row]['t_time_to'] +'</span> - ' + self.data_items[self.cur_row]['name'];
+                    self.program_info.innerHTML = '<span class="time">' + self.data_items[self.cur_row]['t_time'] + ' - ' + self.data_items[self.cur_row]['t_time_to'] +'</span> - ' + (self.data_items[self.cur_row]['o_name'] ? self.data_items[self.cur_row]['o_name'] : self.data_items[self.cur_row]['name']);
                 }else{
                     self.program_info.innerHTML = '';
                 }
@@ -359,7 +419,7 @@
             
             this.set_active_current_week_row();
             
-            this.load_params['date'] = this.week[this.cur_week_row].f_mysql;
+            this.load_params['date'] = this.week[this.cur_week_row + (this.cur_week_page - 1) * 7].f_mysql;
             
             this.load_data();
         };
@@ -387,19 +447,52 @@
             this.week = data;
             
             _debug('this.week', this.week);
-            
-            for (var i=0; i <= 6; i++){
-                this.week_days_map[i].dom_obj.innerHTML = this.week[i].f_human;
-                
+
+            this.total_week_pages = Math.ceil(this.week.length / 7);
+
+            _debug('this.total_week_pages', this.total_week_pages);
+
+            var today_idx = this.week.getIdxByVal('today', 1);
+
+            _debug('today_idx', today_idx);
+
+            if (today_idx === null){
+                var page = 1;
+            }else{
+                page = Math.ceil((today_idx + 1) / 7)
+            }
+
+            this.cur_week_page = page;
+
+            this.fill_week_page(page);
+        };
+
+        this.fill_week_page = function(page){
+            _debug('epg_simple.fill_week_page', page);
+
+            if (this.week.length <= 7){
+                return;
+            }
+
+            var start_idx = (page - 1) * 7 + 0;
+            var stop_idx  = (page - 1) * 7 + 7;
+
+            var week = this.week.slice(start_idx, stop_idx);
+
+            _debug('week', week);
+
+            for (var i=0; i < week.length; i++){
+                this.week_days_map[i].dom_obj.innerHTML = week[i].f_human;
+
                 this.week_days_map[i].dom_obj.setAttribute('active', '');
-                
-                if (this.week[i].today){
-                    
+
+                if (week[i].today){
+
                     this.week_days_map[i].dom_obj.setAttribute('rel', '');
                     //this.week_days_map[i].dom_obj.setAttribute('active', 'active');
-                    
-                    this.load_params['date'] = this.week[i].f_mysql;
-                    
+
+                    this.load_params['date'] = week[i].f_mysql;
+
                     this.cur_week_row = i;
                     this.active_week_row = i;
                 }else{
@@ -407,7 +500,7 @@
                     //this.week_days_map[i].dom_obj.setAttribute('active', '');
                 }
             }
-            
+
             this.load_data();
         };
         
@@ -419,29 +512,37 @@
             if (this.epg_list_active){
                 this.set_active_row(this.cur_row);
             }
+
         };
         
         this.shift_page = function(dir){
 
-            this.page_dir = dir;
-            
-            if (dir > 0){
-                if (this.cur_page < this.total_pages){
-                    this.cur_page++;
-                    this.load_data();
+            if (this.epg_list_active){
+                
+                this.page_dir = dir;
+
+                if (dir > 0){
+                    if (this.cur_page < this.total_pages){
+                        this.cur_page++;
+                        this.load_data();
+                    }else{
+                        this.set_active_row(this.cur_row);
+                        //this.cur_page = 1;
+                    }
                 }else{
-                    this.set_active_row(this.cur_row);
-                    //this.cur_page = 1;
+                    if (this.cur_page > 1){
+                        this.cur_page--;
+                        this.load_data();
+                    }else{
+                        this.set_active_row(this.cur_row);
+                        //this.cur_page = this.total_pages;
+                    }
                 }
             }else{
-                if (this.cur_page > 1){
-                    this.cur_page--;
-                    this.load_data();
-                }else{
-                    this.set_active_row(this.cur_row);
-                    //this.cur_page = this.total_pages;
-                }
+                this.shift_week_page(dir);
             }
+
+
             
             //this.load_data();
         };
@@ -519,6 +620,14 @@
             this.parent.map[this.parent.cur_row]['mark_rec_block'].hide();
             this.parent.data_items[this.parent.cur_row].mark_rec = 0;
         }
+    }
+
+    if (module.tv_archive){
+        epg_simple.tv_archive = function(){};
+        
+        epg_simple.tv_archive.prototype = module.tv_archive;
+        epg_simple.tv_archive = new epg_simple.tv_archive;
+        epg_simple.tv_archive.parent = epg_simple;
     }
     
     epg_simple.bind();
