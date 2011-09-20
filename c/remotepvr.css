@@ -4,7 +4,7 @@
     top: 0;
     width: 96px;
     height: 25px;
-    background: url("i/mb_table.png") 102px -90px;
+    background: url("i/mb_table04.png") 102px 0;
     padding: 3px 0 0 4px;
     color: #fff;
     font-family: "Myriad Pro Cond", sans-serif;
@@ -20,7 +20,7 @@
 }
 
 #remote_pvr .active_t_start_block{
-    background: url("i/mb_table_act.png") 118px -63px;
+    background: url("i/mb_table_act02.png") 118px -4px;
     color: #000000;
     font-family: "Myriad Pro Cond",sans-serif;
     height: 40px;
