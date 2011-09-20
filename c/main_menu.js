@@ -327,7 +327,7 @@ var main_menu = {
         this.map.push(
             {
                 "title"    : title,
-                "img"      : 'i' + (gmode == 720 ? '_720' : '') + '/' + img,
+                "img"      : 'i' + resolution_prefix + '/' + img,
                 "cmd"      : cmd,
                 "sub"      : sub,
                 "module"   : module
