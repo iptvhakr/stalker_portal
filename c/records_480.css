@@ -1,0 +1,77 @@
+.t_start_block{
+    width: 165px;
+    color: #fff;
+    font-size: 20px;
+    text-shadow: #122946 0 -1px 0;
+    margin: 3px 0 0 3px;
+    padding-left: 3px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.active_t_start_block{
+    width: 165px;
+    font-size: 22px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+    margin-top: 8px;
+    margin-right: 5px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.ch_name_block{
+    width: 330px;
+    color: #fff;
+    font-size: 20px;
+    text-shadow: #122946 0 -1px 0;
+    margin: 3px 0 0 3px;
+    padding-left: 3px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.active_ch_name_block{
+    width: 330px;
+    font-size: 22px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+    margin-top: 8px;
+    margin-right: 5px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.length_block{
+    width: 90px;
+    color: #fff;
+    font-size: 20px;
+    text-shadow: #122946 0 -1px 0;
+    margin: 3px 0 0 3px;
+    padding-left: 3px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.active_length_block{
+    width: 90px;
+    font-size: 22px;
+    color: #002864;
+    text-shadow: #fff 0 1px 0;
+    margin-top: 8px;
+    margin-right: 5px;
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+}

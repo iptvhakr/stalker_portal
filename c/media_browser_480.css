@@ -1,0 +1,17 @@
+.dir_block{
+    width: 24px;
+    height: 21px;
+    float: left;
+    margin: 2px 0 0 4px;
+    background-image: url("i/mb_icons.png");
+    background-position: -126px 0px;
+}
+
+.active_dir_block{
+    width: 24px;
+    height: 31px;
+    margin: 4px 2px 0 0;
+    float:left;
+    background-image: url("i/mb_icons.png");
+    background-position: -126px -21px;
+}
