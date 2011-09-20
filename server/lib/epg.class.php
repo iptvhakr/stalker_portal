@@ -309,20 +309,37 @@ class Epg
         $ch_id = intval($ch_id);
 
         $program = $this->db
-                            ->from('epg')
-                            ->where(array(
-                                'ch_id'    => $ch_id,
-                                'time<='   => $datetime
-                            ))
-                            ->where(array(
-                                'time_to'  => 0,
-                                'time_to>' => $datetime
-                            ), 'OR ')
-                            ->orderby('time', 'DESC')
-                            ->get()
-                            ->first();
+            ->from('epg')
+            ->where(array(
+                'ch_id'    => $ch_id,
+                'time<='   => $datetime
+            ))
+            ->where(array(
+                'time_to'  => 0,
+                'time_to>' => $datetime
+            ), 'OR ')
+            ->orderby('time', 'DESC')
+            ->get()
+            ->first();
 
         return $program;
+    }
+
+    public function getAllProgramForCh(){
+
+        $ch_id = intval($_REQUEST['ch_id']);
+
+        return $this->db
+            ->select('UNIX_TIMESTAMP(time) as start_timestamp, UNIX_TIMESTAMP(time_to) as stop_timestamp, name')
+            ->from('epg')
+            ->where(array(
+                'ch_id'    => $ch_id
+                //'time<='   => 'NOW()'
+            ))
+            ->orderby('time')
+            ->get()
+            ->all();
+
     }
 
     /**
@@ -428,6 +445,9 @@ class Epg
         $recorder = new StreamRecorder();
         $user_rec_ids = $recorder->getDeferredRecordIdsForUser(Stb::getInstance()->id);
 
+        $tv_archive = new TvArchive();
+        $archived_recs = $tv_archive->getAllTasksAssoc();
+
         foreach ($result as $ch_id => $epg){
 
             for ($i = 0; $i < count($epg); $i++){
@@ -455,6 +475,24 @@ class Epg
                     $epg[$i]['rec_id']   = $user_rec_ids[$epg[$i]['id']];
                 }else{
                     $epg[$i]['mark_rec'] = 0;
+                }
+
+                if (key_exists($epg[$i]['ch_id'], $archived_recs)){
+
+                    //var_dump($epg[$i]['start_timestamp'], $archived_recs[$epg[$i]['ch_id']]['start_timestamp'], $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']);
+
+                    //if (time() > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] && time() < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']){
+                    if ($epg[$i]['start_timestamp'] > $archived_recs[$epg[$i]['ch_id']]['start_timestamp'] &&
+                        $epg[$i]['start_timestamp'] < $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']){
+    
+                        $epg[$i]['mark_archive'] = 1;
+                        $epg[$i]['position']  = date("i", $epg[$i]['start_timestamp']) * 60;
+                        $epg[$i]['media_len'] = $epg[$i]['stop_timestamp'] - $epg[$i]['start_timestamp'];
+                    }else{
+                        $epg[$i]['mark_archive'] = 0;
+                    }
+                }else{
+                    $epg[$i]['mark_archive'] = 0;
                 }
 
                 $epg[$i]['on_date'] = $week_day_arr[date("w", $epg[$i]['start_timestamp'])].' '.date("d.m.Y", $epg[$i]['start_timestamp']);
@@ -620,13 +658,14 @@ class Epg
 
         //var_dump($cur_num_day);
 
-        for ($i=0; $i<=6; $i++){
-            $w_day   = date("d", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year));
-            $w_month = date("n", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year))-1;
-            $week_days[$i]['f_human'] = $week_short_arr[$i].' '.$w_day.' '.$month_arr[$w_month];
-            $week_days[$i]['f_mysql'] = date("Y-m-d", mktime (0, 0, 0, $month, $day-$cur_num_day+$i, $year));
-            if (intval($cur_num_day) === $i){
-                var_dump($cur_num_day, $i);
+        for ($i=0; $i<=13; $i++){
+            $w_day   = date("d", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year));
+            $w_month = date("n", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year))-1;
+            $week_days[$i]['f_human'] = $week_short_arr[$i % 7].' '.$w_day.' '.$month_arr[$w_month];
+            $week_days[$i]['f_mysql'] = date("Y-m-d", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year));
+            //if (intval($cur_num_day) === $i){
+            if ($week_days[$i]['f_mysql'] === date("Y-m-d")){
+                //var_dump($cur_num_day, $i);
                 $week_days[$i]['today'] = 1;
             }else{
                 $week_days[$i]['today'] = 0;
@@ -710,6 +749,9 @@ class Epg
 
         $user_rec_ids = $recorder->getDeferredRecordIdsForUser(Stb::getInstance()->id);
 
+        $tv_archive = new TvArchive();
+        $archived_recs = $tv_archive->getAllTasksAssoc();
+
         for ($i=0; $i<count($program); $i++){
             if ($program[$i]['stop_timestamp'] < $now){
                 $program[$i]['open'] = 0;
@@ -733,6 +775,24 @@ class Epg
                 $program[$i]['rec_id']   = $user_rec_ids[$program[$i]['id']];
             }else{
                 $program[$i]['mark_rec'] = 0;
+            }
+
+            if (key_exists($program[$i]['ch_id'], $archived_recs)){
+
+                var_dump($program[$i]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['stop_timestamp']);
+
+                //if (time() > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] && time() < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']){
+                if ($program[$i]['start_timestamp'] > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] &&
+                    $program[$i]['start_timestamp'] < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']){
+                    
+                    $program[$i]['mark_archive'] = 1;
+                    $program[$i]['position']  = date("i", $program[$i]['start_timestamp']) * 60;
+                    $program[$i]['media_len'] = $program[$i]['stop_timestamp'] - $program[$i]['start_timestamp'];
+                }else{
+                    $program[$i]['mark_archive'] = 0;
+                }
+            }else{
+                $program[$i]['mark_archive'] = 0;
             }
         }
 
