@@ -94,6 +94,7 @@ if (@$_FILES['userfile']){
                         $result[$stb_id][] = intval($service_id_map[$ch]);
                     }else if($ch == '00494'){
                         $result[$stb_id] = merge_services($result[$stb_id], get_all_payed_ch_discovery());
+                        $result[$stb_id] = merge_services($result[$stb_id], get_all_hd_channels());
                     }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00466'){
                         $result[$stb_id] = merge_services($result[$stb_id], $all_payed_ch);
                         if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389' || $ch == '00466'){
@@ -103,6 +104,7 @@ if (@$_FILES['userfile']){
                         $result[$stb_id] = merge_services($result[$stb_id], $all_payed_ch_100);
                     }else if($ch == '00493'){
                         $result[$stb_id] = merge_services($result[$stb_id], array(270, 271, 272, 273, 274, 275));
+                        $result[$stb_id] = merge_services($result[$stb_id], get_all_hd_channels());
                     }else if($ch == '00160' || $ch == '00161' || $ch == '00162' || $ch == '00169' || $ch == '00170' || $ch == '00432' || $ch == '00433'){ // additional services on
                         $add_services_on[] = $stb_id;
                     }else{
@@ -283,6 +285,18 @@ function get_base_channels(){
     }
     return $arr;
 }
+
+function get_all_hd_channels(){
+    $db = Database::getInstance();
+    $arr = array();
+    $sql = "select * from itv where hd=1";
+    $rs = $db->executeQuery($sql);
+    while(@$rs->next()){
+        $arr[] = intval($rs->getCurrentValueByName('id'));
+    }
+    return $arr;
+}
+
 
 function get_all_payed_ch(){
     $db = Database::getInstance();
