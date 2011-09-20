@@ -117,7 +117,7 @@ ColorButtonsBar.prototype.init = function(map){
 
         if (i == 0){
             var separator = document.createElement('img');
-            separator.src = 'i' + img_prefix + '/1x1.gif';
+            separator.src = 'i' + resolution_prefix + '/1x1.gif';
         }else{
             var separator = document.createElement('div');
             separator.addClass('separator');
