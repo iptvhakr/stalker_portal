@@ -114,7 +114,7 @@ vclub_info.prototype.fill = function(item){
                      '<span>' + word['vclub_cast'] + ':</span> ' + item.actors + 
                      '<div class="hr_filminfo"></div>' + item.description;// + '<br><br>';
     
-    this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'" width="240" height="320">';
+    this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'>';
 };
 
 vclub_info.prototype.shift = function(dir){
@@ -183,7 +183,7 @@ vclub_info.prototype.bind = function(){
     
     this.shift.bind(key.UP, this, -1);
     this.shift.bind(key.DOWN, this, 1);
-    
+        
     this.shift_page.bind(key.PAGE_PREV, this, -1);
     this.shift_page.bind(key.PAGE_NEXT, this, 1);
     
