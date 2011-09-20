@@ -87,7 +87,7 @@
     top: 82px;
     width: 1140px;
     height: 38px;
-    background: url("i_720/mb_table.png") no-repeat;
+    background: url("i_720/mb_table01.png") no-repeat;
 }
 
 .middle_container .blue_row_bg{
@@ -96,7 +96,7 @@
     top: 82px;
     width: 730px;
     height: 38px;
-    background: url("i_720/mb_table.png") no-repeat 0 -190px;
+    background: url("i_720/mb_table06.png") no-repeat;
     /*background-position: 0 -190px;*/
 }
 
@@ -106,7 +106,7 @@
     top: 82px;
     width: 528px;
     height: 38px;
-    background: url("i_720/mb_table.png") no-repeat 0 -152px;
+    background: url("i_720/mb_table05.png") no-repeat;
     /*background-position: 0 -152px;*/
 }
 
@@ -115,7 +115,7 @@
     width: 1168px;
     height: 62px;
     left: 56px;
-    background: url("i_720/mb_table_act.png") left top no-repeat;
+    background: url("i_720/mb_table_act01.png") no-repeat;
     padding: 5px 0 0 13px;
 }
 
@@ -124,7 +124,7 @@
     width: 1168px;
     height: 62px;
     left: 56px;
-    background: url("i_720/mb_table_act.png") no-repeat 0 -268px;
+    background: url("i_720/mb_table_act05.png") no-repeat;
     /*background-position: 0 -268px;*/
     padding: 5px 0 0 13px;
 }
@@ -134,8 +134,7 @@
     width: 757px;
     height: 62px;
     left: 56px;
-    background: url("i_720/mb_table_act.png") no-repeat 0 -201px;
-    /*background-position: 0 -201px;*/
+    background: url("i_720/mb_table_act04.png") no-repeat;
     padding: 5px 0 0 13px;
 }
 
@@ -144,8 +143,7 @@
     width: 542px;
     height: 62px;
     left: 56px;
-    background: url("i_720/mb_table_act.png") no-repeat 0 -134px;
-    /*background-position: 0 -134px;*/
+    background: url("i_720/mb_table_act03.png") no-repeat;
     padding: 5px 0 0 13px;
 }
 
@@ -347,7 +345,7 @@
 }
 
 .osd_info_clock{
-    margin: 20px 0 0 21px;
+    margin: 20px 0 0 40px;
     font-size: 24px;
     color: #99A8B5;
     font-family: "Myriad Pro Cond", sans-serif;
@@ -357,7 +355,7 @@
 .osd_info_title{
     margin: 16px 0 0 7px;
     float: left;
-    width: 1160px;
+    width: 1140px;
     font-size: 30px;
     font-weight: bold;
     color: #fff;
@@ -429,7 +427,7 @@
 .osd_info_epg{
     position: absolute;
     top: 49px;
-    left: 60px;
+    left: 110px;
     font-size: 26px;
     color: #fff;
     text-shadow: #000 0 1px 0;
