@@ -11,6 +11,68 @@ class TvArchive extends Master
         parent::__construct();
     }
 
+    public function createLink(){
+
+        $res = array(
+            'id'         => 0,
+            'cmd'        => '',
+            'storage_id' => '',
+            'load'       => '0',
+            'error'      => ''
+        );
+        
+        preg_match("/\/media\/(\d+).mpg/", $_REQUEST['cmd'], $tmp_arr);
+
+        $program_id = $tmp_arr[1];
+
+        $program = Epg::getById($program_id);
+
+        $task = $this->getTaskByChId($program['ch_id']);
+
+        $storage = Master::getStorageByName($task['storage_name']);
+
+        $start_timestamp = strtotime($program['time']);
+        $stop_timestamp  = strtotime($program['time_to']);
+
+        $position = date("i", $start_timestamp) * 60;
+
+        $res['storage_id'] = $storage['id'];
+        $res['cmd']        = 'ffmpeg http://' . $storage['storage_ip']
+                             . '/archive/'
+                             . $program['ch_id']
+                             . '/'
+                             . date("Ymd-H", $start_timestamp)
+                             . '.mpg position:' . $position
+                             . ' media_len:' . ($stop_timestamp - $start_timestamp);
+
+        var_dump($res);
+
+        return $res;
+    }
+
+    public function getLinkForChannel(){
+
+        $ch_id = intval($_REQUEST['ch_id']);
+
+        $task = $this->getTaskByChId($ch_id);
+        $storage = Master::getStorageByName($task['storage_name']);
+        $position = date("i") * 60 + intval(date("s"));
+
+        return 'ffmpeg http://' . $storage['storage_ip']
+                             . '/archive/'
+                             . $ch_id
+                             . '/'
+                             //  'ffmpeg http://192.168.1.71:8080/'
+                             . date("Ymd-H")
+                             . '.mpg position:' . $position
+                             . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
+    }
+
+    private function getTaskByChId($ch_id){
+        
+        return Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
+    }
+
     protected function getAllActiveStorages(){
 
         $storages = array();
@@ -45,9 +107,10 @@ class TvArchive extends Master
         $channel = Itv::getChannelById($ch_id);
 
         $task = array(
-            'id'    => $task_id,
-            'ch_id' => $channel['id'],
-            'cmd'   => $channel['cmd']
+            'id'             => $task_id,
+            'ch_id'          => $channel['id'],
+            'cmd'            => $channel['cmd'],
+            'parts_number'   => Config::get('tv_archive_parts_number')
         );
 
         return $this->clients[$less_loaded]->resource('tv_archive_recorder')->create(array('task' => $task));
@@ -66,15 +129,43 @@ class TvArchive extends Master
         return $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($ch_id)->delete();
     }
 
-    public function getAllTasks($storage_name){
+    public function getAllTasks($storage_name = null){
 
-        return Mysql::getInstance()
-            ->select('tv_archive.id as id, itv.id as ch_id, itv.cmd as cmd')
+        if ($storage_name){
+            $where = array('storage_name' => $storage_name);
+        }else{
+            $where = array();
+        }
+
+        $tasks = array();
+
+        $raw_tasks = Mysql::getInstance()
+            ->select('tv_archive.id as id, itv.id as ch_id, itv.cmd as cmd, UNIX_TIMESTAMP(tv_archive.start_time) as start_timestamp, UNIX_TIMESTAMP(tv_archive.end_time) as stop_timestamp')
             ->from('tv_archive')
             ->join('itv', 'itv.id', 'tv_archive.ch_id', 'LEFT')
-            ->where(array('storage_name' => $storage_name))
+            ->where($where)
             ->get()
             ->all();
+
+        foreach ($raw_tasks as $task){
+            $task['parts_number'] = Config::get('tv_archive_parts_number');
+            $tasks[] = $task;
+        }
+
+        return $tasks;
+    }
+
+    public function getAllTasksAssoc($storage_name = null){
+
+        $tasks = $this->getAllTasks($storage_name);
+
+        $result = array();
+
+        foreach ($tasks as $task){
+            $result[$task['ch_id']] = $task;
+        }
+
+        return $result;
     }
 
     public function updateStartTime($ch_id, $time){
