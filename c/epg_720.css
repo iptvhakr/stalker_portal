@@ -104,6 +104,12 @@
     background-image: url("i_720/epg_red_mark.png");
 }
 
+#epg .program .marks .mark_archive{
+    height: 8px;
+    width: 8px;
+    background-image: url("i_720/epg_orange_mark.png");
+}
+
 #epg .blue_row_bg .program{
     color: #bcc7d6;
 }
