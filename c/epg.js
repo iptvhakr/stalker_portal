@@ -203,6 +203,9 @@
 
                 if (this.active_row['epg_cell'][this.cur_cell_col].data.rec_id){
                     this.play(this.active_row['epg_cell'][this.cur_cell_col].data.rec_id);
+                }else if (this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive && this.tv_archive){
+                    //_debug('this.active_row[epg_cell][this.cur_cell_col].data.mark_archive', this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive);
+                    this.tv_archive.play();
                 }else{
 
                     var now = new Date().getTime() / 1000;
@@ -466,9 +469,17 @@
                 }else{
                     mark_rec.hide();
                 }
+
+                var mark_archive = create_block_element('mark_archive', marks);
+
+                if (epg[j]['mark_archive']){
+                    mark_archive.show();
+                }else{
+                    mark_archive.hide();
+                }
                 
                 if (!is_active_row){
-                    this.marks_map.push({"program_id" : epg[j]['id'], "mark_memo" : mark_memo, "mark_rec" : mark_rec});
+                    this.marks_map.push({"program_id" : epg[j]['id'], "mark_memo" : mark_memo, "mark_rec" : mark_rec, "mark_archive" : mark_archive});
                 }
                 
                 if (j < epg_length-1){
@@ -650,6 +661,26 @@
         epg.recorder.prototype = module.epg_recorder;
         epg.recorder = new epg.recorder;
         epg.recorder.parent = epg;
+    }
+
+    if (module.tv_archive){
+        epg.tv_archive = function(){};
+
+        epg.tv_archive.prototype = module.tv_archive;
+        epg.tv_archive = new epg.tv_archive;
+        epg.tv_archive.parent = epg;
+
+        epg.tv_archive.get_item = function(){
+            _debug('epg.tv_archive.get_item');
+
+            return this.parent.data_items[this.parent.cur_row].epg[this.parent.cur_cell_col];
+        };
+
+        epg.tv_archive.get_channel_name = function(){
+            _debug('epg.tv_archive.get_channel_name');
+
+            return this.parent.channel.name;
+        };
     }
     
     epg.bind();
