@@ -5,7 +5,7 @@
  */
 var $ = function(id){
     return document.getElementById(id);
-}
+};
 
 /**
  * Debug function.
@@ -125,7 +125,7 @@ HTMLElement.prototype.show = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.hide = function(){
     try{
@@ -133,7 +133,7 @@ HTMLElement.prototype.hide = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.isHidden = function(){
     try{
@@ -145,7 +145,7 @@ HTMLElement.prototype.isHidden = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.moveX = function(to_x){
     try{
@@ -153,7 +153,7 @@ HTMLElement.prototype.moveX = function(to_x){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.moveY = function(to_y){
     try{
@@ -161,7 +161,7 @@ HTMLElement.prototype.moveY = function(to_y){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.offsetX = function(offset_x){
     try{
@@ -169,7 +169,7 @@ HTMLElement.prototype.offsetX = function(offset_x){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.offsetY = function(offset_y){
     try{
@@ -177,7 +177,7 @@ HTMLElement.prototype.offsetY = function(offset_y){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.setClass = function(class_name){
     try{
@@ -185,7 +185,7 @@ HTMLElement.prototype.setClass = function(class_name){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.delClass = function(){
     try{
@@ -193,7 +193,7 @@ HTMLElement.prototype.delClass = function(){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.addClass = function(class_name){
     try{
@@ -208,7 +208,7 @@ HTMLElement.prototype.addClass = function(class_name){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.removeClass = function(class_name){
     try{
@@ -218,7 +218,7 @@ HTMLElement.prototype.removeClass = function(class_name){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 HTMLElement.prototype.replaceClass = function(from, to){
     try{
@@ -228,11 +228,11 @@ HTMLElement.prototype.replaceClass = function(from, to){
     }catch(e){
         _debug(e);
     }
-}
+};
 
 String.prototype.clearnl = function(){
     return this.replace(/(\n(\r)?)/g, '');
-}
+};
 
 if (typeof Object.prototype.toSource != 'function'){
     
@@ -323,7 +323,7 @@ Object.prototype.clone = function() {
     
     var newObj = (this instanceof Array) ? [] : {};  
     
-    for (i in this) {
+    for (var i in this) {
         
         if (this.hasOwnProperty(i)){
             //_debug(i);
@@ -338,7 +338,7 @@ Object.prototype.clone = function() {
         }
     }
     return newObj;
-}
+};
 
 Array.prototype.getIdxById = function(id){
     for (var i=0; i<this.length; i++){
@@ -349,7 +349,7 @@ Array.prototype.getIdxById = function(id){
         }
     }
     return null;
-}
+};
 
 Array.prototype.getIdxByVal = function(what, eq){
     for (var i=0; i<this.length; i++){
@@ -360,7 +360,7 @@ Array.prototype.getIdxByVal = function(what, eq){
         }
     }
     return null;
-}
+};
 
 Array.prototype.getIdxByNumber = function(number){
     for (var i=0; i<this.length; i++){
@@ -371,7 +371,7 @@ Array.prototype.getIdxByNumber = function(number){
         }
     }
     return null;
-}
+};
 
 Array.prototype.inArray = function (value){
     for (var i=0; i < this.length; i++){
@@ -380,15 +380,15 @@ Array.prototype.inArray = function (value){
         }
     }
     return false;
-}
+};
 
 Math.__proto__.isEven = function(x){
     return !(x % 2);
-}
+};
 
 Math.__proto__.isOdd = function(x){
     return !Math.isEven(x);
-}
+};
 
 function empty(val){
     
@@ -443,3 +443,57 @@ String.prototype.format = function() {
         return typeof args[number] != 'undefined' ? args[number]: '{' + number + '}';
     });
 };
+
+/**
+ * @example
+ * var obj ={
+ *     'tag':'div',
+ *     'attrs':{
+ *         'id':'id',
+ *         'class': 'new_class',
+ *         'style':'"width:50px'
+ *     },
+ *     'child':[
+ *         {
+ *             'tag':'div',
+ *             'attrs':{
+ *                 'id':'id',
+ *                 'class': 'new_class',
+ *                 'style':'"width:50px'
+ *             },
+ *             'child':[
+ *
+ *             ]
+ *         },
+ *         {
+ *             'tag':'div',
+ *
+ *             'attrs':{
+ *                 'id':'id',
+ *                 'class': 'new_class',
+ *                 'style':'"width:50px'
+ *             },
+ *             'child':[
+ *
+ *             ]
+ *         }
+ *    ]
+ * };
+ * createHTMLTree(obj);
+ *
+ * @param obj
+ */
+function createHTMLTree(obj){
+    var el = document.createElement(obj.tag);
+    for(var key in obj.attrs) {
+        if (obj.attrs.hasOwnProperty(key)){
+            el.setAttribute(key, obj.attrs[key]);
+        }
+    }
+    if(typeof obj.child != 'undefined'){
+        for(var i=0; i<obj.child.length; i++){
+            el.appendChild(createHTMLTree(obj.child[i]));
+        }
+    }
+    return el;
+}
