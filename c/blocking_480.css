@@ -1,0 +1,19 @@
+.cut_off{
+    position:absolute;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    width: 720px;
+    height: 480px;
+    background-image: url("i_480/bg2.png");
+}
+
+.cut_off_text{
+    text-align: center;
+    vertical-align: middle;
+    height: 480px;
+    width: 720px;
+    display: table-cell;
+    font: 45px "trebuchet ms", Arial, Helvetica, sans-serif;
+    color: #fff;
+}
