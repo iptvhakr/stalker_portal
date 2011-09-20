@@ -20,7 +20,7 @@
             {"mode" : 576,  "xsize" : 320, "ysize" : 256, "x" : 350, "y" : 74},
             {"mode" : 720,  "xsize" : 569, "ysize" : 320, "x" : 622, "y" : 93},
             {"mode" : 1080, "xsize" : 854, "ysize" : 480, "x" : 933, "y" : 139},
-            {"mode" : 480,  "xsize" : 320, "ysize" : 213, "x" : 350, "y" : 62}
+            {"mode" : 480,  "xsize" : 300, "ysize" : 240, "x" : 350, "y" : 63}
         ];
         
         this.preview_pos = this.preview_pos_map[this.preview_pos_map.getIdxByVal("mode", parseInt(stb.video_mode))];
@@ -520,12 +520,14 @@
                     if (item.lock){
                         self.password_input.callback = function(){
                             stb.player.need_show_info = 0;
+                            stb.player.prev_layer = self;
                             self._play_now(item);
                         };
 
                         self.password_input.show();
                     }else{
                    stb.player.need_show_info = 0;
+                        stb.player.prev_layer = self;
                         self._play_now(item);
                     }
                 }else{
