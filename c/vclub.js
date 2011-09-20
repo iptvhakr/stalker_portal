@@ -229,7 +229,7 @@
             //item.genres_str
             
             this.short_info_box.innerHTML = '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str + '<br><span>' + word['vclub_year'] + ': </span>' + item.year + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br><span>' + word['vclub_director'] + ': </span>' + item.director;
-            this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '" width="240" height="320">';
+            this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '>';
         };
         
         this.init_short_info = function(){
