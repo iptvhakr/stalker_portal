@@ -39,6 +39,34 @@
             return item;
         });
 
+        this.playback_limit_map = [
+            {
+                "label" : get_word('playback_limit_off'),
+                "value" : 0
+            },
+            {
+                "label" : 3 + get_word('playback_hours'),
+                "value" : 3
+            },
+            {
+                "label" : 4 + get_word('playback_hours'),
+                "value" : 4
+            },
+            {
+                "label" : 5 + get_word('playback_hours'),
+                "value" : 5
+            },
+            {
+                "label" : 6 + get_word('playback_hours'),
+                "value" : 6
+            }
+        ].map(function(item){
+            if (item.value == stb.user['playback_limit']){
+                item.selected = 1;
+            }
+            return item;
+        });
+
         this.save_callback = function(result){
             _debug('playback_settings.save_callback', result);
 
@@ -53,6 +81,7 @@
 
             stb.SetBufferSize(this.save_params.playback_buffer_size * 1000, this.save_params.playback_buffer_bytes);
             stb.SetupSPdif(this.save_params.audio_out);
+            stb.user['playback_limit'] = this.save_params.playback_limit;
         };
 
         this.save = function(){
@@ -100,6 +129,8 @@
             };
 
             this.audio_out = this.add_control(new OptionInput(this , {"name" : "audio_out", "label" : get_word('audio_out'), "map" : this.audio_out_map}));
+
+            this.playback_limit = this.add_control(new OptionInput(this , {"name" : "playback_limit", "label" : get_word('playback_limit_title'), "map" : this.playback_limit_map}));
         };
     }
 
