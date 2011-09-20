@@ -597,6 +597,11 @@ abstract class Master
         }
         return 1;
     }
+
+    public static function getStorageByName($name){
+
+        return Mysql::getInstance()->from('storages')->where(array('storage_name' => $name))->get()->first();
+    }
     
     /**
      * Return online sessions on storage
