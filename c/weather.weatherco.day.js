@@ -106,7 +106,7 @@
                 
                 this.map[i].descr.innerHTML = descr;
                 
-                this.map[i].layer_1.src = 'i' + img_prefix + '/' + data[i].pict;
+                this.map[i].layer_1.src = 'i' + resolution_prefix + '/' + data[i].pict;
                 
                 this.map[i].temp.innerHTML = data[i].temperature;
             }
