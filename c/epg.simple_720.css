@@ -67,6 +67,15 @@
     background-image: url("i_720/epg_red_mark.png");
 }
 
+#epg_simple .mark_archive_block{
+    position: absolute;
+    top: 4px;
+    left: 17px;
+    height: 8px;
+    width: 8px;
+    background-image: url("i_720/epg_orange_mark.png");
+}
+
 #epg_simple .blue_row_bg[rel="close"] .name_block{
     color: #99A8B5 !important;
 }
@@ -93,9 +102,11 @@
     background-image: url("i_720/tv_table.png");
     background-position: 0 -44px;
     color: #fff;
-    font-size: 24px;
+    font-size: 22px;
     text-shadow: #122946 0 -1px 0;
     padding: 10px 0 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 #epg_simple .week li[active="active"]{
