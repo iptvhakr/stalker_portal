@@ -199,6 +199,8 @@ class Stb
         $profile['web_proxy_pass']         = Config::exist('stb_http_proxy_pass') ? Config::get('stb_http_proxy_pass') : '';
         $profile['web_proxy_exclude_list'] = Config::exist('stb_http_proxy_exclude_list') ? Config::get('stb_http_proxy_exclude_list') : '';
         $profile['update_url']             = Config::exist('update_url') ? Config::get('update_url') : '';
+        $profile['tv_archive_days']        = Config::exist('tv_archive_parts_number') ? Config::get('tv_archive_parts_number') / 24 : 0;
+        $profile['playback_limit']         = Config::get('enable_playback_limit') ? $profile['playback_limit'] : 0;
 
         return $profile;
     }
@@ -651,12 +653,14 @@ class Stb
         $playback_buffer_bytes = intval($_REQUEST['playback_buffer_bytes']);
         $playback_buffer_size  = intval($_REQUEST['playback_buffer_size']) * 1000;
         $audio_out             = intval($_REQUEST['audio_out']);
+        $playback_limit        = intval($_REQUEST['playback_limit']);
 
         return Mysql::getInstance()->update('users',
             array(
                 'playback_buffer_bytes' => $playback_buffer_bytes,
                 'playback_buffer_size'  => $playback_buffer_size,
-                'audio_out'             => $audio_out
+                'audio_out'             => $audio_out,
+                'playback_limit'        => $playback_limit
             ),
             array('id' => $this->id));
     }
