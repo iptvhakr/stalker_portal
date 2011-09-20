@@ -158,7 +158,8 @@ function common_xpcom(){
 
         try{
 
-            this.video_mode = stb.RDir('vmode');
+            this.video_mode   = stb.RDir('vmode');
+            //this.graphic_mode = stb.RDir('gmode');
 
             this.mac = stb.RDir('MACAddress').toUpperCase().clearnl();
 
@@ -179,6 +180,12 @@ function common_xpcom(){
             }else{
                 this.hd = 0;
             }
+
+            if (this.graphic_mode >= 720){
+                _debug('gSTB.SetObjectCacheCapacities');
+                gSTB.SetObjectCacheCapacities(1000000,7000000,10000000);
+            }
+            
         }catch(e){
             _debug(e);
         }
@@ -284,7 +291,7 @@ function common_xpcom(){
             {
                 'type'   : 'stb',
                 'action' : 'get_preload_images',
-                'gmode'  : gmode
+                'gmode'  : resolution_prefix.substr(1)
             },
 
             function(result){
@@ -360,9 +367,9 @@ function common_xpcom(){
 
         _debug('this.user:', user_data);
 
-        if (!this.check_graphic_res()){
+        /*if (!this.check_graphic_res()){
             return;
-        }
+        }*/
 
         if (this.user['status'] == 0){
             try{
@@ -391,6 +398,10 @@ function common_xpcom(){
 
             this.user['aspect']    = parseInt(this.user['aspect'],    10);
             this.user['audio_out'] = parseInt(this.user['audio_out'], 10);
+                
+            stb.user['playback_limit'] = parseInt(this.user['playback_limit'], 10);
+
+            this.user['tv_archive_days'] = parseInt(this.user['tv_archive_days'], 10);
 
             this.locale = this.user.locale;
 
@@ -612,38 +623,61 @@ function common_xpcom(){
         _debug('check_graphic_res');
 
         try{
-            var gres = stb.RDir('gmode');
+            //var gres = stb.RDir('gmode');
 
-            _debug('gres:', gres);
+            //_debug('gres:', gres);
 
             var res = {
-                "r720" :{
+                "r480" :{
+                    "w"        : 720,
+                    "h"        : 480,
+                    "window_w" : 720,
+                    "window_h" : 480,
+                    "prefix"   : '_480'
+                },
+                "r576" :{
                     "w"        : 720,
                     "h"        : 576,
                     "window_w" : 720,
-                    "window_h" : 576
+                    "window_h" : 576,
+                    "prefix"   : ''
                 },
-                "r1280" : {
+                "r720" : {
                     "w"        : 1280,
                     "h"        : 720,
                     "window_w" : 1280,
-                    "window_h" : 720
+                    "window_h" : 720,
+                    "prefix"   : '_720'
+
                 },
-                "r1920" : {
+                "r1080" : {
                     "w"        : 1920,
                     "h"        : 1080,
                     "window_w" : 1280,
-                    "window_h" : 720
+                    "window_h" : 720,
+                    "prefix"   : '_720'
                 }
             };
 
-            if (gres == '720'){
-            //if (res["r"+gres]){
+            //if (gres == 'tvsystem_res'){
+                var gres = screen.height;
+            //}
+
+            this.graphic_mode = gres;
+
+            _debug('gres', gres);
+
+            //if (gres == '720'){
+            if (res["r"+gres]){
+
+                resolution_prefix = res["r"+gres].prefix;
 
                 _debug('window.moveTo', (res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
                 window.moveTo((res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
 
-                if (gres == 1920 && !window.referrer){
+                window.resizeTo(res["r"+gres].window_w, res["r"+gres].window_h);
+
+                if (gres == 1080 && !window.referrer){
                     stb.ExecAction('graphicres 1280');
                 }else{
                     return 1;
