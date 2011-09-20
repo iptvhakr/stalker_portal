@@ -1,6 +1,8 @@
-/**
- * Downloads module.
- */
+/*
+    Document   : Downloads
+    Created on : 12.07.2011, 11:26:16
+    Author     : Affect
+*/
 (function(){
     /* Downloads */
     function downloads_constructor(){
@@ -156,7 +158,7 @@
     downloads.hide();
     module.downloads = downloads;
     /* END DOWNLOADS */
-    main_menu.add(get_word('downloads_title'), [], 'downloads/mm_ico_dm.png', function(){
+    main_menu.add(get_word('downloads_title'), [], 'mm_ico_dm.png', function(){
             main_menu.hide();
             module.downloads.show();
         },
