@@ -69,6 +69,15 @@
     background-image: url("i/epg_red_mark.png");
 }
 
+#epg_simple .mark_archive_block{
+    position: absolute;
+    top: 1px;
+    left: 17px;
+    height: 8px;
+    width: 8px;
+    background-image: url("i/epg_orange_mark.png");
+}
+
 #epg_simple .blue_row_bg[rel="close"] .name_block{
     color: #99A8B5 !important;
 }
