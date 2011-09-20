@@ -1,6 +1,8 @@
-/**
- * Downloads_dialog module-layout.
- */
+/*
+    Document   :  Downloads_dialog module-layout.
+    Created on : 12.07.2011, 11:26:16
+    Author     : Affect
+*/
 function downloads_dialog_constructor(){    
     this.init();
 }
