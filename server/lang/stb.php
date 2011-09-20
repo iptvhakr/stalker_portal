@@ -268,4 +268,10 @@ $words['downloads_record'] = _('RECORDING');
 $words['downloads_download'] = _('DOWNLOAD');
 $words['downloads_record_and_file'] = _('RECORDING AND FILE');
 
+$words['playback_limit_title']   = _('Duration of continuous playback');
+$words['playback_limit_off']     = _('Without limit');
+$words['playback_hours']         = _('hours');
+$words['playback_limit_reached'] = _('Reached limit the duration of continuous playback. To continue playback, press the OK or EXIT.');
+
+
 ?>
