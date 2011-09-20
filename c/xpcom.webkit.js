@@ -12,6 +12,10 @@ function webkit_xpcom(){
     this.setFrontPanel = function(num, use_colon){
         _debug('stb.setFrontPanel', num, use_colon);
 
+        if (!num){
+            return;
+        }
+
         num = num.toString();
 
         var panel = ['.','.','.','.'].map(function(val, idx, arr){
