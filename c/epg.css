@@ -99,6 +99,12 @@
     background-image: url("i/epg_red_mark.png");
 }
 
+#epg .program .marks .mark_archive{
+    height: 8px;
+    width: 8px;
+    background-image: url("i/epg_orange_mark.png");
+}
+
 #epg .blue_row_bg .program{
     color: #bcc7d6;
 }
@@ -186,7 +192,7 @@
     top: 72px;
     right: 495px;
     text-align: right;
-    width: 173px;
+    width: 210px;
     color: #fff;
 }
 
