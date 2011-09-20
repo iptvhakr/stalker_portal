@@ -48,6 +48,12 @@
     padding: 5px;
     margin-top: 15px;
 }
+
+.mb_filminfo_prev img {
+    width: 240px;
+    height: 320px;
+}
+
 .mb_filminfo_trans{
     background: url("i/mb_filminfo_trans.png") bottom left;
     height: 35px;
