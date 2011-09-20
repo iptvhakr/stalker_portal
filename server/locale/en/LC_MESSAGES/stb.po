@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-01 11:56+0200\n"
-"PO-Revision-Date: 2011-09-01 11:56+0200\n"
+"POT-Creation-Date: 2011-09-19 15:39+0200\n"
+"PO-Revision-Date: 2011-09-19 15:39+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -812,6 +812,22 @@ msgstr ""
 msgid "RECORDING AND FILE"
 msgstr "RECORDING DURATION, h"
 
+#: ../../../lang/stb.php:271
+msgid "Duration of continuous playback"
+msgstr ""
+
+#: ../../../lang/stb.php:272
+msgid "Without limit"
+msgstr ""
+
+#: ../../../lang/stb.php:273
+msgid "hours"
+msgstr ""
+
+#: ../../../lang/stb.php:274
+msgid "Reached limit the duration of continuous playback. To continue playback, press the OK or EXIT."
+msgstr ""
+
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
 #: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_1l"
@@ -1001,37 +1017,37 @@ msgstr ""
 msgid "[No channel info]"
 msgstr ""
 
-#: ../../../lib/epg.class.php:608
+#: ../../../lib/epg.class.php:646
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sun"
 msgstr ""
 
-#: ../../../lib/epg.class.php:608
+#: ../../../lib/epg.class.php:646
 #: ../../../lib/gismeteo.class.php:29
 msgid "Mon"
 msgstr ""
 
-#: ../../../lib/epg.class.php:608
+#: ../../../lib/epg.class.php:646
 #: ../../../lib/gismeteo.class.php:29
 msgid "Tue"
 msgstr ""
 
-#: ../../../lib/epg.class.php:608
+#: ../../../lib/epg.class.php:646
 #: ../../../lib/gismeteo.class.php:29
 msgid "Wed"
 msgstr ""
 
-#: ../../../lib/epg.class.php:608
+#: ../../../lib/epg.class.php:646
 #: ../../../lib/gismeteo.class.php:29
 msgid "Thu"
 msgstr ""
 
-#: ../../../lib/epg.class.php:608
+#: ../../../lib/epg.class.php:646
 #: ../../../lib/gismeteo.class.php:29
 msgid "Fri"
 msgstr ""
 
-#: ../../../lib/epg.class.php:608
+#: ../../../lib/epg.class.php:646
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sat"
 msgstr ""
@@ -1157,7 +1173,7 @@ msgid "scheduled"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:713
+#: ../../../lib/stb.class.php:717
 #: ../../../lib/weatherco.class.php:118
 #: ../../../lib/weatherco.class.php:138
 msgid "city_name_field"
