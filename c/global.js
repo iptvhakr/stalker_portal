@@ -352,14 +352,12 @@ Object.prototype.addCustomEventListener = function(type, listener){
 
 Object.prototype.triggerCustomEventListener = function(type, param){
 
-    var self = this;
-
     if (this._listeners && this._listeners.hasOwnProperty(type)){
         for (var i = 0; i < this._listeners[type].length; i++){
             try{
-                window.setTimeout(function(){self._listeners[type][i](param)}, 10);
+                this._listeners[type][i](param);
             }catch(e){
-                _debug(e);
+                _debug(e)
             }
         }
     }
