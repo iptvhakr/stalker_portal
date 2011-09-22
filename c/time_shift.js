@@ -4,6 +4,10 @@
 
 (function(){
 
+    if (stb.firmware_version <= 208){
+        return;
+    }
+
     module.time_shift = {
 
         cur_media_item : {},
@@ -56,6 +60,9 @@
 
             if (live_date == now_date){
                 var media_len = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+                if (media_len > 5){
+                    media_len = media_len - 5;
+                }
             }else{
                 media_len = 86400;
             }
@@ -147,6 +154,7 @@
             _debug('this.cur_piece_date.getTime()', this.cur_piece_date.getTime());
 
             _debug('this.cur_media_item', this.cur_media_item);
+            _debug('this.cur_media_item.live_date.getTime()', this.cur_media_item.live_date.getTime());
 
             this.get_program(this.cur_media_item.id);
         },
@@ -308,6 +316,8 @@
             _debug('next_file_name', next_file_name);
 
             var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mpg/, next_file_name).replace(/position:(\d*)/, '').trim();
+
+            this.cur_media_item.live_date = new Date();
 
             _debug('stb.player.cur_media_item.cmd', stb.player.cur_media_item.cmd);
             _debug('url', url);
