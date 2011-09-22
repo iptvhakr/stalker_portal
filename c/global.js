@@ -340,6 +340,31 @@ Object.prototype.clone = function() {
     return newObj;
 };
 
+Object.prototype.addCustomEventListener = function(type, listener){
+    this._listeners = this._listeners || {};
+
+    if (!this._listeners.hasOwnProperty(type)){
+        this._listeners[type] = [];
+    }
+    
+    this._listeners[type].push(listener);
+};
+
+Object.prototype.triggerCustomEventListener = function(type, param){
+
+    if (this._listeners && this._listeners.hasOwnProperty(type)){
+        for (var i = 0; i < this._listeners[type].length; i++){
+            try{
+                this._listeners[type][i](param);
+            }catch(e){
+                _debug(e);
+            }
+        }
+    }
+
+    return false;
+};
+
 Array.prototype.getIdxById = function(id){
     for (var i=0; i<this.length; i++){
         if (this[i].hasOwnProperty('id')){
@@ -423,7 +448,7 @@ function get_params(){
         get = get.substr(x+1, l-x);
         l = get.split('&');
         x = 0;
-        for(i in l){
+        for(var i in l){
             if (l.hasOwnProperty(i)){
                 get = l[i].split('=');
                 _GET[get[0]] = get[1];
