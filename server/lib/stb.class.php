@@ -665,6 +665,17 @@ class Stb
             array('id' => $this->id));
     }
 
+    public function setCommonSettings(){
+
+        $screensaver_delay = intval($_REQUEST['screensaver_delay']);
+
+        return Mysql::getInstance()->update('users',
+            array(
+                'screensaver_delay' => $screensaver_delay
+            ),
+            array('id' => $this->id));
+    }
+
     public function getCountries(){
 
         $result = array();
