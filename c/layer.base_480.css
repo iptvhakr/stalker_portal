@@ -8,3 +8,24 @@
     width: 14px;
     margin: 0;
 }
+
+.screensaver{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 480px;
+    width: 720px;
+    z-index: 1001;
+    background-color: #000;
+}
+
+.screensaver .screensaver_clock{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    height: 40px;
+    width: 100px;
+    color: #fff;
+    font-size: 28px;
+    /*-webkit-transition: all 3s linear;*/
+}
