@@ -849,6 +849,7 @@ player.prototype.play = function(item){
     _debug('player.is_tv: ', this.is_tv);
 
     this.on_play && this.on_play(this.cur_media_item['id']);
+    this.triggerCustomEventListener('onplay', this.cur_media_item['id']);
 
     this.play_initiated = true;
     
@@ -1116,9 +1117,12 @@ player.prototype.pause_switch = function(){
 player.prototype.disable_pause = function(){
 
     if (this.active_time_shift){
-        //var cmd = module.time_shift.plt_link.replace(/media_len:(\d*)/g, '').trim();
-        //this.play_now(cmd);
-        this.play(module.time_shift.cur_media_item);
+        _debug('new Date() - module.time_shift.cur_media_item.live_date', (new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime())/1000);
+        if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
+           this.play_last();
+        }else{
+            this.play(module.time_shift.cur_media_item);
+        }
     }else{
         
         try{
@@ -1856,7 +1860,7 @@ player.prototype.set_pos_button = function(to_time){
 
                 if (!module.time_shift.is_last_archive_day()){
                     this.cur_pos_time = to_time = 0;
-                    _debug('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!date + 1');
+                    //_debug('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++!date + 1');
                     module.time_shift.cur_piece_date.setDate(module.time_shift.cur_piece_date.getDate()+1);
                     this.cur_media_length = module.time_shift.get_cur_media_length();
 
@@ -1877,7 +1881,7 @@ player.prototype.set_pos_button = function(to_time){
                     this.cur_media_length = 86400;
                     
                     this.diff_pos = 0;
-                    _debug('------------------------------------------------------------------------------------------------------------------------! date - 1');
+                    //_debug('------------------------------------------------------------------------------------------------------------------------! date - 1');
                     module.time_shift.cur_piece_date.setDate(module.time_shift.cur_piece_date.getDate()-1);
 
                 }else{
@@ -1886,7 +1890,7 @@ player.prototype.set_pos_button = function(to_time){
             }else{
                 if (!module.time_shift.in_archive(to_time) && this.diff_pos){
                     _debug('this.diff_pos', this.diff_pos);
-                    _debug('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+                    //_debug('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                     this.cur_pos_time = to_time = module.time_shift.get_first_piece_position();
                     this.diff_pos = 0;
                     //return;
