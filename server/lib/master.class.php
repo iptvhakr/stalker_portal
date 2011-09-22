@@ -99,6 +99,7 @@ abstract class Master
                 
                     if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
                         $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                        //$res['cmd'] = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
                     }else{
                         $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
                     }
