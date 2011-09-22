@@ -371,6 +371,8 @@ function common_xpcom(){
             return;
         }*/
 
+        screensaver.init();
+
         if (this.user['status'] == 0){
             try{
 
@@ -401,7 +403,8 @@ function common_xpcom(){
                 
             stb.user['playback_limit'] = parseInt(this.user['playback_limit'], 10);
 
-            this.user['tv_archive_days'] = parseInt(this.user['tv_archive_days'], 10);
+            this.user['tv_archive_days']   = parseInt(this.user['tv_archive_days'], 10);
+            this.user['screensaver_delay'] = parseInt(this.user['screensaver_delay'], 10);
 
             this.locale = this.user.locale;
 
@@ -1091,6 +1094,111 @@ function common_xpcom(){
             if (!stb.player.on || (stb.player.on && !stb.player.is_tv)){
                 stb.setFrontPanel(this.hours + '' + this.minutes, true);
             }
+
+            this.triggerCustomEventListener("tick", this);
         }
     }
 }
+
+var screensaver = {
+
+    on : false,
+
+    init : function(){
+        //_debug('screensaver.init');
+
+        //return;
+
+        this.build();
+
+        var self = this;
+
+        keydown_observer.addCustomEventListener("keypress", function(event){
+            _debug('screensaver keypress', event);
+
+            if (self.on){
+                self.hide();
+            }
+
+            self.restart_timer.call(self);
+        });
+
+        this.restart_timer();
+
+        stb.player.addCustomEventListener("onplay", function(event){
+            if (self.on){
+                self.hide();
+            }
+        });
+
+        stb.clock.addCustomEventListener("tick", function(date){
+            if (self.on){
+                self.clock.innerHTML = get_word('time_format').format(date.hours, date.minutes, date.ap_hours, date.ap_mark);
+            }
+        });
+    },
+
+    restart_timer : function(){
+        _debug('screensaver.restart_timer');
+
+        var self = this;
+
+        window.clearTimeout(this.activate_timer);
+
+        if (stb.user['screensaver_delay'] > 0){
+            this.activate_timer = window.setTimeout(function(){
+                self.show.call(self);
+            }, stb.user['screensaver_delay'] * 60000);
+            //}, stb.user['screensaver_delay'] * 10000);
+        }
+    },
+
+    build : function(){
+        //_debug('screensaver.build');
+
+        this.dom_obj = create_block_element("screensaver");
+        this.clock   = create_block_element("screensaver_clock", this.dom_obj);
+        this.hide();
+    },
+
+    show : function(){
+        _debug('screensaver.show');
+
+        if (stb.player.on){
+            _debug('stb.player.on', stb.player.on);
+            this.restart_timer();
+            return;
+        }
+
+        //stb.cur_layer && stb.cur_layer.dom_obj.hide();
+        this.dom_obj.show();
+        this.on = true;
+
+        this.clock.innerHTML = get_word('time_format').format(stb.clock.hours, stb.clock.minutes, stb.clock.ap_hours, stb.clock.ap_mark);
+
+        this.move();
+        var self = this;
+        this.move_timer = window.setInterval(function(){self.move.call(self)}, 5000);
+    },
+
+    hide : function(){
+        _debug('screensaver.hide');
+
+        //stb.cur_layer && stb.cur_layer.dom_obj.show();
+        this.dom_obj.hide();
+        this.on = false;
+        window.clearInterval(this.move_timer);
+    },
+
+    move : function(){
+        _debug('screensaver.start');
+
+        var top  = Math.floor(Math.random() * (screen.height - this.clock.offsetHeight));
+        var left = Math.floor(Math.random() * (screen.width  - this.clock.offsetWidth));
+        _debug('top', top);
+        _debug('left', left);
+
+        this.clock.moveX(left);
+        this.clock.moveY(top);
+    }
+};
