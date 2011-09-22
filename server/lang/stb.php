@@ -242,8 +242,8 @@ $words['channel_recording_restricted'] = _('Recording this channel is forbidden'
 $words['playback_settings_buffer_size'] = _('Buffer size');
 $words['playback_settings_time'] = _('Time, sec');
 $words['playback_settings_title'] = _('PLAYBACK');
-$words['playback_settings_cancel'] = _('CANCEL');
-$words['playback_settings_save'] = _('SAVE');
+$words['playback_settings_cancel'] = $words['settings_cancel'] = _('CANCEL');
+$words['playback_settings_save'] = $words['settings_save'] = _('SAVE');
 
 $words['audio_out'] = _('Audio out');
 $words['audio_out_analog'] = _('Analog only');
@@ -273,5 +273,9 @@ $words['playback_limit_off']     = _('Without limit');
 $words['playback_hours']         = _('hours');
 $words['playback_limit_reached'] = _('Reached limit the duration of continuous playback. To continue playback, press the OK or EXIT.');
 
+$words['common_settings_title']   = _('GENERAL SETTINGS');
+$words['screensaver_delay_title'] = _('Screensaver interval');
+$words['screensaver_off']         = _('Disabled');
+$words['screensaver_minutes']     = _('min');
 
 ?>
