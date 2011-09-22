@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-19 15:39+0200\n"
-"PO-Revision-Date: 2011-09-19 15:39+0200\n"
+"POT-Creation-Date: 2011-09-20 16:23+0200\n"
+"PO-Revision-Date: 2011-09-20 16:28+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -262,6 +262,7 @@ msgid "Length"
 msgstr ""
 
 #: ../../../lang/stb.php:86
+#: ../../../lang/stb.php:279
 msgid "min"
 msgstr ""
 
@@ -826,6 +827,18 @@ msgstr ""
 
 #: ../../../lang/stb.php:274
 msgid "Reached limit the duration of continuous playback. To continue playback, press the OK or EXIT."
+msgstr ""
+
+#: ../../../lang/stb.php:276
+msgid "GENERAL SETTINGS"
+msgstr "GENERAL"
+
+#: ../../../lang/stb.php:277
+msgid "Screensaver interval"
+msgstr ""
+
+#: ../../../lang/stb.php:278
+msgid "Disabled"
 msgstr ""
 
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
