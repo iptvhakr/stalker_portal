@@ -18,6 +18,12 @@ function password_input(options){
     }else{
         if (stb && stb.user && (stb.user.parent_password || stb.user.parent_password == '')){
             this.pattern = stb.user.parent_password;
+            /*var self = this;
+            module.parent_settings.addCustomEventListener("onpasswordchange", function(new_pass){
+                _debug('onpasswordchange', new_pass);
+
+                self.parent = new_pass;
+            });*/
         }
     }
     
@@ -71,7 +77,8 @@ password_input.prototype.hide = function(){
 password_input.prototype.check = function(){
     _debug('password_input.check');
     
-    if (this.input_value == this.pattern){
+    //if (this.input_value == this.pattern){
+    if (this.input_value == stb.user.parent_password){
         this.hide();
         this.callback();
     }else{
