@@ -208,8 +208,12 @@
             var current_pos_time = stb.GetPosTime();
 
             _debug('current_pos_time', current_pos_time);
-            
-            var file_num = this.get_file_piece_num();
+
+            if (stb.player.cur_media_item['wowza_dvr']){
+                var file_num = 0;
+            }else{
+                file_num = this.get_file_piece_num();
+            }
 
             _debug('file_num', file_num);
 
