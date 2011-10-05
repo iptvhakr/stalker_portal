@@ -114,7 +114,7 @@ vclub_info.prototype.fill = function(item){
                      '<span>' + word['vclub_cast'] + ':</span> ' + item.actors + 
                      '<div class="hr_filminfo"></div>' + item.description;// + '<br><br>';
     
-    this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'>';
+    this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'">';
 };
 
 vclub_info.prototype.shift = function(dir){
