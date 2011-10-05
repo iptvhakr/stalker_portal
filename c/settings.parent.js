@@ -26,6 +26,7 @@
             _debug('parent_settings_constructor.save');
             if ((stb.user.parent_password == this.get_input_value('parent_password')) &&  (this.get_input_value('pass') == this.get_input_value('repeat_pass'))){
                 stb.user.parent_password = this.get_input_value('pass');
+                this.triggerCustomEventListener("onpasswordchange", stb.user.parent_password);
                 this.superclass.save.apply(this);
             }else{
                 stb.notice.show(word['settings_check_error']);
