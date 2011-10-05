@@ -30,6 +30,13 @@ class VideoMaster extends Master
         
         return $this->media_name.'/'.$file_name;
     }
+
+    protected function setStatus($status){
+        
+        $this->db->update('video',
+                          array('status' => $status),
+                          array('id' => $this->media_id));
+    }
     
     protected function saveSeries($series_arr){
         sort($series_arr);
