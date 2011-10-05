@@ -64,7 +64,7 @@ function common_xpcom(){
         this.get_server_params();
         this.get_stb_params();
         this.get_user_profile();
-        this.epg_loader.start();
+        //this.epg_loader.start();
 
         /*this.notice = new _alert();
 
@@ -174,6 +174,10 @@ function common_xpcom(){
             this.ntp_server = stb.RDir('getenv ntpurl').clearnl();
 
             this.version = 'PORTAL version: '+ver+'; '+stb.Version();
+
+            var mtdparts = stb.RDir('getenv mtdparts').clearnl();
+
+            this.num_banks = mtdparts.indexOf('RootFs2') > 0 ? 2 : 1;
 
             if (this.type == 'MAG200' || this.type == 'MAG250'){
                 this.hd = 1;
@@ -345,17 +349,30 @@ function common_xpcom(){
     };
 
     this.check_image_version = function(){
-        if (this.type == 'MAG200'){
-            var cur_version = stb.RDir('ImageVersion').clearnl();
-            this.firmware_version = cur_version;
-            _debug('cur_version:', cur_version);
-            _debug('stb.user.image_version:', stb.user['image_version']);
-            if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0'){
-                _debug('RebootDHCP');
-                stb.ExecAction('RebootDHCP');
-                return 0;
-            }
+
+        var cur_version = stb.RDir('ImageVersion').clearnl();
+        this.firmware_version = cur_version;
+        _debug('cur_version:', cur_version);
+        _debug('stb.user.image_version:', stb.user['image_version']);
+
+        if (this.firmware_version < 203){
+            return 0;
         }
+
+        if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0' && this.num_banks == 2){
+        //if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0' && this.num_banks == 2 && this.type == 'MAG250'){
+
+            try{
+                _debug('this.user[update_url]', this.user['update_url']);
+                
+                stbUpdate.startAutoUpdate(this.user['update_url'], false);
+            }catch(e){
+                _debug(e);
+            }
+
+            return 0;
+        }
+        
         return 1;
     };
 
@@ -376,87 +393,91 @@ function common_xpcom(){
         if (this.user['status'] == 0){
             try{
 
-            if (this.type == 'MAG200'){
-                if (!this.check_image_version()){
+                //if (this.type == 'MAG200'){
+
+                /*if (!this.check_graphic_res()){
                     return;
+                }*/
+
+                //this.get_localization();
+
+                this.usbdisk.init();
+
+                this.preload_images();
+
+                this.player.volume.set_level(parseInt(this.user['volume'], 10));
+
+                this.player.setup_rtsp(this.user['rtsp_type'], this.user['rtsp_flags']);
+
+                this.user.fav_itv_on = parseInt(this.user.fav_itv_on, 10);
+
+                this.user['aspect']    = parseInt(this.user['aspect'],    10);
+                this.user['audio_out'] = parseInt(this.user['audio_out'], 10);
+
+                stb.user['playback_limit'] = parseInt(this.user['playback_limit'], 10);
+
+                this.user['tv_archive_days']   = parseInt(this.user['tv_archive_days'], 10);
+                this.user['screensaver_delay'] = parseInt(this.user['screensaver_delay'], 10);
+
+                this.user['update_url'] = this.profile['update_url'] ? this.profile['update_url'] + this.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + this.type.substr(3) + '/imageupdate';
+
+                if (['MAG200', 'MAG250'].indexOf(this.type) >= 0){
+                    this.check_image_version();
                 }
-            }
 
-            /*if (!this.check_graphic_res()){
-                return;
-            }*/
+                this.epg_loader.start();
 
-            //this.get_localization();
+                this.locale = this.user.locale;
 
-            this.usbdisk.init();
+                this.aspect_idx = this.aspect_array.getIdxByVal('mode', this.user['aspect']);
 
-            this.preload_images();
+                this.check_additional_services(this.user['additional_services_on']);
 
-            this.player.volume.set_level(parseInt(this.user['volume'], 10));
-
-            this.player.setup_rtsp(this.user['rtsp_type'], this.user['rtsp_flags']);
-
-            this.user.fav_itv_on = parseInt(this.user.fav_itv_on, 10);
-
-            this.user['aspect']    = parseInt(this.user['aspect'],    10);
-            this.user['audio_out'] = parseInt(this.user['audio_out'], 10);
-                
-            stb.user['playback_limit'] = parseInt(this.user['playback_limit'], 10);
-
-            this.user['tv_archive_days']   = parseInt(this.user['tv_archive_days'], 10);
-            this.user['screensaver_delay'] = parseInt(this.user['screensaver_delay'], 10);
-
-            this.locale = this.user.locale;
-
-            this.aspect_idx = this.aspect_array.getIdxByVal('mode', this.user['aspect']);
-
-            this.check_additional_services(this.user['additional_services_on']);
-
-            if (this.aspect_idx == null){
-                this.aspect_idx = 0;
-            }
-
-            try{
-
-                _debug('stb.GetBrightness before', stb.GetBrightness());
-                _debug('stb.GetContrast before', stb.GetContrast());
-                _debug('stb.GetSaturation before', stb.GetSaturation());
-
-                stb.SetBrightness(127);
-                stb.SetContrast(-27);
-                stb.SetSaturation(100);
-
-                _debug('stb.GetBrightness after', stb.GetBrightness());
-                _debug('stb.GetContrast after', stb.GetContrast());
-                _debug('stb.GetSaturation after', stb.GetSaturation());
-
-                stb.SetAspect(this.user['aspect']);
-
-                stb.SetBufferSize(this.user['playback_buffer_size'], this.user['playback_buffer_bytes']);
-
-                this.user['playback_buffer_size'] = this.user['playback_buffer_size'] / 1000;
-
-                stb.SetupSPdif(this.user['audio_out']);
-
-                stb.EnableServiceButton(false);
-
-                //stb.SetWebProxy(string proxy_addr,int proxy_port,string user_name,string passwd,string exclude_list);
-                if (this.user['web_proxy_host']){
-                    stb.SetWebProxy && stb.SetWebProxy(this.user['web_proxy_host'], this.user['web_proxy_port'], this.user['web_proxy_user'], this.user['web_proxy_pass'], this.user['web_proxy_exclude_list']);
+                if (this.aspect_idx == null){
+                    this.aspect_idx = 0;
                 }
-            }catch(e){
-                _debug(e);
-            }
 
-            this.get_modules();
+                try{
 
-            //this.mount_home_dir(this.user['storages']);
-            this.set_storages(this.user['storages']);
-            stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
+                    _debug('stb.GetBrightness before', stb.GetBrightness());
+                    _debug('stb.GetContrast before', stb.GetContrast());
+                    _debug('stb.GetSaturation before', stb.GetSaturation());
 
-            this.load_channels();
-            this.load_fav_channels();
-            this.load_fav_itv();
+                    stb.SetBrightness(127);
+                    stb.SetContrast(-27);
+                    stb.SetSaturation(100);
+
+                    _debug('stb.GetBrightness after', stb.GetBrightness());
+                    _debug('stb.GetContrast after', stb.GetContrast());
+                    _debug('stb.GetSaturation after', stb.GetSaturation());
+
+                    stb.SetAspect(this.user['aspect']);
+
+                    stb.SetBufferSize(this.user['playback_buffer_size'], this.user['playback_buffer_bytes']);
+
+                    this.user['playback_buffer_size'] = this.user['playback_buffer_size'] / 1000;
+
+                    stb.SetupSPdif(this.user['audio_out']);
+
+                    stb.EnableServiceButton(false);
+
+                    //stb.SetWebProxy(string proxy_addr,int proxy_port,string user_name,string passwd,string exclude_list);
+                    if (this.user['web_proxy_host']){
+                        stb.SetWebProxy && stb.SetWebProxy(this.user['web_proxy_host'], this.user['web_proxy_port'], this.user['web_proxy_user'], this.user['web_proxy_pass'], this.user['web_proxy_exclude_list']);
+                    }
+                }catch(e){
+                    _debug(e);
+                }
+
+                this.get_modules();
+
+                //this.mount_home_dir(this.user['storages']);
+                this.set_storages(this.user['storages']);
+                stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
+
+                this.load_channels();
+                this.load_fav_channels();
+                this.load_fav_itv();
 
             }catch(e){
                 _debug(e);
