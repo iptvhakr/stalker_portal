@@ -75,23 +75,34 @@ class Itv extends AjaxResponse
             $error = 'nothing_to_play';
         }
 
-        preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+        if ($channel['wowza_tmp_link']){
+            $key = $this->createTemporaryLink("1");
 
-        if (empty($tmp_url_arr)){
-            $error = 'nothing_to_play';
-        }else{
-            $redirect_host = $tmp_url_arr[1];
-            $redirect_uri  = $tmp_url_arr[2];
-            $redirect_url = '/get/'.$redirect_host.'/'.$redirect_uri;
-
-            $link_result = $this->createTemporaryLink($redirect_url);
-
-            var_dump($redirect_url, $link_result);
-
-            if (!$link_result){
+            if (!$key){
                 $error = 'link_fault';
             }else{
-                $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result;
+                $cmd = $channel['cmd'].'?'.$key;
+            }
+        }else{
+
+            preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+
+            if (empty($tmp_url_arr)){
+                $error = 'nothing_to_play';
+            }else{
+                $redirect_host = $tmp_url_arr[1];
+                $redirect_uri  = $tmp_url_arr[2];
+                $redirect_url = '/get/'.$redirect_host.'/'.$redirect_uri;
+
+                $link_result = $this->createTemporaryLink($redirect_url);
+
+                var_dump($redirect_url, $link_result);
+
+                if (!$link_result){
+                    $error = 'link_fault';
+                }else{
+                    $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result;
+                }
             }
         }
 
@@ -501,7 +512,8 @@ class Itv extends AjaxResponse
             
             if (Config::get('enable_subscription')){
                 
-                if (in_array($this->response['data'][$i]['id'], $this->getAllUserChannelsIds())){
+                if (in_array($this->response['data'][$i]['id'], $this->getAllUserChannelsIds()) || $this->stb->isModerator()){
+                //if (in_array($this->response['data'][$i]['id'], $this->getAllUserChannelsIds())){
                     $this->response['data'][$i]['open'] = 1;
                 }else{
                     $this->response['data'][$i]['open'] = 0;
