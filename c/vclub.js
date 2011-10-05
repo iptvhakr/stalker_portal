@@ -220,6 +220,10 @@
         
         this.fill_short_info = function(item){
             _debug('fill_short_info');
+
+            if (!item){
+                return;
+            }
             
             //item.name
             //item.o_name
@@ -229,7 +233,7 @@
             //item.genres_str
             
             this.short_info_box.innerHTML = '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str + '<br><span>' + word['vclub_year'] + ': </span>' + item.year + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br><span>' + word['vclub_director'] + ': </span>' + item.director;
-            this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '>';
+            this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '">';
         };
         
         this.init_short_info = function(){
@@ -629,8 +633,9 @@
     
     vclub.init_short_info();
     
-    vclub.set_wide_container();
-    
+    //vclub.set_wide_container();
+    vclub.set_middle_container();
+
     if (single_module != 'vclub'){
         vclub.init_left_ear(word['ears_back']);
     }
@@ -679,8 +684,9 @@
     
     vclub.init_view_menu(
         [
-            {"label" : word['vclub_list'], "cmd" : function(){this.parent.set_wide_container()}},
-            {"label" : word['vclub_list_w_info'], "cmd" : function(){this.parent.set_middle_container()}}
+            {"label" : word['vclub_list_w_info'], "cmd" : function(){this.parent.set_middle_container()}},
+            {"label" : word['vclub_list'], "cmd" : function(){this.parent.set_wide_container()}}
+            //{"label" : word['vclub_list_w_info'], "cmd" : function(){this.parent.set_middle_container()}}
         ],
         {
             "offset_x" : 27,
