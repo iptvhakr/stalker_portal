@@ -24,7 +24,8 @@
             {
                 "title" : word['update_from_http'],
                 //"uri"   : (function(){ try{ return stb.RDir('getenv update_url').clearnl()}catch(e){_debug(e)}})()
-                "uri"   : stb.profile['update_url'] ? stb.profile['update_url'] : 'http://mag.infomir.com.ua/' + stb.type.substr(3) + '/imageupdate'
+                //"uri"   : stb.profile['update_url'] ? stb.profile['update_url'] + '/' + stb.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + stb.type.substr(3) + '/imageupdate'
+                "uri"   : stb.user['update_url']
             },
             {
                 "title" : word['update_from_usb'],
