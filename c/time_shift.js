@@ -43,7 +43,21 @@
 
             //_debug('live_date.getTime()', live_date.getTime());
 
-            var cur_piece_date = new Date(this.cur_piece_date);
+            _debug('this.cur_media_item[wowza_dvr]', this.cur_media_item['wowza_dvr']);
+
+            if (this.cur_media_item['wowza_dvr'] == 1){
+                
+                var cur_piece_date = new Date();
+                var len = stb.GetMediaLen();
+                var cur_pos_time = stb.GetPosTime();
+                _debug('media_len', len);
+                _debug('cur_pos_time', cur_pos_time);
+
+                cur_piece_date.setSeconds(cur_piece_date.getSeconds() - len + cur_pos_time);
+                
+            }else{
+                cur_piece_date = new Date(this.cur_piece_date);
+            }
 
             _debug('this.cur_piece_date', this.cur_piece_date);
             _debug('typeof(this.cur_piece_date)', typeof(this.cur_piece_date));
@@ -52,7 +66,7 @@
             _debug('cur_piece_date.getTime()', cur_piece_date.getTime());
 
             var live_date = cur_piece_date.getYear() + '-' + cur_piece_date.getMonth() + '-' + cur_piece_date.getDate();
-            //var live_date = this.cur_media_item.live_date.getYear() + '-' + this.cur_media_item.live_date.getMonth() + '-' + this.cur_media_item.live_date.getDate();
+            
             var now_date  = now.getYear() + '-' + now.getMonth() + '-' + now.getDate();
 
             _debug('live_date', live_date);
@@ -95,6 +109,22 @@
                     _debug('current_pos_time 2', current_pos_time);
                 }
 
+            }else if (this.cur_media_item['wowza_dvr'] == 1){
+                
+                var cur_time = new Date();
+                var media_len = stb.GetMediaLen();
+                var cur_pos_time = stb.GetPosTime();
+                _debug('media_len', media_len);
+                _debug('cur_pos_time', cur_pos_time);
+
+                cur_time.setSeconds(cur_time.getSeconds() - media_len + cur_pos_time);
+
+                pos_time = cur_time.getHours() * 3600 + cur_time.getMinutes() * 60 + cur_time.getSeconds();
+
+                _debug('pos_time', pos_time);
+
+                return pos_time;
+                
             }else{
                 var now = new Date();
                 current_pos_time = now.getMinutes() * 60 + now.getSeconds();
@@ -380,6 +410,34 @@
             from_date.setSeconds(from_date.getSeconds() - seconds);
 
             return from_date.getHours() * 3600;
+        },
+
+        get_position_from_url : function(){
+            _debug('time_shift.get_position_from_url');
+
+            var position_part = /position:(\d*)/.exec(this.cur_media_item.cmd);
+
+            if (position_part){
+                var position = parseInt(position_part[1], 10);
+            }else{
+                position = 0;
+            }
+
+            _debug('position', position);
+
+            return position;
+        },
+
+        update_position_in_url : function(position){
+            _debug('time_shift.update_position_in_url', position);
+
+            if (!/position:(\d*)/.exec(this.cur_media_item.cmd)){
+                this.cur_media_item.cmd += ' position:'+position;
+            }else{
+                this.cur_media_item.cmd = this.cur_media_item.cmd.replace(/position:(\d*)/, 'position:' + position).trim();
+            }
+
+            return this.cur_media_item.cmd;
         }
 
     };
