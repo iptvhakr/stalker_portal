@@ -798,6 +798,8 @@ function get_path_color($id, $path){
         $color = 'red';
     }else if ($color_status == 2){
         $color = 'blue';
+    }else if ($color_status == 3){
+        $color = '#f4c430';
     }
     return "<span id='path_$id' style='color:".$color."'>$path</span>";
 }
@@ -1084,19 +1086,32 @@ function open_info(id){
 
 function display_info(arr, id){
     //alert(arr.toSource())
+    var general_storages = arr.filter(function(e){
+        return e['for_moderator'] == 1;
+    });
+
     if (arr.length > 0){
+           
+        if (general_storages.length > 0 && general_storages.length == arr.length){
+            var path_color = '#f4c430';
+        }else{
+            path_color = 'green';
+        }
+
         document.getElementById('loading_bar_'+id).style.display = 'none';
         
-        var md5sum = ''
-        var table  = '<tr>'
-        table += '<td class="list2" width="70">Сервер</td>'
-        table += '<td class="list2" width="200">Каталог</td>'
-        table += '<td class="list2" width="60">Серии</td>'
-        table += '<td class="list2">&nbsp;</td>'
-        table += '</tr>'
+        var md5sum = '';
+        var table  = '<tr>';
+        table += '<td class="list2" width="70">Сервер</td>';
+        table += '<td class="list2" width="200">Каталог</td>';
+        table += '<td class="list2" width="60">Серии</td>';
+        table += '<td class="list2">&nbsp;</td>';
+        table += '</tr>';
         
         for (i=0; i<arr.length; i++){
+
             var md5btn_txt = '';
+
             if (arr[i]['files'][0]['status'] == 'done'){
                 if (arr[i]['files'][0]['md5'] != ''){
                     md5btn_txt = 'проверить'
@@ -1106,18 +1121,25 @@ function display_info(arr, id){
             }else{
                 md5btn_txt = 'идет подсчет'
             }
-            table +='<tr>'
-                 table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>'
-                 table +='<td class="list2"><b><a href="#" onclick="document.getElementById(\'files_'+id+'_'+arr[i]['storage_name']+'\').style.display=\'\';return false;"><font color="green">'+arr[i]['path']+'</font></a></b></td>'
-                 table +='<td class="list2">'+arr[i]['series']+'</td>'
-                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a></sub></td>'
-            table +='</tr>'
+
+            if (arr[i]['for_moderator'] == 1){
+                var folder_color = '#f4c430';
+            }else{
+                folder_color = 'green';
+            }
+
+            table +='<tr>';
+                 table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>';
+                 table +='<td class="list2"><b><a href="#" onclick="document.getElementById(\'files_'+id+'_'+arr[i]['storage_name']+'\').style.display=\'\';return false;"><font color="'+folder_color+'">'+arr[i]['path']+'</font></a></b></td>';
+                 table +='<td class="list2">'+arr[i]['series']+'</td>';
+                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a></sub></td>';
+            table +='</tr>';
             
-            table +='<tr style="display:none" id="files_'+id+'_'+arr[i]['storage_name']+'">'
-            table +='<td colspan="4" class="list2" width="100%" style="padding-right:5px">'
-            table +='<table width="100%" border="0" cellpadding="0" cellspacing="0">'
+            table +='<tr style="display:none" id="files_'+id+'_'+arr[i]['storage_name']+'">';
+            table +='<td colspan="4" class="list2" width="100%" style="padding-right:5px">';
+            table +='<table width="100%" border="0" cellpadding="0" cellspacing="0">';
             for (j=0; j<arr[i]['files'].length; j++){
-                table +='<tr>'
+                table +='<tr>';
                 if(arr[i]['files'][j]['status'] == 'done'){
                     md5sum = arr[i]['files'][j]['md5'];
                 }else{
@@ -1128,10 +1150,10 @@ function display_info(arr, id){
                 
                 table +='</tr>'
             }
-            table +='<tr><td><sub><br></sub></td></tr>'
-            table +='</table>'
-            table +='</td>'
-            table +='</tr>'
+            table +='<tr><td><sub><br></sub></td></tr>';
+            table +='</table>';
+            table +='</td>';
+            table +='</tr>';
             
             document.getElementById('series_'+id).innerHTML = arr[i]['series'];
         }
@@ -1139,7 +1161,7 @@ function display_info(arr, id){
         document.getElementById('storages_content_'+id).innerHTML = table;
         document.getElementById('error_bar_'+id).style.display = 'none';
         document.getElementById('storages_'+id).style.display = '';
-        document.getElementById('path_'+id).style.color = 'green';
+        document.getElementById('path_'+id).style.color = path_color;
     }else{
         document.getElementById('loading_bar_'+id).style.display = 'none';
         document.getElementById('error_bar_'+id).style.display = '';
