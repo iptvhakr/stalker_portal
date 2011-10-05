@@ -98,7 +98,7 @@ a:hover{
                 <tr>
                     <td>Необходимый образ NAND</td>
                     <td><input type="text" name="image_version" value="<?echo $image_version?>"></input></td>
-                    <td><sup>*для MAG200</sup></td>
+                    <td><sup></sup></td>
                 </tr>
                 <tr>
                     <td></td>
