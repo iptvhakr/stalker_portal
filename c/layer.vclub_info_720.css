@@ -58,7 +58,7 @@
     background: url("i_720/mb_filminfo_trans.png") bottom left;
     height: 60px;
     width: 865px;
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    top: 430px;
 }
 /* END VCLUB INFO */
