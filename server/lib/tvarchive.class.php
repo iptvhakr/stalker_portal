@@ -11,6 +11,11 @@ class TvArchive extends Master
         parent::__construct();
     }
 
+    /**
+     * Return link for program
+     *
+     * @return array
+     */
     public function createLink(){
 
         $res = array(
@@ -29,40 +34,61 @@ class TvArchive extends Master
 
         $task = $this->getTaskByChId($program['ch_id']);
 
-        $storage = Master::getStorageByName($task['storage_name']);
-
         $start_timestamp = strtotime($program['time']);
         $stop_timestamp  = strtotime($program['time_to']);
 
-        $position = date("i", $start_timestamp) * 60;
+        $channel = Itv::getChannelById($program['ch_id']);
 
-        $res['storage_id'] = $storage['id'];
-        $res['cmd']        = 'ffmpeg http://' . $storage['storage_ip']
-                             . '/archive/'
-                             . $program['ch_id']
-                             . '/'
-                             . date("Ymd-H", $start_timestamp)
-                             . '.mpg position:' . $position
-                             . ' media_len:' . ($stop_timestamp - $start_timestamp);
+        if ($channel['wowza_dvr']){
+
+            $position = $start_timestamp - (time() - Config::get('tv_archive_parts_number') * 3600);
+
+            $res['cmd'] = $channel['mc_cmd']
+                        . 'position:' . $position;
+            
+        }else{
+
+            $storage = Master::getStorageByName($task['storage_name']);
+
+            $res['storage_id'] = $storage['id'];
+
+            $position = date("i", $start_timestamp) * 60;
+
+            $res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
+                        . '/archive/'
+                        . $program['ch_id']
+                        . '/'
+                        . date("Ymd-H", $start_timestamp)
+                        . '.mpg position:' . $position;
+        }
+
+        $res['cmd'] .= ' media_len:' . ($stop_timestamp - $start_timestamp);
 
         var_dump($res);
 
         return $res;
     }
 
+    /**
+     * Return link for current channel and current time
+     *
+     * @return string
+     */
     public function getLinkForChannel(){
 
         $ch_id = intval($_REQUEST['ch_id']);
 
         $task = $this->getTaskByChId($ch_id);
         $storage = Master::getStorageByName($task['storage_name']);
+
+        //$channel = Itv::getChannelById($ch_id);
+
         $position = date("i") * 60 + intval(date("s"));
 
         return 'ffmpeg http://' . $storage['storage_ip']
                              . '/archive/'
                              . $ch_id
                              . '/'
-                             //  'ffmpeg http://192.168.1.71:8080/'
                              . date("Ymd-H")
                              . '.mpg position:' . $position
                              . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
@@ -98,6 +124,12 @@ class TvArchive extends Master
         $storage_names = array_keys($this->storages);
         $less_loaded = $storage_names[0];
 
+        $exist_task = Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
+
+        if (!empty($exist_task)){
+            return true;
+        }
+
         $task_id = Mysql::getInstance()->insert('tv_archive', array('ch_id' => $ch_id, 'storage_name' => $less_loaded))->insert_id();
 
         if (!$task_id){
@@ -109,7 +141,7 @@ class TvArchive extends Master
         $task = array(
             'id'             => $task_id,
             'ch_id'          => $channel['id'],
-            'cmd'            => $channel['cmd'],
+            'cmd'            => empty($channel['mc_cmd']) ?  $channel['cmd'] : $channel['mc_cmd'],
             'parts_number'   => Config::get('tv_archive_parts_number')
         );
 
