@@ -334,8 +334,9 @@ class Vod extends AjaxResponse
         
         $offset = $this->page * self::max_page_items;
         
-        $where = array('status' => 1);
-        
+        //$where = array('status' => 1);
+        $where = array();
+
         if (@$_REQUEST['hd']){
             $where['hd'] = 1;
         }else{
@@ -344,10 +345,14 @@ class Vod extends AjaxResponse
         
         if (!$this->stb->isModerator()){
             $where['accessed'] = 1;
+
+            $where['status'] = 1;
             
             if ($this->stb->hd){
                 $where['disable_for_hd_devices'] = 0;
             }
+        }else{
+            $where['status>='] = 1;
         }
         
         if (@$_REQUEST['years'] && @$_REQUEST['years'] !== '*'){
