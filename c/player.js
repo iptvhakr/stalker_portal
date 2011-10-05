@@ -195,7 +195,7 @@ player.prototype.event_callback = function(event){
                         
                     }
 
-                    if (this.active_time_shift){
+                    if (this.active_time_shift && this.cur_media_item['wowza_dvr'] != 1){
 
                         var cur_piece_pos_time = stb.GetPosTime();
                         _debug('cur_piece_pos_time', cur_piece_pos_time);
@@ -1118,11 +1118,25 @@ player.prototype.disable_pause = function(){
 
     if (this.active_time_shift){
         _debug('new Date() - module.time_shift.cur_media_item.live_date', (new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime())/1000);
-        if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
-           this.play_last();
-        }else{
+
+        if (this.cur_media_item['wowza_dvr'] == 1){
+
+            var position = module.time_shift.get_position_from_url();
+
+            position += new Date().getTime() - module.time_shift.live_date.getTime();
+
+            module.time_shift.update_position_in_url(position);
+
             this.play(module.time_shift.cur_media_item);
+
+        }else{
+            if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
+               this.play_last();
+            }else{
+                this.play(module.time_shift.cur_media_item);
+            }
         }
+
     }else{
         
         try{
