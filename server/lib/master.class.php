@@ -23,6 +23,7 @@ abstract class Master
     protected $media_params;
     protected $rtsp_url;
     protected $db_table;
+    protected $stb_storages;
     
     public function __construct(){
         $this->db = Mysql::getInstance();
@@ -31,6 +32,7 @@ abstract class Master
         $this->moderator_storages = $this->getModeratorStorages();
         $this->clients = $this->getClients();
         $this->cache_expire_h = Config::get('master_cache_expire');
+        $this->stb_storages = $this->getStoragesForStb();
     }
     
     /**
@@ -342,7 +344,7 @@ abstract class Master
         if ($this->stb->isModerator() || $force_moderator){
             $storages = $this->storages;
         }else{
-            $storages = array_diff($this->storages, $this->moderator_storages);
+            $storages = array_diff_assoc($this->storages, $this->moderator_storages);
         }
         
         foreach ($storages as $name => $storage){
@@ -353,8 +355,6 @@ abstract class Master
                 continue;
             }
 
-            var_dump($raw, $name, $this->media_name);
-            
             if (count($raw['files']) > 0){
                 
                 $raw['first_media'] = $raw['files'][0]['name'];
@@ -362,6 +362,8 @@ abstract class Master
                 $this->saveSeries($raw['series']);
                 
                 $raw['load'] = $this->getStorageLoad($storage);
+
+                $raw['for_moderator'] = $storage['for_moderator'];
                 
                 $good_storages[$name] = $raw;
                 
@@ -371,6 +373,17 @@ abstract class Master
         
         if (!$this->stb->isModerator()){
             $this->setStorageCache($good_storages);
+        }
+
+        if (method_exists($this, 'setStatus')){
+
+            $status = intval($good_storages);
+
+            if ($status == 1 && array_diff_assoc($this->storages, $good_storages)){
+                $status = 3;
+            }
+
+            $this->setStatus($status);
         }
         
         return $good_storages;
@@ -480,7 +493,7 @@ abstract class Master
             if(!empty($storage_cache)){
                 $storage_cache = $storage_cache[0];
                 $storage_data = unserialize($storage_cache['storage_data']);
-                if (is_array($storage_data) && !empty($storage_data)){
+                if (is_array($storage_data) && !empty($storage_data) && !empty($this->stb_storages[$storage_cache['storage_name']])){
                     $cache[$storage_cache['storage_name']] = $storage_data;
                     $cache[$storage_cache['storage_name']]['load'] = $this->getStorageLoad($this->storages[$storage_cache['storage_name']]);
                 }
