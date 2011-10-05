@@ -121,7 +121,13 @@ function create_block_element(class_name, parent){
 
 HTMLElement.prototype.show = function(){
     try{
-        this.style.display = 'block';
+        switch(this.tagName.toLowerCase()){
+            case "span": case "strong": case "b": case "em": case "i":
+                this.style.display = 'inline';
+            break;
+            default:
+                this.style.display = 'block';
+        }
     }catch(e){
         _debug(e);
     }
