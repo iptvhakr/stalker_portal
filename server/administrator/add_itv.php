@@ -47,6 +47,18 @@ if (!$error){
         $use_http_tmp_link = 0;
     }
 
+    if (@$_POST['wowza_tmp_link'] == 'on'){
+        $wowza_tmp_link = 1;
+    }else{
+        $wowza_tmp_link = 0;
+    }
+    
+    if (@$_POST['wowza_dvr'] == 'on'){
+        $wowza_dvr = 1;
+    }else{
+        $wowza_dvr = 0;
+    }
+
     if (@$_POST['enable_tv_archive'] == 'on'){
         $enable_tv_archive = 1;
     }else{
@@ -83,6 +95,8 @@ if (!$error){
                                         name,
                                         number,
                                         use_http_tmp_link,
+                                        wowza_tmp_link,
+                                        wowza_dvr,
                                         censored,
                                         base_ch,
                                         bonus_ch,
@@ -101,6 +115,8 @@ if (!$error){
                                 values ('".@$_POST['name']."', 
                                         '".@$_POST['number']."', 
                                         '".$use_http_tmp_link."',
+                                        '".$wowza_tmp_link."',
+                                        '".$wowza_dvr."',
                                         '".$censored."',
                                         '".$base_ch."',
                                         '".$bonus_ch."',
@@ -121,7 +137,7 @@ if (!$error){
             //var_dump($rs);
             $ch_id = $rs->getLastInsertId();
 
-            if ($enable_tv_archive){
+            if ($enable_tv_archive && !$wowza_dvr){
                 $archive = new TvArchive();
                 $archive->createTask($ch_id);
             }
@@ -140,24 +156,30 @@ if (!$error){
 
             $ch_id = intval(@$_GET['id']);
 
-            $enabled_tv_archive = intval(Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first('enable_tv_archive'));
+            //$enabled_tv_archive = intval(Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first('enable_tv_archive'));
 
-            if ($enabled_tv_archive ^ $enable_tv_archive){
+            //if ($enabled_tv_archive){
 
-                $archive = new TvArchive();
+            $archive = new TvArchive();
 
-                if ($enable_tv_archive){
+            if ($enable_tv_archive && !$wowza_dvr){
+                //if (!$enabled_tv_archive){
                     $archive->createTask($ch_id);
-                }else{
+                //}
+            }else{
+                //if ($enabled_tv_archive){
                     $archive->deleteTask($ch_id);
-                }
+                //}
             }
+            //}
             
             $query = "update itv 
                                 set name='".$_POST['name']."', 
                                 cmd='".$_GET['cmd']."', 
                                 mc_cmd='".$_POST['mc_cmd']."',
                                 enable_tv_archive='".$enable_tv_archive."',
+                                wowza_tmp_link='".$wowza_tmp_link."',
+                                wowza_dvr='".$wowza_dvr."',
                                 use_http_tmp_link='".$use_http_tmp_link."',
                                 censored='".$censored."',
                                 base_ch='".$base_ch."',
@@ -366,10 +388,20 @@ if (@$_GET['edit']){
         $service_id = $arr['service_id'];
         $volume_correction = $arr['volume_correction'];
         $use_http_tmp_link = $arr['use_http_tmp_link'];
+        $wowza_tmp_link    = $arr['wowza_tmp_link'];
+        $wowza_dvr = $arr['wowza_dvr'];
         $enable_tv_archive = $arr['enable_tv_archive'];
 
         if ($use_http_tmp_link){
             $checked_http_tmp_link = 'checked';
+        }
+
+        if ($wowza_tmp_link){
+            $checked_wowza_tmp_link = 'checked';
+        }
+
+        if ($wowza_dvr){
+            $checked_wowza_dvr = 'checked';
         }
 
         if ($enable_tv_archive){
@@ -472,7 +504,11 @@ function popup(src){
            Временная HTTP ссылка:
            </td>
            <td>
-            <input name="use_http_tmp_link" id="use_http_tmp_link" type="checkbox" <? echo @$checked_http_tmp_link ?> >
+            <input name="use_http_tmp_link" id="use_http_tmp_link" type="checkbox" <? echo @$checked_http_tmp_link ?> onchange="this.checked ? document.getElementById('wowza_tmp_link_tr').style.display = '' : document.getElementById('wowza_tmp_link_tr').style.display = 'none'" >
+            <span id="wowza_tmp_link_tr" style="display: <?echo @$checked_http_tmp_link ? '' : 'none' ?>">
+                Поддержка WOWZA:
+                <input name="wowza_tmp_link" id="wowza_tmp_link" type="checkbox" <? echo @$checked_wowza_tmp_link ?> >
+            </span>
            </td>
         </tr>
         <tr>
@@ -547,7 +583,12 @@ function popup(src){
             Вести ТВ архив:
            </td>
            <td>
-            <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> >
+            <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> onchange="this.checked ? document.getElementById('wowza_dvr_tr').style.display = '' : document.getElementById('wowza_dvr_tr').style.display = 'none'" >
+
+            <span id="wowza_dvr_tr" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
+            WOWZA DVR:
+            <input name="wowza_dvr" id="wowza_dvr" type="checkbox" <? echo @$checked_wowza_dvr ?> >
+            </span>
            </td>
         </tr>
         <tr>
