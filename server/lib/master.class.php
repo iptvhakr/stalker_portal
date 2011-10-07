@@ -379,7 +379,7 @@ abstract class Master
 
             $status = intval($good_storages);
 
-            if ($status == 1 && array_diff_assoc($this->storages, $good_storages)){
+            if ($status == 1 && !array_diff_assoc($good_storages, $this->moderator_storages)){
                 $status = 3;
             }
 
