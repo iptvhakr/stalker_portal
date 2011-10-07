@@ -18,7 +18,7 @@ $rs = $db->executeQuery($sql);
 
 while(@$rs->next()){
     $master = new VideoMaster();
-    $master->getAllGoodStoragesForMediaFromNet($rs->getCurrentValueByName('id'));
+    $master->getAllGoodStoragesForMediaFromNet($rs->getCurrentValueByName('id'), true);
     unset($master);
     $updated_video++;
 }
