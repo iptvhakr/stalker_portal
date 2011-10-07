@@ -104,6 +104,8 @@
             category = category || this.categories[0];
             
             this.load_params['category'] = category.id;
+
+            this.update_header_path([{"alias" : "genre", "item" : category.title}]);
             
             try{
                 this.sort_menu.action();
