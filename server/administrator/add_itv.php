@@ -65,6 +65,8 @@ if (!$error){
         $enable_tv_archive = 0;
     }
 
+    $enable_monitoring = @intval($_POST['enable_monitoring']);
+
     if (@$_POST['base_ch'] == 'on'){
         $base_ch = 1;
     }else{
@@ -105,6 +107,8 @@ if (!$error){
                                         cmd, 
                                         mc_cmd,
                                         enable_tv_archive,
+                                        enable_monitoring,
+                                        monitoring_url,
                                         descr,
                                         tv_genre_id, 
                                         status,
@@ -125,6 +129,8 @@ if (!$error){
                                         '".@$_GET['cmd']."', 
                                         '".@$_POST['mc_cmd']."',
                                         '".$enable_tv_archive."',
+                                        '".$enable_monitoring."',
+                                        '".@$_POST['monitoring_url']."',
                                         '".@$_POST['descr']."',
                                         '".@$_POST['tv_genre_id']."', 
                                         1,
@@ -178,6 +184,8 @@ if (!$error){
                                 cmd='".$_GET['cmd']."', 
                                 mc_cmd='".$_POST['mc_cmd']."',
                                 enable_tv_archive='".$enable_tv_archive."',
+                                enable_monitoring='".$enable_monitoring."',
+                                monitoring_url='".$_POST['monitoring_url']."',
                                 wowza_tmp_link='".$wowza_tmp_link."',
                                 wowza_dvr='".$wowza_dvr."',
                                 use_http_tmp_link='".$use_http_tmp_link."',
@@ -337,7 +345,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['number']."</td>";
     echo "<td class='list'>".$arr['service_id']."</td>";
     //echo "<td class='list'><a href='".get_screen_name($arr['cmd'])."' >".$arr['name']."</a></td>";
-    echo "<td class='list' style='color:#5588FF'><b>".$arr['name']."</b></td>";
+    echo "<td class='list' style='color:".get_color($arr)."' title='".get_hint($arr)."'><b>".$arr['name']."</b></td>";
     echo "<td class='list'>".$arr['cmd']."</td>";
     //echo "<td class='list'>".$arr['descr']."</td>";
     echo "<td class='list'>"._($arr['genres_name'])."</td>";
@@ -391,6 +399,8 @@ if (@$_GET['edit']){
         $wowza_tmp_link    = $arr['wowza_tmp_link'];
         $wowza_dvr = $arr['wowza_dvr'];
         $enable_tv_archive = $arr['enable_tv_archive'];
+        $enable_monitoring = $arr['enable_monitoring'];
+        $monitoring_url = $arr['monitoring_url'];
 
         if ($use_http_tmp_link){
             $checked_http_tmp_link = 'checked';
@@ -406,6 +416,10 @@ if (@$_GET['edit']){
 
         if ($enable_tv_archive){
             $checked_enable_tv_archive = 'checked';
+        }
+
+        if ($enable_monitoring){
+            $checked_enable_monitoring = 'checked';
         }
 
         if ($censored){
@@ -440,6 +454,43 @@ function get_genres(){
     }
     return $option;
 }
+
+function get_color($channel){
+
+    if (!$channel['enable_monitoring']){
+        return '#5588FF';
+    }
+
+    if (time() - strtotime($channel['monitoring_status_updated']) > 3600){
+        return '#f4c430';
+    }
+
+    if ($channel['monitoring_status'] == 1){
+        return 'green';
+    }else{
+        return 'red';
+    }
+}
+
+function get_hint($channel){
+
+    if (!$channel['enable_monitoring']){
+        return 'не мониторится';
+    }
+
+    $diff = time() - strtotime($channel['monitoring_status_updated']);
+
+    if ($diff > 3600){
+        return 'больше часа назад';
+    }
+
+    if ($diff < 60){
+        return 'меньше минуты назад';
+    }
+
+    return round($diff/60).' минут назад';
+}
+
 ?>
 <script type="text/javascript">
 function save(){
@@ -589,6 +640,22 @@ function popup(src){
             WOWZA DVR:
             <input name="wowza_dvr" id="wowza_dvr" type="checkbox" <? echo @$checked_wowza_dvr ?> >
             </span>
+           </td>
+        </tr>
+        <tr>
+           <td align="right">
+            Вести мониторинг:
+           </td>
+           <td>
+            <input id="enable_monitoring" name="enable_monitoring" type="checkbox" value="1" <? echo @$checked_enable_monitoring ?> onchange="this.checked ? document.getElementById('monitoring_url_tr').style.display = '' : document.getElementById('monitoring_url_tr').style.display = 'none'">
+           </td>
+        </tr>
+        <tr id="monitoring_url_tr" style="display:<? echo @$checked_enable_monitoring ? '' : 'none' ?>">
+           <td align="right">
+            URL канала для мониторинга:
+           </td>
+           <td>
+            <input id="monitoring_url" name="monitoring_url" size="50" type="text" value="<? echo @$monitoring_url ?>"> * только http
            </td>
         </tr>
         <tr>
