@@ -100,6 +100,22 @@ if (check_access(array(2))){
 $sql = "select * from administrators $where order by login";
 $rs=$db->executeQuery($sql);
 
+function get_video_color($video){
+
+    $colors = array(
+        0 => 'red',
+        1 => 'green',
+        2 => '',
+        3 => '#d8a903'
+    );
+
+    if (!empty($colors[$video['status']])){
+        return $colors[$video['status']];
+    }
+
+    return '';
+}
+
 while(@$rs->next()){
     $arr=$rs->getCurrentValuesAsHash();
     ?>
@@ -135,7 +151,7 @@ while(@$rs->next()){
                             and archived=0
                             and moderator_tasks.to_usr={$arr['id']}";*/
         
-        $sql_open = "select moderator_tasks.*, count(moderators_history.id) as counter, video.name as name, video.accessed as accessed from moderator_tasks inner join video on media_id=video.id left join moderators_history on task_id=moderator_tasks.id where moderator_tasks.ended=0 and archived=0 and moderator_tasks.to_usr={$arr['id']} group by moderators_history.task_id";
+        $sql_open = "select moderator_tasks.*, count(moderators_history.id) as counter, video.name as name, video.status as status, video.accessed as accessed from moderator_tasks inner join video on media_id=video.id left join moderators_history on task_id=moderator_tasks.id where moderator_tasks.ended=0 and archived=0 and moderator_tasks.to_usr={$arr['id']} group by moderators_history.task_id";
         
         $rs_open = $db->executeQuery($sql_open);
         $num = 1;
@@ -150,7 +166,7 @@ while(@$rs->next()){
             }
             echo " >";
             echo "<td>".$num.".</td>";
-            echo "<td>".$arr_open['name']."</td>";
+            echo '<td><span style="color:'.get_video_color($arr_open).'; font-weight:bold">'.$arr_open['name']."</span></td>";
             echo "<td>".$arr_open['start_time']."</td>";
             //echo "<td>".get_count_all_msgs($arr_open['id']).' / <a href="msgs.php?task='.$arr_open['id'].'" class="msgs"><b>'.get_count_unreaded_msgs($arr_open['id'])."</b></a></td>";
             echo "<td>".($arr_open['accessed'] ? '<b style="color:#f00">on</b>' : '<b style="color:#008000">on</b>') ."</td>";
