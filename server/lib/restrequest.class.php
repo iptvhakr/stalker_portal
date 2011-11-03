@@ -73,7 +73,8 @@ class RESTRequest extends APIRequest
 
     public function getConvertedIdentifiers(){
 
-        if (self::$use_mac_identifiers){
+        if (self::$use_mac_identifiers || (!empty($this->identifiers[0]) && strlen($this->identifiers[0]) >= 12)){
+            //var_dump($this->identifiers);
             return Stb::getUidByMacs($this->identifiers);
         }else{
             return Stb::getUidByLs($this->identifiers);
