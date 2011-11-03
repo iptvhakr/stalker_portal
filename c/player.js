@@ -705,7 +705,7 @@ player.prototype.define_media_type = function(cmd){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0) && !this.active_time_shift && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
+        if ((cmd.indexOf('rtmp://') >=0 ||cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0) && !this.active_time_shift && stb.cur_place != 'main_menu' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -2518,7 +2518,7 @@ player.prototype.subtitle_pid = {
         this.all_pids = subtitle_pids;
     },
     
-    set : function(){
+    set : function(pid){
         _debug('subtitle_pid.set', pid);
     
         stb.SetSubtitles(true);
