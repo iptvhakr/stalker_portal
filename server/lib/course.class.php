@@ -10,7 +10,7 @@ class Course
 {
     public $db;
     public $cache_table;
-    public $content_url = 'http://www.bank.gov.ua/Fin_ryn/OF_KURS/Currency/FindByDate.aspx';
+    public $content_url = 'http://www.bank.gov.ua/control/uk/curmetal/detail/currency?period=daily';
     public $codes = array(840, 978, 643);
     
     public function __construct(){
@@ -26,7 +26,8 @@ class Course
         $result = array();
         $content = file_get_contents($this->content_url);
         if ($content){
-            preg_match("/<SPAN class='h5'>([\d,\.]+)<\/SPAN>/",$content,$arr);
+            //preg_match("/<SPAN class='h5'>([\d,\.]+)<\/SPAN>/",$content,$arr);
+            preg_match("/<td class=\"date\">([\d,\.]+)<\/td>/",$content,$arr);
             //$result['title'] = System::word('course_title').$arr[1];
             $result['title'] = _('Exchange rate on').' '.$arr[1];
             $result['on_date'] = $arr[1];
@@ -39,7 +40,11 @@ class Course
             //if (1){
             
                 foreach ($this->codes as $code){
-                    preg_match("/<td align=\"Center\">$code<\/td><td align=\"Center\">([\S]+)<\/td><td align=\"Center\">([\d]+)<\/td><td align=\"Left\">(.*)<\/td><td align=\"Right\">([\d,\.]+)<\/td>/",$content,$arr2);
+                    //preg_match("/<td align=\"Center\">$code<\/td><td align=\"Center\">([\S]+)<\/td><td align=\"Center\">([\d]+)<\/td><td align=\"Left\">(.*)<\/td><td align=\"Right\">([\d,\.]+)<\/td>/",$content,$arr2);
+                    preg_match("/<td class=\"cell_c\">$code<\/td>\s*<td class=\"cell_c\">([\S]+)<\/td>\s*<td class=\"cell_c\">([\d]+)<\/td>\s*<td class=\"cell\">(.*)<\/td>\s*<td class=\"cell_c\">([\d,\.]+)<\/td>/",$content,$arr2);
+
+                    //var_dump($arr2);
+
                     $result['data'][$idx] = array();
                     $result['data'][$idx]['code'] = $code;
                     $result['data'][$idx]['currency'] = $arr2[2].' '.$arr2[1];
