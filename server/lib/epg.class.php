@@ -353,24 +353,34 @@ class Epg
 
         $cur_program = $this->getCurProgram($ch_id);
 
-        if (!empty($cur_program['id'])){
-
-            return $this->db->from('epg')
-                                        ->select('epg.*, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
-                                        ->where(
-                                            array(
-                                                'epg.ch_id' => $ch_id,
-                                                'epg.time>='  => $cur_program['time']
-                                            ))
-                                        ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
-                                        ->orderby('epg.time')
-                                        ->limit($num_programs)
-                                        ->get()
-                                        ->all();
-
+        if (empty($cur_program['id'])){
+            return array();
         }
 
-        return array();
+        $epg = $this->db->from('epg')
+            ->select('epg.*, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
+            ->where(
+                array(
+                    'epg.ch_id' => $ch_id,
+                    'epg.time>='  => $cur_program['time']
+                ))
+            ->orderby('epg.time')
+            ->limit($num_programs)
+            ->get()
+            ->all();
+
+        $reminder = new TvReminder();
+        $reminders = $reminder->getAllActiveForMac(Stb::getInstance()->mac);
+
+        for ($i = 0; $i < count($epg); $i++){
+            if (key_exists($epg[$i]['id'], $reminders)){
+                $epg[$i]['mark_memo'] = 1;
+            }else{
+                $epg[$i]['mark_memo'] = 0;
+            }
+        }
+
+        return $epg;
     }
 
     /**
@@ -421,13 +431,12 @@ class Epg
 
             $program = $db
                          ->from('epg')
-                         ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
+                         ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
                          ->where(array(
                              'epg.ch_id'     =>  $ch_id,
                              'epg.time_to>'  =>  $from,
                              'epg.time<'     =>  $to,
                          ))
-                         ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
                          ->orderby('epg.time');
 
             if ($limit){
@@ -448,6 +457,9 @@ class Epg
         $tv_archive = new TvArchive();
         $archived_recs = $tv_archive->getAllTasksAssoc();
 
+        $reminder = new TvReminder();
+        $reminders = $reminder->getAllActiveForMac(Stb::getInstance()->mac);
+
         foreach ($result as $ch_id => $epg){
 
             for ($i = 0; $i < count($epg); $i++){
@@ -466,15 +478,21 @@ class Epg
                     $epg[$i]['display_duration'] = $epg[$i]['duration'] - ($epg[$i]['stop_timestamp'] - $to_ts);
                 }
 
-                if ($epg[$i]['start_timestamp'] < $now_ts){
+                /*if ($epg[$i]['start_timestamp'] < $now_ts){
                     $epg[$i]['mark_memo'] = null;
-                }
+                }*/
 
                 if (key_exists($epg[$i]['id'], $user_rec_ids)){
                     $epg[$i]['mark_rec'] = 1;
                     $epg[$i]['rec_id']   = $user_rec_ids[$epg[$i]['id']];
                 }else{
                     $epg[$i]['mark_rec'] = 0;
+                }
+
+                if (key_exists($epg[$i]['id'], $reminders)){
+                    $epg[$i]['mark_memo'] = 1;
+                }else{
+                    $epg[$i]['mark_memo'] = 0;
                 }
 
                 if (key_exists($epg[$i]['ch_id'], $archived_recs)){
@@ -606,7 +624,7 @@ class Epg
             $ch_idx = array_search($ch_id, $display_channels_ids) + 1;
         }
 
-        var_dump($display_channels_ids, $ch_id, $ch_idx);
+        //var_dump($display_channels_ids, $ch_id, $ch_idx);
 
         return array('total_items'    => $total_channels,
                      'max_page_items' => $page_items,
@@ -698,13 +716,12 @@ class Epg
 
         $program = Mysql::getInstance()
                      ->from('epg')
-                     ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to, (0 || tv_reminder.id) as mark_memo')
+                     ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
                      ->where(array(
                          'epg.ch_id'       =>  $ch_id,
                          'epg.time>='      =>  $from,
                          'epg.time<='      =>  $to
                      ))
-                     ->join('tv_reminder', 'tv_reminder.tv_program_id', 'epg.id', 'LEFT')
                      ->orderby('epg.time')
                      ->get()
                      ->all();
@@ -723,7 +740,7 @@ class Epg
                      ->get()
                      ->counter();
 
-        var_dump($ch_idx, date('Y-m-d'));
+        //var_dump($ch_idx, date('Y-m-d'));
 
         if ($page == 0){
 
@@ -746,11 +763,15 @@ class Epg
         $now = time();
 
         $recorder = new StreamRecorder();
-
         $user_rec_ids = $recorder->getDeferredRecordIdsForUser(Stb::getInstance()->id);
 
         $tv_archive = new TvArchive();
         $archived_recs = $tv_archive->getAllTasksAssoc();
+
+        $reminder = new TvReminder();
+        $reminders = $reminder->getAllActiveForMac(Stb::getInstance()->mac);
+
+        //var_dump($reminders);
 
         for ($i=0; $i<count($program); $i++){
             if ($program[$i]['stop_timestamp'] < $now){
@@ -759,11 +780,11 @@ class Epg
                 $program[$i]['open'] = 1;
             }
 
-            if ($program[$i]['start_timestamp'] < $now){
+            /*if ($program[$i]['start_timestamp'] < $now){
                 $program[$i]['mark_memo'] = null;
-            }
-
-            if ($program[$i]['mark_memo']){
+            }*/
+            //var_dump($reminders);
+            if (key_exists($program[$i]['id'], $reminders)){
                 $program[$i]['mark_memo'] = 1;
             }else{
                 $program[$i]['mark_memo'] = 0;
@@ -779,7 +800,7 @@ class Epg
 
             if (key_exists($program[$i]['ch_id'], $archived_recs)){
 
-                var_dump($program[$i]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['stop_timestamp']);
+                //var_dump($program[$i]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['stop_timestamp']);
 
                 //if (time() > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] && time() < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']){
                 if ($program[$i]['start_timestamp'] > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] &&
