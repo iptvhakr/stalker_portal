@@ -43,6 +43,7 @@ function common_xpcom(){
         "layer.base",
         "layer.list",
         "layer.setting",
+        "layer.simple",
         "layer.input",
         "layer.sidebar",
         "layer.search_box",
@@ -499,7 +500,7 @@ function common_xpcom(){
         this.key_lock = false;
 
         if (single_module && module[single_module]){
-            module[single_module]._show();
+            module[single_module]._show && module[single_module]._show() || module[single_module].show && module[single_module].show();
             return;
         }
 
@@ -1072,6 +1073,7 @@ function common_xpcom(){
 
             this.day   = this.current_date.getDay();
 
+            this.hours = this.current_date.getHours();
             this.hours = this.current_date.getHours();
 
             if (this.hours > 11){
