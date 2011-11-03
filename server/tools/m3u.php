@@ -10,7 +10,7 @@ $channels = Mysql::getInstance()->from('itv')->where(array('status' => 1))->orde
 $m3u_data = "#EXTM3U\n";
 
 foreach ($channels as $channel){
-    $m3u_data .= "#EXTINF:0,".$channel['name']."\n";
+    $m3u_data .= "#EXTINF:0,".$channel['number'].'. '.$channel['name']."\n";
 
     if (!empty($_GET['origin'])){
         $m3u_data .= $channel['cmd']."\n";
