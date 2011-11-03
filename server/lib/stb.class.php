@@ -87,6 +87,10 @@ class Stb
         $this->id = $id;
         $this->params['id'] = $id;
     }
+
+    public function getParam($name){
+        return $this->params[$name];
+    }
     
     public function getStbParams(){
 
@@ -201,6 +205,7 @@ class Stb
         $profile['update_url']             = Config::exist('update_url') ? Config::get('update_url') : '';
         $profile['tv_archive_days']        = Config::exist('tv_archive_parts_number') ? Config::get('tv_archive_parts_number') / 24 : 0;
         $profile['playback_limit']         = Config::get('enable_playback_limit') ? $profile['playback_limit'] : 0;
+        $profile['demo_video_url']         = Config::getSafe('demo_video_url', '');
 
         return $profile;
     }
@@ -828,21 +833,46 @@ class Stb
             return false;
         }
         
-        $data = file_get_contents(Config::get('oss_url').'?mac='.$this->mac.'&uid='.$this->id);
+        //$data = file_get_contents(Config::get('oss_url').'?mac='.$this->mac.'&uid='.$this->id);
+        $data = file_get_contents(Config::get('oss_url').'?mac='.$this->mac);
 
         if (!$data){
             return false;
         }
 
-        $data = json_decode($data);
+        $data = json_decode($data, true);
 
         if (empty($data)){
             return false;
         }
 
-        if (key_exists('ls', $data)){
-            Mysql::getInstance()->update('users', array('ls' => $data['ls']), array('id' => $this->id));
+        var_dump($data);
+
+        if ($data['status'] != 'OK' || empty($data['results']) || empty($data['results'][0])){
+            return false;
         }
+
+        $user = $data['results'][0];
+
+        $update_data = array();
+
+        if (key_exists('ls', $user)){
+            $this->params['ls'] = $update_data['ls'] = intval($user['ls']);
+        }
+
+        if (key_exists('status', $user)){
+            $this->params['status'] = $update_data['status'] = intval(!$user['status']);
+        }
+
+        if (key_exists('additional_services_on', $user)){
+            $this->params['additional_services_on'] = $update_data['additional_services_on'] = intval($user['additional_services_on']);
+        }
+
+        if (empty($update_data)){
+            return false;
+        }
+
+        return Mysql::getInstance()->update('users', $update_data, array('id' => $this->id));
     }
 
     public static function getUidByLs($ls){
@@ -863,11 +893,25 @@ class Stb
 
     public static function getUidByMacs($mac){
 
-        if (!is_array($mac)){
-            $mac = array($mac);
+        $result = Mysql::getInstance()->from('users');
+
+        if ($mac !== null){
+
+            if (!is_array($mac)){
+                $mac = array($mac);
+            }
+
+            $mac = Middleware::normalizeMacArray($mac);
+
+            //var_dump($mac);
+            //var_dump($mac);
+
+            $result = $result->in('mac', $mac);
         }
 
-        return Mysql::getInstance()->from('users')->in('mac', $mac)->get()->all('id');
+        return $result->get()->all('id');
+
+        //return Mysql::getInstance()->from('users')->in('mac', $mac)->get()->all('id');
     }
 }
 ?>
