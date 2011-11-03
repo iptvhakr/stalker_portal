@@ -52,11 +52,11 @@
             
             try{
                 
-                if (this.on){
+                /*if (this.on){*/
                     if (stb.player.on){
                         stb.player.stop();
                     }
-                }
+                /*}*/
                 
                 this.superclass.hide.call(this, do_not_reset);
                 
