@@ -131,6 +131,7 @@ HTMLElement.prototype.show = function(){
     }catch(e){
         _debug(e);
     }
+    return this;
 };
 
 HTMLElement.prototype.hide = function(){
@@ -139,6 +140,7 @@ HTMLElement.prototype.hide = function(){
     }catch(e){
         _debug(e);
     }
+    return this;
 };
 
 HTMLElement.prototype.isHidden = function(){
