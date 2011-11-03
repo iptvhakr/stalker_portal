@@ -38,12 +38,27 @@
                     this.update_header_path([{"alias" : "playing", "item" : "*"}]);
                     return;
                 }
-                
+
+                if (single_module == this.layer_name){
+                    if (window.referrer){
+                        window.location = window.referrer;
+                    }
+                    return;
+                }
+
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this);
             
             (function(){
+
+                if (single_module == this.layer_name){
+                    if (window.referrer){
+                        window.location = window.referrer;
+                    }
+                    return;
+                }
+
                 this.hide();
                 main_menu.show();
             }).bind(key.LEFT, this).bind(key.MENU, this);
@@ -65,8 +80,10 @@
     
     radio.bind();
     radio.init();
-    
-    radio.init_left_ear(word['ears_back']);
+
+    if (single_module != 'radio'){
+        radio.init_left_ear(word['ears_back']);
+    }
     
     radio.init_header_path(word['radio_title']);
     
