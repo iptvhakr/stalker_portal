@@ -68,13 +68,14 @@ class Middleware
      * @return string|false clean mac address or error if string don't looks like mac address
      */
     public static function normalizeMac($mac){
+
         $mac = iconv("WINDOWS-1251","UTF-8", $mac);
         
         $mac = strtoupper($mac);
         
         $pattern = array('А', 'В', 'С', 'Е'); // ru
         $replace = array('A', 'B', 'C', 'E'); // en
-        
+
         $mac = str_replace($pattern, $replace, trim($mac));
         
         if (strlen($mac)==12){
@@ -87,6 +88,28 @@ class Middleware
             return false;
         }
     }
+
+    /**
+     * Clean perhaps "dirty" array of mac addresses
+     *
+     * @param array $mac
+     * @return array clean mac address array
+     */
+    public static function normalizeMacArray($macs){
+
+        $clean = array();
+
+        foreach ($macs as $mac){
+
+            $clean_mac = self::normalizeMac($mac);
+            //var_dump($mac, $clean_mac);
+            if ($clean_mac){
+                $clean[] = $clean_mac; 
+            }
+        }
+
+        return $clean;
+    }
     
     public static function log($text, $type = null){
         
@@ -94,9 +117,7 @@ class Middleware
             $type = 'notice';
         }
         
-        $db = Mysql::getInstance();
-        
-        $this->db->insert('sys_log',
+        Mysql::getInstance()->insert('sys_log',
                           array(
                               'text' => $text,
                               'type' => $type
