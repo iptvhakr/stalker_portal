@@ -38,6 +38,17 @@ class Config
         return self::$settings[$key];
     }
 
+    public static function getSafe($key, $default){
+        
+        try{
+            $value = self::get($key);
+        }catch (ConfigException $e){
+            $value = $default;
+        }
+
+        return $value;
+    }
+
     public static function exist($key){
 
         if (empty(self::$settings)){
