@@ -51,10 +51,24 @@ class TvReminder
                         ->join('epg', 'tv_reminder.tv_program_id', 'epg.id', 'INNER')
                         ->join('itv', 'tv_reminder.ch_id', 'itv.id', 'INNER');
     }
-    
+
     public function getAllActive(){
-        
+
         return $this->getRaw()->where(array('tv_reminder.mac' => $this->stb->mac, 'tv_reminder.fire_time>' => 'NOW()'))->get()->all();
+    }
+
+    
+    public function getAllActiveForMac($mac){
+        
+        $all = $this->getRaw()->where(array('tv_reminder.mac' => $mac, 'tv_reminder.fire_time>' => 'NOW()'))->get()->all();
+        
+        $reminders = array();
+
+        foreach ($all as $memo){
+            $reminders[$memo['tv_program_id']] = $memo;
+        }
+
+        return $reminders;
     }
     
     public function del(){
