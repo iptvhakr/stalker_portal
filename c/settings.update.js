@@ -19,17 +19,21 @@
         this.superclass = SettingLayer.prototype;
         
         this.source_idx = 0;
+
+        try{
+            var storage_info = JSON.parse(stb.RDir('get_storage_info'));
+        }catch(e){
+            _debug(e);
+        }
         
         this.sources = [
             {
                 "title" : word['update_from_http'],
-                //"uri"   : (function(){ try{ return stb.RDir('getenv update_url').clearnl()}catch(e){_debug(e)}})()
-                //"uri"   : stb.profile['update_url'] ? stb.profile['update_url'] + '/' + stb.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + stb.type.substr(3) + '/imageupdate'
                 "uri"   : stb.user['update_url']
             },
             {
                 "title" : word['update_from_usb'],
-                "uri"   : "/media/usbdisk/mag200/imageupdate"
+                "uri"   : (storage_info && storage_info[0]) ? storage_info[0].mountPath + "/mag200/imageupdate" : "/media/usbdisk/mag200/imageupdate"
             }
         ];
         
