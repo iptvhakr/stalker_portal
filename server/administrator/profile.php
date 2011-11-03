@@ -12,11 +12,11 @@ $db = new Database();
 
 moderator_access();
 
-echo '<pre>';
+//echo '<pre>';
 //print_r($_FILES);
 //print_r($_SESSION);
 //print_r($_POST);
-echo '</pre>';
+//echo '</pre>';
 
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
@@ -32,6 +32,19 @@ if (@$_POST['save']){
         $stb_groups->setMember(array('stb_group_id' => $_POST['group_id']), $member['id']);
     }
     
+    header("Location: profile.php?id=".@$_GET['id']);
+    exit;
+}
+
+if (@$_POST['account']){
+
+    Mysql::getInstance()->update('users',
+        array(
+            'fname'  => $_POST['fname'],
+            'phone' =>  $_POST['phone']
+        ),
+        array('id' => intval($_GET['id'])));
+
     header("Location: profile.php?id=".@$_GET['id']);
     exit;
 }
@@ -90,7 +103,7 @@ if (isset($_GET['set_services'])){
     exit();
 }
 
-?>
+?><!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -116,6 +129,13 @@ td.other {
     border-color: #E5E5E5;
 	background-color:#FFFFFF;
 }
+
+table.other {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #E5E5E5;
+}
+
 .list{
     border-width: 1px;
     border-style: solid;
@@ -193,6 +213,7 @@ $rs=$db->executeQuery($sql);
 
 while(@$rs->next()){
         $arr=$rs->getCurrentValuesAsHash();
+        $user = $arr;
         $mac = $arr['mac'];
         $ip  = $arr['ip'];
         $video_out  = $arr['video_out'];
@@ -214,7 +235,7 @@ if (is_array($fav_ch_arr)){
 <title>Профиль пользователя</title>
 </head>
 <body>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="700">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
     <font size="5px" color="White"><b>&nbsp;Профиль пользователя&nbsp;</b></font>
@@ -238,7 +259,7 @@ if (is_array($fav_ch_arr)){
 </tr>
 <tr>
 <td>
-<table cellpadding="0" cellspacing="3">
+<table cellpadding="0" cellspacing="3" style="float:left;">
     <tr>
         <td class="other" width="320">
         <table>
@@ -314,8 +335,8 @@ if (is_array($fav_ch_arr)){
                     }
                     ?>
                 </select>
-                <input type="hidden" name="mac" value="<?echo $mac?>"></input>
-                <input type="submit" name="save" value="Сохранить"></input>
+                <input type="hidden" name="mac" value="<?echo $mac?>"/>
+                <input type="submit" name="save" value="Сохранить"/>
                 </td>
             </tr>
         </table>
@@ -341,6 +362,42 @@ if (is_array($fav_ch_arr)){
         </td>
     </tr>
 </table>
+
+<form method="post">
+    <table style="float:left;margin-top: 3px" class="other" cellpadding="0" cellspacing="3">
+        <tr>
+            <td>
+                ФИО:
+            </td>
+            <td>
+                <input type="text" name="fname" value="<? echo $user['fname'] ?>"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Изменение статуса:
+            </td>
+            <td>
+                <input type="text" name="" readonly="readonly" disabled="disabled" value="<? echo $user['last_change_status'] ?>"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Телефон:
+            </td>
+            <td>
+                <input type="text" name="phone" value="<? echo $user['phone'] ?>"/>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" name="account" />
+            </td>
+        </tr>
+    </table>
+</form>
+
 </td>
 </tr>
 </table>
