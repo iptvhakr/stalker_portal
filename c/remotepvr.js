@@ -435,7 +435,10 @@
 
             window.clearInterval(this.tick_timer);
 
-            stb.player.rec.set_seconds(this.convert_sec_to_human_time(record['t_start_ts'] - stb.clock.seconds));
+            _debug('record[t_start_ts]', record['t_start_ts']);
+            _debug('stb.clock.timestamp', stb.clock.timestamp);
+
+            stb.player.rec.set_seconds(this.convert_sec_to_human_time(record['t_start_ts'] - stb.clock.timestamp));
 
             var self = this;
             this.tick_timer = window.setInterval(function(){self.tick_s(record)}, 1000);
