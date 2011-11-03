@@ -175,6 +175,7 @@
 
             this.cur_media_item = cur_tv_item.clone();
             delete this.cur_media_item.open;
+            this.cur_media_item.use_http_tmp_link = 0;
             this.cur_media_item.live_date = new Date();
             this.cur_piece_date = new Date();
             this.cur_piece_date.setHours(0);
