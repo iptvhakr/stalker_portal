@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-20 16:23+0200\n"
-"PO-Revision-Date: 2011-09-20 16:28+0200\n"
+"POT-Creation-Date: 2011-10-25 12:30+0200\n"
+"PO-Revision-Date: 2011-10-25 12:30+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -841,6 +841,55 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
+#: ../../../lang/stb.php:281
+msgid "DEMO VIDEO"
+msgstr ""
+
+#: ../../../lang/stb.php:282
+msgid "ACCOUNT"
+msgstr ""
+
+#: ../../../lang/stb.php:283
+msgid "Coming soon"
+msgstr ""
+
+#: ../../../lang/stb.php:285
+msgid "INFORMATION"
+msgstr ""
+
+#: ../../../lang/stb.php:286
+msgid "PAYMENT"
+msgstr ""
+
+#: ../../../lang/stb.php:287
+msgid "AGREEMENT"
+msgstr ""
+
+#: ../../../lang/stb.php:288
+msgid "TERMS OF USE"
+msgstr ""
+
+#: ../../../lang/stb.php:290
+msgid "Video instruction"
+msgstr ""
+
+#: ../../../lib/accountinfo.class.php:12
+#, php-format
+msgid "account_main_info"
+msgstr ""
+
+#: ../../../lib/accountinfo.class.php:19
+msgid "account_payment_info"
+msgstr ""
+
+#: ../../../lib/accountinfo.class.php:23
+msgid "account_agreement_info"
+msgstr ""
+
+#: ../../../lib/accountinfo.class.php:27
+msgid "account_terms_info"
+msgstr ""
+
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
 #: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_1l"
@@ -1030,37 +1079,37 @@ msgstr ""
 msgid "[No channel info]"
 msgstr ""
 
-#: ../../../lib/epg.class.php:646
+#: ../../../lib/epg.class.php:664
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sun"
 msgstr ""
 
-#: ../../../lib/epg.class.php:646
+#: ../../../lib/epg.class.php:664
 #: ../../../lib/gismeteo.class.php:29
 msgid "Mon"
 msgstr ""
 
-#: ../../../lib/epg.class.php:646
+#: ../../../lib/epg.class.php:664
 #: ../../../lib/gismeteo.class.php:29
 msgid "Tue"
 msgstr ""
 
-#: ../../../lib/epg.class.php:646
+#: ../../../lib/epg.class.php:664
 #: ../../../lib/gismeteo.class.php:29
 msgid "Wed"
 msgstr ""
 
-#: ../../../lib/epg.class.php:646
+#: ../../../lib/epg.class.php:664
 #: ../../../lib/gismeteo.class.php:29
 msgid "Thu"
 msgstr ""
 
-#: ../../../lib/epg.class.php:646
+#: ../../../lib/epg.class.php:664
 #: ../../../lib/gismeteo.class.php:29
 msgid "Fri"
 msgstr ""
 
-#: ../../../lib/epg.class.php:646
+#: ../../../lib/epg.class.php:664
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sat"
 msgstr ""
@@ -1186,9 +1235,7 @@ msgid "scheduled"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:717
-#: ../../../lib/weatherco.class.php:118
-#: ../../../lib/weatherco.class.php:138
+#: ../../../lib/stb.class.php:733
 msgid "city_name_field"
 msgstr "name_en"
 
@@ -1216,22 +1263,22 @@ msgid "s"
 msgstr ""
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:540
+#: ../../../lib/vod.class.php:545
 msgid "today"
 msgstr ""
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:543
+#: ../../../lib/vod.class.php:548
 msgid "yesterday"
 msgstr ""
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
-#: ../../../lib/vod.class.php:485
+#: ../../../lib/vod.class.php:490
 #, php-format
 msgid "video_name_format"
 msgstr "%2$s"
 
-#: ../../../lib/vod.class.php:546
+#: ../../../lib/vod.class.php:551
 msgid "last week"
 msgstr ""
 
