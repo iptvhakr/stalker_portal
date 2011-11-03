@@ -278,4 +278,15 @@ $words['screensaver_delay_title'] = _('Screensaver interval');
 $words['screensaver_off']         = _('Disabled');
 $words['screensaver_minutes']     = _('min');
 
+$words['demo_video_title']   = _('DEMO VIDEO');
+$words['account_info_title'] = _('ACCOUNT');
+$words['coming_soon']        = _('Coming soon');
+
+$words['account_info']      = _('INFORMATION');
+$words['account_payment']   = _('PAYMENT');
+$words['account_agreement'] = _('AGREEMENT');
+$words['account_terms']     = _('TERMS OF USE');
+
+$words['demo_video'] = _('Video instruction');
+
 ?>
