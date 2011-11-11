@@ -90,14 +90,14 @@ if (isset($_GET['accessed']) && @$_GET['id']){
         }
     }
     
-    if ($_GET['accessed'] == 1){
+    /*if ($_GET['accessed'] == 1){
         $master = new VideoMaster();
         try {
             $master->startMD5SumInAllStorages($path);
         }catch (Exception $exception){
             
         }
-    }
+    }*/
     
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@urldecode($_GET['search'])."&page=".@$_GET['page']);
     exit;
@@ -158,6 +158,12 @@ if (count(@$_POST) > 0){
             }else{
                 $hd = 0;
             }
+
+            if (@$_POST['for_sd_stb'] == 'on'){
+                $for_sd_stb = 1;
+            }else{
+                $for_sd_stb = 0;
+            }
             
             $genre_id_1 = @$_POST['genre_id_1'] ? @$_POST['genre_id_1'] : 0;
             $genre_id_2 = @$_POST['genre_id_2'] ? @$_POST['genre_id_2'] : 0;
@@ -215,6 +221,7 @@ if (count(@$_POST) > 0){
                                                  o_name,
                                                  censored,
                                                  hd,
+                                                 for_sd_stb,
                                                  path,
                                                  protocol,
                                                  rtsp_url,
@@ -240,6 +247,7 @@ if (count(@$_POST) > 0){
                                                 '".trim(mysql_real_escape_string($o_name))."',
                                                 '".$censored."',
                                                 '".$hd."',
+                                                '".$for_sd_stb."',
                                                 '".$trans_name."',
                                                 '".$protocol."',
                                                 '".$rtsp_url."',
@@ -288,6 +296,7 @@ if (count(@$_POST) > 0){
                                                o_name='".trim(mysql_real_escape_string($_POST['o_name']))."', 
                                                censored='".$censored."', 
                                                hd='".$hd."', 
+                                               for_sd_stb='".$for_sd_stb."',
                                                protocol='".$protocol."',
                                                rtsp_url='".$rtsp_url."',
                                                time='".@$_POST['time']."',
@@ -726,6 +735,9 @@ if (@$_GET['edit']){
         $hd       = $arr['hd'];
         $rtsp_url = $arr['rtsp_url'];
         $protocol = $arr['protocol'];
+        
+        $for_sd_stb = $arr['for_sd_stb'];
+        
         $volume_correction = $arr['volume_correction'];
         $readonly = 'readonly';
         if ($censored){
@@ -733,6 +745,9 @@ if (@$_GET['edit']){
         }
         if ($hd){
             $checked_hd = 'checked';
+        }
+        if ($for_sd_stb){
+            $checked_for_sd_stb = 'checked';
         }
     }
     $query = "select * from screenshots where media_id=".intval(@$_GET['id']);
@@ -1521,8 +1536,17 @@ function check_protocol(){
             <input name="hd" id="hd" type="checkbox" <? echo @$checked_hd ?> >
            </td>
         </tr>
-        
-        
+
+        <? if (Config::get('vclub_mag100_filter')){ ?>
+        <tr>
+           <td align="right" valign="top">
+           Только для MAG100:
+           </td>
+           <td>
+            <input name="for_sd_stb" id="for_sd_stb" type="checkbox" <? echo @$checked_for_sd_stb ?> >
+           </td>
+        </tr>
+        <?}?>
         
         <tr id="genre_1" style="background-color:#e0e0e0">
            <td align="right" valign="top">
