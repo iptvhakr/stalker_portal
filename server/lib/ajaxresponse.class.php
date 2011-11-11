@@ -76,6 +76,7 @@ abstract class AjaxResponse
         $query_rows = clone $query;
         
         $this->setResponse('total_items', $query_rows->nolimit()->nogroupby()->noorderby()->count()->get()->counter());
+        //$this->setResponse('total_items', $query_rows->nolimit()->noorderby()->get()->count());
         $this->setResponse('cur_page', $this->cur_page);
         $this->setResponse('selected_item', $this->selected_item);
         $this->setResponse('data', $query->get()->all());
@@ -105,7 +106,8 @@ abstract class AjaxResponse
     protected function getImgUri($id){
     
         $dir_name = ceil($id/100);
-        $dir_path = Config::get('portal_url').'screenshots/'.$dir_name;
+        //$dir_path = Config::get('portal_url').'screenshots/'.$dir_name;
+        $dir_path = Config::get('screenshots_url').$dir_name;
         $dir_path .= '/'.$id.'.jpg';
         return $dir_path;
     }
