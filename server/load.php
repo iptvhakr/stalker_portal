@@ -17,5 +17,5 @@ Stb::getInstance();
 $loader = new DataLoader($_REQUEST['type'], $_REQUEST['action']);
 $GLOBALS['_RESULT'] = $loader->getResult();
 
-echo "generated in: ".round(microtime(1) - $start_time, 3)."s; query counter: ".Mysql::get_num_queries()."; ".$debug->getErrorStr();
+echo "generated in: ".round(microtime(1) - $start_time, 3)."s; query counter: ".Mysql::get_num_queries()."; cache hits: ".Mysql::get_cache_hits()."; cache miss: ".Mysql::get_cache_misses()."; ".$debug->getErrorStr();
 ?>
