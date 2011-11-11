@@ -26,6 +26,10 @@ class AccountInfo
     public function getTermsInfo(){
         return _('account_terms_info');
     }
+
+    public function getDemoVideoParts(){
+        return Config::getSafe('demo_part_video_url', '');
+    }
 }
 
 ?>
