@@ -342,6 +342,10 @@ class Vod extends AjaxResponse
         }else{
             $where['hd<='] = 1;
         }
+
+        /*if (!$this->stb->hd && Config::get('vclub_mag100_filter')){
+            $where['for_sd_stb'] = 1;
+        }*/
         
         if (!$this->stb->isModerator()){
             $where['accessed'] = 1;
@@ -405,17 +409,14 @@ class Vod extends AjaxResponse
         }
         
         $data = $this->db
-                        ->select('video.*, screenshots.id as screenshot_id')
+                        //->select('video.*, screenshots.id as screenshot_id')
+                        ->select('video.*, (select group_concat(screenshots.id) from screenshots where media_id=video.id) as screenshots')
                         ->from('video')
-                        ->join('screenshots', 'video.id', 'screenshots.media_id', 'LEFT')
+                        //->join('screenshots', 'video.id', 'screenshots.media_id', 'LEFT')
                         ->where($where)
                         ->where($where_genre, 'OR ');
 
         if (!empty($genres_ids) && is_array($genres_ids)){
-            /*$data = $data->in('cat_genre_id_1', $genres_ids)
-                         ->in('cat_genre_id_2', $genres_ids)
-                         ->in('cat_genre_id_3', $genres_ids)
-                         ->in('cat_genre_id_4', $genres_ids);*/
 
             $data = $data->group_in(array(
                                         'cat_genre_id_1' => $genres_ids,
@@ -427,6 +428,7 @@ class Vod extends AjaxResponse
 
         $data = $data->like($like)
                      ->like($search, 'OR ')
+                     //->groupby('video.path')
                      ->limit(self::max_page_items, $offset);
 
         return $data;
@@ -497,7 +499,7 @@ class Vod extends AjaxResponse
                 $this->response['data'][$i]['lock'] = 0;
             }
             
-            if (in_array($this->response['data'][$i]['id'], $fav)){
+            if ($fav !== null && in_array($this->response['data'][$i]['id'], $fav)){
                 $this->response['data'][$i]['fav'] = 1;
             }else{
                 $this->response['data'][$i]['fav'] = 0;
@@ -509,8 +511,18 @@ class Vod extends AjaxResponse
                 $this->response['data'][$i]['position'] = 0;
             }
             
-            $this->response['data'][$i]['screenshot_uri'] = $this->getImgUri($this->response['data'][$i]['screenshot_id']);
+            //$this->response['data'][$i]['screenshot_uri'] = $this->getImgUri($this->response['data'][$i]['screenshot_id']);
+
+            //var_dump('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', $this->response['data'][$i]['screenshots']);
+
+            if ($this->response['data'][$i]['screenshots'] === null){
+                $this->response['data'][$i]['screenshots'] = '0';
+            }
+
+            $screenshots = explode(",", $this->response['data'][$i]['screenshots']);
             
+            $this->response['data'][$i]['screenshot_uri'] = $this->getImgUri($screenshots[0]);
+
             $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
             
             if (!empty($this->response['data'][$i]['rtsp_url'])){
