@@ -226,11 +226,11 @@ function display_info(arr, id){
         document.getElementById('storages_content_'+id).innerHTML = table;
         document.getElementById('error_bar_'+id).style.display = 'none';
         document.getElementById('storages_'+id).style.display = '';
-        document.getElementById('path_'+id).style.color = 'green';
+        //document.getElementById('path_'+id).style.color = 'green';
     }else{
         document.getElementById('loading_bar_'+id).style.display = 'none';
         document.getElementById('error_bar_'+id).style.display = '';
-        document.getElementById('path_'+id).style.color = 'red';
+        //document.getElementById('path_'+id).style.color = 'red';
     }
 }
 
@@ -341,7 +341,7 @@ function md5sum(obj, status, media_name, storage_name){
     </tr>
     <tr>
         <td colspan="2">
-            <input type="submit" value="Поиск" name="search"></input>
+            <input type="submit" value="Поиск" name="search"/>
         </td>
     </tr>
 </table>
@@ -386,12 +386,19 @@ function page_bar(){
 }
 
 function get_path_color($id, $path){
-    if (check_video_status($id)){
-            $color = 'green';
-        }else{
-            $color = 'red';
+
+    $color_status = check_video_status($id);
+
+    if ($color_status == 1){
+        $color = 'green';
+    }else if ($color_status == 0){
+        $color = 'red';
+    }else if ($color_status == 2){
+        $color = 'blue';
+    }else if ($color_status == 3){
+        $color = '#f4c430';
     }
-    return "<span id='path_$id' style='color:$color'>$path</span>";
+    return "<span id='path_$id' style='color:".$color."'>$path</span>";
 }
 
 function check_video_status($id){
@@ -399,6 +406,13 @@ function check_video_status($id){
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
+
+    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
+
+    if (!empty($rtsp_url)){
+        return 2;
+    }
+
     return $rs->getValueByName(0, 'status');
 }
 
@@ -471,12 +485,12 @@ if (empty($result_ids_str)){
     $result_ids_str = '0';
 }
 
-$sql = "select * from video where status=1 and accessed=1 and id in(".$result_ids_str.")";
+$sql = "select * from video where status in(1,3) and accessed=1 and id in(".$result_ids_str.")";
 $rs  = $db->executeQuery($sql);
 $total_items = $rs->getRowCount();
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-$sql = "select *, count_first_0_5+count_second_0_5 as views from video where status=1 and accessed=1 and id in(".$result_ids_str.") order by views";
+$sql = "select *, count_first_0_5+count_second_0_5 as views from video where status in(1,3) and accessed=1 and id in(".$result_ids_str.") order by views";
 
 if (@$_GET['view'] != 'text'){
     $sql .= " limit $page_offset, $MAX_PAGE_ITEMS";
