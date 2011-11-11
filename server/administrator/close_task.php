@@ -27,6 +27,19 @@ if (@$_GET['id']){
     
     $sql = "update moderator_tasks set ended=1, end_time=NOW() where id=".$_GET['id'];
     $db->executeQuery($sql);
+
+    $sql  = "select * from video where id=".$video_id;
+    $rs   = $db->executeQuery($sql);
+    $path = $rs->getValueByName(0, 'path');
+
+    $master = new VideoMaster();
+    
+    try {
+        $master->startMD5SumInAllStorages($path);
+        //var_dump('startMD5SumInAllStorages');
+    }catch (Exception $exception){
+
+    }
     
     header("Location: tasks.php");
     exit();
