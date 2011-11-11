@@ -12,8 +12,9 @@ class Mysql
     
     private $charset = 'utf8';
     private static $num_queries = 0;
-    private $cache_hits = 0;
-    
+    private static $cache_hits = 0;
+    private static $cache_misses = 0;
+
     private $cache;
     
     private $allow_caching = true;
@@ -53,6 +54,7 @@ class Mysql
 
         if (Config::get('query_cache') && $this->allow_caching){
             $this->cache = Cache::getInstance();
+            $this->cache->useCustomCaching(true);
         }
         
         if ($this->link){
@@ -554,9 +556,10 @@ class Mysql
         if (Config::get('query_cache') && $this->allow_caching){
             
             $tags = $this->get_tags(get_object_vars($this));
+
+            var_dump('????????????????????????', $tags, !preg_match('/^INSERT|^UPDATE|^REPLACE|^SET|^DELETE|^TRUNCATE/i', $sql));
             
-            
-            if(!preg_match('/INSERT|UPDATE|REPLACE|SET|DELETE|TRUNCATE/i', $sql)){                
+            if(!preg_match('/^INSERT|^UPDATE|^REPLACE|^SET|^DELETE|^TRUNCATE/i', $sql)){
                 
                 $key = $this->get_cache_key($sql);
                 
@@ -566,10 +569,12 @@ class Mysql
                     $result = new MysqlResult(mysql_query($sql, $this->link), $sql, $this->link);
                     
                     $this->cache->set($key, $result->as_array(true), $tags);
-                    
+
+                    self::$cache_misses++;
+
                     return $result;
                 }else{
-                    $this->cache_hits++;
+                    self::$cache_hits++;
                     
                     $result = new CacheResult($result, $sql);
                     
@@ -640,8 +645,12 @@ class Mysql
 	    return self::$num_queries;
 	}
 	
-	public function get_cache_hits(){
-	    return $this->cache_hits;
+	public static function get_cache_hits(){
+	    return self::$cache_hits;
+	}
+
+    public static function get_cache_misses(){
+	    return self::$cache_misses;
 	}
 	
 	private function get_cache_key($sql){
@@ -667,6 +676,10 @@ class Mysql
 		    }else{
 		        $where = $database['where'];
 		    }
+
+            $where = array_map(function($item){
+                return strtr($item, array(' ' => '_', ')' => '', '(' => ''));
+            },$where);
 		    
 			$tags = array_merge($tags, $where);
 		}
