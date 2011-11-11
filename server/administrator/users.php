@@ -391,10 +391,11 @@ function get_user_status($id){
 }
 
 function set_user_status($id, $status){
-    global $db;
+    /*global $db;
     $query = "update users set status=$status, last_change_status=NOW() where id='$id'";
     $rs = $db->executeQuery($query);
-    return;
+    return;*/
+    return Mysql::getInstance()->update('users', array('status' => $status, 'last_change_status' => 'NOW()'), array('id' => $id));
 }
 
 function get_video_out($video_out, $id){
