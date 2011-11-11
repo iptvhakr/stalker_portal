@@ -39,19 +39,26 @@ class Cache
     }
 
     private function customGet($key){
+
         $val = $this->backend->get($key);
+
+        var_dump('-----------------------customGet', $key);
 
         if (!is_array($val)){
             return $val;
         }
 
         if(floatval($val['expire']) < time() && $val['expire'] != 0){
+            $this->miss();
             return false;
         }
 
         if ($this->isInvalidTags($val['tags'])){
+            $this->miss();
             return false;
         }
+
+        $this->hit();
 
         return $val['data'];
     }
@@ -72,6 +79,8 @@ class Cache
     private function customSet($key, $val, $tags, $expire = 0){
 
         $tags = $this->setInvalidTags($tags);
+
+        var_dump('-----------------------customSet', $tags);
 
         $prepared_val = array(
             'expire' => ($expire == 0)? 0 : $expire + time(),
@@ -101,7 +110,9 @@ class Cache
     }
 
     public function setInvalidTags($tags){
-        
+
+        var_dump('-----------------------setInvalidTags', $tags);
+
         $new_tags = array();
         
         $tag_version = strval(microtime(true));
@@ -114,12 +125,14 @@ class Cache
             $new_tags[$tag_name] = $tag_version;
         }
         
-        var_dump($new_tags);
+        //var_dump($new_tags);
         
         return $new_tags;
     }
     
     private function isInvalidTags($tags){
+
+        var_dump('-----------------------isInvalidTags', $tags);
         
         foreach ($tags as $tag => $version){
             $cur_version = $this->backend->get($tag);
@@ -133,6 +146,36 @@ class Cache
             }
         }
         return false;
+    }
+
+    private function hit(){
+
+        var_dump('!!!!!!!!!!!!!++++++++++++HIT');
+
+        $stats = $this->backend->get('stats');
+
+        if ($stats === false || empty($stats)){
+            $stats = array();
+        }
+
+        !key_exists('hits', $stats) ? $stats['hits'] = 0 : $stats['hits'] += 1;
+
+        $this->backend->set('stats', $stats);
+    }
+
+    private function miss(){
+
+        var_dump('!!!!!!!!!!!!!----------MISS');
+
+        $stats = $this->backend->get('stats');
+
+        if ($stats === false || empty($stats)){
+            $stats = array();
+        }
+
+        !key_exists('misses', $stats) ? $stats['misses'] = 0 : $stats['misses'] += 1;
+
+        $this->backend->set('stats', $stats);
     }
 }
 ?>
