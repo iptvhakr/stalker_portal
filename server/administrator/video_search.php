@@ -83,9 +83,9 @@ a:hover{
 }
 </style>
 
-<script language="JavaScript" src="js.js"></script>
+<script type="text/javascript" src="js.js"></script>
 
-<script>
+<script type="text/javascript">
 <?
 if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
     echo "var can_md5dum=1\n";
@@ -95,7 +95,7 @@ if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_acce
 ?>
 function doLoad(get, data){
     
-    var req = new Subsys_JsHttpRequest_Js()
+    var req = new Subsys_JsHttpRequest_Js();
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
             
@@ -103,44 +103,44 @@ function doLoad(get, data){
                 
                 if (get == 'vclub_info'){
                     
-                    var info = req.responseJS.data
+                    var info = req.responseJS.data;
                     if(info != null){
-                        display_info(info, data)
+                        display_info(info, data);
                     }
                     return
                 }
                 
                 if (get == 'startmd5sum'){
                     if (req.responseJS.error){
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'ошибка'
-                        alert(req.responseJS.error)
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'ошибка';
+                        alert(req.responseJS.error);
                     }else{
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'идет подсчет'
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'идет подсчет';
                     }
                 }
                 
                 if (get == 'chk_name'){
-                    var resp = req.responseJS
+                    var resp = req.responseJS;
                     if(resp != null){
                         resp_check_name(resp)
                     }
-                    return
+                    return;
                 }
                 
                 if (get == 'chk_org_name'){
-                    var resp = req.responseJS
+                    var resp = req.responseJS;
                     if(resp != null){
                         resp_check_org_name(resp)
                     }
-                    return
+                    return;
                 }
                 
                 if (get == 'get_cat_genres'){
-                    var resp = req.responseJS.data
+                    var resp = req.responseJS.data;
                     if(resp != null){
                         set_cat_genres(resp)
                     }
-                    return
+                    return;
                 }
                 
             }else{
@@ -149,11 +149,12 @@ function doLoad(get, data){
                 }
             }
         }
-    }
-    req.caching = false
+    };
+
+    req.caching = false;
     
-    req.open('POST', 'load.php?get='+get, true)
-    send = {data : data}
+    req.open('POST', 'load.php?get='+get, true);
+    send = {data : data};
     
     req.send(send)
 }
@@ -174,13 +175,13 @@ function display_info(arr, id){
     if (arr.length > 0){
         document.getElementById('loading_bar_'+id).style.display = 'none';
         
-        var md5sum = ''
-        var table  = '<tr>'
-        table += '<td class="list2" width="70">Сервер</td>'
-        table += '<td class="list2" width="200">Каталог</td>'
-        table += '<td class="list2" width="60">Серии</td>'
-        table += '<td class="list2">&nbsp;</td>'
-        table += '</tr>'
+        var md5sum = '';
+        var table  = '<tr>';
+        table += '<td class="list2" width="70">Сервер</td>';
+        table += '<td class="list2" width="200">Каталог</td>';
+        table += '<td class="list2" width="60">Серии</td>';
+        table += '<td class="list2">&nbsp;</td>';
+        table += '</tr>';
         
         for (i=0; i<arr.length; i++){
             var md5btn_txt = '';
@@ -193,32 +194,32 @@ function display_info(arr, id){
             }else{
                 md5btn_txt = 'идет подсчет'
             }
-            table +='<tr>'
-                 table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>'
-                 table +='<td class="list2"><b><a href="#" onclick="document.getElementById(\'files_'+id+'_'+arr[i]['storage_name']+'\').style.display=\'\';return false;"><font color="green">'+arr[i]['path']+'</font></a></b></td>'
-                 table +='<td class="list2">'+arr[i]['series']+'</td>'
-                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a></sub></td>'
-            table +='</tr>'
+            table +='<tr>';
+                 table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>';
+                 table +='<td class="list2"><b><a href="#" onclick="document.getElementById(\'files_'+id+'_'+arr[i]['storage_name']+'\').style.display=\'\';return false;"><font color="green">'+arr[i]['path']+'</font></a></b></td>';
+                 table +='<td class="list2">'+arr[i]['series']+'</td>';
+                 table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a></sub></td>';
+            table +='</tr>';
             
-            table +='<tr style="display:none" id="files_'+id+'_'+arr[i]['storage_name']+'">'
-            table +='<td colspan="4" class="list2" width="100%" style="padding-right:5px">'
-            table +='<table width="100%" border="0" cellpadding="0" cellspacing="0">'
+            table +='<tr style="display:none" id="files_'+id+'_'+arr[i]['storage_name']+'">';
+            table +='<td colspan="4" class="list2" width="100%" style="padding-right:5px">';
+            table +='<table width="100%" border="0" cellpadding="0" cellspacing="0">';
             for (j=0; j<arr[i]['files'].length; j++){
-                table +='<tr>'
+                table +='<tr>';
                 if(arr[i]['files'][j]['status'] == 'done'){
                     md5sum = arr[i]['files'][j]['md5'];
                 }else{
-                    md5sum = 'подсчитывается...'
+                    md5sum = 'подсчитывается...';
                 }
                 
-                table +='<td nowrap width="100%" align="right"><sub><b>'+arr[i]['files'][j]['name']+'</b> '+md5sum+'</sub></td>'
+                table +='<td nowrap width="100%" align="right"><sub><b>'+arr[i]['files'][j]['name']+'</b> '+md5sum+'</sub></td>';
                 
-                table +='</tr>'
+                table +='</tr>';
             }
-            table +='<tr><td><sub><br></sub></td></tr>'
-            table +='</table>'
-            table +='</td>'
-            table +='</tr>'
+            table +='<tr><td><sub><br></sub></td></tr>';
+            table +='</table>';
+            table +='</td>';
+            table +='</tr>';
             
             //document.getElementById('series_'+id).innerHTML = arr[i]['series'];
         }
@@ -226,11 +227,11 @@ function display_info(arr, id){
         document.getElementById('storages_content_'+id).innerHTML = table;
         document.getElementById('error_bar_'+id).style.display = 'none';
         document.getElementById('storages_'+id).style.display = '';
-        document.getElementById('path_'+id).style.color = 'green';
+        //document.getElementById('path_'+id).style.color = 'green';
     }else{
         document.getElementById('loading_bar_'+id).style.display = 'none';
         document.getElementById('error_bar_'+id).style.display = '';
-        document.getElementById('path_'+id).style.color = 'red';
+        //document.getElementById('path_'+id).style.color = 'red';
     }
 }
 
@@ -311,7 +312,7 @@ function md5sum(obj, status, media_name, storage_name){
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" name="total_storages" value="<? echo @$_GET['total_storages']?>" size="5" maxlength="2"></input> хранилищах
+                        <input type="text" name="total_storages" value="<? echo @$_GET['total_storages']?>" size="5" maxlength="2" /> хранилищах
                     </td>
                 </tr>
             </table>
@@ -319,11 +320,11 @@ function md5sum(obj, status, media_name, storage_name){
     </tr>
     <tr>
         <td colspan="2">
-            <input type="submit" value="Поиск" name="search"></input>
+            <input type="submit" value="Поиск" name="search" />
         </td>
     </tr>
 </table>
-<script>
+<script type="text/javascript">
     function sortby(obj){
         document.location = 'video_search.php?on_storage=<?echo @$_GET['on_storage']?>&total_storages=<?echo @$_GET['total_storages']?>&search=<?echo @$_GET['search']?>&view=<?echo @$_GET['view']?>&sortby='+obj.options[obj.selectedIndex].value;
     }
@@ -383,12 +384,19 @@ function page_bar(){
 }
 
 function get_path_color($id, $path){
-    if (check_video_status($id)){
-            $color = 'green';
-        }else{
-            $color = 'red';
+
+    $color_status = check_video_status($id);
+
+    if ($color_status == 1){
+        $color = 'green';
+    }else if ($color_status == 0){
+        $color = 'red';
+    }else if ($color_status == 2){
+        $color = 'blue';
+    }else if ($color_status == 3){
+        $color = '#f4c430';
     }
-    return "<span id='path_$id' style='color:$color'>$path</span>";
+    return "<span id='path_$id' style='color:".$color."'>$path</span>";
 }
 
 function check_video_status($id){
@@ -396,6 +404,13 @@ function check_video_status($id){
     
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
+
+    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
+
+    if (!empty($rtsp_url)){
+        return 2;
+    }
+
     return $rs->getValueByName(0, 'status');
 }
 
