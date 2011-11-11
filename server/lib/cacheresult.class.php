@@ -22,19 +22,41 @@ class CacheResult extends DatabaseResult
         
     }
     
-    public function as_array($return = false){
+    public function as_array($return = false, $field = null){
         
         if (!$return){
             
             return $this;
         }
+
+        $array = array();
+
+	    if ($this->total_rows > 0){
+
+            reset($this->data);
+
+            if($field !== null){
+                //while ($row = mysql_fetch_assoc($this->result)){
+                foreach ($this->data as $row){
+    				$array[] = $row[$field];
+    			}
+            }else{
+                //while ($row = mysql_fetch_assoc($this->result)){
+                foreach ($this->data as $row){
+    				$array[] = $row;
+                }
+            }
+
+		}
+
+        return $array;
         
-        return $this->data;
+        //return $this->data;
     }
     
-    public function all(){
+    public function all($field = null){
         
-        return $this->as_array(true);
+        return $this->as_array(true, $field);
     }
     
     public function seek($offset){
@@ -51,6 +73,10 @@ class CacheResult extends DatabaseResult
     public function current(){
         
         return $this->data[$this->current_row];
+    }
+
+    public function counter(){
+        return $this->total_rows;
     }
 }
 
