@@ -98,9 +98,9 @@ if (@$_FILES['userfile']){
                     }else if($ch == '00494'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, get_all_payed_ch_discovery());
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, get_all_hd_channels());
-                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00466' || $ch == '00609' || $ch == '00610'){
+                    }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00609' || $ch == '00610'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, $all_payed_ch);
-                        if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389' || $ch == '00466' || $ch == '00609' || $ch == '00610'){
+                        if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389' || $ch == '00609' || $ch == '00610'){
                             $add_services_on[] = $stb_id;
                         }
                     }else if($ch == '00100'){
