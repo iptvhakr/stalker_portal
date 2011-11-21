@@ -46,6 +46,21 @@ class RESTCommandStb extends RESTCommand
         return $this->formatList($stb_list);
     }
 
+    public function delete(RESTRequest $request){
+
+        if (count($request->getIdentifiers()) == 0){
+            throw new RESTCommandException('Identifier required');
+        }
+
+        $stb_list = $request->getConvertedIdentifiers();
+
+        if (count($stb_list) == 0){
+            throw new RESTCommandException('STB not found');
+        }
+
+        return $this->manager->deleteById($stb_list);
+    }
+
     private function formatList($list){
 
         $allowed_fields = $this->allowed_fields;
