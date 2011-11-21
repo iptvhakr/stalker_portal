@@ -895,6 +895,9 @@ function common_xpcom(){
             var result = '';
 
             _debug('now', now);
+            _debug('this.epg[ch_id]', this.epg[ch_id]);
+            _debug('typeof this.epg[ch_id]', typeof(this.epg[ch_id]));
+            _debug('this.epg[ch_id].length', this.epg[ch_id].length);
 
             try{
                 if (typeof(this.epg[ch_id]) == 'object' && this.epg[ch_id].length > 0){
