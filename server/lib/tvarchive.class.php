@@ -172,7 +172,7 @@ class TvArchive extends Master
         $tasks = array();
 
         $raw_tasks = Mysql::getInstance()
-            ->select('tv_archive.id as id, itv.id as ch_id, itv.cmd as cmd, UNIX_TIMESTAMP(tv_archive.start_time) as start_timestamp, UNIX_TIMESTAMP(tv_archive.end_time) as stop_timestamp')
+            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, UNIX_TIMESTAMP(tv_archive.start_time) as start_timestamp, UNIX_TIMESTAMP(tv_archive.end_time) as stop_timestamp')
             ->from('tv_archive')
             ->join('itv', 'itv.id', 'tv_archive.ch_id', 'LEFT')
             ->where($where)
