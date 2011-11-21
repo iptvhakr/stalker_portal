@@ -289,4 +289,22 @@ $words['account_terms']     = _('TERMS OF USE');
 
 $words['demo_video'] = _('Video instruction');
 
+
+$words['tv_quality_low']    = _('low quality');
+$words['tv_quality_medium'] = _('medium quality');
+$words['tv_quality_high']   = _('high quality');
+
+$words['internet']   = _('internet');
+
+$words['network_status_title'] = _('NETWORK STATUS');
+$words['network_status_refresh'] = _('REFRESH');
+
+$words['test_speed'] = _('Speed test');
+$words['speedtest_testing']   = _('testing...');
+$words['speedtest_error']     = _('error');
+$words['speedtest_waiting']   = _('waiting...');
+
+$words['lan_up']     = _('UP');
+$words['lan_down']   = _('DOWN');
+
 ?>
