@@ -20,11 +20,11 @@
         
         this.source_idx = 0;
 
-        try{
+        /*try{
             var storage_info = JSON.parse(stb.RDir('get_storage_info'));
         }catch(e){
             _debug(e);
-        }
+        }*/
         
         this.sources = [
             {
@@ -33,12 +33,23 @@
             },
             {
                 "title" : word['update_from_usb'],
-                "uri"   : (storage_info && storage_info[0]) ? storage_info[0].mountPath + "/mag200/imageupdate" : "/media/usbdisk/mag200/imageupdate"
+                //"uri"   : (storage_info && storage_info[0]) ? storage_info[0].mountPath + "/" + stb.type.toLowerCase() + "/imageupdate" : "/media/usbdisk/" + stb.type.toLowerCase() + "/imageupdate"
+                "uri"   : "/media/usbdisk/" + stb.type.toLowerCase() + "/imageupdate"
             }
         ];
         
         this.show = function(){
             _debug('update_settings.show');
+
+            try{
+                var storage_info = JSON.parse(stb.RDir('get_storage_info'));
+            }catch(e){
+                _debug(e);
+            }
+
+            this.sources[1].uri = (storage_info && storage_info[0]) ? storage_info[0].mountPath + "/" + stb.type.toLowerCase() + "/imageupdate" : "/media/usbdisk/" + stb.type.toLowerCase() + "/imageupdate";
+
+            _debug('storage_info', storage_info);
             
             this.superclass.show.call(this);
             
