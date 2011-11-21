@@ -91,6 +91,21 @@ class Stb
     public function getParam($name){
         return $this->params[$name];
     }
+
+    public function setParam($key, $value){
+
+        if (!key_exists($key, $this->params)){
+            return false;
+        }
+
+        if ($this->params[$key] == $value){
+            return true;
+        }
+
+        $this->params[$key] = $value;
+
+        return Mysql::getInstance()->update('users', array($key => $value), array('id' => $this->id));
+    }
     
     public function getStbParams(){
 
@@ -206,6 +221,9 @@ class Stb
         $profile['tv_archive_days']        = Config::exist('tv_archive_parts_number') ? Config::get('tv_archive_parts_number') / 24 : 0;
         $profile['playback_limit']         = Config::get('enable_playback_limit') ? $profile['playback_limit'] : 0;
         $profile['demo_video_url']         = Config::getSafe('demo_video_url', '');
+        $profile['tv_quality_filter']      = Config::get('enable_tv_quality_filter');
+        
+        $profile['test_download_url']      = Config::getSafe('test_download_url', '');
 
         return $profile;
     }
@@ -912,6 +930,23 @@ class Stb
         return $result->get()->all('id');
 
         //return Mysql::getInstance()->from('users')->in('mac', $mac)->get()->all('id');
+    }
+
+    public function deleteById($ids){
+
+        if (empty($ids)){
+            return false;
+        }
+
+        if (!is_array($ids)){
+            $ids = array($ids);
+        }
+
+        foreach ($ids as $id){
+            Mysql::getInstance()->delete('users', array('id' => $id));
+        }
+
+        return true;
     }
 }
 ?>
