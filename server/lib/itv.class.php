@@ -75,33 +75,55 @@ class Itv extends AjaxResponse
             $error = 'nothing_to_play';
         }
 
-        if ($channel['wowza_tmp_link']){
-            $key = $this->createTemporaryLink("1");
+        if ($channel['enable_wowza_load_balancing']){
 
-            if (!$key){
-                $error = 'link_fault';
-            }else{
-                $cmd = $channel['cmd'].'?'.$key;
-            }
-        }else{
+            $balancer_addr = $this->getWowzaBalancer($channel['cmd']);
 
-            preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+            $edge = $this->getWowzaEdge('http://'.$balancer_addr.'/loadbalancer');
 
-            if (empty($tmp_url_arr)){
+            if (!$edge){
+
                 $error = 'nothing_to_play';
             }else{
-                $redirect_host = $tmp_url_arr[1];
-                $redirect_uri  = $tmp_url_arr[2];
-                $redirect_url = '/get/'.$redirect_host.'/'.$redirect_uri;
 
-                $link_result = $this->createTemporaryLink($redirect_url);
+                $cmd = preg_replace("/".preg_replace('/:.*/', '', $balancer_addr)."/", $edge, $channel['cmd']);
 
-                var_dump($redirect_url, $link_result);
+                if ($cmd){
+                    $channel['cmd'] = $cmd;
+                }
+            }
+        }
 
-                if (!$link_result){
+        if ($channel['use_http_tmp_link']){
+
+            if ($channel['wowza_tmp_link']){
+                $key = $this->createTemporaryLink("1");
+
+                if (!$key){
                     $error = 'link_fault';
                 }else{
-                    $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result;
+                    $cmd = $channel['cmd'].'?'.$key;
+                }
+            }else{
+
+                preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+
+                if (empty($tmp_url_arr)){
+                    $error = 'nothing_to_play';
+                }else{
+                    $redirect_host = $tmp_url_arr[1];
+                    $redirect_uri  = $tmp_url_arr[2];
+                    $redirect_url = '/get/'.$redirect_host.'/'.$redirect_uri;
+
+                    $link_result = $this->createTemporaryLink($redirect_url);
+
+                    var_dump($redirect_url, $link_result);
+
+                    if (!$link_result){
+                        $error = 'link_fault';
+                    }else{
+                        $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result;
+                    }
                 }
             }
         }
@@ -115,6 +137,36 @@ class Itv extends AjaxResponse
         var_dump($res);
 
         return $res;
+    }
+
+    private function getWowzaBalancer($url){
+
+        if (preg_match('/:\/\/([^\/]*)\//', $url, $tmp)){
+            
+            return $tmp[1];
+        }
+
+        return false;
+    }
+
+    private function getWowzaEdge($balancer_addr){
+
+        $a = microtime(1);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $balancer_addr);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $responce = curl_exec($ch);
+
+        if ($responce === false){
+            return false;
+        }
+
+        $responce = trim($responce);
+
+        var_dump($balancer_addr,'load', microtime(1) - $a);
+
+        return substr($responce, strlen('redirect='));
     }
 
     private function createTemporaryLink($url){
@@ -263,6 +315,10 @@ class Itv extends AjaxResponse
                         
         if (!$this->stb->isModerator()){
             $query->where(array('status' => 1));
+        }
+
+        if (Config::get('enable_tv_quality_filter')){
+            $query->where(array('quality' => $this->stb->getParam('tv_quality')));
         }
         
         return $query;
@@ -417,6 +473,12 @@ class Itv extends AjaxResponse
         }else{
             $where['hd<='] = 1;
         }
+
+        if (Config::get('enable_tv_quality_filter')){
+            $quality = empty($_REQUEST['quality']) ? $this->stb->getParam('tv_quality') : $_REQUEST['quality'];
+            $this->stb->setParam('tv_quality', $quality);
+            $where['quality'] = $quality;
+        }
         
         if (@$_REQUEST['genre'] && @$_REQUEST['genre'] !== '*'){
             
@@ -508,6 +570,11 @@ class Itv extends AjaxResponse
 
             if($this->response['data'][$i]['use_http_tmp_link']){
                 $this->response['data'][$i]['cmd'] = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$this->response['data'][$i]['id'];
+            }
+
+            if($this->response['data'][$i]['enable_wowza_load_balancing']){
+                $this->response['data'][$i]['use_http_tmp_link'] = 1;
+                $this->response['data'][$i]['cmd'] = 'udp://ch/'.$this->response['data'][$i]['id'];
             }
             
             if (Config::get('enable_subscription')){

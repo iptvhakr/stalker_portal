@@ -67,6 +67,8 @@ if (!$error){
 
     $enable_monitoring = @intval($_POST['enable_monitoring']);
 
+    $enable_wowza_load_balancing = @intval($_POST['enable_wowza_load_balancing']);
+
     if (@$_POST['base_ch'] == 'on'){
         $base_ch = 1;
     }else{
@@ -84,6 +86,8 @@ if (!$error){
     }else{
         $hd = 0;
     }
+
+    $quality = empty($_POST['quality']) ? 'high' : $_POST['quality'];
     
     if (@$_POST['number'] && !check_number($_POST['number']) && !@$_GET['update']){
         $error = 'Ошибка: Номер канала "'.intval($_POST['number']).'" уже используется';
@@ -95,6 +99,7 @@ if (!$error){
     
             $query = "insert into itv (
                                         name,
+                                        quality,
                                         number,
                                         use_http_tmp_link,
                                         wowza_tmp_link,
@@ -106,6 +111,7 @@ if (!$error){
                                         cost,
                                         cmd, 
                                         mc_cmd,
+                                        enable_wowza_load_balancing,
                                         enable_tv_archive,
                                         enable_monitoring,
                                         monitoring_url,
@@ -116,7 +122,8 @@ if (!$error){
                                         service_id,
                                         volume_correction
                                         ) 
-                                values ('".@$_POST['name']."', 
+                                values ('".@$_POST['name']."',
+                                        '".$quality."',
                                         '".@$_POST['number']."', 
                                         '".$use_http_tmp_link."',
                                         '".$wowza_tmp_link."',
@@ -128,6 +135,7 @@ if (!$error){
                                         '".@$_POST['cost']."',
                                         '".@$_GET['cmd']."', 
                                         '".@$_POST['mc_cmd']."',
+                                        '".$enable_wowza_load_balancing."',
                                         '".$enable_tv_archive."',
                                         '".$enable_monitoring."',
                                         '".@$_POST['monitoring_url']."',
@@ -181,8 +189,10 @@ if (!$error){
             
             $query = "update itv 
                                 set name='".$_POST['name']."', 
-                                cmd='".$_GET['cmd']."', 
+                                quality='".$_POST['quality']."',
+                                cmd='".$_GET['cmd']."',
                                 mc_cmd='".$_POST['mc_cmd']."',
+                                enable_wowza_load_balancing='".$enable_wowza_load_balancing."',
                                 enable_tv_archive='".$enable_tv_archive."',
                                 enable_monitoring='".$enable_monitoring."',
                                 monitoring_url='".$_POST['monitoring_url']."',
@@ -401,6 +411,8 @@ if (@$_GET['edit']){
         $enable_tv_archive = $arr['enable_tv_archive'];
         $enable_monitoring = $arr['enable_monitoring'];
         $monitoring_url = $arr['monitoring_url'];
+        $enable_wowza_load_balancing = $arr['enable_wowza_load_balancing'];
+        $quality = $arr['quality'];
 
         if ($use_http_tmp_link){
             $checked_http_tmp_link = 'checked';
@@ -420,6 +432,10 @@ if (@$_GET['edit']){
 
         if ($enable_monitoring){
             $checked_enable_monitoring = 'checked';
+        }
+
+        if ($enable_wowza_load_balancing){
+            $checked_wowza_load_balancing = 'checked';
         }
 
         if ($censored){
@@ -550,6 +566,22 @@ function popup(src){
             <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
            </td>
         </tr>
+
+        <? if (Config::get('enable_tv_quality_filter')){ ?>
+        <tr>
+           <td align="right" valign="top">
+           Качество:
+           </td>
+           <td>
+               <select name="quality" id="quality">
+                   <option value="low" <? if ($quality == 'low') echo 'selected' ?>>низкое</option>
+                   <option value="medium" <? if ($quality == 'medium') echo 'selected' ?>>среднее</option>
+                   <option value="high" <? if ($quality == 'high') echo 'selected' ?>>высокое</option>
+               </select>
+           </td>
+        </tr>
+        <?}?>
+        
         <tr>
            <td align="right" valign="top">
            Временная HTTP ссылка:
@@ -621,6 +653,16 @@ function popup(src){
             <input id="cmd" name="cmd" size="50" type="text" value="<? echo @$cmd ?>">
            </td>
         </tr>
+
+        <tr>
+           <td align="right" valign="top">
+           WOWZA load balancing:
+           </td>
+           <td>
+            <input name="enable_wowza_load_balancing" id="enable_wowza_load_balancing" value="1" type="checkbox" <? echo @$checked_wowza_load_balancing ?> >
+           </td>
+        </tr>
+        
         <tr>
            <td align="right">
             Адрес для записи (мультикаст):
