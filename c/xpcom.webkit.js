@@ -7,6 +7,16 @@ function webkit_xpcom(){
     this.StandBy = function(par){
 
         gSTB.StandBy(par);
+
+        _debug('gSTB.RDir(HardwareVersion).substr(0, 3)', gSTB.RDir('HardwareVersion').substr(0, 3));
+
+        if (['0.1', '0.2'].indexOf(gSTB.RDir('HardwareVersion').substr(0, 3)) == -1){
+            if (par){
+                gSTB.ExecAction('front_panel led-on');
+            }else{
+                gSTB.ExecAction('front_panel led-off');
+            }
+        }
     };
 
     this.setFrontPanel = function(num, use_colon){
