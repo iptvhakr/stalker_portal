@@ -467,7 +467,7 @@ function get_params(){
 }
 
 function get_word(alias){
-    return word[alias];
+    return word[alias] || alias;
 }
 
 String.prototype.format = function() {
@@ -530,3 +530,63 @@ function createHTMLTree(obj){
     }
     return el;
 }
+
+function HTMLDefinitionList(class_name, parent){
+
+    this._class   = class_name;
+    this._parent  = parent;
+    this._rows    = [];
+    this._separator = '';
+    
+    this._init();
+}
+
+HTMLDefinitionList.prototype._init = function(){
+
+    this.dom_obj = document.createElement('dl');
+    this.dom_obj.addClass('definition_list');
+    this.dom_obj.addClass(this._class);
+    this._parent.appendChild(this.dom_obj);
+};
+
+HTMLDefinitionList.prototype.addRow = function(title, value){
+
+    var dt = document.createElement('dt');
+    dt.innerHTML = title + this._separator;
+
+    var dd = document.createElement('dd');
+    dd.innerHTML = value;
+
+    this._rows.push({"title" : title, "value" : value, "title_dom_obj" : dt, "value_dom_obj" : dd});
+
+    this.dom_obj.appendChild(dt);
+    this.dom_obj.appendChild(dd);
+};
+
+HTMLDefinitionList.prototype.setSeparator = function(separator){
+
+    this._separator = separator;
+};
+
+HTMLDefinitionList.prototype.getRowByTitle = function(title){
+
+    var idx = this._rows.getIdxByVal('title', title);
+
+    if (idx === null){
+        return undefined;
+    }
+
+    return this._rows[idx];
+};
+
+HTMLDefinitionList.prototype.updateValueByTitle = function(title, value){
+
+    var row = this.getRowByTitle(title);
+
+    if (!row){
+        return false;
+    }
+
+    row.value = value;
+    row.value_dom_obj.innerHTML = value;
+};
