@@ -984,24 +984,34 @@
         {"label" : word['tv_favorite'], "cmd" : tv.add_del_fav},
         {"label" : word['tv_move'], "cmd" : tv.switch_fav_manage_mode}
     ]);
-    
-    tv.init_sort_menu(
-        [
-            {"label" : word['tv_by_number'], "cmd" : function(){
+
+    var sort_menu_map = [
+        {
+            "label" : word['tv_by_number'],
+            "cmd" : function(){
+
                 this.parent.load_params.fav = false;
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'number';
                 this.parent.color_buttons.get('blue').disable();
-            }},
-            {"label" : word['tv_by_title'], "cmd" : function(){
+            }
+        },
+        {
+            "label" : word['tv_by_title'],
+            "cmd" : function(){
+
                 this.parent.load_params.fav = false;
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'name';
                 this.parent.color_buttons.get('blue').disable();
-            }},
-            {"label" : word['tv_only_favorite'], "cmd" : function(){
+            }
+        },
+        {
+            "label"   : word['tv_only_favorite'],
+            "cmd" : function(){
+
                 this.parent.load_params.sortby = 'fav';
                 stb.user.fav_itv_on = 1;
                 stb.player.set_fav_status();
@@ -1012,9 +1022,44 @@
                 }else{
                     this.parent.color_buttons.get('blue').disable();
                 }
-                
-            }}
-        ],
+            }
+        }
+    ];
+
+    if (stb.profile['tv_quality_filter']){
+        sort_menu_map = sort_menu_map.concat([
+            {
+                "label" : get_word('tv_quality_low'),
+                "type"  : "checkbox",
+                "name"  : "tv_quality_low",
+                "group" : "tv_quality",
+                "cmd"   : function(){
+                    this.parent.load_params.quality = "low";
+                }
+            },
+            {
+                "label" : get_word('tv_quality_medium'),
+                "type"  : "checkbox",
+                "name"  : "tv_quality_medium",
+                "group" : "tv_quality",
+                "cmd"   : function(){
+                    this.parent.load_params.quality = "medium";
+                }
+            },
+            {
+                "label" : get_word('tv_quality_high'),
+                "type"  : "checkbox",
+                "name"  : "tv_quality_high",
+                "group" : "tv_quality",
+                "cmd"   : function(){
+                    this.parent.load_params.quality = "high";
+                }
+            }
+        ])
+    }
+    
+    tv.init_sort_menu(
+        sort_menu_map,
         {
             "offset_x" : 217,
             "color"    : "green"
@@ -1043,6 +1088,13 @@
         tv.sort_menu.cur_row_idx = 2;
         tv.sort_menu.set_active_row();
         tv.sort_menu.action();
+    }
+
+    _debug('stb.profile[tv_quality_filter]', stb.profile['tv_quality_filter']);
+    _debug('stb.profile[tv_quality]', stb.profile['tv_quality']);
+
+    if (stb.profile['tv_quality_filter']){
+        tv.sort_menu.check_by_name('tv_quality_'+stb.profile['tv_quality']);
     }
     
     tv.view_menu.dependency  = [tv.sort_menu];
