@@ -38,8 +38,8 @@
 
             _debug('ntp_server', this.save_params.ntp_server);
             
-            if(stb.timezone.ntp_server != this.save_params.ntp_server){
-                stb.timezone.ntp_server = this.save_params.ntp_server;
+            if(stb.ntp_server != this.save_params.ntp_server){
+                stb.ntp_server = this.save_params.ntp_server;
                 stb.RDir('setenv ntpurl ' + this.save_params.ntp_server);
             }
         };
