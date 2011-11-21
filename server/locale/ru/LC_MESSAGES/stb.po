@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-25 12:30+0200\n"
-"PO-Revision-Date: 2011-10-25 12:30+0200\n"
+"POT-Creation-Date: 2011-11-18 18:17+0200\n"
+"PO-Revision-Date: 2011-11-18 18:18+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -871,6 +871,54 @@ msgstr "ПРАВИЛА"
 msgid "Video instruction"
 msgstr "Видео инструкция"
 
+#: ../../../lang/stb.php:293
+msgid "low quality"
+msgstr "низкое качество"
+
+#: ../../../lang/stb.php:294
+msgid "medium quality"
+msgstr "среднее качество"
+
+#: ../../../lang/stb.php:295
+msgid "high quality"
+msgstr "высокое качество"
+
+#: ../../../lang/stb.php:297
+msgid "internet"
+msgstr "интернет"
+
+#: ../../../lang/stb.php:299
+msgid "NETWORK STATUS"
+msgstr "СОСТОЯНИЕ СЕТИ"
+
+#: ../../../lang/stb.php:300
+msgid "REFRESH"
+msgstr "ОБНОВИТЬ"
+
+#: ../../../lang/stb.php:302
+msgid "Speed test"
+msgstr "Тест скорости"
+
+#: ../../../lang/stb.php:303
+msgid "testing..."
+msgstr "тестирование..."
+
+#: ../../../lang/stb.php:304
+msgid "error"
+msgstr "ошибка"
+
+#: ../../../lang/stb.php:305
+msgid "waiting..."
+msgstr "ожидание..."
+
+#: ../../../lang/stb.php:307
+msgid "UP"
+msgstr "ВКЛ"
+
+#: ../../../lang/stb.php:308
+msgid "DOWN"
+msgstr "ВЫКЛ"
+
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
 msgid "account_main_info"
@@ -1233,7 +1281,7 @@ msgid "scheduled"
 msgstr "запланировано"
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:733
+#: ../../../lib/stb.class.php:751
 msgid "city_name_field"
 msgstr "name"
 
@@ -1261,22 +1309,22 @@ msgid "s"
 msgstr "с"
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:545
+#: ../../../lib/vod.class.php:557
 msgid "today"
 msgstr "сегодня"
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:548
+#: ../../../lib/vod.class.php:560
 msgid "yesterday"
 msgstr "вчера"
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
-#: ../../../lib/vod.class.php:490
+#: ../../../lib/vod.class.php:492
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
 
-#: ../../../lib/vod.class.php:551
+#: ../../../lib/vod.class.php:563
 msgid "last week"
 msgstr "7 дней"
 
