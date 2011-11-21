@@ -92,9 +92,29 @@ bottom_menu.prototype.init = function(map){
     var item;
     
     for (var i = 0; i < map.length; i++){
-        item = document.createElement('li');
-        item.innerHTML = map[i].label;
         
+        item = document.createElement('li');
+        var label = create_block_element('', item);
+        label.style.cssFloat = "left";
+        //item.innerHTML = map[i].label;
+        label.innerHTML = map[i].label;
+
+        if (map[i].type == "checkbox"){
+            var checkbox = create_block_element('', item);
+            checkbox.addClass('bull');
+            /*checkbox.style.cssFloat = "right";
+            checkbox.style.color = "#f00";*/
+            checkbox.innerHTML = "&bull;";
+
+            this.items[i].checked = map[i].checked || false;
+
+            if (!map[i].checked){
+                checkbox.hide();
+            }
+
+            this.items[i].checkbox_dom_obj = checkbox;
+        }
+
         this.items[i].dom_obj = item;
         
         this.main_container.appendChild(item);
@@ -105,6 +125,43 @@ bottom_menu.prototype.init = function(map){
     this.set_active_row();
     
     this.hide();
+};
+
+bottom_menu.prototype.get_by_name = function(name){
+    _debug('bottom_menu.get_by_name', name);
+
+    var idx = this.items.getIdxByVal('name', name);
+
+    if (idx === null){
+        return null;
+    }
+
+    return this.items[idx];
+};
+
+bottom_menu.prototype.check_by_name = function(name){
+    _debug('bottom_menu.check_by_name', name);
+    
+    var item = this.get_by_name(name);
+
+    if (item === null){
+        return false;
+    }
+
+    this.uncheck_group(item.group);
+    item.checked = true;
+    item.checkbox_dom_obj.show();
+};
+
+bottom_menu.prototype.uncheck_group = function(group){
+    _debug('bottom_menu.uncheck_group', group);
+
+    this.items.map(function(item){
+        if (item.group == group){
+            item.checked = false;
+            item.checkbox_dom_obj.hide();
+        }
+    });
 };
 
 bottom_menu.prototype.shift_row = function(dir){
@@ -149,6 +206,10 @@ bottom_menu.prototype.action = function(){
     
     try{
         this.items[this.cur_row_idx].cmd.call(this);
+
+        if (this.items[this.cur_row_idx].type == "checkbox"){
+            this.check_by_name(this.items[this.cur_row_idx].name);
+        }
         
         if (this.need_update_header){
             this.parent.update_header_path([{"alias" : "sortby", "item" : this.items[this.cur_row_idx].label}]);

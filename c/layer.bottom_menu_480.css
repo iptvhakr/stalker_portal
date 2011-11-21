@@ -33,4 +33,9 @@
     text-shadow: #fff -1px -1px 0;
     font-weight:bold;
 }
+
+.bottom_menu_container li .bull{
+    color: #f00;
+    float: right;
+}
 /* END BOTTOM MENU */
