@@ -356,7 +356,7 @@ function common_xpcom(){
         _debug('cur_version:', cur_version);
         _debug('stb.user.image_version:', stb.user['image_version']);
 
-        if (this.firmware_version < 203){
+        if (this.firmware_version < 203 && this.firmware_version != 0){
             return 0;
         }
 
