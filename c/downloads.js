@@ -11,6 +11,17 @@
         this.superclass = ListLayer.prototype;
         this.dialog = new downloads_dialog_constructor();
         this.dialog.hide();
+
+        //this.states = ["Stopped", "WaitingQueue", "Running", "Completed", "TemporaryError", "PermanentError"];
+        this.states = [
+            get_word("download_stopped"),
+            get_word("download_waiting_queue"),
+            get_word("download_running"),
+            get_word("download_completed"),
+            get_word("download_temporary_error"),
+            get_word("download_permanent_error")
+        ];
+
         this.hide = function(do_not_reset){
             //_debug('downloads.hide');
             this.exit();
@@ -21,7 +32,7 @@
             var self = this;
             this.interval = setInterval(function(){self.every_interval.call(self);}, 3500);
             this.every_interval(false);
-        }
+        };
         this.every_interval = function(do_load_data){
             var obj = [];
             if(stbDownloadManager) {
@@ -36,10 +47,11 @@
                     'd_name': obj[i].filePath.split('/')[obj[i].filePath.split('/').length-1],
                     'd_progress':(obj[i].progressPct != '-1') ?
                         '<span class="pb"><span style="width:'+(obj[i].progressPct * 110 / 100)+'px;"></span></span><span class="txt">'+obj[i].progressPct.substr(0, 4)+'%</span>':
-                        '<span class="pb"><span style="width:0px;"></span></span><span class="txt">0%</span>',
-                    'd_status':obj[i].stateStr,
-                    'state':obj[i].state,
-                    'id':obj[i].id
+                        '<span class="pb"><span style="width:0;"></span></span><span class="txt">0%</span>',
+                    //'d_status':obj[i].stateStr,
+                    'd_status': this.states[parseInt(obj[i].state)],
+                    'state': obj[i].state,
+                    'id': obj[i].id
                 });
             }
             if(!do_load_data || do_load_data!=false) {
