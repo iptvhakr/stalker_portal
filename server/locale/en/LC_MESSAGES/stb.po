@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-18 18:17+0200\n"
-"PO-Revision-Date: 2011-11-18 18:17+0200\n"
+"POT-Creation-Date: 2011-12-07 12:51+0200\n"
+"PO-Revision-Date: 2011-12-07 12:51+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -874,51 +874,87 @@ msgid "Video instruction"
 msgstr ""
 
 #: ../../../lang/stb.php:293
-msgid "low quality"
+msgid "QUALITY"
 msgstr ""
 
 #: ../../../lang/stb.php:294
-msgid "medium quality"
+msgid "low"
 msgstr ""
 
 #: ../../../lang/stb.php:295
-msgid "high quality"
+msgid "medium"
 msgstr ""
 
-#: ../../../lang/stb.php:297
-msgid "internet"
+#: ../../../lang/stb.php:296
+msgid "high"
+msgstr ""
+
+#: ../../../lang/stb.php:298
+msgid "add"
 msgstr ""
 
 #: ../../../lang/stb.php:299
-msgid "NETWORK STATUS"
+msgid "del"
 msgstr ""
 
-#: ../../../lang/stb.php:300
-msgid "REFRESH"
-msgstr ""
-
-#: ../../../lang/stb.php:302
-msgid "Speed test"
+#: ../../../lang/stb.php:301
+msgid "internet"
 msgstr ""
 
 #: ../../../lang/stb.php:303
-msgid "testing..."
+msgid "NETWORK STATUS"
 msgstr ""
 
 #: ../../../lang/stb.php:304
-msgid "error"
+msgid "REFRESH"
 msgstr ""
 
-#: ../../../lang/stb.php:305
-msgid "waiting..."
+#: ../../../lang/stb.php:306
+msgid "Speed test"
 msgstr ""
 
 #: ../../../lang/stb.php:307
-msgid "UP"
+msgid "testing..."
 msgstr ""
 
 #: ../../../lang/stb.php:308
+msgid "error"
+msgstr ""
+
+#: ../../../lang/stb.php:309
+msgid "waiting..."
+msgstr ""
+
+#: ../../../lang/stb.php:311
+msgid "UP"
+msgstr ""
+
+#: ../../../lang/stb.php:312
 msgid "DOWN"
+msgstr ""
+
+#: ../../../lang/stb.php:314
+msgid "stopped"
+msgstr ""
+
+#: ../../../lang/stb.php:315
+msgid "waiting queue"
+msgstr ""
+
+#: ../../../lang/stb.php:316
+msgid "running"
+msgstr ""
+
+#: ../../../lang/stb.php:317
+msgid "completed"
+msgstr ""
+
+#: ../../../lang/stb.php:318
+msgid "temporary error"
+msgstr ""
+
+#: ../../../lang/stb.php:319
+msgid "permanent error"
 msgstr ""
 
 #: ../../../lib/accountinfo.class.php:12
@@ -1274,16 +1310,16 @@ msgstr ""
 msgid "wind"
 msgstr ""
 
-#: ../../../lib/remotepvr.class.php:73
+#: ../../../lib/remotepvr.class.php:85
 msgid "recording"
 msgstr ""
 
-#: ../../../lib/remotepvr.class.php:75
+#: ../../../lib/remotepvr.class.php:87
 msgid "scheduled"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:751
+#: ../../../lib/stb.class.php:756
 msgid "city_name_field"
 msgstr "name_en"
 
@@ -1291,7 +1327,7 @@ msgstr "name_en"
 msgid "Starting recording"
 msgstr ""
 
-#: ../../../lib/streamrecorder.class.php:384
+#: ../../../lib/streamrecorder.class.php:394
 msgid "Stopped recording"
 msgstr ""
 

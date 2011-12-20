@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-18 18:17+0200\n"
-"PO-Revision-Date: 2011-11-18 18:18+0200\n"
+"POT-Creation-Date: 2011-12-07 12:51+0200\n"
+"PO-Revision-Date: 2011-12-07 12:53+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -872,52 +872,88 @@ msgid "Video instruction"
 msgstr "Видео инструкция"
 
 #: ../../../lang/stb.php:293
-msgid "low quality"
-msgstr "низкое качество"
+msgid "QUALITY"
+msgstr "КАЧЕСТВО"
 
 #: ../../../lang/stb.php:294
-msgid "medium quality"
-msgstr "среднее качество"
+msgid "low"
+msgstr "низкое"
 
 #: ../../../lang/stb.php:295
-msgid "high quality"
-msgstr "высокое качество"
+msgid "medium"
+msgstr "среднее"
 
-#: ../../../lang/stb.php:297
+#: ../../../lang/stb.php:296
+msgid "high"
+msgstr "высокое"
+
+#: ../../../lang/stb.php:298
+msgid "add"
+msgstr "добавить"
+
+#: ../../../lang/stb.php:299
+msgid "del"
+msgstr "удалить"
+
+#: ../../../lang/stb.php:301
 msgid "internet"
 msgstr "интернет"
 
-#: ../../../lang/stb.php:299
+#: ../../../lang/stb.php:303
 msgid "NETWORK STATUS"
 msgstr "СОСТОЯНИЕ СЕТИ"
 
-#: ../../../lang/stb.php:300
+#: ../../../lang/stb.php:304
 msgid "REFRESH"
 msgstr "ОБНОВИТЬ"
 
-#: ../../../lang/stb.php:302
+#: ../../../lang/stb.php:306
 msgid "Speed test"
 msgstr "Тест скорости"
 
-#: ../../../lang/stb.php:303
+#: ../../../lang/stb.php:307
 msgid "testing..."
 msgstr "тестирование..."
 
-#: ../../../lang/stb.php:304
+#: ../../../lang/stb.php:308
 msgid "error"
 msgstr "ошибка"
 
-#: ../../../lang/stb.php:305
+#: ../../../lang/stb.php:309
 msgid "waiting..."
 msgstr "ожидание..."
 
-#: ../../../lang/stb.php:307
+#: ../../../lang/stb.php:311
 msgid "UP"
 msgstr "ВКЛ"
 
-#: ../../../lang/stb.php:308
+#: ../../../lang/stb.php:312
 msgid "DOWN"
 msgstr "ВЫКЛ"
+
+#: ../../../lang/stb.php:314
+msgid "stopped"
+msgstr "остановлено"
+
+#: ../../../lang/stb.php:315
+msgid "waiting queue"
+msgstr "ожидание"
+
+#: ../../../lang/stb.php:316
+msgid "running"
+msgstr "загрузка"
+
+#: ../../../lang/stb.php:317
+msgid "completed"
+msgstr "закончено"
+
+#: ../../../lang/stb.php:318
+msgid "temporary error"
+msgstr "временная ошибка"
+
+#: ../../../lang/stb.php:319
+msgid "permanent error"
+msgstr "ошибка"
 
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
@@ -1272,16 +1308,16 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/remotepvr.class.php:73
+#: ../../../lib/remotepvr.class.php:85
 msgid "recording"
 msgstr "идет запись"
 
-#: ../../../lib/remotepvr.class.php:75
+#: ../../../lib/remotepvr.class.php:87
 msgid "scheduled"
 msgstr "запланировано"
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:751
+#: ../../../lib/stb.class.php:756
 msgid "city_name_field"
 msgstr "name"
 
@@ -1289,7 +1325,7 @@ msgstr "name"
 msgid "Starting recording"
 msgstr "Начинается запись"
 
-#: ../../../lib/streamrecorder.class.php:384
+#: ../../../lib/streamrecorder.class.php:394
 msgid "Stopped recording"
 msgstr "Остановлена запись"
 
@@ -1764,3 +1800,8 @@ msgstr "З"
 msgid "NW"
 msgstr "СЗ"
 
+#~ msgid "low quality"
+#~ msgstr "низкое качество"
+
+#~ msgid "high quality"
+#~ msgstr "высокое качество"
