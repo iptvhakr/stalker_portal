@@ -205,6 +205,10 @@
                     this.play(this.active_row['epg_cell'][this.cur_cell_col].data.rec_id);
                 }else if (this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive && this.tv_archive){
                     //_debug('this.active_row[epg_cell][this.cur_cell_col].data.mark_archive', this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive);
+                    if (!this.channel.wowza_dvr){
+
+                    }
+                    
                     this.tv_archive.play();
                 }else{
 
@@ -582,7 +586,7 @@
                     this.color_buttons.get('red')  .disable();
                     this.color_buttons.get('green').disable();
 
-                    if (now >= this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp && module.downloads && this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive && this.tv_archive){
+                    if (now >= this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp && module.downloads && this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive && this.tv_archive && !this.channel.wowza_dvr){
                         this.color_buttons.get('yellow').enable();
                     }
 
