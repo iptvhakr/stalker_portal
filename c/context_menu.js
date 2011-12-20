@@ -312,7 +312,7 @@ context_menu.prototype.bind = function(){
     
     this.goto_main_menu.bind(key.LEFT, this);
     
-    this.hide.bind(key.EXIT, this).bind(key.NULL, this);
+    this.hide.bind(key.EXIT, this).bind(key.NULL, this).bind(key.WEB, this).bind(key.AUDIO, this);
 };
 
 context_menu.prototype.goto_sub_menu = function(){
@@ -359,6 +359,8 @@ context_menu.prototype.action = function(){
     }catch(e){
         _debug(e);
     }
+
+    this.hide();
 };
 
 context_menu.prototype.set_active_option = function(row){
