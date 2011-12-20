@@ -8,7 +8,7 @@
 .blue_row_bg .d_number_block{background-position:-92px 0px;width:34px;height:21px;float:left;margin:4px 0 0 4px;color:#002864;text-shadow:#fff 0 1px 0;font-size:18px;text-align:center;overflow:hidden;}
 .blue_row_bg .d_name_block,
 .blue_row_bg .d_status_block,
-.blue_row_bg .d_progress_block{float:left;width:247px;color:#fff;font-size:20px;text-shadow:#122946 0 -1px 0;margin:3px 5px 0 3px;padding-left:3px;overflow:hidden;text-overflow:ellipsis;font-family:"Myriad Pro Cond";}
+.blue_row_bg .d_progress_block{white-space: pre;float:left;width:247px;color:#fff;font-size:20px;text-shadow:#122946 0 -1px 0;margin:3px 5px 0 3px;padding-left:3px;overflow:hidden;text-overflow:ellipsis;font-family:"Myriad Pro Cond";}
 .blue_row_bg .d_name_block{padding-top:1px;margin-left:5px;}
 .blue_row_bg .d_progress_block{line-height:32px;width:165px;}
 .blue_row_bg .d_status_block{padding-top:2px;width:135px;}
