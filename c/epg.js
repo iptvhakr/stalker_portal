@@ -576,9 +576,16 @@
 
                 this.active_row['epg_cell'][this.cur_cell_col].cell.setAttribute('rel', 'active');
 
+                this.color_buttons.get('yellow').disable();
+
                 if (now > this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp){
                     this.color_buttons.get('red')  .disable();
                     this.color_buttons.get('green').disable();
+
+                    if (now >= this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp && module.downloads && this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive && this.tv_archive){
+                        this.color_buttons.get('yellow').enable();
+                    }
+
                 }else{
                     if (module.remote_pvr && this.channel.mc_cmd){
                         this.color_buttons.get('red').enable();
@@ -625,8 +632,16 @@
                 this.program_info.innerHTML = '';
                 this.on_date.innerHTML = '';
             }
+        };
+
+        this.add_download = function(url, to_filename){
+            _debug('epg_simple.add_download', url, to_filename);
+
+            if (module.downloads){
+                _debug('downloads');
+                module.downloads.dialog.show({"parent" : this, "url" : url, "name" : to_filename});
+            }
         }
-        
     }
     
     epg_constructor.prototype = new ListLayer();
@@ -692,7 +707,7 @@
     epg.init_color_buttons([
         {"label" : word['epg_record'], "cmd" : (function(){if (epg.recorder){return function(){epg.recorder.add_del()}}else{return ''}})()},
         {"label" : word['epg_remind'], "cmd" : (function(){if (epg.reminder){return function(){epg.reminder.add_del()}}else{return ''}})()},
-        {"label" : word['empty'], "cmd" : ''},
+        {"label" : word['downloads_download'], "cmd" : stb.all_modules.indexOf('downloads') >=0 ? function(){epg.tv_archive.play.call(epg.tv_archive, true, function(url, to_file){epg.add_download.call(epg, url, to_file)})} : ''},
         {"label" : word['empty'], "cmd" : ''}
     ]);
     
