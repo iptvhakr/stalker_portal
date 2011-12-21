@@ -152,6 +152,8 @@ player.prototype.event_callback = function(event){
                     _debug('stream error');
                     
                     var self = this;
+
+                    stb.log_stream_error(this.cur_tv_item['id'], 1);
                     
                     this.replay_channel_timer = window.setTimeout(
                         function(){
@@ -169,13 +171,13 @@ player.prototype.event_callback = function(event){
                         return;
                     }*/
                     
-                    if (this.play_continuously){
+                    if (this.play_continuously && this.cur_media_item.hasOwnProperty('series')){
                         
                         _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
                         _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
                         _debug('this.cur_media_item.hasOwnProperty(series)', this.cur_media_item.hasOwnProperty('series'));
                         
-                        if (this.cur_media_item.hasOwnProperty('series')){
+                        //if (this.cur_media_item.hasOwnProperty('series')){
                             
                             _debug('this.cur_media_item.cur_series + 1', this.cur_media_item.cur_series + 1);
                             
@@ -188,14 +190,15 @@ player.prototype.event_callback = function(event){
                                 
                                 break;
                             }
-                        }
+                        //}
                         
                         //this.cur_media_item.series;
                         //this.cur_media_item.cur_series;
                         
                     }
 
-                    if (this.active_time_shift && this.cur_media_item['wowza_dvr'] != 1){
+                    /*if (this.active_time_shift && this.cur_media_item['wowza_dvr'] != 1){*/
+                    if (this.active_time_shift){
 
                         var cur_piece_pos_time = stb.GetPosTime();
                         _debug('cur_piece_pos_time', cur_piece_pos_time);
@@ -370,6 +373,10 @@ player.prototype.event_callback = function(event){
             var self = this;
             
             if (this.media_type == 'stream'){
+
+                if (this.is_tv){
+                    stb.log_stream_error(this.cur_tv_item['id'], 5);
+                }
 
                 if (this.proto == 'http' && this.is_tv){
 
@@ -705,7 +712,7 @@ player.prototype.define_media_type = function(cmd){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('rtmp://') >=0 ||cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
+        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -1083,7 +1090,7 @@ player.prototype.init_rec = function(){
 player.prototype.pause_switch = function(){
     _debug('player.pause_switch');
     
-    if (this.is_tv && (!parseInt(this.cur_media_item.enable_tv_archive, 10) || this.prev_layer.on)){
+    if (this.is_tv && (!parseInt(this.cur_media_item.enable_tv_archive, 10) || this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
         return;
     }
 
@@ -1119,23 +1126,23 @@ player.prototype.disable_pause = function(){
     if (this.active_time_shift){
         _debug('new Date() - module.time_shift.cur_media_item.live_date', (new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime())/1000);
 
-        if (this.cur_media_item['wowza_dvr'] == 1){
+        /*if (this.cur_media_item['wowza_dvr'] == 1){
 
             var position = module.time_shift.get_position_from_url();
 
-            position += new Date().getTime() - module.time_shift.live_date.getTime();
+            position += new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime();
 
-            module.time_shift.update_position_in_url(position);
+            module.time_shift.update_position_in_url(parseInt(position/1000, 10));
 
             this.play(module.time_shift.cur_media_item);
 
-        }else{
+        }else{*/
             if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
                this.play_last();
             }else{
                 this.play(module.time_shift.cur_media_item);
             }
-        }
+        /*}*/
 
     }else{
         
@@ -1255,6 +1262,8 @@ player.prototype.show_info = function(item){
             /*if (this.last_state == 4){
                 this.set_pos_button_to_cur_time();
             }*/
+
+            _debug('this.last_state', this.last_state);
             
             if (this.info.video_container.isHidden()){
                 this.info.video_container.show();
@@ -1593,7 +1602,7 @@ player.prototype.bind = function(){
             this.con_menu && this.con_menu.show && this.con_menu.show();
         }
         
-    }).bind(key.WEB, this);
+    }).bind(key.APP, this).bind(key.AUDIO, this);
     
     
     (function(){
@@ -2055,7 +2064,7 @@ player.prototype.move_pos = function(dir){
         return;
     }*/
 
-    if (this.is_tv && (!parseInt(this.cur_media_item.enable_tv_archive, 10) || this.prev_layer.on)){
+    if (this.is_tv && (!parseInt(this.cur_media_item.enable_tv_archive, 10) || this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
         return;
     }
 
@@ -2522,6 +2531,11 @@ player.prototype.subtitle_pid = {
         _debug('subtitle_pid.set', pid);
     
         stb.SetSubtitles(true);
+
+        this.cur_pid_idx = this.all_pids.getIdxByVal('pid', pid);
+
+        _debug('this.cur_pid_idx', this.cur_pid_idx);
+        _debug('this.all_pids', this.all_pids);
         
         this.all_pids[this.cur_pid_idx].selected = false;
         this.cur_pid = pid;
