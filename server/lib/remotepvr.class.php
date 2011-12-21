@@ -12,6 +12,8 @@ class RemotePvr extends AjaxResponse
 
         $media_id = $tmp_arr[1];
 
+        $item = self::getById($media_id);
+
         $master = new StreamRecorder();
 
         try {
@@ -20,9 +22,19 @@ class RemotePvr extends AjaxResponse
             trigger_error($e->getMessage());
         }
 
+        if (!empty($res['cmd'])){
+            preg_match("/\.(\w*)$/", $res['cmd'], $ext_arr);
+            $res['to_file'] = System::transliterate($item['id'].'_'.Itv::getChannelNameById($item['ch_id']).'_'.$item['program']);
+            $res['to_file'] .= '.'.$ext_arr[1];
+        }
+
         var_dump($res);
 
         return $res;
+    }
+
+    public static function getById($id){
+        return Mysql::getInstance()->from('users_rec')->where(array('id' => intval($id)))->get()->first();
     }
 
     public function getOrderedList(){
