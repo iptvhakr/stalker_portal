@@ -197,7 +197,9 @@
                         stb.player.cur_tv_item = stb.player.channels[stb.player.ch_idx];
                         
                         keydown_observer.emulate_key(key.MENU);
-                        keydown_observer.emulate_key(key.EXIT);
+                        //keydown_observer.emulate_key(key.EXIT);
+                        main_menu.hide();
+                        stb.player.play_last();
                     }
                     
                 }else{
@@ -210,7 +212,9 @@
                     stb.player.cur_tv_item = stb.player.fav_channels[stb.player.f_ch_idx];
                     
                     keydown_observer.emulate_key(key.MENU);
-                    keydown_observer.emulate_key(key.EXIT);
+                    //keydown_observer.emulate_key(key.EXIT);
+                    main_menu.hide();
+                    stb.player.play_last();
                 }
             });
             
