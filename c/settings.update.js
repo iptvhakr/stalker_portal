@@ -85,7 +85,7 @@
             this.h_shift.bind(key.LEFT, this, -1).bind(key.DOWN, this, -1);
             this.h_shift.bind(key.RIGHT, this, 1).bind(key.UP, this, 1);
             
-            this.start_update.bind(key.OK, this);
+            //this.start_update.bind(key.OK, this);
             
             (function(){
                 this.hide();
