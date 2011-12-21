@@ -95,9 +95,12 @@ if (@$_FILES['userfile']){
                             $result[$stb_id] = array();
                         }
                         $result[$stb_id][] = intval($service_id_map[$ch]);
-                    }else if($ch == '00494'){
+                    }else if($ch == '00494' || $ch == '00674' || $ch == '00675'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, get_all_payed_ch_discovery());
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, get_all_hd_channels());
+                        if ($ch == '00674' || $ch == '00675'){
+                            $add_services_on[] = $stb_id;
+                        }
                     }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00609' || $ch == '00610'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, $all_payed_ch);
                         if ($ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00389' || $ch == '00609' || $ch == '00610'){
@@ -112,10 +115,13 @@ if (@$_FILES['userfile']){
                         $add_services_on[] = $stb_id;
                     }else if($ch == '00649'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, array(270, 271, 272, 273, 274, 275));
-                    }else if($ch == '00630' || $ch == '00642'){
+                    }else if($ch == '00630' || $ch == '00642' || $ch == '00673'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, $extended_packet);
-                        //$result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, $bonus2);
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, $bonus1);
+                        $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, array(245, 263));
+                        if ($ch == '00673'){
+                            $add_services_on[] = $stb_id;
+                        }
                     }else{
                         if (!@key_exists($stb_id, $result)){
                             $result[$stb_id] = array();
