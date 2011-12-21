@@ -45,7 +45,7 @@
 
             _debug('this.cur_media_item[wowza_dvr]', this.cur_media_item['wowza_dvr']);
 
-            if (this.cur_media_item['wowza_dvr'] == 1){
+            /*if (this.cur_media_item['wowza_dvr'] == 1){
                 
                 var cur_piece_date = new Date();
                 var len = stb.GetMediaLen();
@@ -55,9 +55,9 @@
 
                 cur_piece_date.setSeconds(cur_piece_date.getSeconds() - len + cur_pos_time);
                 
-            }else{
+            }else{*/
                 cur_piece_date = new Date(this.cur_piece_date);
-            }
+            /*}*/
 
             _debug('this.cur_piece_date', this.cur_piece_date);
             _debug('typeof(this.cur_piece_date)', typeof(this.cur_piece_date));
@@ -89,7 +89,7 @@
 
             _debug('stb.player.cur_media_item.cmd', stb.player.cur_media_item.cmd);
 
-            if (/([^\/]*)\.mpg/.exec(stb.player.cur_media_item.cmd)){
+            if (/([^\/]*)\.mp[g,4]/.exec(stb.player.cur_media_item.cmd)){
 
                 _debug('stb.player.play_initiated', stb.player.play_initiated);
 
@@ -109,7 +109,7 @@
                     _debug('current_pos_time 2', current_pos_time);
                 }
 
-            }else if (this.cur_media_item['wowza_dvr'] == 1){
+            /*}else if (this.cur_media_item['wowza_dvr'] == 1){
                 
                 var cur_time = new Date();
                 var media_len = stb.GetMediaLen();
@@ -123,7 +123,7 @@
 
                 _debug('pos_time', pos_time);
 
-                return pos_time;
+                return pos_time;*/
                 
             }else{
                 var now = new Date();
@@ -147,7 +147,7 @@
         _get_file_date_by_url : function(url){
             _debug('time_shift._get_file_date_by_url', url);
 
-            var date_part = /([^\/]*)\.mpg/.exec(url);
+            var date_part = /([^\/]*)\.mp[g,4]/.exec(url);
 
             _debug('date_part', date_part);
 
@@ -285,7 +285,7 @@
 
             _debug('position', position);
 
-            var url = this.cur_media_item.cmd.replace(/([^\/]*)\.mpg/, new_file_name).trim();
+            var url = this.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, new_file_name).trim();
 
             _debug('url 1', url);
 
@@ -304,11 +304,13 @@
         get_filename_by_date : function(date){
             _debug('time_shift.get_filename_by_date', date);
 
+            _debug('stb.player.cur_tv_item[wowza_dvr]', stb.player.cur_tv_item);
+
             return date.getFullYear() + ''
                     + this.format_date(date.getMonth() + 1) + ''
                     + this.format_date(date.getDate()) + '-'
                     + this.format_date(date.getHours())
-                    + '.mpg';
+                    + (parseInt(stb.player.cur_tv_item['wowza_dvr'], 10) ? '.mp4' : '.mpg');
         },
 
         format_date : function(param){
@@ -346,7 +348,7 @@
 
             _debug('next_file_name', next_file_name);
 
-            var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mpg/, next_file_name).replace(/position:(\d*)/, '').trim();
+            var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, next_file_name).replace(/position:(\d*)/, '').trim();
 
             this.cur_media_item.live_date = new Date();
 
