@@ -50,7 +50,7 @@ class ItvSubscription
 
     public static function getByUids($uids = array()){
         
-        $result = Mysql::getInstance()->select('itv_subscription.*, users.mac as mac, users.ls as ls')->from('itv_subscription')->join('users', 'itv_subscription.uid', 'users.id', 'LEFT');
+        $result = Mysql::getInstance()->select('itv_subscription.*, users.mac as mac, users.ls as ls, users.additional_services_on as additional_services_on')->from('itv_subscription')->join('users', 'itv_subscription.uid', 'users.id', 'LEFT');
 
         if (!empty($uids)){
             $result = $result->in('uid', $uids);
