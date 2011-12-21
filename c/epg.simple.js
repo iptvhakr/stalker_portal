@@ -124,7 +124,7 @@
                 //this.parent.show(true);
                 this.parent._show.call(this.parent, this.parent.genre);
                 this.hide();
-            }).bind(key.EXIT, this);
+            }).bind(key.EXIT, this).bind(key.EPG, this);
             
             (function(){
                 if (!this.epg_list_active){
@@ -133,6 +133,12 @@
                     if (this.data_items[this.cur_row].rec_id){
                         this.play(this.data_items[this.cur_row].rec_id);
                     }else if(this.data_items[this.cur_row].mark_archive && this.tv_archive){
+
+                        if (!stb.player.cur_media_item.wowza_dvr){
+                            delete stb.player.cur_media_item.enable_tv_archive;
+                            delete this.data_items[this.cur_row].media_len;
+                        }
+
                         this.tv_archive.play();
                     }
                 }
@@ -206,6 +212,7 @@
                 }else if(result.error == 'link_fault'){
                     stb.notice.show(word['player_server_error']);
                 }else{
+
 
                     self.hide(true);
 
@@ -344,9 +351,16 @@
             _debug('now', now);
             _debug('this.data_items[this.cur_row].start_timestamp', this.data_items[this.cur_row].start_timestamp);
 
+            this.color_buttons.get('yellow').disable();
+
             if (now > this.data_items[this.cur_row].start_timestamp){
                 this.color_buttons.get('red')  .disable();
                 this.color_buttons.get('green').disable();
+
+                if (now >= this.data_items[this.cur_row].stop_timestamp && module.downloads && this.data_items[this.cur_row].mark_archive && this.tv_archive && !stb.player.cur_media_item.wowza_dvr){
+                    this.color_buttons.get('yellow').enable();
+                }
+                
             }else{
                 if (module.remote_pvr && this.channel.mc_cmd){
                     this.color_buttons.get('red').enable();
@@ -546,6 +560,15 @@
             
             //this.load_data();
         };
+
+        this.add_download = function(url, to_filename){
+            _debug('epg_simple.add_download', url, to_filename);
+
+            if (module.downloads){
+                _debug('downloads');
+                module.downloads.dialog.show({"parent" : this, "url" : url, "name" : to_filename});
+            }
+        }
     }
     
     EpgSimpleConstructor.prototype = new ListLayer();
@@ -638,7 +661,7 @@
     epg_simple.init_color_buttons([
         {"label" : word['epg_record'], "cmd" : (function(){if (epg_simple.recorder){return function(){epg_simple.recorder.add_del()}}else{return ''}})()},
         {"label" : word['epg_remind'], "cmd" : (function(){if (epg_simple.reminder){return function(){epg_simple.reminder.add_del()}}else{return ''}})()},
-        {"label" : word['empty'], "cmd" : ''},
+        {"label" : word['downloads_download'], "cmd" : stb.all_modules.indexOf('downloads') >=0 ? function(){epg_simple.tv_archive.play.call(epg_simple.tv_archive, true, function(url, to_file){epg_simple.add_download.call(epg_simple, url, to_file)})} : ''},
         {"label" : word['empty'], "cmd" : ''}
     ]);
     
