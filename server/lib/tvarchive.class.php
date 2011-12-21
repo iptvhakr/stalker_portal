@@ -39,30 +39,54 @@ class TvArchive extends Master
 
         $channel = Itv::getChannelById($program['ch_id']);
 
+        $filename = date("Ymd-H", $start_timestamp);
+
         if ($channel['wowza_dvr']){
+            $filename .= '.mp4';
+        }else{
+            $filename .= '.mpg';
+        }
+
+        /*if ($channel['wowza_dvr']){
 
             $position = $start_timestamp - (time() - Config::get('tv_archive_parts_number') * 3600);
 
             $res['cmd'] = $channel['mc_cmd']
                         . 'position:' . $position;
             
-        }else{
+        }else{*/
 
-            $storage = Master::getStorageByName($task['storage_name']);
+        $storage = Master::getStorageByName($task['storage_name']);
 
-            $res['storage_id'] = $storage['id'];
-
-            $position = date("i", $start_timestamp) * 60;
-
-            $res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
-                        . '/archive/'
-                        . $program['ch_id']
-                        . '/'
-                        . date("Ymd-H", $start_timestamp)
-                        . '.mpg position:' . $position;
+        if ($storage['wowza_server']){
+            $storage['storage_ip'] = empty($storage['archive_stream_server']) ? $storage['storage_ip'] : $storage['archive_stream_server'];
         }
 
+        $res['storage_id'] = $storage['id'];
+
+        $position = date("i", $start_timestamp) * 60;
+
+        $res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
+                    . '/archive/'
+                    . $program['ch_id']
+                    . '/'
+                    . $filename
+                    . ' position:' . $position;
+        /*}*/
+
         $res['cmd'] .= ' media_len:' . ($stop_timestamp - $start_timestamp);
+
+        $res['download_cmd'] = 'http://' . $storage['storage_ip'] . ':88'
+            . '/stalker_portal/storage/get.php?filename=' . $filename
+            . '&ch_id=' . $program['ch_id']
+            . '&start=' . $position
+            . '&duration=' . ($stop_timestamp - $start_timestamp);
+
+        if (!$channel['wowza_dvr']){
+            $res['cmd'] = $res['download_cmd'];
+        }
+
+        $res['to_file'] = date("Ymd-H", $start_timestamp).'_'.System::transliterate($channel['name'].'_'.$program['name']).'.mpg';
 
         var_dump($res);
 
@@ -85,12 +109,22 @@ class TvArchive extends Master
 
         $position = date("i") * 60 + intval(date("s"));
 
+        $channel = Itv::getChannelById($ch_id);
+
+        $filename = date("Ymd-H");
+
+        if ($channel['wowza_dvr']){
+            $filename .= '.mp4';
+        }else{
+            $filename .= '.mpg';
+        }
+
         return 'ffmpeg http://' . $storage['storage_ip']
                              . '/archive/'
                              . $ch_id
                              . '/'
-                             . date("Ymd-H")
-                             . '.mpg position:' . $position
+                             . $filename
+                             . ' position:' . $position
                              . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
     }
 
@@ -117,6 +151,17 @@ class TvArchive extends Master
 
     protected function getMediaName(){
         return $this->media_id;
+    }
+
+    protected function getStorageLoad($storage){
+
+        $total_tasks = count($this->getAllTasks());
+
+        if ($total_tasks == 0){
+            return 0;
+        }
+
+        return count($this->getAllTasks($storage['storage_name'])) / count($this->getAllTasks());
     }
 
     public function createTask($ch_id){
@@ -172,7 +217,7 @@ class TvArchive extends Master
         $tasks = array();
 
         $raw_tasks = Mysql::getInstance()
-            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, UNIX_TIMESTAMP(tv_archive.start_time) as start_timestamp, UNIX_TIMESTAMP(tv_archive.end_time) as stop_timestamp')
+            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, enable_tv_archive & wowza_dvr as wowza_archive, UNIX_TIMESTAMP(tv_archive.start_time) as start_timestamp, UNIX_TIMESTAMP(tv_archive.end_time) as stop_timestamp')
             ->from('tv_archive')
             ->join('itv', 'itv.id', 'tv_archive.ch_id', 'LEFT')
             ->where($where)
