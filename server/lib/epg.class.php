@@ -800,11 +800,9 @@ class Epg
 
             if (key_exists($program[$i]['ch_id'], $archived_recs)){
 
-                //var_dump($program[$i]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['start_timestamp'], $archived_recs[$program[$i]['ch_id']]['stop_timestamp']);
-
-                //if (time() > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] && time() < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']){
-                if ($program[$i]['start_timestamp'] > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] &&
-                    $program[$i]['start_timestamp'] < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']){
+                if (($program[$i]['start_timestamp'] > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] &&
+                    $program[$i]['start_timestamp'] < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']) ||
+                    ($archived_recs[$program[$i]['ch_id']]['wowza_archive'] && $program[$i]['start_timestamp'] < (time() - date("i")*60-date("s"))) ){
                     
                     $program[$i]['mark_archive'] = 1;
                     $program[$i]['position']  = date("i", $program[$i]['start_timestamp']) * 60;
