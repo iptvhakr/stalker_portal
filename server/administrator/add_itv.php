@@ -87,8 +87,6 @@ if (!$error){
         $hd = 0;
     }
 
-    $quality = empty($_POST['quality']) ? 'high' : $_POST['quality'];
-    
     if (@$_POST['number'] && !check_number($_POST['number']) && !@$_GET['update']){
         $error = 'Ошибка: Номер канала "'.intval($_POST['number']).'" уже используется';
     }
@@ -99,7 +97,6 @@ if (!$error){
     
             $query = "insert into itv (
                                         name,
-                                        quality,
                                         number,
                                         use_http_tmp_link,
                                         wowza_tmp_link,
@@ -109,7 +106,10 @@ if (!$error){
                                         bonus_ch,
                                         hd,
                                         cost,
-                                        cmd, 
+                                        cmd,
+                                        cmd_1,
+                                        cmd_2,
+                                        cmd_3,
                                         mc_cmd,
                                         enable_wowza_load_balancing,
                                         enable_tv_archive,
@@ -123,7 +123,6 @@ if (!$error){
                                         volume_correction
                                         ) 
                                 values ('".@$_POST['name']."',
-                                        '".$quality."',
                                         '".@$_POST['number']."', 
                                         '".$use_http_tmp_link."',
                                         '".$wowza_tmp_link."',
@@ -133,7 +132,10 @@ if (!$error){
                                         '".$bonus_ch."',
                                         '".$hd."',
                                         '".@$_POST['cost']."',
-                                        '".@$_GET['cmd']."', 
+                                        '".(empty($_GET['cmd']) ? $_POST['cmd_1'] : $_GET['cmd'])."',
+                                        '".@$_POST['cmd_1']."',
+                                        '".@$_POST['cmd_2']."',
+                                        '".@$_POST['cmd_3']."',
                                         '".@$_POST['mc_cmd']."',
                                         '".$enable_wowza_load_balancing."',
                                         '".$enable_tv_archive."',
@@ -151,9 +153,21 @@ if (!$error){
             //var_dump($rs);
             $ch_id = $rs->getLastInsertId();
 
-            if ($enable_tv_archive && !$wowza_dvr){
+            /*if ($enable_tv_archive && !$wowza_dvr){
                 $archive = new TvArchive();
                 $archive->createTask($ch_id);
+            }*/
+
+            if ($wowza_dvr){
+                $archive = new WowzaTvArchive();
+            }else{
+                $archive = new TvArchive();
+            }
+
+            if ($enable_tv_archive){
+                $archive->createTask($ch_id);
+            }else{
+                $archive->deleteTask($ch_id);
             }
             
             header("Location: add_itv.php");
@@ -166,31 +180,36 @@ if (!$error){
     
     if (@$_GET['update'] && !$error){
         
-        if(@$_GET['cmd'] && @$_GET['name']){
+        if(@$_GET['name']){
 
             $ch_id = intval(@$_GET['id']);
 
-            //$enabled_tv_archive = intval(Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first('enable_tv_archive'));
-
-            //if ($enabled_tv_archive){
-
-            $archive = new TvArchive();
+            /*$archive = new TvArchive();
 
             if ($enable_tv_archive && !$wowza_dvr){
-                //if (!$enabled_tv_archive){
                     $archive->createTask($ch_id);
-                //}
             }else{
-                //if ($enabled_tv_archive){
                     $archive->deleteTask($ch_id);
-                //}
+            }*/
+
+            if ($wowza_dvr){
+                $archive = new WowzaTvArchive();
+            }else{
+                $archive = new TvArchive();
             }
-            //}
-            
+
+            if ($enable_tv_archive){
+                $archive->createTask($ch_id);
+            }else{
+                $archive->deleteTask($ch_id);
+            }
+
             $query = "update itv 
-                                set name='".$_POST['name']."', 
-                                quality='".$_POST['quality']."',
-                                cmd='".$_GET['cmd']."',
+                                set name='".$_POST['name']."',
+                                cmd='".(empty($_GET['cmd']) ? $_POST['cmd_1'] : $_GET['cmd'])."',
+                                cmd_1='".$_POST['cmd_1']."',
+                                cmd_2='".$_POST['cmd_2']."',
+                                cmd_3='".$_POST['cmd_3']."',
                                 mc_cmd='".$_POST['mc_cmd']."',
                                 enable_wowza_load_balancing='".$enable_wowza_load_balancing."',
                                 enable_tv_archive='".$enable_tv_archive."',
@@ -211,7 +230,7 @@ if (!$error){
                                 service_id='".trim($_POST['service_id'])."',
                                 volume_correction=".intval($_POST['volume_correction'])."
                             where id=".intval(@$_GET['id']);
-            echo $query;
+            var_dump($query);
             $rs=$db->executeQuery($query);
             header("Location: add_itv.php");
             exit;
@@ -412,7 +431,6 @@ if (@$_GET['edit']){
         $enable_monitoring = $arr['enable_monitoring'];
         $monitoring_url = $arr['monitoring_url'];
         $enable_wowza_load_balancing = $arr['enable_wowza_load_balancing'];
-        $quality = $arr['quality'];
 
         if ($use_http_tmp_link){
             $checked_http_tmp_link = 'checked';
@@ -510,14 +528,16 @@ function get_hint($channel){
 ?>
 <script type="text/javascript">
 function save(){
-    form_ = document.getElementById('form_');
-    
-    name = document.getElementById('name').value;
-    cmd = document.getElementById('cmd').value;
-    id = document.getElementById('id').value;
+    var form_ = document.getElementById('form_');
+    var cmd = '';
+    var name = document.getElementById('name').value;
+    if (document.getElementById('cmd')){
+        cmd = document.getElementById('cmd').value;
+    }
+    var id = document.getElementById('id').value;
     //descr = document.getElementById('descr').value
     
-    action = 'add_itv.php?name='+name+'&cmd='+cmd+'&id='+id;
+    var action = 'add_itv.php?name='+name+'&cmd='+cmd+'&id='+id;
     //alert(action)
     if(document.getElementById('action').value == 'edit'){
         action += '&update=1'
@@ -566,21 +586,6 @@ function popup(src){
             <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
            </td>
         </tr>
-
-        <? if (Config::get('enable_tv_quality_filter')){ ?>
-        <tr>
-           <td align="right" valign="top">
-           Качество:
-           </td>
-           <td>
-               <select name="quality" id="quality">
-                   <option value="low" <? if ($quality == 'low') echo 'selected' ?>>низкое</option>
-                   <option value="medium" <? if ($quality == 'medium') echo 'selected' ?>>среднее</option>
-                   <option value="high" <? if ($quality == 'high') echo 'selected' ?>>высокое</option>
-               </select>
-           </td>
-        </tr>
-        <?}?>
         
         <tr>
            <td align="right" valign="top">
@@ -644,15 +649,43 @@ function popup(src){
                 <?echo get_genres()?>
             </select>
            </td>
-        </tr> 
+        </tr>
+
+        <? if (Config::get('enable_tv_quality_filter')){ ?>
         <tr>
            <td align="right">
-            Адрес: 
+            URL (HQ):
+           </td>
+           <td>
+            <input id="cmd_1" name="cmd_1" size="50" type="text" value="<? echo @$arr['cmd_1'] ?>">
+           </td>
+        </tr>
+        <tr>
+           <td align="right">
+            URL (Medium):
+           </td>
+           <td>
+            <input id="cmd_2" name="cmd_2" size="50" type="text" value="<? echo @$arr['cmd_2'] ?>">
+           </td>
+        </tr>
+        <tr>
+           <td align="right">
+            URL (Low):
+           </td>
+           <td>
+            <input id="cmd_3" name="cmd_3" size="50" type="text" value="<? echo @$arr['cmd_3'] ?>">
+           </td>
+        </tr>
+        <?}else{?>
+        <tr>
+           <td align="right">
+            Адрес:
            </td>
            <td>
             <input id="cmd" name="cmd" size="50" type="text" value="<? echo @$cmd ?>">
            </td>
         </tr>
+        <?}?>
 
         <tr>
            <td align="right" valign="top">
@@ -679,7 +712,7 @@ function popup(src){
             <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> onchange="this.checked ? document.getElementById('wowza_dvr_tr').style.display = '' : document.getElementById('wowza_dvr_tr').style.display = 'none'" >
 
             <span id="wowza_dvr_tr" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
-            WOWZA DVR:
+            Wowza DVR:
             <input name="wowza_dvr" id="wowza_dvr" type="checkbox" <? echo @$checked_wowza_dvr ?> >
             </span>
            </td>
