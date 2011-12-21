@@ -290,9 +290,13 @@ $words['account_terms']     = _('TERMS OF USE');
 $words['demo_video'] = _('Video instruction');
 
 
-$words['tv_quality_low']    = _('low quality');
-$words['tv_quality_medium'] = _('medium quality');
-$words['tv_quality_high']   = _('high quality');
+$words['tv_quality']        = _('QUALITY');
+$words['tv_quality_low']    = _('low');
+$words['tv_quality_medium'] = _('medium');
+$words['tv_quality_high']   = _('high');
+
+$words['tv_fav_add'] = _('add');
+$words['tv_fav_del'] = _('del');
 
 $words['internet']   = _('internet');
 
@@ -306,5 +310,12 @@ $words['speedtest_waiting']   = _('waiting...');
 
 $words['lan_up']     = _('UP');
 $words['lan_down']   = _('DOWN');
+
+$words['download_stopped']       = _('stopped');
+$words['download_waiting_queue'] = _('waiting queue');
+$words['download_running']       = _('running');
+$words['download_completed']     = _('completed');
+$words['download_temporary_error'] = _('temporary error');
+$words['download_permanent_error'] = _('permanent error');
 
 ?>
