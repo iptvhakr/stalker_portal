@@ -67,7 +67,7 @@ BaseLayer.prototype.create_block = function(class_name, is_active){
     }
     
     var block = document.createElement('div');
-    
+
     if (class_name){
         block.addClass(prefix + class_name);
     }
