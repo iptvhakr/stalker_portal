@@ -34,6 +34,14 @@
     font-weight:bold;
 }
 
+.bottom_menu_container li[rel="disabled"]{
+    color: #606060;
+}
+
+.bottom_menu_container li[rel="disabled"].bottom_menu_active_row {
+    color: #606060;
+}
+
 .bottom_menu_container li .bull{
     color: #f00;
     float: right;

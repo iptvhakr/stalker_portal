@@ -43,6 +43,8 @@ function bottom_menu(parent, options){
 
 bottom_menu.prototype.show = function(){
     _debug('bottom_menu.show');
+
+    _debug('this.dependency.length', this.dependency.length);
     
     for (var i=0; i<this.dependency.length; i++){
         this.dependency[i].on && this.dependency[i].hide && this.dependency[i].hide();
@@ -139,6 +141,30 @@ bottom_menu.prototype.get_by_name = function(name){
     return this.items[idx];
 };
 
+bottom_menu.prototype.disable_by_name = function(name){
+    _debug('bottom_menu.disable_by_name', name);
+
+    var item = this.get_by_name(name);
+
+    if (item === null){
+        return false;
+    }
+
+    item.dom_obj.setAttribute("rel", "disabled");
+};
+
+bottom_menu.prototype.enable_by_name = function(name){
+    _debug('bottom_menu.enable_by_name', name);
+
+    var item = this.get_by_name(name);
+
+    if (item === null){
+        return false;
+    }
+
+    item.dom_obj.setAttribute("rel", "enabled");
+};
+
 bottom_menu.prototype.check_by_name = function(name){
     _debug('bottom_menu.check_by_name', name);
     
@@ -202,6 +228,11 @@ bottom_menu.prototype.action = function(){
     _debug('bottom_menu.action');
     
     _debug('this.items', this.items);
+
+    if (this.items[this.cur_row_idx].dom_obj.getAttribute("rel") == "disabled"){
+        return;
+    }
+
     _debug('this.items[this.cur_row_idx].cmd', this.items[this.cur_row_idx].cmd);
     
     try{
