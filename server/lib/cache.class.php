@@ -31,7 +31,13 @@ class Cache
 
         $this->backend = new Memcache;
         
-        $this->backend->connect(Config::get('memcache_host'), 11211);
+        $status = $this->backend->connect(Config::get('memcache_host'), 11211);
+
+        //var_dump($status);
+
+        if (!$status){
+            throw new Exception("Could not connect to memcached. Host: ".Config::get('memcache_host'));
+        }
     }
 
     public function useCustomCaching($val){
