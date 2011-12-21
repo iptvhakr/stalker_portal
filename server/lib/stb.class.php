@@ -104,6 +104,10 @@ class Stb
 
         $this->params[$key] = $value;
 
+        if (property_exists($this, $key)){
+            $this->$key = $value;
+        }
+
         return Mysql::getInstance()->update('users', array($key => $value), array('id' => $this->id));
     }
     
@@ -389,7 +393,8 @@ class Stb
         $this->db->insert('stream_error',
                            array(
                                 'ch_id'      => intval($_REQUEST['ch_id']),
-                                'mac'        => $this->stb->mac,
+                                'event'      => intval($_REQUEST['event']),
+                                'mac'        => $this->mac,
                                 'error_time' => 'NOW()'
                            ));
         return true;
@@ -834,6 +839,16 @@ class Stb
 
         $result = $result->update('users', $data);
 
+        if (key_exists("status", $data)){
+            $event = new SysEvent();
+            $event->setUserListById($uids);
+            if ($data["status"] == 0){
+                $event->sendCutOn();
+            }else{
+                $event->sendCutOff();
+            }
+        }
+
         if (!$result){
             return false;
         }
@@ -930,6 +945,11 @@ class Stb
         return $result->get()->all('id');
 
         //return Mysql::getInstance()->from('users')->in('mac', $mac)->get()->all('id');
+    }
+
+    public static function setAdditionServicesById($uid, $value){
+
+        return Mysql::getInstance()->update('users', array('additional_services_on' => intval($value)), array('id' => intval($uid)));
     }
 
     public function deleteById($ids){
