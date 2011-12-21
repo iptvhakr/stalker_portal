@@ -242,6 +242,11 @@ class StreamRecorder extends Master
         return Mysql::getInstance()->delete('users_rec', array('id' => $user_rec_id));
     }
 
+    private function deleteFileRecord($rec_file_id){
+
+        return Mysql::getInstance()->delete('rec_files', array('id' => $rec_file_id));
+    }
+
     private function createFileRecord($user_rec_id){
 
         $user_rec = Mysql::getInstance()->from('users_rec')->where(array('id' => $user_rec_id))->get()->first();
@@ -264,7 +269,7 @@ class StreamRecorder extends Master
                 'vtrack'   => $user_rec['vtrack'],
             ))->insert_id();
 
-        var_dump($this->storages);
+        //var_dump($this->storages);
 
         foreach ($this->storages as $name => $storage){
 
@@ -274,6 +279,8 @@ class StreamRecorder extends Master
                     //$file_name = $this->clients[$name]->startRecording($channel['mc_cmd'], $rec_file_id);
                     $file_name = $this->clients[$name]->resource('recorder')->create(array('url' => $channel['mc_cmd'], 'rec_id' => $rec_file_id));
                 }catch (Exception $exception){
+                    $this->deleteUserRecord($user_rec_id);
+                    $this->deleteFileRecord($rec_file_id);
                     $this->parseException($exception);
                 }
             }
@@ -306,7 +313,7 @@ class StreamRecorder extends Master
         $user_record = Mysql::getInstance()->from('users_rec')->where(array('id' => $user_rec_id))->get()->first();
         $file_record = Mysql::getInstance()->from('rec_files')->where(array('id' => $user_record['file_id']))->get()->first();
 
-        Mysql::getInstance()->update('users_rec',
+        /*Mysql::getInstance()->update('users_rec',
                                      array(
                                          't_stop'  => 'NOW()',
                                          'ended'   => 1,
@@ -314,14 +321,24 @@ class StreamRecorder extends Master
                                      ),
                                      array(
                                          'id' => $user_rec_id,
-                                     ));
+                                     ));*/
 
         /*$active_recordings = Mysql::getInstance()->from('users_rec')->where(array('ch_id' => $record['ch_id'], 'ended' => 0))->get()->count();
-
         if (empty($active_recordings) ){*/
 
         $daemon = new RESTClient(Config::get('daemon_api_url'));
         $daemon->resource('recorder_task')->ids($user_rec_id)->delete();
+
+        Mysql::getInstance()->update('users_rec',
+                                 array(
+                                     't_stop'  => 'NOW()',
+                                     'ended'   => 1,
+                                     'length'  => '(UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(t_start))'
+                                 ),
+                                 array(
+                                     'id' => $user_rec_id,
+                                 ));
+
 
         if ($user_record['started']){
 
@@ -430,9 +447,11 @@ class StreamRecorder extends Master
 
     public function getAllDeferredRecords(){
         return Mysql::getInstance()
-            ->select('users_rec.*, UNIX_TIMESTAMP(epg.time) as start_ts, UNIX_TIMESTAMP(epg.time_to) as stop_ts')
+            /*->select('users_rec.*, UNIX_TIMESTAMP(epg.time) as start_ts, UNIX_TIMESTAMP(epg.time_to) as stop_ts')
             ->from('users_rec')
-            ->join('epg', 'epg.id', 'users_rec.program_id', 'LEFT')
+            ->join('epg', 'epg.id', 'users_rec.program_id', 'LEFT')*/
+            ->select('users_rec.*, UNIX_TIMESTAMP(t_start) as start_ts, UNIX_TIMESTAMP(t_stop) as stop_ts')
+            ->from('users_rec')
             ->where(array('ended' => 0))
             ->get()
             ->all();
