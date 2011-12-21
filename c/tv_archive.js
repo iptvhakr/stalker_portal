@@ -8,7 +8,7 @@
 
         cur_url : '',
 
-        play : function(){
+        play : function(download, download_callback){
             _debug('tv_archive.play');
 
             this.get_item().cmd  = 'auto /media/' + this.get_item().id + '.mpg';
@@ -32,15 +32,23 @@
                         stb.notice.show(word['player_server_error']);
                     }else{
 
-                        self.parent.hide(true);
+                        if (!download){
 
-                        stb.player.prev_layer = self.parent;
-                        stb.player.need_show_info = 1;
-                        module.tv_archive.cur_url = result.cmd;
-                        _debug('self.cur_url', self.cur_url);
-                        _debug('module.tv_archive.cur_url', module.tv_archive.cur_url);
-                        stb.player.cur_media_item.cmd = result.cmd;
-                        stb.player.play_now(result.cmd);
+                            self.parent.hide(true);
+
+                            stb.player.prev_layer = self.parent;
+                            stb.player.need_show_info = 1;
+                            module.tv_archive.cur_url = result.cmd;
+                            _debug('self.cur_url', self.cur_url);
+                            _debug('module.tv_archive.cur_url', module.tv_archive.cur_url);
+                            stb.player.cur_media_item.cmd = result.cmd;
+                            stb.player.play_now(result.cmd);
+                        }else{
+                            var url = /(http:\/\/[^\s]*)/.exec(result.download_cmd)[1];
+                            //self.add_download.call(self, url, result.to_file);
+
+                            download_callback && download_callback(url, result.to_file)
+                        }
                     }
                 };
 
@@ -95,7 +103,7 @@
 
             _debug('url 1', url);
 
-            var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mpg/, new_file_name).trim();
+            var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, new_file_name).trim();
 
             _debug('url 2', url);
 
@@ -125,7 +133,7 @@
 
             _debug('next_file_name', next_file_name);
 
-            var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mpg/, next_file_name).replace(/position:(\d*)/, '').trim();
+            var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, next_file_name).replace(/position:(\d*)/, '').trim();
 
             _debug('stb.player.cur_media_item.cmd', stb.player.cur_media_item.cmd);
             _debug('url', url);
@@ -136,11 +144,13 @@
         get_filename_by_date : function(date){
             _debug('tv_archive.get_filename_by_date', date);
 
+            _debug('stb.player.cur_tv_item', stb.player.cur_tv_item);
+
             return date.getFullYear() + ''
                     + this.format_date(date.getMonth() + 1) + ''
                     + this.format_date(date.getDate()) + '-'
                     + this.format_date(date.getHours())
-                    + '.mpg';
+                    + (parseInt(stb.player.cur_tv_item['wowza_dvr'], 10) ? '.mp4' : '.mpg');
         },
 
         get_file_piece_num : function(){
@@ -171,7 +181,7 @@
         _get_file_date_by_url : function(url){
             _debug('tv_archive._get_file_date_by_url', url);
 
-            var date_part = /([^\/]*)\.mpg/.exec(url);
+            var date_part = /([^\/]*)\.mp[g,4]/.exec(url);
 
             _debug('date_part', date_part);
 
@@ -209,11 +219,11 @@
 
             _debug('current_pos_time', current_pos_time);
 
-            if (stb.player.cur_media_item['wowza_dvr']){
+            /*if (stb.player.cur_media_item['wowza_dvr']){
                 var file_num = 0;
-            }else{
+            }else{*/
                 file_num = this.get_file_piece_num();
-            }
+            /*}*/
 
             _debug('file_num', file_num);
 
