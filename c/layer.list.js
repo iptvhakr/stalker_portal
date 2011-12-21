@@ -147,6 +147,8 @@ ListLayer.prototype.init_list = function(){
     
     for (var i=0; i<this.total_rows; i++){
         item = this.create_block('blue_row_bg');
+        //item = document.createElement('ul');
+        //item.setClass('blue_row_bg');
         
         if (i > 0){
             offset = this.map[i-1].row.clientHeight + this.map[i-1].row.offsetTop;
@@ -372,6 +374,7 @@ ListLayer.prototype.clear_row = function(row_obj){
 ListLayer.prototype.set_active_row = function(num){
     
     _debug('set_active_row', num);
+
     try{
         if (num == 0){
             if (!this.data_items[num]){
