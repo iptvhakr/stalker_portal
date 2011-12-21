@@ -732,7 +732,7 @@ abstract class Master
      *
      * @return array SoapClient for all good storages
      */
-    private function getClients(){
+    protected function getClients(){
         $clients = array();
 
         RESTClient::$from = $this->stb->mac;
