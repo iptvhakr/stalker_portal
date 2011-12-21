@@ -63,8 +63,8 @@
             this.total_pages = 1;
         };*/
 
-        this.play = function(){
-            _debug('remote_pvr.play');
+        this.play = function(play_url){
+            _debug('remote_pvr.play', play_url);
 
             var self = this;
 
@@ -83,11 +83,18 @@
                     stb.notice.show(word['player_server_error']);
                 }else{
 
-                    self.hide(true);
+                    if (play_url){
+                        self.hide(true);
 
-                    stb.player.prev_layer = self;
-                    stb.player.need_show_info = 1;
-                    stb.player.play_now(result.cmd);
+                        stb.player.prev_layer = self;
+                        stb.player.need_show_info = 1;
+                        stb.player.play_now(result.cmd);
+                    }else{
+
+                        var url = /(http:\/\/[^\s]*)/.exec(result.cmd)[1];
+
+                        self.add_download.call(self, url, result.to_file);
+                    }
                 }
             };
 
@@ -106,7 +113,7 @@
         this.bind = function(){
             this.superclass.bind.apply(this);
 
-            this.play.bind(key.OK, this);
+            this.play.bind(key.OK, this, true);
 
             (function(){
 
@@ -145,7 +152,7 @@
             _debug('remote_pvr.rec_switch', ch);
 
             if (!ch['mc_cmd']){
-                stb.notice.show(get_word('channel_recording_restricted'))
+                stb.notice.show(get_word('channel_recording_restricted'));
                 return;
             }
 
@@ -380,19 +387,33 @@
         this.set_active_row = function(num){
             _debug('remote_pvr.set_active_row', num);
 
-            this.superclass.set_active_row.call(this, num);
+            try{
+                this.superclass.set_active_row.call(this, num);
+            }catch(e){
+                
+            }
 
-            if (!parseInt(this.data_items[this.cur_row].ended)){
-                if (parseInt(this.data_items[this.cur_row].started)){
-                    this.color_buttons.get('red')  .disable();
-                    this.color_buttons.get('green').enable();
-                }else{
-                    this.color_buttons.get('red')  .enable();
-                    this.color_buttons.get('green').disable();
-                }
+            if (!this.data_items[this.cur_row]){
+                this.color_buttons.get('red')   .disable();
+                this.color_buttons.get('green') .disable();
+                this.color_buttons.get('yellow').disable();
             }else{
-                this.color_buttons.get('red')  .enable();
-                this.color_buttons.get('green').disable();
+
+                if (!parseInt(this.data_items[this.cur_row].ended)){
+                    if (parseInt(this.data_items[this.cur_row].started)){
+                        this.color_buttons.get('red')   .disable();
+                        this.color_buttons.get('green') .enable();
+                        this.color_buttons.get('yellow').disable();
+                    }else{
+                        this.color_buttons.get('red')   .enable();
+                        this.color_buttons.get('green') .disable();
+                        this.color_buttons.get('yellow').enable();
+                    }
+                }else{
+                    this.color_buttons.get('red')   .enable();
+                    this.color_buttons.get('green') .disable();
+                    this.color_buttons.get('yellow').enable();
+                }
             }
         };
 
@@ -551,6 +572,15 @@
 
             this.superclass.fill_list.call(this, data);
         };
+
+        this.add_download = function(url, to_filename){
+            _debug('remote_pvr.add_download', url, to_filename);
+
+            if (module.downloads){
+                _debug('downloads');
+                module.downloads.dialog.show({"parent" : this, "url" : url, "name" : to_filename});
+            }
+        }
     }
 
     RemotePvr.prototype = new ListLayer();
@@ -567,7 +597,7 @@
     remote_pvr.init_color_buttons([
         {"label" : word['remote_pvr_del'], "cmd" : remote_pvr.del_confirm},
         {"label" : word['remote_pvr_stop'], "cmd" : remote_pvr.stop_confirm},
-        {"label" : word['empty'], "cmd" : ''},
+        {"label" : word['downloads_download'], "cmd" : module.downloads ? function(){remote_pvr.play.call(remote_pvr, false)} : ''},
         {"label" : word['empty'], "cmd" : ''}
     ]);
 
