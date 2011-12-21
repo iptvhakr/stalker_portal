@@ -30,6 +30,8 @@ if (@$_POST['add']){
                 max_online,
                 for_moderator,
                 for_records,
+                wowza_server,
+                archive_stream_server,
                 external,
                 for_simple_storage
                 )
@@ -40,6 +42,8 @@ if (@$_POST['add']){
                 "'.@$_POST['max_online'].'",
                 "'.@intval($_POST['for_moderator']).'",
                 "'.@intval($_POST['for_records']).'",
+                "'.@intval($_POST['wowza_server']).'",
+                "'.@$_POST['archive_stream_server'].'",
                 "'.@intval($_POST['external']).'",
                 "'.@intval($_POST['for_simple_storage']).'"
             )';
@@ -59,10 +63,13 @@ if (!empty($id)){
                     max_online="'.@$_POST['max_online'].'",
                     for_moderator="'.@intval($_POST['for_moderator']).'",
                     for_records="'.@intval($_POST['for_records']).'",
+                    wowza_server="'.@intval($_POST['wowza_server']).'",
+                    archive_stream_server="'.@$_POST['archive_stream_server'].'",
                     external="'.@intval($_POST['external']).'",
                     for_simple_storage="'.@intval($_POST['for_simple_storage']).'"
                 where id='.intval($_GET['id']);
         $db->executeQuery($sql);
+        //var_dump($_POST,$sql);
         header("Location: storages.php");
     }elseif (@$_GET['del']){
         $sql = 'delete from storages where id='.intval($_GET['id']);
@@ -146,6 +153,7 @@ a:hover{
 }
 </style>
 <title>Настройки параметров хранилищ</title>
+
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
@@ -221,8 +229,8 @@ a:hover{
         <form method="POST">
             <table class="form">
                 <tr>
-                    <td>Имя</td>
-                    <td><input type="text" name="storage_name" value="<?echo @$edit_storage['storage_name']?>"/></td>
+                    <td width="190">Имя</td>
+                    <td><input type="text" name="storage_name" value="<?echo @$edit_storage['storage_name']?>" <? if (!empty($_GET['id'])) echo "readonly" ?>/></td>
                 </tr>
                 <tr>
                     <td>IP</td>
@@ -242,11 +250,21 @@ a:hover{
                 </tr>
                 <tr>
                     <td>Запись ТВ</td>
-                    <td><input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?>/></td>
+                    <td>
+                        <input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('wowza_server').style.display = '' : document.getElementById('wowza_server').style.display = 'none'"/>
+                        <span id="wowza_server" style="margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
+                            Wowza server
+                            <input type="checkbox" name="wowza_server" value="1" <? if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('archive_playback_row').style.display = '' : document.getElementById('archive_playback_row').style.display = 'none'"/>
+                        </span>
+                    </td>
+                </tr>
+                <tr id="archive_playback_row" style="display: <?echo @$edit_storage['wowza_server'] && $edit_storage['for_records'] ? '' : 'none' ?>">
+                    <td>IP воспроизведения архива</td>
+                    <td><input type="text" name="archive_stream_server" value="<?echo @$edit_storage['archive_stream_server']?>"/></td>
                 </tr>
                 <tr>
                     <td>Внешнее</td>
-                    <td><input type="checkbox" name="external" value="1" <? if(@$edit_storage['external']){ echo 'checked="checked"'; } ?>/></td>
+                    <td><input disabled="disabled" type="checkbox" name="external" value="1" <? if(@$edit_storage['external']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
                     <td>Только модераторы</td>
