@@ -41,7 +41,8 @@ var main_menu = {
         (function(){
             _debug('window.referrer', window.referrer);
             if (window.referrer){
-                window.location = window.referrer;
+                //window.location = window.referrer;
+                stb.LoadURL(window.referrer);
                 return;
             }
             this.hide();
