@@ -159,4 +159,74 @@
 .tv_preview_quick_ch_switch{
     top: 300px;
 }
+
+#tv .quality_high_block{
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    height: 21px;
+    width: 24px;
+    background: url("i_480/mb_quality.png") no-repeat -48px 0;
+}
+
+#tv .active_quality_high_block{
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    height: 31px;
+    width: 24px;
+    background: url("i_480/mb_quality.png") no-repeat -48px -21px;
+}
+
+#tv .quality_medium_block{
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    height: 21px;
+    width: 24px;
+    background: url("i_480/mb_quality.png") no-repeat -24px 0;
+}
+
+#tv .active_quality_medium_block{
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    height: 31px;
+    width: 24px;
+    background: url("i_480/mb_quality.png") no-repeat -24px -21px;
+}
+
+#tv .quality_low_block{
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    height: 21px;
+    width: 24px;
+    background: url("i_480/mb_quality.png") no-repeat 0 0;
+}
+
+#tv .active_quality_low_block{
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    height: 31px;
+    width: 24px;
+    background: url("i_480/mb_quality.png") no-repeat 0 -21px;
+}
+
+#tv .wide_container .active_quality_low_block, #tv .wide_container .active_quality_medium_block, #tv .wide_container .active_quality_high_block{
+    right: 15px;
+}
+
+#tv[rel="quality-filter"] .short_container .name_block{
+    margin-right: 30px;
+}
+#tv[rel="quality-filter"] .short_container .active_name_block{
+    margin-right: 40px;
+}
+
+#tv[rel="quality-filter"] .wide_container .cur_playing_block{
+    right: 33px;
+    width: 329px;
+}
 /* END TV */
