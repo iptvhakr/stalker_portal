@@ -5,7 +5,7 @@ class RESTCommandItvSubscription extends RESTCommand
     private $allowed_fields;
 
     public function __construct(){
-        $this->allowed_fields = array_fill_keys(array('ls' , 'mac', 'sub_ch'), true);
+        $this->allowed_fields = array_fill_keys(array('ls' , 'mac', 'sub_ch', 'additional_services_on'), true);
     }
 
     public function get(RESTRequest $request){
@@ -27,11 +27,24 @@ class RESTCommandItvSubscription extends RESTCommand
 
         $data = array_intersect_key($put, $allowed_to_update_fields);
 
+        $stb_data = array_intersect_key($put, array('additional_services_on' => true));
+
         if (empty($data)){
             throw new RESTCommandException('Update data is empty');
         }
 
-        //var_dump($data);
+        if (!empty($stb_data)){
+            //$stb = Stb::getInstance();
+            //$stb->setParam('additional_services_on', intval($stb_data['additional_services_on']));
+
+            $uids = $request->getConvertedIdentifiers();
+
+            foreach ($uids as $uid){
+                Stb::setAdditionServicesById($uid, intval($stb_data['additional_services_on']));
+            }
+        }
+
+        //var_dump($stb_data);
 
         $list = ItvSubscription::updateByUids($request->getConvertedIdentifiers(), $data);
 
