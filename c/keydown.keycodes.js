@@ -35,7 +35,9 @@ var key = {
     SERVICES  : 120,
     TV    : 121,
     PHONE : 119,
+    EPG   : 119,
     WEB   : 123,
+    APP   : 123,
     REW   : 2066,
     FFWD  : 2070,
     PLAY  : 2082,
@@ -45,6 +47,7 @@ var key = {
     REC   : 2087,
     INFO  : 2089,
     FRAME : 117,
+    AUDIO : 2071,
     NULL  : 2076,
     USB_UNMOUNTED : 2081,
     USB_MOUNTED   : 2080
