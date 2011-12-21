@@ -461,6 +461,7 @@ function common_xpcom(){
                     stb.SetupSPdif(this.user['audio_out']);
 
                     stb.EnableServiceButton(false);
+                    stb.EnableAppButton && stb.EnableAppButton(false);
 
                     //stb.SetWebProxy(string proxy_addr,int proxy_port,string user_name,string passwd,string exclude_list);
                     if (this.user['web_proxy_host']){
@@ -839,6 +840,21 @@ function common_xpcom(){
             this.key_lock = false;
             this.channels_inited = 1;
         }*/
+    };
+
+    this.log_stream_error = function(ch_id, event){
+        this.load(
+            {
+                "type"   : "stb",
+                "action" : "set_stream_error",
+                "ch_id"  : ch_id,
+                "event"  : event
+            },
+            function(result){
+
+            },
+            this
+        );
     };
 
     this.epg_loader = {
