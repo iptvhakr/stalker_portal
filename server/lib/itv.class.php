@@ -106,7 +106,8 @@ class Itv extends AjaxResponse
                 }
             }else{
 
-                preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+                //preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+                preg_match("/http:\/\/([^\/]*)[\/]?([^\s]*)?(\s*)?(.*)?$/", $channel['cmd'], $tmp_url_arr);
 
                 if (empty($tmp_url_arr)){
                     $error = 'nothing_to_play';
@@ -122,7 +123,7 @@ class Itv extends AjaxResponse
                     if (!$link_result){
                         $error = 'link_fault';
                     }else{
-                        $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result;
+                        $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result.' '.$tmp_url_arr[4];
                     }
                 }
             }
@@ -318,7 +319,7 @@ class Itv extends AjaxResponse
         }
 
         if (Config::get('enable_tv_quality_filter')){
-            $query->where(array('quality' => $this->stb->getParam('tv_quality')));
+            //$query->where(array('quality' => $this->stb->getParam('tv_quality')));
         }
         
         return $query;
@@ -477,7 +478,7 @@ class Itv extends AjaxResponse
         if (Config::get('enable_tv_quality_filter')){
             $quality = empty($_REQUEST['quality']) ? $this->stb->getParam('tv_quality') : $_REQUEST['quality'];
             $this->stb->setParam('tv_quality', $quality);
-            $where['quality'] = $quality;
+            //$where['quality'] = $quality;
         }
         
         if (@$_REQUEST['genre'] && @$_REQUEST['genre'] !== '*'){
@@ -533,8 +534,50 @@ class Itv extends AjaxResponse
         $fav = $this->getFav();
         
         $epg = new Epg();
-        
+
+        //$qualities = array('high' => 1, 'medium' => 2, 'low' => 3);
+
+        $quality = $this->stb->getParam('tv_quality');
+
         for ($i = 0; $i < count($this->response['data']); $i++){
+
+            if (Config::get('enable_tv_quality_filter')){
+
+                if ($quality == 'low'){
+                    if ($this->response['data'][$i]['cmd_3']){
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_3'];
+                        $this->response['data'][$i]['quality_low'] = 1;
+                    }else if ($this->response['data'][$i]['cmd_2']){
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_2'];
+                        $this->response['data'][$i]['quality_medium'] = 1;
+                    }else{
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_1'];
+                        $this->response['data'][$i]['quality_high'] = 1;
+                    }
+                }else if ($quality == 'medium'){
+                    if ($this->response['data'][$i]['cmd_2']){
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_2'];
+                        $this->response['data'][$i]['quality_medium'] = 1;
+                    }else if ($this->response['data'][$i]['cmd_3']){
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_3'];
+                        $this->response['data'][$i]['quality_low'] = 1;
+                    }else{
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_1'];
+                        $this->response['data'][$i]['quality_high'] = 1;
+                    }
+                }else{
+                    if ($this->response['data'][$i]['cmd_1']){
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_1'];
+                        $this->response['data'][$i]['quality_high'] = 1;
+                    }else if ($this->response['data'][$i]['cmd_2']){
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_2'];
+                        $this->response['data'][$i]['quality_medium'] = 1;
+                    }else{
+                        $this->response['data'][$i]['cmd']     = $this->response['data'][$i]['cmd_3'];
+                        $this->response['data'][$i]['quality_low'] = 1;
+                    }
+                }
+            }
             
             if ($this->response['data'][$i]['censored']){
                 $this->response['data'][$i]['lock'] = 1;
