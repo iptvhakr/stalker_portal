@@ -12,7 +12,7 @@ $db = new Database();
 $updated_video = 0;
 $updated_karaoke = 0;
 
-$sql = "select * from video";
+$sql = "select * from video where protocol!='custom'";
 
 $rs = $db->executeQuery($sql);
 
@@ -24,7 +24,7 @@ while(@$rs->next()){
 }
 
 
-$sql = "select * from karaoke";
+$sql = "select * from karaoke where protocol!='custom'";
 
 $rs = $db->executeQuery($sql);
 
