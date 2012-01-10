@@ -55,49 +55,85 @@ if (@$_GET['reset_video_vote'] && @$_GET['id']){
 
 if (isset($_GET['accessed']) && @$_GET['id']){
 	$_GET['accessed'] = intval($_GET['accessed']);
-    
-	set_accessed(@$_GET['id'], @$_GET['accessed']);
-    $id = $_GET['id'];
-    $path = get_path($_GET['id']);
-    
-    $query = 'select * from video where id='.intval($_GET['id']);
-    $rs = $db->executeQuery($query);
-    $video = $rs->getValuesByRow(0);
-    
-    $name = mysql_real_escape_string($video['name']);
-    $o_name = mysql_real_escape_string($video['o_name']);
-    $director = mysql_real_escape_string($video['director']);
-    
-    $year = $video['year'];
-    
-    if ($_GET['accessed'] == 1){
-        add_video_log('on', @$_GET['id']);
-        $sql = "update updated_places set vclub=1";
-        $db->executeQuery($sql);
-        
-        if ($video['hd']){
-            // disable this video in SD for hd devices
-            $sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
-            $db->executeQuery($sql);
-        }
-        
-    }else{
-        add_video_log('off', @$_GET['id']);
-        
-        if ($video['hd']){
-            $sql = "update video set disable_for_hd_devices=0 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
-            $db->executeQuery($sql);
-        }
+
+    $video_id = intval($_GET['id']);
+
+    if (!empty($_GET['date_on'])){
+        $date_on = date("Y-m-d", strtotime($_GET['date_on']));
     }
-    
-    /*if ($_GET['accessed'] == 1){
-        $master = new VideoMaster();
-        try {
-            $master->startMD5SumInAllStorages($path);
-        }catch (Exception $exception){
-            
+
+    if (isset($date_on) && $date_on == date("Y-m-d")){
+        Mysql::getInstance()->delete('video_on_tasks', array('video_id' => $video_id));
+    }
+
+    if (isset($date_on) && $date_on != date("Y-m-d")){
+
+        //var_dump($date_on, $_GET['id']); exit;
+
+        $video_on_task = Mysql::getInstance()->from('video_on_tasks')->where(array('video_id' => $video_id))->get()->first();
+
+        $data = array(
+            'video_id' => $video_id,
+            'date_on'  => $date_on
+        );
+
+        if (empty($video_on_task)){
+            Mysql::getInstance()->insert('video_on_tasks', $data);
+        }else{
+            Mysql::getInstance()->update('video_on_tasks', $data, array('video_id' => $video_id));
         }
-    }*/
+
+    }else{
+    
+        /*set_accessed(@$_GET['id'], @$_GET['accessed']);
+        $id = $_GET['id'];
+        $path = get_path($_GET['id']);
+
+        $query = 'select * from video where id='.intval($_GET['id']);
+        $rs = $db->executeQuery($query);
+        $video = $rs->getValuesByRow(0);
+
+        $name = mysql_real_escape_string($video['name']);
+        $o_name = mysql_real_escape_string($video['o_name']);
+        $director = mysql_real_escape_string($video['director']);
+
+        $year = $video['year'];
+
+        if ($_GET['accessed'] == 1){
+            add_video_log('on', @$_GET['id']);
+            $sql = "update updated_places set vclub=1";
+            $db->executeQuery($sql);
+
+            if ($video['hd']){
+                // disable this video in SD for hd devices
+                $sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
+                $db->executeQuery($sql);
+            }
+
+        }else{
+            add_video_log('off', @$_GET['id']);
+
+            if ($video['hd']){
+                $sql = "update video set disable_for_hd_devices=0 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
+                $db->executeQuery($sql);
+            }
+        }*/
+
+        if ($_GET['accessed'] == 1){
+            Video::switchOnById($video_id);
+        }else{
+            Video::switchOffById($video_id);
+        }
+
+        /*if ($_GET['accessed'] == 1){
+            $master = new VideoMaster();
+            try {
+                $master->startMD5SumInAllStorages($path);
+            }catch (Exception $exception){
+
+            }
+        }*/
+    }
     
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@urldecode($_GET['search'])."&page=".@$_GET['page']);
     exit;
@@ -340,6 +376,10 @@ if (count(@$_POST) > 0){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="css/jquery.ui.all.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
 <style type="text/css">
 
 body {
@@ -377,13 +417,104 @@ a:hover{
 	font-weight: bold;
 	text-decoration:underline;
 }
+
+#video-on-form label{
+    font-style: italic;
+}
+
+#video-on-form label, input{
+    display: block;
+}
+
+#video-on-form fieldset {
+    padding: 0;
+    border: 0;
+    margin-top: 25px;
+}
+
+#video-on-form input.text{
+    margin-bottom: 12px;
+    width: 100%;
+    padding: .4em;
+}
+
+.ui-widget{
+    font-size: 12px !important;
+}
+
 </style>
 <script type="text/javascript" src="js.js"></script>
+<script type="text/javascript">
+
+    $(function() {
+
+        $("#video_on_date").datepicker({
+            dateFormat  : 'dd-mm-yy',
+            dayNamesMin : ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            firstDay    : 1,
+            minDate     : new Date(),
+            monthNames  : ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+        });
+
+        //$("#video_on_date").datepicker("setDate", new Date());
+
+        $(".buttons").delegate(".switch_button", "click", function(){
+            $("#video_on_id").val($(this).attr('video-id'));
+
+            if ($(this).attr('date-on') != ''){
+                $("#video_on_date").datepicker("setDate", $(this).attr('date-on'));
+            }else{
+                $("#video_on_date").datepicker("setDate", new Date());
+            }
+
+            $("#video-on-form").dialog('open');
+            return false;
+        });
+
+        $("#video-on-form").dialog({
+            autoOpen: false,
+            height: 200,
+            width: 350,
+            modal: true,
+            buttons: {
+                "Включить" : function(){
+                    window.location = "add_video.php?date_on="+$('#video_on_date').val()+"&accessed=1&id="+$("#video_on_id").val()+"&letter="+getURLParameter('letter')+"&search="+getURLParameter('search')+"&page="+getURLParameter('page');
+                },
+                "Отмена" : function(){
+                    $(this).dialog("close");
+                }
+            },
+            close : function(){
+                
+            }
+        });
+    });
+    
+    function getURLParameter(name) {
+        return decodeURI(
+            (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+        );
+    }
+
+</script>
 <title>
 Редактирование списка файлов ВИДЕО КЛУБА
 </title>
 </head>
 <body onload="init_genres();fill_category();get_cat_genres();">
+
+<div id="video-on-form" title="Расписание включения">
+    <p class="validateTips"></p>
+
+    <form onsubmit="return false">
+    <fieldset>
+        <label for="video_on_date">Дата</label>
+        <input type="text" readonly="readonly" name="video_on_date" id="video_on_date" class="text ui-widget-content ui-corner-all" />
+        <input type="hidden" id="video_on_id">
+    </fieldset>
+    </form>
+</div>
+
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
@@ -661,7 +792,7 @@ while(@$rs->next()){
     }
     echo "</td>\n";
 
-    echo "<td class='list'>";
+    echo "<td class='list buttons'>";
     if (check_access(array(1, 2))){
         echo "<a href='?edit=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."&#form'>edit</a>&nbsp;&nbsp;\n";
     }
@@ -819,7 +950,7 @@ function get_path_color($id, $path){
     return "<span id='path_$id' style='color:".$color."'>$path</span>";
 }
 
-function get_path($id){
+/*function get_path($id){
     $db = Database::getInstance();
     
     $query = "select * from video where id=$id";
@@ -830,7 +961,7 @@ function get_path($id){
     }else{
         return '';
     }
-}
+}*/
 
 /*function set_status($path, $val){
     $db = Database::getInstance();
@@ -840,13 +971,13 @@ function get_path($id){
     }
 }*/
 
-function set_accessed($id, $val){
+/*function set_accessed($id, $val){
     $db = Database::getInstance();
     if ($id){
         $query = "update video set accessed=$val,added=NOW()  where id='$id'";
         $rs=$db->executeQuery($query);
     }
-}
+}*/
 
 function get_accessed($id){
     $db = Database::getInstance();
@@ -867,10 +998,25 @@ function get_accessed_color($id){
         $accessed = 1;
         $txt = 'off';
     }
+
+    $hint = '';
+    $date_on = '';
+
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
     if (check_access(array(1))){
-        return "<a href='add_video.php?accessed=$accessed&id=$id&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
+        if ($accessed){
+            $class = "switch_button";
+            $video_on_task = Mysql::getInstance()->from('video_on_tasks')->where(array('video_id' => $id))->get()->first();
+            if (!empty($video_on_task)){
+                $color   = 'orange';
+                $hint    = 'Включится '.$video_on_task['date_on'];
+                $date_on = date("d-m-Y", strtotime($video_on_task['date_on']));
+            }
+        }else{
+            $class = "";
+        }
+        return "<a class='$class' title='$hint' video-id='$id' date-on='$date_on' href='add_video.php?accessed=$accessed&id=$id&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
     }else{
         return "<font color='$color'><b>$txt</b></font>";
     }
