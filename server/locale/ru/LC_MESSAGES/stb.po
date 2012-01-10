@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-07 12:51+0200\n"
-"PO-Revision-Date: 2011-12-07 12:53+0200\n"
+"POT-Creation-Date: 2012-01-10 12:46+0200\n"
+"PO-Revision-Date: 2012-01-10 12:47+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -955,6 +955,34 @@ msgstr "временная ошибка"
 msgid "permanent error"
 msgstr "ошибка"
 
+#: ../../../lang/stb.php:321
+msgid "Authentication"
+msgstr "Вход"
+
+#: ../../../lang/stb.php:322
+msgid "Login"
+msgstr "Логин"
+
+#: ../../../lang/stb.php:323
+msgid "Password"
+msgstr "Пароль"
+
+#: ../../../lang/stb.php:324
+msgid "Error"
+msgstr "ошибка"
+
+#: ../../../lang/stb.php:326
+msgid "Play this url or start download?"
+msgstr "Проиграть или скачать данную ссылку?"
+
+#: ../../../lang/stb.php:327
+msgid "Play"
+msgstr "Проиграть"
+
+#: ../../../lang/stb.php:328
+msgid "Download"
+msgstr "Скачать"
+
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
 msgid "account_main_info"
@@ -1317,15 +1345,15 @@ msgid "scheduled"
 msgstr "запланировано"
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:756
+#: ../../../lib/stb.class.php:907
 msgid "city_name_field"
 msgstr "name"
 
-#: ../../../lib/streamrecorder.class.php:117
+#: ../../../lib/streamrecorder.class.php:124
 msgid "Starting recording"
 msgstr "Начинается запись"
 
-#: ../../../lib/streamrecorder.class.php:394
+#: ../../../lib/streamrecorder.class.php:409
 msgid "Stopped recording"
 msgstr "Остановлена запись"
 
@@ -1345,12 +1373,10 @@ msgid "s"
 msgstr "с"
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:557
 msgid "today"
 msgstr "сегодня"
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:560
 msgid "yesterday"
 msgstr "вчера"
 

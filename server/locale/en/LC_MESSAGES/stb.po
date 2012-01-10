@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-07 12:51+0200\n"
-"PO-Revision-Date: 2011-12-07 12:51+0200\n"
+"POT-Creation-Date: 2012-01-10 12:46+0200\n"
+"PO-Revision-Date: 2012-01-10 12:46+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -957,6 +957,34 @@ msgstr ""
 msgid "permanent error"
 msgstr ""
 
+#: ../../../lang/stb.php:321
+msgid "Authentication"
+msgstr ""
+
+#: ../../../lang/stb.php:322
+msgid "Login"
+msgstr ""
+
+#: ../../../lang/stb.php:323
+msgid "Password"
+msgstr ""
+
+#: ../../../lang/stb.php:324
+msgid "Error"
+msgstr ""
+
+#: ../../../lang/stb.php:326
+msgid "Play this url or start download?"
+msgstr ""
+
+#: ../../../lang/stb.php:327
+msgid "Play"
+msgstr ""
+
+#: ../../../lang/stb.php:328
+msgid "Download"
+msgstr ""
+
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
 msgid "account_main_info"
@@ -1319,15 +1347,15 @@ msgid "scheduled"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:756
+#: ../../../lib/stb.class.php:907
 msgid "city_name_field"
 msgstr "name_en"
 
-#: ../../../lib/streamrecorder.class.php:117
+#: ../../../lib/streamrecorder.class.php:124
 msgid "Starting recording"
 msgstr ""
 
-#: ../../../lib/streamrecorder.class.php:394
+#: ../../../lib/streamrecorder.class.php:409
 msgid "Stopped recording"
 msgstr ""
 
@@ -1347,12 +1375,10 @@ msgid "s"
 msgstr ""
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:557
 msgid "today"
 msgstr ""
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:560
 msgid "yesterday"
 msgstr ""
 

@@ -318,4 +318,12 @@ $words['download_completed']     = _('completed');
 $words['download_temporary_error'] = _('temporary error');
 $words['download_permanent_error'] = _('permanent error');
 
+$words['auth_title'] = _('Authentication');
+$words['auth_login'] = _('Login');
+$words['auth_password'] = _('Password');
+$words['auth_error']    = _('Error');
+
+$words['play_or_download'] = _('Play this url or start download?');
+$words['player_play']      = _('Play');
+$words['player_download']  = _('Download');
 ?>
