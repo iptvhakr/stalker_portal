@@ -586,7 +586,7 @@
                     this.color_buttons.get('red')  .disable();
                     this.color_buttons.get('green').disable();
 
-                    if (now >= this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp && module.downloads && this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive && this.tv_archive && !this.channel.wowza_dvr){
+                    if (now >= this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp && module.downloads && this.active_row['epg_cell'][this.cur_cell_col].data.mark_archive && this.tv_archive && !parseInt(this.channel.wowza_dvr, 10)){
                         this.color_buttons.get('yellow').enable();
                     }
 
