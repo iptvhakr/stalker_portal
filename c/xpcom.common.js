@@ -58,6 +58,9 @@ function common_xpcom(){
     this.init = function(){
         _debug('stb.init');
 
+        loader.append("reset");
+        loader.append("layer.modal_form");
+
         this.browser = this.get_user_browser();
 
         this.player = new player();
@@ -65,24 +68,49 @@ function common_xpcom(){
         this.get_server_params();
         this.get_stb_params();
         this.get_user_profile();
-        //this.epg_loader.start();
-
-        /*this.notice = new _alert();
-
-        this.msg = new _alert('info');
-        this.msg.bind();
-
-        this.confirm = new _alert('confirm');
-        this.confirm.bind();*/
 
         this.watchdog = new watchdog();
 
         this.usbdisk = new usbdisk();
+    };
 
-        /*this.cut_off_dom_obj = create_block_element('cut_off');
-        this.cut_off_dom_obj.hide()*/
+    this.init_auth_dialog = function(){
+        this.auth_dialog = new ModalForm({"title" : get_word('auth_title')});
+        this.auth_dialog.addItem(new ModalFormInput({"label" : get_word('auth_login'),    "name" : "login",    "onchange" : function(){_debug('change'); stb.auth_dialog.resetStatus()}}));
+        this.auth_dialog.addItem(new ModalFormInput({"label" : get_word('auth_password'), "name" : "password", "onchange" : function(){_debug('change'); stb.auth_dialog.resetStatus()}}));
+        var self = this;
+        this.auth_dialog.addItem(new ModalFormButton(
+            {
+                "value" : "OK",
+                "onclick" : function(){
 
-        //this.clock.start();
+                    var login    = self.auth_dialog.getItemByName("login").getValue();
+                    var password = self.auth_dialog.getItemByName("password").getValue();
+
+                    _debug("login", login);
+                    _debug("password", password);
+
+                    stb.load(
+                        {
+                            "type"     : "stb",
+                            "action"   : "do_auth",
+                            "login"    : login,
+                            "password" : password
+                        },
+                        function(result){
+                            _debug('auth result', result);
+
+                            if (result){
+                                stb.get_user_profile();
+                                stb.auth_dialog.hide();
+                            }else{
+                                stb.auth_dialog.setStatus(get_word('auth_error'));
+                            }
+                        }
+                    )
+                }
+            }
+        ));
     };
 
     this.init_alerts = function(){
@@ -121,10 +149,20 @@ function common_xpcom(){
             function(result){
                 _debug('stb.get_modules callback', result);
                 var all_modules = result.all_modules;
-                this.disabled_modules = result.disabled_modules;
+                this.switchable_modules = result.switchable_modules;
+
+                this.disabled_modules   = result.disabled_modules   || [];
+                this.restricted_modules = result.restricted_modules || [];
 
                 this.all_modules = this.base_modules.concat(all_modules);
                 _debug('all_modules', this.all_modules);
+
+                var self = this;
+
+                this.all_modules = this.all_modules.filter(function(module){
+                    return self.disabled_modules.indexOf(module) == -1;
+                });
+
                 loader.add(this.all_modules);
             },
 
@@ -132,17 +170,39 @@ function common_xpcom(){
         );
     };
 
-    this.is_disabled_module = function(module){
-        _debug('stb.is_disabled_module');
+    this.update_modules = function(){
+        _debug('stb.get_modules');
+        
+        this.load(
+
+            {
+                "type"   : "stb",
+                "action" : "get_modules"
+            },
+
+            function(result){
+                _debug('update_modules result', result);
+
+                this.switchable_modules = result.switchable_modules || [];
+                this.disabled_modules   = result.disabled_modules   || [];
+                this.restricted_modules = result.restricted_modules || [];
+            },
+
+            this
+        );
+    };
+
+    this.is_restricted_module = function(module){
+        _debug('stb.is_restricted_module');
         _debug('module.layer_name', module.layer_name);
 
         _debug('this.additional_services_on', this.additional_services_on);
 
-        if (this.additional_services_on){
-            return false;
+        if (this.restricted_modules.indexOf(module.layer_name) >= 0){
+            return true;
         }
 
-        if (this.disabled_modules.indexOf(module.layer_name) >= 0){
+        if (!this.additional_services_on && this.switchable_modules.indexOf(module.layer_name) >= 0){
             return true;
         }
 
@@ -391,7 +451,17 @@ function common_xpcom(){
 
         screensaver.init();
 
-        if (this.user['status'] == 0){
+        
+        /*this.init_auth_dialog();
+        this.key_lock = false;
+        this.auth_dialog.show();
+        return;*/
+
+        if (this.user['status'] == 2){
+            this.init_auth_dialog();
+            this.key_lock = false;
+            this.auth_dialog.show();
+        }else if (this.user['status'] == 0){
             try{
 
                 //if (this.type == 'MAG200'){
@@ -487,7 +557,6 @@ function common_xpcom(){
         }else if(this.user['status'] == 1){
             stb.loader.stop();
             this.cut_off();
-            //module.blocking.show()
         }
 
         this.watchdog.run();
@@ -1049,6 +1118,11 @@ function common_xpcom(){
         start : function(){
             _debug('clock.start()');
 
+            if (this.t_clock){
+                _debug('exit clock.start');
+                return;
+            }
+
             this.tick();
 
             var self = this;
@@ -1150,6 +1224,11 @@ var screensaver = {
         //_debug('screensaver.init');
 
         //return;
+
+        if (this.dom_obj){
+            _debug('exit screensaver.init');
+            return;
+        }
 
         this.build();
 
