@@ -12,7 +12,7 @@ function usbdisk(){
     this.files = [];
     
     try{
-        stb.SetListFilesExt('.mpg .mkv .avi .ts .mp4 .wmv .mp3 .ac3 .mov .vob .wav');
+        stb.SetListFilesExt('.mpg .mkv .avi .m2ts .ts .mp4 .wmv .mp3 .ac3 .mov .vob .wav');
     }catch(e){
         _debug(e);
     }
@@ -42,8 +42,10 @@ usbdisk.prototype.drive_mounted = function(){
     _debug('usbdisk.drive_mounted');
     
     this.mounted = true;
-    
-    stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_connected'));
+
+    if (!stb.player.on){
+        stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_connected'));
+    }
     
     var self = this;
     
@@ -54,8 +56,10 @@ usbdisk.prototype.drive_umounted = function(){
     _debug('usbdisk.drive_umounted');
     
     this.mounted = false;
-    
-    stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_disconnected'));
+
+    if (!stb.player.on){
+        stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_disconnected'));
+    }
     
     this.fire_onumount_callbacks();
 };
