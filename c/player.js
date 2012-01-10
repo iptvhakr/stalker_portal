@@ -143,10 +143,13 @@ player.prototype.play_or_download = function(content_type, url){
     _debug('player.play_media', content_type, url);
 
     /*if (content_type.indexOf('video') == 0 || content_type.indexOf('audio') == 0){*/
+
+    this.init_play_or_download_dialog();
+
     if (content_type.indexOf('video') == 0){
         _debug('module.downloads', !!module.downloads);
         if (module.downloads){
-            this.init_play_or_download_dialog();
+            //this.init_play_or_download_dialog();
             this.play_or_download_dialog.contentType = content_type;
             this.play_or_download_dialog.url         = url;
             this.play_or_download_dialog.show();
@@ -159,7 +162,6 @@ player.prototype.play_or_download = function(content_type, url){
             _debug('after close');
         }else{
             _debug('play url');
-            //todo play url
 
             stb.set_cur_place('internet');
 
@@ -174,8 +176,8 @@ player.prototype.play_or_download = function(content_type, url){
         }
     }else if (module.downloads){
         _debug('show download dialog');
-        //todo show question about download dialog
-        module.downloads.dialog.show({"parent" : main_menu, "url" : stb.player.play_or_download_dialog.url});
+        module.downloads.dialog.show({"parent" : main_menu, "url" : url});
+        stbWindowMgr.showPortalWindow();
     }
 };
 
