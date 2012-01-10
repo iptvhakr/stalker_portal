@@ -54,12 +54,17 @@ watchdog.prototype.send_request = function(){
 watchdog.prototype.parse_result = function(data){
     
     _debug('watchdog.parse_result', data);
+
+    try{
     
-    module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
-    
-    module.course && module.course.set && module.course.set(data.course);
-    
-    stb.check_additional_services(data.additional_services_on);
+        module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
+
+        module.course && module.course.set && module.course.set(data.course);
+
+        stb.check_additional_services(data.additional_services_on);
+    }catch(e){
+        _debug(e);
+    }
     
     if (typeof(data.id) != 'undefined'){
         
@@ -146,6 +151,11 @@ watchdog.prototype.parse_result = function(data){
                 //keydown_observer.emulate_key(key.EXIT);
                 main_menu.hide();
                 stb.player.play_last();
+                break;
+            }
+            case 'update_modules':
+            {
+                stb.update_modules();
                 break;
             }
         }

@@ -7,7 +7,7 @@ class RESTCommandStb extends RESTCommand
 
     public function __construct(){
         $this->manager = Stb::getInstance();
-        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'status', 'additional_services_on'), true);
+        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'login', 'status', 'additional_services_on'), true);
     }
 
     public function get(RESTRequest $request){
@@ -59,6 +59,43 @@ class RESTCommandStb extends RESTCommand
         }
 
         return $this->manager->deleteById($stb_list);
+    }
+
+    public function create(RESTRequest $request){
+
+        $data = $request->getData();
+
+        if (empty($data)){
+            throw new RESTCommandException('HTTP POST data is empty');
+        }
+
+        $allowed_to_update_fields = array_fill_keys(array('mac', 'login', 'password', 'status', 'additional_services_on', 'ls'), true);
+
+        $data = array_intersect_key($data, $allowed_to_update_fields);
+
+        if (empty($data)){
+            throw new RESTCommandException('Insert data is empty');
+        }
+
+        if (empty($data['mac']) && (empty($data['login']) || empty($data['password']))){
+            throw new RESTCommandException('Login and password required');
+        }
+
+        try{
+            $uid = Stb::create($data);
+        }catch(Exception $e){
+            throw new RESTCommandException($e->getMessage());
+        }
+        
+        $stb_list = $this->manager->getByUids(array($uid));
+
+        $stb_list = $this->formatList($stb_list);
+
+        if (count($stb_list) == 1){
+            return $stb_list[0];
+        }
+
+        return $stb_list;
     }
 
     private function formatList($list){

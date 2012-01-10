@@ -230,7 +230,7 @@ var main_menu = {
         }else{
             var menu_length = this.map[1].sub.length;
             if (menu_length > 0){
-                for (var i=0; i<=6; i++){
+                for (i=0; i<=6; i++){
                     this.map[1].sub.unshift(this.map[1].sub[menu_length-1]);
                     this.map[1].sub.splice(menu_length, 1);
                 }
@@ -270,7 +270,7 @@ var main_menu = {
         
         _debug('this.active_sub', this.active_sub);
         
-        if (stb.is_disabled_module(this.map[1].module)){
+        if (stb.is_restricted_module(this.map[1].module)){
             stb.notice.show(get_word('msg_service_off'));
             return;
         }
@@ -301,7 +301,7 @@ var main_menu = {
             
             var length = this.vert_body.childNodes.length;
             
-            for(var i=0; i<length; i++){
+            for(i=0; i<length; i++){
                 this.vert_body.removeChild(this.vert_body.lastChild);
             }
         }catch(e){
@@ -313,11 +313,11 @@ var main_menu = {
     
     add : function(title, sub, img, cmd, module){
         
-        var cmd = cmd || '';
+        cmd = cmd || '';
         
-        var sub = sub || [];
+        sub = sub || [];
         
-        var img = img || '';
+        img = img || '';
         
         if (sub.length > 0){
             for (var k=1; k<3; k++){

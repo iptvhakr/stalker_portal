@@ -47,6 +47,14 @@ class SysEvent extends Event
         $this->setEvent('update_subscription');
         $this->send();
     }
+
+    /**
+     * Send "update modules" event
+     */
+    public function sendUpdateModules(){
+        $this->setEvent('update_modules');
+        $this->send();
+    }
     
     /**
      * Send "mount all storages" event

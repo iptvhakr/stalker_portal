@@ -72,6 +72,10 @@ class Stb
         
         $this->db = Mysql::getInstance();
         $this->getStbParams();
+
+        if (empty($this->id)){
+            $this->initLocale();
+        }
         
         if ($this->db->from('moderators')->where(array('mac' => $this->mac, 'status' => 1))->get()->count() == 1){
             $this->is_moderator = true;
@@ -137,7 +141,11 @@ class Stb
             $offset = $date->format('P');
             Mysql::getInstance()->set_timezone($offset);
 
-            $stb_lang = $this->stb_lang;
+            $this->additional_services_on = $user['additional_services_on'];
+
+            $this->initLocale();
+
+            /*$stb_lang = $this->stb_lang;
 
             if (!empty($this->stb_lang) && strlen($this->stb_lang) >= 2){
                 $preferred_locales = array_filter(Config::get('allowed_locales'),
@@ -171,8 +179,45 @@ class Stb
 
             bindtextdomain('stb', PROJECT_PATH.'/locale');
             textdomain('stb');
-            bind_textdomain_codeset('stb', 'UTF-8');
+            bind_textdomain_codeset('stb', 'UTF-8');*/
         }
+    }
+
+    private function initLocale(){
+        
+        $stb_lang = $this->stb_lang;
+
+        if (!empty($this->stb_lang) && strlen($this->stb_lang) >= 2){
+            $preferred_locales = array_filter(Config::get('allowed_locales'),
+                function ($e) use ($stb_lang){
+                    if (strpos($e, $stb_lang) === 0){
+                        return true;
+                    }
+                }
+            );
+
+            if (!empty($preferred_locales)){
+
+                $preferred_locales = array_values($preferred_locales);
+
+                $this->locale = $preferred_locales[0];
+            }
+        }
+
+        setlocale(LC_MESSAGES, $this->locale);
+        putenv('LC_MESSAGES='.$this->locale);
+
+        if (!function_exists('bindtextdomain')){
+            throw new ErrorException("php-gettext extension not installed.");
+        }
+
+        if (!function_exists('locale_accept_from_http')){
+            throw new ErrorException("php-intl extension not installed.");
+        }
+
+        bindtextdomain('stb', PROJECT_PATH.'/locale');
+        textdomain('stb');
+        bind_textdomain_codeset('stb', 'UTF-8');
     }
     
     public function getStorages(){
@@ -184,7 +229,15 @@ class Stb
     public function getProfile(){
         
         if (!$this->id){
-            $this->createProfile();
+            if (Config::exist('auth_url')){
+
+                return array(
+                    'status' => 2 // authentication request
+                );
+                
+            }else{
+                $this->initProfile();
+            }
         }
 
         $this->getInfoFromOss();
@@ -231,13 +284,43 @@ class Stb
 
         return $profile;
     }
+
+    public static function create($data){
+
+        if (!empty($data['mac'])){
+            $user = Stb::getUidByMacs($data['mac']);
+
+            if (!empty($user)){
+                throw new ErrorException('Stb already exists');
+            }
+        }
+
+        return Mysql::getInstance()->insert('users', $data)->insert_id();
+    }
     
-    private function createProfile(){
-        
-        $uid = $this->db->insert('users', array(
+    private function initProfile($login = null, $password = null){
+
+        if (empty($login)){
+            /*$uid = $this->db->insert('users', array(
+                        'mac'  => $this->mac,
+                        'name' => substr($this->mac, 12, 16)
+                    ))->insert_id();*/
+            $data = array(
+                'mac'  => $this->mac,
+                'name' => substr($this->mac, 12, 16)
+            );
+            $uid = self::create($data);
+        }else{
+            Mysql::getInstance()->update('users',
+                array(
                     'mac'  => $this->mac,
-                    'name' => substr($this->mac, 12, 16)
-                ))->insert_id();
+                    'name' => substr($this->mac, 12, 16)),
+                array(
+                     'login'    => $login,
+                     'password' => $password));
+
+            $uid = intval(Mysql::getInstance()->from('users')->where(array('mac' => $this->mac))->get()->first('id'));
+        }
                 
         $this->getStbParams();        
         
@@ -632,26 +715,94 @@ class Stb
     public function getModules(){
 
         return array(
-            'all_modules'      => Config::get('all_modules'),
-            'disabled_modules' => Config::get('disabled_modules')
+            'all_modules'        => Config::get('all_modules'),
+            'switchable_modules' => Config::get('disabled_modules'),
+            'disabled_modules'   => $this->getDisabledModules(),
+            'restricted_modules' => $this->getRestrictedModules()
             );
     }
-    
-    /*public static function setModules($all, $disabled){
+
+    private function getDisabledModules(){
+
+        return self::getDisabledModulesByUid($this->id);
+    }
+
+    public static function getDisabledModulesByUid($uid){
+
+        $disabled_modules = Mysql::getInstance()->from('user_modules')->where(array('uid' => intval($uid)))->get()->first('disabled');
+
+        if (empty($disabled_modules)){
+            return array();
+        }
+
+        $disabled_modules = unserialize($disabled_modules);
+
+        if ($disabled_modules === false){
+            return array();
+        }
+
+        return $disabled_modules;
+    }
+
+    public static function setDisabledModulesByUid($uid, $disabled_modules = array()){
+
+        self::initModulesRecord($uid);
+
+        /*$event = new SysEvent();
+        $event->setUserListById(array($uid));
+        $event->sendUpdateModules();*/
+
+        return Mysql::getInstance()->update('user_modules', array('disabled' => serialize($disabled_modules)), array('uid' => intval($uid)));
+    }
+
+    private static function initModulesRecord($uid){
         
-        self::$all_modules = $all;
-        self::$disabled_modules = $disabled;
-    }*/
+        $record = Mysql::getInstance()->from('user_modules')->where(array('uid' => intval($uid)))->get()->first();
+
+        if (empty($record)){
+            return Mysql::getInstance()->insert('user_modules', array('uid' => intval($uid)))->insert_id();
+        }
+
+        return false;
+    }
+
+    private function getRestrictedModules(){
+
+        return self::getRestrictedModulesByUid($this->id);
+    }
+
+    public static function getRestrictedModulesByUid($uid){
+        
+        $restricted_modules = Mysql::getInstance()->from('user_modules')->where(array('uid' => intval($uid)))->get()->first('restricted');
+
+        if (empty($restricted_modules)){
+            return array();
+        }
+
+        $restricted_modules = unserialize($restricted_modules);
+
+        if ($restricted_modules === false){
+            return array();
+        }
+
+        return $restricted_modules;
+    }
+
+    public static function setRestrictedModulesByUid($uid, $restricted_modules = array()){
+
+        self::initModulesRecord($uid);
+
+        $event = new SysEvent();
+        $event->setUserListById(array($uid));
+        $event->sendUpdateModules();
+
+        return Mysql::getInstance()->update('user_modules', array('restricted' => serialize($restricted_modules)), array('uid' => intval($uid)));
+    }
     
     public static function setAllowedLanguages($languages){
         
         self::$allowed_languages = $languages;
     }
-
-    /*public static function setAllowedLocales($locales){
-
-        self::$allowed_locales = $locales;
-    }*/
 
     public function getLocales(){
 
@@ -967,6 +1118,41 @@ class Stb
         }
 
         return true;
+    }
+
+    public function doAuth(){
+        
+        $login    = $_REQUEST['login'];
+        $password = $_REQUEST['password'];
+
+        $data = file_get_contents(Config::get('auth_url').'?login='.$login.'&password='.$password.'&mac='.$this->mac);
+
+        if (!$data){
+            return false;
+        }
+
+        $data = json_decode($data, true);
+
+        if (empty($data)){
+            return false;
+        }
+
+        var_dump($data);
+
+        if ($data['status'] != 'OK' || empty($data['results'])){
+            return false;
+        }
+
+        $auth_result = $data['results'];
+
+        if ($auth_result == "true"){
+            
+            $this->initProfile($login, $password);
+
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 ?>
