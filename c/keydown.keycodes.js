@@ -49,6 +49,7 @@ var key = {
     FRAME : 117,
     AUDIO : 2071,
     NULL  : 2076,
+    KEYBOARD  : 2076,
     USB_UNMOUNTED : 2081,
     USB_MOUNTED   : 2080
 };
