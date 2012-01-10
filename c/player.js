@@ -114,6 +114,16 @@ player.prototype.init = function(){
                 self.event_callback.apply(self, arguments);
             }
         })(this);
+
+        /*stbEvent.onMediaAvailable = function(contenttype, url){
+            _debug('stbEvent.onMediaAvailable', contenttype, url);
+        }*/
+
+        stbEvent.onMediaAvailable = (function(self){
+            return function(){
+                self.play_or_download.apply(self, arguments);
+            }
+        })(this);
         
     }catch(e){
         _debug(e);
@@ -127,6 +137,89 @@ player.prototype.setup_rtsp = function(rtsp_type, rtsp_flags){
     }catch(e){
         _debug(e);
     }
+};
+
+player.prototype.play_or_download = function(content_type, url){
+    _debug('player.play_media', content_type, url);
+
+    /*if (content_type.indexOf('video') == 0 || content_type.indexOf('audio') == 0){*/
+    if (content_type.indexOf('video') == 0){
+        _debug('module.downloads', !!module.downloads);
+        if (module.downloads){
+            this.init_play_or_download_dialog();
+            this.play_or_download_dialog.contentType = content_type;
+            this.play_or_download_dialog.url         = url;
+            this.play_or_download_dialog.show();
+            _debug('before close');
+            try{
+                stbWindowMgr.showPortalWindow();
+            }catch(e){
+                _debug(e);
+            }
+            _debug('after close');
+        }else{
+            _debug('play url');
+            //todo play url
+
+            stb.set_cur_place('internet');
+
+            main_menu.hide();
+
+            stb.player.prev_layer = main_menu;
+
+            stb.player.play({
+                "cmd"  : "ffmpeg " + stb.player.play_or_download_dialog.url,
+                "name" : stb.player.play_or_download_dialog.url.split("/").pop()
+            });
+        }
+    }else if (module.downloads){
+        _debug('show download dialog');
+        //todo show question about download dialog
+        module.downloads.dialog.show({"parent" : main_menu, "url" : stb.player.play_or_download_dialog.url});
+    }
+};
+
+player.prototype.init_play_or_download_dialog = function(){
+    _debug('player.init_play_or_download_dialog');
+    
+    if (this.play_or_download_dialog){
+        return;
+    }
+
+    this.play_or_download_dialog = new ModalForm({"title" : get_word('play_or_download')});
+    this.play_or_download_dialog.enableOnExitClose();
+
+    this.play_or_download_dialog.addItem(new ModalFormButton(
+        {
+            "value" : get_word("player_play"),
+            "onclick" : function(){
+
+                stb.set_cur_place('internet');
+
+                stb.player.play_or_download_dialog.hide();
+                main_menu.hide();
+                
+                stb.player.prev_layer = main_menu;
+
+                stb.player.play({
+                    "cmd"  : "ffmpeg " + stb.player.play_or_download_dialog.url,
+                    "name" : stb.player.play_or_download_dialog.url.split("/").pop()
+                });
+            }
+        }
+    ));
+
+    this.play_or_download_dialog.addItem(new ModalFormButton(
+        {
+            "value" : get_word("player_download"),
+            "onclick" : function(){
+
+                module.downloads.dialog.show({"parent" : main_menu, "url" : stb.player.play_or_download_dialog.url});
+
+                stb.player.play_or_download_dialog.hide();
+            }
+        }
+    ));
 };
 
 player.prototype.event_callback = function(event){
@@ -712,7 +805,7 @@ player.prototype.define_media_type = function(cmd){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
+        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
             this.is_tv = true;
         }else{
             this.is_tv = false;
