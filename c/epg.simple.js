@@ -143,8 +143,18 @@
                     }
                 }
             }).bind(key.OK, this);
-            
-            this.horizontal_shift.bind(key.LEFT, this, -1);
+
+            //this.horizontal_shift.bind(key.LEFT, this, -1);
+
+            (function(){
+                if (this.epg_list_active){
+                    this.horizontal_shift(-1);
+                }else{
+                    this.parent._show.call(this.parent, this.parent.genre);
+                    this.hide();
+                }
+            }).bind(key.LEFT, this);
+
             this.horizontal_shift.bind(key.RIGHT, this, 1);
         };
 
@@ -357,7 +367,14 @@
                 this.color_buttons.get('red')  .disable();
                 this.color_buttons.get('green').disable();
 
-                if (now >= this.data_items[this.cur_row].stop_timestamp && module.downloads && this.data_items[this.cur_row].mark_archive && this.tv_archive && !stb.player.cur_media_item.wowza_dvr){
+                _debug('this.data_items[this.cur_row].stop_timestamp', this.data_items[this.cur_row].stop_timestamp);
+                _debug('this.data_items[this.cur_row].mark_archive', !!this.data_items[this.cur_row].mark_archive);
+                _debug('!stb.player.cur_media_item.wowza_dvr', !stb.player.cur_media_item.wowza_dvr);
+                _debug('module.downloads', !!module.downloads);
+                _debug('this.tv_archive', !!this.tv_archive);
+                _debug('now >= this.data_items[this.cur_row].stop_timestamp', (now >= this.data_items[this.cur_row].stop_timestamp));
+
+                if (now >= this.data_items[this.cur_row].stop_timestamp && !!module.downloads && !!this.data_items[this.cur_row].mark_archive && !!this.tv_archive && !parseInt(stb.player.cur_media_item.wowza_dvr,10)){
                     this.color_buttons.get('yellow').enable();
                 }
                 
@@ -657,6 +674,8 @@
     epg_simple.init();
     
     epg_simple.init_header_path(word['epg_title']);
+
+    epg_simple.init_left_ear(word['ears_back']);
 
     epg_simple.init_color_buttons([
         {"label" : word['epg_record'], "cmd" : (function(){if (epg_simple.recorder){return function(){epg_simple.recorder.add_del()}}else{return ''}})()},
