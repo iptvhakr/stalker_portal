@@ -52,7 +52,14 @@ class StreamRecorder extends Master
         );
 
         $daemon = new RESTClient(Config::get('daemon_api_url'));
-        $start = $daemon->resource('recorder_task')->create($start_rec_task);
+        
+        try{
+            $start = $daemon->resource('recorder_task')->create($start_rec_task);
+        }catch (RESTClientException $e){
+            $this->deleteUserRecord($user_rec_id);
+            echo $e->getMessage();
+            throw new Exception($e->getMessage());
+        }
 
         if ($start){
 
@@ -353,6 +360,7 @@ class StreamRecorder extends Master
                                          ));
 
             //return $this->clients[$file_record['storage_name']]->stopRecording($file_record['id']);
+            var_dump($file_record, $this->clients);
             return $this->clients[$file_record['storage_name']]->resource('recorder')->ids($file_record['id'])->update();
         }
         //}

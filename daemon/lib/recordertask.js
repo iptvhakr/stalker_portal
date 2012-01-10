@@ -205,6 +205,32 @@ function sync(){
 
                             });
                         return false;
+                    }else{
+
+                        var self = this;
+                        var timeout = (item.time - now) * 1000;
+
+                        if (timeout < 0) timeout = 0;
+
+                        console.log('id', item.id);
+                        console.log('job', item.job);
+                        console.log('timeout', timeout);
+
+                        item.timer = setTimeout(function(){
+                            new RESTClient(config.param('stalker_api_url'))
+                                .resource("stream_recorder")
+                                .identifiers(item.id)
+                                .update({"action" : item.job})
+                                .on('end',
+                                    function(body, error){
+                                        console.log(body, error);
+                                        recorder_task._del_from_stack(item.id, item.job);
+                                });
+                            },
+                            timeout
+                        );
+                        
+                        stack.push(item);
                     }
                     return true
                 })
