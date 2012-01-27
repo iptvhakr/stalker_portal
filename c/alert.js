@@ -152,6 +152,10 @@ _alert.prototype.queue_handler = function(){
 
                 this.show(msg.msg);
             }
+
+            if (msg.hasOwnProperty('auto_hide_timeout') && msg['auto_hide_timeout'] > 0){
+                this.hide_after(msg['auto_hide_timeout']);
+            }
         }
         
         this.queue.splice(0, 1);
@@ -179,9 +183,22 @@ _alert.prototype.t_hide = function(){
     }, this.hide_timer);
 };
 
+_alert.prototype.hide_after = function(seconds){
+    _debug('_alert.hide_after');
+
+    var self = this;
+
+    this.hide_to = window.setTimeout(function(){
+        self.hide();
+
+    }, seconds*1000);
+};
+
 _alert.prototype.hide = function(){
     _debug('_alert.hide');
-    
+
+    window.clearTimeout(this.hide_to);
+
     this.dom_obj.hide();
     this.on = false;
     
