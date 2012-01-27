@@ -8,6 +8,8 @@ class RESTClient
     private $ids;
     private $data;
     public static $from;
+    private $auth_login;
+    private $auth_password;
 
     public function __construct($rest_server){
         $this->rest_server = $rest_server;
@@ -55,6 +57,13 @@ class RESTClient
         return $this;
     }
 
+    public function setAuthParams($login, $password){
+        if (!empty($login) && !empty($password)){
+            $this->auth_login = $login;
+            $this->auth_password = $password;
+        }
+    }
+
     private function execute(){
 
         $url = $this->rest_server  . $this->resource . '/' . ((!empty($this->ids)) ? implode(',', $this->ids) : '');
@@ -65,6 +74,10 @@ class RESTClient
 
         $headers[] = "Connection: close";
         $headers[] = "X-From: ".self::$from;
+
+        if (!empty(self::$auth_login) && !empty(self::$auth_password)){
+            $headers[] = "Authorization: Basic ".base64_encode(self::$auth_login.":".self::$auth_password);
+        }
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
