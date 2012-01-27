@@ -17,12 +17,14 @@
 
         _debug('module.internet.win_inited', module.internet.win_inited);
 
-        /*if (module.internet.win_inited){
+        _debug('stbWindowMgr.IsWebWindowExist', !!stbWindowMgr.IsWebWindowExist);
+
+        if (module.internet.win_inited && stbWindowMgr.IsWebWindowExist && stbWindowMgr.IsWebWindowExist()){
             stbWindowMgr.raiseWebWindow();
-        }else{*/
+        }else{
             stbWindowMgr.openWebWindow('http://google.com');
             module.internet.win_inited = true;
-        //}
+        }
     }, {});
 
     loader.next();
