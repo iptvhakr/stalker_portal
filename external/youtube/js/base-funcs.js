@@ -300,61 +300,10 @@ function getEnvironmentValue(name){
  * @return void
  */
 function parseYoutubePage(html, playNow) {
-/*
-    var swfConfig =  /swfConfig = \{.*\}\;/.exec(unescape(html)),
-        fmtUrlMap = unescape(/\"fmt_url_map\": ".*?"\,/.exec(swfConfig));
-    fmtUrlMap = trim(string_replace("\\","", string_replace("\"","", string_replace("fmt_url_map","", fmtUrlMap)).substr(1)));
-    
-    var temp1 = '({';
-    var list1=fmtUrlMap.split(/,(\d*)\|http/);
-    for(var i=0; i<=list1.length; i++) {
-        if(i==0) {
-            var tmp = list1[i].split( /\|/);
-            temp1 += '' + tmp[0] + ':"' + tmp[1] + '",';
-        } else {
-            if(i%2==0) {
-                temp1 += '' + list1[i - 1]+':"' + ("http" + list1[i]) + '",';
-            }
-        }
-    }
-    temp1 =  temp1.substr(0, temp1.length - 3) + '"})';
-*/
-/*
-    var str = decodeURIComponent(/fmt_url_map=.*?&/.exec(html)).substr(12);
-    str = str.substr(0, str.length - 1);
-    str = decodeURIComponent(str);
-    var temp = '({';
-    var list=str.split(/,(\d*)\|http/);
-    for(var i=0; i<=list.length; i++) {
-        if(i==0) {
-            var tmp = list[i].split( /\|/);
-            temp += '' + tmp[0] + ':"' + tmp[1] + '",';
-        } else {
-            if(i%2==0) {
-                temp += '' + list[i - 1]+':"' + ("http" + list[i]) + '",';
-            }
-        }
-    }
-    temp =  temp.substr(0, temp.length - 1) + '})';
-*/
-/*
-    if(temp==temp1) {
-        log("\n\nAll right!\n\n\n");
-    } else {
-        log("\n\nSwfHTML\n");
-        log(temp);
-
-        log("\n\nSwfConfig\n");
-        log(temp1);
-        log("\n\n");
-    }
-*/
-    var s = /\&amp\;url_encoded_fmt_stream_map=(.*?)\&amp\;/.exec(html);
-    
+    var s = /amp\;url_encoded_fmt_stream_map=(.*?)amp\;/.exec(html);
     log('\n\n'+s.length+'\n\n');
     log('\n\n'+s[1]+'\n\n');
     var str = '({';
-    
     var r = s[1].split('%2C');
     for(var i=0;i<r.length;i++){
         r[i] = r[i].replace('url%3D', '');
