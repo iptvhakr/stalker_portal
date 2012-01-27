@@ -33,7 +33,8 @@ if (@$_POST['add']){
                 wowza_server,
                 archive_stream_server,
                 external,
-                for_simple_storage
+                for_simple_storage,
+                not_for_mag100
                 )
             values (
                 "'.@$_POST['storage_name'].'",
@@ -45,7 +46,8 @@ if (@$_POST['add']){
                 "'.@intval($_POST['wowza_server']).'",
                 "'.@$_POST['archive_stream_server'].'",
                 "'.@intval($_POST['external']).'",
-                "'.@intval($_POST['for_simple_storage']).'"
+                "'.@intval($_POST['for_simple_storage']).'",
+                "'.@intval($_POST['not_for_mag100']).'"
             )';
     $db->executeQuery($sql);
     header("Location: storages.php");
@@ -66,7 +68,8 @@ if (!empty($id)){
                     wowza_server="'.@intval($_POST['wowza_server']).'",
                     archive_stream_server="'.@$_POST['archive_stream_server'].'",
                     external="'.@intval($_POST['external']).'",
-                    for_simple_storage="'.@intval($_POST['for_simple_storage']).'"
+                    for_simple_storage="'.@intval($_POST['for_simple_storage']).'",
+                    not_for_mag100="'.@intval($_POST['not_for_mag100']).'"
                 where id='.intval($_GET['id']);
         $db->executeQuery($sql);
         //var_dump($_POST,$sql);
@@ -247,6 +250,10 @@ a:hover{
                 <tr>
                     <td>Хранение контента</td>
                     <td><input type="checkbox" name="for_simple_storage" value="1" <? if(@$edit_storage['for_simple_storage']){ echo 'checked="checked"'; } ?>/></td>
+                </tr>
+                <tr>
+                    <td>Недоступно для MAG100</td>
+                    <td><input type="checkbox" name="not_for_mag100" value="1" <? if(@$edit_storage['not_for_mag100']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
                     <td>Запись ТВ</td>
