@@ -251,8 +251,10 @@ class Itv extends AjaxResponse
         $fav_ch = @$_REQUEST['fav_ch'];
         
         if (empty($fav_ch)){
-            $fav_ch = array();
+            $fav_ch = '';
         }
+
+        $fav_ch = explode(",", $fav_ch);
         
         if (is_array($fav_ch)){
             $fav_ch_str = base64_encode(serialize($fav_ch));
@@ -531,8 +533,11 @@ class Itv extends AjaxResponse
     }
     
     public function prepareData(){
-        $fav = $this->getFav();
-        
+
+        $fav           = $this->getFav();
+        $censored_list = $this->getCensoredList();
+        $censored_exclude_list = $this->getCensoredExcludeList();
+
         $epg = new Epg();
 
         //$qualities = array('high' => 1, 'medium' => 2, 'low' => 3);
@@ -579,10 +584,14 @@ class Itv extends AjaxResponse
                 }
             }
             
-            if ($this->response['data'][$i]['censored']){
+            if ($this->response['data'][$i]['censored'] && !in_array($this->response['data'][$i]['id'], $censored_exclude_list)){
                 $this->response['data'][$i]['lock'] = 1;
             }else{
                 $this->response['data'][$i]['lock'] = 0;
+            }
+
+            if (in_array($this->response['data'][$i]['id'], $censored_list)){
+                $this->response['data'][$i]['lock'] = 1;
             }
             
             if (in_array($this->response['data'][$i]['id'], $fav)){
@@ -726,6 +735,112 @@ class Itv extends AjaxResponse
         $result = $result->get()->all();
 
         return $result;
+    }
+
+    public function addToCensored(){
+
+        $ch_id = intval($_REQUEST['ch_id']);
+
+        $censored_list = $this->getCensoredList();
+
+        array_push($censored_list, $ch_id);
+
+        return $this->setCensoredList(array_unique($censored_list));
+    }
+
+    public function delFromCensored(){
+
+        $ch_id = intval($_REQUEST['ch_id']);
+
+        $censored_list = $this->getCensoredList();
+
+        $idx = array_search($ch_id, $censored_list);
+
+        if ($idx === false){
+
+            $exclude_list = $this->getCensoredExcludeList();
+            array_push($exclude_list, $ch_id);
+            
+            return $this->setCensoredExcludeList(array_unique($exclude_list));
+        }
+
+        unset($censored_list[$idx]);
+
+        return $this->setCensoredList($censored_list);
+    }
+
+    private function getCensoredExcludeList(){
+        
+        $list = Mysql::getInstance()->from('censored_channels')->where(array('uid' => $this->stb->id))->get()->first('exclude');
+
+        if (empty($list)){
+            return array();
+        }
+
+        $list = unserialize(System::base64_decode($list));
+
+        if ($list === false){
+            return array();
+        }
+
+        return $list;
+    }
+
+    private function setCensoredExcludeList($list){
+        
+        $item = Mysql::getInstance()->from('censored_channels')->where(array('uid' => $this->stb->id))->get()->first();
+
+        $data = array(
+            "exclude" => System::base64_encode(serialize($list)),
+            "uid"     => $this->stb->id
+        );
+
+        if (empty($item)){
+
+            return Mysql::getInstance()->insert('censored_channels', $data)->insert_id();
+
+        }else{
+
+            return Mysql::getInstance()->update('censored_channels', $data, array('uid' => $this->stb->id));
+
+        }
+    }
+
+    private function getCensoredList(){
+
+        $list = Mysql::getInstance()->from('censored_channels')->where(array('uid' => $this->stb->id))->get()->first('list');
+
+        if (empty($list)){
+            return array();
+        }
+
+        $list = unserialize(System::base64_decode($list));
+
+        if ($list === false){
+            return array();
+        }
+
+        return $list;
+    }
+
+    private function setCensoredList($list){
+
+        $item = Mysql::getInstance()->from('censored_channels')->where(array('uid' => $this->stb->id))->get()->first();
+
+        $data = array(
+            "list" => System::base64_encode(serialize($list)),
+            "uid"  => $this->stb->id
+        );
+
+        if (empty($item)){
+
+            return Mysql::getInstance()->insert('censored_channels', $data)->insert_id();
+
+        }else{
+
+            return Mysql::getInstance()->update('censored_channels', $data, array('uid' => $this->stb->id));
+
+        }
     }
 }
 ?>
