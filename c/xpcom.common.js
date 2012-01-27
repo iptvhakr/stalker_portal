@@ -40,6 +40,7 @@ function common_xpcom(){
         "context_menu",
         "main_menu",
         "alert",
+        "speedtest",
         "layer.base",
         "layer.list",
         "layer.setting",
@@ -50,6 +51,7 @@ function common_xpcom(){
         "layer.bottom_menu",
         "layer.scrollbar",
         "layer.vclub_info",
+        "image.viewer",
         "password_input",
         "series_switch",
         "duration_input"
@@ -127,11 +129,12 @@ function common_xpcom(){
 
         var pattern = /http:\/\/([\w\.\-]*)\/([\w\/]+)*\/([\w\/]+)\/(.)*/;
 
+        this.portal_ip   = document.URL.replace(pattern, "$1");
         this.portal_path = document.URL.replace(pattern, "$2");
 
         _debug('stb.portal_path:', this.portal_path);
 
-        this.ajax_loader = 'http://'+document.URL.replace(pattern, "$1")+'/'+this.portal_path+'/server/load.php';
+        this.ajax_loader = 'http://'+this.portal_ip+'/'+this.portal_path+'/server/load.php';
 
         _debug('stb.ajax_loader:', this.ajax_loader);
     };
@@ -226,6 +229,8 @@ function common_xpcom(){
 
             this.ip  = stb.RDir('IPAddress').clearnl();
 
+            this.serial_number  = stb.RDir('SerialNumber').clearnl();
+
             this.type = stb.RDir('Model').clearnl();
 
             this.stb_lang = stb.RDir('getenv language').clearnl();
@@ -248,7 +253,7 @@ function common_xpcom(){
 
             if (this.graphic_mode >= 720){
                 _debug('gSTB.SetObjectCacheCapacities');
-                gSTB.SetObjectCacheCapacities(1000000,7000000,10000000);
+                gSTB.SetObjectCacheCapacities(1000000, 7000000, 10000000);
             }
             
         }catch(e){
@@ -263,9 +268,11 @@ function common_xpcom(){
             this.set_cookie('debug', 1);
         }
 
-        this.set_cookie('mac', this.mac);
+        this.set_cookie('mac',      this.mac);
         this.set_cookie('stb_lang', this.stb_lang);
         this.set_cookie('timezone', this.timezone);
+        this.set_cookie('stb_type', this.type);
+        this.set_cookie('sn',       this.serial_number);
 
         //this.get_localization();
 
@@ -1092,6 +1099,10 @@ function common_xpcom(){
                     cur_place_num = 9;
                 }else if(this.cur_place == 'media_browser'){
                     cur_place_num = 10;
+                }else if (this.cur_place == 'epg_simple' || this.cur_place == 'epg'){
+                    cur_place_num = 11;
+                }else if (this.cur_place == 'remote_pvr'){
+                    cur_place_num = 12;
                 }
             }
         }else{
@@ -1285,6 +1296,8 @@ var screensaver = {
     show : function(){
         _debug('screensaver.show');
 
+        window.clearTimeout(this.activate_timer);
+
         if (stb.player.on){
             _debug('stb.player.on', stb.player.on);
             this.restart_timer();
@@ -1309,6 +1322,16 @@ var screensaver = {
         this.dom_obj.hide();
         this.on = false;
         window.clearInterval(this.move_timer);
+    },
+
+    toggle : function(){
+        _debug('screensaver.toggle');
+        
+        if (this.on){
+            this.hide();
+        }else{
+            window.setTimeout(function(){screensaver.show()}, 500);
+        }
     },
 
     move : function(){
