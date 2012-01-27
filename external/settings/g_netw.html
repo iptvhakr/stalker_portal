@@ -1,0 +1,185 @@
+<html>
+<head>    
+<script>
+var iid=1;
+var mid=5;
+var menuT=new Array();
+var fl=true;
+var ind=1;
+var read=JSON.parse(parent.stb.GetEnv('{"varList":["lan_noip","ipaddr_conf","dnsip","pppoe_enabled","pppoe_login","pppoe_dns1","wifi_ssid","wifi_int_ip"]}'));
+var chek=document.getElementsByClassName("check");
+function _debug(){}
+var loader = {next:function(){}};
+
+function onLoad()
+{
+        get_word = parent.t;
+        sload();
+        parent.cont.focus();
+        document.getElementById("i1").focus();
+        document.getElementById("i1").value=parent.t('Wired (Ethernet)');
+        document.getElementById("i2").value=parent.t('PPPoE');
+        document.getElementById("i3").value=parent.t('Wireless (Wi-Fi)');
+        document.getElementById("i4").value=parent.t('Speed test');
+        document.getElementById("i5").value=parent.t('Back');
+}
+
+function ent(a)
+{
+    ind=a;
+    document.getElementById("menu_buttons").style.display="none";
+    if(a<=3)chek[0].style.display="block";else chek[1].style.display="block";
+    var tt=parent.stb.GetNetworkGateways();
+    var tt1=parent.stb.GetNetworkNameServers();
+    for(var i=1;i<=8;i++)
+    {
+       document.getElementById("t"+i).innerHTML="";document.getElementById("t"+i+'1').innerHTML="";
+    }
+    switch(a)
+    {
+    case 1:mid=10;
+        if(read.result.lan_noip!='true'){
+        var tcur='';
+        if(!cIP(read.result.ipaddr_conf)){tcur=parent.t("DHCP")
+        if(cIP(read.result.dnsip))tcur+='('+parent.t("manual DNS")+')';}
+        else tcur=parent.t('Static IP');}
+        else tcup=parent.t("No config");
+        menuT=[['text',parent.t('Current configuration'),tcur],
+        ['text',parent.t('Current status'),''],
+        ['text',parent.t('Link status:'),parent.stb.GetLanLinkStatus()?parent.t("UP"):parent.t("Down")],
+        ['text',parent.t('MAC address:'),parent.stb.GetDeviceMacAddress()],
+        ['text',parent.t('IP address:'),parent.stb.RDir('IPAddress')],
+        ['text',parent.t('Network mask:'),parent.stb.RDir('IPMask')],
+        ['text',parent.t('Gateway(s):'),(tt==''?'n/a':tt.replace(/\r\n|\r|\n/g,', '))],
+        ['text',parent.t('DNS server(s):'),(tt1==''?'n/a':tt1.replace(/\r\n|\r|\n/g,', '))]];
+        mid=10;
+        init();
+        break;
+    case 2:mid=8;
+        var tcur='';
+        if(read.result.pppoe_enabled=="true"){
+        tcur=parent.t("Disabled");    
+        }
+        else{
+            tcur=read.result.pppoe_login;
+         if(cIP(read.result.pppoe_dns1))tcur+='('+parent.t("manual DNS")+')';
+        }
+        var tip=parent.stb.GetPppoeIp();
+        menuT=[['text',parent.t('Current configuration'),tcur],
+        ['text',parent.t('Current status'),''],
+        ['text',parent.t('Link status:'),parent.stb.GetPppoeLinkStatus()?parent.t("UP"):parent.t("Down")],
+        ['text',parent.t('IP address:'),tip==""?"n/a":tip],
+        ['text',parent.t('Gateway(s):'),(tt==''?'n/a':tt.replace(/\r\n|\r|\n/g,', '))],
+        ['text',parent.t('DNS server(s):'),(tt1==''?'n/a':tt1.replace(/\r\n|\r|\n/g,', '))]];
+        init();break;
+    case 3:mid=9;
+        var tcur='"'+read.result.wifi_ssid+'" (';
+        if(cIP(read.result.wifi_int_ip))tcur+=parent.t('Static IP')+')';
+        else tcur+=parent.t('DHCP')+')';
+        var tmac=parent.stb.GetNetworkWifiMac();
+        var tip=parent.stb.RDir('WiFi_ip');
+        menuT=[['text',parent.t('Current configuration'),tcur],
+        ['text',parent.t('Current status'),''],
+        ['text',parent.t('Link status:'),parent.stb.GetWifiLinkStatus()?parent.t("UP"):parent.t("Down")],
+        ['text',parent.t('MAC address:'),tmac==''?'n/a':tmac],
+        ['text',parent.t('IP address:'),tip==''?'n/a':tip],
+        ['text',parent.t('Gateway(s):'),(tt==''?'n/a':tt.replace(/\r\n|\r|\n/g,', '))],
+        ['text',parent.t('DNS server(s):'),(tt1==''?'n/a':tt1.replace(/\r\n|\r|\n/g,', '))]];
+        init();break;
+    case 4:mid=5;
+        var d=document.getElementById('tt31');
+        var speedtest = new Speedtest(parent.prof.test_download_url);
+        speedtest.onSuccess(function(speed){
+            d.innerHTML=speed;
+        });
+        speedtest.onCheck(function(result){
+           if (result.state == 2){
+               d.innerHTML=parent.t('Testing');
+           }else if (result.state == 4 || result.state == 5){
+               d.innerHTML=parent.t('Error');
+           }else if (result.state == 1){
+               d.innerHTML=parent.t('Waiting');
+           }
+        });
+        menuT=[['text','LAN:',parent.stb.GetLanLinkStatus()?parent.t("UP"):parent.t("Down")],['text','WLAN:',parent.stb.GetWifiLinkStatus()?parent.t("UP"):parent.t("Down")],['text',parent.t('Speed test')+':','']];
+        for(i=0;i<menuT.length;i++){
+           document.getElementById('tt'+(i+1)).innerHTML=menuT[i][1];
+           document.getElementById('tt'+(i+1)+'1').innerHTML=menuT[i][2];
+        }  
+        speedtest.start();
+        break;
+    }
+    document.getElementById("i5").focus();mid=0;fl=false;
+}
+
+function backH(){
+    if(fl)back();else{if(iid<=3){chek[0].style.display="none";}else chek[1].style.display="none";document.getElementById("menu_buttons").style.display="block";fl=true;mid=5;document.getElementById("i"+ind).focus();}
+}
+function change(a){}
+</script>
+<script language="JavaScript" src="js/pres.js"></script>
+<script type="text/javascript" src="../../c/speedtest.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<body onload="onLoad()" onkeydown="pressKey(event);">
+        <div align="center" id="menu_buttons" style="display:block;">
+                <input id="i1" type="button" onClick="ent(1);"/><br />
+                <input id="i2" type="button" onClick="ent(2);"/><br />
+                <input id="i3" type="button" onClick="ent(3);"/><br />
+                <input id="i4" type="button" onClick="ent(4);"/>
+        </div>            
+        <div id="blueback" class="check" style="display:none;">
+         <table width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td colspan="2"><span id="t1" class="list_head"></span><div style="height:2px; background:#FFF; width:100%; margin:5px 0;"></div></td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center"><span id="t11" class="item_name"></span></td>
+          </tr>
+            <td colspan="2"><span id="t2" class="list_head"></span><div style="height:2px; background:#FFF; width:100%; margin:5px 0;"></div><span id="t21"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="t3" class="list_head"></div></td>
+            <td><span id="t31" class="item_name"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="t4" class="list_head"></div></td>
+            <td><span id="t41" class="item_name"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="t5" class="list_head"></div></td>
+            <td><span id="t51" class="item_name"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="t6" class="list_head"></div></td>
+            <td><span id="t61" class="item_name"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="t7" class="list_head"></div></td>
+            <td><span id="t71" class="item_name"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="t8" class="list_head"></div></td>
+            <td><span id="t81" class="item_name"></span></td>
+          </tr>
+        </table>
+        </div>
+        <div id="blueback" class="check" style="display:none;">
+         <table class="nsp" width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="right"><div id="tt1" class="list_head"></div></td>
+            <td width="50%"><span id="tt11" class="item_name"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="tt2" class="list_head"></div></td>
+            <td><span id="tt21" class="item_name"></span></td>
+          </tr>
+          <tr>
+            <td align="right"><div id="tt3" class="list_head"></div></td>
+            <td><span id="tt31" class="item_name"></span></td>
+        </table>
+        </div>
+    <div id="footer">
+        <input id="i5" type="button"  value="" onClick="backH();"/>
+    </div>
+</body>
+</html>

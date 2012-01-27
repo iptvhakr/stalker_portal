@@ -1,0 +1,235 @@
+
+<html>
+    <head>
+        
+<script>
+var iid=1;
+var icF=false;
+var model=parent.stb.RDir("Model");
+var menuT=new Array();
+menuT=[['select',parent.t('Language:')],['select',parent.t('Country:')],['select',parent.t('City:')],['select',parent.t('Time zone:')]];
+var  mid=menuT.length+2;
+var City=new Object();
+var index=0;var maxIn=0;
+var numberC=0;
+var goInd=-1;var goMax=0;
+var goCity=new Object();
+parent.load({"type":"stb","action":"get_locales"},
+        function(langv){ 
+            var dl=document.getElementById("i1");
+            var options = '';
+            for(var il in langv)
+            {
+               if(langv[il].selected==1){var selected = "selected";}else{selected = ""}
+               options += '<option value="'+langv[il].value+'" '+selected+'>'+langv[il].label+'</option>';  
+            }
+            dl.innerHTML = options;
+        });
+        
+parent.load({"type":"stb","action":"get_countries"},
+        function(locales){ 
+            var dlo=document.getElementById("i2");
+            var sel=true;
+            var options = '';
+            for(var il in locales)
+            {
+               if(locales[il].selected==1){var selected = "selected";}else{selected = ""}
+               options += '<option value="'+locales[il].value+'" '+selected+'>'+locales[il].label+'</option>';
+            }
+            dlo.innerHTML = options;
+            if(sel)loadCity(dlo[dlo.selectedIndex].value);
+        });
+
+ parent.load({"type":"stb","action":"get_timezones"},
+        function(timezon){ 
+            var dl=document.getElementById("i4");
+            var options = '';
+            for(var il in timezon)
+            {
+               if(timezon[il].selected==1){var selected = "selected";}else{selected = ""}
+               options += '<option value="'+timezon[il].value+'" '+selected+'>'+timezon[il].label+'</option>';
+            }
+            dl.innerHTML = options;
+        });
+        
+function loadCity(id){
+    parent.load({"type":"stb","action":"get_cities","country_id" : id},
+        function(city){ 
+            maxIn=0;index=0;
+            var dl=document.getElementById("i3");
+            City=city;
+            for(var il in city)
+            {
+               maxIn++;
+               if(city[il].selected==1){index=il;}
+            }
+            maxIn--;
+            numberC=City[index].value;
+            dl.value=City[index].label;
+            changeTime(City[index].timezone);
+        });
+}
+
+function changeTime(timezone)
+{
+    var dl=document.getElementById("i4");
+    if(timezone!='')for(i=0;i<dl.length;i++){
+        if(timezone==dl[i].value){dl[i].selected=true;break;}
+    }
+}
+
+function onLoad()
+{
+        sload();
+        init();
+        parent.cont.focus();
+        document.getElementById("i1").focus();
+        document.getElementById("i5").value=parent.t('OK');
+        document.getElementById("i6").value=parent.t('Cancel');
+        menuT[2][0]='ic';
+}
+
+function pressKeyH(e)
+{
+ec = e.keyCode;
+//parent.stb.Debug('key='+ec);
+if(!block)switch(ec)
+    {
+    case 9:case 116:e.preventDefault();break;
+    case 27:parent.wifi_ssid.length=0;back();break;
+    case 13:fc=true;if(menuT[iid-1][0]=='ic'){icCheck();e.preventDefault();}break;
+    case 40:if(iid<=mid)perehod_set(+1);fc=true;e.preventDefault();if(fln)ni=1;break;
+    case 38:if(iid<=mid)perehod_set(-1);fc=true;e.preventDefault();if(fln)ni=1;break;
+    case 37:change(-1);if(fln&&iid<=mid-2)if(menuT[iid-1][0]=='dn')e.preventDefault();break;
+    case 39:change(1);if(fln&&iid<=mid-2)if(menuT[iid-1][0]=='dn')e.preventDefault();break;
+    }
+else switch(ec)
+    {
+    case 9:case 116:e.preventDefault();break;
+    case 27:icCheck();e.preventDefault();break;//exit
+    case 13:if(goInd>=0)icCheck(goCity[goInd].value);else icCheck();maxIn=0;index=0;goInd=-1;break;//ok
+    case 40:cityGo(1);e.preventDefault();break;//niz
+    case 38:cityGo(-1);e.preventDefault();break;//vverh
+    case 37:break;//levo
+    case 39:break;//pravo
+    }
+}
+
+function icCheck(check){
+    icF=!icF;
+    if(icF){
+        var d=document.getElementById('i'+iid);
+        d.removeAttribute('readonly', 0);
+        d.focus();
+        d.value='';
+        block=true;
+        document.getElementById('i'+iid).addEventListener('input',function(){eval('searchCity()')})
+    }
+    else{
+        var d=document.getElementById('i'+iid);
+        d.setAttribute('readonly', 0);
+        d.focus();
+        block=false;
+        if(check){
+            parent.stb.Debug(check)
+            for(var i=0;i<=maxIn;i++)if(City[i].value==check){index=i;break;}
+            numberC=City[index].value;
+            d.value=City[index].label;
+            changeTime(City[index].timezone); 
+        }
+        numberC=City[index].value;
+        d.value=City[index].label;
+        changeTime(City[index].timezone);
+        document.getElementById('list_array').style.display='none';
+        document.getElementById('list_array').innerHTML='';
+    } 
+}
+
+function searchCity(){
+    if(block){
+        parent.load({"type":"stb","action":"search_cities","search":document.getElementById('i3').value,"country_id":document.getElementById('i2').value},
+    function(city){
+        var html='';
+        goInd=0;
+        goMax=0;
+        var d=document.getElementById('list_array');
+        parent.stb.Debug(city);
+        for(var i in city){
+            parent.stb.Debug(city[i].label);
+            html+='<div class="line">'+city[i].label+'</div>';
+            goInd++;
+            if(i>=2)break;
+        }
+        if(goInd!=0){
+        goCity=city;
+        goMax=goInd-1;
+        d.innerHTML=html;
+        d.style.display='block';}
+        else {d.innerHTML='';d.style.display='none';goInd=-1;}
+    });  
+    }
+}
+
+function cityGo(a){
+    parent.stb.Debug(goInd);
+    if(goInd>=0){if(goInd<=goMax)document.getElementsByClassName('line_act')[0].className='line';
+    parent.stb.Debug(document.getElementById('list_array').innerHTML);
+    goInd+=a;
+    parent.stb.Debug(goInd);
+    if(goInd>goMax){goInd=goMax;}else if(goInd<0){goInd=0;}
+    var d=document.getElementsByClassName('line');
+    parent.stb.Debug(document.getElementById('list_array').innerHTML);
+    d[goInd].className='line_act';}
+}
+
+function submit()
+{
+    var la=document.getElementById('i1').value;
+    var tm=document.getElementById('i4').value;
+    parent.stb.RDir('setenv language '+la.substr(0, 2));
+    parent.stb.ExecAction('timezone '+tm);
+    parent.stb.RDir('setenv timezone_conf_int');    
+    parent.load({"type":"stb","action":"set_locale","locale":la,"city":numberC},function(result){if(!result)parent.erMes(parent.t('Saving error'),"i"+iid);else parent.rebut2=true;back();});
+}
+
+function change(a){if(iid>mid-2){if(iid+a<=mid&&iid+a>=mid-1){iid+=a;document.getElementById('i'+iid).focus();}}
+else {var d=document.getElementById('i'+iid);
+    switch(iid){
+    case 2:loadCity(d[d.selectedIndex+a>=0?(d.selectedIndex+a<d.length?d.selectedIndex+a:d.length-1):0].value);break;
+    case 3:index=parseInt(index)+a;if(index>maxIn)index=maxIn;else if(index<0)index=0;d.value=City[index].label;changeTime(City[index].timezone);numberC=City[index].value;break;
+}}}
+</script>
+<script language="JavaScript" src="js/pres.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<body onload="onLoad()" onkeydown="pressKeyH(event);">
+        <div id="blueback">
+        <div id="list_array"></div>  
+        <table class="nsl1" width="100%" border="0" cellpadding="0" cellspacing="0">
+          <tr>
+            <td align="right"><span id="t1"></span></td>
+            <td width="50%"><div class="sub_select"><select id="i1"></select></div>
+          </tr>
+          <tr>
+            <td align="right"><span id="t2"></span></td>
+            <td><div class="sub_select"><select id="i2" onChange="loadCity(this.value)"></select></div>
+            </td>
+          </tr>
+          <tr>
+            <td align="right"><span id="t3"></span></td>
+            <td><input id="i3" type="text" readonly class="arrow" onChange="searchCity()" />
+           </td>
+          </tr>
+          <tr>
+            <td align="right"><span id="t4"></span>
+            <td><div class="sub_select"><select id="i4"></select></div>
+            </td>
+          </tr>   
+        </table>
+
+        </div>
+    <div id="footer">
+        <input id="i6" type="button"  value="" onClick="back();"/>
+        <input id="i5" type="button" value="" onClick="submit();"/>
+    </div>
+</body>
+</html>

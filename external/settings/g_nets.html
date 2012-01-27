@@ -1,0 +1,64 @@
+<html>
+<head>    
+<script>
+var iid=1;var mid=4;var menuT=new Array();var fl=true;var fl1=false;var fl2=false;var ind=1;
+
+function onLoad()
+{
+        sload();
+        parent.cont.focus();
+        document.getElementById("i1").focus();
+        switch(parent.lani){
+            case 0:initH();break;
+            case 1:ent(2);parent.lani=0;break;
+            case 2:ent(3);parent.lani=0;break;
+        }
+        document.getElementById("i4").value=parent.t('Back');
+}
+
+function initH(){
+        document.getElementById("i1").value=parent.t('Wired (Ethernet)');
+        document.getElementById("i2").value=parent.t('PPPoE');
+        document.getElementById("i3").value=parent.t('Wireless (Wi-Fi)');
+}
+
+function ent(a)
+{
+    ind=a;
+    switch(a)
+    {
+    case 1:if(fl1){parent.nextMenu("nsp_pavto.html");}
+        else if(fl2){parent.nextMenu("nsw_dhcp.html");}
+        else {parent.nextMenu("ns_lans.html");}break;
+    case 2:if(fl1){parent.nextMenu("nsp_pad.html");}
+        else if(fl2){parent.nextMenu("nsw_dhd.html");}
+        else{iid=1;document.getElementById("i1").focus();parent.document.getElementById("zagolovok").innerHTML+="/"+parent.t('PPPoE');document.getElementById("i1").value=parent.t('Auto (DHCP)');document.getElementById("i2").value=parent.t('Auto (DHCP), manual DNS');document.getElementById("i3").value=parent.t('Disable PPPoE');fl1=true;fl=false;}break;
+    case 3:if(fl1){parent.conf(parent.t('Do you want to do it?'),'i'+iid,'cont.contentWindow.submit();erMbeck();');}
+        else if(fl2){parent.nextMenu("nsw_stat.html");}
+        else{iid=1;document.getElementById("i1").focus();parent.document.getElementById("zagolovok").innerHTML+="/"+parent.t('Wireless (Wi-Fi)');document.getElementById("i1").value=parent.t('Auto (DHCP)');document.getElementById("i2").value=parent.t('Auto (DHCP), manual DNS');document.getElementById("i3").value=parent.t('Manual');fl2=true;fl=false;}break;
+    }
+    fl=false;
+}
+
+function submit(){
+    parent.stb.SetEnv('{"pppoe_enabled":""}');ind=2;
+}
+
+function backH(){
+    if(fl)back();else{iid=ind;initH();document.getElementById("i"+ind).focus();fl=true;fl1=false;fl2=false;parent.document.getElementById("zagolovok").innerHTML=parent.t('Network');}
+}
+function change(a){}
+</script>
+<script language="JavaScript" src="js/pres.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<body onload="onLoad()" onkeydown="pressKey(event);">
+        <div align="center" id="menu_buttons">
+                <input id="i1" type="button" onClick="ent(1);"/><br />
+                <input id="i2" type="button" onClick="ent(2);"/><br />
+                <input id="i3" type="button" onClick="ent(3);"/>
+        </div>
+    <div id="footer">
+        <input id="i4" type="button"  value="" onClick="parent.lani=0;backH();"/>
+    </div>
+</body>
+</html>
