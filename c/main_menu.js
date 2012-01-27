@@ -17,12 +17,16 @@ var main_menu = {
         stb.set_cur_layer(this);
         
         module.curweather && module.curweather.current && module.curweather.render();
+
+        this.triggerCustomEventListener('mainmenushow');
     },
     
     hide : function(){
         _debug('main_menu.hide');
         this.dom_obj.hide();
         this.on = false;
+
+        this.triggerCustomEventListener('mainmenuhide');
     },
     
     init : function(){
@@ -48,6 +52,10 @@ var main_menu = {
             this.hide();
             stb.player.play_last();
         }).bind(key.EXIT, this);
+
+        (function(){
+            screensaver.toggle();
+        }).bind(key.CLOCK, this);
         
         this.dom_obj = create_block_element('main_menu', document.body);
         
