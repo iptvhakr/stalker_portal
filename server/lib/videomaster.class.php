@@ -11,9 +11,18 @@ class VideoMaster extends Master
     public function __construct(){
         
         $this->media_type = 'vclub';
-        $this->db_table = 'video';
+        $this->db_table   = 'video';
         
         parent::__construct();
+    }
+
+    public function getStoragesForVideo(){
+
+        $video_id = intval($_REQUEST['video_id']);
+
+        $good_storages = $this->getAllGoodStoragesForMediaFromNet($video_id);
+        $good_storages = $this->sortByLoad($good_storages);
+        return array_keys($good_storages);
     }
     
     protected function getMediaName(){
