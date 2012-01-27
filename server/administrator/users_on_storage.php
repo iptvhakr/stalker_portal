@@ -122,7 +122,7 @@ function page_bar(){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$where = " where now_playing_type=2 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-120";
+$where = " where now_playing_type=".intval($_GET['type'])." and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-120";
 
 $query = "select * from users $where";
 
