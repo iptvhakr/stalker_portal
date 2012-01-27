@@ -121,6 +121,7 @@ class StreamRecorder extends Master
 
             $event = new SysEvent();
             $event->setUserListById($user_record['uid']);
+            $event->setAutoHideTimeout(300);
             $event->sendMsg(_('Starting recording') . ' — ' . $user_record['program'] . ' ' .  _('on channel') . ' ' . $channel['name']);
         }
 
