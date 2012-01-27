@@ -127,7 +127,7 @@
 
                             function(result){
                                 _debug('get_cities callback');
-                                
+
                                 self.city_option.fill(result);
                                 self.city_option.suggests_target['country_id'] = country_id;
                             },
