@@ -15,7 +15,8 @@ class Event extends HTTPPush
         'msg'       => '',
         'need_confirm'    => 0,
         'reboot_after_ok' => 0,
-        'eventtime' => 0
+        'eventtime' => 0,
+        'auto_hide_timeout' => 0
     );
     
     private $pattern;
@@ -169,6 +170,15 @@ class Event extends HTTPPush
     protected function setRebootAfterOk($reboot_after_ok){
         $this->param['reboot_after_ok'] = $reboot_after_ok;
     }
+
+    /**
+     * Set auto hide timeout option. In seconds.
+     *
+     * @param int $reboot_after_ok
+     */
+    public function setAutoHideTimeout($timeout){
+        $this->param['auto_hide_timeout'] = $timeout;
+    }
     
     /**
      * Send event
@@ -235,14 +245,15 @@ class Event extends HTTPPush
             foreach ($this->param['user_list'] as $uid){
                 
                 $data[] = array(
-                    'uid'             => $uid,
-                    'event'           => $this->param['event'],
-                    'addtime'         => 'NOW()',
-                    'eventtime'       => $this->param['eventtime'],
-                    'need_confirm'    => $this->param['need_confirm'],
-                    'reboot_after_ok' => $this->param['reboot_after_ok'],
-                    'msg'             => $this->param['msg'],
-                    'priority'        => $this->param['priority'],
+                    'uid'               => $uid,
+                    'event'             => $this->param['event'],
+                    'addtime'           => 'NOW()',
+                    'eventtime'         => $this->param['eventtime'],
+                    'need_confirm'      => $this->param['need_confirm'],
+                    'reboot_after_ok'   => $this->param['reboot_after_ok'],
+                    'msg'               => $this->param['msg'],
+                    'priority'          => $this->param['priority'],
+                    'auto_hide_timeout' => $this->param['auto_hide_timeout']
                 );
                 
             }
