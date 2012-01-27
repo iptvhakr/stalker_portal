@@ -11,7 +11,9 @@ function series_switch(options){
     this.cur_idx    = 0;
     this.callback   = function(){};
     this.parent     = {};
-    
+    this.box_input_format  = '{0} / {1}';
+    this.continuously_box_enable  = true;
+
     if (options && options.hasOwnProperty('parent')){
         this.parent = options.parent;
     }
@@ -47,7 +49,13 @@ series_switch.prototype.show = function(series, cur_series){
     _debug('this.cur_idx', this.cur_idx);
     
     this.update_series_box();
-    
+
+    if (!this.continuously_box_enable){
+        this.continuously_box.hide();
+    }else{
+        this.continuously_box.show();
+    }
+
     this.dom_obj.show();
     this.on = true;
     
@@ -59,9 +67,9 @@ series_switch.prototype.show = function(series, cur_series){
 series_switch.prototype.hide = function(){
     _debug('series_switch.hide');
     
-    this.series   = [];
+    /*this.series   = [];
     this.cur_idx  = 0;
-    this.callback = function(){};
+    this.callback = function(){};*/
     
     this.dom_obj.hide();
     this.on = false;
@@ -71,12 +79,22 @@ series_switch.prototype.hide = function(){
     }
 };
 
+series_switch.prototype.reset = function(){
+    _debug('series_switch.reset');
+
+    this.series   = [];
+    this.cur_idx  = 0;
+    this.callback = function(){};
+};
+
 series_switch.prototype.set = function(){
     _debug('series_switch.set');
-    
-    this.callback(this.series[this.cur_idx]);
 
     this.hide();
+
+    this.callback(this.series[this.cur_idx]);
+
+    this.reset();
 };
 
 series_switch.prototype.shift = function(dir){
@@ -101,6 +119,10 @@ series_switch.prototype.shift = function(dir){
 
 series_switch.prototype.vshift = function(dir){
     _debug('series_switch.vshift', dir);
+
+    if (!this.continuously_box_enable){
+        return;
+    }
     
     if (stb && stb.player && stb.player.hasOwnProperty('play_continuously')){
     
@@ -116,8 +138,14 @@ series_switch.prototype.vshift = function(dir){
 
 series_switch.prototype.update_series_box = function(){
     _debug('series_switch.update_series_box');
-    
-    this.series_box.innerHTML = this.series[this.cur_idx] + ' / ' + this.series.length;
+
+    var out = this.box_input_format.format(this.series[this.cur_idx], this.series.length);
+
+    if (this.decorate_fun){
+        out = this.decorate_fun(out);
+    }
+
+    this.series_box.innerHTML = out;
 };
 
 series_switch.prototype.bind = function(){
