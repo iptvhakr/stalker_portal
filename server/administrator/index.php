@@ -158,6 +158,8 @@ $offline = get_offline_users();
 
 $cur_tv = get_cur_playing_type($db, 'itv');
 $cur_vclub = get_cur_active_playing_type($db, 'vclub');
+$cur_tv_archive = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - 120, 'now_playing_type' => 11))->get()->count();
+$cur_records = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - 120, 'now_playing_type' => 12))->get()->count();
 $cur_aclub = get_cur_active_playing_type($db, 'aclub');
 $cur_karaoke = get_cur_active_playing_type($db, 'karaoke');
 $cur_radio = get_cur_playing_type($db, 'radio');
@@ -201,7 +203,7 @@ $cur_infoportal = get_cur_infoportal($db);
             $counter = $rs_2->getValueByName(0, 'counter');
             echo '<tr>';
             echo '<td class="td_stat" width="80"><b>'.$storage_name.'</b>:</td>';
-            echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'" style="color:black">'.$counter.'</a></td>';
+            echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=2" style="color:black">'.$counter.'</a></td>';
             echo '</tr>';
         }
         ?>
@@ -224,6 +226,42 @@ $cur_infoportal = get_cur_infoportal($db);
         <td class="td_stat">инфопортал:</td>
         <td class="td_stat"><? echo $cur_infoportal ?></td>
     </tr>
+    </tr>
+</table>
+</td>
+
+<td class="other" width="150" valign="top" style="background-color: whiteSmoke">
+<table width="150"  border="0" align="left" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="td_stat" height="64" colspan="2"></td>
+    </tr>
+    <tr>
+        <td class="td_stat">тв архив:</td>
+        <td class="td_stat"><? echo $cur_tv_archive ?></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <?
+        $sql = "select * from storages where for_records=1";
+        $rs=$db->executeQuery($sql);
+        while(@$rs->next()){
+            $storage_name = $rs->getCurrentValueByName('storage_name');
+            $sql_2 = "select count(*) as counter from users where now_playing_type=11 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-120";
+            $rs_2  = $db->executeQuery($sql_2);
+            $counter = $rs_2->getValueByName(0, 'counter');
+            echo '<tr>';
+            echo '<td class="td_stat" width="80"><b>'.$storage_name.'</b>:</td>';
+            echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=11   " style="color:black">'.$counter.'</a></td>';
+            echo '</tr>';
+        }
+        ?>
+        </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="td_stat">записи:</td>
+        <td class="td_stat"><? echo $cur_records ?></td>
     </tr>
 </table>
 </td>
