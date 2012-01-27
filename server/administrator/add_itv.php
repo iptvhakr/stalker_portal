@@ -94,6 +94,22 @@ if (!$error){
     if (@$_GET['save'] && !$error){
     
         if(@$_GET['cmd'] && @$_GET['name'] && @$_POST['tv_genre_id'] > 0){
+
+            $channel = Itv::getChannelById($ch_id);
+
+            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+
+                if ($channel['enable_tv_archive']){
+
+                    if ($channel['wowza_dvr']){
+                        $archive = new WowzaTvArchive();
+                    }else{
+                        $archive = new TvArchive();
+                    }
+
+                    $archive->deleteTask($ch_id);
+                }
+            }
     
             $query = "insert into itv (
                                         name,
@@ -153,12 +169,21 @@ if (!$error){
             //var_dump($rs);
             $ch_id = $rs->getLastInsertId();
 
-            /*if ($enable_tv_archive && !$wowza_dvr){
-                $archive = new TvArchive();
-                $archive->createTask($ch_id);
-            }*/
+            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
-            if ($wowza_dvr){
+                if ($enable_tv_archive){
+
+                    if ($wowza_dvr){
+                        $archive = new WowzaTvArchive();
+                    }else{
+                        $archive = new TvArchive();
+                    }
+
+                    $archive->createTask($ch_id);
+                }
+            }
+
+            /*if ($wowza_dvr){
                 $archive = new WowzaTvArchive();
             }else{
                 $archive = new TvArchive();
@@ -168,7 +193,7 @@ if (!$error){
                 $archive->createTask($ch_id);
             }else{
                 $archive->deleteTask($ch_id);
-            }
+            }*/
             
             header("Location: add_itv.php");
             exit;
@@ -184,32 +209,28 @@ if (!$error){
 
             $ch_id = intval(@$_GET['id']);
 
-            /*$archive = new TvArchive();
+            $channel = Itv::getChannelById($ch_id);
 
-            if ($enable_tv_archive && !$wowza_dvr){
-                    $archive->createTask($ch_id);
-            }else{
+            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+
+                if ($channel['enable_tv_archive']){
+
+                    if ($channel['wowza_dvr']){
+                        $archive = new WowzaTvArchive();
+                    }else{
+                        $archive = new TvArchive();
+                    }
+
                     $archive->deleteTask($ch_id);
-            }*/
-
-            if ($wowza_dvr){
-                $archive = new WowzaTvArchive();
-            }else{
-                $archive = new TvArchive();
-            }
-
-            if ($enable_tv_archive){
-                $archive->createTask($ch_id);
-            }else{
-                $archive->deleteTask($ch_id);
+                }
             }
 
             $query = "update itv 
                                 set name='".$_POST['name']."',
                                 cmd='".(empty($_GET['cmd']) ? $_POST['cmd_1'] : $_GET['cmd'])."',
-                                cmd_1='".$_POST['cmd_1']."',
-                                cmd_2='".$_POST['cmd_2']."',
-                                cmd_3='".$_POST['cmd_3']."',
+                                cmd_1='".@$_POST['cmd_1']."',
+                                cmd_2='".@$_POST['cmd_2']."',
+                                cmd_3='".@$_POST['cmd_3']."',
                                 mc_cmd='".$_POST['mc_cmd']."',
                                 enable_wowza_load_balancing='".$enable_wowza_load_balancing."',
                                 enable_tv_archive='".$enable_tv_archive."',
@@ -232,6 +253,21 @@ if (!$error){
                             where id=".intval(@$_GET['id']);
             var_dump($query);
             $rs=$db->executeQuery($query);
+
+            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+
+                if ($enable_tv_archive){
+
+                    if ($wowza_dvr){
+                        $archive = new WowzaTvArchive();
+                    }else{
+                        $archive = new TvArchive();
+                    }
+
+                    $archive->createTask($ch_id);
+                }
+            }
+
             header("Location: add_itv.php");
             exit;
         }
@@ -757,14 +793,14 @@ function popup(src){
             <input id="volume_correction" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
            </td>
         </tr>
-        <!--<tr>
+        <tr>
            <td align="right">
-            Описание: 
+            Комментарий:
            </td>
-           <td>-->
-            <input id="descr"  name="descr" type="hidden" value="<? //echo @$descr ?>">
-           <!--</td>
-        </tr>-->
+           <td>
+            <textarea id="descr"  name="descr" cols="39" rows="5"><? echo @$descr ?></textarea>
+           </td>
+        </tr>
         <tr>
            <td>
            </td>
