@@ -325,5 +325,14 @@ $words['auth_error']    = _('Error');
 
 $words['play_or_download'] = _('Play this url or start download?');
 $words['player_play']      = _('Play');
-$words['player_download']  = _('Download');
+
+$words['player_download']    = _('Download');
+$words['play_all']  = _('Play all');
+$words['on']  = _('on');
+$words['off'] = _('off');
+
+$words['smb_auth'] = _('Network authentication');
+$words['smb_username'] = _('Login');
+$words['smb_password'] = _('Password');
+
 ?>
