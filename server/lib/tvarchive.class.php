@@ -137,7 +137,7 @@ class TvArchive extends Master
 
         $storages = array();
 
-        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1))->get()->all();
+        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0))->get()->all();
 
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;
