@@ -28,11 +28,13 @@ class Vod extends AjaxResponse
             
         $media_id = $tmp_arr[1];
         $params   = $tmp_arr[2];
+
+        $forced_storage = $_REQUEST['forced_storage'];
         
         $master = new VideoMaster();
         
         try {
-            $res = $master->play($media_id, intval($_REQUEST['series']));
+            $res = $master->play($media_id, intval($_REQUEST['series']), false, $forced_storage);
         }catch (Exception $e){
             trigger_error($e->getMessage());
         }
