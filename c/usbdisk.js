@@ -3,16 +3,26 @@
  * @constructor
  */
 function usbdisk(){
-    
+
     this.mounted = false;
     this.onmount_callbacks  = [];
     this.onumount_callbacks = [];
 
     this.dirs  = [];
     this.files = [];
-    
+
+    this.audio_ext = '.mp3 .ac3 .wav .flac .ogg';
+    this.video_ext = '.mpg .mkv .avi .m2ts .mts .ts .mp4 .wmv .mov .vob';
+    this.image_ext = '.jpg .jpeg';
+
+    var files_ext  = this.audio_ext + ' ' + this.video_ext;
+
+    if (stb.type == 'MAG250'){
+        files_ext += ' ' + this.image_ext;
+    }
+
     try{
-        stb.SetListFilesExt('.mpg .mkv .avi .m2ts .ts .mp4 .wmv .mp3 .ac3 .mov .vob .wav');
+        stb.SetListFilesExt(files_ext);
     }catch(e){
         _debug(e);
     }
