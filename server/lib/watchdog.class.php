@@ -46,7 +46,8 @@ class Watchdog extends AjaxResponse
                 $res['data']['event'] = $events[0]['event'];
                 $res['data']['need_confirm'] = $events[0]['need_confirm'];
                 $res['data']['msg'] = $events[0]['msg'];
-                $res['data']['reboot_after_ok'] = $events[0]['reboot_after_ok'];
+                $res['data']['reboot_after_ok']   = $events[0]['reboot_after_ok'];
+                $res['data']['auto_hide_timeout'] = $events[0]['auto_hide_timeout'];
             }
         }
         
