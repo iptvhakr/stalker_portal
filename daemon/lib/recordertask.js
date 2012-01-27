@@ -14,6 +14,7 @@ try{
 
 var stack  = [];
 var timers = [];
+/*var stalker_api_url = config.param('stalker_api_url');*/
 
 function RESTCommandRecorderTask(){
 
