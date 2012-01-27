@@ -40,9 +40,11 @@ abstract class Master
      *
      * @param int $media_id
      * @param int $series_num
+     * @param bool $from_cache
+     * @param string $forced_storage
      * @return array contains path to media or error
      */
-    public function play($media_id, $series_num = 0, $from_cache = true){
+    public function play($media_id, $series_num = 0, $from_cache = true, $forced_storage = ""){
         
         $this->initMedia($media_id);
         
@@ -61,9 +63,21 @@ abstract class Master
             
             return $res;
         }
+
+        if (!empty($forced_storage)){
+            $from_cache = false;
+        }
         
         $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, !$from_cache);
-        
+
+        if (!empty($forced_storage)){
+            if (key_exists($forced_storage, $good_storages)){
+                $good_storages = array($forced_storage => $good_storages[$forced_storage]);
+            }else{
+                $good_storages = array();
+            }
+        }
+
         $default_error = 'nothing_to_play';
         
         foreach ($good_storages as $name => $storage){
@@ -311,6 +325,7 @@ abstract class Master
         
         if ($this->stb->isModerator()){
             $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name);
+            $good_storages = $this->sortByLoad($good_storages);
             return $good_storages;
         }
         
