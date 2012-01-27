@@ -38,6 +38,11 @@
         this.series_switch = new series_switch({"parent" : this});
         this.series_switch.bind();
 
+        this.storage_switch = new series_switch({"parent" : this});
+        this.storage_switch.box_input_format = '{0}';
+        this.storage_switch.continuously_box_enable = false;
+        this.storage_switch.bind();
+
         /*this.dialog = new downloads_dialog_constructor();
         this.dialog.hide();*/
         
@@ -155,7 +160,8 @@
             this.info.on && this.info.hide && this.info.hide();
             this.password_input.on && this.password_input.hide && this.password_input.hide();
             this.series_switch.on && this.series_switch.hide && this.series_switch.hide();
-            
+            this.storage_switch.on && this.storage_switch.hide && this.storage_switch.hide();
+
             stb.player.pause && stb.player.pause.on && stb.player.hide_pause();
             
             this.superclass.hide.call(this, do_not_reset);
@@ -392,6 +398,7 @@
             this.superclass.bind.apply(this);
             
             this.check_for_pass.bind(key.OK, this, true);
+            this.check_for_storage_selection.bind(key.PLAY, this, true);
             this.check_for_pass.bind(key.REC, this, false);
 
             (function(){
@@ -407,9 +414,46 @@
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
         };
+
+        this.check_for_storage_selection = function(play_url){
+            _debug('vclub.check_for_storage_selection', play_url);
+
+            _debug('stb.user.is_moderator', stb.user.is_moderator);
+
+            var self = this;
+
+            if (!stb.user.is_moderator || this.data_items[this.cur_row].rtsp_url){
+                this.check_for_pass(play_url);
+                return;
+            }
+
+            stb.load(
+                {
+                    "type"     : "video_master",
+                    "action"   : "get_storages_for_video",
+                    "video_id" : this.data_items[this.cur_row].id
+                },
+                function(result){
+                    _debug('get_storages_for_video result', result);
+
+                    if (!result || !result.length || result.length == 0){
+                        stb.notice.show(get_word('player_file_missing'));
+                        return;
+                    }
+
+                    self.storage_switch.callback = function(storage){
+                        _debug('storage', storage);
+                        self.check_for_pass.call(self, play_url, storage);
+                    };
+
+                    self.storage_switch.show(result, result[0]);
+                },
+                this
+            );
+        };
         
-        this.check_for_pass = function(play_url){
-            _debug('vclub.check_for_play', play_url);
+        this.check_for_pass = function(play_url, storage){
+            _debug('vclub.check_for_play', play_url, storage);
             
             _debug('lock', this.data_items[this.cur_row].lock);
             
@@ -417,17 +461,17 @@
                 var self = this;
                 
                 this.password_input.callback = function(){
-                    self.check_for_series(play_url);
+                    self.check_for_series(play_url, storage);
                 };
                 
                 this.password_input.show();
             }else{
-                this.check_for_series(play_url);
+                this.check_for_series(play_url, storage);
             }
         };
         
-        this.check_for_series = function(play_url){
-            _debug('vclub.check_for_series', play_url);
+        this.check_for_series = function(play_url, storage){
+            _debug('vclub.check_for_series', play_url, storage);
             
             if (this.data_items[this.cur_row].series.length > 0){
                 
@@ -436,16 +480,16 @@
                 this.series_switch.callback = function(series){
                     _debug('series', series);
                     self.data_items[self.cur_row].cur_series = series;
-                    self.play(play_url);
+                    self.play(play_url, storage);
                 };
                 
                 this.series_switch.show(this.data_items[this.cur_row].series, this.data_items[this.cur_row].cur_series);
             }else{
-                this.play(play_url);
+                this.play(play_url, storage);
             }
         };
         
-        this.play = function(play_url){
+        this.play = function(play_url, storage){
             _debug('vclub.play', play_url);
             
             var self = this;
@@ -527,7 +571,13 @@
                 }
             }
 
-            stb.player.play(this.data_items[this.cur_row]);
+            var played_item = this.data_items[this.cur_row].clone();
+
+            if (storage){
+                played_item.forced_storage = storage;
+            }
+
+            stb.player.play(played_item);
         };
 
         this.add_download = function(item, url){
