@@ -115,16 +115,31 @@ player.prototype.init = function(){
             }
         })(this);
 
-        /*stbEvent.onMediaAvailable = function(contenttype, url){
-            _debug('stbEvent.onMediaAvailable', contenttype, url);
-        }*/
-
         stbEvent.onMediaAvailable = (function(self){
             return function(){
                 self.play_or_download.apply(self, arguments);
             }
         })(this);
-        
+
+        stbEvent.onPortalEvent = function(params){
+            _debug('params', params);
+            params = JSON.parse(params);
+            _debug('json params', params);
+
+            if (params.hasOwnProperty("type") && params.type == "settings"){
+                
+                if (params.hasOwnProperty("parent_password")){
+                    stb.user.parent_password = params.parent_password;
+                    module.parent_settings.triggerCustomEventListener("onpasswordchange", stb.user.parent_password);
+                }
+
+                if (params.hasOwnProperty("screensaver_delay")){
+                    stb.user.screensaver_delay = params.screensaver_delay;
+                    screensaver.restart_timer();
+                }
+            }
+        }
+
     }catch(e){
         _debug(e);
     }
@@ -290,6 +305,30 @@ player.prototype.event_callback = function(event){
                         //this.cur_media_item.series;
                         //this.cur_media_item.cur_series;
                         
+                    }
+
+                    if (this.cur_media_item.playlist && this.cur_media_item.playlist.length > 0){
+
+                        var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
+
+                        _debug('playlist idx', idx);
+
+                        if (idx >= 0 && idx < this.cur_media_item.playlist.length - 1){
+
+                            idx++;
+
+                            var cur_media_item = this.cur_media_item.clone();
+
+                            cur_media_item.cmd  = cur_media_item.playlist[idx];
+
+                            cur_media_item.name = cur_media_item.cmd.substr(this.cur_media_item.cmd.lastIndexOf("/") + 1);
+
+                            /*this.triggerCustomEventListener('audiostop', this.cur_media_item);*/
+
+                            this.play(cur_media_item);
+
+                            break;
+                        }
                     }
 
                     /*if (this.active_time_shift && this.cur_media_item['wowza_dvr'] != 1){*/
@@ -933,6 +972,11 @@ player.prototype.play = function(item){
         item.position = position_part[1];
     }
 
+    /*if (this.file_type == 'audio' && this.cur_media_item && this.cur_media_item.playlist){*/
+    if (this.file_type == 'audio'){
+        this.triggerCustomEventListener('audiostop', this.cur_media_item);
+    }
+
     this.cur_media_item = item;
     
     _debug('item.position', item.position);
@@ -941,6 +985,12 @@ player.prototype.play = function(item){
     
     this.media_type = this.define_media_type(cmd);
 
+    if (this.media_type == 'file'){
+        this.file_type = this.get_file_type(cmd);
+    }else{
+        this.file_type = undefined;
+    }
+
     _debug('player.proto', this.proto);
     
     if (this.is_tv){
@@ -948,10 +998,16 @@ player.prototype.play = function(item){
     }
     
     _debug('player.media_type: ', this.media_type);
+    _debug('player.file_type: ', this.file_type);
     _debug('player.is_tv: ', this.is_tv);
 
     this.on_play && this.on_play(this.cur_media_item['id']);
     this.triggerCustomEventListener('onplay', this.cur_media_item['id']);
+
+    /*if (this.file_type == 'audio' && this.cur_media_item.playlist){*/
+    if (this.file_type == 'audio'){
+        this.triggerCustomEventListener('audiostart', this.cur_media_item);
+    }
 
     this.play_initiated = true;
     
@@ -1011,7 +1067,7 @@ player.prototype.play = function(item){
             }
         }
         
-    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0){
+    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/tmp-smb/') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0){
         
         this.play_now(cmd);
         
@@ -1031,11 +1087,11 @@ player.prototype.play = function(item){
         
         var series_number = item.cur_series || 0;
         
-        this.create_link('vod', cmd, series_number);
+        this.create_link('vod', cmd, series_number, item.forced_storage || '');
     }
 };
 
-player.prototype.create_link = function(type, uri, series_number){
+player.prototype.create_link = function(type, uri, series_number, forced_storage){
     
     series_number = series_number || "";
     
@@ -1047,7 +1103,8 @@ player.prototype.create_link = function(type, uri, series_number){
             "type"   : type,
             "action" : "create_link",
             "cmd"    : uri,
-            "series" : series_number
+            "series" : series_number,
+            forced_storage : forced_storage
         },
         
         function(result){
@@ -1110,6 +1167,11 @@ player.prototype.stop = function(){
     _debug('player.stop');
 
     this.on_stop && this.on_stop();
+
+    /*if (this.file_type == 'audio' && this.cur_media_item.playlist){
+        this.triggerCustomEventListener('audiostop', this.cur_media_item);
+    }*/
+
     this.on_stop = undefined;
 
     this.prev_layer = {};
@@ -1132,6 +1194,11 @@ player.prototype.stop = function(){
     this.on_create_link = function(){};
     
     this.on = false;
+
+    /*if (this.file_type == 'audio' && this.cur_media_item.playlist){*/
+    if (this.file_type == 'audio'){
+        this.triggerCustomEventListener('audiostop', this.cur_media_item);
+    }
     
     if(this.pause.on){
         this.disable_pause();
@@ -1208,6 +1275,10 @@ player.prototype.pause_switch = function(){
             }
         }
 
+        if (this.file_type == 'audio' && this.cur_media_item.playlist){
+            this.triggerCustomEventListener('audiopause', this.cur_media_item);
+        }
+
         try{
             stb.Pause();
         }catch(e){}
@@ -1240,6 +1311,10 @@ player.prototype.disable_pause = function(){
         /*}*/
 
     }else{
+
+        if (this.file_type == 'audio' && this.cur_media_item.playlist){
+            this.triggerCustomEventListener('audiocontinue', this.cur_media_item);
+        }
         
         try{
             stb.Continue();
@@ -1772,6 +1847,38 @@ player.prototype.bind = function(){
     }).bind(key.REC, this).bind(key.RED, this);
     
     this.volume.set_level.bind(key.REFRESH, this.volume, 50);
+
+    (function(dir){
+
+        _debug('dir', dir);
+
+        if (!this.cur_media_item.playlist){
+            return;
+        }
+
+        var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
+
+        _debug('idx', idx);
+
+        if (idx == -1){
+            return;
+        }
+
+        idx = idx + dir;
+
+        if (!this.cur_media_item.playlist[idx]){
+            return;
+        }
+
+        var cur_media_item = this.cur_media_item.clone();
+
+        cur_media_item.cmd  = cur_media_item.playlist[idx];
+
+        cur_media_item.name = cur_media_item.cmd.substr(this.cur_media_item.cmd.lastIndexOf("/") + 1);
+
+        this.play(cur_media_item);
+
+    }).bind(key.NEXT, this, 1).bind(key.PREV, this, -1);
 };
 
 player.prototype.numpad_key_handler = function(num){
@@ -1862,7 +1969,7 @@ player.prototype.save_fav_ids = function(){
         {
             'type'   : 'itv',
             'action' : 'set_fav',
-            'fav_ch' : this.fav_channels_ids
+            'fav_ch' : this.fav_channels_ids.join(',')
         },
         
         function(result){
@@ -1885,7 +1992,7 @@ player.prototype.get_file_type = function(item){
     
     var p = /^(.*)\.(\S+)$/
     
-    var ext = ['mp3', 'ac3', 'vob', 'wav'];
+    var ext = ['mp3', 'ac3', 'wav', 'flac', 'ogg'];
     
     var type = 'video';
     
