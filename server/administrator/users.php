@@ -197,6 +197,8 @@ function get_cur_media($media_id){
         7 => 'Записи',
         9 => 'ad',
         10 => 'Медиа Браузер',
+        11 => 'ТВ Архив',
+        12 => 'Записи',
         20 => 'Инфопортал',
         21 => 'Инфопортал',
         22 => 'Инфопортал',
@@ -487,6 +489,10 @@ switch (@$_GET['sort_by']){
             add_where($where, " keep_alive>'$now_time' and now_playing_type>=20 and now_playing_type<=29 order by id");
             break;
         }
+    case 'tv_archive':{
+            add_where($where, " keep_alive>'$now_time' and now_playing_type=11 order by id");
+            break;
+        }
     case 'none':{
         }
     default:{
@@ -548,6 +554,7 @@ function sort_page(){
                 <option value="horoscope_page" <? if (@$_GET['sort_by'] == 'horoscope_page') echo 'selected' ?>>horoscope_page
                 <option value="course_page" <? if (@$_GET['sort_by'] == 'course_page') echo 'selected' ?>>course_page
                 <option value="ad" <? if (@$_GET['sort_by'] == 'ad') echo 'selected' ?>>ad
+                <option value="tv_archive" <? if (@$_GET['sort_by'] == 'tv_archive') echo 'selected' ?>>tv_archive
             </select>
             <br>
             <br>
