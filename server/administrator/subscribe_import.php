@@ -47,6 +47,7 @@ if (@$_FILES['userfile']){
         //var_dump($all_ch_bonus);
         /*$simple_bonus_arr = array(84, 86, 48, 58, 70, 162, 42, 43);*/
         $extended_packet = array(231, 146, 162, 151, 149, 27, 47, 29, 115, 153, 154, 156, 150, 116, 178);
+        $base_channels = array();
         $bonus1 = get_bonus1();
         $bonus2 = get_bonus2();
         $stb_id_arr = array();
@@ -163,13 +164,17 @@ if (@$_FILES['userfile']){
         }else{
             $bonus = $bonus1;
         }
-        
+
+        $sub = array_merge($sub, $bonus2);
+
         $sub = array_unique($sub);
         $sub_str = base64_encode(serialize($sub));
         
         /*if (count($sub) == 18){
             $bonus = array_unique(array_merge($bonus, $all_ch_bonus));
         }*/
+
+        //var_dump($sub); exit;
         
         $bonus_str = base64_encode(serialize($bonus));        
         
@@ -251,7 +256,8 @@ function get_bonus1(){
 function get_bonus2(){
     $db = Database::getInstance();
     $arr = array();
-    $sql = "select * from itv where bonus_ch=1 and cost=99";
+    //$sql = "select * from itv where bonus_ch=1 and cost=99";
+    $sql = "select * from itv where cost=99";
     $rs = $db->executeQuery($sql);
     while(@$rs->next()){
         $arr[] = intval($rs->getCurrentValueByName('id'));
