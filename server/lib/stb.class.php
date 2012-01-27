@@ -54,6 +54,8 @@ class Stb
             $this->mac = @trim(urldecode($_REQUEST['mac']));
         }
 
+        $this->mac = strtoupper($this->mac);
+
         if (!empty($_COOKIE['stb_lang'])){
             $this->stb_lang = @trim(urldecode($_COOKIE['stb_lang']));
         }
@@ -124,12 +126,12 @@ class Stb
         
         if (!empty($user)){
             $this->params = $user;
-            $this->id    = $user['id'];
-            $this->hd    = $user['hd'];
+            $this->id     = $user['id'];
+            $this->hd     = $user['hd'];
 
             $this->locale     = (empty($user['locale']) && Config::exist('default_locale')) ? Config::get('default_locale') : $user['locale'];
 
-            $this->city_id = (empty($user['city_id']) && Config::exist('default_city_id')) ? Config::get('default_city_id') : intval($user['city_id']);
+            $this->city_id    = (empty($user['city_id']) && Config::exist('default_city_id')) ? Config::get('default_city_id') : intval($user['city_id']);
 
             $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
 
@@ -144,42 +146,6 @@ class Stb
             $this->additional_services_on = $user['additional_services_on'];
 
             $this->initLocale();
-
-            /*$stb_lang = $this->stb_lang;
-
-            if (!empty($this->stb_lang) && strlen($this->stb_lang) >= 2){
-                $preferred_locales = array_filter(Config::get('allowed_locales'),
-                    function ($e) use ($stb_lang){
-                        if (strpos($e, $stb_lang) === 0){
-                            return true;
-                        }
-                    }
-                );
-
-                if (!empty($preferred_locales)){
-
-                    $preferred_locales = array_values($preferred_locales);
-
-                    $this->locale = $preferred_locales[0];
-                }
-            }
-
-            $this->additional_services_on = $user['additional_services_on'];
-
-            setlocale(LC_MESSAGES, $this->locale);
-            putenv('LC_MESSAGES='.$this->locale);
-
-            if (!function_exists('bindtextdomain')){
-                throw new ErrorException("php-gettext extension not installed.");
-            }
-
-            if (!function_exists('locale_accept_from_http')){
-                throw new ErrorException("php-intl extension not installed.");
-            }
-
-            bindtextdomain('stb', PROJECT_PATH.'/locale');
-            textdomain('stb');
-            bind_textdomain_codeset('stb', 'UTF-8');*/
         }
     }
 
@@ -243,10 +209,12 @@ class Stb
         $this->getInfoFromOss();
         
         $this->db->update('users', array(
-                'last_start' => 'NOW()',
-                'keep_alive' => 'NOW()',
-                'version'    => @$_REQUEST['ver'],
-                'hd'         => @$_REQUEST['hd'],
+                'last_start'    => 'NOW()',
+                'keep_alive'    => 'NOW()',
+                'version'       => @$_REQUEST['ver'],
+                'hd'            => @$_REQUEST['hd'],
+                'stb_type'      => isset($_COOKIE['stb_type']) ? $_COOKIE['stb_type'] : '',
+                'serial_number' => isset($_COOKIE['sn']) ? $_COOKIE['sn'] : '',
             ),
             array('id' => $this->id));
         
@@ -282,7 +250,20 @@ class Stb
         
         $profile['test_download_url']      = Config::getSafe('test_download_url', '');
 
+        $profile['is_moderator']           = $this->is_moderator;
+
         return $profile;
+    }
+
+    public function getSettingsProfile(){
+
+        return array(
+            "parent_password"      => $this->params['parent_password'],
+            "update_url"           => Config::exist('update_url') ? Config::get('update_url').substr($this->params['stb_type'], 3).'/imageupdate' : '',
+            "test_download_url"    => Config::getSafe('test_download_url', ''),
+            "playback_buffer_size" => $this->params['playback_buffer_size'] / 1000,
+            "screensaver_delay"    => $this->params['screensaver_delay'],
+        );
     }
 
     public static function create($data){
@@ -632,6 +613,15 @@ class Stb
 
                     $_sql .= ", now_playing_content='$video_name'";
                     break;*/
+                case 11:
+                    if (preg_match("/http:\/\/([^:\/]*)/", $param, $tmp_arr)){
+                         $storage_ip = $tmp_arr[1];
+                         $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip))->get()->first('storage_name');
+                    }
+
+                    $update_data['now_playing_content'] = $param;
+                        
+                    break;
                 default:
                     $update_data['now_playing_content'] = 'unknown media '.$param;
             }
@@ -828,6 +818,18 @@ class Stb
         return false;
     }
 
+    public function setPlaybackBuffer(){
+        $playback_buffer_bytes = intval($_REQUEST['playback_buffer_bytes']);
+        $playback_buffer_size  = intval($_REQUEST['playback_buffer_size']) * 1000;
+
+        return Mysql::getInstance()->update('users',
+            array(
+                'playback_buffer_bytes' => $playback_buffer_bytes,
+                'playback_buffer_size'  => $playback_buffer_size
+            ),
+            array('id' => $this->id));
+    }
+
     public function setPlaybackSettings(){
         $playback_buffer_bytes = intval($_REQUEST['playback_buffer_bytes']);
         $playback_buffer_size  = intval($_REQUEST['playback_buffer_size']) * 1000;
@@ -842,6 +844,10 @@ class Stb
                 'playback_limit'        => $playback_limit
             ),
             array('id' => $this->id));
+    }
+
+    public function setScreensaverDelay(){
+        return $this->setCommonSettings();
     }
 
     public function setCommonSettings(){
