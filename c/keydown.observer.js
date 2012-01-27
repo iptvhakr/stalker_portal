@@ -33,6 +33,10 @@ var keydown_observer = new function(){
         }
         
         _debug('code:', code);
+
+        if ([1000, 2000, 3000].indexOf(code) >= 0){
+            return;
+        }
         
         var item;
         var priority_item;
@@ -67,7 +71,7 @@ var keydown_observer = new function(){
             
         }
 
-        _debug('keydown exit');
+        _debug('keydown handler exit');
 
         this.triggerCustomEventListener('keypress', e);
     }
