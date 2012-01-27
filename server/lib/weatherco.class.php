@@ -46,7 +46,7 @@ class Weatherco
 
             $weather['forecast'] = array();
 
-            foreach ($xml_resp->forecast->day as $day){
+            foreach ($forecast->day as $day){
 
                 $item = array();
 
@@ -99,9 +99,9 @@ class Weatherco
         $field = empty($current) ? 'forecast' : 'current';
 
         if (empty($cache)){
-            return Mysql::getInstance()->insert('weatherco_cache', array('city_id' => $city_id, $field => System::base64_encode(serialize($weather))));
+            return Mysql::getInstance()->insert('weatherco_cache', array('city_id' => $city_id, 'updated' => 'NOW()', $field => System::base64_encode(serialize($weather))));
         }else{
-            return Mysql::getInstance()->update('weatherco_cache', array($field => System::base64_encode(serialize($weather))), array('city_id' => $city_id));
+            return Mysql::getInstance()->update('weatherco_cache', array($field => System::base64_encode(serialize($weather)), 'updated' => 'NOW()'), array('city_id' => $city_id));
         }
     }
 
