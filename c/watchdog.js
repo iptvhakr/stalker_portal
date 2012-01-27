@@ -23,7 +23,7 @@ watchdog.prototype.send_request = function(){
     
     var self = this;
     
-    var cur_play_type = 0
+    var cur_play_type = 0;
     
     if (!stb.player.pause.on){
         cur_play_type = stb.get_current_place();
@@ -91,7 +91,12 @@ watchdog.prototype.parse_result = function(data){
                         self.send_confirm();
                     });
                 
-                stb.msg.push(data.msg);
+                stb.msg.push(
+                    {
+                        msg               : data.msg,
+                        auto_hide_timeout : data.auto_hide_timeout || 0
+                    }
+                );
                 
                 this.reboot_after_ok = data.reboot_after_ok;
                 
