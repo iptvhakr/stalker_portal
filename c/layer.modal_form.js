@@ -47,6 +47,8 @@ ModalForm.prototype.hide = function(){
     this._items[this._cur_item_idx] && this._items[this._cur_item_idx].blur && this._items[this._cur_item_idx].blur();
     this._dom_obj.hide();
     this.on = false;
+    this.reset();
+    this.triggerCustomEventListener("hide", this);
 };
 
 ModalForm.prototype.reset = function(){
@@ -237,7 +239,7 @@ ModalFormInput.prototype.getName = function(){
 };
 
 ModalFormInput.prototype.reset = function(){
-    this._input_dom_odj.value = this.value;
+    this._input_dom_odj.value = this._value;
 };
 /* END ModalFormInput */
 
