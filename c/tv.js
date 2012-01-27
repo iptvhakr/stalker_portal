@@ -267,6 +267,91 @@
             
             this.shift_row.bind(key.CHANNEL_PREV, this, -1);
             this.shift_row.bind(key.CHANNEL_NEXT, this, 1);
+
+            this.add_to_censored_check.bind(key.APP, this);
+        };
+
+        this.add_to_censored_check = function(){
+            _debug('tv.add_to_censored_check');
+
+            var self = this;
+
+            this.password_input.callback = function(){
+                self.add_del_censored();
+            };
+
+            this.password_input.show();
+        };
+
+        this.add_del_censored = function(){
+            _debug('tv.add_del_censored');
+
+            if (this.data_items[this.cur_row].lock == 1){
+                this.del_from_censored(this.data_items[this.cur_row].id);
+            }else{
+                this.add_to_censored(this.data_items[this.cur_row].id);
+            }
+        };
+
+        this.add_to_censored = function(ch_id){
+            _debug('tv.add_to_censored', ch_id);
+
+            var cur_item = this.data_items[this.cur_row];
+            var cur_row  = this.cur_row;
+
+            var self = this;
+
+            stb.load(
+                {
+                    "type"   : "itv",
+                    "action" : "add_to_censored",
+                    "ch_id"  : ch_id
+                },
+                function(result){
+                    _debug('add_to_censored result', result);
+
+                    if (result){
+                        cur_item.lock = 1;
+                        self.map[cur_row].lock_block.show();
+
+                        if (self.cur_row == cur_row){
+                            self.active_row.lock_block.show();
+                        }
+                    }
+                },
+                this
+            );
+        };
+
+        this.del_from_censored = function(ch_id){
+            _debug('tv.del_from_censored', ch_id);
+
+            var cur_item = this.data_items[this.cur_row];
+            var cur_row  = this.cur_row;
+
+            var self = this;
+            
+            stb.load(
+                {
+                    "type"   : "itv",
+                    "action" : "del_from_censored",
+                    "ch_id"  : ch_id
+                },
+                function(result){
+                    _debug('del_from_censored result', result);
+
+                    if (result){
+                        cur_item.lock = 0;
+                        /*cur_item.lock_block.hide();*/
+                        self.map[cur_row].lock_block.hide();
+
+                        if (self.cur_row == cur_row){
+                            self.active_row.lock_block.hide();
+                        }
+                    }
+                },
+                this
+            );
         };
         
         this.check_for_play = function(){
