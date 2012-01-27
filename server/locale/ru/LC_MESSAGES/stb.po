@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-10 12:46+0200\n"
-"PO-Revision-Date: 2012-01-10 12:47+0200\n"
+"POT-Creation-Date: 2012-01-25 11:04+0200\n"
+"PO-Revision-Date: 2012-01-25 11:06+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -960,10 +960,12 @@ msgid "Authentication"
 msgstr "Вход"
 
 #: ../../../lang/stb.php:322
+#: ../../../lang/stb.php:335
 msgid "Login"
 msgstr "Логин"
 
 #: ../../../lang/stb.php:323
+#: ../../../lang/stb.php:336
 msgid "Password"
 msgstr "Пароль"
 
@@ -979,9 +981,25 @@ msgstr "Проиграть или скачать данную ссылку?"
 msgid "Play"
 msgstr "Проиграть"
 
-#: ../../../lang/stb.php:328
+#: ../../../lang/stb.php:329
 msgid "Download"
 msgstr "Скачать"
+
+#: ../../../lang/stb.php:330
+msgid "Play all"
+msgstr "ИГРАТЬ ВСЁ"
+
+#: ../../../lang/stb.php:331
+msgid "on"
+msgstr "вкл"
+
+#: ../../../lang/stb.php:332
+msgid "off"
+msgstr "выкл"
+
+#: ../../../lang/stb.php:334
+msgid "Network authentication"
+msgstr "Сетевой вход"
 
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
@@ -1345,15 +1363,15 @@ msgid "scheduled"
 msgstr "запланировано"
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:907
+#: ../../../lib/stb.class.php:947
 msgid "city_name_field"
 msgstr "name"
 
-#: ../../../lib/streamrecorder.class.php:124
+#: ../../../lib/streamrecorder.class.php:125
 msgid "Starting recording"
 msgstr "Начинается запись"
 
-#: ../../../lib/streamrecorder.class.php:409
+#: ../../../lib/streamrecorder.class.php:410
 msgid "Stopped recording"
 msgstr "Остановлена запись"
 
