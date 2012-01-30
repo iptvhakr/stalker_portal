@@ -324,7 +324,7 @@
 
                     if (name == 'av'){
                         name = 'UPnP';
-                    }else if (name.indexOf('USB-') == 0 || name.indexOf('tmp-smb') == 0){
+                    }else if (name.indexOf('USB-') == 0 || name.indexOf('tmp-smb') == 0 || name.indexOf('SAMBA') == 0){
                         continue;
                     }
 
