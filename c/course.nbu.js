@@ -69,6 +69,10 @@
         
         set : function(data){
             _debug('course.set', data);
+
+            if (!data){
+                return false;
+            }
             
             this.current = data;
             
