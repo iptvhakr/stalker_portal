@@ -139,7 +139,7 @@ function get_cur_playing_type($db, $in_param = ''){
 }
 
 function get_cur_active_playing_type($db, $in_param = ''){
-    $now_timestamp = time() - 120;
+    $now_timestamp = time() - Config::get('watchdog_timeout')*2;
     $now_time = date("Y-m-d H:i:s", $now_timestamp);
     
     if($in_param == ''){
@@ -168,7 +168,7 @@ function get_cur_active_playing_type($db, $in_param = ''){
 }
 
 function get_cur_infoportal($db){
-    $now_timestamp = time() - 120;
+    $now_timestamp = time() - Config::get('watchdog_timeout')*2;
     $now_time = date("Y-m-d H:i:s", $now_timestamp);
     $sql = "select count(*) as counter from users where UNIX_TIMESTAMP(keep_alive) > $now_timestamp and now_playing_type>=20 and now_playing_type<=29";
     $rs=$db->executeQuery($sql);
@@ -207,7 +207,7 @@ function get_cur_users($db, $in_param = ''){
         $in_param = $_GET['in_param'];
     }
     
-    $now_timestamp = time() - 120;
+    $now_timestamp = time() - Config::get('watchdog_timeout')*2;
     $now_time = date("Y-m-d H:i:s", $now_timestamp);
     
     if ($in_param == 'online'){
@@ -259,7 +259,7 @@ function check_keep_alive($time){
     $keep_alive_ts = datetime2timestamp($time);
     $now_ts = time();
     $dif_ts = $now_ts - $keep_alive_ts;
-    if ($dif_ts > 2*60){
+    if ($dif_ts > Config::get('watchdog_timeout')*2){
         return 0;
     }else{
         return 1;
@@ -334,7 +334,7 @@ function get_storage_use($db, $in_param = ''){
         $in_param = $_GET['in_param'];
     }
     
-    $now_timestamp = time() - 120;
+    $now_timestamp = time() - Config::get('watchdog_timeout')*2;
     $now_time = date("Y-m-d H:i:s", $now_timestamp);
     
     $sql = "select count(*) as counter from users where keep_alive>'$now_time' and storage_name='$in_param' and now_playing_type=2";

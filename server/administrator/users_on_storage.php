@@ -109,7 +109,7 @@ function page_bar(){
 
     for($i = 1; $i <= $total_pages; $i++){
         if(($i-1) != $page){
-            $page_bar .= ' <a href="?storage='.@$_GET['storage'].'&page='.($i-1).'">'.$i.'</a> |';
+            $page_bar .= ' <a href="?storage='.@$_GET['storage'].'&page='.($i-1).'&type='.intval($_GET['type']).'">'.$i.'</a> |';
         }
         else
         {
@@ -122,7 +122,7 @@ function page_bar(){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$where = " where now_playing_type=".intval($_GET['type'])." and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-120";
+$where = " where now_playing_type=".intval($_GET['type'])." and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
 
 $query = "select * from users $where";
 

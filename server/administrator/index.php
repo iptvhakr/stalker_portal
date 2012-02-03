@@ -138,7 +138,7 @@ a:hover{
 function get_online_users(){
     global $db;
     
-    $sql = "select count(id) as online from users where keep_alive>now()-2*60";
+    $sql = "select count(id) as online from users where keep_alive>now()-".Config::get('watchdog_timeout')*2;
     $rs=$db->executeQuery($sql);
     $online = @$rs->getValueByName(0, 'online');
     return $online;
@@ -147,7 +147,7 @@ function get_online_users(){
 function get_offline_users(){
     global $db;
     
-    $sql = "select count(id) as offline from users where keep_alive<now()-2*60";
+    $sql = "select count(id) as offline from users where keep_alive<now()-".Config::get('watchdog_timeout')*2;
     $rs=$db->executeQuery($sql);
     $offline = @$rs->getValueByName(0, 'offline');
     return $offline;
@@ -158,8 +158,8 @@ $offline = get_offline_users();
 
 $cur_tv = get_cur_playing_type($db, 'itv');
 $cur_vclub = get_cur_active_playing_type($db, 'vclub');
-$cur_tv_archive = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - 120, 'now_playing_type' => 11))->get()->count();
-$cur_records = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - 120, 'now_playing_type' => 12))->get()->count();
+$cur_tv_archive = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2, 'now_playing_type' => 11))->get()->count();
+$cur_records = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2, 'now_playing_type' => 12))->get()->count();
 $cur_aclub = get_cur_active_playing_type($db, 'aclub');
 $cur_karaoke = get_cur_active_playing_type($db, 'karaoke');
 $cur_radio = get_cur_playing_type($db, 'radio');
@@ -198,7 +198,7 @@ $cur_infoportal = get_cur_infoportal($db);
         $rs=$db->executeQuery($sql);
         while(@$rs->next()){
             $storage_name = $rs->getCurrentValueByName('storage_name');
-            $sql_2 = "select count(*) as counter from users where now_playing_type=2 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-120";
+            $sql_2 = "select count(*) as counter from users where now_playing_type=2 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
             $rs_2  = $db->executeQuery($sql_2);
             $counter = $rs_2->getValueByName(0, 'counter');
             echo '<tr>';
@@ -247,7 +247,7 @@ $cur_infoportal = get_cur_infoportal($db);
         $rs=$db->executeQuery($sql);
         while(@$rs->next()){
             $storage_name = $rs->getCurrentValueByName('storage_name');
-            $sql_2 = "select count(*) as counter from users where now_playing_type=11 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-120";
+            $sql_2 = "select count(*) as counter from users where now_playing_type=11 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
             $rs_2  = $db->executeQuery($sql_2);
             $counter = $rs_2->getValueByName(0, 'counter');
             echo '<tr>';
@@ -329,10 +329,10 @@ $cur_infoportal = get_cur_infoportal($db);
 <br>
 
 
-<? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || @$_SESSION['login'] == 'zx' || @$_SESSION['login'] == 'vitaxa' || check_access()){ ?>
+<? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || @$_SESSION['login'] == 'azmus' || @$_SESSION['login'] == 'vitaxa' || check_access()){ ?>
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
 
-<? if (@$_SESSION['login'] != 'zx'){ ?>
+<? if (@$_SESSION['login'] != 'azmus'){ ?>
   <tr>
     <td colspan="3" align="center"><span class="style1">Настройки</span></td>
   </tr>

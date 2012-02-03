@@ -189,7 +189,7 @@ class Event extends HTTPPush
             if ($this->param['event'] == 'send_msg'){
                 $correction = 7*24*3600;
             }else{
-                $correction = 2*60;
+                $correction = Config::get('watchdog_timeout')*2;
             }
             $this->setEventTime(date("Y-m-d H:i:s", time() + $correction));
         }

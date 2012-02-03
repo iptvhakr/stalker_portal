@@ -422,7 +422,7 @@ if ($from_time){
     $where .= "where last_active<='$from_time'";
 }
 
-$now_timestamp = time() - 120;
+$now_timestamp = time() - Config::get('watchdog_timeout')*2;
 $now_time = date("Y-m-d H:i:s", $now_timestamp);
 switch (@$_GET['sort_by']){
     case 'online':{

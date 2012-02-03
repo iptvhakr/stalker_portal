@@ -252,6 +252,10 @@ class Stb
 
         $profile['is_moderator']           = $this->is_moderator;
 
+        $profile['watchdog_timeout']       = Config::getSafe('watchdog_timeout', 30000);
+
+        $profile['timeslot']               = $this->id * $profile['watchdog_timeout']/ Mysql::getInstance()->select('max(id) as max_id')->from('users')->get()->first('max_id');
+
         return $profile;
     }
 

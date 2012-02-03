@@ -650,7 +650,7 @@ abstract class Master
                                       'now_playing_type' => 2,
                                       'hd_content'       => 0,
                                       'storage_name'     => $storage_name,
-                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - 120,
+                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
                                   ))
                               ->get()
                               ->first('sd_online');
@@ -662,7 +662,7 @@ abstract class Master
                                       'now_playing_type' => 2,
                                       'hd_content'       => 1,
                                       'storage_name'     => $storage_name,
-                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - 120,
+                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
                                   ))
                               ->get()
                               ->first('hd_online');
