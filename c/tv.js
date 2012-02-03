@@ -185,15 +185,12 @@
             (function(){
 
                 if (single_module == this.layer_name){
-                    if (window.referrer){
-                        window.location = window.referrer;
-                    }
                     return;
                 }
 
                 this.hide();
                 main_menu.show();
-            }).bind(key.LEFT, this).bind(key.MENU, this);
+            }).bind(key.MENU, this).bind(key.LEFT, this);
             
             (function(){
                 if (module.epg_simple){
@@ -234,6 +231,7 @@
 
                     if (single_module == this.layer_name){
                         if (window.referrer){
+                            stb.player.stop();
                             window.location = window.referrer;
                         }else{
                             this.check_for_play();
@@ -317,6 +315,12 @@
                         if (self.cur_row == cur_row){
                             self.active_row.lock_block.show();
                         }
+
+                        var idx = stb.player.channels.getIdxByVal("id", ch_id);
+                        if (idx !== null){
+                            //stb.player.channels[idx].lock = 1;
+                            stb.player.channels.splice(idx, 1);
+                        }
                     }
                 },
                 this
@@ -348,6 +352,8 @@
                         if (self.cur_row == cur_row){
                             self.active_row.lock_block.hide();
                         }
+
+                        stb.load_channels();
                     }
                 },
                 this
@@ -594,7 +600,8 @@
                 this.short_info_box.innerHTML = '<span class="current">' + word['msg_channel_not_available'] + '</span>';
             }else if (item && item.epg){
                 
-                this.fill_short_epg(item.epg);
+                //this.fill_short_epg(item.epg);
+                this.short_info_box.innerHTML = '';
                 this.short_epg_loader.start();
             }
         };
@@ -662,7 +669,7 @@
 
                         self.password_input.show();
                     }else{
-                   stb.player.need_show_info = 0;
+                        stb.player.need_show_info = 0;
                         stb.player.prev_layer = self;
                         self._play_now(item);
                     }
@@ -1073,7 +1080,7 @@
             load : function(){
                 _debug('tv.short_epg_loader.load');
                 
-                if (this.parent && this.parent.data_items && this.parent.cur_row){
+                if (this.parent && this.parent.data_items && this.parent.cur_row >= 0){
                 
                     stb.load(
                         {
