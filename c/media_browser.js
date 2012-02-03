@@ -214,6 +214,8 @@
 
             this.superclass.show.call(this, do_not_load);
 
+            this.update_breadcrumbs();
+
             this.refresh_play_all_switch();
         };
         
