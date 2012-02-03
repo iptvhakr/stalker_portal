@@ -1,6 +1,6 @@
-require.paths.unshift(__dirname + '/lib');
+//require.paths.unshift(__dirname + '/lib');
 
-var RESTServer = require('./lib/restserver').RESTServer;
+var RESTServer = require('restserver').RESTServer;
 
 RESTServer.start();
 
