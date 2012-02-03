@@ -14,7 +14,7 @@ $db = new Database();
 
 moderator_access();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'zx'&& @$_SESSION['login'] != 'vitaxa' && !check_access()){
+if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'azmus' && @$_SESSION['login'] != 'vitaxa' && !check_access()){
     exit;
 }
 
@@ -179,11 +179,11 @@ a:hover{
             <table class="form">
                 <tr>
                     <td>URI</td>
-                    <td><input type="text" name="uri" value="<?echo @$edit['uri']?>" size="50"></input></td>
+                    <td><input type="text" name="uri" value="<?echo @$edit['uri']?>" size="50"/></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"></input></td>
+                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"/></td>
                 </tr>
             </table>
         </form>
