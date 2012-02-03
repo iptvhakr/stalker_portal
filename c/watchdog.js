@@ -10,13 +10,57 @@ function watchdog(){
     this.reboot_after_ok = false;
 }
 
-watchdog.prototype.run = function(){
-    
+watchdog.prototype.run = function(timeout, timeslot){
+    _debug('watchdog.run', timeout, timeslot);
+
+    this.request_timeout = timeout*1000 || this.request_timeout;
+    timeslot = timeslot*1000;
+
+    _debug('this.request_timeout', this.request_timeout);
+
+    var day_start = new Date();
+    day_start.setHours(0);
+    day_start.setMinutes(0);
+    day_start.setSeconds(0);
+    day_start.setMilliseconds(0);
+    day_start = day_start.getTime();
+
+    var now = new Date().getTime();
+
+    _debug('now', now);
+    _debug('day_start', day_start);
+
+    _debug('Math.floor((now - day_start)/this.request_timeout)', Math.floor((now - day_start)/this.request_timeout));
+
+    var delay = this.request_timeout - ((now - day_start) - Math.floor((now - day_start)/this.request_timeout) * this.request_timeout);
+
+    _debug('delay', delay);
+
+    //delay += timeslot;
+
+    if ((delay + timeslot) > this.request_timeout){
+        delay = delay - (this.request_timeout - timeslot);
+    }else{
+        delay += timeslot;
+    }
+
+    _debug('delay', delay);
+    _debug('date', new Date(now + delay) + " " + new Date(now + delay).getMilliseconds() + "ms");
+
     var self = this;
-    
-    window.setInterval(function(){
+
+    this.send_request();
+
+    window.setTimeout(function(){
+        window.setInterval(function(){
+            self.send_request();
+        }, self.request_timeout);
         self.send_request();
-    }, this.request_timeout);
+    }, delay);
+
+    /*window.setInterval(function(){
+        self.send_request();
+    }, this.request_timeout);*/
 };
 
 watchdog.prototype.send_request = function(){
@@ -30,7 +74,9 @@ watchdog.prototype.send_request = function(){
     }
     
     _debug('cur_play_type', cur_play_type);
-    
+
+    _debug('now', new Date() + " " + new Date().getMilliseconds() + "ms");
+
     stb.load(
         {
             "type"            : "watchdog",
@@ -59,7 +105,7 @@ watchdog.prototype.parse_result = function(data){
     
         module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
 
-        module.course && module.course.set && module.course.set(data.course);
+        module.course && module.course.set && data.course && module.course.set(data.course);
 
         stb.check_additional_services(data.additional_services_on);
     }catch(e){
