@@ -41,6 +41,7 @@
 
                 if (single_module == this.layer_name){
                     if (window.referrer){
+                        stb.player.stop();
                         window.location = window.referrer;
                     }
                     return;
@@ -53,15 +54,12 @@
             (function(){
 
                 if (single_module == this.layer_name){
-                    if (window.referrer){
-                        window.location = window.referrer;
-                    }
                     return;
                 }
 
                 this.hide();
                 main_menu.show();
-            }).bind(key.LEFT, this).bind(key.MENU, this);
+            }).bind(key.MENU, this).bind(key.LEFT, this);
         };
         
         this.play = function(){
