@@ -127,7 +127,7 @@ function common_xpcom(){
 
     this.get_server_params = function(){
 
-        var pattern = /http:\/\/([\w\.\-]*)\/([\w\/]+)*\/([\w\/]+)\/(.)*/;
+        var pattern = /http:\/\/([^\/]*)\/([\w\/]+)*\/([\w\/]+)\/(.)*/;
 
         this.portal_ip   = document.URL.replace(pattern, "$1");
         this.portal_path = document.URL.replace(pattern, "$2");
@@ -496,6 +496,8 @@ function common_xpcom(){
 
                 this.user['tv_archive_days']   = parseInt(this.user['tv_archive_days'], 10);
                 this.user['screensaver_delay'] = parseInt(this.user['screensaver_delay'], 10);
+                this.user['watchdog_timeout']  = parseInt(this.user['watchdog_timeout'], 10);
+                this.user['timeslot']          = parseFloat(this.user['timeslot']);
 
                 this.user['update_url'] = this.profile['update_url'] ? this.profile['update_url'] + this.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + this.type.substr(3) + '/imageupdate';
 
@@ -565,8 +567,8 @@ function common_xpcom(){
             stb.loader.stop();
             this.cut_off();
         }
-
-        this.watchdog.run();
+        
+        this.watchdog.run(this.user['watchdog_timeout'], this.user['timeslot']);
     };
 
     this.post_loading_handle = function(){
