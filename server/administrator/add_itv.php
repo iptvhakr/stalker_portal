@@ -93,11 +93,13 @@ if (!$error){
     
     if (@$_GET['save'] && !$error){
     
-        if(@$_GET['cmd'] && @$_GET['name'] && @$_POST['tv_genre_id'] > 0){
+        if(@$_GET['name'] && @$_POST['tv_genre_id'] > 0){
+
+            $ch_id = intval(@$_GET['id']);
 
             $channel = Itv::getChannelById($ch_id);
 
-            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
                 if ($channel['enable_tv_archive']){
 
@@ -169,7 +171,7 @@ if (!$error){
             //var_dump($rs);
             $ch_id = $rs->getLastInsertId();
 
-            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
                 if ($enable_tv_archive){
 
@@ -211,7 +213,7 @@ if (!$error){
 
             $channel = Itv::getChannelById($ch_id);
 
-            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
                 if ($channel['enable_tv_archive']){
 
@@ -254,7 +256,7 @@ if (!$error){
             var_dump($query);
             $rs=$db->executeQuery($query);
 
-            if ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
                 if ($enable_tv_archive){
 
