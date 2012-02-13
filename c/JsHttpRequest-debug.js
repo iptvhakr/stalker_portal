@@ -1,4 +1,4 @@
-/**
+ /**
  * JsHttpRequest: JavaScript "AJAX" data loader
  *
  * @license LGPL
@@ -481,7 +481,9 @@ JsHttpRequest.LOADERS.xml = { loader: function(req) {
         if (this.url.match(new RegExp('^([a-z]+://[^\\/]+)(.*)', 'i'))) {
         	// We MUST also check if protocols matched: cannot send from HTTP 
         	// to HTTPS and vice versa.
-            if (RegExp.$1.toLowerCase() != document.location.protocol + '//' + document.location.hostname.toLowerCase()) {
+            var loc__ = document.location.protocol + '//' + document.location.hostname.toLowerCase() + (document.location.port?':'+document.location.port:'');
+            var url__ = RegExp.$1.toLowerCase();
+            if (url__ != loc__) {
                 return ['xml_no_diffdom', RegExp.$1];
             }
         }

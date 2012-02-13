@@ -317,7 +317,7 @@ if(this.queryElem.length){
 return ["xml_no_form_upl"];
 }
 if(this.url.match(new RegExp("^([a-z]+://[^\\/]+)(.*)","i"))){
-if(RegExp.$1.toLowerCase()!=document.location.protocol+"//"+document.location.hostname.toLowerCase()){
+if(RegExp.$1.toLowerCase()!=document.location.protocol+"//"+document.location.hostname.toLowerCase()+(document.location.port?':'+document.location.port:'')){
 return ["xml_no_diffdom",RegExp.$1];
 }
 }
