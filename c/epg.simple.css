@@ -102,15 +102,15 @@
     height: 32px;
     margin: 0 0 1px 0;
     background-image: url("i/tv_table.png");
-    background-position: 0px -36px;
+    background-position: 0 -36px;
     color: #fff;
     font-size: 20px;
     text-shadow: #122946 0 -1px 0;
-    padding: 2px 0 0 5px;
+    padding: 1px 0 0 5px;
 }
 
 #epg_simple .week li[active="active"]{
-    background-position: 0px -1px;
+    background-position: 0 -1px;
     color: #002864;
     text-shadow: #fff 0 1px 0;
 }
