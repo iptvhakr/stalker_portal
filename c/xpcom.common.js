@@ -239,7 +239,10 @@ function common_xpcom(){
             
             this.ntp_server = stb.RDir('getenv ntpurl').clearnl();
 
-            this.version = 'PORTAL version: '+ver+'; '+stb.Version();
+            this.image_version = stb.RDir('ImageVersion').clearnl();
+            this.image_desc    = stb.RDir('ImageDescription').clearnl();
+
+            this.version = 'Image Description: ' + this.image_desc + '; PORTAL version: '+ver+';';//+stb.Version();
 
             var mtdparts = stb.RDir('getenv mtdparts').clearnl();
 
@@ -271,8 +274,9 @@ function common_xpcom(){
         this.set_cookie('mac',      this.mac);
         this.set_cookie('stb_lang', this.stb_lang);
         this.set_cookie('timezone', this.timezone);
-        this.set_cookie('stb_type', this.type);
+        /*this.set_cookie('stb_type', this.type);
         this.set_cookie('sn',       this.serial_number);
+        this.set_cookie('num_banks',this.num_banks);*/
 
         //this.get_localization();
 
@@ -287,7 +291,11 @@ function common_xpcom(){
     };
 
     this.set_cookie = function(name, val){
-        document.cookie = name + '=' + escape(val) + '; path=/;'
+        document.cookie = name + '=' + escape(val) + '; path=/;';
+    };
+
+    this.delete_cookie = function(name){
+        document.cookie = name + '=; path=/; expires=Thu, 01-Jan-1970 00:00:01 GMT;';
     };
 
     this.get_localization = function(){
@@ -384,10 +392,14 @@ function common_xpcom(){
         this.load(
 
             {
-                'type'  : 'stb',
-                'action': 'get_profile',
-                'hd'    : this.hd,
-                'ver'   : this.version
+                'type'      : 'stb',
+                'action'    : 'get_profile',
+                'hd'        : this.hd,
+                'ver'       : this.version,
+                'num_banks' : this.num_banks,
+                'sn'        : this.serial_number,
+                'stb_type'  : this.type
+
             },
 
             function(result){
@@ -418,7 +430,7 @@ function common_xpcom(){
 
     this.check_image_version = function(){
 
-        var cur_version = stb.RDir('ImageVersion').clearnl();
+        var cur_version = this.image_version;
         this.firmware_version = cur_version;
         _debug('cur_version:', cur_version);
         _debug('stb.user.image_version:', stb.user['image_version']);
@@ -567,7 +579,7 @@ function common_xpcom(){
             stb.loader.stop();
             this.cut_off();
         }
-        
+
         this.watchdog.run(this.user['watchdog_timeout'], this.user['timeslot']);
     };
 
@@ -776,10 +788,12 @@ function common_xpcom(){
 
                 resolution_prefix = res["r"+gres].prefix;
 
+                window.resizeTo(res["r"+gres].window_w, res["r"+gres].window_h);
+
                 _debug('window.moveTo', (res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
                 window.moveTo((res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
 
-                window.resizeTo(res["r"+gres].window_w, res["r"+gres].window_h);
+                //window.resizeTo(res["r"+gres].window_w, res["r"+gres].window_h);
 
                 if (gres == 1080 && !window.referrer){
                     stb.ExecAction('graphicres 1280');
