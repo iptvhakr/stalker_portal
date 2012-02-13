@@ -213,11 +213,16 @@ class Stb
                 'keep_alive'    => 'NOW()',
                 'version'       => @$_REQUEST['ver'],
                 'hd'            => @$_REQUEST['hd'],
-                'stb_type'      => isset($_COOKIE['stb_type']) ? $_COOKIE['stb_type'] : '',
-                'serial_number' => isset($_COOKIE['sn']) ? $_COOKIE['sn'] : '',
+                'stb_type'      => isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '',
+                'serial_number' => isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
+                'num_banks'     => isset($_REQUEST['num_banks']) ? $_REQUEST['num_banks'] : 0,
             ),
             array('id' => $this->id));
-        
+
+        /*setcookie("stb_type",  "");
+        setcookie("sn",        "");
+        setcookie("num_banks", "");*/
+
         $master = new VideoMaster();
         /*$master->checkAllHomeDirs();*/
         
@@ -1042,11 +1047,21 @@ class Stb
 
         var_dump($data);
 
-        if ($data['status'] != 'OK' || empty($data['results']) || empty($data['results'][0])){
+        if ($data['status'] != 'OK' || empty($data['results'])){
             return false;
         }
 
-        $user = $data['results'][0];
+        if (key_exists(0, $data['results'])){
+            $user = $data['results'][0];
+        }else{
+            $user = $data['results'];
+        }
+
+        var_dump($user);
+
+        if (empty($user)){
+            return false;
+        }
 
         $update_data = array();
 
