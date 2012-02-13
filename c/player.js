@@ -1741,7 +1741,14 @@ player.prototype.bind = function(){
     (function(){
         
         if (this.info.on){
-            this.set_pos_and_play();
+            if(this.is_tv){
+                this.hide_info();
+                module.tv._show();
+                module.tv.set_short_container();
+            }else{
+                this.set_pos_and_play();
+            }
+
         }else  if (this.quick_ch_switch.on){
             this.hide_quick_ch_switch();
         }else  if (this.prev_layer && this.prev_layer.cur_view == 'short' && !this.is_tv){
