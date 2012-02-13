@@ -114,6 +114,7 @@ if (@$_FILES['userfile']){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, get_all_hd_channels());
                     }else if($ch == '00160' || $ch == '00161' || $ch == '00162' || $ch == '00169' || $ch == '00170' || $ch == '00432' || $ch == '00433'){ // additional services on
                         $add_services_on[] = $stb_id;
+                        $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, array());
                     }else if($ch == '00649'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, array(270, 271, 272, 273, 274, 275));
                     }else if($ch == '00630' || $ch == '00642' || $ch == '00673'){
@@ -155,8 +156,9 @@ if (@$_FILES['userfile']){
         //echo $sql;
         $db->executeQuery($sql);
     }
-    
-    
+
+    //var_dump($result); exit;
+
     foreach ($result as $uid => $sub){
         
         if (count($sub) == 0){
@@ -175,7 +177,7 @@ if (@$_FILES['userfile']){
         }*/
 
         //var_dump($sub); exit;
-        
+
         $bonus_str = base64_encode(serialize($bonus));        
         
         if (key_exists($uid, $subscription_map)){
