@@ -49,7 +49,7 @@ class Mysql
         $this->link = mysql_connect(Config::get('mysql_host'), Config::get('mysql_user'), Config::get('mysql_pass'));
 
         if (!$this->link){
-            throw new MysqlException('Cannot connect to database');
+            throw new MysqlException('Cannot connect to database: '.mysql_error());
         }
 
         if (Config::get('query_cache') && $this->allow_caching){
