@@ -5,6 +5,7 @@
 <script>
 var iid=1;
 var menuT=[['select',parent.t('Download method for Bootstrap:'),"0",parent.t("From HTTP"),"1",parent.t("From USB"),"2",parent.t("From USB (using bootstrap)")]];
+if(parent.stbUpdate.GetFlashBankCount()!=2) menuT.splice(1,1);
 var  mid=menuT.length+2;
 var pread=["a"];var model=parent.stb.RDir("Model").toLowerCase();
 var read={"result":{"a":"0"}}

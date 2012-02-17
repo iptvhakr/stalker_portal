@@ -75,9 +75,19 @@ function submit()
             if(activeBank == -1){
                 parent.stbUpdate.startUpdate(0, turl);
             }else{
+                if(parent.stbUpdate.GetFlashBankCount()!=2){
                 block=false;
                 parent.erMes(parent.t('Updating error!'),'i'+(iid+1));
-                return;
+                return;}
+                else if(activeBank == 1){
+                    parent.stbUpdate.startUpdate(0, turl);
+                    }else{
+                    if(activeBank == 0){
+                    parent.stbUpdate.startUpdate(1, turl);
+                    }else{
+                    parent.stbUpdate.startUpdate(0, turl);
+                }
+            }
             }
         }      
         block=true;
