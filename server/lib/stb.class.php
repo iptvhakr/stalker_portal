@@ -216,6 +216,7 @@ class Stb
                 'stb_type'      => isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '',
                 'serial_number' => isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
                 'num_banks'     => isset($_REQUEST['num_banks']) ? $_REQUEST['num_banks'] : 0,
+                'image_version' => isset($_REQUEST['image_version']) ? $_REQUEST['image_version'] : '',
             ),
             array('id' => $this->id));
 
@@ -260,6 +261,11 @@ class Stb
         $profile['watchdog_timeout']       = Config::getSafe('watchdog_timeout', 30000);
 
         $profile['timeslot']               = $this->id * $profile['watchdog_timeout']/ Mysql::getInstance()->select('max(id) as max_id')->from('users')->get()->first('max_id');
+
+        $image_update = new ImageAutoUpdate();
+        if ($image_update->isEnabled()){
+            $profile['autoupdate'] = $image_update->getSettings();
+        }
 
         return $profile;
     }

@@ -241,6 +241,7 @@ function common_xpcom(){
 
             this.image_version = stb.RDir('ImageVersion').clearnl();
             this.image_desc    = stb.RDir('ImageDescription').clearnl();
+            this.image_date    = stb.RDir('ImageDate').clearnl();
 
             this.version = 'Image Description: ' + this.image_desc + '; PORTAL version: '+ver+';';//+stb.Version();
 
@@ -392,14 +393,14 @@ function common_xpcom(){
         this.load(
 
             {
-                'type'      : 'stb',
-                'action'    : 'get_profile',
-                'hd'        : this.hd,
-                'ver'       : this.version,
-                'num_banks' : this.num_banks,
-                'sn'        : this.serial_number,
-                'stb_type'  : this.type
-
+                'type'          : 'stb',
+                'action'        : 'get_profile',
+                'hd'            : this.hd,
+                'ver'           : this.version,
+                'num_banks'     : this.num_banks,
+                'sn'            : this.serial_number,
+                'stb_type'      : this.type,
+                'image_version' : this.image_version
             },
 
             function(result){
@@ -430,24 +431,39 @@ function common_xpcom(){
 
     this.check_image_version = function(){
 
-        var cur_version = this.image_version;
-        this.firmware_version = cur_version;
-        _debug('cur_version:', cur_version);
-        _debug('stb.user.image_version:', stb.user['image_version']);
+        /*var cur_version = this.image_version;
+        this.firmware_version = cur_version;*/
+        _debug('this.image_version:', this.image_version);
+        _debug('this.image_desc:', this.image_desc);
+        _debug('this.image_date:', this.image_date);
+        //_debug('stb.user.image_version:', stb.user['image_version']);
 
-        if (this.firmware_version < 203 && this.firmware_version != 0){
+        if (this.image_version < 203 && this.image_version != 0){
             return 0;
         }
 
-        if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0' && this.num_banks == 2){
-        //if (cur_version != stb.user['image_version'] && stb.user['image_version'] != '0' && this.num_banks == 2 && this.type == 'MAG250'){
+        if (typeof stb.user['autoupdate'] == 'object' && 
+            ((stb.user['autoupdate'].require_image_version != ''     && stb.user['autoupdate'].require_image_version != this.image_version) ||
+            (stb.user['autoupdate'].require_image_date != ''         && stb.user['autoupdate'].require_image_date != this.image_date)) &&
+            ((stb.user['autoupdate'].image_version_contains != ''    && stb.user['autoupdate'].image_version_contains == this.image_version) ||
+            (stb.user['autoupdate'].image_description_contains != '' && this.image_desc.indexOf(stb.user['autoupdate'].image_description_contains) != -1)
+            )){
 
-            try{
-                _debug('this.user[update_url]', this.user['update_url']);
-                
-                stbUpdate.startAutoUpdate(this.user['update_url'], false);
-            }catch(e){
-                _debug(e);
+            if (this.num_banks == 2 && stb.user['autoupdate'].update_type == 'http_update'){
+                try{
+                    _debug('this.user[update_url]', this.user['update_url']);
+
+                    _debug('stb.user[autoupdate]', stb.user['autoupdate']);
+
+                    stbUpdate.startAutoUpdate(this.user['update_url'], false);
+                    //console.log('startAutoUpdate: '+this.user['update_url']);
+                }catch(e){
+                    _debug(e);
+                }
+            }else if (stb.user['autoupdate'].update_type == 'reboot_dhcp'){
+                _debug('RebootDHCP');
+                stb.ExecAction('RebootDHCP');
+                //console.log('RebootDHCP');
             }
 
             return 0;
