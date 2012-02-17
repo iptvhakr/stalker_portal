@@ -9,7 +9,7 @@
         
         this.layer_name   = 'media_browser';
         
-        this.row_blocks   = ["dir", "playing", "paused", "name", "seek_bar"];
+        this.row_blocks   = ["dir", "back", "playing", "paused", "name", "seek_bar"];
         this.mounted      = false;
         this.cur_dir_list = [];
         this.data_items   = [];
@@ -347,7 +347,7 @@
             if (this.dir_hist.length == 1){
                 var clear_arr = [];
             }else{
-                clear_arr = [{"name" : "..", "dir" : 1}];
+                clear_arr = [{"name" : "..", "back" : 1}];
             }
 
             for (var i=0; i < list.length; i++){
@@ -390,7 +390,7 @@
                 return {"name" : group, "dir" : 1, "dir_name" : "SMB_GROUP"}
             });
 
-            groups.unshift({"name" : "..", "dir" : 1});
+            groups.unshift({"name" : "..", "back" : 1});
 
             _debug('groups', groups);
 
@@ -421,7 +421,7 @@
                 return {"name" : server, "dir" : 1, "dir_name" : "SMB_SERVER"}
             });
 
-            servers.unshift({"name" : "..", "dir" : 1});
+            servers.unshift({"name" : "..", "back" : 1});
 
             _debug('servers', servers);
 
@@ -456,7 +456,7 @@
                 return {"name" : share, "dir" : 1, "dir_name" : "SMB_SHARE"}
             });
 
-            shares.unshift({"name" : "..", "dir" : 1});
+            shares.unshift({"name" : "..", "back" : 1});
 
             _debug('shares', shares);
 
@@ -550,7 +550,11 @@
             _debug('this.cur_page', this.cur_page);
             _debug('this.cur_row', this.cur_row);
 
-            this.set_total_items(data.length);
+            if (this.dir_hist.length > 1){
+                this.set_total_items(data.length - 1);
+            }else{
+                this.set_total_items(data.length);
+            }
 
             var begin = (this.cur_page - 1) * 14;
             var end   = this.cur_page * 14;
@@ -587,12 +591,14 @@
             
             if (this.data_items[this.cur_row].hasOwnProperty('dir')){
                 
-                if (this.data_items[this.cur_row].name == '..'){
+                /*if (this.data_items[this.cur_row].name == '..'){
                     this.out_dir();
-                }else{
+                }else{*/
                     //this.in_dir(this.data_items[this.cur_row]);
                     this.check_for_mount(this.data_items[this.cur_row]);
-                }
+                //}
+            }else if (this.data_items[this.cur_row].hasOwnProperty('back')){
+                this.out_dir();
             }else{
 
                 var self = this;

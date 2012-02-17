@@ -7,6 +7,15 @@
     background-position: -156px 0;
 }
 
+.back_block{
+    width: 34px;
+    height: 30px;
+    float: left;
+    margin: 4px 0 0 4px;
+    background-image: url("i_720/mb_icons.png");
+    background-position: -190px 0;
+}
+
 .active_dir_block{
     width: 34px;
     height: 39px;
@@ -14,6 +23,15 @@
     float:left;
     background-image: url("i_720/mb_icons.png");
     background-position: -156px -29px;
+}
+
+.active_back_block{
+    width: 34px;
+    height: 39px;
+    margin: 6px 2px 0 0;
+    float:left;
+    background-image: url("i_720/mb_icons.png");
+    background-position: -190px -29px;
 }
 
 #media_browser .playing_block{
