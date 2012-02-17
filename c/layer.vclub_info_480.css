@@ -15,6 +15,7 @@
 }
 
 .mb_filminfo_fullinfo{
+    position: relative
     float: left;
     font-size: 16px;
     color: #fff;

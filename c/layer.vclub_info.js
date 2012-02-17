@@ -94,7 +94,8 @@ vclub_info.prototype.init = function(){
     
     info_container.insertBefore(this.scrollbar.dom_obj, this.full_info);
     
-    create_block_element('mb_filminfo_trans', this.main_container);
+    //create_block_element('mb_filminfo_trans', this.main_container);
+    create_block_element('mb_filminfo_trans', info_container);
 
     this.film_cover = create_block_element('mb_filminfo_prev', this.main_container);
     
@@ -112,7 +113,7 @@ vclub_info.prototype.fill = function(item){
                      '<div class="hr_filminfo"></div>' + 
                      '<span>' + word['vclub_director'] + ':</span> ' + item.director + '<br>' +
                      '<span>' + word['vclub_cast'] + ':</span> ' + item.actors + 
-                     '<div class="hr_filminfo"></div>' + item.description;// + '<br><br>';
+                     '<div class="hr_filminfo"></div>' + item.description + '<br><br>';
     
     this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'">';
 };

@@ -15,6 +15,7 @@
 }
 
 .mb_filminfo_fullinfo{
+    position: relative;
     float: left;
     font-size: 25px;
     color: #fff;
@@ -58,7 +59,8 @@
     background: url("i_720/mb_filminfo_trans.png") bottom left;
     height: 60px;
     width: 865px;
-    position: relative;
-    top: 430px;
+    position: absolute;
+    /*top: 430px;*/
+    bottom: 0;
 }
 /* END VCLUB INFO */
