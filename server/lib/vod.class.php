@@ -34,7 +34,7 @@ class Vod extends AjaxResponse
         $master = new VideoMaster();
         
         try {
-            $res = $master->play($media_id, intval($_REQUEST['series']), false, $forced_storage);
+            $res = $master->play($media_id, intval($_REQUEST['series']), true, $forced_storage);
         }catch (Exception $e){
             trigger_error($e->getMessage());
         }
