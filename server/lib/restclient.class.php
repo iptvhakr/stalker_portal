@@ -10,9 +10,12 @@ class RESTClient
     public static $from;
     private $auth_login;
     private $auth_password;
+    private $timeout;
 
     public function __construct($rest_server){
         $this->rest_server = $rest_server;
+        $this->timeout     = (int) Config::getSafe('rest_client_timeout', 3);
+        $this->connection_timeout = (int) Config::getSafe('rest_client_connection_timeout', 1);
     }
 
     public function get(){
@@ -81,8 +84,10 @@ class RESTClient
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
+        curl_setopt($ch, CURLOPT_HTTPHEADER,     $headers);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST,  $this->method);
+        curl_setopt($ch, CURLOPT_TIMEOUT,        $this->timeout);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connection_timeout);
 
         if ($this->method == 'POST' || $this->method == 'PUT'){
 
@@ -94,7 +99,11 @@ class RESTClient
         $this->reset();
 
         if ($json_result === false){
-            throw new RESTClientConnectException('Error get contents from url: '.$url.'; Error: '.curl_error($ch));
+            if (curl_errno($ch) == 28){
+                throw new RESTClientConnectionTimeout('Connection timeout. url: '.$url.'; Error: '.curl_error($ch));
+            }else{
+                throw new RESTClientConnectionFailure('Error get contents from url: '.$url.'; Error: '.curl_error($ch));
+            }
         }
 
         $result = json_decode($json_result, true);
@@ -106,14 +115,14 @@ class RESTClient
         }
 
         if ($result === null){
-            throw new RESTClientException("Result cannot be decoded. Result: ".$json_result);
+            throw new RESTClientUnknownFormat("Result cannot be decoded. Result: ".$json_result);
         }
 
         if ($result['status'] != 'OK'){
 
             $error = !empty($result['error']) ? $result['error'] : "No description of the error. Result: ".$json_result;
 
-            throw new RESTClientException($error);
+            throw new RESTClientRemoteError($error);
         }
 
         return $result['results'];
@@ -128,6 +137,10 @@ class RESTClient
 }
 
 class RESTClientException extends Exception{}
+class RESTClientConnectionTimeout extends RESTClientException{}
+class RESTClientConnectionFailure extends RESTClientException{}
+class RESTClientUnknownFormat extends RESTClientException{}
 class RESTClientConnectException extends RESTClientException{}
+class RESTClientRemoteError extends RESTClientException{}
 
 ?>
