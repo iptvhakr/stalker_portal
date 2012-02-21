@@ -56,6 +56,20 @@ class AuthAccessHandler extends AccessHandler
         );
     }
 
+    public function getAuthorizationInfo(){
+
+        if (empty($_SERVER['HTTP_AUTHORIZATION'])){
+            return false;
+        }
+
+        $auth_info = array();
+
+        if (preg_match('/Bearer\s+(.*)$/i', $_SERVER['HTTP_AUTHORIZATION'], $matches)){
+            $auth_info['schema'] = 'Bearer';
+            $auth_info['token']  = $matches[1];
+        }
+    }
+
     public function checkAccess(){
         
     }
