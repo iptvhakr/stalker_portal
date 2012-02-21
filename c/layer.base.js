@@ -115,15 +115,11 @@ ColorButtonsBar.prototype.init = function(map){
         var cell = document.createElement('td');
         row.appendChild(cell);
 
-        if (i == 0){
-            var separator = document.createElement('img');
-            separator.src = 'i' + resolution_prefix + '/1x1.gif';
-        }else{
+        if (i != 0){
             separator = document.createElement('div');
             separator.addClass('separator');
+            cell.appendChild(separator);
         }
-
-        cell.appendChild(separator);
 
         var color = this.color_map[i].color;
 

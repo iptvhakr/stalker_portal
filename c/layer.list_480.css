@@ -239,23 +239,24 @@
 }
 
 .btn_red{
-    background: url("i_480/footer_btn.png") right no-repeat;
-    background-position: 0px 0px;
+    background: url("i_480/footer_btn.png") no-repeat;
+    /*background-position: 0 0;*/
+    margin-left: 10px !important;
 }
 
 .btn_green{
-    background: url("i_480/footer_btn.png") right no-repeat;
-    background-position: -24px 0px;
+    background: url("i_480/footer_btn.png") no-repeat -24px 0;
+    /*background-position: -24px 0px;*/
 }
 
 .btn_yellow{
-    background: url("i_480/footer_btn.png") right no-repeat;
-    background-position: -48px 0px;
+    background: url("i_480/footer_btn.png") no-repeat -48px 0;
+    /*background-position: -48px 0px;*/
 }
 
 .btn_blue{
-    background: url("i_480/footer_btn.png") right no-repeat;
-    background-position: -72px 0px;
+    background: url("i_480/footer_btn.png") no-repeat -72px 0;
+    /*background-position: -72px 0px;*/
 }
 
 .disable_color_btn_text{

@@ -233,22 +233,19 @@
 
 .btn_red{
     background: url("i_720/footer_btn.png") no-repeat;
-    /*background-position: 0 0;*/
+    margin-left: 10px !important;
 }
 
 .btn_green{
     background: url("i_720/footer_btn.png") no-repeat -30px 0;
-    /*background-position: -30px 0;*/
 }
 
 .btn_yellow{
     background: url("i_720/footer_btn.png") no-repeat -60px 0;
-    /*background-position: -60px 0;*/
 }
 
 .btn_blue{
     background: url("i_720/footer_btn.png") no-repeat -90px 0;
-    /*background-position: -90px 0;*/
 }
 
 .disable_color_btn_text{
