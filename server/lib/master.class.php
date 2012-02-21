@@ -104,6 +104,12 @@ abstract class Master
                     }catch (Exception $exception){
                         $default_error = 'link_fault';
                         $this->parseException($exception);
+                        
+                        if (($exception instanceof RESTClientException) && !($exception instanceof RESTClientRemoteError)){
+                            $storage = new Storage(array('name' => $name));
+                            $storage->markAsFailed($exception->getMessage());
+                            continue;
+                        }
 
                         if ($this->from_cache){
 
@@ -614,6 +620,11 @@ abstract class Master
             return $this->clients[$storage_name]->resource($this->media_type)->ids($media_name)->get();
         }catch (Exception $exception){
             $this->parseException($exception);
+
+            if ($exception instanceof RESTClientException){
+                $storage = new Storage(array('name' => $storage_name));
+                $storage->markAsFailed($exception->getMessage());
+            }
         }
     }
     
