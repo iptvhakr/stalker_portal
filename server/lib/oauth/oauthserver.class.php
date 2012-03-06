@@ -9,6 +9,7 @@ namespace Stalker\Lib\OAuth;
 class OAuthServer
 {
     private $access_handler;
+    private $token_type;
 
     public function __construct(AccessHandler $access_handler){
         $this->access_handler = $access_handler;
@@ -20,6 +21,7 @@ class OAuthServer
 
         $request  = new OAuthRequest();
         $response->setRequest($request);
+        $response->setTokenType($this->token_type);
 
         try{
             
@@ -43,11 +45,13 @@ class OAuthServer
 
                     $response->setAccessToken($token);
 
-                    $key = $this->access_handler->getSecretKey($request->getUsername());
-
-                    $response->setMacKey($key);
+                    if ($this->token_type == "mac"){
+                        $key = $this->access_handler->getSecretKey($request->getUsername());
+                        $response->setMacKey($key);
+                    }
 
                     $additional_params = $this->access_handler->getAdditionalParams($request->getUsername());
+
                     if (!empty($additional_params)){
                         $response->setAdditionalParams($additional_params);
                     }
@@ -58,7 +62,6 @@ class OAuthServer
             
         }catch(OAuthException $e){
             if ($request->isImplicitGrantAuth()){
-                //todo: render error page
                 echo $e->getMessage();
             }else{
                 $response->setError($e->getCode(), $e->getMessage(), $e->getUrl());
@@ -67,22 +70,42 @@ class OAuthServer
         
         $response->send();
     }
+
+    public function setTokenType($token_type){
+
+        if (!in_array($token_type, array("bearer", "mac"))){
+            throw new OAuthInvalidRequest("Not supported access type");
+        }
+
+        $this->token_type = $token_type;
+    }
 }
 
 class OAuthResponse
 {
-    protected $body = array('token_type' => 'mac', 'mac_algorithm' => 'hmac-sha-256');
+    protected $body = array();
     protected $request;
     private   $error_fields;
+    private   $token_type;
 
     public function __construct(){
         ob_start();
-        $this->error_fields = array_fill_keys(array('status', 'error', 'debug'), true);
+        $this->error_fields = array_fill_keys(array('status', 'error', 'error_description', 'error_uri', 'debug'), true);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST'){
             header($_SERVER["SERVER_PROTOCOL"]." 405 Method Not Allowed");
             echo "<pre>Method not allowed</pre>";
             exit;
+        }
+    }
+
+    public function setTokenType($token_type){
+        $this->token_type = $token_type;
+
+        $this->body['token_type'] = $this->token_type;
+
+        if ($this->token_type == "mac"){
+            $this->body['mac_algorithm'] = 'hmac-sha-256';
         }
     }
 
@@ -105,10 +128,6 @@ class OAuthResponse
 
     public function setAccessToken($token){
         $this->body['access_token'] = $token;
-    }
-
-    public function setTokenType($token_type){
-        $this->body['token_type'] = $token_type;
     }
 
     public function setMacKey($key){
