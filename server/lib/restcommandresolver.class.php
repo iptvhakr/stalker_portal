@@ -12,7 +12,7 @@ class RESTCommandResolver
      */
     public function getCommand(RESTRequest $request){
 
-        $resource = implode(array_map(function($part){
+        $resource = implode("", array_map(function($part){
             return ucfirst($part);
         },explode('_', $request->getResource())));
 
