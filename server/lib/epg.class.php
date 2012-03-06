@@ -358,7 +358,7 @@ class Epg
         }
 
         $epg = $this->db->from('epg')
-            ->select('epg.*, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
+            ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
             ->where(
                 array(
                     'epg.ch_id' => $ch_id,
@@ -372,11 +372,23 @@ class Epg
         $reminder = new TvReminder();
         $reminders = $reminder->getAllActiveForMac(Stb::getInstance()->mac);
 
+        $tv_archive = new TvArchive();
+        $archived_recs = $tv_archive->getAllTasksAssoc();
+
         for ($i = 0; $i < count($epg); $i++){
-            if (key_exists($epg[$i]['id'], $reminders)){
+
+            if (array_key_exists($epg[$i]['id'], $reminders)){
                 $epg[$i]['mark_memo'] = 1;
             }else{
                 $epg[$i]['mark_memo'] = 0;
+            }
+
+            if ($epg[$i]['start_timestamp'] > $archived_recs[$epg[$i]['ch_id']]['start_timestamp'] &&
+                $epg[$i]['start_timestamp'] < $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']){
+
+                $epg[$i]['mark_archive'] = 1;
+            }else{
+                $epg[$i]['mark_archive'] = 0;
             }
         }
 
@@ -404,7 +416,7 @@ class Epg
         return $this->getEpgForChannelsOnPeriod(array());
     }
 
-    private function getEpgForChannelsOnPeriod($channels_ids = array(), $from ='', $to = '', $limit = 0, $offset = 0){
+    public function getEpgForChannelsOnPeriod($channels_ids = array(), $from ='', $to = '', $limit = 0, $offset = 0){
 
         $db = clone $this->db;
 
@@ -482,20 +494,20 @@ class Epg
                     $epg[$i]['mark_memo'] = null;
                 }*/
 
-                if (key_exists($epg[$i]['id'], $user_rec_ids)){
+                if (array_key_exists($epg[$i]['id'], $user_rec_ids)){
                     $epg[$i]['mark_rec'] = 1;
                     $epg[$i]['rec_id']   = $user_rec_ids[$epg[$i]['id']];
                 }else{
                     $epg[$i]['mark_rec'] = 0;
                 }
 
-                if (key_exists($epg[$i]['id'], $reminders)){
+                if (array_key_exists($epg[$i]['id'], $reminders)){
                     $epg[$i]['mark_memo'] = 1;
                 }else{
                     $epg[$i]['mark_memo'] = 0;
                 }
 
-                if (key_exists($epg[$i]['ch_id'], $archived_recs)){
+                if (array_key_exists($epg[$i]['ch_id'], $archived_recs)){
 
                     //var_dump($epg[$i]['start_timestamp'], $archived_recs[$epg[$i]['ch_id']]['start_timestamp'], $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']);
 
