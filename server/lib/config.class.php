@@ -31,7 +31,7 @@ class Config
             self::init();
         }
 
-        if (!key_exists($key, self::$settings)){
+        if (!array_key_exists($key, self::$settings)){
             throw new ConfigException('Key "'.$key.'" not found in settings');
         }
 
@@ -55,7 +55,7 @@ class Config
             self::init();
         }
 
-        if (!key_exists($key, self::$settings)){
+        if (!array_key_exists($key, self::$settings)){
             return false;
         }
 
