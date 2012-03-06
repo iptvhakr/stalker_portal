@@ -450,7 +450,7 @@ class Mysql
         $fields = array();
         $values = array();
         
-        if (key_exists(0, $keys)){
+        if (array_key_exists(0, $keys)){
             
             $fields = array_keys($keys[0]);
             
