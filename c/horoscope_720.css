@@ -47,18 +47,18 @@
 
 .horoscope_left_arrow{
     position: absolute;
-    bottom: 106px;
+    bottom: 124px;
     left: 0;
     height: 162px;
-    width: 220px;
+    width: 165px;
     background-image: url("i_720/mm_hor_left.png");
 }
 
 .horoscope_right_arrow{
     position: absolute;
-    bottom: 106px;
-    right: 0;
+    bottom: 124px;
+    right: 10px;
     height: 162px;
-    width: 220px;
+    width: 320px;
     background-image: url("i_720/mm_hor_right.png");
 }
