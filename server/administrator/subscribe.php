@@ -23,6 +23,7 @@ if (@$_GET['save']){
     $bonus_str = '';
     $uid = @$_POST['uid'];
     $sub = @$_GET['sub'];
+
     $bonus = @$_GET['bonus'];
     $stb = Stb::getInstance();
     
