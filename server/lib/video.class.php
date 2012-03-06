@@ -75,6 +75,64 @@ class Video
             'actiontime'   => 'NOW()'
         ))->insert_id();
     }
-}
 
-?>
+    public function getRawAll(){
+
+        return Mysql::getInstance()->from('video')->where(array('status' => 1, 'accessed' => 1));
+    }
+
+    public function filterList($list){
+
+        for ($i = 0; $i < count($list); $i++){
+            $list[$i]['name']   = sprintf(_('video_name_format'), $list[$i]['name'], $list[$i]['o_name']);
+            $list[$i]['genres'] = implode(', ',
+                array_map(
+                    function($item){
+                        return _($item);
+                    },
+                    Mysql::getInstance()->from('cat_genre')
+                        ->in('id',
+                        array(
+                            $list[$i]['cat_genre_id_1'],
+                            $list[$i]['cat_genre_id_2'],
+                            $list[$i]['cat_genre_id_3'],
+                            $list[$i]['cat_genre_id_4']))
+                        ->get()->all('title')
+                )
+            );
+
+            $list[$i]['genres_ids'] = array();
+
+            for ($j = 1; $j<=4; $j++){
+                if ($list[$i]['cat_genre_id_'.$j] > 0)
+                    $list[$i]['genres_ids'][] = (int) $list[$i]['cat_genre_id_'.$j];
+            }
+
+            $list[$i]['cover'] = $this->getCoverUrl($list[$i]['id']);
+        }
+
+        return $list;
+    }
+
+    private function getCoverUrl($video_id){
+
+        $cover_id = Mysql::getInstance()->from('screenshots')->where(array('media_id' => intval($video_id)))->get()->first('id');
+
+        if (empty($cover_id)){
+            return false;
+        }
+
+        $dir_name = ceil($cover_id/100);
+        $dir_path = Config::get('screenshots_url').$dir_name;
+        $dir_path .= '/'.$cover_id.'.jpg';
+        return $dir_path;
+    }
+
+    public function setLocale($language){
+        Stb::getInstance()->initLocale($language);
+    }
+
+    public function getFavorites(){
+
+    }
+}
