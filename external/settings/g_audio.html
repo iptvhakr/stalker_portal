@@ -31,11 +31,11 @@ function submit()
 {
     var wf=false;var pr=false;
     var wr='{';
-    t=document.getElementById("i4").value;
+    t=document.getElementById("i1").value;
     if(t!=read.result.audio_stereo_out_mode){wf=true;wr+='"audio_stereo_out_mode":"'+t+'"';pr=true;}
-    t=document.getElementById("i5").value;
+    t=document.getElementById("i2").value;
     if(t!=read.result.audio_spdif_mode){wf=true;wr+=(pr?',':'')+'"audio_spdif_mode":"'+t+'"';pr=true;parent.stb.SetupSPdif(t=="PCM"?1:2);}
-    t=document.getElementById("i6").value;
+    t=document.getElementById("i3").value;
     if(t!=read.result.audio_hdmi_audio_mode){wf=true;wr+=(pr?',':'')+'"audio_hdmi_audio_mode":"'+t+'"';parent.stb.SetHDMIAudioOut(t=="SPDIF"?1:0)} 
     wr+='}';
     if(wf){parent.stb.SetEnv(wr);}
