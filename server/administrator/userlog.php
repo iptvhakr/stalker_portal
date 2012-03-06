@@ -153,7 +153,7 @@ $query = "select * from user_log $where order by time desc LIMIT  $page_offset, 
 $rs = $db->executeQuery($query);
 
 function construct_YY(){
-    if (!$_GET['yy']){
+    if (empty($_GET['yy'])){
         $year = date("Y");
     }else{
         $year = $_GET['yy'];
@@ -179,7 +179,7 @@ function construct_MM(){
         12 => 'Декабрь',
     );
     $mm = '';
-    if (!$_GET['mm']){
+    if (empty($_GET['mm'])){
         $mon = date("n");
     }else{
         $mon = $_GET['mm'];
@@ -195,7 +195,7 @@ function construct_MM(){
 }
 
 function construct_DD(){
-    if (!$_GET['dd']){
+    if (empty($_GET['dd'])){
         $day = date("j");
     }else{
         $day = $_GET['dd'];
@@ -237,10 +237,13 @@ function parse_param($action, $param, $type){
                 $video_name = '';
                 
                 //preg_match("/auto \/media\/(\d+).mpg$/", $param, $tmp_arr);
-                preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr);
-                
+                if (!preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr)){
+                    $name = $param;
+                    break;
+                }
+
                 $media_id = $tmp_arr[1];
-                
+
                 $sql = "select * from video where id=$media_id";
                 $rs = $db->executeQuery($sql);
                 
