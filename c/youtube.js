@@ -12,7 +12,7 @@
         }
 
         window.location = '/' + stb.portal_path + '/external/youtube/index.html'+params;
-    }, {});
+    }, {layer_name : "youtube"});
 
     loader.next();
 })();

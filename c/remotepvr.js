@@ -613,8 +613,7 @@
         main_menu.hide();
         module.remote_pvr.show();
     },
-    '',
-    module.records);
+    module.remote_pvr);
 
 })();
 

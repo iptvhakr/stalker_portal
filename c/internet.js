@@ -25,7 +25,7 @@
             stbWindowMgr.openWebWindow('http://google.com');
             module.internet.win_inited = true;
         }
-    }, {});
+    }, {layer_name : "internet"});
 
     loader.next();
 })();
