@@ -76,7 +76,7 @@ class Stb
         $this->getStbParams();
 
         if (empty($this->id)){
-            $this->initLocale();
+            $this->initLocale($this->stb_lang);
         }
         
         if ($this->db->from('moderators')->where(array('mac' => $this->mac, 'status' => 1))->get()->count() == 1){
@@ -145,20 +145,18 @@ class Stb
 
             $this->additional_services_on = $user['additional_services_on'];
 
-            $this->initLocale();
+            $this->initLocale($this->stb_lang);
         }
     }
 
-    private function initLocale(){
+    public function initLocale($lang){
         
-        $stb_lang = $this->stb_lang;
+        $stb_lang = $lang;
 
-        if (!empty($this->stb_lang) && strlen($this->stb_lang) >= 2){
+        if (!empty($lang) && strlen($lang) >= 2){
             $preferred_locales = array_filter(Config::get('allowed_locales'),
                 function ($e) use ($stb_lang){
-                    if (strpos($e, $stb_lang) === 0){
-                        return true;
-                    }
+                    return (strpos($e, $stb_lang) === 0);
                 }
             );
 
@@ -1184,6 +1182,29 @@ class Stb
         }else{
             return false;
         }
+    }
+
+    public function getAll($limit = null, $offset = null){
+        return $this->getRawAll($limit, $offset)->get()->all();
+    }
+
+    public function getRawAll($limit = null, $offset = null){
+
+        $result = Mysql::getInstance()->from('users');
+
+        if ($limit !== null){
+            $result = $result->limit($limit, $offset);
+        }
+
+        return $result;
+    }
+
+    public function getByLogin($login){
+        return Mysql::getInstance()->from('users')->where(array('login' => $login))->get()->first();
+    }
+
+    public function updateByLogin($login, $data){
+        return Mysql::getInstance()->update('users', $data, array('login' => $login))->result();
     }
 }
 ?>
