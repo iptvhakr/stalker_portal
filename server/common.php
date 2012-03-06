@@ -15,7 +15,7 @@ define('PROJECT_PATH', dirname(__FILE__));
 
 ini_set("include_path", ini_get("include_path").PATH_SEPARATOR.PROJECT_PATH);
 
-function __autoload($class_name) {
+/*function __autoload($class_name) {
 
     $class = PROJECT_PATH.'/lib/'.strtolower($class_name).'.class.php';
 
@@ -23,8 +23,15 @@ function __autoload($class_name) {
         throw new Exception('Class file for "'.$class_name.'" not found');
     }
     
-    require_once $class;
-}
+    require $class;
+}*/
+
+require "lib/splclassloader.class.php";
+
+$classLoader = new SplClassLoader(null, PROJECT_PATH.DIRECTORY_SEPARATOR.'lib');
+$classLoader->setFileExtension('.class.php');
+$classLoader->setExcludeNs('Stalker\Lib');
+$classLoader->register();
 
 if (Config::exist('default_timezone')){
     date_default_timezone_set(Config::get('default_timezone'));
