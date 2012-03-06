@@ -23,7 +23,7 @@ class RESTCommandItvSubscription extends RESTCommand
             throw new RESTCommandException('HTTP PUT data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('sub_ch'), true);
+        $allowed_to_update_fields = array_fill_keys(array('sub_ch', 'additional_services_on'), true);
 
         $data = array_intersect_key($put, $allowed_to_update_fields);
 
@@ -32,6 +32,8 @@ class RESTCommandItvSubscription extends RESTCommand
         if (empty($data)){
             throw new RESTCommandException('Update data is empty');
         }
+
+        unset($data['additional_services_on']);
 
         if (!empty($stb_data)){
             //$stb = Stb::getInstance();
@@ -46,13 +48,16 @@ class RESTCommandItvSubscription extends RESTCommand
 
         //var_dump($stb_data);
 
-        $list = ItvSubscription::updateByUids($request->getConvertedIdentifiers(), $data);
+        if (!empty($data)){
 
-        if (empty($list)){
-            return false;
+            $list = ItvSubscription::updateByUids($request->getConvertedIdentifiers(), $data);
+
+            if (empty($list)){
+                return false;
+            }
         }
 
-        return $this->formatList($list);
+        return $this->formatList(ItvSubscription::getByUids($request->getConvertedIdentifiers()));
     }
 
     private function formatList($list){
