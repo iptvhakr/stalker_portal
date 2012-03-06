@@ -17,12 +17,24 @@ if (empty($_GET['response_type']) || empty($_GET['client_id']) || $_GET['respons
     $error = 'access_denied';
 }else if (!empty($_POST)){
     if ($access_handler->checkUserAuth($_POST['username'], $_POST['password'])){
+
         $auth = array(
             "access_token"  => $access_handler->generateUniqueToken($_POST['username']),
-            "token_type"    => "mac",
-            "mac_key"       => $access_handler->getSecretKey($_POST['username']),
-            "mac_algorithm" => "hmac-sha-256"
         );
+
+        if (Config::getSafe("api_v2_access_type", "bearer") == "bearer"){
+            $access = array(
+                "token_type"    => "bearer"
+            );
+        }else{
+            $access = array(
+                "token_type"    => "mac",
+                "mac_key"       => $access_handler->getSecretKey($_POST['username']),
+                "mac_algorithm" => "hmac-sha-256"
+            );
+        }
+
+        $auth = array_merge($auth, $access);
 
         $additional = $access_handler->getAdditionalParams($_POST['username']);
 
@@ -84,13 +96,13 @@ if ($error){
     <fieldset>
       <legend>Stalker Authorization</legend>
       <div class="control-group">
-        <label class="control-label" for="input01">Username</label>
+        <label class="control-label" for="username">Username</label>
         <div class="controls">
           <input type="text" class="input-xlarge" id="username" name="username">
         </div>
       </div>
     <div class="control-group">
-        <label class="control-label" for="input01">Password</label>
+        <label class="control-label" for="password">Password</label>
         <div class="controls">
           <input type="password" class="input-xlarge" id="password" name="password">
         </div>
