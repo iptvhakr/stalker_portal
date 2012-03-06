@@ -70,7 +70,7 @@ if (@$_FILES['userfile']){
                 
                 $mac = Middleware::normalizeMac($mac);
                 
-                if (@key_exists($mac, $stb_id_map)){
+                if (@array_key_exists($mac, $stb_id_map)){
                     
                     $sql = "select * from users where mac='$mac'";
                     $rs = $db->executeQuery($sql);
@@ -91,15 +91,15 @@ if (@$_FILES['userfile']){
                     
                     $stb_id_arr[] = $stb_id;
                     
-                    if (key_exists($ch, $service_id_map)){
-                        if (!@key_exists($stb_id, $result)){
+                    if (array_key_exists($ch, $service_id_map)){
+                        if (!@array_key_exists($stb_id, $result)){
                             $result[$stb_id] = array();
                         }
                         $result[$stb_id][] = intval($service_id_map[$ch]);
-                    }else if($ch == '00494' || $ch == '00674' || $ch == '00675'){
+                    }else if($ch == '00494' || $ch == '00674' || $ch == '00675' || $ch == '00725' || $ch == '00726'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, get_all_payed_ch_discovery());
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, get_all_hd_channels());
-                        if ($ch == '00674' || $ch == '00675'){
+                        if ($ch == '00674' || $ch == '00675' || $ch == '00725' || $ch == '00726'){
                             $add_services_on[] = $stb_id;
                         }
                     }else if($ch == '00116' || $ch == '00139' || $ch == '00203' || $ch == '00021' || $ch == '00274' || $ch == '00283' || $ch == '00350' || $ch == '00343' || $ch == '00381' || $ch == '00382' || $ch == '00389' || $ch == '00426' || $ch == '00609' || $ch == '00610'){
@@ -117,15 +117,15 @@ if (@$_FILES['userfile']){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, array());
                     }else if($ch == '00649'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, array(270, 271, 272, 273, 274, 275));
-                    }else if($ch == '00630' || $ch == '00642' || $ch == '00673'){
+                    }else if($ch == '00630' || $ch == '00642' || $ch == '00673' || $ch == '00724'){
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, $extended_packet);
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, $bonus1);
                         $result[$stb_id] = merge_services(!empty($result[$stb_id]) ? $result[$stb_id] : null, array(245, 263));
-                        if ($ch == '00673'){
+                        if ($ch == '00673' || $ch == '00724'){
                             $add_services_on[] = $stb_id;
                         }
                     }else{
-                        if (!@key_exists($stb_id, $result)){
+                        if (!@array_key_exists($stb_id, $result)){
                             $result[$stb_id] = array();
                         }
                         _log('услуга "'.$ch.'" не найдена');
@@ -180,7 +180,7 @@ if (@$_FILES['userfile']){
 
         $bonus_str = base64_encode(serialize($bonus));        
         
-        if (key_exists($uid, $subscription_map)){
+        if (array_key_exists($uid, $subscription_map)){
             $sql = "update itv_subscription set sub_ch='$sub_str', bonus_ch='$bonus_str', addtime=NOW() where uid=$uid";
         }else{
             $sql = "insert into itv_subscription (uid, sub_ch, bonus_ch, addtime) value ($uid, '$sub_str', '$bonus_str', NOW())";
