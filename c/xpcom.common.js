@@ -239,7 +239,7 @@ function common_xpcom(){
             
             this.ntp_server = stb.RDir('getenv ntpurl').clearnl();
 
-            this.image_version = stb.RDir('ImageVersion').clearnl();
+            this.firmware_version = this.image_version = stb.RDir('ImageVersion').clearnl();
             this.image_desc    = stb.RDir('ImageDescription').clearnl();
             this.image_date    = stb.RDir('ImageDate').clearnl();
 
