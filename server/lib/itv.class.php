@@ -65,14 +65,37 @@ class Itv extends AjaxResponse
             $error = 'nothing_to_play';
         }
 
-        $media_id = intval($tmp_arr[1]);
+        $ch_id = intval($tmp_arr[1]);
 
-        $channel = self::getChannelById($media_id);
+        try{
+            $cmd = $this->getUrlByChannelId($ch_id);
+        }catch(ItvLinkException $e){
+            $error = $e->getMessage();
+            echo $e->getTraceAsString();
+        }catch(Exception $e){
+            $error = 'link_fault';
+            echo $e->getTraceAsString();
+        }
 
-        var_dump($media_id, $channel);
+        $res = array(
+            'id'    => $ch_id,
+            'cmd'   => empty($error) ? $cmd : '',
+            'error' => empty($error) ? '' : $error
+        );
+
+        var_dump($res);
+
+        return $res;
+    }
+
+    public function getUrlByChannelId($ch_id){
+
+        $ch_id = intval($ch_id);
+
+        $channel = self::getChannelById($ch_id);
 
         if (empty($channel)){
-            $error = 'nothing_to_play';
+            throw new ItvLinkException('nothing_to_play');
         }
 
         if ($channel['enable_wowza_load_balancing']){
@@ -82,8 +105,7 @@ class Itv extends AjaxResponse
             $edge = $this->getWowzaEdge('http://'.$balancer_addr.'/loadbalancer');
 
             if (!$edge){
-
-                $error = 'nothing_to_play';
+                throw new ItvLinkException('nothing_to_play');
             }else{
 
                 $cmd = preg_replace("/".preg_replace('/:.*/', '', $balancer_addr)."/", $edge, $channel['cmd']);
@@ -100,17 +122,16 @@ class Itv extends AjaxResponse
                 $key = $this->createTemporaryLink("1");
 
                 if (!$key){
-                    $error = 'link_fault';
+                    throw new ItvLinkException('link_fault');
                 }else{
                     $cmd = $channel['cmd'].'?'.$key;
                 }
             }else{
 
-                //preg_match("/http:\/\/([^\/]*)[\/]?(.*)?$/", $channel['cmd'], $tmp_url_arr);
                 preg_match("/http:\/\/([^\/]*)[\/]?([^\s]*)?(\s*)?(.*)?$/", $channel['cmd'], $tmp_url_arr);
 
                 if (empty($tmp_url_arr)){
-                    $error = 'nothing_to_play';
+                    throw new ItvLinkException('nothing_to_play');
                 }else{
                     $redirect_host = $tmp_url_arr[1];
                     $redirect_uri  = $tmp_url_arr[2];
@@ -118,26 +139,18 @@ class Itv extends AjaxResponse
 
                     $link_result = $this->createTemporaryLink($redirect_url);
 
-                    var_dump($redirect_url, $link_result);
-
                     if (!$link_result){
-                        $error = 'link_fault';
+                        throw new ItvLinkException('link_fault');
                     }else{
                         $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result.' '.$tmp_url_arr[4];
                     }
                 }
             }
+        }else{
+            return $channel['cmd'];
         }
 
-        $res = array(
-            'id'    => $media_id,
-            'cmd'   => empty($error) ? $cmd : '',
-            'error' => empty($error) ? '' : $error
-        );
-
-        var_dump($res);
-
-        return $res;
+        return (empty($cmd) ? false : $cmd);
     }
 
     private function getWowzaBalancer($url){
@@ -257,7 +270,7 @@ class Itv extends AjaxResponse
         $fav_ch = explode(",", $fav_ch);
         
         if (is_array($fav_ch)){
-            $fav_ch_str = base64_encode(serialize($fav_ch));
+            /*$fav_ch_str = base64_encode(serialize($fav_ch));
             
             $fav_itv_arr = $this->db->from('fav_itv')->where(array('uid' => $uid))->get()->first();
             
@@ -275,10 +288,39 @@ class Itv extends AjaxResponse
                                         'addtime' => 'NOW()'
                                    ),
                                    array('uid' => $uid));
-            }
+            }*/
+
+            return $this->saveFav($fav_ch, $uid);
         }
         
         return true;
+    }
+
+    public function saveFav(array $fav_array, $uid){
+
+        if (empty($uid)){
+            return false;
+        }
+
+        $fav_ch_str  = base64_encode(serialize($fav_array));
+
+        $fav_itv_arr = $this->db->from('fav_itv')->where(array('uid' => $uid))->get()->first();
+
+        if (empty($fav_itv_arr)){
+            return $this->db->insert('fav_itv',
+                array(
+                    'uid'     => $uid,
+                    'fav_ch'  => $fav_ch_str,
+                    'addtime' => 'NOW()'
+                ))->insert_id();
+        }else{
+            return $this->db->update('fav_itv',
+                array(
+                    'fav_ch'  => $fav_ch_str,
+                    'addtime' => 'NOW()'
+                ),
+                array('uid' => $uid))->result();
+        }
     }
     
     public function getFav($uid = null){
@@ -668,10 +710,15 @@ class Itv extends AjaxResponse
         
         if (empty($this->all_user_channels_ids)){
         
-            $this->all_user_channels_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($this->stb->id), ItvSubscription::getBonusChannelsIds($this->stb->id), $this->getBaseChannelsIds()));
+            //$this->all_user_channels_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($this->stb->id), ItvSubscription::getBonusChannelsIds($this->stb->id), $this->getBaseChannelsIds()));
+            $this->all_user_channels_ids = $this->getAllUserChannelsIdsByUid($this->stb->id);
         }
         
         return $this->all_user_channels_ids;
+    }
+
+    public function getAllUserChannelsIdsByUid($uid){
+        return array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($uid), ItvSubscription::getBonusChannelsIds($uid), $this->getBaseChannelsIds()));
     }
 
     public function getBaseChannelsIds(){
@@ -735,6 +782,10 @@ class Itv extends AjaxResponse
         $result = $result->get()->all();
 
         return $result;
+    }
+
+    public function getById($id){
+        return Mysql::getInstance()->from('itv')->where(array('id' => intval($id)))->get()->first();
     }
 
     public function addToCensored(){
@@ -842,5 +893,18 @@ class Itv extends AjaxResponse
 
         }
     }
+
+    public function getRawAllUserChannels($uid = null){
+
+        if ($uid){
+            $user_channels = $this->getAllUserChannelsIdsByUid($uid);
+            return Mysql::getInstance()->from('itv')->where(array('status' => 1))->in('id', $user_channels)->orderby('number');
+        }
+
+
+        return Mysql::getInstance()->from('itv')->where(array('status' => 1))->orderby('number');
+    }
 }
+
+class ItvLinkException extends Exception{}
 ?>
