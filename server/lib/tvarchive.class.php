@@ -93,6 +93,62 @@ class TvArchive extends Master
         return $res;
     }
 
+    public function getUrlByProgramId($program_id){
+
+        $program = Epg::getById($program_id);
+
+        $task = $this->getTaskByChId($program['ch_id']);
+
+        $start_timestamp = strtotime($program['time']);
+        $stop_timestamp  = strtotime($program['time_to']);
+
+        $channel = Itv::getChannelById($program['ch_id']);
+
+        $filename = date("Ymd-H", $start_timestamp);
+
+        if ($channel['wowza_dvr']){
+            $filename .= '.mp4';
+        }else{
+            $filename .= '.mpg';
+        }
+
+        $storage = Master::getStorageByName($task['storage_name']);
+
+        /*if ($storage['wowza_server']){
+            $storage['storage_ip'] = empty($storage['archive_stream_server']) ? $storage['storage_ip'] : $storage['archive_stream_server'];
+        }*/
+
+        /*$res['storage_id'] = $storage['id'];*/
+
+        $position = date("i", $start_timestamp) * 60;
+
+        /*$res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
+            . '/archive/'
+            . $program['ch_id']
+            . '/'
+            . $filename
+            . ' position:' . $position;*/
+        /*}*/
+
+        /*$res['cmd'] .= ' media_len:' . ($stop_timestamp - $start_timestamp);*/
+
+        return 'http://' . $storage['storage_ip'] . ':88'
+            . '/stalker_portal/storage/get.php?filename=' . $filename
+            . '&ch_id=' . $program['ch_id']
+            . '&start=' . $position
+            . '&duration=' . ($stop_timestamp - $start_timestamp);
+
+        /*if (!$channel['wowza_dvr']){
+            $res['cmd'] = $res['download_cmd'];
+        }*/
+
+        /*$res['to_file'] = date("Ymd-H", $start_timestamp).'_'.System::transliterate($channel['name'].'_'.$program['name']).'.mpg';
+
+        var_dump($res);
+
+        return $res;*/
+    }
+
     /**
      * Return link for current channel and current time
      *
@@ -253,6 +309,10 @@ class TvArchive extends Master
     public function updateEndTime($ch_id, $time){
 
         return Mysql::getInstance()->update('tv_archive', array('end_time' => date("Y-m-d H:i:s", $time)), array('ch_id' => intval($ch_id)));
+    }
+
+    public static function getArchiveRange($ch_id){
+        return (int) Config::get('tv_archive_parts_number');
     }
 }
 
