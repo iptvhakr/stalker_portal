@@ -31,7 +31,7 @@ class Vod extends AjaxResponse
 
         $forced_storage = $_REQUEST['forced_storage'];
         
-        $master = new VideoMaster();
+        /*$master = new VideoMaster();
         
         try {
             $res = $master->play($media_id, intval($_REQUEST['series']), true, $forced_storage);
@@ -43,7 +43,51 @@ class Vod extends AjaxResponse
         
         var_dump($res);
         
+        return $res;*/
+
+        $link = $this->getLinkByVideoId($media_id, intval($_REQUEST['series']), $forced_storage);
+
+        $link['cmd'] = $link['cmd'].$params;
+
+        var_dump($link);
+
+        return $link;
+    }
+
+    public function getLinkByVideoId($video_id, $series = 0, $forced_storage = ""){
+
+        $video_id = intval($video_id);
+
+        $master = new VideoMaster();
+
+        try {
+            $res = $master->play($video_id, intval($series), true, $forced_storage);
+        }catch (Exception $e){
+            trigger_error($e->getMessage());
+        }
+
         return $res;
+    }
+
+    public function getUrlByVideoId($video_id, $series = 0, $forced_storage = ""){
+
+        $video = Video::getById($video_id);
+
+        if (empty($video)){
+            throw new Exception("Video not found");
+        }
+
+        if (!empty($video['rtsp_url'])){
+            return $video['rtsp_url'];
+        }
+
+        $link = $this->getLinkByVideoId($video_id, $series, $forced_storage);
+
+        if (empty($link['cmd'])){
+            throw new Exception("Obtaining url failed");
+        }
+
+        return $link['cmd'];
     }
 
     public function delLink(){
@@ -205,9 +249,17 @@ class Vod extends AjaxResponse
         
         $new_id = intval($_REQUEST['video_id']);
 
-        $fav_video = $this->getFav();
-        
-        if ($fav_video === null){
+        $favorites = $this->getFav();
+
+        if ($favorites === null){
+            $favorites = array($new_id);
+        }else{
+            $favorites[] = $new_id;
+        }
+
+        return $this->saveFav($favorites, $this->stb->id);
+
+        /*if ($fav_video === null){
             $this->db->insert('fav_vclub',
                                array(
                                     'uid'       => $this->stb->id,
@@ -230,13 +282,40 @@ class Vod extends AjaxResponse
             
         }
         
-        return true;
+        return true;*/
+    }
+
+    public function saveFav(array $fav_array, $uid){
+
+        if (empty($uid)){
+            return false;
+        }
+
+        $fav_videos_str = serialize($fav_array);
+
+        $fav_video = $this->getFav();
+
+        if ($fav_video === null){
+            return $this->db->insert('fav_vclub',
+                array(
+                    'uid'       => $uid,
+                    'fav_video' => $fav_videos_str,
+                    'addtime'   => 'NOW()'
+                ))->insert_id();
+        }else{
+            return $this->db->update('fav_vclub',
+                array(
+                    'fav_video' => $fav_videos_str,
+                    'edittime'  => 'NOW()'),
+                array('uid' => $uid))->result();
+        }
     }
     
     public function getFav(){
+
+        return $this->getFavByUid($this->stb->id);
         
-        //$fav_video_arr = $this->db->getFirstData('fav_vclub', array('uid' => $this->stb->id));
-        $fav_video_arr = $this->db->from('fav_vclub')->where(array('uid' => $this->stb->id))->get()->first();
+        /*$fav_video_arr = $this->db->from('fav_vclub')->where(array('uid' => $this->stb->id))->get()->first();
         
         if ($fav_video_arr === null){
             return null;
@@ -252,6 +331,29 @@ class Vod extends AjaxResponse
             $fav_video = array();
         }
         
+        return $fav_video;*/
+    }
+
+    public function getFavByUid($uid){
+
+        $uid = (int) $uid;
+
+        $fav_video_arr = $this->db->from('fav_vclub')->where(array('uid' => $uid))->get()->first();
+
+        if ($fav_video_arr === null){
+            return null;
+        }
+
+        if (empty($fav_video_arr)){
+            return array();
+        }
+
+        $fav_video = unserialize($fav_video_arr['fav_video']);
+
+        if (!is_array($fav_video)){
+            $fav_video = array();
+        }
+
         return $fav_video;
     }
     
@@ -660,4 +762,5 @@ class Vod extends AjaxResponse
     }
 }
 
+class VodLinkException extends Exception{}
 ?>
