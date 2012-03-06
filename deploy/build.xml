@@ -74,4 +74,10 @@
         
     </target>
 
+    <target name="test">
+        <phpunit>
+            <formatter></formatter>
+        </phpunit>
+    </target>
+
 </project>
