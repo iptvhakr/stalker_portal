@@ -1,10 +1,12 @@
 <?php
+
 ob_start();
 
 require_once "../server/common.php";
 
-$error = false;
+use Stalker\Lib\OAuth\AuthAccessHandler as AuthAccessHandler;
 
+$error = false;
 
 $access_handler = new AuthAccessHandler();
 if (empty($_GET['response_type']) || empty($_GET['client_id']) || $_GET['response_type'] != 'token'){
@@ -16,8 +18,10 @@ if (empty($_GET['response_type']) || empty($_GET['client_id']) || $_GET['respons
 }else if (!empty($_POST)){
     if ($access_handler->checkUserAuth($_POST['username'], $_POST['password'])){
         $auth = array(
-            "access_token" => $access_handler->generateUniqueToken($_POST['username']),
-            "token_type"   => "mac"
+            "access_token"  => $access_handler->generateUniqueToken($_POST['username']),
+            "token_type"    => "mac",
+            "mac_key"       => $access_handler->getSecretKey($_POST['username']),
+            "mac_algorithm" => "hmac-sha-256"
         );
 
         $additional = $access_handler->getAdditionalParams($_POST['username']);
