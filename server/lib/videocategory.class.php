@@ -1,0 +1,55 @@
+<?php
+
+class VideoCategory
+{
+    private $language;
+
+    public function setLocale($language){
+        $this->language = $language;
+
+        Stb::getInstance()->initLocale($this->language);
+    }
+
+    public function getAll($pretty_id = false){
+
+        $categories = Mysql::getInstance()->from('media_category')->orderby('num')->get()->all();
+
+        $categories = array_map(
+            function($item) use ($pretty_id){
+
+                if ($pretty_id){
+                    $item['id'] = preg_replace("/_/i", "-", $item['category_alias']);
+                }
+
+                $item['title'] = _($item['category_name']);
+
+                return $item;
+            }, $categories);
+
+        return $categories;
+    }
+
+    public function getById($id, $pretty_id = false){
+
+        if ($pretty_id){
+            $this->setLocale('en');
+            $categories = $this->getAll($pretty_id);
+
+            /*var_dump($id, $categories);*/
+
+            $categories = array_filter($categories, function($category) use ($id){
+                return $id == preg_replace("/_/i", "-", $category['category_alias']);
+            });
+
+            if (empty($categories)){
+                return null;
+            }
+
+            $categories = array_values($categories);
+
+            return Mysql::getInstance()->from('media_category')->where(array('category_name' => $categories[0]['title']))->get()->first();
+        }else{
+            return Mysql::getInstance()->from('media_category')->where(array('id' => intval($id)))->get()->first();
+        }
+    }
+}
