@@ -94,9 +94,9 @@ class AuthAccessHandler extends AccessHandler
             throw new AuthUnauthorized("Authorization required");
         }
 
-        if (strpos($auth_header, "MAC ") === 0){
+        if (strpos($auth_header, "MAC ") === 0 && \Config::getSafe('api_v2_access_type', 'bearer') == 'mac'){
             return new MACAccessType($request, new self);
-        }else if (strpos($auth_header, "Bearer ") === 0){
+        }else if (strpos($auth_header, "Bearer ") === 0 && \Config::getSafe('api_v2_access_type', 'bearer') == 'bearer'){
             return new BearerAccessType($request, new self);
         }else if ($request->getParam('api_key') !== null){
             return new DeveloperAccessType($request, new self);
