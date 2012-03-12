@@ -5,7 +5,6 @@ namespace Stalker\Lib\OAuth;
 class BearerAccessType extends AccessTokenType
 {
     protected $type = 'Bearer';
-    private   $access_token;
 
     protected function parseAuthHeader(){
 
