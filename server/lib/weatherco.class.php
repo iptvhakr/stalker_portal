@@ -237,7 +237,7 @@ class Weatherco
             5 => '_1_moon_cl.png',
         );
 
-        if ($arr['hour'] > 21 && $arr['hour'] < 6){
+        if ($arr['hour'] >= 21 || $arr['hour'] <= 6){
             $pictures = $pictures_night + $pictures;
         }
 
