@@ -31,9 +31,9 @@ class OAuthServer
                 //todo: render auth page
             }else{
 
-                if (!$this->access_handler->isValidClient($request->getClientId(), $request->getClientSecret())){
+                /*if (!$this->access_handler->isValidClient($request->getClientId(), $request->getClientSecret())){
                     throw new OAuthInvalidClient("Client authentication failed", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-5.2");
-                }
+                }*/
 
                 if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword())){
 
@@ -230,14 +230,14 @@ class OAuthRequest
             throw new OAuthInvalidRequest("Username and password must bee specified", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.3.2");
         }
 
-        if (empty($_POST['client_id']) || empty($_POST['client_secret'])){
+        /*if (empty($_POST['client_id']) || empty($_POST['client_secret'])){
             throw new OAuthInvalidRequest("Client ID and secret must bee specified", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.3.2");
-        }
+        }*/
 
         $this->username      = $_POST['username'];
         $this->password      = $_POST['password'];
-        $this->client_id     = $_POST['client_id'];
-        $this->client_secret = $_POST['client_secret'];
+        /*$this->client_id     = $_POST['client_id'];
+        $this->client_secret = $_POST['client_secret'];*/
     }
 
     public function getUsername(){
