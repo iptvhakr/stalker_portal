@@ -1226,6 +1226,11 @@ player.prototype.stop = function(){
         
         module && module.vclub && module.vclub.set_not_ended && module.vclub.set_not_ended(this.cur_media_item.id, cur_series, end_time);
     }
+
+    if (stb.cur_place == 'vclub' && this.play_auto_ended){
+
+        module && module.vclub && module.vclub.set_ended && module.vclub.set_ended(this.cur_media_item.id);
+    }
     
     this.play_auto_ended = false;
     

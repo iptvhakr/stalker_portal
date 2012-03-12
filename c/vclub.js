@@ -611,11 +611,11 @@
         
         this.set_not_ended = function(video_id, series, end_time){
             _debug('vclub.set_not_ended', video_id, series, end_time);
-            
+
             if (this.load_params.not_ended && empty(this.data_items[this.cur_row].series)){
                 this.data_items[this.cur_row].position = end_time;
             }
-            
+
             stb.load(
                 {
                     "type"     : "vod",
@@ -624,11 +624,29 @@
                     "series"   : series,
                     "end_time" : end_time
                 },
-                
+
+                function(result){
+
+                },
+
+                this
+            )
+        };
+
+        this.set_ended = function(video_id){
+            _debug('vclub.set_not_ended', video_id);
+
+            stb.load(
+                {
+                    "type"     : "vod",
+                    "action"   : "set_ended",
+                    "video_id" : video_id
+                },
+
                 function(result){
                     
                 },
-                
+
                 this
             )
         };
