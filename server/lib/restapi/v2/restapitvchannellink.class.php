@@ -46,6 +46,7 @@ class RESTApiTvChannelLink extends RESTApiController
 
         if ($start){
             // todo: time shift!
+            throw new RESTNotFound("Time shift in progress...");
         }
 
         try{
