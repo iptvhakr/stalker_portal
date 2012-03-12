@@ -276,6 +276,7 @@ class Stb
             "test_download_url"    => Config::getSafe('test_download_url', ''),
             "playback_buffer_size" => $this->params['playback_buffer_size'] / 1000,
             "screensaver_delay"    => $this->params['screensaver_delay'],
+            "spdif_mode"           => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out']
         );
     }
 
@@ -839,6 +840,17 @@ class Stb
             array(
                 'playback_buffer_bytes' => $playback_buffer_bytes,
                 'playback_buffer_size'  => $playback_buffer_size
+            ),
+            array('id' => $this->id));
+    }
+
+    public function setSpdifMode(){
+
+        $audio_out = intval($_REQUEST['spdif_mode']);
+
+        return Mysql::getInstance()->update('users',
+            array(
+                'audio_out' => $audio_out
             ),
             array('id' => $this->id));
     }
