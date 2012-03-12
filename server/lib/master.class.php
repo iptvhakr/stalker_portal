@@ -761,7 +761,13 @@ abstract class Master
     protected function getClients(){
         $clients = array();
 
-        RESTClient::$from = $this->stb->mac;
+        $user_id = User::getInstance()->getId();
+
+        if ($user_id){
+            RESTClient::$from = $user_id;
+        }else{
+            RESTClient::$from = $this->stb->mac;
+        }
 
         foreach ($this->storages as $name => $storage){
             //$clients[$name] = new SoapClient('http://localhost'.Config::get('portal_url').'server/storage/storage.wsdl.php?id='.$this->storages[$name]['id']);
