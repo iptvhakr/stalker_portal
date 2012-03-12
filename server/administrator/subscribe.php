@@ -18,23 +18,37 @@ moderator_access();
 
 
 if (@$_GET['save']){
-    
+
+    //var_dump($_POST);exit;
+
     $sub_str = '';
     $bonus_str = '';
     $uid = @$_POST['uid'];
-    $sub = @$_GET['sub'];
+    //$sub = @$_GET['sub'];
+    //$sub = @$_POST['sub_ch'];
+    if (empty($_POST['sub_ch'])){
+        $sub = array();
+    }else{
+        $sub = explode(",", $_POST['sub_ch']);
+    }
 
-    $bonus = @$_GET['bonus'];
+    //$bonus = @$_GET['bonus'];
+    if (empty($_POST['bonus_ch'])){
+        $bonus = array();
+    }else{
+        $bonus = explode(",", $_POST['bonus_ch']);
+    }
+
     $stb = Stb::getInstance();
     
-    if (!is_array($sub)){
+    /*if (!is_array($sub)){
         $sub = array();
-    }
+    }*/
     $sub_str = base64_encode(serialize($sub));
     
-    if (!is_array($bonus)){
+    /*if (!is_array($bonus)){
         $bonus = array();
-    }
+    }*/
     $bonus_str = base64_encode(serialize($bonus));
     
     $sql = "select * from itv_subscription where uid=$uid";
@@ -188,24 +202,34 @@ function bonus_del(){
 }
 
 function sub(form){
-    var _sel = document.getElementById('sel');
+    var _sel   = document.getElementById('sel');
     var _bonus = document.getElementById('bonus');
-    var order = '';
-    /*if (_sel.options.length < 5){
-        alert("Подписка должна состоять минимум из 5 каналов")
-        return 0
-    }*/
-    for (i=0; i<_sel.options.length; i++){
+    var order  = '';
+
+    var sub_ch = [];
+
+    for (var i=0; i<_sel.options.length; i++){
         order += 'sub[]=' + _sel.options[i].value + '&';
+        sub_ch.push(_sel.options[i].value);
     }
+
+    document.getElementById('sub_ch').value = sub_ch.join(",");
+
+
+    var bonus_ch = [];
+
     for (i=0; i<_bonus.options.length; i++){
         order += 'bonus[]=' + _bonus.options[i].value + '&';
+        bonus_ch.push(_bonus.options[i].value);
     }
-    //alert(order);
-    form_ = document.getElementById('sub_form')
+
+    document.getElementById('bonus_ch').value = bonus_ch.join(",");
+
+
+    var form_ = document.getElementById('sub_form');
     
-    form_.action = form_.action +'?save=1&'+ order
-    form_.method = 'POST'
+    form_.action = form_.action +'?save=1';
+    form_.method = 'POST';
     form_.submit();
 }
 </script>
@@ -333,6 +357,8 @@ function get_bonus_channels_opt(){
         </tr>
         <tr>
             <td height="10%" align="center" valign="bottom">
+            <input type="hidden" name="sub_ch" id="sub_ch"/>
+            <input type="hidden" name="bonus_ch" id="bonus_ch"/>
             <input type="button" value="Сохранить подписку" onclick="sub(this.form)"/>
             </td>
         </tr>
