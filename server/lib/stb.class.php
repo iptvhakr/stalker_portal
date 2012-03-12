@@ -251,7 +251,8 @@ class Stb
         $profile['playback_limit']         = Config::get('enable_playback_limit') ? $profile['playback_limit'] : 0;
         $profile['demo_video_url']         = Config::getSafe('demo_video_url', '');
         $profile['tv_quality_filter']      = Config::get('enable_tv_quality_filter');
-        
+        $profile['use_embedded_settings']  = Config::getSafe('use_embedded_settings', false);
+
         $profile['test_download_url']      = Config::getSafe('test_download_url', '');
 
         $profile['is_moderator']           = $this->is_moderator;
