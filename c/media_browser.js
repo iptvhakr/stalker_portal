@@ -696,9 +696,9 @@
 
             _debug('item.name.split()', item.name.split(''));
 
-            item.name.split('').map(function(letter){
-                _debug('letter code', letter.charCodeAt(0));
-            });
+            //item.name.split('').map(function(letter){
+            //    _debug('letter code', letter.charCodeAt(0));
+            //});
 
             this.active_item = item;
 
