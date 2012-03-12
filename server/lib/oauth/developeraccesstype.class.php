@@ -31,4 +31,8 @@ class DeveloperAccessType extends AccessTokenType
 
         return true;
     }
+
+    public function getSession(){
+        return $this->access_handler->getAccessSessionByDeveloperApiKey($this->api_key);
+    }
 }
