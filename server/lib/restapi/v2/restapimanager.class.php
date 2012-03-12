@@ -33,6 +33,10 @@ class RESTApiManager
                 throw new RESTForbidden($access_exception->getMessage());
             }
 
+            $session = $access->getSession();
+
+            \User::getInstance($session['uid']);
+
             $target_resolver = new RESTApiTargetResolver();
             $target = $target_resolver->getTarget($request);
 
