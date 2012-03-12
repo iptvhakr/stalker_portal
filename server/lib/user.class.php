@@ -3,9 +3,27 @@
 class User
 {
     private $id;
+    private static $instance = null;
 
-    public function __construct($uid = 0){
+    /**
+     * @static
+     * @param int $uid
+     * @return User
+     */
+    public static function getInstance($uid = 0){
+        if (self::$instance == null)
+        {
+            self::$instance = new self($uid);
+        }
+        return self::$instance;
+    }
+
+    private function __construct($uid = 0){
         $this->id = (int) $uid;
+    }
+
+    public function getId(){
+        return $this->id;
     }
 
     public function getVideoFavorites(){
