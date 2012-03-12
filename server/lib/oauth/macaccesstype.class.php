@@ -17,7 +17,7 @@ class MACAccessType extends AccessTokenType
         if (preg_match('/MAC\s+(.*)$/i', $this->request->getAuthorization(), $matches)){
 
             if (preg_match('/id="([^"]+)"/i', $matches[1], $params)){
-                $this->id = $params[1];
+                $this->id = $this->access_token = $params[1];
             }else{
                 throw new AuthBadRequest("Wrong [id] param in authorization header");
             }
