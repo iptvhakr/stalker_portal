@@ -8,6 +8,7 @@ abstract class AccessTokenType
     protected $type;
     protected $request;
     protected $access_handler;
+    protected $access_token;
 
     public final function __construct(HTTPRequest $request,AccessHandler $access_handler){
         $this->request     = $request;
@@ -24,6 +25,10 @@ abstract class AccessTokenType
     abstract public function getToken();
 
     abstract public function checkRequest();
+
+    public function getSession(){
+        return $this->access_handler->getAccessSessionByToken($this->access_token);
+    }
 }
 
 ?>
