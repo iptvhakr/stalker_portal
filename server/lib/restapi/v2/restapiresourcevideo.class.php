@@ -33,7 +33,7 @@ class RESTApiResourceVideo extends RESTApiCollection
                 throw new RESTNotFound("User nor found");
             }
 
-            $user_obj = new \User($user['id']);
+            $user_obj = \User::getInstance();
             $this->favorites = $user_obj->getVideoFavorites();
         }
 
