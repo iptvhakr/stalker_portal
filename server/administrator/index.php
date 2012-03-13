@@ -116,7 +116,7 @@ a:hover{
   </tr>
   
   <tr>
-    <td><div align="center"><a href="ad.php">РЕКЛАМА</a></div></td>
+    <td><!--<div align="center"><a href="ad.php">РЕКЛАМА</a></div>--></td>
     <td>&nbsp;</td>
     <td align="center"></td>
   </tr>
