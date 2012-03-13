@@ -27,8 +27,8 @@ function submit()
     var erm="";
     var wr='{';
     var t=document.getElementById("i1").value;
-    if(t!=read.result.ntpurl)if(URLC(t)){wf=true;wr+='"ntpurl":"'+t+'"';pr=true;}else erm+=parent.t("Incorrect")+" "+parent.t("Manager channel URL:")+"<br />";
-    if(read.result.mcip_img_conf!="")if(URLC(t)||t==''){wf=true;wr+=(pr?',':'')+'"mcip_img_conf":""';pr=true;} else em+=parent.t("Incorrect")+" "+parent.t("NTP server:")+"<br />";
+    if(t!=read.result.ntpurl){wf=true;wr+='"ntpurl":"'+t+'"';pr=true;}else erm+=parent.t("Incorrect")+" "+parent.t("Manager channel URL:")+"<br />";
+    if(read.result.mcip_img_conf!=""){wf=true;wr+=(pr?',':'')+'"mcip_img_conf":""';pr=true;}
     if(read.result.mcport_img_conf!=""){wf=true;wr+=(pr?',':'')+'"mcport_img_conf":""';}
     wr+='}';
     if(erm!="")parent.erMes(erm,"i"+iid);
