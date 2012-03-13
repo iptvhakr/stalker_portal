@@ -3,7 +3,7 @@
 <script>
 var iid=1;
 var menuT=[['select',parent.t('Stereo Out Mode:'),"STEREO",parent.t("Stereo"),"MONO",parent.t("Mono"),"MONO_LEFT",parent.t("Mono Left"),"MONO_RIGHT",parent.t("Mono Right"),"LT_RT",parent.t("Lt/Rt")],
-    ['select',parent.t('SPDIF Mode:'),"PCM",parent.t("PCM"),"BITSTEAM",parent.t("Bitstream")],
+    ['select',parent.t('SPDIF Mode:'),"1",parent.t("PCM"),"2",parent.t("Bitstream")],
     ['select',parent.t('HDMI Audio:'),"PCM",parent.t("PCM"),"SPDIF",parent.t("SPDIF")]];
 var  mid=menuT.length+2;
 var pread=["audio_stereo_out_mode","audio_spdif_mode","audio_hdmi_audio_mode"];
@@ -12,6 +12,7 @@ for(i=1;i<pread.length;i++){tread+=',"'+pread[i]+'"';}
 tread+=']}';
 read=JSON.parse(parent.stb.GetEnv(tread));
 var bp=read.result;
+read.result.audio_spdif_mode=parent.prof.spdif_mode;
 if(read.result.audio_spdif_mode=="")read.result.audio_spdif_mode="BITSTEAM";
 if(read.result.audio_hdmi_audio_mode=="")read.result.audio_hdmi_audio_mode="PCM";
 var gr=parseInt(read.result.audio_initial_volume);
@@ -31,10 +32,10 @@ function submit()
 {
     var wf=false;var pr=false;
     var wr='{';
-    t=document.getElementById("i1").value;
+    var t=document.getElementById("i1").value;
     if(t!=read.result.audio_stereo_out_mode){wf=true;wr+='"audio_stereo_out_mode":"'+t+'"';pr=true;}
     t=document.getElementById("i2").value;
-    if(t!=read.result.audio_spdif_mode){wf=true;wr+=(pr?',':'')+'"audio_spdif_mode":"'+t+'"';pr=true;parent.stb.SetupSPdif(t=="PCM"?1:2);}
+    if(t!=read.result.audio_spdif_mode){wf=true;wr+=(pr?',':'')+'"audio_spdif_mode":"'+(t==1?'PCM':'BITSTEAM')+'"';parent.prof.spdif_mode=t;pr=true;parent.stb.SetupSPdif(t);parent.load({"type":"stb","action":"set_spdif_mode","spdif_mode":t},function(result){if(!result){erm+=parent.t('Saving error');}});}
     t=document.getElementById("i3").value;
     if(t!=read.result.audio_hdmi_audio_mode){wf=true;wr+=(pr?',':'')+'"audio_hdmi_audio_mode":"'+t+'"';parent.stb.SetHDMIAudioOut(t=="SPDIF"?1:0)} 
     wr+='}';
