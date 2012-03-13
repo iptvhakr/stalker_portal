@@ -382,6 +382,8 @@
 
             _debug('groups', groups);
 
+            groups.result = groups.result || [];
+
             if (!groups || !groups.result || groups.errMsg){
                 return;
             }
