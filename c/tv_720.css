@@ -105,6 +105,7 @@
     color: #99a8b5;
     overflow: hidden;
     height: 185px;
+    -webkit-mask: -webkit-gradient(linear, left 145, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 
 .tv_timetable .mark_memo{
