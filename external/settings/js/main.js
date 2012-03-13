@@ -119,6 +119,8 @@ function confb(erm,el,ef,back){
 
 function confOk(){
     eval(func);
+    if(document.getElementById('confirmb').style.display=="none")document.getElementById('confirm').style.display="none";
+    else document.getElementById('confirmb').style.display="none";
 }
 
 function pressKey(e)

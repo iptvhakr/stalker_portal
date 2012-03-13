@@ -42,7 +42,7 @@ function submit()
     if(t!=read.result.force_dvi){wf=true;wr+=(pr?',':'')+'"force_dvi":"'+t+'"';pr=true;} 
     wr+='}';
    if(wf){parent.stb.SetEnv(wr);}
-   if(flau)parent.confb(parent.t('Auto framerate:')+'<br />'+parent.t('Video output framerate will be automatically adjusted according to played content during file playback.<br />Notes:<br />- works only with HDMI 720p/1080i/1080p video modes<br />- make sure that TV supports required video mode')+'<br />'+ parent.t('Are you sure about this changes?'),'i'+iid,'stb.SetEnv("'+wra+'");nextMenu("glavnaya.html");');
+   if(flau)parent.confb(parent.t('Auto framerate:')+'<br />'+parent.t('Video output framerate will be automatically adjusted according to played content during file playback.<br />Notes:<br />- works only with HDMI 720p/1080i/1080p video modes<br />- make sure that TV supports required video mode')+'<br />'+ parent.t('Are you sure about this changes?'),'i'+iid,"stb.SetEnv('"+wra+"');nextMenu('glavnaya.html');");
    else back();
 }
 function change(a){if(iid>mid-2)if(iid+a<=mid&&iid+a>=mid-1){iid+=a;document.getElementById('i'+iid).focus();}}
