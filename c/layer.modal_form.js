@@ -166,6 +166,10 @@ ModalForm.prototype.enableOnExitClose = function(){
         this.hide();
     }).bind(key.EXIT, this);
 };
+
+ModalForm.prototype.getTitleDomObj = function(){
+    return this._title_dom_obj;
+};
 /* END ModalForm */
 
 /**

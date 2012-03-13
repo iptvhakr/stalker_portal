@@ -45,8 +45,8 @@ var main_menu = {
         (function(){
             _debug('window.referrer', window.referrer);
             if (window.referrer){
-                //window.location = window.referrer;
-                stb.LoadURL(window.referrer);
+                //stb.LoadURL(window.referrer);
+                this.exit_comfirm.show();
                 return;
             }
             this.hide();
@@ -103,7 +103,32 @@ var main_menu = {
         
         //this.build();
         
-        main_menu.hide()
+        main_menu.hide();
+
+        this.exit_comfirm = new ModalForm({"title" : get_word('exit_title')});
+        this.exit_comfirm.getTitleDomObj().style.textAlign = "center";
+        this.exit_comfirm.enableOnExitClose();
+
+        var scope = this;
+
+        this.exit_comfirm.addItem(new ModalFormButton(
+            {
+                "value" : get_word("cancel_btn"),
+                "onclick" : function(){
+                    scope.exit_comfirm.hide();
+                }
+            }
+        ));
+
+        this.exit_comfirm.addItem(new ModalFormButton(
+            {
+                "value" : get_word("yes_btn"),
+                "onclick" : function(){
+                    scope.exit_comfirm.hide();
+                    stb.LoadURL(window.referrer);
+                }
+            }
+        ));
     },
     
     build : function(){

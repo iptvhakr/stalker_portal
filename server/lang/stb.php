@@ -242,7 +242,9 @@ $words['channel_recording_restricted'] = _('Recording this channel is forbidden'
 $words['playback_settings_buffer_size'] = _('Buffer size');
 $words['playback_settings_time'] = _('Time, sec');
 $words['playback_settings_title'] = _('PLAYBACK');
-$words['playback_settings_cancel'] = $words['settings_cancel'] = _('CANCEL');
+$words['playback_settings_cancel'] = $words['settings_cancel'] = $words['cancel_btn'] = _('CANCEL');
+$words['exit_btn'] = _('EXIT');
+$words['yes_btn'] = _('YES');
 $words['playback_settings_save'] = $words['settings_save'] = _('SAVE');
 
 $words['audio_out'] = _('Audio out');
@@ -334,5 +336,7 @@ $words['off'] = _('off');
 $words['smb_auth'] = _('Network authentication');
 $words['smb_username'] = _('Login');
 $words['smb_password'] = _('Password');
+
+$words['exit_title'] = _('Do you really want to exit?');
 
 ?>

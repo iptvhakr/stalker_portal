@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-25 11:04+0200\n"
-"PO-Revision-Date: 2012-01-25 11:06+0200\n"
+"POT-Creation-Date: 2012-03-13 17:00+0200\n"
+"PO-Revision-Date: 2012-03-13 17:00+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -262,7 +262,7 @@ msgid "Length"
 msgstr "Время"
 
 #: ../../../lang/stb.php:86
-#: ../../../lang/stb.php:279
+#: ../../../lang/stb.php:281
 msgid "min"
 msgstr "мин"
 
@@ -425,7 +425,7 @@ msgid "CANCEL"
 msgstr "ОТМЕНА"
 
 #: ../../../lang/stb.php:131
-#: ../../../lang/stb.php:246
+#: ../../../lang/stb.php:248
 msgid "SAVE"
 msgstr "СОХРАНИТЬ"
 
@@ -690,7 +690,7 @@ msgid "NTP Server"
 msgstr "NTP Сервер"
 
 #: ../../../lang/stb.php:227
-#: ../../../lang/stb.php:266
+#: ../../../lang/stb.php:268
 msgid "DELETE"
 msgstr "УДАЛИТЬ"
 
@@ -711,7 +711,7 @@ msgid "Confirm"
 msgstr "Подтверждение"
 
 #: ../../../lang/stb.php:233
-#: ../../../lang/stb.php:262
+#: ../../../lang/stb.php:264
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -743,263 +743,275 @@ msgstr "Время, с"
 msgid "PLAYBACK"
 msgstr "ВОСПРОИЗВЕДЕНИЕ"
 
-#: ../../../lang/stb.php:248
+#: ../../../lang/stb.php:246
+msgid "EXIT"
+msgstr "ВЫХОД"
+
+#: ../../../lang/stb.php:247
+msgid "YES"
+msgstr "ДА"
+
+#: ../../../lang/stb.php:250
 msgid "Audio out"
 msgstr "Аудио выходы"
 
-#: ../../../lang/stb.php:249
+#: ../../../lang/stb.php:251
 msgid "Analog only"
 msgstr "Только аналоговые"
 
-#: ../../../lang/stb.php:250
+#: ../../../lang/stb.php:252
 msgid "Analog and S/PDIF 2-channel PCM"
 msgstr "Аналоговые и 2-x канальный PCM в  S/PDIF"
 
-#: ../../../lang/stb.php:251
+#: ../../../lang/stb.php:253
 msgid "S/PDIF raw or 2-channel PCM"
 msgstr "S/PDIF не декодированный (RAW) или S/PDIF PCM"
 
-#: ../../../lang/stb.php:253
+#: ../../../lang/stb.php:255
 msgid "GAME"
 msgstr "ИГРА"
 
-#: ../../../lang/stb.php:256
+#: ../../../lang/stb.php:258
 msgid "DOWNLOADS"
 msgstr "ЗАГРУЗКИ"
 
-#: ../../../lang/stb.php:257
+#: ../../../lang/stb.php:259
 msgid "Not found mounted devices"
 msgstr "Не найдены внешние  носители"
 
-#: ../../../lang/stb.php:258
+#: ../../../lang/stb.php:260
 msgid "Add download"
 msgstr "Добавить загрузку"
 
-#: ../../../lang/stb.php:259
+#: ../../../lang/stb.php:261
 msgid "Device"
 msgstr "Устройство"
 
-#: ../../../lang/stb.php:260
+#: ../../../lang/stb.php:262
 msgid "File name"
 msgstr "Имя файла"
 
-#: ../../../lang/stb.php:261
+#: ../../../lang/stb.php:263
 msgid "Ok"
 msgstr "Ок"
 
-#: ../../../lang/stb.php:263
+#: ../../../lang/stb.php:265
 msgid "CREATE"
 msgstr "СОЗДАТЬ"
 
-#: ../../../lang/stb.php:264
+#: ../../../lang/stb.php:266
 msgid "MOVE UP"
 msgstr "ВВЕРХ"
 
-#: ../../../lang/stb.php:265
+#: ../../../lang/stb.php:267
 msgid "MOVE DOWN"
 msgstr "ВНИЗ"
 
-#: ../../../lang/stb.php:267
+#: ../../../lang/stb.php:269
 msgid "RECORDING"
 msgstr "ЗАПИСЬ"
 
-#: ../../../lang/stb.php:268
+#: ../../../lang/stb.php:270
 msgid "DOWNLOAD"
 msgstr "СКАЧАТЬ"
 
-#: ../../../lang/stb.php:269
+#: ../../../lang/stb.php:271
 msgid "RECORDING AND FILE"
 msgstr "ЗАПИСЬ И ФАЙЛ"
 
-#: ../../../lang/stb.php:271
+#: ../../../lang/stb.php:273
 msgid "Duration of continuous playback"
 msgstr "Длительность непрерывного воспроизведения"
 
-#: ../../../lang/stb.php:272
+#: ../../../lang/stb.php:274
 msgid "Without limit"
 msgstr "Ограничение отключено"
 
-#: ../../../lang/stb.php:273
+#: ../../../lang/stb.php:275
 msgid "hours"
 msgstr "ч"
 
-#: ../../../lang/stb.php:274
+#: ../../../lang/stb.php:276
 msgid "Reached limit the duration of continuous playback. To continue playback, press the OK or EXIT."
 msgstr "Достигнут лимит продолжительности непрерывного воспроизведения. Для продолжения воспроизведения нажмите OK или EXIT."
 
-#: ../../../lang/stb.php:276
+#: ../../../lang/stb.php:278
 msgid "GENERAL SETTINGS"
 msgstr "ОБЩИЕ"
 
-#: ../../../lang/stb.php:277
+#: ../../../lang/stb.php:279
 msgid "Screensaver interval"
 msgstr "Интервал запуска хранителя экрана"
 
-#: ../../../lang/stb.php:278
+#: ../../../lang/stb.php:280
 msgid "Disabled"
 msgstr "Отключено"
 
-#: ../../../lang/stb.php:281
+#: ../../../lang/stb.php:283
 msgid "DEMO VIDEO"
 msgstr "ВИДЕО ИНСТРУКЦИЯ"
 
-#: ../../../lang/stb.php:282
+#: ../../../lang/stb.php:284
 msgid "ACCOUNT"
 msgstr "ЛИЧНЫЙ КАБИНЕТ"
 
-#: ../../../lang/stb.php:283
+#: ../../../lang/stb.php:285
 msgid "Coming soon"
 msgstr "Появится в ближайшее время"
 
-#: ../../../lang/stb.php:285
+#: ../../../lang/stb.php:287
 msgid "INFORMATION"
 msgstr "СВЕДЕНИЯ"
 
-#: ../../../lang/stb.php:286
+#: ../../../lang/stb.php:288
 msgid "PAYMENT"
 msgstr "ОПЛАТА"
 
-#: ../../../lang/stb.php:287
+#: ../../../lang/stb.php:289
 msgid "AGREEMENT"
 msgstr "ДОГОВОР"
 
-#: ../../../lang/stb.php:288
+#: ../../../lang/stb.php:290
 msgid "TERMS OF USE"
 msgstr "ПРАВИЛА"
 
-#: ../../../lang/stb.php:290
+#: ../../../lang/stb.php:292
 msgid "Video instruction"
 msgstr "Видео инструкция"
 
-#: ../../../lang/stb.php:293
+#: ../../../lang/stb.php:295
 msgid "QUALITY"
 msgstr "КАЧЕСТВО"
 
-#: ../../../lang/stb.php:294
+#: ../../../lang/stb.php:296
 msgid "low"
 msgstr "низкое"
 
-#: ../../../lang/stb.php:295
+#: ../../../lang/stb.php:297
 msgid "medium"
 msgstr "среднее"
 
-#: ../../../lang/stb.php:296
+#: ../../../lang/stb.php:298
 msgid "high"
 msgstr "высокое"
 
-#: ../../../lang/stb.php:298
+#: ../../../lang/stb.php:300
 msgid "add"
 msgstr "добавить"
 
-#: ../../../lang/stb.php:299
+#: ../../../lang/stb.php:301
 msgid "del"
 msgstr "удалить"
 
-#: ../../../lang/stb.php:301
+#: ../../../lang/stb.php:303
 msgid "internet"
 msgstr "интернет"
 
-#: ../../../lang/stb.php:303
+#: ../../../lang/stb.php:305
 msgid "NETWORK STATUS"
 msgstr "СОСТОЯНИЕ СЕТИ"
 
-#: ../../../lang/stb.php:304
+#: ../../../lang/stb.php:306
 msgid "REFRESH"
 msgstr "ОБНОВИТЬ"
 
-#: ../../../lang/stb.php:306
+#: ../../../lang/stb.php:308
 msgid "Speed test"
 msgstr "Тест скорости"
 
-#: ../../../lang/stb.php:307
+#: ../../../lang/stb.php:309
 msgid "testing..."
 msgstr "тестирование..."
 
-#: ../../../lang/stb.php:308
+#: ../../../lang/stb.php:310
 msgid "error"
 msgstr "ошибка"
 
-#: ../../../lang/stb.php:309
+#: ../../../lang/stb.php:311
 msgid "waiting..."
 msgstr "ожидание..."
 
-#: ../../../lang/stb.php:311
+#: ../../../lang/stb.php:313
 msgid "UP"
 msgstr "ВКЛ"
 
-#: ../../../lang/stb.php:312
+#: ../../../lang/stb.php:314
 msgid "DOWN"
 msgstr "ВЫКЛ"
 
-#: ../../../lang/stb.php:314
+#: ../../../lang/stb.php:316
 msgid "stopped"
 msgstr "остановлено"
 
-#: ../../../lang/stb.php:315
+#: ../../../lang/stb.php:317
 msgid "waiting queue"
 msgstr "ожидание"
 
-#: ../../../lang/stb.php:316
+#: ../../../lang/stb.php:318
 msgid "running"
 msgstr "загрузка"
 
-#: ../../../lang/stb.php:317
+#: ../../../lang/stb.php:319
 msgid "completed"
 msgstr "закончено"
 
-#: ../../../lang/stb.php:318
+#: ../../../lang/stb.php:320
 msgid "temporary error"
 msgstr "временная ошибка"
 
-#: ../../../lang/stb.php:319
+#: ../../../lang/stb.php:321
 msgid "permanent error"
 msgstr "ошибка"
 
-#: ../../../lang/stb.php:321
+#: ../../../lang/stb.php:323
 msgid "Authentication"
 msgstr "Вход"
 
-#: ../../../lang/stb.php:322
-#: ../../../lang/stb.php:335
+#: ../../../lang/stb.php:324
+#: ../../../lang/stb.php:337
 msgid "Login"
 msgstr "Логин"
 
-#: ../../../lang/stb.php:323
-#: ../../../lang/stb.php:336
+#: ../../../lang/stb.php:325
+#: ../../../lang/stb.php:338
 msgid "Password"
 msgstr "Пароль"
 
-#: ../../../lang/stb.php:324
+#: ../../../lang/stb.php:326
 msgid "Error"
 msgstr "ошибка"
 
-#: ../../../lang/stb.php:326
+#: ../../../lang/stb.php:328
 msgid "Play this url or start download?"
 msgstr "Проиграть или скачать данную ссылку?"
 
-#: ../../../lang/stb.php:327
+#: ../../../lang/stb.php:329
 msgid "Play"
 msgstr "Проиграть"
 
-#: ../../../lang/stb.php:329
+#: ../../../lang/stb.php:331
 msgid "Download"
 msgstr "Скачать"
 
-#: ../../../lang/stb.php:330
+#: ../../../lang/stb.php:332
 msgid "Play all"
 msgstr "ИГРАТЬ ВСЁ"
 
-#: ../../../lang/stb.php:331
+#: ../../../lang/stb.php:333
 msgid "on"
 msgstr "вкл"
 
-#: ../../../lang/stb.php:332
+#: ../../../lang/stb.php:334
 msgid "off"
 msgstr "выкл"
 
-#: ../../../lang/stb.php:334
+#: ../../../lang/stb.php:336
 msgid "Network authentication"
 msgstr "Сетевой вход"
+
+#: ../../../lang/stb.php:340
+msgid "Do you really want to exit?"
+msgstr "Вы действительно хотите выйти?"
 
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
@@ -1207,37 +1219,37 @@ msgstr "Все"
 msgid "[No channel info]"
 msgstr "[телепрограмма отсутствует]"
 
-#: ../../../lib/epg.class.php:664
+#: ../../../lib/epg.class.php:676
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sun"
 msgstr "Вс"
 
-#: ../../../lib/epg.class.php:664
+#: ../../../lib/epg.class.php:676
 #: ../../../lib/gismeteo.class.php:29
 msgid "Mon"
 msgstr "Пн"
 
-#: ../../../lib/epg.class.php:664
+#: ../../../lib/epg.class.php:676
 #: ../../../lib/gismeteo.class.php:29
 msgid "Tue"
 msgstr "Вт"
 
-#: ../../../lib/epg.class.php:664
+#: ../../../lib/epg.class.php:676
 #: ../../../lib/gismeteo.class.php:29
 msgid "Wed"
 msgstr "Ср"
 
-#: ../../../lib/epg.class.php:664
+#: ../../../lib/epg.class.php:676
 #: ../../../lib/gismeteo.class.php:29
 msgid "Thu"
 msgstr "Чт"
 
-#: ../../../lib/epg.class.php:664
+#: ../../../lib/epg.class.php:676
 #: ../../../lib/gismeteo.class.php:29
 msgid "Fri"
 msgstr "Пт"
 
-#: ../../../lib/epg.class.php:664
+#: ../../../lib/epg.class.php:676
 #: ../../../lib/gismeteo.class.php:29
 msgid "Sat"
 msgstr "Сб"
@@ -1363,7 +1375,7 @@ msgid "scheduled"
 msgstr "запланировано"
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:947
+#: ../../../lib/stb.class.php:955
 msgid "city_name_field"
 msgstr "name"
 
@@ -1391,20 +1403,23 @@ msgid "s"
 msgstr "с"
 
 #: ../../../lib/system.class.php:99
+#: ../../../lib/vod.class.php:697
 msgid "today"
 msgstr "сегодня"
 
 #: ../../../lib/system.class.php:101
+#: ../../../lib/vod.class.php:700
 msgid "yesterday"
 msgstr "вчера"
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
-#: ../../../lib/vod.class.php:492
+#: ../../../lib/video.class.php:87
+#: ../../../lib/vod.class.php:631
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
 
-#: ../../../lib/vod.class.php:563
+#: ../../../lib/vod.class.php:703
 msgid "last week"
 msgstr "7 дней"
 
