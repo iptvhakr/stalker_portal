@@ -97,7 +97,7 @@ if(!block)switch(ec)
     {
     case 9:case 116:e.preventDefault();break;
     case 27:parent.wifi_ssid.length=0;back();break;
-    case 13:fc=true;if(menuT[iid-1][0]=='ic'){icCheck();e.preventDefault();}break;
+    case 13:fc=true;if(iid<=mid-2)if(menuT[iid-1][0]=='ic'){icCheck();e.preventDefault();}break;
     case 40:if(iid<=mid)perehod_set(+1);fc=true;e.preventDefault();if(fln)ni=1;break;
     case 38:if(iid<=mid)perehod_set(-1);fc=true;e.preventDefault();if(fln)ni=1;break;
     case 37:change(-1);if(fln&&iid<=mid-2)if(menuT[iid-1][0]=='dn')e.preventDefault();break;
