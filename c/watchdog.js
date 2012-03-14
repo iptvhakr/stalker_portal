@@ -57,10 +57,6 @@ watchdog.prototype.run = function(timeout, timeslot){
         }, self.request_timeout);
         self.send_request();
     }, delay);
-
-    /*window.setInterval(function(){
-        self.send_request();
-    }, this.request_timeout);*/
 };
 
 watchdog.prototype.send_request = function(){
@@ -124,6 +120,11 @@ watchdog.prototype.parse_result = function(data){
             }
             case 'send_msg':
             {
+
+                if (!stb.msg){
+                    return;
+                }
+
                 if (this.event_active_id == data.id){
                     return;
                 }
