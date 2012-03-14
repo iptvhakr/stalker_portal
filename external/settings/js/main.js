@@ -1,6 +1,7 @@
 var spos=0;
 var _GET = {};
 var close=false;
+var load_fl=false;
 
 (function(){
    var get = new String(window.location);
@@ -22,23 +23,40 @@ var close=false;
 
 function init_m()
 {
-    punkti=[[t('Parental'),"ico_lock","ico_lock_act","ico_l_lang","g_pass.html"],
-    [t('Localization'),"ico_lang","ico_lang_act","ico_l_lang","g_local.html"],
-    [t('Software update'),"ico_reload","ico_reload_act","ico_l_reload","g_update.html"],
-    [t('Network info'),"ico_netinfo","ico_netinfo_act","ico_l_netinfo","g_netw.html"],
-    [t('Video'),"ico_video","ico_video_act","ico_l_video","g_video.html"],
-    [t('Audio'),"ico_audio","ico_audio_act","ico_l_audio","g_audio.html"],    
-    [t('Network'),"ico_net","ico_net_act","ico_l_net","g_nets.html"],
-    [t('Advanced settings'),"ico_advset","ico_advset_act","ico_l_advset","g_adv.html"],
-    [t('Servers'),"ico_server","ico_server_act","ico_l_server","g_serv.html"],    
-    [t('Device info'),"ico_sysinfo","ico_sysinfo_act","ico_l_sysinfo","g_dev.html"],
-    [t('Reload portal'),"ico_exit","ico_exit_act","ico_l_exit",2],
-    [t('Go to the inner portal'),"ico_switch","ico_switch_act","ico_l_switch",1],
-    [t('Reboot device'),"ico_reboot","ico_reboot_act","ico_l_reboot",3]];
+    if(load_fl){
+    var punktiT={
+        "lock":[t('Parental'),"ico_lock","ico_lock_act","ico_l_lang","g_pass.html"],
+        "lang":[t('Localization'),"ico_lang","ico_lang_act","ico_l_lang","g_local.html"],
+        "update":[t('Software update'),"ico_reload","ico_reload_act","ico_l_reload","g_update.html"],
+        "net_info":[t('Network info'),"ico_netinfo","ico_netinfo_act","ico_l_netinfo","g_netw.html"],
+        "video":[t('Video'),"ico_video","ico_video_act","ico_l_video","g_video.html"],
+        "audio":[t('Audio'),"ico_audio","ico_audio_act","ico_l_audio","g_audio.html"],    
+        "net":[t('Network'),"ico_net","ico_net_act","ico_l_net","g_nets.html"],
+        "advanced":[t('Advanced settings'),"ico_advset","ico_advset_act","ico_l_advset","g_adv.html"],
+        "servers":[t('Servers'),"ico_server","ico_server_act","ico_l_server","g_serv.html"],    
+        "dev_info":[t('Device info'),"ico_sysinfo","ico_sysinfo_act","ico_l_sysinfo","g_dev.html"],
+        "reload":[t('Reload portal'),"ico_exit","ico_exit_act","ico_l_exit",2],
+        "internal_portal":[t('Go to the inner portal'),"ico_switch","ico_switch_act","ico_l_switch",1],
+        "reboot":[t('Reboot device'),"ico_reboot","ico_reboot_act","ico_l_reboot",3]
+    }
+    punkti=[];
+    var cache=[];
+    for(var i=0;i<prof.modules.length;i++){
+        punkti[i]=punktiT[prof.modules[i].name];
+        cache[i]=new Image();
+        cache[i].src="style/"+parent.put+"/"+punkti[i][1]+'.png';
+        cache[i].src="style/"+parent.put+"/"+punkti[i][2]+'.png';
+    }    
     //punkti[-1]=[t('default'),"ico_empty","ico_empty_act",""];
     kol=punkti.length;
     nextMenu('glavnaya.html');
     document.body.style.display="block";
+    }
+    else setTimeout(function(){init_m()},100);
+}
+
+function up_fl(){
+    load_fl=true;
 }
 
 function nextMenu(urlP)
@@ -58,6 +76,8 @@ function nextMenu(urlP)
 function onLoad()
 {
     stb.EnableVKButton(true);
+    document.cookie = "mac=" + escape(parent.stb.GetDeviceMacAddress()) + '; path=/;';    
+    load({"type":"stb","action":"get_settings_profile"},function(profile){prof=profile;init_m();});
     switch(screen.height)
     {
       case 480:w=623;h=430;a=45;b=5;put=576;break;
@@ -65,8 +85,6 @@ function onLoad()
       case 720:w=1142;h=584;a=60;b=50;put=720;break;
       case 1080:w=1142;h=584;a=380;b=230;put=720;break;
     }
-    document.cookie = "mac=" + escape(parent.stb.GetDeviceMacAddress()) + '; path=/;';    
-    load({"type":"stb","action":"get_settings_profile"},function(profile){prof=profile;});
     var fileref = document.createElement("link");
     fileref.setAttribute("rel", "stylesheet");
     fileref.setAttribute("type", "text/css");

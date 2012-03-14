@@ -23,8 +23,8 @@ var prof=new Object();
 function langv()
 {
     try{main_lang = main_lang.toLowerCase();}catch(e){ }
-    if(main_lang!="en")loadScript('js/langs/' + main_lang + '.js', 'init_m()');
-    else init_m();
+    if(main_lang!="en")loadScript('js/langs/' + main_lang + '.js', 'up_fl()');
+    else up_fl();
 }
 
 function loadScript(src,callback) {
