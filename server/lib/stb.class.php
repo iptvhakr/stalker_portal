@@ -100,7 +100,7 @@ class Stb
 
     public function setParam($key, $value){
 
-        if (!key_exists($key, $this->params)){
+        if (!array_key_exists($key, $this->params)){
             return false;
         }
 
@@ -277,8 +277,24 @@ class Stb
             "test_download_url"    => Config::getSafe('test_download_url', ''),
             "playback_buffer_size" => $this->params['playback_buffer_size'] / 1000,
             "screensaver_delay"    => $this->params['screensaver_delay'],
-            "spdif_mode"           => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out']
+            "spdif_mode"           => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out'],
+            "modules"              => $this->getSettingsMenuModules()
         );
+    }
+
+    public function getSettingsMenuModules($mask = "module"){
+
+        if (!Config::exist($mask)){
+            return null;
+        }
+
+        $scope = $this;
+
+        $modules = array_map(function ($item) use ($scope){
+            return array('name' => $item, "sub" => $scope->getSettingsMenuModules($item));
+        }, Config::get($mask));
+
+        return $modules;
     }
 
     public static function create($data){
