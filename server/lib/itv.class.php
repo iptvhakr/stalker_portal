@@ -641,6 +641,12 @@ class Itv extends AjaxResponse
             }else{
                 $this->response['data'][$i]['fav'] = 0;
             }
+
+            if ($this->response['data'][$i]['enable_tv_archive']){
+                $this->response['data'][$i]['archive'] = 1;
+            }else{
+                $this->response['data'][$i]['archive'] = 0;
+            }
             
             if (@$_REQUEST['fav']){
                 $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)));
