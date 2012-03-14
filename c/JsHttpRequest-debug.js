@@ -752,7 +752,7 @@ JsHttpRequest.LOADERS.form = { loader: function(req) {
             }
             for (var i = 0; i < attr.length; i++) {
                 var k = attr[i][0], v = attr[i][1];
-                // TODO: http://forum.dklab.ru/viewtopic.php?p=129059#129059
+
                 sv[sv.length] = [k, form.getAttribute(k)];
                 form.setAttribute(k, v);
             }

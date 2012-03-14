@@ -607,7 +607,7 @@ class Epg
 
             $result[] = array(
                               'ch_id'  => $id,
-                              //'name'  => Itv::getChannelNameById($id), //TODO: in future for php>=5.3.0 use - array_filter($channels, function($element) use ($id){return ($element['id'] == $id)}),
+                              //'name'  => Itv::getChannelNameById($id),
                               'name'   => $channel['name'],
                               'number' => $channel['number'],
                               'epg_container' => 1,

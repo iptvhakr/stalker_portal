@@ -477,7 +477,6 @@ class Mysql
             $value_str = '('.implode(', ', $values).')';
             
             /*
-            //@TODO: check for sql query size and split if size > max_allowed_packet
             if (mb_strlen($value_str, '8bit') + 1000 > $this->get_max_allowed_packet()){
                 
             }*/

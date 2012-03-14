@@ -28,7 +28,7 @@ class OAuthServer
             $request->parse();
 
             if ($request->isImplicitGrantAuth()){
-                //todo: render auth page
+
             }else{
 
                 /*if (!$this->access_handler->isValidClient($request->getClientId(), $request->getClientSecret())){

@@ -285,7 +285,7 @@ class JsHttpRequest
             (isset($_POST)? $_POST : array()) + 
             (isset($_GET)? $_GET : array());
         if (ini_get('register_globals')) {
-            // TODO?
+            
         }
     }
 
