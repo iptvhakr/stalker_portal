@@ -1,5 +1,21 @@
 /* TV */
 
+#tv .archive_block{
+    width: 27px;
+    height: 28px;
+    background: url("i_720/mb_icons.png") no-repeat -224px 0;
+    float: left;
+    margin-top: 4px;
+}
+
+#tv .active_archive_block{
+    width: 27px;
+    height: 30px;
+    background: url("i_720/mb_icons.png") no-repeat -224px -32px;
+    float: left;
+    margin-top: 9px;
+}
+
 #tv .name_block{
     color: #fff;
     font-size: 26px;

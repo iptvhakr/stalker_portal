@@ -9,7 +9,7 @@
         
         this.layer_name = 'tv';
         
-        this.row_blocks  = ['number', 'fav', 'lock', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
+        this.row_blocks  = ['number', 'fav', 'lock', 'archive', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
         
         this.load_params = {
             'type'   : 'itv',

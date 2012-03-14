@@ -1,5 +1,23 @@
 /* TV */
 
+#tv .archive_block{
+    width: 21px;
+    height: 22px;
+    background-image: url("i/mb_icons.png");
+    background-position: -175px 0;
+    float: left;
+    margin-top: 4px;
+}
+
+#tv .active_archive_block{
+    width: 23px;
+    height: 30px;
+    background-image: url("i/mb_icons.png");
+    background-position: -175px -22px;
+    float: left;
+    margin-top: 7px;
+}
+
 #tv .name_block{
     color: #fff;
     font-size: 20px;
@@ -30,7 +48,7 @@
 
 #tv .short_container .active_name_block{
     width: auto;
-    margin-top: 8px;
+    margin-top: 9px;
     float: none;
 }
 
