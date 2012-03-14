@@ -337,8 +337,10 @@ class Stb
         $this->getStbParams();        
         
         $this->setId($uid);
-            
-        $this->db->insert('updated_places', array('uid' => $this->id));
+
+        if (empty($login)){
+            $this->db->insert('updated_places', array('uid' => $this->id));
+        }
     }
     
     public function getLocalization(){
