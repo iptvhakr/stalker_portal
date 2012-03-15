@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<project name="stalker_portal" basedir="." default="test">
+
+    <tstamp/>
+
+    <property file="../server/custom.ini" />
+    <property file="../server/config.ini" />
+
+    <target name="test">
+        <phpunit>
+            <formatter></formatter>
+        </phpunit>
+    </target>
+</project>
