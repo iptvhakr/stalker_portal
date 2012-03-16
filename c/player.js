@@ -258,7 +258,7 @@ player.prototype.event_callback = function(event){
                 
                 this.play_auto_ended = true;
                 
-                if (this.media_type == 'stream' && this.is_tv){
+                if (this.media_type == 'stream' && (this.is_tv || stb.cur_place == 'radio')){
                     _debug('stream error');
                     
                     var self = this;
@@ -822,7 +822,7 @@ player.prototype.volume = new function(){
     }
 };
 
-player.prototype.seek_bar = new function(){
+/*player.prototype.seek_bar = new function(){
     
     this.seek_bar_dom_obj = $('seek_bar');
     
@@ -837,7 +837,7 @@ player.prototype.seek_bar = new function(){
     this.set_pos = function(){
         
     }
-};
+};*/
 
 player.prototype.define_media_type = function(cmd){
     _debug('player.define_media_type', cmd);
