@@ -6,9 +6,13 @@ function get_data(){
     $data = @$_POST['data'];
     $db = new Database();
     $arr = array();
-    
+
     if ($data){
         switch ($get){
+            case 'del_tv_logo':
+                {
+                    return Itv::delLogoById(intval($_GET['id']));
+                }
             case 'singer':
                 {
                     $sql = "select * from singer where singer like '$data%' order by singer";

@@ -910,6 +910,42 @@ class Itv extends AjaxResponse
 
         return Mysql::getInstance()->from('itv')->where(array('status' => 1))->orderby('number');
     }
+
+    public static function getLogoPathById($id){
+
+        $channel = Itv::getById($id);
+
+        if (empty($channel['logo'])){
+            return null;
+        }
+
+        return realpath(PROJECT_PATH."/../misc/logos/".$channel['logo']);
+    }
+
+    public static function getLogoUriById($id){
+
+        $channel = Itv::getById($id);
+
+        if (empty($channel['logo'])){
+            return Config::get('portal_url').'misc/logos/dummy.png';
+        }
+
+        return Config::get('portal_url').'misc/logos/'.$channel['logo'];
+    }
+
+    public static function delLogoById($id){
+        $path = self::getLogoPathById($id);
+
+        $result = unlink($path);
+
+        if (!$result){
+            return false;
+        }
+
+        Mysql::getInstance()->update('itv', array('logo' => ''), array('id' => $id));
+
+        return $result;
+    }
 }
 
 class ItvLinkException extends Exception{}

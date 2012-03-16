@@ -196,6 +196,15 @@ if (!$error){
             }else{
                 $archive->deleteTask($ch_id);
             }*/
+
+            if (!empty($_FILES['logo'])){
+
+                if ($logo = handle_upload_logo($_FILES['logo'], $ch_id)){
+                    Mysql::getInstance()->update('itv', array('logo' => $logo), array('id' => $ch_id));
+                }else{
+                    $error = 'Ошибка: невозможно сохранить логотип';
+                }
+            }
             
             header("Location: add_itv.php");
             exit;
@@ -253,7 +262,7 @@ if (!$error){
                                 service_id='".trim($_POST['service_id'])."',
                                 volume_correction=".intval($_POST['volume_correction'])."
                             where id=".intval(@$_GET['id']);
-            var_dump($query);
+            //var_dump($query);
             $rs=$db->executeQuery($query);
 
             if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
@@ -270,8 +279,14 @@ if (!$error){
                 }
             }
 
-            header("Location: add_itv.php");
-            exit;
+            if (!empty($_FILES['logo']['name'])){
+
+                if ($logo = handle_upload_logo($_FILES['logo'], $ch_id)){
+                    Mysql::getInstance()->update('itv', array('logo' => $logo), array('id' => $ch_id));
+                }else{
+                    $error = 'Ошибка: невозможно сохранить логотип';
+                }
+            }
         }
         else{
             $error = 'Ошибка: необходимо заполнить все поля';
@@ -279,17 +294,54 @@ if (!$error){
     }
 }
 
+function handle_upload_logo($file, $ch_id){
+
+    if (empty($file)){
+        return true;
+    }
+
+    $images = array('image/gif' => 'gif', 'image/jpeg' => 'jpg', 'image/png' => 'png');
+
+    if (!array_key_exists($file['type'], $images)){
+        return false;
+    }
+
+    $ext = $images[$file['type']];
+
+    $path = realpath(PROJECT_PATH."/../misc/logos/");
+
+    if (!$path){
+        return false;
+    }
+
+    $filename = $ch_id.".".$ext;
+
+    $fullpath = $path."/".$filename;
+
+    umask(0);
+
+    $result = move_uploaded_file($file['tmp_name'], $fullpath);
+
+    if (!$result){
+        return false;
+    }
+
+    chmod($fullpath, 0666);
+
+    return $filename;
+}
+
 function check_number($num){
     global $db;
     $total_items = 1;
     $query = "select * from itv where number=".intval($num);
     $rs=$db->executeQuery($query);
-	$total_items = $rs->getRowCount();
-	if ($total_items > 0){
-	    return 0;
-	}else{
-	    return 1;
-	}
+    $total_items = $rs->getRowCount();
+    if ($total_items > 0){
+        return 0;
+    }else{
+        return 1;
+    }
 }
 
 function get_screen_name($addr){
@@ -337,6 +389,7 @@ a:hover{
 <title>
 Редактирование списка IPTV каналов
 </title>
+<script type="text/javascript" src="js.js"></script>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
@@ -469,6 +522,7 @@ if (@$_GET['edit']){
         $enable_monitoring = $arr['enable_monitoring'];
         $monitoring_url = $arr['monitoring_url'];
         $enable_wowza_load_balancing = $arr['enable_wowza_load_balancing'];
+        $logo = $arr['logo'];
 
         if ($use_http_tmp_link){
             $checked_http_tmp_link = 'checked';
@@ -594,6 +648,31 @@ function save(){
 function popup(src){
      window.open( src, 'win_'+src, 'width=300,height=200,toolbar=0,location=0,directories=0,menubar=0,scrollbars=0,resizable=1,status=0,fullscreen=0')
 }
+
+function delete_logo(id){
+    var req = new Subsys_JsHttpRequest_Js();
+
+    req.onreadystatechange = function() {
+        if (req.readyState == 4) {
+
+            if (req.responseJS) {
+
+                var resp = req.responseJS.data;
+                if(req.responseJS){
+                    //set_cat_genres(resp)
+                    document.getElementById('logo_block').innerHTML = '';
+                }else{
+                    alert('Ошибка при удалении логотипа');
+                }
+            }
+        }
+    };
+
+    req.caching = false;
+
+    req.open('POST', 'load.php?get=del_tv_logo&id='+id, true);
+    req.send({data:'bar'});
+}
 </script>
 <br>
 <table align="center" class='list'>
@@ -604,7 +683,7 @@ function popup(src){
 </tr>
 <tr>
     <td>
-    <form id="form_" method="POST">
+    <form id="form_" method="POST" enctype="multipart/form-data">
     <table align="center">
         <tr>
            <td align="right">
@@ -802,6 +881,22 @@ function popup(src){
            <td>
             <textarea id="descr"  name="descr" cols="39" rows="5"><? echo @$descr ?></textarea>
            </td>
+        </tr>
+        <?if (!empty($logo)){?>
+        <tr>
+            <td align="right"></td>
+            <td valign="top" id="logo_block">
+                <img src="<?echo Itv::getLogoUriById(intval($_GET['id']))?>" style="float: left;"/><a href="javascript://" onclick="delete_logo(<?echo intval($_GET['id'])?>); return false;"  style="float: left;">[x]</a>
+            </td>
+        </tr>
+        <?}?>
+        <tr>
+            <td align="right">
+                Логотип:
+            </td>
+            <td>
+                <input type="file" name="logo" id="logo"/>
+            </td>
         </tr>
         <tr>
            <td>
