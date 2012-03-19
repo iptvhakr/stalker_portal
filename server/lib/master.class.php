@@ -209,6 +209,7 @@ abstract class Master
                 $this->clients[$name]->resource($this->media_type)->update(array('media_name' => $media_name));
             }catch (Exception $exception){
                 $this->parseException($exception);
+                throw new MasterException($exception->getMessage(), $name);
             }
         }
     }
@@ -254,7 +255,7 @@ abstract class Master
      *
      * @return array storages names
      */
-    private function getModeratorStorages(){
+    public function getModeratorStorages(){
         
         $data = $this->db->from('storages')->where(array('status' => 1, 'for_moderator' => 1))->get()->all();
         
@@ -820,5 +821,20 @@ abstract class Master
         echo $exception->getMessage()."\n".$exception->getTraceAsString();
         $this->addToLog($exception->getMessage());
     }
+}
+
+class MasterException extends Exception{
+
+    protected $storage_name;
+
+    public function __construct($message, $storage_name){
+        $this->message      = $message;
+        $this->storage_name = $storage_name;
+    }
+
+    public function getStorageName(){
+        return $this->storage_name;
+    }
+
 }
 ?>

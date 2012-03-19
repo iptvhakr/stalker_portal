@@ -236,6 +236,19 @@ if (count(@$_POST) > 0){
                 if ($rows > 0){
                     $error = 'Ошибка: папка с таким именем уже существует';
                 }
+
+                if(@$_GET['name'] && !$error){
+                    $master = new VideoMaster();
+                    try{
+                        $master->createMediaDir($trans_name);
+                    }catch(MasterException $e){
+                        //var_dump($e->getMessage(), $e->getStorageName()); exit;
+                        $moderator_storages = $master->getModeratorStorages();
+                        if (!empty($moderator_storages[$e->getStorageName()])){
+                            $error = "Ошибка при создании папки на модераторском хранилище";
+                        }
+                    }
+                }
                 
                 if(@$_GET['name'] && !$error){
                     
@@ -247,9 +260,6 @@ if (count(@$_POST) > 0){
                     // disable this video in SD for hd devices
                     //$sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year'";
                     //$db->executeQuery($sql);
-                    
-                    $master = new VideoMaster();
-                    $master->createMediaDir($trans_name);
                     
                     $datetime = date("Y-m-d H:i:s");
                     
