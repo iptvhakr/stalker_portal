@@ -262,6 +262,8 @@ ListLayer.prototype.load_data = function(){
             if (result.selected_item !=0 || result.cur_page !=0){
                 this.cur_row  = result.selected_item-1;
                 this.cur_page = result.cur_page;
+            }else if (this.cur_page == 0){
+                this.cur_page = 1
             }
             
             this.set_total_items(result.total_items);

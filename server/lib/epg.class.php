@@ -796,21 +796,21 @@ class Epg
                 $program[$i]['mark_memo'] = null;
             }*/
             //var_dump($reminders);
-            if (key_exists($program[$i]['id'], $reminders)){
+            if (array_key_exists($program[$i]['id'], $reminders)){
                 $program[$i]['mark_memo'] = 1;
             }else{
                 $program[$i]['mark_memo'] = 0;
             }
 
             //if (in_array($program[$i]['id'], $user_rec_ids)){
-            if (key_exists($program[$i]['id'], $user_rec_ids)){
+            if (array_key_exists($program[$i]['id'], $user_rec_ids)){
                 $program[$i]['mark_rec'] = 1;
                 $program[$i]['rec_id']   = $user_rec_ids[$program[$i]['id']];
             }else{
                 $program[$i]['mark_rec'] = 0;
             }
 
-            if (key_exists($program[$i]['ch_id'], $archived_recs)){
+            if (array_key_exists($program[$i]['ch_id'], $archived_recs)){
 
                 if (($program[$i]['start_timestamp'] > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] &&
                     $program[$i]['start_timestamp'] < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']) ||
@@ -831,14 +831,14 @@ class Epg
             $cur_page = $page;
             $selected_item = $ch_idx - ($page-1)*$page_items;
         }else{
-            $cur_page = $page;
-            $selected_item = 1;
+            $cur_page = 0;
+            $selected_item = 0;
         }
 
         return array(
-                        'total_items'    => $total_items,
-                        'selected_item'  => $selected_item,
                         'cur_page'       => $cur_page,
+                        'selected_item'  => $selected_item,
+                        'total_items'    => $total_items,
                         'max_page_items' => $page_items,
                         'data'           => $program
                     );

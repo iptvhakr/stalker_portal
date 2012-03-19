@@ -86,13 +86,13 @@
 
 #epg_simple .week{
     position: absolute;
-    left: 49px;
+    left: 71px;
     top: 60px;
     list-style: none;
 }
 
 #epg_simple .week li{
-    width: 172px;
+    width: 149px;
     height: 23px;
     margin: 0 0 1px 0;
     background-image: url("i_480/tv_table.png");
@@ -120,11 +120,14 @@
 #epg_simple .program_info{
     position: absolute;
     bottom:50px;
-    left: 49px;
-    height: 70px;
-    width: 632px;
+    left: 72px;
+    height: 93px;
+    width: 599px;
     font-size: 20px;
     color: #fff;
+    background-image: url("i/25alfa_20.png");
+    padding: 5px;
+    -webkit-border-radius: 8px;
 }
 
 #epg_simple .program_info .time{

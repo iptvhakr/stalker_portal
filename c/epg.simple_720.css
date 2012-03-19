@@ -126,11 +126,14 @@
 #epg_simple .program_info{
     position: absolute;
     bottom: 77px;
-    left: 70px;
-    height: 100px;
-    width: 1140px;
+    left: 146px;
+    height: 85px;
+    width: 975px;
     font-size: 28px;
     color: #fff;
+    background-image: url("i/25alfa_20.png");
+    padding: 5px;
+    -webkit-border-radius: 8px;
 }
 
 #epg_simple .program_info .time{
