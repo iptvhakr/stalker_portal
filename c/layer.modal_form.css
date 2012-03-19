@@ -15,6 +15,14 @@
     color: #002864;
     margin-bottom: 6px;
 }
+
+.modal_form .text{
+    font-size: 22px;
+    margin-bottom: 3px;
+    border: 5px;
+    -webkit-border-image: url(i/item_bg.png) 5;
+}
+
 .modal_form .status{
     position: absolute;
     top: 3px;

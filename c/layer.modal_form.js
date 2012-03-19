@@ -11,6 +11,7 @@ function ModalForm(options){
     this._cur_item_idx = 0;
     this._title  = "";
     this._status = "";
+    this._text = "";
 
     this.options = options;
 
@@ -30,6 +31,12 @@ ModalForm.prototype._init = function(){
     this._title_dom_obj  = create_block_element("title", this._dom_obj);
     this._title_dom_obj.innerHTML = this._title;
     this._status_dom_obj = create_block_element("status", this._dom_obj);
+
+    if (this._text){
+        this._text_dom_obj = create_block_element("text", this._dom_obj);
+        this._text_dom_obj.innerHTML = this._text;
+    }
+
     this._items_block    = create_block_element("", this._dom_obj);
     this._buttons_block  = create_block_element("buttons", this._dom_obj);
     this.hide();
@@ -169,6 +176,14 @@ ModalForm.prototype.enableOnExitClose = function(){
 
 ModalForm.prototype.getTitleDomObj = function(){
     return this._title_dom_obj;
+};
+
+ModalForm.prototype.getButtonsBlockDomObj = function(){
+    return this._buttons_block;
+};
+
+ModalForm.prototype.getTextDomObj = function(){
+    return this._text_dom_obj;
 };
 /* END ModalForm */
 

@@ -245,6 +245,7 @@ $words['playback_settings_title'] = _('PLAYBACK');
 $words['playback_settings_cancel'] = $words['settings_cancel'] = $words['cancel_btn'] = _('CANCEL');
 $words['exit_btn'] = _('EXIT');
 $words['yes_btn'] = _('YES');
+$words['close_btn'] = _('CLOSE');
 $words['playback_settings_save'] = $words['settings_save'] = _('SAVE');
 
 $words['audio_out'] = _('Audio out');
@@ -338,5 +339,10 @@ $words['smb_username'] = _('Login');
 $words['smb_password'] = _('Password');
 
 $words['exit_title'] = _('Do you really want to exit?');
+
+$words['identical_download_exist'] = _('There is an active downloads from this server');
+
+$words['alert_form_title'] = _('Alert');
+$words['confirm_form_title'] = _('Confirm');
 
 ?>

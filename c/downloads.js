@@ -122,6 +122,26 @@
             this.delete_menu.init(map);
             this.delete_menu.bind();
         };
+
+        this.identical_download_exist = function(url){
+            _debug('downloads.identical_download_exist', url);
+
+            var normalized_url = url.substr(0, url.lastIndexOf('/'));
+
+            _debug('normalized_url', normalized_url);
+
+            var queue = JSON.parse(stbDownloadManager.GetQueueInfo());
+
+            _debug('queue', queue);
+
+            return queue.some(function(item){
+                _debug('item.url', item.url);
+                _debug('normalized_url', normalized_url);
+                _debug('item.url.indexOf(normalized_url)', item.url.indexOf(normalized_url));
+
+                return item.url.indexOf(normalized_url) != -1 && item.state != 3;
+            });
+        }
     }
     downloads_constructor.prototype = new ListLayer();
     var downloads = new downloads_constructor();

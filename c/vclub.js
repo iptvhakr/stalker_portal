@@ -45,6 +45,26 @@
 
         /*this.dialog = new downloads_dialog_constructor();
         this.dialog.hide();*/
+
+        this.init = function(){
+            this.superclass.init.call(this);
+
+            this.download_exist = new ModalForm({title: get_word("alert_form_title"), text : get_word("identical_download_exist")});
+            this.download_exist.getButtonsBlockDomObj().style.textAlign = "center";
+            this.download_exist.getTextDomObj().style.textAlign = "center";
+            this.download_exist.enableOnExitClose();
+
+            var scope = this;
+
+            this.download_exist.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("close_btn"),
+                    "onclick" : function(){
+                        scope.download_exist.hide();
+                    }
+                }
+            ));
+        };
         
         this.load_genres = function(alias){
             
@@ -496,7 +516,7 @@
             
             _debug('cmd', this.data_items[this.cur_row].cmd);
             _debug('indexOf', this.data_items[this.cur_row].cmd.indexOf('://'));
-            
+
             if (this.data_items[this.cur_row].cmd.indexOf('://') < 0){
             
                 stb.player.on_create_link = function(result){
@@ -509,6 +529,22 @@
                     }else if(result.error == 'link_fault'){
                         stb.notice.show(word['player_server_error']);
                     }else{
+
+                        var match;
+                        if (match = /[\s]([^\s]*)$/.exec(result.cmd)){
+                            var url = match[1];
+                        }else{
+                            url = result.cmd;
+                        }
+                        _debug('url: ', url);
+
+                        if (result.cmd.indexOf('://') != -1 && module.downloads.identical_download_exist(url)){
+                            _debug('identical_download_exist!');
+
+                            self.download_exist.show();
+
+                            return;
+                        }
 
                         if (play_url){
 
@@ -527,8 +563,8 @@
                             stb.player.need_show_info = 1;
                             stb.player.play_now(result.cmd);
                         }else{
-                            var url = /[\s]([^\s]*)$/.exec(result.cmd)[1];
-                            _debug('url: ', url);
+                            /*var url = /[\s]([^\s]*)$/.exec(result.cmd)[1];
+                            _debug('url: ', url);*/
                             /*_debug('path: ', self.data_items[self.cur_row].path);
                             var filename = self.data_items[self.cur_row].path+'.'+/\.(\w*)$/.exec(url)[1];
                             _debug('file: ', filename);

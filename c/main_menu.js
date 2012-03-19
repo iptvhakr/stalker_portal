@@ -105,8 +105,8 @@ var main_menu = {
         
         main_menu.hide();
 
-        this.exit_comfirm = new ModalForm({"title" : get_word('exit_title')});
-        this.exit_comfirm.getTitleDomObj().style.textAlign = "center";
+        this.exit_comfirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('exit_title')});
+        this.exit_comfirm.getTextDomObj().style.textAlign = "center";
         this.exit_comfirm.enableOnExitClose();
 
         var scope = this;
