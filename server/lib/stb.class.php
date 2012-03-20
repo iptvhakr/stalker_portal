@@ -44,14 +44,32 @@ class Stb
     
     private function __construct(){
 
-        if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
+        /*if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
             Mysql::$debug = true;
-        }
+        }*/
 
-        if (!empty($_COOKIE['mac'])){
+        $debug_key = $this->getDebugKey();
+
+        if (!empty($debug_key) && $this->checkDebugKey($debug_key)){
+
+            if (!empty($_REQUEST['mac'])){
+                $this->mac = @trim(urldecode($_REQUEST['mac']));
+            }elseif (!empty($_COOKIE['mac'])){
+                $this->mac = @trim(urldecode($_COOKIE['mac']));
+            }else{
+                echo 'Identification failed';
+                exit;
+            }
+
+            if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
+                Mysql::$debug = true;
+            }
+
+        }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
             $this->mac = @trim(urldecode($_COOKIE['mac']));
-        }else if (!empty($_REQUEST['mac'])){
-            $this->mac = @trim(urldecode($_REQUEST['mac']));
+        }else{
+            echo 'Unauthorized request';
+            exit;
         }
 
         $this->mac = strtoupper($this->mac);
@@ -87,6 +105,21 @@ class Stb
         /*if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
             Mysql::$debug = true;
         }*/
+    }
+
+    private function checkDebugKey($key){
+        return (bool) Mysql::getInstance()->from('administrators')->where(array('debug_key' => $key, 'access' => 0))->get()->first();
+    }
+
+    private function getDebugKey(){
+
+        if (!empty($_REQUEST['debug_key'])){
+            return $_REQUEST['debug_key'];
+        }elseif (!empty($_COOKIE['debug_key'])){
+            return $_COOKIE['debug_key'];
+        }
+
+        return null;
     }
     
     public function setId($id){

@@ -265,11 +265,18 @@ function common_xpcom(){
         }
 
         if (debug){
+
             if (_GET['mac']){
                 this.mac = _GET['mac'];
+                this.set_cookie('mac_emu', 1);
             }
 
             this.set_cookie('debug', 1);
+
+            if (_GET['debug_key']){
+                this.set_cookie('debug_key', _GET['debug_key']);
+            }
+
         }
 
         this.set_cookie('mac',      this.mac);
