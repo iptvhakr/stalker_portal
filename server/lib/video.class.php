@@ -59,7 +59,7 @@ class Video
                 'o_name'   => $video['o_name'],
                 'director' => $video['director'],
                 'year'     => $video['year'],
-                'hd'       => $val
+                'hd'       => 0
             ));
         }
 

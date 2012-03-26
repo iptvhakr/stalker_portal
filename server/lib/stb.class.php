@@ -67,9 +67,15 @@ class Stb
 
         }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
             $this->mac = @trim(urldecode($_COOKIE['mac']));
+        }else if (!empty($_SERVER['HTTP_TARGET']) && $_SERVER['HTTP_TARGET'] == 'API'){
+
         }else{
+            $this->mac = '';
             echo 'Unauthorized request';
-            exit;
+
+            if (!empty($_REQUEST['mac'])){
+                exit;
+            }
         }
 
         $this->mac = strtoupper($this->mac);
