@@ -443,18 +443,25 @@ function common_xpcom(){
         _debug('this.image_version:', this.image_version);
         _debug('this.image_desc:', this.image_desc);
         _debug('this.image_date:', this.image_date);
+        _debug('this.num_banks:', this.num_banks);
         //_debug('stb.user.image_version:', stb.user['image_version']);
 
         if (this.image_version < 203 && this.image_version != 0){
             return 0;
         }
 
+        _debug('checking conditions');
+        _debug('typeof stb.user[autoupdate]', typeof(stb.user['autoupdate']));
+
         if (typeof stb.user['autoupdate'] == 'object' && 
             ((stb.user['autoupdate'].require_image_version != ''     && stb.user['autoupdate'].require_image_version != this.image_version) ||
             (stb.user['autoupdate'].require_image_date != ''         && stb.user['autoupdate'].require_image_date != this.image_date)) &&
             ((stb.user['autoupdate'].image_version_contains != ''    && stb.user['autoupdate'].image_version_contains == this.image_version) ||
-            (stb.user['autoupdate'].image_description_contains != '' && this.image_desc.indexOf(stb.user['autoupdate'].image_description_contains) != -1)
+            (stb.user['autoupdate'].image_description_contains != '' && this.image_desc.indexOf(stb.user['autoupdate'].image_description_contains) != -1) ||
+            (stb.user['autoupdate'].image_version_contains == '' && stb.user['autoupdate'].image_description_contains == '')
             )){
+
+            _debug('checking conditions 2');
 
             if (this.num_banks == 2 && stb.user['autoupdate'].update_type == 'http_update'){
                 try{
