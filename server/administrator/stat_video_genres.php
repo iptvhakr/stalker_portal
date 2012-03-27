@@ -113,24 +113,51 @@ function page_bar(){
     return $page_bar;
 }
 
+$genres = Mysql::getInstance()->from('genre')->get()->all();
+
 $from = date("Y-m-d H:i:s", time()-60*60*24*30);
 
-$query = "select count(played_video.id) as played_counter, genre.title as genre_title from played_video left join video on played_video.video_id=video.id inner join genre on genre.id=genre_id_1 or genre.id=genre_id_2 or genre.id=genre_id_3 or genre.id=genre_id_4 where playtime>'$from' group by genre.title";
+//$query = "select count(played_video.id) as played_counter, genre.title as genre_title from played_video left join video on played_video.video_id=video.id inner join genre on genre.id=genre_id_1 or genre.id=genre_id_2 or genre.id=genre_id_3 or genre.id=genre_id_4 where playtime>'$from' group by genre.title";
 //echo $query;
-$rs = $db->executeQuery($query);
+//$rs = $db->executeQuery($query);
 
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>Жанр</b></td>\n";
 echo "<td class='list'><b>Просмотров</b></td>\n";
+echo "<td class='list'><b>Всего фильмов</b></td>\n";
+echo "<td class='list'><b>%</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+//while(@$rs->next()){
+foreach ($genres as $genre){
+
+    //$arr=$rs->getCurrentValuesAsHash();
+
+    $total_movies_in_genre = Mysql::getInstance()
+        ->from('video')
+        ->count()
+        ->where(array('genre_id_1' => $genre['id'], 'genre_id_2' => $genre['id'], 'genre_id_3' => $genre['id'], 'genre_id_4' => $genre['id']), 'OR ')
+        ->get()
+        ->counter();
+
+    //Mysql::$debug = true;
+
+    $played_movies_in_genre = Mysql::getInstance()
+        ->from('played_video')
+        ->count()
+        ->join('video', 'video.id', 'played_video.video_id', 'left')
+        ->where(array('playtime>' => $from))
+        ->where(array('genre_id_1' => $genre['id'], 'genre_id_2' => $genre['id'], 'genre_id_3' => $genre['id'], 'genre_id_4' => $genre['id']), 'OR ')
+        ->get()->counter();
+
+    $ratio = $total_movies_in_genre == 0 ? 0 : round(($played_movies_in_genre / $total_movies_in_genre)*100, 2);
+
     echo "<tr>";
-    echo "<td class='list'>".$arr['genre_title']."</td>\n";
-    echo "<td class='list'>".$arr['played_counter']."</td>\n";
+    //echo "<td class='list'>".$arr['genre_title']."</td>\n";
+    echo "<td class='list'>".$genre['title']."</td>\n";
+    echo "<td class='list'>".$played_movies_in_genre."</td>\n";
+    echo "<td class='list'>".$total_movies_in_genre."</td>\n";
+    echo "<td class='list'>".$ratio."</td>\n";
     echo "</tr>\n";
 }
 echo "</table>\n";
