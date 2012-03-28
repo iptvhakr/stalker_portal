@@ -50,7 +50,7 @@
             cur += this.current.cloud_str + '<br>';
             cur += '<span class="curweather_title">' + word['weather_comfort'] + ':</span> ' + this.current.t_flik +'&deg; C<br>';
             cur += '<span class="curweather_title">' + word['weather_pressure'] + ':</span> ' + this.current.p + ' ' + word['weather_mmhg'] +'<br>';
-            cur += '<span class="curweather_title">' + word['weather_wind'] + ':</span> '+ this.current.w_rumb_str + ', ' + this.current.w + ' ' + word['weather_speed'] + '<br>';
+            cur += '<div class="curweather_title" style="float: left">' + word['weather_wind'] + ':</div><div class="wind_direction_'+this.current.w_rumb_str+'">&uarr;</div> <div style="float: left;"> ' + this.current.w + ' ' + word['weather_speed'] + '</div><br>';
             cur += '<span class="curweather_title">' + word['weather_humidity'] + ':</span> '+ this.current.h + '%<br>';
             cur += '</div>';
             

@@ -117,7 +117,8 @@ class Weatherco
 
             $current['city'] = Mysql::getInstance()->from('cities')->where(array('id' => $current['city_id']))->get()->first(_('city_name_field'));
             $current['cloud_str'] = _($current['cloud_str']);
-            $current['w_rumb_str'] = _($current['w_rumb_str']);
+            //$current['w_rumb_str'] = _($current['w_rumb_str']);
+            $current['w_rumb_str'] = str_replace('/', '', $current['w_rumb_str']);
 
             return $current;
         }
@@ -144,7 +145,8 @@ class Weatherco
                 $day['title'] = _($tod_arr[$day['hour']]).' '.date("j", $day['timestamp']).' '._(date("M", $day['timestamp'])).', '._(date("D", $day['timestamp']));
 
                 $day['cloud_str']  = _($day['cloud_str']);
-                $day['w_rumb_str'] = _($day['w_rumb_str']);
+                //$day['w_rumb_str'] = _($day['w_rumb_str']);
+                $day['w_rumb_str'] = str_replace('/', '', $day['w_rumb_str']);
 
                 $day['temperature'] = (($day['t']['min']) > 0 ? '+' : '').$day['t']['min'].'..'.(($day['t']['max']) > 0 ? '+' : '').$day['t']['max'].'&deg;';
 
@@ -159,7 +161,7 @@ class Weatherco
     }
     
     private function parse($arr){
-        if (key_exists('cloud', $arr)){
+        if (array_key_exists('cloud', $arr)){
             
             $cloud = intval(floor($arr['cloud']/10));
 
@@ -177,14 +179,14 @@ class Weatherco
                 10 => 'Snowfall'
             );
              
-            if (key_exists($cloud, $cloud_arr)){
+            if (array_key_exists($cloud, $cloud_arr)){
                 $arr['cloud_str'] = $cloud_arr[$cloud];
             }else{
                 $arr['cloud_str'] = 'n/a';
             }
         }
         
-        if (key_exists('w_rumb', $arr) || !empty($arr['wind']) && key_exists('rumb', $arr['wind'])){
+        if (key_exists('w_rumb', $arr) || !empty($arr['wind']) && array_key_exists('rumb', $arr['wind'])){
             $arr['w_rumb_str'] = '';
 
             if (!empty($arr['w_rumb'])){
@@ -212,7 +214,7 @@ class Weatherco
             }elseif ($w_rumb >= 305 && $w_rumb <= 325){
                 $arr['w_rumb_str'] = 'NW';
             }else{
-                $arr['w_rumb_str'] = 'n/a';
+                $arr['w_rumb_str'] = 'na';
             }
         }
 

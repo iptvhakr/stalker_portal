@@ -102,7 +102,7 @@
                 this.map[i].text.innerHTML  = data[i].title;
                 
                 var descr = data[i].cloud_str + '<br><span class="day_weather_sub">' + word['dayweather_pressure'] + '</span> ' + data[i].p.min + '...' + data[i].p.max + ' <span class="day_weather_sub">' + word['dayweather_mmhg'] + '</span><br>';
-                descr += '<span class="day_weather_sub">' + word['dayweather_wind'] + '</span> ' + data[i].w_rumb_str + ', ' + data[i].wind.min + '-' + data[i].wind.max + ' <span class="day_weather_sub">' + word['dayweather_speed'] + '</span>';
+                descr += '<div class="day_weather_sub" style="float: left; margin-left: 5px">' + word['dayweather_wind'] + '</div> <div class="wind_direction_'+data[i].w_rumb_str+'">&uarr;</div><div style="float:left;margin-left: 2px"> ' + data[i].wind.min + '-' + data[i].wind.max + ' <span class="day_weather_sub">' + word['dayweather_speed'] + '</span></div>';
                 
                 this.map[i].descr.innerHTML = descr;
                 
@@ -118,7 +118,7 @@
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
-            
+
             this.load.bind(key.REFRESH, this);
         };
     }
