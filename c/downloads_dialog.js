@@ -83,8 +83,12 @@ downloads_dialog_constructor.prototype.show=function(options){
       this.fillUSBDevices(usbDisks);
        $('d_d_url').focus();
     }
-    if(this.url && this.url.length>0){
+    if(typeof(this.url) != 'object' && this.url && this.url.length>0){
+        //$('d_d_url').removeAttribute('readonly');
         $('d_d_url').value=this.url;
+    }else{
+        //$('d_d_url').setAttribute('readonly', 'readonly');
+        $('d_d_url').value='[secure url]';
     }
     if(this.name && this.name.length>0){
         $('d_d_fn').value=this.name;
@@ -167,15 +171,36 @@ downloads_dialog_constructor.prototype.bind = function(){
                 this.hide();
             }
             if($("d_d_button_ok").hasFocus()==true) {
+
                 var splited=$("d_d_url").value.split('/'),
                     fn='';
                 //stb.Debug('\nurl:'+$("d_d_url").value+'\ndir: '+$('d_d_fileNameSerial').value+splited[splited.length-1]);
                 fn = $('d_d_fn').value!=''?$('d_d_fn').value:splited[splited.length-1];
                 fn = fn.replace(/\n|\\|\/|\"|\'|\?|\*|\:/mg, '');
-                stbDownloadManager.AddJob($("d_d_url").value, $('d_d_fileNameSerial').value+'/' + fn);
+
+                //fn = $('d_d_fileNameSerial').value+'/' + fn;
+
+                var download_task = {"url" : this.url};
+
+                if (stb.image_version < 214){
+                    download_task.filePath   = $('d_d_fileNameSerial').value+'/' + fn;
+                }else{
+                    download_task.mountPoint = $('d_d_fileNameSerial').value;
+                    download_task.filePath   = fn;
+                }
+
+                //if (typeof(this.url) == 'object'){
+                    module.downloads.add(download_task);
+                /*}else{
+                    stbDownloadManager.AddJob($("d_d_url").value, fn);
+                }*/
+
+                //stbDownloadManager.AddJob($("d_d_url").value, $('d_d_fileNameSerial').value+'/' + fn);
+
                 if(this.parent==module.downloads) {
                     this.parent.every_interval();
                 }
+
                 this.hide();
             }
             if($("d_d_url").hasFocus()==true || $("d_d_fn").hasFocus()==true) {
@@ -429,6 +454,7 @@ downloads_dialog_constructor.prototype.init = function(){
         dialog.div_outer.divs_inner.main.self.setAttribute('class', 'main');
         dialog.div_outer.divs_inner.main.self.appendChild(dialog.div_outer.divs_inner.main.item1.self);
         dialog.div_outer.divs_inner.main.item1.self.setAttribute('class', 'item');
+        dialog.div_outer.divs_inner.main.item1.self.setAttribute('id', 'download_url');
         dialog.div_outer.divs_inner.main.item1.self.appendChild(dialog.div_outer.divs_inner.main.item1.sub_items.label);
         dialog.div_outer.divs_inner.main.item1.sub_items.label.setAttribute('class', 'label');
         dialog.div_outer.divs_inner.main.item1.self.appendChild(dialog.div_outer.divs_inner.main.item1.sub_items.div_input.self);
@@ -437,6 +463,7 @@ downloads_dialog_constructor.prototype.init = function(){
         dialog.div_outer.divs_inner.main.item1.sub_items.div_input.self.appendChild(dialog.div_outer.divs_inner.main.item1.sub_items.div_input.input);
         dialog.div_outer.divs_inner.main.self.appendChild(dialog.div_outer.divs_inner.main.item2.self);
         dialog.div_outer.divs_inner.main.item2.self.setAttribute('class', 'item');
+        dialog.div_outer.divs_inner.main.item2.self.setAttribute('id', 'download_device');
         dialog.div_outer.divs_inner.main.item2.self.appendChild(dialog.div_outer.divs_inner.main.item2.sub_items.label);
         dialog.div_outer.divs_inner.main.item2.sub_items.label.setAttribute('class', 'label');
         dialog.div_outer.divs_inner.main.item2.self.appendChild(dialog.div_outer.divs_inner.main.item2.sub_items.div_input.self);
@@ -450,6 +477,7 @@ downloads_dialog_constructor.prototype.init = function(){
         dialog.div_outer.divs_inner.main.item2.sub_items.div_input.input_hidden.setAttribute('type', 'hidden');
         dialog.div_outer.divs_inner.main.self.appendChild(dialog.div_outer.divs_inner.main.item3.self);
         dialog.div_outer.divs_inner.main.item3.self.setAttribute('class', 'item');
+        dialog.div_outer.divs_inner.main.item3.self.setAttribute('id', 'download_filename');
         dialog.div_outer.divs_inner.main.item3.self.appendChild(dialog.div_outer.divs_inner.main.item3.sub_items.label);
         dialog.div_outer.divs_inner.main.item3.sub_items.label.setAttribute('class', 'label');
         dialog.div_outer.divs_inner.main.item3.self.appendChild(dialog.div_outer.divs_inner.main.item3.sub_items.div_input.self);

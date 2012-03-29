@@ -378,6 +378,16 @@ ListLayer.prototype.set_active_row = function(num){
     _debug('set_active_row', num);
 
     try{
+
+        if (!this.data_items[num]){
+            if (this.data_items[num-1]){
+                num = num-1;
+            }else{
+                num = 0;
+            }
+            this.cur_row = num;
+        }
+
         if (num == 0){
             if (!this.data_items[num]){
                 if (!this.active_row['row'].isHidden()){

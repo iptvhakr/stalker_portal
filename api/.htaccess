@@ -5,6 +5,7 @@
     RewriteCond %{HTTP_HOST} ^v([^\.]+)\.api\..+$
     RewriteRule ^(.*)$ api_v2.php?_resource=$1 [L,QSA]
 
+    RewriteRule .* - [env=HTTP_TARGET:API]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]

@@ -271,7 +271,10 @@ if (typeof Object.prototype.toSource != 'function'){
                 if(i == len-1){
                     if(this[i] === null){
                         res += 'null]';
+                    }else if (this[i] === undefined){
+                        res += 'undefined';
                     }else{
+                        //console.log(this[i]);
                         res += this[i].toSource(l) + ']';
                     }
                 }else{
@@ -282,7 +285,7 @@ if (typeof Object.prototype.toSource != 'function'){
                     }
                 }
             }
-            return res;
+            return res+']';
         } else if(con == RegExp) {
             return this;
         } else if(con == Function) {

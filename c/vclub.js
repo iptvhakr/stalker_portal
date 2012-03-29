@@ -492,7 +492,8 @@
         
         this.check_for_series = function(play_url, storage){
             _debug('vclub.check_for_series', play_url, storage);
-            
+
+
             if (this.data_items[this.cur_row].series.length > 0){
                 
                 var self = this;
@@ -500,16 +501,47 @@
                 this.series_switch.callback = function(series){
                     _debug('series', series);
                     self.data_items[self.cur_row].cur_series = series;
-                    self.play(play_url, storage);
+                    if (play_url){
+                        self.play(play_url, storage);
+                    }else{
+                        self.add_download.call(self, self.data_items[self.cur_row]);
+                    }
                 };
                 
                 this.series_switch.show(this.data_items[this.cur_row].series, this.data_items[this.cur_row].cur_series);
             }else{
-                this.play(play_url, storage);
+                if (play_url){
+                    this.play(play_url, storage);
+                }else{
+                    this.add_download.call(this, this.data_items[this.cur_row]);
+                }
             }
         };
+
+        this.get_link = function(video_cmd, episode, callback){
+
+            if (video_cmd.indexOf('://') < 0){
+
+                stb.player.on_create_link = function(result){
+                    _debug('vclub.on_create_link', result);
+
+                    if (result.cmd){
+                        if (match = /[\s]([^\s]*)$/.exec(result.cmd)){
+                            result.cmd = match[1];
+                        }
+                    }
+                    callback && callback(result.cmd);
+                }
+
+            }else{
+                callback(video_cmd);
+                return;
+            }
+
+            stb.player.create_link('vod', video_cmd, episode, '');
+        };
         
-        this.play = function(play_url, storage){
+        this.play = function(play_url, storage, callback){
             _debug('vclub.play', play_url);
             
             var self = this;
@@ -521,6 +553,15 @@
             
                 stb.player.on_create_link = function(result){
                     _debug('vclub.on_create_link', result);
+
+                    if (!play_url && callback){
+                        if (result.cmd){
+                            if (match = /[\s]([^\s]*)$/.exec(result.cmd)){
+                                result.cmd = match[1];
+                            }
+                        }
+                        callback && callback(result);
+                    }
                     
                     if (result.error == 'limit'){
                         stb.notice.show(word['player_limit_notice']);
@@ -563,17 +604,7 @@
                             stb.player.need_show_info = 1;
                             stb.player.play_now(result.cmd);
                         }else{
-                            /*var url = /[\s]([^\s]*)$/.exec(result.cmd)[1];
-                            _debug('url: ', url);*/
-                            /*_debug('path: ', self.data_items[self.cur_row].path);
-                            var filename = self.data_items[self.cur_row].path+'.'+/\.(\w*)$/.exec(url)[1];
-                            _debug('file: ', filename);
-
-                            if (module.downloads){
-                                _debug('downloads');
-                                module.downloads.dialog.show({"parent" : self, "url" : url});
-                            }*/
-
+                            //callback && callback(result.cmd);
                             self.add_download.call(self, self.data_items[self.cur_row], url);
                         }
                     }
@@ -593,14 +624,7 @@
                 }else{
                     var url = /[\s]([^\s]*)$/.exec(this.data_items[this.cur_row].cmd)[1];
                     _debug('url: ', url);
-                    /*_debug('path: ', this.data_items[this.cur_row].path);
-                    var filename = this.data_items[this.cur_row].path+'.'+/\.(\w*)$/.exec(url)[1];
-                    _debug('file: ', filename);
 
-                    if (module.downloads){
-                        _debug('downloads');
-                        module.downloads.dialog.show({"parent" : self, "url" : url});
-                    }*/
                     self.add_download.call(self, self.data_items[self.cur_row], url);
 
                     return;
@@ -627,7 +651,11 @@
                 filename += '_E' + this.data_items[this.cur_row].cur_series;
             }
 
-            var ext = /\.(\w*)$/.exec(url);
+            if (url){
+                var ext = /\.(\w*)$/.exec(url);
+            }else{
+                ext = [,'mpg'];
+            }
 
             if (ext){
                 filename += '.'+ext[1];
@@ -637,11 +665,25 @@
 
             _debug('filename: ', filename);
 
-            //var self = this;
+            var self = this;
+
+            var video_cmd = this.data_items[this.cur_row].cmd;
+            var episode   = this.data_items[this.cur_row].cur_series || 0;
+
+            var dialog_options = {"parent" : this, "url" : url, "name" : filename};
+
+            if (!url){
+
+                /*dialog_options.url = function(callback){
+                    self.get_link(video_cmd, episode, callback);
+                };*/
+
+                dialog_options.url = {"type" : "vclub", "exec" : "module.vclub.get_link", "scope" : "module.vclub", "options" : [video_cmd, episode]};
+            }
 
             if (module.downloads){
                 _debug('downloads');
-                module.downloads.dialog.show({"parent" : this, "url" : url, "name" : filename});
+                module.downloads.dialog.show(dialog_options);
             }
         };
         
