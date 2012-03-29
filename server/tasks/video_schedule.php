@@ -2,7 +2,7 @@
 
 include "../common.php";
 
-$today_tasks = Mysql::getInstance()->from('video_on_tasks')->where(array('date_on' => 'CURDATE()'))->get()->all();
+$today_tasks = Mysql::getInstance()->from('video_on_tasks')->where(array('date_on<=' => 'CURDATE()'))->get()->all();
 
 foreach ($today_tasks as $task){
     try{
