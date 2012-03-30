@@ -30,7 +30,7 @@ if (@$_POST['add']){
                 max_online,
                 for_moderator,
                 for_records,
-                wowza_server,
+                fake_tv_archive,
                 archive_stream_server,
                 external,
                 for_simple_storage,
@@ -43,7 +43,7 @@ if (@$_POST['add']){
                 "'.@$_POST['max_online'].'",
                 "'.@intval($_POST['for_moderator']).'",
                 "'.@intval($_POST['for_records']).'",
-                "'.@intval($_POST['wowza_server']).'",
+                "'.@intval($_POST['fake_tv_archive']).'",
                 "'.@$_POST['archive_stream_server'].'",
                 "'.@intval($_POST['external']).'",
                 "'.@intval($_POST['for_simple_storage']).'",
@@ -56,7 +56,7 @@ if (@$_POST['add']){
 $id = @intval($_GET['id']);
 
 if (!empty($id)){
-    
+
     if (@$_POST['edit']){
         $sql = 'update storages set
                     storage_name="'.@$_POST['storage_name'].'",
@@ -65,7 +65,7 @@ if (!empty($id)){
                     max_online="'.@$_POST['max_online'].'",
                     for_moderator="'.@intval($_POST['for_moderator']).'",
                     for_records="'.@intval($_POST['for_records']).'",
-                    wowza_server="'.@intval($_POST['wowza_server']).'",
+                    fake_tv_archive="'.@intval($_POST['fake_tv_archive']).'",
                     archive_stream_server="'.@$_POST['archive_stream_server'].'",
                     external="'.@intval($_POST['external']).'",
                     for_simple_storage="'.@intval($_POST['for_simple_storage']).'",
@@ -258,17 +258,21 @@ a:hover{
                 <tr>
                     <td>Запись ТВ</td>
                     <td>
-                        <input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('wowza_server').style.display = '' : document.getElementById('wowza_server').style.display = 'none'"/>
-                        <span id="wowza_server" style="margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
+                        <input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('fake_tv_archive').style.display = '' : document.getElementById('fake_tv_archive').style.display = 'none'"/>
+                        <!--<span id="wowza_server" style="margin-left: 5px; display: <?/*echo @$edit_storage['for_records'] ? '' : 'none' */?>">
                             Wowza server
-                            <input type="checkbox" name="wowza_server" value="1" <? if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('archive_playback_row').style.display = '' : document.getElementById('archive_playback_row').style.display = 'none'"/>
+                            <input type="checkbox" name="wowza_server" value="1" <?/* if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } */?> onchange="this.checked ? document.getElementById('archive_playback_row').style.display = '' : document.getElementById('archive_playback_row').style.display = 'none'"/>
+                        </span>-->
+                        <span id="fake_tv_archive" style="margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
+                            Эмуляция
+                            <input type="checkbox" name="fake_tv_archive" value="1" <? if(@$edit_storage['fake_tv_archive']){ echo 'checked="checked"'; } ?> />
                         </span>
                     </td>
                 </tr>
-                <tr id="archive_playback_row" style="display: <?echo @$edit_storage['wowza_server'] && $edit_storage['for_records'] ? '' : 'none' ?>">
+                <!--<tr id="archive_playback_row" style="display: <?/*echo @$edit_storage['wowza_server'] && $edit_storage['for_records'] ? '' : 'none' */?>">
                     <td>IP воспроизведения архива</td>
-                    <td><input type="text" name="archive_stream_server" value="<?echo @$edit_storage['archive_stream_server']?>"/></td>
-                </tr>
+                    <td><input type="text" name="archive_stream_server" value="<?/*echo @$edit_storage['archive_stream_server']*/?>"/></td>
+                </tr>-->
                 <tr>
                     <td>Внешнее</td>
                     <td><input disabled="disabled" type="checkbox" name="external" value="1" <? if(@$edit_storage['external']){ echo 'checked="checked"'; } ?>/></td>

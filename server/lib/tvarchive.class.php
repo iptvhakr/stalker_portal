@@ -193,7 +193,7 @@ class TvArchive extends Master
 
         $storages = array();
 
-        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0))->get()->all();
+        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0, 'fake_tv_archive' => 0))->get()->all();
 
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;
@@ -221,6 +221,10 @@ class TvArchive extends Master
     }
 
     public function createTask($ch_id){
+
+        if (empty($this->storages)){
+            return false;
+        }
 
         $storage_names = array_keys($this->storages);
         $less_loaded = $storage_names[0];
@@ -272,8 +276,13 @@ class TvArchive extends Master
 
         $tasks = array();
 
+        $range = $this->getArchiveRange()*3600;
+
+        $archive_start = date("Y-m-d H:00:00", time() - $range);
+        $archive_end   = date("Y-m-d H:00:00");
+
         $raw_tasks = Mysql::getInstance()
-            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, enable_tv_archive & wowza_dvr as wowza_archive, UNIX_TIMESTAMP(tv_archive.start_time) as start_timestamp, UNIX_TIMESTAMP(tv_archive.end_time) as stop_timestamp')
+            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, enable_tv_archive & wowza_dvr as wowza_archive, UNIX_TIMESTAMP("'.$archive_start.'") as start_timestamp, UNIX_TIMESTAMP("'.$archive_end.'") as stop_timestamp')
             ->from('tv_archive')
             ->join('itv', 'itv.id', 'tv_archive.ch_id', 'LEFT')
             ->where($where)
@@ -311,7 +320,7 @@ class TvArchive extends Master
         return Mysql::getInstance()->update('tv_archive', array('end_time' => date("Y-m-d H:i:s", $time)), array('ch_id' => intval($ch_id)));
     }
 
-    public static function getArchiveRange($ch_id){
+    public static function getArchiveRange($ch_id = 0){
         return (int) Config::get('tv_archive_parts_number');
     }
 }
