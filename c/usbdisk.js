@@ -7,6 +7,7 @@ function usbdisk(){
     this.mounted = false;
     this.onmount_callbacks  = [];
     this.onumount_callbacks = [];
+    this.storage_info = [];
 
     this.dirs  = [];
     this.files = [];
@@ -53,6 +54,12 @@ usbdisk.prototype.drive_mounted = function(){
     
     this.mounted = true;
 
+    var storage_info = JSON.parse(stb.RDir('get_storage_info')) || [];
+
+    this.restore_jobs(storage_info);
+
+    this.storage_info = storage_info;
+
     if (!stb.player.on){
         stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_connected'));
     }
@@ -67,6 +74,12 @@ usbdisk.prototype.drive_umounted = function(){
     
     this.mounted = false;
 
+    var storage_info = JSON.parse(stb.RDir('get_storage_info')) || [];
+
+    //this.invalidate_catalogs(storage_info);
+
+    this.storage_info = storage_info;
+
     if (!stb.player.on){
         stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_disconnected'));
     }
@@ -80,19 +93,66 @@ usbdisk.prototype.is_drive_mounted = function(){
     return this.mounted;
 };
 
+usbdisk.prototype.restore_jobs = function(new_storage_info){
+    _debug('usbdisk.restore_jobs');
+
+    if (!stbDownloadManager || !stbDownloadManager.RestoreJobs){
+        return;
+    }
+
+    new_storage_info.every(function(storage){
+        _debug('restore', storage['mountPath']);
+        stbDownloadManager.RestoreJobs(storage['mountPath']);
+    })
+};
+
+usbdisk.prototype.invalidate_catalogs = function(new_storage_info){
+    _debug('usbdisk.invalidate_catalogs');
+
+    if (!stbDownloadManager || !stbDownloadManager.RestoreJobs){
+        return;
+    }
+
+    _debug('this.storage_info', this.storage_info);
+    _debug('new_storage_info', new_storage_info);
+
+    var diff = this.storage_info.filter(function(exist_storage){
+        return !new_storage_info.some(function(new_storage){
+            return JSON.stringify(exist_storage) == JSON.stringify(new_storage);
+        });
+    });
+
+    _debug('diff', diff);
+
+    diff.every(function(storage){
+        _debug('invalidate', storage['mountPath']);
+        stbDownloadManager.InvalidateCatalog(storage['mountPath']);
+    });
+};
+
 usbdisk.prototype.check_mounted = function(){
     _debug('usbdisk.check_mounted');
     
     try{
         
-        var list = this.read_dir("/media/usbdisk/");
-        
-        for (var i=0; i < list.length; i++){
+        //var list = this.read_dir("/media/usbdisk/");
+
+        var storage_info = JSON.parse(stb.RDir('get_storage_info')) || [];
+
+        this.restore_jobs(storage_info);
+
+        this.storage_info = storage_info;
+
+        if (this.storage_info.length > 0){
+            this.drive_mounted();
+        }
+
+        /*for (var i=0; i < list.length; i++){
             if (!empty(list[i])){
                 this.drive_mounted();
                 return;
             }
-        }
+        }*/
     }catch(e){
         _debug(e);
     }

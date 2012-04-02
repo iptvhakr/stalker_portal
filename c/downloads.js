@@ -26,13 +26,19 @@
         this.init = function(){
             this.superclass.init.call(this);
 
+            var self = this;
+
+            stb.usbdisk.add_onmount_callback(function(){
+                self.every_interval.call(self);
+            });
+
             this.load_queue();
         };
 
         this.save_queue = function(){
             _debug('downloads.save_queue');
 
-            _debug('this._queue before', this._queue);
+            //_debug('this._queue before', this._queue);
 
             var prepared_queue = this._queue.clone().map(function(item){
 
@@ -43,8 +49,8 @@
                 return item;
             });
 
-            _debug('prepared_queue', prepared_queue);
-            _debug('this._queue after', this._queue);
+            //_debug('prepared_queue', prepared_queue);
+            //_debug('this._queue after', this._queue);
 
             stb.load(
                 {
@@ -117,7 +123,9 @@
                     this.save_queue();
 
                     if (this._queue.length > 0){
+                        window.clearInterval(this.interval);
                         this.every_interval();
+                        this.interval = window.setInterval(function(){self.every_interval.call(self)}, 3500);
                     }
                 },
                 this
@@ -144,7 +152,10 @@
 
             this._queue.push(download);
             this.save_queue();
+
+            window.clearInterval(this.interval);
             this.every_interval();
+            this.interval = window.setInterval(function(){self.every_interval.call(self)}, 3500);
         };
 
         this.adjust_priority = function(id, rise){
@@ -201,6 +212,7 @@
             if (idx !== null){
 
                 if (del_file){
+                    stb.RDir('RemoveFile "'+this.get_full_file_path(this._queue[idx])+'.temp"');
                     var remove_result = stb.RDir('RemoveFile "'+this.get_full_file_path(this._queue[idx])+'"');
                     _debug('remove_result', remove_result);
                 }
@@ -251,20 +263,6 @@
                 _debug('set waiting');
                 this._queue[idx].state = 1;
 
-                    /*this.get_url(this._queue[idx], function(url){
-
-                        _debug('on get_url', url);
-
-                        self._queue[idx].filePath = self.update_file_path(self._queue[idx].filePath, url);
-                        var result = stbDownloadManager.AddJob(url, self.get_full_file_path(self._queue[idx]));
-
-                        _debug('AddJob result', result);
-
-                        if (!result){
-                            self._queue[idx].state = 5;
-                        }
-                    });*/
-
             }else{
                 // stop job
 
@@ -289,7 +287,7 @@
         this.show=function(){
             this.superclass.show.call(this);
             var self = this;
-            this.interval = setInterval(function(){self.every_interval.call(self);}, 3500);
+            /*this.interval = setInterval(function(){self.every_interval.call(self);}, 3500);*/
             this.every_interval(false);
         };
 
@@ -343,14 +341,17 @@
         };
 
         this.every_interval = function(do_load_data){
+            //_debug('downloads.every_interval');
+
             var obj = [];
             var self = this;
             if(stbDownloadManager) {
 
                 var active_queue = eval(stbDownloadManager.GetQueueInfo());
+
                 _debug('active_queue', active_queue);
 
-                obj = this._queue;
+                //obj = this._queue;
                 //obj = active_queue.concat(this._queue);
 
                 var active_download_exits = active_queue.some(function(item){
@@ -360,6 +361,24 @@
                 _debug('active_download_exits', active_download_exits);
 
                 var need_to_save = false;
+
+                //if (active_download_exits){
+
+                    var diff = active_queue.filter(function(active_download){
+                        return !self._queue.some(function(download){
+                            return active_download.filePath == download.filePath;
+                        });
+                    });
+
+                    _debug('diff', diff);
+
+                    if (diff && diff.length > 0){
+                        need_to_save = true;
+                        this._queue = diff.concat(this._queue);
+                    }
+                //}
+
+                obj = this._queue;
 
                 active_queue.every(function(item){
                     var idx = self._queue.getIdxByVal('filePath', item.filePath);
@@ -390,13 +409,9 @@
                     return item.state == 1
                 });
 
-                _debug('before clear_queue');
-                //_debug('clear_queue json', JSON.stringify(clear_queue));
                 _debug('clear_queue', clear_queue);
-                _debug('after clear_queue');
-                _debug('clear_queue.length', clear_queue.length);
 
-                if (clear_queue.length == 0 && !this.on){
+                if (!active_download_exits && clear_queue.length == 0){
                     window.clearInterval(this.interval);
                 }
 
@@ -550,8 +565,8 @@
         };
 
         this.exit = function(){
-            clearInterval(this.interval);
-            this.interval = null;
+            /*clearInterval(this.interval);
+            this.interval = null;*/
         };
         this.drawCreateDialog = function(){
             this.dialog.show({"parent":this});//,"url":'http://cs13112.vkontakte.ru/u72912054/video/a372ac588e.720.mp4',"name":'Part 9 "И чо".mp4'

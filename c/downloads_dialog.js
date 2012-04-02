@@ -182,11 +182,11 @@ downloads_dialog_constructor.prototype.bind = function(){
 
                 var download_task = {"url" : this.url};
 
-                if (stb.image_version < 214){
-                    download_task.filePath   = $('d_d_fileNameSerial').value+'/' + fn;
-                }else{
+                if (stbDownloadManager.RestoreJobs){
                     download_task.mountPoint = $('d_d_fileNameSerial').value;
                     download_task.filePath   = fn;
+                }else{
+                    download_task.filePath   = $('d_d_fileNameSerial').value+'/' + fn;
                 }
 
                 //if (typeof(this.url) == 'object'){
