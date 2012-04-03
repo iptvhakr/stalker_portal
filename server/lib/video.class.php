@@ -135,4 +135,17 @@ class Video
     public function getFavorites(){
 
     }
+
+    public static function getNotEnded(){
+
+        $raw = Mysql::getInstance()->from('vclub_not_ended')->where(array('uid' => Stb::getInstance()->id))->get()->all();
+
+        $not_ended = array();
+
+        foreach ($raw as $video){
+            $not_ended[$video['video_id']] = $video;
+        }
+
+        return $not_ended;
+    }
 }

@@ -49,7 +49,7 @@
         //this.fav_menu  = {};
         this.filter_menu = {};
         this.genres    = [];
-        
+
         //this.last_ch_id = 0;
         
         this.quick_ch_switch = {"on" : false, "hide_to" : 3000};
@@ -1348,7 +1348,8 @@
             var genres = result;
             
             module.tv.genres = genres;
-            
+            module.tv.genre = genres[0];
+
             var map = [];
     
             for(var i=0; i<genres.length; i++){

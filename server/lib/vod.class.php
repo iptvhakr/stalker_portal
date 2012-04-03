@@ -549,6 +549,7 @@ class Vod extends AjaxResponse
         //->select('video.*, screenshots.id as screenshot_id')
             ->select('video.*, (select group_concat(screenshots.id) from screenshots where media_id=video.id) as screenshots')
             ->from('video')
+            //->join('vclub_not_ended', 'video.id', 'vclub_not_ended.video_id', 'LEFT')
         //->join('screenshots', 'video.id', 'screenshots.media_id', 'LEFT')
             ->where($where)
             ->where($where_genre, 'OR ');
@@ -619,6 +620,8 @@ class Vod extends AjaxResponse
 
         $fav = $this->getFav();
 
+        $not_ended = Video::getNotEnded();
+
         for ($i = 0; $i < count($this->response['data']); $i++) {
 
             if ($this->response['data'][$i]['hd']) {
@@ -648,6 +651,10 @@ class Vod extends AjaxResponse
 
             if (!empty($this->response['data'][$i]['series'])) {
                 $this->response['data'][$i]['position'] = 0;
+            }
+
+            if (!empty($not_ended[$this->response['data'][$i]['id']])){
+                $this->response['data'][$i]['cur_series'] = $not_ended[$this->response['data'][$i]['id']]['series'];
             }
 
             //$this->response['data'][$i]['screenshot_uri'] = $this->getImgUri($this->response['data'][$i]['screenshot_id']);
