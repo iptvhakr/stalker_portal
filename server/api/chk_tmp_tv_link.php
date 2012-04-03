@@ -1,6 +1,6 @@
 <?php
 
-include "../common.php";
+include "./common.php";
 
 $result = Itv::checkTemporaryLink($_GET['key']);
 

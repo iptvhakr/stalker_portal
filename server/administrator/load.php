@@ -5,8 +5,7 @@
 require_once "./lib/config.php";
 require_once "./lib/subsys/php.php";
 require_once "./lib/data.php";
-include "../common.php";
-require_once "../lib/func.php";
+include "./common.php";
 
 $locale = 'ru_RU.utf8';
 

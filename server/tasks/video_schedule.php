@@ -1,6 +1,6 @@
 <?php
 
-include "../common.php";
+include "./common.php";
 
 $today_tasks = Mysql::getInstance()->from('video_on_tasks')->where(array('date_on<=' => 'CURDATE()'))->get()->all();
 

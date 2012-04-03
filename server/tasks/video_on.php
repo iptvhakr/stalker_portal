@@ -1,6 +1,6 @@
 <?php
 
-include "../common.php";
+/*include "./common.php";
 
 $db = new Database();
 
@@ -28,6 +28,6 @@ if (array_key_exists($today, $data)){
         $sql = "update updated_places set vclub=1";
         $db->executeQuery($sql);
     }
-}
+}*/
 
 ?>

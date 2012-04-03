@@ -2,7 +2,7 @@
 /*
     
 */
-include "../common.php";
+include "./common.php";
 
 $db = new Database();
 

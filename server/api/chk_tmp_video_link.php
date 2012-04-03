@@ -1,6 +1,6 @@
 <?php
 
-include "../common.php";
+include "./common.php";
 
 $result = Master::checkTemporaryLink($_GET['key']);
 

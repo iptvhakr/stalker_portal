@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 set_time_limit(0);
 
-include "../common.php";
+include "./common.php";
 
 $weather = new Weatherco();
 $weather->updateFullCurrent();

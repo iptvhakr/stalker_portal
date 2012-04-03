@@ -5,7 +5,7 @@
 
 set_time_limit(0);
 
-include "../common.php";
+include "./common.php";
 
 $db = new Database();
 

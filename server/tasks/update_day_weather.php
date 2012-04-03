@@ -5,7 +5,7 @@
 
 error_reporting(E_ALL);
 
-include "../common.php";
+include "./common.php";
 
 $weather = new Gismeteo();
 $weather->getDataFromXML();

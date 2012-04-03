@@ -5,8 +5,7 @@ session_start();
 
 ob_start();
 
-include "../common.php";
-include "../lib/func.php";
+include "./common.php";
 
 $db = new Database();
 
