@@ -79,21 +79,21 @@ class ItvSubscription
 
         //Mysql::$debug = true;
 
-        $result = Mysql::getInstance();
+        /*$result = Mysql::getInstance();
 
         if (!empty($uids)){
             $result = $result->in('uid', $uids);
-        }
+        }*/
 
-        if (!key_exists('bonus_ch', $data) || !is_array($data['bonus_ch'])){
+        if (!array_key_exists('bonus_ch', $data) || !is_array($data['bonus_ch'])){
             $data['bonus_ch'] = array();
         }
 
-        if (!key_exists('sub_ch', $data) || !is_array($data['sub_ch'])){
+        if (!array_key_exists('sub_ch', $data) || !is_array($data['sub_ch'])){
             $data['sub_ch'] = array();
         }
 
-        if (key_exists('sub_ch', $data)){
+        if (array_key_exists('sub_ch', $data)){
             $data['sub_ch'] = System::base64_encode(serialize($data['sub_ch']));
         }
 
@@ -103,7 +103,24 @@ class ItvSubscription
 
         $data['addtime']  = 'NOW()';
 
-        $result = $result->update('itv_subscription', $data);
+        $result = false;
+
+        foreach ($uids as $uid){
+
+            $subscription = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first();
+
+            if (empty($subscription)){
+
+                $data['uid'] = $uid;
+
+                $result = Mysql::getInstance()->insert('itv_subscription', $data);
+            }else{
+                $result = Mysql::getInstance()->update('itv_subscription', $data, array('uid' => $uid));
+            }
+
+        }
+
+        //$result = $result->update('itv_subscription', $data);
 
         if (!$result){
             return false;
