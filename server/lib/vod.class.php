@@ -589,6 +589,8 @@ class Vod extends AjaxResponse
                 $result->select('(count_first_0_5+count_second_0_5) as top')->orderby('top', 'DESC');
             } elseif ($sortby == 'last_ended') {
                 $result = $result->orderby('vclub_not_ended.added', 'DESC');
+            } elseif ($sortby == 'rating') {
+                $result = $result->orderby('video.rating_kinopoisk', 'DESC');
             }
 
         } else {

@@ -259,8 +259,17 @@
             //item.director
             //item.screenshot_uri
             //item.genres_str
-            
-            this.short_info_box.innerHTML = '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str + '<br><span>' + word['vclub_year'] + ': </span>' + item.year + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br><span>' + word['vclub_director'] + ': </span>' + item.director;
+
+            var info = '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str
+                + '<br><span>' + word['vclub_year'] + ': </span>' + item.year
+                + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br>'
+                + '<span>' + word['vclub_director'] + ': </span>' + item.director + '<br>';
+
+            if (item.rating_kinopoisk && stb.profile['kinopoisk_rating']){
+                info += '<span>' + get_word('vclub_rating') + ': </span>' + item.rating_kinopoisk;
+            }
+
+            this.short_info_box.innerHTML = info;
             this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '">';
         };
         
@@ -843,16 +852,25 @@
     vclub.sidebar.init_items("years",  {"header" : word['vclub_by_year'], "width" : 45});
     
     vclub.sidebar.bind();
+
+    var sort_menu = [
+        {"label" : word['vclub_by_addtime'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+        {"label" : word['vclub_by_title'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+        {"label" : word['vclub_top'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+        {"label" : word['vclub_only_hd'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true; this.parent.load_params.not_ended = false}},
+        {"label" : word['vclub_only_favorite'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
+        {"label" : word['vclub_not_ended'], "cmd" : function(){this.parent.load_params.sortby = 'last_ended'; this.parent.load_params.fav = false; this.parent.load_params.hd = false; this.parent.load_params.not_ended = true}}
+    ];
+
+    if (stb.profile['kinopoisk_rating']){
+
+        var rating_item = {"label" : get_word('vclub_by_rating'), "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'rating'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}};
+
+        sort_menu.splice(1, 0, rating_item);
+    }
     
     vclub.init_sort_menu(
-        [
-            {"label" : word['vclub_by_addtime'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'added'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
-            {"label" : word['vclub_by_title'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'name'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
-            {"label" : word['vclub_top'], "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'top'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
-            {"label" : word['vclub_only_hd'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = false; this.parent.load_params.hd = true; this.parent.load_params.not_ended = false}},
-            {"label" : word['vclub_only_favorite'], "cmd" : function(){this.parent.load_params.sortby = 'name'; this.parent.load_params.fav = true; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}},
-            {"label" : word['vclub_not_ended'], "cmd" : function(){this.parent.load_params.sortby = 'last_ended'; this.parent.load_params.fav = false; this.parent.load_params.hd = false; this.parent.load_params.not_ended = true}}
-        ],
+        sort_menu,
         {
             "offset_x" : 217,
             "color"    : "green"

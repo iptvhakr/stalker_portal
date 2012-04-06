@@ -86,6 +86,7 @@ $words['vclub_length'] = _('Length');
 $words['vclub_minutes'] = _('min');
 $words['vclub_director'] = _('Director');
 $words['vclub_cast'] = _('Cast');
+$words['vclub_rating'] = _('Rating');
 
 // vclub
 $words['vclub_view'] = _('VIEW');
@@ -97,6 +98,7 @@ $words['vclub_find'] = _('FIND');
 $words['vclub_by_letter'] = _('BY LETTER');
 $words['vclub_by_genre'] = _('BY GENRE');
 $words['vclub_by_year'] = _('BY YEAR');
+$words['vclub_by_rating'] = _('BY RATING');
 $words['vclub_search_box'] = _('search');
 $words['vclub_query_box'] = _('picking');
 $words['vclub_by_title'] = _('by title');

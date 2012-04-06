@@ -185,7 +185,7 @@ class Itv extends AjaxResponse
 
     private function createTemporaryLink($url){
 
-        $key = md5($url.time());
+        $key = md5($url.time().uniqid());
 
         $cache = Cache::getInstance();
 

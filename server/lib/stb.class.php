@@ -300,6 +300,8 @@ class Stb
 
         $profile['timeslot']               = $this->id * $profile['watchdog_timeout']/ Mysql::getInstance()->select('max(id) as max_id')->from('users')->get()->first('max_id');
 
+        $profile['kinopoisk_rating']       = Config::getSafe('kinopoisk_rating', true);
+
         $image_update = new ImageAutoUpdate();
         if ($image_update->isEnabled()){
             $profile['autoupdate'] = $image_update->getSettings();

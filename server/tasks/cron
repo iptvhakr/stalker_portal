@@ -13,3 +13,4 @@ MAILTO=alex
 10 * * * * /var/www/stalker_portal/server/tasks/update_weatherco_fullforecast.sh
 */20 * * * * cd /var/www/stalker_portal/server/tools/; php ./channelmonitoring.php > /dev/null 2>&1
 00 14 * * * cd /var/www/stalker_portal/server/tasks/; php ./video_schedule.php
+10 2 * * * cd /var/www/stalker_portal/server/tools/; php ./update_kinopoisk_rating.php > /dev/null 2>&1

@@ -221,6 +221,10 @@ if (count(@$_POST) > 0){
             }
             
             $status = $rtsp_url? 1 : 0;
+
+            if (!empty($_GET['id'])){
+                $video = Video::getById($_GET['id']);
+            }
             
             if (@$_GET['save']){
                 $trans_name = transliterate(@urldecode($_POST['name']));
@@ -286,7 +290,12 @@ if (count(@$_POST) > 0){
                                                  added,
                                                  status,
                                                  year,
-                                                 volume_correction
+                                                 volume_correction,
+                                                 kinopoisk_id,
+                                                 rating_kinopoisk,
+                                                 rating_count_kinopoisk,
+                                                 rating_imdb,
+                                                 rating_count_imdb
                                                  ) 
                                         values ('".trim(mysql_real_escape_string($name))."',
                                                 '".trim(mysql_real_escape_string($o_name))."',
@@ -312,10 +321,17 @@ if (count(@$_POST) > 0){
                                                 '".$datetime."',
                                                 $status,
                                                 '".$year."',
-                                                ".intval($_POST['volume_correction'])."
+                                                ".intval($_POST['volume_correction']).",
+                                                '".$_POST['kinopoisk_id']."',
+                                                '".$_POST['rating_kinopoisk']."',
+                                                '".$_POST['rating_count_kinopoisk']."',
+                                                '".$_POST['rating_imdb']."',
+                                                '".$_POST['rating_count_imdb']."'
                                                 )";
                     //echo $query;
                     $rs = $db->executeQuery($query);
+
+                    $video_id = mysql_insert_id();
                     
                     if(@$_SESSION['upload']){
                         $query = 'UPDATE screenshots SET media_id=\''.mysql_insert_id().'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
@@ -325,8 +341,8 @@ if (count(@$_POST) > 0){
                     
                     add_video_log('add', $rs->getLastInsertId());
 
-                    header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
-                    exit;
+                    //header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
+                    //exit;
                 }
                 else if (!$error){
                     $error = 'Ошибка: необходимо заполнить все поля';
@@ -335,7 +351,9 @@ if (count(@$_POST) > 0){
             
             if (@$_GET['update']){
                 
-                
+
+                $video_id = intval(@$_GET['id']);
+
                 if(@$_GET['name']){
                     $query = "update video set name='".trim(mysql_real_escape_string($_POST['name']))."', 
                                                o_name='".trim(mysql_real_escape_string($_POST['o_name']))."', 
@@ -359,9 +377,14 @@ if (count(@$_POST) > 0){
                                                actors='".@mysql_real_escape_string($_POST['actors'])."', 
                                                status=$status,
                                                year='".@$_POST['year']."',
-                                               volume_correction=".intval($_POST['volume_correction'])."
+                                               volume_correction=".intval($_POST['volume_correction']).",
+                                               kinopoisk_id='".$_POST['kinopoisk_id']."',
+                                               rating_kinopoisk='".$_POST['rating_kinopoisk']."',
+                                               rating_count_kinopoisk='".$_POST['rating_count_kinopoisk']."',
+                                               rating_imdb='".$_POST['rating_imdb']."',
+                                               rating_count_imdb='".$_POST['rating_count_imdb']."'
                                             where id=".intval(@$_GET['id']);
-                    //echo $query;
+                    //echo $query; exit;
                     $rs=$db->executeQuery($query);
                     add_video_log('edit', intval(@$_GET['id']));
                     $query = 'UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
@@ -369,13 +392,27 @@ if (count(@$_POST) > 0){
                     $rs=$db->executeQuery($query);
         
                     unset($_SESSION['upload']);
-                    header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".$_GET['page']);
-                    exit;
+
+                    //header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".$_GET['page']);
+                    //exit;
                 }
                 else{
                     $error = 'Ошибка: необходимо заполнить все поля';
                 }
             }
+
+            if ($error){
+                return;
+            }
+
+            //var_dump(!empty($_POST['rating_kinopoisk']), empty($video), $video['rating_kinopoisk'] != $_POST['rating_kinopoisk']);exit;
+
+            if (!empty($_POST['rating_kinopoisk']) && (empty($video) || $video['rating_kinopoisk'] != $_POST['rating_kinopoisk'])){
+                Mysql::getInstance()->update('video', array('rating_last_update' => 'NOW()'), array('id' => $video_id));
+            }
+
+            header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
+            exit;
         }
     }else{
         $error = 'Ошибка: недостаточно прав для данного действия';
@@ -431,7 +468,7 @@ a:hover{
     font-style: italic;
 }
 
-#video-on-form label, input{
+#video-on-form label, #video-on-form input{
     display: block;
 }
 
@@ -861,7 +898,7 @@ if (@$_GET['edit']){
     $query = "select * from video where id=".intval(@$_GET['id']);
     $rs=$db->executeQuery($query);
     while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+        $item = $arr=$rs->getCurrentValuesAsHash();
         $name = $arr['name'];
         $o_name = $arr['o_name'];
         $censored = $arr['censored'];
@@ -1620,6 +1657,85 @@ function check_protocol(){
     }
 }
 
+function check_kinopoisk_info(orig_name){
+
+    $('.kinopoisk_url').attr('href', '');
+    $('.kinopoisk_url').html('');
+
+    $.get('get.php?get=kinopoisk_info', {"oname" : orig_name}, function(response){
+        $('.info_loader').hide();
+        $('.get_info').show();
+        response = JSON.parse(response);
+
+        var result = response.result;
+
+        if (result){
+            for (var id in result){
+                if (result.hasOwnProperty(id)){
+                    //console.log(id, result[id]);
+                    $("."+id).val(result[id]);
+
+                    if (id == 'kinopoisk_url'){
+                        $('.kinopoisk_url').attr('href', result[id]);
+                        $('.kinopoisk_url').html(result[id]);
+                    }
+                }
+            }
+        }
+    });
+}
+
+function check_kinopoisk_rating(orig_name){
+
+    $('.kinopoisk_url').attr('href', '');
+    $('.kinopoisk_url').html('');
+
+    $.get('get.php?get=kinopoisk_rating', {"oname" : orig_name}, function(response){
+
+        $('.refresh_img').attr('src', 'css/refresh-static.gif');
+
+        response = JSON.parse(response);
+
+        var result = response.result;
+
+        if (result){
+            for (var id in result){
+                if (result.hasOwnProperty(id)){
+                    $("."+id).val(result[id]);
+
+                    if (id == 'kinopoisk_url'){
+                        $('.kinopoisk_url').attr('href', result[id]);
+                        $('.kinopoisk_url').html(result[id]);
+                    }
+                }
+            }
+        }
+    });
+}
+
+$(function(){
+
+    $(".get_info").click(function(){
+        $('.get_info').hide();
+        $('.info_loader').show();
+
+        check_kinopoisk_info($(".o_name").val() || $(".name").val());
+    });
+
+    $(".rating_refresh").click(function(){
+        $('.refresh_img').attr('src', 'css/refresh-anim.gif');
+
+        check_kinopoisk_rating($(".o_name").val() || $(".name").val());
+    });
+
+    if ($('.kinopoisk_id').val()){
+        var kinopoisk_url = 'http://www.kinopoisk.ru/level/1/film/'+$('.kinopoisk_id').val()+'/';
+
+        $('.kinopoisk_url').attr('href', kinopoisk_url);
+        $('.kinopoisk_url').html(kinopoisk_url);
+    }
+});
+
 </script>
 <br>
 <table align="center" class='list'>
@@ -1637,10 +1753,15 @@ function check_protocol(){
             Название: 
            </td>
            <td>
-            <input type="text" size="40" name="name" id="name" onblur="check_name(this.value)" value="<? echo @htmlspecialchars($name) ?>" <? //echo @$readonly ?>>
+            <input type="text" size="40" class="name" name="name" id="name" onblur="check_name(this.value)" value="<? echo @htmlspecialchars($name) ?>" <? //echo @$readonly ?>>
             <span id="name_chk"></span>
             <input type="hidden" id="id" value="<? echo @$_GET['id'] ?>">
             <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
+            <input type="hidden" name="kinopoisk_id" class="kinopoisk_id" value="<? echo @$item['kinopoisk_id'] ?>">
+            <!--<input type="hidden" name="rating_kinopoisk" class="rating_kinopoisk" value="<?/* echo $item['rating_kinopoisk'] */?>">-->
+            <input type="hidden" name="rating_count_kinopoisk" class="rating_count_kinopoisk" value="<? echo @$item['rating_count_kinopoisk'] ?>">
+            <input type="hidden" name="rating_imdb" class="rating_imdb" value="<? echo @$item['rating_imdb'] ?>">
+            <input type="hidden" name="rating_count_imdb" class="rating_count_imdb" value="<? echo @$item['rating_count_imdb'] ?>">
            </td>
         </tr>
         <tr>
@@ -1648,8 +1769,20 @@ function check_protocol(){
            Оригинальное название: 
            </td>
            <td>
-            <input name="o_name" id="o_name" type="text" onblur="" size="40" value="<? echo @$o_name ?>">
+            <input name="o_name" id="o_name" class="o_name" type="text" size="40" value="<? echo @$o_name ?>">
+            <a style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>" href="javascript://" class="get_info">автозаполнение</a><img class="info_loader" src="css/ajax-loader.gif" style="display: none;"/>
             <span id="org_name_chk"></span>
+            <div><a class="kinopoisk_url" href=""></a></div>
+           </td>
+        </tr>
+
+        <tr style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>">
+           <td align="right" valign="top">
+           Рейтинг кинопоиска:
+           </td>
+           <td>
+               <input type="text" readonly="readonly" name="rating_kinopoisk" class="rating_kinopoisk" value="<? echo @$item['rating_kinopoisk'] ?>">
+               <a href="javascript://" class="rating_refresh"><img src="css/refresh-static.gif" class="refresh_img"/></a>
            </td>
         </tr>
 
@@ -1740,8 +1873,6 @@ function check_protocol(){
            </td>
         </tr>
         
-        
-        
         <tr>
            <td align="right" valign="top">
             Категория: 
@@ -1793,7 +1924,7 @@ function check_protocol(){
            Год: 
            </td>
            <td>
-            <input name="year" type="text" size="4" value="<? echo @$year ?>">
+            <input name="year" class="year" type="text" size="4" value="<? echo @$year ?>">
            </td>
         </tr> 
         <tr>
@@ -1801,7 +1932,7 @@ function check_protocol(){
             Длительность: 
            </td>
            <td>
-            <input name="time" type="text" size="4" value="<? echo @$time ?>">, мин
+            <input name="time" type="text" class="duration" size="4" value="<? echo @$time ?>">, мин
            </td>
         </tr> 
         <tr>
@@ -1809,7 +1940,7 @@ function check_protocol(){
             Режиссер: 
            </td>
            <td>
-            <input name="director" type="text" size="40" value="<? echo @$director ?>">
+            <input name="director" type="text" class="director" size="40" value="<? echo @$director ?>">
            </td>
         </tr> 
         <tr>
@@ -1817,7 +1948,7 @@ function check_protocol(){
             Актеры: 
            </td>
            <td>
-            <textarea id="actors" name="actors" rows="6" cols="30"><? echo @$actors ?></textarea>
+            <textarea id="actors" name="actors" class="actors" rows="6" cols="30"><? echo @$actors ?></textarea>
            </td>
         </tr>  
         <tr>
@@ -1825,7 +1956,7 @@ function check_protocol(){
             Описание: 
            </td>
            <td>
-            <textarea id="description" name="description" rows="10" cols="30"><? echo @$description ?></textarea>
+            <textarea id="description" name="description" class="description" rows="10" cols="30"><? echo @$description ?></textarea>
            </td>
         </tr>
         <tr>
