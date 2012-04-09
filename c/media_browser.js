@@ -32,6 +32,8 @@
             var self = this;
 
             this.init_smb_auth_dialog();
+
+            this.get_smb_passwords();
             
             stb.usbdisk.add_onmount_callback(function(){
                 self.load_data();
@@ -166,6 +168,38 @@
                 }
             });
             
+        };
+
+        this.get_smb_passwords = function(){
+            _debug('media_browser.get_smb_passwords');
+
+            if (!stb.LoadUserData){
+                return;
+            }
+
+            var smb_data = Utf8.decode(stb.LoadUserData('smb_data')) || "[]";
+
+            _debug('smb_data', smb_data);
+
+            smb_data = eval(smb_data);
+
+            if (typeof(smb_data) == 'object'){
+                this.smb_auth_history = smb_data;
+            }
+        };
+
+        this.save_smb_passwords = function(){
+            _debug('media_browser.save_smb_passwords');
+
+            if (stb.firmware_version < 214){
+                return;
+            }
+
+            var smb_passwords = JSON.stringify(this.smb_auth_history);
+
+            _debug('smb_passwords', smb_passwords);
+
+            stb.SaveUserData('smb_data',Utf8.encode(smb_passwords));
         };
 
         this.init_smb_auth_dialog = function(){
@@ -474,7 +508,7 @@
             if (login == undefined){
                 var auth_params = this.get_auth_params(this.smb_server_ip, this.smb_share);
                 login    = auth_params.login;
-                password = auth_params.password;
+                password = auth_params.pass;
             }
 
             _debug('this.smb_server_ip', this.smb_server_ip);
@@ -482,7 +516,7 @@
             _debug('password', password);
             _debug('login', login);
 
-            var smb_mount_result = stb.RDir('mount cifs //' + Utf8.encode(this.smb_server_ip + '/' + this.smb_share) + ' /media/tmp-smb username=' + login + ',password=' + password + ',iocharset=utf8');
+            var smb_mount_result = stb.RDir('mount cifs //' + Utf8.encode(this.smb_server_ip + '/' + this.smb_share) + ' /ram/mnt/smb username=' + login + ',password=' + password + ',iocharset=utf8');
             _debug('smb_mount_result', smb_mount_result);
 
             if (smb_mount_result == "Error: mount failed"){
@@ -506,13 +540,15 @@
 
             var idx = this.smb_auth_history.getIdxByVal("url", url);
 
-            var save_obj = {"url" : url, "login" : login, "password" : password};
+            var save_obj = {"url" : url, "login" : login, "pass" : password, "automount" : 0};
 
             if (idx != null){
                 this.smb_auth_history[idx] = save_obj;
             }else{
                 this.smb_auth_history.push(save_obj);
             }
+
+            this.save_smb_passwords();
         };
 
         this.get_auth_params = function(server, share){
@@ -523,10 +559,10 @@
             var idx = this.smb_auth_history.getIdxByVal("url", url);
 
             if (idx == null){
-                return {"login" : "guest", "password" : ""};
+                return {"login" : "guest", "pass" : ""};
             }
 
-            return {"login" : this.smb_auth_history[idx].login, "password" : this.smb_auth_history[idx].password};
+            return {"login" : this.smb_auth_history[idx].login, "pass" : this.smb_auth_history[idx].pass};
         };
 
         this.fill_page = function(data){
@@ -571,7 +607,7 @@
             _debug('this.dir_hist', this.dir_hist);
 
             if (this.dir_hist[this.dir_hist.length - 1].path == 'SMB_SHARE'){
-                return '/media/tmp-smb/'
+                return '/ram/mnt/smb/'
             }
 
             var path = '';
@@ -580,7 +616,7 @@
                 if (['SMB_GROUP', 'SMB_SERVER', 'SMB_SHARE'].indexOf(this.dir_hist[i].path) >= 0){
                     continue;
                 }else if (this.dir_hist[i].path == 'SMB'){
-                    path += 'tmp-smb/';
+                    path += '/ram/mnt/smb/';
                 }else{
                     path += this.dir_hist[i].path;
                 }
@@ -706,9 +742,9 @@
 
             if (item.dir_name == 'SMB_SHARE'){
                 /*if (this.change_level){*/
-                    stb.ExecAction('make_dir /media/tmp-smb/');
+                    stb.ExecAction('make_dir /ram/mnt/smb/');
 
-                    stb.ExecAction('umount_dir /media/tmp-smb/');
+                    stb.ExecAction('umount_dir /ram/mnt/smb/');
 
                     this.smb_share = item.name;
 
@@ -999,6 +1035,37 @@
 
             }
             return utftext;
+        },
+
+        // public method for url decoding
+        decode : function (utftext) {
+            var string = "";
+            var i = 0;
+            var c = c1 = c2 = 0;
+
+            while ( i < utftext.length ) {
+
+                c = utftext.charCodeAt(i);
+
+                if (c < 128) {
+                    string += String.fromCharCode(c);
+                    i++;
+                }
+                else if((c > 191) && (c < 224)) {
+                    c2 = utftext.charCodeAt(i+1);
+                    string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                    i += 2;
+                }
+                else {
+                    c2 = utftext.charCodeAt(i+1);
+                    c3 = utftext.charCodeAt(i+2);
+                    string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                    i += 3;
+                }
+
+            }
+
+            return string;
         }
     };
     
