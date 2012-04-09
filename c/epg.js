@@ -643,7 +643,7 @@
 
             if (module.downloads){
                 _debug('downloads');
-                module.downloads.dialog.show({"parent" : this, "url" : url, "name" : to_filename});
+                module.downloads.dialog.show({"secure_url" : true, "parent" : this, "url" : url, "name" : to_filename});
             }
         }
     }

@@ -263,6 +263,10 @@
                 _debug('set waiting');
                 this._queue[idx].state = 1;
 
+                window.clearInterval(this.interval);
+                this.every_interval();
+                this.interval = window.setInterval(function(){self.every_interval.call(self)}, 3500);
+
             }else{
                 // stop job
 

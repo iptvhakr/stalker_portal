@@ -687,7 +687,7 @@
                     self.get_link(video_cmd, episode, callback);
                 };*/
 
-                dialog_options.url = {"type" : "vclub", "exec" : "module.vclub.get_link", "scope" : "module.vclub", "options" : [video_cmd, episode]};
+                dialog_options.url = {"secure_url" : true, "type" : "vclub", "exec" : "module.vclub.get_link", "scope" : "module.vclub", "options" : [video_cmd, episode]};
             }
 
             if (module.downloads){

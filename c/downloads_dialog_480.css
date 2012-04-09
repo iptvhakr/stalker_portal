@@ -4,9 +4,9 @@
     Author     : Affect
 */
 /* <dialog create download lay> */
-#downloadsDialogCreate  {z-index: 1;display:none;position:absolute;left:50%;top:50%;margin-left:-250px; margin-top:-125px; height:250px; width:484px; border-width:11px 13px 15px 13px; -webkit-border-image: url(i/downloads/modal_bg.png) 11 13 15 13 stretch stretch;}
-#downloadsDialogCreate  .header {position:absolute; width:480px; height:50px; font-size:30px; color:#002864;}
-#downloadsDialogCreate  .main {position:absolute; left:2px; bottom:10px; width:480px; height:190px;}
+#downloadsDialogCreate  {z-index: 1;display:none;position:absolute;left:50%;top:50%;margin-left:-250px; margin-top:-125px; /*height:250px;*/ width:484px; border-width:11px 13px 15px 13px; -webkit-border-image: url(i/downloads/modal_bg.png) 11 13 15 13 stretch stretch;}
+#downloadsDialogCreate  .header {/*position:absolute;*/ width:480px; height:50px; font-size:30px; color:#002864;}
+#downloadsDialogCreate  .main {/*position:absolute;*/ left:2px; bottom:10px; width:480px;/* height:190px;*/}
 #downloadsDialogCreate  .item {position:relative; height:0px; width:468px; margin-bottom:10px; border-width:20px 6px 20px 6px; -webkit-border-image: url(i/downloads/item_bg.png) 20 6 20 6 stretch stretch;}
 #downloadsDialogCreate  .label {position:absolute; width:150px; height:40px; top:-20px; font-size:22px; color:#002864; text-shadow:#fff 1px 1px 1px; line-height:38px;}
 #downloadsDialogCreate  .main .item .input_cover {position:absolute; height:0px; width:280px; top:-13px; left:160px; border-width:13px 13px 14px 13px; -webkit-border-image: url(i/downloads/input.png) 13 13 14 13 stretch stretch;}

@@ -5,6 +5,8 @@
 */
 function downloads_dialog_constructor(){    
     this.init();
+
+    this.secure_url = false;
 }
 function setEnvironmentValue(name, value){gSTB.RDir('setenv '+name+' '+value)}
 function getEnvironmentValue(name){return gSTB.RDir('getenv '+name)}
@@ -30,6 +32,11 @@ downloads_dialog_constructor.prototype.show=function(options){
             this[key] = options[key];
         }
     }
+
+    this.url = options.url || "";
+    this.secure_url = options.secure_url || false;
+    this.name = options.name || "";
+
     this.parent.on = false;
     this.dom_obj.show();
     this.on = true;
@@ -66,6 +73,9 @@ downloads_dialog_constructor.prototype.show=function(options){
             );
         }
     }
+
+    _debug('usbDisks.length', usbDisks.length);
+
     if(usbDisks.length==0){
         $('d_d_fileName').disabled = true;
         $('d_d_fileName').value='';
@@ -80,15 +90,34 @@ downloads_dialog_constructor.prototype.show=function(options){
         $('d_d_button_ok').disabled = false;
         $('d_d_fn').disabled = false;
         $('d_d_header').innerHTML = get_word('downloads_add_download') ;
-      this.fillUSBDevices(usbDisks);
-       $('d_d_url').focus();
+
+        this.fillUSBDevices(usbDisks);
+
+        _debug('this.url', this.url);
+
+        if (this.url == ""){
+            $('d_d_url').focus();
+        }else{
+            $('d_d_button_ok').focus();
+        }
     }
-    if(typeof(this.url) != 'object' && this.url && this.url.length>0){
-        //$('d_d_url').removeAttribute('readonly');
+
+    _debug('typeof(this.url)', typeof(this.url));
+    _debug('this.secure_url', this.secure_url);
+
+    /*if((typeof(this.url) != 'object' && this.url && this.url.length>0) || this.url || !this.secure_url){
         $('d_d_url').value=this.url;
+        $('download_url').show();
     }else{
-        //$('d_d_url').setAttribute('readonly', 'readonly');
         $('d_d_url').value='[secure url]';
+        $('download_url').hide();
+    }*/
+    if(typeof(this.url) == 'object' || this.secure_url){
+        $('d_d_url').value='[secure url]';
+        $('download_url').hide();
+    }else{
+        $('d_d_url').value=this.url || "";
+        $('download_url').show();
     }
     if(this.name && this.name.length>0){
         $('d_d_fn').value=this.name;
