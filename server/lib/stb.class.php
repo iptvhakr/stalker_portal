@@ -67,7 +67,7 @@ class Stb
 
         }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
             $this->mac = @trim(urldecode($_COOKIE['mac']));
-        }else if (!empty($_SERVER['HTTP_TARGET']) && ($_SERVER['HTTP_TARGET'] == 'API' || $_SERVER['HTTP_TARGET'] == 'ADM')){
+        }else if (!empty($_SERVER['HTTP_TARGET']) && ($_SERVER['HTTP_TARGET'] == 'API' || $_SERVER['HTTP_TARGET'] == 'ADM') || !empty($_GET['type']) && $_GET['type'] == 'stb'){
 
         }else{
             $this->mac = '';
