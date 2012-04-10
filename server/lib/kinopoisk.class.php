@@ -66,7 +66,7 @@ class Kinopoisk
         // Translated name
         $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[1]/td/table/tr/td[2]/table/tr[1]/td/h1');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['name'] = self::getNodeText($node_list->item(0));
         }
 
@@ -77,7 +77,7 @@ class Kinopoisk
         // Original name
         $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[1]/td/table/tr/td[2]/table/tr[2]/td/table/tr/td[1]/span');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['o_name'] = self::getNodeText($node_list->item(0));
         }
 
@@ -88,28 +88,28 @@ class Kinopoisk
         // Year
         $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[2]/td[2]/div[1]/table/tr[1]/td[2]/div/a');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['year'] = self::getNodeText($node_list->item(0));
         }
 
         // Duration
         $node_list = $xpath->query('//*[@id="runtime"]');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['duration'] = (int) self::getNodeText($node_list->item(0));
         }
 
         // Director
         $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[2]/td[2]/div[1]/table/tr[4]/td[2]/a');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['director'] = self::getNodeText($node_list->item(0));
         }
 
         // Actors
         $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[2]/div/span');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
 
             $actors = array();
 
@@ -127,28 +127,28 @@ class Kinopoisk
         // Description
         $node_list = $xpath->query('//*[@id="syn"]/tr[1]/td/table/tr[1]/td');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['description'] = self::getNodeText($node_list->item(0));
         }
 
         // Kinopoisk rating
         $node_list = $xpath->query('//*[@id="block_rating"]/div[1]/div[1]/a/span[1]');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['rating_kinopoisk'] = self::getNodeText($node_list->item(0));
         }
 
         // Kinopoisk rating count
         $node_list = $xpath->query('//*[@id="block_rating"]/div[1]/div[1]/a/span[2]');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $movie_info['rating_count_kinopoisk'] = self::getNodeText($node_list->item(0));
         }
 
         // IMDB rating
         $node_list = $xpath->query('//*[@id="block_rating"]/div[1]/div[2]');
 
-        if ($node_list !== false){
+        if ($node_list !== false && $node_list->length != 0){
             $imdb_raw = self::getNodeText($node_list->item(0));
 
             if (preg_match("/IMDb: (.*) \((.*)\)/", $imdb_raw, $match)){
