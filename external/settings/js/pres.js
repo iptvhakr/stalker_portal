@@ -66,7 +66,7 @@ function sload(){
  document.getElementsByTagName("head")[0].appendChild(fileref);
  var html = document.getElementsByTagName('body')[0];
  var img = document.createElement('img');
- img.src = 'http://localhost/12313432.jpg';
+ img.src = 'http://127.0.0.1/12313432.jpg';
  img.onerror = function(){document.body.removeChild(img);parent.cont.style.visibility='visible';}
  html.appendChild(img);
 }
