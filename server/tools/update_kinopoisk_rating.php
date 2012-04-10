@@ -39,7 +39,7 @@ foreach ($movies as $movie){
         continue;
     }
 
-    if ($rating && !empty($rating['kinopoisk_id']) && $rating['rating_kinopoisk'] != $movie['rating_kinopoisk']){
+    if ($rating && !empty($rating['kinopoisk_id']) && !empty($rating['rating_kinopoisk']) && $rating['rating_kinopoisk'] != $movie['rating_kinopoisk']){
 
         Mysql::getInstance()->update('video',
             array(
