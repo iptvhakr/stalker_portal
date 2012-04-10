@@ -44,10 +44,10 @@ foreach ($movies as $movie){
         Mysql::getInstance()->update('video',
             array(
                 'kinopoisk_id'           => $rating['kinopoisk_id'],
-                'rating_kinopoisk'       => $rating['rating_kinopoisk'],
-                'rating_count_kinopoisk' => $rating['rating_count_kinopoisk'],
-                'rating_imdb'            => $rating['rating_imdb'],
-                'rating_count_imdb'      => $rating['rating_count_imdb'],
+                'rating_kinopoisk'       => empty($rating['rating_kinopoisk']) ? '' : $rating['rating_kinopoisk'],
+                'rating_count_kinopoisk' => empty($rating['rating_count_kinopoisk']) ? '' : $rating['rating_count_kinopoisk'],
+                'rating_imdb'            => empty($rating['rating_imdb']) ? '' : $rating['rating_imdb'],
+                'rating_count_imdb'      => empty($rating['rating_count_imdb']) ? '' : $rating['rating_count_imdb'],
                 'rating_last_update'     => 'NOW()'
             ),
             array(
