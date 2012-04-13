@@ -1045,7 +1045,7 @@ player.prototype.play = function(item){
                 this.play_now(cmd);
             }
             
-            if (this.is_tv){
+            if (this.is_tv && this.cur_tv_item.lock != '1'){
                 
                 this.send_last_tv_id(this.cur_tv_item.id);
                 
