@@ -386,7 +386,7 @@
                 return;
             }
             
-            if (this.data_items[this.cur_row].lock){
+            if (this.data_items[this.cur_row].lock && this.cur_view != 'short'){
                 var self = this;
                 
                 this.password_input.callback = function(){
