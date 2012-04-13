@@ -18,7 +18,7 @@
 
         this.superclass = ListLayer.prototype;
 
-        this.duration_input = new DurationInputBox({"parent" : stb.player, "max_val" : stb.user['record_max_length']});
+        this.duration_input = new DurationInputBox({/*"parent" : stb.player,*/ "max_val" : stb.user['record_max_length']});
 
         this.init = function(){
             _debug('remote_pvr.init');
