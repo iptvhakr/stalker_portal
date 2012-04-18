@@ -69,7 +69,7 @@ $words['radio_title'] = _('RADIO');
 // tv
 $words['tv_view'] = _('VIEW');
 $words['tv_sort'] = _('SORT');
-$words['tv_favorite'] = _('FAVORITE');
+$words['tv_favorite'] = $words['favorite'] = _('FAVORITE');
 $words['tv_move'] = _('MOVE');
 $words['tv_by_number'] = _('by number');
 $words['tv_by_title'] = _('by title');
@@ -346,5 +346,7 @@ $words['identical_download_exist'] = _('There is an active downloads from this s
 
 $words['alert_form_title'] = _('Alert');
 $words['confirm_form_title'] = _('Confirm');
+
+$words['media_favorites'] = _('Favorites');
 
 ?>

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-05 17:12+0200\n"
-"PO-Revision-Date: 2012-04-05 17:12+0200\n"
+"POT-Creation-Date: 2012-04-17 16:43+0200\n"
+"PO-Revision-Date: 2012-04-17 16:43+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1036,6 +1036,10 @@ msgstr ""
 msgid "Alert"
 msgstr ""
 
+#: ../../../lang/stb.php:350
+msgid "Favorites"
+msgstr ""
+
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
 msgid "account_main_info"
@@ -1398,7 +1402,7 @@ msgid "scheduled"
 msgstr ""
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:996
+#: ../../../lib/stb.class.php:998
 msgid "city_name_field"
 msgstr "name_en"
 
