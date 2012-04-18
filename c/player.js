@@ -263,14 +263,23 @@ player.prototype.event_callback = function(event){
                     
                     var self = this;
 
-                    stb.log_stream_error(this.cur_tv_item['id'], 1);
-                    
-                    this.replay_channel_timer = window.setTimeout(
-                        function(){
-                            self.play_last();
-                        },
-                        1000
-                    );
+                    if (this.is_tv){
+                        stb.log_stream_error(this.cur_tv_item['id'], 1);
+
+                        this.replay_channel_timer = window.setTimeout(
+                            function(){
+                                self.play_last();
+                            },
+                            1000
+                        );
+                    }else{
+                        this.replay_channel_timer = window.setTimeout(
+                            function(){
+                                self.play_last_radio();
+                            },
+                            1000
+                        );
+                    }
                 }else{
 
                     /*if (this.active_time_shift){
@@ -870,6 +879,13 @@ player.prototype.play_last = function(){
     this.prev_layer = module.tv;
     this.show_info_after_play();
     this.play(this.cur_tv_item);
+};
+
+player.prototype.play_last_radio = function(){
+    _debug('player.play_last_radio');
+
+    this.show_info_after_play();
+    this.play(this.cur_media_item);
 };
 
 player.prototype.init_first_channel = function(){
