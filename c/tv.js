@@ -605,7 +605,7 @@
             this.superclass.fill_list.call(this, data);
             
             if (this.cur_view == 'short'){
-                this.fill_short_info(this.data_items[this.cur_row])
+                //this.fill_short_info(this.data_items[this.cur_row])
             }
         };
         
@@ -656,11 +656,14 @@
             _debug('stb.player.cur_media_item.id', stb.player.cur_media_item.id);
             _debug('stb.player.on', stb.player.on);
 
+            window.clearTimeout(this.row_callback_timer);
+
             if(this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
+                this.short_epg_loader.start();
                 return;
             }
             
-            window.clearTimeout(this.row_callback_timer);
+            //window.clearTimeout(this.row_callback_timer);
             
             var self = this;
 
@@ -672,24 +675,29 @@
                     return;
                 }
                 
-                self.fill_short_info(item);
+                //self.fill_short_info(item);
                 
                 if (item.open){
+
+                    _debug('item.lock', item.lock);
 
                     if (item.lock){
                         self.password_input.callback = function(){
                             stb.player.need_show_info = 0;
                             stb.player.prev_layer = self;
+                            self.fill_short_info(item);
                             self._play_now(item);
                         };
 
                         self.password_input.show();
                     }else{
+                        self.fill_short_info(item);
                         stb.player.need_show_info = 0;
                         stb.player.prev_layer = self;
                         self._play_now(item);
                     }
                 }else{
+                    self.fill_short_info(item);
                     stb.player.stop();
                 }
                 
@@ -803,9 +811,9 @@
         
         this.set_active_row = function(num){
             _debug('tv.set_active_row');
-            
+
             this.short_epg_loader.stop();
-            
+
             this.superclass.set_active_row.call(this, num);
             
             //this.handling_block(this.data_items[num].number, this.active_row, 'number');
