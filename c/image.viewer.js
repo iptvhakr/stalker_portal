@@ -67,11 +67,13 @@
 
         this.update_image = function(){
             _debug('image_viewer.update_image');
-            var img = this.path + decodeURIComponent(this.image_list[this.cur_idx].name);
+            //var img = this.path + decodeURIComponent(this.image_list[this.cur_idx].name);
+            var img = decodeURIComponent(this.image_list[this.cur_idx].cmd);
             _debug('img', img);
             this.update_label();
 
-            stb.Play("auto " + img);
+            //stb.Play("auto " + img);
+            stb.Play(img);
         };
 
         this.update_label = function(){

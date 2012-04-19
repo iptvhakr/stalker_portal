@@ -687,14 +687,14 @@
 
                 var is_image = this.image_extensions.some(
                     function(item){
-                        return self.data_items[self.cur_row].name.toLowerCase().indexOf(item) >= 0 && self.data_items[self.cur_row].name.toLowerCase().indexOf(item) == self.data_items[self.cur_row].name.length - item.length;
+                        return self.data_items[self.cur_row].name.toLowerCase().lastIndexOf(item) >= 0 && self.data_items[self.cur_row].name.toLowerCase().lastIndexOf(item) == self.data_items[self.cur_row].name.length - item.length;
                     });
 
                 _debug('is_image', is_image);
 
                 var is_audio = this.audio_extensions.some(
                     function(item){
-                        return self.data_items[self.cur_row].name.toLowerCase().indexOf(item) >= 0 && self.data_items[self.cur_row].name.toLowerCase().indexOf(item) == self.data_items[self.cur_row].name.length - item.length;
+                        return self.data_items[self.cur_row].name.toLowerCase().lastIndexOf(item) >= 0 && self.data_items[self.cur_row].name.toLowerCase().lastIndexOf(item) == self.data_items[self.cur_row].name.length - item.length;
                     });
 
                 _debug('is_audio', is_audio);
@@ -707,7 +707,7 @@
 
                 var is_video = this.video_extensions.some(
                     function(item){
-                        return self.data_items[self.cur_row].name.toLowerCase().indexOf(item) >= 0 && self.data_items[self.cur_row].name.toLowerCase().indexOf(item) == self.data_items[self.cur_row].name.length - item.length;
+                        return self.data_items[self.cur_row].name.toLowerCase().lastIndexOf(item) >= 0 && self.data_items[self.cur_row].name.toLowerCase().lastIndexOf(item) == self.data_items[self.cur_row].name.length - item.length;
                     });
 
                 _debug('is_video', is_video);
@@ -715,6 +715,9 @@
                 if (is_video && this.play_all){
                     item.playlist = this.video_list;
                 }
+
+
+                _debug('item', item);
 
                 if (is_image){
 
@@ -958,7 +961,7 @@
 
             this.image_list = this.cur_dir_list.filter(function(item){
                 return self.image_extensions.some(function(ext){
-                    return item.name.toLowerCase().indexOf(ext) >= 0 && item.name.toLowerCase().indexOf(ext) == item.name.length - ext.length;
+                    return item.name.toLowerCase().lastIndexOf(ext) >= 0 && item.name.toLowerCase().lastIndexOf(ext) == item.name.length - ext.length;
                 });
             });
 
