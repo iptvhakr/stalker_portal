@@ -928,9 +928,11 @@
                     }
                 }
 
-                item.fav = self.favorites.some(function(favorite){
-                    return favorite._id == (item._id || self.get_id(item));
-                }) ? 1 : 0;
+                if (item.dir){
+                    item.fav = self.favorites.some(function(favorite){
+                        return favorite._id == (item._id || self.get_id(item));
+                    }) ? 1 : 0;
+                }
 
                 return item;
             });
@@ -969,17 +971,23 @@
         };
 
         this.get_audio_list = function(){
+            _debug('media_browser.get_audio_list');
 
             var self = this;
 
             var path = this.compile_path();
+
+            _debug('path', path);
+
+            _debug('this.cur_dir_list', this.cur_dir_list);
 
             this.audio_list = this.cur_dir_list.filter(function(item){
                 return new RegExp("(" + self.audio_extensions.join("|") + ")$").test(item.name);
             });
 
             this.audio_list = this.audio_list.map(function(item){
-                return 'auto ' + path + item.name;
+                //return 'auto ' + path + item.name;
+                return item.cmd;
             });
 
             _debug('this.audio_list', this.audio_list);
@@ -997,7 +1005,8 @@
             });
 
             this.video_list = this.video_list.map(function(item){
-                return 'auto ' + path + item.name;
+                //return 'auto ' + path + item.name;
+                return item.cmd;
             });
 
             _debug('this.video_list', this.video_list);
