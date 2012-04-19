@@ -1761,7 +1761,7 @@ player.prototype.bind = function(){
     
     (function(){
         
-        if (this.info.on){
+        if (this.info.on && !this.quick_ch_switch.on){
             if(this.is_tv){
                 this.hide_info();
                 module.tv._show();
