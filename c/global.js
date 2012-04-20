@@ -280,6 +280,8 @@ if (typeof Object.prototype.toSource != 'function'){
                 }else{
                     if(this[i] === null){
                         res += 'null, ';
+                    }else if (this[i] === undefined){
+                        res += 'undefined, ';
                     }else{
                         res += this[i].toSource(l) + ', ';
                     }
