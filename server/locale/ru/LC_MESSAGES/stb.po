@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-17 16:43+0200\n"
-"PO-Revision-Date: 2012-04-17 16:44+0200\n"
+"POT-Creation-Date: 2012-04-20 10:48+0200\n"
+"PO-Revision-Date: 2012-04-20 10:48+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1038,6 +1038,10 @@ msgstr "Предупреждение"
 msgid "Favorites"
 msgstr "Избранное"
 
+#: ../../../lang/stb.php:352
+msgid "Your STB is not supported"
+msgstr "Ваша приставка не поддерживается"
+
 #: ../../../lib/accountinfo.class.php:12
 #, php-format
 msgid "account_main_info"
@@ -1400,7 +1404,7 @@ msgid "scheduled"
 msgstr "запланировано"
 
 #. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:998
+#: ../../../lib/stb.class.php:1000
 msgid "city_name_field"
 msgstr "name"
 
@@ -1428,18 +1432,14 @@ msgid "s"
 msgstr "с"
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:706
 msgid "today"
 msgstr "сегодня"
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:709
 msgid "yesterday"
 msgstr "вчера"
 
-#. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
 #: ../../../lib/video.class.php:87
-#: ../../../lib/vod.class.php:636
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"

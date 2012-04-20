@@ -349,4 +349,6 @@ $words['confirm_form_title'] = _('Confirm');
 
 $words['media_favorites'] = _('Favorites');
 
+$words['stb_type_not_supported'] = _('Your STB is not supported');
+
 ?>

@@ -302,6 +302,10 @@ class Stb
 
         $profile['kinopoisk_rating']       = Config::getSafe('kinopoisk_rating', true);
 
+        $profile['allowed_stb_types']      = array_map(function($item){
+            return strtolower(trim($item));
+        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG250')));
+
         $image_update = new ImageAutoUpdate();
         if ($image_update->isEnabled()){
             $profile['autoupdate'] = $image_update->getSettings();

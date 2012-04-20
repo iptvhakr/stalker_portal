@@ -494,17 +494,15 @@ function common_xpcom(){
 
         _debug('this.user:', user_data);
 
-        /*if (!this.check_graphic_res()){
-            return;
-        }*/
-
         screensaver.init();
 
-        
-        /*this.init_auth_dialog();
-        this.key_lock = false;
-        this.auth_dialog.show();
-        return;*/
+        if (this.user['allowed_stb_types'].indexOf(this.type.toLowerCase()) == -1){
+
+            stb.loader.stop();
+            this.cut_off(get_word('stb_type_not_supported'));
+
+            return;
+        }
 
         if (this.user['status'] == 2){
             this.init_auth_dialog();
@@ -1069,7 +1067,7 @@ function common_xpcom(){
         }
     };
 
-    this.cut_off = function(){
+    this.cut_off = function(msg){
         _debug('stb.cut_off');
 
         if (module.blocking.on){
@@ -1091,7 +1089,7 @@ function common_xpcom(){
         /*var text_msg = create_block_element('cut_off_text', this.cut_off.dom_obj);
         text_msg.innerHTML = get_word('cut_off_msg');*/
 
-        module.blocking.show();
+        module.blocking.show(msg);
     };
 
     this.cut_on = function(){

@@ -22,10 +22,10 @@
             }
         },
 
-        show : function(){
+        show : function(msg){
             _debug('blocking.show');
             this.init_layer();
-            this.text_msg.innerHTML = get_word('cut_off_msg');
+            this.text_msg.innerHTML = msg || get_word('cut_off_msg');
             this.dom_obj.show();
             this.on = true;
         },
