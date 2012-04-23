@@ -2,13 +2,26 @@
 <head>    
 <script>
 var iid=1;
-var menuT=[['text',parent.t('Model:'),parent.stb.GetDeviceModel()],
+var version=parent.stb.GetDeviceImageVersion();
+var t_model;
+if(parseInt(version)>=214){
+    try{
+        t_model=parent.stb.GetDeviceModelExt(); 
+    }
+    catch(e){
+        t_model=parent.stb.GetDeviceModel();
+    }
+}
+else {
+   t_model=parent.stb.GetDeviceModel(); 
+}
+var menuT=[['text',parent.t('Model:'),t_model],
     ['text',parent.t('Serial number:'),parent.stb.GetDeviceSerialNumber()],
     ['text',parent.t('MAC:'),parent.stb.GetDeviceMacAddress()],
     ['text',parent.t('Vendor:'),parent.stb.GetDeviceVendor()],
     ['text',parent.t('Version Hardware:'),parent.stb.GetDeviceVersionHardware()],
     ['text',parent.t('Active bank:'),parent.stb.GetDeviceActiveBank()],
-    ['text',parent.t('Image version:'),parent.stb.GetDeviceImageVersion()],
+    ['text',parent.t('Image version:'),version],
     ['text',parent.t('Image description:'),parent.stb.GetDeviceImageDesc()],
     ['text',parent.t('RootFS version:'),parent.stb.GetDeviceImageVersionCurrent()]];
 var mid=11;
