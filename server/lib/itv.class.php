@@ -11,6 +11,7 @@ class Itv extends AjaxResponse
     public static $instance = NULL;
     
     private $all_user_channels_ids;
+    private $include_censored = true;
 
     /**
      * @static
@@ -353,6 +354,8 @@ class Itv extends AjaxResponse
     public function getChannels($include_censored = false){
         
         $query = $this->db->from('itv');
+
+        $this->include_censored = $include_censored;
         
         if (!$include_censored){
             $query->where(array('censored' => 0));
@@ -580,6 +583,8 @@ class Itv extends AjaxResponse
         $censored_list = $this->getCensoredList();
         $censored_exclude_list = $this->getCensoredExcludeList();
 
+        //var_dump('!!!!!!!!!!!!!!!!', $censored_list, $censored_exclude_list, $this->include_censored);
+
         $epg = new Epg();
 
         //$qualities = array('high' => 1, 'medium' => 2, 'low' => 3);
@@ -634,6 +639,12 @@ class Itv extends AjaxResponse
 
             if (in_array($this->response['data'][$i]['id'], $censored_list)){
                 $this->response['data'][$i]['lock'] = 1;
+            }
+
+            if ($this->response['data'][$i]['lock'] == 1 && !$this->include_censored){
+                //unset($this->response['data'][$i]);
+                array_splice($this->response['data'], $i, 1);
+                continue;
             }
             
             if (in_array($this->response['data'][$i]['id'], $fav)){
