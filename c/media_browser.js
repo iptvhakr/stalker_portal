@@ -666,7 +666,7 @@
                 }else if (this.dir_hist[i].hasOwnProperty('full_path')){
                     path = this.dir_hist[i].full_path;
                 }else{
-                    path += this.dir_hist[i].path;
+                    path += '/' + this.dir_hist[i].path;
                 }
             }
             
@@ -789,7 +789,7 @@
 
 
             var is_smb = this.dir_hist.some(function(dir){
-                return ['SMB_GROUP', 'SMB_SERVER', 'SMB_SHARE'].indexOf(dir.path) >= 0;
+                return ['SMB_GROUP', 'SMB_SERVER', 'SMB_SHARE'].indexOf(dir.path) >= 0 || dir.full_path && dir.full_path.indexOf('smb://') == 0;
             });
 
              _debug('is_smb', is_smb);
@@ -1192,7 +1192,7 @@
             _debug('full_path 1', full_path);
 
             if (full_path[full_path.length-1] == '/'){
-                full_path = full_path.substring(0, full_path.length-1);
+                //full_path = full_path.substring(0, full_path.length-1);
             }
 
             _debug('full_path 2', full_path);
