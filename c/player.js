@@ -2003,6 +2003,25 @@ player.prototype.save_fav_ids = function(){
         
         function(result){
             _debug('fav_saved', result);
+
+            //stb.load_fav_channels();
+
+            stb.load(
+
+                {
+                    'type'  : 'itv',
+                    'action': 'get_all_fav_channels',
+                    'fav'   : 1
+                },
+
+                function(result){
+                    _debug('get_all_fav_channels result', result);
+
+                    stb.player.fav_channels = result.data || [];
+                },
+
+                this
+            )
         },
         
         this
