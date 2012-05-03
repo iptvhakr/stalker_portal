@@ -22,8 +22,11 @@
             _debug('channel', channel);
 
             if (!channel.mc_cmd){
+                _debug('channel.mc_cmd', channel.mc_cmd);
                 return;
             }
+
+            _debug('program.mark_rec');
 
             if (program.mark_rec == 1){
                 if (program.rec_id){
@@ -38,12 +41,13 @@
             _debug('epg_recorder.add');
 
             var program_id = this.get_item().id;
+            var program_real_id = this.get_item().real_id;
 
             stb.load(
                 {
                     "type"        : "remote_pvr",
                     "action"      : "start_rec_deferred",
-                    "program_id"  : program_id
+                    "program_id"  : program_real_id
 
                 },
 

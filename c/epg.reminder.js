@@ -16,6 +16,7 @@
                 },
                 
                 function (result){
+                    _debug('reminder.get_list result', result);
                     
                     if (!result){
                         return;
@@ -52,11 +53,11 @@
         add_del : function(){
             _debug('add_del');
             
-            var program_id = this.get_item().id;
+            var program_id = this.get_item().real_id;
             
             _debug('this.memos', this.memos);
             
-            var memo_idx = this.memos.getIdxByVal('tv_program_id', program_id);
+            var memo_idx = this.memos.getIdxByVal('tv_program_real_id', program_id);
             
             if (memo_idx !== null){
                 this.del(memo_idx);
@@ -70,10 +71,12 @@
             
             var ch_id      = this.get_ch_id();
             var program_id = this.get_item().id;
+            var program_real_id = this.get_item().real_id;
             var fire_ts    = this.get_item().start_timestamp;
             
             _debug('ch_id', ch_id);
             _debug('program_id', program_id);
+            _debug('program_real_id', program_real_id);
             _debug('fire_ts', fire_ts);
             
             stb.load(
@@ -81,7 +84,7 @@
                     "type"        : "tvreminder",
                     "action"      : "add",
                     "ch_id"       : ch_id,
-                    "program_id"  : program_id
+                    "program_id"  : program_real_id
                 },
                 
                 function(result){
@@ -123,7 +126,7 @@
         },
         
         del : function(memo_idx){
-            _debug('epg.reminder.del');
+            _debug('epg.reminder.del', memo_idx);
             
             var memo = this.memos[memo_idx];
             
@@ -133,7 +136,7 @@
                 {
                     "type"        : "tvreminder",
                     "action"      : "del",
-                    "program_id"  : program_id
+                    "program_id"  : memo.tv_program_real_id
                 },
                 
                 function(result){

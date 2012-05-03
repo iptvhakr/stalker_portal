@@ -33,7 +33,7 @@ class StreamRecorder extends Master
         $epg = Mysql::getInstance()
             ->select('*, UNIX_TIMESTAMP(time) as start_ts, UNIX_TIMESTAMP(time_to) as stop_ts')
             ->from('epg')
-            ->where(array('id' => intval($program_id)))
+            ->where(array('real_id' => $program_id))
             ->get()
             ->first();
 
@@ -192,6 +192,7 @@ class StreamRecorder extends Master
 
             $data['program']    = $program['name'];
             $data['program_id'] = $program['id'];
+            $data['program_real_id'] = $program['real_id'];
             $data['t_start']    = $start_time;
             $data['length']     = $length;
             $data['t_stop']     = date("Y-m-d H:i:s", strtotime($start_time) + $length);
@@ -484,12 +485,12 @@ class StreamRecorder extends Master
 
     public function getDeferredRecordIdsForUser($uid){
 
-        $user_recs = Mysql::getInstance()->select('id, program_id')->from('users_rec')->where(array('uid' => $uid))->get()->all();
+        $user_recs = Mysql::getInstance()->select('id, program_id, program_real_id')->from('users_rec')->where(array('uid' => $uid))->get()->all();
 
         $rec_ids = array();
 
         foreach ($user_recs as $record){
-            $rec_ids[$record['program_id']] = $record['id'];
+            $rec_ids[$record['program_real_id']] = $record['id'];
         }
 
         return $rec_ids;

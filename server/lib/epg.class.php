@@ -131,6 +131,7 @@ class Epg
                                                 'time'  => $mysql_start,
                                                 'time_to'  => $mysql_stop,
                                                 'duration' => $duration,
+                                                'real_id'  => $itv_id.'_'.$start_ts,
                                                 'name'  => $title
                                                 );
 
@@ -217,7 +218,7 @@ class Epg
         $ids = array();
 
         foreach ($valid_channels as $channel){
-            if (!key_exists($channel['xmltv_id'], $ids)){
+            if (!array_key_exists($channel['xmltv_id'], $ids)){
                 $ids[$channel['xmltv_id']] = array();
             }
             $ids[$channel['xmltv_id']][] = $channel['id'];
@@ -377,7 +378,7 @@ class Epg
 
         for ($i = 0; $i < count($epg); $i++){
 
-            if (array_key_exists($epg[$i]['id'], $reminders)){
+            if (array_key_exists($epg[$i]['real_id'], $reminders)){
                 $epg[$i]['mark_memo'] = 1;
             }else{
                 $epg[$i]['mark_memo'] = 0;
@@ -494,14 +495,14 @@ class Epg
                     $epg[$i]['mark_memo'] = null;
                 }*/
 
-                if (array_key_exists($epg[$i]['id'], $user_rec_ids)){
+                if (array_key_exists($epg[$i]['real_id'], $user_rec_ids)){
                     $epg[$i]['mark_rec'] = 1;
-                    $epg[$i]['rec_id']   = $user_rec_ids[$epg[$i]['id']];
+                    $epg[$i]['rec_id']   = $user_rec_ids[$epg[$i]['real_id']];
                 }else{
                     $epg[$i]['mark_rec'] = 0;
                 }
 
-                if (array_key_exists($epg[$i]['id'], $reminders)){
+                if (array_key_exists($epg[$i]['real_id'], $reminders)){
                     $epg[$i]['mark_memo'] = 1;
                 }else{
                     $epg[$i]['mark_memo'] = 0;
@@ -710,6 +711,10 @@ class Epg
         return Mysql::getInstance()->from('epg')->where(array('id' => $id))->get()->first();
     }
 
+    public static function getByRealId($real_id){
+        return Mysql::getInstance()->from('epg')->where(array('real_id' => $real_id))->get()->first();
+    }
+
     public function getSimpleDataTable(){
 
         $ch_id = intval($_REQUEST['ch_id']);
@@ -796,16 +801,16 @@ class Epg
                 $program[$i]['mark_memo'] = null;
             }*/
             //var_dump($reminders);
-            if (array_key_exists($program[$i]['id'], $reminders)){
+            if (array_key_exists($program[$i]['real_id'], $reminders)){
                 $program[$i]['mark_memo'] = 1;
             }else{
                 $program[$i]['mark_memo'] = 0;
             }
 
             //if (in_array($program[$i]['id'], $user_rec_ids)){
-            if (array_key_exists($program[$i]['id'], $user_rec_ids)){
+            if (array_key_exists($program[$i]['real_id'], $user_rec_ids)){
                 $program[$i]['mark_rec'] = 1;
-                $program[$i]['rec_id']   = $user_rec_ids[$program[$i]['id']];
+                $program[$i]['rec_id']   = $user_rec_ids[$program[$i]['real_id']];
             }else{
                 $program[$i]['mark_rec'] = 0;
             }

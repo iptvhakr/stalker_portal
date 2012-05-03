@@ -14,15 +14,15 @@ class TvReminder
     public function add(){
         
         $ch_id      = @intval($_REQUEST['ch_id']);
-        $program_id = @intval($_REQUEST['program_id']);
+        $program_id = $_REQUEST['program_id'];
         
-        $memo = $this->db->from('tv_reminder')->where(array('mac' => $this->stb->mac, 'tv_program_id' => $program_id))->get()->first();
+        $memo = $this->db->from('tv_reminder')->where(array('mac' => $this->stb->mac, 'tv_program_real_id' => $program_id))->get()->first();
         
         if (!empty($memo)){
             return false;
         }
         
-        $program = Epg::getById($program_id);
+        $program = Epg::getByRealId($program_id);
         
         if (empty($program)){
             return false;
@@ -32,7 +32,8 @@ class TvReminder
                                  array(
                                      'mac'           => $this->stb->mac, 
                                      'ch_id'         => $ch_id,
-                                     'tv_program_id' => $program_id,
+                                     'tv_program_id' => $program['id'],
+                                     'tv_program_real_id' => $program['real_id'],
                                      'fire_time'     => $program['time'],
                                      'added'         => 'NOW()'
                                  ))->insert_id();
@@ -46,9 +47,9 @@ class TvReminder
     
     private function getRaw(){
         
-        return $this->db->select('UNIX_TIMESTAMP(`fire_time`) as fire_ts, TIME_FORMAT(`fire_time`,"%H:%i") as t_fire_time, itv.name as itv_name, itv.id as ch_id, epg.name as program_name, tv_program_id')
+        return $this->db->select('UNIX_TIMESTAMP(`fire_time`) as fire_ts, TIME_FORMAT(`fire_time`,"%H:%i") as t_fire_time, itv.name as itv_name, itv.id as ch_id, epg.name as program_name, tv_program_id, tv_program_real_id')
                         ->from('tv_reminder')
-                        ->join('epg', 'tv_reminder.tv_program_id', 'epg.id', 'INNER')
+                        ->join('epg', 'tv_reminder.tv_program_real_id', 'epg.real_id', 'INNER')
                         ->join('itv', 'tv_reminder.ch_id', 'itv.id', 'INNER');
     }
 
@@ -65,7 +66,7 @@ class TvReminder
         $reminders = array();
 
         foreach ($all as $memo){
-            $reminders[$memo['tv_program_id']] = $memo;
+            $reminders[$memo['tv_program_real_id']] = $memo;
         }
 
         return $reminders;
@@ -73,9 +74,9 @@ class TvReminder
     
     public function del(){
         
-        $program_id = @intval($_REQUEST['program_id']);
+        $program_id = $_REQUEST['program_id'];
         
-        return $this->db->delete('tv_reminder', array('tv_program_id' => $program_id, 'mac' => $this->stb->mac));
+        return $this->db->delete('tv_reminder', array('tv_program_real_id' => $program_id, 'mac' => $this->stb->mac));
     }
 }
 

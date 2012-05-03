@@ -93,7 +93,7 @@ class RemotePvr extends AjaxResponse
 
     public function startRecDeferred(){
 
-        $program_id = intval($_REQUEST['program_id']);
+        $program_id = $_REQUEST['program_id'];
 
         //$channel = Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first();
 
