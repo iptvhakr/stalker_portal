@@ -20,6 +20,10 @@ if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
 }
+
+if (!empty($_POST['nfs_home_path']) && strripos($_POST['nfs_home_path'], '/') != strlen($_POST['nfs_home_path'])-1){
+    $_POST['nfs_home_path'] .= '/';
+}
     
 if (@$_POST['add']){
     $sql = 'insert into storages (
