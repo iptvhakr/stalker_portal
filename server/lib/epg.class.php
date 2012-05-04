@@ -68,13 +68,12 @@ class Epg
                 return "\nИсточник ".$setting['uri']." недоступен\n";
             }
 
-            foreach ($headers as $header){
-
-                if (!empty($headers['ETag'])){
-                    $etag = $headers['ETag'];
-
-                    break;
-                }
+            if (!empty($headers['ETag'])){
+                $etag = $headers['ETag'];
+            }else if (!empty($headers['Last-Modified'])){
+                $etag = $headers['Last-Modified'];
+            }else{
+                $etag = time();
             }
         }else{
             $etag = md5_file($setting['uri']);
