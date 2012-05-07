@@ -34,8 +34,10 @@ class TvArchive extends Master
 
         $task = $this->getTaskByChId($program['ch_id']);
 
+        $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
+
         $start_timestamp = strtotime($program['time']);
-        $stop_timestamp  = strtotime($program['time_to']);
+        $stop_timestamp  = strtotime($program['time_to']) + $overlap;
 
         $channel = Itv::getChannelById($program['ch_id']);
 
