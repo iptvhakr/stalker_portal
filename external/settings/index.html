@@ -1,9 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
-<script>    
+<script>
 main_lang="en";
-var wifi_ssid=new Array(); 
+var all_lang=["ru","bg"];
+var wifi_ssid=new Array();
 rebut=false;
 rebut2=false;
 pd=1;vid=1;pos=2;st=0;stel=2;punkti=new Array();kol=0;perB=false;see=6;
@@ -23,8 +24,13 @@ var prof=new Object();
 function langv()
 {
     try{main_lang = main_lang.toLowerCase();}catch(e){ }
-    if(main_lang!="en")loadScript('js/langs/' + main_lang + '.js', 'up_fl()');
-    else up_fl();
+
+    if (all_lang.indexOf(main_lang) != -1){
+        loadScript('js/langs/' + main_lang + '.js', 'up_fl()');
+    }else{
+        main_lang = 'en';
+        up_fl()
+    }
 }
 
 function loadScript(src,callback) {
@@ -54,8 +60,8 @@ function t(par)
 </div>
 <div id="confirmb" class="modal_big">
 <div id="modal_ico" class="ico_alert"></div><input id="b1b" type="button" />
-</div>  
-<iframe name="cont" id="cont" src="" frameborder="0" style="visibility: hidden;"></iframe> 
+</div>
+<iframe name="cont" id="cont" src="" frameborder="0" style="visibility: hidden;"></iframe>
 </div>
 </body>
 </html>
