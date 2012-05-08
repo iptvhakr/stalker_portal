@@ -15,7 +15,7 @@ moderator_access();
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
 
-if (@$_GET['action'] == 'cut_off' && check_access(array(3))){
+if (@$_GET['action'] == 'cut_off' && check_access(array(3)) && !Config::getSafe('deny_change_user_status', false)){
     cut_off_user(@$_GET['id']);
     header("Location: users.php?search=".$_GET['search']);
     exit();
@@ -37,7 +37,7 @@ if (@$_GET['video_out']){
     exit();
 }
 
-if (@$_GET['del'] && check_access(array(3))){
+if (@$_GET['del'] && check_access(array(3)) && !Config::getSafe('deny_delete_user', false)){
     $id = intval(@$_GET['id']);
     
     $sql = "delete from users where id=$id";
@@ -628,15 +628,21 @@ while(@$rs->next()){
     //echo "<td class='list'>".get_video_out($arr['video_out'], $arr['id'])."</b></td>\n";
     //echo "<td class='list' nowrap>".$arr['version']."</td>\n";
     echo "<td class='list' nowrap>";
-    if (check_access(array(3))){
+    if (check_access(array(3)) && !Config::getSafe('deny_change_user_status', false)){
         echo "<a href='users.php?id=".$arr['id']."&search=".@$_GET['search']."&action=cut_off'>".get_user_color($arr['id'])."</a>";
-        echo "&nbsp;&nbsp;";
-        if (!check_keep_alive($arr['keep_alive'])){
+        /*echo "&nbsp;&nbsp;";
+        if (!check_keep_alive($arr['keep_alive']) && !Config::getSafe('deny_delete_user', false)){
             echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"users.php?del=1&id=".$arr['id']."&page=".@$_GET['page']."&search=".@$_GET['search']."\"}'>del</a>";
-        }
+        }*/
     }else{
         echo "<b>".get_user_color($arr['id'])."</b>";
     }
+
+    if (check_access(array(3)) && !check_keep_alive($arr['keep_alive']) && !Config::getSafe('deny_delete_user', false)){
+        echo "&nbsp;&nbsp;";
+        echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"users.php?del=1&id=".$arr['id']."&page=".@$_GET['page']."&search=".@$_GET['search']."\"}'>del</a>";
+    }
+
     echo "</td>\n";
     echo "<td class='list'>".$arr['last_change_status']."</td>\n";
     echo "</tr>\n";
