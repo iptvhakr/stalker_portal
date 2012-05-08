@@ -1,41 +1,53 @@
-<?xml version="1.0" ?> 
+<?xml version="1.0" ?>
 <project name="stalker_portal" basedir="." default="build">
 
     <tstamp/>
 
-    <property file="../server/custom.ini" />
-    <property file="../server/config.ini" />
+    <property file="../server/custom.ini"/>
+    <property file="../server/config.ini"/>
 
     <target name="build" description="Build task">
-	
+
+        <exec command="apt-get -y install php-soap php5-intl php-gettext php5-memcache php5-curl php5-mysql php5-tidy"
+              level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
+
+        <if>
+            <not>
+                <equals arg1="${install.error.code}" arg2="0"/>
+            </not>
+            <then>
+                <echo msg="${install.error.msg}" level="warning"/>
+            </then>
+        </if>
+
         <taskdef
-            name="dbdeploy"
-            classname="phing.tasks.ext.dbdeploy.DbDeployTask" />
+                name="dbdeploy"
+                classname="phing.tasks.ext.dbdeploy.DbDeployTask"/>
 
         <property
-            name="progs.mysql"
-            value="/usr/bin/mysql" />
+                name="progs.mysql"
+                value="/usr/bin/mysql"/>
 
         <property
-            name="build.dir"
-            value="../" />
+                name="build.dir"
+                value="../"/>
 
-        <resolvepath propertyName="project_path" file="${build.dir}" />
-
-        <property
-            name="build.dbdeploy.deployfile"
-            value="deploy/scripts/deploy-${DSTAMP}${TSTAMP}.sql" />
+        <resolvepath propertyName="project_path" file="${build.dir}"/>
 
         <property
-            name="build.dbdeploy.undofile"
-            value="deploy/scripts/undo-${DSTAMP}${TSTAMP}.sql" />
+                name="build.dbdeploy.deployfile"
+                value="deploy/scripts/deploy-${DSTAMP}${TSTAMP}.sql"/>
+
+        <property
+                name="build.dbdeploy.undofile"
+                value="deploy/scripts/undo-${DSTAMP}${TSTAMP}.sql"/>
 
         <exec command="stop stalkerd"/>
 
         <copy file="./src/stalkerd.conf" tofile="/etc/init/stalkerd.conf" overwrite="true">
             <filterchain>
                 <replacetokens>
-                    <token key="STALKERD_INDEX_PATH" value="${project_path}/daemon/index.js" />
+                    <token key="STALKERD_INDEX_PATH" value="${project_path}/daemon/index.js"/>
                 </replacetokens>
             </filterchain>
         </copy>
@@ -47,45 +59,46 @@
         <copy file="./src/cron" tofile="/etc/cron.d/stalker" overwrite="true">
             <filterchain>
                 <replacetokens>
-                    <token key="STALKERD_INDEX_PATH" value="${project_path}" />
+                    <token key="STALKERD_INDEX_PATH" value="${project_path}"/>
                 </replacetokens>
             </filterchain>
         </copy>
 
-        <chmod file="/etc/cron.d/stalker" mode="0755" />
+        <chmod file="/etc/cron.d/stalker" mode="0755"/>
 
         <exec command="start stalkerd"/>
 
-        <copy file="./src/stalkerd" tofile="/etc/logrotate.d/stalkerd" overwrite="true" />
+        <copy file="./src/stalkerd" tofile="/etc/logrotate.d/stalkerd" overwrite="true"/>
 
-        <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; deploy/src/init_db.sql" dir="${build.dir}" checkreturn="true" />
+        <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; deploy/src/init_db.sql"
+              dir="${build.dir}" checkreturn="true"/>
 
         <dbdeploy
-            url="mysql:host=${mysql_host};dbname=${db_name}"
-            userid="${mysql_user}"
-            password="${mysql_pass}"
-            dir="${build.dir}/db/delta"
-            outputfile="${build.dir}/${build.dbdeploy.deployfile}"
-            undooutputfile="${build.dir}/${build.dbdeploy.undofile}" />
+                url="mysql:host=${mysql_host};dbname=${db_name}"
+                userid="${mysql_user}"
+                password="${mysql_pass}"
+                dir="${build.dir}/db/delta"
+                outputfile="${build.dir}/${build.dbdeploy.deployfile}"
+                undooutputfile="${build.dir}/${build.dbdeploy.undofile}"/>
 
         <exec
-            command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}"
-            dir="${build.dir}"
-            returnProperty="dbdeploy_return" outputProperty="dbdeploy_output"/>
+                command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}"
+                dir="${build.dir}"
+                returnProperty="dbdeploy_return" outputProperty="dbdeploy_output"/>
 
-        <echo msg="dbdeploy result: ${dbdeploy_return}" />
+        <echo msg="dbdeploy result: ${dbdeploy_return}"/>
 
         <if>
-            <equals arg1="${dbdeploy_return}" arg2="1" />
+            <equals arg1="${dbdeploy_return}" arg2="1"/>
             <then>
                 <exec
-                    command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.undofile}"
-                    dir="${build.dir}"
-                    checkreturn="true" />
-                <fail message="DbDeployTask failed reason: ${dbdeploy_output}" />
+                        command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.undofile}"
+                        dir="${build.dir}"
+                        checkreturn="true"/>
+                <fail message="DbDeployTask failed reason: ${dbdeploy_output}"/>
             </then>
         </if>
-        
+
     </target>
 
 </project>
