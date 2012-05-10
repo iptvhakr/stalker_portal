@@ -20,6 +20,7 @@
 
         this.duration_input = new DurationInputBox({/*"parent" : stb.player,*/ "max_val" : stb.user['record_max_length']});
 
+
         this.init = function(){
             _debug('remote_pvr.init');
 
@@ -31,6 +32,54 @@
 
             create_inline_element('rest_length_title', rest_length_block).innerHTML = get_word('rest_length_title') + ': ';
             this.rest_length = create_inline_element('rest_length', rest_length_block);
+
+            this.stop_comfirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('remote_pvr_stop_confirm')});
+            this.stop_comfirm.getTextDomObj().style.textAlign = "center";
+            this.stop_comfirm.enableOnExitClose();
+
+            var scope = this;
+
+            this.stop_comfirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.stop_comfirm.hide();
+                    }
+                }
+            ));
+
+            this.stop_comfirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("yes_btn"),
+                    "onclick" : function(){
+                        scope.stop_comfirm.hide();
+                        scope.stop_rec.call(scope, scope.stop_comfirm.rec_id);
+                    }
+                }
+            ));
+
+            this.delete_comfirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('remote_pvr_del_confirm')});
+            this.delete_comfirm.getTextDomObj().style.textAlign = "center";
+            this.delete_comfirm.enableOnExitClose();
+
+            this.delete_comfirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.delete_comfirm.hide();
+                    }
+                }
+            ));
+
+            this.delete_comfirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("yes_btn"),
+                    "onclick" : function(){
+                        scope.delete_comfirm.hide();
+                        scope.del.call(scope, scope.delete_comfirm.rec_id);
+                    }
+                }
+            ));
         };
 
         this.hide = function(do_not_reset){
@@ -139,12 +188,14 @@
 
             if (idx !== null){
                 //this.stop_rec(this.recording_ch_ids[idx].id);
-                stb.confirm.push({
+                /*stb.confirm.push({
                     "msg" : get_word('remote_pvr_stop_confirm'),
                     "confirm_callback" : function(){
                         self.stop_rec.call(self, rec_id)
                     }
-                });
+                });*/
+                this.stop_comfirm.rec_id = rec_id;
+                this.stop_comfirm.show();
             }
         };
 
@@ -376,12 +427,15 @@
 
             var rec_id = this.data_items[this.cur_row].id;
 
-            var self = this;
+            /*var self = this;
 
             stb.confirm.push({
                 "msg" : get_word('remote_pvr_stop_confirm'),
                 "confirm_callback" : function(){self.stop_rec.call(self, rec_id)}
-            });
+            });*/
+
+            this.stop_comfirm.rec_id = rec_id;
+            this.stop_comfirm.show();
         };
 
         this.set_active_row = function(num){
@@ -539,12 +593,15 @@
 
             var rec_id = this.data_items[this.cur_row].id;
 
-            var self = this;
+            /*var self = this;
 
             stb.confirm.push({
                 "msg" : get_word('remote_pvr_del_confirm'),
                 "confirm_callback" : function(){self.del.call(self, rec_id)}
-            });
+            });*/
+
+            this.delete_comfirm.rec_id = rec_id;
+            this.delete_comfirm.show();
         };
 
         this.del = function(rec_id){
