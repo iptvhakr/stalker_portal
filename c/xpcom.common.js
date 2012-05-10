@@ -1023,7 +1023,7 @@ function common_xpcom(){
         get_epg : function(ch_id){
             _debug('epg_loader.get_epg', ch_id);
 
-            var ch_id = ''+ch_id;
+            ch_id = ''+ch_id;
 
             _debug('typeof(ch_id)', typeof(ch_id));
 
@@ -1033,7 +1033,6 @@ function common_xpcom(){
             _debug('now', now);
             _debug('this.epg[ch_id]', this.epg[ch_id]);
             _debug('typeof this.epg[ch_id]', typeof(this.epg[ch_id]));
-            _debug('this.epg[ch_id].length', this.epg[ch_id].length);
 
             try{
                 if (typeof(this.epg[ch_id]) == 'object' && this.epg[ch_id].length > 0){
@@ -1042,9 +1041,9 @@ function common_xpcom(){
                         _debug('i', i);
                         if (this.epg[ch_id][i]['start_timestamp'] < now){
                             _debug('continue');
-                            continue;
                         }else if (this.epg[ch_id][i]['start_timestamp'] == now){
-                            result = this.epg[ch_id][i].time + ' ' + this.epg[ch_id][i].name;
+                            _debug('==');
+                            result = this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
                             if (typeof(this.epg[ch_id][i+1]) == 'object'){
                                 result += '<br>'+this.epg[ch_id][i+1].t_time + ' ' + this.epg[ch_id][i+1].name;
                             }
@@ -1055,8 +1054,11 @@ function common_xpcom(){
                                 if (typeof(this.epg[ch_id][i]) == 'object'){
                                     result += '<br>'+this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
                                 }
-                                return result;
+                            }else{
+                                result = this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
                             }
+
+                            return result;
                         }
                     }
                 }
