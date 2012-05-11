@@ -159,6 +159,8 @@ $words['update_method_select'] = _('Method select');
 $words['empty'] = _('EMPTY');
 
 $words['course_title'] = _('Exchange rate on');
+$words['course_title_nbu'] = _('NBU exchange rate on');
+$words['course_title_cbr'] = _('CBR exchange rate on');
 
 $words['dayweather_title'] = _('WEATHER');
 $words['dayweather_pressure'] = _('pres.:');

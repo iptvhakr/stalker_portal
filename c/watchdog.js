@@ -101,7 +101,7 @@ watchdog.prototype.parse_result = function(data){
     
         module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
 
-        module.course && module.course.set && data.course && module.course.set(data.course);
+        //module.course && module.course.set && data.course && module.course.set(data.course);
 
         stb.check_additional_services(data.additional_services_on);
     }catch(e){

@@ -6,12 +6,12 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Course
+class CourseCbr
 {
     public $db;
     public $cache_table;
-    public $content_url = 'http://www.bank.gov.ua/control/uk/curmetal/detail/currency?period=daily';
-    public $codes = array(840, 978, 643);
+    public $content_url = 'http://www.cbr.ru/scripts/XML_daily.asp';
+    public $codes = array(840, 978, 980);
     
     public function __construct(){
         $this->db = Mysql::getInstance();
@@ -26,7 +26,8 @@ class Course
         $result = array();
         $content = file_get_contents($this->content_url);
         if ($content){
-            preg_match("/<td class=\"date\">([\d,\.]+)<\/td>/",$content,$arr);
+            //preg_match("/<td class=\"date\">([\d,\.]+)<\/td>/",$content,$arr);
+            preg_match("/Date=\"([\d,\.]+)\" name/",$content,$arr);
             $result['title'] = _('Exchange rate on').' '.$arr[1];
             $result['on_date'] = $arr[1];
             $result['data'] = array();
@@ -38,7 +39,8 @@ class Course
             //if (1){
             
                 foreach ($this->codes as $code){
-                    preg_match("/<td class=\"cell_c\">$code<\/td>\s*<td class=\"cell_c\">([\S]+)<\/td>\s*<td class=\"cell_c\">([\d]+)<\/td>\s*<td class=\"cell\">(.*)<\/td>\s*<td class=\"cell_c\">([\d,\.]+)<\/td>/",$content,$arr2);
+                    //preg_match("/<td class=\"cell_c\">$code<\/td>\s*<td class=\"cell_c\">([\S]+)<\/td>\s*<td class=\"cell_c\">([\d]+)<\/td>\s*<td class=\"cell\">(.*)<\/td>\s*<td class=\"cell_c\">([\d,\.]+)<\/td>/",$content,$arr2);
+                    preg_match("/<NumCode>$code<\/NumCode>\s*<CharCode>([\S]+)<\/CharCode>\s*<Nominal>([\d]+)<\/Nominal>\s*<Name>(.*)<\/Name>\s*<Value>([\d,\.]+)<\/Value>/",$content,$arr2);
 
                     //var_dump($arr2);
 

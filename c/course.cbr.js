@@ -1,11 +1,11 @@
 /**
- * Exchange rate of NBU widget.
+ * Exchange rate of CBR widget.
  * Displayed in the main menu.
  */
 
 (function(){
     
-    var course = {
+    var course_cbr = {
         
         dom_obj : {},
         map     : [],
@@ -16,7 +16,7 @@
             
             var title = create_inline_element('', this.dom_obj);
             title.setClass('course_title');
-            title.innerHTML = word['course_title']+' ';
+            title.innerHTML = word['course_title_cbr']+' ';
 
             this.date_obj = create_inline_element('', this.dom_obj);
             this.date_obj.setClass('course_date');
@@ -117,15 +117,15 @@
         },
 
         load : function(){
-            _debug('course.load');
+            _debug('course_cbr.load');
 
             stb.load(
                 {
-                    "type"   : "course",
+                    "type"   : "course_cbr",
                     "action" : "get_data"
                 },
                 function(result){
-                    _debug('on course.load', result);
+                    _debug('on course_cbr.load', result);
 
                     this.set(result)
                 },
@@ -144,10 +144,10 @@
             this.load_interval = window.setInterval(function(){self.load()}, 30*60*1000)
         }
     };
+
+    course_cbr.init();
     
-    course.init();
-    
-    module.course = course;
+    module.course_cbr = course_cbr;
     
     loader.next();
     

@@ -9,4 +9,7 @@ include "./common.php";
 $course = new Course();
 $course->getDataFromURI();
 
+$course = new CourseCbr();
+$course->getDataFromURI();
+
 ?>
