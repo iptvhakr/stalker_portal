@@ -51,13 +51,10 @@ class Watchdog extends AjaxResponse
             }
         }
         
-        /**
-         * @todo вынести в events
-         */
         $res['data']['additional_services_on'] = $this->stb->additional_services_on;
         
-        $weather = new Weatherco();
-        $res['data']['cur_weather'] = $weather->getCurrent();
+        //$weather = new Weatherco();
+        //$res['data']['cur_weather'] = $weather->getCurrent();
         
         //$course = new Course();
         //$res['data']['course'] = $course->getData();

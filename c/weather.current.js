@@ -12,6 +12,7 @@
         init : function(){
             
             this.dom_obj = create_block_element('curweather_block', main_menu.dom_obj);
+            this.start_load();
         },
         
         set : function(weather){
@@ -55,8 +56,36 @@
             cur += '</div>';
             
             this.dom_obj.innerHTML = cur;
+        },
+
+        load : function(){
+            _debug('curweather.load');
+
+            stb.load(
+                {
+                    "type"   : "weatherco",
+                    "action" : "get_current"
+                },
+                function(result){
+                    _debug('on curweather.load');
+
+                    this.set(result);
+                },
+                this
+            )
+
+        },
+
+        start_load : function(){
+            _debug('curweather.start_load');
+
+            this.load();
+
+            var self = this;
+
+            window.clearInterval(this.load_interval);
+            this.load_interval = window.setInterval(function(){self.load()}, 10*60*1000);
         }
-        
     };
     
     curweather.init();

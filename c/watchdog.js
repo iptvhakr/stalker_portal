@@ -99,7 +99,7 @@ watchdog.prototype.parse_result = function(data){
 
     try{
     
-        module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
+        //module.curweather && module.curweather.set && module.curweather.set(data.cur_weather);
 
         //module.course && module.course.set && data.course && module.course.set(data.course);
 

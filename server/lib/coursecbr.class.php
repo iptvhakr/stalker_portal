@@ -47,7 +47,7 @@ class CourseCbr
                     $result['data'][$idx] = array();
                     $result['data'][$idx]['code'] = $code;
                     $result['data'][$idx]['currency'] = $arr2[2].' '.$arr2[1];
-                    $result['data'][$idx]['value'] = $arr2[4];
+                    $result['data'][$idx]['value'] = floatval(str_replace(',', '.', $arr2[4]));
                     
                     $result['data'][$idx]['diff'] = 0;
                     $result['data'][$idx]['trend'] = 0;
