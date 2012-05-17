@@ -41,7 +41,7 @@ while(@$rs->next()){
     $updated_karaoke++;
 }
 
-$error = 'Обновлено '.$updated_video.' видео и '.$updated_karaoke.' караоке';
+$error = sprintf(_('Updated %s videos and %s karaokes'), $updated_video, $updated_karaoke);
 
 $debug = '<!--'.ob_get_contents().'-->';
 ob_clean();
@@ -82,18 +82,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Обновление кеша хранилищ</title>
+<title><?= _('Storage cache refresh')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Обновление кеша хранилищ&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Storage cache refresh')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="storages.php"><< Назад</a>
+        <a href="storages.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>

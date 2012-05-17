@@ -55,18 +55,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Неактивные абоненты за месяц</title>
+<title><?= _('Inactive users per month')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Неактивные абоненты за месяц&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Inactive users per month')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> 
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -119,15 +119,7 @@ $query_video = "select * from users where time_last_play_video<'$from_time' orde
 $rs_video = $db->executeQuery($query_video);
 
 ?>
-<!--<table border="0" align="center" width="620">
-<tr>
-<td>
-<form action="" method="GET">
-<input type="text" name="search" value="<?// echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по mac</font>
-</form>
-</td>
-</tr>
-</table>-->
+
 <table border="0" align="center">
 <tr>
 <td valign="top">
@@ -137,7 +129,7 @@ echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>#</b></td>\n";
 echo "<td class='list'><b>mac</b></td>\n";
-echo "<td class='list'><b>Последний просмотр ТВ</b></td>\n";
+echo "<td class='list'><b>"._('Latest TV viewing')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs_tv->next()){
     
@@ -163,7 +155,7 @@ echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>#</b></td>\n";
 echo "<td class='list'><b>mac</b></td>\n";
-echo "<td class='list'><b>Последний просмотр ВИДЕО</b></td>\n";
+echo "<td class='list'><b>"._('Latest VIDEO viewing')."</b></td>\n";
 echo "</tr>\n";
 $i = 1;
 while(@$rs_video->next()){

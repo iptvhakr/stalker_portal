@@ -63,18 +63,18 @@ a.msgs:hover, a.msgs:visited, a.msgs:link{
 	text-decoration:none;
 }
 </style>
-<title>Мои сообщения</title>
+<title><?= _('My messages')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Мои сообщения&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('My messages')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="tasks.php"><< Назад</a>
+        <a href="tasks.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -110,9 +110,9 @@ $rs=$db->executeQuery($sql);
 <table width="100%" border="1" cellspacing="0">
 <tr>
     <td width="20">&nbsp;</td>
-    <td width="140">Дата</td>
-    <td>От кого</td>
-    <td>Медиа</td>
+    <td width="140"><?= _('Date')?></td>
+    <td><?= _('From')?></td>
+    <td><?= _('Media')?></td>
 </tr>
 
 <?

@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 /*$db = new Database();*/
 
@@ -96,18 +96,18 @@ h3{
     margin-left: 30px;
 }
 </style>
-<title>Общие настройки</title>
+<title><?= _('Firmware auto update')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="640">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Общие настройки&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Firmware auto update')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a>
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -124,9 +124,8 @@ h3{
 <tr>
 
     <td align="center">
-        <!--<h3>Автоматическое обновление (включено) <input type="button" value="Отключить"/></h3>-->
         <form method="POST">
-            <h3>Автоматическое обновление (<? echo ($image_update->isEnabled()?'включено':'отключено')?>) <input type="submit" name="switch_autoupdate" value="<?echo ($image_update->isEnabled()?"Отключить":"Включить")?>"/></h3>
+            <h3><?= _('Firmware auto update')?> (<? echo ($image_update->isEnabled()?_('enabled'):_('disabled'))?>) <input type="submit" name="switch_autoupdate" value="<?echo ($image_update->isEnabled()?_('Disable'):_('Enable'))?>"/></h3>
             <table class="form">
                 <tr>
                     <td>ImageVersion</td>
@@ -137,15 +136,15 @@ h3{
                     <td><input type="text" name="require_image_date" value="<?echo $settings['require_image_date']?>"/></td>
                 </tr>
                 <tr>
-                    <td>Необходимый ImageDescription</td>
+                    <td><?= _('Required')?> ImageDescription</td>
                     <td><input type="text" name="image_description_contains" value="<?echo $settings['image_description_contains']?>"/></td>
                 </tr>
                 <tr>
-                    <td>Необходимый ImageVersion</td>
+                    <td><?= _('Required')?> ImageVersion</td>
                     <td><input type="text" name="image_version_contains" value="<?echo $settings['image_version_contains']?>"/></td>
                 </tr>
                 <tr>
-                    <td>Вариант обновления</td>
+                    <td><?= _('Update type')?></td>
                     <td>
                         <select name="update_type">
                             <option value="http_update" <?echo $settings['update_type']=='http_update'?'selected':''?>>http update</option>
@@ -155,11 +154,8 @@ h3{
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Сохранить"/></td>
+                    <td><input type="submit" value="<?= _('Save')?>"/></td>
                 </tr>
-                <!--<tr>
-                    <td colspan="2">Описание: </td>
-                </tr>-->
             </table>
         </form>
     </td>

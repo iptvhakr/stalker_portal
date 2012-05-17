@@ -56,18 +56,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Статистика просмотра TB за месяц</title>
+<title><?= _('TV views statistics per month')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Статистика просмотра TV за месяц&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('TV views statistics per month')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> 
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -132,21 +132,13 @@ $query = $query." order by counter desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
 $rs = $db->executeQuery($query);
 
 ?>
-<!--<table border="0" align="center" width="620">
-<tr>
-<td>
-<form action="" method="GET">
-<input type="text" name="search" value="<? //echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по "физическому имени" и по "названию фильма"</font>
-</form>
-</td>
-</tr>
-</table>-->
+
 <?
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>\n";
-echo "<td class='list'><b>Название</b></td>\n";
-echo "<td class='list'><b>Просмотров</b></td>\n";
+echo "<td class='list'><b>"._('Title')."</b></td>\n";
+echo "<td class='list'><b>"._('Views')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

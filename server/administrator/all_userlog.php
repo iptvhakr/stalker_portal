@@ -54,19 +54,19 @@ a:hover{
 }
 </style>
 <title>
-Все Пользовательские логи
+<?= _('All users log')?>
 </title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Все Пользовательские логи&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('All users log')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="users.php"><< Назад</a>
+        <a href="users.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -170,18 +170,18 @@ function construct_YY(){
 
 function construct_MM(){
     $month = array(
-         1 => 'Январь',
-         2 => 'Февраль',
-         3 => 'Март',
-         4 => 'Апрель',
-         5 => 'Май',
-         6 => 'Июнь',
-         7 => 'Июль',
-         8 => 'Август',
-         9 => 'Сентябрь',
-        10 => 'Октябрь',
-        11 => 'Ноябрь',
-        12 => 'Декабрь',
+        1 => _('January'),
+        2 => _('February'),
+        3 => _('March'),
+        4 => _('April'),
+        5 => _('May'),
+        6 => _('June'),
+        7 => _('July'),
+        8 => _('August'),
+        9 => _('September'),
+        10 => _('October'),
+        11 => _('November'),
+        12 => _('December'),
     );
     $mm = '';
     if (!$_GET['mm']){
@@ -226,7 +226,7 @@ function parse_param($action, $param){
             
             $query = "select * from itv where cmd='$param'";
             $rs = $db->executeQuery($query);
-            $name = '[Канал] '.@$rs->getValueByName(0, 'name');
+            $name = '['._('Channel').'] '.@$rs->getValueByName(0, 'name');
             
         }else if ($sub_param == 'aut'){
             preg_match("/auto \/media\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
@@ -234,7 +234,7 @@ function parse_param($action, $param){
             
             $query = "select * from video where id='$media_id'";
             $rs = $db->executeQuery($query);
-            $name = '[Видео] '.@$rs->getValueByName(0, 'name');
+            $name = '['._('Video').'] '.@$rs->getValueByName(0, 'name');
             
         }else{
             $name = '';
@@ -292,10 +292,10 @@ function load_log(){
 <?
 echo "<center><table class='list' cellpadding='3' cellspacing='0' width='620'>\n";
 echo "<tr>";
-echo "<td class='list'><b>Время</b></td>\n";
+echo "<td class='list'><b>"._('Time')."</b></td>\n";
 echo "<td class='list'><b>MAC</b></td>\n";
-echo "<td class='list'><b>Действие</b></td>\n";
-echo "<td class='list'><b>Параметр</b></td>\n";
+echo "<td class='list'><b>"._('Action')."</b></td>\n";
+echo "<td class='list'><b>"._('Parameter')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

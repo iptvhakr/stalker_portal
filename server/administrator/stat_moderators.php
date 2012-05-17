@@ -56,18 +56,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Статистика Модераторов</title>
+<title><?= _('Moderators statistics')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
 <tr>
     <td align="center" valign="middle" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Статистика Модераторов&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Moderators statistics')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="tasks_archive.php">Архив Видео</a> | <a href="karaoke_archive.php">Архив Караоке</a> 
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="tasks_archive.php"><?= _('Video archive')?></a> | <a href="karaoke_archive.php"><?= _('Karaoke archive')?></a>
     </td>
 </tr>
 <tr>
@@ -161,11 +161,11 @@ while(@$rs->next()){
     <table width="600" align="center">
     <tr>
     <td width="50%" align="center" valign="top">
-    <a href="last_closed_tasks.php?id=<?echo $arr['id'] ?>">Видео</a>
+    <a href="last_closed_tasks.php?id=<?echo $arr['id'] ?>"><?= _('Movie')?></a>
         <table border="1" width="200" cellspacing="0">
           <tr>
             <td width="170">
-                Всего
+                <?= _('Total')?>
             </td>
             <td width="30">
             <? echo get_total_tasks($arr['id'])?>
@@ -173,7 +173,7 @@ while(@$rs->next()){
           </tr>
           <tr>
             <td>
-                Открыто
+                <?= _('Opened')?>
             </td>
             <td>
             <? echo get_open_tasks($arr['id'])?>
@@ -181,7 +181,7 @@ while(@$rs->next()){
           </tr>
           <tr>
             <td>
-                Закрыто
+                <?= _('Closed')?>
             </td>
             <td>
             <? echo $closed_2?>
@@ -189,7 +189,7 @@ while(@$rs->next()){
           </tr>
           <tr>
             <td>
-                Отклонено
+                <?= _('Rejected')?>
             </td>
             <td>
             <? echo $rejected?>
@@ -199,11 +199,11 @@ while(@$rs->next()){
     </td>
     
     <td width="50%" align="center" valign="top">
-    <a href="last_closed_karaoke.php?id=<?echo $arr['id'] ?>">Караоке</a>
+    <a href="last_closed_karaoke.php?id=<?echo $arr['id'] ?>"><?= _('Karaoke')?></a>
         <table border="1" width="200" cellspacing="0">
           <tr>
             <td width="170">
-                Всего
+                <?= _('Total')?>
             </td>
             <td width="30">
             <? echo $total_open_karaoke ?>
@@ -211,7 +211,7 @@ while(@$rs->next()){
           </tr>
           <tr>
             <td width="170">
-                Открыто
+                <?= _('Opened')?>
             </td>
             <td width="30">
             <? echo $open_karaoke ?>
@@ -219,7 +219,7 @@ while(@$rs->next()){
           </tr>
           <tr>
             <td width="170">
-                Закрыто
+                <?= _('Closed')?>
             </td>
             <td width="30">
             <? echo $closed_karaoke ?>

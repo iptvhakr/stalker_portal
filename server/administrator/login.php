@@ -42,7 +42,7 @@ td {
 	background-color:#88BBFF
 }
 </style>
-<title>ВХОД</title>
+<title><?= _('LOGIN')?></title>
 </head>
 <body onload="document.getElementById('login').focus()">
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
@@ -51,19 +51,19 @@ td {
       <form method="POST" action="login.php">
         <table border="0" bgcolor="#88BBFF" cellpadding="3" cellspacing="3" class="login">
             <tr>
-                <td align="center" colspan="2"><b>Вход</b></td>
+                <td align="center" colspan="2"><b><?= _('Sign in')?></b></td>
             </tr>
             <tr>
-                <td align="right"><b>Логин:</b></td>
+                <td align="right"><b><?= _('Login')?>:</b></td>
                 <td><input type="text" name="login" id="login"></td>
             </tr>
             <tr>
-                <td><b>Пароль:</b></td>
+                <td><b><?= _('Password')?>:</b></td>
                 <td align="right"><input type="password" name="password"></td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" title="Вход" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Вход&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></td>
+                <td><input type="submit" title="<?= _('Sign in')?>" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?= _('Sign in')?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"></td>
             </tr>
         </table>
       </form>

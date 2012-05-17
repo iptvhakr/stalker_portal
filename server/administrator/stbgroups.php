@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 moderator_access();
 
@@ -46,7 +46,7 @@ if (!empty($id)){
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
-    $action_value = 'Сохранить';
+    $action_value = _('Save');
     $edit_group = $stb_groups->getById($id);
 }
 
@@ -91,18 +91,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Группы приставок</title>
+<title><?= _('Stb groups')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Группы приставок&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Stb groups')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="users.php"><< Назад</a>
+        <a href="users.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -121,7 +121,7 @@ a:hover{
     <table class='list' cellpadding='3' cellspacing='0'>
         <tr>
             <td>ID</td>
-            <td>Имя</td>
+            <td><?= _('Title')?></td>
             <td>&nbsp;</td>
         </tr>
         <? foreach ($groups as $group){
@@ -131,7 +131,7 @@ a:hover{
                 echo '<td>';
                 
                 echo '<a href="?edit=1&id='.$group['id'].'">edit</a>&nbsp;';
-                echo '<a href="?del=1&id='.$group['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить группу '.$group['name'].' из базы?\')){return true}else{return false}">del</a>';
+                echo '<a href="?del=1&id='.$group['id'].'" onclick="if(confirm(\''.sprintf(_('Are you sure you want to delete the group %s from the database?'), $group['name']).'\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
            }?>
@@ -145,12 +145,12 @@ a:hover{
         <form method="POST">
             <table class="form">
                 <tr>
-                    <td>Имя</td>
-                    <td><input type="text" name="name" value="<?echo @$edit_group['name']?>"></input></td>
+                    <td><?= _('Name')?></td>
+                    <td><input type="text" name="name" value="<?echo @$edit_group['name']?>"/></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"></input></td>
+                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"/></td>
                 </tr>
             </table>
         </form>

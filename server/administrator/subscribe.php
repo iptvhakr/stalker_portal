@@ -66,11 +66,11 @@ if (@$_GET['save']){
         $event->sendUpdateSubscription();
         $event = new SysEvent();
         $event->setUserListById($uid);
-        $event->sendMsg('Каналы обновлены согласно подписке.');
+        $event->sendMsg(_('Updated according to the subscription channels.'));
         
-        js_redirect('profile.php?id='.$uid, 'Подписка сохранена');
+        js_redirect('profile.php?id='.$uid, _('Subscription saved'));
     }else{
-        echo 'ошибка';
+        echo _('error');
     }
     exit;
 }
@@ -296,18 +296,18 @@ function get_bonus_channels_opt(){
 }
 
 ?>
-<title>Подписка на каналы</title>
+<title><?= _('TV channels subscription')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Подписка на каналы&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('TV channels subscription')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="profile.php?id=<?echo @$_GET['id']?>"><< Назад</a> 
+        <a href="profile.php?id=<?echo @$_GET['id']?>"><< <? _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -331,7 +331,7 @@ function get_bonus_channels_opt(){
     <table align="center" border="1">
     <tr> 
         <td width="33%" align="center" valign="top">
-        Все каналы
+        <?= _('All channels')?>
         <select multiple id="all" class="all">
         <? echo get_all_channels_opt() ?>
         </select>
@@ -343,10 +343,10 @@ function get_bonus_channels_opt(){
         <table border="0" height="100%">
         <tr>
             <td height="80%" align="center">
-            <input type="button" value="Все >>"  onclick="add_all()"/><br>
+            <input type="button" value="<?= _('All')?> >>"  onclick="add_all()"/><br>
             <input type="button" value=">>"  onclick="add()"/><br>
             <input type="button" value="<<" onclick="del()"/><br>
-            <input type="button" value="<< Все" onclick="del_all()"/>
+            <input type="button" value="<< <?= _('All')?>" onclick="del_all()"/>
             </td>
         </tr>
         <tr>
@@ -358,19 +358,19 @@ function get_bonus_channels_opt(){
             <td height="10%" align="center" valign="bottom">
             <input type="hidden" name="sub_ch" id="sub_ch"/>
             <input type="hidden" name="bonus_ch" id="bonus_ch"/>
-            <input type="button" value="Сохранить подписку" onclick="sub(this.form)"/>
+            <input type="button" value="<?= _('Save')?>" onclick="sub(this.form)"/>
             </td>
         </tr>
         </table>
         </td>
         
         <td width="33%" align="center" valign="top">
-        Подписка
+        <?= _('Subscription')?>
         <select multiple id="sel" name="order" class="sub">
         <? echo get_sub_channels_opt() ?>
         </select>
         <br><br><br>
-        Бонус
+        <?= _('Bonus')?>
         <select multiple id="bonus" name="bonus" class="bonus">
         <? echo get_bonus_channels_opt() ?>
         </select>

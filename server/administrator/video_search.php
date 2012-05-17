@@ -34,7 +34,7 @@ if (@$_GET['view'] != 'text'){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Поиск фильмов по хранилищам</title>
+<title><?= _('Search movies on storages')?></title>
 
 <style type="text/css">
 
@@ -111,10 +111,10 @@ function doLoad(get, data){
                 
                 if (get == 'startmd5sum'){
                     if (req.responseJS.error){
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'ошибка';
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('error')?>';
                         alert(req.responseJS.error);
                     }else{
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'идет подсчет';
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('counting')?>';
                     }
                 }
                 
@@ -144,7 +144,7 @@ function doLoad(get, data){
                 
             }else{
                 if (get == 'vclub_info'){
-                    alert('Ошибка: Возможно файл или директория содержат запрещенные символы')
+                    alert('<?= _('Error: The file or directory may contain invalid characters')?>')
                 }
             }
         }
@@ -176,9 +176,9 @@ function display_info(arr, id){
         
         var md5sum = '';
         var table  = '<tr>';
-        table += '<td class="list2" width="70">Сервер</td>';
-        table += '<td class="list2" width="200">Каталог</td>';
-        table += '<td class="list2" width="60">Серии</td>';
+        table += '<td class="list2" width="70"><?= _('Server')?></td>';
+        table += '<td class="list2" width="200"><?= _('Folder')?></td>';
+        table += '<td class="list2" width="60"><?= _('Series')?></td>';
         table += '<td class="list2">&nbsp;</td>';
         table += '</tr>';
         
@@ -186,12 +186,12 @@ function display_info(arr, id){
             var md5btn_txt = '';
             if (arr[i]['files'][0]['status'] == 'done'){
                 if (arr[i]['files'][0]['md5'] != ''){
-                    md5btn_txt = 'проверить'
+                    md5btn_txt = '<?= _('check')?>'
                 }else{
-                    md5btn_txt = 'посчитать MD5 сумму'
+                    md5btn_txt = '<?= _('count md5 sum')?>'
                 }
             }else{
-                md5btn_txt = 'идет подсчет'
+                md5btn_txt = '<?= _('counting')?>'
             }
             table +='<tr>';
                  table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>';
@@ -208,7 +208,7 @@ function display_info(arr, id){
                 if(arr[i]['files'][j]['status'] == 'done'){
                     md5sum = arr[i]['files'][j]['md5'];
                 }else{
-                    md5sum = 'подсчитывается...';
+                    md5sum = '<?= _('counting')?>...';
                 }
                 
                 table +='<td nowrap width="100%" align="right"><sub><b>'+arr[i]['files'][j]['name']+'</b> '+md5sum+'</sub></td>';
@@ -237,11 +237,11 @@ function display_info(arr, id){
 function md5sum(obj, status, media_name, storage_name){
     if (can_md5dum){
         if (status == 'done'){
-            obj.innerHTML = 'подождите...'
+            obj.innerHTML = '<?= _('waiting...')?>'
             doLoad('startmd5sum',{'media_name':media_name, 'storage_name':storage_name})
         }
     }else{
-        alert('У Вас нет прав на это действие')
+        alert('<?= _('You are not authorized for this action')?>')
     }
 }
 
@@ -252,12 +252,12 @@ function md5sum(obj, status, media_name, storage_name){
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Поиск фильмов по хранилищам&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Search movies on storages')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="storages.php"><< Назад</a> | <a href="?<?echo $_SERVER['QUERY_STRING'].'&view=text'?>">В текстовом виде</a>
+        <a href="storages.php"><< <?= _('Back')?></a> | <a href="?<?echo $_SERVER['QUERY_STRING'].'&view=text'?>"><?= _('Plain text')?></a>
     </td>
 </tr>
 <tr>
@@ -280,7 +280,7 @@ function md5sum(obj, status, media_name, storage_name){
         <td valign="top">
             <table width="100%">
                 <tr>
-                    <th>На сервере</th>
+                    <th><?= _('On server')?></th>
                 </tr>
                 <tr>
                     <td>
@@ -307,11 +307,11 @@ function md5sum(obj, status, media_name, storage_name){
         <td valign="top">
             <table width="100%">
                 <tr>
-                    <th width="100%">и еще на</th>
+                    <th width="100%"><?= _('and on')?></th>
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" name="total_storages" value="<? echo @$_GET['total_storages']?>" size="5" maxlength="2" /> хранилищах
+                        <input type="text" name="total_storages" value="<? echo @$_GET['total_storages']?>" size="5" maxlength="2" /> <?= _('storages')?>
                     </td>
                 </tr>
             </table>
@@ -319,7 +319,7 @@ function md5sum(obj, status, media_name, storage_name){
     </tr>
     <tr>
         <td colspan="2">
-            <input type="submit" value="Поиск" name="search" />
+            <input type="submit" value="<?= _('Search')?>" name="search" />
         </td>
     </tr>
 </table>
@@ -331,12 +331,12 @@ function md5sum(obj, status, media_name, storage_name){
 <table>
 <tr>
     <td colspan="2" width="100%" style="text-align: left">
-        Сортировка по
+        <?= _('Sort by')?>
         <select onchange="sortby(this)">
             <option value="">--------</option>
-            <option value="count" <?if (@$_GET['sortby'] == 'count') echo 'selected'?>>просмотрам всего</option>
-            <option value="month_counter" <?if (@$_GET['sortby'] == 'month_counter') echo 'selected'?>>просмотрам за месяц</option>
-            <option value="last_played" <?if (@$_GET['sortby'] == 'last_played') echo 'selected'?>>последнему просмотру</option>
+            <option value="count" <?if (@$_GET['sortby'] == 'count') echo 'selected'?>><?= _('total views')?></option>
+            <option value="month_counter" <?if (@$_GET['sortby'] == 'month_counter') echo 'selected'?>><?= _('total views per month')?></option>
+            <option value="last_played" <?if (@$_GET['sortby'] == 'last_played') echo 'selected'?>><?= _('last viewed')?></option>
         </select>
     </td>
     </tr>
@@ -462,11 +462,11 @@ if (@$_GET['view'] != 'text'){
     echo "<tr>";
     echo "<td class='list'><b>#</b></td>\n";
     echo "<td class='list'><b>id</b></td>\n";
-    echo "<td class='list'><b>Фильм (имя папки)</b></td>\n";
-    echo "<td class='list'><b>Кол-во хранилищ</b></td>\n";
-    echo "<td class='list'><b>Просмотров всего</b></td>\n";
-    echo "<td class='list'><b>Просмотров за месяц</b></td>\n";
-    echo "<td class='list'><b>Последний просмотр</b></td>\n";
+    echo "<td class='list'><b>"._('Movie')." ("._('folder').")</b></td>\n";
+    echo "<td class='list'><b>"._('Number of storages')."</b></td>\n";
+    echo "<td class='list'><b>"._('Total views')."</b></td>\n";
+    echo "<td class='list'><b>"._('Total views per month')."</b></td>\n";
+    echo "<td class='list'><b>"._('Last viewed')."</b></td>\n";
     echo "</tr>\n";
     while(@$rs->next()){
         $arr=$rs->getCurrentValuesAsHash();
@@ -496,10 +496,10 @@ if (@$_GET['view'] != 'text'){
               <table cellpadding="0" cellspacing="0">
                <tr>
                 <td id="loading_bar_<?echo $arr['video_id']?>" style="display:">
-                    Загрузка...
+                    <?= _('Loading')?>...
                 </td>
                 <td id="error_bar_<?echo $arr['video_id']?>" style="display:none">
-                    <font color="red">Не найден!</font>
+                    <font color="red"><?= _('Not found')?>!</font>
                 </td>
                 <td style="display:none" id="storages_<?echo $arr['video_id']?>">
                     <table class='list' border="1" cellpadding='0' cellspacing='0' id="storages_content_<?echo $arr['video_id']?>">

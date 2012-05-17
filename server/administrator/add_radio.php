@@ -26,7 +26,7 @@ if (isset($_GET['status']) && @$_GET['id']){
 if (!$error){
     
     if (@$_POST['number'] && !check_number($_POST['number']) && !@$_GET['update']){
-        $error = 'Ошибка: Номер канала "'.intval($_POST['number']).'" уже используется';
+        $error = sprintf(_('Error: channel with number "%s" is already in use'), intval($_POST['number']));
     }
     
     if (@$_GET['save'] && !$error){
@@ -47,7 +47,7 @@ if (!$error){
             header("Location: add_radio.php");
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
     
@@ -64,7 +64,7 @@ if (!$error){
             header("Location: add_radio.php");
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
 }
@@ -119,19 +119,19 @@ a:hover{
 }
 </style>
 <title>
-Редактирование списка РАДИО каналов
+<?= _('RADIO channels')?>
 </title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование списка РАДИО каналов&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('RADIO channels')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.html"><< Назад</a>
+        <a href="index.html"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -154,9 +154,9 @@ $rs=$db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>";
-echo "<td class='list'><b>Номер</b></td>";
-echo "<td class='list'><b>Имя</b></td>";
-echo "<td class='list'><b>Адрес</b></td>";
+echo "<td class='list'><b>"._('Number')."</b></td>";
+echo "<td class='list'><b>"._('Name')."</b></td>";
+echo "<td class='list'><b>"._('URL')."</b></td>";
 echo "</tr>";
 while(@$rs->next()){
     
@@ -229,7 +229,7 @@ function popup(src){
     <table align="center">
         <tr>
            <td align="right">
-            Номер: 
+            <?= _('Number')?>:
            </td>
            <td>
             <input type="text" name="number" id="number" value="<? echo @$number ?>"  maxlength="3">
@@ -237,7 +237,7 @@ function popup(src){
         </tr>
         <tr>
            <td align="right">
-            Название: 
+            <?= _('Name')?>:
            </td>
            <td>
             <input type="text" name="name" size="50" id="name" value="<? echo @$name ?>">
@@ -247,7 +247,7 @@ function popup(src){
         </tr>
         <tr>
            <td align="right">
-            Адрес: 
+            <?= _('URL')?>:
            </td>
            <td>
             <input id="cmd" name="cmd" size="50" type="text" value="<? echo @$cmd ?>">
@@ -257,7 +257,7 @@ function popup(src){
            <td>
            </td>
            <td>
-            <input type="button" value="Сохранить" onclick="save()">&nbsp;<input type="button" value="Новый" onclick="document.location='add_radio.php'">
+            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_radio.php'">
            </td>
         </tr>
     </table>

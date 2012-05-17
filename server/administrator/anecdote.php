@@ -42,7 +42,7 @@ if (!$error){
             exit();
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
     
@@ -60,7 +60,7 @@ if (!$error){
             exit();
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
 }
@@ -102,19 +102,19 @@ a:hover{
 }
 </style>
 <title>
-Редактирование Анекдотов
+<?= _('Jokes')?>
 </title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование Анекдотов&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Jokes')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a>
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -177,7 +177,7 @@ while(@$rs->next()){
     echo "<td>";
     
     echo $arr['added']." <a href='?edit=1&id=".$arr['id']."#form'>edit</a>&nbsp;&nbsp;";
-    echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"anecdote.php?del=1&id=".$arr['id']."\"}'>del</a>&nbsp;&nbsp;\n";
+    echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"anecdote.php?del=1&id=".$arr['id']."\"}'>del</a>&nbsp;&nbsp;\n";
     echo "<br><br>".nl2br($arr['anec_body']);
     
     echo "</td>";
@@ -236,7 +236,7 @@ function popup(src){
     <table align="center">
         <tr>
            <td align="right" valign="top">
-            Анекдот: 
+            <?= _('Joke')?>:
            </td>
            <td>
             <textarea name="anec_body" id="anec_body" cols="40" rows="10"><? echo @$anec_body ?></textarea>
@@ -248,7 +248,7 @@ function popup(src){
            <td>
            </td>
            <td>
-            <input type="button" value="Сохранить" onclick="save()">&nbsp;<input type="button" value="Новый" onclick="document.location='anecdote.php'">
+            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='anecdote.php'">
            </td>
         </tr>
     </table>

@@ -130,7 +130,7 @@ if (!$error){
             exit;
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
     
@@ -155,7 +155,7 @@ if (!$error){
             exit;
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
 }
@@ -203,19 +203,19 @@ a:hover {
 </style>
 <script language="JavaScript" src="js.js"></script>
 <title>
-Редактирование списка КАРАОКЕ
+<?= _('KARAOKE')?>
 </title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование списка караоке файлов&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('KARAOKE')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.html"><< Назад</a>
+        <a href="index.html"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -358,11 +358,11 @@ function get_done_karaoke_color($id){
 	if(get_done_karaoke($id)){
 		$color = 'green';
         $done = 0;
-        $txt = 'сделано';
+        $txt = _('done');
 	}else{
         $color = 'red';
         $done = 1;
-        $txt = 'не сделано';
+        $txt = _('not done');
     }
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
@@ -396,10 +396,11 @@ $rs = $db->executeQuery($query);
 <tr>
 <td>
 <form action="" method="GET">
-<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по "названию ролика"</font>
+<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by clip name')?></font>
 </form>
 <td>
 </tr>
+<? if (substr($locale, 0, 2) == 'ru'){?>
 <tr>
 <td align="center">
 <a href="?letter=А">А</a>&nbsp;
@@ -437,6 +438,7 @@ $rs = $db->executeQuery($query);
 <a href="?letter=Я">Я</a>&nbsp;
 <td>
 </tr>
+<?}?>
 <tr>
 <td align="center">
 <a href="?letter=A">A</a>&nbsp;
@@ -483,16 +485,12 @@ $rs = $db->executeQuery($query);
 <?
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
-//echo "<td class='list'><b>Имя файла</b></td>";
-echo "<td class='list'><b>Физическое имя</b></td>";
-echo "<td class='list'><b>Название композиции</b></td>";
-echo "<td class='list'><b>Исполнитель</b></td>";
-echo "<td class='list'><b>Добавил</b></td>";
-echo "<td class='list'><b>Когда</b></td>";
-echo "<td class='list'><b>Жалобы на<br>звук/видео</b></td>\n";
-//echo "<td class='list'><b>Путь</b></td>";
-//echo "<td class='list'><b>Длительность, с</b></td>";
-//echo "<td class='list'><b>Описание</b></td>";
+echo "<td class='list'><b>"._('File name')."</b></td>";
+echo "<td class='list'><b>"._('Song name')."</b></td>";
+echo "<td class='list'><b>"._('Performer')."</b></td>";
+echo "<td class='list'><b>"._('Posted by')."</b></td>";
+echo "<td class='list'><b>"._('When')."</b></td>";
+echo "<td class='list'><b>"._('Claims about<br>audio/video')."</b></td>\n";
 echo "<td class='list'>&nbsp;</td>";
 echo "</tr>";
 while(@$rs->next()){
@@ -515,7 +513,7 @@ while(@$rs->next()){
     echo "<td class='list' align='center'>";
     
     if (check_access(array(1))){
-        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик жалоб?\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
+        echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
     echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
     if (check_access(array(1))){
@@ -525,7 +523,7 @@ while(@$rs->next()){
     
     echo "<td class='list'><a href='?edit=1&id=".$arr['id']."&search=$search&letter=$letter#form'>edit</a>&nbsp;&nbsp;";
     if (check_access(array(1))){
-        echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"add_karaoke.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
+        echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"add_karaoke.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
     }
     echo get_karaoke_accessed_color($arr['id'])."&nbsp;&nbsp;";
     echo get_done_karaoke_color($arr['id']);
@@ -541,10 +539,10 @@ while(@$rs->next()){
           <table cellpadding="0" cellspacing="0">
            <tr>
             <td id="loading_bar_<?echo $arr['id']?>" style="display:">
-                &nbsp;Загрузка...
+                &nbsp;<?= _('Loading')?>...
             </td>
             <td id="error_bar_<?echo $arr['id']?>" style="display:none">
-                <font color="red">Не найден!</font>
+                <font color="red"><?= _('Not found')?>!</font>
             </td>
             <td style="display:none" id="storages_<?echo $arr['id']?>">
                 <table class='list' border="1" cellpadding='0' cellspacing='0' id="storages_content_<?echo $arr['id']?>">
@@ -693,8 +691,8 @@ function display_info(arr, id){
         
         
         table  = '<tr>'
-        table += '<td class="list2" width="70">Сервер</td>'
-        table += '<td class="list2" width="70">Файл</td>'
+        table += '<td class="list2" width="70"><?= _('Server')?></td>'
+        table += '<td class="list2" width="70"><?= _('File')?></td>'
         table += '</tr>'
         
         for (i=0; i<arr.length; i++){
@@ -734,7 +732,7 @@ function doLoad(get, data){
                 
             }else{
                 if (get == 'karaoke_info'){
-                    alert('Ошибка: Возможно файл или директория содержат запрещенные символы')
+                    alert('<?= _('Error: The file or directory may contain invalid characters')?>')
                 }
             }
         }
@@ -802,7 +800,7 @@ function check_protocol(){
     <table align="center">
         <tr>
            <td align="right">
-            Название: 
+            <?= _('Name')?>:
            </td>
            <td>
             <input type="text" size="40" name="name" id="name" value='<? echo @$name ?>'>
@@ -812,7 +810,7 @@ function check_protocol(){
         </tr>
         <tr>
            <td align="right" valign="top">
-           Протокол:
+           <?= _('Protocol')?>:
            </td>
            <td>
              <select name="protocol" id="protocol" onchange="check_protocol()">
@@ -827,12 +825,12 @@ function check_protocol(){
            RTSP/HTTP URL: 
            </td>
            <td>
-            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>"> (включая солюшн)
+            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>"> (<?= _('include solution')?>)
            </td>
         </tr> 
         <tr>
            <td align="right">
-            Исполнитель: 
+            <?= _('Performer')?>:
            </td>
            <td>
             <input type="text" size="40" name="singer" id="singer" value='<? echo @$singer ?>'>
@@ -840,7 +838,7 @@ function check_protocol(){
         </tr>
         <tr>
            <td align="right" valign="top">
-           Автор: 
+           <?= _('Author')?>:
            </td>
            <td>
             <input name="author" type="text" size="40" value='<? echo @$author ?>'>
@@ -848,7 +846,7 @@ function check_protocol(){
         </tr>
         <tr>
            <td align="right" valign="top">
-            Жанр: 
+            <?= _('Genre')?>:
            </td>
            <td>
             <select name="genre_id">
@@ -868,7 +866,7 @@ function check_protocol(){
            <td>
            </td>
            <td>
-           <input type="button" value="Сохранить" onclick="save()">&nbsp;<input type="button" value="Новый" onclick="document.location='add_karaoke.php'">
+           <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_karaoke.php'">
            </td>
         </tr>
         <tr>
@@ -876,14 +874,7 @@ function check_protocol(){
            </td>
            <td>
            <br> 
-           <b>Порядок заполнения:</b><br><br>
-           1. Заполнить поля.<br>
-           2. Сохранить.<br>
-           3. Поместить сконвертированный файл с названием, <br>
-           &nbsp;&nbsp;&nbsp;&nbsp;указанным в колонке "Имя файла" в общую директорию.<br>
-           4. При необходимости редактировать или удалить запись.<br>
-           5. Если файл физически присутствует в директории, то он <br> 
-           &nbsp;&nbsp;&nbsp;&nbsp;отображается зеленым цветом, если отсутствует -  красным.
+           <b><?= _('Form filling order')?>:</b><br><br>
            </td>
         </tr>
     </table>

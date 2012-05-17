@@ -5,15 +5,6 @@ ob_start();
 
 include "./common.php";
 
-$locale = 'ru_RU.utf8';
-
-setlocale(LC_MESSAGES, $locale);
-putenv('LC_MESSAGES='.$locale);
-
-bindtextdomain('stb', PROJECT_PATH.'/locale');
-textdomain('stb');
-bind_textdomain_codeset('stb', 'UTF-8');
-
 $error = '';
 
 $db = Database::getInstance();
@@ -237,7 +228,7 @@ if (count(@$_POST) > 0){
                 $rows = @$rs->getRowCount();
                 
                 if ($rows > 0){
-                    $error = 'Ошибка: папка с таким именем уже существует';
+                    $error = _('Error: The folder with that name already exists');
                 }
 
                 if(@$_GET['name'] && !$error){
@@ -248,7 +239,7 @@ if (count(@$_POST) > 0){
                         //var_dump($e->getMessage(), $e->getStorageName()); exit;
                         $moderator_storages = $master->getModeratorStorages();
                         if (!empty($moderator_storages[$e->getStorageName()])){
-                            $error = "Ошибка при создании папки на модераторском хранилище";
+                            $error = _('Error creating the folder on moderator storage');
                         }
                     }
                 }
@@ -345,7 +336,7 @@ if (count(@$_POST) > 0){
                     //exit;
                 }
                 else if (!$error){
-                    $error = 'Ошибка: необходимо заполнить все поля';
+                    $error = _('Error: all fields are required');
                 }
             }
             
@@ -397,7 +388,7 @@ if (count(@$_POST) > 0){
                     //exit;
                 }
                 else{
-                    $error = 'Ошибка: необходимо заполнить все поля';
+                    $error = _('Error: all fields are required');
                 }
             }
 
@@ -415,7 +406,7 @@ if (count(@$_POST) > 0){
             exit;
         }
     }else{
-        $error = 'Ошибка: недостаточно прав для данного действия';
+        $error = _('Error: insufficient permissions for this action');
     }
 }
 ?>
@@ -496,10 +487,23 @@ a:hover{
 
         $("#video_on_date").datepicker({
             dateFormat  : 'dd-mm-yy',
-            dayNamesMin : ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+            dayNamesMin : ['<?= _('Sun')?>', '<?= _('Mon')?>', '<?= _('Tue')?>', '<?= _('Wed')?>', '<?= _('Thu')?>', '<?= _('Fri')?>', '<?= _('Sat')?>'],
             firstDay    : 1,
             minDate     : new Date(),
-            monthNames  : ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+            monthNames  : [
+                '<?= _('January')?>',
+                '<?= _('February')?>',
+                '<?= _('March')?>',
+                '<?= _('April')?>',
+                '<?= _('May')?>',
+                '<?= _('June')?>',
+                '<?= _('July')?>',
+                '<?= _('August')?>',
+                '<?= _('September')?>',
+                '<?= _('October')?>',
+                '<?= _('November')?>',
+                '<?= _('December')?>'
+            ]
         });
 
         //$("#video_on_date").datepicker("setDate", new Date());
@@ -523,10 +527,10 @@ a:hover{
             width: 350,
             modal: true,
             buttons: {
-                "Включить" : function(){
+                "<?= _('Turn on')?>" : function(){
                     window.location = "add_video.php?date_on="+$('#video_on_date').val()+"&accessed=1&id="+$("#video_on_id").val()+"&letter="+getURLParameter('letter')+"&search="+getURLParameter('search')+"&page="+getURLParameter('page');
                 },
-                "Отмена" : function(){
+                "<?= _('Cancel')?>" : function(){
                     $(this).dialog("close");
                 }
             },
@@ -544,17 +548,17 @@ a:hover{
 
 </script>
 <title>
-Редактирование списка файлов ВИДЕО КЛУБА
+<?= _('VIDEO CLUB')?>
 </title>
 </head>
 <body onload="init_genres();fill_category();get_cat_genres();">
 
-<div id="video-on-form" title="Расписание включения">
+<div id="video-on-form" title="<?= _('Schedule turn the video on')?>">
     <p class="validateTips"></p>
 
     <form onsubmit="return false">
     <fieldset>
-        <label for="video_on_date">Дата</label>
+        <label for="video_on_date"><?= _('Date')?></label>
         <input type="text" readonly="readonly" name="video_on_date" id="video_on_date" class="text ui-widget-content ui-corner-all" />
         <input type="hidden" id="video_on_id">
     </fieldset>
@@ -564,15 +568,15 @@ a:hover{
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование списка видео файлов&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('VIDEO CLUB')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="add_moderator_mac.php">MAC адреса модераторов</a> 
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="add_moderator_mac.php"><?= _('Moderators MAC addresses')?></a>
         <?
         if (check_access(array(1, 2))){
-            echo '| <a href="myvideolog.php">Мои логи</a>';
+            echo '| <a href="myvideolog.php">'._('My logs').'</a>';
         }
         ?>
     </td>
@@ -618,9 +622,9 @@ function send_button($id){
     
     if ($rs->getRowCount() > 0){
         $task_id = $rs->getValueByName(0, 'id');;
-        return "<a href='msgs.php?task=".$task_id."'><font color='#CBCB00'>задание</font></a>&nbsp;&nbsp;\n";
+        return "<a href='msgs.php?task=".$task_id."'><font color='#CBCB00'>"._('task')."</font></a>&nbsp;&nbsp;\n";
     }else{
-        return "<a href='send_to.php?id=".$id."'>отправить</a>&nbsp;&nbsp;\n";
+        return "<a href='send_to.php?id=".$id."'>"._('send')."</a>&nbsp;&nbsp;\n";
     }
 }
 
@@ -681,45 +685,13 @@ $rs = $db->executeQuery($query);
 <tr>
 <td>
 <form action="" method="GET">
-<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по "физическому имени" и по "названию фильма"</font>
+<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by file name of movie name')?></font>
 </form>
 <td>
 </tr>
+<? if (substr($locale, 0, 2) == 'ru'){?>
 <tr>
 <td align="center">
-<!--<a href="#" onclick="document.location='?letter='+urlencode('А')">А</a>&nbsp
-<a href="#" onclick="document.location='?letter='+urlencode('Б')">Б</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('В')">В</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Г')">Г</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Д')">Д</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Е')">Е</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ё')">Ё</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ж')">Ж</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('З')">З</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('И')">И</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Й')">Й</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('К')">К</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Л')">Л</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('М')">М</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Н')">Н</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('О')">О</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('П')">П</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Р')">Р</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('С')">С</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Т')">Т</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('У')">У</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ф')">Ф</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Х')">Х</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ц')">Ц</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ч')">Ч</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ш')">Ш</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Щ')">Щ</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ъ')">Ъ</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ы')">Ы</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ь')">Ь</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Э')">Э</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Ю')">Ю</a>&nbsp;
-<a href="#" onclick="document.location='?letter='+urlencode('Я')">Я</a>&nbsp;-->
 <a href="?letter=А">А</a>&nbsp
 <a href="?letter=Б">Б</a>&nbsp;
 <a href="?letter=В">В</a>&nbsp;
@@ -755,6 +727,7 @@ $rs = $db->executeQuery($query);
 <a href="?letter=Я">Я</a>&nbsp;
 <td>
 </tr>
+<?}?>
 <tr>
 <td align="center">
 <a href="?letter=1">1</a>&nbsp;
@@ -774,19 +747,19 @@ $rs = $db->executeQuery($query);
 <table>
 <tr>
 <td>
-Статус:
+<?= _('Status')?>:
 <select id="sort_opt" onchange="change_list()">
     <option value="">---
     <option value="on" <?if (@$_GET['status'] == 'on') echo 'selected'?>>on
     <option value="off" <?if (@$_GET['status'] == 'off') echo 'selected'?>>off
 </select>&nbsp;&nbsp;&nbsp;
-Голосование:
+<?= _('Votes')?>:
 <select id="sort_vote" onchange="change_list()">
     <option value="">---
-    <option value="good_sound" <?if (@$_GET['vote'] == 'good_sound') echo 'selected'?>>хороший звук
-    <option value="bad_sound" <?if (@$_GET['vote'] == 'bad_sound')  echo 'selected'?>>плохой звук
-    <option value="good_video" <?if (@$_GET['vote'] == 'good_video') echo 'selected'?>>хорошое видео
-    <option value="bad_video" <?if (@$_GET['vote'] == 'bad_video')  echo 'selected'?>>плохое видео
+    <option value="good_sound" <?if (@$_GET['vote'] == 'good_sound') echo 'selected'?>><?= _('good sound')?>
+    <option value="bad_sound" <?if (@$_GET['vote'] == 'bad_sound')  echo 'selected'?>><?= _('bad sound')?>
+    <option value="good_video" <?if (@$_GET['vote'] == 'good_video') echo 'selected'?>><?= _('good video')?>
+    <option value="bad_video" <?if (@$_GET['vote'] == 'bad_video')  echo 'selected'?>><?= _('bad video')?>
 </select>
 </td>
 </tr>
@@ -795,18 +768,16 @@ $rs = $db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>\n";
-echo "<td class='list'><b>Каталог</b></td>\n";
-echo "<td class='list'><b>Название фильма</b></td>\n";
-echo "<td class='list'><b>Оригинальное название</b></td>\n";
-echo "<td class='list'><b>Ограничение</b></td>\n";
-echo "<td class='list'><b>Коррекция звука</b></td>\n";
-echo "<td class='list'><b>Длительность, мин</b></td>\n";
-echo "<td class='list'><b>Серии</b></td>\n";
-echo "<td class='list'><b>Жалобы на звук/видео</b></td>\n";
-//echo "<td class='list'><b>Качество звука</b></td>\n";
-//echo "<td class='list'><b>Качество видео</b></td>\n";
+echo "<td class='list'><b>"._('Folder')."</b></td>\n";
+echo "<td class='list'><b>"._('Title')."</b></td>\n";
+echo "<td class='list'><b>"._('Original title')."</b></td>\n";
+echo "<td class='list'><b>"._('Restriction')."</b></td>\n";
+echo "<td class='list'><b>"._('Volume correction')."</b></td>\n";
+echo "<td class='list'><b>"._('Duration, min')."</b></td>\n";
+echo "<td class='list'><b>"._('Series')."</b></td>\n";
+echo "<td class='list'><b>"._('Claims about<br>audio/video')."</b></td>\n";
 echo "<td class='list'>&nbsp;</td>\n";
-echo "<td class='list'><b>Включен</b></td>\n";
+echo "<td class='list'><b>"._('Turn on date')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     
@@ -830,7 +801,7 @@ while(@$rs->next()){
     echo "<td class='list' align='center'>";
     
     if (check_access(array(1))){
-        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик жалоб?\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
+        echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
     echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
     if (check_access(array(1))){
@@ -843,9 +814,8 @@ while(@$rs->next()){
         echo "<a href='?edit=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."&#form'>edit</a>&nbsp;&nbsp;\n";
     }
     if (check_access(array(1))){
-        //echo "<a href='send_to.php?id=".$arr['id']."'>отправить</a>&nbsp;&nbsp;\n";
         echo send_button($arr['id']);
-        echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"add_video.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
+        echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"add_video.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
     }
     echo get_accessed_color($arr['id']);
     echo '</td>';
@@ -865,10 +835,10 @@ while(@$rs->next()){
           <table cellpadding="0" cellspacing="0">
            <tr>
             <td id="loading_bar_<?echo $arr['id']?>" style="display:">
-                Загрузка...
+                <?= _('Loading')?>...
             </td>
             <td id="error_bar_<?echo $arr['id']?>" style="display:none">
-                <font color="red">Не найден!</font>
+                <font color="red"><?= _('Not found')?>!</font>
             </td>
             <td style="display:none" id="storages_<?echo $arr['id']?>">
                 <table class='list' border="1" cellpadding='0' cellspacing='0' id="storages_content_<?echo $arr['id']?>">
@@ -1056,7 +1026,7 @@ function get_accessed_color($id){
             $video_on_task = Mysql::getInstance()->from('video_on_tasks')->where(array('video_id' => $id))->get()->first();
             if (!empty($video_on_task)){
                 $color   = 'orange';
-                $hint    = 'Включится '.$video_on_task['date_on'];
+                $hint    = sprintf(_('turn on %s'), $video_on_task['date_on']);
                 $date_on = date("d-m-Y", strtotime($video_on_task['date_on']));
             }
         }else{
@@ -1204,7 +1174,7 @@ if(@$_SESSION['upload']){
     $rs=$db->executeQuery($is_uploaded);
     while(@$rs->next()){
         $arr=$rs->getCurrentValuesAsHash();
-        $upload_str .= $arr['name'].'.....(размер: '.$arr['size'].' B) <a href="del_upload.php?id='.$arr['id'].'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'"> удалить</a><br>';
+        $upload_str .= $arr['name'].'.....('._('size').': '.$arr['size'].' B) <a href="del_upload.php?id='.$arr['id'].'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'"> '._('delete').'</a><br>';
     }
 }
 
@@ -1235,21 +1205,17 @@ if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_acce
 
 ?>
 
-/* escape(), совместимый с русскими буквами */
 var trans = [];
 for (var i = 0x410; i <= 0x44F; i++)
   trans[i] = i - 0x350; // А-Яа-я
 trans[0x401] = 0xA8;    // Ё
 trans[0x451] = 0xB8;    // ё
 
-// Сохраняем стандартную функцию escape()
 var escapeOrig = window.escape;
 
-// Переопределяем функцию escape()
 function urlencode(str)
 {
   var ret = [];
-  // Составляем массив кодов символов, попутно переводим кириллицу
   for (i = 0; i < str.length; i++)
   {
     n = str.charCodeAt(i);
@@ -1263,8 +1229,8 @@ function urlencode(str)
 /**/
 
 function change_list(){
-    var opt_sort = document.getElementById('sort_opt')
-    var sort_vote = document.getElementById('sort_vote')
+    var opt_sort = document.getElementById('sort_opt');
+    var sort_vote = document.getElementById('sort_vote');
     var url = 'add_video.php?status='+opt_sort.options[opt_sort.selectedIndex].value+'&vote='+sort_vote.options[sort_vote.selectedIndex].value+<?echo '\'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'\''."\n";?>;
     document.location = url;
 }
@@ -1272,11 +1238,11 @@ function change_list(){
 function md5sum(obj, status, media_name, storage_name){
     if (can_md5dum){
         if (status == 'done'){
-            obj.innerHTML = 'подождите...'
+            obj.innerHTML = '<?= _('please wait')?>...';
             doLoad('startmd5sum',{'media_name':media_name, 'storage_name':storage_name})
         }
     }else{
-        alert('У Вас нет прав на это действие')
+        alert('<?= _('Error: insufficient permissions for this action')?>')
     }
 }
 
@@ -1309,9 +1275,9 @@ function display_info(arr, id){
         
         var md5sum = '';
         var table  = '<tr>';
-        table += '<td class="list2" width="70">Сервер</td>';
-        table += '<td class="list2" width="200">Каталог</td>';
-        table += '<td class="list2" width="60">Серии</td>';
+        table += '<td class="list2" width="70"><?= _('Server')?></td>';
+        table += '<td class="list2" width="200"><?= _('Folder')?></td>';
+        table += '<td class="list2" width="60"><?= _('Series')?></td>';
         table += '<td class="list2">&nbsp;</td>';
         table += '</tr>';
         
@@ -1321,12 +1287,12 @@ function display_info(arr, id){
 
             if (arr[i]['files'][0]['status'] == 'done'){
                 if (arr[i]['files'][0]['md5'] != ''){
-                    md5btn_txt = 'проверить'
+                    md5btn_txt = '<?= _('check')?>'
                 }else{
-                    md5btn_txt = 'посчитать MD5 сумму'
+                    md5btn_txt = '<?= _('count md5 sum')?>'
                 }
             }else{
-                md5btn_txt = 'идет подсчет'
+                md5btn_txt = '<?= _('counting')?>...'
             }
 
             if (arr[i]['for_moderator'] == 1){
@@ -1350,7 +1316,7 @@ function display_info(arr, id){
                 if(arr[i]['files'][j]['status'] == 'done'){
                     md5sum = arr[i]['files'][j]['md5'];
                 }else{
-                    md5sum = 'подсчитывается...'
+                    md5sum = '<?= _('counting')?>...'
                 }
                 
                 table +='<td nowrap width="100%" align="right"><sub><b>'+arr[i]['files'][j]['name']+'</b> '+md5sum+'</sub></td>'
@@ -1395,10 +1361,10 @@ function doLoad(get, data){
                 
                 if (get == 'startmd5sum'){
                     if (req.responseJS.error){
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'ошибка'
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('error')?>'
                         alert(req.responseJS.error)
                     }else{
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = 'идет подсчет'
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('counting')?>'
                     }
                 }
                 
@@ -1428,7 +1394,7 @@ function doLoad(get, data){
                 
             }else{
                 if (get == 'vclub_info'){
-                    alert('Ошибка: Возможно файл или директория содержат запрещенные символы')
+                    alert('<?= _('Error: The file or directory may contain invalid characters')?>')
                 }
             }
         }
@@ -1480,26 +1446,15 @@ function resp_check_name(resp){
     var name_itm = document.getElementById('name_chk')
     if(resp == 1){
         name_itm.style.color = 'red'
-        name_itm.innerHTML = 'Занято'
+        name_itm.innerHTML = '<?= _('Not available')?>'
     }else{
         name_itm.style.color = 'green'
-        name_itm.innerHTML = 'Свободно'
+        name_itm.innerHTML = '<?= _('Available')?>'
     }
 }
 
 function check_org_name(name){
     doLoad('chk_org_name', name)
-}
-
-function resp_org_check_name(resp){
-    var name_itm = document.getElementById('org_name_chk')
-    if(resp == 1){
-        name_itm.style.color = 'red'
-        name_itm.innerHTML = 'Запрещенный'
-    }else{
-        name_itm.style.color = 'green'
-        name_itm.innerHTML = 'Разрешён'
-    }
 }
 
 function hint(){
@@ -1750,7 +1705,7 @@ $(function(){
     <table align="center">
         <tr>
            <td align="right">
-            Название: 
+            <?= _('Title')?>:
            </td>
            <td>
             <input type="text" size="40" class="name" name="name" id="name" onblur="check_name(this.value)" value="<? echo @htmlspecialchars($name) ?>" <? //echo @$readonly ?>>
@@ -1766,11 +1721,11 @@ $(function(){
         </tr>
         <tr>
            <td align="right" valign="top">
-           Оригинальное название: 
+           <?= _('Original title')?>:
            </td>
            <td>
             <input name="o_name" id="o_name" class="o_name" type="text" size="40" value="<? echo @$o_name ?>">
-            <a style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>" href="javascript://" class="get_info">автозаполнение</a><img class="info_loader" src="css/ajax-loader.gif" style="display: none;"/>
+            <a style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>" href="javascript://" class="get_info"><?= _('autofill')?></a><img class="info_loader" src="css/ajax-loader.gif" style="display: none;"/>
             <span id="org_name_chk"></span>
             <div><a class="kinopoisk_url" href=""></a></div>
            </td>
@@ -1778,7 +1733,7 @@ $(function(){
 
         <tr style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>">
            <td align="right" valign="top">
-           Рейтинг кинопоиска:
+           <?= _('Kinopoisk rating')?>:
            </td>
            <td>
                <input type="text" readonly="readonly" name="rating_kinopoisk" class="rating_kinopoisk" value="<? echo @$item['rating_kinopoisk'] ?>">
@@ -1788,7 +1743,7 @@ $(function(){
 
         <tr>
            <td align="right" valign="top">
-           Протокол: 
+           <?= _('Protocol')?>:
            </td>
            <td>
              <select name="protocol" id="protocol" onchange="check_protocol()">
@@ -1804,13 +1759,13 @@ $(function(){
            RTSP/HTTP URL: 
            </td>
            <td>
-            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>"> (включая солюшн)
+            <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>"> (<?= _('include solution')?>)
            </td>
         </tr> 
         
         <tr>
            <td align="right" valign="top">
-           Ограничение по возрасту: 
+           <?= _('Age restriction')?>:
            </td>
            <td>
             <input name="censored" id="censored" type="checkbox" <? echo @$checked ?> >
@@ -1828,7 +1783,7 @@ $(function(){
         <? if (Config::get('vclub_mag100_filter')){ ?>
         <tr>
            <td align="right" valign="top">
-           Только для MAG100:
+           <?= _('Only for MAG100')?>:
            </td>
            <td>
             <input name="for_sd_stb" id="for_sd_stb" type="checkbox" <? echo @$checked_for_sd_stb ?> >
@@ -1838,7 +1793,7 @@ $(function(){
         
         <tr id="genre_1" style="background-color:#e0e0e0">
            <td align="right" valign="top">
-            старый жанр 1: 
+            <?= _('old genre')?> 1:
            </td>
            <td>
             <select name="genre_id_1" id="genre_id_1" onchange="genre_proc(1)">
@@ -1847,7 +1802,7 @@ $(function(){
         </tr> 
         <tr id="genre_2" style="display:none;background-color:#e0e0e0">
            <td align="right" valign="top">
-            старый жанр 2: 
+           <?= _('old genre')?> 2:
            </td>
            <td>
             <select name="genre_id_2" id="genre_id_2" onchange="genre_proc(2)">
@@ -1856,7 +1811,7 @@ $(function(){
         </tr>  
         <tr id="genre_3" style="display:none;background-color:#e0e0e0">
            <td align="right" valign="top">
-            старый жанр 3: 
+           <?= _('old genre')?> 3:
            </td>
            <td>
             <select name="genre_id_3" id="genre_id_3" onchange="genre_proc(3)">
@@ -1865,7 +1820,7 @@ $(function(){
         </tr> 
         <tr id="genre_4" style="display:none;background-color:#e0e0e0">
            <td align="right" valign="top">
-            старый жанр 4: 
+           <?= _('old genre')?> 4:
            </td>
            <td>
             <select name="genre_id_4" id="genre_id_4" onchange="genre_proc(4)">
@@ -1875,7 +1830,7 @@ $(function(){
         
         <tr>
            <td align="right" valign="top">
-            Категория: 
+            <?= _('Category')?>:
            </td>
            <td>
             <select name="category_id" id="category_id" onchange="get_cat_genres()">
@@ -1885,7 +1840,7 @@ $(function(){
         
         <tr id="cat_genre_1">
            <td align="right" valign="top">
-            Жанр 1: 
+            <?= _('Genre')?> 1:
            </td>
            <td>
             <select name="cat_genre_id_1" id="cat_genre_id_1" onchange="cat_genre_proc(1)">
@@ -1894,7 +1849,7 @@ $(function(){
         </tr> 
         <tr id="cat_genre_2" style="display:none">
            <td align="right" valign="top">
-            Жанр 2: 
+           <?= _('Genre')?> 2:
            </td>
            <td>
             <select name="cat_genre_id_2" id="cat_genre_id_2" onchange="cat_genre_proc(2)">
@@ -1903,7 +1858,7 @@ $(function(){
         </tr>  
         <tr id="cat_genre_3" style="display:none">
            <td align="right" valign="top">
-            Жанр 3: 
+           <?= _('Genre')?> 3:
            </td>
            <td>
             <select name="cat_genre_id_3" id="cat_genre_id_3" onchange="cat_genre_proc(3)">
@@ -1912,7 +1867,7 @@ $(function(){
         </tr> 
         <tr id="cat_genre_4" style="display:none">
            <td align="right" valign="top">
-            Жанр 4: 
+           <?= _('Genre')?> 4:
            </td>
            <td>
             <select name="cat_genre_id_4" id="cat_genre_id_4" onchange="cat_genre_proc(4)">
@@ -1921,7 +1876,7 @@ $(function(){
         </tr> 
         <tr>
            <td align="right" valign="top">
-           Год: 
+           <?= _('Year')?>:
            </td>
            <td>
             <input name="year" class="year" type="text" size="4" value="<? echo @$year ?>">
@@ -1929,15 +1884,15 @@ $(function(){
         </tr> 
         <tr>
            <td align="right" valign="top">
-            Длительность: 
+            <?= _('Duration')?>:
            </td>
            <td>
-            <input name="time" type="text" class="duration" size="4" value="<? echo @$time ?>">, мин
+            <input name="time" type="text" class="duration" size="4" value="<? echo @$time ?>">, <?= _('min')?>
            </td>
         </tr> 
         <tr>
            <td align="right" valign="top">
-            Режиссер: 
+            <?= _('Director')?>:
            </td>
            <td>
             <input name="director" type="text" class="director" size="40" value="<? echo @$director ?>">
@@ -1945,7 +1900,7 @@ $(function(){
         </tr> 
         <tr>
            <td align="right" valign="top">
-            Актеры: 
+            <?= _('Actors')?>:
            </td>
            <td>
             <textarea id="actors" name="actors" class="actors" rows="6" cols="30"><? echo @$actors ?></textarea>
@@ -1953,7 +1908,7 @@ $(function(){
         </tr>  
         <tr>
            <td align="right" valign="top">
-            Описание: 
+            <?= _('Description')?>:
            </td>
            <td>
             <textarea id="description" name="description" class="description" rows="10" cols="30"><? echo @$description ?></textarea>
@@ -1961,7 +1916,7 @@ $(function(){
         </tr>
         <tr>
            <td align="right">
-            Коррекция звука (-20...20): 
+            <?= _('Volume correction')?> (-20...20):
            </td>
            <td>
             <input id="service_id" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
@@ -1969,10 +1924,10 @@ $(function(){
         </tr>   
         <tr>
            <td align="right">
-            Скриншот: 
+            <?= _('Cover')?>:
            </td>
            <td>
-            <input name="screenshot" size="27" type="file"><input type="submit" value="Прикрепить" name="load" >
+            <input name="screenshot" size="27" type="file"><input type="submit" value="<?= _('Upload')?>" name="load" >
            </td>
         </tr>
         <tr>
@@ -1987,7 +1942,7 @@ $(function(){
            <td>
            </td>
            <td>
-           <input type="button" value="Сохранить" onclick="save()">&nbsp;<input type="button" value="Новый" onclick="document.location='add_video.php'">
+           <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_video.php'">
            </td>
         </tr>
         <tr>
@@ -1995,15 +1950,8 @@ $(function(){
            </td>
            <td>
            <br> 
-           <b>Порядок заполнения:</b><br><br>
-           1. Прикрепить скриншоты.<br>
-           2. Заполнить поля.<br>
-           3. Сохранить.<br>
-           4. Поместить сконвертированный файл с названием, <br>
-           &nbsp;&nbsp;&nbsp;&nbsp;указанным в колонке "Имя файла" в общую директорию.<br>
-           5. При необходимости редактировать или удалить запись.<br>
-           6. Если файл физически присутствует в директории, то он <br> 
-           &nbsp;&nbsp;&nbsp;&nbsp;отображается зеленым цветом, если отсутствует - красным.
+           <b><?= _('Form filling order')?>:</b><br><br>
+           <?= _('1. Upload cover.<br>2. Fill form.<br>3. Save.<br>4. Put the converted in folder<br>&nbsp;&nbsp;&nbsp;&nbsp;specified in the column "Folder".<br>5. If necessary, edit or delete a record.<br>6. Click on folder name.<br>7. If the file is physically present in the directory,<br>&nbsp;&nbsp;&nbsp;&nbsp;it is green, if there is no - in red.')?>
            </td>
         </tr>
     </table>

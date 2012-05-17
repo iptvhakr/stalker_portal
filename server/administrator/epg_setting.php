@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 $db = new Database();
 
@@ -49,7 +49,7 @@ if (!empty($id)){
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
-    $action_value = 'Сохранить';
+    $action_value = _('Save');
     $edit = $db->executeQuery('select * from epg_setting where id='.$id)->getAllValues();
     $edit = @$edit[0];
 }
@@ -107,18 +107,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Настройки EPG</title>
+<title><?= _('EPG settings')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Настройки EPG&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('EPG settings')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="?update_epg">Обновить EPG</a> | <a href="?update_epg&force">Принудительно обновить EPG</a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="?update_epg"><?= _('Update EPG')?></a> | <a href="?update_epg&force"><?= _('Force update EPG')?></a>
     </td>
 </tr>
 <tr>
@@ -141,7 +141,7 @@ a:hover{
             <td>ID</td>
             <td>URI</td>
             <td>ETag/MD5</td>
-            <td>Обновлен</td>
+            <td><?= _('Updated')?></td>
             <td>&nbsp;</td>
         </tr>
         <? foreach ($settings as $setting){
@@ -151,19 +151,9 @@ a:hover{
                 echo '<td>'.$setting['etag'].'</td>';
                 echo '<td>'.$setting['updated'].'</td>';
                 echo '<td>';
-                /*if ($storage['status'] == 1){
-                    $status_str = 'on';
-                    $color = 'Green';
-                    $new_status=0;
-                }else{
-                    $status_str = 'off';
-                    $color = 'Red';
-                    $new_status=1;
-                }
-                echo '<a href="?status='.$new_status.'&id='.$storage['id'].'" style="color:'.$color.'" onclick="if(confirm(\'Вы действительно хотите изменить статус хранилища '.$storage['storage_name'].'?\')){return true}else{return false}">'.$status_str.'</a>&nbsp;';
-                echo '<a href="?reset_cache=1&id='.$storage['id'].'" style="color:grey" onclick="if(confirm(\'Вы действительно хотите сбросить кеш хранилища '.$storage['storage_name'].'?\')){return true}else{return false}">сбросить кеш</a>&nbsp;';*/
+
                 echo '<a href="?edit=1&id='.$setting['id'].'">edit</a>&nbsp;';
-                echo '<a href="?del=1&id='.$setting['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить настройку из базы удалить?\')){return true}else{return false}">del</a>';
+                echo '<a href="?del=1&id='.$setting['id'].'" onclick="if(confirm(\''._('Do you really want to delete this record?').'\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
            }?>

@@ -78,18 +78,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Логи мастера хранилищ</title>
+<title><?= _('Master-storage logs')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Логи мастера хранилищ&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Master-storage logs')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="storages.php"><< Назад</a> 
+        <a href="storages.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -118,8 +118,8 @@ a:hover{
 <?
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
-echo "<td class='list'><b>Время</b></td>\n";
-echo "<td class='list'><b>Сообщение</b></td>\n";
+echo "<td class='list'><b>"._('Time')."</b></td>\n";
+echo "<td class='list'><b>"._('Message')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

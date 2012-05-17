@@ -70,18 +70,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Жалобы</title>
+<title><?= _('Claims')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Жалобы&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Claims')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="claims_log.php">Лог</a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="claims_log.php"><?= _('Log')?></a>
     </td>
 </tr>
 <tr>
@@ -146,13 +146,13 @@ $rs = $db->executeQuery($query);
 <?
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
-echo "<td class='list'><b>Дата</b></td>\n";
-echo "<td class='list'><b>Видео-клуб звук</b></td>\n";
-echo "<td class='list'><b>Видео-клуб видео</b></td>\n";
-echo "<td class='list'><b>ТВ звук</b></td>\n";
-echo "<td class='list'><b>ТВ видео</b></td>\n";
-echo "<td class='list'><b>Караоке звук</b></td>\n";
-echo "<td class='list'><b>Караоке видео</b></td>\n";
+echo "<td class='list'><b>"._('Date')."</b></td>\n";
+echo "<td class='list'><b>"._('Video-club sound')."</b></td>\n";
+echo "<td class='list'><b>"._('Video-club video')."</b></td>\n";
+echo "<td class='list'><b>"._('TV sound')."</b></td>\n";
+echo "<td class='list'><b>"._('TV video')."</b></td>\n";
+echo "<td class='list'><b>"._('Karaoke sound')."</b></td>\n";
+echo "<td class='list'><b>"._('Karaoke video')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

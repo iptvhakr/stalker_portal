@@ -445,18 +445,18 @@ select.bonus {
 $id = intval(@$_GET['id']);
 
 ?>
-<title>Импорт подписки на каналы</title>
+<title><?= _('Subscription import')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Импорт подписки на каналы&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Subscription import')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> 
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -471,20 +471,20 @@ $id = intval(@$_GET['id']);
 <form enctype="multipart/form-data" method="POST">
 <table class="list" align="center" border="0" cellpadding="0" cellspacing="0" width="300">
 <tr>
-    <td width="50%" align="right">Файл:</td>
+    <td width="50%" align="right"><?= _('File')?>:</td>
     <td><input name="userfile" type="file"></td>
 </tr>
 <tr>
     <td align="right">&nbsp;</td>
-    <td align="left"><input name="update_status" type="checkbox" checked value="1"> Обновлять статус</td>
+    <td align="left"><input name="update_status" type="checkbox" checked value="1"> <?= _('Update status')?></td>
 </tr>
 <tr>
     <td align="right">&nbsp;</td>
-    <td align="left"><input name="update_fav" type="checkbox" value="1"> Обновлять избранное</td>
+    <td align="left"><input name="update_fav" type="checkbox" value="1"> <?= _('Update favorites')?></td>
 </tr>
 <tr>
     <td></td>
-    <td><input type="submit" value="Импорт"></td>
+    <td><input type="submit" value="<?= _('Import')?>"></td>
 </tr>
 <table>
 </form>

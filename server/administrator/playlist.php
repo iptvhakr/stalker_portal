@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 moderator_access();
 
@@ -60,7 +60,7 @@ if (!empty($id)){
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
-    $action_value = 'Сохранить';
+    $action_value = _('Save');
     $edit_record = $playlist->getRecord($id);
 }
 
@@ -127,18 +127,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Плейлист "<? echo $item['name'] ?>"</title>
+<title><?= _('Playlist')?> "<? echo $item['name'] ?>"</title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Плейлист "<? echo $item['name'] ?>"&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Playlist')?> "<? echo $item['name'] ?>"&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="playlists.php"><< Назад</a>
+        <a href="playlists.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -157,8 +157,8 @@ a:hover{
     <table class='list' cellpadding='3' cellspacing='0'>
         <tr>
             <td>#</td>
-            <td>Время</td>
-            <td>Видео ID</td>
+            <td><?= _('Time')?></td>
+            <td><?= _('Movie')?> ID</td>
             <td>&nbsp;</td>
         </tr>
         <? 
@@ -172,7 +172,7 @@ a:hover{
                 echo '<td>';
                 
                 echo '<a href="?playlist_id='.$_GET['playlist_id'].'&edit=1&id='.$record['id'].'">edit</a>&nbsp;';
-                echo '<a href="?playlist_id='.$_GET['playlist_id'].'&del=1&id='.$record['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить запись '.$record['video_id'].' из базы?\')){return true}else{return false}">del</a>';
+                echo '<a href="?playlist_id='.$_GET['playlist_id'].'&del=1&id='.$record['id'].'" onclick="if(confirm(\''._('Do you really want to delete this record?').'\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
                 
@@ -189,7 +189,7 @@ a:hover{
         <form method="POST">
             <table class="form">
                 <tr>
-                    <td>Время</td>
+                    <td><?= _('Time')?></td>
                     <td>
                         <select name="hh">
                             <option value="-1">--</option>
@@ -248,12 +248,12 @@ a:hover{
                     </td>
                 </tr>
                 <tr>
-                    <td>Видео ID</td>
-                    <td><input name="video_id" value="<? echo @$edit_record['video_id']?>"></input></td>
+                    <td><?= _('Movie')?> ID</td>
+                    <td><input name="video_id" value="<? echo @$edit_record['video_id']?>"/></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"></input></td>
+                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"/></td>
                 </tr>
             </table>
         </form>

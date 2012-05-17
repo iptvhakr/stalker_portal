@@ -56,18 +56,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Архив Караоке</title>
+<title><?= _('Karaoke Archive')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
 <tr>
     <td align="center" valign="middle" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Архив Караоке&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Karaoke Archive')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="stat_moderators.php"><< Назад</a> 
+        <a href="stat_moderators.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -129,9 +129,9 @@ if (@$_GET['id']){
         <table border="1" width="100%" cellspacing="0">
             <tr>
                 <td>#</td>
-                <td>Название</td>
-                <td>Исполнитель</td>
-                <td>Дата включения</td>
+                <td><?= _('Title')?></td>
+                <td><?= _('Performer')?></td>
+                <td><?= _('Turn on date')?></td>
             </tr>
             <?
             

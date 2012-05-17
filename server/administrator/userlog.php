@@ -52,18 +52,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Пользовательские логи</title>
+<title><?= _('User logs')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Пользовательские логи&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('User logs')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="profile.php?id=<?echo @$_GET['id']?>"><< Назад</a>
+        <a href="profile.php?id=<?echo @$_GET['id']?>"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -164,18 +164,18 @@ function construct_YY(){
 
 function construct_MM(){
     $month = array(
-         1 => 'Январь',
-         2 => 'Февраль',
-         3 => 'Март',
-         4 => 'Апрель',
-         5 => 'Май',
-         6 => 'Июнь',
-         7 => 'Июль',
-         8 => 'Август',
-         9 => 'Сентябрь',
-        10 => 'Октябрь',
-        11 => 'Ноябрь',
-        12 => 'Декабрь',
+        1 => _('January'),
+        2 => _('February'),
+        3 => _('March'),
+        4 => _('April'),
+        5 => _('May'),
+        6 => _('June'),
+        7 => _('July'),
+        8 => _('August'),
+        9 => _('September'),
+        10 => _('October'),
+        11 => _('November'),
+        12 => _('December'),
     );
     $mm = '';
     if (empty($_GET['mm'])){
@@ -230,7 +230,7 @@ function parse_param($action, $param, $type){
                     $ch_name = $param;
                 }
                 
-                $name = '[Канал] '.$ch_name;
+                $name = '['._('Channel').'] '.$ch_name;
                 break;
             case 2: // Video Club
                 $video_name = '';
@@ -252,7 +252,7 @@ function parse_param($action, $param, $type){
                     $video_name = $param;
                 }
                 
-                $name = '[Видео] '.$video_name;
+                $name = '['._('Video').'] '.$video_name;
                 break;
             case 3: // Karaoke
                 $karaoke_name = '';
@@ -269,7 +269,7 @@ function parse_param($action, $param, $type){
                     $karaoke_name = $param;
                 }
                 
-                $name = '[Караоке] '.$karaoke_name;
+                $name = '['._('Karaoke').'] '.$karaoke_name;
                 break;
             case 4: // Audio Club
                 $audio_name = '';
@@ -286,7 +286,7 @@ function parse_param($action, $param, $type){
                     $audio_name = $param;
                 }
                 
-                $name = '[Аудио] '.$audio_name;
+                $name = '['._('Audio').'] '.$audio_name;
                 break;
             case 5: // Radio
                 $ch_name = '';
@@ -299,7 +299,7 @@ function parse_param($action, $param, $type){
                     $ch_name = $param;
                 }
                 
-                $name = '[Радио] '.$ch_name;
+                $name = '['._('Radio').'] '.$ch_name;
                 break;
             case 6: // My Records
                 $my_record_name = '';
@@ -316,7 +316,7 @@ function parse_param($action, $param, $type){
                     $my_record_name = $param;
                 }
                 
-                $name = '[Мои записи] '.$my_record_name;
+                $name = '['._('My records').'] '.$my_record_name;
                 break;
             case 7: // Shared Records
                 $shared_record_name = '';
@@ -333,7 +333,7 @@ function parse_param($action, $param, $type){
                     $shared_record_name = $param;
                 }
                 
-                $name = '[Записи] '.$shared_record_name;
+                $name = '['._('Records').'] '.$shared_record_name;
                 break;
             case 8: // Video clips
                 $video_name = '';
@@ -350,7 +350,7 @@ function parse_param($action, $param, $type){
                     $video_name = $param;
                 }
                 
-                $name = '[Видео Клип] '.$video_name;
+                $name = '['._('Clip').'] '.$video_name;
                 break;
             default:
                 $name = 'unknown media';
@@ -384,16 +384,10 @@ function load_log(){
 }
 </script>
 <table border="0" align="center" width="620">
- <!--<tr>
-        <td>
-            <form action="" method="GET">
-            <input type="text" name="search" value="<? //echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по MAC</font>
-            </form>
-        <td>
-    </tr>-->
+
     <tr>
         <td align="center">
-        <b><?php echo $mac?></b>&nbsp;&nbsp;&nbsp;&nbsp;Дата
+        <b><?php echo $mac?></b>&nbsp;&nbsp;&nbsp;&nbsp;<?= _('Date')?>
         <select name="yy" id="yy">
             <? echo construct_YY()?>
         </select>
@@ -403,16 +397,16 @@ function load_log(){
         <select name="dd" id="dd">
             <? echo construct_DD()?>
         </select>
-        &nbsp;<input type="button" value="Перейти" onclick="load_log()">
+        &nbsp;<input type="button" value="<?= _('Go')?>" onclick="load_log()">
         <td>
     </tr>
 </table>
 <?
 echo "<center><table class='list' cellpadding='3' cellspacing='0' width='620'>\n";
 echo "<tr>";
-echo "<td class='list'><b>Время</b></td>\n";
-echo "<td class='list'><b>Действие</b></td>\n";
-echo "<td class='list'><b>Параметр</b></td>\n";
+echo "<td class='list'><b>"._('Time')."</b></td>\n";
+echo "<td class='list'><b>"._('Action')."</b></td>\n";
+echo "<td class='list'><b>"._('Parameter')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

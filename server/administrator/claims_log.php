@@ -55,18 +55,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Лог жалоб</title>
+<title><?= _('Claims log')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Лог жалоб&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Claims log')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="claims.php"><< Назад</a>
+        <a href="claims.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -184,11 +184,11 @@ $rs = $db->executeQuery($query);
 <?
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
-echo "<td class='list'><b>Тип</b></td>\n";
-echo "<td class='list'><b>Медиа</b></td>\n";
-echo "<td class='list'><b>Жалоба на</b></td>\n";
-echo "<td class='list'><b>От кого</b></td>\n";
-echo "<td class='list'><b>Когда</b></td>\n";
+echo "<td class='list'><b>"._('Type')."</b></td>\n";
+echo "<td class='list'><b>"._('Media')."</b></td>\n";
+echo "<td class='list'><b>"._('Claim on')."</b></td>\n";
+echo "<td class='list'><b>"._('From')."</b></td>\n";
+echo "<td class='list'><b>"._('When')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

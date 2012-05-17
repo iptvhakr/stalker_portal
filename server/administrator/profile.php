@@ -168,7 +168,7 @@ function get_video_out($video_out, $id){
         $change_v_out = 'RCA';
         $now_v_out = 'S-video';
     }
-    $link = '<a href="#" onclick="if(confirm(\'Поменять видео выход на '.$change_v_out.'?\')){document.location=\'profile.php?'.$change_link.'&id='.$id.'\'}">'.$now_v_out.'</a>';    
+    $link = '<a href="#" onclick="if(confirm(\''._('Change the video output on the').' '.$change_v_out.'?\')){document.location=\'profile.php?'.$change_link.'&id='.$id.'\'}">'.$now_v_out.'</a>';
     
     return $link;
 }
@@ -196,11 +196,11 @@ function additional_services_btn(){
     $additional_services_on = @$rs->getValueByName(0, 'additional_services_on');
     if ($additional_services_on == 0){
         $color = 'red';
-        $txt = 'Выключены';
+        $txt = _('Enabled');
         $set = 1;
     }else{
         $color = 'green';
-        $txt = 'Включены';
+        $txt = _('Disabled');
         $set = 0;
     }
     return '<a href="profile.php?id='.$id.'&set_services='.$set.'" style="color:'.$color.'"><b>'.$txt.'</b></a>';
@@ -231,18 +231,18 @@ if (is_array($fav_ch_arr)){
 }
 
 ?>
-<title>Профиль пользователя</title>
+<title><?= _('User profile')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="700">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Профиль пользователя&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('User profile')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="users.php"><< Назад</a> 
+        <a href="users.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -280,11 +280,11 @@ if (is_array($fav_ch_arr)){
             </tr>
             <tr>
                 <td>pass:</td>
-                <td>[<?echo $parent_password?>] <a href="#" onclick="if(confirm('Изменить на пароль по умолчанию?')){document.location='profile.php?parent_password=default&id=<?echo $id?>'}">Сбросить</a></td>
+                <td>[<?echo $parent_password?>] <a href="#" onclick="if(confirm('<?= _('Reset to default password?')?>')){document.location='profile.php?parent_password=default&id=<?echo $id?>'}"><?= _('Reset')?></a></td>
             </tr>
             <tr>
-                <td>избранное тв:</td>
-                <td>[<?echo $fav_ch_count?> канала] <a href="#" onclick="if(confirm('Сбросить избранные ТВ каналы? Каналы полностью сбросятся только если сразу перезапустить приставку!')){document.location='profile.php?fav_itv=default&id=<?echo $id?>'}">Сбросить</a></td>
+                <td><?= _('favorite tv')?>:</td>
+                <td>[<? printf(_('%s channels'), $fav_ch_count)?>] <a href="#" onclick="if(confirm('<?= _('Reset favorite TV channels? The channels will be reset only if immediately restart the stb!')?>')){document.location='profile.php?fav_itv=default&id=<?echo $id?>'}"><?= _('Reset')?></a></td>
             </tr>
         </table>
         </td>
@@ -297,10 +297,10 @@ if (is_array($fav_ch_arr)){
         <td class="other" width="150">
         <table>
             <tr>
-                <td><a href="subscribe.php?id=<?echo $id?>">Подписка на каналы</a> (<?echo kop2grn(get_cost_sub_channels())?> грн)</td>
+                <td><a href="subscribe.php?id=<?echo $id?>"><?= _('TV subscription')?></a> (<?echo kop2grn(get_cost_sub_channels())?>)</td>
             </tr>
             <tr>
-                <td><b>Доп. сервисы</b>: <? echo additional_services_btn() ?></td>
+                <td><b><?= _('Additional services')?></b>: <? echo additional_services_btn() ?></td>
             </tr>
         </table>
         </td>
@@ -314,7 +314,7 @@ if (is_array($fav_ch_arr)){
         <table>
             <tr>
                 <td>
-                Группа: <select name="group_id">
+                <?= _('Group')?>: <select name="group_id">
                     <option value="0">--------</option>
                     <?
  
@@ -335,7 +335,7 @@ if (is_array($fav_ch_arr)){
                     ?>
                 </select>
                 <input type="hidden" name="mac" value="<?echo $mac?>"/>
-                <input type="submit" name="save" value="Сохранить"/>
+                <input type="submit" name="save" value="<?= _('Save')?>"/>
                 </td>
             </tr>
         </table>
@@ -350,10 +350,10 @@ if (is_array($fav_ch_arr)){
         <td class="other" width="150">
         <table>
             <tr>
-                <td><a href="userlog.php?id=<?echo $id?>">Логи</a></td>
+                <td><a href="userlog.php?id=<?echo $id?>"><?= _('Logs')?></a></td>
             </tr>
             <tr>
-                <td><a href="events.php?mac=<?echo $mac?>">События</a></td>
+                <td><a href="events.php?mac=<?echo $mac?>"><?= _('Events')?></a></td>
             </tr>
         </table>
         </td>
@@ -366,7 +366,7 @@ if (is_array($fav_ch_arr)){
     <table style="float:left;margin-top: 3px" class="other" cellpadding="0" cellspacing="3">
         <tr>
             <td>
-                ФИО:
+                <?= _('Full name')?>:
             </td>
             <td>
                 <input type="text" name="fname" value="<? echo $user['fname'] ?>"/>
@@ -374,7 +374,7 @@ if (is_array($fav_ch_arr)){
         </tr>
         <tr>
             <td>
-                Изменение статуса:
+                <?= _('Last change of status')?>:
             </td>
             <td>
                 <input type="text" name="" readonly="readonly" disabled="disabled" value="<? echo $user['last_change_status'] ?>"/>
@@ -382,7 +382,7 @@ if (is_array($fav_ch_arr)){
         </tr>
         <tr>
             <td>
-                Телефон:
+                <?= _('Phone number')?>:
             </td>
             <td>
                 <input type="text" name="phone" value="<? echo $user['phone'] ?>"/>

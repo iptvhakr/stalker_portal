@@ -55,18 +55,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Статистика просмотра ВИДЕО за месяц</title>
+<title><?= _('Video views statistics per month')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Статистика просмотра ВИДЕО за месяц&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Video views statistics per month')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="stat_daily_video.php"> По дням</a> | <a href="stat_video_genres.php"> По жанрам</a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="stat_daily_video.php"> <?= _('By days')?></a> | <a href="stat_video_genres.php"> <?= _('By genres')?></a>
     </td>
 </tr>
 <tr>
@@ -173,7 +173,7 @@ $rs = $db->executeQuery($query);
 <tr>
 <td>
 <form action="" method="GET">
-<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по "названию фильма"</font>
+<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by movie title')?></font>
 </form>
 </td>
 </tr>
@@ -188,10 +188,10 @@ $rs = $db->executeQuery($query);
       document.location = url;
    }
    </script>
-   Сортировать по 
+   <?= _('Sort by')?>
    <select id="sort_by" onchange="sort_page()">
-    <option value="counter">Просмотров</option>
-    <option value="total_counter" <? if(@$_GET['sort_by'] == 'total_counter'){echo "selected";} ?>>Просмотров всего</option>
+    <option value="counter"><?= _('Views')?></option>
+    <option value="total_counter" <? if(@$_GET['sort_by'] == 'total_counter'){echo "selected";} ?>><?= _('Total views')?></option>
    </select>
    </td>
  </tr>
@@ -200,11 +200,11 @@ $rs = $db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>\n";
-echo "<td class='list'><b>Название</b></td>\n";
-echo "<td class='list'><b>Просмотров</b></td>\n";
-echo "<td class='list'><b>Просмотров всего</b></td>\n";
-echo "<td class='list'><b>Последний просмотр</b></td>\n";
-echo "<td class='list'><b>На скольких хранилищах</b></td>\n";
+echo "<td class='list'><b>"._('Title')."</b></td>\n";
+echo "<td class='list'><b>"._('Views')."</b></td>\n";
+echo "<td class='list'><b>"._('Total views')."</b></td>\n";
+echo "<td class='list'><b>"._('Last views')."</b></td>\n";
+echo "<td class='list'><b>"._('How many storages')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

@@ -131,18 +131,18 @@ function construct_YY(){
 
 function construct_MM(){
     $month = array(
-         1 => 'Январь',
-         2 => 'Февраль',
-         3 => 'Март',
-         4 => 'Апрель',
-         5 => 'Май',
-         6 => 'Июнь',
-         7 => 'Июль',
-         8 => 'Август',
-         9 => 'Сентябрь',
-        10 => 'Октябрь',
-        11 => 'Ноябрь',
-        12 => 'Декабрь',
+         1 => _('January'),
+         2 => _('February'),
+         3 => _('March'),
+         4 => _('April'),
+         5 => _('May'),
+         6 => _('June'),
+         7 => _('July'),
+         8 => _('August'),
+         9 => _('September'),
+        10 => _('October'),
+        11 => _('November'),
+        12 => _('December'),
     );
     $mm = '';
     if (!$_GET['mm']){
@@ -152,7 +152,7 @@ function construct_MM(){
     }
     for ($i=1;$i<=12;$i++){
         if ($i == $mon) {
-            $mm .= "<option value='".$i."' selected>".$month[$i]."</option>";	
+            $mm .= "<option value='".$i."' selected>".$month[$i]."</option>";
         }else{
             $mm .= "<option value='".$i."'>".$month[$i]."</option>";
         }
@@ -246,26 +246,26 @@ a:hover{
 }
 </style>
 <title>
-Редактирование списка IPTV каналов
+<?= _('EPG')?>
 </title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование EPG&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('EPG')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="add_itv.php"><< Назад</a>
+        <a href="add_itv.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
     <td align="center">
     <font color="Red">
     <strong>
-    <? if (@$_GET['saved']){echo "Сохранение прошло успешно";}?>
+    <? if (@$_GET['saved']){echo _('Saving was successful');}?>
     </strong>
     </font>
     <br>
@@ -353,7 +353,7 @@ function save_epg(){
     <table align="center">
         <tr>
            <td align="right">
-            Канал: 
+            <?= _('Channel')?>:
            </td>
            <td>
             <!--input type="text" name="name" id="name" value="<?// echo @$name ?>"-->
@@ -367,7 +367,7 @@ function save_epg(){
         </tr>
         <tr>
            <td align="right">
-            Дата: 
+            <?= _('Date')?>:
            </td>
            <td>
            <select name="yy" id="yy">
@@ -380,7 +380,7 @@ function save_epg(){
                 <? echo construct_DD()?>
            </select>
             <!--input id="cmd" type="text" value="<?// echo @$cmd ?>"-->&nbsp;
-            <input type="button" value="Загрузить EPG" onclick="load_epg()">
+            <input type="button" value="<?= _('Load EPG')?>" onclick="load_epg()">
            </td>
         </tr>
         <tr>
@@ -396,8 +396,7 @@ function save_epg(){
            <td>
            </td>
            <td>
-            <input type="submit" value="Сохранить" onclick="save_epg()">&nbsp;<input type="button" value="Новый" onclick="document.location='add_epg.php'">
-<!--            <input type="submit" value="Сохранить">&nbsp;<input type="button" value="Новый" onclick="document.location='add_itv.php'">-->
+            <input type="submit" value="<?= _('Save')?>" onclick="save_epg()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_epg.php'">
            </td>
         </tr>
     </table>

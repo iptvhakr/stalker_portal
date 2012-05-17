@@ -64,24 +64,20 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Текущие просмотры на сторадже <? echo $storage_name ?></title>
+<title><?= _('Current views on storage')?> <? echo $storage_name ?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Текущие просмотры на сторадже <? echo $storage_name ?>&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Current views on storage')?> <? echo $storage_name ?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a>
+        <a href="index.php"><< <?= _('Back')?></a>
         <?
-            /*if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
-                ?>
-                 | <a href="#" onclick='if(confirm("Внимание: Определение уникальных фильмов на <? echo $storage_name ?> займет некоторое время и нагрузит все стораджи!!! Вы уверены?!")){document.location="unique_video.php?storage=<? echo $storage_name ?>"}'>Уникальные фильмы на <? echo $storage_name ?></a>
-                <?
-            }*/
+
         ?>
     </td>
 </tr>
@@ -139,8 +135,8 @@ $rs = $db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>MAC</b></td>\n";
-echo "<td class='list'><b>Фильм</b></td>\n";
-echo "<td class='list'><b>Начало просмотра</b></td>\n";
+echo "<td class='list'><b>"._('Movie')."</b></td>\n";
+echo "<td class='list'><b>"._('Begin')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

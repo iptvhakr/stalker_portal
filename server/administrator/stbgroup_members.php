@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 moderator_access();
 
@@ -54,7 +54,7 @@ if (!empty($id)){
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
-    $action_value = 'Сохранить';
+    $action_value = _('Save');
     $edit_member = $stb_groups->getMember($id);
 }
 
@@ -99,18 +99,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Приставки группы "<? echo $group['name'] ?>"</title>
+<title><?= _('Stb in group')?> "<? echo $group['name'] ?>"</title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Приставки группы "<? echo $group['name'] ?>"&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Stb in group')?> "<? echo $group['name'] ?>"&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="stbgroups.php"><< Назад</a>
+        <a href="stbgroups.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -144,7 +144,7 @@ a:hover{
                 echo '<td>';
                 
                 echo '<a href="?group_id='.$_GET['group_id'].'&edit=1&id='.$member['id'].'">edit</a>&nbsp;';
-                echo '<a href="?group_id='.$_GET['group_id'].'&del=1&id='.$member['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить приставку '.$member['mac'].' из базы?\')){return true}else{return false}">del</a>';
+                echo '<a href="?group_id='.$_GET['group_id'].'&del=1&id='.$member['id'].'" onclick="if(confirm(\''.sprintf(_('Are you sure you want to remove stb %s from the database?'), $member['mac']).'\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
                 
@@ -162,11 +162,11 @@ a:hover{
             <table class="form">
                 <tr>
                     <td>MAC</td>
-                    <td><input type="text" name="mac" value="<?echo @$edit_member['mac']?>"></input></td>
+                    <td><input type="text" name="mac" value="<?echo @$edit_member['mac']?>"/></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"></input></td>
+                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"/></td>
                 </tr>
             </table>
         </form>

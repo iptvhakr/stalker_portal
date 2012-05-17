@@ -87,11 +87,11 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
                 
                 $event->setUserListById($user_list);
 
-                $error = count($user_list).' событий '.$_POST['event'].' отослано, '.$error_counter." ошибок<br>\n".$error;
-                
+                $error = sprintf(_('%s events %s sended, %s errors'), count($user_list), $_POST['event'], $error_counter)."<br>\n".$error;
+
             }
         }else{
-            $error .= 'Отсутствует файл со списком<br>';
+            $error .= _('File with list is missing').'<br>';
         }
     }
     
@@ -127,7 +127,7 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     }
     
     if ($db->getLastError()){
-        echo 'Ошибка при отправке события: '.$db->getLastError();
+        echo _('Error when sending event').': '.$db->getLastError();
         exit;
     }
 }
@@ -183,18 +183,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>События</title>
+<title><?= _('Events')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;События&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Events')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="events.php">Новое событие</a>
+        <a href="index.php"><< <?= _('Events')?></a> | <a href="events.php"><?= _('New event')?></a>
     </td>
 </tr>
 <tr>
@@ -296,14 +296,14 @@ function fill_msg(){
 <form action="events.php" method="POST" enctype="multipart/form-data">
 <tr>
     <td align="right" valign="top" width="100">
-        Отослать:
+        <?= _('Send')?>:
     </td>
     <td>
-        <input type="radio" name="user_list_type" id="to_single" value="to_single" onchange="change_form(this)" checked="checked"><label for="to_single">Одному</label><br/>
-        <input type="radio" name="user_list_type" id="to_all" value="to_all" onchange="change_form(this)"><label for="to_all">Всем</label><br/>
-        <input type="radio" name="user_list_type" id="by_user_list" value="by_user_list" onchange="change_form(this)"><label for="by_user_list">По списку</label><br/>
-        <input type="radio" name="user_list_type" id="by_pattern" value="by_pattern" onchange="change_form(this)"><label for="by_pattern">По шаблону</label><br/>
-        <input type="radio" name="user_list_type" id="by_group" value="by_group" onchange="change_form(this)"><label for="by_group">Группе</label><br/>
+        <input type="radio" name="user_list_type" id="to_single" value="to_single" onchange="change_form(this)" checked="checked"><label for="to_single"><?= _('To one')?></label><br/>
+        <input type="radio" name="user_list_type" id="to_all" value="to_all" onchange="change_form(this)"><label for="to_all"><?= _('To all')?></label><br/>
+        <input type="radio" name="user_list_type" id="by_user_list" value="by_user_list" onchange="change_form(this)"><label for="by_user_list"><?= _('By list')?></label><br/>
+        <input type="radio" name="user_list_type" id="by_pattern" value="by_pattern" onchange="change_form(this)"><label for="by_pattern"><?= _('By pattern')?></label><br/>
+        <input type="radio" name="user_list_type" id="by_group" value="by_group" onchange="change_form(this)"><label for="by_group"><?= _('To group')?></label><br/>
     </td>
 </tr>
 <tr id="mac_row">
@@ -311,12 +311,12 @@ function fill_msg(){
         MAC:
     </td>
     <td>
-        <input type="text" name="mac" id="mac" value="<? echo @$mac?>">&nbsp;<input type="button" value="Загрузить активные события" onclick="load_events_by_mac()">
+        <input type="text" name="mac" id="mac" value="<? echo @$mac?>">&nbsp;<input type="button" value="<?= _('Load active events')?>" onclick="load_events_by_mac()">
     </td>
 </tr>
 <tr id="user_list_row" style="display:none">
     <td align="right">
-        Список:
+        <?= _('List')?>:
     </td>
     <td>
         <input name="user_list" type="file">
@@ -324,7 +324,7 @@ function fill_msg(){
 </tr>
 <tr id="pattern_row" style="display:none">
     <td align="right">
-        Шаблон:
+        <?= _('Pattern')?>:
     </td>
     <td>
         <select name="pattern">
@@ -335,7 +335,7 @@ function fill_msg(){
 </tr>
 <tr id="group_row" style="display:none">
     <td align="right">
-        Группы:
+        <?= _('Group')?>:
     </td>
     <td>
         <select name="group_id">
@@ -367,8 +367,8 @@ function fill_msg(){
             <option value="mount_all_storages">mount_all_storages
             <option value="cut_off">switch_off
         </select>
-        <span style="display:none" id="checkbox_need_reboot"><input type="checkbox" name="need_reboot" id="need_reboot" value="1"> перезапускать по OK</span>
-        <span style="display:none" id="text_channel"><input type="text" name="channel" id="channel" size="5" maxlength="3"> канал</span>
+        <span style="display:none" id="checkbox_need_reboot"><input type="checkbox" name="need_reboot" id="need_reboot" value="1"> <?= _('restart on OK')?></span>
+        <span style="display:none" id="text_channel"><input type="text" name="channel" id="channel" size="5" maxlength="3"> <?= _('channels')?></span>
     </td>
 </tr>
 <tr id="msg_row" style="display:none">
@@ -377,13 +377,15 @@ function fill_msg(){
     </td>
     <td>
         <textarea name="msg" id="msg" rows="10" cols="50"></textarea><br/>
+        <? if (substr($locale, 0, 2) == 'ru'){?>
         <a href="#" onclick="fill_msg()" style="font-size:12px;font-weight:normal">Истек срок тестирования</a>
+        <?}?>
     </td>
 </tr>
 <tr>
     <td align="left"></td>
     <td>
-        <input type="submit" id="submit_button" disabled="disabled" value="Сохранить">
+        <input type="submit" id="submit_button" disabled="disabled" value="<?= _('Save')?>">
     </td>
 </tr>
 </form>
@@ -391,12 +393,12 @@ function fill_msg(){
 <br><br>
 <? if (is_array($events) && count($events) > 0){?>
 <table class='list' align="center" cellpadding='3' cellspacing='0' width='620'>
-<caption>Активные события для <?echo $mac?> <a href="events.php?del=1&mac=<?echo $mac?>" style="font-size:12px">очистить</a></caption>
+<caption><?printf(_('Active events for %s'), $mac)?> <a href="events.php?del=1&mac=<?echo $mac?>" style="font-size:12px"><?= _('clean')?></a></caption>
 <tr>
-<td class='list'><b>Действительно до</b></td>
-<td class='list'><b>Событие</b></td>
-<td class='list'><b>Сообщение</b></td>
-<td class='list'><b>Статус</b></td>
+<td class='list'><b><?= _('Valid up to')?></b></td>
+<td class='list'><b><?= _('Event')?></b></td>
+<td class='list'><b><?= _('Message')?></b></td>
+<td class='list'><b><?= _('Status')?></b></td>
 </tr>
 <?
 foreach ($events as $idx => $arr){
@@ -405,7 +407,7 @@ foreach ($events as $idx => $arr){
     echo "<td class='list'>".$arr['event']."</td>\n";
     echo "<td class='list'>".$arr['msg']."</td>\n";
     echo "<td class='list'>";
-    echo ($arr['sended'])? 'отправлено' : 'не отправлено';
+    echo ($arr['sended'])? _('sended') : _('not sended');
     echo "</td>\n";
     echo "</tr>\n";
 }
@@ -414,7 +416,7 @@ foreach ($events as $idx => $arr){
 <?
 }else{
     if (!empty($_GET['mac'])){
-        echo "<center>Нет активных событий для ".$_GET['mac']."</center>";
+        echo "<center>".sprintf(_('There are no active events for %s'), $_GET['mac'])."</center>";
     }
 }
 ?>

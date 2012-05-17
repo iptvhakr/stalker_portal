@@ -54,18 +54,18 @@ a.msgs:hover, a.msgs:visited, a.msgs:link{
 	text-decoration:none;
 }
 </style>
-<title>Просмотр сообщения</title>
+<title><?= _("View message")?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Просмотр сообщения&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _("View message")?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="<? echo $_SERVER['HTTP_REFERER'] ?>"><< Назад</a>
+        <a href="<? echo $_SERVER['HTTP_REFERER'] ?>"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -122,7 +122,7 @@ if ($to_usr == @$_SESSION['uid']){
 <tr>
 <?
 if($from_usr != @$_SESSION['uid']){?>
-    <td><a href="reply.php?id=<?echo $id?>">Ответить</a></td>
+    <td><a href="reply.php?id=<?echo $id?>"><?= _('Reply')?></a></td>
 <?
 }
 ?>
@@ -130,15 +130,15 @@ if($from_usr != @$_SESSION['uid']){?>
 </table>
 <table width="100%" border="1" cellspacing="0">
 <tr>
-    <td>Дата</td>
+    <td><?= _('Date')?></td>
     <td><? echo $send_time?></td>
 </tr>
 <tr>
-    <td>Медиа</td>
+    <td><?= _('Media')?></td>
     <td><? echo $media_name?></td>
 </tr>
 <tr>
-    <td>От кого</td>
+    <td><?= _('From')?></td>
     <td><? echo $from?></td>
 </tr>
 <tr>
@@ -151,8 +151,8 @@ if (check_access(array(1))){
 <table width="100%" border="0" cellspacing="0">
 <tr>
     <td width="100%" align="right">
-    <a href="#" onclick='if(confirm("Вы действительно хотите закрыть задание?")){document.location="close_task.php?id=<?echo $task_id?>"}'>Задание выполнено</a><br>
-    <a href="#" onclick='if(confirm("Вы действительно хотите отклонить задание?")){document.location="reject_task.php?id=<?echo $task_id?>"}'>Задание отклонено</a>
+    <a href="#" onclick='if(confirm("<?= _('Are you sure you want to close this task?')?>")){document.location="close_task.php?id=<?echo $task_id?>"}'><?= _('Task accomplished')?></a><br>
+    <a href="#" onclick='if(confirm("<?= _('Are you sure you want to reject this task?')?>")){document.location="reject_task.php?id=<?echo $task_id?>"}'><?= _('Task rejected')?></a>
     </td>
 </tr>
 </table>

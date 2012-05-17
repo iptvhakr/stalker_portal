@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 $db = Mysql::getInstance();
 
@@ -58,7 +58,7 @@ if (!empty($id)){
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
-    $action_value = 'Сохранить';
+    $action_value = _('Save');
     
     $edit_tester = $db->from('testers')->where(array('id' => $id))->get()->first();
 }
@@ -104,18 +104,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Тестировщики</title>
+<title><?= _('Testers')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Тестировщики&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Testers')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="users.php"><< Назад</a>
+        <a href="users.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -153,9 +153,9 @@ a:hover{
                     $color = 'Red';
                     $new_status=1;
                 }
-                echo '<a href="?status='.$new_status.'&id='.$tester['id'].'" style="color:'.$color.'" onclick="if(confirm(\'Вы действительно хотите изменить статус тестировщика '.$tester['mac'].'?\')){return true}else{return false}">'.$status_str.'</a>&nbsp;';
+                echo '<a href="?status='.$new_status.'&id='.$tester['id'].'" style="color:'.$color.'" onclick="if(confirm(\''.sprintf(_('Are you sure you want to change the status of the tester %s?'), $tester['mac']).'\')){return true}else{return false}">'.$status_str.'</a>&nbsp;';
                 echo '<a href="?edit=1&id='.$tester['id'].'">edit</a>&nbsp;';
-                echo '<a href="?del=1&id='.$tester['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить тестировщика '.$tester['mac'].'?\')){return true}else{return false}">del</a>';
+                echo '<a href="?del=1&id='.$tester['id'].'" onclick="if(confirm(\''.sprintf(_('Are you sure you want to remove the tester %s?'), $tester['mac']).'\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
                 
@@ -172,11 +172,11 @@ a:hover{
             <table class="form">
                 <tr>
                     <td>MAC</td>
-                    <td><input type="text" name="mac" value="<?echo @$edit_tester['mac']?>"></input></td>
+                    <td><input type="text" name="mac" value="<?echo @$edit_tester['mac']?>"/></td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"></input></td>
+                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"/></td>
                 </tr>
             </table>
         </form>

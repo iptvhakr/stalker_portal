@@ -47,18 +47,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Видео лог</title>
+<title><?= _('Video log')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Видео лог&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Video log')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="add_video.php"><< Назад</a>
+        <a href="add_video.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -139,9 +139,9 @@ echo "<center><br>\n";
 echo get_video_name();
 echo "<table class='list' cellpadding='3' cellspacing='0' width='620'>\n";
 echo "<tr>";
-echo "<td class='list'><b>Дата</b></td>\n";
-echo "<td class='list'><b>Модератор</b></td>\n";
-echo "<td class='list'><b>Действие</b></td>\n";
+echo "<td class='list'><b>"._('Date')."</b></td>\n";
+echo "<td class='list'><b>"._('Moderator')."</b></td>\n";
+echo "<td class='list'><b>"._('Action')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

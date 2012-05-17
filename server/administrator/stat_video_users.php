@@ -55,18 +55,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Статистика просмотра ВИДЕО за месяц</title>
+<title><?= _('Users video views statistics per month')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Статистика просмотра ВИДЕО за месяц&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Users video views statistics per month')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> 
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -130,7 +130,7 @@ $rs = $db->executeQuery($query);
 <table border="0" align="center" width="620">
 <tr>
 <td>
-<font color="Gray">* Просмотром считается проигрывание фильма больше чем 70% от общей длительности</font><br>
+<font color="Gray">* <?= _('Counting if the movie playback is more than 70% of the total duration')?></font><br>
 <br>
 
 </td>
@@ -140,7 +140,7 @@ $rs = $db->executeQuery($query);
 <tr>
 <td>
 <form action="" method="GET">
-<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по mac</font>
+<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by mac')?></font>
 </form>
 </td>
 </tr>
@@ -150,7 +150,7 @@ echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>\n";
 echo "<td class='list'><b>mac</b></td>\n";
-echo "<td class='list'><b>Просмотров ВИДЕО</b></td>\n";
+echo "<td class='list'><b>"._('Views')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     

@@ -35,9 +35,9 @@ if (count($_POST) > 0){
                 ";
     $rs=$db->executeQuery($sql);
     if (!$db->getLastError()){
-        js_redirect('tasks.php', 'сообщение отправлено');
+        js_redirect('tasks.php', _('message sended'));
     }else{
-        echo 'ошибка';
+        echo _('error');
     }
     exit;
 }
@@ -78,18 +78,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Отправка сообщения</title>
+<title><?= _('Send message')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Отправка сообщения&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Send message')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="tasks.php"><< Назад</a>
+        <a href="tasks.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -127,13 +127,13 @@ $to = get_moderator_login_by_id($to_id);
 <form method="POST">
 <table border="0">
 <tr>
-    <td valign="top">Видео:</td>
+    <td valign="top"><?= _('Movie')?>:</td>
     <td>
         <?echo $media_name?>
     </td>
 </tr>
 <tr>
-    <td>Кому:</td>
+    <td><?= _('To')?>:</td>
     <td>
         <?echo $to?>
         <input type="hidden" name="to_usr" value="<? echo $to_id?>">
@@ -142,7 +142,7 @@ $to = get_moderator_login_by_id($to_id);
     </td>
 </tr>
 <tr>
-    <td valign="top">Примечание:</td>
+    <td valign="top"><?= _('Comment')?>:</td>
     <td>
         <textarea name="comment" cols="30" rows="8"></textarea>
     </td>
@@ -150,7 +150,7 @@ $to = get_moderator_login_by_id($to_id);
 <tr>
     <td></td>
     <td>
-        <input type="submit" value="Отправить">
+        <input type="submit" value="<?= _('Send')?>">
     </td>
 </tr>
 

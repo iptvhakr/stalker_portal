@@ -51,9 +51,9 @@ if (count($_POST) > 0){
                 ";
     $rs=$db->executeQuery($sql);
     if (!$db->getLastError()){
-        js_redirect('add_video.php', 'задание отправлено');
+        js_redirect('add_video.php', _('the task has been sent'));
     }else{
-        echo 'ошибка';
+        echo _('error');
     }
     exit;
 }
@@ -94,18 +94,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Отправка ВИДЕО</title>
+<title><?= _('Create task')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Отправка ВИДЕО&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Create task')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a>
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -155,13 +155,13 @@ function get_sended_video(){
 <form method="POST">
 <table border="0">
 <tr>
-    <td valign="top">Видео:</td>
+    <td valign="top"><?= _('Movie')?>:</td>
     <td>
         <input type="text" size="32" readonly value="<?echo get_sended_video()?>">
     </td>
 </tr>
 <tr>
-    <td>Кому:</td>
+    <td><?= _('To')?>:</td>
     <td>
     <select name="to_usr">
         <option>- - - - - - - - - - - - - 
@@ -171,7 +171,7 @@ function get_sended_video(){
     </td>
 </tr>
 <tr>
-    <td valign="top">Примечание:</td>
+    <td valign="top"><?= _('Comment')?>:</td>
     <td>
         <textarea name="comment" cols="30" rows="8"></textarea>
     </td>
@@ -179,7 +179,7 @@ function get_sended_video(){
 <tr>
     <td></td>
     <td>
-        <input type="submit" value="Отправить">
+        <input type="submit" value="<?= _('Send')?>">
     </td>
 </tr>
 

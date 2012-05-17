@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 $db = new Database();
 
@@ -91,7 +91,7 @@ if (!empty($id)){
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
-    $action_value = 'Сохранить';
+    $action_value = _('Save');
     $edit_storage = $db->executeQuery('select * from storages where id='.$id)->getAllValues();
     $edit_storage = @$edit_storage[0];
 }
@@ -102,19 +102,19 @@ if (@$_GET['reset_cache'] && !empty($id)){
     if (!empty($storage_name)){
         $db->executeQuery('update storage_cache set changed="0000-00-00 00:00:00" where storage_name="'.$storage_name.'"');
         if (!$db->getLastError()){
-            $error = 'Кеш '.$storage_name.' сброшен';
+            $error = sprintf(_('Cache %s is cleared'), $storage_name);;
         }else{
             $error = $db->getLastError();
         }
     }else{
-        $error = 'Хранилище с ID '.$id.' в базе отсутствует';
+        $error = sprintf(_('Storage with id %s not found'), $id);
     }
 }
 
 if (@$_GET['reset_all_cache']){
     $db->executeQuery('update storage_cache set changed="0000-00-00 00:00:00"');
     if (!$db->getLastError()){
-        $error = 'Кеш сброшен';
+        $error = _('Cache is cleared');
     }else{
         $error = $db->getLastError();
     }
@@ -158,19 +158,19 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Настройки параметров хранилищ</title>
+<title><?= _('Storages')?></title>
 
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Настройки параметров хранилищ&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Storages')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="master_log.php">Логи</a> | <a href="?reset_all_cache=1" onclick="if(confirm('Вы действительно хотите сбросить весь кеш?')){return true}else{return false}">Сбросить кеш</a> | <a href="cache_refresh.php" onclick="if(confirm('Вы действительно хотите обновить весь кеш? Эта операция займет какое-то время.')){return true}else{return false}">Обновить кеш</a> | <a href="unique_video.php">Уникальные фильмы</a> | <a href="video_search.php">Поиск по хранилищам</a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="master_log.php"><?= _('Logs')?></a> | <a href="?reset_all_cache=1" onclick="if(confirm('<?= _('Are you sure you want to reset a cache?')?>')){return true}else{return false}"><?= _('Clear cache')?></a> | <a href="cache_refresh.php" onclick="if(confirm('<?= _('Are you sure you want to update a cache? This operation will take some time.')?>')){return true}else{return false}"><?= _('Refresh cache')?></a> | <a href="unique_video.php"><?= _('Unique movies')?></a> | <a href="video_search.php"><?= _('Search in storages')?></a>
     </td>
 </tr>
 <tr>
@@ -189,9 +189,9 @@ a:hover{
     <table class='list' cellpadding='3' cellspacing='0'>
         <tr>
             <td>ID</td>
-            <td>Имя</td>
+            <td><?= _('Name')?></td>
             <td>IP</td>
-            <td>Домашняя директория</td>
+            <td><?= _('Home path')?></td>
             <td>Max online</td>
             <td>&nbsp;</td>
         </tr>
@@ -218,10 +218,10 @@ a:hover{
                     $color = 'Red';
                     $new_status=1;
                 }
-                echo '<a href="?status='.$new_status.'&id='.$storage['id'].'" style="color:'.$color.'" onclick="if(confirm(\'Вы действительно хотите изменить статус хранилища '.$storage['storage_name'].'?\')){return true}else{return false}">'.$status_str.'</a>&nbsp;';
-                echo '<a href="?reset_cache=1&id='.$storage['id'].'" style="color:grey" onclick="if(confirm(\'Вы действительно хотите сбросить кеш хранилища '.$storage['storage_name'].'?\')){return true}else{return false}">сбросить кеш</a>&nbsp;';
+                echo '<a href="?status='.$new_status.'&id='.$storage['id'].'" style="color:'.$color.'" onclick="if(confirm(\''.sprintf(_('Are you sure you want to change the status of the storage %s?'), $storage['storage_name']).'\')){return true}else{return false}">'.$status_str.'</a>&nbsp;';
+                echo '<a href="?reset_cache=1&id='.$storage['id'].'" style="color:grey" onclick="if(confirm(\''.sprintf(_('Are you sure you want to reset the cache of the storage %s?'), $storage['storage_name']).'\')){return true}else{return false}">'._('clear cache').'</a>&nbsp;';
                 echo '<a href="?edit=1&id='.$storage['id'].'">edit</a>&nbsp;';
-                echo '<a href="?del=1&id='.$storage['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить хранилище '.$storage['storage_name'].' из базы?\')){return true}else{return false}">del</a>';
+                echo '<a href="?del=1&id='.$storage['id'].'" onclick="if(confirm(\''.sprintf(_('Are you sure you want to delete storage %s?'), $storage['storage_name']).'\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
            }?>
@@ -235,7 +235,7 @@ a:hover{
         <form method="POST">
             <table class="form">
                 <tr>
-                    <td width="190">Имя</td>
+                    <td width="190"><?= _('Name')?></td>
                     <td><input type="text" name="storage_name" value="<?echo @$edit_storage['storage_name']?>" <? if (!empty($_GET['id'])) echo "readonly" ?>/></td>
                 </tr>
                 <tr>
@@ -243,7 +243,7 @@ a:hover{
                     <td><input type="text" name="storage_ip" value="<?echo @$edit_storage['storage_ip']?>"/></td>
                 </tr>
                 <tr>
-                    <td>Домашняя директория</td>
+                    <td><?= _('Home path')?></td>
                     <td><input type="text" name="nfs_home_path" value="<?echo @$edit_storage['nfs_home_path']?>"/></td>
                 </tr>
                 <tr>
@@ -251,15 +251,15 @@ a:hover{
                     <td><input type="text" name="max_online" value="<?echo @$edit_storage['max_online']?>"/></td>
                 </tr>
                 <tr>
-                    <td>Хранение контента</td>
+                    <td><?= _('Storing content')?></td>
                     <td><input type="checkbox" name="for_simple_storage" value="1" <? if(@$edit_storage['for_simple_storage']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
-                    <td>Недоступно для MAG100</td>
+                    <td><?= _('Not available for MAG100')?></td>
                     <td><input type="checkbox" name="not_for_mag100" value="1" <? if(@$edit_storage['not_for_mag100']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
-                    <td>Запись ТВ</td>
+                    <td><?= _('Record TV')?></td>
                     <td>
                         <input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('fake_tv_archive').style.display = '' : document.getElementById('fake_tv_archive').style.display = 'none'"/>
                         <!--<span id="wowza_server" style="margin-left: 5px; display: <?/*echo @$edit_storage['for_records'] ? '' : 'none' */?>">
@@ -267,21 +267,17 @@ a:hover{
                             <input type="checkbox" name="wowza_server" value="1" <?/* if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } */?> onchange="this.checked ? document.getElementById('archive_playback_row').style.display = '' : document.getElementById('archive_playback_row').style.display = 'none'"/>
                         </span>-->
                         <span id="fake_tv_archive" style="margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
-                            Эмуляция
+                            <?= _('Emulation')?>
                             <input type="checkbox" name="fake_tv_archive" value="1" <? if(@$edit_storage['fake_tv_archive']){ echo 'checked="checked"'; } ?> />
                         </span>
                     </td>
                 </tr>
-                <!--<tr id="archive_playback_row" style="display: <?/*echo @$edit_storage['wowza_server'] && $edit_storage['for_records'] ? '' : 'none' */?>">
-                    <td>IP воспроизведения архива</td>
-                    <td><input type="text" name="archive_stream_server" value="<?/*echo @$edit_storage['archive_stream_server']*/?>"/></td>
-                </tr>-->
                 <tr>
-                    <td>Внешнее</td>
+                    <td><?= _('External')?></td>
                     <td><input disabled="disabled" type="checkbox" name="external" value="1" <? if(@$edit_storage['external']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
-                    <td>Только модераторы</td>
+                    <td><?= _('Only moderators')?></td>
                     <td><input type="checkbox" name="for_moderator" value="1" <? if(@$edit_storage['for_moderator']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>

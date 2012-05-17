@@ -56,18 +56,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Архив Видео заданий</title>
+<title><?= _('Video tasks archive')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
 <tr>
     <td align="center" valign="middle" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Архив Видео заданий&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Video tasks archive')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="stat_moderators.php"><< Назад</a> 
+        <a href="stat_moderators.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -160,10 +160,10 @@ if (@$_GET['id']){
         <table border="1" width="100%" cellspacing="0">
             <tr>
                 <td>#</td>
-                <td>Видео</td>
-                <td>Дата открытия</td>
-                <td>Дата закрытия</td>
-                <td width="100">Длительность медиа, м</td>
+                <td><?= _('Movie')?></td>
+                <td><?= _('Opening date')?></td>
+                <td><?= _('Closing date')?></td>
+                <td width="100"><?= _('Duration, min')?></td>
             </tr>
             <?
             
@@ -194,19 +194,19 @@ if (@$_GET['id']){
     </table>
     <table border="0" width="100%">
         <tr>
-            <td  width="100%" align="right"> Суммарная длительность, м:  <b><? echo $total_length?></b></td>
+            <td  width="100%" align="right"> <?= _('Total duration, min')?>:  <b><? echo $total_length?></b></td>
         </tr>
     </table>
     <br>
     <br>
-    <center>Отклоненные задания</center>
+    <center><?= _('Rejected tasks')?></center>
     <table border="1" width="100%" cellspacing="0">
         <tr>
             <td>#</td>
-            <td>Видео</td>
-            <td>Дата открытия</td>
-            <td>Дата закрытия</td>
-            <td width="100">Длительность медиа, м</td>
+            <td><?= _('Movie')?></td>
+            <td><?= _('Opening date')?></td>
+            <td><?= _('Closing date')?></td>
+            <td width="100"><?= _('Duration, min')?></td>
         </tr>
     <?
     $sql_rej = "select * from moderator_tasks where moderator_tasks.ended=1 and rejected=1 and archived=$archive_id and moderator_tasks.to_usr=$uid";

@@ -38,7 +38,7 @@ if (!$error){
             header("Location: add_moderator_mac.php");
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
     
@@ -52,7 +52,7 @@ if (!$error){
             header("Location: add_moderator_mac.php");
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
 }
@@ -94,19 +94,19 @@ a:hover{
 }
 </style>
 <title>
-Редактирование списка MAC адресов модераторов
+<?= _('Moderators MAC addresses')?>
 </title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование списка MAC адресов модераторов&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Moderators MAC addresses')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="add_video.php"><< Назад</a>
+        <a href="add_video.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -129,7 +129,7 @@ $rs=$db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
 echo "<td class='list'><b>#</b></td>";
-echo "<td class='list'><b>Имя</b></td>";
+echo "<td class='list'><b>"._('Name')."</b></td>";
 echo "<td class='list'><b>MAC</b></td>";
 echo "<td class='list'>&nbsp;</td>";
 echo "</tr>";
@@ -202,7 +202,7 @@ function save(){
     <table align="center">
         <tr>
            <td align="right">
-            Имя: 
+            <?= _('Name')?>:
            </td>
            <td>
             <input type="text" name="name" id="name" value="<? echo @$name ?>">
@@ -222,7 +222,7 @@ function save(){
            <td>
            </td>
            <td>
-            <input type="button" value="Сохранить" onclick="save()">&nbsp;<input type="button" value="Новый" onclick="document.location='add_moderator_mac.php'">
+            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_moderator_mac.php'">
            </td>
         </tr>
     </table>

@@ -18,7 +18,7 @@ $rs = $db->executeQuery($query);
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Отчет по измененным статусам приставок за <? echo date("d.m.Y") ?> на <? echo date("H:i:s") ?></title>
+<title><?= sprintf(_('Report for the stb status changed on %s on %s'), date("d.m.Y"), date("H:i:s"))?></title>
 <style>
 table, td {
     border: 1px solid #000000;
@@ -34,13 +34,13 @@ table .item_row td {
 </head>
 
 <body>
-<center><h2>Отчет по измененным статусам приставок за <? echo date("d.m.Y") ?> на <? echo date("H:i:s") ?></h2></center>
+<center><h2><?= sprintf(_('Report of the stb status changing on %s on %s'), date("d.m.Y"), date("H:i:s"))?></h2></center>
 <table width="600" align="center" cellpadding="0" cellspacing="0">
 <tr class="head">
     <td>#</td>
     <td>MAC</td>
-    <td>Текущий статус</td>
-    <td>Время изменения</td>
+    <td><?= _('Current status')?></td>
+    <td><?= _('Time of change')?></td>
 </tr>
 
 <?

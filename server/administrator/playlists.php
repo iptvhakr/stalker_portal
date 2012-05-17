@@ -7,7 +7,7 @@ include "./common.php";
 
 $error = '';
 $action_name = 'add';
-$action_value = 'Добавить';
+$action_value = _('Add');
 
 moderator_access();
 
@@ -46,7 +46,7 @@ if (!empty($id)){
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
-    $action_value = 'Сохранить';
+    $action_value = _('Save');
     $edit_playlist = $playlist->getById($id);
 }
 
@@ -91,18 +91,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Плейлисты</title>
+<title><?= _('Playlists')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Плейлисты&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Playlists')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a>
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -121,7 +121,7 @@ a:hover{
     <table class='list' cellpadding='3' cellspacing='0'>
         <tr>
             <td>ID</td>
-            <td>Имя</td>
+            <td><?= _('Name')?></td>
             <td>&nbsp;</td>
         </tr>
         <? foreach ($playlists as $playlist){
@@ -131,7 +131,7 @@ a:hover{
                 echo '<td>';
                 
                 echo '<a href="?edit=1&id='.$playlist['id'].'">edit</a>&nbsp;';
-                echo '<a href="?del=1&id='.$playlist['id'].'" onclick="if(confirm(\'Вы действительно хотите удалить плейлист '.$playlist['name'].' из базы?\')){return true}else{return false}">del</a>';
+                echo '<a href="?del=1&id='.$playlist['id'].'" onclick="if(confirm(\''._('Do you really want to delete this record?').'\')){return true}else{return false}">del</a>';
                 echo '</td>';
                 echo '</tr>';
            }?>
@@ -145,11 +145,11 @@ a:hover{
         <form method="POST">
             <table class="form">
                 <tr>
-                    <td>Имя</td>
-                    <td><input type="text" name="name" value="<?echo @$edit_playlist['name']?>"></input></td>
+                    <td><?= _('Name')?></td>
+                    <td><input type="text" name="name" value="<?echo @$edit_playlist['name']?>"/></td>
                 </tr>
                 <tr>
-                    <td>Группа</td>
+                    <td><?= _('Group')?></td>
                     <td>
                         <select name="group_id">
                             <option value="0">--------</option>
@@ -173,7 +173,7 @@ a:hover{
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"></input></td>
+                    <td><input type="submit" name="<? echo $action_name ?>" value="<? echo $action_value?>"/></td>
                 </tr>
             </table>
         </form>

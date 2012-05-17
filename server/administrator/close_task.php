@@ -20,7 +20,7 @@ if (@$_GET['id']){
     $moderator_id = $rs->getValueByName(0, 'to_usr');
     $video_id = $rs->getValueByName(0, 'media_id');
     
-    $action = "<a href=\'msgs.php?task=$task_id\'>выполнено задание</a>";
+    $action = "<a href=\'msgs.php?task=$task_id\'>"._('task done')."</a>";
     $query = "insert into video_log (action, video_id, moderator_id, actiontime) values ('$action', $video_id, $moderator_id, NOW())";
     $db->executeQuery($query);
     

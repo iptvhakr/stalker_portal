@@ -56,19 +56,19 @@ a:hover{
 }
 </style>
 <title>
-Статистика просмотра ВИДЕО по жанрам за месяц
+<?= _('Video views statistics by genres per month')?>
 </title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Статистика просмотра ВИДЕО по жанрам за месяц&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Video views statistics by genres per month')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="stat_video.php"><< Назад</a>
+        <a href="stat_video.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -122,9 +122,9 @@ $from = date("Y-m-d H:i:s", time()-60*60*24*30);
 
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
-echo "<td class='list'><b>Жанр</b></td>\n";
-echo "<td class='list'><b>Просмотров</b></td>\n";
-echo "<td class='list'><b>Всего фильмов</b></td>\n";
+echo "<td class='list'><b>"._('Genre')."</b></td>\n";
+echo "<td class='list'><b>"._('Views')."</b></td>\n";
+echo "<td class='list'><b>"._('Total movies')."</b></td>\n";
 echo "<td class='list'><b>%</b></td>\n";
 echo "</tr>\n";
 //while(@$rs->next()){

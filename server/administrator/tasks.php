@@ -56,18 +56,18 @@ a.msgs:hover, a.msgs:visited, a.msgs:link{
 	text-decoration:none;
 }
 </style>
-<title>Задания</title>
+<title><?= _('Tasks')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Задания&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Tasks')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a>
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -123,15 +123,15 @@ while(@$rs->next()){
     <tr>
     <td align="center">
     <br>
-    <b><?echo $arr['login'] ?></b> - <a href="last_closed_tasks.php?id=<?echo $arr['id'] ?>">видео</a>
+    <b><?echo $arr['login'] ?></b> - <a href="last_closed_tasks.php?id=<?echo $arr['id'] ?>"><?= _('video')?></a>
     <br>
     <table border="1" width="100%" cellspacing="0">
         <tr>
             <td><b>#</b></td>
-            <td><b>Видео</b></td>
-            <td><b>Дата открытия</b></td>
-            <td><b>Статус</b></td>
-            <td><b>Сообщения</b></td>
+            <td><b><?= _('Movie')?></b></td>
+            <td><b><?= _('Opening date')?></b></td>
+            <td><b><?= _('Status')?></b></td>
+            <td><b><?= _('Messages')?></b></td>
         </tr>
         <?
         /*$sql_open = "select * from moderator_tasks 
@@ -178,13 +178,13 @@ while(@$rs->next()){
     <br>
     <br>
     <br>
-    <b><?echo $arr['login'] ?></b> - <a href="last_closed_karaoke.php?id=<?echo $arr['id'] ?>">караоке</a>
+    <b><?echo $arr['login'] ?></b> - <a href="last_closed_karaoke.php?id=<?echo $arr['id'] ?>"><?= _('karaoke')?></a>
     <table border="1" width="100%" cellspacing="0">
     <tr>
         <td><b>#</b></td>
-        <td><b>Название</b></td>
-        <td><b>Исполнитель</b></td>
-        <td><b>Дата добавления</b></td>
+        <td><b><?= _('Title')?></b></td>
+        <td><b><?= _('Performer')?></b></td>
+        <td><b><?= _('Date')?></b></td>
     </tr>
     
     <? 
@@ -233,13 +233,13 @@ $sql = "select moderator_tasks.*, video.name as name, administrators.login as lo
 $rs=$db->executeQuery($sql);
 if ($rs->getRowCount() > 0){
     
-    echo '<center><b><font color="Red">Истекло 10 суток</font></b></center>';
+    echo '<center><b><font color="Red">'._('Expired 10 days').'</font></b></center>';
     echo '<table border="1" width="680" cellspacing="0">';
     echo "<tr>";
     echo "<td><b>#</b></td>";
-    echo "<td><b>Видео</b></td>";
-    echo "<td><b>Кому</b></td>";
-    echo "<td><b>Дата открытия</b></td>";
+    echo "<td><b>"._('Movie')."</b></td>";
+    echo "<td><b>"._('Date')."</b></td>";
+    echo "<td><b>"._('Opening date')."</b></td>";
     echo "<td>&nbsp;</td>";
     echo "</tr>";
     $num = 0;
@@ -252,7 +252,7 @@ if ($rs->getRowCount() > 0){
         echo "<td>".$arr['name']."</td>";
         echo "<td>".$arr['login']."</td>";
         echo "<td>".$arr['start_time']."</td>";
-        echo '<td><a href="reject_task.php?id='.$arr['id'].'&send_to='.$arr['media_id'].'">отклонить</a></td>';
+        echo '<td><a href="reject_task.php?id='.$arr['id'].'&send_to='.$arr['media_id'].'">'._('reject').'</a></td>';
         echo "</tr>";
     }
     echo "</table>";

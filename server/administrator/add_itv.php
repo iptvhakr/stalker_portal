@@ -5,15 +5,6 @@ ob_start();
 
 include "./common.php";
 
-$locale = 'ru_RU.utf8';
-
-setlocale(LC_MESSAGES, $locale);
-putenv('LC_MESSAGES='.$locale);
-
-bindtextdomain('stb', PROJECT_PATH.'/locale');
-textdomain('stb');
-bind_textdomain_codeset('stb', 'UTF-8');
-
 $error = '';
 
 $db = new Database();
@@ -87,7 +78,7 @@ if (!$error){
     }
 
     if (@$_POST['number'] && !check_number($_POST['number']) && !@$_GET['update']){
-        $error = 'Ошибка: Номер канала "'.intval($_POST['number']).'" уже используется';
+        $error = sprintf(_('Error: channel with number "%s" is already in use'), intval($_POST['number']));
     }
     
     if (@$_GET['save'] && !$error){
@@ -201,7 +192,7 @@ if (!$error){
                 if ($logo = handle_upload_logo($_FILES['logo'], $ch_id)){
                     Mysql::getInstance()->update('itv', array('logo' => $logo), array('id' => $ch_id));
                 }else{
-                    $error = 'Ошибка: невозможно сохранить логотип';
+                    $error = _('Error: could not save logo');
                 }
             }
             
@@ -209,7 +200,7 @@ if (!$error){
             exit;
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
     
@@ -283,12 +274,12 @@ if (!$error){
                 if ($logo = handle_upload_logo($_FILES['logo'], $ch_id)){
                     Mysql::getInstance()->update('itv', array('logo' => $logo), array('id' => $ch_id));
                 }else{
-                    $error = 'Ошибка: невозможно сохранить логотип';
+                    $error = _('Error: could not save logo');
                 }
             }
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');
         }
     }
 }
@@ -386,7 +377,7 @@ a:hover{
 }
 </style>
 <title>
-Редактирование списка IPTV каналов
+<?= _('IPTV channels')?>
 </title>
 <script type="text/javascript" src="js.js"></script>
 </head>
@@ -394,12 +385,12 @@ a:hover{
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование списка IPTV каналов&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('IPTV channels')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a>
+        <a href="index.php"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -415,8 +406,6 @@ a:hover{
 </tr>
 <tr>
 <td align="center">
-<div style="display:none;border: 1px solid #E0E0E0;width: 400px; text-align:center;">
-Внимание, с 1 апреля вводится подписка на каналы! Во избежание недоразумений менять номера каналов и ставить опции необходимо по согласованию.</div><br>
 
 <?
 $query = "select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number";
@@ -427,14 +416,13 @@ $rs=$db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>";
-echo "<td class='list'><b>Номер</b></td>";
-echo "<td class='list'><b>Услуга</b></td>";
-echo "<td class='list'><b>Имя</b></td>";
-echo "<td class='list'><b>Адрес</b></td>";
-//echo "<td class='list'><b>Описание</b></td>";
-echo "<td class='list'><b>Жанр</b></td>";
-echo "<td class='list'><b>Коррекция звука</b></td>";
-echo "<td class='list'><b>Жалобы на<br>звук/видео</b></td>\n";
+echo "<td class='list'><b>"._('Number')."</b></td>";
+echo "<td class='list'><b>"._('Service code')."</b></td>";
+echo "<td class='list'><b>"._('Name')."</b></td>";
+echo "<td class='list'><b>"._('URL')."</b></td>";
+echo "<td class='list'><b>"._('Genre')."</b></td>";
+echo "<td class='list'><b>"._('Volume correction')."</b></td>";
+echo "<td class='list'><b>"._('Claims about<br>audio/video')."</b></td>\n";
 echo "<td class='list'><b>&nbsp;</b></td>";
 echo "</tr>";
 while(@$rs->next()){
@@ -472,7 +460,7 @@ while(@$rs->next()){
     
     echo "<td class='list' align='center'>\n";
     if (check_access(array(1))){
-        echo "<a href='#' onclick='if(confirm(\"Вы действительно хотите сбросить счетчик жалоб?\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
+        echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
     echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
     if (check_access(array(1))){
@@ -482,7 +470,7 @@ while(@$rs->next()){
     
     echo "<td class='list' nowrap><a href='?edit=1&id=".$arr['id']."#form'>edit</a>&nbsp;&nbsp;";
     //echo "<a href='?del=1&id=".$arr['id']."' >del</a>&nbsp;&nbsp;";
-    echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"add_itv.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
+    echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"add_itv.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
     if ($arr['status']){
         echo "<a href='?status=0&id=".$arr['id']."'><font color='Green'>on</font></a>&nbsp;&nbsp;";
     }else{
@@ -600,20 +588,20 @@ function get_color($channel){
 function get_hint($channel){
 
     if (!$channel['enable_monitoring']){
-        return 'не мониторится';
+        return _('monitoring off');
     }
 
     $diff = time() - strtotime($channel['monitoring_status_updated']);
 
     if ($diff > 3600){
-        return 'больше часа назад';
+        return _('more than an hour ago');
     }
 
     if ($diff < 60){
-        return 'меньше минуты назад';
+        return _('less than a minute ago');
     }
 
-    return round($diff/60).' минут назад';
+    return round($diff/60).' '._('minutes ago');
 }
 
 ?>
@@ -661,7 +649,7 @@ function delete_logo(id){
                     //set_cat_genres(resp)
                     document.getElementById('logo_block').innerHTML = '';
                 }else{
-                    alert('Ошибка при удалении логотипа');
+                    alert('<?= _('Error deleting a logo')?>');
                 }
             }
         }
@@ -686,7 +674,7 @@ function delete_logo(id){
     <table align="center">
         <tr>
            <td align="right">
-            Номер: 
+            <?= _('Number')?>:
            </td>
            <td>
             <input type="text" name="number" id="number" value="<? echo @$number ?>"  maxlength="3">
@@ -694,7 +682,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right">
-            Название: 
+            <?= _('Name')?>:
            </td>
            <td>
             <input type="text" name="name" id="name" value="<? echo @$name ?>">
@@ -705,19 +693,19 @@ function delete_logo(id){
         
         <tr>
            <td align="right" valign="top">
-           Временная HTTP ссылка:
+           <?= _('Temporary HTTP URL')?>:
            </td>
            <td>
             <input name="use_http_tmp_link" id="use_http_tmp_link" type="checkbox" <? echo @$checked_http_tmp_link ?> onchange="this.checked ? document.getElementById('wowza_tmp_link_tr').style.display = '' : document.getElementById('wowza_tmp_link_tr').style.display = 'none'" >
             <span id="wowza_tmp_link_tr" style="display: <?echo @$checked_http_tmp_link ? '' : 'none' ?>">
-                Поддержка WOWZA:
+                <?= _('WOWZA support')?>:
                 <input name="wowza_tmp_link" id="wowza_tmp_link" type="checkbox" <? echo @$checked_wowza_tmp_link ?> >
             </span>
            </td>
         </tr>
         <tr>
            <td align="right" valign="top">
-           Ограничение по возрасту:
+           <?= _('Age restriction')?>:
            </td>
            <td>
             <input name="censored" id="censored" type="checkbox" <? echo @$checked ?> >
@@ -733,7 +721,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right" valign="top">
-           Базовый канал: 
+           <?= _('Base channel')?>:
            </td>
            <td>
             <input name="base_ch" id="base_ch" type="checkbox" <? echo @$checked_base ?> >
@@ -741,7 +729,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right" valign="top">
-           Бонусный канал: 
+           <?= _('Bonus channel')?>:
            </td>
            <td>
             <input name="bonus_ch" id="bonus_ch" type="checkbox" <? echo @$checked_bonus ?> >
@@ -749,15 +737,15 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right" valign="top">
-           Цена: 
+           <?= _('Price')?>:
            </td>
            <td>
-            <input name="cost" id="cost" type="text" value="<? echo @$cost ?>" size="5" maxlength="6">, коп
+            <input name="cost" id="cost" type="text" value="<? echo @$cost ?>" size="5" maxlength="6">
            </td>
         </tr>
         <tr>
            <td align="right" valign="top">
-            Жанр: 
+            <?= _('Genre')?>:
            </td>
            <td>
             <select name="tv_genre_id">
@@ -795,7 +783,7 @@ function delete_logo(id){
         <?}else{?>
         <tr>
            <td align="right">
-            Адрес:
+            <?= _('URL')?>:
            </td>
            <td>
             <input id="cmd" name="cmd" size="50" type="text" value="<? echo @$cmd ?>">
@@ -814,7 +802,7 @@ function delete_logo(id){
         
         <tr>
            <td align="right">
-            Адрес для записи (мультикаст):
+            <?= _('URL for recording (multicast)')?>:
            </td>
            <td>
             <input id="mc_cmd" name="mc_cmd" size="50" type="text" value="<? echo @$mc_cmd ?>">
@@ -822,7 +810,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right">
-            Вести ТВ архив:
+            <?= _('Enable TV archive')?>:
            </td>
            <td>
             <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> onchange="this.checked ? document.getElementById('wowza_dvr_tr').style.display = '' : document.getElementById('wowza_dvr_tr').style.display = 'none'" >
@@ -835,7 +823,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right">
-            Вести мониторинг:
+            <?= _('Enable monitoring')?>:
            </td>
            <td>
             <input id="enable_monitoring" name="enable_monitoring" type="checkbox" value="1" <? echo @$checked_enable_monitoring ?> onchange="this.checked ? document.getElementById('monitoring_url_tr').style.display = '' : document.getElementById('monitoring_url_tr').style.display = 'none'">
@@ -843,10 +831,10 @@ function delete_logo(id){
         </tr>
         <tr id="monitoring_url_tr" style="display:<? echo @$checked_enable_monitoring ? '' : 'none' ?>">
            <td align="right">
-            URL канала для мониторинга:
+            <?= _('Channel URL for monitoring')?>:
            </td>
            <td>
-            <input id="monitoring_url" name="monitoring_url" size="50" type="text" value="<? echo @$monitoring_url ?>"> * только http
+            <input id="monitoring_url" name="monitoring_url" size="50" type="text" value="<? echo @$monitoring_url ?>"> * <?= _('http only')?>
            </td>
         </tr>
         <tr>
@@ -859,7 +847,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right">
-            # услуги: 
+            <?= _('Service code')?>:
            </td>
            <td>
             <input id="service_id" name="service_id" size="50" type="text" value="<? echo @$service_id ?>">
@@ -867,7 +855,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right">
-            Коррекция звука (-20...20): 
+            <?= _('Volume correction')?> (-20...20):
            </td>
            <td>
             <input id="volume_correction" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
@@ -875,7 +863,7 @@ function delete_logo(id){
         </tr>
         <tr>
            <td align="right">
-            Комментарий:
+            <?= _('Comments')?>:
            </td>
            <td>
             <textarea id="descr"  name="descr" cols="39" rows="5"><? echo @$descr ?></textarea>
@@ -891,7 +879,7 @@ function delete_logo(id){
         <?}?>
         <tr>
             <td align="right">
-                Логотип:
+                <?= _('Logo')?>:
             </td>
             <td>
                 <input type="file" name="logo" id="logo"/>
@@ -901,7 +889,7 @@ function delete_logo(id){
            <td>
            </td>
            <td>
-            <input type="button" value="Сохранить" onclick="save()">&nbsp;<input type="button" value="Новый" onclick="document.location='add_itv.php'">
+            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('Cancel')?>" onclick="document.location='add_itv.php'">
            </td>
         </tr>
     </table>

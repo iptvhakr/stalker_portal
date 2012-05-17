@@ -15,7 +15,7 @@ moderator_access();
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Администрирование абонентского портала</title>
+<title><?= _('Stalker MW admin interface')?></title>
 <style type="text/css">
 td, table.menu {
     font-family: Arial, Helvetica, sans-serif;
@@ -72,11 +72,34 @@ a:hover{
 	font-weight: bold;
 	text-decoration:underline;
 }
+.lang{
+    color: blue !important;
+    font-weight: normal !important;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
 </style>
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookies.2.2.0.js"></script>
+
+<script type="text/javascript">
+
+    $(function(){
+        $('.lang').click(function(e){
+            var lang = $(e.target).attr('lang');
+            $.cookies.set('language', lang, {expiresAt: new Date( 2037, 1, 1 )});
+            document.location = document.location;
+        });
+    });
+
+</script>
+
 </head>
 
 <body>
-<br>
+<div style="width: 1100px; margin:0 auto; text-align: right">
+    <a href="javascript://" class="lang" lang="en">en</a> | <a href="javascript://" class="lang" lang="ru">ru</a>
+</div>
 <br>
 <br>
 <table width="80%" border="0" align="center">
@@ -87,29 +110,29 @@ a:hover{
 
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
   <tr>
-    <td colspan="3" align="center"><span class="style1">Администрирование портала</span></td>
+    <td colspan="3" align="center"><span class="style1"><?= _('Sections')?></span></td>
   </tr>
   
   <tr>
-    <td width="47%"><div align="center"><a href="add_itv.php">IPTV Каналы</a></div></td>
+    <td width="47%"><div align="center"><a href="add_itv.php"><?= _('IPTV channels')?></a></div></td>
     <td width="6%">&nbsp;</td>
-    <td width="47%"><div align="center"><a href="users.php">Пользователи</a></div></td>
+    <td width="47%"><div align="center"><a href="users.php"><?= _('Users')?></a></div></td>
   </tr>
   
   <tr>
-    <td><div align="center"><a href="add_video.php">ВИДЕО КЛУБ</a></div></td>
+    <td><div align="center"><a href="add_video.php"><?= _('VIDEO CLUB')?></a></div></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="events.php">События</a></td>
+    <td align="center"><a href="events.php"><?= _('Events')?></a></td>
   </tr>
   
   <tr>
-    <td><div align="center"><a href="add_karaoke.php">КАРАОКЕ</a></div></td>
+    <td><div align="center"><a href="add_karaoke.php"><?= _('KARAOKE')?></a></div></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="logout.php">[<?echo $_SESSION['login']?>] Выход</a></td>
+    <td align="center"><a href="logout.php">[<?echo $_SESSION['login']?>] <?= _('Logout')?></a></td>
   </tr>
   
   <tr>
-    <td><div align="center"><a href="add_radio.php">РАДИО</a></div></td>
+    <td><div align="center"><a href="add_radio.php"><?= _('RADIO')?></a></div></td>
     <td>&nbsp;</td>
     <td align="center"></td>
   </tr>
@@ -121,11 +144,11 @@ a:hover{
   </tr>
 
   <tr>
-    <td><div align="center"><a href="playlists.php">ПЛЕЙЛИСТЫ</a></div></td>
+    <td><div align="center"><a href="playlists.php"><?= _('PLAYLISTS')?></a></div></td>
     <td>&nbsp;</td>
     <td align="center"><?
     if (check_access(array(1,2))){
-        echo "<a href='tasks.php'>Задания (новые сообщения:".get_count_unreaded_msgs_by_uid().")</a>";
+        echo "<a href='tasks.php'>".sprintf(_('Tasks (new messages: %s)'), get_count_unreaded_msgs_by_uid())."</a>";
     }
     ?></td>
   </tr>
@@ -182,11 +205,11 @@ $cur_infoportal = get_cur_infoportal($db);
         <td class="td_stat"></td>
     </tr>
     <tr>
-        <td class="td_stat">тв:</td>
+        <td class="td_stat"><?= _('tv')?>:</td>
         <td class="td_stat"><? echo $cur_tv ?></td>
     </tr>
     <tr>
-        <td class="td_stat">видеоклуб:</td>
+        <td class="td_stat"><?= _('videoclub')?>:</td>
         <td class="td_stat"><? echo $cur_vclub ?></td>
     </tr>
     <tr>
@@ -209,20 +232,20 @@ $cur_infoportal = get_cur_infoportal($db);
         </table>
         </td>
     </tr>
+    <!--<tr>
+        <td class="td_stat"><?/*= _('audioclub')*/?>:</td>
+        <td class="td_stat"><?/* echo $cur_aclub */?></td>
+    </tr>-->
     <tr>
-        <td class="td_stat">аудиоклуб:</td>
-        <td class="td_stat"><? echo $cur_aclub ?></td>
-    </tr>
-    <tr>
-        <td class="td_stat">караоке:</td>
+        <td class="td_stat"><?= _('karaoke')?>:</td>
         <td class="td_stat"><? echo $cur_karaoke ?></td>
     </tr>
     <tr>
-        <td class="td_stat">радио:</td>
+        <td class="td_stat"><?= _('radio')?>:</td>
         <td class="td_stat"><? echo $cur_radio ?></td>
     </tr>
     <tr>
-        <td class="td_stat">инфопортал:</td>
+        <td class="td_stat"><?= _('infoportal')?>:</td>
         <td class="td_stat"><? echo $cur_infoportal ?></td>
     </tr>
     </tr>
@@ -235,7 +258,7 @@ $cur_infoportal = get_cur_infoportal($db);
         <td class="td_stat" height="64" colspan="2"></td>
     </tr>
     <tr>
-        <td class="td_stat">тв архив:</td>
+        <td class="td_stat"><?= _('tv archive')?>:</td>
         <td class="td_stat"><? echo $cur_tv_archive ?></td>
     </tr>
     <tr>
@@ -259,7 +282,7 @@ $cur_infoportal = get_cur_infoportal($db);
         </td>
     </tr>
     <tr>
-        <td class="td_stat">записи:</td>
+        <td class="td_stat"><?= _('records')?>:</td>
         <td class="td_stat"><? echo $cur_records ?></td>
     </tr>
 </table>
@@ -269,7 +292,7 @@ $cur_infoportal = get_cur_infoportal($db);
 </td>
 <td class="other" width="100">
 <form action="users.php" method="GET">
-<input type="text" name="search" value=""><input type="submit" value="Поиск"><br><font color="Gray">поиск по MAC или IP</font>
+<input type="text" name="search" value=""><input type="submit" value="<?= _('Search')?>"><br><font color="Gray"><?= _('search by MAC or IP')?></font>
 </form>
 </td>
 
@@ -278,13 +301,13 @@ $cur_infoportal = get_cur_infoportal($db);
 <br>
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
   <tr>
-    <td colspan="3" align="center"><span class="style1">Инфопортал</span></td>
+    <td colspan="3" align="center"><span class="style1"><?= _('Infoportal')?></span></td>
   </tr>
   
   <tr>
-    <td width="47%" align="center"><a href="city_info.php">Городская справка</a></td>
+    <td width="47%" align="center"><a href="city_info.php"><?= _('City help')?></a></td>
     <td width="6%">&nbsp;</td>
-    <td width="47%" align="center"><a href="anecdote.php">Анекдоты</a></td>
+    <td width="47%" align="center"><a href="anecdote.php"><?= _('Jokes')?></a></td>
   </tr>
   
   <!--<tr>
@@ -298,31 +321,31 @@ $cur_infoportal = get_cur_infoportal($db);
 
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
   <tr>
-    <td colspan="3" align="center"><span class="style1">Статистика</span></td>
+    <td colspan="3" align="center"><span class="style1"><?= _('Statistics')?></span></td>
   </tr>
   
   <tr>
-    <td width="47%" align="center"><a href="stat_video.php">Статистика Видео</a></td>
+    <td width="47%" align="center"><a href="stat_video.php"><?= _('Video statistics')?></a></td>
     <td width="6%">&nbsp;</td>
-    <td width="47%" align="center"><a href="stat_tv_users.php">Абонентская статистика по ТВ</a></td>
+    <td width="47%" align="center"><a href="stat_tv_users.php"><?= _('Users statistics for TV')?></a></td>
   </tr>
   
   <tr>
-    <td align="center"><a href="stat_tv.php">Статистика ТВ</a></td>
+    <td align="center"><a href="stat_tv.php"><?= _('TV statistics')?></a></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="stat_video_users.php">Абонентская статистика по ВИДЕО</a></td>
+    <td align="center"><a href="stat_video_users.php"><?= _('Users statistics for VIDEO')?></a></td>
   </tr>
   
   <tr>
-    <td align="center"><a href="stat_moderators.php">Статистика Модераторов</a></td>
+    <td align="center"><a href="stat_moderators.php"><?= _('Moderators statistics')?></a></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="stat_anec_users.php">Абонентская статистика по Анекдотам</a></td>
+    <td align="center"><a href="stat_anec_users.php"><?= _('Users statistics for Jokes')?></a></td>
   </tr>
   
   <tr>
-    <td align="center"><a href="claims.php">Жалобы</a></td>
+    <td align="center"><a href="claims.php"><?= _('Claims')?></a></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="stat_not_active_users.php">Неактивные абоненты</a></td>
+    <td align="center"><a href="stat_not_active_users.php"><?= _('Inactive users')?></a></td>
   </tr>
 </table>
 <br>
@@ -333,13 +356,13 @@ $cur_infoportal = get_cur_infoportal($db);
 
 <? if (@$_SESSION['login'] != 'azmus'){ ?>
   <tr>
-    <td colspan="3" align="center"><span class="style1">Настройки</span></td>
+    <td colspan="3" align="center"><span class="style1"><?= _('Settings')?></span></td>
   </tr>
   
   <tr>
-    <td width="47%" align="center"><a href="setting_common.php">Общие</a></td>
+    <td width="47%" align="center"><a href="setting_common.php"><?= _('Firmware auto update')?></a></td>
     <td width="6%">&nbsp;</td>
-    <td width="47%" align="center"><a href="storages.php">Хранилища</a></td>
+    <td width="47%" align="center"><a href="storages.php"><?= _('Storages')?></a></td>
   </tr>
 <?}?>
   <tr>

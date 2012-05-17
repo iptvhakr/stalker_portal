@@ -83,18 +83,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Пользователи</title>
+<title><?= _('Users')?></title>
 </head>
 <body>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="620">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="660">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Пользователи&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Users')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="testers.php">Тестировщики</a> | <a href="stbgroups.php">Группы приставок</a> | <a href="all_userlog.php">Все логи</a> | <a href="today_user_status_report.php" target="_blank">Отчет</a> | <a href="subscribe_import.php">Импорт подписок</a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="testers.php"><?= _('Testers')?></a> | <a href="stbgroups.php"><?= _('Stb groups')?></a> | <a href="all_userlog.php"><?= _('All logs')?></a> | <a href="today_user_status_report.php" target="_blank"><?= _('Report')?></a> | <a href="subscribe_import.php"><?= _('Subscription import')?></a>
     </td>
 </tr>
 <tr>
@@ -187,23 +187,23 @@ function get_last_time($time){
 function get_cur_media($media_id){
     $media = array(
         0 => '--',
-        1 => 'ТВ',
-        2 => 'Видео',
-        3 => 'Караоке',
-        4 => 'Аудио',
-        5 => 'Радио',
-        6 => 'Мои Записи',
-        7 => 'Записи',
+        1 => _('TV'),
+        2 => _('Video'),
+        3 => _('Karaoke'),
+        4 => _('Audio'),
+        5 => _('Radio'),
+        6 => _('My records'),
+        7 => _('Records'),
         9 => 'ad',
-        10 => 'Медиа Браузер',
-        11 => 'ТВ Архив',
-        12 => 'Записи',
-        20 => 'Инфопортал',
-        21 => 'Инфопортал',
-        22 => 'Инфопортал',
-        23 => 'Инфопортал',
-        24 => 'Инфопортал',
-        25 => 'Инфопортал'
+        10 => _('Media browser'),
+        11 => _('Tv archive'),
+        12 => _('Records'),
+        20 => _('Infoportal'),
+        21 => _('Infoportal'),
+        22 => _('Infoportal'),
+        23 => _('Infoportal'),
+        24 => _('Infoportal'),
+        25 => _('Infoportal')
     );
     
     if (!empty($media[$media_id])){
@@ -226,18 +226,18 @@ function construct_YY(){
 
 function construct_MM(){
     $month = array(
-         1 => 'Январь',
-         2 => 'Февраль',
-         3 => 'Март',
-         4 => 'Апрель',
-         5 => 'Май',
-         6 => 'Июнь',
-         7 => 'Июль',
-         8 => 'Август',
-         9 => 'Сентябрь',
-        10 => 'Октябрь',
-        11 => 'Ноябрь',
-        12 => 'Декабрь',
+        1 => _('January'),
+        2 => _('February'),
+        3 => _('March'),
+        4 => _('April'),
+        5 => _('May'),
+        6 => _('June'),
+        7 => _('July'),
+        8 => _('August'),
+        9 => _('September'),
+        10 => _('October'),
+        11 => _('November'),
+        12 => _('December'),
     );
     $mm = '';
     if (!@$_GET['mm']){
@@ -333,7 +333,7 @@ function parse_param($action, $param){
             
             $query = "select * from itv where cmd='$param'";
             $rs = $db->executeQuery($query);
-            $name = '[Канал] '.@$rs->getValueByName(0, 'name');
+            $name = '['._('Channel').'] '.@$rs->getValueByName(0, 'name');
             
         }else if ($sub_param == 'aut'){
             preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr);
@@ -341,7 +341,7 @@ function parse_param($action, $param){
             
             $query = "select * from video where id='$media_id'";
             $rs = $db->executeQuery($query);
-            $name = '[Видео] '.@$rs->getValueByName(0, 'name');
+            $name = '['._('Video').'] '.@$rs->getValueByName(0, 'name');
             
         }else{
             $name = '';
@@ -529,14 +529,14 @@ function sort_page(){
     <tr>
         <td>
             <form action="" method="GET">
-            <input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по MAC или IP</font>
+            <input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by MAC or IP')?></font>
             </form>
         <td>
     </tr>
     <tr>
         <td>
             <select id="sort_by" onchange="sort_page()">
-                <option value="none">без сортировки
+                <option value="none"><?= _('without sorting')?>
                 <option value="online" <? if (@$_GET['sort_by'] == 'online') echo 'selected' ?>>online
                 <option value="offline" <? if (@$_GET['sort_by'] == 'offline') echo 'selected' ?>>offline
                 <option value="iptv" <? if (@$_GET['sort_by'] == 'iptv') echo 'selected' ?>>iptv
@@ -577,7 +577,7 @@ function sort_page(){
             <select name="ii" id="ii">
                 <? echo construct_II()?>
             </select>
-            <input type="submit" value="Поиск"> <font color="Gray">поиск неактивных пользователей</font>
+            <input type="submit" value="<?= _('Search')?>"> <font color="Gray"><?= _('search inactive users')?></font>
             </form>
         <td>
     </tr>
@@ -590,17 +590,12 @@ echo "<tr>";
 echo "<td class='list'><b>#</b></td>\n";
 echo "<td class='list'><b>MAC</b></td>\n";
 echo "<td class='list'><b>IP</b></td>\n";
-echo "<td class='list'><b>Тип</b></td>\n";
-echo "<td class='list' width='250'><b>Медиа</b></td>\n";
-echo "<td class='list'><b>Время с <br>
-последнего <br>
-просмотра <br>
-чч:мм:сс</b></td>\n";
+echo "<td class='list'><b>"._('Type')."</b></td>\n";
+echo "<td class='list' width='250'><b>"._('Media')."</b></td>\n";
+echo "<td class='list'><b>"._('Time from<br>last playback')."</b></td>\n";
 echo "<td class='list'><b>&nbsp;</b></td>\n";
-//echo "<td class='list'><b>&nbsp;</b></td>\n";
-//echo "<td class='list'><b>Версия</b></td>\n";
 echo "<td class='list'><b>&nbsp;</b></td>\n";
-echo "<td class='list'><b>Последнее<br>изменение<br>статуса</b></td>\n";
+echo "<td class='list'><b>"._('Last change<br>of status')."</b></td>\n";
 echo "</tr>\n";
 $i=0+$MAX_PAGE_ITEMS*$page;
 
@@ -630,17 +625,13 @@ while(@$rs->next()){
     echo "<td class='list' nowrap>";
     if (check_access(array(3)) && !Config::getSafe('deny_change_user_status', false)){
         echo "<a href='users.php?id=".$arr['id']."&search=".@$_GET['search']."&action=cut_off'>".get_user_color($arr['id'])."</a>";
-        /*echo "&nbsp;&nbsp;";
-        if (!check_keep_alive($arr['keep_alive']) && !Config::getSafe('deny_delete_user', false)){
-            echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"users.php?del=1&id=".$arr['id']."&page=".@$_GET['page']."&search=".@$_GET['search']."\"}'>del</a>";
-        }*/
     }else{
         echo "<b>".get_user_color($arr['id'])."</b>";
     }
 
     if (check_access(array(3)) && !check_keep_alive($arr['keep_alive']) && !Config::getSafe('deny_delete_user', false)){
         echo "&nbsp;&nbsp;";
-        echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"users.php?del=1&id=".$arr['id']."&page=".@$_GET['page']."&search=".@$_GET['search']."\"}'>del</a>";
+        echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"users.php?del=1&id=".$arr['id']."&page=".@$_GET['page']."&search=".@$_GET['search']."\"}'>del</a>";
     }
 
     echo "</td>\n";

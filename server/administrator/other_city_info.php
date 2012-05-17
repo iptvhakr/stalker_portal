@@ -43,7 +43,7 @@ if (!$error){
             header("Location: other_city_info.php");
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');;
         }
     }
     
@@ -60,7 +60,7 @@ if (!$error){
             header("Location: other_city_info.php");
         }
         else{
-            $error = 'Ошибка: необходимо заполнить все поля';
+            $error = _('Error: all fields are required');;
         }
     }
 }
@@ -101,18 +101,18 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
-<title>Редактирование списка других служб</title>
+<title><?= _('Other services')?></title>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-    <font size="5px" color="White"><b>&nbsp;Редактирование списка других служб&nbsp;</b></font>
+    <font size="5px" color="White"><b>&nbsp;<?= _('Other services')?>&nbsp;</b></font>
     </td>
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< Назад</a> | <a href="city_info.php">Экстренные службы</a> | <a href="help_city_info.php">Справочные службы</a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="city_info.php"><?= _('Emergency services')?></a> | <a href="help_city_info.php"><?= _('Information services')?></a>
     </td>
 </tr>
 <tr>
@@ -135,8 +135,8 @@ $rs=$db->executeQuery($query);
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
 echo "<td class='list'><b>#</b></td>";
-echo "<td class='list'><b>Служба</b></td>";
-echo "<td class='list'><b>Номер</b></td>";
+echo "<td class='list'><b>"._('Department')."</b></td>";
+echo "<td class='list'><b>"._('Number')."</b></td>";
 echo "</tr>";
 while(@$rs->next()){
     
@@ -147,7 +147,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['title']."</td>";
     echo "<td class='list'>".$arr['number']."</td>";
     echo "<td class='list'><a href='?edit=1&id=".$arr['id']."#form'>edit</a>&nbsp;&nbsp;";
-    echo "<a href='#' onclick='if(confirm(\"Удалить данную запись?\")){document.location=\"other_city_info.php?del=1&id=".$arr['id']."\"}'>del</a>&nbsp;&nbsp;\n";
+    echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"other_city_info.php?del=1&id=".$arr['id']."\"}'>del</a>&nbsp;&nbsp;\n";
     
     echo "</tr>";
 }
@@ -201,7 +201,7 @@ function popup(src){
     <table align="center">
         <tr>
            <td align="right">
-            Номер по порядку: 
+            <?= _('Number')?>:
            </td>
            <td>
             <input id="num" name="num" size="10" type="text" value="<? echo @$num ?>">
@@ -209,7 +209,7 @@ function popup(src){
         </tr>
         <tr>
            <td align="right">
-            Служба: 
+           <?= _('Department')?>:
            </td>
            <td>
             <input type="text" name="title" size="50" id="title" value="<? echo @$title ?>">
@@ -219,7 +219,7 @@ function popup(src){
         </tr>
         <tr>
            <td align="right">
-            Номер: 
+           <?= _('Phone number')?>:
            </td>
            <td>
             <input id="number" name="number" size="50" type="text" value="<? echo @$number ?>">
@@ -229,7 +229,7 @@ function popup(src){
            <td>
            </td>
            <td>
-            <input type="button" value="Сохранить" onclick="save()">&nbsp;<input type="button" value="Новый" onclick="document.location='other_city_info.php'">
+            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='other_city_info.php'">
            </td>
         </tr>
     </table>
