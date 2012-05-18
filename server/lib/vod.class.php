@@ -303,7 +303,9 @@ class Vod extends AjaxResponse
 
         $fav_videos_str = serialize($fav_array);
 
-        $fav_video = $this->getFav();
+        $fav_video = $this->getFav($uid);
+
+        //var_dump($this->stb->id, $fav_video);
 
         if ($fav_video === null) {
             return $this->db->insert('fav_vclub',
@@ -321,10 +323,13 @@ class Vod extends AjaxResponse
         }
     }
 
-    public function getFav()
-    {
+    public function getFav($uid = null){
 
-        return $this->getFavByUid($this->stb->id);
+        if (!$uid){
+            $uid = $this->stb->id;
+        }
+
+        return $this->getFavByUid($uid);
 
         /*$fav_video_arr = $this->db->from('fav_vclub')->where(array('uid' => $this->stb->id))->get()->first();
 
