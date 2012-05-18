@@ -68,7 +68,7 @@ if (_GET.hasOwnProperty('debug')){
 }
 
 if (_GET.hasOwnProperty('referrer')){
-    var referrer = _GET['referrer'];
+    var referrer = decodeURIComponent(_GET['referrer']);
 }else{
     referrer = '';
 }
