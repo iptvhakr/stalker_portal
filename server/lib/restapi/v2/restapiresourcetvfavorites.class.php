@@ -41,13 +41,17 @@ class RESTApiResourceTvFavorites extends RESTApiCollection
 
     public function update(RESTApiRequest $request){
 
-        $new_favorites = $request->getData('ch_id');
+        $data = $request->getData();
 
-        if (empty($new_favorites)){
+        if (!isset($data['ch_id'])){
             throw new RESTBadRequest("Favorite channels required");
         }
 
-        $new_favorites = explode(",", $new_favorites);
+        if (empty($data['ch_id'])){
+            $new_favorites = array();
+        }else{
+            $new_favorites = explode(",", $data['ch_id']);
+        }
 
         $result = $this->manager->saveFav($new_favorites, $this->user_id);
 

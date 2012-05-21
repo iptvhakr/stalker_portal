@@ -40,13 +40,17 @@ class RESTApiResourceVideoFavorites extends RESTApiCollection
 
     public function update(RESTApiRequest $request){
 
-        $new_favorites = $request->getData('video_id');
+        $data = $request->getData();
 
-        if (empty($new_favorites)){
+        if (!isset($data['video_id'])){
             throw new RESTBadRequest("Favorite videos required");
         }
 
-        $new_favorites = explode(",", $new_favorites);
+        if (empty($data['video_id'])){
+            $new_favorites = array();
+        }else{
+            $new_favorites = explode(",", $data['video_id']);
+        }
 
         $result = $this->manager->saveFav($new_favorites, $this->user_id);
 
