@@ -54,6 +54,8 @@ class RESTApiResponse extends HTTPResponse
             header("Content-type: ".$this->content_type."; charset=utf-8");
         }
 
+        header("Access-Control-Allow-Origin: *");
+
         $this->setOutput();
         echo $this->getFormattedOutput();
     }
