@@ -168,7 +168,7 @@ class Kinopoisk
 
         $ch = curl_init();
 
-        $search_url = 'http://www.kinopoisk.ru/index.php?level=7&from=forma&result=adv&m_act[from]=forma&m_act[what]=content&m_act[find]='.urlencode($orig_name).'&m_act[content_find]=film&first=yes';
+        $search_url = 'http://www.kinopoisk.ru/index.php?level=7&from=forma&result=adv&m_act[from]=forma&m_act[what]=content&m_act[find]='.urlencode($orig_name).'&m_act[content_find]=film,serial&first=yes';
 
         curl_setopt_array($ch,
             array(
