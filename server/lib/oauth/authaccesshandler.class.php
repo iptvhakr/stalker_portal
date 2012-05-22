@@ -25,7 +25,8 @@ class AuthAccessHandler extends AccessHandler
         $data = array(
             'uid'     => $user['id'],
             'token'   => $token,
-            'secret_key'     => md5($token.microtime(1)),
+            'refresh_token' => md5($token.''.uniqid()),
+            'secret_key'    => md5($token.microtime(1)),
             'started' => 'NOW()',
             'expires' => 'FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())+'.$this->token_expire.')'
         );
@@ -103,6 +104,28 @@ class AuthAccessHandler extends AccessHandler
         }else{
             throw new AuthBadRequest("Unsupported authentication type");
         }
+    }
+
+    public function getRefreshToken($token){
+
+        return Mysql::getInstance()->from('access_tokens')->where(array('token' => $token))->get()->first('refresh_token');
+    }
+
+    public function getUsernameByRefreshToken($refresh_token){
+
+        if (empty($refresh_token)){
+            return null;
+        }
+
+        $uid = Mysql::getInstance()->from('access_tokens')->where(array('refresh_token' => $refresh_token))->get()->first('uid');
+
+        if (empty($uid)){
+            return null;
+        }
+
+        $username = Mysql::getInstance()->from('users')->where(array('id' => $uid))->get()->first('login');
+
+        return $username;
     }
 }
 

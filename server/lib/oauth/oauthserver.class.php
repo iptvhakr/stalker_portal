@@ -31,11 +31,15 @@ class OAuthServer
 
             }else{
 
-                /*if (!$this->access_handler->isValidClient($request->getClientId(), $request->getClientSecret())){
-                    throw new OAuthInvalidClient("Client authentication failed", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-5.2");
-                }*/
+                if ($request->getRefreshToken()){
 
-                if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword())){
+                    $username = $this->access_handler->getUsernameByRefreshToken($request->getRefreshToken());
+
+                    if (empty($username)){
+                        throw new OAuthInvalidClient("request_token not valid");
+                    }
+
+                    $request->setUsername($username);
 
                     $token = $this->access_handler->generateUniqueToken($request->getUsername());
 
@@ -44,6 +48,39 @@ class OAuthServer
                     }
 
                     $response->setAccessToken($token);
+
+                    $refresh_token = $this->access_handler->getRefreshToken($token);
+
+                    if ($refresh_token){
+                        $response->setRefreshToken($refresh_token);
+                    }
+
+                    if ($this->token_type == "mac"){
+                        $key = $this->access_handler->getSecretKey($request->getUsername());
+                        $response->setMacKey($key);
+                    }
+
+                    $additional_params = $this->access_handler->getAdditionalParams($request->getUsername());
+
+                    if (!empty($additional_params)){
+                        $response->setAdditionalParams($additional_params);
+                    }
+
+                }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword())){
+
+                    $token = $this->access_handler->generateUniqueToken($request->getUsername());
+
+                    if (!$token){
+                        throw new OAuthServerError("Token making failed");
+                    }
+
+                    $response->setAccessToken($token);
+
+                    $refresh_token = $this->access_handler->getRefreshToken($token);
+
+                    if ($refresh_token){
+                        $response->setRefreshToken($refresh_token);
+                    }
 
                     if ($this->token_type == "mac"){
                         $key = $this->access_handler->getSecretKey($request->getUsername());
@@ -130,6 +167,10 @@ class OAuthResponse
         $this->body['access_token'] = $token;
     }
 
+    public function setRefreshToken($refresh_token){
+        $this->body['refresh_token'] = $refresh_token;
+    }
+
     public function setMacKey($key){
         $this->body['mac_key'] = $key;
     }
@@ -174,22 +215,25 @@ class OAuthRequest
     protected $password;
     protected $client_id;
     protected $client_secret;
+    protected $refresh_token;
     private $is_implicit_grant_auth = false;
 
     public function __construct(){
 
-        /*if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $this->proceedResourceOwnerPasswordCredentialsAuth();
-        }else if ($_SERVER['REQUEST_METHOD'] == 'GET'){
-            $this->proceedImplicitGrantAuth();
-        }else{
-            throw new OAuthInvalidRequest("Invalid request method", "invalid_request");
-        }*/
     }
 
     public function parse(){
+
+        if (empty($_SERVER['CONTENT_TYPE']) || strpos($_SERVER['CONTENT_TYPE'], 'application/x-www-form-urlencoded') === false){
+            throw new OAuthInvalidRequest("Invalid content-type. Require Content-Type: application/x-www-form-urlencoded");
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $this->proceedResourceOwnerPasswordCredentialsAuth();
+            if (!empty($_POST['grant_type']) && $_POST['grant_type'] == 'refresh_token'){
+                $this->proceedRefreshToken();
+            }else{
+                $this->proceedResourceOwnerPasswordCredentialsAuth();
+            }
         }else if ($_SERVER['REQUEST_METHOD'] == 'GET'){
             $this->proceedImplicitGrantAuth();
         }else{
@@ -199,6 +243,7 @@ class OAuthRequest
 
     /**
      * @see http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.2
+     * @throws OAuthInvalidRequest
      * @return void
      */
     private function proceedImplicitGrantAuth(){
@@ -218,7 +263,8 @@ class OAuthRequest
 
     /**
      * @see http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.3
-     * @return void
+     * @throws OAuthInvalidRequest
+     * @return boolean
      */
     private function proceedResourceOwnerPasswordCredentialsAuth(){
 
@@ -230,18 +276,33 @@ class OAuthRequest
             throw new OAuthInvalidRequest("Username and password must bee specified", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.3.2");
         }
 
-        /*if (empty($_POST['client_id']) || empty($_POST['client_secret'])){
-            throw new OAuthInvalidRequest("Client ID and secret must bee specified", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.3.2");
-        }*/
+        $this->username = $_POST['username'];
+        $this->password = $_POST['password'];
 
-        $this->username      = $_POST['username'];
-        $this->password      = $_POST['password'];
-        /*$this->client_id     = $_POST['client_id'];
-        $this->client_secret = $_POST['client_secret'];*/
+        return true;
+    }
+
+    private function proceedRefreshToken(){
+
+        if (empty($_POST['grant_type']) || $_POST['grant_type'] != 'refresh_token'){
+            throw new OAuthInvalidRequest("Require valid grant_type", "http://tools.ietf.org/html/draft-ietf-oauth-v2-26#section-6");
+        }
+
+        if (empty($_POST['refresh_token'])){
+            throw new OAuthInvalidRequest("refresh_token must bee specified", "http://tools.ietf.org/html/draft-ietf-oauth-v2-26#section-6");
+        }
+
+        $this->refresh_token = $_POST['refresh_token'];
+
+        return true;
     }
 
     public function getUsername(){
         return $this->username;
+    }
+
+    public function setUsername($username){
+        $this->username = $username;
     }
 
     public function getPassword(){
@@ -254,6 +315,10 @@ class OAuthRequest
 
     public function getClientSecret(){
         return $this->client_secret;
+    }
+
+    public function getRefreshToken(){
+        return $this->refresh_token;
     }
 
     public function isImplicitGrantAuth(){
