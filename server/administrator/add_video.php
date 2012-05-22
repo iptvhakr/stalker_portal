@@ -163,8 +163,13 @@ if (count(@$_POST) > 0){
                     
                     $img_path = get_save_folder($upload_id);
                     umask(0);
-                    rename($_FILES['screenshot']['tmp_name'], $img_path.'/'.$upload_id.'.jpg');
-                    chmod($img_path.'/'.$upload_id.'.jpg', 0644);
+
+                    if (!rename($_FILES['screenshot']['tmp_name'], $img_path.'/'.$upload_id.'.jpg')){
+                        $error = sprintf(_('Error during file moving from %s to %s'), $_FILES['screenshot']['tmp_name'], $img_path.'/'.$upload_id.'.jpg');
+                        unset($_SESSION['upload']);
+                    }else{
+                        chmod($img_path.'/'.$upload_id.'.jpg', 0644);
+                    }
                 }
             }
         }
@@ -393,17 +398,20 @@ if (count(@$_POST) > 0){
             }
 
             if ($error){
-                return;
+                //return;
             }
 
             //var_dump(!empty($_POST['rating_kinopoisk']), empty($video), $video['rating_kinopoisk'] != $_POST['rating_kinopoisk']);exit;
 
-            if (!empty($_POST['rating_kinopoisk']) && (empty($video) || $video['rating_kinopoisk'] != $_POST['rating_kinopoisk'])){
-                Mysql::getInstance()->update('video', array('rating_last_update' => 'NOW()'), array('id' => $video_id));
-            }
+            if (!$error){
 
-            header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
-            exit;
+                if (!empty($_POST['rating_kinopoisk']) && (empty($video) || $video['rating_kinopoisk'] != $_POST['rating_kinopoisk'])){
+                    Mysql::getInstance()->update('video', array('rating_last_update' => 'NOW()'), array('id' => $video_id));
+                }
+
+                header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
+                exit;
+            }
         }
     }else{
         $error = _('Error: insufficient permissions for this action');
@@ -1927,7 +1935,7 @@ $(function(){
             <?= _('Cover')?>:
            </td>
            <td>
-            <input name="screenshot" size="27" type="file"><input type="submit" value="<?= _('Upload')?>" name="load" >
+            <input name="screenshot" size="27" type="file"><!--<input type="submit" value="<?/*= _('Upload')*/?>" name="load" >-->
            </td>
         </tr>
         <tr>
