@@ -352,7 +352,9 @@ class Itv extends AjaxResponse
     }
     
     public function getChannels($include_censored = false){
-        
+
+        $all_user_channels_ids = $this->getAllUserChannelsIds();
+
         $query = $this->db->from('itv');
 
         $this->include_censored = $include_censored;
@@ -368,6 +370,11 @@ class Itv extends AjaxResponse
         if (Config::get('enable_tv_quality_filter')){
             //$query->where(array('quality' => $this->stb->getParam('tv_quality')));
         }
+
+        if (Config::get('enable_tariff_plans')){
+            $query->in('id', $all_user_channels_ids);
+        }
+
         
         return $query;
     }
@@ -450,6 +457,7 @@ class Itv extends AjaxResponse
         }
         
         $fav = $this->getFav();
+        $all_user_channels_ids = $this->getAllUserChannelsIds();
         
         if (!empty($_REQUEST['from_ch_id']) && intval($_REQUEST['from_ch_id'])>0){
             $last_id = intval($_REQUEST['from_ch_id']);
@@ -471,15 +479,27 @@ class Itv extends AjaxResponse
                     $fav = array_slice($fav, 0, $ch_tmp_idx+1);
                 }
             }
-            
-            $ch_idx = $this->db->from('itv')->where($where)->in('itv.id', $fav)->get()->count();
+
+            $query = $this->db->from('itv')->where($where)->in('itv.id', $fav);
+
+            if (Config::get('enable_tariff_plans')){
+                $query->in('itv.id', $all_user_channels_ids);
+            }
+
+            $ch_idx = $query->get()->count();
         }else{
 
             $sortby = $_REQUEST['sortby'];
 
             if ($sortby == 'name'){
-                //$ch_idx = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number))->get()->count();
-                $chs = $this->db->from('itv')->where($where)->orderby('name')->get()->all();
+
+                $query = $this->db->from('itv')->where($where)->orderby('name');
+
+                if (Config::get('enable_tariff_plans')){
+                    $query->in('itv.id', $all_user_channels_ids);
+                }
+
+                $chs = $query->get()->all();
 
                 foreach ($chs as $ch){
                     $ch_idx++;
@@ -489,7 +509,13 @@ class Itv extends AjaxResponse
                 }
 
             }else{
-                $ch_idx = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number))->get()->count();
+                $query = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number));
+
+                if (Config::get('enable_tariff_plans')){
+                    $query->in('itv.id', $all_user_channels_ids);
+                }
+
+                $ch_idx = $query->get()->count();
             }
         }
         
@@ -509,7 +535,7 @@ class Itv extends AjaxResponse
     }
     
     private function getData(){
-        
+
         $where = array();
         
         if (!$this->stb->isModerator()){
@@ -545,6 +571,8 @@ class Itv extends AjaxResponse
     
     public function getOrderedList(){
         $fav = $this->getFav();
+        $all_user_channels_ids = $this->getAllUserChannelsIds();
+
         $fav_str = implode(",", $fav);
         
         if (empty($fav_str)){
@@ -571,6 +599,10 @@ class Itv extends AjaxResponse
         if (@$_REQUEST['fav']){
             $result = $result->in('itv.id', $fav);
         }
+
+        if (Config::get('enable_tariff_plans')){
+            $result = $result->in('itv.id', $all_user_channels_ids);
+        }
         
         $this->setResponseData($result);
         
@@ -591,7 +623,9 @@ class Itv extends AjaxResponse
 
         $quality = $this->stb->getParam('tv_quality');
 
-        for ($i = 0; $i < count($this->response['data']); $i++){
+        $length = count($this->response['data']);
+
+        for ($i = 0; $i < $length; $i++){
 
             if (Config::get('enable_tv_quality_filter')){
 
@@ -725,8 +759,7 @@ class Itv extends AjaxResponse
     
     public function getAllUserChannelsIds(){
         
-        if (empty($this->all_user_channels_ids)){
-        
+        if ($this->all_user_channels_ids === null){
             //$this->all_user_channels_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($this->stb->id), ItvSubscription::getBonusChannelsIds($this->stb->id), $this->getBaseChannelsIds()));
             $this->all_user_channels_ids = $this->getAllUserChannelsIdsByUid($this->stb->id);
         }
@@ -735,7 +768,25 @@ class Itv extends AjaxResponse
     }
 
     public function getAllUserChannelsIdsByUid($uid){
-        return array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($uid), ItvSubscription::getBonusChannelsIds($uid), $this->getBaseChannelsIds()));
+
+        if (Config::getSafe('enable_tariff_plans', false)){
+
+            $user = User::getInstance(Stb::getInstance()->id);
+            $subscription = $user->getServicesByType('tv');
+
+            if (empty($subscription)){
+                $subscription = array();
+            }
+
+            //var_dump($subscription);
+
+            //$channel_ids = array_unique(array_merge($subscription, $this->getBaseChannelsIds()));
+            $channel_ids = $subscription;
+        }else{
+            $channel_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($uid), ItvSubscription::getBonusChannelsIds($uid), $this->getBaseChannelsIds()));
+        }
+
+        return $channel_ids;
     }
 
     public function getBaseChannelsIds(){
@@ -956,6 +1007,11 @@ class Itv extends AjaxResponse
         Mysql::getInstance()->update('itv', array('logo' => ''), array('id' => $id));
 
         return $result;
+    }
+
+    public static function getServices(){
+        Mysql::$debug=true;
+        return Mysql::getInstance()->select('id, CONCAT_WS(". ", cast(number as char), name) as name')->from('itv')->orderby('number')->get()->all();
     }
 }
 

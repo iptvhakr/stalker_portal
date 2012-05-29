@@ -1,0 +1,52 @@
+#service_management .description_block{
+    display: none !important;
+}
+
+#service_management .subscribed_str_block,
+#service_management .not_subscribed_str_block{
+    display: none !important;
+}
+
+#service_management .active_name_block{
+    margin-top: 0;
+}
+
+#service_management .active_description_block{
+    color: #284B82;
+    font-size: 20px;
+    line-height: 21px;
+    white-space: pre;
+    overflow: hidden;
+    width: 1068px;
+    float: left;
+    text-overflow: ellipsis;
+    margin: -5px 0 0 2px;
+}
+
+.active_subscribed_str_block{
+    position: absolute;
+    right: 23px;
+    top: 4px;
+    width: 201px;
+    height: 36px;
+    background: url("i_720/mb_table_act02.png") 219px -4px;
+    padding: 15px 0 0 8px;
+    color: #000;
+    font-family: "Myriad Pro Cond", sans-serif;
+    font-size: 20px;
+    overflow: hidden;
+}
+
+.active_not_subscribed_str_block{
+    position: absolute;
+    right: 23px;
+    top: 4px;
+    width: 201px;
+    height: 36px;
+    background: url("i_720/mb_table_act02.png") 219px -4px;
+    padding: 15px 0 0 8px;
+    color: #000;
+    font-family: "Myriad Pro Cond", sans-serif;
+    font-size: 20px;
+    overflow: hidden;
+}

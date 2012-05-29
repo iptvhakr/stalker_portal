@@ -144,7 +144,7 @@ a:hover{
   </tr>
 
   <tr>
-    <td><div align="center"><a href="playlists.php"><?= _('PLAYLISTS')?></a></div></td>
+    <td><div align="center"><a href="tariffs.php"><?= _('TARIFFS')?></a><!--<a href="playlists.php"><?/*= _('PLAYLISTS')*/?></a>--></div></td>
     <td>&nbsp;</td>
     <td align="center"><?
     if (check_access(array(1,2))){

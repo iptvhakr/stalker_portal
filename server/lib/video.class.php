@@ -148,4 +148,9 @@ class Video
 
         return $not_ended;
     }
+
+    public static function getServices(){
+
+        return Mysql::getInstance()->select('id, name')->from('video')->orderby('name')->get()->all();
+    }
 }

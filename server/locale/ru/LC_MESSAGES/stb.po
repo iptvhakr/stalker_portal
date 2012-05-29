@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-22 10:54+0200\n"
-"PO-Revision-Date: 2012-05-22 10:55+0200\n"
+"POT-Creation-Date: 2012-05-29 14:24+0200\n"
+"PO-Revision-Date: 2012-05-29 14:25+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -897,8 +897,8 @@ msgid "RADIO"
 msgstr "РАДИО"
 
 #: ../../../administrator/index.php:147
-msgid "PLAYLISTS"
-msgstr "ПЛЕЙЛИСТЫ"
+msgid "TARIFFS"
+msgstr "ТАРИФЫ"
 
 #: ../../../administrator/index.php:151
 #, php-format
@@ -1130,64 +1130,84 @@ msgstr "Плейлист"
 msgid "Playlists"
 msgstr "Плейлисты"
 
-#: ../../../administrator/profile.php:171
+#: ../../../administrator/profile.php:29
+msgid "Tariff plan is changed, please restart your STB"
+msgstr "Тарифный план изменен. Пожалуйста, перезагрузите приставку."
+
+#: ../../../administrator/profile.php:193
 msgid "Change the video output on the"
 msgstr "Поменять видео выход на "
 
-#: ../../../administrator/profile.php:199
+#: ../../../administrator/profile.php:221
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../../../administrator/profile.php:203
+#: ../../../administrator/profile.php:225
 msgid "Disabled"
 msgstr "Отключено"
 
-#: ../../../administrator/profile.php:234
-#: ../../../administrator/profile.php:240
+#: ../../../administrator/profile.php:268
+#: ../../../administrator/profile.php:274
 msgid "User profile"
 msgstr "Профиль пользователя"
 
-#: ../../../administrator/profile.php:283
+#: ../../../administrator/profile.php:279
+msgid "Logs"
+msgstr "Логи"
+
+#: ../../../administrator/profile.php:318
 msgid "Reset to default password?"
 msgstr "Сбросить на пароль по умолчанию?"
 
-#: ../../../administrator/profile.php:283
-#: ../../../administrator/profile.php:287
+#: ../../../administrator/profile.php:318
+#: ../../../administrator/profile.php:322
 msgid "Reset"
 msgstr "Сбросить"
 
-#: ../../../administrator/profile.php:286
+#: ../../../administrator/profile.php:321
 msgid "favorite tv"
-msgstr "только избранное"
+msgstr "избранное тв"
 
-#: ../../../administrator/profile.php:287
+#: ../../../administrator/profile.php:322
 #, php-format
 msgid "%s channels"
 msgstr "%s канала"
 
-#: ../../../administrator/profile.php:287
+#: ../../../administrator/profile.php:322
 msgid "Reset favorite TV channels? The channels will be reset only if immediately restart the stb!"
 msgstr "Сбросить избранные ТВ каналы? Каналы полностью сбросятся только если сразу перезапустить приставку!"
 
-#: ../../../administrator/profile.php:300
-msgid "TV subscription"
-msgstr "Подписка на каналы"
-
-#: ../../../administrator/profile.php:303
-msgid "Additional services"
-msgstr "Доп. сервисы"
-
-#: ../../../administrator/profile.php:353
-msgid "Logs"
-msgstr "Логи"
-
-#: ../../../administrator/profile.php:369
+#: ../../../administrator/profile.php:335
 msgid "Full name"
 msgstr "ФИО"
 
-#: ../../../administrator/profile.php:377
+#: ../../../administrator/profile.php:343
 msgid "Last change of status"
 msgstr "Изменение статуса"
+
+#: ../../../administrator/profile.php:403
+msgid "Tariff plan"
+msgstr "Тарифный план"
+
+#: ../../../administrator/profile.php:419
+msgid "Change"
+msgstr "Изменить"
+
+#: ../../../administrator/profile.php:428
+msgid "No packages available"
+msgstr "Нет доступных пакетов"
+
+#: ../../../administrator/profile.php:432
+msgid "Packages"
+msgstr "Пакеты"
+
+#: ../../../administrator/profile.php:454
+msgid "TV subscription"
+msgstr "Подписка на каналы"
+
+#: ../../../administrator/profile.php:457
+msgid "Additional services"
+msgstr "Доп. сервисы"
 
 #: ../../../administrator/reply.php:38
 msgid "message sended"
@@ -1216,6 +1236,24 @@ msgstr "задание отправлено"
 #: ../../../administrator/send_to.php:103
 msgid "Create task"
 msgstr "Создать задание"
+
+#: ../../../administrator/services_packages.php:93
+#: ../../../administrator/services_packages.php:227
+msgid "SERVICES PACKAGES"
+msgstr "ПАКЕТЫ УСЛУГ"
+
+#: ../../../administrator/services_packages.php:250
+#: ../../../administrator/services_packages.php:276
+msgid "External ID"
+msgstr "Внешний ID"
+
+#: ../../../administrator/services_packages.php:284
+msgid "Short description"
+msgstr "Краткое описание"
+
+#: ../../../administrator/services_packages.php:313
+msgid "Selected"
+msgstr "Выбрано"
 
 #: ../../../administrator/setting_common.php:128
 msgid "enabled"
@@ -1544,6 +1582,19 @@ msgstr "Обновлять избранное"
 #: ../../../administrator/subscribe_import.php:487
 msgid "Import"
 msgstr "Импорт"
+
+#: ../../../administrator/tariffs.php:102
+#: ../../../administrator/tariffs.php:265
+msgid "TARIFF PLANS"
+msgstr "ТАРИФНЫЕ ПЛАНЫ"
+
+#: ../../../administrator/tariffs.php:253
+msgid "optional"
+msgstr "опциональный"
+
+#: ../../../administrator/tariffs.php:270
+msgid "Services packages"
+msgstr "Пакеты услуг"
 
 #: ../../../administrator/tasks.php:59
 #: ../../../administrator/tasks.php:65
@@ -2728,22 +2779,53 @@ msgstr "Избранное"
 msgid "Your STB is not supported"
 msgstr "Ваша приставка не поддерживается"
 
-#: ../../../lib/accountinfo.class.php:12
-#, php-format
-msgid "account_main_info"
-msgstr "%1$s <br>Телефон: %3$s<br>Активация: %2$s"
+#: ../../../lang/stb.php:356
+msgid "Phone"
+msgstr "Телефон"
 
-#: ../../../lib/accountinfo.class.php:19
+#: ../../../lang/stb.php:358
+msgid "User"
+msgstr "Пользователь"
+
+#: ../../../lang/stb.php:359
+msgid "SERVICES MANAGEMENT"
+msgstr "УПРАВЛЕНИЕ УСЛУГАМИ"
+
+#: ../../../lang/stb.php:360
+msgid "SUBSCRIBE"
+msgstr "ПОДКЛЮЧИТЬ"
+
+#: ../../../lang/stb.php:361
+msgid "UNSUBSCRIBE"
+msgstr "ОТКЛЮЧИТЬ"
+
+#: ../../../lang/stb.php:362
+msgid "Are you really want to subscribe to this service?"
+msgstr "Вы действительно хотите подключить данную устугу?"
+
+#: ../../../lang/stb.php:363
+msgid "Are you really want to unsubscribe from this service?"
+msgstr "Вы действительно хотите отключить данную услугу?"
+
+#: ../../../lib/accountinfo.class.php:31
 msgid "account_payment_info"
 msgstr "Информация об оплате"
 
-#: ../../../lib/accountinfo.class.php:23
+#: ../../../lib/accountinfo.class.php:35
 msgid "account_agreement_info"
 msgstr "Договор"
 
-#: ../../../lib/accountinfo.class.php:27
+#: ../../../lib/accountinfo.class.php:39
 msgid "account_terms_info"
 msgstr "Правила пользования"
+
+#: ../../../lib/accountinfo.class.php:62
+msgid "Subscribed"
+msgstr "Подключено"
+
+#: ../../../lib/accountinfo.class.php:64
+msgid "Not subscribed"
+msgstr "Не подключено"
 
 #. / TRANSLATORS: Letters of the alphabet. If the letter is missing - leave ".";
 #: ../../../lib/ajaxresponse.class.php:40
@@ -3042,11 +3124,6 @@ msgstr "идет запись"
 msgid "scheduled"
 msgstr "запланировано"
 
-#. / TRANSLATORS: don't translate this.
-#: ../../../lib/stb.class.php:1002
-msgid "city_name_field"
-msgstr "name"
-
 #: ../../../lib/streamrecorder.class.php:125
 msgid "Starting recording"
 msgstr "Начинается запись"
@@ -3078,14 +3155,21 @@ msgstr "сегодня"
 msgid "yesterday"
 msgstr "вчера"
 
+#. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
 #: ../../../lib/video.class.php:87
+#: ../../../lib/vod.class.php:645
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
 
-#: ../../../lib/vod.class.php:717
+#: ../../../lib/vod.class.php:721
 msgid "last week"
 msgstr "7 дней"
+
+#: ../../../lib/weatherco.class.php:118
+#: ../../../lib/weatherco.class.php:139
+msgid "city_name_field"
+msgstr "name"
 
 #: ../../../tools/misctranslations.php:9
 msgid "biography"
@@ -3518,6 +3602,12 @@ msgstr "З"
 #: ../../../tools/misctranslations.php:147
 msgid "NW"
 msgstr "СЗ"
+
+#~ msgid "account_main_info"
+#~ msgstr "%1$s <br>Телефон: %3$s<br>Активация: %2$s"
+
+#~ msgid "PLAYLISTS"
+#~ msgstr "ПЛЕЙЛИСТЫ"
 
 #~ msgid "Upload"
 #~ msgstr "Загрузить"

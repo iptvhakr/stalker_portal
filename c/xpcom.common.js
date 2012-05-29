@@ -625,7 +625,7 @@ function common_xpcom(){
 
         this.player.init_first_channel();
 
-        if (this.user['display_menu_after_loading']){
+        if (this.user['display_menu_after_loading'] || !this.player.channels || this.player.channels.length == 0){
             main_menu.show();
         }else{
             this.player.first_play();
@@ -1292,7 +1292,7 @@ var screensaver = {
         var self = this;
 
         keydown_observer.addCustomEventListener("keypress", function(event){
-            _debug('screensaver keypress', event);
+            //_debug('screensaver keypress', event);
 
             if (self.on){
                 self.hide();
@@ -1317,7 +1317,7 @@ var screensaver = {
     },
 
     restart_timer : function(){
-        _debug('screensaver.restart_timer');
+        //_debug('screensaver.restart_timer');
 
         var self = this;
 

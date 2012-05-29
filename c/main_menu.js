@@ -49,8 +49,12 @@ var main_menu = {
                 this.exit_comfirm.show();
                 return;
             }
-            this.hide();
-            stb.player.play_last();
+
+            _debug('stb.player.channels', stb.player.channels);
+            if (stb.player.channels && stb.player.channels.length>0){
+                this.hide();
+                stb.player.play_last();
+            }
         }).bind(key.EXIT, this);
 
         (function(){

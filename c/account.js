@@ -28,7 +28,7 @@
                     "action" : "get_main_info"
                 },
                 function(result){
-                    this.tab['main'].content.dom_obj.innerHTML = result;
+                    this.fill_main_info(result);
                 },
                 this
             );
@@ -103,10 +103,30 @@
                     "action" : "get_main_info"
                 },
                 function(result){
-                    this.tab['main'].content.dom_obj.innerHTML = result;
+                    this.fill_main_info(result);
                 },
                 this
             );
+        };
+
+        this.fill_main_info = function(result){
+            _debug('account.fill_main_info', result);
+
+            var info = '';
+
+            if (result['fname']){
+                info += '<span class="label">' + get_word('User') + ':</span> ' + result['fname'] + '<br>';
+            }
+
+            if (result['phone']){
+                info += '<span class="label">' + get_word('Phone') + ':</span> ' + result['phone'] + '<br>';
+            }
+
+            if (result['tariff_plan']){
+                info += '<span class="label">' +get_word('Tariff plan') + ':</span>: ' + result['tariff_plan'] + '<br>';
+            }
+
+            this.tab['main'].content.dom_obj.innerHTML = info;
         };
 
         this.hide = function(){
@@ -239,7 +259,7 @@
         {"label" : word['account_payment'], "cmd" : function(){
             account.tab['payment'].show();
             account.cur_tab = 'payment';
-            this.update_header_path([{"alias" : "tab", "item" : word['account_payment']}])
+            this.update_header_path([{"alias" : "tab", "item" : word['account_payment']}]);
             this.color_buttons.get('red').enable();
             this.color_buttons.get('green').disable();
             this.color_buttons.get('yellow').enable();
@@ -248,7 +268,7 @@
         {"label" : word['account_agreement'], "cmd" : function(){
             account.tab['agreement'].show();
             account.cur_tab = 'agreement';
-            this.update_header_path([{"alias" : "tab", "item" : word['account_agreement']}])
+            this.update_header_path([{"alias" : "tab", "item" : word['account_agreement']}]);
             this.color_buttons.get('red').enable();
             this.color_buttons.get('green').enable();
             this.color_buttons.get('yellow').disable();
@@ -257,7 +277,7 @@
         {"label" : word['account_terms'], "cmd" : function(){
             account.tab['terms'].show();
             account.cur_tab = 'terms';
-            this.update_header_path([{"alias" : "tab", "item" : word['account_terms']}])
+            this.update_header_path([{"alias" : "tab", "item" : word['account_terms']}]);
             this.color_buttons.get('red').enable();
             this.color_buttons.get('green').enable();
             this.color_buttons.get('yellow').enable();
@@ -275,12 +295,12 @@
 
     module.account = account;
 
-    if (!module.infoportal_sub){
-        module.infoportal_sub = [];
+    if (!module.account_menu){
+        module.account_menu = [];
     }
 
-    module.infoportal_sub.push({
-        "title" : get_word('account_info_title'),
+    module.account_menu.push({
+        "title" : get_word('account_info'),
         "cmd"   : function(){
             main_menu.hide();
             module.account.show();

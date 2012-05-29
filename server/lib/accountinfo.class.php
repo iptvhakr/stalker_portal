@@ -9,10 +9,22 @@ class AccountInfo
     }
 
     public function getMainInfo(){
-        return sprintf(_('account_main_info'),
+
+        $user = User::getInstance(Stb::getInstance()->id);
+
+        $info = array(
+            'fname' => $this->stb->getParam('fname'),
+            'last_change_status' => $this->stb->getParam('last_change_status'),
+            'phone' => $this->stb->getParam('phone'),
+            'tariff_plan' => $user->getTariffPlanName()
+        );
+
+        return $info;
+
+        /*return sprintf(_('account_main_info'),
             $this->stb->getParam('fname'),
             $this->stb->getParam('last_change_status'),
-            $this->stb->getParam('phone'));
+            $this->stb->getParam('phone'));*/
     }
 
     public function getPaymentInfo(){
@@ -29,6 +41,41 @@ class AccountInfo
 
     public function getDemoVideoParts(){
         return Config::getSafe('demo_part_video_url', '');
+    }
+
+    public function getUserPackages(){
+        $user = User::getInstance($this->stb->id);
+        $packages = $user->getPackages();
+
+        $page = intval($_GET['p']);
+
+        if ($page == 0){
+            $page = 1;
+        }
+
+        $sliced_packages = array_slice($packages, ($page-1) * 10, 10);
+
+        $sliced_packages = array_map(function($package){
+            $package['optional'] = (boolean) $package['optional'];
+
+            if ($package['subscribed']){
+                $package['subscribed_str'] = _('Subscribed');
+            }else{
+                $package['not_subscribed_str'] = _('Not subscribed');
+            }
+
+            return $package;
+        }, $sliced_packages);
+
+        $data = array(
+            'total_items' => count($packages),
+            'max_page_items' => 14,
+            'selected_item' => 0,
+            'cur_page' => 0,
+            'data' => $sliced_packages,
+        );
+
+        return $data;
     }
 }
 

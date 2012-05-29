@@ -220,6 +220,11 @@ function init(){
             return;
         }
 
+        if (!stb.player.channels || stb.player.channels.length == 0){
+            return;
+
+        }
+
         stb.cur_layer && stb.cur_layer.hide && stb.cur_layer.hide();
 
         if (module && module.tv){

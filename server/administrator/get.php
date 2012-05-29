@@ -4,24 +4,35 @@ include "./common.php";
 ob_start();
 $response = array();
 
-try{
-    if ($_GET['get'] == 'kinopoisk_info'){
-        $response['result'] = Kinopoisk::getInfoByName($_GET['oname']);
-    }else if ($_GET['get'] == 'kinopoisk_rating'){
-        $response['result'] = Kinopoisk::getRatingByName($_GET['oname']);
+if ($_GET['get'] == 'kinopoisk_info' || $_GET['get'] == 'kinopoisk_rating'){
+
+    try{
+        if ($_GET['get'] == 'kinopoisk_info'){
+            $response['result'] = Kinopoisk::getInfoByName($_GET['oname']);
+        }else if ($_GET['get'] == 'kinopoisk_rating'){
+            $response['result'] = Kinopoisk::getRatingByName($_GET['oname']);
+        }
+    }catch (KinopoiskException $e){
+        echo $e->getMessage();
+
+        $logger = new Logger();
+        $logger->setPrefix("kinopoisk_");
+
+        // format: [date] - error_message - [base64 encoded response];
+        $logger->error(sprintf("[%s] - %s - \"%s\"\n",
+            date("r"),
+            $e->getMessage(),
+            base64_encode($e->getResponse())
+        ));
     }
-}catch (KinopoiskException $e){
-    echo $e->getMessage();
-
-    $logger = new Logger();
-    $logger->setPrefix("kinopoisk_");
-
-    // format: [date] - error_message - [base64 encoded response];
-    $logger->error(sprintf("[%s] - %s - \"%s\"\n",
-        date("r"),
-        $e->getMessage(),
-        base64_encode($e->getResponse())
-    ));
+}elseif ($_GET['get'] == 'tv_services'){
+    $response['result'] = Itv::getServices();
+}elseif ($_GET['get'] == 'video_services'){
+    $response['result'] = Video::getServices();
+}elseif ($_GET['get'] == 'radio_services'){
+    $response['result'] = Radio::getServices();
+}elseif ($_GET['get'] == 'module_services'){
+    $response['result'] = Module::getServices();
 }
 
 $output = ob_get_contents();

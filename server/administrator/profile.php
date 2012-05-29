@@ -20,6 +20,18 @@ moderator_access();
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
 
+if (!empty($_POST['change_tariff_plan'])){
+
+    Mysql::getInstance()->update('users', array('tariff_plan_id' => intval($_POST['tariff_plan_id'])), array('id' => intval($_GET['id'])));
+
+    $event = new SysEvent();
+    $event->setUserListById(array(intval($_GET['id'])));
+    $event->sendMsgAndReboot(_('Tariff plan is changed, please restart your STB'));
+
+    header("Location: profile.php?id=".@$_GET['id']);
+    exit;
+}
+
 if (@$_POST['save']){
     
     $stb_groups = new StbGroup();
@@ -36,6 +48,15 @@ if (@$_POST['save']){
 }
 
 if (@$_POST['account']){
+
+    $stb_groups = new StbGroup();
+    $member = $stb_groups->getMemberByUid(intval($_GET['id']));
+
+    if (empty($member)){
+        $stb_groups->addMember(array('mac' => Middleware::normalizeMac($_POST['mac']), 'uid' => Middleware::getUidByMac($_POST['mac']), 'stb_group_id' => $_POST['group_id']));
+    }else{
+        $stb_groups->setMember(array('stb_group_id' => $_POST['group_id']), $member['id']);
+    }
 
     Mysql::getInstance()->update('users',
         array(
@@ -102,7 +123,8 @@ if (isset($_GET['set_services'])){
     exit();
 }
 
-?><!DOCTYPE html>
+
+?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -135,7 +157,7 @@ table.other {
     border-color: #E5E5E5;
 }
 
-.list{
+.list, .list td, .form{
     border-width: 1px;
     border-style: solid;
     border-color: #E5E5E5;
@@ -217,6 +239,7 @@ while(@$rs->next()){
         $ip  = $arr['ip'];
         $video_out  = $arr['video_out'];
         $parent_password  = $arr['parent_password'];
+        $tariff_plan_id  = $arr['tariff_plan_id'];
 }
 
 $rs=$db->executeQuery("select * from fav_itv where uid=".$id);
@@ -228,6 +251,17 @@ if (is_array($fav_ch_arr)){
     $fav_ch_count = count($fav_ch_arr);
 }else{
     $fav_ch_count = 0;
+}
+
+$tariff_plans = Mysql::getInstance()->select('id, name')->from('tariff_plan')->orderby('name')->get()->all();
+
+$users = User::getInstance($id);
+//var_dump($users->getServicesByType('tv'));
+//var_dump($users->getPackages());
+$packages = $users->getPackages();
+
+if (empty($packages)){
+    $packages = array();
 }
 
 ?>
@@ -242,7 +276,7 @@ if (is_array($fav_ch_arr)){
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="users.php"><< <?= _('Back')?></a>
+        <a href="users.php"><< <?= _('Back')?></a> | <a href="userlog.php?id=<?echo $id?>"><?= _('Logs')?></a> | <a href="events.php?mac=<?echo $mac?>"><?= _('Events')?></a>
     </td>
 </tr>
 <tr>
@@ -258,6 +292,7 @@ if (is_array($fav_ch_arr)){
 </tr>
 <tr>
 <td>
+
 <table cellpadding="0" cellspacing="3" style="float:left;">
     <tr>
         <td class="other" width="320">
@@ -285,75 +320,6 @@ if (is_array($fav_ch_arr)){
             <tr>
                 <td><?= _('favorite tv')?>:</td>
                 <td>[<? printf(_('%s channels'), $fav_ch_count)?>] <a href="#" onclick="if(confirm('<?= _('Reset favorite TV channels? The channels will be reset only if immediately restart the stb!')?>')){document.location='profile.php?fav_itv=default&id=<?echo $id?>'}"><?= _('Reset')?></a></td>
-            </tr>
-        </table>
-        </td>
-        <td>
-        </td>
-    </tr>
-    <?// if (ENABLE_SUBSCRIPTION && check_access(array(3))){ ?>
-    <? if (check_access(array(3)) || @$_SESSION['login'] == 'alex'){ ?>
-    <tr>
-        <td class="other" width="150">
-        <table>
-            <tr>
-                <td><a href="subscribe.php?id=<?echo $id?>"><?= _('TV subscription')?></a> (<?echo kop2grn(get_cost_sub_channels())?>)</td>
-            </tr>
-            <tr>
-                <td><b><?= _('Additional services')?></b>: <? echo additional_services_btn() ?></td>
-            </tr>
-        </table>
-        </td>
-        <td>
-        </td>
-    </tr>
-    
-    <tr>
-        <td class="other" width="150">
-        <form method="POST">
-        <table>
-            <tr>
-                <td>
-                <?= _('Group')?>: <select name="group_id">
-                    <option value="0">--------</option>
-                    <?
- 
-                    $stb_groups = new StbGroup();
-                    $all_groups = $stb_groups->getAll();
-                    
-                    $member = $stb_groups->getMemberByUid(intval($_GET['id']));
-                    
-                    foreach ($all_groups as $group){
-                        $selected = '';
-                        
-                        if (!empty($member) && $member['stb_group_id'] == $group['id']){
-                            $selected = 'selected';
-                        }
-                        
-                        echo '<option value="'.$group['id'].'" '.$selected.'>'.$group['name'].'</option>';
-                    }
-                    ?>
-                </select>
-                <input type="hidden" name="mac" value="<?echo $mac?>"/>
-                <input type="submit" name="save" value="<?= _('Save')?>"/>
-                </td>
-            </tr>
-        </table>
-        </form>
-        </td>
-        <td>
-        </td>
-    </tr>
-    
-    <?} ?>
-    <tr>
-        <td class="other" width="150">
-        <table>
-            <tr>
-                <td><a href="userlog.php?id=<?echo $id?>"><?= _('Logs')?></a></td>
-            </tr>
-            <tr>
-                <td><a href="events.php?mac=<?echo $mac?>"><?= _('Events')?></a></td>
             </tr>
         </table>
         </td>
@@ -389,6 +355,33 @@ if (is_array($fav_ch_arr)){
             </td>
         </tr>
         <tr>
+            <td>
+                <?= _('Group')?>:
+            </td>
+            <td>
+                <select name="group_id">
+                <option value="0">--------</option>
+                <?
+
+                $stb_groups = new StbGroup();
+                $all_groups = $stb_groups->getAll();
+
+                $member = $stb_groups->getMemberByUid(intval($_GET['id']));
+
+                foreach ($all_groups as $group){
+                    $selected = '';
+
+                    if (!empty($member) && $member['stb_group_id'] == $group['id']){
+                        $selected = 'selected';
+                    }
+
+                    echo '<option value="'.$group['id'].'" '.$selected.'>'.$group['name'].'</option>';
+                }
+                ?>
+            </select>
+            </td>
+        </tr>
+        <tr>
             <td></td>
             <td>
                 <input type="submit" name="account" />
@@ -396,6 +389,83 @@ if (is_array($fav_ch_arr)){
         </tr>
     </table>
 </form>
+
+<? if (check_access(array(3)) || @$_SESSION['login'] == 'alex'){ ?>
+<table cellpadding="0" cellspacing="3" width="641">
+    <tr>
+        <td class="other">
+        <table align="center" width="80%">
+
+            <? if (Config::getSafe('enable_tariff_plans', false)){?>
+            <tr>
+                <td align="center">
+                    <form method="post">
+                        <?= _('Tariff plan')?>:
+                        <select name="tariff_plan_id">
+                            <option value="0">---</option>
+                            <?
+                                foreach ($tariff_plans as $plan){
+                                    if ($tariff_plan_id == $plan['id']){
+                                        $selected = 'selected="selected"';
+                                    }else{
+                                        $selected = '';
+                                    }
+
+                                    echo '<option value="'.$plan['id'].'" '.$selected.'>'.$plan['name'].'</option>';
+                                }
+
+                            ?>
+                        </select>
+                        <input type="submit" name="change_tariff_plan" value="<?= _('Change')?>">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <?
+
+                    if (empty($packages)){
+                        echo _('No packages available');
+                    }else{
+                    ?>
+                    <table align="center" class="list" cellspacing="0" cellpadding="3">
+                        <caption><?= _('Packages')?></caption>
+                        <tr>
+                            <th>Название</th>
+                            <th>Опциональный</th>
+                            <th>Подписан</th>
+                        </tr>
+                        <?
+                        foreach ($packages as $package){
+                            echo '<tr>';
+                            echo '<td><a href="services_packages.php?edit=1&id='.$package['package_id'].'">'.$package['name'].'</a></td>';
+                            echo '<td>'.($package['optional'] ? 'yes' : 'no').'</td>';
+                            echo '<td>'.($package['subscribed'] ? 'yes' : 'no').'</td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                    </table>
+                    <?}?>
+                </td>
+            </tr>
+
+            <? }else{?>
+            <tr align="center">
+                <td><a href="subscribe.php?id=<?echo $id?>"><?= _('TV subscription')?></a> (<?echo kop2grn(get_cost_sub_channels())?>)</td>
+            </tr>
+            <tr align="center">
+                <td><b><?= _('Additional services')?></b>: <? echo additional_services_btn() ?></td>
+            </tr>
+            <?}?>
+
+        </table>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+
+<?}?>
 
 </td>
 </tr>

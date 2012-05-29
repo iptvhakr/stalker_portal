@@ -353,4 +353,13 @@ $words['media_favorites'] = _('Favorites');
 
 $words['stb_type_not_supported'] = _('Your STB is not supported');
 
+$words['Phone'] = _('Phone');
+$words['Tariff plan'] = _('Tariff plan');
+$words['User'] = _('User');
+$words['SERVICES MANAGEMENT'] = _('SERVICES MANAGEMENT');
+$words['SUBSCRIBE'] = _('SUBSCRIBE');
+$words['UNSUBSCRIBE'] = _('UNSUBSCRIBE');
+$words['confirm_service_subscribe_text'] = _('Are you really want to subscribe to this service?');
+$words['confirm_service_unsubscribe_text'] = _('Are you really want to unsubscribe from this service?');
+
 ?>

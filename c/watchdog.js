@@ -135,7 +135,11 @@ watchdog.prototype.parse_result = function(data){
                 
                 stb.msg.set_callback(
                     function(){
-                        self.send_confirm();
+                        self.send_confirm(function(){
+                            if (data.reboot_after_ok == 1){
+                                stb.ExecAction('reboot');
+                            }
+                        });
                     });
                 
                 stb.msg.push(
@@ -214,7 +218,7 @@ watchdog.prototype.parse_result = function(data){
     }
 };
 
-watchdog.prototype.send_confirm = function(){
+watchdog.prototype.send_confirm = function(callback){
     
     stb.load(
     {
@@ -225,6 +229,7 @@ watchdog.prototype.send_confirm = function(){
     
     function(result){
         _debug(result);
+        callback && callback();
     });
     
     this.event_active_id = 0;

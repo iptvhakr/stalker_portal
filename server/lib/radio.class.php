@@ -39,10 +39,20 @@ class Radio extends AjaxResponse
     }
     
     public function getOrderedList(){
+
+        $user = User::getInstance($this->stb->id);
+        $all_user_radio_ids = $user->getServicesByType('radio');
+        if ($all_user_radio_ids === null){
+            $all_user_radio_ids = array();
+        }
         
         $result = $this->getData();
         
         $result = $result->orderby('number');
+
+        if (Config::get('enable_tariff_plans')){
+            $result = $result->in('radio.id', $all_user_radio_ids);
+        }
         
         $this->setResponseData($result);
         
@@ -52,6 +62,10 @@ class Radio extends AjaxResponse
     public function prepareData(){
         
         return $this->response;
+    }
+
+    public static function getServices(){
+        return Mysql::getInstance()->select('id, name')->from('radio')->get()->all();
     }
 }
 

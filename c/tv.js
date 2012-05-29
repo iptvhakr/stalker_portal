@@ -653,12 +653,12 @@
             }
 
             _debug('this.data_items[this.cur_row].id', this.data_items[this.cur_row].id);
-            _debug('stb.player.cur_media_item.id', stb.player.cur_media_item.id);
+            _debug('stb.player.cur_media_item', stb.player.cur_media_item);
             _debug('stb.player.on', stb.player.on);
 
             window.clearTimeout(this.row_callback_timer);
 
-            if(this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
+            if(stb.player.cur_media_item && stb.player.cur_media_item.id && this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
                 this.short_epg_loader.start();
                 return;
             }
@@ -711,7 +711,7 @@
         this._play_now = function(item){
             _debug('tv._play_now', item);
 
-            if(item.id == stb.player.cur_media_item.id && stb.player.on){
+            if(stb.player.cur_media_item && stb.player.cur_media_item.id && item.id == stb.player.cur_media_item.id && stb.player.on){
                 return;
             }
 

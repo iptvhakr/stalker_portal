@@ -797,16 +797,28 @@ class Stb
 
     public static function getDisabledModulesByUid($uid){
 
-        $disabled_modules = Mysql::getInstance()->from('user_modules')->where(array('uid' => intval($uid)))->get()->first('disabled');
+        if (Config::get('enable_tariff_plans')){
+            $user = User::getInstance(Stb::getInstance()->id);
 
-        if (empty($disabled_modules)){
-            return array();
-        }
+            $user_enabled_modules = $user->getServicesByType('module');
 
-        $disabled_modules = unserialize($disabled_modules);
+            if ($user_enabled_modules === null){
+                $user_enabled_modules = array();
+            }
 
-        if ($disabled_modules === false){
-            return array();
+            $disabled_modules = array_values(array_diff(Config::get('disabled_modules'), $user_enabled_modules));
+        }else{
+            $disabled_modules = Mysql::getInstance()->from('user_modules')->where(array('uid' => intval($uid)))->get()->first('disabled');
+
+            if (empty($disabled_modules)){
+                return array();
+            }
+
+            $disabled_modules = unserialize($disabled_modules);
+
+            if ($disabled_modules === false){
+                return array();
+            }
         }
 
         return $disabled_modules;
@@ -999,7 +1011,7 @@ class Stb
         $result = array();
 
         /// TRANSLATORS: don't translate this.
-        $cities = Mysql::getInstance()->from('cities')->where(array('country_id' => $country_id))->orderby(_('city_name_field'))->get()->all();
+        $cities = Mysql::getInstance()->from('cities')->where(array('country_id' => $country_id))->orderby('name_en')->get()->all();
 
         foreach ($cities as $city){
             $selected = ($this->city_id == $city['id'])? 1 : 0;

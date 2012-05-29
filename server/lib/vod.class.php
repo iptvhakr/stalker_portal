@@ -551,11 +551,8 @@ class Vod extends AjaxResponse
         }
 
         $data = $this->db
-        //->select('video.*, screenshots.id as screenshot_id')
             ->select('video.*, (select group_concat(screenshots.id) from screenshots where media_id=video.id) as screenshots')
             ->from('video')
-            //->join('vclub_not_ended', 'video.id', 'vclub_not_ended.video_id', 'LEFT')
-        //->join('screenshots', 'video.id', 'screenshots.media_id', 'LEFT')
             ->where($where)
             ->where($where_genre, 'OR ');
 
@@ -580,6 +577,9 @@ class Vod extends AjaxResponse
     public function getOrderedList()
     {
         $fav = $this->getFav();
+
+        $user = User::getInstance($this->stb->id);
+        $all_users_video_ids = $user->getServicesByType('video');
 
         $result = $this->getData();
 
@@ -608,6 +608,10 @@ class Vod extends AjaxResponse
 
         if (@$_REQUEST['hd']) {
             $result = $result->where(array('hd' => 1));
+        }
+
+        if (Config::get('enable_tariff_plans')){
+            $result = $result->in('video.id', $all_users_video_ids);
         }
 
         if (@$_REQUEST['not_ended']) {
