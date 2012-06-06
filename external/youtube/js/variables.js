@@ -1,8 +1,9 @@
-var pages={"back":"../services.html"},
+var  version='1.0.3',
+    pages={"back":"../services.html"},
     def = {"lang":"en"},
     current = {
         "mode": {
-            "debug":false,                   // create a _log and insert into #debug div
+            "debug":true,                   // create a _log and insert into #debug div
             "emulate":false,                // set "true" if you wanna test version in browser
             "show_all_keydowns":false
         },
@@ -31,8 +32,8 @@ var pages={"back":"../services.html"},
         "isPL":false
     },
     items = {
-        "atLine": 4,                        // number items at line (youtube moves view)
-        "atPage": 8                         // number items at layer in one time
+        "atLine": 6,                        // number items at line (youtube moves view)
+        "atPage": 12                         // number items at layer in one time
     },
     layers = {
         "BASE":0,

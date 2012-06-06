@@ -708,8 +708,10 @@ var player_cond = 0,
     "displayModeChange": function() {
         if(player.dmc_var) {clearTimeout(player.dmc_var);}
         player.dmc_var = null;
+        log(aspects[aspect_current].mode);
         aspect_current = (aspect_current + 1) % 4;
         stb.SetAspect(aspects[aspect_current].mode);
+        log(aspects[aspect_current].mode);
         byID('screenAspect').style.backgroundImage = 'url(' + aspects[aspect_current].img + ')';
         byID('screenAspect').style.display = 'block';
         player.dmc_var = setTimeout(function() {byID('screenAspect').style.display = 'none';}, 3000);

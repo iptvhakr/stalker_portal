@@ -79,6 +79,7 @@ function keyProcessing(e) {
                             loading.show();
                             getData(current.feed+'&start-index='+current.globalObj.length.toString()+'&max-results='+request.itemsPerRequest.toString(), current.isPL==true ? 'search.playlistsResult' : 'rebuildCurrentGlobalObj');
                         } else {
+                            if((current.globalObj.length%36)!=0 && current.obj+1>=current.globalObj.length){return;}
                             current.page++;
                             workWithItems.shift = 1;
                             if(current.isPL==true){
@@ -94,22 +95,26 @@ function keyProcessing(e) {
                     }
                 break;
                 case keys.DOWN:
+                    log('data: '+current.globalObj.length+' : '+request.totalItems)
                     if(current.obj - (current.page - 1) * items.atPage < items.atLine) {
-                        workWithItems.shift = items.atLine;
-                        workWithItems.focusMovie();
-                    } else {
-                        if(current.globalObj.length >= (current.page + 1) * items.atPage ||
-                           (request.totalItems == current.globalObj.length - 1)) {
-                            current.page++;
+                        if(current.obj+items.atLine<current.globalObj.length){
                             workWithItems.shift = items.atLine;
-                            if(current.isPL==true){
-                                search.drawBoxesForPlaylists();
-                            } else {
-                                workWithItems.drawBoxes();
-                            }
+                            workWithItems.focusMovie();
+                        }
+                    } else {
+                        if(current.globalObj.length >= (current.page + 1) * items.atPage ||(request.totalItems == current.globalObj.length - 1)) {
+                            if((current.globalObj.length%36)!=0 && (current.obj-(current.obj%items.atPage)+items.atPage)+1>=current.globalObj.length){return;}
+                                current.page++;
+                                workWithItems.shift = items.atLine;
+                                if(current.isPL==true){
+                                    search.drawBoxesForPlaylists();
+                                } else {
+                                    workWithItems.drawBoxes();
+                                }
+                            
                         } else {
                             if(request.totalItems == current.globalObj.length - 1) {return;}
-log("event to upload next");
+                            log("event to upload next");
                             current.page++;
                             workWithItems.shift = items.atLine;
                             loading.show();

@@ -108,7 +108,7 @@ hr {color:#000; border:solid 1px; margin:3px 0px;}
 
 #footer_yt .footer_yt_buttons { position:relative; margin-top:20px; margin-right:10px; }
 
-#footer_yt .footer_text {font-size: 25px; color:#FFF; margin:10px 15px 8px 0; float:left;}
+#footer_yt .footer_text {font-size: 25px; color:#FFF; margin:10px 15px 8px 5px; float:left;}
 
 #footer_yt .footer_btn_yt {background:url(../img/1280/mb_footer_btn.png); width:36px; height:36px; float:left;}
 
@@ -310,17 +310,17 @@ img, a img, a {border: none !important;}
 .input_80 {width:80px; font-size:21px; color:#313131;}
 .input_140 {width:240px; font-size:21px; color:#313131;}
 .btn_ok{background:url(../img/1280/advanced_search/mb_btn_ok.png) right center no-repeat; float:right; width:36px; height:36px; position: relative; top:-35px; left:40px;}
-.yt_search_name {margin-left:120px; margin-top:15px; position:absolute}
+.yt_search_name {margin-left:120px; margin-top:15px; position:absolute;}
 .yt_search {margin:50px 0 0 110px; position:absolute;}
 .yt_search_color {float:left;}
 .yt_search_line2 {margin-left:120px; margin-top:95px;}
 .yt_search_line3 {margin-left:120px; margin-top:135px;}
 .right_combo{background:url(../img/1280/advanced_search/combobox.png) right center no-repeat; float:left; width:14px; height:33px;}
 .left_combo{background:url(../img/1280/advanced_search/combobox.png) no-repeat; border:none; height:25px; padding:8px 0 4px 10px; margin: 0 0 0 5px; float:left}
-#btn_small_red {height:31px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png) left center; float:left; margin-right:5px}
-#btn_small_green {height:31px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png); background-position:-31px 0; float:left; margin-right:5px}
-#btn_small_yellow {height:31px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png); background-position:-62px 0; float:left; margin:0 5px 0 20px}
-#btn_small_blue {height:31px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png) right center; float:left; margin-right:5px}
+#btn_small_red {height:26px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png) left top; float:left; margin-right:5px}
+#btn_small_green {height:26px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png); background-position:-31px 0; float:left; margin-right:5px}
+#btn_small_yellow {height:26px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png); background-position:-62px 0; float:left; margin:0 5px 0 20px}
+#btn_small_blue {height:26px; width:31px; background:url(../img/1280/advanced_search/mb_btn_small.png) right center; float:left; margin-right:5px}
 .combo_drop {height:283px; width: 350px; border-width:10px 10px 10px 10px; -moz-border-image: url(../img/1280/advanced_search/combobox_drop.png) 0 10 stretch; -webkit-border-image: url(../img/1280/advanced_search/combobox_drop.png) 0 10 stretch; position:absolute; margin-top:-63px; margin-left:0px; z-index:999; display: none;}
 .combo_drop_box {background:url(../img/1280/advanced_search/combobox_arrow.png) top center no-repeat;height:283px;padding:18px 7px 18px 7px;}
 .combo_drop_box .as_cats_menu {padding:0;margin:-5px 0 0 0;}
@@ -337,5 +337,5 @@ img, a img, a {border: none !important;}
 #menu_video_like .body {background-image:url(../img/1280/footer_menu.png);  background-position:bottom center;  background-repeat:no-repeat;  width: 341px;  padding-bottom:38px;}
 #menu_video_like span {padding-left: 30px;  font-size:20px;  color:#FFF;  text-transform:uppercase;  line-height: 35px;}
 #menu_video_like .active span {text-shadow:#fff -1px -1px 0;  color:#000;  font-weight:bold;  background:url(../img/1280/footer_menu_act.png) 50% 0px no-repeat;  display: block;  height: 33px;}
-#as_field_cat, #as_field_time, #as_field_orderby, #as_field_data {margin-top: 5px;}
+#as_field_cat, #as_field_time, #as_field_orderby, #as_field_data {margin-top: 8px;}
 /* end Advanced Search */

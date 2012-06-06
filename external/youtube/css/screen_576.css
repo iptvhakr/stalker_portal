@@ -56,13 +56,13 @@ hr {color:#000; border:solid 1px; margin:3px 0px;}
 #debug p { border:#f00 1px dashed; padding:3px; margin:5px; }
 #footer_yt { position:absolute; width:670px; left:0px; padding-left:50px; height:80px; background:url(../img/720/mb_footer_yt.png) top; top:496px; }
 #footer_yt .footer_yt_buttons { position:relative; margin-top:20px; margin-right:5px; }
-#footer_yt .footer_text { font-size: 20px; color:#FFF; margin:7px 5px 0 1px ; float:left; }
+#footer_yt .footer_text { font-size: 20px; color:#FFF; margin:7px 5px 0 3px ; float:left; }
 #footer_yt .footer_icons { float:left; width: 51px; position: relative; margin: -5px 0 0 7px; background: url(../img/720/pictog_pas.png) 50% 50% no-repeat; width:50px; height:35px; }
-#footer_yt .footer_btn_yt { background:url(../img/720/mb_footer_btn.png); width:31px; height:31px; float:left; }
-#footer_yt .btn_red_yt { background-position: 0px -31px; }
-#footer_yt .btn_green_yt {background-position: -31px -31px; }
-#footer_yt .btn_yellow_yt { background-position: -62px -31px; }
-#footer_yt .btn_blue_yt { background-position: -93px -31px; }
+#footer_yt .footer_btn_yt { background:url(../img/720/mb_footer_btn.png); width:26px; height:26px; float:left; }
+#footer_yt .btn_red_yt { background-position: 0px -26px; }
+#footer_yt .btn_green_yt {background-position: -26px -26px; }
+#footer_yt .btn_yellow_yt { background-position: -52px -26px; }
+#footer_yt .btn_blue_yt { background-position: -78px -26px; }
 #arrows { float:left; width:62px; height:27px; margin-left:12px; }
 #arrows .arrow { display:block; width:30px; height:27px; }
 #arrows .left { float:left; }

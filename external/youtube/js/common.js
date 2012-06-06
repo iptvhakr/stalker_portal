@@ -1,7 +1,7 @@
 window.onload = init;               // Initialization for event onLoad
 window.onkeydown = keyProcessing;   // Intercept events keydown and sent in into function keyProcessing (key-Processing.js)
 
-var debug = false;
+var debug = true;
 var emulate = false;
 var main_lang ="";
 var stb = new Object();
@@ -66,7 +66,7 @@ function init() {
     }
     catch(e){}
     
-    stb.ExecAction("graphicres " + graphicres_mode);
+    //stb.ExecAction("graphicres " + graphicres_mode);
     /*stb.EnableServiceButton(true);*/
 
     var fileref = document.createElement("link");
@@ -79,13 +79,16 @@ function init() {
     main_lang = getEnvironmentValue('language');
     try{main_lang = main_lang.toLowerCase();}catch(e){ }
     if(empty(main_lang)){main_lang='ru';}
-    loadScript('js/langs/' + main_lang + '.js', 'load_vars()');
+    loadScript('js/langs/' + main_lang + '.js', 'load_vars()');    
+    //log(getEnvironmentValue('graphicres'));
+    
     
 }
 function load_vars() {
     try {
         log('test lang: some ' + lang.intervals);
         fillPage();
+        
     } catch(e) {
         loadScript('js/langs/' + def.lang + '.js', 'load_vars()');
     }
@@ -117,7 +120,7 @@ function loadScript(src, callback) {
     apiRequestNode.type = 'text/javascript';
     document.documentElement.firstChild.appendChild(apiRequestNode);
     log('- - - - - -script "' + src + '" loaded');
-    setTimeout(function(){eval(callback);}, 300)
+    setTimeout(function(){eval(callback);}, 500)
 }
 function fillPage() {
     var tmp_items = new Object();
@@ -209,6 +212,28 @@ function fillPage() {
     log('stb.InitPlayer();');
     stb.SetTopWin(0);
     log('stb.SetTopWin(0);');
+    stb.SetPIG (1,0,0,0);
+/*    var vout = getEnvironmentValue('tvsystem'); //PAL : 576p-50 : 720p-50 : 1080i-50 : 1080p-50 : NTSC : 720p-60 : 1080i-60 : 1080p-60
+    switch(vout){
+        case 'NTSC':
+            stb.SetViewport(720,480,0,0);
+        break;
+        case 'PAL':
+        case '576p-50':
+            stb.SetViewport(720,576,0,0);
+        break;
+        case '720p-50':
+        case '720p-60':
+            stb.SetViewport(1280,720,0,0);
+        break;
+        case '1080i-50':
+        case '1080p-50':
+        case '1080i-60':
+        case '1080p-60':
+            stb.SetViewport(1920,1080,0,0);
+        break;
+    }*/
+    //log('video output: '+vout);
     current.obj = 0;
     current.page = 1;
     workWithItems.shift = current.obj;
