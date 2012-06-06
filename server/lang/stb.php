@@ -250,6 +250,7 @@ $words['playback_settings_cancel'] = $words['settings_cancel'] = $words['cancel_
 $words['exit_btn'] = _('EXIT');
 $words['yes_btn'] = _('YES');
 $words['close_btn'] = _('CLOSE');
+$words['ok_btn'] = _('OK');
 $words['playback_settings_save'] = $words['settings_save'] = _('SAVE');
 
 $words['audio_out'] = _('Audio out');
@@ -348,6 +349,7 @@ $words['identical_download_exist'] = _('There is an active downloads from this s
 
 $words['alert_form_title'] = _('Alert');
 $words['confirm_form_title'] = _('Confirm');
+$words['notice_form_title'] = _('Notice');
 
 $words['media_favorites'] = _('Favorites');
 
@@ -361,5 +363,9 @@ $words['SUBSCRIBE'] = _('SUBSCRIBE');
 $words['UNSUBSCRIBE'] = _('UNSUBSCRIBE');
 $words['confirm_service_subscribe_text'] = _('Are you really want to subscribe to this service?');
 $words['confirm_service_unsubscribe_text'] = _('Are you really want to unsubscribe from this service?');
+
+$words['service_subscribe_success'] = _('You have successfully subscribed to the service.');
+$words['service_unsubscribe_success'] = _('You have successfully unsubscribed from the service.');
+$words['service_subscribe_fail'] = _('An error in the management of subscriptions.');
 
 ?>

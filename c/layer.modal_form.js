@@ -44,7 +44,12 @@ ModalForm.prototype._init = function(){
     this._bind();
 };
 
-ModalForm.prototype.show = function(){
+ModalForm.prototype.show = function(text){
+
+    if (text){
+        this.setText(text);
+    }
+
     this._dom_obj.show();
     this.on = true;
     this._items[0].focus();
@@ -184,6 +189,10 @@ ModalForm.prototype.getButtonsBlockDomObj = function(){
 
 ModalForm.prototype.getTextDomObj = function(){
     return this._text_dom_obj;
+};
+
+ModalForm.prototype.setText = function(text){
+    this._text_dom_obj.innerHTML = text;
 };
 /* END ModalForm */
 

@@ -167,4 +167,44 @@ class User
             ->get()
             ->first('name');
     }
+
+    public function subscribeToPackage($package_id){
+
+        $packages = $this->getPackages();
+
+        $filtered_packages = array_filter($packages, function($item) use ($package_id){
+            return $package_id == $item['package_id'] && $item['optional'] == 1 && !$item['subscribed'];
+        });
+
+        if (empty($filtered_packages)){
+            return false;
+        }
+
+        // api hook place
+
+        return Mysql::getInstance()->insert('user_package_subscription', array(
+            'user_id' => $this->id,
+            'package_id' => $package_id
+        ))->insert_id();
+    }
+
+    public function unsubscribeFromPackage($package_id){
+
+        $packages = $this->getPackages();
+
+        $filtered_packages = array_filter($packages, function($item) use ($package_id){
+            return $package_id == $item['package_id'] && $item['optional'] == 1 && $item['subscribed'];
+        });
+
+        if (empty($filtered_packages)){
+            return false;
+        }
+
+        // api hook place
+
+        return Mysql::getInstance()->delete('user_package_subscription', array(
+            'user_id' => $this->id,
+            'package_id' => $package_id
+        ));
+    }
 }

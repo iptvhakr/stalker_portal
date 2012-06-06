@@ -35,7 +35,6 @@
                     "value" : get_word("cancel_btn"),
                     "onclick" : function(){
                         scope.confirm_dialog.hide();
-                        scope.do_subscribe();
                     }
                 }
             ));
@@ -45,6 +44,7 @@
                     "value" : get_word("yes_btn"),
                     "onclick" : function(){
                         scope.confirm_dialog.hide();
+                        scope.do_subscribe(scope.confirm_dialog.package_id);
                     }
                 }
             ));
@@ -57,7 +57,6 @@
                     "value" : get_word("cancel_btn"),
                     "onclick" : function(){
                         scope.confirm_unsubscribe_dialog.hide();
-                        scope.do_unsubscribe();
                     }
                 }
             ));
@@ -67,6 +66,20 @@
                     "value" : get_word("yes_btn"),
                     "onclick" : function(){
                         scope.confirm_unsubscribe_dialog.hide();
+                        scope.do_unsubscribe(scope.confirm_unsubscribe_dialog.package_id);
+                    }
+                }
+            ));
+
+
+            this.complete_confirm = new ModalForm({"title" : get_word('notice_form_title'), "text" : get_word('service_subscribe_success')});
+            this.complete_confirm.enableOnExitClose();
+
+            this.complete_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        scope.complete_confirm.hide();
                     }
                 }
             ));
@@ -109,6 +122,7 @@
             var self = this;
 
             this.password_input.callback = function(){
+                self.confirm_dialog.package_id = self.data_items[self.cur_row].package_id;
                 self.confirm_dialog.show();
             };
 
@@ -121,18 +135,61 @@
             var self = this;
 
             this.password_input.callback = function(){
+                self.confirm_unsubscribe_dialog.package_id = self.data_items[self.cur_row].package_id;
                 self.confirm_unsubscribe_dialog.show();
             };
 
             this.password_input.show();
         };
 
-        this.do_subscribe = function(){
-            _debug('service_management.do_subscribe');
+        this.do_subscribe = function(package_id){
+            _debug('service_management.do_subscribe', package_id);
+
+            stb.load({
+                    "type"   : "account",
+                    "action" : "subscribe_to_package",
+                    "package_id" : package_id
+                },
+
+                function(result){
+                    _debug('on do_subscribe', result);
+
+                    this.load_data();
+
+                    if (result){
+                        this.complete_confirm.show(get_word('service_subscribe_success'));
+                    }else{
+                        this.complete_confirm.show(get_word('service_subscribe_fail'));
+                    }
+                },
+
+                this
+            );
         };
 
-        this.do_unsubscribe = function(){
-            _debug('service_management.do_unsubscribe');
+        this.do_unsubscribe = function(package_id){
+            _debug('service_management.do_unsubscribe', package_id);
+
+            stb.load({
+                    "type"   : "account",
+                    "action" : "unsubscribe_from_package",
+                    "package_id" : package_id
+                },
+
+                function(result){
+                    _debug('on do_unsubscribe', result);
+
+                    this.load_data();
+
+                    if (result){
+                        this.complete_confirm.show(get_word('service_unsubscribe_success'));
+                    }else{
+                        this.complete_confirm.show(get_word('service_subscribe_fail'));
+                    }
+                },
+
+                this
+            );
         };
     }
 

@@ -123,7 +123,7 @@
             }
 
             if (result['tariff_plan']){
-                info += '<span class="label">' +get_word('Tariff plan') + ':</span>: ' + result['tariff_plan'] + '<br>';
+                info += '<span class="label">' +get_word('Tariff plan') + ':</span> ' + result['tariff_plan'] + '<br>';
             }
 
             this.tab['main'].content.dom_obj.innerHTML = info;

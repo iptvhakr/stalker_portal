@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-29 14:24+0200\n"
-"PO-Revision-Date: 2012-05-29 14:25+0200\n"
+"POT-Creation-Date: 2012-06-05 13:49+0200\n"
+"PO-Revision-Date: 2012-06-05 13:50+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2197,7 +2197,7 @@ msgid "CANCEL"
 msgstr "ОТМЕНА"
 
 #: ../../../lang/stb.php:133
-#: ../../../lang/stb.php:253
+#: ../../../lang/stb.php:254
 msgid "SAVE"
 msgstr "СОХРАНИТЬ"
 
@@ -2470,7 +2470,7 @@ msgid "NTP Server"
 msgstr "NTP Сервер"
 
 #: ../../../lang/stb.php:231
-#: ../../../lang/stb.php:273
+#: ../../../lang/stb.php:274
 msgid "DELETE"
 msgstr "УДАЛИТЬ"
 
@@ -2483,7 +2483,7 @@ msgid "Do you really want to stop this record?"
 msgstr "Вы действительно хотите остановить эту запись?"
 
 #: ../../../lang/stb.php:236
-#: ../../../lang/stb.php:350
+#: ../../../lang/stb.php:351
 msgid "Confirm"
 msgstr "Подтверждение"
 
@@ -2527,303 +2527,323 @@ msgstr "ДА"
 msgid "CLOSE"
 msgstr "ЗАКРЫТЬ"
 
-#: ../../../lang/stb.php:255
+#: ../../../lang/stb.php:253
+msgid "OK"
+msgstr "ОК"
+
+#: ../../../lang/stb.php:256
 msgid "Audio out"
 msgstr "Аудио выходы"
 
-#: ../../../lang/stb.php:256
+#: ../../../lang/stb.php:257
 msgid "Analog only"
 msgstr "Только аналоговые"
 
-#: ../../../lang/stb.php:257
+#: ../../../lang/stb.php:258
 msgid "Analog and S/PDIF 2-channel PCM"
 msgstr "Аналоговые и 2-x канальный PCM в  S/PDIF"
 
-#: ../../../lang/stb.php:258
+#: ../../../lang/stb.php:259
 msgid "S/PDIF raw or 2-channel PCM"
 msgstr "S/PDIF не декодированный (RAW) или S/PDIF PCM"
 
-#: ../../../lang/stb.php:260
+#: ../../../lang/stb.php:261
 msgid "GAME"
 msgstr "ИГРА"
 
-#: ../../../lang/stb.php:263
+#: ../../../lang/stb.php:264
 msgid "DOWNLOADS"
 msgstr "ЗАГРУЗКИ"
 
-#: ../../../lang/stb.php:264
+#: ../../../lang/stb.php:265
 msgid "Not found mounted devices"
 msgstr "Не найдены внешние  носители"
 
-#: ../../../lang/stb.php:265
+#: ../../../lang/stb.php:266
 msgid "Add download"
 msgstr "Добавить загрузку"
 
-#: ../../../lang/stb.php:266
+#: ../../../lang/stb.php:267
 msgid "Device"
 msgstr "Устройство"
 
-#: ../../../lang/stb.php:268
+#: ../../../lang/stb.php:269
 msgid "Ok"
 msgstr "Ок"
 
-#: ../../../lang/stb.php:270
+#: ../../../lang/stb.php:271
 msgid "CREATE"
 msgstr "СОЗДАТЬ"
 
-#: ../../../lang/stb.php:271
+#: ../../../lang/stb.php:272
 msgid "MOVE UP"
 msgstr "ВВЕРХ"
 
-#: ../../../lang/stb.php:272
+#: ../../../lang/stb.php:273
 msgid "MOVE DOWN"
 msgstr "ВНИЗ"
 
-#: ../../../lang/stb.php:274
+#: ../../../lang/stb.php:275
 msgid "RECORDING"
 msgstr "ЗАПИСЬ"
 
-#: ../../../lang/stb.php:275
+#: ../../../lang/stb.php:276
 msgid "DOWNLOAD"
 msgstr "СКАЧАТЬ"
 
-#: ../../../lang/stb.php:276
+#: ../../../lang/stb.php:277
 msgid "RECORDING AND FILE"
 msgstr "ЗАПИСЬ И ФАЙЛ"
 
-#: ../../../lang/stb.php:278
+#: ../../../lang/stb.php:279
 msgid "Duration of continuous playback"
 msgstr "Длительность непрерывного воспроизведения"
 
-#: ../../../lang/stb.php:279
+#: ../../../lang/stb.php:280
 msgid "Without limit"
 msgstr "Ограничение отключено"
 
-#: ../../../lang/stb.php:280
+#: ../../../lang/stb.php:281
 msgid "hours"
 msgstr "ч"
 
-#: ../../../lang/stb.php:281
+#: ../../../lang/stb.php:282
 msgid "Reached limit the duration of continuous playback. To continue playback, press the OK or EXIT."
 msgstr "Достигнут лимит продолжительности непрерывного воспроизведения. Для продолжения воспроизведения нажмите OK или EXIT."
 
-#: ../../../lang/stb.php:283
+#: ../../../lang/stb.php:284
 msgid "GENERAL SETTINGS"
 msgstr "ОБЩИЕ"
 
-#: ../../../lang/stb.php:284
+#: ../../../lang/stb.php:285
 msgid "Screensaver interval"
 msgstr "Интервал запуска хранителя экрана"
 
-#: ../../../lang/stb.php:288
+#: ../../../lang/stb.php:289
 msgid "DEMO VIDEO"
 msgstr "ВИДЕО ИНСТРУКЦИЯ"
 
-#: ../../../lang/stb.php:289
+#: ../../../lang/stb.php:290
 msgid "ACCOUNT"
 msgstr "ЛИЧНЫЙ КАБИНЕТ"
 
-#: ../../../lang/stb.php:290
+#: ../../../lang/stb.php:291
 msgid "Coming soon"
 msgstr "Появится в ближайшее время"
 
-#: ../../../lang/stb.php:292
+#: ../../../lang/stb.php:293
 msgid "INFORMATION"
 msgstr "СВЕДЕНИЯ"
 
-#: ../../../lang/stb.php:293
+#: ../../../lang/stb.php:294
 msgid "PAYMENT"
 msgstr "ОПЛАТА"
 
-#: ../../../lang/stb.php:294
+#: ../../../lang/stb.php:295
 msgid "AGREEMENT"
 msgstr "ДОГОВОР"
 
-#: ../../../lang/stb.php:295
+#: ../../../lang/stb.php:296
 msgid "TERMS OF USE"
 msgstr "ПРАВИЛА"
 
-#: ../../../lang/stb.php:297
+#: ../../../lang/stb.php:298
 msgid "Video instruction"
 msgstr "Видео инструкция"
 
-#: ../../../lang/stb.php:300
+#: ../../../lang/stb.php:301
 msgid "QUALITY"
 msgstr "КАЧЕСТВО"
 
-#: ../../../lang/stb.php:301
+#: ../../../lang/stb.php:302
 msgid "low"
 msgstr "низкое"
 
-#: ../../../lang/stb.php:302
+#: ../../../lang/stb.php:303
 msgid "medium"
 msgstr "среднее"
 
-#: ../../../lang/stb.php:303
+#: ../../../lang/stb.php:304
 msgid "high"
 msgstr "высокое"
 
-#: ../../../lang/stb.php:305
+#: ../../../lang/stb.php:306
 msgid "add"
 msgstr "добавить"
 
-#: ../../../lang/stb.php:306
+#: ../../../lang/stb.php:307
 msgid "del"
 msgstr "удалить"
 
-#: ../../../lang/stb.php:308
+#: ../../../lang/stb.php:309
 msgid "internet"
 msgstr "интернет"
 
-#: ../../../lang/stb.php:310
+#: ../../../lang/stb.php:311
 msgid "NETWORK STATUS"
 msgstr "СОСТОЯНИЕ СЕТИ"
 
-#: ../../../lang/stb.php:311
+#: ../../../lang/stb.php:312
 msgid "REFRESH"
 msgstr "ОБНОВИТЬ"
 
-#: ../../../lang/stb.php:313
+#: ../../../lang/stb.php:314
 msgid "Speed test"
 msgstr "Тест скорости"
 
-#: ../../../lang/stb.php:314
+#: ../../../lang/stb.php:315
 msgid "testing..."
 msgstr "тестирование..."
 
-#: ../../../lang/stb.php:318
+#: ../../../lang/stb.php:319
 msgid "UP"
 msgstr "ВКЛ"
 
-#: ../../../lang/stb.php:319
+#: ../../../lang/stb.php:320
 msgid "DOWN"
 msgstr "ВЫКЛ"
 
-#: ../../../lang/stb.php:321
+#: ../../../lang/stb.php:322
 msgid "stopped"
 msgstr "остановлено"
 
-#: ../../../lang/stb.php:322
+#: ../../../lang/stb.php:323
 msgid "waiting queue"
 msgstr "ожидание"
 
-#: ../../../lang/stb.php:323
+#: ../../../lang/stb.php:324
 msgid "running"
 msgstr "загрузка"
 
-#: ../../../lang/stb.php:324
+#: ../../../lang/stb.php:325
 msgid "completed"
 msgstr "закончено"
 
-#: ../../../lang/stb.php:325
+#: ../../../lang/stb.php:326
 msgid "temporary error"
 msgstr "временная ошибка"
 
-#: ../../../lang/stb.php:326
+#: ../../../lang/stb.php:327
 msgid "permanent error"
 msgstr "ошибка"
 
-#: ../../../lang/stb.php:328
+#: ../../../lang/stb.php:329
 msgid "Authentication"
 msgstr "Вход"
 
-#: ../../../lang/stb.php:331
+#: ../../../lang/stb.php:332
 msgid "Error"
 msgstr "ошибка"
 
-#: ../../../lang/stb.php:333
+#: ../../../lang/stb.php:334
 msgid "Play this url or start download?"
 msgstr "Проиграть или скачать данную ссылку?"
 
-#: ../../../lang/stb.php:334
+#: ../../../lang/stb.php:335
 msgid "Play"
 msgstr "Проиграть"
 
-#: ../../../lang/stb.php:336
+#: ../../../lang/stb.php:337
 msgid "Download"
 msgstr "Скачать"
 
-#: ../../../lang/stb.php:337
+#: ../../../lang/stb.php:338
 msgid "Play all"
 msgstr "ИГРАТЬ ВСЁ"
 
-#: ../../../lang/stb.php:338
+#: ../../../lang/stb.php:339
 msgid "on"
 msgstr "вкл"
 
-#: ../../../lang/stb.php:339
+#: ../../../lang/stb.php:340
 msgid "off"
 msgstr "выкл"
 
-#: ../../../lang/stb.php:341
+#: ../../../lang/stb.php:342
 msgid "Network authentication"
 msgstr "Сетевой вход"
 
-#: ../../../lang/stb.php:345
+#: ../../../lang/stb.php:346
 msgid "Do you really want to exit?"
 msgstr "Вы действительно хотите выйти?"
 
-#: ../../../lang/stb.php:347
+#: ../../../lang/stb.php:348
 msgid "There is an active downloads from this server"
 msgstr "Существует активная загрузка с выбранного сервера"
 
-#: ../../../lang/stb.php:349
+#: ../../../lang/stb.php:350
 msgid "Alert"
 msgstr "Предупреждение"
 
 #: ../../../lang/stb.php:352
+msgid "Notice"
+msgstr "Уведомление"
+
+#: ../../../lang/stb.php:354
 msgid "Favorites"
 msgstr "Избранное"
 
-#: ../../../lang/stb.php:354
+#: ../../../lang/stb.php:356
 msgid "Your STB is not supported"
 msgstr "Ваша приставка не поддерживается"
 
-#: ../../../lang/stb.php:356
+#: ../../../lang/stb.php:358
 msgid "Phone"
 msgstr "Телефон"
 
-#: ../../../lang/stb.php:358
+#: ../../../lang/stb.php:360
 msgid "User"
 msgstr "Пользователь"
 
-#: ../../../lang/stb.php:359
+#: ../../../lang/stb.php:361
 msgid "SERVICES MANAGEMENT"
 msgstr "УПРАВЛЕНИЕ УСЛУГАМИ"
 
-#: ../../../lang/stb.php:360
+#: ../../../lang/stb.php:362
 msgid "SUBSCRIBE"
 msgstr "ПОДКЛЮЧИТЬ"
 
-#: ../../../lang/stb.php:361
+#: ../../../lang/stb.php:363
 msgid "UNSUBSCRIBE"
 msgstr "ОТКЛЮЧИТЬ"
 
-#: ../../../lang/stb.php:362
+#: ../../../lang/stb.php:364
 msgid "Are you really want to subscribe to this service?"
-msgstr "Вы действительно хотите подключить данную устугу?"
+msgstr "Вы действительно хотите подключить данную услугу?"
 
-#: ../../../lang/stb.php:363
+#: ../../../lang/stb.php:365
 msgid "Are you really want to unsubscribe from this service?"
 msgstr "Вы действительно хотите отключить данную услугу?"
 
-#: ../../../lib/accountinfo.class.php:31
+#: ../../../lang/stb.php:367
+msgid "You have successfully subscribed to the service."
+msgstr "Вы успешно подключили данную услугу."
+
+#: ../../../lang/stb.php:368
+msgid "You have successfully unsubscribed from the service."
+msgstr "Вы успешно отключили данную услугу."
+
+#: ../../../lang/stb.php:369
+msgid "An error in the management of subscriptions."
+msgstr "Ошибка во время управления услугами."
+
+#: ../../../lib/accountinfo.class.php:26
 msgid "account_payment_info"
 msgstr "Информация об оплате"
 
-#: ../../../lib/accountinfo.class.php:35
+#: ../../../lib/accountinfo.class.php:30
 msgid "account_agreement_info"
 msgstr "Договор"
 
-#: ../../../lib/accountinfo.class.php:39
+#: ../../../lib/accountinfo.class.php:34
 msgid "account_terms_info"
 msgstr "Правила пользования"
 
-#: ../../../lib/accountinfo.class.php:62
+#: ../../../lib/accountinfo.class.php:57
 msgid "Subscribed"
 msgstr "Подключено"
 
-#: ../../../lib/accountinfo.class.php:64
+#: ../../../lib/accountinfo.class.php:59
 msgid "Not subscribed"
 msgstr "Не подключено"
 

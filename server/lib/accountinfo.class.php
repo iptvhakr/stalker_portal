@@ -20,11 +20,6 @@ class AccountInfo
         );
 
         return $info;
-
-        /*return sprintf(_('account_main_info'),
-            $this->stb->getParam('fname'),
-            $this->stb->getParam('last_change_status'),
-            $this->stb->getParam('phone'));*/
     }
 
     public function getPaymentInfo(){
