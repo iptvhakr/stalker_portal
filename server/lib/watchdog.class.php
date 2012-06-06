@@ -25,7 +25,7 @@ class Watchdog extends AjaxResponse
                          ));
         
         $events = Event::getAllNotEndedEvents($this->stb->id);
-        
+
         $messages = count($events);
                 
         $res['data'] = array();

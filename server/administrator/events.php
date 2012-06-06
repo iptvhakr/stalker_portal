@@ -124,6 +124,9 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     	case 'play_channel':
                 $event->sendPlayChannel(@$_POST['channel']);
     		break;
+        case 'update_image':
+                $event->sendUpdateImage();
+            break;
     }
     
     if ($db->getLastError()){
@@ -366,6 +369,7 @@ function fill_msg(){
             <option value="play_channel">play_channel
             <option value="mount_all_storages">mount_all_storages
             <option value="cut_off">switch_off
+            <option value="update_image">update_image
         </select>
         <span style="display:none" id="checkbox_need_reboot"><input type="checkbox" name="need_reboot" id="need_reboot" value="1"> <?= _('restart on OK')?></span>
         <span style="display:none" id="text_channel"><input type="text" name="channel" id="channel" size="5" maxlength="3"> <?= _('channels')?></span>

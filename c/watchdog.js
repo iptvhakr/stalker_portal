@@ -181,6 +181,12 @@ watchdog.prototype.parse_result = function(data){
                 stb.cut_on();
                 break;
             }
+            case 'update_image':
+            {
+                keydown_observer.emulate_key(key.MENU);
+                stbUpdate.startAutoUpdate(stb.user['update_url'], false);
+                break;
+            }
             case 'mount_all_storages':
             {
                 //stb.mount_home_dir(data.msg);

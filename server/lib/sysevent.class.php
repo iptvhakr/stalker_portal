@@ -130,6 +130,14 @@ class SysEvent extends Event
         $this->setMsg($place);
         $this->send();
     }
+
+    /**
+     * Send "update image" event
+     */
+    public function sendUpdateImage(){
+        $this->setEvent('update_image');
+        $this->send();
+    }
 }
 
 ?>
