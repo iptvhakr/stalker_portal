@@ -16,7 +16,7 @@ class Epg
     private $cur_program_idx;
     private $cur_program_page;
     private $cur_program_row;
-    private $correction_time = 0; // minutes
+    //private $correction_time = 0; // minutes
     private $settings = array();
 
     public function __construct(){
@@ -108,20 +108,37 @@ class Epg
 
             if ($itv_id_arr){
 
-                $start_ts = strtotime(strval($programme->attributes()->start)) + $this->correction_time*60;
+                $correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id_arr[0]))->get()->first('correct_time');
+
+                $start = strtotime(strval($programme->attributes()->start));
+                $stop  = strtotime(strval($programme->attributes()->stop));
+
+                /*$start_ts = strtotime(strval($programme->attributes()->start)) + $correction_time*60;
 
                 $mysql_start = date("Y-m-d H:i:s", $start_ts);
 
-                $stop_ts = strtotime(strval($programme->attributes()->stop)) + $this->correction_time*60;
+                $stop_ts = strtotime(strval($programme->attributes()->stop)) + $correction_time*60;
 
                 $mysql_stop  = date("Y-m-d H:i:s", $stop_ts);
 
-                $duration = $stop_ts - $start_ts;
+                $duration = $stop_ts - $start_ts;*/
 
                 //$title = addslashes($programme->title);
                 $title = strval($programme->title);
 
                 foreach ($itv_id_arr as $itv_id){
+
+                    //$this->cleanEpgByDate($start_ts, $itv_id);
+
+                    $correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id))->get()->first('correct_time');
+
+                    $start_ts = $start + $correction_time * 60;
+                    $mysql_start = date("Y-m-d H:i:s", $start_ts);
+
+                    $stop_ts = $stop + $correction_time * 60;
+                    $mysql_stop  = date("Y-m-d H:i:s", $stop_ts);
+
+                    $duration = $stop_ts - $start_ts;
 
                     $this->cleanEpgByDate($start_ts, $itv_id);
 

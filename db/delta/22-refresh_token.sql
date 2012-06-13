@@ -44,4 +44,6 @@ CREATE TABLE IF NOT EXISTS `user_package_subscription`(
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 ALTER TABLE `users` ADD `tariff_plan_id` int not null default 0;
+
+ALTER TABLE `itv` ADD `correct_time` int not null default 0;
 --//@UNDO

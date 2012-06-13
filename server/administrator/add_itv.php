@@ -128,7 +128,8 @@ if (!$error){
                                         status,
                                         xmltv_id,
                                         service_id,
-                                        volume_correction
+                                        volume_correction,
+                                        correct_time
                                         ) 
                                 values ('".@$_POST['name']."',
                                         '".@$_POST['number']."', 
@@ -154,7 +155,8 @@ if (!$error){
                                         1,
                                         '".@$_POST['xmltv_id']."',
                                         '".trim($_POST['service_id'])."',
-                                        ".intval($_POST['volume_correction'])."
+                                        ".intval($_POST['volume_correction']).",
+                                        ".intval($_POST['correct_time'])."
                                         )";
             echo $query;
             $rs=$db->executeQuery($query);
@@ -250,7 +252,8 @@ if (!$error){
                                 tv_genre_id='".$_POST['tv_genre_id']."',
                                 xmltv_id='".$_POST['xmltv_id']."',
                                 service_id='".trim($_POST['service_id'])."',
-                                volume_correction=".intval($_POST['volume_correction'])."
+                                volume_correction=".intval($_POST['volume_correction']).",
+                                correct_time=".intval($_POST['correct_time'])."
                             where id=".intval(@$_GET['id']);
             //var_dump($query);
             $rs=$db->executeQuery($query);
@@ -502,6 +505,7 @@ if (@$_GET['edit']){
         $xmltv_id = $arr['xmltv_id'];
         $service_id = $arr['service_id'];
         $volume_correction = $arr['volume_correction'];
+        $correct_time    = $arr['correct_time'];
         $use_http_tmp_link = $arr['use_http_tmp_link'];
         $wowza_tmp_link    = $arr['wowza_tmp_link'];
         $wowza_dvr = $arr['wowza_dvr'];
@@ -844,6 +848,14 @@ function delete_logo(id){
            <td>
             <input id="xmltv_id" name="xmltv_id" size="50" type="text" value="<? echo @$xmltv_id ?>">
            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <?= _('EPG correction').', '._('min')?>:
+            </td>
+            <td>
+                <input id="correct_time" name="correct_time" size="50" type="text" value="<? echo @$correct_time ?>">
+            </td>
         </tr>
         <tr>
            <td align="right">
