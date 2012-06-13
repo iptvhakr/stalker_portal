@@ -29,6 +29,10 @@ class User
         return $this->id;
     }
 
+    public function getMac(){
+        return $this->profile['mac'];
+    }
+
     public function getVideoFavorites(){
 
         $fav_video_arr = Mysql::getInstance()->from('fav_vclub')->where(array('uid' => $this->id))->get()->first();
@@ -132,7 +136,7 @@ class User
         }
 
         $packages = Mysql::getInstance()
-            ->select('package_in_plan.*, services_package.name as name, services_package.description as description')
+            ->select('package_in_plan.*, services_package.name as name, services_package.external_id as external_id, services_package.description as description')
             ->from('package_in_plan')
             ->join('services_package', 'services_package.id', 'package_in_plan.package_id', 'INNER')
             ->where(array('plan_id' => $plan['id']))
@@ -168,19 +172,25 @@ class User
             ->first('name');
     }
 
-    public function subscribeToPackage($package_id){
+    public function subscribeToPackage($package_id, $packages = null, $force_no_check_billing = false){
 
-        $packages = $this->getPackages();
+        if ($packages === null){
+            $packages = $this->getPackages();
+        }
 
-        $filtered_packages = array_filter($packages, function($item) use ($package_id){
-            return $package_id == $item['package_id'] && $item['optional'] == 1 && !$item['subscribed'];
-        });
+        if ($packages != null){
+            $filtered_packages = array_filter($packages, function($item) use ($package_id){
+                return $package_id == $item['package_id'] && $item['optional'] == 1 && !$item['subscribed'];
+            });
+        }
 
         if (empty($filtered_packages)){
             return false;
         }
 
-        // api hook place
+        if (!$force_no_check_billing){
+            // api hook place
+        }
 
         return Mysql::getInstance()->insert('user_package_subscription', array(
             'user_id' => $this->id,
@@ -188,9 +198,11 @@ class User
         ))->insert_id();
     }
 
-    public function unsubscribeFromPackage($package_id){
+    public function unsubscribeFromPackage($package_id, $packages = null, $force_no_check_billing = false){
 
-        $packages = $this->getPackages();
+        if ($packages === null){
+            $packages = $this->getPackages();
+        }
 
         $filtered_packages = array_filter($packages, function($item) use ($package_id){
             return $package_id == $item['package_id'] && $item['optional'] == 1 && $item['subscribed'];
@@ -200,11 +212,204 @@ class User
             return false;
         }
 
-        // api hook place
+        if (!$force_no_check_billing){
+            // api hook place
+        }
 
         return Mysql::getInstance()->delete('user_package_subscription', array(
             'user_id' => $this->id,
             'package_id' => $package_id
         ));
+    }
+
+    public function getAccountInfo(){
+        $info = Mysql::getInstance()
+            ->select('login, fname as full_name, ls as account_number, external_id as tariff_plan, serial_number as stb_sn,
+                mac as stb_mac, stb_type, status')
+            ->from('users')
+            ->join('tariff_plan', 'tariff_plan_id', 'tariff_plan.id', 'LEFT')
+            ->where(array('users.id' => $this->id))
+            ->get()
+            ->first();
+
+        $info['status'] = intval(!$info['status']);
+
+        $packages = $this->getPackages();
+
+        if (count($packages) == 0){
+            $info['subscribed'] = array();
+        }else{
+            $info['subscribed'] = array_values(array_map(function($package){
+                return $package['external_id'];
+            }, array_filter($packages, function($package){
+                return $package['optional'] == 1 && $package['subscribed'];
+            })));
+        }
+
+        //$info['subscribed'] = $packages;
+
+        return $info;
+    }
+
+    public static function createAccount($account){
+
+        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'account_number', 'tariff_plan', 'stb_mac'), true);
+
+        $key_map = array(
+            'full_name'      => 'fname',
+            'account_number' => 'ls',
+            'stb_mac'        => 'mac',
+        );
+
+        $new_account = array_intersect_key($account, $allowed_fields);
+
+        if (isset($account['status'])){
+            $new_account['status'] = intval(!$account['status']);
+        }
+
+        foreach ($new_account as $key => $value){
+            if (array_key_exists($key, $key_map)){
+                $new_account[$key_map[$key]] = $value;
+                unset($new_account[$key]);
+            }
+        }
+
+        if (!empty($new_account['tariff_plan'])){
+            $new_account['tariff_plan_id'] = (int) Mysql::getInstance()
+                ->from('tariff_plan')
+                ->where(array('external_id' => $new_account['tariff_plan']))
+                ->get()
+                ->first('id');
+
+            unset($new_account['tariff_plan']);
+        }
+
+        $insert_id = Mysql::getInstance()->insert('users', $new_account)->insert_id();
+
+        if (!$insert_id){
+            return false;
+        }
+
+        if (!empty($new_account['password'])){
+            $password = md5(md5($new_account['password']).$insert_id);
+            Mysql::getInstance()->update('users', array('password' => $password), array('id' => $insert_id));
+        }
+
+        return $insert_id;
+    }
+
+    public function updateAccount($account){
+
+        $allowed_fields = array_fill_keys(array('password', 'full_name', 'account_number', 'tariff_plan', 'stb_mac'), true);
+
+        $key_map = array(
+            'full_name'      => 'fname',
+            'account_number' => 'ls',
+            'stb_mac'        => 'mac'
+        );
+
+        $new_account = array_intersect_key($account, $allowed_fields);
+
+        if (isset($account['status'])){
+            $new_account['status'] = intval(!$account['status']);
+        }
+
+        foreach ($new_account as $key => $value){
+            if (array_key_exists($key, $key_map)){
+                $new_account[$key_map[$key]] = $value;
+                unset($new_account[$key]);
+            }
+        }
+
+        if (!empty($new_account['tariff_plan'])){
+            $new_account['tariff_plan_id'] = (int) Mysql::getInstance()
+                ->from('tariff_plan')
+                ->where(array('external_id' => $new_account['tariff_plan']))
+                ->get()
+                ->first('id');
+
+            unset($new_account['tariff_plan']);
+        }
+
+        if (!empty($new_account['password'])){
+            $password = md5(md5($new_account['password']).$this->id);
+            Mysql::getInstance()->update('users', array('password' => $password), array('id' => $this->id));
+        }else{
+            unset($new_account['password']);
+        }
+
+        return Mysql::getInstance()->update('users', $new_account, array('id' => $this->id))->result();
+    }
+
+    /**
+     * @static
+     * @param $login
+     * @return bool|User
+     */
+    public static function getByLogin($login){
+
+        $user = Mysql::getInstance()->from('users')->where(array('login' => $login))->get()->first();
+
+        if (empty($user)){
+            return false;
+        }
+
+        return self::getInstance((int) $user['id']);
+    }
+
+    public static function getByMac($mac){
+
+        $user = Mysql::getInstance()->from('users')->where(array('mac' => $mac))->get()->first();
+
+        if (empty($user)){
+            return false;
+        }
+
+        return self::getInstance((int) $user['id']);
+    }
+
+    public function delete(){
+        return Mysql::getInstance()->delete('users', array('id' => $this->id))->result();
+    }
+
+    public function updateOptionalPackageSubscription($params){
+
+        if (empty($params['subscribe']) && empty($params['unsubscribe'])){
+            return false;
+        }
+
+        $packages = $this->getPackages();
+
+        $total_result = false;
+
+        if (!empty($params['subscribe'])){
+
+            if (!is_array($params['subscribe'])){
+                $params['subscribe'] = array($params['subscribe']);
+            }
+
+            $user_packages = Mysql::getInstance()->from('services_package')->in('external_id', $params['subscribe'])->get()->all();
+
+            foreach ($user_packages as $user_package){
+                $result = $this->subscribeToPackage($user_package['id'], $packages, true);
+                $total_result = $total_result || $result;
+            }
+        }
+
+        if (!empty($params['unsubscribe'])){
+
+            if (!is_array($params['unsubscribe'])){
+                $params['unsubscribe'] = array($params['unsubscribe']);
+            }
+
+            $user_packages = Mysql::getInstance()->from('services_package')->in('external_id', $params['unsubscribe'])->get()->all();
+
+            foreach ($user_packages as $user_package){
+                $result = $this->unsubscribeFromPackage($user_package['id'], $packages, true);
+                $total_result = $total_result || $result;
+            }
+        }
+
+        return $total_result;
     }
 }

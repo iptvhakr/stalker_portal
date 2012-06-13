@@ -123,6 +123,19 @@ if (isset($_GET['set_services'])){
     exit();
 }
 
+if (isset($_GET['id']) && isset($_GET['package_id']) && isset($_GET['subscribed'])){
+    $id = intval($_GET['id']);
+    $package_id = intval($_GET['package_id']);
+    $subscribed = intval($_GET['subscribed']);
+
+    $user = User::getInstance($id);
+
+    if ($subscribed){
+        $user->subscribeToPackage($package_id, null, true);
+    }else{
+        $user->unsubscribeFromPackage($package_id, null, true);
+    }
+}
 
 ?>
 <html>
@@ -440,7 +453,11 @@ if (empty($packages)){
                             echo '<tr>';
                             echo '<td><a href="services_packages.php?edit=1&id='.$package['package_id'].'">'.$package['name'].'</a></td>';
                             echo '<td>'.($package['optional'] ? 'yes' : 'no').'</td>';
-                            echo '<td>'.($package['subscribed'] ? 'yes' : 'no').'</td>';
+                            if ($package['optional']){
+                                echo '<td><a href="?id='.$id.'&package_id='.$package['package_id'].'&subscribed='.($package['subscribed'] ? 0 : 1).'">'.($package['subscribed'] ? 'yes' : 'no').'</a></td>';
+                            }else{
+                                echo '<td>'.($package['subscribed'] ? 'yes' : 'no').'</td>';
+                            }
                             echo '</tr>';
                         }
                         ?>

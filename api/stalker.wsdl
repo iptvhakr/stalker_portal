@@ -1,0 +1,160 @@
+<wsdl:definitions xmlns:tns="API" targetNamespace="API" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+    <wsdl:types>
+        <s:schema targetNamespace="API">
+            <s:complexType name="AccountInfo">
+                <s:annotation>
+                    <s:documentation>
+                        AccountInfo complex type
+                    </s:documentation>
+                </s:annotation>
+                <s:sequence>
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="login" type="s:string">
+                        <s:annotation>
+                            <s:documentation>
+                                Unique login
+                            </s:documentation>
+                        </s:annotation>
+                    </s:element>
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="full_name" type="s:string">
+                        <s:annotation>
+                            <s:documentation>
+                                Full Name or description
+                            </s:documentation>
+                        </s:annotation>
+                    </s:element>
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="account_number" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="tariff_plan" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="stb_sn" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="stb_mac" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="stb_type" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" nillable="false" name="status" type="s:int" />
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="Account">
+                <s:annotation>
+                    <s:documentation>
+                        Account complex type
+                    </s:documentation>
+                </s:annotation>
+                <s:sequence>
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="login" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" nillable="true" name="password" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" nillable="true" name="full_name" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" nillable="true" name="account_number" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" nillable="true" name="tariff_plan" type="s:string" />
+                    <s:element minOccurs="1" maxOccurs="1" nillable="false" name="status" type="s:int" />
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="SearchCondition">
+                <s:annotation>
+                    <s:documentation>
+                        SearchCondition complex type
+                    </s:documentation>
+                </s:annotation>
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" nillable="true" name="login" type="s:string" />
+                    <s:element minOccurs="0" maxOccurs="1" nillable="true" name="stb_mac" type="s:string" />
+                </s:sequence>
+            </s:complexType>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="CreateOrUpdateAccountSoapIn">
+        <wsdl:part name="params" type="tns:Account" />
+    </wsdl:message>
+    <wsdl:message name="CreateOrUpdateAccountSoapOut">
+        <wsdl:part name="return" type="s:boolean" />
+    </wsdl:message>
+    <wsdl:message name="CreateAccountSoapIn">
+        <wsdl:part name="params" type="tns:Account" />
+    </wsdl:message>
+    <wsdl:message name="CreateAccountSoapOut">
+        <wsdl:part name="return" type="s:boolean" />
+    </wsdl:message>
+    <wsdl:message name="UpdateAccountSoapIn">
+        <wsdl:part name="params" type="tns:Account" />
+    </wsdl:message>
+    <wsdl:message name="UpdateAccountSoapOut">
+        <wsdl:part name="return" type="s:boolean" />
+    </wsdl:message>
+    <wsdl:message name="GetAccountInfoSoapIn">
+        <wsdl:part name="params" type="tns:SearchCondition" />
+    </wsdl:message>
+    <wsdl:message name="GetAccountInfoSoapOut">
+        <wsdl:part name="return" type="tns:AccountInfo" />
+    </wsdl:message>
+    <wsdl:portType name="StalkerSoap">
+        <wsdl:operation name="CreateOrUpdateAccount">
+            <wsdl:documentation>
+                If there is an account with a specified login, it updates its, otherwise -
+                create new account.
+            </wsdl:documentation>
+            <wsdl:input message="tns:CreateOrUpdateAccountSoapIn" />
+            <wsdl:output message="tns:CreateOrUpdateAccountSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="CreateAccount">
+            <wsdl:documentation>
+                Create new account.
+            </wsdl:documentation>
+            <wsdl:input message="tns:CreateAccountSoapIn" />
+            <wsdl:output message="tns:CreateAccountSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAccount">
+            <wsdl:documentation>
+                Update account.
+            </wsdl:documentation>
+            <wsdl:input message="tns:UpdateAccountSoapIn" />
+            <wsdl:output message="tns:UpdateAccountSoapOut" />
+        </wsdl:operation>
+        <wsdl:operation name="GetAccountInfo">
+            <wsdl:documentation>
+                Return first account, that match params.
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetAccountInfoSoapIn" />
+            <wsdl:output message="tns:GetAccountInfoSoapOut" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="StalkerSoap" type="tns:StalkerSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+        <wsdl:operation name="CreateOrUpdateAccount">
+            <soap:operation soapAction="APICreateOrUpdateAccount" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="params" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateAccount">
+            <soap:operation soapAction="APICreateAccount" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="params" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAccount">
+            <soap:operation soapAction="APIUpdateAccount" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="params" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAccountInfo">
+            <soap:operation soapAction="APIGetAccountInfo" />
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="params" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="API" parts="return" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Stalker">
+        <wsdl:port name="StalkerSoap" binding="tns:StalkerSoap">
+            <soap:address location="http://192.168.1.71/stalker_portal/api/soap.php" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,67 @@
+PhpWsdl framework
+~~~~~~~~~~~~~~~~~
+To install the demonstrations on your webserver, simply copy all files to a 
+folder that is accessable with a browser. To see the generated WSDL, you 
+don't need to do anything else.
+
+The caching feature also needs a writeable cache folder. Per default the demo 
+classes are using the subfolder "cache". Set the rights for this folder to 
+777. You really should use caching! Disabling the cache makes only sense in 
+some special cases. However, PhpWsdl can also work with caching disabled.
+
+To see the WSDL in your browser, the location should look like this:
+
+http://your-server.com/demo.php?WSDL&readable
+
+This location is also valid when adding a service or web reference in 
+Microsoft Visual Studio for example. Within the WSDL the real SOAP endpoint 
+(without "?WSDL") is defined. But for your project you should use the 
+optimized WSDL URI:
+
+http://your-server.com/demo.php?WSDL
+
+To see a human readable HTML interface description, simply use this location:
+
+http://your-server.com/demo.php
+
+To download a PHP SOAP client proxy class, use this locatioN:
+
+http://your-server.com/demo.php?PHPSOAPCLIENT
+
+If something doesn't work, be sure that your PHP installation includes the PHP 
+SoapServer class! To determine this, you can use this PHP script:
+
+<?php phpInfo();
+
+The output should contain "Soap Server enabled" in the "soap" section. PhpWsdl 
+also uses libxml, so ensure that "libXML support active" is contained in the 
+"libxml" section.
+
+The PhpWsdlClient requires the DOMDocument classes to be accessable from PHP. 
+It also used XPath. The PHP info output should contain "DOM/XML enabled" and 
+"XPath Support enabled" in the "dom" section. The PhpWsdlClient also uses the 
+native PHP SoapClient object, so "Soap Client enabled" should be contained in 
+the "soap" section.
+
+I developed and tested PhpWsdl with PHP 5.2.10 on a Debian lenny server. But 
+PhpWsdl may also work on a different OS and with older or newer PHP versions.
+
+PhpWsdl addons
+~~~~~~~~~~~~~~
+There are some extensions available. Their files should be located in the 
+same folder as the PhpWsdl framework is located at. Two types of extensions 
+exists:
+
+1. Plugins
+PhpWsdl should load plugins while loading the framework. However, if your PHP 
+installation disabled the "glob" function, you need to load them by yourself. 
+An plugin is always named "class.phpwsdl.[name].php". For example: 
+"class.phpwsdl.nusoap.php". To load a plugin manually AFTER PhpWsdl has been 
+loaded:
+
+if(!class_exists('PluginClassName'))
+	require_once('class.phpwsdl.[name].php');
+
+2. Extensions
+The AJAX proxy f.e. is an extension. Look at the demo.php that is provided 
+with an extension to see how to load and use it.

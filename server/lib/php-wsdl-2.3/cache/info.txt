@@ -1,0 +1,4 @@
+This is a sample cache folder. This file may be deleted. You may also delete 
+this folder, if you wish to use another location for caching your WSDL files. 
+If you want to use this folder as cache folder, you should ensure that it is 
+writeable (chmod 777 ...) for PhpWsdl in your webserver user context.

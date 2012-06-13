@@ -1,0 +1,190 @@
+Note: See the diff in the respository for other changes that are not 
+documented here. Only smaller changes that not seem to be very important will 
+stay undocumented.
+
+2011-08-20: 2.3
+Changed: The license.txt is now included in all downloadable packages
+New: Run JSON, http, REST or XML RPC webservices with the PhpWsdlServers 
+     extension
+New: A simple request forwarder method in PhpWsdlAjax to proxy foreign 
+     webservices for an AJAX client (may serve any foreign SOAP webservice)
+New: The headline of the HTML output can be changed now by setting another 
+     headline string in the PhpWsdl->HtmlHeadLine property
+New: Downloadable JavaScript JSON client proxy class with the PhpWsdlServers 
+     extension that uses AJAX synchron or asynchron. The JavaScript code can 
+     be downloaded as raw or compressed code
+
+2011-08-15: 2.2.2
+Bugfix: PhpWsdlComplex interpreted all types as array
+
+2011-08-14: 2.2.1
+Bugfix: PhpWsdl->IsFileInList did not declare the variable $fLen
+
+2011-08-13: 2.2
+Bugfix: Parsing the documentation couldn't be fully disabled
+Bugfix: The CacheTime property is static and should be handled as such in the 
+        demonstrations
+Changed: The AJAX proxy is now released
+Changed: The PhpWsdlParser will now handle class methods without an explicit 
+         public declaration
+Changed: The return part is named "return". This change needs your clients to 
+         update their SOAP proxies f.e. This change was required to be 
+         compatible to the PHPs SoapServer response when not using WSDL. But 
+         you can change it back to the old behavior by setting another name in 
+         the PhpWsdlParam::$DefaultReturnName
+Changed: WSDL element classes are now responsibly for creating the HTML 
+         documentation output
+Changed: A file named "class.webservice.php" may be in the current folder OR 
+         in the same folder as the file "class.phpwsdl.php" exists
+Changed: An array can be defined without a name restriction just by adding [] 
+         to the type name. The "Array" type name postfix can be disabled by 
+         setting the PhpWsdlComplex::$DisableArrayPostfix to TRUE
+Changed: All PhpWsdl elements should extend the PhpWsdlObject class
+Changed: Caching of HTML (and PHP) output
+Changed: This version contains some caching improvements
+Changed: Cache files from other versions can't be used anymore
+New: PhpWsdl can handle htp Auth logins before running a SOAP server
+New: The xmlns namespaces for the target namespace and XSD can now be changed 
+     in the PhpWsdl::$Config configuration
+New: Added methods to format and optimize XML, also added a new class 
+     PhpWsdlFormatter
+New: The quick mode should be cone with the PhpWsdl::RunQuickMode method, the 
+     quick mode by giving TRUE to the constructor is deprecated and will be 
+     removed from version 3.0
+New: Extended PhpWsdl->TidyCache method allows to cleanup the cache folder: 
+     Only timed out cache files can be deleted.
+New: Added support for writing a debug file
+New: Debugging messages may now contain a backtrace info from where the 
+     message has been sent
+New: Added xsd:anyType to the list of basic types
+New: Namespaces in WSDL can be modified by changing the values of the 
+     PhpWsdl::$NameSpaces property
+New: @ignore has the same meaning as @pw_omitfnc and can disable a complex 
+     type definition when inserted before the @pw_complex keyword in the same 
+     comment block
+New: Added the @service keyword to support a description for a webservice. The 
+     name of the webservice could be set with this keyword, too - usage:
+     "@service ServiceName"
+New: If you're only using global methods, you don't need to setup a webservice 
+     name (PhpWsdl will use "SoapWebService" in this case)
+New: Added support for global methods with "@pw_set global=1" in the comment 
+     block, or (to handle all methods as global per default) by setting the 
+     PhpWsdlMethod::$IsGlobalDefault to TRUE (see demo5.php)
+New: The PhpWsdlProxy can now be served with OR without WSDL (check the new 
+     PhpWsdl::$UseProxyWsdl property)
+New: Added a global method to demo3.php to demonstrate how to mix class and 
+     global methods within one webservice
+New: Added a list of non-nillable types as PhpWsdl::$NonNillable to determine 
+     the nillable flag for an complex type element based on its type
+New: PhpWsdl will use the folder "./cache", if it's writeable and you didn't 
+     define another cache folder. The second choice would be the systems 
+     temporary folder. If no folder is writeable, caching will be disabled
+New: Autorun in quick mode possible, if you change the source of 
+     class.phpwsdl.php and set the PhpWsdl::$AutoRun property to TRUE, or you 
+     set the global variable $PhpWsdlAutoRun to TRUE (see demo4/5.php for an 
+     example)
+New: The NuSOAP adapter is able to create a new PhpWsdl object with data from 
+     an existing NuSOAP server object
+New: PhpWsdl is able to create a documented PHP SOAP client class for a 
+     webservice
+New: Added a SOAP client class that can produce a PHP SOAP client from an WSDL 
+     URI with help of PhpWsdl (see demo6.php)
+Info: If you used the hooks for creating the HTML documentation, you need to 
+      update your code to be compatible with the changes in this version!
+
+2011-08-01: 2.1
+Bugfix: @pw_omit should be @pw_omitfnc in class.phpwsdlhash.php
+Bugfix: Hook calls in PhpWsdl->RunServer didn't use a hash array as parameter
+Bugfix: Some predefined hooks didn't use 'Hook' as postfix of their name
+Bugfix: Extension loading failed because the generated filename didn't match
+Bugfix: PhpWsdl::Init method was called too late
+Changed: Some code from the PhpWsdl::Init method that is related to other 
+         classes is now replaced to the top of the mathing class definition
+Changed: Most internal hook handlers will now return TRUE to give your own 
+         handlers a chance to run
+New: Started to add debugging informations
+New: $class in PhpWsdl->RunServer may be an instance of an object that will 
+     become provided to the PHP SoapServer by the setObject method.
+New: The static PhpWsdl::CreateInstance method is the new way to create an 
+     instance of PhpWsdl to be compatible to extensions.
+New: The PHP SoapServer object is now accessable with the SoapServer property
+New: The NuSOAP adapter lets you use NuSOAP as SOAP server
+New: The Zend adapter lets you use Zend as SOAP server
+New: Proxy webservice for forwarding AJAX SOAP requests to another SOAP 
+     webservice
+Info: If you used the PrepareServerHook or RunServerHook, you should notice 
+      the bugfix: Your handler method will now receive an hash array! Please 
+      update your code to be compatible.
+Info: If you used any hook without the 'Hook' postfix, you should notice the 
+      bugfix: Their names have now the 'Hook' postfix!
+
+2011-07-31: 2.0
+Info: In earlier versions multiple complex types could be defined within one 
+      comment block. Now every complex type has to be defined in its own 
+      comment block. If multiple complex types are defined in a single 
+      comment block, only the first one will be visible! This is the only 
+      change in this version that affects the main usage of PhpWsdl.
+
+2011-07-30: 1.1
+Changed: Unoptimized WSDL won't be cached anymore
+Changed: PhpWsdl->CreateWsdl is now PhpWsdl->ParseFiles where is makes more 
+         sense
+Changed: The PhpWsdl->OutputHtmlHook can now return a true value to omit the 
+         internal HTML
+Changed: The PHP SoapServer is now started with SOAP_1_1 AND SOAP_1_2 per 
+         default
+Changed: The default namespace is now generated with the server environment 
+         information
+Changed: PhpWsdl trys to detect the name of the class that handles the SOAP 
+         requests
+Changed: PhpWsdl will use the "SCRIPT_FILENAME" if CreateWsdl is called 
+         without setting up the PhpWsdl->Files property
+Changed: Giving only TRUE to the PhpWsdl constructor will run the SOAP server 
+         by determining all configuration
+New: @pw_clear keyword to initialize the parser temporaries
+New: Added demo4.php to demonstrate how to use PhpWsdl in quick mode
+New: PhpWsdl has a quick mode now
+New: Added test URIs on my server so you can test PhpWsdl without installing 
+     it on your own server
+New: Added support for the HTML2PDF http API (see www.htmltopdf.de for more 
+     information) to enable licensed users to generate a PDF from the 
+     documentation with the WSDL files attached (in the PDF document itself)
+New: Complex types and public methods are now being sorted by their names in 
+     the HTML output 
+New: Now there is an index in the HTML description to jump to a definition
+New: The PhpWsdl->Force(Not)OutputWsdl/Html flags can enable and disable 
+     sending WSDL and/or HTML
+New: The options that are given to the PHP SoapServer constructor can be 
+     modified with the new PhpWsdl->SoapServerOptions array
+New: The HTML output can be downloaded as PDF when clicking the "Download this 
+     page as PDF" at the bottom of the document. This will only work in an 
+     internet environment without authentification! (See www.htmltopdf.de for 
+     more information)
+New: Documentation can be parsed and included in WSDL and the HTML output
+New: Setting "docs" holds the documentation for elements and will be filled by 
+     the file parser
+New: PhpWsdl->ParseDocs flag to enable parsing for documentation (enabled per 
+     default)
+New: PhpWsdl->IncludeDocs flag to enable including the documentation in WSDL, 
+     if the optimizer is disabled (enabled per default)
+New: Version history in readme.txt
+Info: Except for the change of the PhpWsdl->OutputHtmlHook behavior this 
+      version is fully compatible to version 1.0. The bugfixes are released in 
+      version 1.0.1, the download has been updated
+Info: There are plans for great improvements for this quick shot. The whole 
+      parsing engine could maybe been done with not more than only 3 regular 
+      expressions at all, f.e. The parser and the WSDL builder should support 
+      plugins to extend PhpWsdl very easy and compatible to future changes. 
+      All this will be a version 2.0. Until that version is released, version 
+      1.* will of course be continued.
+
+2001-07-29: 1.0.1
+Bugfix: When determining the endpoint URI the http(s) selection didn't work 
+        for an SSL URI
+Bugfix: "is_boolean" should be "is_bool". Because of this bug the server 
+        was not able to run at construction time
+Bugfix: Found a typo in the HTML description: "occours" should be "occurs"
+Info: This version is fully compatible to version 1.0.
+
+2011-07-28: 1.0
+The very first release version!

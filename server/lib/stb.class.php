@@ -1192,6 +1192,22 @@ class Stb
         return $result->get()->all('id');
     }
 
+    public static function getUidByLogin($login){
+
+        $result = Mysql::getInstance()->from('users');
+
+        if ($login !== null){
+
+            if (!is_array($login)){
+                $login = array($login);
+            }
+
+            $result = $result->in('login', $login);
+        }
+
+        return $result->get()->all('id');
+    }
+
     public static function getUidByMacs($mac){
 
         $result = Mysql::getInstance()->from('users');
@@ -1293,6 +1309,16 @@ class Stb
 
     public function updateByLogin($login, $data){
         return Mysql::getInstance()->update('users', $data, array('login' => $login))->result();
+    }
+
+    public static function getByMac($mac){
+        $mac = Middleware::normalizeMac($mac);
+
+        if (empty($mac)){
+            return null;
+        }
+
+        return Mysql::getInstance()->from('users')->where(array('mac' => $mac))->get()->first();
     }
 }
 ?>
