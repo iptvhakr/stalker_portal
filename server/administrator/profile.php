@@ -231,11 +231,11 @@ function additional_services_btn(){
     $additional_services_on = @$rs->getValueByName(0, 'additional_services_on');
     if ($additional_services_on == 0){
         $color = 'red';
-        $txt = _('Enabled');
+        $txt = _('Disabled');
         $set = 1;
     }else{
         $color = 'green';
-        $txt = _('Disabled');
+        $txt = _('Enabled');
         $set = 0;
     }
     return '<a href="profile.php?id='.$id.'&set_services='.$set.'" style="color:'.$color.'"><b>'.$txt.'</b></a>';
