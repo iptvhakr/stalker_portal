@@ -90,7 +90,7 @@ app.ctrls={
                     }
                 }
             }
-        //log(source_html); //if test(nothing was found!) -> нету нифига
+        //log(source_html); //if test(nothing was found!) -> пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         source_html_splited = source_html.split('</td>');
         for(var i=0;i<source_html_splited.length;i++){
                 var result = /href='(\/view\/.*?)'.*?src='(.*?)'.*?href='.*?'><b>(.*?)<\/b><\/a>/igm.exec(source_html_splited[i]);
@@ -964,7 +964,7 @@ app.player={
                             'tag':'div',
                             'attrs':{
                                 'id':'pls_midline_left'+tempY,
-                                'style':'background: url(../img/info_menu/v_menu_2a.png) left bottom; white-space: nowrap; width: 270px; height: 26px; font-size: 21px; padding: 2px 10px; overflow: hidden; text-overflow: ellipsis; float:left;'
+                                'style':'background: url(img/info_menu/v_menu_2a.png) left bottom; white-space: nowrap; width: 270px; height: 26px; font-size: 21px; padding: 2px 10px; overflow: hidden; text-overflow: ellipsis; float:left;'
                             }
                         },
                         {
@@ -972,7 +972,7 @@ app.player={
                             'attrs':{
                                 'id':'pls_midline_right'+tempY,
                                 'class':'pls_midline_right',
-                                'style':'background: url(../img/info_menu/v_menu_2a.png) right bottom; width: 10px; height: 30px; float:left;'
+                                'style':'background: url(img/info_menu/v_menu_2a.png) right bottom; width: 10px; height: 30px; float:left;'
                             }
                         }
                     ]
@@ -982,8 +982,8 @@ app.player={
             playlist_len = tempY;
             tempY++;
         }
-        $('pls_midline_left0').style.background = 'url(../img/info_menu/v_menu_2a.png) left top';
-        $('pls_midline_right0').style.background = 'url(../img/info_menu/v_menu_2a.png) right top';
+        $('pls_midline_left0').style.background = 'url(img/info_menu/v_menu_2a.png) left top';
+        $('pls_midline_right0').style.background = 'url(img/info_menu/v_menu_2a.png) right top';
         tempY = 0;
 
         app.views.addElement(pls_lowline,pls_form);

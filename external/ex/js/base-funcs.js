@@ -178,6 +178,7 @@ function get_params(){
 }
 
 function setCookie (name, value, expires, path, domain, secure) {
+    gSTB.EnableSetCookieFrom(domain,true);
     document.cookie = name + "=" + escape(value) +
       ((expires) ? "; expires=" + expires : "") +
       ((path) ? "; path=" + path : "") +

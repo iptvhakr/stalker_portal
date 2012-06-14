@@ -502,7 +502,7 @@ var views={
                                 {
                                     'tag':'img',
                                     'attrs':{
-                                        'src':'../img/volume/volume_left.png',
+                                        'src':'img/volume/volume_left.png',
                                         'id':'volumeLeft',
                                         'class':'alignLeft',
                                         'alt':''
@@ -680,14 +680,14 @@ var pls_line_obj = {
                                 'tag':'div',
                                 'attrs':{
                                     'id':'pls_midline_left',
-                                    'style':'background: url(img/info_menu/v_menu_2a.png) left bottom; width: 270px; height: 26px; font-size: 20px; padding: 2px 10px; overflow: hidden; text-overflow:ellipsis;float:left;'
+                                    'style':'background: url(../img/info_menu/v_menu_2a.png) left bottom; width: 270px; height: 26px; font-size: 20px; padding: 2px 10px; overflow: hidden; text-overflow:ellipsis;float:left;'
                                 }
                             },
                             {
                                 'tag':'div',
                                 'attrs':{
                                     'class':'pls_midline_right',
-                                    'style':'background: url(img/info_menu/v_menu_2a.png) right bottom; width: 10px; height: 30px; float:left;'
+                                    'style':'background: url(../img/info_menu/v_menu_2a.png) right bottom; width: 10px; height: 30px; float:left;'
                                 }
                             }
                         ]

@@ -413,8 +413,7 @@ app.keypress={
                             if(as.layer==as.layers.SUB_CATS_LIST){as.sizes[as.actualSize].max_list_lines=as.sizes[as.actualSize].max_list_lines_s;as.list='list_s';as.navig='navigation_s';}
                             else {as.sizes[as.actualSize].max_list_lines=as.sizes[as.actualSize].max_list_lines_l;as.list='list';as.navig='navigation';}
                         } else {
-                            //window.location = "http://freetv.infomir.com.ua/inet-services/public_html/?language="+as.cur_lang;
-                            window.location = "../../c/index.html";
+                           window.location= decodeURIComponent(_GET['referrer']);
                         }
                     break;
                     case as.layers.PLAYER:
