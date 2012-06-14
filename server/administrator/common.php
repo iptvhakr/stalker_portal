@@ -19,6 +19,8 @@ if (!empty($_COOKIE['language']) && array_key_exists($_COOKIE['language'], $loca
     $locale = $locales[key($locales)];
 }
 
+setcookie("debug_key", "", time() - 3600, "/");
+
 //$locale = 'en_GB.utf8';
 
 setlocale(LC_MESSAGES, $locale);

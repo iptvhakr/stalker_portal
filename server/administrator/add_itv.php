@@ -81,7 +81,7 @@ if (!$error){
         $error = sprintf(_('Error: channel with number "%s" is already in use'), intval($_POST['number']));
     }
     
-    if (@$_GET['save'] && !$error){
+    if (@$_GET['save'] && !$error && !empty($_POST)){
     
         if(@$_GET['name'] && @$_POST['tv_genre_id'] > 0){
 
@@ -206,8 +206,8 @@ if (!$error){
         }
     }
     
-    if (@$_GET['update'] && !$error){
-        
+    if (@$_GET['update'] && !$error && !empty($_POST)){
+
         if(@$_GET['name']){
 
             $ch_id = intval(@$_GET['id']);
