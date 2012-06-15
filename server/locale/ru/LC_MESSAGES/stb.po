@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-12 14:54+0200\n"
-"PO-Revision-Date: 2012-06-12 14:55+0200\n"
+"POT-Creation-Date: 2012-06-14 17:53+0200\n"
+"PO-Revision-Date: 2012-06-14 17:53+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1144,12 +1144,12 @@ msgid "Change the video output on the"
 msgstr "Поменять видео выход на "
 
 #: ../../../administrator/profile.php:234
-msgid "Enabled"
-msgstr "Включено"
-
-#: ../../../administrator/profile.php:238
 msgid "Disabled"
 msgstr "Отключено"
+
+#: ../../../administrator/profile.php:238
+msgid "Enabled"
+msgstr "Включено"
 
 #: ../../../administrator/profile.php:281
 #: ../../../administrator/profile.php:287
@@ -1699,6 +1699,23 @@ msgstr "каталог"
 #: ../../../administrator/video_search.php:468
 msgid "Total views per month"
 msgstr "Кол-во просмотров за месяц"
+
+#: ../../../administrator/user.php:24
+msgid "Error: Not all required fields are filled"
+msgstr "Ошибка: не все обязательные поля заполнены"
+
+#: ../../../administrator/user.php:32
+#: ../../../administrator/user.php:75
+msgid "User account"
+msgstr "Учетная запись пользователя"
+
+#: ../../../administrator/user.php:114
+msgid "Account number"
+msgstr "Номер лицевого счета"
+
+#: ../../../administrator/user.php:118
+msgid "Account disabled"
+msgstr "Учетная напись отключена"
 
 #: ../../../administrator/userlog.php:55
 #: ../../../administrator/userlog.php:61

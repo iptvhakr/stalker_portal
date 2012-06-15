@@ -86,7 +86,7 @@ a:hover{
 <title><?= _('Users')?></title>
 </head>
 <body>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="660">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="760">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
     <font size="5px" color="White"><b>&nbsp;<?= _('Users')?>&nbsp;</b></font>
@@ -94,7 +94,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a> | <a href="testers.php"><?= _('Testers')?></a> | <a href="stbgroups.php"><?= _('Stb groups')?></a> | <a href="all_userlog.php"><?= _('All logs')?></a> | <a href="today_user_status_report.php" target="_blank"><?= _('Report')?></a> | <a href="subscribe_import.php"><?= _('Subscription import')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="user.php"><?= _('Add')?></a> | <a href="testers.php"><?= _('Testers')?></a> | <a href="stbgroups.php"><?= _('Stb groups')?></a> | <a href="all_userlog.php"><?= _('All logs')?></a> | <a href="today_user_status_report.php" target="_blank"><?= _('Report')?></a> | <a href="subscribe_import.php"><?= _('Subscription import')?></a>
     </td>
 </tr>
 <tr>

@@ -253,7 +253,7 @@ class User
 
     public static function createAccount($account){
 
-        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'account_number', 'tariff_plan', 'stb_mac'), true);
+        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'account_number', 'tariff_plan', 'tariff_plan_id', 'stb_mac'), true);
 
         $key_map = array(
             'full_name'      => 'fname',
@@ -274,7 +274,7 @@ class User
             }
         }
 
-        if (!empty($new_account['tariff_plan'])){
+        if (empty($new_account['tariff_plan_id']) && !empty($new_account['tariff_plan'])){
             $new_account['tariff_plan_id'] = (int) Mysql::getInstance()
                 ->from('tariff_plan')
                 ->where(array('external_id' => $new_account['tariff_plan']))

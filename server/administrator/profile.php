@@ -353,6 +353,22 @@ if (empty($packages)){
         </tr>
         <tr>
             <td>
+                <?= _('Login')?>:
+            </td>
+            <td>
+                <input type="text" name="login" value="<? echo $user['login'] ?>" disabled="disabled"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <?= _('Account number')?>:
+            </td>
+            <td>
+                <input type="text" name="ls" value="<? echo $user['ls'] ?>"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <?= _('Last change of status')?>:
             </td>
             <td>
