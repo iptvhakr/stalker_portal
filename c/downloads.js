@@ -600,6 +600,10 @@
 
             _debug('normalized_url', normalized_url);
 
+            if (typeof(stbDownloadManager) == 'undefined'){
+                return false;
+            }
+
             if (!queue){
                 queue = JSON.parse(stbDownloadManager.GetQueueInfo());
             }

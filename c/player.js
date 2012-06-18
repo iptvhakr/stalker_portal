@@ -82,6 +82,7 @@ function player(){
     this.init_show_info();
     this.init_quick_ch_switch();
     this.volume.init();
+    this.progress_bar.init();
 
     this.init_aspect_info();
     
@@ -419,12 +420,19 @@ player.prototype.event_callback = function(event){
             }else{
                 this.volume.correct_level(0);
             }*/
-            
+            this.triggerCustomEventListener('event_2', this.cur_media_item);
+            //if (this.is_tv){
+                this.progress_bar.start();
+            //}
+
             break;
         }
         case 4: // Playback started
         {
-            
+
+            this.triggerCustomEventListener('event_4', this.cur_media_item);
+            this.progress_bar.stop();
+
             if (this.cur_media_item.hasOwnProperty('volume_correction')){
                 this.volume.correct_level(parseInt(this.cur_media_item.volume_correction));
             }else{
@@ -3037,7 +3045,77 @@ var playback_limit = {
 
         window.clearTimeout(this.timer);
     }
+};
 
+player.prototype.progress_bar = {
+
+    init : function(){
+        _debug('progressBar.init');
+
+        this.dom_obj = create_block_element('playback_progress_block');
+        this.progress = create_block_element('playback_progress', this.dom_obj);
+        this.dom_obj.hide();
+    },
+
+    start : function(){
+        _debug('progressBar.start');
+
+        this.dom_obj.show();
+
+        var self = this;
+
+        window.clearInterval(this.update_timer);
+        window.clearTimeout(this.stop_timer);
+        window.clearTimeout(this.hide_timeout);
+
+        this.update_timer = window.setInterval(function(){
+            self.update();
+        }, 300);
+    },
+
+    update : function(load){
+        _debug('progressBar.update', load);
+
+        if (!load){
+            load = stb.GetBufferLoad();
+        }
+
+        _debug('load', load);
+
+        this.set_progress(load);
+
+        if (load == 100){
+            var self = this;
+            window.clearTimeout(this.stop_timer);
+            window.clearInterval(this.update_timer);
+            //this.stop_timer = window.setTimeout(function(){self.stop()}, 300);
+            this.stop();
+        }
+    },
+
+    set_progress : function(load){
+        _debug('set_progress', load);
+
+        var max = this.dom_obj.offsetWidth-4;
+
+        var width = max/100 * load;
+
+        this.progress.style.width = width + 'px';
+    },
+
+    stop : function(){
+        _debug('progressBar.stop');
+
+        //this.dom_obj.hide();
+
+        this.set_progress(100);
+        var self = this;
+        window.clearTimeout(this.hide_timeout);
+        this.hide_timeout = window.setTimeout(function(){self.dom_obj.hide();self.progress.style.width = 0;}, 300);
+
+        window.clearInterval(this.update_timer);
+        //this.progress.style.width = 0;
+    }
 };
 
 /*

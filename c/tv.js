@@ -91,6 +91,8 @@
 
                 /*this.active_row.name_block.style.marginRight = '50px';*/
             }
+
+            this.progress_bar.init(this);
         };
         
         this.show = function(do_not_load){
@@ -1130,6 +1132,88 @@
                 this.parent.fill_short_epg(data);
             }
         };
+
+        this.progress_bar = {
+
+            init : function(parent){
+                _debug('progressBar.init');
+
+                this.dom_obj = create_block_element('playback_progress_block', parent.dom_obj);
+                this.progress = create_block_element('playback_progress', this.dom_obj);
+                this.dom_obj.hide();
+
+                var self = this;
+
+                stb.player.addCustomEventListener('event_2', function(){
+                    _debug('event_2');
+                    self.start.call(self);
+                });
+
+                stb.player.addCustomEventListener('event_4', function(){
+                    _debug('event_4');
+                    self.stop.call(self);
+                });
+            },
+
+            start : function(){
+                _debug('progressBar.start');
+
+                this.dom_obj.show();
+
+                var self = this;
+
+                window.clearInterval(this.update_timer);
+                window.clearTimeout(this.stop_timer);
+                window.clearTimeout(this.hide_timeout);
+
+                this.update_timer = window.setInterval(function(){
+                    self.update();
+                }, 300);
+            },
+
+            update : function(load){
+                _debug('progressBar.update', load);
+
+                if (!load){
+                    load = stb.GetBufferLoad();
+                }
+
+                _debug('load', load);
+
+                this.set_progress(load);
+
+                if (load == 100){
+                    var self = this;
+                    window.clearTimeout(this.stop_timer);
+                    window.clearInterval(this.update_timer);
+                    this.stop_timer = window.setTimeout(function(){self.stop()}, 300);
+                }
+            },
+
+            set_progress : function(load){
+                _debug('set_progress', load);
+
+                var max = this.dom_obj.offsetWidth-4;
+
+                var width = max/100 * load;
+
+                this.progress.style.width = width + 'px';
+            },
+
+            stop : function(){
+                _debug('progressBar.stop');
+
+                //this.dom_obj.hide();
+
+                this.set_progress(100);
+                var self = this;
+                window.clearTimeout(this.hide_timeout);
+                this.hide_timeout = window.setTimeout(function(){self.dom_obj.hide();self.progress.style.width = 0;}, 300);
+
+                window.clearInterval(this.update_timer);
+                //this.progress.style.width = 0;
+            }
+        }
     }
     
     tv_constructor.prototype = new ListLayer();

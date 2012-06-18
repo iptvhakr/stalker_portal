@@ -248,4 +248,13 @@
     right: 33px;
     width: 329px;
 }
+
+#tv .playback_progress_block{
+    width: 218px;
+    margin: 0;
+    position: absolute;
+    top: 191px;
+    right: 100px;
+}
+
 /* END TV */

@@ -624,3 +624,19 @@
     float: left;
     height: 41px;
 }
+
+.playback_progress_block{
+    width: 300px;
+    height: 10px;
+    border: 2px #fff solid;
+    margin: 384px auto;
+    border-radius: 6px;
+}
+
+.playback_progress{
+    height: 10px;
+    width: 0;
+    background-color: #2c6eff;
+    border-radius: 2px;
+    -webkit-transition: all 0.3s ease;
+}
