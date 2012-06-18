@@ -478,15 +478,23 @@ class Itv extends AjaxResponse
                 if ($ch_tmp_idx >= 0){
                     $fav = array_slice($fav, 0, $ch_tmp_idx+1);
                 }
+
+                $query = $this->db->from('itv')->where($where)->in('itv.id', $fav);
+
+                if (Config::get('enable_tariff_plans')){
+                    $query->in('itv.id', $all_user_channels_ids);
+                }
+
+                $ch_idx = $query->get()->count();
             }
 
-            $query = $this->db->from('itv')->where($where)->in('itv.id', $fav);
+/*            $query = $this->db->from('itv')->where($where)->in('itv.id', $fav);
 
             if (Config::get('enable_tariff_plans')){
                 $query->in('itv.id', $all_user_channels_ids);
             }
 
-            $ch_idx = $query->get()->count();
+            $ch_idx = $query->get()->count();*/
         }else{
 
             $sortby = $_REQUEST['sortby'];

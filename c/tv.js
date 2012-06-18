@@ -174,6 +174,13 @@
                 _debug(e);
             }
         };
+
+        this.reset = function(){
+            _debug('tv.reset');
+
+            this.superclass.reset.apply(this);
+            this.cur_page = 0;
+        };
         
         this.clear_list = function(){
             _debug('tv.clear_list');
