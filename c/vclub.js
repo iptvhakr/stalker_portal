@@ -183,6 +183,8 @@
             this.storage_switch.on && this.storage_switch.hide && this.storage_switch.hide();
 
             stb.player.pause && stb.player.pause.on && stb.player.hide_pause();
+
+            this.clear_short_info();
             
             this.superclass.hide.call(this, do_not_reset);
         };
@@ -271,6 +273,13 @@
 
             this.short_info_box.innerHTML = info;
             this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '">';
+        };
+
+        this.clear_short_info = function(){
+            _debug('clear_short_info');
+
+            this.short_info_box.innerHTML = '';
+            this.screenshot_box.innerHTML = '';
         };
         
         this.init_short_info = function(){
