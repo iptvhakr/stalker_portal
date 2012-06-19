@@ -5,6 +5,7 @@ class RESTResponse
 
     protected $body = array('status' => 'OK', 'results' => '');
     private $request;
+    private $content_type = 'application/json';
 
     public function __construct(){
         ob_start();
@@ -39,8 +40,41 @@ class RESTResponse
         exit;
     }
 
+    public function setContentType($content_type){
+        $this->content_type = $content_type;
+    }
+
     public function send(){
-        header("Content-Type: application/json");
+
+        if (strpos($this->request->getAccept(), 'text/channel-monitoring-id-url') !== false){
+            if (is_array($this->body['results'])){
+
+                $channels = array_filter($this->body['results'], function($channel){
+                    return $channel['enable_monitoring'];
+                });
+
+                if (preg_match("/part=(\d+)-(\d*)/", $this->request->getAccept(), $match)){
+                    $start = $match[1];
+                    $end   = empty($match[2]) ? count($channels) : $match[2];
+
+                    $channels = array_slice($channels, $start, $end-$start);
+
+                    //var_dump($start, $end, $channels);
+                }
+
+                $body = array_reduce($channels, function($prev, $curr){
+                    return $prev.$curr['id'].' '.$curr['url']."\n";
+                }, '');
+
+                header("Content-Type: text/plain");
+
+                echo $body;
+            }
+            return;
+        }
+
+        header("Content-Type: ".$this->content_type);
+
         $this->setOutput();
         $response = json_encode($this->body);
         echo $response;

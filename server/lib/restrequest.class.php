@@ -67,6 +67,10 @@ class RESTRequest extends APIRequest
         return $this->identifiers;
     }
 
+    public function getAccept(){
+        return $_SERVER['HTTP_ACCEPT'];
+    }
+
     public static function useMacIdentifiers(){
         return self::$use_mac_identifiers = true;
     }

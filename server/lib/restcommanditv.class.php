@@ -7,7 +7,7 @@ class RESTCommandItv extends RESTCommand
 
     public function __construct(){
         $this->manager = Itv::getInstance();
-        $this->allowed_fields = array_fill_keys(array('id', 'name', 'number', 'base_ch', 'hd'), true);
+        $this->allowed_fields = array_fill_keys(array('id', 'name', 'number', 'base_ch', 'hd', 'url', 'enable_monitoring'), true);
     }
 
     public function get(RESTRequest $request){
@@ -18,7 +18,9 @@ class RESTCommandItv extends RESTCommand
 
         $itv_list = array_map(function($item) use ($allowed_fields){
 
-            $item = array_intersect_key($item, $allowed_fields);
+                $item['url'] = $item['monitoring_url'];
+
+                $item = array_intersect_key($item, $allowed_fields);
 
             return $item;
         },
@@ -26,6 +28,33 @@ class RESTCommandItv extends RESTCommand
         );
 
         return $itv_list;
+    }
+
+    public function update(RESTRequest $request){
+
+        $put = $request->getPut();
+
+        if (empty($put)){
+            throw new RESTCommandException('HTTP PUT data is empty');
+        }
+
+        $allowed_to_update_fields = array_fill_keys(array('monitoring_status'), true);
+
+        $data = array_intersect_key($put, $allowed_to_update_fields);
+
+        if (empty($data)){
+            throw new RESTCommandException('Update data is empty');
+        }
+
+        $ids = $request->getIdentifiers();
+
+        if (empty($ids)){
+            throw new RESTCommandException('Empty channel id');
+        }
+
+        $channel_id = intval($ids[0]);
+
+        return Mysql::getInstance()->update('itv', $data, array('id' => $channel_id));
     }
 }
 
