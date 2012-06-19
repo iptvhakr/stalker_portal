@@ -1943,9 +1943,12 @@ player.prototype.change_pos_by_numbers = function(num){
         this.pos_by_numbers_input = this.pos_by_numbers_input.substr(this.pos_by_numbers_input.length-6, 6);
     }
 
-    var new_pos_time = this.human_time_to_sec(this.pos_by_numbers_input);
+    this.pos_by_numbers_input = '' + parseInt(this.pos_by_numbers_input, 10);
+
+    //var new_pos_time = this.human_time_to_sec(this.pos_by_numbers_input);
+    var new_pos_time = this.number_to_sec(this.pos_by_numbers_input);
     this.set_pos_button(new_pos_time);
-    this.update_current_time(new_pos_time);
+    this.update_current_time(this.pos_by_numbers_input);
 };
 
 player.prototype.pos_by_numbers_back_key_handler = function(){
@@ -1955,9 +1958,10 @@ player.prototype.pos_by_numbers_back_key_handler = function(){
 
     this.pos_by_numbers_input = this.pos_by_numbers_input.substr(0, this.pos_by_numbers_input.length - 1);
 
-    var new_pos_time = this.human_time_to_sec(this.pos_by_numbers_input);
+    //var new_pos_time = this.human_time_to_sec(this.pos_by_numbers_input);
+    var new_pos_time = this.number_to_sec(this.pos_by_numbers_input);
     this.set_pos_button(new_pos_time);
-    this.update_current_time(new_pos_time);
+    this.update_current_time(this.pos_by_numbers_input);
 };
 
 player.prototype.processing_pos_input = function(){
@@ -2215,7 +2219,7 @@ player.prototype.set_pos_button = function(to_time){
 
         this.new_pos_time = to_time;
         
-        this.update_current_time(to_time);
+        this.update_current_time(to_time, true);
 
         var to_pos = 0;
 
@@ -2427,11 +2431,16 @@ player.prototype.move_pos = function(dir){
     }
 };
 
-player.prototype.update_current_time = function(cur_time){
+player.prototype.update_current_time = function(cur_time, strict){
     _debug('player.update_current_time', cur_time);
     
     //this.info.pos_time.innerHTML = this.sec_to_human_time(cur_time) + '/' + this.sec_to_human_time(this.cur_media_length);
-    this.info.cur_pos_time.innerHTML   = this.sec_to_human_time(cur_time);
+    //this.info.cur_pos_time.innerHTML   = this.sec_to_human_time(cur_time);
+    if (strict){
+        this.info.cur_pos_time.innerHTML   = this.sec_to_human_time(cur_time);
+    }else{
+        this.info.cur_pos_time.innerHTML   = this.pos_format_str(cur_time);
+    }
     this.info.total_pos_time.innerHTML = this.sec_to_human_time(this.cur_media_length);
 };
 
@@ -2453,6 +2462,60 @@ player.prototype.sec_to_human_time = function(seconds){
     }
     
     return hh+':'+mm+':'+ss;
+};
+
+player.prototype.pos_format_str = function(number){
+
+    number = ''+number;
+
+    var zeros = 6-number.length;
+
+    var zeros_str = '';
+
+    for (var i=0; i<zeros; i++){
+        zeros_str += '0';
+    }
+
+    number = zeros_str + number;
+
+    return number.substr(0,2) + ':' + number.substr(2,2) + ':' + number.substr(4,2);
+};
+
+player.prototype.number_to_sec = function(number){
+
+    var hh = 0;
+    var mm = 0;
+    var ss = 0;
+
+    number = '' + number;
+
+    if (number.length > 4){
+        hh = number.substr(0, number.length - 4);
+        number = number.substring(number.length - 4);
+        hh = parseInt(hh, 10);
+        if (hh > 99){
+            hh = 99;
+        }
+    }
+
+    if (number.length > 2){
+        mm = number.substr(0, number.length - 2);
+        number = number.substring(number.length - 2);
+        mm = parseInt(mm, 10);
+        if (mm > 59){
+            mm = 59;
+            ss = 59;
+        }
+    }
+
+    if (number.length > 0 && !ss){
+        ss = parseInt(number, 10);
+        if (ss > 59){
+            ss = 59;
+        }
+    }
+
+    return hh*3600 + mm*60 + ss;
 };
 
 player.prototype.human_time_to_sec = function(time){
