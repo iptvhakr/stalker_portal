@@ -1,5 +1,9 @@
 (function(){
 
+    if (!stb.profile['enable_tariff_plans']){
+        return;
+    }
+
     function ServiceManagement(){
 
         this.layer_name = 'service_management';

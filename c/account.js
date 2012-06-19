@@ -122,6 +122,10 @@
                 info += '<span class="label">' + get_word('Phone') + ':</span> ' + result['phone'] + '<br>';
             }
 
+            if (result['ls']){
+                info += '<span class="label">' +get_word('Account number') + ':</span> ' + result['ls'] + '<br>';
+            }
+
             if (result['tariff_plan']){
                 info += '<span class="label">' +get_word('Tariff plan') + ':</span> ' + result['tariff_plan'] + '<br>';
             }

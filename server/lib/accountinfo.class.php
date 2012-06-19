@@ -16,8 +16,12 @@ class AccountInfo
             'fname' => $this->stb->getParam('fname'),
             'last_change_status' => $this->stb->getParam('last_change_status'),
             'phone' => $this->stb->getParam('phone'),
-            'tariff_plan' => $user->getTariffPlanName()
+            'ls' => $this->stb->getParam('ls')
         );
+
+        if (Config::get('enable_tariff_plans')){
+            $info['tariff_plan'] = $user->getTariffPlanName();
+        }
 
         return $info;
     }

@@ -302,6 +302,8 @@ class Stb
 
         $profile['kinopoisk_rating']       = Config::getSafe('kinopoisk_rating', true);
 
+        $profile['enable_tariff_plans']    = Config::getSafe('enable_tariff_plans', false);
+
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
         },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG250')));
@@ -1143,7 +1145,7 @@ class Stb
             return false;
         }
 
-        if (key_exists(0, $data['results'])){
+        if (array_key_exists(0, $data['results'])){
             $user = $data['results'][0];
         }else{
             $user = $data['results'];
@@ -1157,16 +1159,24 @@ class Stb
 
         $update_data = array();
 
-        if (key_exists('ls', $user)){
-            $this->params['ls'] = $update_data['ls'] = intval($user['ls']);
+        if (array_key_exists('ls', $user)){
+            $this->params['ls'] = $update_data['ls'] = $user['ls'];
         }
 
-        if (key_exists('status', $user)){
+        if (array_key_exists('status', $user)){
             $this->params['status'] = $update_data['status'] = intval(!$user['status']);
         }
 
-        if (key_exists('additional_services_on', $user)){
+        if (array_key_exists('additional_services_on', $user)){
             $this->params['additional_services_on'] = $update_data['additional_services_on'] = intval($user['additional_services_on']);
+        }
+
+        if (array_key_exists('fname', $user)){
+            $this->params['fname'] = $update_data['fname'] = $user['fname'];
+        }
+
+        if (array_key_exists('phone', $user)){
+            $this->params['phone'] = $update_data['phone'] = $user['phone'];
         }
 
         if (empty($update_data)){
