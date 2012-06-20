@@ -533,8 +533,8 @@ class Epg
                         $epg[$i]['start_timestamp'] < $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']){
     
                         $epg[$i]['mark_archive'] = 1;
-                        $epg[$i]['position']  = date("i", $epg[$i]['start_timestamp']) * 60;
-                        $epg[$i]['media_len'] = $epg[$i]['stop_timestamp'] - $epg[$i]['start_timestamp'];
+                        //$epg[$i]['position']  = date("i", $epg[$i]['start_timestamp']) * 60;
+                        //$epg[$i]['media_len'] = $epg[$i]['stop_timestamp'] - $epg[$i]['start_timestamp'];
                     }else{
                         $epg[$i]['mark_archive'] = 0;
                     }
@@ -838,8 +838,8 @@ class Epg
                     ($archived_recs[$program[$i]['ch_id']]['wowza_archive'] && $program[$i]['start_timestamp'] < (time() - date("i")*60-date("s"))) ){
                     
                     $program[$i]['mark_archive'] = 1;
-                    $program[$i]['position']  = date("i", $program[$i]['start_timestamp']) * 60;
-                    $program[$i]['media_len'] = $program[$i]['stop_timestamp'] - $program[$i]['start_timestamp'];
+                    //$program[$i]['position']  = date("i", $program[$i]['start_timestamp']) * 60;
+                    //$program[$i]['media_len'] = $program[$i]['stop_timestamp'] - $program[$i]['start_timestamp'];
                 }else{
                     $program[$i]['mark_archive'] = 0;
                 }

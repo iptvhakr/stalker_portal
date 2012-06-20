@@ -142,7 +142,7 @@
         },
 
         get_filename_by_date : function(date){
-            _debug('tv_archive.get_filename_by_date', date);
+            _debug('tv_archive.get_filename_by_date', date.toString());
 
             _debug('stb.player.cur_tv_item', stb.player.cur_tv_item);
 

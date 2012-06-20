@@ -68,7 +68,7 @@ class RESTRequest extends APIRequest
     }
 
     public function getAccept(){
-        return $_SERVER['HTTP_ACCEPT'];
+        return empty($_SERVER['HTTP_ACCEPT']) ? 'application/json' : $_SERVER['HTTP_ACCEPT'];
     }
 
     public static function useMacIdentifiers(){
