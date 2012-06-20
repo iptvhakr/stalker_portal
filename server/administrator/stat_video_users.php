@@ -130,7 +130,10 @@ $rs = $db->executeQuery($query);
 <table border="0" align="center" width="620">
 <tr>
 <td>
-<font color="Gray">* <?= _('Counting if the movie playback is more than 70% of the total duration')?></font><br>
+<font color="Gray">* <?
+    /// xgettext:no-php-format
+    echo _('Counting if the movie playback is more than 70% of the total duration')
+    ?></font><br>
 <br>
 
 </td>

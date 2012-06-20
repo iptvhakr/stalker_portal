@@ -144,7 +144,7 @@ a:hover{
   </tr>
 
   <tr>
-    <td><div align="center"><?if (Config::get('enable_tariff_plans')){?><a href="tariffs.php"><?= _('TARIFFS')?></a><?}?></div></td>
+    <td><div align="center"><a href="tariffs.php"><?= _('TARIFFS')?></a></div></td>
     <td>&nbsp;</td>
     <td align="center"><?
     if (check_access(array(1,2))){

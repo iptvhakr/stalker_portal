@@ -262,7 +262,7 @@ $packages = Mysql::getInstance()->select('id, name')->from('services_package')->
 <table align="center" border="0" cellpadding="0" cellspacing="0">
     <tr>
         <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-            <font size="5px" color="White"><b>&nbsp;<?= _('TARIFF PLANS')?>&nbsp;</b></font>
+            <font size="5px" color="White"><b>&nbsp;&nbsp;<?= _('TARIFF PLANS')?> <? if (!Config::get('enable_tariff_plans')){ echo '('._('disabled').')'; } ?>&nbsp;&nbsp;</b></font>
         </td>
     </tr>
     <tr>

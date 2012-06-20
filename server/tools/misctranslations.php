@@ -101,6 +101,11 @@ _('music');
 _('business');
 _('culture');
 _('for adults');
+_('information-entertaining');
+_('religion');
+_('social');
+_("woman's");
+_('scientific-entertainment');
 
 /**
  * karaoke_genre table

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-14 17:53+0200\n"
-"PO-Revision-Date: 2012-06-20 15:04+0200\n"
+"POT-Creation-Date: 2012-06-20 16:54+0200\n"
+"PO-Revision-Date: 2012-06-20 16:54+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1074,6 +1074,7 @@ msgid "Sign in"
 msgstr "Вход"
 
 #: ../../../administrator/login.php:57
+#: ../../../administrator/profile.php:359
 msgid "Login"
 msgstr "Логин"
 
@@ -1135,82 +1136,86 @@ msgstr "Плейлист"
 msgid "Playlists"
 msgstr "Плейлисты"
 
-#: ../../../administrator/profile.php:29
+#: ../../../administrator/profile.php:30
 msgid "Tariff plan is changed, please restart your STB"
 msgstr "Тарифный план изменен. Пожалуйста, перезагрузите приставку."
 
-#: ../../../administrator/profile.php:206
+#: ../../../administrator/profile.php:209
 msgid "Change the video output on the"
 msgstr "Поменять видео выход на "
 
-#: ../../../administrator/profile.php:234
+#: ../../../administrator/profile.php:237
 msgid "Disabled"
 msgstr "Отключено"
 
-#: ../../../administrator/profile.php:238
+#: ../../../administrator/profile.php:241
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../../../administrator/profile.php:281
-#: ../../../administrator/profile.php:287
+#: ../../../administrator/profile.php:284
+#: ../../../administrator/profile.php:290
 msgid "User profile"
 msgstr "Профиль пользователя"
 
-#: ../../../administrator/profile.php:292
+#: ../../../administrator/profile.php:295
 msgid "Logs"
 msgstr "Логи"
 
-#: ../../../administrator/profile.php:331
+#: ../../../administrator/profile.php:334
 msgid "Reset to default password?"
 msgstr "Сбросить на пароль по умолчанию?"
 
-#: ../../../administrator/profile.php:331
-#: ../../../administrator/profile.php:335
+#: ../../../administrator/profile.php:334
+#: ../../../administrator/profile.php:338
 msgid "Reset"
 msgstr "Сбросить"
 
-#: ../../../administrator/profile.php:334
+#: ../../../administrator/profile.php:337
 msgid "favorite tv"
 msgstr "избранное тв"
 
-#: ../../../administrator/profile.php:335
+#: ../../../administrator/profile.php:338
 #, php-format
 msgid "%s channels"
 msgstr "%s канала"
 
-#: ../../../administrator/profile.php:335
+#: ../../../administrator/profile.php:338
 msgid "Reset favorite TV channels? The channels will be reset only if immediately restart the stb!"
 msgstr "Сбросить избранные ТВ каналы? Каналы полностью сбросятся только если сразу перезапустить приставку!"
 
-#: ../../../administrator/profile.php:348
+#: ../../../administrator/profile.php:351
 msgid "Full name"
 msgstr "ФИО"
 
-#: ../../../administrator/profile.php:356
+#: ../../../administrator/profile.php:367
+msgid "Account number"
+msgstr "Номер лицевого счета"
+
+#: ../../../administrator/profile.php:375
 msgid "Last change of status"
 msgstr "Изменение статуса"
 
-#: ../../../administrator/profile.php:416
+#: ../../../administrator/profile.php:435
 msgid "Tariff plan"
 msgstr "Тарифный план"
 
-#: ../../../administrator/profile.php:432
+#: ../../../administrator/profile.php:451
 msgid "Change"
 msgstr "Изменить"
 
-#: ../../../administrator/profile.php:441
+#: ../../../administrator/profile.php:460
 msgid "No packages available"
 msgstr "Нет доступных пакетов"
 
-#: ../../../administrator/profile.php:445
+#: ../../../administrator/profile.php:464
 msgid "Packages"
 msgstr "Пакеты"
 
-#: ../../../administrator/profile.php:471
+#: ../../../administrator/profile.php:490
 msgid "TV subscription"
 msgstr "Подписка на каналы"
 
-#: ../../../administrator/profile.php:474
+#: ../../../administrator/profile.php:493
 msgid "Additional services"
 msgstr "Доп. сервисы"
 
@@ -1296,7 +1301,7 @@ msgstr "Просмотром считается просмотр минимум 
 
 #: ../../../administrator/stat_anec_users.php:148
 #: ../../../administrator/stat_tv_users.php:142
-#: ../../../administrator/stat_video_users.php:143
+#: ../../../administrator/stat_video_users.php:146
 msgid "search by mac"
 msgstr "поиск по mac"
 
@@ -1307,7 +1312,7 @@ msgstr "поиск по mac"
 #: ../../../administrator/stat_video.php:193
 #: ../../../administrator/stat_video.php:204
 #: ../../../administrator/stat_video_genres.php:126
-#: ../../../administrator/stat_video_users.php:153
+#: ../../../administrator/stat_video_users.php:156
 msgid "Views"
 msgstr "Просмотров"
 
@@ -1430,7 +1435,8 @@ msgstr "Всего фильмов"
 msgid "Users video views statistics per month"
 msgstr "Статистика просмотра ВИДЕО за месяц"
 
-#: ../../../administrator/stat_video_users.php:133
+#: ../../../administrator/stat_video_users.php:135
+#, no-php-format
 msgid "Counting if the movie playback is more than 70% of the total duration"
 msgstr "Просмотром считается проигрывание фильма больше чем 70% от общей длительности"
 
@@ -1699,20 +1705,28 @@ msgstr "каталог"
 msgid "Total views per month"
 msgstr "Кол-во просмотров за месяц"
 
-#: ../../../administrator/user.php:24
+#: ../../../administrator/user.php:25
+msgid "Error: Login already in use"
+msgstr "Ошибка: Логин уже используется"
+
+#: ../../../administrator/user.php:34
+msgid "Error: could not create account"
+msgstr "Ошибка: невозможно создать учетную запись"
+
+#: ../../../administrator/user.php:39
 msgid "Error: Not all required fields are filled"
 msgstr "Ошибка: не все обязательные поля заполнены"
 
-#: ../../../administrator/user.php:32
-#: ../../../administrator/user.php:75
+#: ../../../administrator/user.php:47
+#: ../../../administrator/user.php:90
 msgid "User account"
 msgstr "Учетная запись пользователя"
 
-#: ../../../administrator/user.php:114
-msgid "Account number"
-msgstr "Номер лицевого счета"
+#: ../../../administrator/user.php:133
+msgid "MAC"
+msgstr ""
 
-#: ../../../administrator/user.php:118
+#: ../../../administrator/user.php:137
 msgid "Account disabled"
 msgstr "Учетная напись отключена"
 
@@ -2848,23 +2862,23 @@ msgstr "Вы успешно отключили данную услугу."
 msgid "An error in the management of subscriptions."
 msgstr "Ошибка во время управления услугами."
 
-#: ../../../lib/accountinfo.class.php:26
+#: ../../../lib/accountinfo.class.php:30
 msgid "account_payment_info"
 msgstr "Информация об оплате"
 
-#: ../../../lib/accountinfo.class.php:30
+#: ../../../lib/accountinfo.class.php:34
 msgid "account_agreement_info"
 msgstr "Договор"
 
-#: ../../../lib/accountinfo.class.php:34
+#: ../../../lib/accountinfo.class.php:38
 msgid "account_terms_info"
 msgstr "Правила пользования"
 
-#: ../../../lib/accountinfo.class.php:57
+#: ../../../lib/accountinfo.class.php:61
 msgid "Subscribed"
 msgstr "Подключено"
 
-#: ../../../lib/accountinfo.class.php:59
+#: ../../../lib/accountinfo.class.php:63
 msgid "Not subscribed"
 msgstr "Не подключено"
 
@@ -3197,8 +3211,9 @@ msgid "yesterday"
 msgstr "вчера"
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
-#: ../../../lib/video.class.php:87
+#: ../../../lib/video.class.php:88
 #: ../../../lib/vod.class.php:645
+#, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"
 
@@ -3527,119 +3542,139 @@ msgstr "культура"
 msgid "for adults"
 msgstr "для взрослых"
 
+#: ../../../tools/misctranslations.php:104
+msgid "information-entertaining"
+msgstr "информационно-развлекательный"
+
+#: ../../../tools/misctranslations.php:105
+msgid "religion"
+msgstr "религия"
+
+#: ../../../tools/misctranslations.php:106
+msgid "social"
+msgstr "социальный"
+
+#: ../../../tools/misctranslations.php:107
+msgid "woman's"
+msgstr "женский"
+
 #: ../../../tools/misctranslations.php:108
+msgid "scientific-entertainment"
+msgstr "научно-развлекательный"
+
+#: ../../../tools/misctranslations.php:113
 msgid "Pop"
 msgstr "Поп"
 
-#: ../../../tools/misctranslations.php:109
+#: ../../../tools/misctranslations.php:114
 msgid "Rock"
 msgstr "Рок"
 
-#: ../../../tools/misctranslations.php:110
+#: ../../../tools/misctranslations.php:115
 msgid "Chanson"
 msgstr "Шансон"
 
-#: ../../../tools/misctranslations.php:111
+#: ../../../tools/misctranslations.php:116
 msgid "From cartoon films"
 msgstr "Из мультфильмов"
 
-#: ../../../tools/misctranslations.php:112
+#: ../../../tools/misctranslations.php:117
 msgid "Nurseries"
 msgstr "Детские"
 
-#: ../../../tools/misctranslations.php:113
+#: ../../../tools/misctranslations.php:118
 msgid "National"
 msgstr "Народные"
 
-#: ../../../tools/misctranslations.php:114
+#: ../../../tools/misctranslations.php:119
 msgid "Jazz"
 msgstr "Джаз"
 
-#: ../../../tools/misctranslations.php:115
+#: ../../../tools/misctranslations.php:120
 msgid "From films"
 msgstr "Из кинофильмов"
 
-#: ../../../tools/misctranslations.php:120
+#: ../../../tools/misctranslations.php:125
 msgid "Clear"
 msgstr "Ясно"
 
-#: ../../../tools/misctranslations.php:121
+#: ../../../tools/misctranslations.php:126
 msgid "Partly Cloudy"
 msgstr "Переменная облачность"
 
-#: ../../../tools/misctranslations.php:122
+#: ../../../tools/misctranslations.php:127
 msgid "Cloudy"
 msgstr "Облачно"
 
-#: ../../../tools/misctranslations.php:123
+#: ../../../tools/misctranslations.php:128
 msgid "Overcast"
 msgstr "Пасмурно"
 
-#: ../../../tools/misctranslations.php:124
+#: ../../../tools/misctranslations.php:129
 msgid "Little rain"
 msgstr "Кратковременный дождь"
 
-#: ../../../tools/misctranslations.php:125
+#: ../../../tools/misctranslations.php:130
 msgid "Rain"
 msgstr "Дождь"
 
-#: ../../../tools/misctranslations.php:126
+#: ../../../tools/misctranslations.php:131
 msgid "Thunderstorm"
 msgstr "Гроза"
 
-#: ../../../tools/misctranslations.php:127
+#: ../../../tools/misctranslations.php:132
 msgid "Hail"
 msgstr "Пасмурно"
 
-#: ../../../tools/misctranslations.php:128
+#: ../../../tools/misctranslations.php:133
 msgid "Sleet"
 msgstr "Мокрый снег"
 
-#: ../../../tools/misctranslations.php:129
+#: ../../../tools/misctranslations.php:134
 msgid "Snow"
 msgstr "Снег"
 
-#: ../../../tools/misctranslations.php:130
+#: ../../../tools/misctranslations.php:135
 msgid "Snowfall"
 msgstr "Снегопад"
 
 #. / North
-#: ../../../tools/misctranslations.php:133
+#: ../../../tools/misctranslations.php:138
 msgid "N"
 msgstr "С"
 
 #. / North-East
-#: ../../../tools/misctranslations.php:135
+#: ../../../tools/misctranslations.php:140
 msgid "NE"
 msgstr "СВ"
 
 #. / East
-#: ../../../tools/misctranslations.php:137
+#: ../../../tools/misctranslations.php:142
 msgid "E"
 msgstr "В"
 
 #. / South-East
-#: ../../../tools/misctranslations.php:139
+#: ../../../tools/misctranslations.php:144
 msgid "SE"
 msgstr "ЮВ"
 
 #. / South
-#: ../../../tools/misctranslations.php:141
+#: ../../../tools/misctranslations.php:146
 msgid "S"
 msgstr "Ю"
 
 #. / South-West
-#: ../../../tools/misctranslations.php:143
+#: ../../../tools/misctranslations.php:148
 msgid "SW"
 msgstr "ЮЗ"
 
 #. / West
-#: ../../../tools/misctranslations.php:145
+#: ../../../tools/misctranslations.php:150
 msgid "W"
 msgstr "З"
 
 #. / North-West
-#: ../../../tools/misctranslations.php:147
+#: ../../../tools/misctranslations.php:152
 msgid "NW"
 msgstr "СЗ"
 

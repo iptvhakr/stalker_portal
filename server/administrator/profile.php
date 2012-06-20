@@ -24,9 +24,11 @@ if (!empty($_POST['change_tariff_plan'])){
 
     Mysql::getInstance()->update('users', array('tariff_plan_id' => intval($_POST['tariff_plan_id'])), array('id' => intval($_GET['id'])));
 
-    $event = new SysEvent();
-    $event->setUserListById(array(intval($_GET['id'])));
-    $event->sendMsgAndReboot(_('Tariff plan is changed, please restart your STB'));
+    if (Config::get('enable_tariff_plans')){
+        $event = new SysEvent();
+        $event->setUserListById(array(intval($_GET['id'])));
+        $event->sendMsgAndReboot(_('Tariff plan is changed, please restart your STB'));
+    }
 
     header("Location: profile.php?id=".@$_GET['id']);
     exit;

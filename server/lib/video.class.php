@@ -84,6 +84,7 @@ class Video
     public function filterList($list){
 
         for ($i = 0; $i < count($list); $i++){
+            /// xgettext:no-php-format
             $list[$i]['name']   = sprintf(_('video_name_format'), $list[$i]['name'], $list[$i]['o_name']);
             $list[$i]['genres'] = implode(', ',
                 array_map(
