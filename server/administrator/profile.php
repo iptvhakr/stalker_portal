@@ -61,7 +61,8 @@ if (@$_POST['account']){
     Mysql::getInstance()->update('users',
         array(
             'fname'  => $_POST['fname'],
-            'phone' =>  $_POST['phone']
+            'phone'  => $_POST['phone'],
+            'ls'     => $_POST['ls']
         ),
         array('id' => intval($_GET['id'])));
 
