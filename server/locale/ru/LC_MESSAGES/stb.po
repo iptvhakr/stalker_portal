@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-14 17:53+0200\n"
-"PO-Revision-Date: 2012-06-19 13:44+0200\n"
+"PO-Revision-Date: 2012-06-20 15:04+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1431,7 +1431,6 @@ msgid "Users video views statistics per month"
 msgstr "Статистика просмотра ВИДЕО за месяц"
 
 #: ../../../administrator/stat_video_users.php:133
-#, php-format
 msgid "Counting if the movie playback is more than 70% of the total duration"
 msgstr "Просмотром считается проигрывание фильма больше чем 70% от общей длительности"
 
@@ -3200,7 +3199,6 @@ msgstr "вчера"
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
 #: ../../../lib/video.class.php:87
 #: ../../../lib/vod.class.php:645
-#, php-format
 msgid "video_name_format"
 msgstr "%1$s"
 
