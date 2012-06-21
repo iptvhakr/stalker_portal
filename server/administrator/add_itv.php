@@ -141,7 +141,7 @@ if (!$error){
                                         '".$bonus_ch."',
                                         '".$hd."',
                                         '".@$_POST['cost']."',
-                                        '".(empty($_GET['cmd']) ? $_POST['cmd_1'] : $_GET['cmd'])."',
+                                        '".(empty($_POST['cmd']) ? $_POST['cmd_1'] : $_POST['cmd'])."',
                                         '".@$_POST['cmd_1']."',
                                         '".@$_POST['cmd_2']."',
                                         '".@$_POST['cmd_3']."',
@@ -230,7 +230,7 @@ if (!$error){
 
             $query = "update itv 
                                 set name='".$_POST['name']."',
-                                cmd='".(empty($_GET['cmd']) ? $_POST['cmd_1'] : $_GET['cmd'])."',
+                                cmd='".(empty($_POST['cmd']) ? $_POST['cmd_1'] : $_POST['cmd'])."',
                                 cmd_1='".@$_POST['cmd_1']."',
                                 cmd_2='".@$_POST['cmd_2']."',
                                 cmd_3='".@$_POST['cmd_3']."',
@@ -383,6 +383,105 @@ a:hover{
 <?= _('IPTV channels')?>
 </title>
 <script type="text/javascript" src="js.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript">
+
+    jQuery.fn.sortElements = (function(){
+
+        var sort = [].sort;
+
+        return function(comparator, getSortable) {
+
+            getSortable = getSortable || function(){return this;};
+
+            var placements = this.map(function(){
+
+                var sortElement = getSortable.call(this),
+                    parentNode = sortElement.parentNode,
+
+                // Since the element itself will change position, we have
+                // to have some way of storing its original position in
+                // the DOM. The easiest way is to have a 'flag' node:
+                    nextSibling = parentNode.insertBefore(
+                        document.createTextNode(''),
+                        sortElement.nextSibling
+                    );
+
+                return function() {
+
+                    if (parentNode === this) {
+                        throw new Error(
+                            "You can't sort elements if any one is a descendant of another."
+                        );
+                    }
+
+                    // Insert before flag:
+                    parentNode.insertBefore(this, nextSibling);
+                    // Remove flag:
+                    parentNode.removeChild(nextSibling);
+
+                };
+
+            });
+
+            return sort.call(this, comparator).each(function(i){
+                placements[i].call(getSortable.call(this));
+            });
+
+        };
+
+    })();
+
+    $(function(){
+
+        var table = $('.item_list');
+
+        $('.item_list th')
+            .each(function(){
+
+                var th = $(this),
+                    thIndex = th.index(),
+                    inverse = false;
+
+                if (thIndex == 1){
+                    inverse = true;
+                }
+
+                th.click(function(){
+
+                    table.find('td').filter(function(){
+
+                        return $(this).index() === thIndex;
+
+                    }).sortElements(function(a, b){
+
+                        // todo: sort numbers
+                        if (th.hasClass('number_row')){
+                            return parseInt($.text([a]), 10) > parseInt($.text([b]), 10) ?
+                                inverse ? -1 : 1
+                                : inverse ? 1 : -1
+                        }else{
+                            return $.text([a]) > $.text([b]) ?
+                                inverse ? -1 : 1
+                                : inverse ? 1 : -1
+                        }
+
+                    }, function(){
+
+                        // parentNode is the element we want to move
+                        return this.parentNode;
+
+                    });
+
+                    inverse = !inverse;
+                    $('.order').remove();
+
+                    th.append(' <span class="order">' + (inverse ? '&darr;' : '&uarr;') + '</span>');
+                });
+            });
+    });
+</script>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
@@ -416,17 +515,17 @@ $query = "select itv.*, tv_genre.title as genres_name, media_claims.media_type, 
 //echo $query;
 
 $rs=$db->executeQuery($query);
-echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
+echo "<center><table class='list item_list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
-echo "<td class='list'><b>id</b></td>";
-echo "<td class='list'><b>"._('Number')."</b></td>";
-echo "<td class='list'><b>"._('Service code')."</b></td>";
-echo "<td class='list'><b>"._('Name')."</b></td>";
-echo "<td class='list'><b>"._('URL')."</b></td>";
-echo "<td class='list'><b>"._('Genre')."</b></td>";
-echo "<td class='list'><b>"._('Volume correction')."</b></td>";
-echo "<td class='list'><b>"._('Claims about<br>audio/video')."</b></td>\n";
-echo "<td class='list'><b>&nbsp;</b></td>";
+echo "<th class='list number_row'><b>id</b></th>";
+echo "<th class='list number_row'><b>"._('Number')."</b> <span class='order'>&darr;</span></th>";
+echo "<th class='list'><b>"._('Service code')."</b></th>";
+echo "<th class='list'><b>"._('Name')."</b></th>";
+echo "<th class='list'><b>"._('URL')."</b></th>";
+echo "<th class='list'><b>"._('Genre')."</b></th>";
+echo "<th class='list'><b>"._('Volume correction')."</b></th>";
+echo "<th class='list'><b>"._('Claims about<br>audio/video')."</b></th>\n";
+echo "<th class='list'><b>&nbsp;</b></th>";
 echo "</tr>";
 while(@$rs->next()){
     
