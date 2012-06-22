@@ -108,7 +108,7 @@ class Epg
 
             if ($itv_id_arr){
 
-                $correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id_arr[0]))->get()->first('correct_time');
+                ///$correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id_arr[0]))->get()->first('correct_time');
 
                 $start = strtotime(strval($programme->attributes()->start));
                 $stop  = strtotime(strval($programme->attributes()->stop));
@@ -257,11 +257,16 @@ class Epg
         $from = $date." 00:00:00";
         $to   = $date." 23:59:59";
 
-        if (!@$this->cleaned_epg[$itv_id]){
+        /*if (!@$this->cleaned_epg[$itv_id]){
+            $this->cleaned_epg[$itv_id] = array();
+        }*/
+
+        if (!array_key_exists($itv_id, $this->cleaned_epg)){
             $this->cleaned_epg[$itv_id] = array();
         }
 
-        if (!@$this->cleaned_epg[$itv_id][$date]){
+        //if (!@$this->cleaned_epg[$itv_id][$date]){
+        if (!array_key_exists($date, $this->cleaned_epg[$itv_id])){
             $this->cleaned_epg[$itv_id] = array($date => 1);
 
             $this->db->delete('epg',
