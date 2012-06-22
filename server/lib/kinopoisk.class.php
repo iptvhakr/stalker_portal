@@ -9,6 +9,15 @@ class Kinopoisk
         $movie_url = 'http://www.kinopoisk.ru/level/1/film/'.$id.'/';
 
         $movie_info['kinopoisk_url'] = $movie_url;
+        $movie_info['cover'] = 'http://st.kinopoisk.ru/images/film/'.$id.'.jpg';
+
+        $cover_big_url = 'http://st.kinopoisk.ru/images/film_big/'.$id.'.jpg';
+
+        $big_cover_headers = get_headers($cover_big_url);
+
+        if ($big_cover_headers !== false && strpos($big_cover_headers[0], '302') === false){
+            $movie_info['cover_big'] = $cover_big_url;
+        }
 
         $ch = curl_init();
 

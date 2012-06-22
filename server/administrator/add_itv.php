@@ -480,6 +480,12 @@ a:hover{
                     th.append(' <span class="order">' + (inverse ? '&darr;' : '&uarr;') + '</span>');
                 });
             });
+
+        $('.add_btn').click(function(){
+            var new_position = $('.itv_form').offset();
+            window.scrollTo(new_position.left, new_position.top);
+            return false;
+        });
     });
 </script>
 </head>
@@ -492,7 +498,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="#" class="add_btn"><?= _('Add')?></a>
     </td>
 </tr>
 <tr>
@@ -773,7 +779,7 @@ function delete_logo(id){
 </tr>
 <tr>
     <td>
-    <form id="form_" method="POST" enctype="multipart/form-data">
+    <form id="form_" class="itv_form" method="POST" enctype="multipart/form-data">
     <table align="center">
         <tr>
            <td align="right">

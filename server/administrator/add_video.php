@@ -173,6 +173,41 @@ if (count(@$_POST) > 0){
                 }
             }
         }
+
+        if ((empty($_FILES['screenshot']) || empty($_FILES['screenshot']['tmp_name'])) && !empty($_POST['cover_big'])){
+
+            try{
+                $cover = new Imagick($_POST['cover_big']);
+            }catch(ImagickException $e){
+                $error = _('Error: '.$e->getMessage());
+            }
+
+            if ($cover){
+
+                if (!$cover->resizeImage(240,320,Imagick::FILTER_LANCZOS,1)){
+                    $error = _('Error: could not resize cover');
+                }
+
+                $cover_filename = substr($_POST['cover_big'], strrpos($_POST['cover_big'], '/')+1);
+
+                $cover_id = Mysql::getInstance()->insert('screenshots', array('name' => $cover_filename))->insert_id();
+
+                if (empty($_SESSION['upload'])){
+                    $_SESSION['upload'] = array();
+                }
+
+                $_SESSION['upload'][] = $cover_id;
+
+                $img_path = get_save_folder($cover_id);
+                umask(0);
+
+                if (!$error && !$cover->writeImage($img_path.'/'.$cover_id.'.jpg')){
+                    $error = _('Error: could not save cover image');
+                }
+
+                $cover->destroy();
+            }
+        }
         
         $type = '';
         
@@ -330,11 +365,18 @@ if (count(@$_POST) > 0){
                     $video_id = mysql_insert_id();
                     
                     if(@$_SESSION['upload']){
-                        $query = 'UPDATE screenshots SET media_id=\''.mysql_insert_id().'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
+                        $query = 'DELETE from screenshots where media_id=\''.$video_id.'\' and id not IN ('.implode(',', $_SESSION['upload']).')';
+                        $rs=$db->executeQuery($query);
+
+                        $query = 'UPDATE screenshots SET media_id=\''.$video_id.'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
                         $rs=$db->executeQuery($query);
                         unset($_SESSION['upload']);
                     }
-                    
+
+                    if ((empty($_FILES['screenshot']) || empty($_FILES['screenshot']['tmp_name'])) && empty($_POST['cover_big']) && empty($_POST['cover_id'])){
+                        Mysql::getInstance()->delete('screenshots', array('media_id' => $video_id));
+                    }
+
                     add_video_log('add', $rs->getLastInsertId());
 
                     //header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
@@ -383,11 +425,19 @@ if (count(@$_POST) > 0){
                     //echo $query; exit;
                     $rs=$db->executeQuery($query);
                     add_video_log('edit', intval(@$_GET['id']));
+
+                    $query = 'DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.implode(',', $_SESSION['upload']).')';
+                    $rs=$db->executeQuery($query);
+
                     $query = 'UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
                     //echo $query;
                     $rs=$db->executeQuery($query);
         
                     unset($_SESSION['upload']);
+
+                    if ((empty($_FILES['screenshot']) || empty($_FILES['screenshot']['tmp_name'])) && empty($_POST['cover_big']) && empty($_POST['cover_id'])){
+                        Mysql::getInstance()->delete('screenshots', array('media_id' => intval(@$_GET['id'])));
+                    }
 
                     //header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".$_GET['page']);
                     //exit;
@@ -890,6 +940,14 @@ if (@$_GET['edit']){
         $hd       = $arr['hd'];
         $rtsp_url = $arr['rtsp_url'];
         $protocol = $arr['protocol'];
+
+        $cover_id = (int) Mysql::getInstance()->from('screenshots')->where(array('media_id' => $item['id']))->get()->first('id');
+
+        if ($cover_id){
+            $dir_name = ceil($cover_id/100);
+            $cover_big = Config::get('screenshots_url').$dir_name;
+            $cover_big .= '/'.$cover_id.'.jpg';
+        }
         
         $for_sd_stb = $arr['for_sd_stb'];
         
@@ -910,7 +968,7 @@ if (@$_GET['edit']){
     $rs=$db->executeQuery($query);
     while(@$rs->next()){
         $arr=$rs->getCurrentValuesAsHash();
-        $_SESSION['upload'][] = $arr['id'];
+        //$_SESSION['upload'][] = $arr['id'];
     }
 }
 
@@ -1633,6 +1691,19 @@ function check_kinopoisk_info(orig_name){
         var result = response.result;
 
         if (result){
+
+            if (result.hasOwnProperty('cover_big')){
+                $('.cover_block').html('<img src="'+result['cover_big']+'" width="240" height="320" style="float:left"/>' +
+                    '<div style="float:left"><a href="#" class="del_cover">x</a></div>');
+                $('.screenshot').hide();
+                $('.cover_id').val('');
+            }/*else{
+                $('.cover_block').html('');
+                $('.cover_big').val('');
+                $('.cover_id').val('');
+                $('.screenshot').show();
+            }*/
+
             for (var id in result){
                 if (result.hasOwnProperty(id)){
                     //console.log(id, result[id]);
@@ -1677,6 +1748,14 @@ function check_kinopoisk_rating(orig_name){
 }
 
 $(function(){
+
+    $(".del_cover").live('click', function(){
+        $('.cover_block').html('');
+        $('.cover_big').val('');
+        $('.cover_id').val('');
+        $('.screenshot').show();
+        return false;
+    });
 
     $(".get_info").click(function(){
         $('.get_info').hide();
@@ -1931,14 +2010,21 @@ $(function(){
            </td>
         </tr>   
         <tr>
-           <td align="right">
+           <td align="right" valign="top">
             <?= _('Cover')?>:
            </td>
            <td>
-            <input name="screenshot" size="27" type="file"><!--<input type="submit" value="<?/*= _('Upload')*/?>" name="load" >-->
+            <input name="screenshot" class="screenshot" size="27" type="file" style="<?= !empty($cover_big) ? 'display:none' : '' ?>">
+            <input type="hidden" name="cover_big" class="cover_big">
+            <input type="hidden" name="cover_id" class="cover_id" value="<?= @$cover_id?>">
+            <div class="cover_block"><?
+                if (!empty($cover_big)){
+                    echo '<img src="'.$cover_big.'" width="240" height="320" style="float:left"/><div style="float:left"><a href="#" class="del_cover">x</a></div>';
+                }
+            ?></div>
            </td>
         </tr>
-        <tr>
+        <tr style="display: none;">
            <td align="right">
            
            </td>
