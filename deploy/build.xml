@@ -99,6 +99,19 @@
             </then>
         </if>
 
+        <echo msg="${project_path}"/>
+
+        <if>
+            <isset property="customization_path"/>
+            <then>
+                <resolvepath propertyName="clear_customization_path" file="${customization_path}/"/>
+                <exec command="cp -r ${clear_customization_path}/* ${project_path}" level="info"/>
+            </then>
+
+        </if>
+
+        <exec command="/etc/init.d/apache2 restart" level="info"/>
+
     </target>
 
 </project>
