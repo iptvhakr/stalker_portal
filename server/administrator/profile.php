@@ -255,7 +255,8 @@ while(@$rs->next()){
         $ip  = $arr['ip'];
         $video_out  = $arr['video_out'];
         $parent_password  = $arr['parent_password'];
-        $tariff_plan_id  = $arr['tariff_plan_id'];
+        //$tariff_plan_id  = $arr['tariff_plan_id'];
+        $tariff_plan_id  = User::getInstance((int) $arr['id'])->getProfileParam('tariff_plan_id');
 }
 
 $rs=$db->executeQuery("select * from fav_itv where uid=".$id);

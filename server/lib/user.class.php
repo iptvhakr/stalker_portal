@@ -23,6 +23,10 @@ class User
         $this->id = (int) $uid;
 
         $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
+
+        if ($this->profile['tariff_plan_id'] == 0){
+            $this->profile['tariff_plan_id'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
+        }
     }
 
     public function getId(){
@@ -31,6 +35,10 @@ class User
 
     public function getMac(){
         return $this->profile['mac'];
+    }
+
+    public function getProfileParam($param){
+        return $this->profile[$param];
     }
 
     public function getVideoFavorites(){
@@ -233,6 +241,10 @@ class User
             ->first();
 
         $info['status'] = intval(!$info['status']);
+
+        if ($info['tariff_plan_id'] == 0){
+            $info['tariff_plan_id'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
+        }
 
         $packages = $this->getPackages();
 

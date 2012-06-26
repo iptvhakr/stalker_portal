@@ -21,6 +21,7 @@ if (!empty($_POST['add']) && !empty($_POST['name'])){
 
     $plan_id = Mysql::getInstance()->insert('tariff_plan', array(
         'name' => $_POST['name'],
+        'user_default' => empty($_POST['user_default']) ? 0 : 1,
         'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id']
     ))->insert_id();
 
@@ -48,6 +49,7 @@ if (!empty($id)){
 
         Mysql::getInstance()->update('tariff_plan', array(
             'name' => $_POST['name'],
+            'user_default' => empty($_POST['user_default']) ? 0 : 1,
             'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id']
         ), array('id' => $id));
 
@@ -81,7 +83,7 @@ if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
     $action_value = _('Save');
     $edit_tariff = Mysql::getInstance()->from('tariff_plan')->where(array('id' => $id))->get()->first();
-
+    //var_dump($edit_tariff);
     $default_packages = Mysql::getInstance()->select('package_id as id, optional')->from('package_in_plan')->where(array('plan_id' => $id))->get()->all();
 
     $default_packages = array_map(function($package){
@@ -92,6 +94,8 @@ if (@$_GET['edit'] && !empty($id)){
 }else{
     $default_packages = array();
 }
+
+$user_default_tariff_id = Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
 
 $packages = Mysql::getInstance()->select('id, name')->from('services_package')->get()->all();
 
@@ -291,7 +295,7 @@ $packages = Mysql::getInstance()->select('id, name')->from('services_package')->
                 </tr>
                 <?
                 foreach ($tariff_plans as $plan){
-                    echo '<tr>';
+                    echo '<tr '.($plan['user_default'] == 1 ? 'style="background-color: #ecffec;"' : '').'>';
                     echo '<td>'.$plan['external_id'].'</td>';
                     echo '<td>'.$plan['name'].'</td>';
                     echo '<td>';
@@ -317,6 +321,15 @@ $packages = Mysql::getInstance()->select('id, name')->from('services_package')->
                     <tr>
                         <td><?= _('Title')?></td>
                         <td><input type="text" name="name" value="<?= @$edit_tariff['name']?>"></td>
+                    </tr>
+                    <tr>
+                        <td><?= _('Use as default')?></td>
+                        <td><input type="checkbox"
+                                   name="user_default"
+                                   value="1"
+                                   <?= (!empty($edit_tariff['user_default']) && $edit_tariff['user_default'] == 1 ? 'checked="checked"' : '')?>
+                                   <?= (!empty($user_default_tariff_id) && (empty($edit_tariff) || $user_default_tariff_id != $edit_tariff['id'])? 'disabled="disabled"' : '') ?>
+                            ></td>
                     </tr>
                     <tr>
                         <td><?= _('Packages')?></td>
