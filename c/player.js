@@ -1368,6 +1368,8 @@ player.prototype.init_show_info = function(){
     this.info.dom_obj = create_block_element("osd_info");
     
     this.info.clock = create_block_element("osd_info_clock", this.info['dom_obj']);
+
+    this.info.time_shift_mark = create_block_element("osd_info_time_shift_mark", this.info['dom_obj']);
     
     this.info.title = create_block_element("osd_info_title", this.info['dom_obj']);
     
@@ -1503,7 +1505,13 @@ player.prototype.show_info = function(item){
         }else{
             this.info.pos_series.innerHTML = '';
         }
-        
+
+        if (item.enable_tv_archive == 1 && module.time_shift){
+            this.info.time_shift_mark.show();
+        }else{
+            this.info.time_shift_mark.hide();
+        }
+
         var self = this;
         
         this.info.hide_timeout = window.setTimeout(function(){

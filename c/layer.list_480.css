@@ -363,6 +363,14 @@
     float: left;
 }
 
+.osd_info_time_shift_mark{
+    float: left;
+    width: 23px;
+    height: 30px;
+    background: url("i_480/mb_icons.png") no-repeat -175px -22px;
+    margin: 13px 0 0 3px;
+}
+
 .osd_info_title{
     /*position: absolute;
     top: 14px;
