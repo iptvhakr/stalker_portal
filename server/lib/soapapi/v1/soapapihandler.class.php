@@ -208,6 +208,7 @@ class AccountInfo
  * Account complex type
  *
  * @pw_element string $login
+ * @pw_set minoccurs=0
  * @pw_element string $password
  * @pw_set minoccurs=0
  * @pw_element string $full_name

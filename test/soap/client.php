@@ -31,6 +31,10 @@ class SoapApiTest extends PHPUnit_Framework_TestCase
 
     }
 
+    /*public function testCut(){
+        $result = $this->test_client->UpdateAccount(array('login' => 1564, 'status' => 1));
+    }*/
+
     public function testCreateAccount(){
         $result = $this->test_client->CreateAccount($this->test_account);
         $this->assertTrue($result);

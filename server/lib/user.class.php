@@ -323,7 +323,11 @@ class User
         $new_account = array_intersect_key($account, $allowed_fields);
 
         if (isset($account['status'])){
-            $new_account['status'] = intval(!$account['status']);
+            $this->setStatus($account['status']);
+
+            if (empty($new_account)){
+                return true;
+            }
         }
 
         foreach ($new_account as $key => $value){
@@ -382,6 +386,26 @@ class User
 
     public function delete(){
         return Mysql::getInstance()->delete('users', array('id' => $this->id))->result();
+    }
+
+    public function setStatus($status){
+
+        $status = intval(!$status);
+
+        if ($status == $this->profile['status']){
+            return;
+        }
+
+        Mysql::getInstance()->update('users', array('status' => $status), array('id' => $this->id));
+
+        $event = new SysEvent();
+        $event->setUserListById($this->id);
+
+        if ($status == 1){
+            $event->sendCutOff();
+        }else{
+            $event->sendCutOn();
+        }
     }
 
     public function updateOptionalPackageSubscription($params){
