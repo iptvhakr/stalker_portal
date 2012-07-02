@@ -1164,7 +1164,49 @@ app.player={
                         ]};
                     app.views.addElement(div,d);
                 }
-                break;   
+                break;
+                case "3dmode":
+                    app.keypress.als_layer=3;
+                    app.keypress.als_max_v=4;
+                    for(var i=1;i<=4;i++){
+                        div={
+                                'tag':'div',
+                                'attrs':{
+                                'id':'ars_line_'+i,
+                                'class':'als_line',
+                                'style':'width: 300px; height: 26px; '
+                                },
+                                'child':[
+                                {
+                                    'tag':'div',
+                                    'attrs':{
+                                        'class':'als_midline_left'
+                                    },
+                                    'child':[
+                                        {
+                                        'tag':'div',
+                                        'attrs':{
+                                            'id':"ars_img_"+i,
+                                            'class':'ars_img',
+                                        }
+                                        },
+                                        {'tag':'div',
+                                        'attrs':{
+                                            'html':lang.mode+" "+i
+                                        }}
+                                    ]
+                                },
+                                {
+                                    'tag':'div',
+                                    'attrs':{
+                                        'class':'als_midline_right'
+                                    }
+                                }
+                                ]};
+                        app.views.addElement(div,d);
+                    }
+                        
+                       
         }
         log(app.keypress.als_index_v)
         if($('ars_img_'+app.keypress.als_index_v))$('ars_img_'+app.keypress.als_index_v).className='ars_img_a';

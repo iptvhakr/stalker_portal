@@ -636,6 +636,29 @@ var plsobj = {
                         ]
                      },
                      {
+                        'tag':'div',
+                        'attrs':{
+                        'id':'als_line_3',
+                        'class':'als_line',
+                        'style':'width: 300px; height: 26px; '
+                        },
+                        'child':[
+                        {
+                            'tag':'div',
+                            'attrs':{
+                                'class':'als_midline_left',
+                                'html':' {$3dmode$}'
+                               }
+                        },
+                        {
+                            'tag':'div',
+                            'attrs':{
+                                'class':'als_midline_right'
+                            }
+                        }
+                        ]
+                     },
+                     {
                      'tag':'div',
                      'attrs':{
                          'style':'width: 300px; height: 15px;'

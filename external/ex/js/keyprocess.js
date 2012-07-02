@@ -113,6 +113,8 @@ app.keypress={
     
     "als_index_h":1,
     "als_index_v":1,
+    "ars_index_v":1,
+    "ars_max_v":3,
     "als_layer":1,
     "als_max_v":0,
     "als_active_audio":-1,
@@ -127,8 +129,32 @@ app.keypress={
     "als_vert":function(a){
         switch(app.keypress.als_index_h){
             case 1:
-                if(a==-1){$('acs_form').style.marginTop='15px';$('ars_form').style.marginTop='0px';$('als_line_1').className='als_line_a';$('als_line_2').className='als_line';app.player.InfoMenu('audio',app.keypress.audio_langv);}
-                else {$('acs_form').style.marginTop='45px';$('ars_form').style.marginTop='30px';$('als_line_2').className='als_line_a';$('als_line_1').className='als_line';app.player.InfoMenu('subtitles',app.keypress.subtitri_langv);}
+                app.keypress.ars_index_v+=a;
+                if(app.keypress.ars_index_v<1)app.keypress.ars_index_v=1;else if(app.keypress.ars_index_v>app.keypress.ars_max_v)app.keypress.ars_index_v=app.keypress.ars_max_v;
+                switch(app.keypress.ars_index_v){
+                case 1:
+                    $('acs_form').style.marginTop='15px';
+                    $('ars_form').style.marginTop='0px';
+                    $('als_line_1').className='als_line_a';
+                    $('als_line_2').className='als_line';
+                    app.player.InfoMenu('audio',app.keypress.audio_langv);
+                    break;
+                case 2:
+                    $('acs_form').style.marginTop='45px';
+                    $('ars_form').style.marginTop='30px';
+                    $('als_line_2').className='als_line_a';
+                    $('als_line_1').className='als_line';
+                    $('als_line_3').className='als_line';
+                    app.player.InfoMenu('subtitles',app.keypress.subtitri_langv);
+                    break;
+                case 3:
+                    $('acs_form').style.marginTop='75px';
+                    $('ars_form').style.marginTop='60px';
+                    $('als_line_3').className='als_line_a';
+                    $('als_line_2').className='als_line';
+                    app.player.InfoMenu('3dmode');
+                    break;
+                }
                 break;
             case 2:
                 if($('ars_line_'+app.keypress.als_index_v)){$('ars_line_'+app.keypress.als_index_v).className='als_line';
@@ -158,6 +184,11 @@ app.keypress={
                 app.keypress.als_on=true;
                 stb.SetSubtitlePID(app.keypress.subtitri_langv[app.keypress.als_active_subt].pid);}
                 else {stb.SetSubtitles(false);app.keypress.als_on=false;}
+                break;
+            case 3:
+                document.getElementsByClassName('ars_img_a')[0].className='ars_img';
+                $('ars_img_'+app.keypress.als_index_v).className='ars_img_a';
+                stb.Set3DConversionMode(app.keypress.als_index_v-1);
                 break;
         }
         else {app.keypress.als_hor(1);}
@@ -549,11 +580,11 @@ app.keypress={
                 'tag':'div',
                 'attrs':{
                     'id':'aspectdiv',
-                    'style':'width: 131px; height:41px; position:absolute;position:absolute; top: 50px; right:50px;'
+                    'style':'width: 210px; height:41px; position:absolute;position:absolute; top: 70px; right:70px;'
                 }
             };
             document.body.appendChild(app.views.createHTMLFromObj(aspect_obj));
-            $('aspectdiv').style.backgroundImage = 'url(img/aspect/'+aspect_array[cur_aspect].img+'.png)';
+            $('aspectdiv').style.background = 'url(img/aspect/'+as.cur_lang+'/'+aspect_array[cur_aspect].img+'.png) 50% 50% no-repeat';
             app.keypress.aspect_timer = setTimeout(function(){
                 if($('aspectdiv')){
                     document.body.removeChild($('aspectdiv'));

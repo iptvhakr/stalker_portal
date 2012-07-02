@@ -34,6 +34,8 @@ var lang = {
 	"mes":"Message",
 	"subt":"Subtitles",
 	"audio":"Audio track",
+        "3dmode":"3D mode",
+        "mode":"Mode",
 	"off":"Off",
 	"unk":"Unknown",
 	"nota":"None"
