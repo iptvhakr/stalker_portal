@@ -354,7 +354,14 @@ class Stb
             }
         }
 
-        return Mysql::getInstance()->insert('users', $data)->insert_id();
+        $user_id = Mysql::getInstance()->insert('users', $data)->insert_id();
+
+        if ($user_id && !empty($data['password'])){
+            $password = md5(md5($data['password']).$user_id);
+            Mysql::getInstance()->update('users', array('password' => $password), array('id' => $user_id));
+        }
+
+        return $user_id;
     }
     
     private function initProfile($login = null, $password = null){
@@ -375,8 +382,7 @@ class Stb
                     'mac'  => $this->mac,
                     'name' => substr($this->mac, 12, 16)),
                 array(
-                     'login'    => $login,
-                     'password' => $password));
+                     'login' => $login));
 
             $uid = intval(Mysql::getInstance()->from('users')->where(array('mac' => $this->mac))->get()->first('id'));
         }

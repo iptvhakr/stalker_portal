@@ -10,7 +10,12 @@ if (empty($_REQUEST['login']) || empty($_REQUEST['password'])){
 $login    = $_REQUEST['login'];
 $password = $_REQUEST['password'];
 
-$user = Mysql::getInstance()->from('users')->where(array('login' => $login, 'password' => $password, 'mac' => ''))->get()->first();
+$possible_user = Mysql::getInstance()->from('users')->where(array('login' => $login, 'mac' => ''))->get()->first();
+
+if ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
+    || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){
+    $user = $possible_user;
+}
 
 if (empty($user)){
     echo error("User not exist or login-password mismatch");
