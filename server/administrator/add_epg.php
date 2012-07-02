@@ -166,6 +166,8 @@ function construct_DD(){
     }else{
         $day = $_GET['dd'];
     }
+
+    $dd = '';
     
     for ($i=1;$i<=31;$i++){
         if ($i == $day) {

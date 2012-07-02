@@ -17,7 +17,7 @@ class RemotePvr extends AjaxResponse
         $master = new StreamRecorder();
 
         try {
-            $res = $master->play($media_id, 0, false);
+            $res = $master->play($media_id, 0, false, $item['storage_name']);
         }catch (Exception $e){
             trigger_error($e->getMessage());
         }
@@ -34,7 +34,14 @@ class RemotePvr extends AjaxResponse
     }
 
     public static function getById($id){
-        return Mysql::getInstance()->from('users_rec')->where(array('id' => intval($id)))->get()->first();
+        //return Mysql::getInstance()->from('users_rec')->where(array('id' => intval($id)))->get()->first();
+        return Mysql::getInstance()
+            ->select('users_rec.*, rec_files.storage_name as storage_name')
+            ->from('users_rec')
+            ->join('rec_files', 'users_rec.file_id', 'rec_files.id', 'LEFT')
+            ->where(array('users_rec.id' => intval($id)))
+            ->get()
+            ->first();
     }
 
     public function getOrderedList(){
