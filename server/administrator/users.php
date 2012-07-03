@@ -414,7 +414,7 @@ $MAX_PAGE_ITEMS = 30;
 
 $where = '';
 if ($search){
-    $where = 'where mac like "%'.$search.'%" or ip like "%'.$search.'%"';
+    $where = 'where mac like "%'.$search.'%" or ip like "%'.$search.'%" or login like "%'.$search.'%" or ls like "%'.$search.'%"';
 }
 $from_time = construct_time();
 if ($from_time){
@@ -492,6 +492,10 @@ switch (@$_GET['sort_by']){
             add_where($where, " keep_alive>'$now_time' and now_playing_type=11 order by id");
             break;
         }
+    case 'records':{
+            add_where($where, " keep_alive>'$now_time' and now_playing_type=12 order by id");
+            break;
+        }
     case 'none':{
         }
     default:{
@@ -529,7 +533,7 @@ function sort_page(){
     <tr>
         <td>
             <form action="" method="GET">
-            <input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by MAC or IP')?></font>
+            <input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by MAC, IP, login or account number')?></font>
             </form>
         <td>
     </tr>
@@ -543,16 +547,17 @@ function sort_page(){
                 <option value="video" <? if (@$_GET['sort_by'] == 'video') echo 'selected' ?>>video
                 <option value="radio" <? if (@$_GET['sort_by'] == 'radio') echo 'selected' ?>>radio
                 <option value="karaoke" <? if (@$_GET['sort_by'] == 'karaoke') echo 'selected' ?>>karaoke
-                <option value="my_records" <? if (@$_GET['sort_by'] == 'my_records') echo 'selected' ?>>my records
-                <option value="shared_records" <? if (@$_GET['sort_by'] == 'shared_records') echo 'selected' ?>>shared records
-                <option value="infoportal" <? if (@$_GET['sort_by'] == 'infoportal') echo 'selected' ?>>infoportal
-                <option value="city_info" <? if (@$_GET['sort_by'] == 'city_info') echo 'selected' ?>>city_info
-                <option value="anec_page" <? if (@$_GET['sort_by'] == 'anec_page') echo 'selected' ?>>anec_page
-                <option value="weather_page" <? if (@$_GET['sort_by'] == 'weather_page') echo 'selected' ?>>weather_page
-                <option value="game_page" <? if (@$_GET['sort_by'] == 'game_page') echo 'selected' ?>>game_page
-                <option value="horoscope_page" <? if (@$_GET['sort_by'] == 'horoscope_page') echo 'selected' ?>>horoscope_page
-                <option value="course_page" <? if (@$_GET['sort_by'] == 'course_page') echo 'selected' ?>>course_page
-                <option value="ad" <? if (@$_GET['sort_by'] == 'ad') echo 'selected' ?>>ad
+                <option value="records" <? if (@$_GET['sort_by'] == 'records') echo 'selected' ?>>records
+                <!--<option value="my_records" <?/* if (@$_GET['sort_by'] == 'my_records') echo 'selected' */?>>my records-->
+                <!--<option value="shared_records" <?/* if (@$_GET['sort_by'] == 'shared_records') echo 'selected' */?>>shared records
+                <option value="infoportal" <?/* if (@$_GET['sort_by'] == 'infoportal') echo 'selected' */?>>infoportal
+                <option value="city_info" <?/* if (@$_GET['sort_by'] == 'city_info') echo 'selected' */?>>city_info
+                <option value="anec_page" <?/* if (@$_GET['sort_by'] == 'anec_page') echo 'selected' */?>>anec_page
+                <option value="weather_page" <?/* if (@$_GET['sort_by'] == 'weather_page') echo 'selected' */?>>weather_page
+                <option value="game_page" <?/* if (@$_GET['sort_by'] == 'game_page') echo 'selected' */?>>game_page
+                <option value="horoscope_page" <?/* if (@$_GET['sort_by'] == 'horoscope_page') echo 'selected' */?>>horoscope_page
+                <option value="course_page" <?/* if (@$_GET['sort_by'] == 'course_page') echo 'selected' */?>>course_page
+                <option value="ad" <?/* if (@$_GET['sort_by'] == 'ad') echo 'selected' */?>>ad-->
                 <option value="tv_archive" <? if (@$_GET['sort_by'] == 'tv_archive') echo 'selected' ?>>tv_archive
             </select>
             <br>
@@ -589,6 +594,7 @@ echo "<tr>";
 //echo "<td class='list'><b>id</b></td>\n";
 echo "<td class='list'><b>#</b></td>\n";
 echo "<td class='list'><b>MAC</b></td>\n";
+echo "<td class='list'><b>Login</b></td>\n";
 echo "<td class='list'><b>IP</b></td>\n";
 echo "<td class='list'><b>"._('Type')."</b></td>\n";
 echo "<td class='list' width='250'><b>"._('Media')."</b></td>\n";
@@ -615,6 +621,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$i."</td>\n";
     //echo "<td class='list'><a href='userlog.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
     echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
+    echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['login']."</a></td>\n";
     echo "<td class='list'><a href='events.php?mac=".$arr['mac']."'>".$arr['ip']."</a></td>\n";
     echo "<td class='list'>".get_cur_media($arr['now_playing_type'])."</td>\n";
     echo "<td class='list'>".$now_playing_content."</td>\n";

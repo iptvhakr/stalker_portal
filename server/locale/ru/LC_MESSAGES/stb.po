@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-25 12:19+0200\n"
-"PO-Revision-Date: 2012-06-25 12:19+0200\n"
+"POT-Creation-Date: 2012-07-03 11:53+0200\n"
+"PO-Revision-Date: 2012-07-03 11:54+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -75,12 +75,12 @@ msgstr "Ноябрь"
 msgid "December"
 msgstr "Декабрь"
 
-#: ../../../administrator/add_epg.php:249
-#: ../../../administrator/add_epg.php:256
+#: ../../../administrator/add_epg.php:251
+#: ../../../administrator/add_epg.php:258
 msgid "EPG"
 msgstr "EPG"
 
-#: ../../../administrator/add_epg.php:261
+#: ../../../administrator/add_epg.php:263
 #: ../../../administrator/add_itv.php:501
 #: ../../../administrator/add_karaoke.php:218
 #: ../../../administrator/add_moderator_mac.php:109
@@ -89,24 +89,24 @@ msgstr "EPG"
 msgid "Back"
 msgstr "Назад"
 
-#: ../../../administrator/add_epg.php:268
+#: ../../../administrator/add_epg.php:270
 msgid "Saving was successful"
 msgstr "Сохранение прошло успешно"
 
-#: ../../../administrator/add_epg.php:356
+#: ../../../administrator/add_epg.php:358
 msgid "Channel"
 msgstr "Канал"
 
-#: ../../../administrator/add_epg.php:370
+#: ../../../administrator/add_epg.php:372
 #: ../../../administrator/add_video.php:619
 msgid "Date"
 msgstr "Дата"
 
-#: ../../../administrator/add_epg.php:383
+#: ../../../administrator/add_epg.php:385
 msgid "Load EPG"
 msgstr "Загрузить EPG"
 
-#: ../../../administrator/add_epg.php:399
+#: ../../../administrator/add_epg.php:401
 #: ../../../administrator/add_itv.php:1009
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
@@ -115,7 +115,7 @@ msgstr "Загрузить EPG"
 msgid "Save"
 msgstr "Сохранить"
 
-#: ../../../administrator/add_epg.php:399
+#: ../../../administrator/add_epg.php:401
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
 #: ../../../administrator/add_radio.php:260
@@ -1086,7 +1086,7 @@ msgid "Sign in"
 msgstr "Вход"
 
 #: ../../../administrator/login.php:57
-#: ../../../administrator/profile.php:359
+#: ../../../administrator/profile.php:360
 msgid "Login"
 msgstr "Логин"
 
@@ -1164,70 +1164,70 @@ msgstr "Отключено"
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../../../administrator/profile.php:284
-#: ../../../administrator/profile.php:290
+#: ../../../administrator/profile.php:285
+#: ../../../administrator/profile.php:291
 msgid "User profile"
 msgstr "Профиль пользователя"
 
-#: ../../../administrator/profile.php:295
+#: ../../../administrator/profile.php:296
 msgid "Logs"
 msgstr "Логи"
 
-#: ../../../administrator/profile.php:334
+#: ../../../administrator/profile.php:335
 msgid "Reset to default password?"
 msgstr "Сбросить на пароль по умолчанию?"
 
-#: ../../../administrator/profile.php:334
-#: ../../../administrator/profile.php:338
+#: ../../../administrator/profile.php:335
+#: ../../../administrator/profile.php:339
 msgid "Reset"
 msgstr "Сбросить"
 
-#: ../../../administrator/profile.php:337
+#: ../../../administrator/profile.php:338
 msgid "favorite tv"
 msgstr "избранное тв"
 
-#: ../../../administrator/profile.php:338
+#: ../../../administrator/profile.php:339
 #, php-format
 msgid "%s channels"
 msgstr "%s канала"
 
-#: ../../../administrator/profile.php:338
+#: ../../../administrator/profile.php:339
 msgid "Reset favorite TV channels? The channels will be reset only if immediately restart the stb!"
 msgstr "Сбросить избранные ТВ каналы? Каналы полностью сбросятся только если сразу перезапустить приставку!"
 
-#: ../../../administrator/profile.php:351
+#: ../../../administrator/profile.php:352
 msgid "Full name"
 msgstr "ФИО"
 
-#: ../../../administrator/profile.php:367
+#: ../../../administrator/profile.php:368
 msgid "Account number"
 msgstr "Номер лицевого счета"
 
-#: ../../../administrator/profile.php:375
+#: ../../../administrator/profile.php:376
 msgid "Last change of status"
 msgstr "Изменение статуса"
 
-#: ../../../administrator/profile.php:435
+#: ../../../administrator/profile.php:436
 msgid "Tariff plan"
 msgstr "Тарифный план"
 
-#: ../../../administrator/profile.php:451
+#: ../../../administrator/profile.php:452
 msgid "Change"
 msgstr "Изменить"
 
-#: ../../../administrator/profile.php:460
+#: ../../../administrator/profile.php:461
 msgid "No packages available"
 msgstr "Нет доступных пакетов"
 
-#: ../../../administrator/profile.php:464
+#: ../../../administrator/profile.php:465
 msgid "Packages"
 msgstr "Пакеты"
 
-#: ../../../administrator/profile.php:490
+#: ../../../administrator/profile.php:491
 msgid "TV subscription"
 msgstr "Подписка на каналы"
 
-#: ../../../administrator/profile.php:493
+#: ../../../administrator/profile.php:494
 msgid "Additional services"
 msgstr "Доп. сервисы"
 
@@ -1800,19 +1800,23 @@ msgstr "Медиа Браузер"
 msgid "Tv archive"
 msgstr "Тв архив"
 
-#: ../../../administrator/users.php:539
+#: ../../../administrator/users.php:536
+msgid "search by MAC, IP, login or account number"
+msgstr "Поиск по MAC, IP, логину или номеру лицевого счета"
+
+#: ../../../administrator/users.php:543
 msgid "without sorting"
 msgstr "без сортировки"
 
-#: ../../../administrator/users.php:580
+#: ../../../administrator/users.php:585
 msgid "search inactive users"
 msgstr "поиск неактивных пользователей"
 
-#: ../../../administrator/users.php:595
+#: ../../../administrator/users.php:601
 msgid "Time from<br>last playback"
 msgstr "Время с<br>последнего<br>просмотра<br>чч:мм:сс"
 
-#: ../../../administrator/users.php:598
+#: ../../../administrator/users.php:604
 msgid "Last change<br>of status"
 msgstr "Последнее<br>изменение<br>статуса"
 
@@ -3187,11 +3191,11 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/remotepvr.class.php:85
+#: ../../../lib/remotepvr.class.php:92
 msgid "recording"
 msgstr "идет запись"
 
-#: ../../../lib/remotepvr.class.php:87
+#: ../../../lib/remotepvr.class.php:94
 msgid "scheduled"
 msgstr "запланировано"
 
