@@ -12,7 +12,18 @@ class AuthAccessHandler extends AccessHandler
 
     public function checkUserAuth($username, $password){
         sleep(1); // anti brute-force delay
-        $user = Mysql::getInstance()->from('users')->where(array('login' => $username, 'password' => $password))->get()->first();
+
+        $possible_user = Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first();
+
+        if (empty($possible_user)){
+            return false;
+        }
+
+        if ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
+            || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){
+            $user = $possible_user;
+        }
+
         return !empty($user);
     }
 

@@ -25,7 +25,7 @@
     
 function refresh_login(){
         $html='';
-        global $done_test,$fail_test,$rkey;
+        global $done_test,$fail_test,$rkey,$url_test_auth;
         $data_url="grant_type=refresh_token&refresh_token=$rkey";
         try{
             $json_string = file_get_contents ($url_test_auth, false, stream_context_create (array ('http'=>array ('method'=>'POST','content'=>$data_url))));
@@ -123,7 +123,7 @@ function refresh_login(){
 
 function login(){
         $html='';
-        global $done_test,$fail_test;
+        global $done_test,$fail_test,$url_test_auth;
         $data_url="grant_type=password&username=1557&password=12345";
         try{
             $json_string = file_get_contents ($url_test_auth, false, stream_context_create (array ('http'=>array ('method'=>'POST','header'=>"Content-Type: application/x-www-form-urlencoded \r\n",'content'=>$data_url))));
