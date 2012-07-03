@@ -1080,7 +1080,7 @@ class Stb
 
     public function getByUids($uids = array()){
 
-        $result = Mysql::getInstance()->from('users');
+        $result = Mysql::getInstance()->select('*, keep_alive>=FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout').') online')->from('users');
 
         //if (!empty($uids)){
         $result = $result->in('id', $uids);
