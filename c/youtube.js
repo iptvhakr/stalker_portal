@@ -11,6 +11,7 @@
             params = '?proxy=http://'+stb.user['web_proxy_host']+':' +stb.user['web_proxy_port'];
         }
 
+        stb.setFrontPanel('.');
         window.location = '/' + stb.portal_path + '/external/youtube/index.html'+params;
     }, {layer_name : "youtube"});
 

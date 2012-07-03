@@ -10,6 +10,7 @@
     module.infoportal_sub.push({
         "title" : get_word('game') + ' LINES',
         "cmd"   : function(){
+            stb.setFrontPanel('.');
             window.location = '/' + stb.portal_path + '/external/lines/index.html';
         }
     });

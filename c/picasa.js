@@ -10,6 +10,7 @@
     module.infoportal_sub.push({
         "title" : 'PICASA',
         "cmd"   : function(){
+            stb.setFrontPanel('.');
             window.location = '/' + stb.portal_path + '/external/picasa/picasa_main.html';
         }
     });
