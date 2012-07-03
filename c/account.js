@@ -126,6 +126,8 @@
                 info += '<span class="label">' +get_word('Account number') + ':</span> ' + result['ls'] + '<br>';
             }
 
+            info += '<span class="label">' +get_word('MAC') + ':</span> ' + stb.mac + '<br>';
+
             if (result['tariff_plan']){
                 info += '<span class="label">' +get_word('Tariff plan') + ':</span> ' + result['tariff_plan'] + '<br>';
             }
