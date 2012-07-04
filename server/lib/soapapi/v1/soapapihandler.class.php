@@ -216,6 +216,7 @@ class AccountInfo
  * @pw_element string $account_number
  * @pw_set minoccurs=0
  * @pw_element string $tariff_plan
+ * @pw_set minoccurs=0
  * @pw_element int $status
  * @pw_set minoccurs=0
  * @pw_element string $stb_mac
