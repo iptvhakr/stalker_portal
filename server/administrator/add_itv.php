@@ -55,6 +55,8 @@ if (!$error){
         $enable_tv_archive = 0;
     }
 
+    $storage_name = empty($_POST['storage_name']) ? '' : $_POST['storage_name'];
+
     $enable_monitoring = @intval($_POST['enable_monitoring']);
 
     $enable_wowza_load_balancing = @intval($_POST['enable_wowza_load_balancing']);
@@ -173,7 +175,7 @@ if (!$error){
                         $archive = new TvArchive();
                     }
 
-                    $archive->createTask($ch_id);
+                    $archive->createTask($ch_id, $storage_name);
                 }
             }
 
@@ -268,7 +270,7 @@ if (!$error){
                         $archive = new TvArchive();
                     }
 
-                    $archive->createTask($ch_id);
+                    $archive->createTask($ch_id, $storage_name);
                 }
             }
 
@@ -341,6 +343,18 @@ function get_screen_name($addr){
     preg_match("/(\S+)\s(\S+):\/\/(\d+).(\d+).(\d+).(\d+):(\d+)/", $addr, $tmp_arr);
     $img_str = '/iptv/mpg/'.$tmp_arr[6].'_'.$tmp_arr[7].'.mpg';
     return $img_str;
+}
+
+$tv_archive = new TvArchive();
+$storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0, 'fake_tv_archive' => 0))->get()->all();
+
+if (!empty($_GET['id'])){
+
+    $task = TvArchive::getTaskByChannelId((int) $_GET['id']);
+
+    if (!empty($task)){
+        $selected_storage = $task['storage_name'];
+    }
 }
 
 ?>
@@ -922,11 +936,23 @@ function delete_logo(id){
             <?= _('Enable TV archive')?>:
            </td>
            <td>
-            <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> onchange="this.checked ? document.getElementById('wowza_dvr_tr').style.display = '' : document.getElementById('wowza_dvr_tr').style.display = 'none'" >
+            <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> onchange="this.checked ? document.getElementById('storage_name').style.display = '' : document.getElementById('storage_name').style.display = 'none'" >
 
-            <span id="wowza_dvr_tr" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
-            Wowza DVR:
-            <input name="wowza_dvr" id="wowza_dvr" type="checkbox" <? echo @$checked_wowza_dvr ?> >
+            <span id="storage_name" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
+            <!--Wowza DVR:
+            <input name="wowza_dvr" id="wowza_dvr" type="checkbox" <?/* echo @$checked_wowza_dvr */?> >-->
+                <select name="storage_name" <?= !empty($name) && !empty($enable_tv_archive) ? 'disabled="disabled"' : '' ?>>
+                    <? foreach ($storages as $storage){
+
+                        $selected = '';
+
+                        if (!empty($selected_storage) && $selected_storage == $storage['storage_name']){
+                            $selected = 'selected="selected"';
+                        }
+
+                    echo '<option value="'.$storage['storage_name'].'" '.$selected.'>'.$storage['storage_name'].'</option>';
+                    }?>
+                </select>
             </span>
            </td>
         </tr>

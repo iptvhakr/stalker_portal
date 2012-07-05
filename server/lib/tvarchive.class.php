@@ -222,14 +222,19 @@ class TvArchive extends Master
         return count($this->getAllTasks($storage['storage_name'])) / count($this->getAllTasks());
     }
 
-    public function createTask($ch_id){
+    public function createTask($ch_id, $force_storage = ''){
 
         if (empty($this->storages)){
             return false;
         }
 
         $storage_names = array_keys($this->storages);
-        $less_loaded = $storage_names[0];
+
+        if (!empty($force_storage) && in_array($force_storage, $storage_names)){
+            $storage_name = $force_storage;
+        }else{
+            $storage_name = $storage_names[0];
+        }
 
         $exist_task = Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
 
@@ -237,7 +242,7 @@ class TvArchive extends Master
             return true;
         }
 
-        $task_id = Mysql::getInstance()->insert('tv_archive', array('ch_id' => $ch_id, 'storage_name' => $less_loaded))->insert_id();
+        $task_id = Mysql::getInstance()->insert('tv_archive', array('ch_id' => $ch_id, 'storage_name' => $storage_name))->insert_id();
 
         if (!$task_id){
             return false;
@@ -252,7 +257,7 @@ class TvArchive extends Master
             'parts_number'   => Config::get('tv_archive_parts_number')
         );
 
-        return $this->clients[$less_loaded]->resource('tv_archive_recorder')->create(array('task' => $task));
+        return $this->clients[$storage_name]->resource('tv_archive_recorder')->create(array('task' => $task));
     }
 
     public function deleteTask($ch_id){
@@ -324,6 +329,10 @@ class TvArchive extends Master
 
     public static function getArchiveRange($ch_id = 0){
         return (int) Config::get('tv_archive_parts_number');
+    }
+
+    public static function getTaskByChannelId($ch_id){
+        return Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
     }
 }
 
