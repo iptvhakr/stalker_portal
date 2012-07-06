@@ -26,6 +26,6 @@
             module.internet.win_inited = true;
         }
     }, {layer_name : "internet"});
-
-    loader.next();
 })();
+
+loader.next();

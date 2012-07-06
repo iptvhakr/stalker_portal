@@ -129,13 +129,25 @@ class Itv extends AjaxResponse
                 }
             }else{
 
-                preg_match("/http:\/\/([^\/]*)[\/]?([^\s]*)?(\s*)?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+                if (Config::getSafe('stream_proxy', '') != ''){
+                    preg_match("/http:\/\/([^\/]*)[\/]?([^\s]*)?(\s*)?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+                }else{
+                    preg_match("/http:\/\/([^\/]*)\/([^\/]*)[\/]?([^\s]*)?(\s*)?(.*)?$/", $channel['cmd'], $tmp_url_arr);
+                }
 
                 if (empty($tmp_url_arr)){
                     throw new ItvLinkException('nothing_to_play');
                 }else{
-                    $redirect_host = $tmp_url_arr[1];
-                    $redirect_uri  = $tmp_url_arr[2];
+                    if (count($tmp_url_arr) == 6){
+                        $streamer = $tmp_url_arr[1];
+                        $redirect_host = $tmp_url_arr[2];
+                        $redirect_uri  = $tmp_url_arr[3];
+                    }else{
+                        $streamer = Config::get('stream_proxy');
+                        $redirect_host = $tmp_url_arr[1];
+                        $redirect_uri  = $tmp_url_arr[2];
+                    }
+
                     $redirect_url = '/get/'.$redirect_host.'/'.$redirect_uri;
 
                     $link_result = $this->createTemporaryLink($redirect_url);
@@ -143,7 +155,7 @@ class Itv extends AjaxResponse
                     if (!$link_result){
                         throw new ItvLinkException('link_fault');
                     }else{
-                        $cmd = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link_result.' '.$tmp_url_arr[4];
+                        $cmd = 'ffrt http://'.$streamer.'/ch/'.$link_result.' '.$tmp_url_arr[4];
                     }
                 }
             }
