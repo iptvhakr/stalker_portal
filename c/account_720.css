@@ -17,7 +17,7 @@
 .main_content, .payment_content, .agreement_content, .terms_content{
     position: absolute;
     height: 488px;
-    width: 1170px;
+    width: 1080px;
     overflow: hidden;
 }
 

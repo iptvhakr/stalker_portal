@@ -197,7 +197,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Events')?></a> | <a href="events.php"><?= _('New event')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="events.php"><?= _('New event')?></a>
     </td>
 </tr>
 <tr>
