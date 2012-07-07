@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-06 15:31+0200\n"
-"PO-Revision-Date: 2012-07-06 15:31+0200\n"
+"POT-Creation-Date: 2012-07-07 11:42+0200\n"
+"PO-Revision-Date: 2012-07-07 11:42+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2885,6 +2885,14 @@ msgstr "Ошибка во время управления услугами."
 #: ../../../lang/stb.php:373
 msgid "End date"
 msgstr "Окончание действия"
+
+#: ../../../lang/stb.php:376
+msgid "3D mode"
+msgstr "3D режим"
+
+#: ../../../lang/stb.php:378
+msgid "mode {0}"
+msgstr "режим {0}"
 
 #: ../../../lib/accountinfo.class.php:33
 #, php-format

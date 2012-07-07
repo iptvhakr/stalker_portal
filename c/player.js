@@ -1091,7 +1091,7 @@ player.prototype.play = function(item){
             }
         }
         
-    }else if (cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/ram/mnt/smb/') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0){
+    }else if (cmd.indexOf('/media/') > 0 || cmd.indexOf('/usbdisk') > 0 || cmd.indexOf('/USB-') > 0 || cmd.indexOf('/ram/mnt/smb/') > 0 || cmd.indexOf('/av/') > 0 || cmd.indexOf('/UPnP/') > 0){
         
         this.play_now(cmd);
         
@@ -1235,6 +1235,11 @@ player.prototype.stop = function(){
     try{
         stb.Stop();
         _debug('stb.Stop()');
+
+        if (stb && stb.Set3DConversionMode){
+            stb.Set3DConversionMode(0);
+        }
+
     }catch(e){}
     
     if (this.media_type == 'file'){
@@ -2929,11 +2934,6 @@ player.prototype.init_con_menu = function(){
 
     
     this.con_menu.construct(map);
-        
-    /*this.con_menu = new context_menu(map);
-    this.con_menu.bind();
-    this.con_menu.set_x_offset(100);
-    this.con_menu.set_y_offset(100);*/
 };
 
 player.prototype.build_con_menu = function(){
@@ -2942,7 +2942,22 @@ player.prototype.build_con_menu = function(){
     if (this.con_menu.map.length > 1){
         return;
     }
-    
+
+    if (stb && stb.Set3DConversionMode){
+        this.con_menu.map.unshift(
+            {
+                "title" : get_word('3D mode'),
+                "type"  : "switch",
+                "cmd"   : [
+                    {"title" : get_word('mode {0}').format(1), "cmd" : function(){_debug('mode 1'); stb.Set3DConversionMode(0)}, active : true},
+                    {"title" : get_word('mode {0}').format(2), "cmd" : function(){_debug('mode 2'); stb.Set3DConversionMode(1)}},
+                    {"title" : get_word('mode {0}').format(3), "cmd" : function(){_debug('mode 3'); stb.Set3DConversionMode(2)}},
+                    {"title" : get_word('mode {0}').format(4), "cmd" : function(){_debug('mode 4'); stb.Set3DConversionMode(3)}}
+                ]
+            }
+        );
+    }
+
     this.con_menu.map.unshift(
         {
             "title" : get_word('player_subtitle'),
@@ -2950,7 +2965,7 @@ player.prototype.build_con_menu = function(){
             "cmd"   : this.subtitle_pid.get_for_menu()
         }
     );
-        
+
     this.con_menu.map.unshift(
         {
             "title" : get_word('player_audio'),
@@ -2964,23 +2979,11 @@ player.prototype.build_con_menu = function(){
     if (this.con_menu.on){
         this.con_menu.hide();
         
-        /*this.con_menu.destroy_container();
-        this.con_menu = new context_menu(this.con_menu.map);
-        this.con_menu.bind();
-        this.con_menu.set_x_offset(100);
-        this.con_menu.set_y_offset(100);*/
-        
         this.con_menu.construct(this.con_menu.map);
         this.con_menu.show();
     }else{
         
         this.con_menu.construct(this.con_menu.map);
-        
-        /*this.con_menu.destroy_container();
-        this.con_menu = new context_menu(this.con_menu.map);
-        this.con_menu.bind();
-        this.con_menu.set_x_offset(100);
-        this.con_menu.set_y_offset(100);*/
     }
 };
 

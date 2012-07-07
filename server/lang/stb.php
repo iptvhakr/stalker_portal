@@ -372,4 +372,10 @@ $words['Account number'] = _('Account number');
 
 $words['End date'] = _('End date');
 
+
+$words['3D mode'] = _('3D mode');
+
+$words['mode {0}'] = _('mode {0}');
+
+
 ?>
