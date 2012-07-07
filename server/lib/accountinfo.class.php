@@ -12,12 +12,34 @@ class AccountInfo
 
         $user = User::getInstance(Stb::getInstance()->id);
 
-        $info = array(
+        $info = $user->getInfoFromOSS();
+
+        if (!$info){
+            $info = array(
+                'fname' => $this->stb->getParam('fname'),
+                'phone' => $this->stb->getParam('phone'),
+                'ls' => $this->stb->getParam('ls')
+            );
+        }
+
+        $info['last_change_status'] = $this->stb->getParam('last_change_status');
+
+        if (array_key_exists('end_date', $info)){
+            $end_time = strtotime($info['end_date']);
+
+            if ($end_time){
+                $days = ceil(($end_time - time())/(24*3600));
+
+                $info['end_date'] = $info['end_date'].' ('.sprintf(ngettext('%d day', '%d days', $days), $days).')';
+            }
+        }
+
+        /*$info = array(
             'fname' => $this->stb->getParam('fname'),
             'last_change_status' => $this->stb->getParam('last_change_status'),
             'phone' => $this->stb->getParam('phone'),
             'ls' => $this->stb->getParam('ls')
-        );
+        );*/
 
         if (Config::get('enable_tariff_plans')){
             $info['tariff_plan'] = $user->getTariffPlanName();

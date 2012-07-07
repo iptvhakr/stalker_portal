@@ -132,6 +132,10 @@
                 info += '<span class="label">' +get_word('Tariff plan') + ':</span> ' + result['tariff_plan'] + '<br>';
             }
 
+            if (result['end_date']){
+                info += '<span class="label">' +get_word('End date') + ':</span> ' + result['end_date'] + '<br>';
+            }
+
             this.tab['main'].content.dom_obj.innerHTML = info;
         };
 

@@ -1124,7 +1124,7 @@ class Stb
 
     private function getInfoFromOss(){
 
-        if (!Config::exist('oss_url')){
+        /*if (!Config::exist('oss_url')){
             return false;
         }
 
@@ -1145,44 +1145,36 @@ class Stb
             return false;
         }
 
-        var_dump($data);
+        var_dump($data);*/
 
-        if ($data['status'] != 'OK' || empty($data['results'])){
-            return false;
-        }
+        $user = User::getInstance($this->id);
 
-        if (array_key_exists(0, $data['results'])){
-            $user = $data['results'][0];
-        }else{
-            $user = $data['results'];
-        }
+        $info = $user->getInfoFromOSS();
 
-        var_dump($user);
-
-        if (empty($user)){
+        if (!$info){
             return false;
         }
 
         $update_data = array();
 
-        if (array_key_exists('ls', $user)){
-            $this->params['ls'] = $update_data['ls'] = $user['ls'];
+        if (array_key_exists('ls', $info)){
+            $this->params['ls'] = $update_data['ls'] = $info['ls'];
         }
 
-        if (array_key_exists('status', $user)){
-            $this->params['status'] = $update_data['status'] = intval(!$user['status']);
+        if (array_key_exists('status', $info)){
+            $this->params['status'] = $update_data['status'] = intval(!$info['status']);
         }
 
-        if (array_key_exists('additional_services_on', $user)){
-            $this->params['additional_services_on'] = $update_data['additional_services_on'] = intval($user['additional_services_on']);
+        if (array_key_exists('additional_services_on', $info)){
+            $this->params['additional_services_on'] = $update_data['additional_services_on'] = intval($info['additional_services_on']);
         }
 
-        if (array_key_exists('fname', $user)){
-            $this->params['fname'] = $update_data['fname'] = $user['fname'];
+        if (array_key_exists('fname', $info)){
+            $this->params['fname'] = $update_data['fname'] = $info['fname'];
         }
 
-        if (array_key_exists('phone', $user)){
-            $this->params['phone'] = $update_data['phone'] = $user['phone'];
+        if (array_key_exists('phone', $info)){
+            $this->params['phone'] = $update_data['phone'] = $info['phone'];
         }
 
         if (empty($update_data)){

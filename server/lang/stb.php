@@ -370,4 +370,6 @@ $words['service_subscribe_fail'] = _('An error in the management of subscription
 
 $words['Account number'] = _('Account number');
 
+$words['End date'] = _('End date');
+
 ?>

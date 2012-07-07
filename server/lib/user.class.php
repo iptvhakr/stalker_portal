@@ -448,4 +448,43 @@ class User
 
         return $total_result;
     }
+
+    public function getInfoFromOSS(){
+
+        if (!Config::exist('oss_url')){
+            return false;
+        }
+
+        if (Config::get('oss_url') == ''){
+            return false;
+        }
+
+        $data = file_get_contents(Config::get('oss_url').'?mac='.$this->getMac());
+
+        if (!$data){
+            return false;
+        }
+
+        $data = json_decode($data, true);
+
+        if (empty($data)){
+            return false;
+        }
+
+        var_dump($data);
+
+        if ($data['status'] != 'OK' || empty($data['results'])){
+            return false;
+        }
+
+        if (array_key_exists(0, $data['results'])){
+            $info = $data['results'][0];
+        }else{
+            $info = $data['results'];
+        }
+
+        var_dump($info);
+
+        return $info;
+    }
 }
