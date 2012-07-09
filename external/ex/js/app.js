@@ -618,7 +618,7 @@ app.player={
                 app.keypress.als_on=info_menu.on;
                 app.keypress.als_active_subt=-1;
                 app.keypress.als_active_audio=-1;
-                stb.SetAudioLangs(iso639[info_menu.audio].code[0],"rus");
+                //stb.SetAudioLangs(iso639[info_menu.audio].code[0],"rus");
                 stb.SetSubtitleLangs(iso639[info_menu.subt].code[0],"rus");
                 stb.SetSubtitles(info_menu.on);
                 app.player.playlist_length = play.video.length;
