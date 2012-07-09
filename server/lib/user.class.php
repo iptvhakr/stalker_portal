@@ -19,9 +19,12 @@ class User
         return self::$instance;
     }
 
+    public static function clear(){
+        self::$instance = null;
+    }
+
     private function __construct($uid = 0){
         $this->id = (int) $uid;
-
         $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
 
         if ($this->profile['tariff_plan_id'] == 0){
@@ -242,8 +245,8 @@ class User
 
         $info['status'] = intval(!$info['status']);
 
-        if ($info['tariff_plan_id'] == 0){
-            $info['tariff_plan_id'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
+        if ($info['tariff_plan'] == 0){
+            $info['tariff_plan'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
         }
 
         $packages = $this->getPackages();

@@ -26,7 +26,7 @@ class RESTCommandAccounts extends RESTCommand
         foreach($users_ids as $user_id){
             $user = User::getInstance($user_id);
             $result[] = $user->getAccountInfo();
-            $user = null;
+            User::clear();
         }
 
         return $result;
