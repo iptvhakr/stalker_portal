@@ -365,17 +365,19 @@ Object.prototype.addCustomEventListener = function(type, listener){
 
 Object.prototype.triggerCustomEventListener = function(type, param){
 
+    var result = true;
+
     if (this._listeners && this._listeners.hasOwnProperty(type)){
         for (var i = 0; i < this._listeners[type].length; i++){
             try{
-                this._listeners[type][i](param);
+                result = !!this._listeners[type][i](param) && result;
             }catch(e){
                 _debug(e)
             }
         }
     }
 
-    return false;
+    return result;
 };
 
 Array.prototype.getIdxById = function(id){

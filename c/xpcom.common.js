@@ -1296,9 +1296,12 @@ var screensaver = {
 
             if (self.on){
                 self.hide();
+                self.restart_timer.call(self);
+                return false;
             }
 
             self.restart_timer.call(self);
+            return true;
         });
 
         this.restart_timer();
@@ -1327,7 +1330,7 @@ var screensaver = {
             this.activate_timer = window.setTimeout(function(){
                 self.show.call(self);
             }, stb.user['screensaver_delay'] * 60000);
-            //}, stb.user['screensaver_delay'] * 10000);
+            //}, 30000);
         }
     },
 

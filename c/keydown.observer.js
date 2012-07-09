@@ -34,6 +34,10 @@ var keydown_observer = new function(){
         
         _debug('code:', code);
 
+        if (code == 0){
+            return;
+        }
+
         if ([1000, 2000, 3000].indexOf(code) >= 0){
             return;
         }
@@ -41,6 +45,10 @@ var keydown_observer = new function(){
         var item;
         var priority_item;
         var normal_item;
+
+        if (!this.triggerCustomEventListener('keypress', e)){
+            return;
+        }
         
         if (this.listeners.hasOwnProperty(code)){
             for(var i=0; i<this.listeners[code].length; i++){
@@ -73,7 +81,7 @@ var keydown_observer = new function(){
 
         _debug('keydown handler exit');
 
-        this.triggerCustomEventListener('keypress', e);
+        //this.triggerCustomEventListener('keypress', e);
     }
 };
 
