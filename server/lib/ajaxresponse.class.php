@@ -135,11 +135,17 @@ abstract class AjaxResponse
         
         $sound_counter = 0;
         $video_counter = 0;
-        
+        $no_epg_counter = 0;
+        $wrong_epg_counter = 0;
+
         if ($type == 'video'){
             $video_counter++;
-        }else{
+        }else if ($type == 'sound'){
             $sound_counter++;
+        }else if ($type == 'no_epg'){
+            $no_epg_counter++;
+        }else if ($type == 'wrong_epg'){
+            $wrong_epg_counter++;
         }
         
         if (!empty($total_media_claims)){
@@ -147,6 +153,8 @@ abstract class AjaxResponse
                               array(
                                   'sound_counter' => $total_media_claims['sound_counter'] + $sound_counter,
                                   'video_counter' => $total_media_claims['video_counter'] + $video_counter,
+                                  'no_epg'        => $total_media_claims['no_epg'] + $no_epg_counter,
+                                  'wrong_epg'     => $total_media_claims['wrong_epg'] + $wrong_epg_counter,
                               ),
                               array(
                                   'media_type' => $media_type,
@@ -157,6 +165,8 @@ abstract class AjaxResponse
                               array(
                                   'sound_counter' => $sound_counter,
                                   'video_counter' => $video_counter,
+                                  'no_epg'        => $no_epg_counter,
+                                  'wrong_epg'     => $wrong_epg_counter,
                                   'media_type'    => $media_type,
                                   'media_id'      => $id
                               ));
@@ -168,7 +178,9 @@ abstract class AjaxResponse
             $this->db->update('daily_media_claims',
                               array(
                                   $media_type.'_sound' => $total_daily_claims[$media_type.'_sound'] + $sound_counter,
-                                  $media_type.'_video' => $total_daily_claims[$media_type.'_video'] + $video_counter
+                                  $media_type.'_video' => $total_daily_claims[$media_type.'_video'] + $video_counter,
+                                  'no_epg'             => $total_daily_claims['no_epg'] + $no_epg_counter,
+                                  'wrong_epg'          => $total_daily_claims['wrong_epg'] + $wrong_epg_counter,
                               ),
                               array('date' => 'CURDATE()'));
         }else{
@@ -176,6 +188,8 @@ abstract class AjaxResponse
                               array(
                                   $media_type.'_sound' => $sound_counter,
                                   $media_type.'_video' => $video_counter,
+                                  'no_epg'             => $no_epg_counter,
+                                  'wrong_epg'          => $wrong_epg_counter,
                                   'date'               => 'CURDATE()'
                               ));
         }

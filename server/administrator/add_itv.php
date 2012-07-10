@@ -530,7 +530,7 @@ a:hover{
 <td align="center">
 
 <?
-$query = "select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number";
+$query = "select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter, media_claims.no_epg, media_claims.wrong_epg from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number";
 
 //echo $query;
 
@@ -544,7 +544,7 @@ echo "<th class='list'><b>"._('Name')."</b></th>";
 echo "<th class='list'><b>"._('URL')."</b></th>";
 echo "<th class='list'><b>"._('Genre')."</b></th>";
 echo "<th class='list'><b>"._('Volume correction')."</b></th>";
-echo "<th class='list'><b>"._('Claims about<br>audio/video')."</b></th>\n";
+echo "<th class='list'><b>"._('Claims about<br>audio/video/epg')."</b></th>\n";
 echo "<th class='list'><b>&nbsp;</b></th>";
 echo "</tr>";
 while(@$rs->next()){
@@ -584,7 +584,7 @@ while(@$rs->next()){
     if (check_access(array(1))){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
-    echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
+    echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']." / ".$arr['no_epg']," / ".$arr['wrong_epg']."</span>";
     if (check_access(array(1))){
         echo "</a>";
     }

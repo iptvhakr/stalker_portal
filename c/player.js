@@ -2915,22 +2915,40 @@ player.prototype.init_con_menu = function(){
         this.con_menu.set_x_offset(100);
         this.con_menu.set_y_offset(100);
     }
+
+    var claim_cmd = [
+            {
+                "cmd"   : function(){stb.player.send_claim('sound')},
+                "title" : get_word('player_on_sound')
+            },
+            {
+                "cmd"   : function(){stb.player.send_claim('video')},
+                "title" : get_word('player_on_video')
+            }
+    ];
+
+    if (this.is_tv){
+        claim_cmd = claim_cmd.concat(
+            [
+                {
+                    "cmd"   : function(){stb.player.send_claim('no_epg')},
+                    "title" : get_word('no epg')
+                }
+                ,
+                {
+                    "cmd"   : function(){stb.player.send_claim('wrong_epg')},
+                    "title" : get_word('wrong epg')
+                }
+            ]
+        )
+    }
     
     var map = [
-            {
-                "title" : get_word('player_claim'),
-                "cmd"   : [
-                    {
-                        "cmd"   : function(){stb.player.send_claim('sound')},
-                        "title" : get_word('player_on_sound')
-                    },
-                    {
-                        "cmd"   : function(){stb.player.send_claim('video')},
-                        "title" : get_word('player_on_video')
-                    }
-                  ]
-            }
-        ];
+        {
+            "title" : get_word('player_claim'),
+            "cmd"   : claim_cmd
+        }
+    ];
 
     
     this.con_menu.construct(map);

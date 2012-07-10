@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-07 11:42+0200\n"
-"PO-Revision-Date: 2012-07-07 11:42+0200\n"
+"POT-Creation-Date: 2012-07-09 14:48+0200\n"
+"PO-Revision-Date: 2012-07-09 14:49+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -204,10 +204,8 @@ msgid "Volume correction"
 msgstr "Коррекция звука"
 
 #: ../../../administrator/add_itv.php:547
-#: ../../../administrator/add_karaoke.php:493
-#: ../../../administrator/add_video.php:836
-msgid "Claims about<br>audio/video"
-msgstr "Жалобы на<br>видео/аудио"
+msgid "Claims about<br>audio/video/epg"
+msgstr "Жалобы на<br>видео/аудио/epg"
 
 #: ../../../administrator/add_itv.php:585
 #: ../../../administrator/add_karaoke.php:516
@@ -350,6 +348,11 @@ msgstr "Добавил"
 #: ../../../administrator/add_karaoke.php:492
 msgid "When"
 msgstr "Когда"
+
+#: ../../../administrator/add_karaoke.php:493
+#: ../../../administrator/add_video.php:836
+msgid "Claims about<br>audio/video"
+msgstr "Жалобы на<br>видео/аудио"
 
 #: ../../../administrator/add_karaoke.php:542
 #: ../../../administrator/add_video.php:896
@@ -739,10 +742,18 @@ msgid "TV video"
 msgstr "ТВ видео"
 
 #: ../../../administrator/claims.php:154
+msgid "No epg"
+msgstr "Нет EPG"
+
+#: ../../../administrator/claims.php:155
+msgid "Wrong epg"
+msgstr "EPG не соответствует"
+
+#: ../../../administrator/claims.php:156
 msgid "Karaoke sound"
 msgstr "Караоке звук"
 
-#: ../../../administrator/claims.php:155
+#: ../../../administrator/claims.php:157
 msgid "Karaoke video"
 msgstr "Караоке видео"
 
@@ -2893,6 +2904,14 @@ msgstr "3D режим"
 #: ../../../lang/stb.php:378
 msgid "mode {0}"
 msgstr "режим {0}"
+
+#: ../../../lang/stb.php:380
+msgid "no epg"
+msgstr "отсутствует программа передач"
+
+#: ../../../lang/stb.php:381
+msgid "wrong epg"
+msgstr "программа передач не соответствует"
 
 #: ../../../lib/accountinfo.class.php:33
 #, php-format

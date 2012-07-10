@@ -22,7 +22,7 @@ $letter = @$_GET['letter'];
 
 if (@$_GET['reset'] && @$_GET['media_type'] && @$_GET['media_id']){
     
-    $sql = "update media_claims set sound_counter=0, video_counter=0 where media_type='".$_GET['media_type']."' and media_id=".intval($_GET['media_id']);
+    $sql = "update media_claims set sound_counter=0, video_counter=0, no_epg=0, wrong_epg=0 where media_type='".$_GET['media_type']."' and media_id=".intval($_GET['media_id']);
     $db->executeQuery($sql);
     
     if ($_SERVER['HTTP_REFERER']){
@@ -151,6 +151,8 @@ echo "<td class='list'><b>"._('Video-club sound')."</b></td>\n";
 echo "<td class='list'><b>"._('Video-club video')."</b></td>\n";
 echo "<td class='list'><b>"._('TV sound')."</b></td>\n";
 echo "<td class='list'><b>"._('TV video')."</b></td>\n";
+echo "<td class='list'><b>"._('No epg')."</b></td>\n";
+echo "<td class='list'><b>"._('Wrong epg')."</b></td>\n";
 echo "<td class='list'><b>"._('Karaoke sound')."</b></td>\n";
 echo "<td class='list'><b>"._('Karaoke video')."</b></td>\n";
 echo "</tr>\n";
@@ -164,6 +166,8 @@ while(@$rs->next()){
     echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=video&media_type=vclub'>".$arr['vclub_video']."</a></td>\n";
     echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=sound&media_type=itv'>".$arr['itv_sound']."</a></td>\n";
     echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=video&media_type=itv'>".$arr['itv_video']."</a></td>\n";
+    echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=no_epg&media_type=itv'>".$arr['no_epg']."</a></td>\n";
+    echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=wrong_epg&media_type=itv'>".$arr['wrong_epg']."</a></td>\n";
     echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=sound&media_type=karaoke'>".$arr['karaoke_sound']."</a></td>\n";
     echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=video&media_type=karaoke'>".$arr['karaoke_video']."</a></td>\n";
     echo "</tr>\n";
