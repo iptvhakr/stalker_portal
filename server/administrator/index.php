@@ -97,7 +97,7 @@ a:hover{
 </head>
 
 <body>
-<div style="width: 1100px; margin:0 auto; text-align: right">
+<div style="width: 80%; margin:0 auto; text-align: right">
     <a href="javascript://" class="lang" lang="en">en</a> | <a href="javascript://" class="lang" lang="ru">ru</a>
 </div>
 <br>
