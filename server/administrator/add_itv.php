@@ -80,7 +80,7 @@ if (!$error){
     }
 
     if (@$_POST['number'] && !check_number($_POST['number']) && !@$_GET['update']){
-        $error = sprintf(_('Error: channel with number "%s" is already in use'), intval($_POST['number']));
+        $error = sprintf(_('Error: channel with number "%s" is already in use').' <a href="#form">#</a>', intval($_POST['number']));
     }
     
     if (@$_GET['save'] && !$error && !empty($_POST)){
@@ -196,7 +196,7 @@ if (!$error){
                 if ($logo = handle_upload_logo($_FILES['logo'], $ch_id)){
                     Mysql::getInstance()->update('itv', array('logo' => $logo), array('id' => $ch_id));
                 }else{
-                    $error = _('Error: could not save logo');
+                    $error = _('Error: could not save logo').' <a href="#form">#</a>';
                 }
             }
             
@@ -204,7 +204,7 @@ if (!$error){
             exit;
         }
         else{
-            $error = _('Error: all fields are required');
+            $error = _('Error: all fields are required').' <a href="#form">#</a>';
         }
     }
     
@@ -279,12 +279,12 @@ if (!$error){
                 if ($logo = handle_upload_logo($_FILES['logo'], $ch_id)){
                     Mysql::getInstance()->update('itv', array('logo' => $logo), array('id' => $ch_id));
                 }else{
-                    $error = _('Error: could not save logo');
+                    $error = _('Error: could not save logo').' <a href="#form">#</a>';
                 }
             }
         }
         else{
-            $error = _('Error: all fields are required');
+            $error = _('Error: all fields are required').' <a href="#form">#</a>';
         }
     }
 }
@@ -671,7 +671,61 @@ if (@$_GET['edit']){
             $checked_hd = 'checked';
         }
     }
+}else if (!empty($_POST)){
+    $name   = @$_POST['name'];
+    $number = @$_POST['number'];
+    $cmd    = @$_POST['cmd'];
+    $mc_cmd = @$_POST['mc_cmd'];
+    $tv_genre_id = @$_POST['tv_genre_id'];
+    $descr  = @$_POST['descr'];
+    $cost   = @$_POST['cost'];
+    $xmltv_id   = @$_POST['xmltv_id'];
+    $service_id = @$_POST['service_id'];
+    $volume_correction = @$_POST['volume_correction'];
+    $correct_time   = @$_POST['correct_time'];
+    $monitoring_url = @$_POST['monitoring_url'];
+
+    if (@$_POST['use_http_tmp_link']){
+        $checked_http_tmp_link = 'checked';
+    }
+
+    if (@$_POST['wowza_tmp_link']){
+        $checked_wowza_tmp_link = 'checked';
+    }
+
+    if (@$_POST['wowza_dvr']){
+        $checked_wowza_dvr = 'checked';
+    }
+
+    if (@$_POST['enable_tv_archive']){
+        $checked_enable_tv_archive = 'checked';
+    }
+
+    if (@$_POST['enable_monitoring']){
+        $checked_enable_monitoring = 'checked';
+    }
+
+    if (@$_POST['enable_wowza_load_balancing']){
+        $checked_wowza_load_balancing = 'checked';
+    }
+
+    if (@$_POST['censored']){
+        $checked = 'checked';
+    }
+
+    if (@$_POST['base_ch']){
+        $checked_base = 'checked';
+    }
+
+    if (@$_POST['bonus_ch']){
+        $checked_bonus = 'checked';
+    }
+
+    if (@$_POST['hd']){
+        $checked_hd = 'checked';
+    }
 }
+
 function get_genres(){
     global $db;
     global $tv_genre_id;

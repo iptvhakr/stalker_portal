@@ -589,13 +589,14 @@ function sort_page(){
 </table>
 
 <?
-echo "<center><table class='list' cellpadding='3' cellspacing='0' width='980'>\n";
+echo "<center><table class='list' cellpadding='3' cellspacing='0' width='1100'>\n";
 echo "<tr>";
 //echo "<td class='list'><b>id</b></td>\n";
 echo "<td class='list'><b>#</b></td>\n";
 echo "<td class='list'><b>MAC</b></td>\n";
-echo "<td class='list'><b>Login</b></td>\n";
 echo "<td class='list'><b>IP</b></td>\n";
+echo "<td class='list'><b>Login</b></td>\n";
+echo "<td class='list'><b>Name</b></td>\n";
 echo "<td class='list'><b>"._('Type')."</b></td>\n";
 echo "<td class='list' width='250'><b>"._('Media')."</b></td>\n";
 echo "<td class='list'><b>"._('Time from<br>last playback')."</b></td>\n";
@@ -621,8 +622,9 @@ while(@$rs->next()){
     echo "<td class='list'>".$i."</td>\n";
     //echo "<td class='list'><a href='userlog.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
     echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
-    echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['login']."</a></td>\n";
     echo "<td class='list'><a href='events.php?mac=".$arr['mac']."'>".$arr['ip']."</a></td>\n";
+    echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['login']."</a></td>\n";
+    echo "<td class='list'>".$arr['fname']."</td>\n";
     echo "<td class='list'>".get_cur_media($arr['now_playing_type'])."</td>\n";
     echo "<td class='list'>".$now_playing_content."</td>\n";
     echo "<td class='list'>".get_last_time($arr['now_playing_start'])."</td>\n";
