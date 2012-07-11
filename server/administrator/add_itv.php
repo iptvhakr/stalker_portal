@@ -398,6 +398,7 @@ a:hover{
 </title>
 <script type="text/javascript" src="js.js"></script>
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.cookies.2.2.0.js"></script>
 
 <script type="text/javascript">
 
@@ -462,7 +463,13 @@ a:hover{
                     inverse = true;
                 }
 
-                th.click(function(){
+                th.click(function(eventObject){
+
+                    //console.log(eventObject);
+
+                    if (eventObject.hasOwnProperty("inverse")){
+                        inverse = !eventObject.inverse;
+                    }
 
                     table.find('td').filter(function(){
 
@@ -489,6 +496,10 @@ a:hover{
                     });
 
                     inverse = !inverse;
+
+                    $.cookies.set('sort_by_row', $(this).index());
+                    $.cookies.set('sort_inverse', inverse);
+
                     $('.order').remove();
 
                     th.append(' <span class="order">' + (inverse ? '&darr;' : '&uarr;') + '</span>');
@@ -500,6 +511,12 @@ a:hover{
             window.scrollTo(new_position.left, new_position.top);
             return false;
         });
+
+        var sort_by_row = $.cookies.get('sort_by_row');
+
+        if (sort_by_row !== null){
+            $('.item_list th:eq('+sort_by_row+')').trigger(jQuery.Event("click", { inverse: $.cookies.get('sort_inverse') }));
+        }
     });
 </script>
 </head>
