@@ -171,6 +171,11 @@ watchdog.prototype.parse_result = function(data){
                 }
                 break;
             }
+            case 'update_epg':
+            {
+                stb.epg_loader.load();
+                break;
+            }
             case 'cut_off':
             {
                 stb.cut_off();

@@ -49,6 +49,14 @@ class SysEvent extends Event
     }
 
     /**
+     * Send "update epg" event
+     */
+    public function sendUpdateEpg(){
+        $this->setEvent('update_epg');
+        $this->send();
+    }
+
+    /**
      * Send "update modules" event
      */
     public function sendUpdateModules(){

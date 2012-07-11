@@ -179,6 +179,10 @@ class Epg
         $setting['etag'] = $etag;
         $this->setSettings($setting);
 
+        $event = new SysEvent();
+        $event->setUserListByMac('all');
+        $event->sendUpdateEpg();
+
         $str = "Обновлено $done каналов из $total, $err ошибок \n";
         $str .= "<b>Ошибки: </b>\n".($err? $xml_ids_err : $err)."\n";
         $str .= "<b>Успешно: </b>\n".$xml_ids_done."\n";
@@ -252,6 +256,8 @@ class Epg
      */
     private function cleanEpgByDate($date, $itv_id){
 
+        $real_from = date("Y-m-d H:i:s", $date);
+
         $date = date("Y-m-d", $date);
 
         $from = $date." 00:00:00";
@@ -272,7 +278,7 @@ class Epg
             $this->db->delete('epg',
                               array(
                                   'ch_id'  => $itv_id,
-                                  'time>=' => $from,
+                                  'time>=' => $real_from,
                                   'time<'  => $to
                               ));
         }
