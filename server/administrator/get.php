@@ -4,13 +4,15 @@ include "./common.php";
 ob_start();
 $response = array();
 
-if ($_GET['get'] == 'kinopoisk_info' || $_GET['get'] == 'kinopoisk_rating'){
+if ($_GET['get'] == 'kinopoisk_info' || $_GET['get'] == 'kinopoisk_rating' || $_GET['get'] == 'kinopoisk_info_by_id'){
 
     try{
         if ($_GET['get'] == 'kinopoisk_info'){
             $response['result'] = Kinopoisk::getInfoByName($_GET['oname']);
         }else if ($_GET['get'] == 'kinopoisk_rating'){
             $response['result'] = Kinopoisk::getRatingByName($_GET['oname']);
+        }else if ($_GET['get'] == 'kinopoisk_info_by_id'){
+            $response['result'] = Kinopoisk::getInfoById($_GET['kinopoisk_id']);
         }
     }catch (KinopoiskException $e){
         echo $e->getMessage();

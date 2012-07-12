@@ -28,7 +28,7 @@ if (@$_GET['id']){
 }
 
 if (@$_GET['reset_sound_vote'] && @$_GET['id']){
-    
+
     $sql = "update video set vote_sound_good=0, vote_sound_bad=0 where id=".intval($_GET['id']);
     $rs=$db->executeQuery($sql);
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
@@ -36,7 +36,7 @@ if (@$_GET['reset_sound_vote'] && @$_GET['id']){
 }
 
 if (@$_GET['reset_video_vote'] && @$_GET['id']){
-    
+
     $sql = "update video set vote_video_good=0, vote_video_bad=0 where id=".intval($_GET['id']);
     $rs=$db->executeQuery($sql);
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
@@ -74,7 +74,7 @@ if (isset($_GET['accessed']) && @$_GET['id']){
         }
 
     }else{
-    
+
         /*set_accessed(@$_GET['id'], @$_GET['accessed']);
         $id = $_GET['id'];
         $path = get_path($_GET['id']);
@@ -124,7 +124,7 @@ if (isset($_GET['accessed']) && @$_GET['id']){
             }
         }*/
     }
-    
+
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@urldecode($_GET['search'])."&page=".@$_GET['page']);
     exit;
 }
@@ -141,26 +141,26 @@ if (count(@$_POST) > 0){
         if (isset($_FILES['screenshot'])){
             if (is_uploaded_file($_FILES['screenshot']['tmp_name'])){
                 if (preg_match("/jpeg/",$_FILES['screenshot']['type'])){
-               
+
                     $insert_upload = "INSERT INTO screenshots (name,
                                                                size,
                                                                type
                                                                )
-                                                       VALUES ('".$_FILES['screenshot']['name']."', 
-                                                               '".$_FILES['screenshot']['size']."', 
+                                                       VALUES ('".$_FILES['screenshot']['name']."',
+                                                               '".$_FILES['screenshot']['size']."',
                                                                '".$_FILES['screenshot']['type']."'
                                                                )";
                     //echo $insert_upload;
                     $rs=$db->executeQuery($insert_upload);
-                
+
                     $upload_id = mysql_insert_id();
-                    
+
                     if (empty($_SESSION['upload'])){
                         $_SESSION['upload'] = array();
                     }
-                    
+
                     $_SESSION['upload'][] = $upload_id;
-                    
+
                     $img_path = get_save_folder($upload_id);
                     umask(0);
 
@@ -208,17 +208,17 @@ if (count(@$_POST) > 0){
                 $cover->destroy();
             }
         }
-        
+
         $type = '';
-        
+
         if (!$error){
-            
+
             if (@$_POST['censored'] == 'on'){
                 $censored = 1;
             }else{
                 $censored = 0;
             }
-            
+
             if (@$_POST['hd'] == 'on'){
                 $hd = 1;
             }else{
@@ -230,17 +230,17 @@ if (count(@$_POST) > 0){
             }else{
                 $for_sd_stb = 0;
             }
-            
+
             $genre_id_1 = @$_POST['genre_id_1'] ? @$_POST['genre_id_1'] : 0;
             $genre_id_2 = @$_POST['genre_id_2'] ? @$_POST['genre_id_2'] : 0;
             $genre_id_3 = @$_POST['genre_id_3'] ? @$_POST['genre_id_3'] : 0;
             $genre_id_4 = @$_POST['genre_id_4'] ? @$_POST['genre_id_4'] : 0;
-            
+
             $cat_genre_id_1 = @$_POST['cat_genre_id_1'] ? @$_POST['cat_genre_id_1'] : 0;
             $cat_genre_id_2 = @$_POST['cat_genre_id_2'] ? @$_POST['cat_genre_id_2'] : 0;
             $cat_genre_id_3 = @$_POST['cat_genre_id_3'] ? @$_POST['cat_genre_id_3'] : 0;
             $cat_genre_id_4 = @$_POST['cat_genre_id_4'] ? @$_POST['cat_genre_id_4'] : 0;
-            
+
             $category_id = @$_POST['category_id'] ? @intval($_POST['category_id']) : 0;
 
             $protocol = $_POST['protocol'];
@@ -250,23 +250,23 @@ if (count(@$_POST) > 0){
             }else{
                 $rtsp_url = '';
             }
-            
+
             $status = $rtsp_url? 1 : 0;
 
             if (!empty($_GET['id'])){
                 $video = Video::getById($_GET['id']);
             }
-            
+
             if (@$_GET['save']){
                 $trans_name = transliterate(@urldecode($_POST['name']));
-                
+
                 if ($hd){
                     $trans_name .= '_HD';
                 }
                 $sql = "select * from video where path='".$trans_name."'";
                 $rs = $db->executeQuery($sql);
                 $rows = @$rs->getRowCount();
-                
+
                 if ($rows > 0){
                     $error = _('Error: The folder with that name already exists');
                 }
@@ -283,20 +283,20 @@ if (count(@$_POST) > 0){
                         }
                     }
                 }
-                
+
                 if(@$_GET['name'] && !$error){
-                    
+
                     $name = mysql_escape_string(@$_POST['name']);
                     $o_name = mysql_escape_string(@$_POST['o_name']);
                     $director = mysql_escape_string(@$_POST['director']);
                     $year = @$_POST['year'];
-                    
+
                     // disable this video in SD for hd devices
                     //$sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year'";
                     //$db->executeQuery($sql);
-                    
+
                     $datetime = date("Y-m-d H:i:s");
-                    
+
                     $query = "insert into video (name,
                                                  o_name,
                                                  censored,
@@ -363,7 +363,7 @@ if (count(@$_POST) > 0){
                     $rs = $db->executeQuery($query);
 
                     $video_id = mysql_insert_id();
-                    
+
                     if(@$_SESSION['upload']){
                         $query = 'DELETE from screenshots where media_id=\''.$video_id.'\' and id not IN ('.implode(',', $_SESSION['upload']).')';
                         $rs=$db->executeQuery($query);
@@ -386,33 +386,33 @@ if (count(@$_POST) > 0){
                     $error = _('Error: all fields are required');
                 }
             }
-            
+
             if (@$_GET['update']){
-                
+
 
                 $video_id = intval(@$_GET['id']);
 
                 if(@$_GET['name']){
-                    $query = "update video set name='".trim(mysql_real_escape_string($_POST['name']))."', 
-                                               o_name='".trim(mysql_real_escape_string($_POST['o_name']))."', 
-                                               censored='".$censored."', 
-                                               hd='".$hd."', 
+                    $query = "update video set name='".trim(mysql_real_escape_string($_POST['name']))."',
+                                               o_name='".trim(mysql_real_escape_string($_POST['o_name']))."',
+                                               censored='".$censored."',
+                                               hd='".$hd."',
                                                for_sd_stb='".$for_sd_stb."',
                                                protocol='".$protocol."',
                                                rtsp_url='".$rtsp_url."',
                                                time='".@$_POST['time']."',
-                                               description='".@mysql_real_escape_string($_POST['description'])."', 
-                                               genre_id_1='".$genre_id_1."',  
-                                               genre_id_2='".$genre_id_2."', 
-                                               genre_id_3='".$genre_id_3."', 
-                                               genre_id_4='".$genre_id_4."', 
-                                               cat_genre_id_1='".$cat_genre_id_1."',  
-                                               cat_genre_id_2='".$cat_genre_id_2."', 
-                                               cat_genre_id_3='".$cat_genre_id_3."', 
-                                               cat_genre_id_4='".$cat_genre_id_4."', 
-                                               category_id='".$category_id."', 
-                                               director='".@$_POST['director']."', 
-                                               actors='".@mysql_real_escape_string($_POST['actors'])."', 
+                                               description='".@mysql_real_escape_string($_POST['description'])."',
+                                               genre_id_1='".$genre_id_1."',
+                                               genre_id_2='".$genre_id_2."',
+                                               genre_id_3='".$genre_id_3."',
+                                               genre_id_4='".$genre_id_4."',
+                                               cat_genre_id_1='".$cat_genre_id_1."',
+                                               cat_genre_id_2='".$cat_genre_id_2."',
+                                               cat_genre_id_3='".$cat_genre_id_3."',
+                                               cat_genre_id_4='".$cat_genre_id_4."',
+                                               category_id='".$category_id."',
+                                               director='".@$_POST['director']."',
+                                               actors='".@mysql_real_escape_string($_POST['actors'])."',
                                                status=$status,
                                                year='".@$_POST['year']."',
                                                volume_correction=".intval($_POST['volume_correction']).",
@@ -432,7 +432,7 @@ if (count(@$_POST) > 0){
                     $query = 'UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
                     //echo $query;
                     $rs=$db->executeQuery($query);
-        
+
                     unset($_SESSION['upload']);
 
                     if ((empty($_FILES['screenshot']) || empty($_FILES['screenshot']['tmp_name'])) && empty($_POST['cover_big']) && empty($_POST['cover_id'])){
@@ -537,6 +537,10 @@ a:hover{
     font-size: 12px !important;
 }
 
+.kinopoisk_id[readonly="readonly"]{
+    color:#555;
+}
+
 </style>
 <script type="text/javascript" src="js.js"></script>
 <script type="text/javascript">
@@ -593,11 +597,11 @@ a:hover{
                 }
             },
             close : function(){
-                
+
             }
         });
     });
-    
+
     function getURLParameter(name) {
         return decodeURI(
             (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
@@ -657,7 +661,7 @@ function page_bar(){
     global $MAX_PAGE_ITEMS;
     global $page;
     global $total_pages;
-    
+
     $page_bar = '';
 
     for($i = 1; $i <= $total_pages; $i++){
@@ -674,10 +678,10 @@ function page_bar(){
 
 function send_button($id){
     $db = Database::getInstance();
-    
+
     $sql = "select * from moderator_tasks where ended=0 and media_id=$id";
     $rs = $db->executeQuery($sql);
-    
+
     if ($rs->getRowCount() > 0){
         $task_id = $rs->getValueByName(0, 'id');;
         return "<a href='msgs.php?task=".$task_id."'><font color='#CBCB00'>"._('task')."</font></a>&nbsp;&nbsp;\n";
@@ -704,7 +708,7 @@ if (@$_GET['status']){
     }else if (@$_GET['status'] == 'off'){
         $op_accessed=0;
     }
-    
+
     if ($where){
         $where .= ' and accessed='.$op_accessed;
     }else{
@@ -838,14 +842,14 @@ echo "<td class='list'>&nbsp;</td>\n";
 echo "<td class='list'><b>"._('Turn on date')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
-    
+
     $arr=$rs->getCurrentValuesAsHash();
-    
+
     echo "<tr>";
     echo "<td class='list'><a href='videolog.php?id={$arr['id']}'>".$arr['id']."</a></td>\n";
     //echo "<td class='list'>".get_path_color($arr['path'])."</td>\n";
     echo "<td class='list'><a href='javascript://' ";
-    
+
     if (empty($arr['rtsp_url'])){
         echo "onclick='open_info({$arr['id']})'";
     }
@@ -857,7 +861,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['time']."</td>\n";
     echo "<td class='list'><span id='series_{$arr['id']}'>".count_series($arr['series'])."</span></td>\n";
     echo "<td class='list' align='center'>";
-    
+
     if (check_access(array(1))){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
@@ -880,12 +884,12 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['added']."</td>\n";
     echo "</tr>\n";
     ?>
-    
+
     <tr style="display:none;" id="info_<?echo $arr['id']?>" bgcolor="#f2f2f2">
     <td>
         &nbsp;
     </td>
-    
+
     <td colspan="10">
     <table cellpadding="0" cellspacing="0">
       <tr>
@@ -902,14 +906,14 @@ while(@$rs->next()){
                 <table class='list' border="1" cellpadding='0' cellspacing='0' id="storages_content_<?echo $arr['id']?>">
                 </table>
             </td>
-           </tr>           
-          </table>           
+           </tr>
+          </table>
         </td>
       </tr>
     </table>
     </td>
     </tr>
-    
+
     <?
 }
 echo "</table>\n";
@@ -948,9 +952,9 @@ if (@$_GET['edit']){
             $cover_big = Config::get('screenshots_url').$dir_name;
             $cover_big .= '/'.$cover_id.'.jpg';
         }
-        
+
         $for_sd_stb = $arr['for_sd_stb'];
-        
+
         $volume_correction = $arr['volume_correction'];
         $readonly = 'readonly';
         if ($censored){
@@ -985,7 +989,7 @@ function check_incoming_path($path){
         umask(0);
         mkdir(INCOMING_DIR.$path, 0777);
     }
-    
+
     if (is_dir(VIDEO_STORAGE_DIR.$path)) {
     }else{
         umask(0);
@@ -999,16 +1003,16 @@ function del_incoming_path($path){
 
 function check_video_status($id){
     $db = Database::getInstance();
-    
+
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
-    
+
     $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
-    
+
     if (!empty($rtsp_url)){
         return 2;
     }
-    
+
     return $rs->getValueByName(0, 'status');
 }
 
@@ -1017,9 +1021,9 @@ function count_series($series){
 }
 
 function get_path_color($id, $path){
-    
+
     $color_status = check_video_status($id);
-    
+
     if ($color_status == 1){
         $color = 'green';
     }else if ($color_status == 0){
@@ -1063,7 +1067,7 @@ function get_path_color($id, $path){
 
 function get_accessed($id){
     $db = Database::getInstance();
-    
+
     $query = "select * from video where id=$id";
     $rs=$db->executeQuery($query);
     $accessed = $rs->getValueByName(0, 'accessed');
@@ -1107,7 +1111,7 @@ function get_accessed_color($id){
 function get_genres(){
     $db = Database::getInstance();
     global $genre_id;
-    
+
     $query = "select * from genre order by title";
     $rs=$db->executeQuery($query);
     $option = '';
@@ -1128,7 +1132,7 @@ function get_genres(){
 
 function get_selected_genres(){
     $db = Database::getInstance();
-    
+
     $genre_id = array();
     $str = '';
     if (@$_GET['id']){
@@ -1141,21 +1145,21 @@ function get_selected_genres(){
             $genre_id[3] = $rs->getValueByName(0, 'genre_id_3');
             $genre_id[4] = $rs->getValueByName(0, 'genre_id_4');
         //}
-    
-    
+
+
         $genre_id[1] = $genre_id[1] ? $genre_id[1] : 0;
         $genre_id[2] = $genre_id[2] ? $genre_id[2] : 0;
         $genre_id[3] = $genre_id[3] ? $genre_id[3] : 0;
         $genre_id[4] = $genre_id[4] ? $genre_id[4] : 0;
-        
+
         $k=0;
-        
+
         for ($i = 1; $i <= 4; $i++){
             if ($genre_id[$i] > 0){
                 $k ++;
             }
         }
-        
+
         $str  = "var sel_genre_id_1 = ".$genre_id[1]."\n";
         $str .= "var sel_genre_id_2 = ".$genre_id[2]."\n";
         $str .= "var sel_genre_id_3 = ".$genre_id[3]."\n";
@@ -1168,7 +1172,7 @@ function get_selected_genres(){
 function get_categories(){
     $db = Database::getInstance();
     global $category_id;
-    
+
     $query = "select * from media_category order by num";
     $rs=$db->executeQuery($query);
     $option = '';
@@ -1189,7 +1193,7 @@ function get_categories(){
 
 function get_selected_cat_genres(){
     $db = Database::getInstance();
-    
+
     $cat_genre_id = array();
     $str = '';
     if (@$_GET['id']){
@@ -1202,21 +1206,21 @@ function get_selected_cat_genres(){
             $cat_genre_id[3] = $rs->getValueByName(0, 'cat_genre_id_3');
             $cat_genre_id[4] = $rs->getValueByName(0, 'cat_genre_id_4');
         //}
-    
-    
+
+
         $cat_genre_id[1] = $cat_genre_id[1] ? $cat_genre_id[1] : 0;
         $cat_genre_id[2] = $cat_genre_id[2] ? $cat_genre_id[2] : 0;
         $cat_genre_id[3] = $cat_genre_id[3] ? $cat_genre_id[3] : 0;
         $cat_genre_id[4] = $cat_genre_id[4] ? $cat_genre_id[4] : 0;
-        
+
         $k=0;
-        
+
         for ($i = 1; $i <= 4; $i++){
             if ($cat_genre_id[$i] > 0){
                 $k ++;
             }
         }
-        
+
         $str  = "var sel_cat_genre_id_1 = ".$cat_genre_id[1]."\n";
         $str .= "var sel_cat_genre_id_2 = ".$cat_genre_id[2]."\n";
         $str .= "var sel_cat_genre_id_3 = ".$cat_genre_id[3]."\n";
@@ -1330,7 +1334,7 @@ function display_info(arr, id){
     });
 
     if (arr.length > 0){
-           
+
         if (general_storages.length > 0 && general_storages.length == arr.length){
             var path_color = '#f4c430';
         }else{
@@ -1338,7 +1342,7 @@ function display_info(arr, id){
         }
 
         document.getElementById('loading_bar_'+id).style.display = 'none';
-        
+
         var md5sum = '';
         var table  = '<tr>';
         table += '<td class="list2" width="70"><?= _('Server')?></td>';
@@ -1346,7 +1350,7 @@ function display_info(arr, id){
         table += '<td class="list2" width="60"><?= _('Series')?></td>';
         table += '<td class="list2">&nbsp;</td>';
         table += '</tr>';
-        
+
         for (i=0; i<arr.length; i++){
 
             var md5btn_txt = '';
@@ -1373,7 +1377,7 @@ function display_info(arr, id){
                  table +='<td class="list2">'+arr[i]['series']+'</td>';
                  table +='<td class="list2"><sub><a href="#" id="md5sum_link_'+arr[i]['path']+'_'+arr[i]['storage_name']+'" onclick="md5sum(this,\''+arr[i]['files'][0]['status']+'\',\''+arr[i]['path']+'\', \''+arr[i]['storage_name']+'\');return false;">'+md5btn_txt+'</a></sub></td>';
             table +='</tr>';
-            
+
             table +='<tr style="display:none" id="files_'+id+'_'+arr[i]['storage_name']+'">';
             table +='<td colspan="4" class="list2" width="100%" style="padding-right:5px">';
             table +='<table width="100%" border="0" cellpadding="0" cellspacing="0">';
@@ -1384,19 +1388,19 @@ function display_info(arr, id){
                 }else{
                     md5sum = '<?= _('counting')?>...'
                 }
-                
+
                 table +='<td nowrap width="100%" align="right"><sub><b>'+arr[i]['files'][j]['name']+'</b> '+md5sum+'</sub></td>'
-                
+
                 table +='</tr>'
             }
             table +='<tr><td><sub><br></sub></td></tr>';
             table +='</table>';
             table +='</td>';
             table +='</tr>';
-            
+
             document.getElementById('series_'+id).innerHTML = arr[i]['series'];
         }
-        
+
         document.getElementById('storages_content_'+id).innerHTML = table;
         document.getElementById('error_bar_'+id).style.display = 'none';
         document.getElementById('storages_'+id).style.display = '';
@@ -1409,22 +1413,22 @@ function display_info(arr, id){
 }
 
 function doLoad(get, data){
-    
+
     var req = new Subsys_JsHttpRequest_Js()
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
-            
+
             if (req.responseJS) {
-                
+
                 if (get == 'vclub_info'){
-                    
+
                     var info = req.responseJS.data
                     if(info != null){
                         display_info(info, data)
                     }
                     return
                 }
-                
+
                 if (get == 'startmd5sum'){
                     if (req.responseJS.error){
                         document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('error')?>'
@@ -1433,7 +1437,7 @@ function doLoad(get, data){
                         document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('counting')?>'
                     }
                 }
-                
+
                 if (get == 'chk_name'){
                     var resp = req.responseJS
                     if(resp != null){
@@ -1441,7 +1445,7 @@ function doLoad(get, data){
                     }
                     return
                 }
-                
+
                 if (get == 'chk_org_name'){
                     var resp = req.responseJS
                     if(resp != null){
@@ -1449,7 +1453,7 @@ function doLoad(get, data){
                     }
                     return
                 }
-                
+
                 if (get == 'get_cat_genres'){
                     var resp = req.responseJS.data
                     if(resp != null){
@@ -1457,7 +1461,7 @@ function doLoad(get, data){
                     }
                     return
                 }
-                
+
             }else{
                 if (get == 'vclub_info'){
                     alert('<?= _('Error: The file or directory may contain invalid characters')?>')
@@ -1466,7 +1470,7 @@ function doLoad(get, data){
         }
     }
     req.caching = false
-    
+
     req.open('POST', 'load.php?get='+get, true)
     send = {data : data}
     //alert(send.toSource())
@@ -1476,7 +1480,7 @@ function doLoad(get, data){
 function get_cat_genres(){
 
     cat_obj = document.getElementById('category_id')
-    
+
     for(i = 1; i <= 4; i++){
         if (i > 1){
             document.getElementById('cat_genre_id_'+i).options.length = 0;
@@ -1485,10 +1489,10 @@ function get_cat_genres(){
             document.getElementById('cat_genre_id_'+i).options.length = 0;
         }
     }
-    
+
     if (cat_obj.selectedIndex > 0){
         sel_category_id = cat_obj.options[cat_obj.selectedIndex].value
-        
+
         //alert(sel_category_id)
         if (sel_category_id > 0){
             tmp_cat = sel_category_id
@@ -1529,22 +1533,22 @@ function hint(){
 
 function save(){
     form_ = document.getElementById('form_')
-    
+
     name = document.getElementById('name').value
-    
+
     id = document.getElementById('id').value
     description = document.getElementById('description').value
-    
+
     action = 'add_video.php?name='+name+'&id='+id+'&letter=<? echo @$_GET['letter'] ?>&search=<? echo @$_GET['search']?>&page=<? echo @$_GET['page'] ?>'
-    
-    
+
+
     if(document.getElementById('action').value == 'edit'){
         action += '&update=1'
     }
     else{
         action += '&save=1'
     }
-    
+
     form_.action = action
     form_.method = 'POST'
     form_.submit()
@@ -1574,7 +1578,7 @@ function cat_genre_proc(num){
         cat_genre_obj = document.getElementById('cat_genre_'+num)
         if (cat_genre_id_obj.options[cat_genre_id_obj.selectedIndex].value != '0'){
             fill_cat_genres(num+1)
-            document.getElementById('cat_genre_'+(num+1)).style.display = ''            
+            document.getElementById('cat_genre_'+(num+1)).style.display = ''
         }else{
             for(i = 1; i <= 4; i++){
                 if (i > num){
@@ -1670,7 +1674,7 @@ function check_protocol(){
 
     var protocol_obj = document.getElementById('protocol');
     var rtsp_url_block = document.getElementById('rtsp_url_block');
-    
+
     if (protocol_obj.options[protocol_obj.selectedIndex].value == 'custom'){
         rtsp_url_block.style.display = '';
     }else{
@@ -1678,12 +1682,30 @@ function check_protocol(){
     }
 }
 
-function check_kinopoisk_info(orig_name){
+function check_kinopoisk_info_by_name(orig_name){
+    check_kinopoisk_info(orig_name)
+}
+
+function check_kinopoisk_info_by_id(id){
+    check_kinopoisk_info(null, id);
+}
+
+function check_kinopoisk_info(orig_name, kinopoisk_id){
 
     $('.kinopoisk_url').attr('href', '');
     $('.kinopoisk_url').html('');
 
-    $.get('get.php?get=kinopoisk_info', {"oname" : orig_name}, function(response){
+    if (orig_name){
+        var url = 'get.php?get=kinopoisk_info';
+        var data = {"oname" : orig_name}
+    }else if (kinopoisk_id){
+        url = 'get.php?get=kinopoisk_info_by_id';
+        data = {"kinopoisk_id" : kinopoisk_id}
+    }else{
+        return;
+    }
+
+    $.get(url, data, function(response){
         $('.info_loader').hide();
         $('.get_info').show();
         response = JSON.parse(response);
@@ -1761,7 +1783,11 @@ $(function(){
         $('.get_info').hide();
         $('.info_loader').show();
 
-        check_kinopoisk_info($(".o_name").val() || $(".name").val());
+        if ($(".o_name").val() || $(".name").val()){
+            check_kinopoisk_info($(".o_name").val() || $(".name").val());
+        }else if ($(".kinopoisk_id").val()){
+            check_kinopoisk_info_by_id($(".kinopoisk_id").val())
+        }
     });
 
     $(".rating_refresh").click(function(){
@@ -1775,6 +1801,28 @@ $(function(){
 
         $('.kinopoisk_url').attr('href', kinopoisk_url);
         $('.kinopoisk_url').html(kinopoisk_url);
+    }
+
+    $('.name').blur(function(){
+        if (!$(this).val() && !$('.o_name').val()){
+            $('.kinopoisk_id').removeAttr('readonly');
+        }else{
+            $('.kinopoisk_id').attr('readonly', 'readonly');
+        }
+    });
+
+    $('.o_name').blur(function(){
+        if (!$(this).val() && !$('.name').val()){
+            $('.kinopoisk_id').removeAttr('readonly');
+        }else{
+            $('.kinopoisk_id').attr('readonly', 'readonly');
+        }
+    });
+
+    if (!$('.name').val() && !$('.o_name').val()){
+        $('.kinopoisk_id').removeAttr('readonly');
+    }else{
+        $('.kinopoisk_id').attr('readonly', 'readonly');
     }
 });
 
@@ -1799,7 +1847,7 @@ $(function(){
             <span id="name_chk"></span>
             <input type="hidden" id="id" value="<? echo @$_GET['id'] ?>">
             <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
-            <input type="hidden" name="kinopoisk_id" class="kinopoisk_id" value="<? echo @$item['kinopoisk_id'] ?>">
+            <!--<input type="hidden" name="kinopoisk_id" class="kinopoisk_id" value="<?/* echo @$item['kinopoisk_id'] */?>">-->
             <!--<input type="hidden" name="rating_kinopoisk" class="rating_kinopoisk" value="<?/* echo $item['rating_kinopoisk'] */?>">-->
             <input type="hidden" name="rating_count_kinopoisk" class="rating_count_kinopoisk" value="<? echo @$item['rating_count_kinopoisk'] ?>">
             <input type="hidden" name="rating_imdb" class="rating_imdb" value="<? echo @$item['rating_imdb'] ?>">
@@ -1816,6 +1864,17 @@ $(function(){
             <span id="org_name_chk"></span>
             <div><a class="kinopoisk_url" href=""></a></div>
            </td>
+        </tr>
+
+        <tr style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>">
+            <td align="right" valign="top">
+                <?= _('Kinopoisk ID')?>:
+            </td>
+            <td>
+                <input type="text" name="kinopoisk_id" class="kinopoisk_id" value="<? echo @$item['kinopoisk_id'] ?>" title="<?= _('For unlock please delete Name and Original name fields')?>">
+                <a href="javascript://" title="<?= _('For unlock please delete Name and Original name fields')?>">?</a>
+                <!--<a href="javascript://" class="edit_kinopoisk_id">edit</a>-->
+            </td>
         </tr>
 
         <tr style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>">
@@ -1840,16 +1899,16 @@ $(function(){
              </select>
            </td>
         </tr>
-        
+
         <tr id="rtsp_url_block" <?if (@$protocol != 'custom'){ echo 'style="display:none"';}?>>
            <td align="right" valign="top">
-           RTSP/HTTP URL: 
+           RTSP/HTTP URL:
            </td>
            <td>
             <input name="rtsp_url" id="rtsp_url" type="text" onblur="" size="40" value="<? echo @$rtsp_url ?>"> (<?= _('include solution')?>)
            </td>
-        </tr> 
-        
+        </tr>
+
         <tr>
            <td align="right" valign="top">
            <?= _('Age restriction')?>:
@@ -1860,7 +1919,7 @@ $(function(){
         </tr>
         <tr>
            <td align="right" valign="top">
-           HD: 
+           HD:
            </td>
            <td>
             <input name="hd" id="hd" type="checkbox" <? echo @$checked_hd ?> >
@@ -1877,7 +1936,7 @@ $(function(){
            </td>
         </tr>
         <?}?>
-        
+
         <tr id="genre_1" style="background-color:#e0e0e0">
            <td align="right" valign="top">
             <?= _('old genre')?> 1:
@@ -1886,7 +1945,7 @@ $(function(){
             <select name="genre_id_1" id="genre_id_1" onchange="genre_proc(1)">
             </select>
            </td>
-        </tr> 
+        </tr>
         <tr id="genre_2" style="display:none;background-color:#e0e0e0">
            <td align="right" valign="top">
            <?= _('old genre')?> 2:
@@ -1895,7 +1954,7 @@ $(function(){
             <select name="genre_id_2" id="genre_id_2" onchange="genre_proc(2)">
             </select>
            </td>
-        </tr>  
+        </tr>
         <tr id="genre_3" style="display:none;background-color:#e0e0e0">
            <td align="right" valign="top">
            <?= _('old genre')?> 3:
@@ -1904,7 +1963,7 @@ $(function(){
             <select name="genre_id_3" id="genre_id_3" onchange="genre_proc(3)">
             </select>
            </td>
-        </tr> 
+        </tr>
         <tr id="genre_4" style="display:none;background-color:#e0e0e0">
            <td align="right" valign="top">
            <?= _('old genre')?> 4:
@@ -1914,7 +1973,7 @@ $(function(){
             </select>
            </td>
         </tr>
-        
+
         <tr>
            <td align="right" valign="top">
             <?= _('Category')?>:
@@ -1923,8 +1982,8 @@ $(function(){
             <select name="category_id" id="category_id" onchange="get_cat_genres()">
             </select>
            </td>
-        </tr> 
-        
+        </tr>
+
         <tr id="cat_genre_1">
            <td align="right" valign="top">
             <?= _('Genre')?> 1:
@@ -1933,7 +1992,7 @@ $(function(){
             <select name="cat_genre_id_1" id="cat_genre_id_1" onchange="cat_genre_proc(1)">
             </select>
            </td>
-        </tr> 
+        </tr>
         <tr id="cat_genre_2" style="display:none">
            <td align="right" valign="top">
            <?= _('Genre')?> 2:
@@ -1942,7 +2001,7 @@ $(function(){
             <select name="cat_genre_id_2" id="cat_genre_id_2" onchange="cat_genre_proc(2)">
             </select>
            </td>
-        </tr>  
+        </tr>
         <tr id="cat_genre_3" style="display:none">
            <td align="right" valign="top">
            <?= _('Genre')?> 3:
@@ -1951,7 +2010,7 @@ $(function(){
             <select name="cat_genre_id_3" id="cat_genre_id_3" onchange="cat_genre_proc(3)">
             </select>
            </td>
-        </tr> 
+        </tr>
         <tr id="cat_genre_4" style="display:none">
            <td align="right" valign="top">
            <?= _('Genre')?> 4:
@@ -1960,7 +2019,7 @@ $(function(){
             <select name="cat_genre_id_4" id="cat_genre_id_4" onchange="cat_genre_proc(4)">
             </select>
            </td>
-        </tr> 
+        </tr>
         <tr>
            <td align="right" valign="top">
            <?= _('Year')?>:
@@ -1968,7 +2027,7 @@ $(function(){
            <td>
             <input name="year" class="year" type="text" size="4" value="<? echo @$year ?>">
            </td>
-        </tr> 
+        </tr>
         <tr>
            <td align="right" valign="top">
             <?= _('Duration')?>:
@@ -1976,7 +2035,7 @@ $(function(){
            <td>
             <input name="time" type="text" class="duration" size="4" value="<? echo @$time ?>">, <?= _('min')?>
            </td>
-        </tr> 
+        </tr>
         <tr>
            <td align="right" valign="top">
             <?= _('Director')?>:
@@ -1984,7 +2043,7 @@ $(function(){
            <td>
             <input name="director" type="text" class="director" size="40" value="<? echo @$director ?>">
            </td>
-        </tr> 
+        </tr>
         <tr>
            <td align="right" valign="top">
             <?= _('Actors')?>:
@@ -1992,7 +2051,7 @@ $(function(){
            <td>
             <textarea id="actors" name="actors" class="actors" rows="6" cols="30"><? echo @$actors ?></textarea>
            </td>
-        </tr>  
+        </tr>
         <tr>
            <td align="right" valign="top">
             <?= _('Description')?>:
@@ -2008,7 +2067,7 @@ $(function(){
            <td>
             <input id="service_id" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
            </td>
-        </tr>   
+        </tr>
         <tr>
            <td align="right" valign="top">
             <?= _('Cover')?>:
@@ -2026,7 +2085,7 @@ $(function(){
         </tr>
         <tr style="display: none;">
            <td align="right">
-           
+
            </td>
            <td>
            <? echo $upload_str ?>
@@ -2043,7 +2102,7 @@ $(function(){
            <td>
            </td>
            <td>
-           <br> 
+           <br>
            <b><?= _('Form filling order')?>:</b><br><br>
            <?= _('1. Upload cover.<br>2. Fill form.<br>3. Save.<br>4. Put the converted in folder<br>&nbsp;&nbsp;&nbsp;&nbsp;specified in the column "Folder".<br>5. If necessary, edit or delete a record.<br>6. Click on folder name.<br>7. If the file is physically present in the directory,<br>&nbsp;&nbsp;&nbsp;&nbsp;it is green, if there is no - in red.')?>
            </td>
