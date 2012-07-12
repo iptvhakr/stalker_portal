@@ -565,7 +565,8 @@
             
             if (this.data_items && this.data_items[this.cur_row] && !this.loading){
                 stb.player.need_show_info = 0;
-                this._play_now(this.data_items[this.cur_row]);
+                //this._play_now(this.data_items[this.cur_row]);
+                this.set_active_row(this.cur_row);
             }
             
             // set active list w/ info item
