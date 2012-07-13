@@ -635,7 +635,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a> | <a href="add_moderator_mac.php"><?= _('Moderators MAC addresses')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="#form"><?= _('Add')?></a> |<a href="add_moderator_mac.php"><?= _('Moderators MAC addresses')?></a>
         <?
         if (check_access(array(1, 2))){
             echo '| <a href="myvideolog.php">'._('My logs').'</a>';
@@ -1828,6 +1828,7 @@ $(function(){
 
 </script>
 <br>
+<a name="form"></a>
 <table align="center" class='list'>
 <tr>
     <td>
@@ -2109,7 +2110,6 @@ $(function(){
         </tr>
     </table>
     </form>
-    <a name="form"></a>
     </td>
 </tr>
 </table>

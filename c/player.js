@@ -155,6 +155,58 @@ player.prototype.setup_rtsp = function(rtsp_type, rtsp_flags){
     }
 };
 
+player.prototype.set_cas = function(profile){
+    _debug('player.prototype.setup_cas', profile);
+    try{
+
+        if (!profile['cas_type'] || profile['cas_type'] == 0){
+            return;
+        }
+
+        if (profile['cas_ini_file']){
+            _debug('stb.LoadCASIniFile', profile['cas_ini_file']);
+            stb.LoadCASIniFile(profile['cas_ini_file']);
+        }
+
+        if (!profile['cas_ini_file'] && profile['cas_params']){
+            _debug('stb.SetCASParam',
+                profile['cas_params'].server_addr,
+                parseInt(profile['cas_params'].server_port, 10),
+                profile['cas_params'].company_name,
+                parseInt(profile['cas_params'].ip_id, 10),
+                parseInt(profile['cas_params'].error_level, 10));
+
+            stb.SetCASParam(
+                profile['cas_params'].server_addr,
+                parseInt(profile['cas_params'].server_port, 10),
+                profile['cas_params'].company_name,
+                parseInt(profile['cas_params'].ip_id, 10),
+                parseInt(profile['cas_params'].error_level, 10)
+            );
+        }
+
+        if (!profile['cas_ini_file'] && profile['cas_additional_params']){
+            for (var param in profile['cas_additional_params']){
+                if (profile['cas_additional_params'].hasOwnProperty(param)){
+                    _debug('stb.SetAdditionalCasParam', param, profile['cas_additional_params'][param]);
+                    stb.SetAdditionalCasParam(param, profile['cas_additional_params'][param]);
+                }
+            }
+        }
+
+        if (profile.hasOwnProperty('cas_hw_descrambling')){
+            _debug('stb.SetCASDescrambling', profile['cas_hw_descrambling']);
+            stb.SetCASDescrambling(profile['cas_hw_descrambling']);
+        }
+
+        _debug('stb.SetCASType', parseInt(profile['cas_type'], 10));
+
+        stb.SetCASType(parseInt(profile['cas_type'], 10));
+    }catch(e){
+        _debug(e);
+    }
+};
+
 player.prototype.play_or_download = function(content_type, url){
     _debug('player.play_media', content_type, url);
 

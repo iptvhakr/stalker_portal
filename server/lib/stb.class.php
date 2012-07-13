@@ -313,6 +313,12 @@ class Stb
             $profile['autoupdate'] = $image_update->getSettings();
         }
 
+        $profile['cas_type']   = Config::getSafe('cas_type', 0);
+        $profile['cas_params'] = Config::getSafe('cas_params', array());
+        $profile['cas_additional_params'] = Config::getSafe('cas_additional_params', array());
+        $profile['cas_hw_descrambling']   = Config::getSafe('cas_hw_descrambling', 0);
+        $profile['cas_ini_file']          = Config::getSafe('cas_ini_file', "");
+
         return $profile;
     }
 

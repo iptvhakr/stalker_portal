@@ -527,6 +527,10 @@ function common_xpcom(){
 
                 this.player.setup_rtsp(this.user['rtsp_type'], this.user['rtsp_flags']);
 
+                if (this.user.hasOwnProperty('cas_type')){
+                    this.player.set_cas(this.user);
+                }
+
                 this.user.fav_itv_on = parseInt(this.user.fav_itv_on, 10);
 
                 this.user['aspect']    = parseInt(this.user['aspect'],    10);
