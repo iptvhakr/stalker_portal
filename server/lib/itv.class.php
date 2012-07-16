@@ -620,7 +620,7 @@ class Itv extends AjaxResponse
             $result = $result->in('itv.id', $fav);
         }
 
-        if (Config::get('enable_tariff_plans')){
+        if (Config::get('enable_tariff_plans') && !Config::getSafe('show_unsubscribed_tv_channels', false)){
             $result = $result->in('itv.id', $all_user_channels_ids);
         }
         
