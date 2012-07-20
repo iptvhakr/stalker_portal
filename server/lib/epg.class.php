@@ -61,11 +61,11 @@ class Epg
             $headers = get_headers($setting['uri'], 1);
 
             if ($headers === false){
-                return "\nИсточник ".$setting['uri']." недоступен\n";
+                return "\n"._("Source")." ".$setting['uri']." "._("unavailable")."\n";
             }
 
             if (!preg_match("/200 OK/", $headers[0])){
-                return "\nИсточник ".$setting['uri']." недоступен\n";
+                return "\n"._("Source")." ".$setting['uri']." "._("unavailable")."\n";
             }
 
             if (!empty($headers['ETag'])){
@@ -80,7 +80,7 @@ class Epg
         }
 
         if ($setting['etag'] == $etag && !$force){
-            return "Источник ".$setting['uri']." не изменился\n";
+            return _("Source")." ".$setting['uri']." "._("not changed")."\n";
         }
 
         if (preg_match("/\.gz$/", $setting['uri'])){
@@ -183,9 +183,10 @@ class Epg
         $event->setUserListByMac('all');
         $event->sendUpdateEpg();
 
-        $str = "Обновлено $done каналов из $total, $err ошибок \n";
-        $str .= "<b>Ошибки: </b>\n".($err? $xml_ids_err : $err)."\n";
-        $str .= "<b>Успешно: </b>\n".$xml_ids_done."\n";
+        //$str = "Обновлено $done каналов из $total, $err ошибок \n";
+        $str = sprintf(_("Updated %d channels from %d, %d errors"), $done, $total, $err)." \n";
+        $str .= "<b>"._("Errors").": </b>\n".($err? $xml_ids_err : $err)."\n";
+        $str .= "<b>"._("Successful").": </b>\n".$xml_ids_done."\n";
 
         return $str;
     }
