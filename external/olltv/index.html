@@ -1,0 +1,200 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="sys.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="keyhandler.js"></script>
+        <script type="text/javascript" src="player.js"></script>
+        <script type="text/javascript" src="vars.js"></script>
+    </head>
+    <body onload="init()" onkeydown="keydown(event)">
+        <div id="loading">
+            <div class="loading_ico"></div>
+        </div>
+        <div class="header">
+            <div class="header_logo"></div>
+            <div id="headerTitle" class="header_title"></div>
+            <div class="header_btn_red">Поиск</div>		
+            <div class="header_btn_back">вернуться назад</div>		
+            <div class="header_shadow"></div>
+        </div>
+        <div id="message" class="modal">
+		<div class="modal_box" id="message_html">
+			<div id="message_text" class="modal_title">Контент временно недоступен.</div>
+                        <div id="message_"></div>
+<!--			<div class="modal_btn_act">Дальше</div>-->
+			<div class="subscript_btn">Ок</div>
+		</div>
+	</div>    
+        <div id="inteface"  class="container">
+            
+            <!-- MAIN MENU -->
+            <div id="main_page">
+                <div id="short_info" class="infopanel">
+                    
+                    <div class="infopanel_shadow"></div>
+                    <div class="text_title">Краткая информация:</div>
+<!--                    <div class="gray_text"><span class="year_text">2008</span> | Франция, США | Исторический, Драма</div>
+                    <div id="descr">После провала очередной операции и гибели любовницы профессиональный киллер Джек решает, что следующее задание, которое поручает ему таинственная женщина, будет последним в его карьере. Он тайно поселяется в маленьком итальянском городке, затерявшемся в...</div>
+                    <div class="rating"><div class="rating_act"></div>6.8</div>
+                    <div class="infopanel_bottom">
+                        <div class="infopanel_bottom_link">смотри бесплатно</div>
+                    </div>-->
+                </div>
+
+                <div class="main_list">
+    <!--                <div id="line0" class="strip">
+
+                    </div>
+                    <div id="line1" class="strip">
+
+                    </div>
+                    <div id="line2" class="strip">
+
+                    </div>-->
+                </div>
+            </div>
+            <div id="info_page" class="fullinfo_container">
+<!--                <div id="infoTitle" class="fullinfo_title">Последняя из рода БолейнПоследняя из рода Болейн<span class="fullinfo_series">сезон 2, серия 5</span></div>
+                <div class="fullinfo_stripe_act">
+                    <div class="fullinfo_btn_series">Сезон 8</div>
+                    <div class="fullinfo_btn_series_act">Сезон 9</div>
+                    <div class="fullinfo_btn_series_press">Сезон 10</div>
+                    <div class="fullinfo_btn_series">Сезон 11</div>
+                </div>
+                <div class="fullinfo_stripe">
+                    <div class="fullinfo_btn_series">Серия 8</div>
+                    <div class="fullinfo_btn_series_act">Серия 9</div>
+                    <div class="fullinfo_btn_series_press">Серия 10</div>
+                    <div class="fullinfo_btn_series">Серия 11</div>
+                </div>
+                <div class="fullinfo_content">
+                    <div class="fullinfo_menu">
+                        <div class="fullinfo_btn_large">Продолжить просмотр</div>
+                        <div class="fullinfo_btn_large_act">Смотреть сначала</div>
+                        <div class="fullinfo_btn_large_press">Добавить в избранное</div>
+                        <div class="fullinfo_menu_block">
+                            <div>Субтитры на выбор</div>
+                            <div class="fullinfo_btn_small">рус</div>
+                            <div class="fullinfo_btn_small_act">eng</div>
+                            <div class="fullinfo_btn_small_press">укр</div>
+                            <div class="fullinfo_btn_small">fra</div>
+                        </div>
+                        <div class="fullinfo_menu_block">
+                            <div>Звуковые дорожки на выбор</div>
+                            <div class="fullinfo_btn_small">рус</div>
+                            <div class="fullinfo_btn_small">eng</div>
+                            <div class="fullinfo_btn_small">укр</div>
+                            <div class="fullinfo_btn_small">fra</div>
+                        </div>
+                    </div>
+                    <div class="fullinfo_toptext">
+                        <div><span class="year_text">2008</span> | Франция, Великобритания, Италия, Тунис | Боевик/Триллер, Приключения, Приключения, Приключения, Военный, Фантастика<span class="hd_ico"></span></div>
+                        <div class="fullinfo_cover">
+                            <img src="img/cover/7fd5a2_poslednii_legion.jpg" /><br /><br />
+                            <div class="rating"><div class="rating_act"></div>6.8</div>
+                        </div>
+                        <div class="fullinfo_text">Которую он назначает фрейлиной при королеве. Мария вынуждена подчиниться воле отца и мужа Вынуждена подчиниться воле отца и мужа. Но королю больше приглянулась вторая дочь — замужняя Мария (Скарлетт Йоханссон)<br />Мария вынуждена подчиниться воле отца и мужа Вынуждена подчиниться воле отца и мужа. Но королю больше приглянулась вторая дочь — замужняя Мария (Скарлетт Йоханссон). Которую он назначает фрейлиной при королеве. <br /><br />
+                        <b>Актеры:</b> Колин Фёрт, Айэйн Глен, Бен Кингсли, Айшвария Рай, Питер Муллан, Кевин МакКидд, Джон Ханна, Томас Броди Сэнгстер, Руперт Френд, Нонсо Анози<br />
+                        <b>Режисер:</b> Тарак Бен Аммар, Дино Де Лаурентис, Марта Де Лаурентис
+                        </div>
+                    </div>
+		</div>-->
+            </div>
+            
+            <!-- END MAIN MENU -->
+                
+                
+        </div>
+        <div id="search_page" class="search_container">
+            <div class="keypad_box">
+                <div class="keypad_key_act keypad_empty">12#</div>
+                <div class="keypad_key">а</div>
+                <div class="keypad_key">б</div>
+                <div class="keypad_key">в</div>
+                <div class="keypad_key">г</div>
+                <div class="keypad_key">д</div>
+                <div class="keypad_key_add keypad_empty">RU</div>
+                <div class="keypad_key">е</div>
+                <div class="keypad_key">ё</div>
+                <div class="keypad_key">ж</div>
+                <div class="keypad_key">з</div>
+                <div class="keypad_key">и</div>
+                <div class="keypad_key_add keypad_empty"><img src="img/720/keypad_space.png" /></div>
+                <div class="keypad_key">й</div>
+                <div class="keypad_key">к</div>
+                <div class="keypad_key">л</div>
+                <div class="keypad_key">м</div>
+                <div class="keypad_key">н</div>
+                <div class="keypad_key_add keypad_empty"><img src="img/720/keypad_del.png" /></div>
+                <div class="keypad_key">о</div>
+                <div class="keypad_key">п</div>
+                <div class="keypad_key">р</div>
+                <div class="keypad_key">с</div>
+                <div class="keypad_key">т</div>
+                <div class="keypad_key_null keypad_empty"></div>
+                <div class="keypad_key">у</div>
+                <div class="keypad_key">ф</div>
+                <div class="keypad_key">х</div>
+                <div class="keypad_key">ц</div>
+                <div class="keypad_key">ч</div>
+                <div class="keypad_key_null keypad_empty"></div>
+                <div class="keypad_key">ш</div>
+                <div class="keypad_key">щ</div>
+                <div class="keypad_key">ъ</div>
+                <div class="keypad_key">ы</div>
+                <div class="keypad_key">ь</div>
+                <div class="keypad_key_null keypad_empty"></div>
+                <div class="keypad_key">э</div>
+                <div class="keypad_key">ю</div>
+                <div class="keypad_key">я</div>
+            </div>
+
+            <input id="search_input" oninput="getSuggest()" readonly="readonly" />
+            <div id="search_count" class="search_count"></div>
+            <div class="search_box" style="display: none;">
+                <div id="suggests" class="search_inner">
+<!--                    <div class="search_result">Р</div>
+                    <div class="search_result_act">Терминатор</div>
+                    <div class="search_result">Терминатор 2</div>
+                    <div class="search_result">Терминатор 3</div>-->
+                </div>
+            </div>
+	</div>
+        <div id="player_page" style="display:none; position: absolute;">
+                <div id="head">
+                    <div id="video_title"></div>
+    <!--                <div class="hide">Скрыть - "ОК"</div>-->
+                </div>
+                <div id="player">
+                    <div id="setTime">
+                        <div class="btn_red">Скрыть</div>
+                    </div>
+                    <div id="player_btns">
+                        <div id="btn_bwd"></div>
+                        <div id="btn_play"></div>
+                        <div id="btn_fwd"></div>
+                    </div>
+                    <div id="playtime" style="float: right;">
+                        <span id="cur_time"></span>&nbsp;/&nbsp;<span id="total_time"></span>
+                    </div>
+                    <div id="progressbar">
+                        <div id="progress"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="mute" style="display:none;"></div>
+            <div id="playingStatus" style="display:none;"></div>
+            <div id="volumeForm" style="display:none;">
+                <div id="volume_bar"><div id="volume_right"></div></div>
+                <div id="volume_num">100%</div>
+            </div>
+            <div id="screenAspect"></div>
+    </body>
+</html>

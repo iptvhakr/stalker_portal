@@ -1,0 +1,142 @@
+#player_page{width: 720px;height: 576px;position: absolute;}
+
+#head{position: absolute;top: 0px; width: 720px;background-color: rgba(0,0,0,0.6); padding:60px 0px 10px 80px; display: none;}
+#video_title{width: 600px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;font-size: 32px;}
+.hide{float: right;font-size: 30px; margin-right: 105px;}
+
+#player{position: absolute; bottom: 0px; width: 720px; height: 140px;background-color: rgba(0,0,0,0.6); display: none;}
+#setTime{background: url(img/576/mb_btn_ok.png) no-repeat left;background-size:36px 36px; padding-left:40px; position:absolute;top:20px;left: 70px; height: 40px; line-height: 46px;}
+#player_btns{position: absolute;top: 10px;left: 275px; width: 170px;height: 62px;}
+#btn_bwd{position: relative; top:0px;width: 48px;height: 48px;display: inline-block;background: url(img/576/btn_rewind.png);}
+#btn_play{position: relative; top:0px;width: 48px;height: 48px;display: inline-block;background: url(img/576/btn_play.png);}
+#btn_fwd{position: relative; top:0px;width: 48px;height: 48px;display: inline-block;background: url(img/576/btn_ffwd.png);}
+#progressbar{position:absolute; width: 560px; height: 10px; background: url(img/576/white_bg.png); top: 80px; left: 80px;}
+#progress{width: 0px; height: 10px; background: white;}
+
+#playtime{position: absolute; top: 55px;right: 91px; width: 123px;}
+#cur_time{font-size: 20px;}
+#total_time{font-size: 18px; color: #a8a8a8;}
+
+.volumeContainer{width:300px;}
+#volumeForm { position:absolute; top:50px; right:110px; width:308px; height:41px; line-height:41px; z-index:1; background-image: url(img/volume/volume_bg.png); }
+#volume_bar { position:relative; width:200px; height:41px; left:47px; background: url(img/volume/volume_left.png) 0 50% no-repeat; }
+#volume_right { position:relative; width:100%; max-width: 195px; height:41px; margin-left:5px; background: url(img/volume/volume_bar.png) 100% 50% no-repeat; }
+#volume_num { position:relative; float:right; top:-37px; font: 26px "Myriad Pro Cond"; font-weight:bold; margin-right:6px; height:41px; line-height:41px; }
+#mute { position:absolute; width:47px; height:41px; top:50px; right:373px; background:url(img/volume/volume_off.png); }
+#screenAspect { width:206px; height:41px; position:absolute; top:50px; right:50px; z-index: 3; background-repeat:no-repeat;  background-position:50% 50%; }
+
+* {margin:0; padding:0;}
+html, body {overflow:hidden; font-family:"Myriad Pro"; color:#222; width:720px; height:576px; }
+body{background:url(img/bg.png);}
+a {outline:none; text-decoration:none;}
+#loading{position: absolute; width: 720px; height: 576px; background-color: #000; z-index: 999; display: none;}
+.loading_ico{margin: 170px auto; width: 200px; height: 200px; background: url(img/preloader.jpg) center center;}
+.header {position:absolute; width:670px; padding-right:50px; height:86px; top:0; background:url(img/header.jpg) top no-repeat;}
+.header_shadow {height:6px; width:720px; margin-top:80px; background:url(img/header_shadow.png);}
+.header_logo {height:44px; width:100px; margin-left:50px; margin-top:36px; background:url(img/header_logo.png) top no-repeat; float:left;}
+.header_title {margin-top:40px; margin-left:20px; font-size:26px; line-height:30px; color:#cde; float:left;}
+.header_btn_back {height:26px; margin-top:40px; margin-bottom:18px; margin-left:16px; padding-left:40px; background:url(img/header_btn_back.png) left no-repeat; font-size:20px; font-family:"Myriad Pro Cond"; color:#cde; line-height:26px; float:right;}
+.header_btn_red {height:26px; margin-top:40px; margin-bottom:18px; margin-left:16px; padding-left:40px; background:url(img/header_btn_red.png) left no-repeat; font-size:20px; font-family:"Myriad Pro Cond"; color:#cde; line-height:26px; float:right;}
+
+.container {height:496px; width:720px; margin-top:80px;}
+.main_list {height:622px; width:486px; margin-top:-112px; overflow:hidden;}
+.strip {height:206px; width:720px; margin-left:20px; overflow:hidden; border-bottom:solid 1px #aaa; padding-top:5px;}
+.strip_act {height:206px; width:720px; margin-left:20px; overflow:hidden; background:url(img/bg_light.png); border-bottom:solid 1px #aaa; padding-top:5px;}
+.strip_text {height:20px; width:410px; padding:0 16px 0 70px; margin-left:-50px; font-size:20px; font-weight:bold;}
+.strip_text_count {color:#555; height:20px; font-size:20px; font-weight:bold; float:right; margin-right: 10px;}
+.strip_item {height:136px; width:101px; margin:0 -4px 7px -5px; padding:10px; float:left; background:url(img/strip_item.png) no-repeat; background-size: 121px 156px;}
+.strip_item_act {height:136px; width:101px; margin:0 -4px 7px -5px; padding:10px; float:left; background:url(img/strip_item_act.png) no-repeat; background-size: 121px 156px;}
+.strip_genre {height:32px; width:106px; font-size:20px; line-height:24px; text-align: center; padding:20px 10px; margin:120px 4px 0 4px; background:url(img/strip_genre.png) no-repeat; float:left; background-size:127px 72px;}
+.strip_genre_act {height:52px; width:106px; font-size:20px; line-height:24px; text-align: center; color:#fff; padding:10px 10px; margin-top:120px; background:url(img/strip_genre_act.png) no-repeat; float:left; background-size:127px 72px;}
+
+.infopanel {height:470px; width:170px; padding:118px 50px 36px 14px; right:0px; background:url(img/bg_light.png); float:right; font-size:18px; line-height:18px; font-family:"Myriad Pro Cond";}
+.infopanel_shadow {height:510px; width:36px; margin-left:-50px; margin-top:-20px; background:url(img/infopanel_shadow.png) left no-repeat; float:left;}
+.hd_ico {position:absolute; height:20px; width:30px; margin-left:6px; background:url(img/576/hd_ico.png);}
+.text_title {font-size:24px; margin-bottom:14px; line-height:24px;}
+.gray_text {color:#555; margin-bottom:14px; font-size:19px; float:left; width: 170px;}
+.year_text {color:#222; font-weight:bold;}
+.infopanel_bottom {width:236px; height:480px; margin-left:-14px; margin-top:10px; background:url(img/infopanel_bottom.png) top no-repeat; overflow:hidden;}
+.infopanel_bottom_link {font-size:22px; color:#333; padding-left:24px; margin-left:14px; margin-top:10px; background:url(img/infopanel_button.png) left no-repeat;}
+.rating {height:20px; background:url(img/rating_0.png) no-repeat; padding-left:106px; width:110px; margin-right:10px; font-size:18px; color:#777; float:left;}
+.rating_act {height:20px; width:68px; background:url(img/rating_1.png) left; margin-left:-106px; float:left;}
+
+.fullinfo_container {width:720px; height:496px; background:url(img/bg_light.png);}
+.fullinfo_title {width:620px; padding:16px 50px 6px 50px; font-size:26px; border-bottom:solid 1px #888; font-family:"Myriad Pro Cond"; background:url(img/bg.png);}
+.fullinfo_series {font-size:24px; color:#555; margin-left:10px;}
+.fullinfo_content {width:620px; padding:10px 50px 40px 50px;}
+
+.fullinfo_menu {width:230px; margin-left:30px; float:right;}
+.fullinfo_btn_large {border-width:12px; -webkit-border-image: url(img/btn.png) 12 stretch; padding:0 4px; font-size:20px; font-family:"Myriad Pro Cond"; font-weight:bold;}
+.fullinfo_btn_large_act {border-width:12px; -webkit-border-image: url(img/btn_act.png) 12 stretch; padding:0 4px; font-size:20px; color:#184ead; font-family:"Myriad Pro Cond"; font-weight:bold;}
+.fullinfo_btn_large_press {border-width:12px; -webkit-border-image: url(img/btn_press.png) 12 stretch; padding:0 4px; font-size:20px; color:#184ead; font-family:"Myriad Pro Cond"; font-weight:bold;}
+.fullinfo_btn_small {border-width:12px; width:25px; -webkit-border-image: url(img/btn.png) 12 stretch; padding:0px 4px; text-indent:0px; font-size:18px; font-family:"Myriad Pro Cond"; font-weight:bold; float:left;}
+.fullinfo_btn_small_act {border-width:12px; width:25px; -webkit-border-image: url(img/btn_act.png) 12 stretch; padding:0px 4px; text-indent:0px; font-size:18px; color:#184ead; font-family:"Myriad Pro Cond"; font-weight:bold; float:left;}
+.fullinfo_btn_small_press {border-width:12px; width:25px; -webkit-border-image: url(img/btn_press.png) 12 stretch; padding:0px 4px; text-indent:0px; font-size:18px; color:#184ead; font-family:"Myriad Pro Cond"; font-weight:bold; float:left;}
+.fullinfo_btn_series {border-width:12px; width:66px; -webkit-border-image: url(img/btn.png) 12 stretch; padding:0px; text-indent:0px; font-size:18px; font-family:"Myriad Pro Cond"; font-weight:bold; text-align:center; float:left;}
+.fullinfo_btn_series_act {border-width:12px; width:66px; -webkit-border-image: url(img/btn_act.png) 12 stretch; padding:0px; text-indent:0px; font-size:18px; font-family:"Myriad Pro Cond"; font-weight:bold; text-align:center; color:#184ead; float:left;}
+.fullinfo_btn_series_press {border-width:12px; width:66px; -webkit-border-image: url(img/btn_press.png) 12 stretch; padding:0px; text-indent:0px; font-size:18px; font-family:"Myriad Pro Cond"; text-align:center; color:#184ead; float:left;}
+.fullinfo_menu_block {width:230px; margin-top:6px; font-size:20px; font-family:"Myriad Pro Cond"; text-indent:10px; float:left;}
+.fullinfo_toptext {width:390px; font-size:18px; line-height:22px; font-family:"Myriad Pro Cond"; color:#555; height: 350px; overflow-y: auto;  text-overflow:ellipsis; position: absolute;}
+.fullinfo_cover {width:152px; height:204px; padding:4px; margin-top:6px; background:#fff; float:left;}
+.fullinfo_text {font-size:18px; padding-left:170px; margin-top:4px; width:190px; line-height:18px;}
+#pgup{background: url(img/720/pgup.png) no-repeat left;    background-size:50px 34px; padding-left:50px; position:absolute; top:400px;left: 440px; height: 50px; line-height: 46px;}
+#pgdown{background: url(img/720/pgdown.png) no-repeat left; background-size:50px 34px; padding-left:50px; position:absolute; top:440px;left: 440px; height: 50px; line-height: 46px;}
+#info_year{margin-left: 10px;}
+.fullinfo_stripe {width:640px; height:44px; padding:0px 40px 2px; border-bottom:solid 1px #888; background:url(img/bg.png);}
+.fullinfo_stripe_act {width:640px; height:44px; padding:0px 40px 2px;; border-bottom:solid 1px #888; background:url(img/bg_dark.png);}
+.fullinfo_rating {height:20px; background:url(img/rating_0.png) no-repeat; padding-left:106px; margin-right:10px; margin-top:16px; font-size:18px; color:#777; float:left;}
+.fullinfo_rating_act {height:20px; width:68px; background:url(img/rating_1.png) left; margin-left:-106px; float:left;}
+#series{width:1152px; height:46px;}
+
+.modal {position:absolute; width:720px; height:576px; background:url(img/black_bg.png); z-index:999; display: none;}
+.modal_box {width:580px; margin:90px auto; border-radius:5px; padding:20px 20px 80px 20px; background:#ccc; font-size:20px;}
+.modal_title {font-size:26px; margin-bottom:16px;}
+.modal_btn {border-width:12px; width:110px; -webkit-border-image: url(img/btn.png) 12 stretch; padding:10px 10px; font-size:20px; margin-top:0px; float:right;}
+.modal_btn_act {border-width:12px; width:110px; -webkit-border-image: url(img/btn_act.png) 12 stretch; padding:10px 10px; font-size:20px; margin-top:0px; color:#184ead; float:right;}
+.modal_btn_press {border-width:12px; width:110px; -webkit-border-image: url(img/btn_press.png) 12 stretch; padding:10px 10px; font-size:20px; margin-top:0px; color:#184ead; float:right;}
+.subscript_btn {border-width:12px; -webkit-border-image: url(img/btn.png) 12 stretch; padding:10px 20px; font-size:20px; margin-top:5px; float:left;}
+.subscript_btn_act {border-width:12px; -webkit-border-image: url(img/btn_act.png) 12 stretch; padding:10px 20px; font-size:20px; margin-top:5px; color:#184ead; float:left;}
+.modal_darkbg {background:#bbb; border-bottom:solid 1px #aaa; border-top:solid 1px #aaa; padding:16px 16px; margin:10px -20px; font-size:18px; font-family:"Myriad Pro Cond";}
+.bullet {width:32px; height:32px; background:url(img/720/bullet.png) no-repeat; margin-right:10px; margin-top:-6px; float:left; color:#fff; font-size:22px; text-align:center; line-height:34px;}
+.subscript_bg {position:absolute; background:url(img/576/bg_subscription.png) right no-repeat; height:222px; margin-top:130px; width:600px;}
+.authorization_bg {position:absolute; background:url(img/576/bg_autorization.png) right no-repeat; height:222px; margin-top:130px; width:600px;}
+.auth_box {height:60px; width:200px; border-width:0 15px; -webkit-border-image: url(img/576/auth_bg.png) 0 15 stretch; font-size:40px; text-align:center; color:#fff; line-height:70px;}
+
+.achtung_box {width:400px; margin:20px auto; border-radius:5px; padding:40px 120px 40px 40px; background:#ccc url(img/achtung_bg.png) right no-repeat; background-size:120px; font-size:18px;}
+
+.search_container {position: absolute; width:720px; height:496px; top: 60px; display: none;}
+.search_count {width:240px; margin:12px 64px 0px 20px; font-size:20px; float:left; color:#555;}
+.search_count .black {color:#000; font-size:24px;}
+.search_box {width:246px; margin:6px 0 0 16px; border-width:10px; float:left; -webkit-border-image: url(img/576/search_bg.png) 10 stretch;}
+.search_inner {width:256px; margin:5px 0 5px -5px; border-top:solid 1px #ccc;}
+.search_result {height:50px; border-bottom:solid 1px #ccc; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; font-size:28px; padding:0 10px; line-height:50px;}
+.search_result_act {height:50px; border-bottom:solid 1px #ccc; overflow:hidden; text-overflow: ellipsis; white-space: nowrap; background:url(img/576/search_act.png); font-size:28px; color:#fff; padding:0 10px; line-height:50px;}
+.keypad_box {height:378px; width:336px; margin-left:50px; margin-top:30px; font-size:32px; line-height:50px; color:#fff; text-align:center; float:left;}
+.keypad_key {height:50px; width:50px; margin:2px; border-radius:5px; float:left; background:#555;}
+.keypad_key_act {height:50px; width:50px; margin:2px; float:left; background:url(img/576/keypad_act.png);}
+.keypad_key_add {height:50px; width:50px; margin:2px; border-radius:5px; float:left; background:#777; color:#fff;}
+.keypad_key_null {height:50px; width:50px; margin:2px; float:left;}
+.keypad_empty {margin-right:12px; font-size:24px; line-height:54px;}
+#search_input{margin-left:20px; height:46px; width:240px; margin-top:30px; background: none; font-family:"Trebuchet MS"; font-size:28px; font-weight: normal; color:#135;border-width: 0 14px 0 6px; -webkit-border-image: url(img/720/input720.png) 0 14 0 6 stretch stretch;}
+#search_input:focus {height:46px; width:240px; margin-top:30px; background: none; font-family:"Trebuchet MS"; font-size:28px; font-weight: normal; color:#135;border-width: 0 14px 0 6px; -webkit-border-image: url(img/720/input_act.png) 0 14 0 6 stretch stretch;}
+::-webkit-scrollbar {
+    width: 10px;
+    
+}
+
+::-webkit-scrollbar-track {
+    background: #fff;
+    border-color: #aaa;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 5px;
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background: #184ead;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    
+}
