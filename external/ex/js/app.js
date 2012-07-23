@@ -51,7 +51,8 @@ app.ctrls={
         source_html = /include_0(.*?)table/img.exec(html)[0].toString();
         source_html_splited = source_html.split('</td>');
         for(var i=0;i<source_html_splited.length;i++){
-            var result = /href='(\/view\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
+            //var result = /href='(\/view\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
+            var result = /href='(\/ru\/video\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
             if(result==null){continue;}
             cats.push({
                 "url":'http://www.ex.ua'+result [1],
@@ -371,7 +372,7 @@ app.models={
 	            if (request.readyState == 4 && request.status == 200) {
 	                log("Url " + url + " get done");
 	                var html = request.responseText;//.replace(/<script.*?\/script>/igm,'')
-                	html = html.replace(/[\n\r\t]/igm,' ').replace(/\s{1,}/igm,' ').replace(/<\!--.*?-->/igm,'').replace(/<head>.*?\/head>/igm,'');
+                    html = html.replace(/[\n\r\t]/igm,' ').replace(/\s{1,}/igm,' ').replace(/<\!--.*?-->/igm,'').replace(/<head>.*?\/head>/igm,'');
                         log(html)
                         callback(html);
 	                //setTimeout(function(){stb.EnableSetCookieFrom(".ex.ua", true);}, 500);//
