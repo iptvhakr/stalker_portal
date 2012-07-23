@@ -6,7 +6,7 @@ class Kinopoisk
 
         $movie_info = array('kinopoisk_id' => $id);
 
-        $movie_url = 'http://www.kinopoisk.ru/level/1/film/'.$id.'/';
+        $movie_url = 'http://www.kinopoisk.ru/film/'.$id.'/';
 
         $movie_info['kinopoisk_url'] = $movie_url;
         $movie_info['cover'] = 'http://st.kinopoisk.ru/images/film/'.$id.'.jpg';
@@ -51,7 +51,7 @@ class Kinopoisk
                 'indent' => true,
                 'bare'   => true,
                 'clean'  => true,
-                'drop-proprietary-attributes' => true,
+                'drop-proprietary-attributes' => false,
                 'new-inline-tags' => 'spacer',
                 'new-empty-tags' => 'spacer',
                 'new-blocklevel-tags' => 'spacer',
@@ -134,7 +134,8 @@ class Kinopoisk
         }
 
         // Description
-        $node_list = $xpath->query('//*[@id="syn"]/tr[1]/td/table/tr[1]/td');
+        //$node_list = $xpath->query('//*[@id="syn"]/tr[1]/td/table/tr[1]/td');
+        $node_list = $xpath->query('//div[@itemprop="description"]');
 
         if ($node_list !== false && $node_list->length != 0){
             $movie_info['description'] = self::getNodeText($node_list->item(0));
