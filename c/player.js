@@ -2936,8 +2936,14 @@ player.prototype.subtitle_pid = {
         var lang;
         var title;
         var map = [];
+
+        var sub_off = this.all_pids.some(function(pid_obj){
+            return pid_obj.selected;
+        });
+
+        _debug('sub_off', sub_off);
         
-        map.push({'title' : get_word('player_off'), 'cmd' : function(){stb.SetSubtitles(false)}, 'active' : true});
+        map.push({'title' : get_word('player_off'), 'cmd' : function(){stb.SetSubtitles(false)}, 'active' : !sub_off});
         
         for (var i=0; i<this.all_pids.length; i++){
             
