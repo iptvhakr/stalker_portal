@@ -490,4 +490,30 @@ class User
 
         return $info;
     }
+
+    public function getLastChannelId(){
+        return (int) Mysql::getInstance()->from('last_id')->where(array('uid' => $this->id))->get()->first('last_id');
+    }
+
+    public function setLastChannelId($ch_id){
+
+        $last_id = Mysql::getInstance()->from('last_id')->where(array('uid' => $this->id))->get()->first();
+
+        if (empty($last_id)){
+            return (bool) Mysql::getInstance()
+                ->insert('last_id',
+                array(
+                    'ident'   => $this->getMac(),
+                    'last_id' => $ch_id,
+                    'uid'     => $this->id
+                ))
+                ->insert_id();
+        }else{
+            return Mysql::getInstance()->update('last_id',
+                array(
+                    'last_id' => $ch_id
+                ),
+                array('uid' => $this->id))->result();
+        }
+    }
 }

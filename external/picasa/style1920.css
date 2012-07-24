@@ -1,3 +1,7 @@
+body{
+    overflow: hidden;
+}
+
 @charset "utf-8";
 
 .t13w {font-size:13px; color:#FFF;}

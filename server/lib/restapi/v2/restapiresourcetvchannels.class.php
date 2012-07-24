@@ -18,6 +18,7 @@ class RESTApiResourceTvChannels extends RESTApiCollection
         parent::__construct($nested_params, $external_params);
         $this->document = new RESTApiTvChannelDocument();
         $this->document->controllers->add(new RESTApiTvChannelLink($this->nested_params));
+        $this->controllers->add(new RESTApiTvChannelLast($this->nested_params));
 
         $this->fields_map = array_fill_keys(array('id', "name", "number", "archive", "censored"), true);
 
