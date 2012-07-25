@@ -116,7 +116,14 @@ class RESTApiResourceTvChannels extends RESTApiCollection
             $new_channel['archive']  = (int) $channel['enable_tv_archive'];
             $new_channel['censored'] = (int) $channel['censored'];
             $new_channel['archive_range'] = \TvArchive::getArchiveRange($channel['id']);
-            $new_channel['logo'] = \Itv::getLogoUriById($channel['id']);
+
+            if (!empty($_SERVER['HTTP_UA_RESOLUTION']) && in_array($_SERVER['HTTP_UA_RESOLUTION'], array(120, 160, 240, 320))){
+                $resolution = (int) $_SERVER['HTTP_UA_RESOLUTION'];
+            }else{
+                $resolution = 320;
+            }
+
+            $new_channel['logo'] = \Itv::getLogoUriById($channel['id'], $resolution);
 
             return $new_channel;
         }, $channels);

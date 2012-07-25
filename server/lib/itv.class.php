@@ -1004,15 +1004,16 @@ class Itv extends AjaxResponse
         return realpath(PROJECT_PATH."/../misc/logos/".$channel['logo']);
     }
 
-    public static function getLogoUriById($id){
+    public static function getLogoUriById($id, $resolution = 320){
 
         $channel = Itv::getById($id);
 
         if (empty($channel['logo'])){
-            return Config::get('portal_url').'misc/logos/dummy.png';
+            //return Config::get('portal_url').'misc/logos/dummy.png';
+            return "";
         }
 
-        return Config::get('portal_url').'misc/logos/'.$channel['logo'];
+        return Config::get('portal_url').'misc/logos/'.$resolution.'/'.$channel['logo'];
     }
 
     public static function delLogoById($id){

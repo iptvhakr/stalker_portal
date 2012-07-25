@@ -412,7 +412,8 @@ class Epg
                 $epg[$i]['mark_memo'] = 0;
             }
 
-            if ($epg[$i]['start_timestamp'] > $archived_recs[$epg[$i]['ch_id']]['start_timestamp'] &&
+            if (array_key_exists($epg[$i]['ch_id'], $archived_recs) &&
+                $epg[$i]['start_timestamp'] > $archived_recs[$epg[$i]['ch_id']]['start_timestamp'] &&
                 $epg[$i]['start_timestamp'] < $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']){
 
                 $epg[$i]['mark_archive'] = 1;

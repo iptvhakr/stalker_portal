@@ -311,17 +311,77 @@ function handle_upload_logo($file, $ch_id){
 
     $filename = $ch_id.".".$ext;
 
-    $fullpath = $path."/".$filename;
+    //$fullpath = $path."/".$filename;
+
+    $resolutions = array(
+        '320' => array('height' => 96, 'width' => 96),
+        '240' => array('height' => 72, 'width' => 72),
+        '160' => array('height' => 48, 'width' => 48),
+        '120' => array('height' => 36, 'width' => 36)
+    );
+
+    /*try{
+        $icon = new Imagick($file['tmp_name']);
+    }catch(ImagickException $e){
+        //$e->getMessage();
+        return false;
+    }*/
 
     umask(0);
 
-    $result = move_uploaded_file($file['tmp_name'], $fullpath);
+    foreach ($resolutions as $resolution => $dimension){
 
+        $ico_path = $path."/".$resolution;
+
+        if (!is_dir($ico_path)){
+            mkdir($ico_path, 0777);
+        }
+
+        $fullpath = $ico_path."/".$filename;
+
+        try{
+            $icon = new Imagick($file['tmp_name']);
+        }catch(ImagickException $e){
+            //$e->getMessage();
+            return false;
+        }
+
+        if (!$icon->resizeImage($dimension['width'], $dimension['height'], Imagick::FILTER_LANCZOS, 1)){
+            return false;
+        }
+
+        if (!$icon->writeImage($fullpath)){
+            return false;
+        }
+
+        $icon->destroy();
+
+        chmod($fullpath, 0666);
+    }
+
+    unlink($file['tmp_name']);
+
+    /*if (!$icon->resizeImage(96, 96, Imagick::FILTER_LANCZOS, 1)){
+        return false;
+    }*/
+
+    //umask(0);
+
+    /*if (!$icon->writeImage($fullpath)){
+        return false;
+    }*/
+
+    //$icon->destroy();
+
+    //chmod($fullpath, 0666);
+
+    //$result = move_uploaded_file($file['tmp_name'], $fullpath);
+/*
     if (!$result){
         return false;
     }
 
-    chmod($fullpath, 0666);
+    chmod($fullpath, 0666);*/
 
     return $filename;
 }
