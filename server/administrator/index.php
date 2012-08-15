@@ -354,7 +354,6 @@ $cur_infoportal = get_cur_infoportal($db);
 <? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || @$_SESSION['login'] == 'azmus' || @$_SESSION['login'] == 'vitaxa' || check_access()){ ?>
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
 
-<? if (@$_SESSION['login'] != 'azmus'){ ?>
   <tr>
     <td colspan="3" align="center"><span class="style1"><?= _('Settings')?></span></td>
   </tr>
@@ -364,7 +363,7 @@ $cur_infoportal = get_cur_infoportal($db);
     <td width="6%">&nbsp;</td>
     <td width="47%" align="center"><a href="storages.php"><?= _('Storages')?></a></td>
   </tr>
-<?}?>
+
   <tr>
     <td width="47%" align="center"><a href="epg_setting.php">EPG</a></td>
     <td width="6%">&nbsp;</td>
