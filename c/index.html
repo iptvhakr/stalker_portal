@@ -241,6 +241,17 @@ function init(){
     (function(){
         
         stb.switchPower();
+
+        keydown_observer.addCustomEventListener("keypress", function(event){
+            //_debug('power keypress', event);
+
+            if (stb.power_off){
+                stb.switchPower();
+                return false;
+            }
+
+            return true;
+        });
         
     }).bind(key.POWER);
 
