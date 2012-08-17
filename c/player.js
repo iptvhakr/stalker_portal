@@ -2443,6 +2443,15 @@ player.prototype.move_pos = function(dir){
     if (!this.info.on){
         this.show_info();
     }
+
+    var media_len = stb.GetMediaLen();
+
+    _debug('media_len', media_len);
+    _debug('this.last_state', this.last_state);
+
+    if (media_len <= 0 || this.last_state != 4){
+        return;
+    }
     
     if (this.prev_move_pos_dir != dir){
         this.pos_step = 10;
