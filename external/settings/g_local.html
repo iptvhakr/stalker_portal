@@ -6,6 +6,7 @@
 var iid=1;
 var icF=false;
 var model=parent.stb.RDir("Model");
+var read=JSON.parse(parent.stb.GetEnv('{"varList":["timezone_conf"]}'));
 var menuT=new Array();
 menuT=[['select',parent.t('Language:')],['select',parent.t('Country:')],['select',parent.t('City:')],['select',parent.t('Time zone:')]];
 var  mid=menuT.length+2;
@@ -14,6 +15,7 @@ var index=0;var maxIn=0;
 var numberC=0;
 var goInd=-1;var goMax=0;
 var goCity=new Object();
+var first_load=true;
 parent.load({"type":"stb","action":"get_locales"},
         function(langv){ 
             var dl=document.getElementById("i1");
@@ -44,15 +46,24 @@ parent.load({"type":"stb","action":"get_countries"},
         function(timezon){ 
             var dl=document.getElementById("i4");
             var options = '';
+            var select = 0;
+            var base_select = -1;
             for(var il in timezon)
             {
-               if(timezon[il].selected==1){var selected = "selected";}else{selected = ""}
-               options += '<option value="'+timezon[il].value+'" '+selected+'>'+timezon[il].label+'</option>';
+               if(timezon[il].selected==1){
+                   select = il;
+               }
+               if(timezon[il].value == read.result.timezone_conf){
+                   base_select = il;
+               }
+               options += '<option value="'+timezon[il].value+'">'+timezon[il].label+'</option>';
             }
             dl.innerHTML = options;
+            dl.getElementsByTagName("option")[base_select!=-1?base_select:select].selected=true;
         });
         
 function loadCity(id){
+
     parent.load({"type":"stb","action":"get_cities","country_id" : id},
         function(city){ 
             maxIn=0;index=0;
@@ -66,7 +77,12 @@ function loadCity(id){
             maxIn--;
             numberC=City[index].value;
             dl.value=City[index].label;
-            changeTime(City[index].timezone);
+            if (!first_load){
+                changeTime(City[index].timezone);
+            }else{
+                first_load = false;
+            }
+
         });
 }
 
