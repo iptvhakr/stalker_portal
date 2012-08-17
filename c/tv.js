@@ -92,7 +92,9 @@
                 /*this.active_row.name_block.style.marginRight = '50px';*/
             }
 
-            this.progress_bar.init(this);
+            if (stb.user['enable_buffering_indication']){
+                this.progress_bar.init(this);
+            }
         };
         
         this.show = function(do_not_load){

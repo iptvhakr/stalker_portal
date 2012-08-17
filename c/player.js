@@ -474,7 +474,9 @@ player.prototype.event_callback = function(event){
             }*/
             this.triggerCustomEventListener('event_2', this.cur_media_item);
             //if (this.is_tv){
+            if (stb.user['enable_buffering_indication']){
                 this.progress_bar.start();
+            }
             //}
 
             break;
@@ -483,7 +485,9 @@ player.prototype.event_callback = function(event){
         {
 
             this.triggerCustomEventListener('event_4', this.cur_media_item);
-            this.progress_bar.stop();
+            if (stb.user['enable_buffering_indication']){
+                this.progress_bar.stop();
+            }
 
             if (this.cur_media_item.hasOwnProperty('volume_correction')){
                 this.volume.correct_level(parseInt(this.cur_media_item.volume_correction));
