@@ -563,6 +563,15 @@ function common_xpcom(){
 
                 try{
 
+                    var timezone = stb.RDir('getenv timezone_conf');
+
+                    _debug('timezone', timezone);
+
+                    if (this.user['default_timezone'] && !timezone){
+                        _debug('setenv timezone_conf '+this.user['default_timezone']);
+                        stb.RDir('setenv timezone_conf '+this.user['default_timezone']);
+                    }
+
                     _debug('stb.GetBrightness before', stb.GetBrightness());
                     _debug('stb.GetContrast before', stb.GetContrast());
                     _debug('stb.GetSaturation before', stb.GetSaturation());

@@ -306,6 +306,8 @@ class Stb
 
         $profile['enable_buffering_indication'] = Config::getSafe('enable_buffering_indication', false);
 
+        $profile['default_timezone']       = Config::getSafe('default_timezone', '');
+
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
         },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG250')));
