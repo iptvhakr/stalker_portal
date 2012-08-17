@@ -46,7 +46,7 @@ class RESTResponse
 
     public function send(){
 
-        if (strpos($this->request->getAccept(), 'text/channel-monitoring-id-url') !== false){
+        if (!empty($this->request) && strpos($this->request->getAccept(), 'text/channel-monitoring-id-url') !== false){
             if (is_array($this->body['results'])){
 
                 $channels = array_filter($this->body['results'], function($channel){
@@ -90,7 +90,7 @@ class RESTResponse
             date("r"),
             $_SERVER['REQUEST_METHOD'],
             $_SERVER['REQUEST_URI'],
-            http_build_query($this->request->getData()),
+            empty($this->request) ? 'no resource' : http_build_query($this->request->getData()),
             strlen($response)
         ));
 
@@ -102,7 +102,7 @@ class RESTResponse
                 date("r"),
                 $_SERVER['REQUEST_METHOD'],
                 $_SERVER['REQUEST_URI'],
-                http_build_query($this->request->getData()),
+                empty($this->request) ? 'no resource' : http_build_query($this->request->getData()),
                 $this->body['error']
             ));
         }
