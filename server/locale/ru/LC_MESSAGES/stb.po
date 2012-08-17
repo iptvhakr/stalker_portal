@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-07-20 15:16+0200\n"
-"PO-Revision-Date: 2012-07-20 15:16+0200\n"
+"PO-Revision-Date: 2012-08-17 10:19+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1765,7 +1765,7 @@ msgstr ""
 
 #: ../../../administrator/user.php:137
 msgid "Account disabled"
-msgstr "Учетная напись отключена"
+msgstr "Учетная запись отключена"
 
 #: ../../../administrator/userlog.php:55
 #: ../../../administrator/userlog.php:61

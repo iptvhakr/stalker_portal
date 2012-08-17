@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-05-11 15:21+0200\n"
-"PO-Revision-Date: 2012-06-20 15:10+0200\n"
+"PO-Revision-Date: 2012-08-17 10:22+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -99,7 +99,7 @@ msgstr ""
 #: ../../../lang/stb.php:32
 #: ../../../lang/stb.php:123
 msgid "RECORDS"
-msgstr ""
+msgstr "RECORDINGS"
 
 #: ../../../lang/stb.php:33
 msgid "LOADING..."
