@@ -3,6 +3,11 @@
  */
 (function(){
 
+    if (stb.type == 'MAG200'){
+        loader.next();
+        return;
+    }
+
     main_menu.add('OLL.TV', [], 'mm_ico_oll.png', function(){
 
         var params = '';
