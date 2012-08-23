@@ -25,7 +25,7 @@ function init_m()
 {
     if(load_fl){
     var punktiT={
-        "lock":[t('Parental'),"ico_lock","ico_lock_act","ico_l_lang","g_pass.html"],
+        "lock":[t('Parental control'),"ico_lock","ico_lock_act","ico_l_lang","g_pass.html"],
         "lang":[t('Localization'),"ico_lang","ico_lang_act","ico_l_lang","g_local.html"],
         "update":[t('Software update'),"ico_reload","ico_reload_act","ico_l_reload","g_update.html"],
         "net_info":[t('Network info'),"ico_netinfo","ico_netinfo_act","ico_l_netinfo","g_netw.html"],
