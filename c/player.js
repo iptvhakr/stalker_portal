@@ -2448,8 +2448,9 @@ player.prototype.move_pos = function(dir){
 
     _debug('media_len', media_len);
     _debug('this.last_state', this.last_state);
+    _debug('this.active_time_shift', this.active_time_shift);
 
-    if (media_len <= 0 || this.last_state != 4){
+    if ((media_len <= 0 || this.last_state != 4) && !this.active_time_shift){
         return;
     }
     
