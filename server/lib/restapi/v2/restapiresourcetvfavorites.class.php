@@ -7,11 +7,13 @@ class RESTApiResourceTvFavorites extends RESTApiCollection
 
     protected $params_map = array("users" => "users.login");
     private   $user_id;
-    private   $manager;
+    public    $manager;
 
     public function __construct(array $nested_params, array $external_params){
 
         parent::__construct($nested_params, $external_params);
+
+        $this->document = new RESTApiTvFavoriteDocument($this, $this->external_params);
 
         if (empty($this->nested_params['users.login'])){
             throw new RESTBadRequest("User must be specified");
@@ -28,6 +30,10 @@ class RESTApiResourceTvFavorites extends RESTApiCollection
 
         $this->user_id = $user['id'];
         $this->manager = \Itv::getInstance();
+    }
+
+    public function getUserId(){
+        return $this->user_id;
     }
 
     public function getCount(RESTApiRequest $request){
