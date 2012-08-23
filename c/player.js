@@ -1357,7 +1357,7 @@ player.prototype.pause_switch = function(){
         if (this.is_tv && parseInt(this.cur_media_item.enable_tv_archive, 10) && module.time_shift && !this.prev_layer.on){
             module.time_shift.set_media_item(this.cur_tv_item);
             module.time_shift.get_link_for_channel();
-            this.is_tv = false;
+            //this.is_tv = false;
             this.active_time_shift = true;
         }else{
             if (!this.cur_media_item.hasOwnProperty('live_date')){
@@ -1382,23 +1382,19 @@ player.prototype.disable_pause = function(){
     if (this.active_time_shift){
         _debug('new Date() - module.time_shift.cur_media_item.live_date', (new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime())/1000);
 
-        /*if (this.cur_media_item['wowza_dvr'] == 1){
-
-            var position = module.time_shift.get_position_from_url();
-
-            position += new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime();
-
-            module.time_shift.update_position_in_url(parseInt(position/1000, 10));
-
-            this.play(module.time_shift.cur_media_item);
-
-        }else{*/
-            if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
-               this.play_last();
-            }else{
+        if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
+           this.play_last();
+        }else{
+            if (this.is_tv){
                 this.play(module.time_shift.cur_media_item);
+            }else{
+                try{
+                    stb.Continue();
+                }catch(e){}
             }
-        /*}*/
+        }
+
+        this.is_tv = false;
 
     }else{
 
