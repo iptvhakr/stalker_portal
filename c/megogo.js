@@ -3,6 +3,11 @@
  */
 (function(){
 
+    if (stb.type == 'MAG200'){
+        loader.next();
+        return;
+    }
+
     main_menu.add('MEGOGO', [], 'mm_ico_megogo.png', function(){
 
         var params = '';
