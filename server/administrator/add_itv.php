@@ -939,7 +939,7 @@ function delete_logo(id){
             <?= _('Name')?>:
            </td>
            <td>
-            <input type="text" name="name" id="name" value="<? echo @$name ?>">
+            <input type="text" name="name" id="name" value="<? echo @htmlspecialchars($name) ?>">
             <input type="hidden" id="id" value="<? echo @$_GET['id'] ?>">
             <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
            </td>
