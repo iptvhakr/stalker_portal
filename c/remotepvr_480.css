@@ -4,7 +4,7 @@
     top: 0;
     width: 96px;
     height: 25px;
-    background: url("i/mb_table.png") 102px -90px;
+    background: url("i_480/mb_table.png") 102px -90px;
     padding: 3px 0 0 4px;
     color: #fff;
     font-family: "Myriad Pro Cond", sans-serif;
@@ -20,15 +20,15 @@
 }
 
 #remote_pvr .active_t_start_block{
-    background: url("i/mb_table_act.png") 118px -63px;
+    background: url("i_480/mb_table_act.png") 118px -61px;
     color: #000000;
     font-family: "Myriad Pro Cond",sans-serif;
-    height: 40px;
+    height: 32px;
     overflow: hidden;
     padding: 3px 0 0 4px;
     position: absolute;
-    right: 23px;
-    top: 4px;
+    right: 12px;
+    top: 7px;
     width: 105px;
 }
 
@@ -73,8 +73,8 @@
     overflow: hidden;
     padding: 3px 0 0 4px;
     position: absolute;
-    right: 23px;
-    top: 23px;
+    right: 12px;
+    top: 21px;
     width: 105px;
 }
 
