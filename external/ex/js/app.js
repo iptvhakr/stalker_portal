@@ -51,9 +51,10 @@ app.ctrls={
         source_html = /include_0(.*?)table/img.exec(html)[0].toString();
         source_html_splited = source_html.split('</td>');
         for(var i=0;i<source_html_splited.length;i++){
-            //var result = /href='(\/view\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
-            var result = /href='(\/ru\/video\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
-            if(result==null){continue;}
+            var result1 = /href='(\/view\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
+            var result2 = /href='(\/ru\/video\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
+            if(result1==null && result2==null){continue;}
+            var result = result1 || result2;
             cats.push({
                 "url":'http://www.ex.ua'+result [1],
                 "name":result[2],
