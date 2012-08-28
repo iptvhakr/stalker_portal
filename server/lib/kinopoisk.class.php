@@ -58,7 +58,7 @@ class Kinopoisk
                 'new-pre-tags' => 'spacer',
             );
 
-            $page = $tidy->repairString($page, $tidy_config, 'raw');
+            //$page = $tidy->repairString($page, $tidy_config, 'raw');
         }else{
             throw new ErrorException("php-tidy extension not installed.");
         }
@@ -243,6 +243,7 @@ class Kinopoisk
         //$text = str_replace('&nbsp;', ' ', $text);
 
         $rules = array(
+            "/\x{0085}/u" => "...",
             "/(\s+)/" => " ",
             "/\n/" => ""
         );
