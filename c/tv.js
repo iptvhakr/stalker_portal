@@ -221,7 +221,13 @@
             
             (function(){
                 if (module.epg_simple){
-                    
+
+                    _debug('this.data_items[this.cur_row]', this.data_items[this.cur_row]);
+
+                    if (this.data_items[this.cur_row].lock == 1 && !this.data_items[this.cur_row].hasOwnProperty('unlocked')){
+                        return;
+                    }
+
                     if (stb.player.on){
                         stb.player.stop();
                     }
@@ -401,6 +407,7 @@
                 var self = this;
                 
                 this.password_input.callback = function(){
+                    self.data_items[self.cur_row].unlocked = true;
                     self.play();
                 };
                 
@@ -697,6 +704,7 @@
                         self.password_input.callback = function(){
                             stb.player.need_show_info = 0;
                             stb.player.prev_layer = self;
+                            self.data_items[self.cur_row].unlocked = true;
                             self.fill_short_info(item);
                             self._play_now(item);
                         };
