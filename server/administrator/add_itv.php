@@ -620,6 +620,7 @@ echo "<th class='list'><b>"._('Service code')."</b></th>";
 echo "<th class='list'><b>"._('Name')."</b></th>";
 echo "<th class='list'><b>"._('URL')."</b></th>";
 echo "<th class='list'><b>"._('Genre')."</b></th>";
+echo "<th class='list'><b>"._('Archive')."</b></th>";
 echo "<th class='list'><b>"._('Volume correction')."</b></th>";
 echo "<th class='list'><b>"._('Claims about<br>audio/video/epg')."</b></th>\n";
 echo "<th class='list'><b>&nbsp;</b></th>";
@@ -655,6 +656,7 @@ while(@$rs->next()){
     echo "<td class='list'>".$arr['cmd']."</td>";
     //echo "<td class='list'>".$arr['descr']."</td>";
     echo "<td class='list'>"._($arr['genres_name'])."</td>";
+    echo "<td class='list' align='center'>".($arr['enable_tv_archive'] == 1 ? '&bull;' : '')."</td>";
     echo "<td class='list'>".$arr['volume_correction']."</td>";
     
     echo "<td class='list' align='center'>\n";
