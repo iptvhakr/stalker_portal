@@ -159,8 +159,8 @@ a:hover{
 <?
 function get_online_users(){
     global $db;
-    
-    $sql = "select count(id) as online from users where keep_alive>now()-".Config::get('watchdog_timeout')*2;
+
+    $sql = "select count(id) as online from users where UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(now())-".Config::get('watchdog_timeout')*2;
     $rs=$db->executeQuery($sql);
     $online = @$rs->getValueByName(0, 'online');
     return $online;
@@ -168,8 +168,8 @@ function get_online_users(){
 
 function get_offline_users(){
     global $db;
-    
-    $sql = "select count(id) as offline from users where keep_alive<now()-".Config::get('watchdog_timeout')*2;
+
+    $sql = "select count(id) as offline from users where UNIX_TIMESTAMP(keep_alive)<UNIX_TIMESTAMP(now())-".Config::get('watchdog_timeout')*2;
     $rs=$db->executeQuery($sql);
     $offline = @$rs->getValueByName(0, 'offline');
     return $offline;
