@@ -62,9 +62,10 @@ if (@$_POST['account']){
 
     Mysql::getInstance()->update('users',
         array(
-            'fname'  => $_POST['fname'],
-            'phone'  => $_POST['phone'],
-            'ls'     => $_POST['ls']
+            'fname'   => $_POST['fname'],
+            'phone'   => $_POST['phone'],
+            'ls'      => $_POST['ls'],
+            'comment' => $_POST['comment']
         ),
         array('id' => intval($_GET['id'])));
 
@@ -385,6 +386,12 @@ if (empty($packages)){
             </td>
             <td>
                 <input type="text" name="phone" value="<? echo $user['phone'] ?>"/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <?= _('Comment')?>:<br>
+                <textarea name="comment" rows="5" cols="36"><? echo $user['comment'] ?></textarea>
             </td>
         </tr>
         <tr>
