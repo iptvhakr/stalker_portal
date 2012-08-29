@@ -577,6 +577,11 @@ a:hover{
         if (sort_by_row !== null){
             $('.item_list th:eq('+sort_by_row+')').trigger(jQuery.Event("click", { inverse: $.cookies.get('sort_inverse') }));
         }
+
+        $('.add_btn').click(function(){
+            $('#form_').get(0).reset();
+            document.location.href = 'add_itv.php#form';
+        })
     });
 </script>
 </head>
