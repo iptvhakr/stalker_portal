@@ -91,7 +91,7 @@ class TvArchiveRecorder extends Storage
 
         unlink($pid_file);
 
-        return posix_kill($pid, 15);
+        return posix_kill($pid, 9);
     }
     
     /**

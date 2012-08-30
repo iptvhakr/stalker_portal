@@ -71,7 +71,7 @@ abstract class Master
         $good_storages = $this->getAllGoodStoragesForMedia($this->media_id, !$from_cache);
 
         if (!empty($forced_storage)){
-            if (key_exists($forced_storage, $good_storages)){
+            if (array_key_exists($forced_storage, $good_storages)){
                 $good_storages = array($forced_storage => $good_storages[$forced_storage]);
             }else{
                 $good_storages = array();
@@ -81,83 +81,83 @@ abstract class Master
         $default_error = 'nothing_to_play';
         
         foreach ($good_storages as $name => $storage){
-            if ($storage['load'] < 1){
-                
-                if ($series_num > 0){
-                    
-                    $file = $storage['series_file'][array_search($series_num, $storage['series'])];
-                    
-                }else{
-                    $file = $storage['first_media'];
-                }
+                if ($storage['load'] < 1){
 
-                preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
-                $ext = $arr[2];
+                    if ($series_num > 0){
 
-                //var_dump($this->storages[$name]);
+                        $file = $storage['series_file'][array_search($series_num, $storage['series'])];
 
-                if ($this->storages[$name]['external'] == 0){
-
-                    try {
-                        //$this->clients[$name]->createLink($this->stb->mac, $this->media_name, $file, $this->media_id, (($this->media_protocol == 'http') ? 'http_' : '') . $this->media_type);
-                        $this->clients[$name]->resource($this->media_type)->create(array('media_name' => $this->getMediaPath($file), 'media_id' => $this->media_id, 'proto' => $this->media_protocol));
-                    }catch (Exception $exception){
-                        $default_error = 'link_fault';
-                        $this->parseException($exception);
-                        
-                        if (($exception instanceof RESTClientException) && !($exception instanceof RESTClientRemoteError)){
-                            $storage = new Storage(array('name' => $name));
-                            $storage->markAsFailed($exception->getMessage());
-                            continue;
-                        }
-
-                        if ($this->from_cache){
-
-                            return $this->play($media_id, $series_num, false);
-                        }else{
-                            continue;
-                        }
-                    }
-                
-                    if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
-                        if (Config::exist('nfs_proxy')){
-                            $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
-                        }else{
-                            $res['cmd'] = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
-                        }
                     }else{
-                        $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                        $file = $storage['first_media'];
                     }
-                    
-                }else{
-                    $redirect_url = '/media/'.$this->getMediaPath($file);
 
-                    $link_result = $this->createTemporaryLink($redirect_url);
+                    preg_match("/([\S\s]+)\.([\S]+)$/", $file, $arr);
+                    $ext = $arr[2];
 
-                    var_dump($redirect_url, $link_result);
+                    //var_dump($this->storages[$name]);
 
-                    if (!$link_result){
-                        $default_error = 'link_fault';
-                        
-                        if ($this->from_cache){
+                    if ($this->storages[$name]['external'] == 0){
 
-                            return $this->play($media_id, $series_num, false);
-                        }else{
-                            continue;
+                        try {
+                            //$this->clients[$name]->createLink($this->stb->mac, $this->media_name, $file, $this->media_id, (($this->media_protocol == 'http') ? 'http_' : '') . $this->media_type);
+                            $this->clients[$name]->resource($this->media_type)->create(array('media_name' => $this->getMediaPath($file), 'media_id' => $this->media_id, 'proto' => $this->media_protocol));
+                        }catch (Exception $exception){
+                            $default_error = 'link_fault';
+                            $this->parseException($exception);
+
+                            if (($exception instanceof RESTClientException) && !($exception instanceof RESTClientRemoteError)){
+                                $storage = new Storage(array('name' => $name));
+                                $storage->markAsFailed($exception->getMessage());
+                                continue;
+                            }
+
+                            if ($this->from_cache){
+
+                                return $this->play($media_id, $series_num, false);
+                            }else{
+                                continue;
+                            }
                         }
+
+                        if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
+                            if (Config::exist('nfs_proxy')){
+                                $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                            }else{
+                                $res['cmd'] = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.$this->stb->mac.'/'.$this->media_id.'.'.$ext;
+                            }
+                        }else{
+                            $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                        }
+
                     }else{
-                        $res['cmd']      = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/get/'.$link_result;
-                        $res['external'] = 1;
+                        $redirect_url = '/media/'.$this->getMediaPath($file);
+
+                        $link_result = $this->createTemporaryLink($redirect_url);
+
+                        var_dump($redirect_url, $link_result);
+
+                        if (!$link_result){
+                            $default_error = 'link_fault';
+
+                            if ($this->from_cache){
+
+                                return $this->play($media_id, $series_num, false);
+                            }else{
+                                continue;
+                            }
+                        }else{
+                            $res['cmd']      = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/get/'.$link_result;
+                            $res['external'] = 1;
+                        }
                     }
-                }
-                
-                //$res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
-                $res['id']   = $this->media_id;
-                $res['load'] = $storage['load'];
-                $res['storage_id'] = $this->storages[$name]['id'];
-                $res['from_cache'] = $this->from_cache;
-                return $res;
-            }else{
+
+                    //$res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                    $res['id']   = $this->media_id;
+                    $res['load'] = $storage['load'];
+                    $res['storage_id'] = $this->storages[$name]['id'];
+                    $res['from_cache'] = $this->from_cache;
+                    return $res;
+                }else{
                 $this->incrementStorageDeny($name);
                 $res['error'] = 'limit';
                 return $res;
@@ -376,7 +376,7 @@ abstract class Master
             
             $raw = $this->checkMediaDir($name, $this->media_name);
             
-            if (count($raw['files']) > 1 && empty($raw['series'])){
+            if (!$raw || count($raw['files']) > 1 && empty($raw['series'])){
                 continue;
             }
 
@@ -468,7 +468,7 @@ abstract class Master
     private function checkMD5Sum($storages_from_net){
         $storages_from_cache = $this->getAllGoodStoragesForMediaFromCache();
         foreach ($storages_from_net as $name => $storage){
-            if (key_exists($name, $storages_from_cache)){
+            if (array_key_exists($name, $storages_from_cache)){
                 foreach ($storages_from_net[$name]['files'] as $net_file){
                     foreach ($storages_from_cache[$name]['files'] as $cache_file){
                         if (($cache_file['name'] == $net_file['name']) && ($cache_file['md5'] != $net_file['md5']) && !empty($net_file['md5']) && !empty($cache_file['md5'])){
@@ -622,10 +622,11 @@ abstract class Master
         }catch (Exception $exception){
             $this->parseException($exception);
 
-            if ($exception instanceof RESTClientException){
+            /*if ($exception instanceof RESTClientException){
                 $storage = new Storage(array('name' => $storage_name));
                 $storage->markAsFailed($exception->getMessage());
-            }
+            }*/
+            return false;
         }
     }
     
