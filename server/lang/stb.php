@@ -380,5 +380,6 @@ $words['mode {0}'] = _('mode {0}');
 $words['no epg'] = _('no epg');
 $words['wrong epg'] = _('wrong epg');
 
+$words['iso_title'] = _('Part');
 
 ?>

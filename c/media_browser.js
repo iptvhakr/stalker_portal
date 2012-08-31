@@ -17,6 +17,7 @@
         this.play_all     = true;
         this.smb_auth_history = [];
         this.favorites    = [];
+        this.change_level = true;
         
         this.superclass = ListLayer.prototype;
 
@@ -249,6 +250,8 @@
         this.show = function(do_not_load){
             _debug('media_browser.show', do_not_load);
 
+            this.change_level = true;
+
             this.superclass.show.call(this, do_not_load);
 
             this.update_breadcrumbs();
@@ -340,7 +343,10 @@
 
             _debug('path', path);
 
-            stb.usbdisk.read_dir(path);
+
+            if (this.change_level){
+                stb.usbdisk.read_dir(path);
+            }
 
             //_debug(txt);
 
@@ -387,7 +393,17 @@
                         continue;
                     }
 
-                    new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]/*, "_id" : this.get_id({"name" : name, "dir_name" : stb.usbdisk.dirs[i]})*/})
+                    var is_playable = this.is_playable_folder(path+'/'+name);
+
+                    _debug('is_playable', is_playable);
+
+                    if (is_playable){
+                        new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i], "cmd" : "extBDDVD "+path+'/'+name})
+                    }else{
+                        new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]})
+                    }
+
+                    //new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]/*, "_id" : this.get_id({"name" : name, "dir_name" : stb.usbdisk.dirs[i]})*/})
                 }
             }
 
@@ -395,7 +411,14 @@
 
             for (var i=0; i < stb.usbdisk.files.length; i++){
                 if (!empty(stb.usbdisk.files[i])){
-                    new_files.push({"name" : stb.usbdisk.files[i].name, "cmd" : ("auto " + path + stb.usbdisk.files[i].name), "size" : stb.usbdisk.files[i].size});
+
+                    if (stb.usbdisk.files[i].name.toLowerCase().indexOf('.iso') == stb.usbdisk.files[i].name.length-4){
+                        var solution = 'extBDDVD';
+                    }else{
+                        solution = 'auto';
+                    }
+
+                    new_files.push({"name" : stb.usbdisk.files[i].name, "cmd" : (solution + " " + path + stb.usbdisk.files[i].name), "size" : stb.usbdisk.files[i].size});
                 }
             }
 
@@ -436,6 +459,17 @@
             }
 
             this.fill_page(clear_arr);
+        };
+
+        this.is_playable_folder = function(path){
+            _debug('media_browser.is_playable_folder', path);
+
+            return stb.IsFolderExist(Utf8.encode(path+'/VIDEO_TS/'))
+                || stb.IsFolderExist(Utf8.encode(path+'/BDMV/'))
+                || stb.IsFileExist(Utf8.encode(path+'/VIDEO_TS.IFO'))
+                || stb.IsFolderExist(Utf8.encode(path+'/video_ts/'))
+                || stb.IsFolderExist(Utf8.encode(path+'/bdmv/'))
+                || stb.IsFileExist(Utf8.encode(path+'/video_ts.ifo'));
         };
 
         this.load_smb_groups = function(){
@@ -675,7 +709,7 @@
         
         this.action = function(){
             
-            if (this.data_items[this.cur_row].hasOwnProperty('dir')){
+            if (this.data_items[this.cur_row].hasOwnProperty('dir') && !this.data_items[this.cur_row].hasOwnProperty('cmd')){
 
                 this.check_for_mount(this.data_items[this.cur_row]);
 

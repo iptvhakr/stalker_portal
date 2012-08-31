@@ -467,6 +467,36 @@ player.prototype.event_callback = function(event){
         }
         case 2: // Receive information about stream
         {
+
+            if (stb.GetMetadataInfo){
+                var metadata = stb.GetMetadataInfo();
+                _debug('stb.GetMetadataInfo()', metadata);
+
+                metadata = JSON.parse(metadata);
+
+                var self = this;
+
+                if (metadata && metadata.hasOwnProperty('titles') && metadata.titles.length > 1){
+
+                    var title_idx = self.cur_media_item.cmd.indexOf('?title=');
+
+                    if (title_idx != -1){
+                        var clear_cmd = self.cur_media_item.cmd.substr(0, title_idx);
+                    }else{
+                        clear_cmd = self.cur_media_item.cmd;
+                    }
+
+                    this.cur_media_item.playlist = metadata.titles.map(function(title, idx){
+                        return clear_cmd+'?title='+idx;
+                    });
+
+                    if (metadata.hasOwnProperty('infoCurtitle')){
+                        this.cur_media_item.cmd = clear_cmd+'?title='+metadata.infoCurtitle;
+                    }
+                }
+
+                _debug('this.cur_media_item', this.cur_media_item);
+            }
             /*if (this.cur_media_item.hasOwnProperty('volume_correction')){
                 this.volume.correct_level(parseInt(this.cur_media_item.volume_correction));
             }else{
@@ -1470,13 +1500,41 @@ player.prototype.show_info = function(item){
         this.info.on = true;
     }
 
+    _debug('item', item);
+
     var title = '';
 
     if (item.hasOwnProperty('number')){
         title = item.number + '. ';
     }
 
+    var title_idx = item.name.indexOf('?title=');
+
+    var part = '';
+
+    if (title_idx != -1){
+
+        part = item.name.substr(title_idx+7);
+
+        item.name = item.name.substr(0, title_idx);
+    }
+
+    var cmd_title_idx = item.cmd.indexOf('?title=');
+
+    if (!part && cmd_title_idx != -1){
+        part = item.cmd.substr(cmd_title_idx+7);
+    }
+
     title += item.name;
+
+    if (part){
+
+        title += ' '+get_word('iso_title')+' '+(parseInt(part, 10)+1);
+
+        if (item.hasOwnProperty('playlist')){
+            title += '/' + item.playlist.length;
+        }
+    }
 
     this.info.title.innerHTML = title;
     
