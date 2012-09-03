@@ -20,6 +20,9 @@ foreach ($channels as $channel){
         }else{
             $cmd = '';
         }
+
+        $cmd = str_replace(array('rtp://', 'udp://'), array('rtp://@', 'udp://@'), $cmd);
+
         $m3u_data .= $cmd."\n";
     }
 }
