@@ -337,6 +337,7 @@ class Epg
         $ch_id = intval($ch_id);
 
         $program = $this->db
+            ->select('*, TIME_FORMAT(epg.time,"%H:%i") as t_time')
             ->from('epg')
             ->where(array(
                 'ch_id'    => $ch_id,

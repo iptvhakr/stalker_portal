@@ -719,17 +719,19 @@ class Itv extends AjaxResponse
             
             $this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
             
-            $next_five_epg = $epg->getCurProgramAndFiveNext($this->response['data'][$i]['id']);
-            
+            //$next_five_epg = $epg->getCurProgramAndFiveNext($this->response['data'][$i]['id']);
+
+            $cur_program = $epg->getCurProgram($this->response['data'][$i]['id']);
+
             $cur_playing = $this->no_ch_info;
             
-            if (!empty($next_five_epg)){
-                $cur_playing = $next_five_epg[0]['t_time'].' '.$next_five_epg[0]['name'];
+            if (!empty($cur_program)){
+                $cur_playing = $cur_program['t_time'].' '.$cur_program['name'];
             }
             
             $this->response['data'][$i]['cur_playing'] = $cur_playing;
             
-            $this->response['data'][$i]['epg'] = $next_five_epg;
+            $this->response['data'][$i]['epg'] = empty($next_five_epg) ? array() : $next_five_epg;
             
             $this->response['data'][$i]['open'] = 1;
 
