@@ -104,7 +104,7 @@ class Epg
 
         foreach ($xml->programme as $programme){
 
-            $itv_id_arr = @$ids_arr[strval($programme->attributes()->channel)];
+            $itv_id_arr = @$ids_arr[$setting['id_prefix'].strval($programme->attributes()->channel)];
 
             if ($itv_id_arr){
 
@@ -167,10 +167,10 @@ class Epg
 
             if ($result->insert_id()){
                 $done++;
-                $xml_ids_done .= "xml_id #".$itv_xml_id."\n";
+                $xml_ids_done .= "xml_id #".$setting['id_prefix'].$itv_xml_id."\n";
             }else{
                 $err++;
-                $xml_ids_err  .= "xml_id #".$itv_xml_id."\n";
+                $xml_ids_err  .= "xml_id #".$setting['id_prefix'].$itv_xml_id."\n";
             }
 
             $total++;
@@ -183,7 +183,6 @@ class Epg
         $event->setUserListByMac('all');
         $event->sendUpdateEpg();
 
-        //$str = "Обновлено $done каналов из $total, $err ошибок \n";
         $str = sprintf(_("Updated %d channels from %d, %d errors"), $done, $total, $err)." \n";
         $str .= "<b>"._("Errors").": </b>\n".($err? $xml_ids_err : $err)."\n";
         $str .= "<b>"._("Successful").": </b>\n".$xml_ids_done."\n";

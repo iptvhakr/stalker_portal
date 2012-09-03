@@ -23,10 +23,12 @@ foreach (@$_POST as $key => $value){
     
 if (@$_POST['add']){
     $sql = 'insert into epg_setting (
-                uri
+                uri,
+                id_prefix
                 ) 
             values (
-                "'.@$_POST['uri'].'"
+                "'.@$_POST['uri'].'",
+                "'.@$_POST['id_prefix'].'"
             )';
     $db->executeQuery($sql);
     header("Location: epg_setting.php");
@@ -37,7 +39,7 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     
     if (@$_POST['edit']){
-        $sql = 'update epg_setting set uri="'.@$_POST['uri'].'" where id='.intval($_GET['id']);
+        $sql = 'update epg_setting set uri="'.@$_POST['uri'].'", id_prefix="'.@$_POST['id_prefix'].'" where id='.intval($_GET['id']);
         $db->executeQuery($sql);
         header("Location: epg_setting.php");
     }elseif (@$_GET['del']){
@@ -169,6 +171,10 @@ a:hover{
                 <tr>
                     <td>URI</td>
                     <td><input type="text" name="uri" value="<?echo @$edit['uri']?>" size="50"/></td>
+                </tr>
+                <tr>
+                    <td><?= _('ID prefix')?>:</td>
+                    <td><input type="text" name="id_prefix" value="<?echo @$edit['id_prefix']?>" size=""/></td>
                 </tr>
                 <tr>
                     <td></td>
