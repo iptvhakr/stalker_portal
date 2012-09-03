@@ -104,7 +104,19 @@ a:hover{
 <br>
 <table width="80%" border="0" align="center">
   <tr>
-    <td align="right" class="other" style="border-width: 0px;"><?echo date("Y-m-d H:i:s")?></td>
+    <td align="right" class="other" style="border-width: 0px;"><?echo date("Y-m-d H:i:s")?>
+        <?
+        $ver = @file_get_contents(PROJECT_PATH.'/../c/version.js');
+
+        if (!empty($ver)){
+            $start = strpos($ver, "'")+1;
+            $end = strrpos($ver, "'");
+            $ver = substr($ver, $start, $end-$start);
+            echo '(v '.$ver.')';
+        }
+
+        ?>
+    </td>
   </tr>
 </table>
 

@@ -339,6 +339,10 @@ if (empty($packages)){
                 <td><?= _('favorite tv')?>:</td>
                 <td>[<? printf(_('%s channels'), $fav_ch_count)?>] <a href="#" onclick="if(confirm('<?= _('Reset favorite TV channels? The channels will be reset only if immediately restart the stb!')?>')){document.location='profile.php?fav_itv=default&id=<?echo $id?>'}"><?= _('Reset')?></a></td>
             </tr>
+            <tr>
+                <td>version:</td>
+                <td><?= $arr['version']?></td>
+            </tr>
         </table>
         </td>
         <td>
