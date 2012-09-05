@@ -537,6 +537,10 @@
         
         this.fill_list = function(data){
             _debug('epg_simple.fill_list');
+
+            if (this.cur_row == -1){
+                this.cur_row = 0;
+            }
             
             this.superclass.fill_list.call(this, data);
             
