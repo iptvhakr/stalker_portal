@@ -6,7 +6,7 @@ include "./common.php";
 
 $db = new Database();
 
-$from_ts = time() - 7*24*60*60;
+$from_ts = time() - 24*60*60;
 $from_date = date("Y-m-d H:i:s", $from_ts); 
 
 $sql = "delete from user_log where time<'$from_date'";

@@ -550,6 +550,11 @@ class Stb
     }
     
     public function setStreamError(){
+
+        if (!Config::getSafe('enable_stream_error_logging', false)){
+            return false;
+        }
+
         $this->db->insert('stream_error',
                            array(
                                 'ch_id'      => intval($_REQUEST['ch_id']),
