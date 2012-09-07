@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `stalker_db`;
-USE `stalker_db`;
+  CREATE DATABASE IF NOT EXISTS `@DB_NAME@`;
+USE `@DB_NAME@`;
 
 CREATE TABLE IF NOT EXISTS `changelog` (
   `change_number` BIGINT NOT NULL,

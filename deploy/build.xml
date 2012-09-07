@@ -70,7 +70,15 @@
 
         <copy file="./src/stalkerd" tofile="/etc/logrotate.d/stalkerd" overwrite="true"/>
 
-        <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; deploy/src/init_db.sql"
+        <copy file="./src/init_db.sql" tofile="/tmp/init_db.sql" overwrite="true">
+            <filterchain>
+                <replacetokens>
+                    <token key="DB_NAME" value="${db_name}"/>
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
               dir="${build.dir}" checkreturn="true"/>
 
         <dbdeploy
