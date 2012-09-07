@@ -68,6 +68,15 @@ td {
     border-style: solid;
     border-color: #E5E5E5;
 }
+
+table.list tr:nth-child(odd) {
+    background: #FFFFFF;
+}
+
+table.list tr:nth-child(even) {
+    background: #EFF5FB;
+}
+
 a{
 	color:#0000FF;
 	font-weight: bold;
