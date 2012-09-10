@@ -18,6 +18,7 @@ class Epg
     private $cur_program_row;
     //private $correction_time = 0; // minutes
     private $settings = array();
+    private $real_ids = array();
 
     public function __construct(){
         $this->db = Mysql::getInstance();
@@ -140,6 +141,14 @@ class Epg
 
                     $duration = $stop_ts - $start_ts;
 
+                    $real_id = $itv_id.'_'.$start_ts;
+
+                    if (in_array($real_id, $this->real_ids)){
+                        continue;
+                    }
+
+                    $this->real_ids[] = $real_id;
+
                     $this->cleanEpgByDate($start_ts, $itv_id);
 
                     $data_arr[$itv_id][] = array(
@@ -147,7 +156,7 @@ class Epg
                                                 'time'  => $mysql_start,
                                                 'time_to'  => $mysql_stop,
                                                 'duration' => $duration,
-                                                'real_id'  => $itv_id.'_'.$start_ts,
+                                                'real_id'  => $real_id,
                                                 'name'  => $title
                                                 );
 
