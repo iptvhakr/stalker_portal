@@ -143,11 +143,11 @@ class Epg
 
                     $real_id = $itv_id.'_'.$start_ts;
 
-                    if (in_array($real_id, $this->real_ids)){
+                    if (isset($this->real_ids[$real_id])){
                         continue;
                     }
 
-                    $this->real_ids[] = $real_id;
+                    $this->real_ids[$real_id] = true;
 
                     $this->cleanEpgByDate($start_ts, $itv_id);
 
