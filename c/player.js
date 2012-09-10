@@ -1125,7 +1125,9 @@ player.prototype.play = function(item){
         
         if (item.hasOwnProperty('open') && !item.open){
             _debug('channel is closed');
-            stb.Stop();
+            try{
+                stb.Stop();
+            }catch(e){}
             this.show_info(this.cur_media_item);
         }else{
 
@@ -1648,6 +1650,62 @@ player.prototype.hide_info = function(){
     this.info.on = false;
 };
 
+player.prototype._find_nearest_ch_idx = function(direction, condition){
+    _debug('player._find_nearest_channel', direction, condition);
+
+    if (stb.user.fav_itv_on){
+        var channels = this.fav_channels;
+        var ch_idx = this.f_ch_idx;
+    }else{
+        channels = this.channels;
+        ch_idx = this.ch_idx;
+    }
+
+    for (var _param in condition){
+        if (condition.hasOwnProperty(_param)){
+            var param = _param;
+            var value = condition[param];
+        }
+    }
+
+    if (direction>0){
+        var end = channels.length-1;
+    }else{
+        end = 0;
+    }
+
+    if (direction > 0){
+
+        for (var i = ch_idx+1; i <= channels.length-1; i++){
+            if (channels[i][param] == value){
+                return i;
+            }
+        }
+
+        for (i = 0; i < ch_idx; i++){
+            if (channels[i][param] == value){
+                return i;
+            }
+        }
+
+    }else{
+
+        for (i = ch_idx-1; i>= 0; i--){
+            if (channels[i][param] == value){
+                return i;
+            }
+        }
+
+        for (i = channels.length-1; i > ch_idx; i--){
+            if (channels[i][param] == value){
+                return i;
+            }
+        }
+
+    }
+    return null;
+};
+
 player.prototype.switch_channel = function(dir, show_info){
     
     _debug('switch_channel', dir);
@@ -1663,15 +1721,24 @@ player.prototype.switch_channel = function(dir, show_info){
     }
 
     var item = {};
-    
+
+    _debug('module.tv.genre', module.tv.genre);
+
     if (dir > 0){
         
         if (stb.user.fav_itv_on){
-            
-            if (this.f_ch_idx < this.fav_channels.length-1){
-                this.f_ch_idx++;
+
+            if (module.tv.genre && module.tv.genre.id != '*'){
+                this.f_ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : module.tv.genre.id});
+
+                _debug('nearest this.f_ch_idx', this.f_ch_idx);
             }else{
-                this.f_ch_idx = 0;
+            
+                if (this.f_ch_idx < this.fav_channels.length-1){
+                    this.f_ch_idx++;
+                }else{
+                    this.f_ch_idx = 0;
+                }
             }
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
@@ -1679,11 +1746,18 @@ player.prototype.switch_channel = function(dir, show_info){
             item = this.fav_channels[this.f_ch_idx];
             
         }else{
-            
-            if (this.ch_idx < this.channels.length-1){
-                this.ch_idx++;
+
+            if (module.tv.genre && module.tv.genre.id != '*'){
+                this.ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : module.tv.genre.id});
+
+                _debug('nearest this.ch_idx', this.ch_idx);
             }else{
-                this.ch_idx = 0;
+            
+                if (this.ch_idx < this.channels.length-1){
+                    this.ch_idx++;
+                }else{
+                    this.ch_idx = 0;
+                }
             }
             
             _debug('this.ch_idx:', this.ch_idx);
@@ -1693,11 +1767,17 @@ player.prototype.switch_channel = function(dir, show_info){
         
     }else{
         if (stb.user.fav_itv_on){
-            
-            if (this.f_ch_idx > 0){
-                this.f_ch_idx--;
+
+            if (module.tv.genre && module.tv.genre.id != '*'){
+                this.f_ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : module.tv.genre.id});
+
+                _debug('nearest this.f_ch_idx', this.f_ch_idx);
             }else{
-                this.f_ch_idx = this.fav_channels.length-1;
+                if (this.f_ch_idx > 0){
+                    this.f_ch_idx--;
+                }else{
+                    this.f_ch_idx = this.fav_channels.length-1;
+                }
             }
             
             _debug('this.f_ch_idx:', this.f_ch_idx);
@@ -1705,17 +1785,28 @@ player.prototype.switch_channel = function(dir, show_info){
             item = this.fav_channels[this.f_ch_idx];
             
         }else{
-            
-            if (this.ch_idx > 0){
-                this.ch_idx--;
+
+            if (module.tv.genre && module.tv.genre.id != '*'){
+                this.ch_idx = this._find_nearest_ch_idx(dir, {"tv_genre_id" : module.tv.genre.id});
+
+                _debug('nearest this.ch_idx', this.ch_idx);
             }else{
-                this.ch_idx = this.channels.length-1;
+                if (this.ch_idx > 0){
+                    this.ch_idx--;
+                }else{
+                    this.ch_idx = this.channels.length-1;
+                }
             }
             
             _debug('this.ch_idx:', this.ch_idx);
             
             item = this.channels[this.ch_idx];
         }
+    }
+
+    if (!item){
+        _debug('no channel');
+        return;
     }
 
     if (parseInt(item.use_http_tmp_link) == 1){

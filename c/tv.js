@@ -66,7 +66,7 @@
             
             _debug('tv._show', genre);
             
-            genre = genre || this.genres[0];
+            genre = genre || this.genre || this.genres[0];
             
             this.load_params['genre'] = genre.id;
 
@@ -100,13 +100,18 @@
         this.show = function(do_not_load){
             _debug('tv.show', do_not_load);
 
-            if(this.data_items && this.data_items[this.cur_row] && this.data_items[this.cur_row].id && stb.player.cur_media_item && this.data_items[this.cur_row].id == stb.player.cur_media_item.id){
+            /*if(this.data_items && this.data_items[this.cur_row] && this.data_items[this.cur_row].id && stb.player.cur_media_item && this.data_items[this.cur_row].id == stb.player.cur_media_item.id){
                 do_not_load = true;
             }else{
                 do_not_load = false;
                 if (this.genre && this.genre.hasOwnProperty('id')){
                     this.load_params['genre'] = this.genre.id;
                 }
+            }*/
+
+
+            if(this.data_items && this.data_items[this.cur_row] && this.data_items[this.cur_row].id && stb.player.cur_media_item && this.data_items[this.cur_row].id == stb.player.cur_media_item.id){
+                do_not_load = true;
             }
 
             _debug('do_not_load', do_not_load);
@@ -140,6 +145,7 @@
 
             if (!do_not_reset){
                 this.cur_page = 0;
+                this.genre = null;
             }
             
             this.short_epg_loader.stop();
