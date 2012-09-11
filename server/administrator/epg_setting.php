@@ -1,4 +1,7 @@
 <?php
+
+set_time_limit(120);
+
 session_start();
 
 ob_start();
