@@ -247,7 +247,8 @@ function getHtmlByUrl(url) {
         {
             if (request.readyState == 4 && request.status == 200) {
                 log("Url " + url + " get done");
-                parseYoutubePage(request.responseText);     // call to function parse YouTube html
+                //parseYoutubePage(request.responseText);     // call to function parse YouTube html
+                parseVideoInfo(request.responseText);
                 setTimeout(function(){stb.EnableSetCookieFrom(".youtube.com", true);}, 500);//
                 // enabled cookie receiving from domain '.youtube.com'
             }
@@ -322,6 +323,32 @@ function parseYoutubePage(html, playNow) {
         player.play(eval(str));  // call player
     }
 }
+
+function parseVideoInfo(html, playNow){
+    var s = /url_encoded_fmt_stream_map=(.*)/.exec(html);
+    log('\n\n'+s.length+'\n\n');
+    log('\n\n'+s[1]+'\n\n');
+    var str = '({';
+    var r = s[1].split('%2C');
+    for(var i=0;i<r.length;i++){
+        r[i] = r[i].replace('url%3D', '');
+        r[i] = decodeURIComponent(r[i]);
+        r[i] = decodeURIComponent(r[i]);
+        r[i] = decodeURIComponent(r[i]);
+        var m = /itag\=(\d{1,})/.exec(r[i]);
+        if (!m){
+            continue;
+        }
+        log('\n\nm='+m+'\n\n');
+        r[i] = r[i].substr(r[i].indexOf('http://'));
+        str+=m[1]+':\''+r[i].split(';')[0]+'\',';
+    }
+    str =  str.substr(0, str.length - 1) + '})';
+    if(!playNow || playNow == true) {
+        player.play(eval(str));  // call player
+    }
+}
+
 function trimLeft(str) {
   return str.replace(/^\s+/, '');
 }
