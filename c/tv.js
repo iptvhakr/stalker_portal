@@ -244,7 +244,7 @@
                     module.epg_simple.ch_id   = this.data_items[this.cur_row].id;
                     module.epg_simple.ch_name = this.data_items[this.cur_row].name;
                     module.epg_simple.channel = this.data_items[this.cur_row];
-                    this.hide();
+                    this.hide(true);
                     module.epg_simple.show();
                 }
             }).bind(key.RIGHT, this).bind(key.EPG, this);
@@ -256,7 +256,7 @@
                     }
                     
                     module.epg.ch_id = this.data_items[this.cur_row].id;
-                    this.hide();
+                    this.hide(true);
                     module.epg.show();
                 }
             }).bind(key.INFO, this);
@@ -626,14 +626,56 @@
             }
             
             this.load_params['from_ch_id'] = 0;
-            
+
+            data = this.sync_channels(data);
+
             this.superclass.fill_list.call(this, data);
             
             if (this.cur_view == 'short'){
                 //this.fill_short_info(this.data_items[this.cur_row])
             }
         };
-        
+
+        this.sync_channels = function(data){
+            _debug('sync_channels');
+
+            var self = this;
+
+            data = data.map(function(channel){
+
+                _debug('channel.id', channel.id);
+
+                var idx = stb.player.channels.getIdxByVal('id', channel.id);
+
+                if (idx !== null){
+                    stb.player.channels[idx].open  = channel.open;
+
+                    //var cmd_idx = stb.player.channels[idx].cmds.getIdxByVal('url', channel.cmd);
+                    var cmd_idx = channel.cmds.getIdxByVal('url', stb.player.channels[idx].cmd);
+
+                    _debug('cmd_idx', cmd_idx);
+
+                    if (!stb.player.channels[idx].manually_selected || cmd_idx === null){
+                        stb.player.channels[idx].cmd               = channel.cmd;
+                        stb.player.channels[idx].use_http_tmp_link = channel.use_http_tmp_link;
+                        stb.player.channels[idx].wowza_tmp_link    = channel.wowza_tmp_link;
+                        stb.player.channels[idx].use_load_balancing= channel.use_load_balancing;
+                    }else{
+                        channel.cmd               = stb.player.channels[idx].cmd;
+                        channel.use_http_tmp_link = stb.player.channels[idx].use_http_tmp_link;
+                        channel.wowza_tmp_link    = stb.player.channels[idx].wowza_tmp_link;
+                        channel.use_load_balancing= stb.player.channels[idx].use_load_balancing;
+                    }
+
+                    stb.player.channels[idx].cmds  = channel.cmds;
+                }
+
+                return channel;
+            });
+
+            return data;
+        };
+
         this.fill_short_info = function(item){
             _debug('tv.fill_short_info');
             
@@ -761,7 +803,7 @@
 
                         //stb.player.prev_layer = self;
                         //stb.player.need_show_info = 1;
-                        stb.player.play_now(result.cmd);
+                        stb.player.play_now(result);
                     }
                 }
             }

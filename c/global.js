@@ -36,20 +36,32 @@ function _debug(){
 }
 
 function _log(action, param){
-    
-    var param = param || '';
-    
+
+    param = param || '';
+
+    if (typeof(param) == 'object'){
+        var add_data = param;
+    }
+
+    var data = {
+        "type"   : "stb",
+        "action" : "log",
+        "real_action" : action,
+        "param"  : param,
+        "tmp_type" : stb.get_current_place()
+    };
+
+    for (var prop in add_data){
+        if (add_data.hasOwnProperty(prop)){
+            data[prop] = add_data[prop];
+        }
+    }
+
     stb.load(
-        {
-            "type"   : "stb",
-            "action" : "log",
-            "real_action" : action,
-            "param"  : param,
-            "tmp_type" : stb.get_current_place()
-        },
-        
+        data,
+
         function(result){
-            
+
         }
     )
 }

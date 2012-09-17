@@ -36,6 +36,10 @@ class User
         return $this->id;
     }
 
+    public static function getUserAgent(){
+        return empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
+    }
+
     public function getMac(){
         return $this->profile['mac'];
     }

@@ -300,7 +300,43 @@ $cur_infoportal = get_cur_infoportal($db);
 </table>
 </td>
 
-<td class="other">
+<td class="other" width="160" valign="top" style="background-color: whiteSmoke">
+    <table width="100%"  border="0" align="left" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="td_stat" height="" colspan="2"></td>
+        </tr>
+        <tr>
+            <?
+            $stream_servers = StreamServer::getAllActive(true);
+
+            $streamer_sessions = array_reduce($stream_servers, function($sessions, $streamer){
+                return $sessions + $streamer['sessions'];
+            }, 0);
+            ?>
+            <td class="td_stat">сервера вещания:</td>
+            <td class="td_stat"><? echo $streamer_sessions ?></td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <?
+
+                    foreach ($stream_servers as $streamer){
+                        echo '<tr>';
+                        echo '<td class="td_stat" width="80"><b>'.$streamer['name'].'</b>:</td>';
+                        echo '<td class="td_stat">'.$streamer['sessions'].'/'.round($streamer['load'], 2).'</td>';
+                        echo '</tr>';
+                    }
+
+                    ?>
+                </table>
+            </td>
+        </tr>
+    </table>
+</td>
+
+    <td class="other">
 </td>
 <td class="other" width="100">
 <form action="users.php" method="GET">
@@ -379,7 +415,7 @@ $cur_infoportal = get_cur_infoportal($db);
   <tr>
     <td width="47%" align="center"><a href="epg_setting.php">EPG</a></td>
     <td width="6%">&nbsp;</td>
-    <td width="47%" align="center">&nbsp;</td>
+    <td width="47%" align="center"><a href="stream_servers.php"><?= _('Stream servers')?></a></td>
   </tr>
 </table>
 <?}?>

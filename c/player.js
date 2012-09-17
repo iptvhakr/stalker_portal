@@ -1135,7 +1135,7 @@ player.prototype.play = function(item){
                 stb.setFrontPanel(item.number);
             }
 
-            if (parseInt(item.use_http_tmp_link) == 1){
+            if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1){
 
                 stb.player.on_create_link = function(result){
                     _debug('tv.on_create_link', result);
@@ -1148,7 +1148,7 @@ player.prototype.play = function(item){
                         stb.notice.show(word['player_server_error']);
                     }else{*/
 
-                    stb.player.play_now(result.cmd);
+                    stb.player.play_now(result);
                     //}
                 };
 
@@ -1257,10 +1257,22 @@ player.prototype.delete_link = function(uri){
     )
 };
 
-player.prototype.play_now = function(uri){
-    _debug('player.play_now', uri);
+player.prototype.play_now = function(item){
+    _debug('player.play_now', item);
 
-    _log('play', uri);
+    if (typeof(item) == 'object'){
+        var uri = item.cmd;
+
+        if (item.hasOwnProperty('streamer_id')){
+            _log('play', {"streamer_id" : item.streamer_id, "link_id" : (item.link_id || 0), "ch_id" : item.id});
+        }else{
+            _log('play', uri);
+        }
+
+    }else{
+        uri = item;
+        _log('play', uri);
+    }
 
     this.start_time = Date.parse(new Date())/1000;
 
@@ -1809,7 +1821,7 @@ player.prototype.switch_channel = function(dir, show_info){
         return;
     }
 
-    if (parseInt(item.use_http_tmp_link) == 1){
+    if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1){
         this.on_create_link = function(result){
             _debug('player.tv.on_create_link', result);
 
@@ -1820,7 +1832,7 @@ player.prototype.switch_channel = function(dir, show_info){
             }else if(result.error == 'link_fault'){
                 stb.notice.show(word['player_server_error']);
             }else{
-                stb.player.play_now(result.cmd);
+                stb.player.play_now(result);
             }
         }
     }

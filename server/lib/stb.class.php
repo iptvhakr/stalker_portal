@@ -12,6 +12,7 @@ class Stb
     public $mac = '';
     public $ip;
     public $hd  = 0;
+    private $user_agent = '';
     private $is_moderator = false;
     private $params = array();
     private $db;
@@ -49,6 +50,8 @@ class Stb
         }*/
 
         $debug_key = $this->getDebugKey();
+
+        $this->user_agent = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
 
         if (!empty($debug_key) && $this->checkDebugKey($debug_key)){
 
@@ -135,6 +138,10 @@ class Stb
 
     public function getParam($name){
         return $this->params[$name];
+    }
+
+    public function getUserAgent(){
+        return $this->user_agent;
     }
 
     public function setParam($key, $value){
@@ -587,15 +594,31 @@ class Stb
 
             switch ($type){
                 case 1: // TV
-                    
-                    $ch_name = $this->db->from('itv')->where(array('cmd' => $param, 'status' => 1))->get()->first('name');
-                    
+
+                    if (!empty($_REQUEST['ch_id'])){
+                        $ch_name = $this->db->from('itv')->where(array('id' => (int) $_REQUEST['ch_id']))->get()->first('name');
+                    }else{
+                        $ch_name = $this->db->from('itv')->where(array('cmd' => $param, 'status' => 1))->get()->first('name');
+                    }
+
                     if (empty($ch_name)){
                         $ch_name = $param;
                     }
-                    
+
                     $update_data['now_playing_content'] = $ch_name;
-                    
+
+                    if (!empty($_REQUEST['link_id'])){
+                        $update_data['now_playing_link_id'] = $_REQUEST['link_id'];
+                    }else{
+                        $update_data['now_playing_link_id'] = 0;
+                    }
+
+                    if (!empty($_REQUEST['streamer_id'])){
+                        $update_data['now_playing_streamer_id'] = $_REQUEST['streamer_id'];
+                    }else{
+                        $update_data['now_playing_streamer_id'] = 0;
+                    }
+
                     break;
                 case 2: // Video Club
                     
@@ -754,7 +777,9 @@ class Stb
             $update_data['now_playing_content'] = '';
             $update_data['storage_name'] = '';
             $update_data['hd_content'] = '';
-            
+            $update_data['now_playing_link_id'] = '';
+            $update_data['now_playing_streamer_id'] = '';
+
             $type = 0;
         }
         

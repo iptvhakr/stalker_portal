@@ -82,7 +82,30 @@ if (!$error){
     if (@$_POST['number'] && !check_number($_POST['number']) && !@$_GET['update']){
         $error = sprintf(_('Error: channel with number "%s" is already in use').' <a href="#form">#</a>', intval($_POST['number']));
     }
-    
+
+    $urls = empty($_POST['cmd']) ? array() : $_POST['cmd'];
+
+    $links = array();
+
+    foreach ($urls as $key => $value){
+
+        if (empty($value)){
+            continue;
+        }
+
+        $links[] = array(
+            'url'               => $value,
+            'priority'          => array_key_exists($key, $_POST['priority']) ? (int) $_POST['priority'][$key] : 0,
+            'use_http_tmp_link' => !empty($_POST['use_http_tmp_link']) && array_key_exists($key, $_POST['use_http_tmp_link']) ? (int) $_POST['use_http_tmp_link'][$key] : 0,
+            'wowza_tmp_link'    => !empty($_POST['wowza_tmp_link']) && array_key_exists($key, $_POST['wowza_tmp_link']) ? (int) $_POST['wowza_tmp_link'][$key] : 0,
+            'user_agent_filter' => array_key_exists($key, $_POST['user_agent_filter']) ? $_POST['user_agent_filter'][$key] : '',
+            'monitoring_url'    => array_key_exists($key, $_POST['monitoring_url']) ? $_POST['monitoring_url'][$key] : '',
+            'use_load_balancing' => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) && !empty($_POST['use_load_balancing']) && array_key_exists($key, $_POST['use_load_balancing']) ? (int) $_POST['use_load_balancing'][$key] : 0,
+            'stream_servers'    => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) ? $_POST['stream_server'][$key] : array(),
+        );
+    }
+
+
     if (@$_GET['save'] && !$error && !empty($_POST)){
     
         if(@$_GET['name'] && @$_POST['tv_genre_id'] > 0){
@@ -143,7 +166,7 @@ if (!$error){
                                         '".$bonus_ch."',
                                         '".$hd."',
                                         '".@$_POST['cost']."',
-                                        '".(empty($_POST['cmd']) ? $_POST['cmd_1'] : $_POST['cmd'])."',
+                                        '".(!empty($_POST['cmd'][0]) ? $_POST['cmd'][0] : "")."',
                                         '".@$_POST['cmd_1']."',
                                         '".@$_POST['cmd_2']."',
                                         '".@$_POST['cmd_3']."',
@@ -164,6 +187,23 @@ if (!$error){
             $rs=$db->executeQuery($query);
             //var_dump($rs);
             $ch_id = $rs->getLastInsertId();
+
+            foreach ($links as $link){
+
+                $link['ch_id'] = $ch_id;
+
+                $links_on_server = $link['stream_servers'];
+
+                unset($link['stream_servers']);
+
+                $link_id = Mysql::getInstance()->insert('ch_links', $link)->insert_id();
+
+                if ($link_id && $links_on_server){
+                    foreach ($links_on_server as $streamer_id){
+                        Mysql::getInstance()->insert('ch_link_on_streamer', array('link_id' => $link_id, 'streamer_id' => $streamer_id));
+                    }
+                }
+            }
 
             if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
@@ -232,7 +272,7 @@ if (!$error){
 
             $query = "update itv 
                                 set name='".$_POST['name']."',
-                                cmd='".(empty($_POST['cmd']) ? $_POST['cmd_1'] : $_POST['cmd'])."',
+                                cmd='".(!empty($_POST['cmd'][0]) ? $_POST['cmd'][0] : "")."',
                                 cmd_1='".@$_POST['cmd_1']."',
                                 cmd_2='".@$_POST['cmd_2']."',
                                 cmd_3='".@$_POST['cmd_3']."',
@@ -259,6 +299,83 @@ if (!$error){
                             where id=".intval(@$_GET['id']);
             //var_dump($query);
             $rs=$db->executeQuery($query);
+
+            $urls = $_POST['cmd'];
+            $priorities = $_POST['priority'];
+
+            $current_urls  = Mysql::getInstance()->from('ch_links')->where(array('ch_id' => intval($_GET['id'])))->get()->all('url');
+            $current_links = Mysql::getInstance()->from('ch_links')->where(array('ch_id' => intval($_GET['id'])))->get()->all();
+
+            $urls_str = "'".implode("','", $urls)."'";
+
+            $need_to_delete_links = Mysql::getInstance()->query("select * from ch_links where ch_id=".intval($_GET['id'])." and url not in (".$urls_str.")")->all('id');
+
+            //Mysql::getInstance()->query("delete from ch_links where ch_id=".intval($_GET['id'])." and url not in (".$urls_str.")");
+            if ($need_to_delete_links){
+                Mysql::getInstance()->query("delete from ch_links where id in (".implode(",", $need_to_delete_links).")");
+                Mysql::getInstance()->query("delete from ch_link_on_streamer where link_id in (".implode(",", $need_to_delete_links).")");
+            }
+
+            foreach ($links as $link){
+
+                $link['ch_id'] = (int) $_GET['id'];
+
+                $links_on_server = $link['stream_servers'];
+
+                unset($link['stream_servers']);
+
+                if (!in_array($link['url'], $current_urls)){
+                    $link_id = Mysql::getInstance()->insert('ch_links', $link)->insert_id();
+
+                    if ($link_id && $links_on_server){
+                        foreach ($links_on_server as $streamer_id){
+                            Mysql::getInstance()->insert('ch_link_on_streamer', array('link_id' => $link_id, 'streamer_id' => $streamer_id));
+                        }
+                    }
+                }else{
+
+                    $link_id = Mysql::getInstance()
+                        ->from('ch_links')
+                        ->where(array(
+                        'ch_id' => (int) $_GET['id'],
+                        'url'   => $link['url']
+                    ))
+                        ->get()
+                        ->first('id');
+
+                    Mysql::getInstance()->update('ch_links',
+                        $link,
+                        array(
+                            'ch_id' => (int) $_GET['id'],
+                            'url'   => $link['url']
+                        )
+                    );
+
+                    if ($link_id){
+                        $on_streamers = Mysql::getInstance()->from('ch_link_on_streamer')->where(array('link_id' => $link_id))->get()->all('streamer_id');
+
+                        if ($on_streamers){
+                            $need_to_delete = array_diff($on_streamers, $links_on_server);
+                            $need_to_insert = array_diff($links_on_server, $on_streamers);
+
+                            if ($need_to_delete){
+                                Mysql::getInstance()->query("delete from ch_link_on_streamer where link_id=$link_id and streamer_id in (".implode(",", $need_to_delete).")");
+                            }
+
+                            if ($need_to_insert){
+                                foreach ($need_to_insert as $streamer_id){
+                                    Mysql::getInstance()->insert('ch_link_on_streamer', array('link_id' => $link_id, 'streamer_id' => $streamer_id));
+                                }
+                            }
+
+                        }else{
+                            foreach ($links_on_server as $streamer_id){
+                                Mysql::getInstance()->insert('ch_link_on_streamer', array('link_id' => $link_id, 'streamer_id' => $streamer_id));
+                            }
+                        }
+                    }
+                }
+            }
 
             if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
@@ -311,21 +428,12 @@ function handle_upload_logo($file, $ch_id){
 
     $filename = $ch_id.".".$ext;
 
-    //$fullpath = $path."/".$filename;
-
     $resolutions = array(
         '320' => array('height' => 96, 'width' => 96),
         '240' => array('height' => 72, 'width' => 72),
         '160' => array('height' => 48, 'width' => 48),
         '120' => array('height' => 36, 'width' => 36)
     );
-
-    /*try{
-        $icon = new Imagick($file['tmp_name']);
-    }catch(ImagickException $e){
-        //$e->getMessage();
-        return false;
-    }*/
 
     umask(0);
 
@@ -360,28 +468,6 @@ function handle_upload_logo($file, $ch_id){
     }
 
     unlink($file['tmp_name']);
-
-    /*if (!$icon->resizeImage(96, 96, Imagick::FILTER_LANCZOS, 1)){
-        return false;
-    }*/
-
-    //umask(0);
-
-    /*if (!$icon->writeImage($fullpath)){
-        return false;
-    }*/
-
-    //$icon->destroy();
-
-    //chmod($fullpath, 0666);
-
-    //$result = move_uploaded_file($file['tmp_name'], $fullpath);
-/*
-    if (!$result){
-        return false;
-    }
-
-    chmod($fullpath, 0666);*/
 
     return $filename;
 }
@@ -458,7 +544,66 @@ a:hover{
 </title>
 <script type="text/javascript" src="js.js"></script>
 <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
 <script type="text/javascript" src="js/jquery.cookies.2.2.0.js"></script>
+
+<script id="link_item_tmpl" type="text/x-jquery-tmpl">
+    <div>
+        <input name="cmd[${idx}]" size="50" type="text" value="${url}"
+               style="border-style:solid;border-color: {{if status==1}}#66A566{{else}}#F88787{{/if}}"><br>
+        <table>
+            <tr>
+                <td><?= _('priority')?>:</td>
+                <td><input type="text" name="priority[${idx}]" size="3" value="${priority}"></td>
+            </tr>
+            <tr>
+                <td><?= _('filter')?>:</td>
+                <td>
+                    <input type="text" name="user_agent_filter[${idx}]" value="${user_agent_filter}">
+                </td>
+            </tr>
+            <tr>
+                <td>временная HTTP ссылка:</td>
+                <td>
+                    <input type="checkbox" class="use_http_tmp_link" name="use_http_tmp_link[${idx}]" value="1" {{if use_http_tmp_link==="1"}}checked{{/if}}>
+                    <span style="display:{{if use_http_tmp_link==1}} {{else}}none{{/if}}">&nbsp;&nbsp;Wowza ссылка:<input type="checkbox" name="wowza_tmp_link[${idx}]" value="1" {{if wowza_tmp_link==="1"}}checked{{/if}}></span>
+                </td>
+            </tr>
+            <tr class="monitoring_url_block">
+                <td colspan="2">
+                    URL для мониторинга:<br>
+                    <input type="text" size="48" name="monitoring_url[${idx}]" value="${monitoring_url}">
+                </td>
+            </tr>
+            <tr>
+                <td>load balancing:</td>
+                <td>
+                    <input type="checkbox" class="use_load_balancing" name="use_load_balancing[${idx}]" value="1" {{if use_load_balancing==="1"}}checked{{/if}}>
+                </td>
+            </tr>
+            <tr style="display:{{if use_load_balancing==1}} {{else}}none{{/if}}; background-color:#f8f8f8">
+                <td colspan="2">
+                    <table width="100%">
+                        {{each(i, stream_server) stream_servers}}
+                        <tr>
+                            <td width="50%">${stream_server.name}:</td>
+                            <td width="50%">
+                                <input type="checkbox" class="stream_server" name="stream_server[${idx}][]" value="${stream_server.id}" {{if stream_server.selected==1}}checked{{/if}}/>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <button href="javascript://" class="add_ch_url">добавить еще ссылку</button>
+        {{if idx>0}}
+        <button href="javascript://" class="del_ch_url">удалить</button>
+        {{/if}}
+        <hr>
+    </div>
+</script>
 
 <script type="text/javascript">
 
@@ -503,12 +648,60 @@ a:hover{
             return sort.call(this, comparator).each(function(i){
                 placements[i].call(getSortable.call(this));
             });
-
         };
 
     })();
 
     $(function(){
+
+        $('.add_ch_url').live('click', function(event){
+
+            var idx = $('.links_block>div').length;
+
+            var link = {"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"user_agent_filter":"","idx":idx,"monitoring_url":"", "use_load_balancing":0};
+
+            $("#link_item_tmpl").tmpl(link).appendTo('.links_block');
+
+            return false;
+        });
+
+        $('.del_ch_url').live('click', function(event){
+            if (confirm("<?= _('Do you really want to delete this record?')?>")){
+                $(this).closest('div').remove();
+            }
+            return false;
+        });
+
+        if (!links){
+            links = [];
+        }
+
+        if (links.length == 0){
+            links = [{"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"user_agent_filter":"","monitoring_url":"","use_load_balancing":0}];
+        }
+
+        links = links.map(function(link, idx){
+            link['idx'] = idx;
+            return link;
+        });
+
+        $("#link_item_tmpl").tmpl(links).appendTo('.links_block');
+
+        $('.use_http_tmp_link').live('click', function(event){
+            if ($(this).attr('checked')){
+                $(this).next().show();
+            }else{
+                $(this).next().hide();
+            }
+        });
+
+        $('.use_load_balancing').live('click', function(event){
+            if ($(this).attr('checked')){
+                $(this).parent().parent().next().show();
+            }else{
+                $(this).parent().parent().next().hide();
+            }
+        });
 
         var table = $('.item_list');
 
@@ -581,7 +774,7 @@ a:hover{
         $('.add_btn').click(function(){
             $('#form_').get(0).reset();
             document.location.href = 'add_itv.php#form';
-        })
+        });
     });
 </script>
 </head>
@@ -754,6 +947,35 @@ if (@$_GET['edit']){
         if ($hd){
             $checked_hd = 'checked';
         }
+
+        $stream_servers = StreamServer::getAll();
+
+        $links = Mysql::getInstance()
+            ->from('ch_links')
+            ->where(array('ch_id' => (int) $arr['id']))
+            ->orderby('priority')
+            ->get()
+            ->all();
+
+        //var_dump($stream_servers);
+
+        $links = array_map(function($link) use ($stream_servers){
+
+            $on_streamers = StreamServer::getStreamersIdsForLink($link['id']);
+
+            $link['stream_servers'] = array_map(function($server) use ($on_streamers){
+
+                if (in_array($server['id'], $on_streamers)){
+                    $server['selected'] = 1;
+                }else{
+                    $server['selected'] = 0;
+                }
+
+                return $server;
+            }, $stream_servers);
+
+            return $link;
+        }, $links);
     }
 }else if (!empty($_POST)){
     $name   = @$_POST['name'];
@@ -923,6 +1145,11 @@ function delete_logo(id){
 }
 </script>
 <br>
+<script type="text/javascript">
+    var links = <?= empty($links)?'[]':json_encode($links)?>;
+</script>
+
+<a name="form"></a>
 <table align="center" class='list'>
 <tr>
     <td>
@@ -952,18 +1179,18 @@ function delete_logo(id){
            </td>
         </tr>
         
-        <tr>
+        <!--<tr>
            <td align="right" valign="top">
-           <?= _('Temporary HTTP URL')?>:
+           <?/*= _('Temporary HTTP URL')*/?>:
            </td>
            <td>
-            <input name="use_http_tmp_link" id="use_http_tmp_link" type="checkbox" <? echo @$checked_http_tmp_link ?> onchange="this.checked ? document.getElementById('wowza_tmp_link_tr').style.display = '' : document.getElementById('wowza_tmp_link_tr').style.display = 'none'" >
-            <span id="wowza_tmp_link_tr" style="display: <?echo @$checked_http_tmp_link ? '' : 'none' ?>">
-                <?= _('WOWZA support')?>:
-                <input name="wowza_tmp_link" id="wowza_tmp_link" type="checkbox" <? echo @$checked_wowza_tmp_link ?> >
+            <input name="use_http_tmp_link" id="use_http_tmp_link" type="checkbox" <?/* echo @$checked_http_tmp_link */?> onchange="this.checked ? document.getElementById('wowza_tmp_link_tr').style.display = '' : document.getElementById('wowza_tmp_link_tr').style.display = 'none'" >
+            <span id="wowza_tmp_link_tr" style="display: <?/*echo @$checked_http_tmp_link ? '' : 'none' */?>">
+                <?/*= _('WOWZA support')*/?>:
+                <input name="wowza_tmp_link" id="wowza_tmp_link" type="checkbox" <?/* echo @$checked_wowza_tmp_link */?> >
             </span>
            </td>
-        </tr>
+        </tr>-->
         <tr>
            <td align="right" valign="top">
            <?= _('Age restriction')?>:
@@ -1043,16 +1270,16 @@ function delete_logo(id){
         </tr>
         <?}else{?>
         <tr>
-           <td align="right">
-            <?= _('URL')?>:
-           </td>
-           <td>
-            <input id="cmd" name="cmd" size="50" type="text" value="<? echo @$cmd ?>">
-           </td>
+            <td align="right" valign="top">
+                Ссылки:
+            </td>
+            <td class="links_block">
+
+            </td>
         </tr>
         <?}?>
 
-        <tr>
+        <tr style="display: none;">
            <td align="right" valign="top">
            WOWZA load balancing:
            </td>
@@ -1094,22 +1321,22 @@ function delete_logo(id){
             </span>
            </td>
         </tr>
-        <tr>
+        <!--<tr>
            <td align="right">
-            <?= _('Enable monitoring')?>:
+            <?/*= _('Enable monitoring')*/?>:
            </td>
            <td>
-            <input id="enable_monitoring" name="enable_monitoring" type="checkbox" value="1" <? echo @$checked_enable_monitoring ?> onchange="this.checked ? document.getElementById('monitoring_url_tr').style.display = '' : document.getElementById('monitoring_url_tr').style.display = 'none'">
+            <input id="enable_monitoring" name="enable_monitoring" type="checkbox" value="1" <?/* echo @$checked_enable_monitoring */?> onchange="this.checked ? document.getElementById('monitoring_url_tr').style.display = '' : document.getElementById('monitoring_url_tr').style.display = 'none'">
            </td>
         </tr>
-        <tr id="monitoring_url_tr" style="display:<? echo @$checked_enable_monitoring ? '' : 'none' ?>">
+        <tr id="monitoring_url_tr" style="display:<?/* echo @$checked_enable_monitoring ? '' : 'none' */?>">
            <td align="right">
-            <?= _('Channel URL for monitoring')?>:
+            <?/*= _('Channel URL for monitoring')*/?>:
            </td>
            <td>
-            <input id="monitoring_url" name="monitoring_url" size="50" type="text" value="<? echo @$monitoring_url ?>"> * <?= _('http only')?>
+            <input id="monitoring_url" name="monitoring_url" size="50" type="text" value="<?/* echo @$monitoring_url */?>"> * <?/*= _('http only')*/?>
            </td>
-        </tr>
+        </tr>-->
         <tr>
            <td align="right">
             xmltv id: 
@@ -1175,7 +1402,6 @@ function delete_logo(id){
         </tr>
     </table>
     </form>
-    <a name="form"></a>
     </td>
 </tr>
 </table>

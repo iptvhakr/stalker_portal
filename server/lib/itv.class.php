@@ -59,6 +59,9 @@ class Itv extends AjaxResponse
     public function createLink(){
 
         $cmd = '';
+        $streamer_id = 0;
+        $link_id = 0;
+        $load = 0;
 
         preg_match("/\/ch\/(\d+)$/", $_REQUEST['cmd'], $tmp_arr);
 
@@ -66,10 +69,28 @@ class Itv extends AjaxResponse
             $error = 'nothing_to_play';
         }
 
-        $ch_id = intval($tmp_arr[1]);
+        //$ch_id = intval($tmp_arr[1]);
+
+        $link_id = intval($tmp_arr[1]);
+        $link = \Itv::getLinkById($link_id);
+
+        $channel = Itv::getById($link['ch_id']);
+        $ch_id = $channel['id'];
 
         try{
-            $cmd = $this->getUrlByChannelId($ch_id);
+
+            if (!empty($link)){
+                $link_id = $link['id'];
+            }else{
+                $link_id = null;
+            }
+
+            $real_channel = $this->getRealChannelByChannelId($ch_id, $link_id);
+            $cmd = $real_channel['cmd'];
+            $streamer_id = empty($real_channel['streamer_id']) ? 0 : (int) $real_channel['streamer_id'];
+            $link_id     = empty($real_channel['link_id']) ? 0 : (int) $real_channel['link_id'];
+            $load        = empty($real_channel['load']) ? 0 : (int) $real_channel['load'];
+
         }catch(ItvLinkException $e){
             $error = $e->getMessage();
             echo $e->getTraceAsString();
@@ -79,9 +100,12 @@ class Itv extends AjaxResponse
         }
 
         $res = array(
-            'id'    => $ch_id,
-            'cmd'   => empty($error) ? $cmd : '',
-            'error' => empty($error) ? '' : $error
+            'id'          => $ch_id,
+            'cmd'         => empty($error) ? $cmd : '',
+            'streamer_id' => $streamer_id,
+            'link_id'     => $link_id,
+            'load'        => $load,
+            'error'       => empty($error) ? '' : $error
         );
 
         var_dump($res);
@@ -89,11 +113,30 @@ class Itv extends AjaxResponse
         return $res;
     }
 
-    public function getUrlByChannelId($ch_id){
+    public function getUrlByChannelId($ch_id, $link_id = null){
+
+        $channel = $this->getRealChannelByChannelId($ch_id, $link_id);
+
+        return (empty($channel['cmd']) ? false : $channel['cmd']);
+    }
+
+    public function getRealChannelByChannelId($ch_id, $link_id = null){
 
         $ch_id = intval($ch_id);
 
         $channel = self::getChannelById($ch_id);
+        $channel['link_id'] = $link_id;
+
+        if ($link_id != null){
+            $link = Itv::getLinkById($link_id);
+
+            if (!empty($link)){
+                $channel['cmd'] = $link['url'];
+                $channel['use_http_tmp_link']  = $link['use_http_tmp_link'];
+                $channel['wowza_tmp_link']     = $link['wowza_tmp_link'];
+                $channel['use_load_balancing'] = $link['use_load_balancing'];
+            }
+        }
 
         if (empty($channel)){
             throw new ItvLinkException('nothing_to_play');
@@ -117,6 +160,17 @@ class Itv extends AjaxResponse
             }
         }
 
+        if ($channel['use_load_balancing']){
+            $streamers = StreamServer::getForLink($link_id);
+
+            if ($streamers){
+                $new_addr = $streamers[0]['address'];
+                $channel['load'] = $streamers[0]['load'];
+                $channel['streamer_id'] = $streamers[0]['id'];
+                $channel['cmd'] = preg_replace('/:\/\/([^\/]*)/', '://'.$new_addr ,$channel['cmd']);
+            }
+        }
+
         if ($channel['use_http_tmp_link']){
 
             if ($channel['wowza_tmp_link']){
@@ -125,7 +179,7 @@ class Itv extends AjaxResponse
                 if (!$key){
                     throw new ItvLinkException('link_fault');
                 }else{
-                    $cmd = $channel['cmd'].'?'.$key;
+                    $channel['cmd'] = $channel['cmd'].'?'.$key;
                 }
             }else{
 
@@ -155,15 +209,13 @@ class Itv extends AjaxResponse
                     if (!$link_result){
                         throw new ItvLinkException('link_fault');
                     }else{
-                        $cmd = 'ffrt http://'.$streamer.'/ch/'.$link_result.' '.$tmp_url_arr[4];
+                        $channel['cmd'] = 'ffrt http://'.$streamer.'/ch/'.$link_result.' '.$tmp_url_arr[4];
                     }
                 }
             }
-        }else{
-            return $channel['cmd'];
         }
 
-        return (empty($cmd) ? false : $cmd);
+        return $channel;
     }
 
     private function getWowzaBalancer($url){
@@ -383,14 +435,39 @@ class Itv extends AjaxResponse
             //$query->where(array('quality' => $this->stb->getParam('tv_quality')));
         }
 
-        if (Config::get('enable_tariff_plans')){
+        //if (Config::get('enable_tariff_plans')){
             $query->in('id', $all_user_channels_ids);
-        }
+        //}
 
         
         return $query;
     }
-    
+
+    public static function getFilteredUserChannelsIds(){
+
+        $user_agent = User::getUserAgent();
+
+        $all_links = Mysql::getInstance()->from('ch_links')->groupby('ch_id')->get()->all();
+
+        $user_links = array_filter($all_links, function($link) use ($user_agent){
+            return preg_match("/".$link['user_agent_filter']."/", $user_agent);
+        });
+
+        if (empty($user_links)){
+            $user_links = array_filter($all_links, function($link) use ($user_agent){
+                return $link['user_agent_filter'] == '';
+            });
+        }
+
+        $user_ch_ids = array_map(function($link){
+            return $link['ch_id'];
+        }, $user_links);
+
+        $user_ch_ids = array_unique($user_ch_ids);
+
+        return $user_ch_ids;
+    }
+
     public function getAllChannels(){
         
         $result = $this->getChannels()
@@ -717,8 +794,9 @@ class Itv extends AjaxResponse
                 $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)));
             }
             
-            $this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
-            
+            //$this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
+            $this->response['data'][$i]['genres_str'] = '';
+
             //$next_five_epg = $epg->getCurProgramAndFiveNext($this->response['data'][$i]['id']);
 
             $cur_program = $epg->getCurProgram($this->response['data'][$i]['id']);
@@ -755,6 +833,17 @@ class Itv extends AjaxResponse
                 }
             }
 
+            $this->response['data'][$i]['cmds']               = self::getUrlsForChannel($this->response['data'][$i]['id']);
+            $this->response['data'][$i]['cmd']                = empty($this->response['data'][$i]['cmds'][0]['url']) ? '' : $this->response['data'][$i]['cmds'][0]['url'];
+            $this->response['data'][$i]['use_http_tmp_link']  = empty($this->response['data'][$i]['cmds'][0]['use_http_tmp_link']) ? 0 : $this->response['data'][$i]['cmds'][0]['use_http_tmp_link'];
+            $this->response['data'][$i]['wowza_tmp_link']     = empty($this->response['data'][$i]['cmds'][0]['wowza_tmp_link']) ? 0 : $this->response['data'][$i]['cmds'][0]['wowza_tmp_link'];
+            $this->response['data'][$i]['use_load_balancing'] = empty($this->response['data'][$i]['cmds'][0]['use_load_balancing']) ? 0 : $this->response['data'][$i]['cmds'][0]['use_load_balancing'];
+
+            if (empty($this->response['data'][$i]['cmds']) || $this->response['data'][$i]['enable_monitoring'] && $this->response['data'][$i]['monitoring_status'] == 0){
+                $this->response['data'][$i]['open'] = 0;
+                $this->response['data'][$i]['cmd'] = 'udp://wtf?';
+            }
+
             $this->response['data'][$i]['mc_cmd'] = empty($this->response['data'][$i]['mc_cmd']) ? '' : '1';
         }
 
@@ -762,7 +851,7 @@ class Itv extends AjaxResponse
     }
     
     private function getGenreById($id){
-        
+
         $genre = $this->db->from('tv_genre')->where(array('id' => $id))->get()->first();
         
         if (empty($genre)){
@@ -808,6 +897,12 @@ class Itv extends AjaxResponse
             $channel_ids = array_unique(array_merge(ItvSubscription::getSubscriptionChannelsIds($uid), ItvSubscription::getBonusChannelsIds($uid), $this->getBaseChannelsIds()));
         }
 
+        $filtered_channels = self::getFilteredUserChannelsIds();
+
+        //var_dump($channel_ids, $filtered_channels);
+
+        $channel_ids = array_intersect($channel_ids, $filtered_channels);
+
         return $channel_ids;
     }
 
@@ -848,6 +943,11 @@ class Itv extends AjaxResponse
     public static function getChannelById($id){
         
         return Mysql::getInstance()->from('itv')->where(array('id' => $id))->get()->first();
+    }
+
+    public static function getLinkById($id){
+
+        return Mysql::getInstance()->from('ch_links')->where(array('id' => $id))->get()->first();
     }
     
     public function getShortEpg(){
@@ -1035,6 +1135,42 @@ class Itv extends AjaxResponse
     public static function getServices(){
         Mysql::$debug=true;
         return Mysql::getInstance()->select('id, CONCAT_WS(". ", cast(number as char), name) as name')->from('itv')->orderby('number')->get()->all();
+    }
+
+    public static function getUrlsForChannel($ch_id){
+
+        $user_agent = User::getUserAgent();
+
+        $channel_links = Mysql::getInstance()
+            ->from('ch_links')
+            ->where(array('ch_id' => $ch_id, 'status' => 1))
+            ->orderby('priority, rand()')
+            ->get()
+            ->all();
+
+        $user_channel_links = array_filter($channel_links, function($link) use ($user_agent){
+            return preg_match("/".$link['user_agent_filter']."/", $user_agent);
+        });
+
+        if (empty($user_channel_links)){
+            $user_channel_links = array_filter($channel_links, function($link) use ($user_agent){
+                return $link['user_agent_filter'] == '';
+            });
+        }
+
+        $user_channel_links = array_map(function($link){
+
+            if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1){
+                $link['url'] = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link['id'];
+            }
+
+            unset($link['monitoring_url']);
+
+            return $link;
+
+        }, $user_channel_links);
+
+        return array_values($user_channel_links);
     }
 }
 
