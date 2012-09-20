@@ -346,8 +346,8 @@ player.prototype.event_callback = function(event){
                         return;
                     }*/
                     
-                    if (this.play_continuously && this.cur_media_item.hasOwnProperty('series')){
-                        
+                    if (this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+
                         _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
                         _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
                         _debug('this.cur_media_item.hasOwnProperty(series)', this.cur_media_item.hasOwnProperty('series'));
