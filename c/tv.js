@@ -597,6 +597,7 @@
             
             this.short_info_box = create_block_element('tv_timetable', this.info_box);
             this.preview_box = create_block_element('tv_prev_window', this.info_box);
+            this.preview_msg = create_block_element('tv_prev_msg', this.preview_box);
             this.clock_box = create_block_element('tv_clock', this.info_box);
         };
         
@@ -680,8 +681,11 @@
             _debug('tv.fill_short_info');
             
             if (item && !item.open){
-                this.short_info_box.innerHTML = '<span class="current">' + word['msg_channel_not_available'] + '</span>';
-            }else if (item && item.epg){
+                //this.short_info_box.innerHTML = '<span class="current">' + word['msg_channel_not_available'] + '</span>';
+                this.preview_msg.innerHTML = word['msg_channel_not_available'];
+            }
+
+            if (item && item.epg){
                 
                 //this.fill_short_epg(item.epg);
                 this.short_info_box.innerHTML = '';
@@ -729,7 +733,9 @@
                 this.short_epg_loader.start();
                 return;
             }
-            
+
+            this.preview_msg.innerHTML = '';
+
             //window.clearTimeout(this.row_callback_timer);
             
             var self = this;
@@ -783,7 +789,7 @@
                 return;
             }
 
-            if (parseInt(item.use_http_tmp_link) == 1){
+            if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1){
 
                 stb.player.on_create_link = function(result){
                     _debug('tv.on_create_link', result);

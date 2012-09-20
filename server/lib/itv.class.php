@@ -161,13 +161,25 @@ class Itv extends AjaxResponse
         }
 
         if ($channel['use_load_balancing']){
-            $streamers = StreamServer::getForLink($link_id);
+
+            try{
+                $streamers = StreamServer::getForLink($link_id);
+            }catch (Exception $e){
+                throw new ItvLinkException($e->getCode());
+            }
 
             if ($streamers){
                 $new_addr = $streamers[0]['address'];
                 $channel['load'] = $streamers[0]['load'];
+
+                if ($channel['load'] >= 1){
+                    throw new ItvLinkException('limit');
+                }
+
                 $channel['streamer_id'] = $streamers[0]['id'];
                 $channel['cmd'] = preg_replace('/:\/\/([^\/]*)/', '://'.$new_addr ,$channel['cmd']);
+            }else{
+                throw new ItvLinkException('nothing_to_play');
             }
         }
 

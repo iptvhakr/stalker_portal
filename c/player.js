@@ -8,6 +8,9 @@ var stbEvent = {
     event : 0
 };
 
+/**
+ * @constructor
+ */
 function player(){
     
     var self = this;
@@ -1136,9 +1139,9 @@ player.prototype.play = function(item){
             }
 
             if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1){
-
+                var self = this;
                 stb.player.on_create_link = function(result){
-                    _debug('tv.on_create_link', result);
+                    _debug('player.on_create_link', result);
 
                     /*if (result.error == 'limit'){
                         stb.notice.show(word['player_limit_notice']);
@@ -1147,6 +1150,14 @@ player.prototype.play = function(item){
                     }else if(result.error == 'link_fault'){
                         stb.notice.show(word['player_server_error']);
                     }else{*/
+
+                    if (result.error){
+                        self.cur_media_item.error = result.error;
+                        module.tv.preview_msg.innerHTML = get_word('error_channel_'+result.error);
+                    }else{
+                        self.cur_media_item.error = '';
+                        module.tv.preview_msg.innerHTML = '';
+                    }
 
                     stb.player.play_now(result);
                     //}
@@ -1283,7 +1294,12 @@ player.prototype.play_now = function(item){
     this.init_con_menu();
 
     try{
-        stb.Play(uri);
+
+        if (this.cur_media_item.error){
+            stb.Stop();
+        }else{
+            stb.Play(uri);
+        }
     }catch(e){_debug(e)}
 };
 
@@ -1575,7 +1591,9 @@ player.prototype.show_info = function(item){
             //_debug('stb.epg_loader.get_epg(item.id)', stb.epg_loader.get_epg(item.id));
             
             if (item.hasOwnProperty('open') && !item.open){
-                this.info.epg.innerHTML = get_word('msg_channel_not_available');
+                this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('msg_channel_not_available') + '</span>';
+            }else if (item.hasOwnProperty('error') && item.error){
+                this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('error_channel_'+item.error) + '</span>';
             }else{
                 this.info.epg.innerHTML = stb.epg_loader.get_epg(item.id);
             }

@@ -25,12 +25,14 @@ if (@$_POST['add']){
     $sql = 'insert into streaming_servers (
                 name,
                 address,
-                max_sessions
+                max_sessions,
+                stream_zone
                 )
             values (
                 "'.@$_POST['name'].'",
                 "'.@$_POST['address'].'",
-                "'.@$_POST['max_sessions'].'"
+                "'.@$_POST['max_sessions'].'",
+                "'.@$_POST['stream_zone'].'"
             )';
     $db->executeQuery($sql);
     header("Location: stream_servers.php");
@@ -44,7 +46,8 @@ if (!empty($id)){
         $sql = 'update streaming_servers set
                     name="'.@$_POST['name'].'",
                     address="'.@$_POST['address'].'",
-                    max_sessions="'.@$_POST['max_sessions'].'"
+                    max_sessions="'.@$_POST['max_sessions'].'",
+                    stream_zone="'.@$_POST['stream_zone'].'"
                 where id='.intval($_GET['id']);
         $db->executeQuery($sql);
         //var_dump($_POST,$sql);
@@ -69,6 +72,8 @@ if (@$_GET['edit'] && !empty($id)){
 
 
 $streamers = StreamServer::getAll();
+
+$zones = Mysql::getInstance()->from('stream_zones')->orderby('name')->get()->all();
 
 ?>
 <html>
@@ -105,6 +110,12 @@ a:hover{
 	font-weight: bold;
 	text-decoration:underline;
 }
+.stream_zone{
+    width: 153px;
+}
+input{
+    margin: 0;
+}
 </style>
 <title><?= _('Stream servers')?></title>
 
@@ -118,7 +129,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="stream_zones.php"><?= _('Zones')?></a>
     </td>
 </tr>
 <tr>
@@ -188,6 +199,24 @@ a:hover{
                 <tr>
                     <td><?= _('Max sessions')?></td>
                     <td><input type="text" name="max_sessions" value="<?echo @$edit_streamer['max_sessions']?>"/></td>
+                </tr>
+                <tr>
+                    <td><?= _('Stream zone')?></td>
+                    <td>
+                        <select name="stream_zone" class="stream_zone">
+                            <option value="0">
+                            <?
+                            foreach ($zones as $zone){
+                                if (@$edit_streamer['stream_zone'] == $zone['id'] || empty($edit_streamer) && $zone['default_zone'] == 1){
+                                    $selected = 'selected';
+                                }else{
+                                    $selected = '';
+                                }
+                                echo '<option value="'.$zone['id'].'" '.$selected.'>'.$zone['name'];
+                            }
+                            ?>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td></td>

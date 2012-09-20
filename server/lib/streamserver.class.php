@@ -39,7 +39,7 @@ class StreamServer
         $streamer_ids = self::getStreamersIdsForLink($link_id);
 
         if (empty($streamer_ids)){
-            return null;
+            throw new EmptyStreamList();
         }
 
         $streamers = Mysql::getInstance()
@@ -49,9 +49,49 @@ class StreamServer
             ->get()
             ->all();
 
+        if (empty($streamers)){
+            throw new EmptyStreamList();
+        }
+
+        $streamers = self::filterByCountry($streamers, User::getCountryId());
+
+        if (empty($streamers)){
+            throw new NotAvailableForZone();
+        }
+
         $streamers = self::countStats($streamers, true);
 
         return $streamers;
+    }
+
+    private static function filterByCountry($streamers, $country_id){
+
+        $streamers = array_map(function($streamer){
+
+            $streamer['countries'] = StreamServer::getCountries($streamer['stream_zone']);
+
+            return $streamer;
+        }, $streamers);
+
+        $filtered_streamers = array_filter($streamers, function($streamer) use ($country_id){
+            return $streamer['stream_zone'] == 0 || array_search($country_id, $streamer['countries']) !== false;
+        });
+
+        if (empty($filtered_streamers)){
+            $filtered_streamers = Mysql::getInstance()
+                ->select('streaming_servers.*, stream_zones.default_zone')
+                ->from('streaming_servers')
+                ->join('stream_zones', 'stream_zone', 'stream_zones.id', 'LEFT')
+                ->where(array('default_zone' => 1))
+                ->get()
+                ->all();
+        }
+
+        return $filtered_streamers;
+    }
+
+    public static function getCountries($zone_id){
+        return Mysql::getInstance()->from('countries_in_zone')->where(array('zone_id' => $zone_id))->get()->all('country_id');
     }
 
     private static function countStats($streamers, $sort_by_load = false){
@@ -122,4 +162,14 @@ class StreamServer
 
         return $streamers;
     }
+}
+
+class EmptyStreamList extends Exception
+{
+    protected $code = 'nothing_to_play';
+}
+
+class NotAvailableForZone extends Exception
+{
+    protected $code = 'not_available_for_zone';
 }

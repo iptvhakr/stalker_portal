@@ -40,6 +40,19 @@ class User
         return empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
     }
 
+    public static function getCountryId(){
+
+        $ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR'];
+
+        $country_code = geoip_country_code_by_name($ip);
+
+        if (empty($country_code)){
+            return 0;
+        }
+
+        return (int) Mysql::getInstance()->from('countries')->where(array('iso2' => $country_code))->get()->first('id');
+    }
+
     public function getMac(){
         return $this->profile['mac'];
     }

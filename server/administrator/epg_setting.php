@@ -145,6 +145,7 @@ a:hover{
         <tr>
             <td>ID</td>
             <td>URI</td>
+            <td><?= _('ID prefix')?></td>
             <td>ETag/MD5</td>
             <td><?= _('Updated')?></td>
             <td>&nbsp;</td>
@@ -153,6 +154,7 @@ a:hover{
                 echo '<tr>';
                 echo '<td>'.$setting['id'].'</td>';
                 echo '<td>'.$setting['uri'].'</td>';
+                echo '<td>'.$setting['id_prefix'].'</td>';
                 echo '<td>'.$setting['etag'].'</td>';
                 echo '<td>'.$setting['updated'].'</td>';
                 echo '<td>';

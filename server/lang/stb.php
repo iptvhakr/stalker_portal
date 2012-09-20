@@ -382,4 +382,9 @@ $words['wrong epg'] = _('wrong epg');
 
 $words['iso_title'] = _('Part');
 
+$words['error_channel_nothing_to_play'] = _('Channel not available');
+$words['error_channel_limit'] = _('Channel temporary available');
+$words['error_channel_not_available_for_zone'] = _('Channel not available for this region');
+$words['error_channel_link_fault'] = _('Channel not available. Server error.');
+
 ?>
