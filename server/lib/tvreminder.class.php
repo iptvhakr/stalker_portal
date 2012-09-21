@@ -60,7 +60,8 @@ class TvReminder
 
     
     public function getAllActiveForMac($mac){
-        
+
+        // todo: optimize slow query getRaw
         $all = $this->getRaw()->where(array('tv_reminder.mac' => $mac, 'tv_reminder.fire_time>' => 'NOW()'))->get()->all();
         
         $reminders = array();
