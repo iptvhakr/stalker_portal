@@ -445,8 +445,7 @@ class Mysql
     }
     
     public function insert($table, $keys){
-        
-        
+
         $fields = array();
         $values = array();
         
@@ -466,7 +465,44 @@ class Mysql
             }
             
             $value_str = implode(', ', $values);
-            
+
+            $max_len = $this->get_max_allowed_packet();
+
+            if (mb_strlen($value_str, '8bit') + 1000 > $max_len){
+
+                $value_str = '';
+
+                $multiple_values_str = '';
+
+                $sql = 'INSERT INTO '.$table.' ('.implode(', ', $fields).') values ';
+
+                $total_result = true;
+
+                for ($i = 0; $i < count($values); $i++){
+
+                    if (isset ($values[$i+1]) && mb_strlen($sql.$multiple_values_str.', '.$values[$i+1], '8bit') >= $max_len){
+
+                        //echo $sql.$multiple_values_str."\n";
+
+                        $result = $this->query($sql.$multiple_values_str);
+                        $total_result = $total_result && $result;
+
+                        $multiple_values_str = '';
+
+                    }
+
+                    if ($multiple_values_str != ''){
+                        $multiple_values_str .= ', ';
+                    }
+
+                    $multiple_values_str .= $values[$i];
+                }
+
+                $this->reset_write();
+
+                return $total_result;
+            }
+
         }else{
             
             foreach ($keys as $field => $value){
@@ -475,15 +511,12 @@ class Mysql
             }
             
             $value_str = '('.implode(', ', $values).')';
-            
-            /*
-            if (mb_strlen($value_str, '8bit') + 1000 > $this->get_max_allowed_packet()){
-                
-            }*/
         }
         
         $sql = 'INSERT INTO '.$table.' ('.implode(', ', $fields).') value '.$value_str;
-        
+
+        //echo $sql;
+
         $result = $this->query($sql);
         
         $this->reset_write();

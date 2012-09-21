@@ -19,6 +19,8 @@ class Epg
     //private $correction_time = 0; // minutes
     private $settings = array();
     private $real_ids = array();
+    private $corrections = null;
+    private $channels_updated = array();
 
     public function __construct(){
         $this->db = Mysql::getInstance();
@@ -103,6 +105,10 @@ class Epg
         $insert_data = array();
         $data_arr = array();
 
+        $start_time = microtime(1);
+
+        $total_need_to_delete = array();
+
         foreach ($xml->programme as $programme){
 
             $itv_id_arr = @$ids_arr[$setting['id_prefix'].strval($programme->attributes()->channel)];
@@ -128,10 +134,21 @@ class Epg
                 $title = strval($programme->title);
 
                 foreach ($itv_id_arr as $itv_id){
+                    $correction_time = $this->getCorrectionTimeByChannelId($itv_id);
+                    $start_ts = $start + $correction_time * 60;
+                    $need_to_delete = $this->getProgramIdsForClean($start_ts, $itv_id);
+
+                    if ($need_to_delete){
+                        $total_need_to_delete = array_merge($total_need_to_delete, $need_to_delete);
+                    }
+                }
+
+                foreach ($itv_id_arr as $itv_id){
 
                     //$this->cleanEpgByDate($start_ts, $itv_id);
 
-                    $correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id))->get()->first('correct_time');
+                    //$correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id))->get()->first('correct_time');
+                    $correction_time = $this->getCorrectionTimeByChannelId($itv_id);
 
                     $start_ts = $start + $correction_time * 60;
                     $mysql_start = date("Y-m-d H:i:s", $start_ts);
@@ -149,9 +166,17 @@ class Epg
 
                     $this->real_ids[$real_id] = true;
 
-                    $this->cleanEpgByDate($start_ts, $itv_id);
+                    //$this->cleanEpgByDate($start_ts, $itv_id);
 
-                    $data_arr[$itv_id][] = array(
+                    /*$data_arr[$itv_id][] = array(
+                                                'ch_id' => $itv_id,
+                                                'time'  => $mysql_start,
+                                                'time_to'  => $mysql_stop,
+                                                'duration' => $duration,
+                                                'real_id'  => $real_id,
+                                                'name'  => $title
+                                                );*/
+                    $data_arr[] = array(
                                                 'ch_id' => $itv_id,
                                                 'time'  => $mysql_start,
                                                 'time_to'  => $mysql_stop,
@@ -160,11 +185,19 @@ class Epg
                                                 'name'  => $title
                                                 );
 
+                    $this->channels_updated[$itv_id] = 1;
                 }
             }
         }
 
-        $err = 0;
+        $xml = null;
+
+        if (!empty($total_need_to_delete)){
+            Mysql::getInstance()->query('delete from epg where id in ('.implode(', ', $total_need_to_delete).')');
+            Mysql::getInstance()->query('OPTIMIZE TABLE epg');
+        }
+
+        /*$err = 0;
         $done = 0;
         $xml_ids_done = '';
         $xml_ids_err = '';
@@ -183,7 +216,9 @@ class Epg
             }
 
             $total++;
-        }
+        }*/
+
+        $result = $this->db->insert('epg', $data_arr);
 
         $setting['etag'] = $etag;
         $this->setSettings($setting);
@@ -192,11 +227,30 @@ class Epg
         $event->setUserListByMac('all');
         $event->sendUpdateEpg();
 
-        $str = sprintf(_("Updated %d channels from %d, %d errors"), $done, $total, $err)." \n";
-        $str .= "<b>"._("Errors").": </b>\n".($err? $xml_ids_err : $err)."\n";
-        $str .= "<b>"._("Successful").": </b>\n".$xml_ids_done."\n";
+        //$str = sprintf(_("Updated %d channels from %d, %d errors"), $done, $total, $err)." \n";
+        $str = "\n";
+        if (!$result){
+            $str .= "<b>"._("Errors").": </b> 1\n";
+        }
+        $str .= "<b>"._("Successful").": </b>".count($this->channels_updated)."\n";
+        $str .= "<b>"._("Queries").": </b>".Mysql::get_num_queries()."\n";
+        $str .= "<b>"._("Exec time").": </b>".round(microtime(1) - $start_time, 2).'s';
 
         return $str;
+    }
+
+    private function getCorrectionTimeByChannelId($ch_id){
+
+        if ($this->corrections === null){
+            $this->corrections = array();
+            $channels = Mysql::getInstance()->from('itv')->get()->all();
+
+            foreach ($channels as $channel){
+                $this->corrections[$channel['id']] = $channel['correct_time'];
+            }
+        }
+
+        return empty($this->corrections[$ch_id]) ? 0 : (int) $this->corrections[$ch_id];
     }
 
     /**
@@ -263,7 +317,7 @@ class Epg
      * @param int $itv_id
      * @return MysqlResult
      */
-    private function cleanEpgByDate($date, $itv_id){
+    private function getProgramIdsForClean($date, $itv_id){
 
         $real_from = date("Y-m-d H:i:s", $date);
 
@@ -284,13 +338,30 @@ class Epg
         if (!array_key_exists($date, $this->cleaned_epg[$itv_id])){
             $this->cleaned_epg[$itv_id] = array($date => 1);
 
-            $this->db->delete('epg',
+            $need_to_delete = Mysql::getInstance()
+                ->from('epg')
+                ->where(array(
+                    'ch_id'  => $itv_id,
+                    'time>=' => $real_from,
+                    'time<'  => $to
+                ))
+                ->get()
+                ->all('id');
+
+            return $need_to_delete;
+
+            /*$this->db->delete('epg',
                               array(
                                   'ch_id'  => $itv_id,
                                   'time>=' => $real_from,
                                   'time<'  => $to
-                              ));
+                              ));*/
+            /*if ($need_to_delete){
+                Mysql::getInstance()->query('delete from epg where id in ('.implode(', ', $need_to_delete).')');
+            }*/
         }
+
+        return null;
     }
 
     /**
