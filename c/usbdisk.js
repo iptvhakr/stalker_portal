@@ -22,7 +22,7 @@ function usbdisk(){
         this.image_ext += ' ' + '.bmp .tiff .tif .png';
     }
 
-    if (stb.type == 'MAG250'){
+    if (stb.type == 'MAG250' || stb.type.indexOf('AuraHD') != -1){
         files_ext += ' ' + this.image_ext;
     }
 

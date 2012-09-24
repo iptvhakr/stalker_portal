@@ -225,13 +225,14 @@ function common_xpcom(){
             this.video_mode   = stb.RDir('vmode');
             //this.graphic_mode = stb.RDir('gmode');
 
-            this.mac = stb.RDir('MACAddress').toUpperCase().clearnl();
+            //this.mac = stb.RDir('MACAddress').toUpperCase().clearnl();
+            this.mac = stb.GetDeviceMacAddress().toUpperCase().clearnl();
 
             this.ip  = stb.RDir('IPAddress').clearnl();
 
-            this.serial_number  = stb.RDir('SerialNumber').clearnl();
+            this.serial_number  = stb.GetDeviceSerialNumber().clearnl();
 
-            this.type = stb.RDir('Model').clearnl();
+            this.type = stb.GetDeviceModelExt().clearnl();
 
             this.stb_lang = stb.RDir('getenv language').clearnl();
             
@@ -249,7 +250,7 @@ function common_xpcom(){
 
             this.num_banks = mtdparts.indexOf('RootFs2') > 0 ? 2 : 1;
 
-            if (this.type == 'MAG200' || this.type == 'MAG250'){
+            if (this.type == 'MAG200' || this.type == 'MAG250' || this.type.indexOf('AuraHD') != -1){
                 this.hd = 1;
             }else{
                 this.hd = 0;
@@ -289,6 +290,7 @@ function common_xpcom(){
         //this.get_localization();
 
         _debug('this.mac:', this.mac);
+        _debug('this.serial_number:', this.serial_number);
         _debug('this.stb_lang:', this.stb_lang);
         _debug('this.timezone:', this.timezone);
         _debug('this.ntp_server:', this.ntp_server);
@@ -545,7 +547,7 @@ function common_xpcom(){
 
                 this.user['update_url'] = this.profile['update_url'] ? this.profile['update_url'] + this.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + this.type.substr(3) + '/imageupdate';
 
-                if (['MAG200', 'MAG250'].indexOf(this.type) >= 0){
+                if (['MAG200', 'MAG250'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
                     this.check_image_version();
                 }
 
