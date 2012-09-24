@@ -36,12 +36,21 @@ class TvArchive extends Master
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
 
-        $start_timestamp = strtotime($program['time']);
-        $stop_timestamp  = strtotime($program['time_to']) + $overlap;
+        $tz = new DateTimeZone(Stb::$server_timezone);
+
+        $date = new DateTime(date('r', strtotime($program['time'])));
+        $date->setTimeZone($tz);
+
+        $date_to = new DateTime(date('r', strtotime($program['time_to'])));
+        $date_to->setTimeZone($tz);
+
+        $start_timestamp = $date->getTimestamp();
+        $stop_timestamp  = $date_to->getTimestamp() + $overlap;
 
         $channel = Itv::getChannelById($program['ch_id']);
 
-        $filename = date("Ymd-H", $start_timestamp);
+        //$filename = date("Ymd-H", $start_timestamp);
+        $filename = $date->format("Ymd-H");
 
         if ($channel['wowza_dvr']){
             $filename .= '.mp4';

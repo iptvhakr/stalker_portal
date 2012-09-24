@@ -21,6 +21,7 @@ class Stb
     private $country_id;
     public $city_id;
     public $timezone;
+    public static $server_timezone;
     private $stb_lang;
     public $additional_services_on = 0;
 
@@ -182,6 +183,8 @@ class Stb
             $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
 
             $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
+
+            self::$server_timezone = date_default_timezone_get();
 
             date_default_timezone_set($this->timezone);
 
