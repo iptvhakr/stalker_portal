@@ -320,7 +320,7 @@ class Stb
 
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG250')));
+        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG250,AuraHD')));
 
         $image_update = new ImageAutoUpdate();
         if ($image_update->isEnabled()){
