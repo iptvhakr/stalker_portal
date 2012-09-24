@@ -498,7 +498,9 @@ function common_xpcom(){
 
         screensaver.init();
 
-        if (this.user['allowed_stb_types'] && this.user['allowed_stb_types'].indexOf(this.type.toLowerCase()) == -1 && !_GET['debug_key']){
+        var cut_type = this.type.indexOf('AuraHD') != -1 ? 'AuraHD' : this.type;
+
+        if (this.user['allowed_stb_types'] && this.user['allowed_stb_types'].indexOf(cut_type.toLowerCase()) == -1 && !_GET['debug_key']){
 
             stb.loader.stop();
             this.cut_off(get_word('stb_type_not_supported'));
