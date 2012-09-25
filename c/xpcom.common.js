@@ -232,7 +232,11 @@ function common_xpcom(){
 
             this.serial_number  = stb.GetDeviceSerialNumber().clearnl();
 
-            this.type = stb.GetDeviceModelExt().clearnl();
+            try{
+                this.type = stb.GetDeviceModelExt().clearnl();
+            }catch(e){
+                stb.RDir('Model').clearnl();
+            }
 
             this.stb_lang = stb.RDir('getenv language').clearnl();
             
