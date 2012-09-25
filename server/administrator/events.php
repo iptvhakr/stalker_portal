@@ -35,9 +35,14 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     $event = new SysEvent();
     
     if (@$_POST['user_list_type'] == 'to_all'){
-        $event->setUserListByMac('all');
-        
-        $user_list = Middleware::getAllUsersId();
+
+        if ($_POST['event'] == 'send_msg'){
+            $event->setUserListByMac('all');
+            $user_list = Middleware::getOnlineUsersId();
+        }else{
+            $event->setUserListByMac('online');
+            $user_list = Middleware::getAllUsersId();
+        }
         
     }elseif (@$_POST['user_list_type'] == 'to_single'){
         $event->setUserListByMac(@$_POST['mac']);

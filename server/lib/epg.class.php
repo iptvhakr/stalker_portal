@@ -45,6 +45,10 @@ class Epg
             $result .= "\n";
         }
 
+        $event = new SysEvent();
+        $event->setUserListByMac('online');
+        $event->sendUpdateEpg();
+
         return $result;
     }
 
@@ -222,10 +226,6 @@ class Epg
 
         $setting['etag'] = $etag;
         $this->setSettings($setting);
-
-        $event = new SysEvent();
-        $event->setUserListByMac('all');
-        $event->sendUpdateEpg();
 
         //$str = sprintf(_("Updated %d channels from %d, %d errors"), $done, $total, $err)." \n";
         $str = "\n";

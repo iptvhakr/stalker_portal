@@ -19,6 +19,21 @@ class Middleware
         //return $db->executeQuery('select * from users')->getValuesByName('id');
         return $db->get('users')->all('id');
     }
+
+    /**
+     * Return online boxes users id's
+     *
+     * @return array users id's
+     */
+    public static function getOnlineUsersId(){
+        return Mysql::getInstance()
+            ->from('users')
+            ->where(array(
+                'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2
+            ))
+            ->get()
+            ->all('id');
+    }
     
     /**
      * Return users ids by mac

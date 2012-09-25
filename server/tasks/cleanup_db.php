@@ -6,4 +6,5 @@ Mysql::getInstance()->query('DELETE FROM `user_log` WHERE `time`<FROM_UNIXTIME(U
 Mysql::getInstance()->query('OPTIMIZE TABLE `user_log`');
 
 Mysql::getInstance()->query('DELETE FROM `events` WHERE `eventtime`<now()');
+Mysql::getInstance()->query('OPTIMIZE TABLE  `events`');
 

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-19 12:38+0200\n"
-"PO-Revision-Date: 2012-09-19 12:40+0200\n"
+"POT-Creation-Date: 2012-09-24 15:12+0200\n"
+"PO-Revision-Date: 2012-09-24 15:13+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -806,107 +806,107 @@ msgstr ""
 msgid "Updated"
 msgstr "Обновлен"
 
-#: ../../../administrator/events.php:90
+#: ../../../administrator/events.php:95
 #, php-format
 msgid "%s events %s sended, %s errors"
 msgstr "%s событий %s отослано, %s ошибок"
 
-#: ../../../administrator/events.php:94
+#: ../../../administrator/events.php:99
 msgid "File with list is missing"
 msgstr "Отсутствует файл со списком"
 
-#: ../../../administrator/events.php:133
+#: ../../../administrator/events.php:138
 msgid "Error when sending event"
 msgstr "Ошибка при отправке события"
 
-#: ../../../administrator/events.php:189
-#: ../../../administrator/events.php:195
+#: ../../../administrator/events.php:194
+#: ../../../administrator/events.php:200
 #: ../../../administrator/index.php:137
 msgid "Events"
 msgstr "События"
 
-#: ../../../administrator/events.php:200
+#: ../../../administrator/events.php:205
 msgid "New event"
 msgstr "Новое событие"
 
-#: ../../../administrator/events.php:302
+#: ../../../administrator/events.php:307
 msgid "Send"
 msgstr "Отправить"
 
-#: ../../../administrator/events.php:305
+#: ../../../administrator/events.php:310
 msgid "To one"
 msgstr "одному"
 
-#: ../../../administrator/events.php:306
+#: ../../../administrator/events.php:311
 msgid "To all"
 msgstr "Всем"
 
-#: ../../../administrator/events.php:307
+#: ../../../administrator/events.php:312
 msgid "By list"
 msgstr "По списку"
 
-#: ../../../administrator/events.php:308
+#: ../../../administrator/events.php:313
 msgid "By pattern"
 msgstr "По шаблону"
 
-#: ../../../administrator/events.php:309
+#: ../../../administrator/events.php:314
 msgid "To group"
 msgstr "Группе"
 
-#: ../../../administrator/events.php:317
+#: ../../../administrator/events.php:322
 msgid "Load active events"
 msgstr "Загрузить активные события"
 
-#: ../../../administrator/events.php:322
+#: ../../../administrator/events.php:327
 msgid "List"
 msgstr "Список"
 
-#: ../../../administrator/events.php:330
+#: ../../../administrator/events.php:335
 msgid "Pattern"
 msgstr "Шаблон"
 
-#: ../../../administrator/events.php:341
+#: ../../../administrator/events.php:346
 msgid "Group"
 msgstr "Группа"
 
-#: ../../../administrator/events.php:374
+#: ../../../administrator/events.php:379
 msgid "restart on OK"
 msgstr "перезапускать по OK"
 
-#: ../../../administrator/events.php:375
+#: ../../../administrator/events.php:380
 msgid "channels"
 msgstr "каналы"
 
-#: ../../../administrator/events.php:400
+#: ../../../administrator/events.php:405
 #, php-format
 msgid "Active events for %s"
 msgstr "Активные события для %s"
 
-#: ../../../administrator/events.php:400
+#: ../../../administrator/events.php:405
 msgid "clean"
 msgstr "очистить"
 
-#: ../../../administrator/events.php:402
+#: ../../../administrator/events.php:407
 msgid "Valid up to"
 msgstr "Действительно до"
 
-#: ../../../administrator/events.php:403
+#: ../../../administrator/events.php:408
 msgid "Event"
 msgstr "Событие"
 
-#: ../../../administrator/events.php:404
+#: ../../../administrator/events.php:409
 msgid "Message"
 msgstr "Сообщение"
 
-#: ../../../administrator/events.php:414
+#: ../../../administrator/events.php:419
 msgid "sended"
 msgstr "отправлено"
 
-#: ../../../administrator/events.php:414
+#: ../../../administrator/events.php:419
 msgid "not sended"
 msgstr "не отправлено"
 
-#: ../../../administrator/events.php:423
+#: ../../../administrator/events.php:428
 #, php-format
 msgid "There are no active events for %s"
 msgstr "Нет активных событий для %s"
@@ -1850,6 +1850,10 @@ msgstr "Клип"
 #: ../../../administrator/userlog.php:400
 msgid "Go"
 msgstr "Перейти"
+
+#: ../../../administrator/userlog.php:408
+msgid "Stb action"
+msgstr "Действие"
 
 #: ../../../administrator/users.php:106
 msgid "All logs"
@@ -3206,27 +3210,30 @@ msgstr "декабрь"
 msgid "[No channel info]"
 msgstr "[телепрограмма отсутствует]"
 
-#: ../../../lib/epg.class.php:65
-#: ../../../lib/epg.class.php:69
+#: ../../../lib/epg.class.php:71
+#: ../../../lib/epg.class.php:75
 msgid "unavailable"
 msgstr "недоступен"
 
-#: ../../../lib/epg.class.php:84
+#: ../../../lib/epg.class.php:90
 msgid "not changed"
 msgstr "не изменился"
 
-#: ../../../lib/epg.class.php:195
-#, php-format
-msgid "Updated %d channels from %d, %d errors"
-msgstr "Обновлено %d каналов из %d, %d ошибок"
-
-#: ../../../lib/epg.class.php:196
+#: ../../../lib/epg.class.php:233
 msgid "Errors"
 msgstr "Ошибок"
 
-#: ../../../lib/epg.class.php:197
+#: ../../../lib/epg.class.php:235
 msgid "Successful"
 msgstr "Успешно"
+
+#: ../../../lib/epg.class.php:236
+msgid "Queries"
+msgstr ""
+
+#: ../../../lib/epg.class.php:237
+msgid "Exec time"
+msgstr ""
 
 #: ../../../lib/gismeteo.class.php:30
 msgid "Night"
@@ -3840,6 +3847,9 @@ msgstr "З"
 #: ../../../tools/misctranslations.php:152
 msgid "NW"
 msgstr "СЗ"
+
+#~ msgid "Updated %d channels from %d, %d errors"
+#~ msgstr "Обновлено %d каналов из %d, %d ошибок"
 
 #~ msgid "Temporary HTTP URL"
 #~ msgstr "Временная HTTP ссылка"

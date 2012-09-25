@@ -36,6 +36,8 @@ class Event extends HTTPPush
         if (is_string($list) || is_int($list)){
             if ($list == 'all'){
                 $this->param['user_list'] = Middleware::getAllUsersId();
+            }else if ($list == 'online'){
+                $this->param['user_list'] = Middleware::getOnlineUsersId();
             }else{
                 $this->param['user_list'] = array(Middleware::getUidByMac($list));
             }
