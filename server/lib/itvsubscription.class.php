@@ -97,7 +97,7 @@ class ItvSubscription
             $data['sub_ch'] = System::base64_encode(serialize($data['sub_ch']));
         }
 
-        if (key_exists('bonus_ch', $data)){
+        if (array_key_exists('bonus_ch', $data)){
             $data['bonus_ch'] = System::base64_encode(serialize($data['bonus_ch']));
         }
 
