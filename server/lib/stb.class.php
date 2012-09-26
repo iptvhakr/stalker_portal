@@ -1220,6 +1220,18 @@ class Stb
             $this->params['phone'] = $update_data['phone'] = $info['phone'];
         }
 
+        if (array_key_exists('tariff', $info)){
+            $tariff = Mysql::getInstance()->from('tariff_plan')->where(array('external_id' => $info['tariff']))->get()->first();
+
+            if ($tariff){
+                $tariff_id = $tariff['id'];
+            }else{
+                $tariff_id = 0;
+            }
+
+            $this->params['tariff_plan_id'] = $update_data['tariff_plan_id'] = $tariff_id;
+        }
+
         if (empty($update_data)){
             return false;
         }

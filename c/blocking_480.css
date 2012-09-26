@@ -17,3 +17,21 @@
     font: 45px "trebuchet ms", Arial, Helvetica, sans-serif;
     color: #fff;
 }
+
+.blocking_account_info{
+    position: absolute;
+    bottom: 70px;
+    right: 80px;
+    color: white;
+    font-size: 24px;
+}
+
+.blocking_account_info .color_btn{
+    width: 27px;
+    height: 27px;
+    -webkit-border-radius: 17px;
+    background-color: #306eff;
+    border: 2px solid #fff;
+    float: left;
+    margin-right: 8px;
+}

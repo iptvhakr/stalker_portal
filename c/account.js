@@ -83,13 +83,24 @@
             );
 
             this.hide();
+
+            (function(){
+                _debug('blocking key.info');
+                module.blocking.hide();
+                module.account.show(module.blocking);
+            }).bind(key.INFO, module.blocking).bind(key.BLUE, module.blocking);
+
+            var blocking_account_info = create_block_element('blocking_account_info', module.blocking.dom_obj);
+            blocking_account_info.innerHTML = '<div class="color_btn"></div> '+get_word('blocking_account_info');
         };
 
-        this.show = function(){
+        this.show = function(return_layer){
             _debug('account.show');
 
             this.superclass.show.apply(this);
-            
+
+            this.return_layer = return_layer;
+
             this.update_header_path([{"alias" : "tab", "item" : word['account_info']}]);
 
             this.color_buttons.get('red').disable();
@@ -169,8 +180,19 @@
 
             (function(){
                 this.hide();
-                main_menu.show();
+                //main_menu.show();
+                this.get_return_layer().show();
             }).bind(key.MENU, this).bind(key.EXIT, this).bind(key.LEFT, this);
+        };
+
+        this.get_return_layer = function(){
+            _debug('account.get_return_layer');
+
+            if (!this.return_layer){
+                return main_menu;
+            }
+
+            return this.return_layer;
         };
     }
 

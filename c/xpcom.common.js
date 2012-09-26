@@ -74,6 +74,7 @@ function common_xpcom(){
         this.watchdog = new watchdog();
 
         this.usbdisk = new usbdisk();
+        module.blocking.init_layer();
     };
 
     this.init_auth_dialog = function(){
@@ -165,6 +166,43 @@ function common_xpcom(){
                 this.all_modules = this.all_modules.filter(function(module){
                     return self.disabled_modules.indexOf(module) == -1;
                 });
+
+                loader.add(this.all_modules);
+            },
+
+            this
+        );
+    };
+
+    this.load_account_modules = function(){
+        _debug('stb.load_account_modules');
+
+        if (this.all_modules){
+            return;
+        }
+
+        this.load(
+
+            {
+                "type"   : "stb",
+                "action" : "get_modules"
+            },
+
+            function(result){
+                _debug('stb.load_account_modules callback', result);
+
+                var all_modules = result.all_modules;
+
+                all_modules = all_modules.filter(function(module){
+                    return module == 'account';
+                });
+
+                if (!all_modules){
+                    return;
+                }
+
+                this.all_modules = this.base_modules.concat(all_modules);
+                _debug('all_modules', this.all_modules);
 
                 loader.add(this.all_modules);
             },

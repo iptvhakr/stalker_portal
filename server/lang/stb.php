@@ -387,4 +387,6 @@ $words['error_channel_limit'] = _('Channel temporary available');
 $words['error_channel_not_available_for_zone'] = _('Channel not available for this region');
 $words['error_channel_link_fault'] = _('Channel not available. Server error.');
 
+$words['blocking_account_info'] = _('Account info');
+
 ?>

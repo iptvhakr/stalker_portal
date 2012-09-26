@@ -28,6 +28,7 @@
             this.text_msg.innerHTML = msg || get_word('cut_off_msg');
             this.dom_obj.show();
             this.on = true;
+            stb.load_account_modules();
         },
 
         hide : function(){
