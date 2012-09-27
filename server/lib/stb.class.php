@@ -333,6 +333,8 @@ class Stb
         $profile['cas_hw_descrambling']   = Config::getSafe('cas_hw_descrambling', 0);
         $profile['cas_ini_file']          = Config::getSafe('cas_ini_file', "");
 
+        $profile['logarithm_volume_control'] = Config::getSafe('logarithm_volume_control', false);
+
         return $profile;
     }
 

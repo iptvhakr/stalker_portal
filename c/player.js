@@ -716,7 +716,7 @@ player.prototype.volume = new function(){
         _debug('this.correction', this.correction);
         
         try{
-            stb.SetVolume(final_level);
+            stb.SetVolume(this._get_real_volume_level(final_level));
         }catch(e){
             _debug(e);
         }
@@ -767,13 +767,24 @@ player.prototype.volume = new function(){
         
         try{
             if (!this.mute.on){
-                stb.SetVolume(level);
+                stb.SetVolume(this._get_real_volume_level(level));
             }
         }catch(e){
             _debug(e);
         }
         
         this.update_bar(level);
+    };
+
+    this._get_real_volume_level = function(level){
+
+        if (stb.profile['logarithm_volume_control']){
+            level = Math.log(level == 0 ? 1 : level) / Math.log(100) * 100;
+        }
+
+        _debug('real_volume_level', level);
+
+        return level;
     };
     
     this.show = function(){
@@ -864,7 +875,7 @@ player.prototype.volume = new function(){
         _debug('volume.hide_mute');
         
         try{
-            stb.SetVolume(this.level);
+            stb.SetVolume(this._get_real_volume_level(this.level));
         }catch(e){
             _debug(e);
         }
