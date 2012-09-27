@@ -82,8 +82,8 @@ var player_cond = 0,
             player.scrolbar_width = 780;
         }
         player.obj = obj;
-        //var url = "http://www.youtube.com/watch?v=" + player.obj.id;
-        var url = "http://www.youtube.com/get_video_info?video_id=" + player.obj.id;
+        var url = "http://www.youtube.com/watch?v=" + player.obj.id;
+        //var url = "http://www.youtube.com/get_video_info?video_id=" + player.obj.id;
         getHtmlByUrl(url);
         player.current_step = 30;
         byID('playModeInPlayer').className = current.playMode;
