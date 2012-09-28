@@ -1301,6 +1301,11 @@ class Stb
         return Mysql::getInstance()->update('users', array('additional_services_on' => intval($value)), array('id' => intval($uid)));
     }
 
+    public static function getById($id){
+
+        return Mysql::getInstance()->from('users')->where(array('id' => $id))->get()->first();
+    }
+
     public function deleteById($ids){
 
         if (empty($ids)){
@@ -1374,6 +1379,10 @@ class Stb
 
     public function updateByLogin($login, $data){
         return Mysql::getInstance()->update('users', $data, array('login' => $login))->result();
+    }
+
+    public function updateById($id, $data){
+        return Mysql::getInstance()->update('users', $data, array('id' => $id))->result();
     }
 
     public static function getByMac($mac){

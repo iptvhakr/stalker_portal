@@ -12,13 +12,13 @@ class RESTApiTvChannelLast extends RESTApiController
 
     public function get(RESTApiRequest $request){
 
-        if (empty($this->params['users.login'])){
+        if (empty($this->params['users.id'])){
             throw new RESTBadRequest("User required");
         }
 
-        $user_login = $this->params['users.login'];
+        $user_id = $this->params['users.id'];
 
-        $user = \User::getByLogin($user_login);
+        $user = \User::getInstance($user_id);
 
         if (empty($user)){
             throw new RESTNotFound("User not found");
@@ -35,13 +35,13 @@ class RESTApiTvChannelLast extends RESTApiController
             throw new RESTBadRequest("Update data is empty");
         }
 
-        if (empty($this->params['users.login'])){
+        if (empty($this->params['users.id'])){
             throw new RESTBadRequest("User required");
         }
 
-        $user_login = $this->params['users.login'];
+        $user_id = $this->params['users.id'];
 
-        $user = \User::getByLogin($user_login);
+        $user = \User::getInstance($user_id);
 
         if (empty($user)){
             throw new RESTNotFound("User not found");

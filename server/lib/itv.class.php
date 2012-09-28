@@ -462,7 +462,7 @@ class Itv extends AjaxResponse
         $all_links = Mysql::getInstance()->from('ch_links')->groupby('ch_id')->get()->all();
 
         $user_links = array_filter($all_links, function($link) use ($user_agent){
-            return preg_match("/".$link['user_agent_filter']."/", $user_agent);
+            return $link['user_agent_filter'] != '' && preg_match("/".$link['user_agent_filter']."/", $user_agent);
         });
 
         if (empty($user_links)){
@@ -1162,7 +1162,7 @@ class Itv extends AjaxResponse
             ->all();
 
         $user_channel_links = array_filter($channel_links, function($link) use ($user_agent){
-            return preg_match("/".$link['user_agent_filter']."/", $user_agent);
+            return $link['user_agent_filter'] != '' && preg_match("/".$link['user_agent_filter']."/", $user_agent);
         });
 
         if (empty($user_channel_links)){

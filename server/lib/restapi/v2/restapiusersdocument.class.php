@@ -17,7 +17,7 @@ class RESTApiUsersDocument extends RESTApiDocument
 
     public function get(RESTApiRequest $request, $id){
 
-        $user = $this->manager->getByLogin($id);
+        $user = \Stb::getById($id);
 
         return $this->filterDocument($user);
     }

@@ -15,14 +15,13 @@ class RESTApiTvChannelLink extends RESTApiController
 
     public function get(RESTApiRequest $request, $parent_id){
 
-        if (empty($this->params['users.login'])){
+        if (empty($this->params['users.id'])){
             throw new RESTBadRequest("User required");
         }
 
-        $user_login = $this->params['users.login'];
+        $user_id = $this->params['users.id'];
 
-        $stb = \Stb::getInstance();
-        $user = $stb->getByLogin($user_login);
+        $user = \Stb::getById($user_id);
 
         if (empty($user)){
             throw new RESTNotFound("User not found");
@@ -49,11 +48,15 @@ class RESTApiTvChannelLink extends RESTApiController
             throw new RESTNotFound("Time shift in progress...");
         }
 
-        try{
-            $url = $itv->getUrlByChannelId($parent_id);
-        }catch(\Exception $e){
-            throw new RESTServerError("Failed to obtain url");
+        $urls = \Itv::getUrlsForChannel($channel['id']);
+
+        if (!empty($urls)){
+            $link = $urls[0]['id'];
+        }else{
+            $link = null;
         }
+
+        $url = $itv->getUrlByChannelId($parent_id, $link);
 
         if (preg_match("/(\S+:\/\/\S+)/", $url, $match)){
             $url = $match[1];

@@ -16,7 +16,7 @@ class RESTApiUserSettings extends RESTApiController
 
     public function get(RESTApiRequest $request, $parent_id){
 
-        $user = $this->manager->getByLogin($parent_id);
+        $user = \Stb::getById($parent_id);
 
         return $this->filter($user);
     }
@@ -37,7 +37,7 @@ class RESTApiUserSettings extends RESTApiController
             throw new RESTBadRequest("Update data is empty");
         }
 
-        return $this->manager->updateByLogin($parent_id, $data);
+        return $this->manager->updateById($parent_id, $data);
     }
 
     private function filter($profile){

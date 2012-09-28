@@ -44,7 +44,7 @@ class User
 
         $ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR'];
 
-        $country_code = geoip_country_code_by_name($ip);
+        $country_code = @geoip_country_code_by_name($ip);
 
         if (empty($country_code)){
             return 0;

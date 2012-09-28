@@ -5,7 +5,7 @@ namespace Stalker\Lib\RESTAPI\v2;
 class RESTApiResourceTvChannels extends RESTApiCollection
 {
     protected $manager;
-    protected $params_map = array("users" => "users.login", "tv-genres" => "genre");
+    protected $params_map = array("users" => "users.id", "tv-genres" => "genre");
     private   $user_id;
     private   $fav_channels  = array();
     private   $user_channels = array();
@@ -24,14 +24,13 @@ class RESTApiResourceTvChannels extends RESTApiCollection
 
         $this->manager = \Itv::getInstance();
 
-        if (!empty($this->nested_params['users.login'])){
-            $user_login = $this->nested_params['users.login'];
+        if (!empty($this->nested_params['users.id'])){
+            $user_id = $this->nested_params['users.id'];
 
-            $stb = \Stb::getInstance();
-            $user = $stb->getByLogin($user_login);
+            $user = \Stb::getById($user_id);
 
             if (empty($user)){
-                throw new RESTNotFound("User nor found");
+                throw new RESTNotFound("User not found");
             }
 
             $this->user_id = $user['id'];
@@ -103,15 +102,15 @@ class RESTApiResourceTvChannels extends RESTApiCollection
 
             $new_channel['favorite'] = in_array($channel['id'], $fav_channels) ? 1 : 0;
 
-            if ($channel['use_http_tmp_link'] || $channel['enable_wowza_load_balancing'] || !in_array($channel['id'], $user_channels)){
+            /*if ($channel['use_http_tmp_link'] || $channel['enable_wowza_load_balancing'] || !in_array($channel['id'], $user_channels)){
                 $new_channel['url'] = "";
             }else{
                 $new_channel['url'] = $channel['cmd'];
-            }
+            }*/
 
-            if (preg_match("/(\S+:\/\/\S+)/", $new_channel['url'], $match)){
+            /*if (preg_match("/(\S+:\/\/\S+)/", $new_channel['url'], $match)){
                 $new_channel['url'] = $match[1];
-            }
+            }*/
 
             $new_channel['archive']  = (int) $channel['enable_tv_archive'];
             $new_channel['censored'] = (int) $channel['censored'];
@@ -124,6 +123,19 @@ class RESTApiResourceTvChannels extends RESTApiCollection
             }
 
             $new_channel['logo'] = \Itv::getLogoUriById($channel['id'], $resolution);
+
+            $urls = \Itv::getUrlsForChannel($channel['id']);
+
+            if (!empty($urls) && $urls[0]['use_http_tmp_link'] == 0 && $urls[0]['use_load_balancing'] == 0){
+                $new_channel['url'] = $urls[0]['url'];
+            }else{
+                $new_channel['url'] = "";
+            }
+
+            if (preg_match("/(\S+:\/\/\S+)/", $new_channel['url'], $match)){
+                $new_channel['url'] = $match[1];
+            }
+
 
             return $new_channel;
         }, $channels);
