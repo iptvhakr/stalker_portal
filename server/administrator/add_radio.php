@@ -36,10 +36,12 @@ if (!$error){
             $query = "insert into radio (
                                         name,
                                         number,
+                                        volume_correction,
                                         cmd
                                         ) 
                                 values ('".@$_POST['name']."', 
                                         '".@$_POST['number']."', 
+                                        '".@$_POST['volume_correction']."',
                                         '".@$_POST['cmd']."'
                                         )";
             //echo $query;
@@ -58,6 +60,7 @@ if (!$error){
             $query = "update radio 
                                 set name='".$_POST['name']."', 
                                 cmd='".$_GET['cmd']."', 
+                                volume_correction='".$_POST['volume_correction']."',
                                 number='".$_POST['number']."'
                             where id=".intval(@$_GET['id']);
             $rs=$db->executeQuery($query);
@@ -187,6 +190,7 @@ if (@$_GET['edit']){
         $number = $arr['number'];
         $cmd = $arr['cmd'];
         $status = $arr['status'];
+        $volume_correction = $arr['volume_correction'];
     }
 }
 ?>
@@ -252,6 +256,14 @@ function popup(src){
            <td>
             <input id="cmd" name="cmd" size="50" type="text" value="<? echo @$cmd ?>">
            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <?= _('Volume correction')?>:
+            </td>
+            <td>
+                <input id="volume_correction" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
+            </td>
         </tr>
         <tr>
            <td>
