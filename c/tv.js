@@ -682,7 +682,12 @@
             
             if (item && !item.open){
                 //this.short_info_box.innerHTML = '<span class="current">' + word['msg_channel_not_available'] + '</span>';
-                this.preview_msg.innerHTML = word['msg_channel_not_available'];
+                if (item.error){
+                    //stb.notice.show(word['player_limit_notice']);
+                    this.preview_msg.innerHTML = get_word('error_channel_'+item.error);
+                }else{
+                    this.preview_msg.innerHTML = word['msg_channel_not_available'];
+                }
             }
 
             if (item && item.epg){

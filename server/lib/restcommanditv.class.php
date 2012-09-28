@@ -6,7 +6,7 @@ class RESTCommandItv extends RESTCommand
     private $allowed_fields;
 
     public function __construct(){
-        //$this->manager = Itv::getInstance();
+        $this->manager = Itv::getInstance();
         $this->allowed_fields = array_fill_keys(array('id', 'name', 'number', 'base_ch', 'hd', 'url', 'enable_monitoring'), true);
     }
 

@@ -101,6 +101,7 @@ if (!$error){
             'user_agent_filter' => array_key_exists($key, $_POST['user_agent_filter']) ? $_POST['user_agent_filter'][$key] : '',
             'monitoring_url'    => array_key_exists($key, $_POST['monitoring_url']) ? $_POST['monitoring_url'][$key] : '',
             'use_load_balancing' => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) && !empty($_POST['use_load_balancing']) && array_key_exists($key, $_POST['use_load_balancing']) ? (int) $_POST['use_load_balancing'][$key] : 0,
+            'enable_monitoring'  => !empty($_POST['enable_monitoring']) && array_key_exists($key, $_POST['enable_monitoring']) ? (int) $_POST['enable_monitoring'][$key] : 0,
             'stream_servers'    => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) ? $_POST['stream_server'][$key] : array(),
         );
     }
@@ -563,15 +564,21 @@ a:hover{
                 </td>
             </tr>
             <tr>
-                <td>временная HTTP ссылка:</td>
+                <td><?= _('Temporary HTTP URL')?>:</td>
                 <td>
                     <input type="checkbox" class="use_http_tmp_link" name="use_http_tmp_link[${idx}]" value="1" {{if use_http_tmp_link==="1"}}checked{{/if}}>
-                    <span style="display:{{if use_http_tmp_link==1}} {{else}}none{{/if}}">&nbsp;&nbsp;Wowza ссылка:<input type="checkbox" name="wowza_tmp_link[${idx}]" value="1" {{if wowza_tmp_link==="1"}}checked{{/if}}></span>
+                    <span style="display:{{if use_http_tmp_link==1}} {{else}}none{{/if}}">&nbsp;&nbsp;<?= _('WOWZA support')?>:<input type="checkbox" name="wowza_tmp_link[${idx}]" value="1" {{if wowza_tmp_link==="1"}}checked{{/if}}></span>
                 </td>
             </tr>
-            <tr class="monitoring_url_block">
+            <tr>
                 <td colspan="2">
-                    URL для мониторинга:<br>
+                    <?= _('Enable monitoring')?>:
+                    <input type="checkbox" class="enable_monitoring"  name="enable_monitoring[${idx}]" value="1" {{if enable_monitoring==="1"}}checked{{/if}}>
+                </td>
+            </tr>
+            <tr class="monitoring_url_block" style="display:{{if enable_monitoring==1}} {{else}}none{{/if}}; background-color:#f8f8f8">
+                <td colspan="2">
+                    <?= _('Channel URL for monitoring')?>:<br>
                     <input type="text" size="48" name="monitoring_url[${idx}]" value="${monitoring_url}">
                 </td>
             </tr>
@@ -658,7 +665,7 @@ a:hover{
 
             var idx = $('.links_block>div').length;
 
-            var link = {"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"user_agent_filter":"","idx":idx,"monitoring_url":"", "use_load_balancing":0};
+            var link = {"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"user_agent_filter":"","idx":idx,"monitoring_url":"", "use_load_balancing":0,"enable_monitoring":0};
 
             $("#link_item_tmpl").tmpl(link).appendTo('.links_block');
 
@@ -677,7 +684,7 @@ a:hover{
         }
 
         if (links.length == 0){
-            links = [{"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"user_agent_filter":"","monitoring_url":"","use_load_balancing":0}];
+            links = [{"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"user_agent_filter":"","monitoring_url":"","use_load_balancing":0,"enable_monitoring":0}];
         }
 
         links = links.map(function(link, idx){
@@ -696,6 +703,14 @@ a:hover{
         });
 
         $('.use_load_balancing').live('click', function(event){
+            if ($(this).attr('checked')){
+                $(this).parent().parent().next().show();
+            }else{
+                $(this).parent().parent().next().hide();
+            }
+        });
+
+        $('.enable_monitoring').live('click', function(event){
             if ($(this).attr('checked')){
                 $(this).parent().parent().next().show();
             }else{

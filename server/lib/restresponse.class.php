@@ -53,13 +53,23 @@ class RESTResponse
                     return $channel['enable_monitoring'];
                 });
 
-                if (preg_match("/part=(\d+)-(\d*)/", $this->request->getAccept(), $match)){
+                //$channels = $this->body['results'];
+
+                if (preg_match("/items=(\d+)-(\d*)/", $this->request->getAccept(), $match)){
                     $start = $match[1];
                     $end   = empty($match[2]) ? count($channels) : $match[2];
 
-                    $channels = array_slice($channels, $start, $end-$start);
+                    $channels = array_slice($channels, $start-1, $end-$start+1);
 
                     //var_dump($start, $end, $channels);
+                } elseif (preg_match("/part=(\d+)\/(\d+)/", $this->request->getAccept(), $match)){
+                    $length = count($channels);
+                    $start  = round((intval($match[1])-1) * ($length/intval($match[2])));
+                    $end    = round((intval($match[1])) * ($length/intval($match[2])));
+
+                    $channels = array_slice($channels, $start, $end-$start);
+
+                    //var_dump($length, $start, $end);
                 }
 
                 $body = array_reduce($channels, function($prev, $curr){

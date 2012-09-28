@@ -1,4 +1,9 @@
 <?php
+/**
+ * @deprecated
+ */
+
+exit;
 
 set_time_limit(0);
 

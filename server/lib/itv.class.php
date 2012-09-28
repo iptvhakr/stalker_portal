@@ -853,6 +853,7 @@ class Itv extends AjaxResponse
 
             if (empty($this->response['data'][$i]['cmds']) || $this->response['data'][$i]['enable_monitoring'] && $this->response['data'][$i]['monitoring_status'] == 0){
                 $this->response['data'][$i]['open'] = 0;
+                $this->response['data'][$i]['error'] = 'limit';
                 $this->response['data'][$i]['cmd'] = 'udp://wtf?';
             }
 
@@ -1183,6 +1184,44 @@ class Itv extends AjaxResponse
         }, $user_channel_links);
 
         return array_values($user_channel_links);
+    }
+
+    public static function setChannelLinkStatus($link_id, $status){
+
+        Mysql::getInstance()->update('ch_links', array('status' => $status), array('id' => $link_id));
+
+        $ch_id = (int) Mysql::getInstance()->from('ch_links')->where(array('id' => $link_id))->get()->first('ch_id');
+
+        $channel = Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first();
+
+        if (empty($channel)){
+            return false;
+        }
+
+        $good_links = Mysql::getInstance()->from('ch_links')->where(array('ch_id' => $ch_id, 'status' => 1))->get()->all();
+
+        if (!empty($good_links) && $channel['monitoring_status'] == 0){
+            Mysql::getInstance()->update('itv', array('monitoring_status' => 1), array('id' => $ch_id));
+
+            if (Config::exist('administrator_email')){
+
+                $message = sprintf(_('Channel %s set to active because at least one of its URLs became available.'), $channel['number'].' '.$channel['name']);
+
+                mail(Config::get('administrator_email'), 'FreeTV monitoring report: channel enabled', $message);
+            }
+
+        }else if (empty($good_links) && $channel['monitoring_status'] == 1){
+            Mysql::getInstance()->update('itv', array('monitoring_status' => 0), array('id' => $ch_id));
+
+            if (Config::exist('administrator_email')){
+
+                $message = sprintf(_('Channel %s set to inactive because all its URLs are not available.'), $channel['number'].' '.$channel['name']);
+
+                mail(Config::get('administrator_email'), 'FreeTV monitoring report: channel disabled', $message);
+            }
+        }
+
+        return Mysql::getInstance()->update('itv', array('monitoring_status_updated' => 'NOW()'), array('id' => $ch_id));
     }
 }
 
