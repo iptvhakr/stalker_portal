@@ -106,7 +106,6 @@ class Epg
 
         $ids_arr = $this->getITVids();
 
-        $insert_data = array();
         $data_arr = array();
 
         $start_time = microtime(1);
@@ -119,22 +118,9 @@ class Epg
 
             if ($itv_id_arr){
 
-                ///$correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id_arr[0]))->get()->first('correct_time');
-
                 $start = strtotime(strval($programme->attributes()->start));
                 $stop  = strtotime(strval($programme->attributes()->stop));
 
-                /*$start_ts = strtotime(strval($programme->attributes()->start)) + $correction_time*60;
-
-                $mysql_start = date("Y-m-d H:i:s", $start_ts);
-
-                $stop_ts = strtotime(strval($programme->attributes()->stop)) + $correction_time*60;
-
-                $mysql_stop  = date("Y-m-d H:i:s", $stop_ts);
-
-                $duration = $stop_ts - $start_ts;*/
-
-                //$title = addslashes($programme->title);
                 $title = strval($programme->title);
 
                 foreach ($itv_id_arr as $itv_id){
@@ -149,9 +135,6 @@ class Epg
 
                 foreach ($itv_id_arr as $itv_id){
 
-                    //$this->cleanEpgByDate($start_ts, $itv_id);
-
-                    //$correction_time = (int) Mysql::getInstance()->from('itv')->where(array('id' => $itv_id))->get()->first('correct_time');
                     $correction_time = $this->getCorrectionTimeByChannelId($itv_id);
 
                     $start_ts = $start + $correction_time * 60;
@@ -170,16 +153,6 @@ class Epg
 
                     $this->real_ids[$real_id] = true;
 
-                    //$this->cleanEpgByDate($start_ts, $itv_id);
-
-                    /*$data_arr[$itv_id][] = array(
-                                                'ch_id' => $itv_id,
-                                                'time'  => $mysql_start,
-                                                'time_to'  => $mysql_stop,
-                                                'duration' => $duration,
-                                                'real_id'  => $real_id,
-                                                'name'  => $title
-                                                );*/
                     $data_arr[] = array(
                                                 'ch_id' => $itv_id,
                                                 'time'  => $mysql_start,
@@ -200,27 +173,6 @@ class Epg
             Mysql::getInstance()->query('delete from epg where id in ('.implode(', ', $total_need_to_delete).')');
             Mysql::getInstance()->query('OPTIMIZE TABLE epg');
         }
-
-        /*$err = 0;
-        $done = 0;
-        $xml_ids_done = '';
-        $xml_ids_err = '';
-        $total = 0;
-
-        foreach ($data_arr as $itv_xml_id => $data){
-
-            $result = $this->db->insert('epg', $data);
-
-            if ($result->insert_id()){
-                $done++;
-                $xml_ids_done .= "xml_id #".$setting['id_prefix'].$itv_xml_id."\n";
-            }else{
-                $err++;
-                $xml_ids_err  .= "xml_id #".$setting['id_prefix'].$itv_xml_id."\n";
-            }
-
-            $total++;
-        }*/
 
         $result = $this->db->insert('epg', $data_arr);
 
@@ -326,15 +278,10 @@ class Epg
         $from = $date." 00:00:00";
         $to   = $date." 23:59:59";
 
-        /*if (!@$this->cleaned_epg[$itv_id]){
-            $this->cleaned_epg[$itv_id] = array();
-        }*/
-
         if (!array_key_exists($itv_id, $this->cleaned_epg)){
             $this->cleaned_epg[$itv_id] = array();
         }
 
-        //if (!@$this->cleaned_epg[$itv_id][$date]){
         if (!array_key_exists($date, $this->cleaned_epg[$itv_id])){
             $this->cleaned_epg[$itv_id] = array($date => 1);
 
@@ -349,16 +296,6 @@ class Epg
                 ->all('id');
 
             return $need_to_delete;
-
-            /*$this->db->delete('epg',
-                              array(
-                                  'ch_id'  => $itv_id,
-                                  'time>=' => $real_from,
-                                  'time<'  => $to
-                              ));*/
-            /*if ($need_to_delete){
-                Mysql::getInstance()->query('delete from epg where id in ('.implode(', ', $need_to_delete).')');
-            }*/
         }
 
         return null;
