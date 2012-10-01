@@ -112,6 +112,8 @@
 
             if(this.data_items && this.data_items[this.cur_row] && this.data_items[this.cur_row].id && stb.player.cur_media_item && this.data_items[this.cur_row].id == stb.player.cur_media_item.id){
                 do_not_load = true;
+            }else{
+                do_not_load = false;
             }
 
             _debug('do_not_load', do_not_load);
