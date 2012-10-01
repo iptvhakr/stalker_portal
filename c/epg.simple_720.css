@@ -90,13 +90,13 @@
 
 #epg_simple .week{
     position: absolute;
-    left: 146px;
+    left: 127px;
     top: 92px;
     list-style: none;
 }
 
 #epg_simple .week li{
-    width: 172px;
+    width: 197px;
     height: 35px;
     /*margin: 0 0 1px 0;*/
     background-image: url("i_720/tv_table.png");
@@ -104,9 +104,10 @@
     color: #fff;
     font-size: 22px;
     text-shadow: #122946 0 -1px 0;
-    padding: 10px 0 0 5px;
+    padding: 10px 0 0 2px;
     overflow: hidden;
     white-space: nowrap;
+    text-align: center;
 }
 
 #epg_simple .week li[active="active"]{
@@ -126,9 +127,9 @@
 #epg_simple .program_info{
     position: absolute;
     bottom: 77px;
-    left: 146px;
+    left: 127px;
     height: 85px;
-    width: 975px;
+    width: 994px;
     font-size: 28px;
     color: #fff;
     background-image: url("i/25alfa_20.png");

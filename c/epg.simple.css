@@ -98,7 +98,7 @@
 }
 
 #epg_simple .week li{
-    width: 172px;
+    width: 175px;
     height: 32px;
     margin: 0 0 1px 0;
     background-image: url("i/tv_table.png");
@@ -106,7 +106,8 @@
     color: #fff;
     font-size: 20px;
     text-shadow: #122946 0 -1px 0;
-    padding: 1px 0 0 5px;
+    padding: 1px 0 0 1px;
+    text-align: center;
 }
 
 #epg_simple .week li[active="active"]{
