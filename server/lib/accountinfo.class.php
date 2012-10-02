@@ -49,15 +49,33 @@ class AccountInfo
     }
 
     public function getPaymentInfo(){
-        return _('account_payment_info');
+        /// sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+        return sprintf(_('account_payment_info'),
+            Stb::getInstance()->getParam('ls'),
+            Stb::getInstance()->getParam('fname'),
+            Stb::getInstance()->getParam('login'),
+            Stb::getInstance()->getParam('mac')
+        );
     }
 
     public function getAgreementInfo(){
-        return _('account_agreement_info');
+        /// sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+        return sprintf(_('account_agreement_info'),
+            Stb::getInstance()->getParam('ls'),
+            Stb::getInstance()->getParam('fname'),
+            Stb::getInstance()->getParam('login'),
+            Stb::getInstance()->getParam('mac')
+        );
     }
 
     public function getTermsInfo(){
-        return _('account_terms_info');
+        /// sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+        return sprintf(_('account_terms_info'),
+            Stb::getInstance()->getParam('ls'),
+            Stb::getInstance()->getParam('fname'),
+            Stb::getInstance()->getParam('login'),
+            Stb::getInstance()->getParam('mac')
+        );
     }
 
     public function getDemoVideoParts(){

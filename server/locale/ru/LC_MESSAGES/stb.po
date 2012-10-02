@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-01 18:01+0200\n"
-"PO-Revision-Date: 2012-10-02 15:09+0200\n"
+"POT-Creation-Date: 2012-10-02 15:26+0200\n"
+"PO-Revision-Date: 2012-10-02 15:26+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3035,23 +3035,25 @@ msgstr[0] "%d день"
 msgstr[1] "%d дня"
 msgstr[2] "%d дней"
 
-#: ../../../lib/accountinfo.class.php:52
+#. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+#: ../../../lib/accountinfo.class.php:53
+#, php-format
 msgid "account_payment_info"
-msgstr "Информация об оплате. Лицевой счет: %s"
+msgstr "Информация об оплате"
 
-#: ../../../lib/accountinfo.class.php:56
+#: ../../../lib/accountinfo.class.php:62
 msgid "account_agreement_info"
 msgstr "Договор"
 
-#: ../../../lib/accountinfo.class.php:60
+#: ../../../lib/accountinfo.class.php:66
 msgid "account_terms_info"
 msgstr "Правила пользования"
 
-#: ../../../lib/accountinfo.class.php:83
+#: ../../../lib/accountinfo.class.php:89
 msgid "Subscribed"
 msgstr "Подключено"
 
-#: ../../../lib/accountinfo.class.php:85
+#: ../../../lib/accountinfo.class.php:91
 msgid "Not subscribed"
 msgstr "Не подключено"
 
