@@ -273,7 +273,7 @@ function common_xpcom(){
             try{
                 this.type = stb.GetDeviceModelExt().clearnl();
             }catch(e){
-                stb.RDir('Model').clearnl();
+                this.type = stb.RDir('Model').clearnl();
             }
 
             this.stb_lang = stb.RDir('getenv language').clearnl();
