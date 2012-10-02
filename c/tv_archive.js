@@ -257,7 +257,71 @@
             _debug('tv_archive.get_channel_name');
 
             return this.parent.ch_name;
-        }/*,
+        },
+
+
+        init_continue_dialog : function(){
+            _debug('tv_archive.init_continue_dialog');
+
+            if (this.continue_dialog){
+                return;
+            }
+
+            this.continue_dialog = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('archive_continue_playing_text')});
+            this.continue_dialog.getTextDomObj().style.textAlign = "center";
+            this.continue_dialog.enableOnExitClose();
+
+            var continue_dialog = module.tv_archive.continue_dialog;
+
+            this.continue_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("archive_yes"),
+                    "onclick" : function(){
+                        continue_dialog.hide();
+
+                        stb.load(
+                            {
+                                "type"   : "tv_archive",
+                                "action" : "get_next_part_url",
+                                "id" :  stb.player.cur_media_item.real_id
+                            },
+                            function(result){
+                                _debug('on get_next_part_url', result);
+
+                                if (!result){
+                                    _debug('no url');
+                                    return;
+                                }
+
+                                //stb.player.cur_media_item.next = result;
+
+                                stb.player.cur_media_item.playlist = [stb.player.cur_media_item.cmd, result];
+
+                                _debug('stb.player.cur_media_item', stb.player.cur_media_item);
+                            }
+                        )
+
+                    }
+                }
+            ));
+
+            this.continue_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("archive_no"),
+                    "onclick" : function(){
+                        continue_dialog.hide();
+                    }
+                }
+            ));
+
+            stb.player.addCustomEventListener('stop', function(){
+                if (continue_dialog.on){
+                    continue_dialog.hide();
+                }
+            });
+        }
+
+        /*,
 
         get_link_for_channel : function(ch_id){
             _debug('tv_archive.get_link_for_channel', ch_id);

@@ -91,7 +91,9 @@ class TvArchive extends Master
             . '/stalker_portal/storage/get.php?filename=' . $filename
             . '&ch_id=' . $program['ch_id']
             . '&start=' . $position
-            . '&duration=' . ($stop_timestamp - $start_timestamp);
+            . '&duration=' . ($stop_timestamp - $start_timestamp)
+            . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+            . '&real_id=' . $program['real_id'];
 
         if (!$channel['wowza_dvr']){
             $res['cmd'] = $res['download_cmd'];
@@ -110,8 +112,26 @@ class TvArchive extends Master
 
         $task = $this->getTaskByChId($program['ch_id']);
 
-        $start_timestamp = strtotime($program['time']);
-        $stop_timestamp  = strtotime($program['time_to']);
+        $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
+
+        if (Stb::$server_timezone){
+
+            $tz = new DateTimeZone(Stb::$server_timezone);
+
+            $date = new DateTime(date('r', strtotime($program['time'])));
+            $date->setTimeZone($tz);
+
+            $date_to = new DateTime(date('r', strtotime($program['time_to'])));
+            $date_to->setTimeZone($tz);
+
+            $start_timestamp = $date->getTimestamp();
+            $stop_timestamp  = $date_to->getTimestamp() + $overlap;
+
+        }else{
+
+            $start_timestamp = strtotime($program['time']);
+            $stop_timestamp  = strtotime($program['time_to']) + $overlap;
+        }
 
         $channel = Itv::getChannelById($program['ch_id']);
 
@@ -125,39 +145,40 @@ class TvArchive extends Master
 
         $storage = Master::getStorageByName($task['storage_name']);
 
-        /*if ($storage['wowza_server']){
-            $storage['storage_ip'] = empty($storage['archive_stream_server']) ? $storage['storage_ip'] : $storage['archive_stream_server'];
-        }*/
-
-        /*$res['storage_id'] = $storage['id'];*/
-
         $position = date("i", $start_timestamp) * 60;
 
-        /*$res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
-            . '/archive/'
-            . $program['ch_id']
-            . '/'
-            . $filename
-            . ' position:' . $position;*/
-        /*}*/
-
-        /*$res['cmd'] .= ' media_len:' . ($stop_timestamp - $start_timestamp);*/
+        $channel = Itv::getChannelById($program['ch_id']);
 
         return 'http://' . $storage['storage_ip'] . ':88'
             . '/stalker_portal/storage/get.php?filename=' . $filename
             . '&ch_id=' . $program['ch_id']
             . '&start=' . $position
-            . '&duration=' . ($stop_timestamp - $start_timestamp);
+            . '&duration=' . ($stop_timestamp - $start_timestamp)
+            . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+            . '&real_id=' . $program['real_id'];
+    }
 
-        /*if (!$channel['wowza_dvr']){
-            $res['cmd'] = $res['download_cmd'];
-        }*/
+    public function getNextPartUrl(){
 
-        /*$res['to_file'] = date("Ymd-H", $start_timestamp).'_'.System::transliterate($channel['name'].'_'.$program['name']).'.mpg';
+        $program_id = $_REQUEST['id'];
 
-        var_dump($res);
+        if (!$program_id){
+            return false;
+        }
 
-        return $res;*/
+        $program = Epg::getByRealId($program_id);
+
+        if (empty($program)){
+            return false;
+        }
+
+        $next = Mysql::getInstance()->from('epg')->where(array('ch_id' => $program['ch_id'], 'time>' => $program['time']))->orderby('time')->limit(1)->get()->first();
+
+        if (empty($next)){
+            return false;
+        }
+
+        return $this->getUrlByProgramId($next['id']);
     }
 
     /**

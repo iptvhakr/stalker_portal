@@ -667,6 +667,9 @@
     }
 
     if (module.tv_archive){
+
+        module.tv_archive.init_continue_dialog();
+
         epg_simple.tv_archive = function(){};
         
         epg_simple.tv_archive.prototype = module.tv_archive;
