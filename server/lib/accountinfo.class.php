@@ -30,7 +30,8 @@ class AccountInfo
             if ($end_time){
                 $days = ceil(($end_time - time())/(24*3600));
 
-                $info['end_date'] = $info['end_date'].' ('.sprintf(ngettext('%d day', '%d days', $days), $days).')';
+                /// in format of php date() function
+                $info['end_date'] = date(_('end_date_format'), strtotime($info['end_date'])).' ('.sprintf(ngettext('%d day', '%d days', $days), $days).')';
             }
         }
 

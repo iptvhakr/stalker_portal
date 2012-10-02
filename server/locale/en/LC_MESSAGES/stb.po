@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-30 15:19+0200\n"
-"PO-Revision-Date: 2012-08-30 15:19+0200\n"
+"POT-Creation-Date: 2012-10-02 15:40+0200\n"
+"PO-Revision-Date: 2012-10-02 15:40+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -81,10 +81,10 @@ msgid "EPG"
 msgstr ""
 
 #: ../../../administrator/add_epg.php:263
-#: ../../../administrator/add_itv.php:597
+#: ../../../administrator/add_itv.php:805
 #: ../../../administrator/add_karaoke.php:218
 #: ../../../administrator/add_moderator_mac.php:109
-#: ../../../administrator/add_radio.php:134
+#: ../../../administrator/add_radio.php:137
 #: ../../../administrator/add_video.php:643
 msgid "Back"
 msgstr ""
@@ -107,10 +107,10 @@ msgid "Load EPG"
 msgstr ""
 
 #: ../../../administrator/add_epg.php:401
-#: ../../../administrator/add_itv.php:1173
+#: ../../../administrator/add_itv.php:1415
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
-#: ../../../administrator/add_radio.php:260
+#: ../../../administrator/add_radio.php:272
 #: ../../../administrator/add_video.php:2104
 msgid "Save"
 msgstr ""
@@ -118,7 +118,7 @@ msgstr ""
 #: ../../../administrator/add_epg.php:401
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
-#: ../../../administrator/add_radio.php:260
+#: ../../../administrator/add_radio.php:272
 #: ../../../administrator/add_video.php:2104
 msgid "New"
 msgstr ""
@@ -129,65 +129,95 @@ msgstr ""
 msgid "Error: channel with number \"%s\" is already in use"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:199
-#: ../../../administrator/add_itv.php:282
+#: ../../../administrator/add_itv.php:240
+#: ../../../administrator/add_itv.php:400
 msgid "Error: could not save logo"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:207
-#: ../../../administrator/add_itv.php:287
+#: ../../../administrator/add_itv.php:248
+#: ../../../administrator/add_itv.php:405
 #: ../../../administrator/add_karaoke.php:133
 #: ../../../administrator/add_karaoke.php:158
 #: ../../../administrator/add_moderator_mac.php:41
 #: ../../../administrator/add_moderator_mac.php:55
-#: ../../../administrator/add_radio.php:50
-#: ../../../administrator/add_radio.php:67
+#: ../../../administrator/add_radio.php:52
+#: ../../../administrator/add_radio.php:70
 #: ../../../administrator/add_video.php:386
 #: ../../../administrator/add_video.php:446
 msgid "Error: all fields are required"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:457
-#: ../../../administrator/add_itv.php:592
+#: ../../../administrator/add_itv.php:544
+#: ../../../administrator/add_itv.php:800
 msgid "IPTV channels"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:597
+#: ../../../administrator/add_itv.php:557
+msgid "priority"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:561
+msgid "filter"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:567
+msgid "Temporary HTTP URL"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:570
+msgid "WOWZA support"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:575
+msgid "Enable monitoring"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:581
+msgid "Channel URL for monitoring"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:676
+#: ../../../administrator/add_itv.php:887
+#: ../../../administrator/add_karaoke.php:526
+#: ../../../administrator/add_video.php:885
+msgid "Do you really want to delete this record?"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:805
 #: ../../../administrator/add_video.php:643
 msgid "Add"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:623
-#: ../../../administrator/add_itv.php:938
-#: ../../../administrator/add_radio.php:157
-#: ../../../administrator/add_radio.php:232
+#: ../../../administrator/add_itv.php:831
+#: ../../../administrator/add_itv.php:1180
+#: ../../../administrator/add_radio.php:160
+#: ../../../administrator/add_radio.php:236
 msgid "Number"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:624
-#: ../../../administrator/add_itv.php:1131
+#: ../../../administrator/add_itv.php:832
+#: ../../../administrator/add_itv.php:1373
 msgid "Service code"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:625
-#: ../../../administrator/add_itv.php:946
+#: ../../../administrator/add_itv.php:833
+#: ../../../administrator/add_itv.php:1188
 #: ../../../administrator/add_karaoke.php:803
 #: ../../../administrator/add_moderator_mac.php:132
 #: ../../../administrator/add_moderator_mac.php:205
-#: ../../../administrator/add_radio.php:158
-#: ../../../administrator/add_radio.php:240
+#: ../../../administrator/add_radio.php:161
+#: ../../../administrator/add_radio.php:244
 msgid "Name"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:626
-#: ../../../administrator/add_itv.php:1047
-#: ../../../administrator/add_radio.php:159
-#: ../../../administrator/add_radio.php:250
+#: ../../../administrator/add_itv.php:834
+#: ../../../administrator/add_radio.php:162
+#: ../../../administrator/add_radio.php:254
 msgid "URL"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:627
-#: ../../../administrator/add_itv.php:1009
+#: ../../../administrator/add_itv.php:835
+#: ../../../administrator/add_itv.php:1251
 #: ../../../administrator/add_karaoke.php:849
 #: ../../../administrator/add_video.php:1995
 #: ../../../administrator/add_video.php:2004
@@ -196,116 +226,91 @@ msgstr ""
 msgid "Genre"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:628
+#: ../../../administrator/add_itv.php:836
 msgid "Archive"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:629
-#: ../../../administrator/add_itv.php:1139
+#: ../../../administrator/add_itv.php:837
+#: ../../../administrator/add_itv.php:1381
+#: ../../../administrator/add_radio.php:262
 #: ../../../administrator/add_video.php:842
 #: ../../../administrator/add_video.php:2071
 msgid "Volume correction"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:630
+#: ../../../administrator/add_itv.php:838
 msgid "Claims about<br>audio/video/epg"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:669
+#: ../../../administrator/add_itv.php:877
 #: ../../../administrator/add_karaoke.php:516
 #: ../../../administrator/add_video.php:871
 msgid "Do you really want to reset claims counter?"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:679
-#: ../../../administrator/add_karaoke.php:526
-#: ../../../administrator/add_video.php:885
-msgid "Do you really want to delete this record?"
-msgstr ""
-
-#: ../../../administrator/add_itv.php:852
+#: ../../../administrator/add_itv.php:1089
 msgid "monitoring off"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:858
+#: ../../../administrator/add_itv.php:1095
 msgid "more than an hour ago"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:862
+#: ../../../administrator/add_itv.php:1099
 msgid "less than a minute ago"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:865
+#: ../../../administrator/add_itv.php:1102
 msgid "minutes ago"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:913
+#: ../../../administrator/add_itv.php:1150
 msgid "Error deleting a logo"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:957
-msgid "Temporary HTTP URL"
-msgstr ""
-
-#: ../../../administrator/add_itv.php:962
-msgid "WOWZA support"
-msgstr ""
-
-#: ../../../administrator/add_itv.php:969
+#: ../../../administrator/add_itv.php:1211
 #: ../../../administrator/add_video.php:1920
 msgid "Age restriction"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:985
+#: ../../../administrator/add_itv.php:1227
 msgid "Base channel"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:993
+#: ../../../administrator/add_itv.php:1235
 msgid "Bonus channel"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1001
+#: ../../../administrator/add_itv.php:1243
 msgid "Price"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1066
+#: ../../../administrator/add_itv.php:1308
 msgid "URL for recording (multicast)"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1074
+#: ../../../administrator/add_itv.php:1316
 msgid "Enable TV archive"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1099
-msgid "Enable monitoring"
-msgstr ""
-
-#: ../../../administrator/add_itv.php:1107
-msgid "Channel URL for monitoring"
-msgstr ""
-
-#: ../../../administrator/add_itv.php:1110
-msgid "http only"
-msgstr ""
-
-#: ../../../administrator/add_itv.php:1123
+#: ../../../administrator/add_itv.php:1365
 msgid "EPG correction"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1123
+#: ../../../administrator/add_itv.php:1365
 #: ../../../administrator/add_video.php:2042
 msgid "min"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1147
+#: ../../../administrator/add_itv.php:1389
 msgid "Comments"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1163
+#: ../../../administrator/add_itv.php:1405
 msgid "Logo"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:1173
+#: ../../../administrator/add_itv.php:1415
 #: ../../../administrator/add_video.php:595
 msgid "Cancel"
 msgstr ""
@@ -407,8 +412,8 @@ msgstr ""
 msgid "Moderators MAC addresses"
 msgstr ""
 
-#: ../../../administrator/add_radio.php:122
-#: ../../../administrator/add_radio.php:129
+#: ../../../administrator/add_radio.php:125
+#: ../../../administrator/add_radio.php:132
 msgid "RADIO channels"
 msgstr ""
 
@@ -681,7 +686,7 @@ msgstr ""
 
 #: ../../../administrator/anecdote.php:105
 #: ../../../administrator/anecdote.php:112
-#: ../../../administrator/index.php:310
+#: ../../../administrator/index.php:358
 msgid "Jokes"
 msgstr ""
 
@@ -730,7 +735,7 @@ msgstr ""
 
 #: ../../../administrator/claims.php:73
 #: ../../../administrator/claims.php:79
-#: ../../../administrator/index.php:346
+#: ../../../administrator/index.php:394
 msgid "Claims"
 msgstr ""
 
@@ -795,124 +800,129 @@ msgstr ""
 msgid "task done"
 msgstr ""
 
-#: ../../../administrator/epg_setting.php:110
-#: ../../../administrator/epg_setting.php:116
+#: ../../../administrator/epg_setting.php:115
+#: ../../../administrator/epg_setting.php:121
 msgid "EPG settings"
 msgstr ""
 
-#: ../../../administrator/epg_setting.php:121
+#: ../../../administrator/epg_setting.php:126
 msgid "Update EPG"
 msgstr ""
 
-#: ../../../administrator/epg_setting.php:121
+#: ../../../administrator/epg_setting.php:126
 msgid "Force update EPG"
 msgstr ""
 
-#: ../../../administrator/epg_setting.php:144
+#: ../../../administrator/epg_setting.php:148
+#: ../../../administrator/epg_setting.php:181
+msgid "ID prefix"
+msgstr ""
+
+#: ../../../administrator/epg_setting.php:150
 msgid "Updated"
 msgstr ""
 
-#: ../../../administrator/events.php:90
+#: ../../../administrator/events.php:95
 #, php-format
 msgid "%s events %s sended, %s errors"
 msgstr ""
 
-#: ../../../administrator/events.php:94
+#: ../../../administrator/events.php:99
 msgid "File with list is missing"
 msgstr ""
 
-#: ../../../administrator/events.php:133
+#: ../../../administrator/events.php:138
 msgid "Error when sending event"
 msgstr ""
 
-#: ../../../administrator/events.php:189
-#: ../../../administrator/events.php:195
-#: ../../../administrator/index.php:125
+#: ../../../administrator/events.php:194
+#: ../../../administrator/events.php:200
+#: ../../../administrator/index.php:137
 msgid "Events"
 msgstr ""
 
-#: ../../../administrator/events.php:200
+#: ../../../administrator/events.php:205
 msgid "New event"
 msgstr ""
 
-#: ../../../administrator/events.php:302
+#: ../../../administrator/events.php:307
 msgid "Send"
 msgstr ""
 
-#: ../../../administrator/events.php:305
+#: ../../../administrator/events.php:310
 msgid "To one"
 msgstr ""
 
-#: ../../../administrator/events.php:306
+#: ../../../administrator/events.php:311
 msgid "To all"
 msgstr ""
 
-#: ../../../administrator/events.php:307
+#: ../../../administrator/events.php:312
 msgid "By list"
 msgstr ""
 
-#: ../../../administrator/events.php:308
+#: ../../../administrator/events.php:313
 msgid "By pattern"
 msgstr ""
 
-#: ../../../administrator/events.php:309
+#: ../../../administrator/events.php:314
 msgid "To group"
 msgstr ""
 
-#: ../../../administrator/events.php:317
+#: ../../../administrator/events.php:322
 msgid "Load active events"
 msgstr ""
 
-#: ../../../administrator/events.php:322
+#: ../../../administrator/events.php:327
 msgid "List"
 msgstr ""
 
-#: ../../../administrator/events.php:330
+#: ../../../administrator/events.php:335
 msgid "Pattern"
 msgstr ""
 
-#: ../../../administrator/events.php:341
+#: ../../../administrator/events.php:346
 msgid "Group"
 msgstr ""
 
-#: ../../../administrator/events.php:374
+#: ../../../administrator/events.php:379
 msgid "restart on OK"
 msgstr ""
 
-#: ../../../administrator/events.php:375
+#: ../../../administrator/events.php:380
 msgid "channels"
 msgstr ""
 
-#: ../../../administrator/events.php:400
+#: ../../../administrator/events.php:405
 #, php-format
 msgid "Active events for %s"
 msgstr ""
 
-#: ../../../administrator/events.php:400
+#: ../../../administrator/events.php:405
 msgid "clean"
 msgstr ""
 
-#: ../../../administrator/events.php:402
+#: ../../../administrator/events.php:407
 msgid "Valid up to"
 msgstr ""
 
-#: ../../../administrator/events.php:403
+#: ../../../administrator/events.php:408
 msgid "Event"
 msgstr ""
 
-#: ../../../administrator/events.php:404
+#: ../../../administrator/events.php:409
 msgid "Message"
 msgstr ""
 
-#: ../../../administrator/events.php:414
+#: ../../../administrator/events.php:419
 msgid "sended"
 msgstr ""
 
-#: ../../../administrator/events.php:414
+#: ../../../administrator/events.php:419
 msgid "not sended"
 msgstr ""
 
-#: ../../../administrator/events.php:423
+#: ../../../administrator/events.php:428
 #, php-format
 msgid "There are no active events for %s"
 msgstr ""
@@ -921,113 +931,117 @@ msgstr ""
 msgid "Stalker MW admin interface"
 msgstr ""
 
-#: ../../../administrator/index.php:113
+#: ../../../administrator/index.php:125
 msgid "Sections"
 msgstr ""
 
-#: ../../../administrator/index.php:119
+#: ../../../administrator/index.php:131
 msgid "Users"
 msgstr ""
 
-#: ../../../administrator/index.php:131
+#: ../../../administrator/index.php:143
 msgid "Logout"
 msgstr ""
 
-#: ../../../administrator/index.php:135
+#: ../../../administrator/index.php:147
 msgid "RADIO"
 msgstr ""
 
-#: ../../../administrator/index.php:147
+#: ../../../administrator/index.php:159
 msgid "TARIFFS"
 msgstr ""
 
-#: ../../../administrator/index.php:151
+#: ../../../administrator/index.php:163
 #, php-format
 msgid "Tasks (new messages: %s)"
 msgstr ""
 
-#: ../../../administrator/index.php:208
+#: ../../../administrator/index.php:220
 msgid "tv"
 msgstr ""
 
-#: ../../../administrator/index.php:212
+#: ../../../administrator/index.php:224
 msgid "videoclub"
 msgstr ""
 
-#: ../../../administrator/index.php:240
+#: ../../../administrator/index.php:252
 msgid "karaoke"
 msgstr ""
 
-#: ../../../administrator/index.php:244
+#: ../../../administrator/index.php:256
 msgid "radio"
 msgstr ""
 
-#: ../../../administrator/index.php:248
+#: ../../../administrator/index.php:260
 msgid "infoportal"
 msgstr ""
 
-#: ../../../administrator/index.php:261
+#: ../../../administrator/index.php:273
 msgid "tv archive"
 msgstr ""
 
-#: ../../../administrator/index.php:285
+#: ../../../administrator/index.php:297
 msgid "records"
 msgstr ""
 
-#: ../../../administrator/index.php:295
+#: ../../../administrator/index.php:343
 msgid "search by MAC or IP"
 msgstr ""
 
-#: ../../../administrator/index.php:304
+#: ../../../administrator/index.php:352
 msgid "Infoportal"
 msgstr ""
 
-#: ../../../administrator/index.php:308
+#: ../../../administrator/index.php:356
 msgid "City help"
 msgstr ""
 
-#: ../../../administrator/index.php:324
+#: ../../../administrator/index.php:372
 msgid "Statistics"
 msgstr ""
 
-#: ../../../administrator/index.php:328
+#: ../../../administrator/index.php:376
 msgid "Video statistics"
 msgstr ""
 
-#: ../../../administrator/index.php:330
+#: ../../../administrator/index.php:378
 msgid "Users statistics for TV"
 msgstr ""
 
-#: ../../../administrator/index.php:334
+#: ../../../administrator/index.php:382
 msgid "TV statistics"
 msgstr ""
 
-#: ../../../administrator/index.php:336
+#: ../../../administrator/index.php:384
 msgid "Users statistics for VIDEO"
 msgstr ""
 
-#: ../../../administrator/index.php:340
+#: ../../../administrator/index.php:388
 msgid "Moderators statistics"
 msgstr ""
 
-#: ../../../administrator/index.php:342
+#: ../../../administrator/index.php:390
 msgid "Users statistics for Jokes"
 msgstr ""
 
-#: ../../../administrator/index.php:348
+#: ../../../administrator/index.php:396
 msgid "Inactive users"
 msgstr ""
 
-#: ../../../administrator/index.php:358
+#: ../../../administrator/index.php:406
 msgid "Settings"
 msgstr ""
 
-#: ../../../administrator/index.php:362
+#: ../../../administrator/index.php:410
 msgid "Firmware auto update"
 msgstr ""
 
-#: ../../../administrator/index.php:364
+#: ../../../administrator/index.php:412
 msgid "Storages"
+msgstr ""
+
+#: ../../../administrator/index.php:418
+msgid "Stream servers"
 msgstr ""
 
 #: ../../../administrator/karaoke_archive.php:59
@@ -1110,7 +1124,7 @@ msgid "Sign in"
 msgstr ""
 
 #: ../../../administrator/login.php:57
-#: ../../../administrator/profile.php:361
+#: ../../../administrator/profile.php:365
 msgid "Login"
 msgstr ""
 
@@ -1219,45 +1233,45 @@ msgstr ""
 msgid "Reset favorite TV channels? The channels will be reset only if immediately restart the stb!"
 msgstr ""
 
-#: ../../../administrator/profile.php:353
+#: ../../../administrator/profile.php:357
 msgid "Full name"
 msgstr ""
 
-#: ../../../administrator/profile.php:369
+#: ../../../administrator/profile.php:373
 msgid "Account number"
 msgstr ""
 
-#: ../../../administrator/profile.php:377
+#: ../../../administrator/profile.php:381
 msgid "Last change of status"
 msgstr ""
 
-#: ../../../administrator/profile.php:393
+#: ../../../administrator/profile.php:397
 #: ../../../administrator/reply.php:145
 #: ../../../administrator/send_to.php:174
 msgid "Comment"
 msgstr ""
 
-#: ../../../administrator/profile.php:443
+#: ../../../administrator/profile.php:447
 msgid "Tariff plan"
 msgstr ""
 
-#: ../../../administrator/profile.php:459
+#: ../../../administrator/profile.php:463
 msgid "Change"
 msgstr ""
 
-#: ../../../administrator/profile.php:468
+#: ../../../administrator/profile.php:472
 msgid "No packages available"
 msgstr ""
 
-#: ../../../administrator/profile.php:472
+#: ../../../administrator/profile.php:476
 msgid "Packages"
 msgstr ""
 
-#: ../../../administrator/profile.php:498
+#: ../../../administrator/profile.php:502
 msgid "TV subscription"
 msgstr ""
 
-#: ../../../administrator/profile.php:501
+#: ../../../administrator/profile.php:505
 msgid "Additional services"
 msgstr ""
 
@@ -1299,6 +1313,7 @@ msgid "Short description"
 msgstr ""
 
 #: ../../../administrator/services_packages.php:313
+#: ../../../administrator/stream_zones.php:313
 msgid "Selected"
 msgstr ""
 
@@ -1583,6 +1598,52 @@ msgstr ""
 msgid "Only moderators"
 msgstr ""
 
+#: ../../../administrator/stream_servers.php:132
+msgid "Zones"
+msgstr ""
+
+#: ../../../administrator/stream_servers.php:152
+#: ../../../administrator/stream_servers.php:196
+msgid "Address"
+msgstr ""
+
+#: ../../../administrator/stream_servers.php:153
+#: ../../../administrator/stream_servers.php:200
+msgid "Max sessions"
+msgstr ""
+
+#: ../../../administrator/stream_servers.php:176
+#, php-format
+msgid "Are you sure you want to change the status of the server %s?"
+msgstr ""
+
+#: ../../../administrator/stream_servers.php:178
+#, php-format
+msgid "Are you sure you want to delete server %s?"
+msgstr ""
+
+#: ../../../administrator/stream_servers.php:204
+msgid "Stream zone"
+msgstr ""
+
+#: ../../../administrator/stream_zones.php:224
+#: ../../../administrator/stream_zones.php:231
+msgid "Stream zones"
+msgstr ""
+
+#: ../../../administrator/stream_zones.php:269
+#, php-format
+msgid "Are you sure you want to delete record %s?"
+msgstr ""
+
+#: ../../../administrator/stream_zones.php:288
+msgid "Default zone"
+msgstr ""
+
+#: ../../../administrator/stream_zones.php:304
+msgid "Countries"
+msgstr ""
+
 #: ../../../administrator/subscribe.php:69
 msgid "Updated according to the subscription channels."
 msgstr ""
@@ -1615,6 +1676,7 @@ msgstr ""
 
 #: ../../../administrator/subscribe_import.php:448
 #: ../../../administrator/subscribe_import.php:454
+#: ../../../administrator/users.php:106
 msgid "Subscription import"
 msgstr ""
 
@@ -1675,7 +1737,7 @@ msgstr ""
 
 #: ../../../administrator/testers.php:107
 #: ../../../administrator/testers.php:113
-#: ../../../administrator/users.php:97
+#: ../../../administrator/users.php:106
 msgid "Testers"
 msgstr ""
 
@@ -1777,23 +1839,23 @@ msgid "User logs"
 msgstr ""
 
 #: ../../../administrator/userlog.php:289
-#: ../../../administrator/users.php:193
+#: ../../../administrator/users.php:202
 msgid "Audio"
 msgstr ""
 
 #: ../../../administrator/userlog.php:302
-#: ../../../administrator/users.php:194
+#: ../../../administrator/users.php:203
 msgid "Radio"
 msgstr ""
 
 #: ../../../administrator/userlog.php:319
-#: ../../../administrator/users.php:195
+#: ../../../administrator/users.php:204
 msgid "My records"
 msgstr ""
 
 #: ../../../administrator/userlog.php:336
-#: ../../../administrator/users.php:196
-#: ../../../administrator/users.php:200
+#: ../../../administrator/users.php:205
+#: ../../../administrator/users.php:209
 msgid "Records"
 msgstr ""
 
@@ -1805,43 +1867,47 @@ msgstr ""
 msgid "Go"
 msgstr ""
 
-#: ../../../administrator/users.php:97
+#: ../../../administrator/userlog.php:408
+msgid "Stb action"
+msgstr ""
+
+#: ../../../administrator/users.php:106
 msgid "All logs"
 msgstr ""
 
-#: ../../../administrator/users.php:97
+#: ../../../administrator/users.php:106
 msgid "Report"
 msgstr ""
 
-#: ../../../administrator/users.php:190
+#: ../../../administrator/users.php:199
 msgid "TV"
 msgstr ""
 
-#: ../../../administrator/users.php:198
+#: ../../../administrator/users.php:207
 msgid "Media browser"
 msgstr ""
 
-#: ../../../administrator/users.php:199
+#: ../../../administrator/users.php:208
 msgid "Tv archive"
 msgstr ""
 
-#: ../../../administrator/users.php:536
+#: ../../../administrator/users.php:545
 msgid "search by MAC, IP, login or account number"
 msgstr ""
 
-#: ../../../administrator/users.php:543
+#: ../../../administrator/users.php:552
 msgid "without sorting"
 msgstr ""
 
-#: ../../../administrator/users.php:585
+#: ../../../administrator/users.php:594
 msgid "search inactive users"
 msgstr ""
 
-#: ../../../administrator/users.php:602
+#: ../../../administrator/users.php:611
 msgid "Time from<br>last playback"
 msgstr ""
 
-#: ../../../administrator/users.php:605
+#: ../../../administrator/users.php:614
 msgid "Last change<br>of status"
 msgstr ""
 
@@ -2600,6 +2666,7 @@ msgid "EXIT"
 msgstr ""
 
 #: ../../../lang/stb.php:251
+#: ../../../lang/stb.php:393
 msgid "YES"
 msgstr ""
 
@@ -2664,18 +2731,16 @@ msgid "MOVE DOWN"
 msgstr ""
 
 #: ../../../lang/stb.php:275
-#, fuzzy
 msgid "RECORDING"
-msgstr "RECORDING DURATION, h"
+msgstr ""
 
 #: ../../../lang/stb.php:276
 msgid "DOWNLOAD"
 msgstr ""
 
 #: ../../../lang/stb.php:277
-#, fuzzy
 msgid "RECORDING AND FILE"
-msgstr "RECORDING DURATION, h"
+msgstr ""
 
 #: ../../../lang/stb.php:279
 msgid "Duration of continuous playback"
@@ -2933,30 +2998,69 @@ msgstr ""
 msgid "Part"
 msgstr "Title"
 
-#: ../../../lib/accountinfo.class.php:33
+#: ../../../lang/stb.php:385
+msgid "Channel not available"
+msgstr ""
+
+#: ../../../lang/stb.php:386
+msgid "Channel temporary available"
+msgstr ""
+
+#: ../../../lang/stb.php:387
+msgid "Channel not available for this region"
+msgstr ""
+
+#: ../../../lang/stb.php:388
+msgid "Channel not available. Server error."
+msgstr ""
+
+#: ../../../lang/stb.php:390
+msgid "Account info"
+msgstr ""
+
+#: ../../../lang/stb.php:392
+msgid "Continue playing?"
+msgstr ""
+
+#: ../../../lang/stb.php:394
+msgid "NO"
+msgstr ""
+
+#. / in format of php date() function
+#: ../../../lib/accountinfo.class.php:34
+msgid "end_date_format"
+msgstr "m.d.Y"
+
+#: ../../../lib/accountinfo.class.php:34
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../../../lib/accountinfo.class.php:52
+#. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+#: ../../../lib/accountinfo.class.php:54
+#, php-format
 msgid "account_payment_info"
 msgstr ""
 
-#: ../../../lib/accountinfo.class.php:56
+#. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+#: ../../../lib/accountinfo.class.php:64
+#, php-format
 msgid "account_agreement_info"
 msgstr ""
 
-#: ../../../lib/accountinfo.class.php:60
+#. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+#: ../../../lib/accountinfo.class.php:74
+#, php-format
 msgid "account_terms_info"
 msgstr ""
 
-#: ../../../lib/accountinfo.class.php:83
+#: ../../../lib/accountinfo.class.php:102
 msgid "Subscribed"
 msgstr ""
 
-#: ../../../lib/accountinfo.class.php:85
+#: ../../../lib/accountinfo.class.php:104
 msgid "Not subscribed"
 msgstr ""
 
@@ -3145,26 +3249,29 @@ msgstr ""
 msgid "[No channel info]"
 msgstr ""
 
-#: ../../../lib/epg.class.php:64
-#: ../../../lib/epg.class.php:68
+#: ../../../lib/epg.class.php:71
+#: ../../../lib/epg.class.php:75
 msgid "unavailable"
 msgstr ""
 
-#: ../../../lib/epg.class.php:83
+#: ../../../lib/epg.class.php:90
 msgid "not changed"
 msgstr ""
 
-#: ../../../lib/epg.class.php:187
-#, php-format
-msgid "Updated %d channels from %d, %d errors"
-msgstr ""
-
-#: ../../../lib/epg.class.php:188
+#: ../../../lib/epg.class.php:185
 msgid "Errors"
 msgstr ""
 
-#: ../../../lib/epg.class.php:189
+#: ../../../lib/epg.class.php:187
 msgid "Successful"
+msgstr ""
+
+#: ../../../lib/epg.class.php:188
+msgid "Queries"
+msgstr ""
+
+#: ../../../lib/epg.class.php:189
+msgid "Exec time"
 msgstr ""
 
 #: ../../../lib/gismeteo.class.php:30
@@ -3271,6 +3378,16 @@ msgstr ""
 msgid "wind"
 msgstr ""
 
+#: ../../../lib/itv.class.php:1208
+#, php-format
+msgid "Channel %s set to active because at least one of its URLs became available."
+msgstr ""
+
+#: ../../../lib/itv.class.php:1218
+#, php-format
+msgid "Channel %s set to inactive because all its URLs are not available."
+msgstr ""
+
 #: ../../../lib/remotepvr.class.php:92
 msgid "recording"
 msgstr ""
@@ -3303,10 +3420,12 @@ msgid "s"
 msgstr ""
 
 #: ../../../lib/system.class.php:99
+#: ../../../lib/vod.class.php:715
 msgid "today"
 msgstr ""
 
 #: ../../../lib/system.class.php:101
+#: ../../../lib/vod.class.php:718
 msgid "yesterday"
 msgstr ""
 

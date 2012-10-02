@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-02 15:26+0200\n"
-"PO-Revision-Date: 2012-10-02 15:26+0200\n"
+"POT-Creation-Date: 2012-10-02 17:07+0200\n"
+"PO-Revision-Date: 2012-10-02 17:07+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2667,7 +2667,7 @@ msgid "EXIT"
 msgstr "ВЫХОД"
 
 #: ../../../lang/stb.php:251
-#: ../../../lang/stb.php:393
+#: ../../../lang/stb.php:394
 msgid "YES"
 msgstr "ДА"
 
@@ -3019,15 +3019,24 @@ msgstr "Канал недоступен. Ошибка сервера."
 msgid "Account info"
 msgstr "Информация"
 
-#: ../../../lang/stb.php:392
+#: ../../../lang/stb.php:391
+msgid "Payment"
+msgstr "Оплата"
+
+#: ../../../lang/stb.php:393
 msgid "Continue playing?"
 msgstr "Программа заканчивается. Продолжить воспроизведение?"
 
-#: ../../../lang/stb.php:394
+#: ../../../lang/stb.php:395
 msgid "NO"
 msgstr "НЕТ"
 
-#: ../../../lib/accountinfo.class.php:33
+#. / in format of php date() function
+#: ../../../lib/accountinfo.class.php:34
+msgid "end_date_format"
+msgstr "d.m.Y"
+
+#: ../../../lib/accountinfo.class.php:34
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -3036,24 +3045,28 @@ msgstr[1] "%d дня"
 msgstr[2] "%d дней"
 
 #. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
-#: ../../../lib/accountinfo.class.php:53
+#: ../../../lib/accountinfo.class.php:54
 #, php-format
 msgid "account_payment_info"
 msgstr "Информация об оплате"
 
-#: ../../../lib/accountinfo.class.php:62
+#. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+#: ../../../lib/accountinfo.class.php:64
+#, php-format
 msgid "account_agreement_info"
 msgstr "Договор"
 
-#: ../../../lib/accountinfo.class.php:66
+#. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
+#: ../../../lib/accountinfo.class.php:74
+#, php-format
 msgid "account_terms_info"
 msgstr "Правила пользования"
 
-#: ../../../lib/accountinfo.class.php:89
+#: ../../../lib/accountinfo.class.php:102
 msgid "Subscribed"
 msgstr "Подключено"
 
-#: ../../../lib/accountinfo.class.php:91
+#: ../../../lib/accountinfo.class.php:104
 msgid "Not subscribed"
 msgstr "Не подключено"
 
