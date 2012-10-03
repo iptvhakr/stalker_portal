@@ -295,7 +295,7 @@ class Stb
         $profile['web_proxy_user']         = Config::exist('stb_http_proxy_user') ? Config::get('stb_http_proxy_user') : '';
         $profile['web_proxy_pass']         = Config::exist('stb_http_proxy_pass') ? Config::get('stb_http_proxy_pass') : '';
         $profile['web_proxy_exclude_list'] = Config::exist('stb_http_proxy_exclude_list') ? Config::get('stb_http_proxy_exclude_list') : '';
-        $profile['update_url']             = Config::exist('update_url') ? Config::get('update_url') : '';
+        $profile['update_url']             = self::getImageUpdateUrl(empty($_REQUEST['stb_type']) ? 'mag250' : $_REQUEST['stb_type']);
         $profile['tv_archive_days']        = Config::exist('tv_archive_parts_number') ? Config::get('tv_archive_parts_number') / 24 : 0;
         $profile['playback_limit']         = Config::get('enable_playback_limit') ? $profile['playback_limit'] : 0;
         $profile['demo_video_url']         = Config::getSafe('demo_video_url', '');
@@ -340,21 +340,26 @@ class Stb
 
     public function getSettingsProfile(){
 
-        if (strpos($this->params['stb_type'], 'AuraHD') !== false){
-            $stb_type = '250';
-        }else{
-            $stb_type = substr($this->params['stb_type'], 3);
-        }
-
         return array(
             "parent_password"      => $this->params['parent_password'],
-            "update_url"           => Config::exist('update_url') ? Config::get('update_url').$stb_type.'/imageupdate' : '',
+            "update_url"           => self::getImageUpdateUrl($this->params['stb_type']),
             "test_download_url"    => Config::getSafe('test_download_url', ''),
             "playback_buffer_size" => $this->params['playback_buffer_size'] / 1000,
             "screensaver_delay"    => $this->params['screensaver_delay'],
             "spdif_mode"           => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out'],
             "modules"              => $this->getSettingsMenuModules()
         );
+    }
+
+    private static function getImageUpdateUrl($stb_model){
+
+        if (strpos($stb_model, 'AuraHD') !== false){
+            $stb_type = '250';
+        }else{
+            $stb_type = substr($stb_model, 3);
+        }
+
+        return Config::getSafe('update_url', '') != '' ? Config::get('update_url').$stb_type.'/imageupdate' : 'http://mag.infomir.com.ua/'.$stb_type.'/imageupdate';
     }
 
     public function getSettingsMenuModules($mask = "module"){

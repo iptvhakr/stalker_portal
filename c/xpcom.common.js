@@ -589,7 +589,7 @@ function common_xpcom(){
                 this.user['watchdog_timeout']  = parseInt(this.user['watchdog_timeout'], 10);
                 this.user['timeslot']          = parseFloat(this.user['timeslot']);
 
-                this.user['update_url'] = this.profile['update_url'] ? this.profile['update_url'] + this.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + this.type.substr(3) + '/imageupdate';
+                //this.user['update_url'] = this.profile['update_url'] ? this.profile['update_url'] + this.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + this.type.substr(3) + '/imageupdate';
 
                 if (['MAG200', 'MAG250'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
                     this.check_image_version();
