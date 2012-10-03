@@ -85,13 +85,34 @@
             this.hide();
 
             (function(){
+                _debug('blocking key.blue');
+                module.blocking.hide();
+                module.account.show(module.blocking);
+
+                module.account.tab['payment'].show();
+                module.account.cur_tab = 'payment';
+                module.account.update_header_path([{"alias" : "tab", "item" : word['account_payment']}]);
+                module.account.color_buttons.get('red').enable();
+                module.account.color_buttons.get('green').disable();
+                module.account.color_buttons.get('yellow').enable();
+                module.account.color_buttons.get('blue').enable();
+
+            }).bind(key.BLUE, module.blocking);
+
+
+            (function(){
                 _debug('blocking key.info');
                 module.blocking.hide();
                 module.account.show(module.blocking);
-            }).bind(key.INFO, module.blocking).bind(key.BLUE, module.blocking);
+            }).bind(key.INFO, module.blocking).bind(key.YELLOW, module.blocking);
 
-            var blocking_account_info = create_block_element('blocking_account_info', module.blocking.dom_obj);
-            blocking_account_info.innerHTML = '<div class="color_btn"></div> '+get_word('blocking_account_info');
+            var blocking_buttons = create_block_element('blocking_buttons', module.blocking.dom_obj);
+
+            var blocking_account_info = create_block_element('blocking_account_info', blocking_buttons);
+            blocking_account_info.innerHTML = '<div class="color_btn blue"></div> '+get_word('blocking_account_payment');
+
+            var blocking_account_payment = create_block_element('blocking_account_payment', blocking_buttons);
+            blocking_account_payment.innerHTML = '<div class="color_btn yellow"></div> '+get_word('blocking_account_info');
         };
 
         this.show = function(return_layer){

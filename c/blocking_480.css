@@ -18,20 +18,33 @@
     color: #fff;
 }
 
-.blocking_account_info{
+.blocking_buttons{
     position: absolute;
     bottom: 70px;
     right: 80px;
+}
+
+.blocking_account_info, .blocking_account_payment{
+    margin-left: 20px;
+    float: right;
     color: white;
     font-size: 24px;
 }
 
-.blocking_account_info .color_btn{
+.blocking_buttons .color_btn, .blocking_buttons .color_btn{
     width: 27px;
     height: 27px;
     -webkit-border-radius: 17px;
-    background-color: #306eff;
     border: 2px solid #fff;
     float: left;
     margin-right: 8px;
+}
+
+
+.blocking_buttons .blue{
+    background-color: #306eff;
+}
+
+.blocking_buttons .yellow{
+    background-color: #ffe928;
 }

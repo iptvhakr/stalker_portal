@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-10-02 17:07+0200\n"
-"PO-Revision-Date: 2012-10-02 17:07+0200\n"
+"PO-Revision-Date: 2012-10-03 11:25+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3021,7 +3021,7 @@ msgstr "Информация"
 
 #: ../../../lang/stb.php:391
 msgid "Payment"
-msgstr "Оплата"
+msgstr "Продлить"
 
 #: ../../../lang/stb.php:393
 msgid "Continue playing?"

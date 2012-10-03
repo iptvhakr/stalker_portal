@@ -388,6 +388,7 @@ $words['error_channel_not_available_for_zone'] = _('Channel not available for th
 $words['error_channel_link_fault'] = _('Channel not available. Server error.');
 
 $words['blocking_account_info'] = _('Account info');
+$words['blocking_account_payment'] = _('Payment');
 
 $words['archive_continue_playing_text'] = _('Continue playing?');
 $words['archive_yes'] = _('YES');
