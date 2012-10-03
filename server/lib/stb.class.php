@@ -340,9 +340,15 @@ class Stb
 
     public function getSettingsProfile(){
 
+        if (strpos($this->params['stb_type'], 'AuraHD') !== false){
+            $stb_type = '250';
+        }else{
+            $stb_type = substr($this->params['stb_type'], 3);
+        }
+
         return array(
             "parent_password"      => $this->params['parent_password'],
-            "update_url"           => Config::exist('update_url') ? Config::get('update_url').substr($this->params['stb_type'], 3).'/imageupdate' : '',
+            "update_url"           => Config::exist('update_url') ? Config::get('update_url').$stb_type.'/imageupdate' : '',
             "test_download_url"    => Config::getSafe('test_download_url', ''),
             "playback_buffer_size" => $this->params['playback_buffer_size'] / 1000,
             "screensaver_delay"    => $this->params['screensaver_delay'],
