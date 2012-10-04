@@ -610,7 +610,7 @@ class Vod extends AjaxResponse
             $result = $result->where(array('hd' => 1));
         }
 
-        if (Config::get('enable_tariff_plans')){
+        if (Config::get('enable_tariff_plans') && $all_users_video_ids != 'all'){
             $result = $result->in('video.id', $all_users_video_ids);
         }
 

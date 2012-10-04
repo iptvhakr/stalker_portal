@@ -17,14 +17,21 @@ $packages = Mysql::getInstance()->from('services_package')->get()->all();
 
 if (!empty($_POST['add']) && !empty($_POST['name'])){
 
+    $all_services = empty($_POST['all_services']) ? 0 : (int) $_POST['all_services'];
+
     $package_id = Mysql::getInstance()->insert('services_package', array(
         'name' => $_POST['name'],
         'description' => $_POST['description'],
         'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
-        'type' => $_POST['package_type']
+        'type' => $_POST['package_type'],
+        'all_services' => $all_services
     ))->insert_id();
 
-    $services = json_decode($_POST['services'], true);
+    if ($all_services){
+        $services = null;
+    }else{
+        $services = json_decode($_POST['services'], true);
+    }
 
     if ($services){
         foreach ($services as $service){
@@ -46,16 +53,23 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     if (!empty($_POST['edit']) && !empty($_POST['name'])){
 
+        $all_services = empty($_POST['all_services']) ? 0 : (int) $_POST['all_services'];
+
         Mysql::getInstance()->update('services_package', array(
             'name' => $_POST['name'],
             'description' => $_POST['description'],
             'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
-            'type' => $_POST['package_type']
+            'type' => $_POST['package_type'],
+            'all_services' => $all_services
         ), array('id' => $id));
 
         Mysql::getInstance()->delete('service_in_package', array('package_id' => $id));
 
-        $services = json_decode($_POST['services'], true);
+        if ($all_services){
+            $services = null;
+        }else{
+            $services = json_decode($_POST['services'], true);
+        }
 
         if ($services){
             foreach ($services as $service){
@@ -155,6 +169,12 @@ if (@$_GET['edit'] && !empty($id)){
 
                 var type = $('.package-type option:selected').val();
 
+                if (type == 'module' || type == ''){
+                    $('.all_services').attr('disabled', 'disbled');
+                }else{
+                    $('.all_services').removeAttr('disabled');
+                }
+
                 if (type != picked_type){
                     picked_services = [];
                 }
@@ -184,6 +204,11 @@ if (@$_GET['edit'] && !empty($id)){
                         },'');
 
                         $(options_str).appendTo('.services-available');
+
+                        if ($('.all_services:checked').length){
+                            $('.services-available').attr('disabled', 'disabled');
+                            $('.services-picked').attr('disabled', 'disabled');
+                        }
                     });
                 }
             });
@@ -216,6 +241,19 @@ if (@$_GET['edit'] && !empty($id)){
 
             $('.package-type option[value='+picked_type+']').attr('selected', 'selected');
             $('.package-type').change();
+
+            $('.all_services').change(function(e){
+
+                var checked = !!$(this).attr('checked');
+
+                if (checked){
+                    $('.services-available').attr('disabled', 'disabled');
+                    $('.services-picked').attr('disabled', 'disabled');
+                }else{
+                    $('.services-available').removeAttr('disabled');
+                    $('.services-picked').removeAttr('disabled');
+                }
+            })
         });
 
     </script>
@@ -296,6 +334,14 @@ if (@$_GET['edit'] && !empty($id)){
                             </select>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td><?= _('All services')?></td>
+                        <td>
+                            <input type="checkbox" name="all_services" class="all_services" value="1" <?= @$edit_package['all_services'] == 1 ? 'checked' : ''?>>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td colspan="2" align="center">
                             <table>

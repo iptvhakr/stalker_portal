@@ -129,6 +129,14 @@ class User
             ->get()
             ->all();
 
+        $contain_all_services = (bool) array_filter($packages, function($package){
+            return $package['all_services'] == 1;
+        });
+
+        if ($contain_all_services){
+            return 'all';
+        }
+
         if (empty($packages)){
             return null;
         }

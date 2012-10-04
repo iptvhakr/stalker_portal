@@ -50,7 +50,7 @@ class Radio extends AjaxResponse
         
         $result = $result->orderby('number');
 
-        if (Config::get('enable_tariff_plans')){
+        if (Config::get('enable_tariff_plans') && $all_user_radio_ids != 'all'){
             $result = $result->in('radio.id', $all_user_radio_ids);
         }
         

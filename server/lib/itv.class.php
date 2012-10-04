@@ -914,7 +914,11 @@ class Itv extends AjaxResponse
 
         //var_dump($channel_ids, $filtered_channels);
 
-        $channel_ids = array_intersect($channel_ids, $filtered_channels);
+        if ($channel_ids == 'all'){
+            $channel_ids = $filtered_channels;
+        }else{
+            $channel_ids = array_intersect($channel_ids, $filtered_channels);
+        }
 
         return $channel_ids;
     }

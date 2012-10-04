@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-02 17:07+0200\n"
-"PO-Revision-Date: 2012-10-03 11:25+0200\n"
+"POT-Creation-Date: 2012-10-03 18:06+0200\n"
+"PO-Revision-Date: 2012-10-03 18:06+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1299,21 +1299,25 @@ msgstr "задание отправлено"
 msgid "Create task"
 msgstr "Создать задание"
 
-#: ../../../administrator/services_packages.php:93
-#: ../../../administrator/services_packages.php:227
+#: ../../../administrator/services_packages.php:107
+#: ../../../administrator/services_packages.php:265
 msgid "SERVICES PACKAGES"
 msgstr "ПАКЕТЫ УСЛУГ"
 
-#: ../../../administrator/services_packages.php:250
-#: ../../../administrator/services_packages.php:276
+#: ../../../administrator/services_packages.php:288
+#: ../../../administrator/services_packages.php:314
 msgid "External ID"
 msgstr "Внешний ID"
 
-#: ../../../administrator/services_packages.php:284
+#: ../../../administrator/services_packages.php:322
 msgid "Short description"
 msgstr "Краткое описание"
 
-#: ../../../administrator/services_packages.php:313
+#: ../../../administrator/services_packages.php:339
+msgid "All services"
+msgstr "Все услуги"
+
+#: ../../../administrator/services_packages.php:359
 #: ../../../administrator/stream_zones.php:313
 msgid "Selected"
 msgstr "Выбрано"
