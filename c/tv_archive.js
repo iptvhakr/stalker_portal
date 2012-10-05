@@ -47,7 +47,8 @@
                             var url = /(http:\/\/[^\s]*)/.exec(result.download_cmd)[1];
                             //self.add_download.call(self, url, result.to_file);
 
-                            download_callback && download_callback(url, result.to_file)
+                            download_callback && download_callback(url, result.to_file);
+                            stb.player.on = false;
                         }
                     }
                 };
