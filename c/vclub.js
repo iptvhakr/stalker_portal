@@ -597,7 +597,7 @@
                         }
                         _debug('url: ', url);
 
-                        if (result.cmd.indexOf('://') != -1 && module.downloads.identical_download_exist(url)){
+                        if (result.cmd.indexOf('://') != -1 && module.downloads && module.downloads.identical_download_exist(url)){
                             _debug('identical_download_exist!');
 
                             self.download_exist.show();
