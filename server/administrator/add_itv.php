@@ -148,7 +148,7 @@ if (!$error){
                                         enable_wowza_load_balancing,
                                         enable_tv_archive,
                                         enable_monitoring,
-                                        monitoring_url,
+
                                         descr,
                                         tv_genre_id, 
                                         status,
@@ -175,7 +175,7 @@ if (!$error){
                                         '".$enable_wowza_load_balancing."',
                                         '".$enable_tv_archive."',
                                         '".$enable_monitoring."',
-                                        '".@$_POST['monitoring_url']."',
+
                                         '".@$_POST['descr']."',
                                         '".@$_POST['tv_genre_id']."', 
                                         1,
@@ -281,7 +281,7 @@ if (!$error){
                                 enable_wowza_load_balancing='".$enable_wowza_load_balancing."',
                                 enable_tv_archive='".$enable_tv_archive."',
                                 enable_monitoring='".$enable_monitoring."',
-                                monitoring_url='".$_POST['monitoring_url']."',
+
                                 wowza_tmp_link='".$wowza_tmp_link."',
                                 wowza_dvr='".$wowza_dvr."',
                                 use_http_tmp_link='".$use_http_tmp_link."',
@@ -301,6 +301,10 @@ if (!$error){
             //var_dump($query);
             $rs=$db->executeQuery($query);
 
+            if (!$enable_monitoring){
+                Mysql::getInstance()->update('itv', array('monitoring_status' => 1), array('id' => intval(@$_GET['id'])));
+            }
+
             $urls = $_POST['cmd'];
             $priorities = $_POST['priority'];
 
@@ -311,7 +315,6 @@ if (!$error){
 
             $need_to_delete_links = Mysql::getInstance()->query("select * from ch_links where ch_id=".intval($_GET['id'])." and url not in (".$urls_str.")")->all('id');
 
-            //Mysql::getInstance()->query("delete from ch_links where ch_id=".intval($_GET['id'])." and url not in (".$urls_str.")");
             if ($need_to_delete_links){
                 Mysql::getInstance()->query("delete from ch_links where id in (".implode(",", $need_to_delete_links).")");
                 Mysql::getInstance()->query("delete from ch_link_on_streamer where link_id in (".implode(",", $need_to_delete_links).")");
@@ -351,6 +354,18 @@ if (!$error){
                             'url'   => $link['url']
                         )
                     );
+
+                    if (!$link['enable_monitoring']){
+                        Mysql::getInstance()->update('ch_links',
+                            array(
+                                'status' => 1
+                            ),
+                            array(
+                                'ch_id' => (int) $_GET['id'],
+                                'url'   => $link['url']
+                            )
+                        );
+                    }
 
                     if ($link_id){
                         $on_streamers = Mysql::getInstance()->from('ch_link_on_streamer')->where(array('link_id' => $link_id))->get()->all('streamer_id');
