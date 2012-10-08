@@ -85,6 +85,7 @@ function player(){
     this.init_show_info();
     this.init_quick_ch_switch();
     this.volume.init();
+    this.osd_clock.init();
     this.progress_bar.init();
 
     this.init_aspect_info();
@@ -2007,6 +2008,53 @@ player.prototype.show_prev_layer = function(){
     }
 };
 
+player.prototype.osd_clock = {
+    on : false,
+
+    init : function(){
+        _debug('osd_clock.init');
+
+        this.dom_obj   = create_block_element('osd_clock_block');
+        this.osd_clock = create_block_element('osd_clock', this.dom_obj);
+        this.dom_obj.hide();
+
+        var self = this;
+
+        stb.clock.addCustomEventListener("tick", function(date){
+            if (self.on){
+                self.osd_clock.innerHTML = get_word('time_format').format(date.hours, date.minutes, date.ap_hours, date.ap_mark);
+            }
+        });
+    },
+
+    show : function(){
+        _debug('osd_clock.show');
+
+        this.osd_clock.innerHTML = get_word('time_format').format(stb.clock.hours, stb.clock.minutes, stb.clock.ap_hours, stb.clock.ap_mark);
+
+        this.dom_obj.show();
+        this.on = true;
+    },
+
+    hide : function(){
+        _debug('osd_clock.hide');
+        this.dom_obj.hide();
+        this.on = false;
+    },
+
+    toggle : function(){
+        _debug('osd_clock.toggle');
+
+        var self = stb.player.osd_clock;
+
+        if (self.on){
+            self.hide();
+        }else{
+            self.show();
+        }
+    }
+};
+
 player.prototype.bind = function(){
     
     var self = this;
@@ -2016,7 +2064,9 @@ player.prototype.bind = function(){
     
     this.switch_channel.bind(key.CHANNEL_NEXT, self, 1, true);
     this.switch_channel.bind(key.CHANNEL_PREV, self, -1, true);
-    
+
+    this.osd_clock.toggle.bind(key.CLOCK, this);
+
     (function(){
         
         if (this.info.on){

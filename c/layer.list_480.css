@@ -651,3 +651,20 @@
     border-radius: 2px;
     -webkit-transition: all 0.3s ease;
 }
+
+.osd_clock_block{
+    position: absolute;
+    top: 95px;
+    right: 95px;
+    background: url("i_720/volume_bg.png") right;
+    -webkit-border-radius: 8px;
+}
+
+.osd_clock_block .osd_clock{
+    color: #fff;
+    text-shadow: #555 -1px -1px 2px;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 4px 8px 0 8px;
+    line-height: 28px;
+}
