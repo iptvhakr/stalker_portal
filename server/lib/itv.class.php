@@ -221,7 +221,14 @@ class Itv extends AjaxResponse
                     if (!$link_result){
                         throw new ItvLinkException('link_fault');
                     }else{
-                        $channel['cmd'] = 'ffrt http://'.$streamer.'/ch/'.$link_result.' '.$tmp_url_arr[4];
+
+                        if (preg_match("/(\w+)\s+http:/", $channel['cmd'], $match)){
+                            $solution = $match[1];
+                        }else{
+                            $solution = 'ffrt';
+                        }
+
+                        $channel['cmd'] = $solution.' http://'.$streamer.'/ch/'.$link_result.' '.$tmp_url_arr[4];
                     }
                 }
             }
@@ -1178,7 +1185,13 @@ class Itv extends AjaxResponse
         $user_channel_links = array_map(function($link){
 
             if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1){
-                $link['url'] = 'ffrt http://'.Config::get('stream_proxy').'/ch/'.$link['id'];
+                if (preg_match("/(\w+)\s+http:/", $link['url'], $match)){
+                    $solution = $match[1];
+                }else{
+                    $solution = 'ffrt';
+                }
+
+                $link['url'] = $solution.' http://'.Config::get('stream_proxy').'/ch/'.$link['id'];
             }
 
             unset($link['monitoring_url']);
