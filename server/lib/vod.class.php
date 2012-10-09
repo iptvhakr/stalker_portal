@@ -578,6 +578,14 @@ class Vod extends AjaxResponse
     {
         $fav = $this->getFav();
 
+        $ls = Stb::getInstance()->getParam('ls');
+
+        if ($ls){
+            $ids_on_ls = Mysql::getInstance()->from('users')->where(array('ls' => $ls))->get()->all('id');
+        }else{
+            $ids_on_ls = array($this->stb->id);
+        }
+
         $user = User::getInstance($this->stb->id);
         $all_users_video_ids = $user->getServicesByType('video');
 
@@ -618,7 +626,8 @@ class Vod extends AjaxResponse
             $result = $result->from('vclub_not_ended')
                 ->select('vclub_not_ended.series as cur_series, vclub_not_ended.end_time as position')
                 ->where('video.id=vclub_not_ended.video_id', 'AND ', null, -1)
-                ->where(array('vclub_not_ended.uid' => $this->stb->id));
+                /*->where(array('vclub_not_ended.uid' => $this->stb->id));*/
+                ->in('vclub_not_ended.uid',  $ids_on_ls);
         }
 
         $this->setResponseData($result);
