@@ -17,6 +17,7 @@ function common_xpcom(){
     this.key_lock = true;
     this.power_off = false;
     this.additional_services_on = 0;
+    this.header_ua_ext = [];
 
     this.aspect_idx = 0;
     this.aspect_array = [
@@ -276,6 +277,8 @@ function common_xpcom(){
                 this.type = stb.RDir('Model').clearnl();
             }
 
+            this.header_ua_ext.push('Model: ' + this.type);
+
             this.stb_lang = stb.RDir('getenv language').clearnl();
             
             this.timezone = stb.RDir('getenv timezone_conf').clearnl();
@@ -301,6 +304,20 @@ function common_xpcom(){
             if (this.graphic_mode >= 720){
                 _debug('gSTB.SetObjectCacheCapacities');
                 gSTB.SetObjectCacheCapacities(1000000, 7000000, 10000000);
+            }
+
+            if (stb.GetWifiLinkStatus){
+                var link = [];
+
+                if (stb.GetLanLinkStatus()){
+                    link.push('Ethernet');
+                }
+
+                if (stb.GetWifiLinkStatus()){
+                    link.push('WiFi');
+                }
+
+                this.header_ua_ext.push('Link: '+link.join(','));
             }
             
         }catch(e){
@@ -378,7 +395,7 @@ function common_xpcom(){
      * @param params
      * @param {...} var_args
      */
-    this.load = function(params, var_args){
+    /*this.load = function(params, var_args){
         _debug('stb.load()');
         _debug('params:', params);
 
@@ -414,6 +431,87 @@ function common_xpcom(){
         }catch(e){
             _debug(e);
         }
+    };*/
+
+    this.load = function(params, var_args){
+        _debug('stb.load()');
+        _debug('params:', params);
+
+        var callback = arguments[1];
+
+        var context = window;
+
+        if (arguments.length == 3){
+            context = arguments[2];
+        }
+
+        try{
+
+            var req = new XMLHttpRequest();
+
+            //req.open("POST", this.ajax_loader + '?JsHttpRequest='+(new Date().getTime())+'-xml', true);
+            //req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+            req.open("GET", this.ajax_loader + '?' + this.params_to_query(params), true);
+
+            if (this.header_ua_ext.length > 0){
+                req.setRequestHeader("X-User-Agent", stb.header_ua_ext.join('; '));
+            }
+
+            //req.send(this.params_to_query(params));
+
+            req.onreadystatechange = function(){
+                if (req.readyState == 4) {
+                    if (req.status == 200) {
+                        try{
+                            var result = JSON.parse(req.responseText);
+                        }catch(er){
+                            _debug('req.responseText', req.responseText);
+                            throw new Error(er);
+                        }
+                        _debug(result.text);
+                        callback.call(context, result.js);
+                    } else if (req.status == 0){
+                        console.log('Abort request');
+                    }else{
+                        console.log(req.responseText);
+                    }
+                    req = null;
+                }
+            };
+            req.send(null);
+        }catch(e){
+            req = null;
+            console.log(e);
+        }
+
+        return req;
+    };
+
+    this.params_to_query = function(params){
+        var query = [];
+
+        if (!params){
+            return null;
+        }
+
+        //params['JsHttpRequest'] = (new Date().getTime())+'-xml';
+        params['JsHttpRequest'] = '1-xml';
+
+        for (var key in params){
+            if (params.hasOwnProperty(key)){
+
+                if (params[key] === false){
+                    params[key] = 0;
+                }else if (params[key] === true){
+                    params[key] = 1;
+                }
+
+                query.push(key + '=' + params[key]);
+            }
+        }
+
+        return query.join('&');
     };
 
     this.preload_images = function(){
