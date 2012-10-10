@@ -394,4 +394,6 @@ $words['archive_continue_playing_text'] = _('Continue playing?');
 $words['archive_yes'] = _('YES');
 $words['archive_no'] = _('NO');
 
+$words['time_shift_exit_confirm_text'] = _('Do you want to quit the Time Shift mode?');
+
 ?>

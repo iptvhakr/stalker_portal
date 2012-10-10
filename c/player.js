@@ -86,10 +86,11 @@ function player(){
     this.init_quick_ch_switch();
     this.volume.init();
     this.osd_clock.init();
+    this.time_shift_indication.init();
     this.progress_bar.init();
 
     this.init_aspect_info();
-    
+
     this.send_last_tv_id_callback = function(){};
     
     this.play_continuously = false;
@@ -251,6 +252,50 @@ player.prototype.play_or_download = function(content_type, url){
         module.downloads.dialog.show({"parent" : main_menu, "url" : url});
         stbWindowMgr.showPortalWindow();
     }
+};
+
+player.prototype.show_time_shift_exit_confirm = function(){
+    _debug('player.show_time_shift_exit_confirm');
+    this.init_time_shift_exit_confirm();
+    this.time_shift_exit_confirm.show();
+};
+
+player.prototype.init_time_shift_exit_confirm = function(){
+    _debug('player.init_time_shift_exit_confirm');
+
+    if (this.time_shift_exit_confirm){
+        return;
+    }
+
+    this.time_shift_exit_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('time_shift_exit_confirm_text')});
+    this.time_shift_exit_confirm.getTextDomObj().style.textAlign = "center";
+    this.time_shift_exit_confirm.enableOnExitClose();
+
+    var scope = this;
+
+    this.time_shift_exit_confirm.addItem(new ModalFormButton(
+        {
+            "value" : get_word("close_btn"),
+            "onclick" : function(){
+                scope.time_shift_exit_confirm.hide();
+            }
+        }
+    ));
+
+    this.time_shift_exit_confirm.addItem(new ModalFormButton(
+        {
+            "value" : get_word("ok_btn"),
+            "onclick" : function(){
+                scope.time_shift_exit_confirm.hide();
+
+                scope.cur_media_item = module.time_shift.stored_media_item;
+                scope.cur_tv_item    = scope.cur_media_item;
+                scope.active_time_shift = false;
+                scope.play_last();
+
+            }
+        }
+    ));
 };
 
 player.prototype.init_play_or_download_dialog = function(){
@@ -541,10 +586,14 @@ player.prototype.event_callback = function(event){
                 this.volume.correct_level(0);
             }
 
+            this.time_shift_indication.hide();
+
             if (this.active_time_shift && module.time_shift){
 
                 this.cur_pos_time     = module.time_shift.get_pos_time();
                 this.cur_media_length = module.time_shift.get_cur_media_length();
+
+                this.time_shift_indication.show();
 
             }else if (this.emulate_media_len && module.tv_archive){
                 /*var global_pos_time = stb.GetPosTime();
@@ -1361,6 +1410,7 @@ player.prototype.stop = function(){
     this.active_time_shift = false;
 
     playback_limit.reset();
+    this.time_shift_indication.hide();
 
     this.set_pos_button(0);
 
@@ -1489,6 +1539,7 @@ player.prototype.disable_pause = function(){
         if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
            this.play_last();
         }else{
+            this.time_shift_indication.show();
             if (this.is_tv){
                 this.play(module.time_shift.cur_media_item);
             }else{
@@ -1796,7 +1847,12 @@ player.prototype._find_nearest_ch_idx = function(direction, condition){
 player.prototype.switch_channel = function(dir, show_info){
     
     _debug('switch_channel', dir);
-    
+
+    if (this.active_time_shift){
+        this.time_shift_indication.show();
+        return;
+    }
+
     if (!this.is_tv){
         return;
     }
@@ -2008,6 +2064,45 @@ player.prototype.show_prev_layer = function(){
     }
 };
 
+player.prototype.time_shift_indication = {
+    on : false,
+
+    init : function(){
+        _debug('time_shift_indication.init');
+
+        this.time_shift_info_container = create_block_element('time_shift_info_container');
+        this.time_shift_info_txt = create_block_element('time_shift_info_block', this.time_shift_info_container);
+
+        this.time_shift_info_txt.innerHTML = get_word('TIME SHIFT');
+
+        create_block_element('time_shift_info_block_right', this.time_shift_info_container);
+
+        this.time_shift_info_container.hide();
+    },
+
+    show : function(){
+        _debug('time_shift_indication.show');
+        this.time_shift_info_container.show();
+        this.on = true;
+        this.t_hide();
+    },
+
+    t_hide : function(){
+        _debug('time_shift_indication.t_hide');
+        window.clearTimeout(this.time_shift_indication_hide);
+        var self = this;
+        this.time_shift_indication_hide = window.setTimeout(function(){
+            self.hide();
+        }, 3000);
+    },
+
+    hide : function(){
+        _debug('time_shift_indication.hide');
+        this.time_shift_info_container.hide();
+        this.on = false;
+    }
+};
+
 player.prototype.osd_clock = {
     on : false,
 
@@ -2085,10 +2180,7 @@ player.prototype.bind = function(){
             this.cancel_quick_ch_switch();
         }else{
             if (this.active_time_shift){
-                this.cur_media_item = module.time_shift.stored_media_item;
-                this.cur_tv_item    = this.cur_media_item;
-                this.active_time_shift = false;
-                this.play_last();
+                this.show_time_shift_exit_confirm();
             }else{
                 this.show_prev_layer();
             }
@@ -2133,10 +2225,7 @@ player.prototype.bind = function(){
         }else  if (this.prev_layer && this.prev_layer.cur_view == 'short' && !this.is_tv){
 
             if (this.active_time_shift){
-                this.cur_media_item = module.time_shift.stored_media_item;
-                this.cur_tv_item    = this.cur_media_item;
-                this.active_time_shift = false;
-                this.play_last();
+                this.show_time_shift_exit_confirm();
             }else{
                 this.show_prev_layer();
             }
