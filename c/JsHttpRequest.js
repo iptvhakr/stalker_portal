@@ -291,6 +291,9 @@ _36(req.responseJS,req.responseText);
 }
 };
 req.open(null,url,true);
+if (stb && stb.header_ua_ext && stb.header_ua_ext.length > 0){
+    req.setRequestHeader("X-User-Agent", stb.header_ua_ext.join('; '));
+}
 req.send(_35);
 return req;
 };

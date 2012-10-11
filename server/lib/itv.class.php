@@ -469,14 +469,16 @@ class Itv extends AjaxResponse
         $all_links = Mysql::getInstance()->from('ch_links')->groupby('ch_id')->get()->all();
 
         $user_links = array_filter($all_links, function($link) use ($user_agent){
-            return $link['user_agent_filter'] != '' && preg_match("/".$link['user_agent_filter']."/", $user_agent);
+            return $link['user_agent_filter'] == '' || preg_match("/".$link['user_agent_filter']."/", $user_agent);
         });
 
-        if (empty($user_links)){
+        //var_dump($user_links);
+
+        /*if (empty($user_links)){
             $user_links = array_filter($all_links, function($link) use ($user_agent){
                 return $link['user_agent_filter'] == '';
             });
-        }
+        }*/
 
         $user_ch_ids = array_map(function($link){
             return $link['ch_id'];

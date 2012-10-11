@@ -37,7 +37,14 @@ class User
     }
 
     public static function getUserAgent(){
-        return empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
+
+        $ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
+
+        if (!empty($_SERVER['HTTP_X_USER_AGENT'])){
+            $ua .= '; '.$_SERVER['HTTP_X_USER_AGENT'];
+        }
+
+        return $ua;
     }
 
     public static function getCountryId(){

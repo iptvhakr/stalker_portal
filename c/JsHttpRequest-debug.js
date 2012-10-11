@@ -414,6 +414,9 @@ JsHttpRequest.query = function(url, content, onready, nocache) {
         }
     }
     req.open(null, url, true);
+    if (stb && stb.header_ua_ext && stb.header_ua_ext.length > 0){
+        req.setRequestHeader("X-User-Agent", stb.header_ua_ext.join('; '));
+    }
     var d = req.send(content);
     _debug('query end', d);
     
