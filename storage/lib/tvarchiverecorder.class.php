@@ -62,7 +62,7 @@ class TvArchiveRecorder extends Storage
      */
     public function startAll($tasks){
 
-        if (empty($tasks)){
+        if (!is_array($tasks)){
             return false;
         }
 

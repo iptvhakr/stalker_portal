@@ -6,7 +6,7 @@ $archive = new TvArchiveTasks(TASKS_API_URL.STORAGE_NAME);
 
 $tasks = $archive->sync();
 
-if (empty($tasks)){
+if (!is_array($tasks)){
     return false;
 }
 
