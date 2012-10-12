@@ -243,7 +243,8 @@ bottom_menu.prototype.action = function(){
         }
         
         if (this.need_update_header){
-            this.parent.update_header_path([{"alias" : "sortby", "item" : this.items[this.cur_row_idx].label}]);
+            var item = this.items[this.cur_row_idx].selector || this.items[this.cur_row_idx].label;
+            this.parent.update_header_path([{"alias" : "sortby", "item" : item}]);
         }
         
         if (this.parent.on && this.need_reset_load_data){

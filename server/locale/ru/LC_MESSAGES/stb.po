@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-09 14:00+0200\n"
-"PO-Revision-Date: 2012-10-09 14:01+0200\n"
+"POT-Creation-Date: 2012-10-11 18:38+0200\n"
+"PO-Revision-Date: 2012-10-11 18:39+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3039,6 +3039,14 @@ msgstr "НЕТ"
 msgid "Do you want to quit the Time Shift mode?"
 msgstr "Выйти из режима Time Shift?"
 
+#: ../../../lang/stb.php:399
+msgid "by name"
+msgstr "по названию"
+
+#: ../../../lang/stb.php:400
+msgid "by date"
+msgstr "по дате"
+
 #. / in format of php date() function
 #: ../../../lib/accountinfo.class.php:34
 msgid "end_date_format"
@@ -3392,12 +3400,12 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/itv.class.php:1225
+#: ../../../lib/itv.class.php:1227
 #, php-format
 msgid "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1235
+#: ../../../lib/itv.class.php:1237
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""

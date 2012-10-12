@@ -396,4 +396,7 @@ $words['archive_no'] = _('NO');
 
 $words['time_shift_exit_confirm_text'] = _('Do you want to quit the Time Shift mode?');
 
+$words['mbrowser_sort_by_name'] = _('by name');
+$words['mbrowser_sort_by_date'] = _('by date');
+
 ?>

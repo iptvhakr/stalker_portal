@@ -18,6 +18,7 @@
         this.smb_auth_history = [];
         this.favorites    = [];
         this.change_level = true;
+        this.sort_by_date = false;
         
         this.superclass = ListLayer.prototype;
 
@@ -350,7 +351,7 @@
 
             //_debug(txt);
 
-            _debug('stb.storages', stb.storages);
+            //_debug('stb.storages', stb.storages);
             _debug('stb.usbdisk.dirs', stb.usbdisk.dirs);
 
             try{
@@ -418,8 +419,24 @@
                         solution = 'auto';
                     }
 
-                    new_files.push({"name" : stb.usbdisk.files[i].name, "cmd" : (solution + " " + path + stb.usbdisk.files[i].name), "size" : stb.usbdisk.files[i].size});
+                    new_files.push({
+                        "name" : stb.usbdisk.files[i].name,
+                        "cmd" : (solution + " " + path + stb.usbdisk.files[i].name),
+                        "size" : stb.usbdisk.files[i].size,
+                        "last_modified" : (stb.usbdisk.files[i].last_modified || 0)
+                    });
                 }
+            }
+
+            if (new_files && new_files.length && new_files[0].hasOwnProperty('last_modified') && new_files[0].last_modified){
+
+                if (this.sort_by_date){
+                    new_files = this.sort_list_by_date(new_files);
+                }
+
+                this.color_buttons.get('green').enable();
+            }else{
+                this.color_buttons.get('green').disable();
             }
 
             var list = new_dirs.concat(new_files);
@@ -1345,7 +1362,49 @@
                 },
                 this
             );
-        }
+        };
+
+        this.init_sort_menu = function(map, options){
+            _debug('media_browser.init_sort_menu');
+
+            this.sort_menu = new bottom_menu(this, options);
+            this.sort_menu.init(map);
+            this.sort_menu.bind();
+        };
+
+        this.sort_menu_switcher = function(){
+            _debug('media_browser.sort_menu_switcher');
+
+            if (this.sort_menu && this.sort_menu.on){
+                this.sort_menu.hide();
+            }else{
+                this.sort_menu.show();
+            }
+        };
+
+        this.sort_list_by_date = function(list){
+            _debug('media_browser.sort_list_by_date', list);
+
+            var times = list.map(function(item){
+                return item.last_modified || 0;
+            });
+
+            times.sort();
+
+            _debug('times', times);
+
+            var sorted_list = [];
+
+            list.every(function(item){
+                var idx = times.indexOf(item.last_modified);
+                sorted_list[idx] = item;
+                return true;
+            });
+
+            _debug('sorted_list', sorted_list);
+
+            return sorted_list;
+        };
     }
 
 
@@ -1423,10 +1482,34 @@
 
     media_browser.init_color_buttons([
         {"label" : word['play_all'], "cmd" : media_browser.play_all_switch},
-        {"label" : word['empty'], "cmd" : ""},
+        {"label" : word['tv_sort'], "cmd" : media_browser.sort_menu_switcher},
         {"label" : get_word('favorite'), "cmd" : media_browser.add_del_fav},
         {"label" : word['empty'], "cmd" : ""}
     ]);
+
+    var sort_menu_map = [
+        {
+            "label" : get_word("mbrowser_sort_by_name"),
+            "cmd"   : function(){
+                this.parent.sort_by_date = false;
+            },
+            "selector" : "*"
+        },
+        {
+            "label" : get_word("mbrowser_sort_by_date"),
+            "cmd"   : function(){
+                this.parent.sort_by_date = true;
+            }
+        }
+    ];
+
+    media_browser.init_sort_menu(
+        sort_menu_map,
+        {
+            "color"    : "green",
+            "need_update_header" : false
+        }
+    );
     
     media_browser.hide();
     
