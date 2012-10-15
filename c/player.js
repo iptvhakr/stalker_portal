@@ -1699,7 +1699,13 @@ player.prototype.show_info = function(item){
             //_debug('stb.epg_loader.get_epg(item.id)', stb.epg_loader.get_epg(item.id));
             
             if (item.hasOwnProperty('open') && !item.open){
-                this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('msg_channel_not_available') + '</span>';
+
+                if (item.hasOwnProperty('error') && item.error){
+                    this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('error_channel_'+item.error) + '</span>';
+                }else{
+                    this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('msg_channel_not_available') + '</span>';
+                }
+
             }else if (item.hasOwnProperty('error') && item.error){
                 this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('error_channel_'+item.error) + '</span>';
             }else{

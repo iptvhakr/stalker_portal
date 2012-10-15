@@ -163,6 +163,14 @@
     padding: 5px;
 }
 
+#tv .tv_prev_msg{
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    margin-top: 107px;
+}
+
 .tv_clock{
     position: absolute;
     top: 48px;

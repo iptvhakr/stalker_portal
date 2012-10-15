@@ -663,6 +663,15 @@
                         stb.player.channels[idx].use_http_tmp_link = channel.use_http_tmp_link;
                         stb.player.channels[idx].wowza_tmp_link    = channel.wowza_tmp_link;
                         stb.player.channels[idx].use_load_balancing= channel.use_load_balancing;
+
+                        if (channel.hasOwnProperty('error')){
+                            stb.player.channels[idx].error = channel.error;
+                        }else{
+                            stb.player.channels[idx].error = null;
+                        }
+
+                        //stb.player.channels[idx].open = channel.open;
+
                     }else{
                         channel.cmd               = stb.player.channels[idx].cmd;
                         channel.use_http_tmp_link = stb.player.channels[idx].use_http_tmp_link;

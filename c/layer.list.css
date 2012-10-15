@@ -55,7 +55,11 @@
     text-overflow: ellipsis;
 }
 
-.blue_row_bg[rel="close"] .name_block{
+/*.blue_row_bg[rel="close"] .name_block{
+    color: #99A8B5 !important;
+}*/
+
+.blue_row_bg.close .name_block{
     color: #99A8B5 !important;
 }
 
@@ -198,7 +202,11 @@
     text-overflow: ellipsis;
 }
 
-.active_row_bg[rel="close"] .active_name_block{
+/*.active_row_bg[rel="close"] .active_name_block{
+    color: #808080 !important;
+}*/
+
+.active_row_bg.close .active_name_block{
     color: #808080 !important;
 }
 

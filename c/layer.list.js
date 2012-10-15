@@ -312,9 +312,11 @@ ListLayer.prototype.fill_list = function(data){
         _debug('data[i]', data[i]);
         
         if (data[i].hasOwnProperty('open') && !data[i].open){
-            this.map[i]['row'].setAttribute('rel', 'close');
+            this.map[i]['row'].addClass('close');
+            //this.map[i]['row'].setAttribute('rel', 'close');
         }else{
-            this.map[i]['row'].setAttribute('rel', '');
+            this.map[i]['row'].removeClass('close');
+            //this.map[i]['row'].setAttribute('rel', '');
         }
     }
     
@@ -413,9 +415,11 @@ ListLayer.prototype.set_active_row = function(num){
         if (this.data_items[num]){
         
             if (this.data_items[num].hasOwnProperty('open') && !this.data_items[num].open){
-                this.active_row['row'].setAttribute('rel', 'close');
+                this.active_row['row'].addClass('close');
+                //this.active_row['row'].setAttribute('rel', 'close');
             }else{
-                this.active_row['row'].setAttribute('rel', '');
+                this.active_row['row'].removeClass('close');
+                //this.active_row['row'].setAttribute('rel', '');
             }
         }
         

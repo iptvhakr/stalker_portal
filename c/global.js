@@ -220,7 +220,7 @@ HTMLElement.prototype.addClass = function(class_name){
         if (!this.className){
             this.setClass(class_name);
         }else{
-            var new_class_name = this.className;
+            var new_class_name = this.className.replace(eval('/('+class_name+')/g'), '').replace(/((\s)+)/g, '');
             new_class_name += " ";
             new_class_name += class_name;
             this.setClass(new_class_name);
