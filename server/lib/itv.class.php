@@ -333,7 +333,7 @@ class Itv extends AjaxResponse
         if (!empty($last_id_arr) && key_exists('last_id', $last_id_arr)){
             $this->db->update('last_id', array('last_id' => $id), array('ident' => $this->stb->mac));
         }else{
-            $this->db->insert('last_id', array('last_id' => $id, 'ident' => $this->stb->mac));
+            $this->db->insert('last_id', array('last_id' => $id, 'ident' => $this->stb->mac, 'uid' => $this->stb->id));
         }
         
         return true;
