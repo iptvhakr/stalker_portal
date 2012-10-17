@@ -624,9 +624,9 @@ a:hover{
             </tr>
         </table>
 
-        <button href="javascript://" class="add_ch_url">добавить еще ссылку</button>
+        <button href="javascript://" class="add_ch_url"><?=_('add new link')?></button>
         {{if idx>0}}
-        <button href="javascript://" class="del_ch_url">удалить</button>
+        <button href="javascript://" class="del_ch_url"><?=_('delete')?></button>
         {{/if}}
         <hr>
     </div>
@@ -1306,7 +1306,7 @@ function delete_logo(id){
         <?}else{?>
         <tr>
             <td align="right" valign="top">
-                Ссылки:
+                <?= _('Links')?>:
             </td>
             <td class="links_block">
 
