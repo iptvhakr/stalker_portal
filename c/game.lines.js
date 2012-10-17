@@ -11,7 +11,7 @@
         "title" : get_word('game') + ' LINES',
         "cmd"   : function(){
             stb.setFrontPanel('.');
-            window.location = '/' + stb.portal_path + '/external/lines/index.html';
+            window.location = '/' + stb.portal_path + '/external/lines/index.html' + '?referrer='+encodeURIComponent(document.location.href);
         }
     });
 

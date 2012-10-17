@@ -11,7 +11,7 @@
         "title" : get_word('game') + ' SUDOKU',
         "cmd"   : function(){
             stb.setFrontPanel('.');
-            window.location = '/' + stb.portal_path + '/external/sudoku/index.html';
+            window.location = '/' + stb.portal_path + '/external/sudoku/index.html' + '?referrer='+encodeURIComponent(document.location.href);;
         }
     });
 

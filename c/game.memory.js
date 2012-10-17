@@ -11,7 +11,7 @@
         "title" : get_word('game') + ' MEMORY',
         "cmd"   : function(){
             stb.setFrontPanel('.');
-            window.location = '/' + stb.portal_path + '/external/memory/index.html';
+            window.location = '/' + stb.portal_path + '/external/memory/index.html' + '?referrer='+encodeURIComponent(document.location.href);
         }
     });
 
