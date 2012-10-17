@@ -60,7 +60,8 @@ function player(){
     this.diff_pos = 0;
     
     this.last_state = 0;
-    
+    this.prev_state = 0;
+
     this.send_last_tv_id_to = 1800000;
     
     this.prev_layer = {};
@@ -563,6 +564,13 @@ player.prototype.event_callback = function(event){
             }else{
                 this.volume.correct_level(0);
             }*/
+
+            _debug('this.prev_state', this.prev_state);
+
+            if (this.prev_state == 4){
+                this.get_pids();
+            }
+
             this.triggerCustomEventListener('event_2', this.cur_media_item);
             //if (this.is_tv){
             if (stb.user['enable_buffering_indication']){
@@ -574,7 +582,6 @@ player.prototype.event_callback = function(event){
         }
         case 4: // Playback started
         {
-
             this.triggerCustomEventListener('event_4', this.cur_media_item);
             if (stb.user['enable_buffering_indication']){
                 this.progress_bar.stop();
@@ -653,18 +660,11 @@ player.prototype.event_callback = function(event){
                     time_send_played
                 )
             }
-            try{
-                this.audio_pid.get_all();
-                
-                _debug('test');
-                _debug('typeof this.subtitle_pid', typeof(this.subtitle_pid));
-                _debug('typeof this.subtitle_pid.get_all', typeof(this.subtitle_pid.get_all));
-                
-                this.subtitle_pid.get_all();
-                
-                this.build_con_menu();
-            }catch(e){
-                _debug(e);
+
+            _debug('this.prev_state', this.prev_state);
+
+            if (this.prev_state == 2){
+                this.get_pids();
             }
 
             if (module.tv_archive && this.cur_media_item.mark_archive){
@@ -732,6 +732,10 @@ player.prototype.event_callback = function(event){
                 )
             }
         }
+    }
+
+    if ([1,2,4,5].indexOf(event) >= 0){
+        this.prev_state = event;
     }
 };
 
@@ -1150,6 +1154,8 @@ player.prototype.play = function(item){
     playback_limit.start_counting();
     
     var media_len_part = /media_len:(\d*)/.exec(cmd);
+
+    this.prev_state = 0;
 
     if (media_len_part){
         this.emulate_media_len = true;
@@ -3228,6 +3234,24 @@ player.prototype.hist_back = function(){
     }
 };
 
+player.prototype.get_pids = function(){
+    _debug('player.get_pids');
+
+    try{
+        this.audio_pid.get_all();
+
+        _debug('test');
+        _debug('typeof this.subtitle_pid', typeof(this.subtitle_pid));
+        _debug('typeof this.subtitle_pid.get_all', typeof(this.subtitle_pid.get_all));
+
+        this.subtitle_pid.get_all();
+
+        this.build_con_menu();
+    }catch(e){
+        _debug(e);
+    }
+};
+
 player.prototype.audio_pid = {
     
     all_pids : [],
@@ -3301,9 +3325,28 @@ player.prototype.subtitle_pid = {
     all_pids : [],
     cur_pid : 0,
     cur_pid_idx : 0,
+    enabled : false,
+
+    enable : function(){
+        _debug('subtitle_pid.enable');
+        stb.SetSubtitles(true);
+        this.enabled = true;
+    },
+
+    disable : function(){
+        _debug('subtitle_pid.disable');
+        stb.SetSubtitles(false);
+        this.enabled = false;
+    },
     
     get_all : function(){
         _debug('subtitle_pid.get_all');
+
+        if (stb.player.cur_media_item.cmd.indexOf(' strack:') != -1){
+            this.enable();
+        }else{
+            this.disable();
+        }
     
         var subtitle_pids = stb.GetSubtitlePIDs();
         
@@ -3319,7 +3362,7 @@ player.prototype.subtitle_pid = {
         
         _debug('this.cur_pid_idx', this.cur_pid_idx);
         
-        if (this.cur_pid_idx !== null){
+        if (this.cur_pid_idx !== null && this.enabled){
             subtitle_pids[this.cur_pid_idx].selected = true;
         }
         
@@ -3329,7 +3372,7 @@ player.prototype.subtitle_pid = {
     set : function(pid){
         _debug('subtitle_pid.set', pid);
     
-        stb.SetSubtitles(true);
+        this.enable();
 
         this.cur_pid_idx = this.all_pids.getIdxByVal('pid', pid);
 
@@ -3355,8 +3398,10 @@ player.prototype.subtitle_pid = {
         });
 
         _debug('sub_off', sub_off);
+
+        var self = this;
         
-        map.push({'title' : get_word('player_off'), 'cmd' : function(){stb.SetSubtitles(false)}, 'active' : !sub_off});
+        map.push({'title' : get_word('player_off'), 'cmd' : function(){self.disable()}, 'active' : !sub_off});
         
         for (var i=0; i<this.all_pids.length; i++){
             

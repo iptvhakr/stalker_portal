@@ -415,6 +415,11 @@ if (!$error){
                     $error = _('Error: could not save logo').' <a href="#form">#</a>';
                 }
             }
+
+            if (empty($error)){
+                header("Location: add_itv.php?edit=1&id=".intval(@$_GET['id'])."#form");
+                exit;
+            }
         }
         else{
             $error = _('Error: all fields are required').' <a href="#form">#</a>';
