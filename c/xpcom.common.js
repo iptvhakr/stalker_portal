@@ -265,15 +265,26 @@ function common_xpcom(){
             //this.graphic_mode = stb.RDir('gmode');
 
             //this.mac = stb.RDir('MACAddress').toUpperCase().clearnl();
-            this.mac = stb.GetDeviceMacAddress().toUpperCase().clearnl();
+            try{
+                this.mac = stb.GetDeviceMacAddress().toUpperCase().clearnl();
+            }catch(e){
+                _debug('this.mac use old API');
+                this.mac = stb.RDir('MACAddress').toUpperCase().clearnl();
+            }
 
             this.ip  = stb.RDir('IPAddress').clearnl();
 
-            this.serial_number  = stb.GetDeviceSerialNumber().clearnl();
+            try{
+                this.serial_number  = stb.GetDeviceSerialNumber().clearnl();
+            }catch(e){
+                _debug('this.serial_number use old API');
+                this.serial_number  = stb.RDir('SerialNumber').clearnl();
+            }
 
             try{
                 this.type = stb.GetDeviceModelExt().clearnl();
             }catch(e){
+                _debug('this.type use old API');
                 this.type = stb.RDir('Model').clearnl();
             }
 
