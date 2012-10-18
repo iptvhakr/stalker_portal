@@ -2340,6 +2340,39 @@ player.prototype.bind = function(){
 
         _debug('dir', dir);
 
+        if (this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+
+            _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
+            _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
+
+            var series_idx = this.cur_media_item.series.indexOf(this.cur_media_item.cur_series);
+
+            _debug('series_idx before', series_idx);
+
+            var old_series_idx = series_idx;
+
+            if (dir > 0){
+                if (series_idx < this.cur_media_item.series.length-1){
+                    series_idx++;
+                }
+            }else{
+                if (series_idx > 0){
+                    series_idx--;
+                }
+            }
+
+            _debug('series_idx after', series_idx);
+
+            if (old_series_idx != series_idx){
+
+                this.cur_media_item.cur_series = this.cur_media_item.series[series_idx];
+
+                this.play(this.cur_media_item);
+            }
+
+            return;
+        }
+
         if (!this.cur_media_item.playlist){
             return;
         }
