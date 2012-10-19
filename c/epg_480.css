@@ -1,3 +1,4 @@
+/*
 #epg .blue_row_bg{
     position: absolute;
     left: 49px;
@@ -7,6 +8,7 @@
     background-image: url("i_480/tv_table.png");    
     background-position: 0 -25px;
 }
+*/
 
 #epg .active_row_bg, #epg .blue_row_bg[active="active"]{
     position: absolute;
@@ -114,6 +116,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:pre;
+    font-family: "Myriad Pro Cond", sans-serif;
 }
 
 #epg .program_separator{
@@ -225,7 +228,8 @@
 
 #epg .live_line{
     position: absolute;
-    background-color: #f00;
+    background-color: rgba(255, 0, 0, 0.4);
     width: 2px;
     height: 250px;
+    -webkit-transition: all 0.2s linear;
 }

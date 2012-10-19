@@ -1,4 +1,4 @@
-#epg_simple .blue_row_bg{
+/*#epg_simple .blue_row_bg{
     position: absolute;
     left: 231px;
     top: 60px;
@@ -6,7 +6,7 @@
     height: 25px;
     background-image: url("i_480/tv_table.png");    
     background-position: -182px -25px;
-}
+}*/
 
 #epg_simple .blue_row_bg[active="active"]{
     background-position: -182px -1px;

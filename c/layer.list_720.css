@@ -682,3 +682,22 @@
     float: left;
     height: 41px;
 }
+
+#epg_simple .blue_row_bg{
+    position: absolute;
+    left: 330px;
+    top: 92px;
+    width: 802px;
+    height: 45px;
+    background: url("i_720/tv_table.png") no-repeat -339px -44px;
+}
+
+#epg .blue_row_bg{
+    position: absolute;
+    left: 70px;
+    top: 92px;
+    width: 1141px;
+    height: 45px;
+    background-image: url("i_720/tv_table.png");
+    background-position: 0 -46px;
+}

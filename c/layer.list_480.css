@@ -676,3 +676,23 @@
     margin: 4px 8px 0 8px;
     line-height: 28px;
 }
+
+#epg_simple .blue_row_bg{
+    position: absolute;
+    left: 231px;
+    top: 60px;
+    width: 450px;
+    height: 25px;
+    background-image: url("i_480/tv_table.png");
+    background-position: -182px -25px;
+}
+
+#epg .blue_row_bg{
+    position: absolute;
+    left: 49px;
+    top: 92px;
+    width: 632px;
+    height: 25px;
+    background-image: url("i_480/tv_table.png");
+    background-position: 0 -25px;
+}
