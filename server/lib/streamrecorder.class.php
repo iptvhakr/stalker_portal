@@ -20,6 +20,11 @@ class StreamRecorder extends Master
             $storages[$storage['storage_name']] = $storage;
             $storages[$storage['storage_name']]['load'] = $this->getStorageLoad($storage);
         }
+
+        $storages = $this->sortByLoad($storages);
+
+        var_dump($storages);
+
         return $storages;
     }
 
@@ -336,7 +341,11 @@ class StreamRecorder extends Master
         if (empty($active_recordings) ){*/
 
         $daemon = new RESTClient(Config::get('daemon_api_url'));
-        $daemon->resource('recorder_task')->ids($user_rec_id)->delete();
+        try{
+            $daemon->resource('recorder_task')->ids($user_rec_id)->delete();
+        }catch (Exception $exception){
+            $this->parseException($exception);
+        }
 
         Mysql::getInstance()->update('users_rec',
                                  array(
@@ -363,7 +372,13 @@ class StreamRecorder extends Master
 
             //return $this->clients[$file_record['storage_name']]->stopRecording($file_record['id']);
             var_dump($file_record, $this->clients);
-            return $this->clients[$file_record['storage_name']]->resource('recorder')->ids($file_record['id'])->update();
+
+            try{
+                return $this->clients[$file_record['storage_name']]->resource('recorder')->ids($file_record['id'])->update();
+            }catch(Exception $exception){
+                $this->parseException($exception);
+                return false;
+            }
         }
         //}
 

@@ -71,9 +71,20 @@ class Recorder extends Storage
 
         $pid = intval(file_get_contents($pid_file));
 
-        unlink($pid_file);
+        if (posix_kill($pid, 0)){
+            $kill_result = posix_kill($pid, 15);
 
-        return posix_kill($pid, 15);
+            if (!$kill_result){
+                throw new IOException('Kill pid "'.$pid.'" failed on '.$this->storage_name.': '.posix_strerror(posix_get_last_error()));
+            }
+
+            unlink($pid_file);
+            return $kill_result;
+
+        }else{
+            unlink($pid_file);
+            return true;
+        }
     }
 
     /**
