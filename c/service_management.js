@@ -98,7 +98,7 @@
         this.set_active_row = function(num){
             this.superclass.set_active_row.call(this, num);
 
-            if (this.data_items[this.cur_row].optional && !this.data_items[this.cur_row].subscribed){
+            if (this.data_items[this.cur_row].optional && !this.data_items[this.cur_row].subscribed && stb.profile['allow_subscription_from_stb']){
                 this.color_buttons.get('green').enable();
                 this.color_buttons.get('red').disable();
             }else if (this.data_items[this.cur_row].optional && this.data_items[this.cur_row].subscribed){
@@ -112,6 +112,10 @@
 
         this.action = function(){
             _debug('service_management.action');
+
+            if (!stb.profile['allow_subscription_from_stb']){
+                return;
+            }
 
             if (this.data_items[this.cur_row].optional && !this.data_items[this.cur_row].subscribed){
                 this.subscribe();

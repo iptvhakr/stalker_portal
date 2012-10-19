@@ -335,6 +335,8 @@ class Stb
 
         $profile['logarithm_volume_control'] = Config::getSafe('logarithm_volume_control', false);
 
+        $profile['allow_subscription_from_stb'] = Config::getSafe('allow_subscription_from_stb', true);
+
         return $profile;
     }
 
