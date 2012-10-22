@@ -735,7 +735,7 @@ class Epg
 
         //var_dump($cur_num_day);
 
-        for ($i=0; $i<=13; $i++){
+        for ($i=0; $i<=20; $i++){
             $w_day   = date("d", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year));
             $w_month = date("n", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year))-1;
             $week_days[$i]['f_human'] = $week_short_arr[$i % 7].' '.$w_day.' '.$month_arr[$w_month];
