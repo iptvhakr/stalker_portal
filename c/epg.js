@@ -228,7 +228,7 @@
             (function(){
                 this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
                 //this.parent.show(true);
-                this.parent._show.call(this.parent, this.parent.load_params['genre']);
+                this.parent._show.call(this.parent, this.parent.genre);
                 this.hide();
             }).bind(key.EXIT, this);
             
