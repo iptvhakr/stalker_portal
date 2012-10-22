@@ -337,6 +337,8 @@ class Stb
 
         $profile['allow_subscription_from_stb'] = Config::getSafe('allow_subscription_from_stb', true);
 
+        $profile['deny_720p_gmode_on_mag200'] = Config::getSafe('deny_720p_gmode_on_mag200', false);
+
         return $profile;
     }
 

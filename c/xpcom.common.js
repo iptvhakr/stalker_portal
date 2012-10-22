@@ -647,6 +647,16 @@ function common_xpcom(){
 
         _debug('this.user:', user_data);
 
+        _debug('this.user[deny_720p_gmode_on_mag200]', this.user['deny_720p_gmode_on_mag200']);
+        _debug('this.type', this.type);
+        _debug('screen.height', screen.height);
+
+        if (this.user['deny_720p_gmode_on_mag200'] && this.type == 'MAG200' && screen.height >= 720){
+            stb.ExecAction('graphicres 720');
+            _debug('Reboot');
+            stb.ExecAction('reboot');
+        }
+
         screensaver.init();
 
         var cut_type = this.type.indexOf('AuraHD') != -1 ? 'AuraHD' : this.type;
@@ -983,6 +993,7 @@ function common_xpcom(){
             if (res["r"+gres]){
 
                 resolution_prefix = res["r"+gres].prefix;
+                _debug('resolution_prefix', resolution_prefix);
 
                 window.resizeTo(res["r"+gres].window_w, res["r"+gres].window_h);
 
