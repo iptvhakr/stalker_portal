@@ -2218,8 +2218,8 @@ player.prototype.bind = function(){
     
     this.show_info.bind(key.INFO, self);
     
-    this.move_pos.bind(key.FFWD, this, 1);
-    this.move_pos.bind(key.REW, this, -1);
+    this.move_pos.bind(key.FFWD, this, 1).bind(key.RIGHT, this, 1);
+    this.move_pos.bind(key.REW, this, -1).bind(key.LEFT, this, -1);
     
     (function(){
         
@@ -2267,13 +2267,13 @@ player.prototype.bind = function(){
         if (this.on){
             this.volume.control(1);
         }
-    }).bind(key.VOL_UP, this).bind(key.RIGHT, this, 1);
+    }).bind(key.VOL_UP, this);
     
     (function(){
         if (this.on){
             this.volume.control(-1);
         }
-    }).bind(key.VOL_DOWN, this).bind(key.LEFT, this, -1);
+    }).bind(key.VOL_DOWN, this);
     
     
     (function(){
