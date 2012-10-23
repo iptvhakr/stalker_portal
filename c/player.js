@@ -2219,6 +2219,7 @@ player.prototype.bind = function(){
     this.show_info.bind(key.INFO, self);
     
     this.move_pos.bind(key.FFWD, this, 1).bind(key.RIGHT, this, 1);
+
     this.move_pos.bind(key.REW, this, -1).bind(key.LEFT, this, -1);
     
     (function(){
