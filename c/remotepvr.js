@@ -202,7 +202,7 @@
         this.rec_switch = function(ch){
             _debug('remote_pvr.rec_switch', ch);
 
-            if (!ch['mc_cmd']){
+            if (!ch['allow_pvr']){
                 stb.notice.show(get_word('channel_recording_restricted'));
                 return;
             }

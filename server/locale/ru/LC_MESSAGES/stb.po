@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-17 16:36+0200\n"
-"PO-Revision-Date: 2012-10-17 16:36+0200\n"
+"POT-Creation-Date: 2012-10-23 10:27+0200\n"
+"PO-Revision-Date: 2012-10-23 10:27+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -108,7 +108,7 @@ msgid "Load EPG"
 msgstr "Загрузить EPG"
 
 #: ../../../administrator/add_epg.php:401
-#: ../../../administrator/add_itv.php:1435
+#: ../../../administrator/add_itv.php:1452
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
 #: ../../../administrator/add_radio.php:272
@@ -199,19 +199,19 @@ msgid "Add"
 msgstr "Добавить"
 
 #: ../../../administrator/add_itv.php:851
-#: ../../../administrator/add_itv.php:1200
+#: ../../../administrator/add_itv.php:1209
 #: ../../../administrator/add_radio.php:160
 #: ../../../administrator/add_radio.php:236
 msgid "Number"
 msgstr "Номер"
 
 #: ../../../administrator/add_itv.php:852
-#: ../../../administrator/add_itv.php:1393
+#: ../../../administrator/add_itv.php:1410
 msgid "Service code"
 msgstr "Код услуги"
 
 #: ../../../administrator/add_itv.php:853
-#: ../../../administrator/add_itv.php:1208
+#: ../../../administrator/add_itv.php:1217
 #: ../../../administrator/add_karaoke.php:803
 #: ../../../administrator/add_moderator_mac.php:132
 #: ../../../administrator/add_moderator_mac.php:205
@@ -227,7 +227,7 @@ msgid "URL"
 msgstr "URL"
 
 #: ../../../administrator/add_itv.php:855
-#: ../../../administrator/add_itv.php:1271
+#: ../../../administrator/add_itv.php:1280
 #: ../../../administrator/add_karaoke.php:849
 #: ../../../administrator/add_video.php:1995
 #: ../../../administrator/add_video.php:2004
@@ -241,7 +241,7 @@ msgid "Archive"
 msgstr "Архив"
 
 #: ../../../administrator/add_itv.php:857
-#: ../../../administrator/add_itv.php:1401
+#: ../../../administrator/add_itv.php:1418
 #: ../../../administrator/add_radio.php:262
 #: ../../../administrator/add_video.php:842
 #: ../../../administrator/add_video.php:2071
@@ -258,73 +258,77 @@ msgstr "Жалобы на<br>видео/аудио/epg"
 msgid "Do you really want to reset claims counter?"
 msgstr "Вы действительно хотите сбросить счетчик жалоб?"
 
-#: ../../../administrator/add_itv.php:1109
+#: ../../../administrator/add_itv.php:1118
 msgid "monitoring off"
 msgstr "не мониторится"
 
-#: ../../../administrator/add_itv.php:1115
+#: ../../../administrator/add_itv.php:1124
 msgid "more than an hour ago"
 msgstr "больше часа назад"
 
-#: ../../../administrator/add_itv.php:1119
+#: ../../../administrator/add_itv.php:1128
 msgid "less than a minute ago"
 msgstr "меньше минуты назад"
 
-#: ../../../administrator/add_itv.php:1122
+#: ../../../administrator/add_itv.php:1131
 msgid "minutes ago"
 msgstr "minutes ago"
 
-#: ../../../administrator/add_itv.php:1170
+#: ../../../administrator/add_itv.php:1179
 msgid "Error deleting a logo"
 msgstr "Ошибка при удалении лого"
 
-#: ../../../administrator/add_itv.php:1231
+#: ../../../administrator/add_itv.php:1240
 #: ../../../administrator/add_video.php:1920
 msgid "Age restriction"
 msgstr "Ограничение по возрасту"
 
-#: ../../../administrator/add_itv.php:1247
+#: ../../../administrator/add_itv.php:1256
 msgid "Base channel"
 msgstr "Базовый канал"
 
-#: ../../../administrator/add_itv.php:1255
+#: ../../../administrator/add_itv.php:1264
 msgid "Bonus channel"
 msgstr "Бонусный канал"
 
-#: ../../../administrator/add_itv.php:1263
+#: ../../../administrator/add_itv.php:1272
 msgid "Price"
 msgstr "Цена"
 
-#: ../../../administrator/add_itv.php:1309
+#: ../../../administrator/add_itv.php:1318
 msgid "Links"
 msgstr "Ссылки"
 
-#: ../../../administrator/add_itv.php:1328
+#: ../../../administrator/add_itv.php:1337
 msgid "URL for recording (multicast)"
 msgstr "Адрес для записи (мультикаст)"
 
-#: ../../../administrator/add_itv.php:1336
+#: ../../../administrator/add_itv.php:1345
 msgid "Enable TV archive"
 msgstr "Вести ТВ архив"
 
-#: ../../../administrator/add_itv.php:1385
+#: ../../../administrator/add_itv.php:1370
+msgid "Allow nPVR"
+msgstr "Разрешить nPVR"
+
+#: ../../../administrator/add_itv.php:1402
 msgid "EPG correction"
 msgstr "Коррекция EPG"
 
-#: ../../../administrator/add_itv.php:1385
+#: ../../../administrator/add_itv.php:1402
 #: ../../../administrator/add_video.php:2042
 msgid "min"
 msgstr "мин"
 
-#: ../../../administrator/add_itv.php:1409
+#: ../../../administrator/add_itv.php:1426
 msgid "Comments"
 msgstr "Комментарии"
 
-#: ../../../administrator/add_itv.php:1425
+#: ../../../administrator/add_itv.php:1442
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../../../administrator/add_itv.php:1435
+#: ../../../administrator/add_itv.php:1452
 #: ../../../administrator/add_video.php:595
 msgid "Cancel"
 msgstr "Отмена"
@@ -3427,11 +3431,11 @@ msgstr "идет запись"
 msgid "scheduled"
 msgstr "запланировано"
 
-#: ../../../lib/streamrecorder.class.php:125
+#: ../../../lib/streamrecorder.class.php:130
 msgid "Starting recording"
 msgstr "Начинается запись"
 
-#: ../../../lib/streamrecorder.class.php:411
+#: ../../../lib/streamrecorder.class.php:426
 msgid "Stopped recording"
 msgstr "Остановлена запись"
 

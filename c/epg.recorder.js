@@ -21,8 +21,8 @@
 
             _debug('channel', channel);
 
-            if (!channel.mc_cmd){
-                _debug('channel.mc_cmd', channel.mc_cmd);
+            if (!channel.allow_pvr){
+                _debug('channel.allow_pvr', channel.allow_pvr);
                 return;
             }
 

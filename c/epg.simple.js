@@ -379,7 +379,7 @@
                 }
                 
             }else{
-                if (module.remote_pvr && this.channel.mc_cmd){
+                if (module.remote_pvr && this.channel.allow_pvr){
                     this.color_buttons.get('red').enable();
                 }else{
                     this.color_buttons.get('red').disable();

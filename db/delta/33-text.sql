@@ -41,4 +41,8 @@ ALTER TABLE `services_package` MODIFY `description` text;
 
 ALTER TABLE `users` MODIFY `comment` text;
 
+ALTER TABLE `itv` ADD `allow_pvr` tinyint default 0;
+
+UPDATE `itv` SET allow_pvr=1 WHERE mc_cmd!='';
+
 --//@UNDO

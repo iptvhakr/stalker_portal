@@ -59,6 +59,8 @@ if (!$error){
 
     $enable_monitoring = @intval($_POST['enable_monitoring']);
 
+    $allow_pvr = @intval($_POST['allow_pvr']);
+
     $enable_wowza_load_balancing = @intval($_POST['enable_wowza_load_balancing']);
 
     if (@$_POST['base_ch'] == 'on'){
@@ -107,6 +109,17 @@ if (!$error){
     }
 
 
+    $mc_cmd = @$_POST['mc_cmd'];
+
+    if (empty($mc_cmd)){
+        foreach ($links  as $link){
+            if ((strpos($link['url'], 'rtp://') !== false || strpos($link['url'], 'udp://') !== false) && preg_match("/(\S+:\/\/\S+)/", $link['url'], $match)){
+                $mc_cmd = $match[1];
+                break;
+            }
+        }
+    }
+
     if (@$_GET['save'] && !$error && !empty($_POST)){
     
         if(@$_GET['name'] && @$_POST['tv_genre_id'] > 0){
@@ -147,6 +160,7 @@ if (!$error){
                                         mc_cmd,
                                         enable_wowza_load_balancing,
                                         enable_tv_archive,
+                                        allow_pvr,
                                         enable_monitoring,
 
                                         descr,
@@ -171,9 +185,10 @@ if (!$error){
                                         '".@$_POST['cmd_1']."',
                                         '".@$_POST['cmd_2']."',
                                         '".@$_POST['cmd_3']."',
-                                        '".@$_POST['mc_cmd']."',
+                                        '".$mc_cmd."',
                                         '".$enable_wowza_load_balancing."',
                                         '".$enable_tv_archive."',
+                                        '".$allow_pvr."',
                                         '".$enable_monitoring."',
 
                                         '".@$_POST['descr']."',
@@ -277,9 +292,10 @@ if (!$error){
                                 cmd_1='".@$_POST['cmd_1']."',
                                 cmd_2='".@$_POST['cmd_2']."',
                                 cmd_3='".@$_POST['cmd_3']."',
-                                mc_cmd='".$_POST['mc_cmd']."',
+                                mc_cmd='".$mc_cmd."',
                                 enable_wowza_load_balancing='".$enable_wowza_load_balancing."',
                                 enable_tv_archive='".$enable_tv_archive."',
+                                allow_pvr='".$allow_pvr."',
                                 enable_monitoring='".$enable_monitoring."',
 
                                 wowza_tmp_link='".$wowza_tmp_link."',
@@ -810,6 +826,25 @@ a:hover{
             $('#form_').get(0).reset();
             document.location.href = 'add_itv.php#form';
         });
+
+        $('#mc_cmd').on('input', null, null, function(eventObject){
+
+            if (eventObject.currentTarget.value.indexOf('rtp://') != -1 || eventObject.currentTarget.value.indexOf('udp://') != -1){
+                $('#enable_tv_archive').removeAttr('disabled');
+                $('#allow_pvr').removeAttr('disabled');
+            }else{
+                $('#enable_tv_archive').attr('disabled', 'disabled');
+                $('#allow_pvr').attr('disabled', 'disabled');
+            }
+        });
+
+        if ($('#mc_cmd').val().indexOf('rtp://') != -1 || $('#mc_cmd').val().indexOf('udp://') != -1){
+            $('#enable_tv_archive').removeAttr('disabled');
+            $('#allow_pvr').removeAttr('disabled');
+        }else{
+            $('#enable_tv_archive').attr('disabled', 'disabled');
+            $('#allow_pvr').attr('disabled', 'disabled');
+        }
     });
 </script>
 </head>
@@ -941,6 +976,7 @@ if (@$_GET['edit']){
         $wowza_tmp_link    = $arr['wowza_tmp_link'];
         $wowza_dvr = $arr['wowza_dvr'];
         $enable_tv_archive = $arr['enable_tv_archive'];
+        $allow_pvr = $arr['allow_pvr'];
         $enable_monitoring = $arr['enable_monitoring'];
         $monitoring_url = $arr['monitoring_url'];
         $enable_wowza_load_balancing = $arr['enable_wowza_load_balancing'];
@@ -960,6 +996,10 @@ if (@$_GET['edit']){
 
         if ($enable_tv_archive){
             $checked_enable_tv_archive = 'checked';
+        }
+
+        if ($allow_pvr){
+            $checked_allow_pvr = 'checked';
         }
 
         if ($enable_monitoring){
@@ -1040,6 +1080,10 @@ if (@$_GET['edit']){
 
     if (@$_POST['enable_tv_archive']){
         $checked_enable_tv_archive = 'checked';
+    }
+
+    if (@$_POST['allow_pvr']){
+        $checked_allow_pvr = 'checked';
     }
 
     if (@$_POST['enable_monitoring']){
@@ -1355,6 +1399,14 @@ function delete_logo(id){
                 </select>
             </span>
            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <?= _('Allow nPVR')?>:
+            </td>
+            <td>
+                <input name="allow_pvr" id="allow_pvr" type="checkbox" value="1" <? echo @$checked_allow_pvr ?> >
+            </td>
         </tr>
         <!--<tr>
            <td align="right">

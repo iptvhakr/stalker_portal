@@ -283,7 +283,7 @@ class TvArchive extends Master
         $task = array(
             'id'             => $task_id,
             'ch_id'          => $channel['id'],
-            'cmd'            => empty($channel['mc_cmd']) ?  $channel['cmd'] : $channel['mc_cmd'],
+            'cmd'            => $channel['mc_cmd'],
             'parts_number'   => Config::get('tv_archive_parts_number')
         );
 
