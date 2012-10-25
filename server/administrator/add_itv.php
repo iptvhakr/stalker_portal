@@ -529,7 +529,7 @@ function get_screen_name($addr){
 }
 
 $tv_archive = new TvArchive();
-$storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0, 'fake_tv_archive' => 0))->get()->all();
+$storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0))->get()->all();
 
 if (!empty($_GET['id'])){
 

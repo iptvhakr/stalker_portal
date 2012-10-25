@@ -16,7 +16,7 @@ class RESTCommandTvArchive extends RESTCommand
             throw new ErrorException('Empty storage name');
         }
 
-        return $this->manager->getAllTasks($ids[0]);
+        return $this->manager->getAllTasks($ids[0], true);
     }
 
     public function update(RESTRequest $request){

@@ -225,7 +225,7 @@ class TvArchive extends Master
 
         $storages = array();
 
-        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0, 'fake_tv_archive' => 0))->get()->all();
+        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0))->get()->all();
 
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;
@@ -278,6 +278,10 @@ class TvArchive extends Master
             return false;
         }
 
+        if (!empty($force_storage) && array_key_exists($force_storage, $this->storages) && $this->storages[$force_storage]['fake_tv_archive'] == 1){
+            return true;
+        }
+
         $channel = Itv::getChannelById($ch_id);
 
         $task = array(
@@ -300,15 +304,29 @@ class TvArchive extends Master
 
         Mysql::getInstance()->delete('tv_archive', array('ch_id' => $ch_id));
 
+        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 1){
+            return true;
+        }
+
         return $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($ch_id)->delete();
     }
 
-    public function getAllTasks($storage_name = null){
+    public function getAllTasks($storage_name = null, $not_fake = false){
 
         if ($storage_name){
             $where = array('storage_name' => $storage_name);
         }else{
             $where = array();
+        }
+
+        $fake_storages = array();
+
+        if ($not_fake){
+            foreach ($this->storages as $storage_name => $storage){
+                if ($storage['fake_tv_archive'] == 1){
+                    $fake_storages[] = $storage_name;
+                }
+            }
         }
 
         $tasks = array();
@@ -322,9 +340,13 @@ class TvArchive extends Master
             ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, enable_tv_archive & wowza_dvr as wowza_archive, UNIX_TIMESTAMP("'.$archive_start.'") as start_timestamp, UNIX_TIMESTAMP("'.$archive_end.'") as stop_timestamp')
             ->from('tv_archive')
             ->join('itv', 'itv.id', 'tv_archive.ch_id', 'LEFT')
-            ->where($where)
-            ->get()
-            ->all();
+            ->where($where);
+
+        if (!empty($fake_storages)){
+            $raw_tasks = $raw_tasks->in('storage_name', $fake_storages, true);
+        }
+
+        $raw_tasks = $raw_tasks->get()->all();
 
         foreach ($raw_tasks as $task){
             $task['parts_number'] = Config::get('tv_archive_parts_number');
