@@ -50,6 +50,9 @@ if (count($_POST) > 0){
                 )
                 ";
     $rs=$db->executeQuery($sql);
+
+    Video::log((int) $_POST['id'], '<a href="msgs.php?task='.$task_id.'">'._('task open').'</a>', (int) $_POST['to_usr']);
+
     if (!$db->getLastError()){
         js_redirect('add_video.php', _('the task has been sent'));
     }else{

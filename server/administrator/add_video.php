@@ -130,6 +130,7 @@ if (isset($_GET['accessed']) && @$_GET['id']){
 }
 
 if (@$_GET['del']){
+    Video::log(intval(@$_GET['id']), _('video deleted'));
     $query = "delete from video where id=".intval(@$_GET['id']);
     $rs=$db->executeQuery($query);
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);

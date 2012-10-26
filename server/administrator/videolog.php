@@ -140,8 +140,8 @@ echo get_video_name();
 echo "<table class='list' cellpadding='3' cellspacing='0' width='620'>\n";
 echo "<tr>";
 echo "<td class='list'><b>"._('Date')."</b></td>\n";
+echo "<td class='list'><b>"._('Stb action')."</b></td>\n";
 echo "<td class='list'><b>"._('Moderator')."</b></td>\n";
-echo "<td class='list'><b>"._('Action')."</b></td>\n";
 echo "</tr>\n";
 while(@$rs->next()){
     
@@ -149,8 +149,8 @@ while(@$rs->next()){
     
     echo "<tr>";
     echo "<td class='list' nowrap>".$arr['actiontime']."</td>\n";
-    echo "<td class='list'>".$arr['login']."</td>\n";
     echo "<td class='list'>".$arr['action']."</td>\n";
+    echo "<td class='list'>".$arr['login']."</td>\n";
     echo "</tr>\n";
 }
 echo "</table>\n";

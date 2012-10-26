@@ -66,12 +66,19 @@ class Video
         return true;
     }
 
-    public static function log($video_id, $text){
+    public static function log($video_id, $text, $moderator_id = null){
+
+        if ($moderator_id === null){
+            $moderator_id = $_SESSION['uid'];
+        }
+
+        $video = self::getById($video_id);
 
         return Mysql::getInstance()->insert('video_log', array(
             'action'       =>  $text,
-            'video_id'     => intval($video_id),
-            'moderator_id' => @intval($_SESSION['uid']),
+            'video_id'     => $video_id,
+            'video_name'   => $video['name'],
+            'moderator_id' => $moderator_id,
             'actiontime'   => 'NOW()'
         ))->insert_id();
     }

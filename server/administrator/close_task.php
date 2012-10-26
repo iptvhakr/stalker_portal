@@ -14,10 +14,11 @@ moderator_access();
 
 if (@$_GET['id']){
     $task_id = intval($_GET['id']);
-    
+
     $sql = "select * from moderator_tasks where id=$task_id";
     $rs  = $db->executeQuery($sql);
     $moderator_id = $rs->getValueByName(0, 'to_usr');
+    //$moderator_id = $_SESSION['uid'];
     $video_id = $rs->getValueByName(0, 'media_id');
     
     $action = "<a href=\'msgs.php?task=$task_id\'>"._('task done')."</a>";

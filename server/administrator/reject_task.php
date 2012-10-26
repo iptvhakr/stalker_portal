@@ -8,13 +8,28 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
+//$db = new Database();
 
 moderator_access();
 
 if (@$_GET['id']){
-    $sql = "update moderator_tasks set ended=1, rejected=1, end_time=NOW() where id=".$_GET['id'];
-    $rs=$db->executeQuery($sql);
+
+    $task_id = (int) $_GET['id'];
+
+    $task = Mysql::getInstance()->from('moderator_tasks')->where(array('id' => $task_id))->get()->first();
+
+    if (!empty($task) && $task['ended'] == 0){
+        Mysql::getInstance()->update('moderator_tasks',
+            array(
+                'ended'    => 1,
+                'rejected' => 1,
+                'end_time' => 'NOW()'
+            ),
+            array('id' => $task_id));
+
+        Video::log($task['media_id'], '<a href="msgs.php?task='.$task_id.'">'._('task rejected').'</a>');
+    }
+
     if (@$_GET['send_to']){
         header("Location: send_to.php?id=".$_GET['send_to']);
     }else{

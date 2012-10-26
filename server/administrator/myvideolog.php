@@ -72,6 +72,13 @@ a:hover{
     <br>
     </td>
 </tr>
+    <tr>
+        <td>
+           <form>
+               <input type="text" name="search" value="<?= !empty($_GET['search']) ? $_GET['search'] : '' ?>"><input type="submit" value="<?= _('Search')?>">
+           </form>
+        </td>
+    </tr>
 </table>
 
 <?
@@ -94,7 +101,7 @@ function page_bar(){
 
     for($i = 1; $i <= $total_pages; $i++){
         if(($i-1) != $page){
-            $page_bar .= ' <a href="?page='.($i-1).'">'.$i.'</a> |';
+            $page_bar .= ' <a href="?page='.($i-1).(!empty($_GET['search']) ? '&search='.$_GET['search'] : '').'">'.$i.'</a> |';
         }
         else
         {
@@ -109,7 +116,20 @@ $where = '';
 $id = intval(@$_GET['id']);
 
 //$where .= " where video_id=$id";
-$where .= " where moderator_id=".$_SESSION['uid'];
+
+if (!check_access(array(1))){
+    $where .= " where moderator_id=".$_SESSION['uid'];
+}
+
+if (!empty($_GET['search'])){
+    if (empty($where)){
+        $where .= " where ";
+    }else{
+        $where .= " and ";
+    }
+
+    $where .= 'video_name like "%'.$_GET['search'].'%"';
+}
 
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
@@ -140,7 +160,8 @@ while(@$rs->next()){
     
     echo "<tr>";
     echo "<td class='list' nowrap>".$arr['actiontime']."</td>\n";
-    echo "<td class='list'>".get_video_name($arr['video_id'])."</td>\n";
+    //echo "<td class='list'>".get_video_name($arr['video_id'])."</td>\n";
+    echo "<td class='list'>".$arr['video_name']."</td>\n";
     echo "<td class='list'>".$arr['login']."</td>\n";
     echo "<td class='list'>".$arr['action']."</td>\n";
     echo "</tr>\n";
