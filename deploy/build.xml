@@ -44,10 +44,31 @@
 
         <exec command="stop stalkerd"/>
 
+        <property
+                name="nodejs.bin"
+                value="nodejs"/>
+
+        <exec command="${nodejs.bin} -v" level="info" outputProperty="nodejs_bin_probe.error.msg" returnProperty="nodejs_bin_probe.error.code"/>
+
+        <if>
+            <not>
+                <equals arg1="${nodejs_bin_probe.error.code}" arg2="0"/>
+            </not>
+            <then>
+                <echo msg="${nodejs_bin_probe.error.msg}" level="info"/>
+                <echo msg="using node as binary" level="info"/>
+                <property
+                        name="nodejs.bin"
+                        value="node"
+                        override="true"/>
+            </then>
+        </if>
+
         <copy file="./src/stalkerd.conf" tofile="/etc/init/stalkerd.conf" overwrite="true">
             <filterchain>
                 <replacetokens>
                     <token key="STALKERD_INDEX_PATH" value="${project_path}/daemon/index.js"/>
+                    <token key="NODEJS_BIN" value="${nodejs.bin}"/>
                 </replacetokens>
             </filterchain>
         </copy>
