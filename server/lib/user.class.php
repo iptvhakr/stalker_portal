@@ -184,7 +184,7 @@ class User
         }
 
         $packages = Mysql::getInstance()
-            ->select('package_in_plan.*, services_package.name as name, services_package.external_id as external_id, services_package.description as description')
+            ->select('package_in_plan.*, services_package.name as name, services_package.type as type, services_package.external_id as external_id, services_package.description as description')
             ->from('package_in_plan')
             ->join('services_package', 'services_package.id', 'package_in_plan.package_id', 'INNER')
             ->where(array('plan_id' => $plan['id']))

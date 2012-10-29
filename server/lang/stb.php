@@ -366,6 +366,10 @@ $words['confirm_service_unsubscribe_text'] = _('Are you really want to unsubscri
 
 $words['service_subscribe_success'] = _('You have successfully subscribed to the service.');
 $words['service_unsubscribe_success'] = _('You have successfully unsubscribed from the service.');
+
+$words['service_subscribe_success_reboot'] = _('You have successfully subscribed to the service.  STB will be rebooted.');
+$words['service_unsubscribe_success_reboot'] = _('You have successfully unsubscribed from the service. STB will be rebooted.');
+
 $words['service_subscribe_fail'] = _('An error in the management of subscriptions.');
 
 $words['Account number'] = _('Account number');

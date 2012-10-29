@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-26 11:26+0200\n"
-"PO-Revision-Date: 2012-10-26 11:26+0200\n"
+"POT-Creation-Date: 2012-10-29 11:57+0200\n"
+"PO-Revision-Date: 2012-10-29 11:59+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -435,7 +435,7 @@ msgstr "MAC адреса модераторов"
 msgid "RADIO channels"
 msgstr "РАДИО каналы"
 
-#: ../../../administrator/add_video.php:135
+#: ../../../administrator/add_video.php:133
 msgid "video deleted"
 msgstr "видео удалено"
 
@@ -1190,7 +1190,7 @@ msgstr "Мои сообщения"
 msgid "Movie log"
 msgstr "Видео лог"
 
-#: ../../../administrator/myvideolog.php:134
+#: ../../../administrator/myvideolog.php:154
 msgid "Moderator"
 msgstr "Модератор"
 
@@ -2697,7 +2697,7 @@ msgid "EXIT"
 msgstr "ВЫХОД"
 
 #: ../../../lang/stb.php:251
-#: ../../../lang/stb.php:394
+#: ../../../lang/stb.php:398
 msgid "YES"
 msgstr "ДА"
 
@@ -3001,75 +3001,83 @@ msgstr "Вы успешно подключили данную услугу."
 msgid "You have successfully unsubscribed from the service."
 msgstr "Вы успешно отключили данную услугу."
 
-#: ../../../lang/stb.php:369
+#: ../../../lang/stb.php:370
+msgid "You have successfully subscribed to the service.  STB will be rebooted."
+msgstr "Вы успешно подключили данную услугу. Приставка будет перезагружена."
+
+#: ../../../lang/stb.php:371
+msgid "You have successfully unsubscribed from the service. STB will be rebooted."
+msgstr "Вы успешно отключили данную услугу. Приставка будет перезагружена."
+
+#: ../../../lang/stb.php:373
 msgid "An error in the management of subscriptions."
 msgstr "Ошибка во время управления услугами."
 
-#: ../../../lang/stb.php:373
+#: ../../../lang/stb.php:377
 msgid "End date"
 msgstr "Окончание действия"
 
-#: ../../../lang/stb.php:376
+#: ../../../lang/stb.php:380
 msgid "3D mode"
 msgstr "3D режим"
 
-#: ../../../lang/stb.php:378
+#: ../../../lang/stb.php:382
 msgid "mode {0}"
 msgstr "режим {0}"
 
-#: ../../../lang/stb.php:380
+#: ../../../lang/stb.php:384
 msgid "no epg"
 msgstr "отсутствует программа передач"
 
-#: ../../../lang/stb.php:381
+#: ../../../lang/stb.php:385
 msgid "wrong epg"
 msgstr "программа передач не соответствует"
 
-#: ../../../lang/stb.php:383
+#: ../../../lang/stb.php:387
 msgid "Part"
 msgstr "Раздел"
 
-#: ../../../lang/stb.php:385
+#: ../../../lang/stb.php:389
 msgid "Channel not available"
 msgstr "Канал недоступен"
 
-#: ../../../lang/stb.php:386
+#: ../../../lang/stb.php:390
 msgid "Channel temporary available"
 msgstr "Канал временно недоступен"
 
-#: ../../../lang/stb.php:387
+#: ../../../lang/stb.php:391
 msgid "Channel not available for this region"
 msgstr "Канал недоступен для данного региона"
 
-#: ../../../lang/stb.php:388
+#: ../../../lang/stb.php:392
 msgid "Channel not available. Server error."
 msgstr "Канал недоступен. Ошибка сервера."
 
-#: ../../../lang/stb.php:390
+#: ../../../lang/stb.php:394
 msgid "Account info"
 msgstr "Информация"
 
-#: ../../../lang/stb.php:391
+#: ../../../lang/stb.php:395
 msgid "Payment"
 msgstr "Продлить"
 
-#: ../../../lang/stb.php:393
+#: ../../../lang/stb.php:397
 msgid "Continue playing?"
 msgstr "Программа заканчивается. Продолжить воспроизведение?"
 
-#: ../../../lang/stb.php:395
+#: ../../../lang/stb.php:399
 msgid "NO"
 msgstr "НЕТ"
 
-#: ../../../lang/stb.php:397
+#: ../../../lang/stb.php:401
 msgid "Do you want to quit the Time Shift mode?"
 msgstr "Выйти из режима Time Shift?"
 
-#: ../../../lang/stb.php:399
+#: ../../../lang/stb.php:403
 msgid "by name"
 msgstr "по названию"
 
-#: ../../../lang/stb.php:400
+#: ../../../lang/stb.php:404
 msgid "by date"
 msgstr "по дате"
 

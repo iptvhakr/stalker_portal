@@ -31,6 +31,7 @@
             this.superclass.init.apply(this);
 
             this.confirm_dialog = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('confirm_service_subscribe_text')});
+            this.confirm_dialog.getTextDomObj().style.textAlign = "center";
             this.confirm_dialog.enableOnExitClose();
             var scope = this;
 
@@ -48,12 +49,13 @@
                     "value" : get_word("yes_btn"),
                     "onclick" : function(){
                         scope.confirm_dialog.hide();
-                        scope.do_subscribe(scope.confirm_dialog.package_id);
+                        scope.do_subscribe(scope.confirm_dialog.tariff_package);
                     }
                 }
             ));
 
             this.confirm_unsubscribe_dialog = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('confirm_service_unsubscribe_text')});
+            this.confirm_unsubscribe_dialog.getTextDomObj().style.textAlign = "center";
             this.confirm_unsubscribe_dialog.enableOnExitClose();
 
             this.confirm_unsubscribe_dialog.addItem(new ModalFormButton(
@@ -70,20 +72,27 @@
                     "value" : get_word("yes_btn"),
                     "onclick" : function(){
                         scope.confirm_unsubscribe_dialog.hide();
-                        scope.do_unsubscribe(scope.confirm_unsubscribe_dialog.package_id);
+                        scope.do_unsubscribe(scope.confirm_unsubscribe_dialog.tariff_package);
                     }
                 }
             ));
 
 
-            this.complete_confirm = new ModalForm({"title" : get_word('notice_form_title'), "text" : get_word('service_subscribe_success')});
+            this.complete_confirm = new ModalForm({"title" : get_word('notice_form_title'), "text" : get_word('service_subscribe_success_reboot')});
             this.complete_confirm.enableOnExitClose();
-
+            this.complete_confirm.getTextDomObj().style.textAlign = "center";
             this.complete_confirm.addItem(new ModalFormButton(
                 {
                     "value" : get_word("ok_btn"),
                     "onclick" : function(){
                         scope.complete_confirm.hide();
+
+                        _debug('scope.complete_confirm.need_reboot', scope.complete_confirm.need_reboot);
+
+                        if (scope.complete_confirm.need_reboot){
+                            scope.hide();
+                            stb.ExecAction('reboot');
+                        }
                     }
                 }
             ));
@@ -130,7 +139,7 @@
             var self = this;
 
             this.password_input.callback = function(){
-                self.confirm_dialog.package_id = self.data_items[self.cur_row].package_id;
+                self.confirm_dialog.tariff_package = self.data_items[self.cur_row];
                 self.confirm_dialog.show();
             };
 
@@ -143,20 +152,20 @@
             var self = this;
 
             this.password_input.callback = function(){
-                self.confirm_unsubscribe_dialog.package_id = self.data_items[self.cur_row].package_id;
+                self.confirm_unsubscribe_dialog.tariff_package = self.data_items[self.cur_row];
                 self.confirm_unsubscribe_dialog.show();
             };
 
             this.password_input.show();
         };
 
-        this.do_subscribe = function(package_id){
-            _debug('service_management.do_subscribe', package_id);
+        this.do_subscribe = function(tariff_package){
+            _debug('service_management.do_subscribe', tariff_package);
 
             stb.load({
                     "type"   : "account",
                     "action" : "subscribe_to_package",
-                    "package_id" : package_id
+                    "package_id" : tariff_package.package_id
                 },
 
                 function(result){
@@ -165,8 +174,15 @@
                     this.load_data();
 
                     if (result){
-                        this.complete_confirm.show(get_word('service_subscribe_success'));
+                        if (tariff_package.type == 'module'){
+                            this.complete_confirm.need_reboot = true;
+                            this.complete_confirm.show(get_word('service_subscribe_success_reboot'));
+                        }else{
+                            this.complete_confirm.need_reboot = false;
+                            this.complete_confirm.show(get_word('service_subscribe_success'));
+                        }
                     }else{
+                        this.complete_confirm.need_reboot = false;
                         this.complete_confirm.show(get_word('service_subscribe_fail'));
                     }
                 },
@@ -175,13 +191,13 @@
             );
         };
 
-        this.do_unsubscribe = function(package_id){
-            _debug('service_management.do_unsubscribe', package_id);
+        this.do_unsubscribe = function(tariff_package){
+            _debug('service_management.do_unsubscribe', tariff_package);
 
             stb.load({
                     "type"   : "account",
                     "action" : "unsubscribe_from_package",
-                    "package_id" : package_id
+                    "package_id" : tariff_package.package_id
                 },
 
                 function(result){
@@ -190,8 +206,15 @@
                     this.load_data();
 
                     if (result){
-                        this.complete_confirm.show(get_word('service_unsubscribe_success'));
+                        if (tariff_package.type == 'module'){
+                            this.complete_confirm.need_reboot = true;
+                            this.complete_confirm.show(get_word('service_unsubscribe_success_reboot'));
+                        }else{
+                            this.complete_confirm.need_reboot = false;
+                            this.complete_confirm.show(get_word('service_unsubscribe_success'));
+                        }
                     }else{
+                        this.complete_confirm.need_reboot = false;
                         this.complete_confirm.show(get_word('service_subscribe_fail'));
                     }
                 },
