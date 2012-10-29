@@ -64,6 +64,11 @@ class User
         return $this->profile['mac'];
     }
 
+    public function getExternalTariffId(){
+        $tariff_plan_id = $this->profile['tariff_plan_id'];
+        return Mysql::getInstance()->from('tariff_plan')->where(array('id' => $tariff_plan_id))->get()->first('external_id');
+    }
+
     public function getProfileParam($param){
         return $this->profile[$param];
     }
@@ -231,8 +236,20 @@ class User
             return false;
         }
 
-        if (!$force_no_check_billing){
-            // api hook place
+        if (!$force_no_check_billing && Config::exist('on_subscribe_hook_url')){
+
+            $on_subscribe_result = $this->onSubscribeHookResult();
+
+            var_dump($on_subscribe_result);
+
+            if ($on_subscribe_result === true){
+                return Mysql::getInstance()->insert('user_package_subscription', array(
+                    'user_id' => $this->id,
+                    'package_id' => $package_id
+                ))->insert_id();
+            }else{
+                return false;
+            }
         }
 
         return Mysql::getInstance()->insert('user_package_subscription', array(
@@ -255,8 +272,20 @@ class User
             return false;
         }
 
-        if (!$force_no_check_billing){
-            // api hook place
+        if (!$force_no_check_billing && Config::exist('on_unsubscribe_hook_url')){
+
+            $on_unsubscribe_result = $this->onSubscribeHookResult();
+
+            var_dump($on_unsubscribe_result);
+
+            if ($on_unsubscribe_result === true){
+                return Mysql::getInstance()->delete('user_package_subscription', array(
+                    'user_id' => $this->id,
+                    'package_id' => $package_id
+                ));
+            }else{
+                return false;
+            }
         }
 
         return Mysql::getInstance()->delete('user_package_subscription', array(
@@ -521,6 +550,49 @@ class User
         var_dump($info);
 
         return $info;
+    }
+
+    public function onSubscribeHookResult(){
+        return $this->onSubscriptionHookResult('on_subscribe_hook_url');
+    }
+
+    public function onUnsubscribeHookResult(){
+        return $this->onSubscriptionHookResult('on_unsubscribe_hook_url');
+    }
+
+    public function onSubscriptionHookResult($config_param){
+
+        if (!Config::exist($config_param)){
+            return false;
+        }
+
+        if (Config::get($config_param) == ''){
+            return false;
+        }
+
+        $url = Config::get($config_param).'?mac='.$this->getMac().'&tariff_id='.$this->getExternalTariffId();
+
+        var_dump($url);
+
+        $data = file_get_contents($url);
+
+        if (!$data){
+            return false;
+        }
+
+        $data = json_decode($data, true);
+
+        if (empty($data)){
+            return false;
+        }
+
+        var_dump($data);
+
+        if ($data['status'] != 'OK' || empty($data['results'])){
+            return false;
+        }
+
+        return $data['results'];
     }
 
     public function getLastChannelId(){
