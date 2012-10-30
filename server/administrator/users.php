@@ -423,8 +423,9 @@ $MAX_PAGE_ITEMS = 30;
 
 $where = '';
 if ($search){
-    $where = 'where mac like "%'.$search.'%" or ip like "%'.$search.'%" or login like "%'.$search.'%" or ls like "%'.$search.'%"';
+    $where = 'where mac like "%'.$search.'%" or ip like "%'.$search.'%" or login like "%'.$search.'%" or ls like "%'.$search.'%" or name like "%'.$search.'%" or fname like "%'.$search.'%"';
 }
+
 $from_time = construct_time();
 if ($from_time){
     $where .= "where last_active<='$from_time'";
