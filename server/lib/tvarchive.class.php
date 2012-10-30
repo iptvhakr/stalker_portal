@@ -284,10 +284,16 @@ class TvArchive extends Master
 
         $channel = Itv::getChannelById($ch_id);
 
+        if (preg_match("/(\S+:\/\/\S+)/", $channel['mc_cmd'], $match)){
+            $cmd = $match[1];
+        }else{
+            $cmd = $channel['mc_cmd'];
+        }
+
         $task = array(
             'id'             => $task_id,
             'ch_id'          => $channel['id'],
-            'cmd'            => $channel['mc_cmd'],
+            'cmd'            => $cmd,
             'parts_number'   => Config::get('tv_archive_parts_number')
         );
 
@@ -350,6 +356,11 @@ class TvArchive extends Master
 
         foreach ($raw_tasks as $task){
             $task['parts_number'] = Config::get('tv_archive_parts_number');
+
+            if (preg_match("/(\S+:\/\/\S+)/", $task['cmd'], $match)){
+                $task['cmd'] = $match[1];
+            }
+
             $tasks[] = $task;
         }
 
