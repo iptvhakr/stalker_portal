@@ -2218,9 +2218,9 @@ player.prototype.bind = function(){
     
     this.show_info.bind(key.INFO, self);
     
-    this.move_pos.bind(key.FFWD, this, 1).bind(key.RIGHT, this, 1);
+    this.move_pos.bind(key.FFWD, this, 1);
 
-    this.move_pos.bind(key.REW, this, -1).bind(key.LEFT, this, -1);
+    this.move_pos.bind(key.REW, this, -1);
     
     (function(){
         
@@ -2275,7 +2275,20 @@ player.prototype.bind = function(){
             this.volume.control(-1);
         }
     }).bind(key.VOL_DOWN, this);
-    
+
+
+    (function(dir){
+
+        _debug('stb.profile[enable_arrow_keys_setpos]', stb.profile['enable_arrow_keys_setpos']);
+        _debug('dir', dir);
+
+        if (stb.profile['enable_arrow_keys_setpos']){
+            this.move_pos(dir);
+        }else{
+            this.volume.control(dir);
+        }
+
+    }).bind(key.RIGHT, this, 1).bind(key.LEFT, this, -1);
     
     (function(){
         if (this.on){
