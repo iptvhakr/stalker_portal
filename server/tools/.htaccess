@@ -2,3 +2,6 @@
 	Order Allow,Deny
 	Deny from All
 </Files>
+<FilesMatch "^(auth_simple.php|on_subscribe.php|m3u.php)$">
+	Allow from All
+</FilesMatch>
