@@ -1,5 +1,5 @@
 * {margin:0; padding:0;}
-html, body {overflow: hidden; font-family:"Myriad Pro"; color:#fff; width:1920px; height:1080px; background:url(img/1080bg2.jpg) no-repeat;}
+html, body {overflow: hidden; font-family:"Myriad Pro"; color:#fff; width:1920px; height:1080px;}
 a {outline:none; text-decoration:none;}
 
 .container {position:absolute; height:990px; width:1920px; background:url(img/1080/bg.jpg) no-repeat;}
