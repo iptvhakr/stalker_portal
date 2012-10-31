@@ -718,6 +718,8 @@ function common_xpcom(){
 
                 this.locale = this.user.locale;
 
+                this.stb_lang = this.user.stb_lang;
+
                 this.aspect_idx = this.aspect_array.getIdxByVal('mode', this.user['aspect']);
 
                 this.check_additional_services(this.user['additional_services_on']);

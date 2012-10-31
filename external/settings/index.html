@@ -1,6 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<script language="JavaScript" src="js/main.js"></script>
 <script>
 main_lang="en";
 var all_lang=["ru","bg"];
@@ -17,7 +18,13 @@ cont=new Object();
 w=660;h=466;//высота, ширина
 a=40;b=30;//отступ
 try {var stb=gSTB;}catch(e){}
-main_lang = stb.RDir('getenv language');
+
+if (_GET.hasOwnProperty('language')){
+    main_lang = _GET['language'];
+}else{
+    main_lang = stb.RDir('getenv language');
+}
+
 if(main_lang=='')main_lang='en';
 var prof=new Object();
 
@@ -48,7 +55,7 @@ function t(par)
    return par;
 }
 </script>
-<script language="JavaScript" src="js/main.js"></script>
+
 <script type="text/javascript" src="../../c/JsHttpRequest.js"></script>
 </head>
 <body onload="onLoad();"  onkeydown="pressKey(event);" style="overflow: hidden;display:none;">

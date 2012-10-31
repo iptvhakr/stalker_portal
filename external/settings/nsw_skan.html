@@ -50,7 +50,8 @@ function submit(a)
 {
     var erm="";
     if(parent.wfl)parent.wset+='"wifi_int_ip":""';
-    if(read.result[a].ssid!=re.result.wifi_ssid){parent.wset+=',"wifi_ssid":"'+read.result[a].ssid+'"'; parent.wifi_ssid[0]=read.result[a].ssid;parent.wifi_ssid[1]=read.result[a].auth;parent.wifi_ssid[2]=read.result[a].enc;}
+    if(read.result[a].ssid!=re.result.wifi_ssid){parent.wset+=',"wifi_ssid":"'+read.result[a].ssid+'"'; }
+    parent.wifi_ssid[0]=read.result[a].ssid;parent.wifi_ssid[1]=read.result[a].auth;parent.wifi_ssid[2]=read.result[a].enc;
     if(read.result[a].ssid.length<1)erm+=parent.t("Invalid format");
     if(erm!="")parent.erMes(erm,"i"+iid);else {parent.nextMenu('nsw_kaes.html');}
 }

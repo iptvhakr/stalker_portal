@@ -217,6 +217,8 @@ class Stb
             }
         }
 
+        $this->stb_lang = substr($this->locale, 0, 2);
+
         setlocale(LC_MESSAGES, $this->locale);
         putenv('LC_MESSAGES='.$this->locale);
 
@@ -286,6 +288,7 @@ class Stb
         $profile['rtsp_flags'] = Config::get('rtsp_flags');
 
         $profile['locale'] = $this->locale;
+        $profile['stb_lang'] = $this->stb_lang;
 
         $profile['display_menu_after_loading'] = Config::get('display_menu_after_loading');
         $profile['record_max_length']          = intval(Config::get('record_max_length'));

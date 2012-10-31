@@ -32,7 +32,7 @@ function submit()
     if(read.result.mcport_img_conf!=""){wf=true;wr+=(pr?',':'')+'"mcport_img_conf":""';}
     wr+='}';
     if(erm!="")parent.erMes(erm,"i"+iid);
-    else {if(wf){parent.stb.SetEnv(wr);}back();}
+    else {if(wf){parent.stb.SetEnv(wr);parent.rebut = true;}back();}
 }
 function change(a){
         if(iid>mid-2)if(iid+a<=mid&&iid+a>=mid-1){iid+=a;document.getElementById('i'+iid).focus();}
