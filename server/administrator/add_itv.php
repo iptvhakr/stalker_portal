@@ -531,6 +531,8 @@ function get_screen_name($addr){
 $tv_archive = new TvArchive();
 $storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, 'for_records' => 1, 'wowza_server' => 0))->get()->all();
 
+$stream_servers = StreamServer::getAll();
+
 if (!empty($_GET['id'])){
 
     $task = TvArchive::getTaskByChannelId((int) $_GET['id']);
@@ -1226,6 +1228,7 @@ function delete_logo(id){
 <br>
 <script type="text/javascript">
     var links = <?= empty($links)?'[]':json_encode($links)?>;
+    var stream_servers = <?= empty($stream_servers)?'[]':json_encode($stream_servers)?>;
 </script>
 
 <a name="form"></a>
