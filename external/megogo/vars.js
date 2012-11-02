@@ -1,3 +1,27 @@
+var _GET = {};
+
+(function(){
+    var get = new String(window.location);
+    var x = get.indexOf('?');
+    if (x!=-1){
+        var l = get.length;
+        get = get.substr(x+1, l-x);
+        l = get.split('&');
+        x = 0;
+        for(var i in l){
+            if (l.hasOwnProperty(i)){
+                get = l[i].split('=');
+                _GET[get[0]] = get[1];
+                x++;
+            }
+        }
+    }
+})();
+
+if (_GET.hasOwnProperty('referrer')){
+    _GET['referrer'] = decodeURIComponent(_GET['referrer']);
+}
+
 var debug = false,
 	sort ='add',
 	genreList =[],

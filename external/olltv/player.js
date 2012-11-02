@@ -55,10 +55,21 @@ function getPlayerObj(text,startPos){
     if(media_obj.media_url){
         //sendreq(media_obj.media_url, log)
         media_obj.media_url = media_obj.media_url.replace(/\/\//igm, '/').replace(/\:\//,'://')
+
         if(/\?/ig.test(media_obj.media_url)){
-            stb.Play("auto "+media_obj.media_url+'&serial_number='+vars.sn);//
+
+            if (_GET.hasOwnProperty('proxy')){
+                stb.Play("auto "+media_obj.media_url+'&serial_number='+vars.sn, _GET['proxy']);//
+            }else{
+                stb.Play("auto "+media_obj.media_url+'&serial_number='+vars.sn);//
+            }
         }else{
-            stb.Play("auto "+media_obj.media_url+'?serial_number='+vars.sn);//
+
+            if (_GET.hasOwnProperty('proxy')){
+                stb.Play("auto "+media_obj.media_url+'?serial_number='+vars.sn, _GET['proxy']);//
+            }else{
+                stb.Play("auto "+media_obj.media_url+'?serial_number='+vars.sn);//
+            }
         }
         switchLayer(player_layer);
     }else{

@@ -91,7 +91,9 @@ function keydown(e){
 }
 function exit(){
     //console.log(back_location)
-    window.location = back_location;
+    //window.location = back_location;
+    console.log('referrer: '+_GET['referrer']);
+    window.location = _GET['referrer'] || '';
 }
 function mainPage_keyhandler(e){
     var key = e.keyCode || e.which;
