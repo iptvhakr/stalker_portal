@@ -55,9 +55,14 @@ app.ctrls={
             var result2 = /href='(\/ru\/video\/.*?)'\><b>(.*?)<\/b><\/a/igm.exec(source_html_splited[i]);
             if(result1==null && result2==null){continue;}
             var result = result1 || result2;
+
+            if (result[2].toLowerCase().indexOf('megogo.net') != -1){
+                continue;
+            }
+
             cats.push({
                 "url":'http://www.ex.ua'+result [1],
-                "name":result[2],
+                "name":result[2]
             });
         }
         $(as.navig).getElementsByClassName('first')[0].show();
