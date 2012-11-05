@@ -238,7 +238,7 @@ class User
 
         if (!$force_no_check_billing && Config::exist('on_subscribe_hook_url')){
 
-            $on_subscribe_result = $this->onSubscribeHookResult();
+            $on_subscribe_result = $this->onSubscribeHookResult($package_id);
 
             var_dump($on_subscribe_result);
 
@@ -274,7 +274,7 @@ class User
 
         if (!$force_no_check_billing && Config::exist('on_unsubscribe_hook_url')){
 
-            $on_unsubscribe_result = $this->onSubscribeHookResult();
+            $on_unsubscribe_result = $this->onSubscribeHookResult($package_id);
 
             var_dump($on_unsubscribe_result);
 
@@ -552,15 +552,15 @@ class User
         return $info;
     }
 
-    public function onSubscribeHookResult(){
-        return $this->onSubscriptionHookResult('on_subscribe_hook_url');
+    public function onSubscribeHookResult($package_id){
+        return $this->onSubscriptionHookResult('on_subscribe_hook_url', $package_id);
     }
 
-    public function onUnsubscribeHookResult(){
-        return $this->onSubscriptionHookResult('on_unsubscribe_hook_url');
+    public function onUnsubscribeHookResult($package_id){
+        return $this->onSubscriptionHookResult('on_unsubscribe_hook_url', $package_id);
     }
 
-    public function onSubscriptionHookResult($config_param){
+    public function onSubscriptionHookResult($config_param, $package_id){
 
         if (!Config::exist($config_param)){
             return false;
@@ -570,7 +570,9 @@ class User
             return false;
         }
 
-        $url = Config::get($config_param).'?mac='.$this->getMac().'&tariff_id='.$this->getExternalTariffId();
+        $package_ext_id = Mysql::getInstance()->from('services_package')->where(array('id' => $package_id))->get()->first('external_id');
+
+        $url = Config::get($config_param).'?mac='.$this->getMac().'&tariff_id='.$this->getExternalTariffId().'&package_id='.$package_ext_id;
 
         var_dump($url);
 
