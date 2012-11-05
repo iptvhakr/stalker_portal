@@ -468,6 +468,8 @@ class Mysql
 
             $max_len = $this->get_max_allowed_packet();
 
+            //var_dump(mb_strlen($value_str, '8bit') , $max_len);
+
             if (mb_strlen($value_str, '8bit') + 1000 > $max_len){
 
                 $value_str = '';
@@ -482,13 +484,12 @@ class Mysql
 
                     if (isset ($values[$i+1]) && mb_strlen($sql.$multiple_values_str.', '.$values[$i+1], '8bit') >= $max_len){
 
-                        //echo $sql.$multiple_values_str."\n";
+                        //echo mb_strlen($multiple_values_str, '8bit')."\n";
 
                         $result = $this->query($sql.$multiple_values_str);
                         $total_result = $total_result && $result;
 
                         $multiple_values_str = '';
-
                     }
 
                     if ($multiple_values_str != ''){
@@ -496,6 +497,14 @@ class Mysql
                     }
 
                     $multiple_values_str .= $values[$i];
+                }
+
+                if ($multiple_values_str != ''){
+
+                    //echo mb_strlen($multiple_values_str, '8bit')."\n";
+
+                    $result = $this->query($sql.$multiple_values_str);
+                    $total_result = $total_result && $result;
                 }
 
                 $this->reset_write();
