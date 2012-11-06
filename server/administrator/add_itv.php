@@ -23,6 +23,33 @@ if (isset($_GET['status']) && @$_GET['id']){
     header("Location: add_itv.php");
 }
 
+if (isset($_GET['status']) && @$_GET['id']){
+    $query = "update itv set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
+    $rs=$db->executeQuery($query);
+    header("Location: add_itv.php");
+}
+
+if (isset($_GET['shift']) && !empty($_GET['from_num'])){
+
+    $direction = (int) $_GET['shift'];
+    $from_num = (int) $_GET['from_num'];
+
+    $channel_ids = Mysql::getInstance()->from('itv')->where(array('number>=' => $from_num))->get()->all('id');
+
+     if ($direction > 0){
+         $direction = '+'.$direction;
+     }
+
+    if (!empty($channel_ids)){
+        $query = 'update itv set number=number'.$direction.' where id in ('.implode(', ', $channel_ids).')';
+        Mysql::getInstance()->query($query);
+    }
+
+
+    header("Location: add_itv.php");
+    exit;
+}
+
 if (!$error){
     
     if (@$_POST['censored'] == 'on'){
@@ -577,6 +604,10 @@ a:hover{
 	font-weight: bold;
 	text-decoration:underline;
 }
+
+.shift_ch{
+    cursor:pointer
+}
 </style>
 <title>
 <?= _('IPTV channels')?>
@@ -806,6 +837,12 @@ a:hover{
                     $.cookies.set('sort_by_row', $(this).index());
                     $.cookies.set('sort_inverse', inverse);
 
+                    if (sort_by_row == $(this).index() && inverse == true){
+                        $('.shift_ch').show();
+                    }else{
+                        $('.shift_ch').hide();
+                    }
+
                     $('.order').remove();
 
                     th.append(' <span class="order">' + (inverse ? '&darr;' : '&uarr;') + '</span>');
@@ -819,14 +856,42 @@ a:hover{
         });
 
         var sort_by_row = $.cookies.get('sort_by_row');
+        var sort_inverse = $.cookies.get('sort_inverse');
 
         if (sort_by_row !== null){
             $('.item_list th:eq('+sort_by_row+')').trigger(jQuery.Event("click", { inverse: $.cookies.get('sort_inverse') }));
+        }else{
+            sort_by_row = 1;
+            sort_inverse = true;
+        }
+
+        if (sort_by_row == 1 && sort_inverse == true){
+            $('.shift_ch').show();
+        }else{
+            $('.shift_ch').hide();
         }
 
         $('.add_btn').click(function(){
             $('#form_').get(0).reset();
             document.location.href = 'add_itv.php#form';
+        });
+
+        $('.shift_ch').click(function(){
+
+            var direction = $(this).attr('data-direction');
+            var from_num  = $(this).parent().parent().find('.number').html();
+
+            var number_error = $('.number').toArray().some(function(dom_obj){
+                return $(dom_obj).html() == parseInt(from_num, 10) + parseInt(direction, 10);
+            });
+
+            if (direction < 0 && number_error){
+                alert('<?= _('Channel with same number already exists!')?>');
+            }else{
+                if (confirm('<?= _('Shift channel list?')?>')){
+                    window.location = 'add_itv.php?shift='+direction+'&from_num='+from_num;
+                }
+            }
         });
 
         $('#mc_cmd').on('input', null, null, function(eventObject){
@@ -919,7 +984,7 @@ while(@$rs->next()){
     }*/
     echo " >";
     echo "<td class='list'>".$arr['id']."</td>";
-    echo "<td class='list'>".$arr['number']."</td>";
+    echo "<td class='list'><span class='number'>".$arr['number']."</span> <div style='float:right'><span class='shift_ch' data-direction='1'>&darr;</span> <span class='shift_ch' data-direction='-1'>&uarr;</span></div></td>";
     echo "<td class='list'>".$arr['service_id']."</td>";
     //echo "<td class='list'><a href='".get_screen_name($arr['cmd'])."' >".$arr['name']."</a></td>";
     echo "<td class='list' style='color:".get_color($arr)."' title='".get_hint($arr)."'><b>".$arr['name']."</b></td>";
