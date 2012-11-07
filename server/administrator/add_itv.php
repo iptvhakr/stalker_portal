@@ -84,6 +84,12 @@ if (!$error){
 
     $storage_name = empty($_POST['storage_name']) ? '' : $_POST['storage_name'];
 
+    $storage_names = empty($_POST['storage_names']) ? array() : $_POST['storage_names'];
+
+    if (empty($storage_names)){
+        $enable_tv_archive = 0;
+    }
+
     $enable_monitoring = @intval($_POST['enable_monitoring']);
 
     $allow_pvr = @intval($_POST['allow_pvr']);
@@ -165,7 +171,7 @@ if (!$error){
                         $archive = new TvArchive();
                     }
 
-                    $archive->deleteTask($ch_id);
+                    $archive->deleteTasks($ch_id);
                 }
             }
     
@@ -248,19 +254,19 @@ if (!$error){
                 }
             }
 
-            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            //if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
                 if ($enable_tv_archive){
 
-                    if ($wowza_dvr){
+                    /*if ($wowza_dvr){
                         $archive = new WowzaTvArchive();
-                    }else{
-                        $archive = new TvArchive();
-                    }
+                    }else{*/
+                    $archive = new TvArchive();
+                    //}
 
-                    $archive->createTask($ch_id, $storage_name);
+                    $archive->createTasks($ch_id, $storage_names);
                 }
-            }
+            //}
 
             /*if ($wowza_dvr){
                 $archive = new WowzaTvArchive();
@@ -309,7 +315,7 @@ if (!$error){
                         $archive = new TvArchive();
                     }
 
-                    $archive->deleteTask($ch_id);
+                    $archive->deleteTasks($ch_id);
                 }
             }
 
@@ -436,19 +442,19 @@ if (!$error){
                 }
             }
 
-            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            //if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
 
                 if ($enable_tv_archive){
 
-                    if ($wowza_dvr){
+                    /*if ($wowza_dvr){
                         $archive = new WowzaTvArchive();
-                    }else{
-                        $archive = new TvArchive();
-                    }
+                    }else{*/
+                    $archive = new TvArchive();
+                    //}
 
-                    $archive->createTask($ch_id, $storage_name);
+                    $archive->createTasks($ch_id, $storage_names);
                 }
-            }
+            //}
 
             if (!empty($_FILES['logo']['name'])){
 
@@ -560,12 +566,16 @@ $storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, '
 
 $stream_servers = StreamServer::getAll();
 
+$selected_storages = array();
+
 if (!empty($_GET['id'])){
 
-    $task = TvArchive::getTaskByChannelId((int) $_GET['id']);
+    $tasks = TvArchive::getTasksByChannelId((int) $_GET['id']);
 
-    if (!empty($task)){
-        $selected_storage = $task['storage_name'];
+    if (!empty($tasks)){
+        $selected_storages = array_map(function($storage){
+            return $storage['storage_name'];
+        }, $tasks);
     }
 }
 
@@ -1444,7 +1454,7 @@ function delete_logo(id){
            </td>
         </tr>
         <tr>
-           <td align="right">
+           <td align="right" valign="top">
             <?= _('Enable TV archive')?>:
            </td>
            <td>
@@ -1453,8 +1463,21 @@ function delete_logo(id){
             <span id="storage_name" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
             <!--Wowza DVR:
             <input name="wowza_dvr" id="wowza_dvr" type="checkbox" <?/* echo @$checked_wowza_dvr */?> >-->
-                <select name="storage_name" <?= !empty($name) && !empty($enable_tv_archive) ? 'disabled="disabled"' : '' ?>>
-                    <? foreach ($storages as $storage){
+
+                <table width="100%" style="background-color:#f8f8f8">
+                    <? foreach ($storages as $storage){?>
+                    <tr>
+                        <td width="50%"><?= $storage['storage_name']?>:</td>
+                        <td width="50%">
+                            <input type="checkbox" class="stream_server" name="storage_names[]" value="<?= $storage['storage_name']?>" <?= (in_array($storage['storage_name'], $selected_storages) ? 'checked' : '')?>/>
+                        </td>
+                    </tr>
+                    <?}?>
+                </table>
+
+
+                <!--<select name="storage_name" <?/*= !empty($name) && !empty($enable_tv_archive) ? 'disabled="disabled"' : '' */?>>
+                    <?/* foreach ($storages as $storage){
 
                         $selected = '';
 
@@ -1463,8 +1486,8 @@ function delete_logo(id){
                         }
 
                     echo '<option value="'.$storage['storage_name'].'" '.$selected.'>'.$storage['storage_name'].'</option>';
-                    }?>
-                </select>
+                    }*/?>
+                </select>-->
             </span>
            </td>
         </tr>

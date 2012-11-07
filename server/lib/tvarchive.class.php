@@ -32,7 +32,8 @@ class TvArchive extends Master
 
         $program = Epg::getById($program_id);
 
-        $task = $this->getTaskByChId($program['ch_id']);
+        //$task = $this->getTaskByChannelId($program['ch_id']);
+        $task = $this->getLessLoadedTaskByChId($program['ch_id']);
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
 
@@ -110,7 +111,8 @@ class TvArchive extends Master
 
         $program = Epg::getById($program_id);
 
-        $task = $this->getTaskByChId($program['ch_id']);
+        //$task = $this->getTaskByChId($program['ch_id']);
+        $task = $this->getLessLoadedTaskByChId($program['ch_id']);
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
 
@@ -190,7 +192,8 @@ class TvArchive extends Master
 
         $ch_id = intval($_REQUEST['ch_id']);
 
-        $task = $this->getTaskByChId($ch_id);
+        //$task = $this->getTaskByChId($ch_id);
+        $task = $this->getLessLoadedTaskByChId($ch_id);
         $storage = Master::getStorageByName($task['storage_name']);
 
         //$channel = Itv::getChannelById($ch_id);
@@ -216,9 +219,42 @@ class TvArchive extends Master
                              . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
     }
 
+    /**
+     * @deprecated
+     * @param $ch_id
+     * @return mixed
+     */
     private function getTaskByChId($ch_id){
         
         return Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
+    }
+
+    private function getLessLoadedTaskByChId($ch_id){
+
+        $tasks = Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->all();
+
+        $tasks_map = array();
+
+        foreach ($tasks as $task){
+            $tasks_map[$task['storage_name']] = $task;
+        }
+
+        var_dump($this->storages);
+
+        $all_storages = array_keys($this->storages);
+        $task_storages = array_keys($tasks_map);
+
+        $intersection = array_intersect($all_storages, $task_storages);
+
+        $intersection = array_values($intersection);
+
+        if (empty($intersection)){
+            return false;
+        }
+
+        var_dump($tasks_map, $intersection);
+
+        return $tasks_map[$intersection[0]];
     }
 
     protected function getAllActiveStorages(){
@@ -241,7 +277,7 @@ class TvArchive extends Master
         return $this->media_id;
     }
 
-    protected function getStorageLoad($storage){
+    /*protected function getStorageLoad($storage){
 
         $total_tasks = count($this->getAllTasks());
 
@@ -250,6 +286,41 @@ class TvArchive extends Master
         }
 
         return count($this->getAllTasks($storage['storage_name'])) / count($this->getAllTasks());
+    }*/
+
+    public function createTasks($ch_id, $force_storages = array()){
+
+        if (empty($force_storages)){
+            return $this->createTask($ch_id);
+        }
+
+        $exist_tasks_raw = $this->getAllTasksForChannel($ch_id);
+        $exist_tasks = array();
+
+        foreach ($exist_tasks_raw as $task){
+            $exist_tasks[$task['storage_name']] = $task;
+        }
+
+        $exist_tasks_storages = array_keys($exist_tasks);
+
+        $need_to_delete = array_diff($exist_tasks_storages, $force_storages);
+        $need_to_add    = array_diff($force_storages, $exist_tasks_storages);
+
+        if (!empty($need_to_delete)){
+            foreach ($need_to_delete as $delete_from_storage){
+                $this->deleteTaskById($exist_tasks[$delete_from_storage]['id']);
+            }
+        }
+
+        $result = true;
+
+        if (!empty($need_to_add)){
+            foreach ($need_to_add as $add_to_storage){
+                $result = $this->createTask($ch_id, $add_to_storage) && $result;
+            }
+        }
+
+        return $result;
     }
 
     public function createTask($ch_id, $force_storage = ''){
@@ -266,7 +337,7 @@ class TvArchive extends Master
             $storage_name = $storage_names[0];
         }
 
-        $exist_task = Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
+        $exist_task = Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id, 'storage_name' => $storage_name))->get()->first();
 
         if (!empty($exist_task)){
             return true;
@@ -300,6 +371,45 @@ class TvArchive extends Master
         return $this->clients[$storage_name]->resource('tv_archive_recorder')->create(array('task' => $task));
     }
 
+    public function deleteTasks($ch_id){
+
+        $channel_tasks = $this->getAllTasksForChannel($ch_id);
+
+        if (empty($channel_tasks)){
+            return true;
+        }
+
+        $result = true;
+
+        foreach ($channel_tasks as $task){
+            $result = $this->deleteTaskById($task['id']) && $result;
+        }
+
+        return $result;
+    }
+
+    private function deleteTaskById($task_id){
+
+        $task = Mysql::getInstance()->from('tv_archive')->where(array('id' => $task_id))->get()->first();
+
+        if (empty($task)){
+            return true;
+        }
+
+        Mysql::getInstance()->delete('tv_archive', array('id' => $task_id));
+
+        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 1){
+            return true;
+        }
+
+        return $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($task['ch_id'])->delete();
+    }
+
+    /**
+     * @deprecated
+     * @param $ch_id
+     * @return bool
+     */
     public function deleteTask($ch_id){
 
         $task = Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
@@ -315,6 +425,10 @@ class TvArchive extends Master
         }
 
         return $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($ch_id)->delete();
+    }
+
+    public function getAllTasksForChannel($ch_id){
+        return Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->all();
     }
 
     public function getAllTasks($storage_name = null, $not_fake = false){
@@ -394,9 +508,19 @@ class TvArchive extends Master
         return (int) Config::get('tv_archive_parts_number');
     }
 
+    /**
+     * @deprecated
+     * @param $ch_id
+     * @return mixed
+     */
     public static function getTaskByChannelId($ch_id){
         return Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
     }
+
+    public static function getTasksByChannelId($ch_id){
+        return Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->all();
+    }
+
 }
 
 ?>

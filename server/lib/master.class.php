@@ -249,6 +249,10 @@ abstract class Master
         return $storages;
         
     }
+
+    public function getStorageList(){
+        return $this->storages;
+    }
     
     /**
      * Return moderators storages
@@ -656,7 +660,7 @@ abstract class Master
      */
     protected function getStorageOnline($storage_name){
         
-        $sd_online = $this->db->select('count(*) as sd_online')
+        $vclub_sd_sessions = $this->db->select('count(*) as sd_online')
                               ->from('users')
                               ->where(
                                   array(
@@ -667,8 +671,8 @@ abstract class Master
                                   ))
                               ->get()
                               ->first('sd_online');
-        
-        $hd_online = $this->db->select('count(*) as hd_online')
+
+        $vclub_hd_sessions = $this->db->select('count(*) as hd_online')
                               ->from('users')
                               ->where(
                                   array(
@@ -680,9 +684,23 @@ abstract class Master
                               ->get()
                               ->first('hd_online');
 
-        $rec_online = Mysql::getInstance()->from('rec_files')->where(array('storage_name' => $storage_name, 'ended' => 0))->get()->count();
-        
-        return $sd_online + 3*$hd_online + $rec_online;
+        $pvr_rec_sessions = Mysql::getInstance()->from('rec_files')->where(array('storage_name' => $storage_name, 'ended' => 0))->get()->count();
+
+        $archive_rec_sessions = Mysql::getInstance()->from('tv_archive')->where(array('storage_name' => $storage_name))->get()->count();
+
+        $archive_sessions = $this->db->select('count(*) as archive_sessions')
+                                ->from('users')
+                                    ->where(
+                                    array(
+                                        'now_playing_type' => 11,
+                                        'hd_content'       => 0,
+                                        'storage_name'     => $storage_name,
+                                        'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+                                    ))
+                                    ->get()
+                                    ->first('archive_sessions');
+
+        return $vclub_sd_sessions + 3*$vclub_hd_sessions + $pvr_rec_sessions + $archive_rec_sessions + $archive_sessions;
     }
     
     /**
