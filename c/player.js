@@ -1538,6 +1538,9 @@ player.prototype.pause_switch = function(){
 };
 
 player.prototype.disable_pause = function(){
+    _debug('player.disable_pause');
+
+    _debug('this.active_time_shift', this.active_time_shift);
 
     if (this.active_time_shift){
         _debug('new Date() - module.time_shift.cur_media_item.live_date', (new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime())/1000);
@@ -2769,13 +2772,36 @@ player.prototype.set_pos_and_play = function(reset){
         if (!reset){
 
             if (this.active_time_shift && module.time_shift){
+
+                _debug('module.time_shift.in_process', module.time_shift.in_process);
+
+                if (module.time_shift.in_process){
+
+                    var self = this;
+
+                    this.info.hide_timeout = window.setTimeout(function(){
+                        self.set_pos_and_play();
+                    }, 500);
+
+                    _debug('return set_pos_and_play');
+                    return;
+                }
+
                 var new_url = module.time_shift.get_url_by_pos(this.new_pos_time);
                 _debug('new_url', new_url);
 
                 module.time_shift.update_media_item(new_url);
 
                 this.play(module.time_shift.cur_media_item);
-                
+
+                this.hide_info();
+
+                this.pos_step  = 10;
+                this.diff_pos  = 0;
+                this.next_step = 0;
+                this.pause.on = false;
+
+                return;
             }else if (this.emulate_media_len && module.tv_archive){
 
                 /*var new_pos_time = this.new_pos_time + parseInt(this.cur_media_item.position, 10);
@@ -2817,17 +2843,16 @@ player.prototype.set_pos_and_play = function(reset){
         }
     }catch(e){
         _debug(e);
-    }finally{
-
-        this.disable_pause();
-        //this.info.dom_obj.hide();
-        //this.info.on = false;
-        this.hide_info();
-        
-        this.pos_step  = 10;
-        this.diff_pos  = 0;
-        this.next_step = 0;
     }
+
+    this.disable_pause();
+    //this.info.dom_obj.hide();
+    //this.info.on = false;
+    this.hide_info();
+
+    this.pos_step  = 10;
+    this.diff_pos  = 0;
+    this.next_step = 0;
 };
 
 player.prototype.move_pos = function(dir){

@@ -11,9 +11,12 @@
     module.time_shift = {
 
         cur_media_item : {},
+        in_process : false,
 
         get_link_for_channel : function(){
             _debug('time_shift.get_link_for_channel');
+
+            this.in_process = true;
 
             stb.load(
                 {
@@ -23,6 +26,8 @@
                 },
                 function(result){
                     _debug('get_link_for_channel result', result);
+
+                    this.in_process = false;
 
                     this.plt_link = result;
                     this.cur_media_item.cmd = result;
