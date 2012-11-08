@@ -630,7 +630,7 @@ app.player={
                 stb.SetSubtitles(info_menu.on);
                 app.player.playlist_length = play.video.length;
                 log('length of playlist: '+app.player.playlist_length);
-                if(as.proxy.lenght>0){
+                if(as.proxy.length>0){
                     stb.Play('ffmpeg '+ play.video[app.player.fileNum].url, as.proxy);
                     log("* stb play with proxy: " + as.proxy);
                 } else {
@@ -648,7 +648,7 @@ app.player={
                 if( play.audio.length>0){
                     app.player.playlist_length = play.audio.length;
                     log('length of playlist: '+app.player.playlist_length);
-                    if(as.proxy.lenght>0){
+                    if(as.proxy.length>0){
                         stb.Play('ffmpeg '+ play.audio[app.player.fileNum].url, as.proxy);
                         log("* stb play with proxy: " + as.proxy);
                     } else {
@@ -665,7 +665,7 @@ app.player={
                     if(play.images.length>0){
                         app.player.playlist_length = play.images.length;
                         log('length of playlist: '+app.player.playlist_length);
-                        if(as.proxy.lenght>0){
+                        if(as.proxy.length>0){
                             stb.Play('jpeg '+ play.images[app.player.fileNum].url, as.proxy);
                             log("* stb play with proxy: " + as.proxy);
                         } else {

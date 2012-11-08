@@ -55,7 +55,7 @@ var _load ={
     	_GET['proxy'] = '';
         get_params();
         as.proxy = _GET['proxy'];
-        as.referer = _GET['referer'];
+        as.referer = _GET['referrer'];
         if(as.proxy.length>0){log('- - - proxy: "'+as.proxy+'"');}
         if(as.proxy.length>0){log('- - - referer: "'+as.referer+'"');}
         
