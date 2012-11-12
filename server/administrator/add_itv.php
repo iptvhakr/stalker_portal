@@ -964,6 +964,7 @@ echo "<th class='list number_row'><b>"._('Number')."</b> <span class='order'>&da
 echo "<th class='list'><b>"._('Service code')."</b></th>";
 echo "<th class='list'><b>"._('Name')."</b></th>";
 echo "<th class='list'><b>"._('URL')."</b></th>";
+echo "<th class='list'><b>"._('xmltv id')."</b></th>";
 echo "<th class='list'><b>"._('Genre')."</b></th>";
 echo "<th class='list'><b>"._('Archive')."</b></th>";
 echo "<th class='list'><b>"._('Volume correction')."</b></th>";
@@ -999,6 +1000,7 @@ while(@$rs->next()){
     //echo "<td class='list'><a href='".get_screen_name($arr['cmd'])."' >".$arr['name']."</a></td>";
     echo "<td class='list' style='color:".get_color($arr)."' title='".get_hint($arr)."'><b>".$arr['name']."</b></td>";
     echo "<td class='list'>".$arr['cmd']."</td>";
+    echo "<td class='list'>".$arr['xmltv_id']."</td>";
     //echo "<td class='list'>".$arr['descr']."</td>";
     echo "<td class='list'>"._($arr['genres_name'])."</td>";
     echo "<td class='list' align='center'>".($arr['enable_tv_archive'] == 1 ? '&bull;' : '')."</td>";
