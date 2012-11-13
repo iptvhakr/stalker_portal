@@ -59,7 +59,7 @@
         
         this.fav_manage_mode = false;
         
-        this.password_input = new password_input({"parent" : this});
+        this.password_input = new password_input({"parent" : this, "proceed_navigation" : true});
         this.password_input.bind();
         
         this._show = function(genre){

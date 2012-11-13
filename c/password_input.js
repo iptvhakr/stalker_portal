@@ -29,6 +29,10 @@ function password_input(options){
     if (options && options.hasOwnProperty('parent')){
         this.parent = options.parent;
     }
+
+    if (options && options.hasOwnProperty('proceed_navigation')){
+        this.proceed_navigation = options.proceed_navigation;
+    }
     
     this.init();
 }
@@ -135,7 +139,25 @@ password_input.prototype.bind = function(){
     
     this.hide.bind(key.EXIT, this);
 
-    (function(){}).bind(key.UP, this).bind(key.DOWN, this).bind(key.APP, this);
+    (function(){}).bind(key.APP, this);
+
+    (function(){
+
+        if (this.proceed_navigation){
+            this.hide();
+            keydown_observer.emulate_key(key.UP);
+        }
+
+    }).bind(key.UP, this);
+
+    (function(){
+
+        if (this.proceed_navigation){
+            this.hide();
+            keydown_observer.emulate_key(key.DOWN);
+        }
+
+    }).bind(key.DOWN, this);
 };
 
 loader.next();
