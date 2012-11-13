@@ -3729,6 +3729,8 @@ var playback_limit = {
 
 player.prototype.progress_bar = {
 
+    load : 0,
+
     init : function(){
         _debug('progressBar.init');
 
@@ -3760,12 +3762,18 @@ player.prototype.progress_bar = {
             load = stb.GetBufferLoad();
         }
 
-        _debug('load', load);
+        _debug('load 1', load);
+
+        if (this.load > load){
+            load = 100;
+        }
+
+        _debug('load 2', load);
 
         this.set_progress(load);
 
         if (load == 100){
-            var self = this;
+            //var self = this;
             window.clearTimeout(this.stop_timer);
             window.clearInterval(this.update_timer);
             //this.stop_timer = window.setTimeout(function(){self.stop()}, 300);
@@ -3775,6 +3783,8 @@ player.prototype.progress_bar = {
 
     set_progress : function(load){
         _debug('set_progress', load);
+
+        this.load = load;
 
         var max = this.dom_obj.offsetWidth-4;
 
@@ -3794,6 +3804,7 @@ player.prototype.progress_bar = {
         this.hide_timeout = window.setTimeout(function(){self.dom_obj.hide();self.progress.style.width = 0;}, 300);
 
         window.clearInterval(this.update_timer);
+        this.load = 0;
         //this.progress.style.width = 0;
     }
 };

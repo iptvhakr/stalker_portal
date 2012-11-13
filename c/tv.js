@@ -1223,6 +1223,8 @@
 
         this.progress_bar = {
 
+            load : 0,
+
             init : function(parent){
                 _debug('progressBar.init');
 
@@ -1266,7 +1268,13 @@
                     load = stb.GetBufferLoad();
                 }
 
-                _debug('load', load);
+                _debug('load 1', load);
+
+                if (this.load > load){
+                    load = 100;
+                }
+
+                _debug('load 2', load);
 
                 this.set_progress(load);
 
@@ -1280,6 +1288,8 @@
 
             set_progress : function(load){
                 _debug('set_progress', load);
+
+                this.load = load;
 
                 var max = this.dom_obj.offsetWidth-4;
 
@@ -1299,6 +1309,7 @@
                 this.hide_timeout = window.setTimeout(function(){self.dom_obj.hide();self.progress.style.width = 0;}, 300);
 
                 window.clearInterval(this.update_timer);
+                this.load = 0;
                 //this.progress.style.width = 0;
             }
         }
