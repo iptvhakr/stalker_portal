@@ -699,13 +699,28 @@ function send_button($id){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$where = '';
+if (@$_GET['status'] == 'closed_n_off'){
+    $where = 'where video.id=moderator_tasks.media_id ';
+}else{
+    $where = '';
+}
+
 if ($search){
-    $where = 'where name like "%'.$search.'%" or o_name like "%'.$search.'%" or path like "%'.$search.'%"';
+    if ($where){
+        $where .= ' and ';
+    }else{
+        $where .= 'where ';
+    }
+    $where .= 'name like "%'.$search.'%" or o_name like "%'.$search.'%" or path like "%'.$search.'%"';
 }
 if (@$_GET['letter']) {
 	//$where = 'where name like "'.urldecode($letter).'%"';
-	$where = 'where name like "'.$letter.'%"';
+    if ($where){
+        $where .= ' and ';
+    }else{
+        $where .= 'where ';
+    }
+    $where .= 'name like "'.$letter.'%"';
 }
 
 if (@$_GET['status']){
@@ -713,12 +728,21 @@ if (@$_GET['status']){
         $op_accessed=1;
     }else if (@$_GET['status'] == 'off'){
         $op_accessed=0;
+    }else if (@$_GET['status'] == 'closed_n_off'){
+        $op_accessed=0;
     }
 
     if ($where){
-        $where .= ' and accessed='.$op_accessed;
+        $where .= ' and ';
     }else{
-        $where .= 'where accessed='.$op_accessed;
+        $where .= 'where ';
+    }
+
+    $where .= 'accessed='.$op_accessed;
+
+    if (@$_GET['status'] == 'closed_n_off'){
+        $where .= ' and video.id=moderator_tasks.media_id and moderator_tasks.media_type=2'
+        .' group by(path)';
     }
 }
 
@@ -736,16 +760,26 @@ if (@$_GET['vote']){
     }
 }
 
-$query = "select * from video $where";
-//echo $query;
+if (@$_GET['status'] == 'closed_n_off'){
+    $query = "select video.*, BIT_AND(moderator_tasks.ended) as ended, GROUP_CONCAT(moderator_tasks.rejected) as rejected from video, moderator_tasks $where";
+}else{
+    $query = "select * from video $where";
+}
+
+//echo $query."<br>\n";
 $rs = $db->executeQuery($query);
 $total_items = $rs->getRowCount();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-$query = "select video.*, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter from video left join media_claims on video.id=media_claims.media_id and media_claims.media_type='vclub' $where group by video.id $order_by LIMIT $page_offset, $MAX_PAGE_ITEMS";
-//echo $query;
+if (@$_GET['status'] == 'closed_n_off'){
+    $query = "select video.*, BIT_AND(moderator_tasks.ended) as ended, GROUP_CONCAT(moderator_tasks.rejected) as rejected from video, moderator_tasks $where having ended=1 and rejected not like '%1' $order_by LIMIT $page_offset, $MAX_PAGE_ITEMS";
+}else{
+    $query = "select video.*, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter from video left join media_claims on video.id=media_claims.media_id and media_claims.media_type='vclub' $where group by video.id $order_by LIMIT $page_offset, $MAX_PAGE_ITEMS";
+}
+
+//echo $query."<br>\n";
 $rs = $db->executeQuery($query);
 //echo $total_pages;
 ?>
@@ -820,6 +854,7 @@ $rs = $db->executeQuery($query);
     <option value="">---
     <option value="on" <?if (@$_GET['status'] == 'on') echo 'selected'?>>on
     <option value="off" <?if (@$_GET['status'] == 'off') echo 'selected'?>>off
+    <option value="closed_n_off" <?if (@$_GET['status'] == 'closed_n_off') echo 'selected'?>>closed and off
 </select>&nbsp;&nbsp;&nbsp;
 <?= _('Votes')?>:
 <select id="sort_vote" onchange="change_list()">
@@ -868,11 +903,11 @@ while(@$rs->next()){
     echo "<td class='list'><span id='series_{$arr['id']}'>".count_series($arr['series'])."</span></td>\n";
     echo "<td class='list' align='center'>";
 
-    if (check_access(array(1))){
+    if (check_access(array(1)) && !empty($arr['media_id'])){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
-    echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
-    if (check_access(array(1))){
+    echo "<span style='color:red;font-weight:bold'>".@$arr['sound_counter']." / ".@$arr['video_counter']."</span>";
+    if (check_access(array(1)) && !empty($arr['media_id'])){
         echo "</a>";
     }
     echo "</td>\n";
