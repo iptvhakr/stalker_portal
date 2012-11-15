@@ -431,7 +431,7 @@ class Epg
 
             if (array_key_exists($epg[$i]['ch_id'], $archived_recs) &&
                 $epg[$i]['start_timestamp'] > $archived_recs[$epg[$i]['ch_id']]['start_timestamp'] &&
-                $epg[$i]['start_timestamp'] < $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']){
+                $epg[$i]['stop_timestamp'] < time()){
 
                 $epg[$i]['mark_archive'] = 1;
             }else{
@@ -560,7 +560,7 @@ class Epg
 
                     //if (time() > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] && time() < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']){
                     if ($epg[$i]['start_timestamp'] > $archived_recs[$epg[$i]['ch_id']]['start_timestamp'] &&
-                        $epg[$i]['start_timestamp'] < $archived_recs[$epg[$i]['ch_id']]['stop_timestamp']){
+                        $epg[$i]['stop_timestamp'] < time()){
     
                         $epg[$i]['mark_archive'] = 1;
                         //$epg[$i]['position']  = date("i", $epg[$i]['start_timestamp']) * 60;
@@ -864,7 +864,7 @@ class Epg
             if (array_key_exists($program[$i]['ch_id'], $archived_recs)){
 
                 if (($program[$i]['start_timestamp'] > $archived_recs[$program[$i]['ch_id']]['start_timestamp'] &&
-                    $program[$i]['start_timestamp'] < $archived_recs[$program[$i]['ch_id']]['stop_timestamp']) ||
+                    $program[$i]['stop_timestamp'] < time()) ||
                     ($archived_recs[$program[$i]['ch_id']]['wowza_archive'] && $program[$i]['start_timestamp'] < (time() - date("i")*60-date("s"))) ){
                     
                     $program[$i]['mark_archive'] = 1;
