@@ -366,9 +366,9 @@
         can_reduce_day : function(){
             _debug('time_shift.can_reduce_day');
 
-            _debug('stb.user.tv_archive_days', stb.user.tv_archive_days);
+            _debug('stb.user.tv_archive_hours', stb.user.tv_archive_hours);
 
-            var seconds = stb.user.tv_archive_days * 86400;
+            var seconds = stb.user.tv_archive_hours * 3600;
 
             var from_date = new Date();
             from_date.setSeconds(from_date.getSeconds() - seconds);
@@ -384,9 +384,9 @@
         in_archive : function(position){
             _debug('time_shift.in_archive', position);
 
-            _debug('stb.user.tv_archive_days', stb.user.tv_archive_days);
+            _debug('stb.user.tv_archive_hours', stb.user.tv_archive_hours);
 
-            var seconds = stb.user.tv_archive_days * 86400;
+            var seconds = stb.user.tv_archive_hours * 3600;
 
             var from_date = new Date();
             from_date.setSeconds(from_date.getSeconds() - seconds);
@@ -410,9 +410,9 @@
         get_first_piece_position : function(){
             _debug('time_shift.get_first_piece_position');
 
-            _debug('stb.user.tv_archive_days', stb.user.tv_archive_days);
+            _debug('stb.user.tv_archive_hours', stb.user.tv_archive_hours);
 
-            var seconds = stb.user.tv_archive_days * 86400;
+            var seconds = stb.user.tv_archive_hours * 3600;
 
             var from_date = new Date();
             from_date.setSeconds(from_date.getSeconds() - seconds);
