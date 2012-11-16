@@ -115,7 +115,7 @@ player.prototype.init = function(){
         stb.SetDefaultFlicker(1);
         stb.SetLoop(0);
         stb.SetMicVolume(100);
-        
+
         stbEvent.onEvent = (function(self){
             return function(){
                 self.event_callback.apply(self, arguments);
@@ -150,6 +150,19 @@ player.prototype.init = function(){
     }catch(e){
         _debug(e);
     }
+};
+
+player.prototype.set_langs = function(pri_lang, sec_lang){
+    _debug('player.set_langs', pri_lang, sec_lang);
+
+    pri_lang = pri_lang || "";
+    sec_lang = sec_lang || "";
+
+    _debug('pri_lang', pri_lang);
+    _debug('sec_lang', sec_lang);
+
+    stb.SetAudioLangs(pri_lang, sec_lang);
+    stb.SetSubtitleLangs(pri_lang, sec_lang);
 };
 
 player.prototype.setup_rtsp = function(rtsp_type, rtsp_flags){

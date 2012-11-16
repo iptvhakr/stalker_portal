@@ -143,7 +143,7 @@ while(@$rs->next()){
     $arr=$rs->getCurrentValuesAsHash();
     
     echo "<tr>";
-    echo "<td class='list'>".$arr['mac']."</td>\n";
+    echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
     echo "<td class='list'>".$arr['now_playing_content']."</td>\n";
     echo "<td class='list'>".$arr['now_playing_start']."</td>\n";
     echo "</tr>\n";
