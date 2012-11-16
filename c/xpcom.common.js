@@ -76,6 +76,8 @@ function common_xpcom(){
 
         this.usbdisk = new usbdisk();
         module.blocking.init_layer();
+
+        connection_problem.init();
     };
 
     this.init_auth_dialog = function(){
@@ -481,10 +483,14 @@ function common_xpcom(){
                             throw new Error(er);
                         }
                         _debug(result.text);
+                        connection_problem.hide();
                         callback.call(context, result.js);
                     } else if (req.status == 0){
                         console.log('Abort request');
+                        connection_problem.show();
                     }else{
+                        connection_problem.show();
+                        console.log('req.status: '+req.status);
                         console.log(req.responseText);
                     }
                     req = null;
@@ -1574,5 +1580,35 @@ var screensaver = {
 
         this.clock.moveX(left);
         this.clock.moveY(top);
+    }
+};
+
+var connection_problem = {
+
+    on: true,
+
+    init : function(){
+        this.dom_obj = create_block_element("connection_problem_container");
+        this.block_obj = create_block_element("connection_problem_block", this.dom_obj);
+        this.block_obj.innerHTML = get_word('Connection problem');
+        this.hide();
+    },
+
+    show : function(){
+        _debug('connection_problem.show');
+
+        this.dom_obj.show();
+        this.on = true;
+    },
+
+    hide : function(){
+        _debug('connection_problem.hide');
+
+        if (!this.on){
+            return;
+        }
+
+        this.dom_obj.hide();
+        this.on = false;
     }
 };
