@@ -161,8 +161,12 @@ player.prototype.set_langs = function(pri_lang, sec_lang){
     _debug('pri_lang', pri_lang);
     _debug('sec_lang', sec_lang);
 
-    stb.SetAudioLangs(pri_lang, sec_lang);
-    stb.SetSubtitleLangs(pri_lang, sec_lang);
+    try{
+        stb.SetAudioLangs(pri_lang, sec_lang);
+        stb.SetSubtitleLangs(pri_lang, sec_lang);
+    }catch(e){
+        _debug(e);
+    }
 };
 
 player.prototype.setup_rtsp = function(rtsp_type, rtsp_flags){
