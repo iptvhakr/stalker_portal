@@ -61,7 +61,7 @@
                 cur_piece_date.setSeconds(cur_piece_date.getSeconds() - len + cur_pos_time);
                 
             }else{*/
-                cur_piece_date = new Date(this.cur_piece_date);
+                var cur_piece_date = new Date(this.cur_piece_date);
             /*}*/
 
             _debug('this.cur_piece_date', this.cur_piece_date);
@@ -77,6 +77,8 @@
             _debug('live_date', live_date);
             _debug('now_date', now_date);
 
+            _debug('now', now);
+
             if (live_date == now_date){
                 var media_len = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
                 if (media_len > 5){
@@ -85,6 +87,8 @@
             }else{
                 media_len = 86400;
             }
+
+            _debug('media_len', media_len);
 
             return media_len
         },
@@ -142,6 +146,8 @@
 
             var cur_file_date = this._get_file_date_by_url(this.cur_media_item.cmd);
 
+            _debug('cur_file_date', cur_file_date);
+
             var pos_time = cur_file_date.getHours() * 3600 + current_pos_time;
 
             _debug('pos_time', pos_time);
@@ -158,6 +164,7 @@
 
             if (!date_part){
                 //return false;
+                //return new Date(new Date().getTime() - stb.profile['timezone_diff']*1000);
                 return new Date();
             }
 
@@ -170,7 +177,7 @@
 
             _debug('true_file_date', true_file_date);
 
-            return new Date(true_file_date);
+            return new Date(new Date(true_file_date).getTime() - stb.profile['timezone_diff']*1000);
         },
 
         set_media_item : function(cur_tv_item){
@@ -308,6 +315,12 @@
 
         get_filename_by_date : function(date){
             _debug('time_shift.get_filename_by_date', date);
+
+            _debug('date 1', date);
+
+            date = new Date(date.getTime() + stb.profile['timezone_diff']*1000);
+
+            _debug('date 2', date);
 
             _debug('stb.player.cur_tv_item[wowza_dvr]', stb.player.cur_tv_item);
 

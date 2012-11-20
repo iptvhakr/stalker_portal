@@ -198,11 +198,16 @@ class TvArchive extends Master
 
         //$channel = Itv::getChannelById($ch_id);
 
-        $position = date("i") * 60 + intval(date("s"));
+        $tz = new DateTimeZone(Stb::$server_timezone);
+
+        $date = new DateTime(date('r'));
+        $date->setTimeZone($tz);
+
+        $position = $date->format("i") * 60 + intval($date->format("s"));
 
         $channel = Itv::getChannelById($ch_id);
 
-        $filename = date("Ymd-H");
+        $filename = $date->format("Ymd-H");
 
         if ($channel['wowza_dvr']){
             $filename .= '.mp4';

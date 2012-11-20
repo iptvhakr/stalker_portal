@@ -20,6 +20,8 @@ function _debug(){
                 text += ' null';
             }else if (typeof(arguments[i]) === "undefined"){
                 text += ' undefined';
+            }else if (arguments[i] instanceof Date){
+                text += ' '+arguments[i].toString();
             }else if (arguments[i].message && arguments[i].name){
                 text += ' '+arguments[i].name+' '+arguments[i].message;
             }else{

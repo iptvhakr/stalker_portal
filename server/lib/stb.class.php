@@ -22,6 +22,7 @@ class Stb
     public $city_id;
     public $timezone;
     public static $server_timezone;
+    public $timezone_diff = 0;
     private $stb_lang;
     public $additional_services_on = 0;
 
@@ -188,6 +189,14 @@ class Stb
 
             date_default_timezone_set($this->timezone);
 
+            $date_server = new DateTime();
+            $date_server->setTimezone(new DateTimeZone(Stb::$server_timezone));
+
+            $date_stb = new DateTime();
+            $date_stb->setTimezone(new DateTimeZone($this->timezone));
+
+            $this->timezone_diff = $date_server->format('Z') - $date_stb->format('Z');
+
             $date = new DateTime();
             $offset = $date->format('P');
             Mysql::getInstance()->set_timezone($offset);
@@ -343,6 +352,8 @@ class Stb
 
         $profile['deny_720p_gmode_on_mag200'] = Config::getSafe('deny_720p_gmode_on_mag200', false);
         $profile['enable_arrow_keys_setpos']  = Config::getSafe('enable_arrow_keys_setpos', false);
+
+        $profile['timezone_diff']  = $this->timezone_diff;
 
         return $profile;
     }
