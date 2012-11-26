@@ -251,7 +251,14 @@ class Stb
     }
     
     public function getProfile(){
-        
+
+        if ((empty($_SERVER['HTTP_TARGET']) || ($_SERVER['HTTP_TARGET'] != 'API' && $_SERVER['HTTP_TARGET'] != 'ADM')) && !Middleware::isValidMAC($this->mac)){
+            $this->logNotValidMAC(isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '', isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '');
+            return array(
+                'status' => 1
+            );
+        }
+
         if (!$this->id){
             if (Config::exist('auth_url')){
 
@@ -1426,6 +1433,19 @@ class Stb
         }
 
         return Mysql::getInstance()->from('users')->where(array('mac' => $mac))->get()->first();
+    }
+
+    private function logNotValidMAC($sn, $stb_type){
+        $logger = new Logger();
+        $logger->setPrefix("mac_validation_");
+        $logger->error(sprintf("%s - [%s] %s, %s, %s, url=%s\n",
+            empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP'] ,
+            date("r"),
+            $this->mac,
+            $sn,
+            $stb_type,
+            $_SERVER['REQUEST_URI']
+        ));
     }
 
     public static function logDoubleMAC($ips){
