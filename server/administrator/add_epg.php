@@ -196,7 +196,7 @@ function load_epg($id = 0){
     $time_from = $year.'-'.$month.'-'.$day.' 00:00:00';
     $time_to = $year.'-'.$month.'-'.$day.' 24:00:00';
 
-    $sql = "select * from epg where ch_id=".$id." and time > '".$time_from."' and time < '".$time_to."' order by time";
+    $sql = "select * from epg where ch_id=".$id." and time >= '".$time_from."' and time < '".$time_to."' order by time";
     //echo $sql;
     $rs=$db->executeQuery($sql);
     $epg = '';
