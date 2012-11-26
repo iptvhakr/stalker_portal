@@ -407,6 +407,8 @@ class Stb
             }
         }
 
+        $data['created'] = 'NOW()';
+
         $user_id = Mysql::getInstance()->insert('users', $data)->insert_id();
 
         if ($user_id && !empty($data['password'])){
@@ -1424,6 +1426,16 @@ class Stb
         }
 
         return Mysql::getInstance()->from('users')->where(array('mac' => $mac))->get()->first();
+    }
+
+    public static function logDoubleMAC($ips){
+        $logger = new Logger();
+        $logger->setPrefix("mac_clone_");
+        $logger->error(sprintf("[%s] %s (%s)\n",
+            date("r"),
+            Stb::getInstance()->mac,
+            implode(", ", $ips)
+        ));
     }
 }
 ?>

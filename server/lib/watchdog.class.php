@@ -13,12 +13,25 @@ class Watchdog extends AjaxResponse
     }
     
     public function getEvents(){
+
+        $just_started = (int) $_REQUEST['init'];
+
+        if (Config::getSafe('log_mac_clones', false) && $just_started == 0 && Stb::getInstance()->getParam('just_started') == 0){
+
+            $clone_ip = Middleware::getClonesIPAddress($this->stb->mac);
+
+            if ($clone_ip){
+                Stb::logDoubleMAC($clone_ip);
+            }
+        }
         
         $this->db->update('users',
                          array(
                             'keep_alive' => 'NOW()',
                             'ip' => $this->stb->ip,
                             'now_playing_type' => intval($_REQUEST['cur_play_type']),
+                            'just_started' => $just_started,
+                            'last_watchdog' => 'NOW()'
                          ),
                          array(
                             'mac' => $this->stb->mac
@@ -53,24 +66,12 @@ class Watchdog extends AjaxResponse
         
         $res['data']['additional_services_on'] = $this->stb->additional_services_on;
         
-        //$weather = new Weatherco();
-        //$res['data']['cur_weather'] = $weather->getCurrent();
-        
-        //$course = new Course();
-        //$res['data']['course'] = $course->getData();
-        
-        //$cur_weather = new Curweather();
-        //$res['data']['cur_weather'] = $cur_weather->getData();
-        
         $updated_places = $this->db->from('updated_places')->where(array('uid' => $this->stb->id))->get()->first();
         
         $res['data']['updated'] = array();
         $res['data']['updated']['anec'] = intval($updated_places['anec']);
         $res['data']['updated']['vclub'] = intval($updated_places['vclub']);
-        
-        //$ad = new Advertising();
-        //$res['data']['main_ad'] = $ad->getMainMini();
-        
+
         return $res;
     }
     

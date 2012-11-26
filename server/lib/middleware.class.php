@@ -104,6 +104,42 @@ class Middleware
         }
     }
 
+    public static function isValidMAC($mac){
+
+        return preg_match("/^00:1A:79:[0-9,A-F]{2}:[0-9,A-F]{2}:[0-9,A-F]{2}$/", $mac);
+    }
+
+    public static function getClonesIPAddress(){
+
+        $cache = Cache::getInstance();
+
+        $mac = Stb::getInstance()->mac;
+
+        $history = Cache::getInstance()->get($mac);
+
+        if ($history === false){
+            $history = array();
+        }else{
+            $history = json_decode($history, true);
+
+            if ($history === null){
+                $history = array();
+            }
+        }
+
+        $history[] = Stb::getInstance()->ip;
+
+        $result = $cache->set($mac, json_encode($history), array(), 10);
+
+        //var_dump($history);
+
+        if (count($history) > 1){
+            return $history;
+        }
+
+        return false;
+    }
+
     /**
      * Clean perhaps "dirty" array of mac addresses
      *

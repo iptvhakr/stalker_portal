@@ -49,7 +49,7 @@ watchdog.prototype.run = function(timeout, timeslot){
 
     var self = this;
 
-    this.send_request();
+    this.send_request(true);
 
     window.setTimeout(function(){
         window.setInterval(function(){
@@ -59,9 +59,10 @@ watchdog.prototype.run = function(timeout, timeslot){
     }, delay);
 };
 
-watchdog.prototype.send_request = function(){
+watchdog.prototype.send_request = function(init){
     
     var self = this;
+    init = init | false;
     
     var cur_play_type = 0;
     
@@ -78,7 +79,8 @@ watchdog.prototype.send_request = function(){
             "type"            : "watchdog",
             "action"          : "get_events",
             "cur_play_type"   : cur_play_type,
-            "event_active_id" : this.event_active_id
+            "event_active_id" : this.event_active_id,
+            "init"            : init
         },
         
         function(result){
