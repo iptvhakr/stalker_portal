@@ -585,6 +585,8 @@ function common_xpcom(){
                 this.user_init(this.profile);
 
                 this.clock.start();
+
+                connection_problem.refresh_msg();
             },
 
             this
@@ -1785,6 +1787,10 @@ var connection_problem = {
         this.block_obj = create_block_element("connection_problem_block", this.dom_obj);
         this.block_obj.innerHTML = get_word('Connection problem');
         this.hide();
+    },
+
+    refresh_msg : function(){
+        this.block_obj.innerHTML = get_word('Connection problem');
     },
 
     show : function(){

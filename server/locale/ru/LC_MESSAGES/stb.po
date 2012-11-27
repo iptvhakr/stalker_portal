@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-05 16:28+0200\n"
-"PO-Revision-Date: 2012-11-05 16:29+0200\n"
+"POT-Creation-Date: 2012-11-27 16:55+0200\n"
+"PO-Revision-Date: 2012-11-27 16:55+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -82,7 +82,7 @@ msgid "EPG"
 msgstr "EPG"
 
 #: ../../../administrator/add_epg.php:263
-#: ../../../administrator/add_itv.php:934
+#: ../../../administrator/add_itv.php:937
 #: ../../../administrator/add_karaoke.php:218
 #: ../../../administrator/add_moderator_mac.php:109
 #: ../../../administrator/add_radio.php:137
@@ -108,11 +108,11 @@ msgid "Load EPG"
 msgstr "Загрузить EPG"
 
 #: ../../../administrator/add_epg.php:401
-#: ../../../administrator/add_itv.php:1562
+#: ../../../administrator/add_itv.php:1580
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
 #: ../../../administrator/add_radio.php:272
-#: ../../../administrator/add_video.php:2105
+#: ../../../administrator/add_video.php:2140
 msgid "Save"
 msgstr "Сохранить"
 
@@ -120,7 +120,7 @@ msgstr "Сохранить"
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
 #: ../../../administrator/add_radio.php:272
-#: ../../../administrator/add_video.php:2105
+#: ../../../administrator/add_video.php:2140
 msgid "New"
 msgstr "Новый"
 
@@ -148,78 +148,78 @@ msgstr "Ошибка: невозможно сохранить логотип"
 msgid "Error: all fields are required"
 msgstr "Ошибка: необходимо заполнить все поля"
 
-#: ../../../administrator/add_itv.php:619
-#: ../../../administrator/add_itv.php:929
+#: ../../../administrator/add_itv.php:623
+#: ../../../administrator/add_itv.php:932
 msgid "IPTV channels"
 msgstr "IPTV каналы"
 
-#: ../../../administrator/add_itv.php:632
+#: ../../../administrator/add_itv.php:636
 msgid "priority"
 msgstr "приоритет"
 
-#: ../../../administrator/add_itv.php:636
+#: ../../../administrator/add_itv.php:640
 msgid "filter"
 msgstr "фильтр"
 
-#: ../../../administrator/add_itv.php:642
+#: ../../../administrator/add_itv.php:646
 msgid "Temporary HTTP URL"
 msgstr "Временная HTTP ссылка"
 
-#: ../../../administrator/add_itv.php:645
+#: ../../../administrator/add_itv.php:649
 msgid "WOWZA support"
 msgstr "Поддержка WOWZA"
 
-#: ../../../administrator/add_itv.php:650
+#: ../../../administrator/add_itv.php:654
 msgid "Enable monitoring"
 msgstr "Вести мониторинг"
 
-#: ../../../administrator/add_itv.php:656
+#: ../../../administrator/add_itv.php:660
 msgid "Channel URL for monitoring"
 msgstr "URL канала для мониторинга"
 
-#: ../../../administrator/add_itv.php:682
+#: ../../../administrator/add_itv.php:686
 msgid "add new link"
 msgstr "добавить новую ссылку"
 
-#: ../../../administrator/add_itv.php:684
-#: ../../../administrator/add_video.php:1253
+#: ../../../administrator/add_itv.php:688
+#: ../../../administrator/add_video.php:1288
 msgid "delete"
 msgstr "удалить"
 
-#: ../../../administrator/add_itv.php:751
-#: ../../../administrator/add_itv.php:1016
+#: ../../../administrator/add_itv.php:755
+#: ../../../administrator/add_itv.php:1021
 #: ../../../administrator/add_karaoke.php:526
-#: ../../../administrator/add_video.php:886
+#: ../../../administrator/add_video.php:921
 msgid "Do you really want to delete this record?"
 msgstr "Вы действительно хотите удалить эту запись?"
 
-#: ../../../administrator/add_itv.php:896
+#: ../../../administrator/add_itv.php:899
 msgid "Channel with same number already exists!"
 msgstr "Канал с таким номером уже существует!"
 
-#: ../../../administrator/add_itv.php:898
+#: ../../../administrator/add_itv.php:901
 msgid "Shift channel list?"
 msgstr "Сдвинуть список каналов?"
 
-#: ../../../administrator/add_itv.php:934
+#: ../../../administrator/add_itv.php:937
 #: ../../../administrator/add_video.php:644
 msgid "Add"
 msgstr "Добавить"
 
-#: ../../../administrator/add_itv.php:960
-#: ../../../administrator/add_itv.php:1319
+#: ../../../administrator/add_itv.php:963
+#: ../../../administrator/add_itv.php:1324
 #: ../../../administrator/add_radio.php:160
 #: ../../../administrator/add_radio.php:236
 msgid "Number"
 msgstr "Номер"
 
-#: ../../../administrator/add_itv.php:961
-#: ../../../administrator/add_itv.php:1520
+#: ../../../administrator/add_itv.php:964
+#: ../../../administrator/add_itv.php:1538
 msgid "Service code"
 msgstr "Код услуги"
 
-#: ../../../administrator/add_itv.php:962
-#: ../../../administrator/add_itv.php:1327
+#: ../../../administrator/add_itv.php:965
+#: ../../../administrator/add_itv.php:1332
 #: ../../../administrator/add_karaoke.php:803
 #: ../../../administrator/add_moderator_mac.php:132
 #: ../../../administrator/add_moderator_mac.php:205
@@ -228,115 +228,119 @@ msgstr "Код услуги"
 msgid "Name"
 msgstr "Имя"
 
-#: ../../../administrator/add_itv.php:963
+#: ../../../administrator/add_itv.php:966
 #: ../../../administrator/add_radio.php:162
 #: ../../../administrator/add_radio.php:254
 msgid "URL"
 msgstr "URL"
 
-#: ../../../administrator/add_itv.php:964
-#: ../../../administrator/add_itv.php:1390
+#: ../../../administrator/add_itv.php:967
+msgid "xmltv id"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:968
+#: ../../../administrator/add_itv.php:1395
 #: ../../../administrator/add_karaoke.php:849
-#: ../../../administrator/add_video.php:1996
-#: ../../../administrator/add_video.php:2005
-#: ../../../administrator/add_video.php:2014
-#: ../../../administrator/add_video.php:2023
+#: ../../../administrator/add_video.php:2031
+#: ../../../administrator/add_video.php:2040
+#: ../../../administrator/add_video.php:2049
+#: ../../../administrator/add_video.php:2058
 msgid "Genre"
 msgstr "Жанр"
 
-#: ../../../administrator/add_itv.php:965
+#: ../../../administrator/add_itv.php:969
 msgid "Archive"
 msgstr "Архив"
 
-#: ../../../administrator/add_itv.php:966
-#: ../../../administrator/add_itv.php:1528
+#: ../../../administrator/add_itv.php:970
+#: ../../../administrator/add_itv.php:1546
 #: ../../../administrator/add_radio.php:262
-#: ../../../administrator/add_video.php:843
-#: ../../../administrator/add_video.php:2072
+#: ../../../administrator/add_video.php:878
+#: ../../../administrator/add_video.php:2107
 msgid "Volume correction"
 msgstr "Коррекция звука"
 
-#: ../../../administrator/add_itv.php:967
+#: ../../../administrator/add_itv.php:971
 msgid "Claims about<br>audio/video/epg"
 msgstr "Жалобы на<br>видео/аудио/epg"
 
-#: ../../../administrator/add_itv.php:1006
+#: ../../../administrator/add_itv.php:1011
 #: ../../../administrator/add_karaoke.php:516
-#: ../../../administrator/add_video.php:872
+#: ../../../administrator/add_video.php:907
 msgid "Do you really want to reset claims counter?"
 msgstr "Вы действительно хотите сбросить счетчик жалоб?"
 
-#: ../../../administrator/add_itv.php:1227
+#: ../../../administrator/add_itv.php:1232
 msgid "monitoring off"
 msgstr "не мониторится"
 
-#: ../../../administrator/add_itv.php:1233
+#: ../../../administrator/add_itv.php:1238
 msgid "more than an hour ago"
 msgstr "больше часа назад"
 
-#: ../../../administrator/add_itv.php:1237
+#: ../../../administrator/add_itv.php:1242
 msgid "less than a minute ago"
 msgstr "меньше минуты назад"
 
-#: ../../../administrator/add_itv.php:1240
+#: ../../../administrator/add_itv.php:1245
 msgid "minutes ago"
 msgstr "minutes ago"
 
-#: ../../../administrator/add_itv.php:1288
+#: ../../../administrator/add_itv.php:1293
 msgid "Error deleting a logo"
 msgstr "Ошибка при удалении лого"
 
-#: ../../../administrator/add_itv.php:1350
-#: ../../../administrator/add_video.php:1921
+#: ../../../administrator/add_itv.php:1355
+#: ../../../administrator/add_video.php:1956
 msgid "Age restriction"
 msgstr "Ограничение по возрасту"
 
-#: ../../../administrator/add_itv.php:1366
+#: ../../../administrator/add_itv.php:1371
 msgid "Base channel"
 msgstr "Базовый канал"
 
-#: ../../../administrator/add_itv.php:1374
+#: ../../../administrator/add_itv.php:1379
 msgid "Bonus channel"
 msgstr "Бонусный канал"
 
-#: ../../../administrator/add_itv.php:1382
+#: ../../../administrator/add_itv.php:1387
 msgid "Price"
 msgstr "Цена"
 
-#: ../../../administrator/add_itv.php:1428
+#: ../../../administrator/add_itv.php:1433
 msgid "Links"
 msgstr "Ссылки"
 
-#: ../../../administrator/add_itv.php:1447
+#: ../../../administrator/add_itv.php:1452
 msgid "URL for recording (multicast)"
 msgstr "Адрес для записи (мультикаст)"
 
-#: ../../../administrator/add_itv.php:1455
+#: ../../../administrator/add_itv.php:1460
 msgid "Enable TV archive"
 msgstr "Вести ТВ архив"
 
-#: ../../../administrator/add_itv.php:1480
+#: ../../../administrator/add_itv.php:1498
 msgid "Allow nPVR"
 msgstr "Разрешить nPVR"
 
-#: ../../../administrator/add_itv.php:1512
+#: ../../../administrator/add_itv.php:1530
 msgid "EPG correction"
 msgstr "Коррекция EPG"
 
-#: ../../../administrator/add_itv.php:1512
-#: ../../../administrator/add_video.php:2043
+#: ../../../administrator/add_itv.php:1530
+#: ../../../administrator/add_video.php:2078
 msgid "min"
 msgstr "мин"
 
-#: ../../../administrator/add_itv.php:1536
+#: ../../../administrator/add_itv.php:1554
 msgid "Comments"
 msgstr "Комментарии"
 
-#: ../../../administrator/add_itv.php:1552
+#: ../../../administrator/add_itv.php:1570
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../../../administrator/add_itv.php:1562
+#: ../../../administrator/add_itv.php:1580
 #: ../../../administrator/add_video.php:596
 msgid "Cancel"
 msgstr "Отмена"
@@ -355,7 +359,7 @@ msgid "not done"
 msgstr "не сделано"
 
 #: ../../../administrator/add_karaoke.php:399
-#: ../../../administrator/add_video.php:756
+#: ../../../administrator/add_video.php:790
 msgid "Search"
 msgstr "Поиск"
 
@@ -385,22 +389,22 @@ msgid "When"
 msgstr "Когда"
 
 #: ../../../administrator/add_karaoke.php:493
-#: ../../../administrator/add_video.php:846
+#: ../../../administrator/add_video.php:881
 msgid "Claims about<br>audio/video"
 msgstr "Жалобы на<br>видео/аудио"
 
 #: ../../../administrator/add_karaoke.php:542
-#: ../../../administrator/add_video.php:906
+#: ../../../administrator/add_video.php:941
 msgid "Loading"
 msgstr "Загрузка"
 
 #: ../../../administrator/add_karaoke.php:545
-#: ../../../administrator/add_video.php:909
+#: ../../../administrator/add_video.php:944
 msgid "Not found"
 msgstr "Не найден"
 
 #: ../../../administrator/add_karaoke.php:694
-#: ../../../administrator/add_video.php:1354
+#: ../../../administrator/add_video.php:1389
 msgid "Server"
 msgstr "Сервер"
 
@@ -409,17 +413,17 @@ msgid "File"
 msgstr "Файл"
 
 #: ../../../administrator/add_karaoke.php:735
-#: ../../../administrator/add_video.php:1473
+#: ../../../administrator/add_video.php:1508
 msgid "Error: The file or directory may contain invalid characters"
 msgstr "Ошибка: Возможно файл или директория содержат запрещенные символы"
 
 #: ../../../administrator/add_karaoke.php:813
-#: ../../../administrator/add_video.php:1899
+#: ../../../administrator/add_video.php:1934
 msgid "Protocol"
 msgstr "Протокол"
 
 #: ../../../administrator/add_karaoke.php:828
-#: ../../../administrator/add_video.php:1915
+#: ../../../administrator/add_video.php:1950
 msgid "include solution"
 msgstr "включая солюшн"
 
@@ -428,7 +432,7 @@ msgid "Author"
 msgstr "Автор"
 
 #: ../../../administrator/add_karaoke.php:877
-#: ../../../administrator/add_video.php:2113
+#: ../../../administrator/add_video.php:2148
 msgid "Form filling order"
 msgstr "Порядок заполнения"
 
@@ -473,7 +477,7 @@ msgid "Error creating the folder on moderator storage"
 msgstr "Ошибка при создании папки на модераторском хранилище"
 
 #: ../../../administrator/add_video.php:468
-#: ../../../administrator/add_video.php:1321
+#: ../../../administrator/add_video.php:1356
 msgid "Error: insufficient permissions for this action"
 msgstr "Ошибка: недостаточно прав для данного действия"
 
@@ -530,162 +534,162 @@ msgstr " задание"
 msgid "send"
 msgstr "отправить"
 
-#: ../../../administrator/add_video.php:756
+#: ../../../administrator/add_video.php:790
 msgid "search by file name of movie name"
 msgstr "поиск по \"физическому имени\" и по \"названию фильма\""
 
-#: ../../../administrator/add_video.php:818
+#: ../../../administrator/add_video.php:852
 msgid "Status"
 msgstr "Статус"
 
-#: ../../../administrator/add_video.php:824
+#: ../../../administrator/add_video.php:859
 msgid "Votes"
 msgstr "Голосование"
 
-#: ../../../administrator/add_video.php:827
+#: ../../../administrator/add_video.php:862
 msgid "good sound"
 msgstr "хороший звук"
 
-#: ../../../administrator/add_video.php:828
+#: ../../../administrator/add_video.php:863
 msgid "bad sound"
 msgstr "плохой звук"
 
-#: ../../../administrator/add_video.php:829
+#: ../../../administrator/add_video.php:864
 msgid "good video"
 msgstr "хорошое видео"
 
-#: ../../../administrator/add_video.php:830
+#: ../../../administrator/add_video.php:865
 msgid "bad video"
 msgstr "плохое видео"
 
-#: ../../../administrator/add_video.php:839
-#: ../../../administrator/add_video.php:1355
+#: ../../../administrator/add_video.php:874
+#: ../../../administrator/add_video.php:1390
 msgid "Folder"
 msgstr "Каталог"
 
-#: ../../../administrator/add_video.php:840
-#: ../../../administrator/add_video.php:1850
+#: ../../../administrator/add_video.php:875
+#: ../../../administrator/add_video.php:1885
 msgid "Title"
 msgstr "Название"
 
-#: ../../../administrator/add_video.php:841
-#: ../../../administrator/add_video.php:1866
+#: ../../../administrator/add_video.php:876
+#: ../../../administrator/add_video.php:1901
 msgid "Original title"
 msgstr "Оригинальное название"
 
-#: ../../../administrator/add_video.php:842
+#: ../../../administrator/add_video.php:877
 msgid "Restriction"
 msgstr "Ограничение"
 
-#: ../../../administrator/add_video.php:844
+#: ../../../administrator/add_video.php:879
 msgid "Duration, min"
 msgstr "Длительность, мин"
 
-#: ../../../administrator/add_video.php:845
-#: ../../../administrator/add_video.php:1356
+#: ../../../administrator/add_video.php:880
+#: ../../../administrator/add_video.php:1391
 msgid "Series"
 msgstr "Серии"
 
-#: ../../../administrator/add_video.php:848
+#: ../../../administrator/add_video.php:883
 msgid "Turn on date"
 msgstr "Дата включения"
 
-#: ../../../administrator/add_video.php:1105
+#: ../../../administrator/add_video.php:1140
 #, php-format
 msgid "turn on %s"
 msgstr "включится %s"
 
-#: ../../../administrator/add_video.php:1253
+#: ../../../administrator/add_video.php:1288
 msgid "size"
 msgstr "размер"
 
-#: ../../../administrator/add_video.php:1317
+#: ../../../administrator/add_video.php:1352
 msgid "please wait"
 msgstr "подождите"
 
-#: ../../../administrator/add_video.php:1366
+#: ../../../administrator/add_video.php:1401
 msgid "check"
 msgstr "проверить"
 
-#: ../../../administrator/add_video.php:1368
+#: ../../../administrator/add_video.php:1403
 msgid "count md5 sum"
 msgstr "посчитать MD5 сумму"
 
-#: ../../../administrator/add_video.php:1371
-#: ../../../administrator/add_video.php:1395
-#: ../../../administrator/add_video.php:1443
+#: ../../../administrator/add_video.php:1406
+#: ../../../administrator/add_video.php:1430
+#: ../../../administrator/add_video.php:1478
 msgid "counting"
 msgstr "идет подсчет"
 
-#: ../../../administrator/add_video.php:1440
+#: ../../../administrator/add_video.php:1475
 msgid "error"
 msgstr "ошибка"
 
-#: ../../../administrator/add_video.php:1525
+#: ../../../administrator/add_video.php:1560
 msgid "Not available"
 msgstr "Не доступно"
 
-#: ../../../administrator/add_video.php:1528
+#: ../../../administrator/add_video.php:1563
 msgid "Available"
 msgstr "Доступно"
 
-#: ../../../administrator/add_video.php:1870
+#: ../../../administrator/add_video.php:1905
 msgid "autofill"
 msgstr "автозаполнение"
 
-#: ../../../administrator/add_video.php:1878
+#: ../../../administrator/add_video.php:1913
 msgid "Kinopoisk ID"
 msgstr "Кинопоиск ID"
 
-#: ../../../administrator/add_video.php:1881
-#: ../../../administrator/add_video.php:1882
+#: ../../../administrator/add_video.php:1916
+#: ../../../administrator/add_video.php:1917
 msgid "For unlock please delete Name and Original name fields"
 msgstr "Для разблокировки очистите поля Имя и Оригинальное имя"
 
-#: ../../../administrator/add_video.php:1889
+#: ../../../administrator/add_video.php:1924
 msgid "Kinopoisk rating"
 msgstr "Рейтинг кинопоиска"
 
-#: ../../../administrator/add_video.php:1939
+#: ../../../administrator/add_video.php:1974
 msgid "Only for MAG100"
 msgstr "Только для MAG100"
 
-#: ../../../administrator/add_video.php:1949
-#: ../../../administrator/add_video.php:1958
-#: ../../../administrator/add_video.php:1967
-#: ../../../administrator/add_video.php:1976
+#: ../../../administrator/add_video.php:1984
+#: ../../../administrator/add_video.php:1993
+#: ../../../administrator/add_video.php:2002
+#: ../../../administrator/add_video.php:2011
 msgid "old genre"
 msgstr "старый жанр"
 
-#: ../../../administrator/add_video.php:1986
+#: ../../../administrator/add_video.php:2021
 msgid "Category"
 msgstr "Категория"
 
-#: ../../../administrator/add_video.php:2032
+#: ../../../administrator/add_video.php:2067
 msgid "Year"
 msgstr "Год"
 
-#: ../../../administrator/add_video.php:2040
+#: ../../../administrator/add_video.php:2075
 msgid "Duration"
 msgstr "Длительность"
 
-#: ../../../administrator/add_video.php:2048
+#: ../../../administrator/add_video.php:2083
 msgid "Director"
 msgstr "Режиссер"
 
-#: ../../../administrator/add_video.php:2056
+#: ../../../administrator/add_video.php:2091
 msgid "Actors"
 msgstr "Актеры"
 
-#: ../../../administrator/add_video.php:2064
+#: ../../../administrator/add_video.php:2099
 msgid "Description"
 msgstr "Описание"
 
-#: ../../../administrator/add_video.php:2080
+#: ../../../administrator/add_video.php:2115
 msgid "Cover"
 msgstr "Обложка"
 
-#: ../../../administrator/add_video.php:2114
+#: ../../../administrator/add_video.php:2149
 msgid "1. Upload cover.<br>2. Fill form.<br>3. Save.<br>4. Put the converted in folder<br>&nbsp;&nbsp;&nbsp;&nbsp;specified in the column \"Folder\".<br>5. If necessary, edit or delete a record.<br>6. Click on folder name.<br>7. If the file is physically present in the directory,<br>&nbsp;&nbsp;&nbsp;&nbsp;it is green, if there is no - in red."
 msgstr "1. Прикрепить скриншоты.<br>           2. Заполнить поля.<br>           3. Сохранить.<br>           4. Поместить сконвертированный файл в папку, <br>           &nbsp;&nbsp;&nbsp;&nbsp;указанную в колонке \"Каталог\"<br>           5. При необходимости редактировать или удалить запись.<br>           6. Если файл физически присутствует в директории, то он <br>            &nbsp;&nbsp;&nbsp;&nbsp;отображается зеленым цветом, если отсутствует - красным."
 
@@ -3088,6 +3092,10 @@ msgstr "по названию"
 #: ../../../lang/stb.php:404
 msgid "by date"
 msgstr "по дате"
+
+#: ../../../lang/stb.php:406
+msgid "Connection problem"
+msgstr "Ошибка подключения"
 
 #. / in format of php date() function
 #: ../../../lib/accountinfo.class.php:34
