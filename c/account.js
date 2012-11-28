@@ -164,6 +164,10 @@
                 info += '<span class="label">' +get_word('Tariff plan') + ':</span> ' + result['tariff_plan'] + '<br>';
             }
 
+            if (result['account_balance']){
+                info += '<span class="label">' +get_word('Account balance') + ':</span> ' + result['account_balance'] + '<br>';
+            }
+
             if (result['end_date']){
                 info += '<span class="label">' +get_word('End date') + ':</span> ' + result['end_date'] + '<br>';
             }

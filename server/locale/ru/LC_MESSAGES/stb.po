@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-27 16:55+0200\n"
-"PO-Revision-Date: 2012-11-27 16:55+0200\n"
+"POT-Creation-Date: 2012-11-28 12:46+0200\n"
+"PO-Revision-Date: 2012-11-28 12:46+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3096,6 +3096,10 @@ msgstr "по дате"
 #: ../../../lang/stb.php:406
 msgid "Connection problem"
 msgstr "Ошибка подключения"
+
+#: ../../../lang/stb.php:408
+msgid "Account balance"
+msgstr "Баланс"
 
 #. / in format of php date() function
 #: ../../../lib/accountinfo.class.php:34

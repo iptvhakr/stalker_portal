@@ -405,4 +405,6 @@ $words['mbrowser_sort_by_date'] = _('by date');
 
 $words['Connection problem'] = _('Connection problem');
 
+$words['Account balance'] = _('Account balance');
+
 ?>
