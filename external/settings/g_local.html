@@ -16,51 +16,6 @@ var numberC=0;
 var goInd=-1;var goMax=0;
 var goCity=new Object();
 var first_load=true;
-parent.load({"type":"stb","action":"get_locales"},
-        function(langv){ 
-            var dl=document.getElementById("i1");
-            var options = '';
-            for(var il in langv)
-            {
-               if(langv[il].selected==1){var selected = "selected";}else{selected = ""}
-               options += '<option value="'+langv[il].value+'" '+selected+'>'+langv[il].label+'</option>';  
-            }
-            dl.innerHTML = options;
-        });
-        
-parent.load({"type":"stb","action":"get_countries"},
-        function(locales){ 
-            var dlo=document.getElementById("i2");
-            var sel=true;
-            var options = '';
-            for(var il in locales)
-            {
-               if(locales[il].selected==1){var selected = "selected";}else{selected = ""}
-               options += '<option value="'+locales[il].value+'" '+selected+'>'+locales[il].label+'</option>';
-            }
-            dlo.innerHTML = options;
-            if(sel)loadCity(dlo[dlo.selectedIndex].value);
-        });
-
- parent.load({"type":"stb","action":"get_timezones"},
-        function(timezon){ 
-            var dl=document.getElementById("i4");
-            var options = '';
-            var select = 0;
-            var base_select = -1;
-            for(var il in timezon)
-            {
-               if(timezon[il].selected==1){
-                   select = il;
-               }
-               if(timezon[il].value == read.result.timezone_conf){
-                   base_select = il;
-               }
-               options += '<option value="'+timezon[il].value+'">'+timezon[il].label+'</option>';
-            }
-            dl.innerHTML = options;
-            dl.getElementsByTagName("option")[base_select!=-1?base_select:select].selected=true;
-        });
         
 function loadCity(id){
 
@@ -96,13 +51,58 @@ function changeTime(timezone)
 
 function onLoad()
 {
-        sload();
-        init();
-        parent.cont.focus();
-        document.getElementById("i1").focus();
-        document.getElementById("i5").value=parent.t('OK');
-        document.getElementById("i6").value=parent.t('Cancel');
-        menuT[2][0]='ic';
+        parent.load({"type":"stb","action":"get_locales"},
+        function(langv){ 
+            var options = '';
+            for(var il in langv)
+            {
+               if(langv[il].selected==1){var selected = "selected";}else{selected = ""}
+               options += '<option value="'+langv[il].value+'" '+selected+'>'+langv[il].label+'</option>';  
+            }
+            document.getElementById("i1").innerHTML = options;
+        });
+        
+        parent.load({"type":"stb","action":"get_countries"},
+                function(locales){ 
+                    var dlo=document.getElementById("i2");
+                    var sel=true;
+                    var options = '';
+                    for(var il in locales)
+                    {
+                    if(locales[il].selected==1){var selected = "selected";}else{selected = ""}
+                    options += '<option value="'+locales[il].value+'" '+selected+'>'+locales[il].label+'</option>';
+                    }
+                    dlo.innerHTML = options;
+                    if(sel)loadCity(dlo[dlo.selectedIndex].value);
+                });
+
+        parent.load({"type":"stb","action":"get_timezones"},
+                function(timezon){ 
+                    var dl=document.getElementById("i4");
+                    var options = '';
+                    var select = 0;
+                    var base_select = -1;
+                    for(var il in timezon)
+                    {
+                    if(timezon[il].selected==1){
+                        select = il;
+                    }
+                    if(timezon[il].value == read.result.timezone_conf){
+                        base_select = il;
+                    }
+                    options += '<option value="'+timezon[il].value+'">'+timezon[il].label+'</option>';
+                    }
+                    dl.innerHTML = options;
+                    dl.getElementsByTagName("option")[base_select!=-1?base_select:select].selected=true;
+                });
+        window.setTimeout(function(){
+            sload();
+            init();
+            parent.cont.focus();
+            document.getElementById("i1").focus();
+            document.getElementById("i5").value=parent.t('OK');
+            document.getElementById("i6").value=parent.t('Cancel');
+            menuT[2][0]='ic';},100);
 }
 
 function pressKeyH(e)
@@ -200,11 +200,23 @@ function cityGo(a){
 
 function submit()
 {
+    var wr='{';
+    var pr=false;
     var la=document.getElementById('i1').value;
     var tm=document.getElementById('i4').value;
-    parent.stb.RDir('setenv language '+la.substr(0, 2));
-    parent.stb.ExecAction('timezone '+tm);
-    parent.stb.RDir('setenv timezone_conf_int');    
+    var conf=JSON.parse(parent.stb.GetEnv('{"varList":["language","timezone_conf_int"]}'));
+    if(conf.result.language != la.substr(0, 2)){
+        wr += '"language":"'+la.substr(0, 2)+'"';
+        pr = true;
+    }
+    if(conf.result.timezone_conf_int != ""){
+        wr += (pr?',':'')+'"timezone_conf_int":""';
+    }
+    parent.stb.ExecAction('timezone '+tm);  
+    if(wr!='{'){
+        wr+='}';
+        parent.stb.SetEnv(wr);
+    }    
     parent.load({"type":"stb","action":"set_locale","locale":la,"city":numberC},function(result){if(!result)parent.erMes(parent.t('Saving error'),"i"+iid);else parent.rebut2=true;back();});
 }
 

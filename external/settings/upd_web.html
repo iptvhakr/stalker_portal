@@ -7,12 +7,13 @@ var iid=1; var flb=false;
 var flesh=JSON.parse(parent.stb.RDir("get_storage_info"));
 var vers=parent.stb.GetDeviceImageVersionCurrent().split(' ');
 var menuT=[['input',parent.t("URL:")],['input','']];
+var conf=JSON.parse(parent.stb.GetEnv('{"varList":["update_url"]}'));
 var j=2;var sc=0;
 var errf;var turl;
 var mid;
 var model = parent.stb.RDir("Model");
 var pread=["a","b"];
-var read={"result":{"a":parent.prof.update_url==''||parent.prof.update_url==undefined?"http://mag.infomir.com.ua/"+model.substr(3,3)+"/imageupdate":parent.prof.update_url,"b":parent.t('Verify')}}
+var read={"result":{"a":parent.prof.update_url==''||parent.prof.update_url==undefined?conf.result.update_url:parent.prof.update_url,"b":parent.t('Verify')}}
 var chb=document.getElementsByName('chb');
 var info=document.getElementsByName('info');
 var lp=0;var pr=new Object();
