@@ -240,6 +240,10 @@ class Mysql
         return $this;
     }
 
+    public function not_in($field, $values){
+        return $this->in($field, $values, true);
+    }
+
     public function group_in($fields, $type){
 
         $where = array();

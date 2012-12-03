@@ -21,6 +21,7 @@ class Epg
     private $real_ids = array();
     private $corrections = null;
     private $channels_updated = array();
+    private $new_ids = array();
 
     public function __construct(){
         $this->db = Mysql::getInstance();
@@ -169,12 +170,24 @@ class Epg
 
         $xml = null;
 
+        $total_need_to_delete = array_diff($total_need_to_delete, $this->new_ids);
+
         if (!empty($total_need_to_delete)){
             Mysql::getInstance()->query('delete from epg where id in ('.implode(', ', $total_need_to_delete).')');
             Mysql::getInstance()->query('OPTIMIZE TABLE epg');
         }
 
-        $result = $this->db->insert('epg', $data_arr);
+        if (!empty($data_arr)){
+            $result = $this->db->insert('epg', $data_arr);
+
+            $real_ids = array_map(function($item){
+                return $item['real_id'];
+            }, $data_arr);
+
+            $this->new_ids = array_merge(Mysql::getInstance()->from('epg')->in('real_id', $real_ids)->get()->all('id'), $this->new_ids);
+        }else{
+            $result = true;
+        }
 
         $setting['etag'] = $etag;
         $this->setSettings($setting);
@@ -184,9 +197,12 @@ class Epg
         if (!$result){
             $str .= "<b>"._("Errors").": </b> 1\n";
         }
-        $str .= "<b>"._("Successful").": </b>".count($this->channels_updated)."\n";
+        $str .= "<b>".sprintf(_("Successful: %s channels"), count($this->channels_updated))."</b>\n";
+        $str .= "<b>".sprintf(_("Deleted: %s records"), count($total_need_to_delete))."</b>\n";
         $str .= "<b>"._("Queries").": </b>".Mysql::get_num_queries()."\n";
         $str .= "<b>"._("Exec time").": </b>".round(microtime(1) - $start_time, 2).'s';
+
+        $this->channels_updated = array();
 
         return $str;
     }

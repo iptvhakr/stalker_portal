@@ -2,6 +2,10 @@ function SpeedtestStatic(){}
 
 function Speedtest(url){
 
+    if (!url){
+        console.log("Empty test download URL!");
+    }
+
     this._url           = url;
     this._interval_time = 1;
     this._static        = SpeedtestStatic;
