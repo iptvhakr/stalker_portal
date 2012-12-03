@@ -14,9 +14,9 @@ class Watchdog extends AjaxResponse
     
     public function getEvents(){
 
-        $just_started = (int) $_REQUEST['init'];
+        $just_started = isset($_REQUEST['init']) ? (int) $_REQUEST['init'] : 0;
 
-        if (Config::getSafe('log_mac_clones', false) && $just_started == 0 && Stb::getInstance()->getParam('just_started') == 0){
+        if (isset($_REQUEST['init']) && Config::getSafe('log_mac_clones', false) && $just_started == 0 && Stb::getInstance()->getParam('just_started') == 0){
 
             $clone_ip = Middleware::getClonesIPAddress($this->stb->mac);
 

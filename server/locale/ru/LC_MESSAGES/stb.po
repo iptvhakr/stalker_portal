@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-28 12:46+0200\n"
-"PO-Revision-Date: 2012-11-28 12:46+0200\n"
+"POT-Creation-Date: 2012-11-29 15:43+0200\n"
+"PO-Revision-Date: 2012-11-29 15:43+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3334,19 +3334,25 @@ msgstr "недоступен"
 msgid "not changed"
 msgstr "не изменился"
 
-#: ../../../lib/epg.class.php:185
+#: ../../../lib/epg.class.php:189
 msgid "Errors"
 msgstr "Ошибок"
 
-#: ../../../lib/epg.class.php:187
-msgid "Successful"
-msgstr "Успешно"
+#: ../../../lib/epg.class.php:191
+#, php-format
+msgid "Successful: %s channels"
+msgstr "Успешно: %s каналов"
 
-#: ../../../lib/epg.class.php:188
+#: ../../../lib/epg.class.php:192
+#, php-format
+msgid "Deleted: %s records"
+msgstr "Удалено: %s записей"
+
+#: ../../../lib/epg.class.php:193
 msgid "Queries"
 msgstr ""
 
-#: ../../../lib/epg.class.php:189
+#: ../../../lib/epg.class.php:194
 msgid "Exec time"
 msgstr ""
 
@@ -3973,6 +3979,9 @@ msgstr "З"
 msgid "NW"
 msgstr "СЗ"
 
+#~ msgid "Successful"
+#~ msgstr "Успешно"
+
 #~ msgid "Yes"
 #~ msgstr "Да"
 
@@ -4022,9 +4031,6 @@ msgstr "СЗ"
 #, fuzzy
 #~ msgid "Claims on<br>audio/video"
 #~ msgstr "Жалобы на<br>видео/аудио"
-
-#~ msgid "Delete this record?"
-#~ msgstr "Вы действительно хотите удалить эту запись?"
 
 #~ msgid "low quality"
 #~ msgstr "низкое качество"
