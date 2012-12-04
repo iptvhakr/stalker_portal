@@ -66,7 +66,7 @@ class OAuthServer
                         $response->setAdditionalParams($additional_params);
                     }
 
-                }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword())){
+                }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword(), $request->getMacAddress(), $request->getSerialNumber())){
 
                     $token = $this->access_handler->generateUniqueToken($request->getUsername());
 
@@ -213,6 +213,8 @@ class OAuthRequest
 {
     protected $username;
     protected $password;
+    protected $mac;
+    protected $serial_number;
     protected $client_id;
     protected $client_secret;
     protected $refresh_token;
@@ -279,6 +281,14 @@ class OAuthRequest
         $this->username = $_POST['username'];
         $this->password = $_POST['password'];
 
+        if (isset($_POST['mac'])){
+            $this->mac = $_POST['mac'];
+        }
+
+        if (isset($_POST['serial_number'])){
+            $this->serial_number = $_POST['serial_number'];
+        }
+
         return true;
     }
 
@@ -307,6 +317,14 @@ class OAuthRequest
 
     public function getPassword(){
         return $this->password;
+    }
+
+    public function getMacAddress(){
+        return $this->mac;
+    }
+
+    public function getSerialNumber(){
+        return $this->serial_number;
     }
 
     public function getClientId(){

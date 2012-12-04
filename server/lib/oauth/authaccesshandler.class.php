@@ -10,7 +10,7 @@ class AuthAccessHandler extends AccessHandler
 {
     private $token_expire = 86400;
 
-    public function checkUserAuth($username, $password){
+    public function checkUserAuth($username, $password, $mac = null, $serial_number = null){
         sleep(1); // anti brute-force delay
 
         $possible_user = Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first();
@@ -21,7 +21,22 @@ class AuthAccessHandler extends AccessHandler
 
         if ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
             || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){
-            $user = $possible_user;
+
+            if (\Config::getSafe('oauth_force_mac_check', false) && \Config::getSafe('oauth_force_serial_number_check', false)){
+                if ($mac == $possible_user['mac'] && $serial_number == $possible_user['serial_number']){
+                    $user = $possible_user;
+                }
+            }else if (\Config::getSafe('oauth_force_mac_check', false)){
+                if ($mac == $possible_user['mac']){
+                    $user = $possible_user;
+                }
+            }else  if (\Config::getSafe('oauth_force_serial_number_check', false)){
+                if ($serial_number == $possible_user['serial_number']){
+                    $user = $possible_user;
+                }
+            }else{
+                $user = $possible_user;
+            }
         }
 
         return !empty($user);
