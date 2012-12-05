@@ -106,14 +106,26 @@ vclub_info.prototype.fill = function(item){
     _debug('vclub_info.fill');
     
     this.film_title.innerHTML = item.name + ' / ' + item.o_name;
-    
-    this.full_info.innerHTML = '<span>' + word['vclub_year'] + ':</span> ' + item.year + '<br>' + 
-                     '<span>' + word['vclub_genre'] + ':</span> ' + item.genres_str + '<br>' + 
-                     '<span>' + word['vclub_length'] + ':</span> ' + item.time + ' ' + (empty(item.series) ? (word['vclub_minutes'] + '.') : '') +
-                     '<div class="hr_filminfo"></div>' + 
+
+    var full_info = '<span>' + word['vclub_year'] + ':</span> ' + item.year + '<br>';
+
+    full_info += '<span>' + word['vclub_genre'] + ':</span> ' + item.genres_str + '<br>' +
+                     '<span>' + word['vclub_length'] + ':</span> ' + item.time + ' ' + (empty(item.series) ? (word['vclub_minutes'] + '.') : '') + '<br>';
+
+    if (item.age){
+        full_info += '<span>' + get_word('vclub_age') + ': </span>' + item.age + '<br>';
+    }
+
+    if (item.rating_mpaa){
+        full_info += '<span>' + get_word('vclub_rating_mpaa') + ': </span>' + item.rating_mpaa + '<br>';
+    }
+
+    full_info +=  '<div class="hr_filminfo"></div>' +
                      '<span>' + word['vclub_director'] + ':</span> ' + item.director + '<br>' +
-                     '<span>' + word['vclub_cast'] + ':</span> ' + item.actors + 
+                     '<span>' + word['vclub_cast'] + ':</span> ' + item.actors +
                      '<div class="hr_filminfo"></div>' + item.description + '<br><br>';
+
+    this.full_info.innerHTML = full_info;
     
     this.film_cover.innerHTML = '<img src="'+ item.screenshot_uri +'">';
 };

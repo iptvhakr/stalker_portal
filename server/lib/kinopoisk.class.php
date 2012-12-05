@@ -141,6 +141,31 @@ class Kinopoisk
             $movie_info['description'] = self::getNodeText($node_list->item(0));
         }
 
+        // Age limit
+        $node_list = $xpath->query('//div[contains(@class, "ageLimit")]');
+
+        if ($node_list !== false && $node_list->length != 0){
+            $class = $node_list->item(0)->attributes->getNamedItem('class')->nodeValue;
+            $movie_info['age'] = substr($class, strrpos($class, 'age')+3);
+            if ($movie_info['age']){
+                $movie_info['age'] .= '+';
+            }
+        }
+
+        // Rating MPAA
+        $node_list = $xpath->query('//td[contains(@class, "rate_")]');
+
+        if ($node_list !== false && $node_list->length != 0){
+            $class = $node_list->item(0)->attributes->getNamedItem('class')->nodeValue;
+            $movie_info['rating_mpaa'] = strtoupper(substr($class, 5));
+
+            if ($movie_info['rating_mpaa'] == 'PG13'){
+                $movie_info['rating_mpaa'] = 'PG-13';
+            }elseif($movie_info['rating_mpaa'] == 'NC17'){
+                $movie_info['rating_mpaa'] = 'NC-17';
+            }
+        }
+
         // Kinopoisk rating
         $node_list = $xpath->query('//*[@id="block_rating"]/div[1]/div[1]/a/span[1]');
 

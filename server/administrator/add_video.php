@@ -327,7 +327,9 @@ if (count(@$_POST) > 0){
                                                  rating_kinopoisk,
                                                  rating_count_kinopoisk,
                                                  rating_imdb,
-                                                 rating_count_imdb
+                                                 rating_count_imdb,
+                                                 age,
+                                                 rating_mpaa
                                                  ) 
                                         values ('".trim(mysql_real_escape_string($name))."',
                                                 '".trim(mysql_real_escape_string($o_name))."',
@@ -358,7 +360,9 @@ if (count(@$_POST) > 0){
                                                 '".$_POST['rating_kinopoisk']."',
                                                 '".$_POST['rating_count_kinopoisk']."',
                                                 '".$_POST['rating_imdb']."',
-                                                '".$_POST['rating_count_imdb']."'
+                                                '".$_POST['rating_count_imdb']."',
+                                                '".$_POST['age']."',
+                                                '".$_POST['rating_mpaa']."'
                                                 )";
                     //echo $query;
                     $rs = $db->executeQuery($query);
@@ -421,7 +425,9 @@ if (count(@$_POST) > 0){
                                                rating_kinopoisk='".$_POST['rating_kinopoisk']."',
                                                rating_count_kinopoisk='".$_POST['rating_count_kinopoisk']."',
                                                rating_imdb='".$_POST['rating_imdb']."',
-                                               rating_count_imdb='".$_POST['rating_count_imdb']."'
+                                               rating_count_imdb='".$_POST['rating_count_imdb']."',
+                                               age='".$_POST['age']."',
+                                               rating_mpaa='".$_POST['rating_mpaa']."'
                                             where id=".intval(@$_GET['id']);
                     //echo $query; exit;
                     $rs=$db->executeQuery($query);
@@ -985,6 +991,8 @@ if (@$_GET['edit']){
         $hd       = $arr['hd'];
         $rtsp_url = $arr['rtsp_url'];
         $protocol = $arr['protocol'];
+        $rating_mpaa = $arr['rating_mpaa'];
+        $age = $arr['age'];
 
         $cover_id = (int) Mysql::getInstance()->from('screenshots')->where(array('media_id' => $item['id']))->get()->first('id');
 
@@ -1760,12 +1768,15 @@ function check_kinopoisk_info(orig_name, kinopoisk_id){
                     '<div style="float:left"><a href="#" class="del_cover">x</a></div>');
                 $('.screenshot').hide();
                 $('.cover_id').val('');
-            }/*else{
-                $('.cover_block').html('');
-                $('.cover_big').val('');
-                $('.cover_id').val('');
-                $('.screenshot').show();
-            }*/
+            }
+
+            if (result.hasOwnProperty('age')){
+                $('.age option[value="'+result.age+'"]').attr('selected', 'selected');
+            }
+
+            if (result.hasOwnProperty('rating_mpaa')){
+                $('.rating_mpaa option[value="'+result.rating_mpaa+'"]').attr('selected', 'selected');
+            }
 
             for (var id in result){
                 if (result.hasOwnProperty(id)){
@@ -1929,15 +1940,49 @@ $(function(){
            </td>
         </tr>
 
+        <tr style="">
+            <td align="right" valign="top">
+                <?= _('Age rating')?>:
+            </td>
+            <td>
+                <select name="age" class="age">
+                    <option value="" >---</option>
+                    <option value="0+" <?if (@$age == '0+'){ echo 'selected';}?>>0+</option>
+                    <option value="6+" <?if (@$age == '6+'){ echo 'selected';}?>>6+</option>
+                    <option value="12+" <?if (@$age == '12+'){ echo 'selected';}?>>12+</option>
+                    <option value="14+" <?if (@$age == '14+'){ echo 'selected';}?>>14+</option>
+                    <option value="16+" <?if (@$age == '16+'){ echo 'selected';}?>>16+</option>
+                    <option value="18+" <?if (@$age == '18+'){ echo 'selected';}?>>18+</option>
+                    <option value="21+" <?if (@$age == '21+'){ echo 'selected';}?>>21+</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr style="">
+            <td align="right" valign="top">
+                <?= _('Rating MPAA')?>:
+            </td>
+            <td>
+                <select name="rating_mpaa" class="rating_mpaa">
+                    <option value="">---</option>
+                    <option value="G" <?if (@$rating_mpaa == 'G'){ echo 'selected';}?>>G</option>
+                    <option value="PG"  <?if (@$rating_mpaa == 'PG'){ echo 'selected';}?>>PG</option>
+                    <option value="PG-13"  <?if (@$rating_mpaa == 'PG-13'){ echo 'selected';}?>>PG-13</option>
+                    <option value="R"  <?if (@$rating_mpaa == 'R'){ echo 'selected';}?>>R</option>
+                    <option value="NC-17"  <?if (@$rating_mpaa == 'NC-17'){ echo 'selected';}?>>NC-17</option>
+                </select>
+            </td>
+        </tr>
+
         <tr>
            <td align="right" valign="top">
            <?= _('Protocol')?>:
            </td>
            <td>
              <select name="protocol" id="protocol" onchange="check_protocol()">
-                 <option value="nfs" <?if (@$protocol == 'nfs'){ echo 'selected';}?>>NFS</option>
                  <option value="http" <?if (@$protocol == 'http'){ echo 'selected';}?>>HTTP</option>
                  <option value="custom" <?if (@$protocol == 'custom'){ echo 'selected';}?>>Custom URL</option>
+                 <option value="nfs" <?if (@$protocol == 'nfs'){ echo 'selected';}?>>NFS</option>
              </select>
            </td>
         </tr>

@@ -262,7 +262,17 @@
             //item.screenshot_uri
             //item.genres_str
 
-            var info = '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str
+            var info = '';
+
+            if (item.age){
+                info += '<span>' + get_word('vclub_age') + ': </span>' + item.age + '<br>';
+            }
+
+            if (item.rating_mpaa){
+                info += '<span>' + get_word('vclub_rating_mpaa') + ': </span>' + item.rating_mpaa + '<br>';
+            }
+
+            info += '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str
                 + '<br><span>' + word['vclub_year'] + ': </span>' + item.year
                 + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br>'
                 + '<span>' + word['vclub_director'] + ': </span>' + item.director + '<br>';

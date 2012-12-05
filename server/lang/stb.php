@@ -87,6 +87,8 @@ $words['vclub_minutes'] = _('min');
 $words['vclub_director'] = _('Director');
 $words['vclub_cast'] = _('Cast');
 $words['vclub_rating'] = _('Rating');
+$words['vclub_age'] = _('Age');
+$words['vclub_rating_mpaa'] = _('Rating MPAA');
 
 // vclub
 $words['vclub_view'] = _('VIEW');
