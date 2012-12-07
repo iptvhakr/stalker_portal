@@ -521,7 +521,7 @@ $total_items = $rs->getRowCount();
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-$query = "select * from users $where LIMIT $page_offset, $MAX_PAGE_ITEMS";
+$query = "select users.*, tariff_plan.name as tariff_plan_name from users left join tariff_plan on tariff_plan.id=tariff_plan_id $where LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
 $rs = $db->executeQuery($query);
 
@@ -607,6 +607,7 @@ echo "<td class='list'><b>MAC</b></td>\n";
 echo "<td class='list'><b>IP</b></td>\n";
 echo "<td class='list'><b>Login</b></td>\n";
 echo "<td class='list'><b>Name</b></td>\n";
+echo "<td class='list'><b>Tariff</b></td>\n";
 echo "<td class='list'><b>"._('Type')."</b></td>\n";
 echo "<td class='list' width='250'><b>"._('Media')."</b></td>\n";
 echo "<td class='list'><b>"._('Time from<br>last playback')."</b></td>\n";
@@ -635,6 +636,7 @@ while(@$rs->next()){
     echo "<td class='list'><a href='events.php?mac=".$arr['mac']."'>".$arr['ip']."</a></td>\n";
     echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['login']."</a></td>\n";
     echo "<td class='list'>".$arr['fname']."</td>\n";
+    echo "<td class='list'>".$arr['tariff_plan_name']."</td>\n";
     echo "<td class='list'>".get_cur_media($arr['now_playing_type'])."</td>\n";
     echo "<td class='list'>".$now_playing_content."</td>\n";
     echo "<td class='list'>".get_last_time($arr['now_playing_start'])."</td>\n";
