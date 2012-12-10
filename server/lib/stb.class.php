@@ -337,6 +337,7 @@ class Stb
         $profile['enable_buffering_indication'] = Config::getSafe('enable_buffering_indication', false);
 
         $profile['default_timezone']       = Config::getSafe('default_timezone', '');
+        $profile['default_locale']         = Config::getSafe('default_locale', '');
 
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
