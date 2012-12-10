@@ -381,12 +381,12 @@ class Stb
     private static function getImageUpdateUrl($stb_model){
 
         if (strpos($stb_model, 'AuraHD') !== false){
-            $stb_type = '250';
+            $stb_type = 'aurahd';
         }else{
             $stb_type = substr($stb_model, 3);
         }
 
-        return Config::getSafe('update_url', '') != '' ? Config::get('update_url').$stb_type.'/imageupdate' : 'http://mag.infomir.com.ua/'.$stb_type.'/imageupdate';
+        return Config::getSafe('update_url', '') != '' ? Config::get('update_url').$stb_type.'/imageupdate' : '';
     }
 
     public function getSettingsMenuModules($mask = "module"){
