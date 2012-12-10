@@ -24,6 +24,7 @@ if (!empty($_POST['add']) && !empty($_POST['name'])){
         'description' => $_POST['description'],
         'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
         'type' => $_POST['package_type'],
+        'service_type' => $_POST['service_type'],
         'all_services' => $all_services
     ))->insert_id();
 
@@ -60,6 +61,7 @@ if (!empty($id)){
             'description' => $_POST['description'],
             'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
             'type' => $_POST['package_type'],
+            'service_type' => $_POST['service_type'],
             'all_services' => $all_services
         ), array('id' => $id));
 
@@ -148,6 +150,7 @@ if (@$_GET['edit'] && !empty($id)){
 
         var picked_services = <?= empty($edit_services) ? '[]' : json_encode($edit_services)?>;
         var picked_type = '<?= empty($edit_package['type']) ? '' : $edit_package['type']?>';
+        var picked_service_type = '<?= empty($edit_package['service_type']) ? '' : $edit_package['service_type']?>';
 
         $(function(){
 
@@ -242,6 +245,8 @@ if (@$_GET['edit'] && !empty($id)){
             $('.package-type option[value='+picked_type+']').attr('selected', 'selected');
             $('.package-type').change();
 
+            $('.service-type option[value='+picked_service_type+']').attr('selected', 'selected');
+
             $('.all_services').change(function(e){
 
                 var checked = !!$(this).attr('checked');
@@ -323,7 +328,7 @@ if (@$_GET['edit'] && !empty($id)){
                         <td><textarea name="description"><?= @$edit_package['description']?></textarea>
                     </tr>
                     <tr>
-                        <td><?= _('Type')?></td>
+                        <td><?= _('Service')?></td>
                         <td>
                             <select name="package_type" class="package-type">
                                 <option value="">---</option>
@@ -331,6 +336,16 @@ if (@$_GET['edit'] && !empty($id)){
                                 <option value="video">video</option>
                                 <option value="radio">radio</option>
                                 <option value="module">module</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td><?= _('Service type')?></td>
+                        <td>
+                            <select name="service_type" class="service-type">
+                                <option value="periodic">periodic</option>
+                                <option value="single">single</option>
                             </select>
                         </td>
                     </tr>

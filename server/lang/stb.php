@@ -253,6 +253,7 @@ $words['exit_btn'] = _('EXIT');
 $words['yes_btn'] = _('YES');
 $words['close_btn'] = _('CLOSE');
 $words['ok_btn'] = _('OK');
+$words['pay_btn'] = _('PAY');
 $words['playback_settings_save'] = $words['settings_save'] = _('SAVE');
 
 $words['audio_out'] = _('Audio out');
@@ -365,6 +366,7 @@ $words['SUBSCRIBE'] = _('SUBSCRIBE');
 $words['UNSUBSCRIBE'] = _('UNSUBSCRIBE');
 $words['confirm_service_subscribe_text'] = _('Are you really want to subscribe to this service?');
 $words['confirm_service_unsubscribe_text'] = _('Are you really want to unsubscribe from this service?');
+$words['confirm_service_price_text'] = _('The service costs {0}');
 
 $words['service_subscribe_success'] = _('You have successfully subscribed to the service.');
 $words['service_unsubscribe_success'] = _('You have successfully unsubscribed from the service.');
@@ -373,6 +375,8 @@ $words['service_subscribe_success_reboot'] = _('You have successfully subscribed
 $words['service_unsubscribe_success_reboot'] = _('You have successfully unsubscribed from the service. STB will be rebooted.');
 
 $words['service_subscribe_fail'] = _('An error in the management of subscriptions.');
+$words['service_subscribe_server_error'] = _('Server error. Try again later.');
+$words['package_price_measurement'] = _('package_price_measurement');
 
 $words['Account number'] = _('Account number');
 

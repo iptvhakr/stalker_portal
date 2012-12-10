@@ -49,10 +49,51 @@
                     "value" : get_word("yes_btn"),
                     "onclick" : function(){
                         scope.confirm_dialog.hide();
-                        scope.do_subscribe(scope.confirm_dialog.tariff_package);
+                        //scope.do_subscribe(scope.confirm_dialog.tariff_package);
+                        scope.check_price(scope.confirm_dialog.tariff_package)
                     }
                 }
             ));
+
+
+            this.price_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('confirm_service_price_text')});
+            this.price_confirm.getTextDomObj().style.textAlign = "center";
+            this.price_confirm.enableOnExitClose();
+
+            this.price_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.price_confirm.hide();
+                    }
+                }
+            ));
+
+            this.price_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("pay_btn"),
+                    "onclick" : function(){
+
+                        scope.do_subscribe(scope.price_confirm.tariff_package);
+
+                        scope.price_confirm.hide();
+                    }
+                }
+            ));
+
+
+            this.subscription_message = new ModalForm({"title" : get_word('notice_form_title'), "text" : " "});
+            this.subscription_message.getTextDomObj().style.textAlign = "center";
+            this.subscription_message.enableOnExitClose();
+            this.subscription_message.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        scope.subscription_message.hide();
+                    }
+                }
+            ));
+
 
             this.confirm_unsubscribe_dialog = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('confirm_service_unsubscribe_text')});
             this.confirm_unsubscribe_dialog.getTextDomObj().style.textAlign = "center";
@@ -159,6 +200,42 @@
             this.password_input.show();
         };
 
+        this.check_price = function(tariff_package){
+            _debug('service_management.check_price', tariff_package);
+
+
+            stb.load({
+                    "type"   : "account",
+                    "action" : "check_price",
+                    "package_id" : tariff_package.package_id
+                },
+
+                function(result){
+                    _debug('on check_price', result);
+
+                    if (!result){
+                        this.subscription_message.show(get_word('service_subscribe_server_error'));
+                    }else if (result.hasOwnProperty('message')){
+                        this.subscription_message.show(result['message']);
+                    }else if (result.result === '0'){
+                        this.do_subscribe(tariff_package);
+                    }else if (result.result !== false){
+                        this.price_confirm.price = result.result;
+
+                        if (!/[^0-9\.,]/.test(this.price_confirm.price)){
+                            this.price_confirm.price = this.price_confirm.price + get_word('package_price_measurement');
+                        }
+
+                        this.price_confirm.tariff_package = tariff_package;
+                        _debug('this.price_confirm.tariff_package', this.price_confirm.tariff_package);
+                        this.price_confirm.show(get_word('confirm_service_price_text').format(this.price_confirm.price));
+                    }
+                },
+
+                this
+            );
+        };
+
         this.do_subscribe = function(tariff_package){
             _debug('service_management.do_subscribe', tariff_package);
 
@@ -173,7 +250,13 @@
 
                     this.load_data();
 
-                    if (result){
+                    this.complete_confirm.need_reboot = false;
+
+                    if (!result || result.hasOwnProperty('result') && result.result === 0){
+                        this.subscription_message.show(get_word('service_subscribe_server_error'));
+                    }else if (result.hasOwnProperty('message')){
+                        this.subscription_message.show(result['message']);
+                    }else if (result.result > 0){
                         if (tariff_package.type == 'module'){
                             this.complete_confirm.need_reboot = true;
                             this.complete_confirm.show(get_word('service_subscribe_success_reboot'));
@@ -182,7 +265,6 @@
                             this.complete_confirm.show(get_word('service_subscribe_success'));
                         }
                     }else{
-                        this.complete_confirm.need_reboot = false;
                         this.complete_confirm.show(get_word('service_subscribe_fail'));
                     }
                 },
@@ -205,7 +287,13 @@
 
                     this.load_data();
 
-                    if (result){
+                    this.complete_confirm.need_reboot = false;
+
+                    if (!result || result.hasOwnProperty('result') && result.result === 0){
+                        this.subscription_message.show(get_word('service_subscribe_server_error'));
+                    }else if (result.hasOwnProperty('message')){
+                        this.subscription_message.show(result['message']);
+                    }else if (result.result === true){
                         if (tariff_package.type == 'module'){
                             this.complete_confirm.need_reboot = true;
                             this.complete_confirm.show(get_word('service_unsubscribe_success_reboot'));
@@ -214,7 +302,6 @@
                             this.complete_confirm.show(get_word('service_unsubscribe_success'));
                         }
                     }else{
-                        this.complete_confirm.need_reboot = false;
                         this.complete_confirm.show(get_word('service_subscribe_fail'));
                     }
                 },

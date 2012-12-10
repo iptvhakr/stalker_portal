@@ -90,7 +90,7 @@ class Stb
         }
 
         if (!empty($_COOKIE['timezone']) && $_COOKIE['timezone'] != 'undefined'){
-            $this->timezone = @trim(urldecode($_COOKIE['timezone']));
+            $this->timezone = @trim($_COOKIE['timezone']);
         }
 
         //var_dump($_COOKIE, $this->stb_lang);
@@ -340,7 +340,7 @@ class Stb
 
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG250,AuraHD')));
+        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,AuraHD')));
 
         $image_update = new ImageAutoUpdate();
         if ($image_update->isEnabled()){
@@ -415,6 +415,16 @@ class Stb
         }
 
         $data['created'] = 'NOW()';
+
+        try{
+            OssWrapper::getWrapper()->registerSTB(
+                Stb::getInstance()->mac,
+                isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
+                isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : ''
+            );
+        }catch(OssException $e){
+            // todo: save to log?
+        }
 
         $user_id = Mysql::getInstance()->insert('users', $data)->insert_id();
 
@@ -1208,29 +1218,6 @@ class Stb
     }
 
     private function getInfoFromOss(){
-
-        /*if (!Config::exist('oss_url')){
-            return false;
-        }
-
-        if (Config::get('oss_url') == ''){
-            return false;
-        }
-        
-        //$data = file_get_contents(Config::get('oss_url').'?mac='.$this->mac.'&uid='.$this->id);
-        $data = file_get_contents(Config::get('oss_url').'?mac='.$this->mac);
-
-        if (!$data){
-            return false;
-        }
-
-        $data = json_decode($data, true);
-
-        if (empty($data)){
-            return false;
-        }
-
-        var_dump($data);*/
 
         $user = User::getInstance($this->id);
 

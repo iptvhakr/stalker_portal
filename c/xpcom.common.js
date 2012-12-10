@@ -561,7 +561,7 @@ function common_xpcom(){
     };
 
     this.set_cookie = function(name, val){
-        document.cookie = name + '=' + escape(val) + '; path=/;';
+        document.cookie = name + '=' + encodeURIComponent(val) + '; path=/;';
     };
 
     this.delete_cookie = function(name){

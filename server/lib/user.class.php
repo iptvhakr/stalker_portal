@@ -64,6 +64,10 @@ class User
         return $this->profile['mac'];
     }
 
+    public function geSerialNumber(){
+        return $this->profile['serial_number'];
+    }
+
     public function getExternalTariffId(){
         $tariff_plan_id = $this->profile['tariff_plan_id'];
         return Mysql::getInstance()->from('tariff_plan')->where(array('id' => $tariff_plan_id))->get()->first('external_id');
@@ -184,11 +188,11 @@ class User
         }
 
         $packages = Mysql::getInstance()
-            ->select('package_in_plan.*, services_package.name as name, services_package.type as type, services_package.external_id as external_id, services_package.description as description')
+            ->select('package_in_plan.*, services_package.id as services_package_id, services_package.name as name, services_package.type as type, services_package.external_id as external_id, services_package.description as description')
             ->from('package_in_plan')
             ->join('services_package', 'services_package.id', 'package_in_plan.package_id', 'INNER')
             ->where(array('plan_id' => $plan['id']))
-            ->orderby('name')
+            ->orderby('package_in_plan.optional, services_package_id')
             ->get()
             ->all();
 
@@ -236,9 +240,10 @@ class User
             return false;
         }
 
-        if (!$force_no_check_billing && Config::exist('on_subscribe_hook_url')){
+        if (!$force_no_check_billing){
 
-            $on_subscribe_result = $this->onSubscribeHookResult($package_id);
+            $ext_package_id = Mysql::getInstance()->from('services_package')->where(array('id' => $package_id))->get()->first('external_id');
+            $on_subscribe_result = OssWrapper::getWrapper()->subscribeToPackage($ext_package_id);
 
             var_dump($on_subscribe_result);
 
@@ -272,9 +277,10 @@ class User
             return false;
         }
 
-        if (!$force_no_check_billing && Config::exist('on_unsubscribe_hook_url')){
+        if (!$force_no_check_billing){
 
-            $on_unsubscribe_result = $this->onSubscribeHookResult($package_id);
+            $ext_package_id = Mysql::getInstance()->from('services_package')->where(array('id' => $package_id))->get()->first('external_id');
+            $on_unsubscribe_result = OssWrapper::getWrapper()->unsubscribeFromPackage($ext_package_id);
 
             var_dump($on_unsubscribe_result);
 
@@ -282,7 +288,7 @@ class User
                 return Mysql::getInstance()->delete('user_package_subscription', array(
                     'user_id' => $this->id,
                     'package_id' => $package_id
-                ));
+                ))->result();
             }else{
                 return false;
             }
@@ -291,7 +297,14 @@ class User
         return Mysql::getInstance()->delete('user_package_subscription', array(
             'user_id' => $this->id,
             'package_id' => $package_id
-        ));
+        ))->result();
+    }
+
+    public function getPriceForPackage($package_id){
+
+        $package = Mysql::getInstance()->from('services_package')->where(array('id' => $package_id))->get()->first();
+
+        return OssWrapper::getWrapper()->getPackagePrice($package['external_id']);
     }
 
     public function getAccountInfo(){
@@ -306,8 +319,8 @@ class User
 
         $info['status'] = intval(!$info['status']);
 
-        if ($info['tariff_plan'] == 0){
-            $info['tariff_plan'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
+                if ($info['tariff_plan'] === null){
+            $info['tariff_plan'] = Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('external_id');
         }
 
         $packages = $this->getPackages();
@@ -357,6 +370,9 @@ class User
                 ->get()
                 ->first('id');
 
+        }
+
+        if (array_key_exists('tariff_plan', $new_account)){
             unset($new_account['tariff_plan']);
         }
 
@@ -515,44 +531,15 @@ class User
 
     public function getInfoFromOSS(){
 
-        if (!Config::exist('oss_url')){
-            return false;
+        try{
+            return OssWrapper::getWrapper()->getUserInfo($this);
+        }catch (OssException $e){
+            // todo: save to log?
+            return array();
         }
-
-        if (Config::get('oss_url') == ''){
-            return false;
-        }
-
-        $data = file_get_contents(Config::get('oss_url').'?mac='.$this->getMac());
-
-        if (!$data){
-            return false;
-        }
-
-        $data = json_decode($data, true);
-
-        if (empty($data)){
-            return false;
-        }
-
-        var_dump($data);
-
-        if ($data['status'] != 'OK' || empty($data['results'])){
-            return false;
-        }
-
-        if (array_key_exists(0, $data['results'])){
-            $info = $data['results'][0];
-        }else{
-            $info = $data['results'];
-        }
-
-        var_dump($info);
-
-        return $info;
     }
 
-    public function onSubscribeHookResult($package_id){
+    /*public function onSubscribeHookResult($package_id){
         return $this->onSubscriptionHookResult('on_subscribe_hook_url', $package_id);
     }
 
@@ -595,7 +582,7 @@ class User
         }
 
         return $data['results'];
-    }
+    }*/
 
     public function getLastChannelId(){
         return (int) Mysql::getInstance()->from('last_id')->where(array('uid' => $this->id))->get()->first('last_id');

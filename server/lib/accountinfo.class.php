@@ -12,14 +12,16 @@ class AccountInfo
 
         $user = User::getInstance(Stb::getInstance()->id);
 
-        $info = $user->getInfoFromOSS();
+        $oss_info = $user->getInfoFromOSS();
 
-        if (!$info){
-            $info = array(
-                'fname' => $this->stb->getParam('fname'),
-                'phone' => $this->stb->getParam('phone'),
-                'ls' => $this->stb->getParam('ls')
-            );
+        $info = array(
+            'fname' => $this->stb->getParam('fname'),
+            'phone' => $this->stb->getParam('phone'),
+            'ls' => $this->stb->getParam('ls')
+        );
+
+        if (is_array($oss_info)){
+            $info = array_merge($info, $oss_info);
         }
 
         $info['last_change_status'] = $this->stb->getParam('last_change_status');
@@ -93,7 +95,9 @@ class AccountInfo
             $page = 1;
         }
 
-        $sliced_packages = array_slice($packages, ($page-1) * 10, 10);
+        $sliced_packages = array_slice($packages, ($page-1) * 10, 14);
+
+        //var_dump($packages);
 
         $sliced_packages = array_map(function($package){
             $package['optional'] = (boolean) $package['optional'];
