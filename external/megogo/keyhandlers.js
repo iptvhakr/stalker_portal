@@ -1,19 +1,49 @@
-
+var powerOff = false;
 
 
 function body_keydown(e){
 //timing();
   //if (empty(currLst))
 //currLst = catLst;
-    log('newAlert_on : '+newAlert_on);
+    log('newAlert_on : '+newAlert_on);    
     var key = e.keyCode || e.which;
     var ret = false;
+    if (e.altKey && key == 85) {
+        if(!powerOff){
+            stb.Stop();
+            if(CUR_LAYER == 5){
+                $('cur_time').innerHTML = '';
+                $('progress').style.width = 'px';
+                $('menu_series').style.display = 'block';
+                $('player_page').style.display = 'none';
+                $('footer').style.display = 'block';
+                currLst = seriesLst;
+                PREV_LAYER = 5;
+                CUR_LAYER = 1;
+                currLst.onChange();
+                playlist.finish = str_replace(playlist.finish, 'http://megogo.net/b/stat?', '');
+                var pos = stb.GetPosTime();
+                playlist.finish += pos;
+                startPosFromContinue = pos;
+                stb.Stop();
+                sendreq(megogoURL+'b/stat?'+createSign({'action':'stop', 'video':'2704','season':'0','episode':'0','position':pos}),finish);
+            }
+        }
+        powerOff = !powerOff;
+        stb.StandBy(powerOff);
+        e.preventDefault();
+        return;
+    }
+    if(powerOff){
+        e.preventDefault();
+        return;
+    }
     log('MAIN keyhandler key: '+key+' Alt: '+e.altKey+' Ctrl: '+e.ctrlKey+' Shift: '+e.shiftKey+' Target_id: '+e.target.id)
     if(newAlert_on && key != 27){
         return;
     }
 
-     log('+++CURR_LAYER+++'+CUR_LAYER);
+    log('+++CURR_LAYER+++'+CUR_LAYER);    
     switch(CUR_LAYER){
         case 0:
            // ret=authPage_keyhandler(e);
@@ -30,7 +60,7 @@ function body_keydown(e){
                 log('+++global handler active+++');
             break;
             case 48:
-                console.log(document.body.innerHTML);
+                //console.log(document.body.innerHTML);
             break;
             case 107:
                 if(vars.player_vars.mute == 1){
@@ -115,6 +145,7 @@ function authPage_keyhandler(e){
             }
         break;
         case 27:
+            startPosFromContinue = 0;
             window.location = '../services.html'
         break;
         case 37:
@@ -159,7 +190,6 @@ function playerPage_keyhandler(e){
     var key = e.keyCode || e.which;
     log('PLAYER keyhandler key: '+key);
     switch(key){
-
         case 8:
         case 83:
             stb.Stop();
@@ -175,10 +205,8 @@ function playerPage_keyhandler(e){
             currLst.onChange();
         break;
         case 13:
-         //log('runner_run  case 13:'+stb.GetPosTime());
             if(!vars.player_shown){
                 vars.player_shown = true;
-//                runner_run();
                 $('head').style.display = 'block';
                 $('player').style.display = 'block';
             }else{
@@ -186,17 +214,10 @@ function playerPage_keyhandler(e){
                 $('head').style.display = 'none';
                 $('player').style.display = 'none';
                 if(setpos_timer){
-//                    clearInterval(runner_timer);
-                    //clearTimeout(pos_timer);
-//                    clearTimeout(setpos_timer);
-                   /* stb.SetPosTime(vars.file_curtime);stb.Continue();*/
-//                    pos_timer = window.setTimeout(runner_run,3000);
                 }
             }
         break;
         case 27:
-         log('+++exit+++'+CUR_LAYER);
-            stb.Stop();
             $('cur_time').innerHTML = '';
             $('progress').style.width = 'px';
             $('menu_series').style.display = 'block';
@@ -206,21 +227,12 @@ function playerPage_keyhandler(e){
             PREV_LAYER = 5;
             CUR_LAYER = 1;
             currLst.onChange();
-             			//"http:\\/megogo.net\b\stat?action=stop&amp;video=20704&amp;season=0&amp;episode=0&amp;position=",
- 			playlist.finish = str_replace(playlist.finish, 'http://megogo.net/b/stat?', '');
- 			var curTime = media_getHourMinSec(vars.file_curtime);
- 			playlist.finish += curTime.hour*3600+curTime.minute*60+curTime.second;
- 			//log('hour'+curTime.hour);
- 			//log('minute'+curTime.minute);
- 			//log('second'+curTime.second);
- 			//playlist.finish += 'sign='+hex_md5(playlist.finish+'09441482eab7a925')+'_sgmag250';
- 			// http://megogo.net/b/stat?action=stop&amp;video=20704&amp;season=0&amp;episode=0&amp;position=40sign=8c6f8f44738b25d09e35adbcb53d7412_sgmag250
- 			//sendreq(megogoURL+'b/stat?'+playlist.finish, finish);
- 			//"statistic":"http:\/\/megogo.net\/b\/user\/playerstat
- 			//sendreq(megogoURL+'b/user/playerstat?'+createSign({'action':'stop', 'video':'2704','season':'0','episode':'0','position':'40'}),finish);
- 			var pos = curTime.hour*3600+curTime.minute*60+curTime.second;
- 			sendreq(megogoURL+'b/stat?'+createSign({'action':'stop', 'video':'2704','season':'0','episode':'0','position':pos}),finish);
- 			//sendreq(megogoURL+'b/stat?'+createSign({'action':'stop', 'video':'2704','season':'0','episode':'0','position':'40','session':session}),finish);
+            playlist.finish = str_replace(playlist.finish, 'http://megogo.net/b/stat?', '');
+            var pos = stb.GetPosTime();
+            playlist.finish += pos;
+            startPosFromContinue = pos;
+            stb.Stop();
+            sendreq(megogoURL+'b/stat?'+createSign({'action':'stop', 'video':'2704','season':'0','episode':'0','position':pos}),finish);
         break;
         case 66:
         case 37:
@@ -232,10 +244,8 @@ function playerPage_keyhandler(e){
             }else{
                 if(vars.file_curtime>30){
                     clearInterval(runner_timer);
-                    //clearInterval(pos_timer);
-                     clearTimeout(setpos_timer);
+                    clearTimeout(setpos_timer);
                     clearTimeout(pos_timer);
-                    //clearTimeout(setpos_timer);
                      if(runFl){
                     	vars.file_curtime = stb.GetPosTime();
                     	stb.Pause();
@@ -265,10 +275,8 @@ function playerPage_keyhandler(e){
             }else{
                 if(vars.file_curtime<vars.file_lenght-30){
                     clearInterval(runner_timer);
-                    //clearInterval(pos_timer);
-                     clearTimeout(setpos_timer);
+                    clearTimeout(setpos_timer);
                     clearTimeout(pos_timer);
-                    //clearTimeout(setpos_timer);
                      if(runFl){
                     	vars.file_curtime = stb.GetPosTime();
                     	stb.Pause();
@@ -281,7 +289,6 @@ function playerPage_keyhandler(e){
                     $('cur_time').innerHTML = curTime.hour+':'+curTime.minute+':'+curTime.second;
                     log(' vars.file_curtime '+curTime.hour+':'+curTime.minute+':'+curTime.second);
                     $('progress').style.width = vars[win.height].stripe_len*(vars.file_curtime/vars.file_lenght)+'px';
-                    //stb.SetPosTime(vars.file_curtime);stb.Continue();
                     stb.SetPosTime(vars.file_curtime);
                     setpos_timer = window.setTimeout(function(){log('stb.Continue');stb.Continue();runFl=1;  //vars.file_curtime = stb.GetPosTime();
                     },3000);
@@ -294,9 +301,6 @@ function playerPage_keyhandler(e){
         case 38:
 
         break;
-       // case 40:
-
-        //break;
         case 82:
             if(stb.IsPlaying()){
                 $('btn_play').style.background = 'url(img/'+win.height+'/btn_pause.png)';
@@ -307,13 +311,9 @@ function playerPage_keyhandler(e){
             }
         break;
         case 109:
-        //log(stb.GetVolume());
-        //stb.SetVolume(stb.GetVolume()+1);
            return true;
         break;
         case 107:
-        //log(stb.GetVolume());
-        //stb.SetVolume(stb.GetVolume()-1);
            return true;
         break;
         case 117:
@@ -334,14 +334,6 @@ function infoPage_keyhandler(e){
         case 13:
             currLst.onEnter();
         break;
-        /*case 14:
-        if(stb_emul_mode)
-        	switchLayer(layer_cats);
-         break;*/
-        //case 8:
-        //case 27:
-        //    switchLayer(layer_cats);
-        //break;
          case 33:
         	if(currLst == movieInfoLst && currLst.pos == 0)
             	currLst.onPageUp();
@@ -366,7 +358,8 @@ function infoPage_keyhandler(e){
         	else currLst.next();
         break;
         case 37:
-        	if(typeof currLst.onLeft == 'function')
+        	startPosFromContinue = 0;
+                if(typeof currLst.onLeft == 'function')
             	currLst.onLeft();
         	else currLst.onExit();
         break;
@@ -385,14 +378,15 @@ function infoPage_keyhandler(e){
            return true;
         break;
         case 8:
-        if(typeof currLst.onRefresh == 'function')
+            startPosFromContinue = 0;
+            if(typeof currLst.onRefresh == 'function')
             	currLst.onRefresh();
         else  currLst.onExit();
         break;
         case 27:
         	if(typeof currLst.onExit == 'function')
-            	currLst.onExit();
-        	//else currLst.next();
+            	startPosFromContinue = 0;
+                currLst.onExit();
         break;
 
         case 112:

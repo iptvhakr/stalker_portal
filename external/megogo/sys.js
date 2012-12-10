@@ -32,7 +32,6 @@ function createSign(data){
 
 	str = '';
 	res = '';
-
 	for (var key in data) {
 	    if(key == 'session' && empty(data[key])){
 			//data.splice(key,1);
@@ -40,7 +39,7 @@ function createSign(data){
 		}
 
 
-		arg = key+'='+data[key];
+            arg = key+'='+data[key];
 	    str += arg;
 	    res += arg+'&';
 	}
@@ -54,7 +53,6 @@ function createSign(data){
 }
 
 function sendreq(url, callback,hide_blackbg){
-
     if (stb_emul_mode){
      url1 = url; {
         url = str_replace(url, '.', '666');
