@@ -403,6 +403,7 @@ if (empty($packages)){
                 <?= _('Group')?>:
             </td>
             <td>
+                <input type="hidden" name="mac" value="<? echo $user['mac'] ?>">
                 <select name="group_id">
                 <option value="0">--------</option>
                 <?
