@@ -1201,9 +1201,18 @@ class Stb
         $result = $result->in('id', $uids);
         //}
 
-        $result = $result->update('users', $data);
+        if (array_key_exists("reboot", $data)){
+            unset($data['reboot']);
+            $event = new SysEvent();
+            $event->setUserListById($uids);
+            $event->sendReboot();
+        }
 
-        if (key_exists("status", $data)){
+        if (!empty($data)){
+            $result = $result->update('users', $data);
+        }
+
+        if (array_key_exists("status", $data)){
             $event = new SysEvent();
             $event->setUserListById($uids);
             if ($data["status"] == 0){

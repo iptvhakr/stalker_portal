@@ -68,6 +68,12 @@ class OAuthServer
 
                 }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword(), $request->getMacAddress(), $request->getSerialNumber())){
 
+                    $user  = \Mysql::getInstance()->from('users')->where(array('login' => $request->getUsername()))->get()->first();
+
+                    if ($user['status'] == 1){
+                        throw new OAuthAccessDenied("Account is disabled");
+                    }
+
                     $token = $this->access_handler->generateUniqueToken($request->getUsername());
 
                     if (!$token){

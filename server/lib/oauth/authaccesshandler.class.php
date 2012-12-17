@@ -31,7 +31,7 @@ class AuthAccessHandler extends AccessHandler
                     $user = $possible_user;
                 }
             }else  if (\Config::getSafe('oauth_force_serial_number_check', false)){
-                if ($serial_number == $possible_user['serial_number']){
+                if ($serial_number == $possible_user['serial_number'] || $possible_user['serial_number'] == ''){
                     $user = $possible_user;
                 }
             }else{
@@ -152,6 +152,10 @@ class AuthAccessHandler extends AccessHandler
         $username = Mysql::getInstance()->from('users')->where(array('id' => $uid))->get()->first('login');
 
         return $username;
+    }
+
+    public static function setInvalidAccessTokenByUid($uid){
+        return Mysql::getInstance()->update('access_tokens', array('token' => 'invalid', 'refresh_token' => 'invalid'), array('uid' => $uid))->result();
     }
 }
 

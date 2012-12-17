@@ -25,7 +25,7 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('HTTP PUT data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('status', 'additional_services_on', 'ls'), true);
+        $allowed_to_update_fields = array_fill_keys(array('status', 'additional_services_on', 'ls', 'reboot'), true);
 
         $data = array_intersect_key($put, $allowed_to_update_fields);
 

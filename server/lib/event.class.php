@@ -257,6 +257,10 @@ class Event extends HTTPPush
                     'priority'          => $this->param['priority'],
                     'auto_hide_timeout' => $this->param['auto_hide_timeout']
                 );
+
+                if ($this->param['event'] == 'cut_off'){
+                    \Stalker\Lib\OAuth\AuthAccessHandler::setInvalidAccessTokenByUid($uid);
+                }
                 
             }
             
