@@ -2,7 +2,79 @@
 
 class ImageAutoUpdate
 {
+    private $id;
     private $settings;
+    private static $storage_initialized = false;
+
+    private static $allowed_fields = array(
+        'enable',
+        'require_image_version',
+        'require_image_date',
+        'image_version_contains',
+        'image_description_contains',
+        'update_type',
+        'stb_type'
+    );
+
+
+    /**
+     * @param int $id
+     * @throws Exception
+     */
+    public function __construct($id){
+
+        self::checkSettingsStorage();
+
+        $this->id = $id;
+
+        $this->settings = Mysql::getInstance()
+            ->from("image_update_settings")
+            ->where(array('id' => $id))
+            ->get()
+            ->first();
+
+        if (empty($this->settings)){
+            throw new Exception("Setting not found");
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return ImageAutoUpdate
+     */
+    public static function getById($id){
+        return new self($id);
+    }
+
+    /**
+     * @return array|null
+     */
+    public static function getAll(){
+
+        self::checkSettingsStorage();
+
+        return Mysql::getInstance()->from("image_update_settings")->get()->all();
+    }
+
+    /**
+     * @param string $stb_type
+     * @return array|null
+     */
+    public static function getSettingByStbType($stb_type){
+        return Mysql::getInstance()
+            ->from('image_update_settings')
+            ->where(array('stb_type' => $stb_type, 'enable' => 1))
+            ->get()
+            ->first();
+    }
+
+    public static function create($settings){
+
+        $allowed_fields = array_fill_keys(self::$allowed_fields, true);
+        $settings = array_intersect_key($settings, $allowed_fields);
+
+        return Mysql::getInstance()->insert("image_update_settings", $settings);
+    }
 
     public function enable(){
         if ($this->isEnabled()){
@@ -29,32 +101,28 @@ class ImageAutoUpdate
     }
 
     public function isEnabled(){
-        $settings = $this->getSettings();
-        return (boolean) $settings['enable'];
-    }
-
-    public function getSettings(){
-        if (empty($this->settings)){
-            $this->checkSettingsStorage();
-            $this->settings = Mysql::getInstance()->from("image_update_settings")->get()->first();
-        }
-        return $this->settings;
+        return (boolean) $this->settings['enable'];
     }
 
     public function setSettings($settings){
-        $this->checkSettingsStorage();
 
-        $allowed_fields = array_fill_keys(array('enable', 'require_image_version', 'require_image_date', 'image_version_contains', 'image_description_contains', 'update_type'), true);
+        $allowed_fields = array_fill_keys(self::$allowed_fields, true);
         $settings = array_intersect_key($settings, $allowed_fields);
 
-        return Mysql::getInstance()->update("image_update_settings", $settings);
+        return Mysql::getInstance()->update("image_update_settings", $settings, array('id' => $this->id));
     }
 
-    private function checkSettingsStorage(){
+    public function delete(){
+        return Mysql::getInstance()->delete('image_update_settings', array('id' => $this->id));
+    }
 
-        if (!empty($this->settings)){
-            return true;
+    private static function checkSettingsStorage(){
+
+        if (self::$storage_initialized){
+            return false;
         }
+
+        self::$storage_initialized = true;
 
         $settings = Mysql::getInstance()->from("image_update_settings")->get()->first();
 

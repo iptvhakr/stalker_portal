@@ -20,25 +20,29 @@ if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda'  && !check_ac
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
 }
-/*
-if (!empty($_POST['change_image_version']) && isset($_POST['image_version'])){
-    $db->executeQuery('alter table users modify image_version varchar(64) not null default "'.$_POST['image_version'].'"');
-    $db->executeQuery('update users set image_version="'.$_POST['image_version'].'"');
-}
 
-$first_user = $db->executeQuery('select * from users limit 0,1')->getAllValues();
-$image_version = $first_user[0]['image_version'];*/
+$settings = ImageAutoUpdate::getAll();
 
-$image_update = new ImageAutoUpdate();
+if (!empty($_GET['del']) && !empty($_GET['id'])){
+    $setting = ImageAutoUpdate::getById((int) $_GET['id']);
+    $setting->delete();
 
-
-$settings = $image_update->getSettings();
+    header("Location: setting_common.php");
+    exit;
+};
 
 if (!empty($_POST)){
-    if (!empty($_POST['switch_autoupdate'])){
-        $image_update->toggle();
+
+    if ($_POST['id'] == 0){
+        ImageAutoUpdate::create($_POST);
     }else{
-        $image_update->setSettings($_POST);
+        $image_update = ImageAutoUpdate::getById((int) $_POST['id']);
+
+        if (!empty($_POST['switch_autoupdate'])){
+            $image_update->toggle();
+        }else{
+            $image_update->setSettings($_POST);
+        }
     }
 
     header("Location: setting_common.php");
@@ -95,8 +99,153 @@ h3{
     text-align: left;
     margin-left: 30px;
 }
+
+.setting-block{
+    border: 1px solid #E5E5E5;
+}
+
+.del-block{
+    float: right;
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.del-block a {
+    color: #8b0000 !important;
+}
+
 </style>
 <title><?= _('Firmware auto update')?></title>
+<script type="text/javascript" src="js.js"></script>
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
+
+<script id="update_item_tmpl" type="text/x-jquery-tmpl">
+    <div class="setting-block">
+        <div class="del-block"><a href="?del=1&id=${id}" style="{{if idx==0}}display:none{{/if}}">x</a></div>
+        <form method="POST">
+            <input type="hidden" name="id" value="${id}">
+            <h3><?= _('Firmware auto update')?> ({{if enable==="1"}}<?=_('enabled')?>{{else}}<?=_('disabled')?>{{/if}})
+                <input type="submit" name="switch_autoupdate" value="{{if enable==="1"}}<?=_('Disable')?>{{else}}<?=_('Enable')?>{{/if}}"/>
+            </h3>
+            <table class="form">
+                <tr>
+                    <td><?= _('STB Model')?></td>
+                    <td>
+                        <select name="stb_type" class="stb-type">
+                            <option value="MAG200" {{if stb_type==="MAG200"}}selected{{/if}} >MAG200</option>
+                            <option value="MAG245" {{if stb_type==="MAG245"}}selected{{/if}} >MAG245</option>
+                            <option value="MAG250" {{if stb_type==="MAG250"}}selected{{/if}} >MAG250</option>
+                            <option value="AuraHD0" {{if stb_type==="AuraHD0"}}selected{{/if}} >AuraHD0</option>
+                            <option value="AuraHD9" {{if stb_type==="AuraHD9"}}selected{{/if}} >AuraHD9</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>ImageVersion</td>
+                    <td><input type="text" name="require_image_version" value="${require_image_version}"/></td>
+                </tr>
+                <tr>
+                    <td>ImageDate</td>
+                    <td><input type="text" name="require_image_date" value="${require_image_date}"/></td>
+                </tr>
+                <tr>
+                    <td><?= _('Required')?> ImageDescription</td>
+                    <td><input type="text" name="image_description_contains" value="${image_description_contains}"/></td>
+                </tr>
+                <tr>
+                    <td><?= _('Required')?> ImageVersion</td>
+                    <td><input type="text" name="image_version_contains" value="${image_version_contains}"/></td>
+                </tr>
+                <tr>
+                    <td><?= _('Update type')?></td>
+                    <td>
+                        <select name="update_type">
+                            <option value="http_update" {{if update_type==="http_update"}}selected{{/if}} >http update</option>
+                            <option value="reboot_dhcp" {{if update_type==="reboot_dhcp"}}selected{{/if}} >reboot dhcp</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="<?= _('Save')?>"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</script>
+
+<script type="text/javascript">
+
+    var update_settings = <?= empty($settings) ? '[]' : json_encode($settings)?>;
+
+    update_settings = update_settings.map(function(item, idx){
+        item['idx'] = idx;
+        return item;
+    });
+
+    $(function(){
+
+        $("#update_item_tmpl").tmpl(update_settings).appendTo('.blocks-container');
+
+        $('.add-block').live('click', function(event){
+
+            var empty_setting = {"idx":$('.blocks-container>div').length,"id":"0","enable":"0","require_image_version":"","require_image_date":"","image_version_contains":"","image_description_contains":"","update_type":"","changed":"","stb_type":""};
+
+            $("#update_item_tmpl").tmpl(empty_setting).appendTo('.blocks-container');
+
+            $(".add-block").hide();
+
+            updateDisabledStbTypes();
+
+            return false;
+        });
+
+        $('.del-block a').live('click', function(event){
+
+            var item = $(this);
+
+            if (confirm('<?= _('Do you really want to delete this item?')?>')){
+                if (item.attr('href').indexOf('&id=0') != -1){
+                    item.parent().parent().remove();
+                    updateDisabledStbTypes();
+                    return false;
+                }else{
+                    updateDisabledStbTypes();
+                    return true;
+                }
+            }
+
+            return false;
+        });
+
+        $('.stb-type').live('change', function(event){
+            updateDisabledStbTypes()
+        });
+    });
+
+    function updateDisabledStbTypes(){
+
+        var selected = {};
+
+        $('.stb-type option:selected').each(function(idx, element){
+            selected[$(element).val()] = true;
+        });
+
+        $('.stb-type option').each(function(idx, element){
+
+            var picked = $(element).parent().find('option:selected').val();
+
+            if (selected.hasOwnProperty($(element).val()) && $(element).val() != picked){
+                $(element).attr('disabled', 'disabled');
+            }else{
+                $(element).removeAttr('disabled');
+            }
+        });
+    }
+
+</script>
+
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="640">
@@ -124,40 +273,12 @@ h3{
 <tr>
 
     <td align="center">
-        <form method="POST">
-            <h3><?= _('Firmware auto update')?> (<? echo ($image_update->isEnabled()?_('enabled'):_('disabled'))?>) <input type="submit" name="switch_autoupdate" value="<?echo ($image_update->isEnabled()?_('Disable'):_('Enable'))?>"/></h3>
-            <table class="form">
-                <tr>
-                    <td>ImageVersion</td>
-                    <td><input type="text" name="require_image_version" value="<?echo $settings['require_image_version']?>"/></td>
-                </tr>
-                <tr>
-                    <td>ImageDate</td>
-                    <td><input type="text" name="require_image_date" value="<?echo $settings['require_image_date']?>"/></td>
-                </tr>
-                <tr>
-                    <td><?= _('Required')?> ImageDescription</td>
-                    <td><input type="text" name="image_description_contains" value="<?echo $settings['image_description_contains']?>"/></td>
-                </tr>
-                <tr>
-                    <td><?= _('Required')?> ImageVersion</td>
-                    <td><input type="text" name="image_version_contains" value="<?echo $settings['image_version_contains']?>"/></td>
-                </tr>
-                <tr>
-                    <td><?= _('Update type')?></td>
-                    <td>
-                        <select name="update_type">
-                            <option value="http_update" <?echo $settings['update_type']=='http_update'?'selected':''?>>http update</option>
-                            <option value="reboot_dhcp" <?echo $settings['update_type']=='reboot_dhcp'?'selected':''?>>reboot dhcp</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="<?= _('Save')?>"/></td>
-                </tr>
-            </table>
-        </form>
+        
+        <div class="blocks-container">
+
+        </div>
+
+        <input type="button" value="<?= _('Add')?>" class="add-block">
     </td>
 </tr>
 </table>

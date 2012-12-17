@@ -802,7 +802,7 @@ function common_xpcom(){
         _debug('checking conditions');
         _debug('typeof stb.user[autoupdate]', typeof(stb.user['autoupdate']));
 
-        if (typeof stb.user['autoupdate'] == 'object' && 
+        if (typeof stb.user['autoupdate'] == 'object' &&
             ((stb.user['autoupdate'].require_image_version != ''     && stb.user['autoupdate'].require_image_version != this.image_version) ||
             (stb.user['autoupdate'].require_image_date != ''         && stb.user['autoupdate'].require_image_date != this.image_date)) &&
             ((stb.user['autoupdate'].image_version_contains != ''    && stb.user['autoupdate'].image_version_contains == this.image_version) ||

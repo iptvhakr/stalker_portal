@@ -343,9 +343,10 @@ class Stb
             return strtolower(trim($item));
         },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,AuraHD')));
 
-        $image_update = new ImageAutoUpdate();
-        if ($image_update->isEnabled()){
-            $profile['autoupdate'] = $image_update->getSettings();
+        $auto_update_setting = ImageAutoUpdate::getSettingByStbType($this->params['stb_type']);
+
+        if ($auto_update_setting){
+            $profile['autoupdate'] = $auto_update_setting;
         }
 
         $profile['cas_type']   = Config::getSafe('cas_type', 0);

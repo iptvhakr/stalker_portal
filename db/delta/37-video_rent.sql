@@ -25,4 +25,6 @@ CREATE TABLE IF NOT EXISTS `video_rent_history`(
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+ALTER TABLE `image_update_settings` ADD `stb_type` VARCHAR(64) NOT NULL DEFAULT '';
+
 --//@UNDO
