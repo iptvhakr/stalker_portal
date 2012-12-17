@@ -1994,6 +1994,8 @@ player.prototype.switch_channel = function(dir, show_info){
                 stb.notice.show(word['player_file_missing']);
             }else if(result.error == 'link_fault'){
                 stb.notice.show(word['player_server_error']);
+            }else if(result.error == 'access_denied'){
+                stb.notice.show(word['player_access_denied']);
             }else{
                 stb.player.play_now(result);
             }

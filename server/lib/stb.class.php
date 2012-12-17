@@ -361,6 +361,8 @@ class Stb
         $profile['deny_720p_gmode_on_mag200'] = Config::getSafe('deny_720p_gmode_on_mag200', false);
         $profile['enable_arrow_keys_setpos']  = Config::getSafe('enable_arrow_keys_setpos', false);
 
+        $profile['show_purchased_filter']  = Config::getSafe('show_purchased_filter', false);
+
         $profile['timezone_diff']  = $this->timezone_diff;
 
         return $profile;
@@ -424,7 +426,7 @@ class Stb
                 isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : ''
             );
         }catch(OssException $e){
-            // todo: save to log?
+            self::logOssError($e);
         }
 
         $user_id = Mysql::getInstance()->insert('users', $data)->insert_id();
@@ -1426,9 +1428,10 @@ class Stb
     private function logNotValidMAC($sn, $stb_type){
         $logger = new Logger();
         $logger->setPrefix("mac_validation_");
+        $date = new DateTime('now', new DateTimeZone(Config::get('default_timezone')));
         $logger->error(sprintf("%s - [%s] %s, %s, %s, url=%s\n",
             empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP'] ,
-            date("r"),
+            $date->format('r'),
             $this->mac,
             $sn,
             $stb_type,
@@ -1439,10 +1442,23 @@ class Stb
     public static function logDoubleMAC($ips){
         $logger = new Logger();
         $logger->setPrefix("mac_clone_");
+        $date = new DateTime('now', new DateTimeZone(Config::get('default_timezone')));
         $logger->error(sprintf("[%s] %s (%s)\n",
-            date("r"),
+            $date->format('r'),
             Stb::getInstance()->mac,
             implode(", ", $ips)
+        ));
+    }
+
+    public static function logOssError(Exception $e){
+        $logger = new Logger();
+        $logger->setPrefix("oss_");
+        $date = new DateTime('now', new DateTimeZone(Config::get('default_timezone')));
+        $logger->error(sprintf("[%s] %s\nMessage:%s\nTrace:[%s]\n-------\n",
+            $date->format('r'),
+            Stb::getInstance()->mac,
+            $e->getMessage(),
+            $e->getTraceAsString()
         ));
     }
 }

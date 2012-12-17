@@ -34,6 +34,9 @@
         
         this.password_input = new password_input({"parent" : this});
         this.password_input.bind();
+
+        this.rent_password_input = new password_input({"parent" : this});
+        this.rent_password_input.bind();
         
         this.series_switch = new series_switch({"parent" : this});
         this.series_switch.bind();
@@ -48,7 +51,7 @@
 
         this.init = function(){
             this.superclass.init.call(this);
-
+            this.init_info();
             this.download_exist = new ModalForm({title: get_word("alert_form_title"), text : get_word("identical_download_exist")});
             this.download_exist.getButtonsBlockDomObj().style.textAlign = "center";
             this.download_exist.getTextDomObj().style.textAlign = "center";
@@ -61,6 +64,121 @@
                     "value" : get_word("close_btn"),
                     "onclick" : function(){
                         scope.download_exist.hide();
+                    }
+                }
+            ));
+
+
+            this.rent_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('rent_movie_text')});
+            this.rent_confirm.getTextDomObj().style.textAlign = "center";
+            this.rent_confirm.enableOnExitClose();
+            this.rent_confirm.addCustomEventListener('show', function(){
+                scope.on = false;
+            });
+            this.rent_confirm.addCustomEventListener('hide', function(){
+                scope.on = true;
+            });
+
+            this.rent_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.rent_confirm.hide();
+                    }
+                }
+            ));
+
+            this.rent_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("yes_btn"),
+                    "onclick" : function(){
+                        scope.rent_confirm.hide();
+
+                        scope.rent_password_input.callback = function(){
+                            scope.check_price(scope.rent_confirm.video_id);
+                        };
+
+                        scope.rent_password_input.show();
+                    }
+                }
+            ));
+
+            this.price_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('rent_movie_price_text')});
+            this.price_confirm.getTextDomObj().style.textAlign = "center";
+            this.price_confirm.enableOnExitClose();
+            this.price_confirm.addCustomEventListener('show', function(){
+                scope.on = false;
+            });
+            this.price_confirm.addCustomEventListener('hide', function(){
+                scope.on = true;
+            });
+
+            this.price_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.price_confirm.hide();
+                    }
+                }
+            ));
+
+            this.price_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("pay_btn"),
+                    "onclick" : function(){
+
+                        scope.rent(scope.price_confirm.video_id, scope.price_confirm.price);
+
+                        scope.price_confirm.hide();
+                    }
+                }
+            ));
+
+            this.subscription_message = new ModalForm({"title" : get_word('notice_form_title'), "text" : " "});
+            this.subscription_message.getTextDomObj().style.textAlign = "center";
+            this.subscription_message.enableOnExitClose();
+            this.subscription_message.addCustomEventListener('show', function(){
+                scope.on = false;
+            });
+            this.subscription_message.addCustomEventListener('hide', function(){
+                scope.on = true;
+            });
+            this.subscription_message.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        scope.subscription_message.hide();
+                    }
+                }
+            ));
+
+
+            this.complete_confirm = new ModalForm({"title" : get_word('notice_form_title'), "text" : get_word('service_subscribe_success')});
+            this.complete_confirm.enableOnExitClose();
+            this.complete_confirm.getTextDomObj().style.textAlign = "center";
+            this.complete_confirm.addCustomEventListener('show', function(){
+                scope.on = false;
+            });
+            this.complete_confirm.addCustomEventListener('before_hide', function(){
+                scope.on = true;
+            });
+            this.complete_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        //scope.on = true;
+                        scope.complete_confirm.hide();
+                    }
+                }
+            ));
+
+            this.complete_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("play_btn"),
+                    "onclick" : function(){
+                        scope.complete_confirm.hide();
+                        //scope.on = false;
+                        scope.check_for_series(scope.play_url, scope.storage);
                     }
                 }
             ));
@@ -179,6 +297,7 @@
             
             this.info.on && this.info.hide && this.info.hide();
             this.password_input.on && this.password_input.hide && this.password_input.hide();
+            this.rent_password_input.on && this.rent_password_input.hide && this.rent_password_input.hide();
             this.series_switch.on && this.series_switch.hide && this.series_switch.hide();
             this.storage_switch.on && this.storage_switch.hide && this.storage_switch.hide();
 
@@ -263,6 +382,15 @@
             //item.genres_str
 
             var info = '';
+
+            if (item.rent_info){
+                info += get_word('vclub_purchased');
+
+                if (item.rent_info['expires_in']){
+                    info += ', '+get_word('vclub_rent_expires_in')+': '+item.rent_info['expires_in'];
+                }
+                info += '<br>';
+            }
 
             if (item.age){
                 info += '<span>' + get_word('vclub_age') + ': </span>' + item.age + '<br>';
@@ -499,14 +627,103 @@
                 this
             );
         };
+
+        this.check_price = function(video_id){
+            _debug('vclub.check_price', video_id);
+
+            stb.load({
+                    "type"     : "account",
+                    "action"   : "check_video_price",
+                    "video_id" : video_id
+                },
+
+                function(result){
+                    _debug('on check_price', result);
+
+                    if (!result){
+                        this.subscription_message.show(get_word('service_subscribe_server_error'));
+                    }else if (result.hasOwnProperty('message')){
+                        this.subscription_message.show(result['message']);
+                    }else if (result.result === '0' || result.result === 0){
+                        this.rent(video_id, 0);
+                    }else if (result.result !== false){
+                        this.price_confirm.price = this.price_confirm.price_str = result.result;
+
+                        if (!/[^0-9\.,]/.test(this.price_confirm.price)){
+                            this.price_confirm.price_str = this.price_confirm.price_str + get_word('package_price_measurement');
+                        }
+
+                        this.price_confirm.video_id = video_id;
+                        _debug('this.price_confirm.video_id', this.price_confirm.video_id);
+
+                        var msg = get_word('rent_movie_price_text').format(this.price_confirm.price_str);
+
+                        if (result.hasOwnProperty('rent_duration') && result.rent_duration != 0){
+                            msg += '<br>'+get_word('rent_duration_text').format(result.rent_duration);
+                        }
+
+                        this.price_confirm.show(msg);
+                    }
+                },
+
+                this
+            );
+        };
+
+        this.rent = function(video_id, price){
+            _debug('video.rent', video_id, price);
+
+            stb.load({
+                    "type"   : "account",
+                    "action" : "rent_video",
+                    "video_id" : video_id,
+                    "price"    : price
+                },
+
+                function(result){
+                    _debug('on do_subscribe', result);
+
+                    if (!result || result.hasOwnProperty('result') && result.result === 0){
+                        this.subscription_message.show(get_word('service_subscribe_server_error'));
+                    }else if (result.hasOwnProperty('message')){
+                        this.subscription_message.show(result['message']);
+                    }else if (result.result > 0){
+                        this.complete_confirm.show(get_word('service_subscribe_success'));
+
+                        this.cur_item['rent_info'] = result.rent_info;
+                        this.cur_item['open'] = 1;
+
+                        if (this.cur_item['id'] == this.data_items[this.cur_row]['id']){
+                            this.set_active_row(this.cur_row);
+                            this.map[this.cur_row]['row'].removeClass('close');
+                        }
+
+                    }else{
+                        this.complete_confirm.show(get_word('service_subscribe_fail'));
+                    }
+                },
+
+                this
+            );
+        };
         
         this.check_for_pass = function(play_url, storage){
             _debug('vclub.check_for_play', play_url, storage);
             
             _debug('lock', this.data_items[this.cur_row].lock);
-            
-            if (this.data_items[this.cur_row].lock){
-                var self = this;
+
+            var self = this;
+
+            if (this.data_items[this.cur_row].for_rent && !this.data_items[this.cur_row].hasOwnProperty('rent_info')){
+
+                self.rent_confirm.video_id = self.data_items[self.cur_row].id;
+                self.rent_confirm.show();
+
+                this.play_url = play_url;
+                this.storage  = storage;
+                this.cur_item = this.data_items[this.cur_row];
+
+            }else if (this.data_items[this.cur_row].lock){
                 
                 this.password_input.callback = function(){
                     self.check_for_series(play_url, storage);
@@ -597,6 +814,8 @@
                         stb.notice.show(word['player_file_missing']);
                     }else if(result.error == 'link_fault'){
                         stb.notice.show(word['player_server_error']);
+                    }else if(result.error == 'access_denied'){
+                        stb.notice.show(word['player_access_denied']);
                     }else{
 
                         var match;
@@ -862,7 +1081,7 @@
         {"label" : word['vclub_find'], "cmd" : vclub.other_switcher}
     ]);
     
-    vclub.init_info();
+    //vclub.init_info();
     
     vclub.init_sidebar();
     
@@ -886,6 +1105,11 @@
         var rating_item = {"label" : get_word('vclub_by_rating'), "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'rating'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}};
 
         sort_menu.splice(1, 0, rating_item);
+    }
+
+    if (stb.profile['show_purchased_filter']){
+        var purchased_item = {"label" : get_word('vclub_only_purchased'), "cmd" : function(){this.parent.load_params.fav = false; this.parent.load_params.sortby = 'purchased'; this.parent.load_params.hd = false; this.parent.load_params.not_ended = false}};
+        sort_menu.push(purchased_item);
     }
     
     vclub.init_sort_menu(

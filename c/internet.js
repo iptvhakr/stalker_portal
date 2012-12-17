@@ -3,7 +3,7 @@
  */
 (function(){
 
-    if (!stbWindowMgr){
+    if (typeof(stbWindowMgr) == "undefined"){
         return;
     }
 

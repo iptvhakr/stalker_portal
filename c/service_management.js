@@ -30,6 +30,14 @@
         this.init = function(){
             this.superclass.init.apply(this);
 
+            PackageInfoConstructor.prototype = new SimpleLayer();
+            this.package_info = new PackageInfoConstructor(this);
+            this.package_info.init();
+            this.package_info.bind();
+            this.package_info.init_left_ear(get_word('ears_back'));
+
+            this.package_info.init_header_path(get_word('package_info_title'));
+
             this.confirm_dialog = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('confirm_service_subscribe_text')});
             this.confirm_dialog.getTextDomObj().style.textAlign = "center";
             this.confirm_dialog.enableOnExitClose();
@@ -80,7 +88,6 @@
                     }
                 }
             ));
-
 
             this.subscription_message = new ModalForm({"title" : get_word('notice_form_title'), "text" : " "});
             this.subscription_message.getTextDomObj().style.textAlign = "center";
@@ -142,13 +149,16 @@
         this.bind = function(){
             this.superclass.bind.apply(this);
 
-            this.action.bind(key.OK, this);
+            this.action.bind(key.OK, this).bind(key.INFO, this);
         };
 
         this.set_active_row = function(num){
             this.superclass.set_active_row.call(this, num);
 
-            if (this.data_items[this.cur_row].optional && !this.data_items[this.cur_row].subscribed && stb.profile['allow_subscription_from_stb']){
+            if (!stb.profile['allow_subscription_from_stb']){
+                this.color_buttons.get('green').disable();
+                this.color_buttons.get('red').disable();
+            }else if (this.data_items[this.cur_row].optional && !this.data_items[this.cur_row].subscribed){
                 this.color_buttons.get('green').enable();
                 this.color_buttons.get('red').disable();
             }else if (this.data_items[this.cur_row].optional && this.data_items[this.cur_row].subscribed){
@@ -163,7 +173,10 @@
         this.action = function(){
             _debug('service_management.action');
 
-            if (!stb.profile['allow_subscription_from_stb']){
+            this.on = false;
+            this.package_info.show(this.data_items[this.cur_row]);
+
+            /*if (!stb.profile['allow_subscription_from_stb']){
                 return;
             }
 
@@ -171,7 +184,7 @@
                 this.subscribe();
             }else if (this.data_items[this.cur_row].optional && this.data_items[this.cur_row].subscribed){
                 this.unsubscribe();
-            }
+            }*/
         };
 
         this.subscribe = function(){
@@ -217,7 +230,7 @@
                         this.subscription_message.show(get_word('service_subscribe_server_error'));
                     }else if (result.hasOwnProperty('message')){
                         this.subscription_message.show(result['message']);
-                    }else if (result.result === '0'){
+                    }else if (result.result === '0' || result.result === 0){
                         this.do_subscribe(tariff_package);
                     }else if (result.result !== false){
                         this.price_confirm.price = result.result;
@@ -311,6 +324,111 @@
         };
     }
 
+    function PackageInfoConstructor(parent){
+        this.layer_name = 'package_info';
+
+        this.parent = parent;
+
+        this.header_path_map = [];
+
+        this.superclass = SimpleLayer.prototype;
+
+        this.init = function(){
+            _debug('account.init');
+
+            this.superclass.init.apply(this);
+
+            this.main_container = create_block_element("main_container", this.container);
+
+            this.main_container.content = new Scrollable(create_block_element("main_content", this.main_container), this.main_container);
+
+            this.hide();
+        };
+
+        this.show = function(tariff_package){
+            _debug('package_info.show', tariff_package);
+
+            this.superclass.show.apply(this);
+
+            this.tariff_package = tariff_package;
+
+            this.update_header_path([{"alias" : "package", "item" : tariff_package.name}]);
+
+            this.main_container.content.dom_obj.innerHTML = get_word('Loading...');
+
+            stb.load(
+                {
+                    "type"   : "user",
+                    "action" : "get_package_description",
+                    "package_id" : tariff_package.package_id
+                },
+                function(result){
+                    this.fill_info(result);
+                },
+                this
+            );
+        };
+
+        this.hide = function(){
+            _debug('tariff_package.hide');
+
+            this.parent.on = true;
+
+            this.dom_obj.hide();
+            this.on = false;
+
+            this.main_container.content.dom_obj.innerHTML = '';
+
+            this.main_container.content.scrollbar && this.main_container.content.scrollbar.reset && this.main_container.content.scrollbar.reset();
+        };
+
+        this.fill_info = function(info){
+            _debug('package_info.fill_info', info);
+
+            var info_str = '';
+
+            if (info['type']){
+                info_str += '<span class="label">' + get_word('package_type') + ':</span> ' + info['type'] + '<br>';
+            }
+
+            if (info['content']){
+                info_str += '<span class="label">' + get_word('package_content') + ':<br></span> ' + info['content'] + '<br>';
+            }
+
+            this.main_container.content.dom_obj.innerHTML = info_str;
+        };
+
+        this.shift = function(dir){
+            _debug('package_info.shift', dir);
+
+            this.main_container.content.scroll && this.main_container.content.scroll(dir);
+        };
+
+        this.shift_page = function(dir){
+            _debug('account.shift_page', dir);
+
+            this.main_container.content.scrollPage && this.main_container.content.scrollPage(dir);
+        };
+
+        this.bind = function(){
+            this.shift.bind(key.UP, this, -1);
+            this.shift.bind(key.DOWN, this, 1);
+
+            this.shift_page.bind(key.PAGE_PREV, this, -1);
+            this.shift_page.bind(key.PAGE_NEXT, this, 1);
+
+            (function(){
+                this.hide();
+            }).bind(key.EXIT, this).bind(key.LEFT, this);
+
+            (function(){
+                this.hide();
+                this.parent.hide();
+                main_menu.show();
+            }).bind(key.MENU, this);
+        };
+    }
+
     ServiceManagement.prototype = new ListLayer();
 
     var service_management = new ServiceManagement();
@@ -330,6 +448,7 @@
     ]);
 
     service_management.init_left_ear(get_word('ears_back'));
+    service_management.init_right_ear(get_word('ears_about_package'));
     service_management.init_header_path(get_word('account_info_title'));
     service_management.update_header_path([{"alias" : "tab", "item" : get_word('SERVICES MANAGEMENT')}]);
     service_management.hide();

@@ -19,14 +19,20 @@ if (!empty($_POST['add']) && !empty($_POST['name'])){
 
     $all_services = empty($_POST['all_services']) ? 0 : (int) $_POST['all_services'];
 
-    $package_id = Mysql::getInstance()->insert('services_package', array(
+    $data = array(
         'name' => $_POST['name'],
         'description' => $_POST['description'],
         'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
         'type' => $_POST['package_type'],
-        'service_type' => $_POST['service_type'],
+        'rent_duration' => $_POST['rent_duration'],
         'all_services' => $all_services
-    ))->insert_id();
+    );
+
+    if (!empty($_POST['service_type'])){
+        $data['service_type'] = $_POST['service_type'];
+    }
+
+    $package_id = Mysql::getInstance()->insert('services_package', $data)->insert_id();
 
     if ($all_services){
         $services = null;
@@ -56,14 +62,20 @@ if (!empty($id)){
 
         $all_services = empty($_POST['all_services']) ? 0 : (int) $_POST['all_services'];
 
-        Mysql::getInstance()->update('services_package', array(
+        $data = array(
             'name' => $_POST['name'],
             'description' => $_POST['description'],
             'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
             'type' => $_POST['package_type'],
-            'service_type' => $_POST['service_type'],
+            'rent_duration' => $_POST['rent_duration'],
             'all_services' => $all_services
-        ), array('id' => $id));
+        );
+
+        if (!empty($_POST['service_type'])){
+            $data['service_type'] = $_POST['service_type'];
+        }
+
+        Mysql::getInstance()->update('services_package', $data, array('id' => $id));
 
         Mysql::getInstance()->delete('service_in_package', array('package_id' => $id));
 
@@ -178,6 +190,12 @@ if (@$_GET['edit'] && !empty($id)){
                     $('.all_services').removeAttr('disabled');
                 }
 
+                if (type == 'video'){
+                    $('.service-type').removeAttr('disabled');
+                }else{
+                    $('.service-type').attr('disabled', 'disbled');
+                }
+
                 if (type != picked_type){
                     picked_services = [];
                 }
@@ -216,6 +234,16 @@ if (@$_GET['edit'] && !empty($id)){
                 }
             });
 
+            $('.service-type').change(function(eventObj){
+                var type = $('.service-type option:selected').val();
+
+                if (type == 'single'){
+                    $('.rent-duration-block').show();
+                }else{
+                    $('.rent-duration-block').hide();
+                }
+            });
+
             $('.services-available').dblclick(function(eventObj){
                 if (eventObj.target instanceof HTMLOptionElement){
                     $(eventObj.target).appendTo('.services-picked');
@@ -246,6 +274,7 @@ if (@$_GET['edit'] && !empty($id)){
             $('.package-type').change();
 
             $('.service-type option[value='+picked_service_type+']').attr('selected', 'selected');
+            $('.service-type').change();
 
             $('.all_services').change(function(e){
 
@@ -316,19 +345,19 @@ if (@$_GET['edit'] && !empty($id)){
             <form class="submit-form" method="POST">
                 <table class="form">
                     <tr>
-                        <td width="130"><?= _('External ID')?></td>
+                        <td width="200" align="right"><?= _('External ID')?></td>
                         <td><input type="text" name="external_id" value="<?= @$edit_package['external_id']?>"></td>
                     </tr>
                     <tr>
-                        <td><?= _('Title')?></td>
+                        <td align="right"><?= _('Title')?></td>
                         <td><input type="text" name="name" value="<?= @$edit_package['name']?>"></td>
                     </tr>
                     <tr>
-                        <td><?= _('Short description')?></td>
+                        <td align="right"><?= _('Short description')?></td>
                         <td><textarea name="description"><?= @$edit_package['description']?></textarea>
                     </tr>
                     <tr>
-                        <td><?= _('Service')?></td>
+                        <td align="right"><?= _('Service')?></td>
                         <td>
                             <select name="package_type" class="package-type">
                                 <option value="">---</option>
@@ -341,17 +370,24 @@ if (@$_GET['edit'] && !empty($id)){
                     </tr>
 
                     <tr>
-                        <td><?= _('Service type')?></td>
+                        <td align="right"><?= _('Service type')?></td>
                         <td>
                             <select name="service_type" class="service-type">
-                                <option value="periodic">periodic</option>
-                                <option value="single">single</option>
+                                <option value="periodic"><?= _('periodic')?></option>
+                                <option value="single"><?= _('single')?></option>
                             </select>
                         </td>
                     </tr>
 
+                    <tr style="display: none" class="rent-duration-block">
+                        <td align="right"><?= _('Rent duration')?></td>
+                        <td>
+                            <input type="text" name="rent_duration" size="7" value="<?= @$edit_package['rent_duration']?>"> <?= _('h')?>
+                        </td>
+                    </tr>
+
                     <tr>
-                        <td><?= _('All services')?></td>
+                        <td align="right"><?= _('All services')?></td>
                         <td>
                             <input type="checkbox" name="all_services" class="all_services" value="1" <?= @$edit_package['all_services'] == 1 ? 'checked' : ''?>>
                         </td>

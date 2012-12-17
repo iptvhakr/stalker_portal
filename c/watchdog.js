@@ -117,6 +117,7 @@ watchdog.prototype.parse_result = function(data){
         switch(data.event){
             case 'reboot':
             {
+                stb.Stop();
                 stb.ExecAction('reboot');
                 break;
             }

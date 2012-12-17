@@ -94,7 +94,7 @@ class User
         return $fav_video;
     }
 
-    public function getServicesByType($type = 'tv'){
+    public function getServicesByType($type = 'tv', $service_type = null){
 
         $plan = Mysql::getInstance()
             ->from('tariff_plan')
@@ -138,9 +138,17 @@ class User
             $packages_ids = array_merge($packages_ids, $subscribed_packages_ids);
         }
 
+        $packages_ids = array_unique($packages_ids);
+
+        $package_where = array('type' => $type);
+
+        if ($service_type){
+            $package_where['service_type'] = $service_type;
+        }
+
         $packages = Mysql::getInstance()
             ->from('services_package')
-            ->where(array('type' => $type))
+            ->where($package_where)
             ->in('id', $packages_ids)
             ->get()
             ->all();
@@ -188,7 +196,9 @@ class User
         }
 
         $packages = Mysql::getInstance()
-            ->select('package_in_plan.*, services_package.id as services_package_id, services_package.name as name, services_package.type as type, services_package.external_id as external_id, services_package.description as description')
+            ->select('package_in_plan.*, services_package.id as services_package_id, services_package.name as name,'
+                .' services_package.type as type, services_package.external_id as external_id,'
+                .' services_package.description as description, services_package.service_type as service_type')
             ->from('package_in_plan')
             ->join('services_package', 'services_package.id', 'package_in_plan.package_id', 'INNER')
             ->where(array('plan_id' => $plan['id']))
@@ -232,7 +242,7 @@ class User
 
         if ($packages != null){
             $filtered_packages = array_filter($packages, function($item) use ($package_id){
-                return $package_id == $item['package_id'] && $item['optional'] == 1 && !$item['subscribed'];
+                return $package_id == $item['package_id'] && ($item['optional'] == 1 && !$item['subscribed'] || $item['service_type'] == 'single');
             });
         }
 
@@ -534,55 +544,10 @@ class User
         try{
             return OssWrapper::getWrapper()->getUserInfo($this);
         }catch (OssException $e){
-            // todo: save to log?
+            Stb::logOssError($e);
             return array();
         }
     }
-
-    /*public function onSubscribeHookResult($package_id){
-        return $this->onSubscriptionHookResult('on_subscribe_hook_url', $package_id);
-    }
-
-    public function onUnsubscribeHookResult($package_id){
-        return $this->onSubscriptionHookResult('on_unsubscribe_hook_url', $package_id);
-    }
-
-    public function onSubscriptionHookResult($config_param, $package_id){
-
-        if (!Config::exist($config_param)){
-            return false;
-        }
-
-        if (Config::get($config_param) == ''){
-            return false;
-        }
-
-        $package_ext_id = Mysql::getInstance()->from('services_package')->where(array('id' => $package_id))->get()->first('external_id');
-
-        $url = Config::get($config_param).'?mac='.$this->getMac().'&tariff_id='.$this->getExternalTariffId().'&package_id='.$package_ext_id;
-
-        var_dump($url);
-
-        $data = file_get_contents($url);
-
-        if (!$data){
-            return false;
-        }
-
-        $data = json_decode($data, true);
-
-        if (empty($data)){
-            return false;
-        }
-
-        var_dump($data);
-
-        if ($data['status'] != 'OK' || empty($data['results'])){
-            return false;
-        }
-
-        return $data['results'];
-    }*/
 
     public function getLastChannelId(){
         return (int) Mysql::getInstance()->from('last_id')->where(array('uid' => $this->id))->get()->first('last_id');
@@ -608,5 +573,201 @@ class User
                 ),
                 array('uid' => $this->id))->result();
         }
+    }
+
+    public function getPackageByServiceId($service_id){
+
+        $user_packages = $this->getPackages();
+
+        if (empty($user_packages)){
+            return null;
+        }
+
+        $user_packages = array_filter($user_packages, function($package){
+            return $package['subscribed'];
+        });
+
+        if (empty($user_packages)){
+            return null;
+        }
+
+        $user_packages_ids = array_map(function($package){
+            return $package['package_id'];
+        }, $user_packages);
+
+        $user_packages_ids = array_values($user_packages_ids);
+
+        return Mysql::getInstance()
+            ->select('services_package.*')
+            ->from('services_package')
+            ->where(array('service_id' => $service_id))
+            ->join('service_in_package', 'services_package.id', 'package_id', 'INNER')
+            ->in('services_package.id', $user_packages_ids)
+            ->get()
+            ->first();
+    }
+
+    /**
+     * Add or update rent record for user.
+     *
+     * @param int $video_id
+     * @param int $price
+     * @return bool|int $rent_session_id
+     */
+    public function rentVideo($video_id, $price = 0){
+
+        $rented = Mysql::getInstance()
+            ->from('video_rent')
+            ->where(array('video_id' => $video_id, 'uid' => $this->id))
+            ->get()
+            ->first();
+
+        $package = $this->getPackageByServiceId($video_id);
+
+        if (empty($package)){
+            return false;
+        }
+
+        $rent_data = array(
+            'uid'           => $this->id,
+            'video_id'      => $video_id,
+            'price'         => $price,
+            'rent_date'     => 'NOW()',
+            'rent_end_date' => 'FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())+'.($package['rent_duration']*3600).')'
+        );
+
+        $rent_history_id = Mysql::getInstance()->insert('video_rent_history', $rent_data)->insert_id();
+
+        $rent_data['rent_history_id'] = $rent_history_id;
+
+        if (empty($rented)){
+            return Mysql::getInstance()->insert('video_rent', $rent_data)->insert_id();
+        }else{
+            $result = Mysql::getInstance()->update('video_rent', $rent_data, array('id' => $rented['id']))->result();
+            if (!$result){
+                return false;
+            }
+            return (int) $rented['id'];
+        }
+    }
+
+    /**
+     * Return all rented video by user.
+     *
+     * @return array $rented_videos
+     */
+    public function getAllRentedVideo(){
+
+        $raw = Mysql::getInstance()->query('select * from video_rent where uid='.$this->id.' and (rent_end_date>NOW() OR rent_date=rent_end_date)')->all();
+
+        $map = array();
+
+        foreach ($raw as $rent){
+
+            if ($rent['rent_date'] != $rent['rent_end_date']){
+                $rent['expires_in'] = self::humanDateDiff($rent['rent_end_date']);
+            }
+
+            $map[$rent['video_id']] = $rent;
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param string $date1
+     * @param string $date2
+     * @return bool|string
+     */
+    public static function humanDateDiff($date1, $date2 = 'now'){
+
+        $diff_str = '';
+
+        $ts1 = strtotime($date1);
+        $ts2 = strtotime($date2);
+
+        if (!$ts1 || !$ts1){
+            return false;
+        }
+
+        $diff_seconds = $ts1 - $ts2;
+
+        $days = floor($diff_seconds / 86400);
+
+        $hours = floor(($diff_seconds-$days*86400) / 3600);
+
+        $minutes = floor(($diff_seconds-($days*86400 + $hours*3600)) / 60);
+
+        if ($days){
+            $diff_str .= sprintf(ngettext('%d day', '%d days', $days), $days).' ';
+        }
+
+        if ($hours){
+            $diff_str .= $hours._('h').' ';
+        }
+
+        if ($minutes){
+            $diff_str .= $minutes._('min').' ';
+        }
+
+        return $diff_str;
+    }
+
+    public static function getPackageDescription(){
+
+        $package_id  = (int) $_REQUEST['package_id'];
+
+        $package = Mysql::getInstance()->from('services_package')->where(array('id' => $package_id))->get()->first();
+
+        if (empty($package)){
+            return false;
+        }
+
+        if ($package['all_services']){
+            $service_filter = false;
+        }else{
+            $service_filter = Mysql::getInstance()
+                ->from('service_in_package')
+                ->where(array('package_id' => $package_id))
+                ->get()
+                ->all('service_id');
+        }
+
+        $services = Mysql::getInstance();
+
+        if ($service_filter !== false){
+            $services->in('id', $service_filter);
+        }
+
+        if ($package['type'] == 'tv'){
+
+            $services = $services->from('itv')->orderby('name')->get()->all('name');
+
+        }elseif($package['type'] == 'radio'){
+
+            $services = $services->from('radio')->orderby('name')->get()->all('name');
+
+        }elseif($package['type'] == 'video'){
+
+            $services = $services->from('video')->orderby(sprintf(_('video_name_format'), 'name', 'o_name'))
+                ->get()->all(sprintf(_('video_name_format'), 'name', 'o_name'));
+
+        }else{
+            $services = array_unique($service_filter);
+        }
+
+        $services_str = implode('<br>', $services);
+
+        $type_map = array(
+            'tv'     => _('TV channels'),
+            'video'  => _('Movies'),
+            'radio'  => _('Radio channels'),
+            'module' => _('Modules')
+        );
+
+        return array(
+            'type'    => array_key_exists($package['type'], $type_map) ? $type_map[$package['type']] : $package['type'],
+            'content' => $services_str
+        );
     }
 }

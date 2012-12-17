@@ -907,7 +907,11 @@ function common_xpcom(){
                 //this.user['update_url'] = this.profile['update_url'] ? this.profile['update_url'] + this.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + this.type.substr(3) + '/imageupdate';
 
                 if (!this.user['update_url']){
-                    this.user['update_url'] = stb.RDir('getenv update_url').clearnl();
+                    try{
+                        this.user['update_url'] = stb.RDir('getenv update_url').clearnl();
+                    }catch(err){
+                        _debug(err);
+                    }
                 }
 
                 _debug('this.user[update_url]', this.user['update_url']);

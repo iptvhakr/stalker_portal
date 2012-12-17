@@ -31,6 +31,7 @@ $words['layer_from'] = _('FROM');
 $words['layer_found'] = _('FOUND');
 $words['layer_records'] = _('RECORDS');
 $words['layer_loading'] = _('LOADING...');
+$words['Loading...'] = _('Loading...');
 
 // media browser
 $words['mbrowser_title'] = _('Media Browser');
@@ -44,6 +45,7 @@ $words['usb_drive'] = _('USB drive');
 $words['player_limit_notice'] = _('The number of connections is limited. <br> Try again later');
 $words['player_file_missing'] = _('File missing');
 $words['player_server_error'] = _('Server error');
+$words['player_access_denied'] = _('Access denied');
 $words['player_server_unavailable'] = _('Server unavailable');
 $words['player_series'] = _('part');
 $words['player_track'] = _('Track');
@@ -108,10 +110,13 @@ $words['vclub_by_addtime'] = _('by addtime');
 $words['vclub_top'] = _('rating');
 $words['vclub_only_hd'] = _('HD only');
 $words['vclub_only_favorite'] = _('favorite only');
+$words['vclub_only_purchased'] = _('purchased');
 $words['vclub_not_ended'] = _('not ended');
 $words['vclub_list'] = _('list');
 $words['vclub_list_w_info'] = _('list + info');
 $words['vclub_title'] = _('VIDEOCLUB');
+$words['vclub_purchased'] = _('Purchased');
+$words['vclub_rent_expires_in'] = _('rent expires in');
 
 // common
 $words['cut_off_msg'] = _('Your STB is blocked.<br/> Call the provider.');
@@ -128,6 +133,7 @@ $words['records_title'] = _('RECORDS');
 $words['ears_back'] = implode('<br>', preg_split('//u', _('BACK')));
 $words['ears_about_movie'] = implode('<br>', preg_split('//u', _('ABOUT MOVIE')));
 $words['ears_tv_guide'] = implode('<br>', preg_split('//u', _('TV GUIDE')));
+$words['ears_about_package'] = implode('<br>', preg_split('//u', _('PACKAGE INFO')));
 
 // settings
 $words['settings_title'] = _('SETTINGS');
@@ -254,6 +260,7 @@ $words['yes_btn'] = _('YES');
 $words['close_btn'] = _('CLOSE');
 $words['ok_btn'] = _('OK');
 $words['pay_btn'] = _('PAY');
+$words['play_btn'] = _('PLAY');
 $words['playback_settings_save'] = $words['settings_save'] = _('SAVE');
 
 $words['audio_out'] = _('Audio out');
@@ -364,6 +371,10 @@ $words['User'] = _('User');
 $words['SERVICES MANAGEMENT'] = _('SERVICES MANAGEMENT');
 $words['SUBSCRIBE'] = _('SUBSCRIBE');
 $words['UNSUBSCRIBE'] = _('UNSUBSCRIBE');
+$words['package_info_title'] = _('PACKAGE INFO');
+$words['package_type'] = _('Type');
+$words['package_content'] = _('Content');
+
 $words['confirm_service_subscribe_text'] = _('Are you really want to subscribe to this service?');
 $words['confirm_service_unsubscribe_text'] = _('Are you really want to unsubscribe from this service?');
 $words['confirm_service_price_text'] = _('The service costs {0}');
@@ -377,6 +388,9 @@ $words['service_unsubscribe_success_reboot'] = _('You have successfully unsubscr
 $words['service_subscribe_fail'] = _('An error in the management of subscriptions.');
 $words['service_subscribe_server_error'] = _('Server error. Try again later.');
 $words['package_price_measurement'] = _('package_price_measurement');
+$words['rent_movie_text'] = _('Do you really want to rent this movie?');
+$words['rent_movie_price_text'] = _('The movie costs {0}');
+$words['rent_duration_text'] = _('Rent duration: {0}h');
 
 $words['Account number'] = _('Account number');
 
@@ -396,6 +410,7 @@ $words['error_channel_nothing_to_play'] = _('Channel not available');
 $words['error_channel_limit'] = _('Channel temporary available');
 $words['error_channel_not_available_for_zone'] = _('Channel not available for this region');
 $words['error_channel_link_fault'] = _('Channel not available. Server error.');
+$words['error_channel_access_denied'] = _('Access denied');
 
 $words['blocking_account_info'] = _('Account info');
 $words['blocking_account_payment'] = _('Payment');

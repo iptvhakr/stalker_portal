@@ -66,3 +66,6 @@
     overflow: hidden;
 }
 
+#package_info .label {
+    color: #99A8B5;
+}

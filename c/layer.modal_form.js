@@ -53,9 +53,11 @@ ModalForm.prototype.show = function(text){
     this._dom_obj.show();
     this.on = true;
     this._items[0].focus();
+    this.triggerCustomEventListener("show", this);
 };
 
 ModalForm.prototype.hide = function(){
+    this.triggerCustomEventListener("before_hide", this);
     this._items[this._cur_item_idx] && this._items[this._cur_item_idx].blur && this._items[this._cur_item_idx].blur();
     this._dom_obj.hide();
     this.on = false;

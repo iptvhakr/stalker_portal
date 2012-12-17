@@ -61,6 +61,31 @@ class Vod extends AjaxResponse
 
         $video_id = intval($video_id);
 
+        if (Config::get('enable_tariff_plans')){
+
+            $user = User::getInstance($this->stb->id);
+            $all_user_video_ids = $user->getServicesByType('video', 'single');
+            $all_user_video_ids = array_flip($all_user_video_ids);
+
+            $all_user_rented_video_ids = $user->getAllRentedVideo();
+
+            if (array_key_exists($video_id, $all_user_video_ids) && !array_key_exists($video_id, $all_user_rented_video_ids)){
+                return array(
+                    'id'         => $video_id,
+                    'error'      => 'access_denied'
+                );
+            }
+
+            $video = Video::getById($video_id);
+
+            if (!empty($video['rtsp_url'])){
+                return array(
+                    'id'  => $video_id,
+                    'cmd' => $video['rtsp_url']
+                );
+            }
+        }
+
         $master = new VideoMaster();
 
         try {
@@ -594,7 +619,7 @@ class Vod extends AjaxResponse
         if (@$_REQUEST['sortby']) {
             $sortby = $_REQUEST['sortby'];
 
-            if ($sortby == 'name') {
+            if ($sortby == 'name' || $sortby == 'purchased') {
                 $result = $result->orderby('video.name');
             } elseif ($sortby == 'added') {
                 $result = $result->orderby('video.added', 'DESC');
@@ -608,6 +633,12 @@ class Vod extends AjaxResponse
 
         } else {
             $result = $result->orderby('video.name');
+        }
+
+        if (!empty($_REQUEST['sortby']) && $_REQUEST['sortby'] == 'purchased' && Config::get('enable_tariff_plans')) {
+            $rented_video = $user->getAllRentedVideo();
+            $rented_video_ids = array_keys($rented_video);
+            $result = $result->in('video.id', $rented_video_ids);
         }
 
         if (@$_REQUEST['fav']) {
@@ -642,6 +673,20 @@ class Vod extends AjaxResponse
 
         $not_ended = Video::getNotEnded();
 
+        if (Config::get('enable_tariff_plans')){
+            $user = User::getInstance($this->stb->id);
+            $for_rent = $user->getServicesByType('video', 'single');
+
+            $rented_video = $user->getAllRentedVideo();
+
+            if ($for_rent != 'all'){
+                $for_rent = array_flip($for_rent);
+            }
+        }else{
+            $for_rent = array();
+            $rented_video = array();
+        }
+
         for ($i = 0; $i < count($this->response['data']); $i++) {
 
             if ($this->response['data'][$i]['hd']) {
@@ -665,6 +710,19 @@ class Vod extends AjaxResponse
                 $this->response['data'][$i]['fav'] = 1;
             } else {
                 $this->response['data'][$i]['fav'] = 0;
+            }
+
+            if (array_key_exists($this->response['data'][$i]['id'], $for_rent) || $for_rent == 'all'){
+                $this->response['data'][$i]['for_rent'] = 1;
+
+                if (array_key_exists($this->response['data'][$i]['id'], $rented_video)){
+                    $this->response['data'][$i]['rent_info'] = $rented_video[$this->response['data'][$i]['id']];
+                }else{
+                    $this->response['data'][$i]['open'] = 0;
+                }
+
+            }else{
+                $this->response['data'][$i]['for_rent'] = 0;
             }
 
             $this->response['data'][$i]['series'] = unserialize($this->response['data'][$i]['series']);
@@ -691,7 +749,7 @@ class Vod extends AjaxResponse
 
             $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
 
-            if (!empty($this->response['data'][$i]['rtsp_url'])) {
+            if (!empty($this->response['data'][$i]['rtsp_url']) && $this->response['data'][$i]['for_rent'] == 0) {
                 $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'];
             } else {
                 $this->response['data'][$i]['cmd'] = '/media/' . $this->response['data'][$i]['id'] . '.mpg';

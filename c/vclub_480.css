@@ -22,13 +22,14 @@
 .vclub_info_box{
     position: absolute;
     width: 240px;
-    height: 82px;
+    height: 61px;
     top: 58px;
     left: 413px;
     line-height: 15px;
     color: #fff;
     font-size: 16px;
     overflow: hidden;
+    -webkit-mask: -webkit-gradient(linear, left 55, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 
 .vclub_info_box span{
