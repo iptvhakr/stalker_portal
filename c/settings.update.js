@@ -11,6 +11,10 @@
     if (stb.firmware_version < 203){
         return;
     }
+
+    if (stb.firmware_version >= 212 && !stb.profile['use_embedded_settings']){
+        return;
+    }
     
     function update_settings_constructor(){
         

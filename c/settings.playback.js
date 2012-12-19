@@ -8,6 +8,10 @@
         return;
     }
 
+    if (stb.firmware_version >= 212 && !stb.profile['use_embedded_settings']){
+        return;
+    }
+
     function PlaybackSettingsConstructor(){
 
         this.layer_name = 'playback_settings';

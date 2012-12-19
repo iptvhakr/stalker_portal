@@ -115,6 +115,10 @@ class Middleware
 
         $mac = Stb::getInstance()->mac;
 
+        if(empty($mac)){
+            return false;
+        }
+
         $history = Cache::getInstance()->get($mac);
 
         if ($history === false){

@@ -661,13 +661,12 @@ function common_xpcom(){
                 req.setRequestHeader("X-User-Agent", stb.header_ua_ext.join('; '));
             }
 
-            //req.send(this.params_to_query(params));
-
             req.onreadystatechange = function(){
                 if (req.readyState == 4) {
                     if (req.status == 200) {
                         try{
                             var result = JSON.parse(req.responseText);
+                            req = null;
                         }catch(er){
                             _debug('req.responseText', req.responseText);
                             throw new Error(er);
@@ -675,6 +674,7 @@ function common_xpcom(){
                         _debug(result.text);
                         connection_problem.hide();
                         callback.call(context, result.js);
+                        result = null;
                     } else if (req.status == 0){
                         console.log('Abort request');
                         connection_problem.show();
@@ -687,6 +687,7 @@ function common_xpcom(){
                 }
             };
             req.send(null);
+            //req.send(this.params_to_query(params));
         }catch(e){
             req = null;
             console.log(e);
@@ -1401,10 +1402,13 @@ function common_xpcom(){
         load : function(){
             _debug('epg_loader.load');
 
+            this.epg = [];
+
             stb.load(
                 {
                     "type"   : "itv",
-                    "action" : "get_epg_info"
+                    "action" : "get_epg_info",
+                    "period" : stb.type == 'MAG200' ? 3 : 6
                 },
 
                 function(result){

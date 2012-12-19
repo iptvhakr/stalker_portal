@@ -886,8 +886,10 @@ class Itv extends AjaxResponse
     
     public function getEpgInfo(){
         $epg = new Epg();
+
+        $period = empty($_REQUEST['period']) ? 3 : (int) $_REQUEST['period'];
         
-        $response = array('data' => $epg->getEpgInfo());
+        $response = array('data' => $epg->getEpgInfo($period));
         return $response;
     }
     

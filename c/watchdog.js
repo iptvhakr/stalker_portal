@@ -176,6 +176,7 @@ watchdog.prototype.parse_result = function(data){
             }
             case 'update_epg':
             {
+                stb.epg_loader.epg = null;
                 stb.epg_loader.load();
                 break;
             }

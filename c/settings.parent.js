@@ -3,7 +3,11 @@
  */
 
 (function(){
-    
+
+    if (stb.firmware_version >= 212 && !stb.profile['use_embedded_settings']){
+        return;
+    }
+
     /* SETTINGS */
     
     function parent_settings_constructor(){

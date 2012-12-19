@@ -4,6 +4,10 @@
 
 (function(){
 
+    if (stb.firmware_version >= 212 && !stb.profile['use_embedded_settings']){
+        return;
+    }
+
     function CommonSettingsConstructor(){
 
         this.layer_name = 'common_settings';

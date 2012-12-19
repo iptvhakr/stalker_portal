@@ -472,11 +472,12 @@ class Epg
     /**
      * Returns an array of programs on channels for next 9 hours.
      *
+     * @param int $hours
      * @return array
      */
-    public function getEpgInfo(){
+    public function getEpgInfo($hours){
 
-        return $this->getEpgForChannelsOnPeriod(array());
+        return $this->getEpgForChannelsOnPeriod(array(), '', date("Y-m-d H:i:s", (time() + ($hours+2)*3600)));
     }
 
     public function getEpgForChannelsOnPeriod($channels_ids = array(), $from ='', $to = '', $limit = 0, $offset = 0){
