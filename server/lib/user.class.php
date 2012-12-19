@@ -113,10 +113,6 @@ class User
             ->get()
             ->all('id');
 
-        if (empty($packages_ids)){
-            return null;
-        }
-
         $available_packages_ids = Mysql::getInstance()
             ->select('package_id as id')
             ->from('package_in_plan')
@@ -139,6 +135,10 @@ class User
         }
 
         $packages_ids = array_unique($packages_ids);
+
+        if (empty($packages_ids)){
+            return null;
+        }
 
         $package_where = array('type' => $type);
 

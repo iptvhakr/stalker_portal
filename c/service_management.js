@@ -149,7 +149,7 @@
         this.bind = function(){
             this.superclass.bind.apply(this);
 
-            this.action.bind(key.OK, this).bind(key.INFO, this);
+            this.action.bind(key.OK, this).bind(key.INFO, this).bind(key.RIGHT, this);
         };
 
         this.set_active_row = function(num){
@@ -273,6 +273,11 @@
                         if (tariff_package.type == 'module'){
                             this.complete_confirm.need_reboot = true;
                             this.complete_confirm.show(get_word('service_subscribe_success_reboot'));
+                        }else if (tariff_package.type == 'tv'){
+                            this.complete_confirm.need_reboot = false;
+                            stb.load_channels();
+                            stb.load_fav_channels();
+                            stb.load_fav_itv();
                         }else{
                             this.complete_confirm.need_reboot = false;
                             this.complete_confirm.show(get_word('service_subscribe_success'));
@@ -310,6 +315,11 @@
                         if (tariff_package.type == 'module'){
                             this.complete_confirm.need_reboot = true;
                             this.complete_confirm.show(get_word('service_unsubscribe_success_reboot'));
+                        }else if (tariff_package.type == 'tv'){
+                            this.complete_confirm.need_reboot = false;
+                            stb.load_channels();
+                            stb.load_fav_channels();
+                            stb.load_fav_itv();
                         }else{
                             this.complete_confirm.need_reboot = false;
                             this.complete_confirm.show(get_word('service_unsubscribe_success'));
