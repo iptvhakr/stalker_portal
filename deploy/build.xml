@@ -144,6 +144,9 @@
 
         <exec command="/etc/init.d/apache2 restart" level="info"/>
 
+        <exec command="mkdir /var/log/stalkerd" level="info"/>
+        <chmod file="/var/log/stalkerd" mode="0777" />
+
     </target>
 
 </project>
