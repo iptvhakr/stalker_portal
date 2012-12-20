@@ -1390,7 +1390,7 @@ function common_xpcom(){
 
             this.load();
             var self = this;
-            this.timer_id = window.setInterval(function(){self.load()}, this.timeout);
+            this.timer_id = window.setInterval(function(){self.load()}, (stb.type == 'MAG200' ? 3 : 6)*3600000);
         },
 
         stop : function(){
