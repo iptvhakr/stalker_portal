@@ -342,6 +342,8 @@
 
             //var path = this.compile_path();
 
+            this.path = path;
+
             _debug('path', path);
 
 
@@ -411,7 +413,7 @@
             var new_files = [];
 
             for (var i=0; i < stb.usbdisk.files.length; i++){
-                if (!empty(stb.usbdisk.files[i])){
+                if (!empty(stb.usbdisk.files[i]) && ['srt', 'sub', 'ass'].indexOf(stb.usbdisk.files[i].name.substring(stb.usbdisk.files[i].name.lastIndexOf('.')+1)) == -1){
 
                     if (stb.usbdisk.files[i].name.toLowerCase().indexOf('.iso') == stb.usbdisk.files[i].name.length-4){
                         var solution = 'extBDDVD';
@@ -802,8 +804,61 @@
             if (stb.player.on){
                 stb.player.stop();
             }
-            
+
+            item['subtitles'] = this.find_subtitles(item['cmd']);
+
             stb.player.play(item);
+        };
+
+        this.find_subtitles = function(cmd){
+            _debug('media_browser.find_subtitles', cmd);
+
+            var filename = cmd.substring(cmd.lastIndexOf('/')+1);
+
+            if (!filename){
+                return null;
+            }
+
+            var base = filename.substring(0, filename.lastIndexOf('.'));
+
+            _debug('base', base);
+
+            if (!base){
+                return null;
+            }
+
+            var subtitle_files = stb.usbdisk.files.filter(function(item){
+                _debug('item.name', item.name);
+                _debug('item.name.indexOf(base)', item.name.indexOf(base));
+                _debug('indexOf...', ['srt', 'sub', 'ass'].indexOf(item.name.substring(item.name.lastIndexOf('.')+1)));
+                return item.name.indexOf(base) === 0 && ['srt', 'sub', 'ass'].indexOf(item.name.substring(item.name.lastIndexOf('.')+1)) != -1;
+            });
+
+            _debug('subtitle_files', subtitle_files);
+
+            var self = this;
+
+            var subtitles = subtitle_files.map(function(item, idx){
+                /*var lang_arr = /_(\w+)\.\w+/.exec(item.name);
+
+                if (lang_arr){
+                    var lang = lang_arr[1];
+                }else{
+                    lang = '';
+                }*/
+
+                var lang = item.name.substring(base.length, item.name.lastIndexOf('.'));
+
+                if (lang[0] == '_' || lang[0] == '.'){
+                    lang = lang.substr(1);
+                }
+
+                return {"pid" : 'external_'+idx, "lang" : [lang, ''], "file" : self.path + item.name};
+            });
+
+            _debug('subtitles', subtitles);
+
+            return subtitles;
         };
         
         this.out_dir = function(){

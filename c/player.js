@@ -3456,6 +3456,12 @@ player.prototype.subtitle_pid = {
         if (this.cur_pid_idx !== null && this.enabled){
             subtitle_pids[this.cur_pid_idx].selected = true;
         }
+
+        if (stb.player.cur_media_item.hasOwnProperty('subtitles')){
+            subtitle_pids = subtitle_pids.concat(stb.player.cur_media_item.subtitles)
+        }
+
+        _debug('subtitle_pids', subtitle_pids);
         
         this.all_pids = subtitle_pids;
     },
@@ -3473,8 +3479,12 @@ player.prototype.subtitle_pid = {
         this.all_pids[this.cur_pid_idx].selected = false;
         this.cur_pid = pid;
         this.cur_pid_idx = this.all_pids.getIdxByVal('pid', this.cur_pid);
-        
-        stb.SetSubtitlePID(pid);
+
+        if (this.all_pids[this.cur_pid_idx].hasOwnProperty('file')){
+            stb.LoadExternalSubtitles(this.all_pids[this.cur_pid_idx].file);
+        }else{
+            stb.SetSubtitlePID(pid);
+        }
     },
     
     get_for_menu : function(){
