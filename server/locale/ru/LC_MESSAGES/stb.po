@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-17 14:09+0200\n"
-"PO-Revision-Date: 2012-12-17 14:10+0200\n"
+"POT-Creation-Date: 2012-12-21 11:12+0200\n"
+"PO-Revision-Date: 2012-12-21 11:12+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -339,6 +339,10 @@ msgstr "Комментарии"
 #: ../../../administrator/add_itv.php:1570
 msgid "Logo"
 msgstr "Логотип"
+
+#: ../../../administrator/add_itv.php:1570
+msgid "Only for API"
+msgstr "Только для API"
 
 #: ../../../administrator/add_itv.php:1580
 #: ../../../administrator/add_video.php:602
@@ -1391,38 +1395,38 @@ msgstr "Все услуги"
 msgid "Selected"
 msgstr "Выбрано"
 
-#: ../../../administrator/setting_common.php:141
-msgid "Do you really want to delete this item?"
-msgstr "Вы действительно хотите удалить этот объект?"
-
-#: ../../../administrator/setting_common.php:144
+#: ../../../administrator/setting_common.php:128
 msgid "enabled"
 msgstr "включено"
 
-#: ../../../administrator/setting_common.php:144
+#: ../../../administrator/setting_common.php:128
 msgid "disabled"
 msgstr "отключено"
 
-#: ../../../administrator/setting_common.php:145
+#: ../../../administrator/setting_common.php:129
 msgid "Disable"
 msgstr "Отключить"
 
-#: ../../../administrator/setting_common.php:145
+#: ../../../administrator/setting_common.php:129
 msgid "Enable"
 msgstr "Включить"
 
-#: ../../../administrator/setting_common.php:149
+#: ../../../administrator/setting_common.php:133
 msgid "STB Model"
 msgstr ""
 
-#: ../../../administrator/setting_common.php:169
-#: ../../../administrator/setting_common.php:173
+#: ../../../administrator/setting_common.php:153
+#: ../../../administrator/setting_common.php:157
 msgid "Required"
 msgstr "Необходимый"
 
-#: ../../../administrator/setting_common.php:177
+#: ../../../administrator/setting_common.php:161
 msgid "Update type"
 msgstr "Вариант обновления"
+
+#: ../../../administrator/setting_common.php:208
+msgid "Do you really want to delete this item?"
+msgstr "Вы действительно хотите удалить этот объект?"
 
 #: ../../../administrator/stat_anec_users.php:59
 #: ../../../administrator/stat_anec_users.php:65
@@ -3573,12 +3577,12 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/itv.class.php:1228
+#: ../../../lib/itv.class.php:1230
 #, php-format
 msgid "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1238
+#: ../../../lib/itv.class.php:1240
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
@@ -3610,16 +3614,20 @@ msgid "s"
 msgstr "с"
 
 #: ../../../lib/system.class.php:99
+#: ../../../lib/vod.class.php:782
 msgid "today"
 msgstr "сегодня"
 
 #: ../../../lib/system.class.php:101
+#: ../../../lib/vod.class.php:785
 msgid "yesterday"
 msgstr "вчера"
 
+#. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
 #: ../../../lib/user.class.php:752
 #: ../../../lib/user.class.php:753
 #: ../../../lib/video.class.php:95
+#: ../../../lib/vod.class.php:699
 #, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"

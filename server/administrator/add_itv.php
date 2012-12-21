@@ -1567,7 +1567,7 @@ function delete_logo(id){
         <?}?>
         <tr>
             <td align="right">
-                <?= _('Logo')?>:
+                <?= _('Logo').' ('._('Only for API').')'?>:
             </td>
             <td>
                 <input type="file" name="logo" id="logo"/>
