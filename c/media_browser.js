@@ -839,13 +839,6 @@
             var self = this;
 
             var subtitles = subtitle_files.map(function(item, idx){
-                /*var lang_arr = /_(\w+)\.\w+/.exec(item.name);
-
-                if (lang_arr){
-                    var lang = lang_arr[1];
-                }else{
-                    lang = '';
-                }*/
 
                 var lang = item.name.substring(base.length, item.name.lastIndexOf('.'));
 
