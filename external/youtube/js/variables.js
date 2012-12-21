@@ -1,9 +1,9 @@
 var  version='1.0.3',
-    pages={"back":"../services.html"},
+    pages={"back":"file:///home/web/services.html"},
     def = {"lang":"en"},
     current = {
         "mode": {
-            "debug":true,                   // create a _log and insert into #debug div
+            "debug":false,                   // create a _log and insert into #debug div
             "emulate":false,                // set "true" if you wanna test version in browser
             "show_all_keydowns":false
         },
