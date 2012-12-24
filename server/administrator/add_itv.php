@@ -29,7 +29,7 @@ if (isset($_GET['status']) && @$_GET['id']){
     header("Location: add_itv.php");
 }
 
-if (isset($_GET['shift']) && !empty($_GET['from_num'])){
+if (isset($_GET['shift']) && isset($_GET['from_num'])){
 
     $direction = (int) $_GET['shift'];
     $from_num = (int) $_GET['from_num'];
