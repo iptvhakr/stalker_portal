@@ -68,6 +68,7 @@ load_bar.prototype.hide = function(){
     this.on = false;
     
     this.callback && this.callback();
+    this.callback = null;
 };
 
 load_bar.prototype.stop = function(){
