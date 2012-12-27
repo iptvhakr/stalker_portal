@@ -65,11 +65,18 @@ class Vod extends AjaxResponse
 
             $user = User::getInstance($this->stb->id);
             $all_user_video_ids = $user->getServicesByType('video', 'single');
-            $all_user_video_ids = array_flip($all_user_video_ids);
+
+            if ($all_user_video_ids === null){
+                $all_user_video_ids = array();
+            }
+
+            if ($all_user_video_ids != 'all'){
+                $all_user_video_ids = array_flip($all_user_video_ids);
+            }
 
             $all_user_rented_video_ids = $user->getAllRentedVideo();
 
-            if (array_key_exists($video_id, $all_user_video_ids) && !array_key_exists($video_id, $all_user_rented_video_ids)){
+            if ((array_key_exists($video_id, $all_user_video_ids) || $all_user_video_ids == 'all') && !array_key_exists($video_id, $all_user_rented_video_ids)){
                 return array(
                     'id'         => $video_id,
                     'error'      => 'access_denied'
@@ -677,10 +684,16 @@ class Vod extends AjaxResponse
             $user = User::getInstance($this->stb->id);
             $for_rent = $user->getServicesByType('video', 'single');
 
+            if ($for_rent === null){
+                $for_rent = array();
+            }
+
             $rented_video = $user->getAllRentedVideo();
 
             if ($for_rent != 'all'){
                 $for_rent = array_flip($for_rent);
+            }else{
+                $for_rent = array();
             }
         }else{
             $for_rent = array();

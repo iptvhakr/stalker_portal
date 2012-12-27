@@ -781,10 +781,15 @@ abstract class Master
     protected function getClients(){
         $clients = array();
 
-        $user_id = User::getInstance()->getId();
+        $user = User::getInstance();
 
-        if ($user_id){
-            RESTClient::$from = $user_id;
+        $uid = $user->getId();
+        $mac = $user->getMac();
+
+        if ($mac){
+            RESTClient::$from = $mac;
+        }elseif ($uid){
+            RESTClient::$from = $uid;
         }else{
             RESTClient::$from = $this->stb->mac;
         }
