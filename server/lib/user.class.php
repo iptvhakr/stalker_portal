@@ -61,7 +61,7 @@ class User
     }
 
     public function getMac(){
-        return $this->profile['mac'];
+        return empty($this->profile['mac']) ? null : $this->profile['mac'];
     }
 
     public function geSerialNumber(){
