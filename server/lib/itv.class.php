@@ -743,6 +743,8 @@ class Itv extends AjaxResponse
 
         $length = count($this->response['data']);
 
+        $enable_numbering_in_order = Config::getSafe('enable_numbering_in_order', false);
+
         for ($i = 0; $i < $length; $i++){
 
             if (Config::get('enable_tv_quality_filter')){
@@ -811,7 +813,7 @@ class Itv extends AjaxResponse
                 $this->response['data'][$i]['archive'] = 0;
             }
             
-            if (@$_REQUEST['fav']){
+            if (@$_REQUEST['fav'] || $enable_numbering_in_order){
                 $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)));
             }
             
