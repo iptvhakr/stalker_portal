@@ -375,7 +375,7 @@ player.prototype.init_pvr_dialogs = function(){
         }
     ));
 
-    this.remote_pvr_confirm = new ModalForm({"title" : get_word('rec_options_form_title'), "text" : get_word('remote_pvr_confirm_text')});
+    this.remote_pvr_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('remote_pvr_confirm_text')});
     this.remote_pvr_confirm.getTextDomObj().style.textAlign = "center";
     this.remote_pvr_confirm.enableOnExitClose();
     this.remote_pvr_confirm.addItem(new ModalFormButton(
@@ -402,7 +402,7 @@ player.prototype.init_pvr_dialogs = function(){
         }
     ));
 
-    this.local_pvr_confirm = new ModalForm({"title" : get_word('confirm_form_title')});
+    this.local_pvr_confirm = new ModalForm({"title" : get_word('rec_options_form_title')});
     this.local_pvr_confirm.enableOnExitClose();
 
     this.local_pvr_confirm.addItem(new ModalFormSelect({"label" : get_word('usb_device')+':', "name" : "usb_device"}));
