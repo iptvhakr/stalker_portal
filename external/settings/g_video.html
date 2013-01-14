@@ -32,17 +32,21 @@ function submit()
     var wf=false;var pr=false;var flau=false;
     var wra='{';
     var wr='{';
+    var temp_af = "";
     var t=document.getElementById("i1").value;
     if(t!=read.result.tvsystem){parent.rebut=true;wf=true;pr=true;wr+='"tvsystem":"'+t+'"';}
     t=document.getElementById("i2").value;
     if(t!=read.result.graphicres){parent.rebut=true;wf=true;wr+=(pr?',':'')+'"graphicres":"'+t+'"';pr=true;}
     t=document.getElementById("i3").value;
-    if(t!=read.result.auto_framerate){wra+='"auto_framerate":"'+t+'"}';flau=true;}
+    if(t!=read.result.auto_framerate){
+        flau=true;
+        temp_af = t;        
+    }
     t=document.getElementById("i4").value;
     if(t!=read.result.force_dvi){wf=true;wr+=(pr?',':'')+'"force_dvi":"'+t+'"';pr=true;} 
     wr+='}';
    if(wf){parent.stb.SetEnv(wr);}
-   if(flau)parent.confb(parent.t('Auto framerate:')+'<br />'+parent.t('Video output framerate will be automatically adjusted according to played content during file playback.<br />Notes:<br />- works only with HDMI 720p/1080i/1080p video modes<br />- make sure that TV supports required video mode')+'<br />'+ parent.t('Are you sure about this changes?'),'i'+iid,"stb.SetEnv('"+wra+"');nextMenu('glavnaya.html');");
+   if(flau)parent.confb(parent.t('Auto framerate:')+'<br />'+parent.t('Video output framerate will be automatically adjusted according to played content during file playback.<br />Notes:<br />- works only with HDMI 720p/1080i/1080p video modes<br />- make sure that TV supports required video mode')+'<br />'+ parent.t('Are you sure about this changes?'),'i'+iid,"auto_fr_save('"+temp_af+"');nextMenu('glavnaya.html');");
    else back();
 }
 function change(a){if(iid>mid-2)if(iid+a<=mid&&iid+a>=mid-1){iid+=a;document.getElementById('i'+iid).focus();}}

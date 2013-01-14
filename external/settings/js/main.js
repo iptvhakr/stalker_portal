@@ -178,3 +178,24 @@ function load(params, callback){
        true
    );
 }
+
+function auto_fr_save(t){
+    var to_af = 0;
+    switch(t){
+        case "50_60":
+            to_af = 6;
+            break;
+        case "24_50_60":
+            to_af = 7;
+            break;
+        case "24_50":
+            to_af = 3;
+            break;
+        case "24_60":
+            to_af = 5;
+            break;
+    }
+    stb.SetAutoFrameRate(to_af);
+    var wra='{"auto_framerate":"'+t+'"}';
+    stb.SetEnv(wra);
+}
