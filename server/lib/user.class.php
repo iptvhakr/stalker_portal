@@ -69,6 +69,16 @@ class User
     }
 
     public function setSerialNumber($serial_number){
+
+        if ($this->profile['serial_number'] != $serial_number){
+            Mysql::getInstance()->update('users',
+                array(
+                    'serial_number' => $serial_number
+                ),
+                array('id' => $this->id)
+            );
+        }
+
         return $this->profile['serial_number'] = $serial_number;
     }
 
@@ -556,6 +566,55 @@ class User
             Stb::logOssError($e);
             return array();
         }
+    }
+
+    public function updateUserInfoFromOSS(){
+
+        $info = $this->getInfoFromOSS();
+
+        if (!$info){
+            return false;
+        }
+
+        $update_data = array();
+
+        if (array_key_exists('ls', $info)){
+            $this->profile['ls'] = $update_data['ls'] = $info['ls'];
+        }
+
+        if (array_key_exists('status', $info)){
+            $this->profile['status'] = $update_data['status'] = intval(!$info['status']);
+        }
+
+        if (array_key_exists('additional_services_on', $info)){
+            $this->profile['additional_services_on'] = $update_data['additional_services_on'] = intval($info['additional_services_on']);
+        }
+
+        if (array_key_exists('fname', $info)){
+            $this->profile['fname'] = $update_data['fname'] = $info['fname'];
+        }
+
+        if (array_key_exists('phone', $info)){
+            $this->profile['phone'] = $update_data['phone'] = $info['phone'];
+        }
+
+        if (array_key_exists('tariff', $info)){
+            $tariff = Mysql::getInstance()->from('tariff_plan')->where(array('external_id' => $info['tariff']))->get()->first();
+
+            if ($tariff){
+                $tariff_id = $tariff['id'];
+            }else{
+                $tariff_id = 0;
+            }
+
+            $this->profile['tariff_plan_id'] = $update_data['tariff_plan_id'] = $tariff_id;
+        }
+
+        if (empty($update_data)){
+            return false;
+        }
+
+        return Mysql::getInstance()->update('users', $update_data, array('id' => $this->id));
     }
 
     public function getLastChannelId(){

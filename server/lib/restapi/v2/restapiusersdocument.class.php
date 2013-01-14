@@ -10,16 +10,19 @@ class RESTApiUsersDocument extends RESTApiDocument
     public function __construct(){
         parent::__construct();
 
-        $this->fields_map = array_fill_keys(array('id', "ls", "status", "mac"), true);
+        $this->fields_map = array_fill_keys(array('id', "ls", "status", "mac", "fname", "phone", "tariff", "end_date", "account_balance"), true);
 
         $this->manager = \Stb::getInstance();
     }
 
     public function get(RESTApiRequest $request, $id){
 
-        $user = \Stb::getById($id);
+        $info = new \AccountInfo();
+        $user_info = $info->getMainInfo();
 
-        return $this->filterDocument($user);
+        $user_info['id'] = \User::getInstance()->getId();
+
+        return $this->filterDocument($user_info);
     }
 
     public function filterDocument($document){
@@ -30,9 +33,8 @@ class RESTApiUsersDocument extends RESTApiDocument
 
         $document = array_intersect_key($document, $this->fields_map);
 
-        $document['status'] = intval(!$document['status']);
         $document['account'] = $document['ls'];
-        unset($document['account']);
+        unset($document['ls']);
 
         return $document;
     }

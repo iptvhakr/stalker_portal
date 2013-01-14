@@ -45,7 +45,7 @@ class AuthAccessHandler extends AccessHandler
 
         if (!empty($verified_user)){
             $user->setSerialNumber($serial_number);
-            $user->getInfoFromOSS();
+            $user->updateUserInfoFromOSS();
         }
 
         return !empty($verified_user);

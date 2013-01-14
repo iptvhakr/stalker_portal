@@ -4,9 +4,7 @@ class AccountInfo
 {
     private $stb;
 
-    public function __construct(){
-        $this->stb = Stb::getInstance();
-    }
+    public function __construct(){}
 
     public function getMainInfo(){
 
@@ -15,16 +13,16 @@ class AccountInfo
         $oss_info = $user->getInfoFromOSS();
 
         $info = array(
-            'fname' => $this->stb->getParam('fname'),
-            'phone' => $this->stb->getParam('phone'),
-            'ls' => $this->stb->getParam('ls')
+            'fname' => $user->getProfileParam('fname'),
+            'phone' => $user->getProfileParam('phone'),
+            'ls' => $user->getProfileParam('ls')
         );
 
         if (is_array($oss_info)){
             $info = array_merge($info, $oss_info);
         }
 
-        $info['last_change_status'] = $this->stb->getParam('last_change_status');
+        $info['last_change_status'] = $user->getProfileParam('last_change_status');
 
         if (array_key_exists('end_date', $info)){
             $end_time = strtotime($info['end_date']);
@@ -36,13 +34,6 @@ class AccountInfo
                 $info['end_date'] = date(_('end_date_format'), strtotime($info['end_date'])).' ('.sprintf(ngettext('%d day', '%d days', $days), $days).')';
             }
         }
-
-        /*$info = array(
-            'fname' => $this->stb->getParam('fname'),
-            'last_change_status' => $this->stb->getParam('last_change_status'),
-            'phone' => $this->stb->getParam('phone'),
-            'ls' => $this->stb->getParam('ls')
-        );*/
 
         if (Config::get('enable_tariff_plans')){
             $info['tariff_plan'] = $user->getTariffPlanName();
@@ -86,7 +77,7 @@ class AccountInfo
     }
 
     public function getUserPackages(){
-        $user = User::getInstance($this->stb->id);
+        $user = User::getInstance(Stb::getInstance()->id);
         $packages = $user->getPackages();
 
         $page = intval($_GET['p']);

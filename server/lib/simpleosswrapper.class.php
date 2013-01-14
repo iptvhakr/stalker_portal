@@ -24,7 +24,9 @@ class SimpleOssWrapper implements OssWrapperInterface
             return false;
         }
 
-        var_dump($data);
+        if (Mysql::$debug){
+            var_dump($data);
+        }
 
         if ($data['status'] != 'OK' || empty($data['results'])){
             return false;
