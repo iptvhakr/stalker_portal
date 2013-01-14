@@ -14,6 +14,13 @@ class RemotePvr extends AjaxResponse
 
         $item = self::getById($media_id);
 
+        if ($item['local']){
+            return array(
+                'cmd' => $item['file'],
+                'local' => 1
+            );
+        }
+
         $master = new StreamRecorder();
 
         try {
@@ -21,6 +28,8 @@ class RemotePvr extends AjaxResponse
         }catch (Exception $e){
             trigger_error($e->getMessage());
         }
+
+        $res['local'] = 0;
 
         if (!empty($res['cmd'])){
             preg_match("/\.(\w*)$/", $res['cmd'], $ext_arr);
@@ -73,9 +82,11 @@ class RemotePvr extends AjaxResponse
 
             $this->response['data'][$i]['t_start'] = System::convertDatetimeToHuman($this->response['data'][$i]['t_start_ts']);
 
-            $this->response['data'][$i]['cmd'] = 'auto /media/'.$this->response['data'][$i]['id'].'.mpg';
-
-            $this->response['data'][$i]['ch_name'] = $this->response['data'][$i]['ch_name'];
+            if ($this->response['data'][$i]['local']){
+                $this->response['data'][$i]['cmd'] = 'auto '.$this->response['data'][$i]['file'];
+            }else{
+                $this->response['data'][$i]['cmd'] = 'auto /media/'.$this->response['data'][$i]['id'].'.mpg';
+            }
 
             if (!empty($this->response['data'][$i]['program'])){
                 $this->response['data'][$i]['ch_name'] .= ' — '.$this->response['data'][$i]['program'];
@@ -83,6 +94,7 @@ class RemotePvr extends AjaxResponse
 
             $this->response['data'][$i]['name'] = $this->response['data'][$i]['ch_name'];
 
+            //$this->response['data'][$i]['open'] = !$this->response['data'][$i]['ended'];
             $this->response['data'][$i]['open'] = !$this->response['data'][$i]['ended'];
 
             $this->response['data'][$i]['started'] = intval($this->response['data'][$i]['started']);
@@ -140,8 +152,134 @@ class RemotePvr extends AjaxResponse
         $recorder = new StreamRecorder();
 
         if ($recorder->startNow($channel)){
-            return $this->getRecordingChIds();
+            return $this->getRecordingChIds(true);
         }
+    }
+
+    public function setInternalId(){
+        $rec_id = (int) $_REQUEST['rec_id'];
+        $internal_id = $_REQUEST['internal_id'];
+
+        return Mysql::getInstance()->update('users_rec',
+            array(
+                'internal_id' => $internal_id,
+                'started' => 1
+            ),
+            array('id' => $rec_id)
+        );
+    }
+
+    public function startDeferredRecordOnStb(){
+
+        $program_id  = $_REQUEST['program_real_id'];
+        $file        = $_REQUEST['file'];
+        $internal_id = $_REQUEST['internal_id'];
+
+        $rec_exist = Mysql::getInstance()->from('users_rec')->where(array('program_real_id' => $program_id, 'uid' => $this->stb->id))->get()->first();
+
+        if ($rec_exist){
+            return $rec_exist['id'];
+        }
+
+        $recorder = new StreamRecorder();
+
+        $rec_id = $recorder->startDeferred($program_id, true);
+
+        if ($rec_id){
+            Mysql::getInstance()->update('users_rec',
+                array(
+                    'file' => $file,
+                    'internal_id' => $internal_id
+
+                ),
+                array('id' => $rec_id));
+        }
+
+        return $rec_id;
+    }
+
+    public function startRecordOnStb(){
+
+        $ch_id = intval($_REQUEST['ch_id']);
+        $file  = $_REQUEST['file'];
+        $start_ts  = (int) $_REQUEST['start_ts'];
+        $stop_ts   = (int) $_REQUEST['stop_ts'];
+        $internal_id = $_REQUEST['internal_id'];
+
+        $channel = Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first();
+
+        if (empty($channel)){
+            return false;
+        }
+
+        $recorder = new StreamRecorder();
+
+        $rec_id = $recorder->startNow($channel, true);
+
+        if ($rec_id){
+            Mysql::getInstance()->update('users_rec',
+                array(
+                    'file' => $file,
+                    't_start' => date("Y-m-d H:i:s", $start_ts),
+                    't_stop'  => date("Y-m-d H:i:s", $stop_ts),
+                    'length'  => $stop_ts - $start_ts,
+                    'internal_id' => $internal_id
+
+                ),
+                array('id' => $rec_id));
+        }
+
+        return $rec_id;
+    }
+
+    public function updateRecordOnStbEndTime(){
+
+        $rec_id  = intval($_REQUEST['rec_id']);
+        $stop_ts = intval($_REQUEST['stop_ts']);
+
+        $user_record = Mysql::getInstance()->from('users_rec')->where(array('id' => $rec_id))->get()->first();
+
+        if (empty($user_record)){
+            return false;
+        }
+
+        return Mysql::getInstance()->update(
+            'users_rec',
+            array(
+                't_stop' => date("Y-m-d H:i:s", $stop_ts),
+                'length' => $stop_ts - strtotime($user_record['t_start']),
+            ),
+            array('id' => $rec_id)
+        )->result();
+    }
+
+    public function stopRecordOnStb(){
+        $rec_id = intval($_REQUEST['rec_id']);
+
+        $user_record = Mysql::getInstance()->from('users_rec')->where(array('id' => $rec_id))->get()->first();
+
+        if (empty($user_record)){
+            return false;
+        }
+
+        return Mysql::getInstance()->update(
+            'users_rec',
+            array(
+                'ended'      => '1',
+                'end_record' => 'NOW()',
+                'length'     => time() - strtotime($user_record['t_start'])
+            ),
+            array('id' => $rec_id)
+        )->result();
+    }
+
+    public function delRecordOnStb(){
+        $rec_id = intval($_REQUEST['rec_id']);
+
+        return Mysql::getInstance()->delete(
+            'users_rec',
+            array('id' => $rec_id)
+        );
     }
 
     public function stopRec(){
@@ -153,9 +291,54 @@ class RemotePvr extends AjaxResponse
         return $recorder->stop($rec_id);
     }
 
-    public function getRecordingChIds(){
+    public function getActiveRecordings(){
+        return $this->getRecordingChIds();
+    }
 
-        return Mysql::getInstance()->select('id, ch_id, UNIX_TIMESTAMP(t_start) as t_start_ts, UNIX_TIMESTAMP(t_stop) as t_stop_ts')->from('users_rec')->where(array('uid' => $this->stb->id, 'ended' => 0, 'started' => 1))->get()->all();
+    public function getRecordingChIds($only_remote = false){
+
+        $fields = 'id, id as real_id, ch_id, local, UNIX_TIMESTAMP(t_start) as t_start_ts, UNIX_TIMESTAMP(t_stop) as t_stop_ts, program, file, program_id, program_real_id, internal_id';
+
+        $remote_recordings = Mysql::getInstance()
+            ->select($fields)
+            ->from('users_rec')
+            ->where(array(
+                'uid'     => $this->stb->id,
+                'ended'   => 0,
+                'started' => 1,
+                'local'   => 0
+            ))
+            ->get()
+            ->all();
+
+        if ($only_remote){
+            return $remote_recordings;
+        }
+
+        Mysql::getInstance()->update(
+            'users_rec',
+            array(
+                'ended'   => 1,
+                'started' => 1),
+            array(
+                'uid'   => $this->stb->id,
+                'ended' => 0,
+                'local' => 1,
+                't_stop<' => 'NOW()'
+            )
+        );
+
+        $local_recordings = Mysql::getInstance()
+            ->select($fields)
+            ->from('users_rec')
+            ->where(array(
+                'uid'     => $this->stb->id,
+                'ended'   => 0
+            ))
+            ->get()
+            ->all();
+
+        return array_merge($remote_recordings, $local_recordings);
     }
 
     public function delRec(){

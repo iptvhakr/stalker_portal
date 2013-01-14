@@ -20,7 +20,7 @@ class DeveloperAccessType extends AccessTokenType
         $session = $this->access_handler->getAccessSessionByDeveloperApiKey($this->api_key);
 
         if (empty($session)){
-            throw new AuthUnauthorized("Developer api key wrong or expired ");
+            throw new AuthUnauthorized("Developer api key wrong or expired");
         }
 
         if (preg_match("/\/users\/(\d+)/", $this->request->getRequestUri(), $match)){

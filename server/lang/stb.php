@@ -247,7 +247,7 @@ $words['alert_cancel'] = _('Cancel');
 $words['recorder_server_error'] = _('Server error. Try again later.');
 $words['record_duration'] = _('RECORDING DURATION');
 
-$words['rest_length_title'] = _('FREE, h');
+$words['rest_length_title'] = _('FREE on the server, h');
 
 $words['channel_recording_restricted'] = _('Recording this channel is forbidden');
 
@@ -261,6 +261,8 @@ $words['close_btn'] = _('CLOSE');
 $words['ok_btn'] = _('OK');
 $words['pay_btn'] = _('PAY');
 $words['play_btn'] = _('PLAY');
+$words['start_btn'] = _('START');
+$words['add_btn'] = _('ADD');
 $words['playback_settings_save'] = $words['settings_save'] = _('SAVE');
 
 $words['audio_out'] = _('Audio out');
@@ -360,6 +362,7 @@ $words['identical_download_exist'] = _('There is an active downloads from this s
 $words['alert_form_title'] = _('Alert');
 $words['confirm_form_title'] = _('Confirm');
 $words['notice_form_title'] = _('Notice');
+$words['select_form_title'] = _('Select');
 
 $words['media_favorites'] = _('Favorites');
 
@@ -428,4 +431,33 @@ $words['Connection problem'] = _('Connection problem');
 
 $words['Account balance'] = _('Account balance');
 
-?>
+
+$words['remote_pvr_confirm_text'] = _('Start recording on the server?');
+$words['remote_deferred_pvr_confirm_text'] = _('Do you really want to schedule a recording on the server?');
+$words['pvr_target_select_text'] = _('Select where to save the record');
+$words['usb_target_btn'] = _('USB Storage');
+$words['server_target_btn'] = _('Server');
+$words['save_path'] = _('Path');
+$words['file_name'] = _('Filename');
+$words['usb_device'] = _('USB Device');
+
+$words['rec_stop_msg'] = _('rec_stop_msg');
+
+$words['rec_file_missing'] = _('The recorded file is missing');
+$words['rec_not_ended'] = _('Recording is not finished yet');
+$words['rec_channel_has_scheduled_recording'] = _('The channel already has a scheduled recording');
+
+$words['pvr_error_wrong_param'] = _('PVR Error: Wrong parameter');
+$words['pvr_error_memory'] = _('PVR Error: Not enough memory to complete the operation');
+$words['pvr_error_duration'] = _('PVR Error: Incorrect recording range');
+$words['pvr_error_not_found'] = _('PVR Error: Task not found');
+$words['pvr_error_wrong_filename'] = _('PVR Error: Wrong filename');
+$words['pvr_error_record_exist'] = _('PVR Error: Record file already exists');
+$words['pvr_error_url_open_error'] = _('PVR Error: Error opening channel URL');
+$words['pvr_error_file_open_error'] = _('PVR Error: Error opening file');
+$words['pvr_error_rec_limit'] = _('PVR Error: Exceeded the maximum number simultaneous recordings');
+$words['pvr_error_end_of_stream'] = _('PVR Error: End of stream');
+$words['pvr_error_file_write_error'] = _('PVR Error: Error writing to file');
+
+$words['rec_options_form_title'] = _('Recording');
+$words['local_pvr_interrupted'] = _('Recording on USB device interrupted');

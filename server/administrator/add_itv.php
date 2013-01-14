@@ -93,6 +93,7 @@ if (!$error){
     $enable_monitoring = @intval($_POST['enable_monitoring']);
 
     $allow_pvr = @intval($_POST['allow_pvr']);
+    $allow_local_pvr = @intval($_POST['allow_local_pvr']);
 
     $enable_wowza_load_balancing = @intval($_POST['enable_wowza_load_balancing']);
 
@@ -194,6 +195,7 @@ if (!$error){
                                         enable_wowza_load_balancing,
                                         enable_tv_archive,
                                         allow_pvr,
+                                        allow_local_pvr,
                                         enable_monitoring,
 
                                         descr,
@@ -222,6 +224,7 @@ if (!$error){
                                         '".$enable_wowza_load_balancing."',
                                         '".$enable_tv_archive."',
                                         '".$allow_pvr."',
+                                        '".$allow_local_pvr."',
                                         '".$enable_monitoring."',
 
                                         '".@$_POST['descr']."',
@@ -329,6 +332,7 @@ if (!$error){
                                 enable_wowza_load_balancing='".$enable_wowza_load_balancing."',
                                 enable_tv_archive='".$enable_tv_archive."',
                                 allow_pvr='".$allow_pvr."',
+                                allow_local_pvr='".$allow_local_pvr."',
                                 enable_monitoring='".$enable_monitoring."',
 
                                 wowza_tmp_link='".$wowza_tmp_link."',
@@ -1056,6 +1060,7 @@ if (@$_GET['edit']){
         $wowza_dvr = $arr['wowza_dvr'];
         $enable_tv_archive = $arr['enable_tv_archive'];
         $allow_pvr = $arr['allow_pvr'];
+        $allow_local_pvr = $arr['allow_local_pvr'];
         $enable_monitoring = $arr['enable_monitoring'];
         $monitoring_url = $arr['monitoring_url'];
         $enable_wowza_load_balancing = $arr['enable_wowza_load_balancing'];
@@ -1079,6 +1084,12 @@ if (@$_GET['edit']){
 
         if ($allow_pvr){
             $checked_allow_pvr = 'checked';
+        }
+
+        if ($allow_local_pvr){
+            $checked_allow_local_pvr = 'checked';
+        }else{
+            $checked_allow_local_pvr = '';
         }
 
         if ($enable_monitoring){
@@ -1161,8 +1172,10 @@ if (@$_GET['edit']){
         $checked_enable_tv_archive = 'checked';
     }
 
-    if (@$_POST['allow_pvr']){
-        $checked_allow_pvr = 'checked';
+    if (@$_POST['allow_local_pvr']){
+        $checked_allow_local_pvr = 'checked';
+    }else{
+        $checked_allow_local_pvr = '';
     }
 
     if (@$_POST['enable_monitoring']){
@@ -1499,6 +1512,14 @@ function delete_logo(id){
             </td>
             <td>
                 <input name="allow_pvr" id="allow_pvr" type="checkbox" value="1" <? echo @$checked_allow_pvr ?> >
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <?= _('Allow USB PVR')?>:
+            </td>
+            <td>
+                <input name="allow_local_pvr" id="allow_local_pvr" type="checkbox" value="1" <?= isset($checked_allow_local_pvr) ? $checked_allow_local_pvr : 'checked' ?> >
             </td>
         </tr>
         <!--<tr>

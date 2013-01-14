@@ -11,6 +11,20 @@
 
             _debug('program', program);
 
+            _debug('program.mark_rec', program.mark_rec);
+
+            if (program.mark_rec == 1){
+                if (program.rec_id){
+                    this.del(program.rec_id);
+                }
+            }else{
+                this.add();
+            }
+        },
+
+        add : function(){
+            _debug('epg_recorder.add');
+
             var ch_id = this.get_ch_id();
 
             _debug('ch_id', ch_id);
@@ -21,27 +35,86 @@
 
             _debug('channel', channel);
 
-            if (!channel.allow_pvr){
-                _debug('channel.allow_pvr', channel.allow_pvr);
-                return;
-            }
+            stb.player.init_pvr_dialogs();
 
-            _debug('program.mark_rec');
+            var allow_remote_pvr = module.remote_pvr && channel['allow_pvr'];
 
-            if (program.mark_rec == 1){
-                if (program.rec_id){
-                    this.del();
-                }
+            var allow_local_pvr = module.pvr_local && channel['allow_local_pvr'];
+
+            _debug('allow_remote_pvr', allow_remote_pvr);
+            _debug('allow_local_pvr', allow_local_pvr);
+
+            if (allow_remote_pvr && allow_remote_pvr){
+                stb.player.pvr_target_select.deferred = true;
+                stb.player.pvr_target_select.program = this.get_item();
+                stb.player.pvr_target_select.show({parent : this.parent});
+            }else if (allow_remote_pvr){
+                // show confirm
+                stb.player.remote_pvr_confirm.deferred = true;
+                stb.player.remote_pvr_confirm.program = this.get_item();
+                stb.player.remote_pvr_confirm.show({parent : this.parent});
+            }else if (allow_local_pvr){
+                // show confirm
+                stb.player.local_pvr_confirm.deferred = true;
+                stb.player.local_pvr_confirm.program = this.get_item();
+                stb.player.local_pvr_confirm.show({parent : this.parent});
             }else{
-                this.add();
+                stb.notice.show(get_word('channel_recording_restricted'));
             }
         },
 
-        add : function(){
-            _debug('epg_recorder.add');
+        del : function(rec_id){
+            _debug('epg_recorder.del', rec_id);
 
-            var program_id = this.get_item().id;
-            var program_real_id = this.get_item().real_id;
+            var idx = stb.recordings.getIdxByVal('id', rec_id);
+
+            _debug('idx', idx);
+
+            if (idx === null){
+                this.del_remote();
+                return;
+            }
+
+            if (stb.recordings[idx].local == 1){
+                this.del_local(stb.recordings[idx]);
+            }else{
+                this.del_remote();
+            }
+        },
+
+        add_local : function(programm, path){
+            _debug('epg_recorder.add_local', programm, path);
+
+            var program_id = programm.id;
+            var self = this;
+            var epg_item = this.get_item();
+
+            module.pvr_local.create_for_program(programm, path,
+                function(result){
+                    _debug('on create_for_program', result);
+
+                    if (result){
+                        self.show_mark(program_id);
+                        epg_item.rec_id = result;
+                    }
+                }
+            );
+        },
+
+        del_local : function(recording){
+            _debug('epg_recorder.del_local', recording);
+
+            module.pvr_local.del(recording.id, recording.file);
+            this.hide_mark(this.get_item().id);
+        },
+
+        add_remote : function(programm){
+            _debug('epg_recorder.add_remote', programm);
+
+            var program_id = programm.id;
+            var program_real_id = programm.real_id;
+            var self = this;
+            var epg_item = this.get_item();
 
             stb.load(
                 {
@@ -56,7 +129,7 @@
 
                     if (result){
                         this.show_mark(program_id);
-                        this.get_item().rec_id = result;
+                        epg_item.rec_id = result;
                     }else{
                         stb.notice.show(word['recorder_server_error']);
                     }
@@ -65,8 +138,8 @@
             )
         },
 
-        del : function(){
-            _debug('epg_recorder.del');
+        del_remote : function(){
+            _debug('epg_recorder.del_remote');
 
             var rec_id = this.get_item().rec_id;
 
@@ -81,6 +154,12 @@
                 },
                 function(result){
                     _debug('result', result);
+
+                    var rm_idx = stb.recordings.getIdxByVal('id', rec_id);
+
+                    if (rm_idx !== null){
+                        stb.recordings.splice(rm_idx, 1);
+                    }
                 },
                 this
             );

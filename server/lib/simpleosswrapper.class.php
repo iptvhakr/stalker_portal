@@ -12,7 +12,7 @@ class SimpleOssWrapper implements OssWrapperInterface
             return false;
         }
 
-        $data = file_get_contents(Config::get('oss_url').'?mac='.$user->getMac().'&serial_number='.$user->geSerialNumber());
+        $data = file_get_contents(Config::get('oss_url').'?mac='.$user->getMac().'&serial_number='.$user->getSerialNumber());
 
         if (!$data){
             return false;

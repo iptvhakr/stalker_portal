@@ -12,7 +12,7 @@ var stbEvent = {
  * @constructor
  */
 function player(){
-    
+
     var self = this;
     
     this.on = false;
@@ -314,6 +314,146 @@ player.prototype.init_time_shift_exit_confirm = function(){
             }
         }
     ));
+};
+
+player.prototype.init_pvr_dialogs = function(){
+    _debug('player.init_pvr_dialogs');
+
+    if (this.pvr_target_select){
+        return;
+    }
+
+    var scope = this;
+
+    this.pvr_target_select = new ModalForm({"title" : get_word('select_form_title'), "text" : get_word('pvr_target_select_text')});
+    this.pvr_target_select.getTextDomObj().style.textAlign = "center";
+    this.pvr_target_select.enableOnExitClose();
+
+    this.pvr_target_select.addItem(new ModalFormButton(
+        {
+            "value" : get_word("usb_target_btn"),
+            "onclick" : function(){
+                if (scope.pvr_target_select.deferred){
+                    scope.local_pvr_confirm.program = scope.pvr_target_select.program;
+                }else{
+                    scope.local_pvr_confirm.channel = scope.pvr_target_select.channel;
+                }
+                scope.local_pvr_confirm.deferred = scope.pvr_target_select.deferred;
+
+                if (scope.pvr_target_select.deferred){
+                    scope.local_pvr_confirm.getItemByName('start_btn').setValue(get_word('add_btn'));
+                }else{
+                    scope.local_pvr_confirm.getItemByName('start_btn').setValue(get_word('start_btn'));
+                }
+                scope.pvr_target_select.hide();
+                scope.local_pvr_confirm.show({parent : scope.pvr_target_select._parent});
+            }
+        }
+    ));
+
+    this.pvr_target_select.addItem(new ModalFormButton(
+        {
+            "value" : get_word("server_target_btn"),
+            "onclick" : function(){
+
+                if (scope.pvr_target_select.deferred){
+                    scope.remote_pvr_confirm.program = scope.pvr_target_select.program;
+                }else{
+                    scope.remote_pvr_confirm.channel = scope.pvr_target_select.channel;
+                }
+
+                scope.remote_pvr_confirm.deferred = scope.pvr_target_select.deferred;
+
+                scope.pvr_target_select.hide();
+
+                if (scope.pvr_target_select.deferred){
+                    scope.remote_pvr_confirm.show({text : get_word('remote_deferred_pvr_confirm_text'), parent : scope.pvr_target_select._parent});
+                }else{
+                    scope.remote_pvr_confirm.show({text : get_word('remote_pvr_confirm_text'), parent : scope.pvr_target_select._parent});
+                }
+            }
+        }
+    ));
+
+    this.remote_pvr_confirm = new ModalForm({"title" : get_word('rec_options_form_title'), "text" : get_word('remote_pvr_confirm_text')});
+    this.remote_pvr_confirm.getTextDomObj().style.textAlign = "center";
+    this.remote_pvr_confirm.enableOnExitClose();
+    this.remote_pvr_confirm.addItem(new ModalFormButton(
+        {
+            "value" : get_word("cancel_btn"),
+            "onclick" : function(){
+                scope.remote_pvr_confirm.hide();
+            }
+        }
+    ));
+    this.remote_pvr_confirm.addItem(new ModalFormButton(
+        {
+            "value" : get_word("yes_btn"),
+            "onclick" : function(){
+
+                if (scope.remote_pvr_confirm.deferred){
+                    scope.remote_pvr_confirm._parent.recorder.add_remote(scope.remote_pvr_confirm.program)
+                }else{
+                    module.remote_pvr.start_rec(scope.remote_pvr_confirm.channel.id);
+                }
+
+                scope.remote_pvr_confirm.hide();
+            }
+        }
+    ));
+
+    this.local_pvr_confirm = new ModalForm({"title" : get_word('confirm_form_title')});
+    this.local_pvr_confirm.enableOnExitClose();
+
+    this.local_pvr_confirm.addItem(new ModalFormSelect({"label" : get_word('usb_device')+':', "name" : "usb_device"}));
+    this.local_pvr_confirm.addItem(new ModalFormInput({"label" : get_word('file_name')+':', "name" : "file_name"}));
+
+    this.local_pvr_confirm.addItem(new ModalFormButton(
+        {
+            "value" : get_word("cancel_btn"),
+            "onclick" : function(){
+                scope.local_pvr_confirm.hide();
+            }
+        }
+    ));
+    this.local_pvr_confirm.addItem(new ModalFormButton(
+        {
+            "value" : get_word("start_btn"),
+            "name"  : "start_btn",
+            "onclick" : function(){
+                var path = scope.local_pvr_confirm.getItemByName('usb_device').getValue() + '/' + scope.local_pvr_confirm.getItemByName('file_name').getValue();
+
+                if (scope.local_pvr_confirm.deferred){
+                    //module.pvr_local.create_for_program(scope.local_pvr_confirm.program, path);
+                    scope.local_pvr_confirm._parent.recorder.add_local(scope.local_pvr_confirm.program, path)
+                }else{
+                    module.pvr_local.create(scope.local_pvr_confirm.channel, path);
+                }
+
+                scope.local_pvr_confirm.hide();
+            }
+        }
+    ));
+
+    this.local_pvr_confirm.addCustomEventListener('show', function(){
+
+        var options = stb.usbdisk.storage_info.map(function(storage_info){
+            storage_info.value = storage_info.mountPath;
+            storage_info.text  = storage_info.vendor
+                + ' ' + storage_info.model
+                + (storage_info.label ? '(' + storage_info.label + ')' : '')
+                + (storage_info.partitionNum > 1 ? ' #' + storage_info.partitionNum : '');
+            return storage_info;
+        });
+
+        scope.local_pvr_confirm.getItemByName('usb_device').setOptions(options);
+
+        if (scope.local_pvr_confirm.deferred){
+            scope.local_pvr_confirm.getItemByName('file_name').setValue(module.pvr_local.get_record_filename_for_program(scope.local_pvr_confirm.program));
+        }else{
+            scope.local_pvr_confirm.getItemByName('file_name').setValue(module.pvr_local.get_record_filename(scope.local_pvr_confirm.channel));
+        }
+    });
 };
 
 player.prototype.init_play_or_download_dialog = function(){
@@ -748,6 +888,13 @@ player.prototype.event_callback = function(event){
                     }
                 )
             }
+            break;
+        }
+        case 35:
+        { // PVR Error
+            stb.notice.show(get_word('local_pvr_interrupted'));
+            module.pvr_local.remove_all_with_errors();
+            break;
         }
     }
 
@@ -1306,7 +1453,7 @@ player.prototype.play = function(item){
         
         this.create_link('karaoke', cmd, 0);
 
-    }else if (stb.cur_place == 'remote_pvr' || stb.cur_place == 'epg_simple' || stb.cur_place == 'epg'){
+    }else if (stb.cur_place == 'records' || stb.cur_place == 'remote_pvr' || stb.cur_place == 'epg_simple' || stb.cur_place == 'epg'){
 
         if (item.mark_archive){
             this.create_link('tv_archive', cmd, 0);
@@ -1342,7 +1489,7 @@ player.prototype.create_link = function(type, uri, series_number, forced_storage
 
             _debug('player.create_link callback type', type);
 
-            if (type !== 'itv'){
+            if (type !== 'itv' && type !== 'remote_pvr'){
                 _debug('create_link callback: ', result);
 
                 this.last_storage_id = result.storage_id;
@@ -1510,6 +1657,35 @@ player.prototype.init_rec = function(){
     create_block_element('rec_left',this.rec.dom_obj);
     this.rec.label = create_block_element('rec_main',this.rec.dom_obj);
     this.rec.dom_obj.hide();
+};
+
+player.prototype.show_rec_icon = function(record){
+    _debug('player.show_rec_icon', record);
+
+    _debug('record[t_start_ts]', record['t_start_ts']);
+    _debug('record[t_stop_ts]', record['t_stop_ts']);
+    _debug('stb.clock.timestamp', stb.clock.timestamp);
+
+    window.clearInterval(this.tick_timer);
+
+    stb.player.rec.set_seconds(stb.clock.convert_sec_to_human_time(record['t_start_ts'] - stb.clock.timestamp));
+
+    var self = this;
+    this.tick_timer = window.setInterval(function(){self.tick_s(record)}, 1000);
+
+    stb.player.rec.show();
+};
+
+player.prototype.hide_rec_icon = function(){
+    _debug('player.hide_rec_icon');
+
+    stb.player.rec.hide();
+    window.clearInterval(this.tick_timer);
+    stb.player.rec.set_seconds(0);
+};
+
+player.prototype.tick_s = function(record){
+    stb.player.rec.set_seconds(stb.clock.convert_sec_to_human_time(stb.clock.timestamp - record['t_start_ts']));
 };
 
 player.prototype.pause_switch = function(){
@@ -2227,10 +2403,23 @@ player.prototype.bind = function(){
     }).bind(key.TV, this);
 
     (function(){
-        if (this.is_tv && module.remote_pvr){
-            if (!module.tv.on){
-                module.remote_pvr.stop_channel_rec(this.cur_tv_item);
+        if (this.is_tv && !module.tv.on){
+
+            var rec_idx = stb.recordings.getIdxByVal('ch_id', this.cur_tv_item.id);
+
+            _debug('rec_idx', rec_idx);
+
+            if (rec_idx !== null){
+
+                if (stb.recordings[rec_idx].local == 1){
+                    module.pvr_local.stop_channel_rec(this.cur_tv_item);
+                }else{
+                    module.remote_pvr.stop_channel_rec(this.cur_tv_item);
+                }
+
+                return;
             }
+
         }else{
             this.show_prev_layer();
         }
@@ -2349,24 +2538,60 @@ player.prototype.bind = function(){
     this.change_aspect.bind(key.FRAME, this);
     
     (function(){
-        /*if (stb.pvr){
-            if (stb.pvr.has_active_rec){
-                
-            }else{
-                if (this.ch_idx == stb.pvr.current_ch_id){
-                    stb.pvr.stop_rec();
+
+        if (this.is_tv && !module.tv.on){
+
+            var rec_idx = stb.recordings.getIdxByVal('ch_id', this.cur_tv_item.id);
+
+            _debug('rec_idx', rec_idx);
+
+            if (rec_idx !== null){
+
+                if (stb.recordings[rec_idx].t_start_ts * 1000 > new Date().getTime()){
+                    stb.notice.show(get_word('rec_channel_has_scheduled_recording'));
+                }else if (stb.recordings[rec_idx].local == 1){
+                    module.pvr_local.rec_switch(this.cur_tv_item);
                 }else{
-                    stb.pvr.start_rec(this.cur_tv_item);
+                    module.remote_pvr.rec_switch(this.cur_tv_item);
                 }
+
+                return;
             }
-        }*/
-        // TEST
-        if (this.is_tv && module.remote_pvr){
+
+            this.init_pvr_dialogs();
+
+            var allow_remote_pvr = module.remote_pvr && this.cur_tv_item['allow_pvr'];
+
+            var allow_local_pvr = module.pvr_local && this.cur_tv_item['allow_local_pvr'];
+
+            _debug('allow_remote_pvr', allow_remote_pvr);
+            _debug('allow_local_pvr', allow_local_pvr);
+
+            if (allow_remote_pvr && allow_local_pvr){
+                this.pvr_target_select.deferred = false;
+                this.pvr_target_select.channel = this.cur_tv_item;
+                this.pvr_target_select.show({parent:this});
+            }else if (allow_remote_pvr){
+                // show confirm
+                this.remote_pvr_confirm.deferred = false;
+                this.remote_pvr_confirm.channel = this.cur_tv_item;
+                this.remote_pvr_confirm.show({parent:this});
+            }else if (allow_local_pvr){
+                // show confirm
+                this.local_pvr_confirm.deferred = false;
+                this.local_pvr_confirm.channel = this.cur_tv_item;
+                this.local_pvr_confirm.show({parent:this});
+            }else{
+                stb.notice.show(get_word('channel_recording_restricted'));
+            }
+        }
+
+        /*if (this.is_tv && module.remote_pvr){
             _debug('module.tv.on', module.tv.on);
             if (!module.tv.on){
                 module.remote_pvr.rec_switch(this.cur_tv_item);
             }
-        }
+        }*/
 
     }).bind(key.REC, this).bind(key.RED, this);
     

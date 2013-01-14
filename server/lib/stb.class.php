@@ -430,6 +430,8 @@ class Stb
             self::logOssError($e);
         }
 
+        $data['serial_number'] = isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '';
+
         $user_id = Mysql::getInstance()->insert('users', $data)->insert_id();
 
         if ($user_id && !empty($data['password'])){

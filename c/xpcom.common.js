@@ -36,6 +36,8 @@ function common_xpcom(){
 
     this.load_step = Math.ceil(50/4);
 
+    this.recordings = [];
+
     // iso639
     this.lang_map = {
         "aa" : "aar", //Afar
@@ -308,6 +310,8 @@ function common_xpcom(){
     };
 
     this.init_alerts = function(){
+        _debug('stb.init_alerts');
+
         this.notice = new _alert();
 
         this.msg = new _alert('info');
@@ -1000,6 +1004,7 @@ function common_xpcom(){
                 this.load_channels();
                 this.load_fav_channels();
                 this.load_fav_itv();
+                this.load_recordings();
 
             }catch(e){
                 _debug(e);
@@ -1331,6 +1336,66 @@ function common_xpcom(){
         )
     };
 
+    this.load_recordings = function(){
+        _debug('stb.load_recordings');
+
+        stb.load(
+            {
+                "type"    : "remote_pvr",
+                "action"  : "get_active_recordings"
+            },
+            function(result){
+                _debug('load_recordings result', result);
+
+                this.recordings = result || [];
+
+                var active_tasks = JSON.parse(pvrManager.GetAllTasks()) || [];
+
+                _debug('active_tasks', active_tasks);
+
+                _debug('this.recordings before', this.recordings);
+
+                var now_ts = Math.ceil(new Date().getTime()/1000);
+
+                _debug('now_ts', now_ts);
+
+                /*this.recordings = this.recordings.filter(function(task){
+                    return task.local == 0 || active_tasks.getIdxByVal('fileName', task.file) !== null && now_ts < task.t_stop_ts || now_ts < task.t_start_ts;
+                });*/
+
+                _debug('this.recordings after', this.recordings);
+
+                stb.player.on_play = function(ch_id){
+                    _debug('player.on_play', ch_id);
+
+                    if (stb.player.is_tv){
+
+                        var rec_idx = stb.recordings.getIdxByVal('ch_id', ch_id);
+
+                        if(rec_idx !== null){
+
+                            var now_ts = Math.ceil(new Date().getTime()/1000);
+
+                            _debug('now_ts', now_ts);
+
+                            if (stb.recordings[rec_idx].local == 0 || (stb.recordings[rec_idx].t_start_ts < now_ts && stb.recordings[rec_idx].t_stop_ts > now_ts)){
+                                stb.player.show_rec_icon(stb.recordings[rec_idx]);
+                            }else{
+                                stb.player.hide_rec_icon();
+                            }
+
+                        }else{
+                            stb.player.hide_rec_icon();
+                        }
+                    }else{
+                        stb.player.rec.hide();
+                    }
+                }
+            },
+            this
+        )
+    };
+
     this.channels_loaded = function(){
 
         /*if (this.channels_inited){
@@ -1425,15 +1490,19 @@ function common_xpcom(){
             _debug('typeof(this.epg)', typeof(this.epg));
         },
 
-        get_epg : function(ch_id){
-            _debug('epg_loader.get_epg', ch_id);
+        get_curr_and_next : function(ch_id, from_ts){
+            _debug('epg_loader.get_curr_and_next', ch_id);
 
             ch_id = ''+ch_id;
 
             _debug('typeof(ch_id)', typeof(ch_id));
 
-            var now = Date.parse(new Date())/1000;
-            var result = '';
+            if (!from_ts){
+                var now = Date.parse(new Date())/1000;
+            }else{
+                now = parseInt(from_ts, 10);
+            }
+            var result = [];
 
             _debug('now', now);
             _debug('this.epg[ch_id]', this.epg[ch_id]);
@@ -1448,19 +1517,19 @@ function common_xpcom(){
                             _debug('continue');
                         }else if (this.epg[ch_id][i]['start_timestamp'] == now){
                             _debug('==');
-                            result = this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
+                            result.push(this.epg[ch_id][i]);
                             if (typeof(this.epg[ch_id][i+1]) == 'object'){
-                                result += '<br>'+this.epg[ch_id][i+1].t_time + ' ' + this.epg[ch_id][i+1].name;
+                                result.push(this.epg[ch_id][i+1]);
                             }
                             return result;
                         }else{
                             if (typeof(this.epg[ch_id][i-1]) == 'object'){
-                                result = this.epg[ch_id][i-1].t_time + ' ' + this.epg[ch_id][i-1].name;
+                                result.push(this.epg[ch_id][i-1]);
                                 if (typeof(this.epg[ch_id][i]) == 'object'){
-                                    result += '<br>'+this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
+                                    result.push(this.epg[ch_id][i]);
                                 }
                             }else{
-                                result = this.epg[ch_id][i].t_time + ' ' + this.epg[ch_id][i].name;
+                                result.push(this.epg[ch_id][i]);
                             }
 
                             return result;
@@ -1470,7 +1539,28 @@ function common_xpcom(){
             }catch(e){
                 _debug(e);
             }
-            return '';
+            return [];
+        },
+
+        get_epg : function(ch_id){
+            _debug('epg_loader.get_epg', ch_id);
+
+            var epg = this.get_curr_and_next(ch_id);
+
+            _debug('epg', epg);
+
+            var epg_str = '';
+
+            epg.map(function(prog, idx){
+
+                if (idx != 0){
+                    epg_str += '<br>';
+                }
+
+                epg_str += prog.t_time + ' ' + prog.name;
+            });
+
+            return epg_str;
         }
     };
 
@@ -1674,6 +1764,61 @@ function common_xpcom(){
             }
 
             this.triggerCustomEventListener("tick", this);
+        },
+
+        convert_sec_to_human_time : function(sec){
+
+            if (sec < 0 || isNaN(sec)){
+                sec = 0;
+            }
+
+            var h = Math.floor(sec/3600);
+
+            var m = Math.floor((sec - (h*3600)) / 60);
+
+            var s = sec - (h*3600) - (m*60);
+
+            var time = '';
+
+            if(h){
+
+                if (h<10){
+                    h = '0'+h;
+                }
+
+                time += h+':';
+            }
+
+            if (m<10){
+                m = '0'+m;
+            }
+
+            time += m+':';
+
+            if (s<10){
+                s = '0'+s;
+            }
+
+            time += s;
+
+            return time;
+        },
+
+        convert_sec_to_human_hours : function(sec){
+
+            var h = Math.floor(sec/3600);
+            var m = Math.floor((sec - (h*3600)) / 60);
+            var time = '';
+
+            time += h+':';
+
+            if (m<10){
+                m = '0'+m;
+            }
+
+            time += m;
+
+            return time;
         }
     }
 }

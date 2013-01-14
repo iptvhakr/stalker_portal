@@ -64,8 +64,12 @@ class User
         return empty($this->profile['mac']) ? null : $this->profile['mac'];
     }
 
-    public function geSerialNumber(){
+    public function getSerialNumber(){
         return $this->profile['serial_number'];
+    }
+
+    public function setSerialNumber($serial_number){
+        return $this->profile['serial_number'] = $serial_number;
     }
 
     public function getExternalTariffId(){
@@ -75,6 +79,10 @@ class User
 
     public function getProfileParam($param){
         return $this->profile[$param];
+    }
+
+    public function getProfile(){
+        return $this->profile;
     }
 
     public function getVideoFavorites(){
@@ -440,6 +448,7 @@ class User
         if (!empty($new_account['password'])){
             $password = md5(md5($new_account['password']).$this->id);
             Mysql::getInstance()->update('users', array('password' => $password), array('id' => $this->id));
+            unset($new_account['password']);
         }else{
             unset($new_account['password']);
         }

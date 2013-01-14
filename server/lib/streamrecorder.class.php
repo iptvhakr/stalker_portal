@@ -33,7 +33,7 @@ class StreamRecorder extends Master
         return Mysql::getInstance()->from('rec_files')->where(array('id' => $this->media_params['file_id']))->get()->first('file_name');
     }
 
-    public function startDeferred($program_id){
+    public function startDeferred($program_id, $on_stb = false){
 
         $epg = Mysql::getInstance()
             ->select('*, UNIX_TIMESTAMP(time) as start_ts, UNIX_TIMESTAMP(time_to) as stop_ts')
@@ -44,10 +44,14 @@ class StreamRecorder extends Master
 
         $channel = Mysql::getInstance()->from('itv')->where(array('id' => intval($epg['ch_id'])))->get()->first();
 
-        $user_rec_id = $this->createUserRecord($channel, false, $epg['time']);
+        $user_rec_id = $this->createUserRecord($channel, false, $epg['time'], $on_stb);
 
         if (!$user_rec_id){
             return false;
+        }
+
+        if ($on_stb){
+            return $user_rec_id;
         }
 
         $start_rec_task = array(
@@ -133,23 +137,29 @@ class StreamRecorder extends Master
         return $file_record;
     }
 
-    public function startNow($channel){
+    public function startNow($channel, $on_stb = false){
 
-        $is_recording = Mysql::getInstance()->from('users_rec')->where(array('ch_id' => $channel['id'], 'uid' => $this->stb->id, 'ended' => 0, 'started' => 1))->get()->first();
+        if (!$on_stb){
+            $is_recording = Mysql::getInstance()->from('users_rec')->where(array('ch_id' => $channel['id'], 'uid' => $this->stb->id, 'ended' => 0, 'started' => 1))->get()->first();
 
-        if (!empty($is_recording)){
-            return false;
+            if (!empty($is_recording)){
+                return false;
+            }
         }
 
-        return $this->createUserRecord($channel);
+        return $this->createUserRecord($channel, true, 0, $on_stb);
     }
 
-    private function createUserRecord($channel, $auto_start = true, $start_time = 0){
+    private function createUserRecord($channel, $auto_start = true, $start_time = 0, $on_stb = false){
 
-        $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
+        if (!$on_stb){
+            $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
 
-        if ($rest_length <= 0){
-            return false;
+            if ($rest_length <= 0){
+                return false;
+            }
+        }else{
+            $rest_length = 0;
         }
 
         preg_match("/vtrack:(\d+)/", $channel['mc_cmd'], $vtrack_arr);
@@ -181,6 +191,7 @@ class StreamRecorder extends Master
             $data['program'] = $program['name'];
             $data['t_start'] = 'NOW()';
             $data['started'] = 1;
+            $data['local']   = (int) $on_stb;
         }else{
             $program = $epg->getProgramByChannelAndTime($channel['id'], $start_time);
 
@@ -191,7 +202,7 @@ class StreamRecorder extends Master
                 return false;
             }
 
-            if ($rest_length - $length <= 0 ){
+            if (!$on_stb && ($rest_length - $length <= 0) ){
                 return false;
             }
 
@@ -201,18 +212,12 @@ class StreamRecorder extends Master
             $data['t_start']    = $start_time;
             $data['length']     = $length;
             $data['t_stop']     = date("Y-m-d H:i:s", strtotime($start_time) + $length);
+            $data['local']      = (int) $on_stb;
         }
 
         $user_rec_id = Mysql::getInstance()->insert('users_rec', $data)->insert_id();
 
-        //$now_recording = Mysql::getInstance()->from('rec_files')->where(array('ch_id' => $channel['id'], 'ended' => 0))->get()->first();
-
-        /*if ($now_recording){
-
-            Mysql::getInstance()->update('users_rec', array('file_id' => $now_recording['id']), array('id' => $user_rec_id));
-        }else{*/
-
-        if (!$auto_start){
+        if ($on_stb || !$auto_start){
             return $user_rec_id;
         }else{
 
@@ -513,7 +518,7 @@ class StreamRecorder extends Master
 
     private function getTotalUserRecordsLength($uid){
 
-        return Mysql::getInstance()->select('SUM(length) as total_length')->from('users_rec')->where(array('uid' => $uid))->get()->first('total_length');
+        return Mysql::getInstance()->select('SUM(length) as total_length')->from('users_rec')->where(array('uid' => $uid, 'local' => 0))->get()->first('total_length');
     }
 
     public function checkTotalUserRecordsLength($uid){

@@ -83,3 +83,36 @@
     color: #fff;
     text-shadow: #000 -1px -1px 3px;
 }
+
+
+.modal_form .form_select{
+    height: 5px;
+    width: 233px !important;
+    top: -13px;
+    border-width: 13px 13px 14px 13px;
+    -webkit-border-image: url(i/combobox.png) 13 13 14 13 stretch stretch !important;
+    float: right;
+    margin-top: -15px;
+    line-height: 2px;
+    overflow: hidden;
+}
+
+.modal_form .form_select.active{
+    -webkit-border-image: url(i/combobox_act.png) 13 13 14 13 stretch stretch !important;
+}
+
+.modal_form .select_arrow{
+    float: right;
+    font-size: 20px;
+    font-family: "Myriad Pro Cond", serif;
+    position: relative;
+    bottom: 11px;
+    color: #888;
+    height: 40px;
+    width: 10px;
+    padding-right: 2px;
+}
+
+.modal_form .select_arrow.active{
+    color: #035f9e;
+}

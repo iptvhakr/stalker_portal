@@ -13,33 +13,42 @@ class AuthAccessHandler extends AccessHandler
     public function checkUserAuth($username, $password, $mac = null, $serial_number = null){
         sleep(1); // anti brute-force delay
 
-        $possible_user = Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first();
+        //$possible_user = Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first();
 
-        if (empty($possible_user)){
+        $user = \User::getByLogin($username);
+
+        if (!$user){
             return false;
         }
+
+        $possible_user = $user->getProfile();
 
         if ((strlen($possible_user['password']) == 32 && md5(md5($password).$possible_user['id']) == $possible_user['password'])
             || (strlen($possible_user['password']) < 32 && $password == $possible_user['password'])){
 
             if (\Config::getSafe('oauth_force_mac_check', false) && \Config::getSafe('oauth_force_serial_number_check', false)){
-                if ($mac == $possible_user['mac'] && $serial_number == $possible_user['serial_number']){
-                    $user = $possible_user;
+                if ($mac == $possible_user['mac'] && ($serial_number == $possible_user['serial_number'] || $possible_user['serial_number'] == '')){
+                    $verified_user = $possible_user;
                 }
             }else if (\Config::getSafe('oauth_force_mac_check', false)){
                 if ($mac == $possible_user['mac']){
-                    $user = $possible_user;
+                    $verified_user = $possible_user;
                 }
             }else  if (\Config::getSafe('oauth_force_serial_number_check', false)){
                 if ($serial_number == $possible_user['serial_number'] || $possible_user['serial_number'] == ''){
-                    $user = $possible_user;
+                    $verified_user = $possible_user;
                 }
             }else{
-                $user = $possible_user;
+                $verified_user = $possible_user;
             }
         }
 
-        return !empty($user);
+        if (!empty($verified_user)){
+            $user->setSerialNumber($serial_number);
+            $user->getInfoFromOSS();
+        }
+
+        return !empty($verified_user);
     }
 
     public function generateUniqueToken($username){

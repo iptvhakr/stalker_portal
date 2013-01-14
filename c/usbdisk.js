@@ -65,7 +65,7 @@ usbdisk.prototype.drive_mounted = function(){
     this.storage_info = storage_info;
 
     if (!stb.player.on){
-        stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_connected'));
+        stb.notice && stb.notice.show && stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_connected'));
     }
     
     var self = this;
@@ -85,7 +85,7 @@ usbdisk.prototype.drive_umounted = function(){
     this.storage_info = storage_info;
 
     if (!stb.player.on){
-        stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_disconnected'));
+        stb.notice && stb.notice.show && stb.notice.show(get_word('usb_drive') + ' ' + get_word('mbrowser_disconnected'));
     }
     
     this.fire_onumount_callbacks();

@@ -197,13 +197,9 @@
         this.play = function(rec_id){
             _debug('epg_simple.play', rec_id);
 
-            if (!module.remote_pvr){
-                return;
-            }
+            var idx = stb.recordings.getIdxByVal('id', rec_id);
 
-            var idx = module.remote_pvr.recording_ch_ids.getIdxByVal('id', rec_id);
-
-            if ( module.remote_pvr.recording_ch_ids[idx] && !module.remote_pvr.recording_ch_ids[idx].started){
+            if ( stb.recordings[idx] && !stb.recordings[idx].started){
                 return;
             }
 
@@ -223,6 +219,12 @@
                     stb.notice.show(word['player_server_error']);
                 }else{
 
+                    if (result.local == 1){
+                        if (stb.IsFileExist && !stb.IsFileExist(result.cmd)){
+                            stb.notice.show(get_word('rec_file_missing'));
+                            return;
+                        }
+                    }
 
                     self.hide(true);
 
@@ -379,7 +381,7 @@
                 }
                 
             }else{
-                if (module.remote_pvr && this.channel.allow_pvr){
+                if (module.remote_pvr && this.channel.allow_pvr || module.pvr_local && this.channel.allow_local_pvr){
                     this.color_buttons.get('red').enable();
                 }else{
                     this.color_buttons.get('red').disable();
