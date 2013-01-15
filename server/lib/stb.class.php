@@ -638,6 +638,10 @@ class Stb
         $action = strval($_REQUEST['real_action']);
         $param  = strval($_REQUEST['param']);
         $type   = $_REQUEST['tmp_type'];
+
+        if ($type == 1 && !empty($_REQUEST['ch_id'])){
+            $param = $this->db->from('itv')->where(array('id' => (int) $_REQUEST['ch_id']))->get()->first('cmd');
+        }
         
         $this->db->insert('user_log',
                             array(
