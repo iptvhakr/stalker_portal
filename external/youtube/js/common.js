@@ -218,6 +218,7 @@ function fillPage() {
     stb.SetTopWin(0);
     log('stb.SetTopWin(0);');
     stb.SetPIG (1,0,0,0);
+    stb.EnableVKButton(true);
 /*    var vout = getEnvironmentValue('tvsystem'); //PAL : 576p-50 : 720p-50 : 1080i-50 : 1080p-50 : NTSC : 720p-60 : 1080i-60 : 1080p-60
     switch(vout){
         case 'NTSC':

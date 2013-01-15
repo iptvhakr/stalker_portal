@@ -96,7 +96,7 @@ function keyProcessing(e) {
                 break;
                 case keys.DOWN:
                     log('data: '+current.globalObj.length+' : '+request.totalItems)
-                    if(current.obj - (current.page - 1) * items.atPage < items.atLine) {
+                    if((current.obj - (current.page - 1) * items.atPage < items.atLine) || (request.totalItems < items.atPage) ) {
                         if(current.obj+items.atLine<current.globalObj.length){
                             workWithItems.shift = items.atLine;
                             workWithItems.focusMovie();

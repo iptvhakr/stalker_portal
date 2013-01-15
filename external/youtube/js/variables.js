@@ -184,10 +184,10 @@ var  version='1.0.3',
             {"name":"travel","url":"&category=Travel"}
         ],
         "time":[
+            {"name":"allTime","url":"&time=all_time"},
             {"name":"today","url":"&time=today"},
             {"name":"thisWeek","url":"&time=this_week"},
-            {"name":"thisMonth","url":"&time=this_month"},
-            {"name":"allTime","url":"&time=all_time"}
+            {"name":"thisMonth","url":"&time=this_month"}
         ],
         "orderBy":[
             {"name":"relevance","url":"&orderby=relevance"},
