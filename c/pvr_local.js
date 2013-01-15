@@ -4,6 +4,10 @@
 
 (function(){
 
+    if (typeof(pvrManager) == "undefined"){
+        return;
+    }
+
     function PvrLocal(){
 
         //this.deferred_epg_records = [];

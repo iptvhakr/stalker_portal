@@ -1349,7 +1349,11 @@ function common_xpcom(){
 
                 this.recordings = result || [];
 
-                var active_tasks = JSON.parse(pvrManager.GetAllTasks()) || [];
+                if (typeof(pvrManager) == "undefined"){
+                    var active_tasks = [];
+                }else{
+                    active_tasks = JSON.parse(pvrManager.GetAllTasks()) || [];
+                }
 
                 _debug('active_tasks', active_tasks);
 
