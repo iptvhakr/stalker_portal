@@ -835,6 +835,7 @@ class User
 
         return array(
             'type'    => array_key_exists($package['type'], $type_map) ? $type_map[$package['type']] : $package['type'],
+            'description' => nl2br($package['description']),
             'content' => $services_str
         );
     }

@@ -377,6 +377,7 @@ $words['UNSUBSCRIBE'] = _('UNSUBSCRIBE');
 $words['package_info_title'] = _('PACKAGE INFO');
 $words['package_type'] = _('Type');
 $words['package_content'] = _('Content');
+$words['package_description'] = _('Description');
 
 $words['confirm_service_subscribe_text'] = _('Are you really want to subscribe to this service?');
 $words['confirm_service_unsubscribe_text'] = _('Are you really want to unsubscribe from this service?');

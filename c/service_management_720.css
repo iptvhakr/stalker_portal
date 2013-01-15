@@ -38,6 +38,7 @@
     float: left;
     text-overflow: ellipsis;
     margin: -5px 0 0 2px;
+    height: 21px;
 }
 
 .active_subscribed_str_block{
@@ -70,4 +71,8 @@
 
 #package_info .label {
     color: #99A8B5;
+}
+
+#package_info .info-block{
+    margin-bottom: 10px;
 }

@@ -398,11 +398,15 @@
             var info_str = '';
 
             if (info['type']){
-                info_str += '<span class="label">' + get_word('package_type') + ':</span> ' + info['type'] + '<br>';
+                info_str += '<div class="info-block"><span class="label">' + get_word('package_type') + ':</span> ' + info['type'] + '</div>';
+            }
+
+            if (info['description']){
+                info_str += '<div class="info-block"><span class="label">' + get_word('package_description') + ':</span> ' + info['description'] + '</div>';
             }
 
             if (info['content']){
-                info_str += '<span class="label">' + get_word('package_content') + ':<br></span> ' + info['content'] + '<br>';
+                info_str += '<div class="info-block"><span class="label">' + get_word('package_content') + ':<br></span> ' + info['content'] + '</div>';
             }
 
             this.main_container.content.dom_obj.innerHTML = info_str;
