@@ -1968,8 +1968,12 @@ var connection_problem = {
     show : function(){
         _debug('connection_problem.show');
 
-        this.dom_obj.show();
-        this.on = true;
+        _debug('stb.user.enable_connection_problem_indication', stb.user.enable_connection_problem_indication);
+
+        if (stb.user.enable_connection_problem_indication == 1){
+            this.dom_obj.show();
+            this.on = true;
+        }
     },
 
     hide : function(){

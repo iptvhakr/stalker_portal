@@ -366,6 +366,8 @@ class Stb
 
         $profile['timezone_diff']  = $this->timezone_diff;
 
+        $profile['enable_connection_problem_indication']  = Config::getSafe('enable_connection_problem_indication', true);
+
         return $profile;
     }
 
