@@ -1291,6 +1291,7 @@ player.prototype.play = function(item){
     //this.cur_media_item = item;
 
     window.clearTimeout(this.replay_channel_timer);
+    window.clearTimeout(this.archive_continue_dialog_to);
 
     if (typeof(item) == 'object'){
         if (!item.hasOwnProperty('cmd')){
