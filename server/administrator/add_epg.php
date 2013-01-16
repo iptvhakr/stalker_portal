@@ -53,7 +53,7 @@ if (!$error){
                 continue;
             }
             
-            $query = "insert into epg (ch_id, name, time, time_to, duration) values ('".$_GET['id']."', '".mysql_real_escape_string($line_arr['name'])."', '".$line_arr['time']."', '".$line_arr['time_to']."', '".$line_arr['duration']."')";
+            $query = "insert into epg (ch_id, name, time, time_to, duration, real_id) values ('".$_GET['id']."', '".mysql_real_escape_string($line_arr['name'])."', '".$line_arr['time']."', '".$line_arr['time_to']."', '".$line_arr['duration']."', '".$_GET['id'].'_'.strtotime($line_arr['time'])."')";
                 
             //var_dump($query);
             
