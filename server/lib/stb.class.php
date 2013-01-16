@@ -638,7 +638,7 @@ class Stb
     public function log(){
         
         $action = strval($_REQUEST['real_action']);
-        $param  = strval($_REQUEST['param']);
+        $param  = urldecode($_REQUEST['param']);
         $type   = $_REQUEST['tmp_type'];
 
         if ($type == 1 && !empty($_REQUEST['ch_id'])){

@@ -43,7 +43,10 @@ function _log(action, param){
 
     if (typeof(param) == 'object'){
         var add_data = param;
+    }else{
+        param = encodeURIComponent(param);
     }
+
 
     var data = {
         "type"   : "stb",
