@@ -100,6 +100,11 @@ app.ctrls={
         //log(source_html); //if test(nothing was found!) -> ���� ������
         source_html_splited = source_html.split('</td>');
         for(var i=0;i<source_html_splited.length;i++){
+
+                if (source_html_splited[i].indexOf('/user/megogo') != -1){
+                    continue;
+                }
+
                 var result = /href='(\/view\/.*?)'.*?src='(.*?)'.*?href='.*?'><b>(.*?)<\/b><\/a>/igm.exec(source_html_splited[i]);
                 //log("\n\n"+source_html_splited[i]+"\n\n")
                 var result2 = /class='?"?info'?"?>(.*?):/igm.exec(source_html_splited[i]);
