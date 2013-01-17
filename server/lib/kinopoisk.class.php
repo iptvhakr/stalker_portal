@@ -21,23 +21,31 @@ class Kinopoisk
 
         $ch = curl_init();
 
-        curl_setopt_array($ch,
-            array(
-                CURLOPT_URL => $movie_url,
-                CURLOPT_HEADER => false,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => array(
-                    'Connection: keep-alive',
-                    'Cache-Control: no-cache',
-                    'Pragma: no-cache',
-                    'User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5',
-                    'Accept: text/css,*/*;q=0.1',
-                    'Accept-Encoding: deflate,sdch',
-                    'Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
-                    'Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.3'
-                )
+        $curl_options = array(
+            CURLOPT_URL => $movie_url,
+            CURLOPT_HEADER => false,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                'Connection: keep-alive',
+                'Cache-Control: no-cache',
+                'Pragma: no-cache',
+                'User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5',
+                'Accept: text/css,*/*;q=0.1',
+                'Accept-Encoding: deflate,sdch',
+                'Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
+                'Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.3'
             )
         );
+
+        if (Config::exist('http_proxy')){
+            $curl_options[CURLOPT_PROXY] = str_replace('tcp://', '', Config::get('http_proxy'));
+
+            if (Config::exist('http_proxy_login') && Config::exist('http_proxy_password')){
+                $curl_options[CURLOPT_PROXYUSERPWD] = Config::get('http_proxy_login').":".Config::get('http_proxy_password');
+            }
+        }
+
+        curl_setopt_array($ch, $curl_options);
 
         $page = curl_exec($ch);
 
@@ -205,23 +213,31 @@ class Kinopoisk
 
         $search_url = 'http://www.kinopoisk.ru/index.php?level=7&from=forma&result=adv&m_act[from]=forma&m_act[what]=content&m_act[find]='.urlencode($orig_name).'&m_act[content_find]=film,serial&first=yes';
 
-        curl_setopt_array($ch,
-            array(
-                CURLOPT_URL => $search_url,
-                CURLOPT_HEADER => 1,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_HTTPHEADER => array(
-                    'Connection: keep-alive',
-                    'Cache-Control: no-cache',
-                    'Pragma: no-cache',
-                    'User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5',
-                    'Accept: text/css,*/*;q=0.1',
-                    'Accept-Encoding: gzip,deflate,sdch',
-                    'Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
-                    'Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.3'
-                )
+        $curl_options = array(
+            CURLOPT_URL => $search_url,
+            CURLOPT_HEADER => 1,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => array(
+                'Connection: keep-alive',
+                'Cache-Control: no-cache',
+                'Pragma: no-cache',
+                'User-Agent: Mozilla/5.0 (Windows NT 6.1) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.9 Safari/536.5',
+                'Accept: text/css,*/*;q=0.1',
+                'Accept-Encoding: gzip,deflate,sdch',
+                'Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
+                'Accept-Charset: windows-1251,utf-8;q=0.7,*;q=0.3'
             )
         );
+
+        if (Config::exist('http_proxy')){
+            $curl_options[CURLOPT_PROXY] = str_replace('tcp://', '', Config::get('http_proxy'));
+
+            if (Config::exist('http_proxy_login') && Config::exist('http_proxy_password')){
+                $curl_options[CURLOPT_PROXYUSERPWD] = Config::get('http_proxy_login').":".Config::get('http_proxy_password');
+            }
+        }
+
+        curl_setopt_array($ch, $curl_options);
 
         $response = curl_exec($ch);
 
