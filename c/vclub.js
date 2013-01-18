@@ -103,6 +103,36 @@
                 }
             ));
 
+            this.parent_password_promt = new ModalForm({"title" : get_word('parent_password_title'), "parent" : main_menu});
+            this.parent_password_promt.enableOnExitClose();
+
+            this.parent_password_promt.addItem(new ModalFormInput({
+                "label" : get_word('password_label'),
+                "name" : "parent_password",
+                "type" : "password",
+                "onchange" : function(){_debug('change'); scope.parent_password_promt.resetStatus()}
+            }));
+
+            this.parent_password_promt.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        var parent_password = scope.parent_password_promt.getItemByName('parent_password').getValue();
+
+                        _debug('parent_password', parent_password);
+                        _debug('stb.user.parent_password', stb.user.parent_password);
+
+                        if (parent_password == stb.user.parent_password){
+                            scope.parent_password_promt.hide();
+                            scope.parent_password_promt.callback && scope.parent_password_promt.callback();
+                        }else{
+                            scope.parent_password_promt.setStatus(get_word('parent_password_error'));
+                        }
+                    }
+                }
+            ));
+
             this.price_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('rent_movie_price_text')});
             this.price_confirm.getTextDomObj().style.textAlign = "center";
             this.price_confirm.enableOnExitClose();
@@ -1192,9 +1222,17 @@
                         
                         return function(){
                             _debug('alias', category.alias);
-                        
-                            main_menu.hide();
-                            module.vclub._show(category);
+
+                            if (category.alias == 'adult'){
+                                module.vclub.parent_password_promt.callback = function(){
+                                    main_menu.hide();
+                                    module.vclub._show(category);
+                                };
+                                module.vclub.parent_password_promt.show();
+                            }else{
+                                main_menu.hide();
+                                module.vclub._show(category);
+                            }
                         }
                         
                     })(categories[i])

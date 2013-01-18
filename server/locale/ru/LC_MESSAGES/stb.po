@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-15 13:10+0200\n"
-"PO-Revision-Date: 2013-01-15 13:10+0200\n"
+"POT-Creation-Date: 2013-01-17 15:33+0200\n"
+"PO-Revision-Date: 2013-01-17 15:34+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3323,6 +3323,14 @@ msgstr "Запись"
 msgid "Recording on USB device interrupted"
 msgstr "Запись на USB устройство прервана"
 
+#: ../../../lang/stb.php:466
+msgid "Wrong"
+msgstr "Неверно"
+
+#: ../../../lang/stb.php:467
+msgid "Parent control"
+msgstr "Родительский контроль"
+
 #: ../../../lib/account.class.php:18
 #: ../../../lib/account.class.php:39
 #: ../../../lib/account.class.php:60
@@ -3727,12 +3735,12 @@ msgid "s"
 msgstr "с"
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:795
+#: ../../../lib/vod.class.php:799
 msgid "today"
 msgstr "сегодня"
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:798
+#: ../../../lib/vod.class.php:802
 msgid "yesterday"
 msgstr "вчера"
 
@@ -3740,7 +3748,7 @@ msgstr "вчера"
 #: ../../../lib/user.class.php:820
 #: ../../../lib/user.class.php:821
 #: ../../../lib/video.class.php:95
-#: ../../../lib/vod.class.php:712
+#: ../../../lib/vod.class.php:716
 #, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -3761,7 +3769,7 @@ msgstr "Радио каналы"
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/vod.class.php:801
+#: ../../../lib/vod.class.php:805
 msgid "last week"
 msgstr "7 дней"
 
@@ -4221,6 +4229,13 @@ msgstr "З"
 #: ../../../tools/misctranslations.php:152
 msgid "NW"
 msgstr "СЗ"
+
+#~ msgid "Wrong password"
+#~ msgstr "Неверный пароль"
+
+#, fuzzy
+#~ msgid "Parent password"
+#~ msgstr "Текущий пароль"
 
 #~ msgid "FREE, h"
 #~ msgstr "СВОБОДНО, ч"

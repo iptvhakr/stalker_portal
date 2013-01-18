@@ -541,6 +541,10 @@ class Vod extends AjaxResponse
             $where['category_id'] = intval($_REQUEST['category']);
         }
 
+        if ((empty($_REQUEST['category']) || $_REQUEST['category'] == '*') && !Config::getSafe('show_adult_movies_in_common_list', true)){
+            $where['category_id!='] = (int) Mysql::getInstance()->from('media_category')->where(array('category_alias' => 'adult'))->get()->first('id');
+        }
+
         $like = array();
 
         if (@$_REQUEST['abc'] && @$_REQUEST['abc'] !== '*') {

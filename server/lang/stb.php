@@ -462,3 +462,7 @@ $words['pvr_error_file_write_error'] = _('PVR Error: Error writing to file');
 
 $words['rec_options_form_title'] = _('Recording');
 $words['local_pvr_interrupted'] = _('Recording on USB device interrupted');
+
+$words['parent_password_error'] = _('Wrong');
+$words['parent_password_title'] = _('Parent control');
+$words['password_label'] = _('Password');
