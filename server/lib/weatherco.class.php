@@ -2,6 +2,28 @@
 
 class Weatherco
 {
+
+    private static $pictures = array(
+        0 => '_0_sun.png',
+        1 => '_1_sun_cl.png',
+        2 => '_2_cloudy.png',
+        3 => '_3_pasmurno.png',
+        4 => '_4_short_rain.png',
+        5 => '_5_rain.png',
+        6 => '_6_lightning.png',
+        7 => '_7_hail.png',
+        8 => '_8_rain_swon.png',
+        9 => '_9_snow.png ',
+        10 => '_10_heavy_snow.png',
+        25 => '_255_NA.png',
+    );
+
+    private static $pictures_night = array(
+        0 => '_0_moon.png',
+        1 => '_1_moon_cl.png',
+        5 => '_1_moon_cl.png',
+    );
+
     public function updateFullCurrent(){
         
         $xml_resp = simplexml_load_file('http://xml.weather.co.ua/1.2/fullcurrent/');
@@ -24,7 +46,7 @@ class Weatherco
                 }
             }
 
-            $item = $this->parse($item);
+            $item = $this->preParse($item);
 
             $this->setCurrentCache($item);
         }
@@ -67,7 +89,7 @@ class Weatherco
                     }
                 }
 
-                $weather['forecast'][] = $this->parse($item);
+                $weather['forecast'][] = $this->preParse($item);
 
                 $this->setForecastCache($weather);
             }
@@ -120,7 +142,7 @@ class Weatherco
             //$current['w_rumb_str'] = _($current['w_rumb_str']);
             $current['w_rumb_str'] = str_replace('/', '', $current['w_rumb_str']);
 
-            return $current;
+            return self::postParse($current);
         }
 
         return false;
@@ -150,7 +172,7 @@ class Weatherco
 
                 $day['temperature'] = (($day['t']['min']) > 0 ? '+' : '').$day['t']['min'].'..'.(($day['t']['max']) > 0 ? '+' : '').$day['t']['max'].'&deg;';
 
-                return $day;
+                return Weatherco::postParse($day);
             },
             $weather['forecast']);
 
@@ -160,9 +182,9 @@ class Weatherco
         return false;
     }
     
-    private function parse($arr){
+    private function preParse($arr){
         if (array_key_exists('cloud', $arr)){
-            
+
             $cloud = intval(floor($arr['cloud']/10));
 
             $cloud_arr = array(
@@ -186,7 +208,7 @@ class Weatherco
             }
         }
         
-        if (key_exists('w_rumb', $arr) || !empty($arr['wind']) && array_key_exists('rumb', $arr['wind'])){
+        if (array_key_exists('w_rumb', $arr) || !empty($arr['wind']) && array_key_exists('rumb', $arr['wind'])){
             $arr['w_rumb_str'] = '';
 
             if (!empty($arr['w_rumb'])){
@@ -218,34 +240,53 @@ class Weatherco
             }
         }
 
-        $pictures = array(
-            0 => '_0_sun.png',
-            1 => '_1_sun_cl.png',
-            2 => '_2_cloudy.png',
-            3 => '_3_pasmurno.png',
-            4 => '_4_short_rain.png',
-            5 => '_5_rain.png',
-            6 => '_6_lightning.png',
-            7 => '_7_hail.png',
-            8 => '_8_rain_swon.png',
-            9 => '_9_snow.png ',
-            10 => '_10_heavy_snow.png',
-            25 => '_255_NA.png',
-        );
+        $arr['pict'] = self::getPicture($arr);
 
-        $pictures_night = array(
-            0 => '_0_moon.png',
-            1 => '_1_moon_cl.png',
-            5 => '_1_moon_cl.png',
-        );
+        return $arr;
+    }
 
-        if ($arr['hour'] >= 21 || $arr['hour'] <= 6){
-            $pictures = $pictures_night + $pictures;
+    public static function postParse($weather){
+
+        if (!empty($weather['date'])){
+
+            if (strlen($weather['date']) == 10 && !empty($weather['hour'])){
+                $weather['date'] = $weather['date'].' '.$weather['hour'].':00:00';
+            }
+
+            $target_timezone = Mysql::getInstance()->from('cities')->where(array('id' => Stb::getInstance()->city_id))->get()->first('timezone');
+
+            if (!$target_timezone){
+                $target_timezone = Stb::getInstance()->getTimezone();
+            }
+
+            $date = new DateTime($weather['date'], new DateTimeZone('Europe/Kiev'));
+            $date->setTimeZone(new DateTimeZone($target_timezone));
+
+            $weather['date_orig'] = $weather['date'];
+            $weather['date'] = $date->format('Y-m-d H:i:s');
+            $weather['hour'] = $date->format('G');
+
+            $weather['pict'] = self::getPicture($weather);
         }
 
-        $arr['pict'] = $pictures[$cloud];
-        
-        return $arr;
+        return $weather;
+    }
+
+    public static function getPicture($weather){
+
+        if (array_key_exists('cloud', $weather)){
+            $cloud = intval(floor($weather['cloud']/10));
+        }else{
+            $cloud = 25;
+        }
+
+        if ($weather['hour'] >= 21 || $weather['hour'] <= 6){
+            $pictures = self::$pictures_night + self::$pictures;
+        }else{
+            $pictures = self::$pictures;
+        }
+
+        return $pictures[$cloud];
     }
 
 }

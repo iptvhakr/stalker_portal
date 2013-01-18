@@ -138,6 +138,10 @@ class Stb
         $this->params['id'] = $id;
     }
 
+    public function getTimezone(){
+        return $this->timezone;
+    }
+
     public function getParam($name){
         return $this->params[$name];
     }
