@@ -555,7 +555,11 @@ class Itv extends AjaxResponse
 
         array_unshift($genres, array('id' => '*', 'title' => $this->all_title));
 
-        $genres = array_map(function($item){$item['title'] = _($item['title']); return $item;}, $genres);
+        $genres = array_map(function($item){
+            $item['alias'] = $item['title'];
+            $item['title'] = _($item['title']);
+            return $item;
+        }, $genres);
         
         return $genres;
     }
@@ -677,6 +681,10 @@ class Itv extends AjaxResponse
             $genre = intval($_REQUEST['genre']);
             
             $where['tv_genre_id'] = $genre;
+        }
+
+        if ((empty($_REQUEST['genre']) || $_REQUEST['genre'] == '*') && !Config::getSafe('show_adult_tv_channels_in_common_list', true)){
+            $where['tv_genre_id!='] = (int) Mysql::getInstance()->from('tv_genre')->where(array('title' => 'for adults'))->get()->first('id');
         }
         
         $offset = $this->getOffset($where);

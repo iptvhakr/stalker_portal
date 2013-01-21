@@ -83,18 +83,44 @@
             this.superclass.init.call(this);
 
             if (stb.profile['tv_quality_filter']){
-                /*for (var i=0; i<this.map.length; i++){
-                    this.map[i].name_block.style.marginRight = '30px';
-                }*/
-
                 this.dom_obj.setAttribute("rel", "quality-filter");
-
-                /*this.active_row.name_block.style.marginRight = '50px';*/
             }
 
             if (stb.user['enable_buffering_indication']){
                 this.progress_bar.init(this);
             }
+
+            var scope = this;
+
+            this.parent_password_promt = new ModalForm({"title" : get_word('parent_password_title'), "parent" : main_menu});
+            this.parent_password_promt.enableOnExitClose();
+
+            this.parent_password_promt.addItem(new ModalFormInput({
+                "label" : get_word('password_label'),
+                "name" : "parent_password",
+                "type" : "password",
+                "onchange" : function(){_debug('change'); scope.parent_password_promt.resetStatus()}
+            }));
+
+            this.parent_password_promt.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        var parent_password = scope.parent_password_promt.getItemByName('parent_password').getValue();
+
+                        _debug('parent_password', parent_password);
+                        _debug('stb.user.parent_password', stb.user.parent_password);
+
+                        if (parent_password == stb.user.parent_password){
+                            scope.parent_password_promt.hide();
+                            scope.parent_password_promt.callback && scope.parent_password_promt.callback();
+                        }else{
+                            scope.parent_password_promt.setStatus(get_word('parent_password_error'));
+                        }
+                    }
+                }
+            ));
         };
         
         this.show = function(do_not_load){
@@ -411,7 +437,7 @@
                 return;
             }
             
-            if (this.data_items[this.cur_row].lock && this.cur_view != 'short'){
+            if (this.data_items[this.cur_row].lock && this.cur_view != 'short' && this.genre.alias != 'for adults'){
                 var self = this;
                 
                 this.password_input.callback = function(){
@@ -770,7 +796,7 @@
 
                     _debug('item.lock', item.lock);
 
-                    if (item.lock){
+                    if (item.lock && self.genre.alias != 'for adults'){
                         self.password_input.callback = function(){
                             stb.player.need_show_info = 0;
                             stb.player.prev_layer = self;
@@ -1553,9 +1579,18 @@
                             
                             return function(){
                                 _debug('genre.id', genre.id);
-                            
-                                main_menu.hide();
-                                module.tv._show(genre);
+
+                                if (genre.alias == 'for adults'){
+
+                                    module.tv.parent_password_promt.callback = function(){
+                                        main_menu.hide();
+                                        module.tv._show(genre);
+                                    };
+                                    module.tv.parent_password_promt.show();
+                                }else{
+                                    main_menu.hide();
+                                    module.tv._show(genre);
+                                }
                             }
                             
                         })(genres[i])
