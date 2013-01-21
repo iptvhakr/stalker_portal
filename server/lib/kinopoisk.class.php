@@ -211,7 +211,11 @@ class Kinopoisk
 
         $ch = curl_init();
 
-        $search_url = 'http://www.kinopoisk.ru/index.php?level=7&from=forma&result=adv&m_act[from]=forma&m_act[what]=content&m_act[find]='.urlencode($orig_name).'&m_act[content_find]=film,serial&first=yes';
+        $orig_name = iconv("utf-8", "windows-1251", $orig_name);
+
+        $orig_name = urlencode($orig_name);
+
+        $search_url = 'http://www.kinopoisk.ru/index.php?level=7&from=forma&result=adv&m_act[from]=forma&m_act[what]=content&m_act[find]='.$orig_name.'&m_act[content_find]=film,serial&first=yes';
 
         $curl_options = array(
             CURLOPT_URL => $search_url,
