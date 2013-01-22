@@ -176,7 +176,7 @@ app.ctrls={
     	var cats=[],
             source_html;
     	html = html.replace(/[\n\r\t]/igm,' ').replace(/\s{1,}/igm,' ').replace(/<script.*?\/script>/igm,'').replace(/<\!--.*?-->/igm,'').replace(/<link.*?>/igm,'').replace(/<head>.*?\/head>/igm,'');
-        source_html = /list\b(.*?)table>/img.exec(html)[0].toString();
+        source_html = /class=list\b(.*?)table>/img.exec(html)[0].toString();
         source_html_splited = source_html.split('/tr>');
         //log('source_html_splited:\n'+source_html_splited)
         for(var i=0;i<source_html_splited.length;i++){
@@ -1072,7 +1072,7 @@ app.player={
                                 'tag':'div',
                                 'attrs':{
                                     'id':"ars_img_"+(i+1),
-                                    'class':'ars_img',
+                                    'class':'ars_img'
                                 }
                                 },
                                 {'tag':'div',
@@ -1113,7 +1113,7 @@ app.player={
                                 'tag':'div',
                                 'attrs':{
                                     'id':"ars_img_1",
-                                    'class':'ars_img',
+                                    'class':'ars_img'
                                 }
                                 },
                                 {'tag':'div',
@@ -1151,14 +1151,14 @@ app.player={
                         {
                             'tag':'div',
                             'attrs':{
-                                'class':'als_midline_left',
+                                'class':'als_midline_left'
                             },
                             'child':[
                                 {
                                 'tag':'div',
                                 'attrs':{
                                     'id':"ars_img_"+(i+2),
-                                    'class':'ars_img',
+                                    'class':'ars_img'
                                 }
                                 },
                                 {'tag':'div',
@@ -1199,7 +1199,7 @@ app.player={
                                         'tag':'div',
                                         'attrs':{
                                             'id':"ars_img_"+i,
-                                            'class':'ars_img',
+                                            'class':'ars_img'
                                         }
                                         },
                                         {'tag':'div',
