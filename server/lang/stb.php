@@ -459,6 +459,9 @@ $words['pvr_error_file_open_error'] = _('PVR Error: Error opening file');
 $words['pvr_error_rec_limit'] = _('PVR Error: Exceeded the maximum number simultaneous recordings');
 $words['pvr_error_end_of_stream'] = _('PVR Error: End of stream');
 $words['pvr_error_file_write_error'] = _('PVR Error: Error writing to file');
+$words['pvr_start_time'] = _('Start time');
+$words['pvr_end_time'] = _('End time');
+$words['pvr_duration'] = _('Duration');
 
 $words['rec_options_form_title'] = _('Recording');
 $words['local_pvr_interrupted'] = _('Recording on USB device interrupted');

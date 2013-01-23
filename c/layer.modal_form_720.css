@@ -55,7 +55,7 @@
     font-size: 22px;
     color: #002864;
     text-shadow: white 1px 1px 1px;
-    line-height: 38px;
+    line-height: 42px;
     margin-top: -20px;
 }
 .modal_form .buttons{
@@ -100,6 +100,44 @@
     -webkit-border-image: url(i/combobox_act.png) 13 13 14 13 stretch stretch !important;
 }
 
+.modal_form .form_time, .modal_form .form_date{
+    height: 5px;
+    top: -13px;
+    border-width: 13px 13px 14px 13px;
+    -webkit-border-image: url(i/input.png) 13 12 14 12 stretch stretch !important;
+    float: left;
+    margin-top: -15px;
+    line-height: 10px;
+    /*overflow: hidden;*/
+    margin-right: 10px;
+    font-size: 18px;
+    /*font-family: "Courier New", serif;*/
+}
+
+.modal_form .form_time.active, .modal_form .form_date.active{
+    -webkit-border-image: url(i/input_act.png) 13 12 14 12 stretch stretch !important;
+}
+
+.modal_form .form_time.edit, .modal_form .form_date.edit{
+    color: #00f;
+}
+
+.modal_form .form_time .highlight, .modal_form .form_date .highlight{
+    color: #f00;
+}
+
+.modal_form .form_time{
+    width: 45px;
+}
+.modal_form .form_date{
+    width: 88px;
+}
+
+.modal_form .fixed_container{
+    width: 283px;
+    float: right;
+}
+
 .modal_form .select_arrow{
     float: right;
     font-size: 20px;
@@ -114,4 +152,8 @@
 
 .modal_form .select_arrow.active{
     color: #035f9e;
+}
+
+#local_pvr_confirm{
+    margin-top: -164px;
 }

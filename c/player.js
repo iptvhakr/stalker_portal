@@ -334,6 +334,7 @@ player.prototype.init_pvr_dialogs = function(){
             "value" : get_word("usb_target_btn"),
             "onclick" : function(){
                 if (scope.pvr_target_select.deferred){
+                    scope.local_pvr_confirm.channel = scope.pvr_target_select.channel;
                     scope.local_pvr_confirm.program = scope.pvr_target_select.program;
                 }else{
                     scope.local_pvr_confirm.channel = scope.pvr_target_select.channel;
@@ -402,8 +403,83 @@ player.prototype.init_pvr_dialogs = function(){
         }
     ));
 
-    this.local_pvr_confirm = new ModalForm({"title" : get_word('rec_options_form_title')});
+    this.local_pvr_confirm = new ModalForm({"title" : get_word('rec_options_form_title'), "id" : "local_pvr_confirm"});
     this.local_pvr_confirm.enableOnExitClose();
+
+    this.local_pvr_confirm.addItem(
+        new ModalFormDateTimeSelect(
+            {
+                "label" : get_word('pvr_start_time')+':',
+                "name"  : "start_time",
+                "onset" : function(value){
+                    _debug('onset start_time', value);
+                    var start_time = scope.local_pvr_confirm.getItemByName('start_time').getDateValue();
+                    var end_time   = scope.local_pvr_confirm.getItemByName('end_time').getDateValue();
+
+                    var duration = (end_time.getTime() - start_time.getTime())/1000;
+
+                    _debug('duration', duration);
+
+                    if (duration < 0){
+                        duration = 0;
+                    }
+
+                    scope.local_pvr_confirm.getItemByName('duration').setTime(duration);
+                }
+            }
+        )
+    );
+
+    this.local_pvr_confirm.addItem(
+        new ModalFormDateTimeSelect(
+            {
+                "label" : get_word('pvr_end_time')+':',
+                "name" : "end_time",
+                "onset" : function(value){
+                    _debug('onset end_time', value);
+
+                    var start_time = scope.local_pvr_confirm.getItemByName('start_time').getDateValue();
+                    var end_time   = scope.local_pvr_confirm.getItemByName('end_time').getDateValue();
+
+                    var duration = (end_time.getTime() - start_time.getTime())/1000;
+
+                    _debug('duration', duration);
+
+                    if (duration < 0){
+                        duration = 0;
+                    }
+
+                    scope.local_pvr_confirm.getItemByName('duration').setTime(duration);
+                }
+            }
+        )
+    );
+
+    this.local_pvr_confirm.addItem(
+        new ModalFormDateTimeSelect(
+            {
+                "label" : get_word('pvr_duration')+':',
+                "name" : "duration",
+                "only_time" : true,
+                "max_time" : "05:00",
+                "onset" : function(value){
+                    _debug('onset duration', value);
+
+                    var start_time = scope.local_pvr_confirm.getItemByName('start_time').getDateValue();
+
+                    var duration_parts = value.split(':');
+
+                    var duration = parseInt(duration_parts[0], 10) * 3600 + parseInt(duration_parts[1], 10) * 60;
+
+                    _debug('duration', duration);
+
+                    start_time.setSeconds(duration);
+
+                    scope.local_pvr_confirm.getItemByName('end_time').setValue(start_time.getTime());
+                }
+            }
+        )
+    );
 
     this.local_pvr_confirm.addItem(new ModalFormSelect({"label" : get_word('usb_device')+':', "name" : "usb_device"}));
     this.local_pvr_confirm.addItem(new ModalFormInput({"label" : get_word('file_name')+':', "name" : "file_name"}));
@@ -423,17 +499,56 @@ player.prototype.init_pvr_dialogs = function(){
             "onclick" : function(){
                 var path = scope.local_pvr_confirm.getItemByName('usb_device').getValue() + '/' + scope.local_pvr_confirm.getItemByName('file_name').getValue();
 
-                if (scope.local_pvr_confirm.deferred){
-                    //module.pvr_local.create_for_program(scope.local_pvr_confirm.program, path);
+                var start_time = scope.local_pvr_confirm.getItemByName('start_time').getDateValue();
+                var end_time   = scope.local_pvr_confirm.getItemByName('end_time').getDateValue();
+
+                var duration = (end_time.getTime() - start_time.getTime())/1000;
+
+                _debug('duration', duration);
+
+                if (duration < 0){
+                    duration = 0;
+                }
+
+                var now_time = new Date();
+
+                if (start_time.getTime() > now_time.getTime()){
+                    scope.local_pvr_confirm.deferred = true;
+                    scope.local_pvr_confirm.program = {
+                        "id"    : 0,
+                        "ch_id" : scope.local_pvr_confirm.channel.id,
+                        "start_timestamp" : parseInt(start_time.getTime()/1000, 10),
+                        "stop_timestamp"  : parseInt(end_time.getTime()/1000, 10)
+                    };
+                }
+
+                if (scope.local_pvr_confirm.deferred && scope.local_pvr_confirm.program.id == 0){
+                    module.pvr_local.create_for_program(scope.local_pvr_confirm.program, path)
+                }else if (scope.local_pvr_confirm.deferred){
                     scope.local_pvr_confirm._parent.recorder.add_local(scope.local_pvr_confirm.program, path)
                 }else{
-                    module.pvr_local.create(scope.local_pvr_confirm.channel, path);
+                    module.pvr_local.create(scope.local_pvr_confirm.channel, path, null, parseInt(end_time.getTime()/1000, 10));
                 }
 
                 scope.local_pvr_confirm.hide();
             }
         }
     ));
+
+    this.local_pvr_confirm.addCustomEventListener('before_show', function(){
+        scope.local_pvr_confirm.getItemByName('start_time').setValue('now');
+
+        var epg = stb.epg_loader.get_curr_and_next(scope.local_pvr_confirm.channel.id);
+
+        if (epg && epg.length > 0){
+            var end_time = epg[0].stop_timestamp * 1000;
+        }else{
+            end_time = new Date().getTime() + 3*3600*1000;
+        }
+
+        scope.local_pvr_confirm.getItemByName('end_time').setValue(end_time);
+        scope.local_pvr_confirm.getItemByName('end_time')._onset(scope.local_pvr_confirm.getItemByName('end_time').getValue());
+    });
 
     this.local_pvr_confirm.addCustomEventListener('show', function(){
 

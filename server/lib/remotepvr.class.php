@@ -174,16 +174,31 @@ class RemotePvr extends AjaxResponse
         $program_id  = $_REQUEST['program_real_id'];
         $file        = $_REQUEST['file'];
         $internal_id = $_REQUEST['internal_id'];
-
-        $rec_exist = Mysql::getInstance()->from('users_rec')->where(array('program_real_id' => $program_id, 'uid' => $this->stb->id))->get()->first();
-
-        if ($rec_exist){
-            return $rec_exist['id'];
-        }
+        $ch_id       = (int) $_REQUEST['ch_id'];
+        $start_ts    = (int) $_REQUEST['start_ts'];
+        $stop_ts     = (int) $_REQUEST['stop_ts'];
 
         $recorder = new StreamRecorder();
 
-        $rec_id = $recorder->startDeferred($program_id, true);
+        if ($program_id != 0){
+            $rec_exist = Mysql::getInstance()->from('users_rec')->where(array('program_real_id' => $program_id, 'uid' => $this->stb->id))->get()->first();
+
+            if ($rec_exist){
+                return $rec_exist['id'];
+            }
+
+            $rec_id = $recorder->startDeferred($program_id, true);
+        }else{
+            $program = array(
+                'id'      => 0,
+                'real_id' => '',
+                'ch_id'   => $ch_id,
+                'time'    => date("Y-m-d H:i:s", $start_ts),
+                'time_to' => date("Y-m-d H:i:s", $stop_ts),
+            );
+
+            $rec_id = $recorder->startDeferred($program_id, true, $program);
+        }
 
         if ($rec_id){
             Mysql::getInstance()->update('users_rec',

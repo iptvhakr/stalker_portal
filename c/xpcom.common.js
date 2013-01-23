@@ -1823,9 +1823,16 @@ function common_xpcom(){
             time += m;
 
             return time;
+        },
+
+        format_XX : function(value){
+            if (value < 10){
+                value = '0'+value;
+            }
+            return value;
         }
     }
-}
+};
 
 var screensaver = {
 

@@ -87,13 +87,18 @@
 
             var program_id = programm.id;
             var self = this;
-            var epg_item = this.get_item();
+
+            if (program_id != 0){
+                var epg_item = this.get_item();
+            }else{
+                epg_item = {};
+            }
 
             module.pvr_local.create_for_program(programm, path,
                 function(result){
                     _debug('on create_for_program', result);
 
-                    if (result){
+                    if (result && program_id != 0){
                         self.show_mark(program_id);
                         epg_item.rec_id = result;
                     }

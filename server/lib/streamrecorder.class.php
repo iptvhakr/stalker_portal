@@ -33,18 +33,22 @@ class StreamRecorder extends Master
         return Mysql::getInstance()->from('rec_files')->where(array('id' => $this->media_params['file_id']))->get()->first('file_name');
     }
 
-    public function startDeferred($program_id, $on_stb = false){
+    public function startDeferred($program_id, $on_stb = false, $program = null){
 
-        $epg = Mysql::getInstance()
-            ->select('*, UNIX_TIMESTAMP(time) as start_ts, UNIX_TIMESTAMP(time_to) as stop_ts')
-            ->from('epg')
-            ->where(array('real_id' => $program_id))
-            ->get()
-            ->first();
+        if ($program){
+            $epg = $program;
+        }else{
+            $epg = Mysql::getInstance()
+                ->select('*, UNIX_TIMESTAMP(time) as start_ts, UNIX_TIMESTAMP(time_to) as stop_ts')
+                ->from('epg')
+                ->where(array('real_id' => $program_id))
+                ->get()
+                ->first();
+        }
 
         $channel = Mysql::getInstance()->from('itv')->where(array('id' => intval($epg['ch_id'])))->get()->first();
 
-        $user_rec_id = $this->createUserRecord($channel, false, $epg['time'], $on_stb);
+        $user_rec_id = $this->createUserRecord($channel, false, $epg['time'], $on_stb, $program);
 
         if (!$user_rec_id){
             return false;
@@ -150,7 +154,7 @@ class StreamRecorder extends Master
         return $this->createUserRecord($channel, true, 0, $on_stb);
     }
 
-    private function createUserRecord($channel, $auto_start = true, $start_time = 0, $on_stb = false){
+    private function createUserRecord($channel, $auto_start = true, $start_time = 0, $on_stb = false, $virtual_program = null){
 
         if (!$on_stb){
             $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
@@ -194,6 +198,11 @@ class StreamRecorder extends Master
             $data['local']   = (int) $on_stb;
         }else{
             $program = $epg->getProgramByChannelAndTime($channel['id'], $start_time);
+
+            if ($virtual_program){
+                $virtual_program['name'] = $program['name'];
+                $program = $virtual_program;
+            }
 
             $length = strtotime($program['time_to']) - strtotime($program['time']);
 

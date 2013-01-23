@@ -136,7 +136,7 @@
         };
 
         this.create = function(channel, path, start, end, program, callback){
-            _debug('pvr_local.start', channel, path);
+            _debug('pvr_local.create', channel, path);
 
             var self = this;
 
@@ -211,7 +211,7 @@
                 }
             }
 
-            if (program){
+            if (program && program.id != 0){
                 cur_prog = program.name
             }else{
                 var epg = stb.epg_loader.get_curr_and_next(channel.id, start);
@@ -360,7 +360,7 @@
                 var ch_idx = stb.player.channels.getIdxByVal("id", stb.recordings[idx].ch_id);
 
                 if (ch_idx !== null){
-                    var channel_name = stb.player.channels[idx].name;
+                    var channel_name = stb.player.channels[ch_idx].name;
                 }else{
                     channel_name = '';
                 }

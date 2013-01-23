@@ -220,15 +220,24 @@ HTMLElement.prototype.delClass = function(){
     }
 };
 
+HTMLElement.prototype.haveClass = function(class_name){
+    var classes = this.className.replace(/\s+/g, ' ').split(' ');
+
+    return classes.indexOf(class_name) != -1;
+};
+
 HTMLElement.prototype.addClass = function(class_name){
     try{
         if (!this.className){
             this.setClass(class_name);
         }else{
-            var new_class_name = this.className.replace(eval('/('+class_name+')/g'), '').replace(/((\s)+)/g, '');
-            new_class_name += " ";
-            new_class_name += class_name;
-            this.setClass(new_class_name);
+            var classes = this.className.replace(/\s+/g, ' ').split(' ');
+
+            if (classes.indexOf(class_name) == -1){
+                classes.push(class_name);
+            }
+
+            this.setClass(classes.join(' '));
         }
     }catch(e){
         _debug(e);

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-17 15:33+0200\n"
-"PO-Revision-Date: 2013-01-17 15:34+0200\n"
+"POT-Creation-Date: 2013-01-23 10:52+0200\n"
+"PO-Revision-Date: 2013-01-23 10:53+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3315,19 +3315,27 @@ msgstr ""
 msgid "PVR Error: Error writing to file"
 msgstr ""
 
+#: ../../../lang/stb.php:462
+msgid "Start time"
+msgstr "Начало"
+
 #: ../../../lang/stb.php:463
+msgid "End time"
+msgstr "Завершение"
+
+#: ../../../lang/stb.php:466
 msgid "Recording"
 msgstr "Запись"
 
-#: ../../../lang/stb.php:464
+#: ../../../lang/stb.php:467
 msgid "Recording on USB device interrupted"
 msgstr "Запись на USB устройство прервана"
 
-#: ../../../lang/stb.php:466
+#: ../../../lang/stb.php:469
 msgid "Wrong"
 msgstr "Неверно"
 
-#: ../../../lang/stb.php:467
+#: ../../../lang/stb.php:470
 msgid "Parent control"
 msgstr "Родительский контроль"
 
@@ -3698,12 +3706,12 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/itv.class.php:1232
+#: ../../../lib/itv.class.php:1240
 #, php-format
 msgid "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1242
+#: ../../../lib/itv.class.php:1250
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
@@ -3773,8 +3781,8 @@ msgstr "Модули"
 msgid "last week"
 msgstr "7 дней"
 
-#: ../../../lib/weatherco.class.php:118
-#: ../../../lib/weatherco.class.php:139
+#: ../../../lib/weatherco.class.php:140
+#: ../../../lib/weatherco.class.php:161
 msgid "city_name_field"
 msgstr "name"
 
