@@ -158,7 +158,7 @@
 
                 stb.load(
                     {
-                        "type"   : "tv",
+                        "type"   : "itv",
                         "action" : "create_link",
                         "cmd"    : channel.cmd
                     },

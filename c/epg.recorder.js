@@ -44,9 +44,10 @@
             _debug('allow_remote_pvr', allow_remote_pvr);
             _debug('allow_local_pvr', allow_local_pvr);
 
-            if (allow_remote_pvr && allow_remote_pvr){
+            if (allow_remote_pvr && allow_local_pvr){
                 stb.player.pvr_target_select.deferred = true;
                 stb.player.pvr_target_select.program = this.get_item();
+                stb.player.pvr_target_select.channel = channel;
                 stb.player.pvr_target_select.show({parent : this.parent});
             }else if (allow_remote_pvr){
                 // show confirm
@@ -57,6 +58,7 @@
                 // show confirm
                 stb.player.local_pvr_confirm.deferred = true;
                 stb.player.local_pvr_confirm.program = this.get_item();
+                stb.player.local_pvr_confirm.channel = channel;
                 stb.player.local_pvr_confirm.show({parent : this.parent});
             }else{
                 stb.notice.show(get_word('channel_recording_restricted'));

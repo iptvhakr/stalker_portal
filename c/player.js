@@ -512,7 +512,7 @@ player.prototype.init_pvr_dialogs = function(){
 
                 var now_time = new Date();
 
-                if (start_time.getTime() > now_time.getTime()){
+                if (start_time.getTime() > now_time.getTime() && !scope.local_pvr_confirm.deferred){
                     scope.local_pvr_confirm.deferred = true;
                     scope.local_pvr_confirm.program = {
                         "id"    : 0,
@@ -536,16 +536,24 @@ player.prototype.init_pvr_dialogs = function(){
     ));
 
     this.local_pvr_confirm.addCustomEventListener('before_show', function(){
-        scope.local_pvr_confirm.getItemByName('start_time').setValue('now');
 
-        var epg = stb.epg_loader.get_curr_and_next(scope.local_pvr_confirm.channel.id);
-
-        if (epg && epg.length > 0){
-            var end_time = epg[0].stop_timestamp * 1000;
+        if (scope.local_pvr_confirm.program && scope.local_pvr_confirm.deferred){
+            var start_time = scope.local_pvr_confirm.program.start_timestamp * 1000;
+            var end_time   = scope.local_pvr_confirm.program.stop_timestamp * 1000;
         }else{
-            end_time = new Date().getTime() + 3*3600*1000;
+
+            start_time = 'now';
+
+            var epg = stb.epg_loader.get_curr_and_next(scope.local_pvr_confirm.channel.id);
+
+            if (epg && epg.length > 0){
+                end_time = epg[0].stop_timestamp * 1000;
+            }else{
+                end_time = new Date().getTime() + 3*3600*1000;
+            }
         }
 
+        scope.local_pvr_confirm.getItemByName('start_time').setValue(start_time);
         scope.local_pvr_confirm.getItemByName('end_time').setValue(end_time);
         scope.local_pvr_confirm.getItemByName('end_time')._onset(scope.local_pvr_confirm.getItemByName('end_time').getValue());
     });
