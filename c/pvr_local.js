@@ -566,6 +566,20 @@
             return false;
         };
 
+        this.handle_error = function(rec_id){
+            _debug('pvr_local.handle_error', rec_id);
+
+            var task = pvrManager.GetTaskByID(rec_id);
+
+            _debug('task', task);
+
+            task = JSON.parse(task);
+
+            if (task && task.hasOwnProperty('errorCode')){
+                this.is_error(task.errorCode);
+            }
+        };
+
         this.remove_all_with_errors = function(){
             _debug('pvr_local.remove_all_active');
 

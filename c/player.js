@@ -622,7 +622,7 @@ player.prototype.init_play_or_download_dialog = function(){
     ));
 };
 
-player.prototype.event_callback = function(event){
+player.prototype.event_callback = function(event, params){
     _debug('event: ', event);
     
     event = parseInt(event);
@@ -1015,7 +1015,16 @@ player.prototype.event_callback = function(event){
         }
         case 35:
         { // PVR Error
-            stb.notice.show(get_word('local_pvr_interrupted'));
+            _debug('params', params);
+
+            params = JSON.parse(params);
+
+            if (params && params.hasOwnProperty('id')){
+                module.pvr_local.handle_error(params.id);
+            }else{
+                stb.notice.show(get_word('local_pvr_interrupted'));
+            }
+
             module.pvr_local.remove_all_with_errors();
             break;
         }

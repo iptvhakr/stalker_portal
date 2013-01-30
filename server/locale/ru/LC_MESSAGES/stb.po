@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-23 10:52+0200\n"
-"PO-Revision-Date: 2013-01-23 10:53+0200\n"
+"PO-Revision-Date: 2013-01-30 15:56+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3272,48 +3272,47 @@ msgstr "Канал уже имеет запланированную запись
 
 #: ../../../lang/stb.php:451
 msgid "PVR Error: Wrong parameter"
-msgstr ""
+msgstr "Ошибка PVR: Неправильный параметр"
 
 #: ../../../lang/stb.php:452
 msgid "PVR Error: Not enough memory to complete the operation"
-msgstr ""
+msgstr "Ошибка PVR: Недостаточно памяти для выполнения операции"
 
 #: ../../../lang/stb.php:453
 msgid "PVR Error: Incorrect recording range"
-msgstr ""
+msgstr "Ошибка PVR: Неправильный диапазон записи"
 
 #: ../../../lang/stb.php:454
 msgid "PVR Error: Task not found"
-msgstr ""
+msgstr "Ошибка PVR: Задача не найдена"
 
 #: ../../../lang/stb.php:455
 msgid "PVR Error: Wrong filename"
-msgstr ""
+msgstr "Ошибка PVR: Неправильное имя файла"
 
 #: ../../../lang/stb.php:456
-#, fuzzy
 msgid "PVR Error: Record file already exists"
-msgstr "Ошибка: папка с таким именем уже существует"
+msgstr "Ошибка PVR: Файл уже существует"
 
 #: ../../../lang/stb.php:457
 msgid "PVR Error: Error opening channel URL"
-msgstr ""
+msgstr "Ошибка PVR: Ошибка открытия URL"
 
 #: ../../../lang/stb.php:458
 msgid "PVR Error: Error opening file"
-msgstr ""
+msgstr "Ошибка PVR: Ошибка открытия файла"
 
 #: ../../../lang/stb.php:459
 msgid "PVR Error: Exceeded the maximum number simultaneous recordings"
-msgstr ""
+msgstr "Ошибка PVR: Превышено максимальное количествоодновременных записей"
 
 #: ../../../lang/stb.php:460
 msgid "PVR Error: End of stream"
-msgstr ""
+msgstr "Ошибка PVR: Получен конец потока"
 
 #: ../../../lang/stb.php:461
 msgid "PVR Error: Error writing to file"
-msgstr ""
+msgstr "Ошибка PVR: Ошибка записи в файл"
 
 #: ../../../lang/stb.php:462
 msgid "Start time"
