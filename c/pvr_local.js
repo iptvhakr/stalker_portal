@@ -599,6 +599,7 @@
     module.pvr_local = new PvrLocal();
 
     if (typeof(pvrManager) != "undefined"){
+        pvrManager.SetMaxRecordingCnt(10);
         var active_tasks = JSON.parse(pvrManager.GetAllTasks()) || [];
     }else{
         active_tasks = [];
