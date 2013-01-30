@@ -463,6 +463,10 @@ class User
             unset($new_account['password']);
         }
 
+        if (empty($new_account)){
+            return true;
+        }
+
         return Mysql::getInstance()->update('users', $new_account, array('id' => $this->id))->result();
     }
 
