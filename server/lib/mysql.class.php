@@ -214,15 +214,14 @@ class Mysql
     private function prepare_in($field, $values, $not = false){
         
         $escaped_values = array();
-
-        foreach ($values as $value){
-            if (is_numeric($value)){
-                $escaped_values []= $value;
-            }else{
-                $escaped_values []= "'".$this->escape_str($value)."'";
-            }
-        }
         if (!empty($values)){
+            foreach ($values as $value){
+                if (is_numeric($value)){
+                    $escaped_values []= $value;
+                }else{
+                    $escaped_values []= "'".$this->escape_str($value)."'";
+                }
+            }
             $values = implode(",", $escaped_values);
         }else{
             $values = 'null';
