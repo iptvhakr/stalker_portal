@@ -1434,17 +1434,17 @@
             _debug('media_browser.sort_list_by_date', list);
 
             var times = list.map(function(item){
-                return item.last_modified || 0;
+                return (item.last_modified || 0)+'_'+item.name;
             });
 
-            times.sort();
+            times.sort(function(a,b){return parseInt(b, 10) - parseInt(a, 10)});
 
             _debug('times', times);
 
             var sorted_list = [];
 
             list.every(function(item){
-                var idx = times.indexOf(item.last_modified);
+                var idx = times.indexOf(item.last_modified+'_'+item.name);
                 sorted_list[idx] = item;
                 return true;
             });

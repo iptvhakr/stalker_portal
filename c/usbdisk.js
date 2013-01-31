@@ -167,7 +167,7 @@ usbdisk.prototype.read_dir = function(path){
     
     try{
         
-        var txt = stb.ListDir(path);
+        var txt = stb.ListDir(path, true);
         
         _debug(txt);
         
