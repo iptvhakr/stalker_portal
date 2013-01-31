@@ -56,7 +56,11 @@ class RESTApiTvChannelLink extends RESTApiController
             $link = null;
         }
 
-        $url = $itv->getUrlByChannelId($parent_id, $link);
+        try{
+            $url = $itv->getUrlByChannelId($parent_id, $link);
+        }catch (\ItvChannelTemporaryUnavailable $e){
+            throw new RESTNotFound($e->getMessage());
+        }
 
         if (preg_match("/(\S+:\/\/\S+)/", $url, $match)){
             $url = $match[1];

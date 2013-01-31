@@ -81,6 +81,11 @@ class Itv extends AjaxResponse
 
             if (!empty($link)){
                 $link_id = $link['id'];
+
+                if ($link['status'] == 0){
+                    throw new ItvLinkException('nothing_to_play');
+                }
+
             }else{
                 $link_id = null;
             }
@@ -136,6 +141,10 @@ class Itv extends AjaxResponse
                 $channel['wowza_tmp_link']     = $link['wowza_tmp_link'];
                 $channel['use_load_balancing'] = $link['use_load_balancing'];
             }
+        }
+
+        if (empty($link_id)){
+            throw new ItvChannelTemporaryUnavailable();
         }
 
         if (empty($channel)){
@@ -1258,4 +1267,8 @@ class Itv extends AjaxResponse
 }
 
 class ItvLinkException extends Exception{}
+
+class ItvChannelTemporaryUnavailable extends Exception{
+    protected $message = 'temporary_unavailable';
+}
 ?>
