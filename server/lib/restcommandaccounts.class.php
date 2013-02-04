@@ -10,7 +10,7 @@ class RESTCommandAccounts extends RESTCommand
         if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
             $users_ids = Stb::getUidByMacs($identifiers);
         }else{
-            $users_ids = Stb::getUidByLogin($identifiers);
+            $users_ids = Stb::getUidByAccountNumber($identifiers);
         }
 
         if (count($identifiers) == 1 && count($users_ids) == 0){
@@ -94,7 +94,7 @@ class RESTCommandAccounts extends RESTCommand
         if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
             $users_ids = Stb::getUidByMacs($identifiers);
         }else{
-            $users_ids = Stb::getUidByLogin($identifiers);
+            $users_ids = Stb::getUidByAccountNumber($identifiers);
         }
 
         if (count($identifiers) == 1 && count($users_ids) == 0){
@@ -122,7 +122,7 @@ class RESTCommandAccounts extends RESTCommand
         if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
             $users_ids = Stb::getUidByMacs($identifiers);
         }else{
-            $users_ids = Stb::getUidByLogin($identifiers);
+            $users_ids = Stb::getUidByAccountNumber($identifiers);
         }
 
         if (count($identifiers) == 1 && count($users_ids) == 0){

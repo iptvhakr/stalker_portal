@@ -1311,6 +1311,22 @@ class Stb
         return $result->get()->all('id');
     }
 
+    public static function getUidByAccountNumber($account_number){
+
+        $result = Mysql::getInstance()->from('users');
+
+        if ($account_number !== null){
+
+            if (!is_array($account_number)){
+                $account_number = array($account_number);
+            }
+
+            $result = $result->in('ls', $account_number);
+        }
+
+        return $result->get()->all('id');
+    }
+
     public static function getUidByLogin($login){
 
         $result = Mysql::getInstance()->from('users');
