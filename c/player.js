@@ -2189,6 +2189,10 @@ player.prototype.switch_channel = function(dir, show_info){
     
     _debug('switch_channel', dir);
 
+    if (stb.user.invert_channel_switch_direction == 1){
+        dir = -1 * dir;
+    }
+
     if (this.active_time_shift){
         this.time_shift_indication.show();
         return;

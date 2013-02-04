@@ -372,6 +372,8 @@ class Stb
 
         $profile['enable_connection_problem_indication']  = Config::getSafe('enable_connection_problem_indication', true);
 
+        $profile['invert_channel_switch_direction']  = Config::getSafe('invert_channel_switch_direction', false);
+
         return $profile;
     }
 
