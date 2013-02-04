@@ -64,6 +64,21 @@ class Radio extends AjaxResponse
         return $this->response;
     }
 
+    public function getRawAllUserChannels($uid = null){
+
+        if ($uid){
+            if (Config::getSafe('enable_tariff_plans', false)){
+
+                $user = User::getInstance(Stb::getInstance()->id);
+                $user_channels = $user->getServicesByType('radio');
+
+                return Mysql::getInstance()->from('radio')->where(array('status' => 1))->in('id', $user_channels)->orderby('number');
+            }
+        }
+
+        return Mysql::getInstance()->from('radio')->where(array('status' => 1))->orderby('number');
+    }
+
     public static function getServices(){
         return Mysql::getInstance()->select('id, name')->from('radio')->get()->all();
     }

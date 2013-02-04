@@ -381,8 +381,8 @@ if (!empty($_GET['letter'])){
 }
 
 $query = "select karaoke.*,administrators.login, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter
-    from karaoke 
-    inner join administrators on administrators.id=karaoke.add_by
+    from karaoke
+    left join administrators on administrators.id=karaoke.add_by
     left join media_claims on karaoke.id=media_claims.media_id and media_claims.media_type='karaoke'
     $where group by karaoke.id, karaoke.add_by order by $orderby LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;

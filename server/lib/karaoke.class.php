@@ -28,17 +28,35 @@ class Karaoke extends AjaxResponse
         
         $media_id = $tmp_arr[1];
 
-        $master = new KaraokeMaster();
-        
-        try {
-            $res = $master->play($media_id);
-        }catch (Exception $e){
-            trigger_error($e->getMessage());
-        }
+        $res = $this->getLinkByKaraokeId($media_id);
         
         var_dump($res);
         
         return $res;
+    }
+
+    public function getLinkByKaraokeId($karaoke_id){
+
+        $master = new KaraokeMaster();
+
+        try {
+            $res = $master->play($karaoke_id);
+        }catch (Exception $e){
+            trigger_error($e->getMessage());
+        }
+
+        return $res;
+    }
+
+    public function getUrlByKaraokeId($karaoke_id){
+
+        $link = $this->getLinkByKaraokeId($karaoke_id);
+
+        if (empty($link['cmd'])) {
+            throw new Exception("Obtaining url failed");
+        }
+
+        return $link['cmd'];
     }
     
     private function getData(){
@@ -133,6 +151,14 @@ class Karaoke extends AjaxResponse
     public function setClaim(){
         
         return $this->setClaimGlobal('vclub');
+    }
+
+    public function getRawAll(){
+        return Mysql::getInstance()
+            ->select('karaoke.*, karaoke_genre.title as genre')
+            ->from('karaoke')
+            ->join('karaoke_genre', 'karaoke.genre_id', 'karaoke_genre.id', 'LEFT')
+            ->where(array('status' => 1));
     }
 }
 
