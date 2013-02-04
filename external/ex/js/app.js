@@ -840,6 +840,8 @@ app.player={
     },
     "_stop": function() {
         log('* stb.Stop();');
+        app.keypress.ars_3dmode = 0;
+        stb.Set3DConversionMode && stb.Set3DConversionMode(0);
         stb.Stop();
         if(app.player._jump_obj != null){
             clearTimeout(app.player._jump_obj);			
@@ -1180,6 +1182,7 @@ app.player={
                 case "3dmode":
                     app.keypress.als_layer=3;
                     app.keypress.als_max_v=4;
+                    app.keypress.als_index_v = app.keypress.ars_3dmode+1;
                     for(var i=1;i<=4;i++){
                         div={
                                 'tag':'div',

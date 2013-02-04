@@ -115,6 +115,7 @@ app.keypress={
     "als_index_v":1,
     "ars_index_v":1,
     "ars_max_v":3,
+    "ars_3dmode":0,
     "als_layer":1,
     "als_max_v":0,
     "als_active_audio":-1,
@@ -501,7 +502,7 @@ app.keypress={
                         }
                     break;
                     case as.layers.PLAYER:
-                        app.player.change_audiotrack();
+                        //app.player.change_audiotrack();
                     break;
                     case as.layers.SEARCH:
                         if(event.target.type=='text'){log("back cancel");return;}
