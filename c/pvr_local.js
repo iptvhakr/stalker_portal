@@ -256,7 +256,7 @@
                     "internal_id" : rec_id ? rec_id : 0,
                     "deferred" : !!start,
                     "program_id"      : program ? program.id : 0,
-                    "program_real_id" : program ? program.real_id : ''
+                    "program_real_id" : program && program.real_id ? program.real_id : ''
                 },
                 function(result){
                     _debug('on start_record_on_stb', result);

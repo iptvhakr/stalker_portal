@@ -35,7 +35,7 @@ class StreamRecorder extends Master
 
     public function startDeferred($program_id, $on_stb = false, $program = null){
 
-        if ($program){
+        if ($program && empty($program_id)){
             $epg = $program;
         }else{
             $epg = Mysql::getInstance()
@@ -199,7 +199,11 @@ class StreamRecorder extends Master
         }else{
             $program = $epg->getProgramByChannelAndTime($channel['id'], $start_time);
 
-            if ($virtual_program){
+            if ($virtual_program && is_array($virtual_program) && !array_key_exists('id', $virtual_program)){
+                $program['time']    = $virtual_program['time'];
+                $program['time_to'] = $virtual_program['time_to'];
+                $start_time = $program['time'];
+            }elseif ($virtual_program){
                 $virtual_program['name'] = $program['name'];
                 $program = $virtual_program;
             }

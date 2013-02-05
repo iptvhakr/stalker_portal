@@ -187,7 +187,10 @@ class RemotePvr extends AjaxResponse
                 return $rec_exist['id'];
             }
 
-            $rec_id = $recorder->startDeferred($program_id, true);
+            $rec_id = $recorder->startDeferred($program_id, true, array(
+                'time'    => date("Y-m-d H:i:s", $start_ts),
+                'time_to' => date("Y-m-d H:i:s", $stop_ts)
+            ));
         }else{
             $program = array(
                 'id'      => 0,

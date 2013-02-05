@@ -520,6 +520,12 @@ player.prototype.init_pvr_dialogs = function(){
                         "start_timestamp" : parseInt(start_time.getTime()/1000, 10),
                         "stop_timestamp"  : parseInt(end_time.getTime()/1000, 10)
                     };
+                }else if(scope.local_pvr_confirm.deferred && scope.local_pvr_confirm.program){
+                    if (scope.local_pvr_confirm.program.start_timestamp*1000 != start_time.getTime()
+                     || scope.local_pvr_confirm.program.stop_timestamp*1000  != end_time.getTime()){
+                        scope.local_pvr_confirm.program.start_timestamp = parseInt(start_time.getTime()/1000, 10);
+                        scope.local_pvr_confirm.program.stop_timestamp  = parseInt(end_time.getTime()/1000, 10);
+                    }
                 }
 
                 if (scope.local_pvr_confirm.deferred && scope.local_pvr_confirm.program.id == 0){
