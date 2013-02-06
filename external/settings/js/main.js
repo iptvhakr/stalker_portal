@@ -4,8 +4,16 @@ var close=false;
 var load_fl=false;
 
 (function(){
-   var get = new String(window.location);
+   var get = window.location.href;
    var x = get.indexOf('?');
+   var bad = get.lastIndexOf('?');
+
+   if (x != bad){
+       get = get.split('');
+       get[bad] = '&';
+       get = get.join('');
+   }
+
    if (x!=-1){
        var l = get.length;
        get = get.substr(x+1, l-x);
