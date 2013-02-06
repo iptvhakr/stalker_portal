@@ -1,7 +1,7 @@
 ﻿
 <html>
     <head>
-        
+<script language="JavaScript" src="js/pres.js"></script>
 <script>
 var iid=1;
 var pread=["a","b","igmp_conf","upnp_conf","mc_proxy_enabled","mc_proxy_url","input_buffer_size"];
@@ -44,7 +44,7 @@ function submit()
     var regURL = /^(?:(?:http):\/\/(?:[a-z0-9_-]{1,32}(?::[a-z0-9_-]{1,32})?@)?)?(?:(?:[a-z0-9-]{1,128}\.)+(?:com|net|org|mil|edu|arpa|ru|gov|biz|info|aero|inc|name|[a-z]{2})|(?! 0)(?:(?! 0[^.]|255)[ 0-9]{1,3}\.){3}(?! 0|255)[ 0-9]{1,3})(?:\/[a-zа-я0-9.,_@%&?+=\~\/-]*)?(?:#[^ \'\"&<>]*)?$/i;
     var wr='{';
     var by=Math.floor(10240000/15*gr);
-    if(gr!=read.result.input_buffer_size){wf=true;pr=true;wr+='"input_buffer_size":"'+gr*1000+'"';parent.stb.SetBufferSize(gr,by);}
+    if(gr!=read.result.input_buffer_size){wf=true;pr=true;wr+='"input_buffer_size":"'+gr*1000+'"';parent.stb.SetBufferSize(gr*1000,by);}
     var t=document.getElementById("i3").value;
     if(t!=read.result.igmp_conf){wf=true;wr+=(pr?',':'')+'"igmp_conf":"'+t+'"';pr=true;}
     t=document.getElementById("i4").value;
@@ -70,7 +70,6 @@ function change(a){
 }
 
 </script>
-<script language="JavaScript" src="js/pres.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
 <body onload="onLoad()" onkeydown="pressKey(event);">
         <div id="blueback">
