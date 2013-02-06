@@ -256,7 +256,7 @@ class Stb
     
     public function getProfile(){
 
-        if ((empty($_SERVER['HTTP_TARGET']) || ($_SERVER['HTTP_TARGET'] != 'API' && $_SERVER['HTTP_TARGET'] != 'ADM')) && !Middleware::isValidMAC($this->mac)){
+        if ((empty($_SERVER['HTTP_TARGET']) || ($_SERVER['HTTP_TARGET'] != 'API' && $_SERVER['HTTP_TARGET'] != 'ADM')) && Config::getSafe('enable_mac_format_validation', true) && !Middleware::isValidMAC($this->mac)){
             $this->logNotValidMAC(isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '', isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '');
             return array(
                 'status' => 1
