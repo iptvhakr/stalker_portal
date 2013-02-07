@@ -224,26 +224,9 @@ class Event extends HTTPPush
     protected function saveInDb(){
         
         if (is_array($this->param['user_list']) && count($this->param['user_list']) > 0){
-        /*$sql = 'insert into events (
-                                      uid,
-                                      event,
-                                      addtime,
-                                      eventtime,
-                                      need_confirm,
-                                      reboot_after_ok,
-                                      msg,
-                                      priority
-                                     )
-                              VALUES ';
-        
-            foreach ($this->param['user_list'] as $uid){
-                $sql .= '('.$uid.', "'.$this->param['event'].'", NOW(), "'.$this->param['eventtime'].'", '.$this->param['need_confirm'].', '.$this->param['reboot_after_ok'].', "'.mysql_real_escape_string($this->param['msg']).'", '.$this->param['priority'].'),';
-            }
-            $sql = substr($sql, 0, strlen($sql)-1);
-            $this->db->executeQuery($sql);*/
             
             $data = array();
-            
+
             foreach ($this->param['user_list'] as $uid){
                 
                 $data[] = array(
@@ -261,15 +244,13 @@ class Event extends HTTPPush
                 if ($this->param['event'] == 'cut_off'){
                     \Stalker\Lib\OAuth\AuthAccessHandler::setInvalidAccessTokenByUid($uid);
                 }
-                
             }
-            
+
+            if ($this->param['event'] == 'send_msg' && $this->param['reboot_after_ok'] == 1){
+                Mysql::getInstance()->query('delete from events where uid in('.implode(',', $this->param['user_list']).') and event="send_msg" and sended=0 and reboot_after_ok=1');
+            }
+
             $this->db->insert('events', $data);
-            
-            
-            /*if ($this->db->getLastError()){
-                echo $this->db->getLastError();
-            }*/
         }
     }
 }
