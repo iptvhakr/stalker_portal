@@ -173,7 +173,7 @@ class Epg
         $total_need_to_delete = array_diff($total_need_to_delete, $this->new_ids);
 
         if (!empty($total_need_to_delete)){
-            Mysql::getInstance()->query('delete from epg where id in ('.implode(', ', $total_need_to_delete).')');
+            Mysql::getInstance()->query('delete from epg where id in ('.implode(', ', array_unique($total_need_to_delete)).')');
             Mysql::getInstance()->query('OPTIMIZE TABLE epg');
         }
 
@@ -287,6 +287,8 @@ class Epg
      */
     private function getProgramIdsForClean($date, $itv_id){
 
+        $real_date = $date;
+
         $real_from = date("Y-m-d H:i:s", $date);
 
         $date = date("Y-m-d", $date);
@@ -298,8 +300,8 @@ class Epg
             $this->cleaned_epg[$itv_id] = array();
         }
 
-        if (!array_key_exists($date, $this->cleaned_epg[$itv_id])){
-            $this->cleaned_epg[$itv_id] = array($date => 1);
+        if (!array_key_exists($date, $this->cleaned_epg[$itv_id]) || $this->cleaned_epg[$itv_id][$date] > $real_date){
+            $this->cleaned_epg[$itv_id] = array($date => $real_date);
 
             $need_to_delete = Mysql::getInstance()
                 ->from('epg')
