@@ -17,7 +17,7 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('Account not found');
         }
 
-        if ($identifiers != null && count($identifiers) != count($users_ids)){
+        if ($identifiers != null && count($identifiers) > count($users_ids)){
             throw new RESTCommandException('One or more identifiers are incorrect');
         }
 
