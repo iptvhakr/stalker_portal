@@ -48,16 +48,36 @@ class Vclub extends Storage
         }
 
         if ($handle = @opendir(VIDEO_STORAGE_DIR.$name)) {
+
+            $file_list = scandir(VIDEO_STORAGE_DIR.$name);
+
+            $subtitles = array_filter($file_list, function($file){
+                return in_array(substr($file, strrpos($file, '.') + 1), array('srt', 'sub', 'ass'));
+            });
+
             while (false !== ($file = readdir($handle))) {
+
                 if ($file != "." && $file != ".." && preg_match("/([\S\s]+)\.(".$this->media_ext_str.")$/i", $file)) {
 
-                    key_exists($file, $md5_sum) ? $sum = $md5_sum[$file] : $sum='';
+                    array_key_exists($file, $md5_sum) ? $sum = $md5_sum[$file] : $sum='';
 
-                    $result['files'][] = array(
+                    $info = array(
                         'name'   => $file,
                         'md5'    => $sum,
                         'status' => $status
                     );
+
+                    $movie_base = substr($file, 0, strrpos($file, '.'));
+
+                    $movie_subtitles = array_filter($subtitles, function($subtitle_file) use ($movie_base){
+                        return strpos($subtitle_file, $movie_base) === 0;
+                    });
+
+                    if (!empty($movie_subtitles)){
+                        $info['subtitles'] = array_values($movie_subtitles);
+                    }
+
+                    $result['files'][] = $info;
 
                     if (preg_match("/^([\d]+)\.(".$this->media_ext_str.")$/i", $file, $tmp_arr)){
                         $result['series'][] = $tmp_arr[1];
@@ -91,8 +111,45 @@ class Vclub extends Storage
 
         $from = VIDEO_STORAGE_DIR.$media_file;
 
+        $path = dirname($from);
+        $file = basename($from);
+
+        $movie_base = substr($file, 0, strrpos($file, '.'));
+
+        $file_list = scandir($path);
+
+        if ($file_list === false){
+            throw new IOException('Could not scan dir'.$path.' on '.$this->storage_name);
+        }
+
+        $subtitles = array_filter($file_list, function($file){
+            return in_array(substr($file, strrpos($file, '.') + 1), array('srt', 'sub', 'ass'));
+        });
+
+        $movie_subtitles = array_filter($subtitles, function($subtitle_file) use ($movie_base){
+            return strpos($subtitle_file, $movie_base) === 0;
+        });
+
+        if (!empty($movie_subtitles)){
+            foreach ($movie_subtitles as $subtitle){
+
+                $from_sub = $path.'/'.$subtitle;
+                $to_sub   = NFS_HOME_PATH.$this->user->getMac().'/'.$subtitle;
+
+                if ($proto == 'http'){
+                    $link_result = @symlink($from_sub, $to_sub);
+                }else{
+                    $link_result = @link($from_sub, $to_sub);
+                }
+
+                if (!$link_result){
+                    throw new IOException('Could not create link '.$from_sub.' to '.$to_sub.' on '.$this->storage_name);
+                }
+            }
+        }
+
         $to = NFS_HOME_PATH.$this->user->getMac().'/'.$media_id.'.'.$ext;
-        
+
         if ($proto == 'http'){
             $link_result = @symlink($from, $to);
         }else{

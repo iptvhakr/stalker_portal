@@ -116,6 +116,10 @@ player.prototype.init = function(){
         stb.SetLoop(0);
         stb.SetMicVolume(100);
 
+        if (stb.IsFileExist && stb.IsFileExist('/usr/lib/fonts/Ubuntu.ttf')){
+            stb.SetSubtitlesFont("/usr/lib/fonts/Ubuntu.ttf");
+        }
+
         stbEvent.onEvent = (function(self){
             return function(){
                 self.event_callback.apply(self, arguments);

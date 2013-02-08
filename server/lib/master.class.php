@@ -121,12 +121,44 @@ abstract class Master
 
                         if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
                             if (Config::exist('nfs_proxy')){
-                                $res['cmd'] = 'ffmpeg http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.RESTClient::$from.'/'.$this->media_id.'.'.$ext;
+                                $base_path = 'http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.RESTClient::$from.'/';
                             }else{
-                                $res['cmd'] = 'ffmpeg http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.RESTClient::$from.'/'.$this->media_id.'.'.$ext;
+                                $base_path = 'http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.RESTClient::$from.'/';
                             }
                         }else{
-                            $res['cmd'] = 'auto /media/'.$name.'/'.$this->media_id.'.'.$ext;
+                            $base_path = '/media/'.$name.'/';
+                        }
+
+                        if (strpos($base_path, 'http://') !== false){
+                            $res['cmd'] = 'ffmpeg ';
+                        }else{
+                            $res['cmd'] = 'auto ';
+                        }
+
+                        $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+
+                        $file_info = array_filter($storage['files'], function($info) use ($file){
+                            return $info['name'] == $file;
+                        });
+
+                        $file_info = array_values($file_info);
+
+                        if (!empty($file_info) && !empty($file_info[0]['subtitles'])){
+                            $res['subtitles'] = array_map(function($subtitle) use ($base_path, $file){
+
+                                $file_base = substr($file, 0, strrpos($file, '.'));
+
+                                $lang = substr($subtitle, strlen($file_base), strrpos($subtitle, '.') - strlen($file_base));
+
+                                if ($lang{0} == '_' || $lang{0} == '.'){
+                                    $lang = substr($lang, 1);
+                                }
+
+                                return array(
+                                    'file' => $base_path.$subtitle,
+                                    'lang' => $lang
+                                );
+                            }, $file_info[0]['subtitles']);
                         }
 
                     }else{
@@ -379,7 +411,7 @@ abstract class Master
         foreach ($storages as $name => $storage){
             
             $raw = $this->checkMediaDir($name, $this->media_name);
-            
+
             if (!$raw || count($raw['files']) > 1 && empty($raw['series'])){
                 continue;
             }

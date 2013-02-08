@@ -879,6 +879,18 @@
 
                             stb.player.prev_layer = self;
                             stb.player.need_show_info = 1;
+
+                            if (result.hasOwnProperty('subtitles')){
+
+                                var subtitles = result.subtitles.map(function(item, idx){
+                                    item.pid  = 'external_'+idx;
+                                    item.lang = [item.lang, ''];
+                                    return item;
+                                });
+
+                                stb.player.cur_media_item.subtitles = subtitles;
+                            }
+
                             stb.player.play_now(result.cmd);
                         }else{
                             //callback && callback(result.cmd);
