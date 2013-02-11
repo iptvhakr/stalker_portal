@@ -827,11 +827,16 @@
                 return null;
             }
 
+            _debug('stb.usbdisk.files',  stb.usbdisk.files);
+
             var subtitle_files = stb.usbdisk.files.filter(function(item){
+                _debug('item', item);
                 _debug('item.name', item.name);
-                _debug('item.name.indexOf(base)', item.name.indexOf(base));
-                _debug('indexOf...', ['srt', 'sub', 'ass'].indexOf(item.name.substring(item.name.lastIndexOf('.')+1)));
-                return item.name.indexOf(base) === 0 && ['srt', 'sub', 'ass'].indexOf(item.name.substring(item.name.lastIndexOf('.')+1)) != -1;
+                if (item.name){
+                    _debug('item.name.indexOf(base)', item.name.indexOf(base));
+                    _debug('indexOf...', ['srt', 'sub', 'ass'].indexOf(item.name.substring(item.name.lastIndexOf('.')+1)));
+                }
+                return item && item.name && item.name.indexOf(base) === 0 && ['srt', 'sub', 'ass'].indexOf(item.name.substring(item.name.lastIndexOf('.')+1)) != -1;
             });
 
             _debug('subtitle_files', subtitle_files);
