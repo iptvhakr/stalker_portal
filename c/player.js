@@ -26,6 +26,7 @@ function player(){
     this.start_time;
     this.cur_media_item = {};
     this.cur_tv_item;
+    this.last_not_locked_tv_item;
     this.need_show_info = 0;
     
     this.pause = {"on" : false};
@@ -1415,7 +1416,7 @@ player.prototype.play_last = function(){
     
     this.prev_layer = module.tv;
     this.show_info_after_play();
-    this.play(this.cur_tv_item);
+    this.play(this.last_not_locked_tv_item || this.cur_tv_item);
 };
 
 player.prototype.play_last_radio = function(){
@@ -1454,7 +1455,7 @@ player.prototype.init_first_channel = function(){
             channel = this.channels[this.ch_idx];
         }
 
-        this.cur_media_item = this.cur_tv_item = channel;
+        this.cur_media_item = this.cur_tv_item = this.last_not_locked_tv_item = channel;
     }
 };
 
@@ -1553,6 +1554,10 @@ player.prototype.play = function(item){
     
     if (this.is_tv){
         this.cur_tv_item = item;
+
+        if (this.cur_tv_item.lock != '1'){
+            this.last_not_locked_tv_item = item;
+        }
     }
     
     _debug('player.media_type: ', this.media_type);
