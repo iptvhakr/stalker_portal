@@ -94,6 +94,7 @@
     margin-top: -15px;
     line-height: 2px;
     overflow: hidden;
+    font-size: 18px;
 }
 
 .modal_form .form_select.active{

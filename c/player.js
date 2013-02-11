@@ -589,6 +589,53 @@ player.prototype.init_pvr_dialogs = function(){
     });
 };
 
+player.prototype.init_subtitle_encoding_select = function(){
+    _debug('player.init_subtitle_encoding_select');
+
+    if (this.subtitle_encoding_select){
+        return;
+    }
+
+    this.subtitle_encoding_select = new ModalForm({"title" : get_word('select_form_title')});
+    this.subtitle_encoding_select.enableOnExitClose();
+
+    this.subtitle_encoding_select.addItem(new ModalFormSelect(
+        {
+            "label" : get_word('encoding_label')+':',
+            "name" : "subtitle_encoding",
+            "options" : [
+                {
+                    "text"  : "UTF-8",
+                    "value" : "utf-8"
+                },
+                {
+                    "text"  : "Windows-1251",
+                    "value" : "cp1251"
+                },
+                {
+                    "text"  : "Windows-1252",
+                    "value" : "cp1252"
+                }
+            ]
+        }
+    ));
+
+    var scope = this;
+
+    this.subtitle_encoding_select.addItem(new ModalFormButton({
+        "value" : get_word("ok_btn"),
+        "name"  : "ok_btn",
+        "onclick" : function(){
+            var subtitle_encoding = scope.subtitle_encoding_select.getItemByName('subtitle_encoding').getValue();
+
+            _debug('subtitle_encoding', subtitle_encoding);
+
+            scope.subtitle_encoding_select.on_confirm && scope.subtitle_encoding_select.on_confirm(subtitle_encoding);
+            scope.subtitle_encoding_select.hide();
+        }
+    }));
+};
+
 player.prototype.init_play_or_download_dialog = function(){
     _debug('player.init_play_or_download_dialog');
     
@@ -3837,24 +3884,44 @@ player.prototype.subtitle_pid = {
         
         this.all_pids = subtitle_pids;
     },
-    
-    set : function(pid){
-        _debug('subtitle_pid.set', pid);
-    
+
+    _set_current_pid : function(pid){
+        _debug('subtitle_pid._set_current_pid', pid);
+
         this.enable();
 
         this.cur_pid_idx = this.all_pids.getIdxByVal('pid', pid);
 
         _debug('this.cur_pid_idx', this.cur_pid_idx);
         _debug('this.all_pids', this.all_pids);
-        
+
         this.all_pids[this.cur_pid_idx].selected = false;
         this.cur_pid = pid;
         this.cur_pid_idx = this.all_pids.getIdxByVal('pid', this.cur_pid);
+    },
 
-        if (this.all_pids[this.cur_pid_idx].hasOwnProperty('file')){
-            stb.LoadExternalSubtitles(this.all_pids[this.cur_pid_idx].file);
+    set : function(pid){
+        _debug('subtitle_pid.set', pid);
+
+        var cur_pid_idx = this.all_pids.getIdxByVal('pid', pid);
+
+        if (this.all_pids[cur_pid_idx].hasOwnProperty('file')){
+
+            var self = this;
+
+            stb.player.init_subtitle_encoding_select();
+
+            stb.player.subtitle_encoding_select.on_confirm = function(encoding){
+                _debug('on_confirm', encoding);
+                self._set_current_pid(pid);
+                stb.SetSubtitlesEncoding(encoding);
+                stb.LoadExternalSubtitles(self.all_pids[cur_pid_idx].file);
+            };
+
+            stb.player.subtitle_encoding_select.show();
+
         }else{
+            this._set_current_pid(pid);
             stb.SetSubtitlePID(pid);
         }
     },

@@ -13,7 +13,7 @@ function ModalForm(options){
     this._status = "";
     this._text = "";
     this._parent = {};
-    this._id = {};
+    this._id = '';
     this._need_restore_parent_on = false;
     this._on_exit_close = false;
 

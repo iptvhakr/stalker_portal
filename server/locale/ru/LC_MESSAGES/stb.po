@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-23 10:52+0200\n"
-"PO-Revision-Date: 2013-01-30 15:56+0200\n"
+"POT-Creation-Date: 2013-02-08 17:18+0200\n"
+"PO-Revision-Date: 2013-02-08 17:18+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3338,6 +3338,10 @@ msgstr "Неверно"
 msgid "Parent control"
 msgstr "Родительский контроль"
 
+#: ../../../lang/stb.php:473
+msgid "Encoding"
+msgstr "Кодировка"
+
 #: ../../../lib/account.class.php:18
 #: ../../../lib/account.class.php:39
 #: ../../../lib/account.class.php:60
@@ -3705,12 +3709,12 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/itv.class.php:1240
+#: ../../../lib/itv.class.php:1250
 #, php-format
 msgid "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1250
+#: ../../../lib/itv.class.php:1260
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
@@ -3723,11 +3727,11 @@ msgstr "идет запись"
 msgid "scheduled"
 msgstr "запланировано"
 
-#: ../../../lib/streamrecorder.class.php:134
+#: ../../../lib/streamrecorder.class.php:138
 msgid "Starting recording"
 msgstr "Начинается запись"
 
-#: ../../../lib/streamrecorder.class.php:431
+#: ../../../lib/streamrecorder.class.php:444
 msgid "Stopped recording"
 msgstr "Остановлена запись"
 
@@ -3742,37 +3746,33 @@ msgid "s"
 msgstr "с"
 
 #: ../../../lib/system.class.php:99
-#: ../../../lib/vod.class.php:799
 msgid "today"
 msgstr "сегодня"
 
 #: ../../../lib/system.class.php:101
-#: ../../../lib/vod.class.php:802
 msgid "yesterday"
 msgstr "вчера"
 
-#. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
-#: ../../../lib/user.class.php:820
-#: ../../../lib/user.class.php:821
+#: ../../../lib/user.class.php:824
+#: ../../../lib/user.class.php:825
 #: ../../../lib/video.class.php:95
-#: ../../../lib/vod.class.php:716
 #, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"
 
-#: ../../../lib/user.class.php:830
+#: ../../../lib/user.class.php:834
 msgid "TV channels"
 msgstr "ТВ каналы"
 
-#: ../../../lib/user.class.php:831
+#: ../../../lib/user.class.php:835
 msgid "Movies"
 msgstr "Видео"
 
-#: ../../../lib/user.class.php:832
+#: ../../../lib/user.class.php:836
 msgid "Radio channels"
 msgstr "Радио каналы"
 
-#: ../../../lib/user.class.php:833
+#: ../../../lib/user.class.php:837
 msgid "Modules"
 msgstr "Модули"
 
