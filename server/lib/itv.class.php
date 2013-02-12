@@ -709,16 +709,16 @@ class Itv extends AjaxResponse
         $all_user_channels_ids = $this->getAllUserChannelsIds();
 
         $fav_str = implode(",", $fav);
-        
+
         if (empty($fav_str)){
             $fav_str = 'null';
         }
-        
+
         $result = $this->getData();
-        
+
         if (@$_REQUEST['sortby']){
             $sortby = $_REQUEST['sortby'];
-            
+
             if ($sortby == 'name'){
                 $result = $result->orderby('name');
             }elseif ($sortby == 'number'){
@@ -726,11 +726,11 @@ class Itv extends AjaxResponse
             }elseif ($sortby == 'fav'){
                 $result = $result->orderby('field(id,'.$fav_str.')');
             }
-            
+
         }else{
             $result = $result->orderby('number');
         }
-        
+
         if (@$_REQUEST['fav']){
             $result = $result->in('itv.id', $fav);
         }
@@ -738,12 +738,12 @@ class Itv extends AjaxResponse
         if (!Config::getSafe('show_unsubscribed_tv_channels', false)){
             $result = $result->in('itv.id', $all_user_channels_ids);
         }
-        
+
         $this->setResponseData($result);
-        
+
         return $this->getResponse('prepareData');
     }
-    
+
     public function prepareData(){
 
         $fav           = $this->getFav();
@@ -871,6 +871,10 @@ class Itv extends AjaxResponse
                     $this->response['data'][$i]['open'] = 0;
                     $this->response['data'][$i]['cmd'] = 'udp://wtf?';
                 }
+            }
+
+            if ($this->response['data'][$i]['status'] == 0 && $this->stb->isModerator()){
+                $this->response['data'][$i]['only_for_moderator'] = 1;
             }
 
             $this->response['data'][$i]['cmds']               = self::getUrlsForChannel($this->response['data'][$i]['id']);

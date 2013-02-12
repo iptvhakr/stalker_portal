@@ -311,7 +311,7 @@ ListLayer.prototype.fill_list = function(data){
         
         _debug('data[i]', data[i]);
         
-        if (data[i].hasOwnProperty('open') && !data[i].open){
+        if (data[i].hasOwnProperty('open') && (!data[i].open || data[i].only_for_moderator == 1)){
             this.map[i]['row'].addClass('close');
             //this.map[i]['row'].setAttribute('rel', 'close');
         }else{
@@ -414,7 +414,7 @@ ListLayer.prototype.set_active_row = function(num){
         
         if (this.data_items[num]){
         
-            if (this.data_items[num].hasOwnProperty('open') && !this.data_items[num].open){
+            if (this.data_items[num].hasOwnProperty('open') && (!this.data_items[num].open || this.data_items[num].only_for_moderator == 1)){
                 this.active_row['row'].addClass('close');
                 //this.active_row['row'].setAttribute('rel', 'close');
             }else{
