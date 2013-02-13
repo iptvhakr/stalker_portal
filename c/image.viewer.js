@@ -63,6 +63,10 @@
             this.shift.bind(key.RIGHT, this, 1);
             this.shift.bind(key.LEFT,  this, -1);
             this.update_label.bind(key.INFO, this);
+
+            (function(){
+                stb.player.change_aspect();
+            }).bind(key.FRAME, this);
         };
 
         this.update_image = function(){
