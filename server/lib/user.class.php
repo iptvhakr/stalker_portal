@@ -95,6 +95,23 @@ class User
         return $this->profile;
     }
 
+    public function getLocalizedText($text){
+
+        $current_local = setlocale(LC_MESSAGES, 0);
+
+        $user_locale = $this->getProfileParam('locale');
+
+        if ($user_locale){
+            setlocale(LC_MESSAGES, $user_locale);
+            putenv('LC_MESSAGES='.$user_locale);
+            $text = _($text);
+            setlocale(LC_MESSAGES, $current_local);
+            putenv('LC_MESSAGES='.$current_local);
+        }
+
+        return $text;
+    }
+
     public function getVideoFavorites(){
 
         $fav_video_arr = Mysql::getInstance()->from('fav_vclub')->where(array('uid' => $this->id))->get()->first();

@@ -27,7 +27,8 @@ if (!empty($_POST['change_tariff_plan'])){
     if (Config::get('enable_tariff_plans')){
         $event = new SysEvent();
         $event->setUserListById(array(intval($_GET['id'])));
-        $event->sendMsgAndReboot(_('Tariff plan is changed, please restart your STB'));
+        $user = User::getInstance((int) $_GET['id']);
+        $event->sendMsgAndReboot($user->getLocalizedText('Tariff plan is changed, please restart your STB'));
     }
 
     header("Location: profile.php?id=".@$_GET['id']);

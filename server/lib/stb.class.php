@@ -286,6 +286,7 @@ class Stb
                 'serial_number' => isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
                 'num_banks'     => isset($_REQUEST['num_banks']) ? $_REQUEST['num_banks'] : 0,
                 'image_version' => isset($_REQUEST['image_version']) ? $_REQUEST['image_version'] : '',
+                'locale'        => $this->locale
             ),
             array('id' => $this->id));
 
