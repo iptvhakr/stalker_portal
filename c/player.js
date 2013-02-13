@@ -2654,14 +2654,9 @@ player.prototype.bind = function(){
             }
             
         }else if (this.is_tv){
-            //module.tv._show();
             module.tv._show(module.tv.genre);
-            //module.tv._show.call(module.tv, module.tv.genre);
             module.tv.set_short_container();
-            //module.tv._show();
-        }/*else{
-            this.con_menu && this.con_menu.show && this.con_menu.show();
-        }*/
+        }
         
     }).bind(key.OK, this);
     

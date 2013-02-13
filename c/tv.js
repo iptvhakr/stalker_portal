@@ -9,7 +9,7 @@
         
         this.layer_name = 'tv';
         
-        this.row_blocks  = ['number', 'fav', 'lock', 'archive', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
+        this.row_blocks  = ['number', 'now_playing', 'fav', 'lock', 'archive', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
         
         this.load_params = {
             'type'   : 'itv',
@@ -238,7 +238,15 @@
                 }else if (this.quick_ch_switch.on){
                     this.hide_quick_ch_switch();
                 }else{
-                    this.check_for_play();
+                    if (stb.profile['play_in_preview_only_by_ok'] && this.cur_view == 'short'){
+                        if (this.data_items[this.cur_row].id != stb.player.cur_media_item.id || !stb.player.on){
+                            this.check_for_play_in_preview();
+                        }else{
+                            this.hide(true);
+                        }
+                    }else{
+                        this.check_for_play();
+                    }
                 }
                 
             }).bind(key.OK, this);
@@ -708,6 +716,10 @@
                     stb.player.channels[idx].cmds  = channel.cmds;
                 }
 
+                if (stb.profile['play_in_preview_only_by_ok'] && channel.id == stb.player.cur_tv_item.id && stb.player.on){
+                    channel.now_playing = 1;
+                }
+
                 return channel;
             });
 
@@ -782,6 +794,14 @@
             
             var self = this;
 
+            _debug('stb.profile[play_in_preview_only_by_ok]', stb.profile['play_in_preview_only_by_ok']);
+
+            if (stb.profile['play_in_preview_only_by_ok']){
+                this.short_info_box.innerHTML = '';
+                this.short_epg_loader.start();
+                return;
+            }
+
             _debug('before set timeout');
             this.row_callback_timer = window.setTimeout(function(){
 
@@ -792,7 +812,7 @@
                 
                 //self.fill_short_info(item);
                 
-                if (item.open){
+                /*if (item.open){
 
                     _debug('item.lock', item.lock);
 
@@ -815,13 +835,48 @@
                 }else{
                     self.fill_short_info(item);
                     stb.player.stop();
-                }
+                }*/
+
+                self.check_for_play_in_preview();
                 
             },
             this.row_callback_timeout);
 
             _debug('this.row_callback_timeout', this.row_callback_timeout);
             _debug('after set timeout');
+        };
+
+        this.check_for_play_in_preview = function(item){
+            _debug('tv.check_for_play_in_preview');
+
+            item = item || this.data_items[this.cur_row];
+
+            var self = this;
+
+            if (item.open){
+
+                _debug('item.lock', item.lock);
+
+                if (item.lock && self.genre.alias != 'for adults'){
+                    self.password_input.callback = function(){
+                        stb.player.need_show_info = 0;
+                        stb.player.prev_layer = self;
+                        self.data_items[self.cur_row].unlocked = true;
+                        self.fill_short_info(item);
+                        self._play_now(item);
+                    };
+
+                    self.password_input.show();
+                }else{
+                    self.fill_short_info(item);
+                    stb.player.need_show_info = 0;
+                    stb.player.prev_layer = self;
+                    self._play_now(item);
+                }
+            }else{
+                self.fill_short_info(item);
+                stb.player.stop();
+            }
         };
 
         this._play_now = function(item){
@@ -855,8 +910,45 @@
                     }
                 }
             }
-            
+
+            if (stb.profile['play_in_preview_only_by_ok']){
+                this.show_now_playing(item.id);
+            }
+
             stb.player.play(item);
+        };
+
+        this.show_now_playing = function(ch_id){
+            _debug('tv.show_now_playing', ch_id);
+
+            var self = this;
+
+            var playing_idx = -1;
+
+            this.map.map(function(item, idx){
+                if (self.data_items[idx].id != ch_id){
+                    self.data_items[idx].now_playing = 0;
+                    item.now_playing_block.hide();
+                }else{
+                    playing_idx = idx;
+                    self.data_items[idx].now_playing = 1;
+                    item.now_playing_block.show();
+                }
+            });
+
+            if (playing_idx >= 0 && playing_idx == this.cur_row){
+                this.active_row.now_playing_block.show();
+            }else{
+                this.active_row.now_playing_block.hide();
+            }
+        };
+
+        this.hide_now_playing = function(){
+            _debug('tv.hide_now_playing');
+
+            this.map.map(function(item, idx){
+                item.now_playing_block.hide();
+            })
         };
         
         this.add_to_fav = function(){

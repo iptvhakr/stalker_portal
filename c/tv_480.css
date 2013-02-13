@@ -264,4 +264,21 @@
     right: 109px;
 }
 
+#tv .now_playing_block{
+    width: 24px;
+    height: 21px;
+    float: left;
+    margin: 1px 0 0 4px;
+    background: url("i/mb_player.png") no-repeat;
+}
+
+#tv .active_now_playing_block{
+    width: 24px;
+    height: 26px;
+    margin: 4px 2px 0 0;
+    float: left;
+    background: url("i/mb_player.png") no-repeat 0 -23px;
+    border-radius: 3px;
+}
+
 /* END TV */

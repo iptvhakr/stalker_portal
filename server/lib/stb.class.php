@@ -374,6 +374,8 @@ class Stb
 
         $profile['invert_channel_switch_direction']  = Config::getSafe('invert_channel_switch_direction', false);
 
+        $profile['play_in_preview_only_by_ok']  = Config::getSafe('play_in_preview_only_by_ok', false);
+
         return $profile;
     }
 
