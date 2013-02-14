@@ -343,37 +343,33 @@ function parseYoutubePage(html, playNow) {
 }
 
 function parseYoutubePage_new(html, playNow) {
-    var s = /amp\;url_encoded_fmt_stream_map=(.*?)amp\;/.exec(html);
+    var s = /"url_encoded_fmt_stream_map": "(.*?)"/.exec(html);
     log('\n\n'+s.length+'\n\n');
     log('\n\n'+s[1]+'\n\n');
     var str = '({';
-    var r = s[1].split('%2C');
+    var r = s[1].split(',');
     for(var i=0;i<r.length;i++){
-        //r[i] = r[i].replace('url%3D', '');
         r[i] = decodeURIComponent(r[i]);
         r[i] = decodeURIComponent(r[i]);
         r[i] = decodeURIComponent(r[i]);
         r[i] = unescape(r[i]);
         r[i] = unescape(r[i]);
         r[i] = unescape(r[i]);
-		var sig = /sig=(([^&])*)/igm.exec(r[i])[1];
-		r[i]=r[i].replace(/&sig=(([^&])*)/igm,"");
-		var link = r[i].substr(r[i].indexOf('http://')).replace(/\?.*/ig,"");
-		r[i] = r[i].replace(/url\=[\s\S]*videoplayback\?/,"");
-		var params = r[i].split("&");
-		var json_object = {};
-		var new_params;
-		for(var y = 0;y<params.length;y++){
-			new_params = params[y].split("=");
-			new_params[1] = new_params[1].replace(/;.*/ig,"");
-			json_object[new_params[0]] = new_params[1];
-		}		
+
+		var sig = /sig=([^\\]*)/igm.exec(r[i])[1];
+        var link_start = r[i].substring(r[i].indexOf('http://'));
+        var link_end = link_start.indexOf('\\');
+
+        if (link_end == - 1){
+            link_end = undefined;
+        }
+
+        var link = link_start.substring(0, link_end);
+
 		var m = /itag\=(\d{1,})/.exec(r[i]);
         str+=m[1]+':\''+link;
-		str+="?signature="+sig;
-		for(var z in json_object){
-			str+="&"+z+"="+json_object[z];
-		}
+		str+="&signature="+sig;
+
 		str+='\',';
     }
     str =  str.substr(0, str.length - 1) + '})';
