@@ -88,7 +88,7 @@ class TvArchive extends Master
 
         $res['cmd'] .= ' media_len:' . ($stop_timestamp - $start_timestamp);
 
-        $res['download_cmd'] = 'http://' . $storage['storage_ip'] . ':88'
+        $res['download_cmd'] = 'http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
             . '/stalker_portal/storage/get.php?filename=' . $filename
             . '&ch_id=' . $program['ch_id']
             . '&start=' . $position
@@ -151,7 +151,7 @@ class TvArchive extends Master
 
         $channel = Itv::getChannelById($program['ch_id']);
 
-        return 'http://' . $storage['storage_ip'] . ':88'
+        return 'http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
             . '/stalker_portal/storage/get.php?filename=' . $filename
             . '&ch_id=' . $program['ch_id']
             . '&start=' . $position

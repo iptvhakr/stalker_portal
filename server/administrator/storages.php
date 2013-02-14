@@ -28,7 +28,8 @@ if (!empty($_POST['nfs_home_path']) && strripos($_POST['nfs_home_path'], '/') !=
 if (@$_POST['add']){
     $sql = 'insert into storages (
                 storage_name, 
-                storage_ip, 
+                storage_ip,
+                apache_port,
                 nfs_home_path, 
                 max_online,
                 for_moderator,
@@ -42,6 +43,7 @@ if (@$_POST['add']){
             values (
                 "'.@$_POST['storage_name'].'",
                 "'.@$_POST['storage_ip'].'",
+                "'.@$_POST['apache_port'].'",
                 "'.@$_POST['nfs_home_path'].'",
                 "'.@$_POST['max_online'].'",
                 "'.@intval($_POST['for_moderator']).'",
@@ -64,6 +66,7 @@ if (!empty($id)){
         $sql = 'update storages set
                     storage_name="'.@$_POST['storage_name'].'",
                     storage_ip="'.@$_POST['storage_ip'].'",
+                    apache_port="'.@$_POST['apache_port'].'",
                     nfs_home_path="'.@$_POST['nfs_home_path'].'",
                     max_online="'.@$_POST['max_online'].'",
                     for_moderator="'.@intval($_POST['for_moderator']).'",
@@ -241,6 +244,10 @@ a:hover{
                 <tr>
                     <td>IP</td>
                     <td><input type="text" name="storage_ip" value="<?echo @$edit_storage['storage_ip']?>"/></td>
+                </tr>
+                <tr>
+                    <td>Apache port</td>
+                    <td><input type="text" name="apache_port" value="<?echo empty($edit_storage['apache_port']) ? '88' : $edit_storage['apache_port']?>"/></td>
                 </tr>
                 <tr>
                     <td><?= _('Home path')?></td>
