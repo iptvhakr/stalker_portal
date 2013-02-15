@@ -72,8 +72,8 @@ function nextMenu(urlP)
     switch(urlP){
         case 0:
             switch(punkti[vid-1][4])
-            {case 1:conf(t("Do you want to go to the inner portal?"),'','stb.LoadURL("file:///home/web/services.html");stbWebWindow.close();');break;
-            case 2:conf(t("Do you want to restart portal?"),'','stb.LoadURL("file:///home/web/index.html");stbWebWindow.close();');break;
+            {case 1:conf(t("Do you want to go to the inner portal?"),'','stb.Stop();stb.LoadURL("file:///home/web/services.html");stbWebWindow.close();');break;
+            case 2:conf(t("Do you want to restart portal?"),'','stb.Stop();stb.LoadURL("file:///home/web/index.html");stbWebWindow.close();');break;
             case 3:conf(t("Device is going to reboot. Are you sure?"),'','stb.ExecAction("reboot")');break;
             default:cont.style.visibility='hidden';cont.src=punkti[vid-1][4];document.getElementById("zagolovok").innerHTML=punkti[vid-1][0];document.getElementById("ico").innerHTML="<img src='style/"+put+"/"+punkti[vid-1][3]+".png' />";break;}break;
         case "glavnaya.html":cont.style.visibility='hidden';cont.src=urlP;document.getElementById("zagolovok").innerHTML=t("Settings");document.getElementById("ico").innerHTML="<img src='style/"+put+"/ico_l_set.png' />";break;
