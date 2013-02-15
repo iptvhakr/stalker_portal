@@ -224,7 +224,7 @@
                         }
                     }
 
-                    if (this.on && callback){
+                    if (callback){
                         callback();
                     }
                 },
