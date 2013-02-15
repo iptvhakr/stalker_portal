@@ -367,6 +367,45 @@ class RemotePvr extends AjaxResponse
 
         return $recorder->del($rec_id);
     }
-}
 
-?>
+    public static function setAllowedStoragesForChannel($ch_id, $storage_names = array()){
+
+        $current_storages = array_keys(self::getStoragesForChannel($ch_id));
+
+        $need_to_delete = array_values(array_diff($current_storages, $storage_names));
+        $need_to_add    = array_values(array_diff($storage_names, $current_storages));
+
+        if (!empty($need_to_delete)){
+            $quoted_storage_name = array_map(function($name){
+                return '"'.$name.'"';
+            }, $need_to_delete);
+            Mysql::getInstance()->query('delete from pvr_storages where ch_id='.intval($ch_id).' and storage_name in ('.implode(', ', $quoted_storage_name).')');
+        }
+
+        if (!empty($need_to_add)){
+
+            $need_to_add = array_map(function($task) use ($ch_id){
+                return array(
+                    'ch_id'        => $ch_id,
+                    'storage_name' => $task
+                );
+            }, $need_to_add);
+
+            Mysql::getInstance()->insert('pvr_storages', $need_to_add);
+        }
+    }
+
+    public static function getStoragesForChannel($ch_id){
+        $allowed_storages_raw = Mysql::getInstance()->from('pvr_storages')->where(array('ch_id' => $ch_id))->get()->all();
+
+        $allowed_storages = array();
+
+        if ($allowed_storages_raw){
+            foreach ($allowed_storages_raw as $task){
+                $allowed_storages[$task['storage_name']] = $task;
+            }
+        }
+
+        return $allowed_storages;
+    }
+}

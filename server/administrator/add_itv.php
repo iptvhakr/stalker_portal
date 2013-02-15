@@ -86,13 +86,20 @@ if (!$error){
 
     $storage_names = empty($_POST['storage_names']) ? array() : $_POST['storage_names'];
 
+    $allow_pvr = @intval($_POST['allow_pvr']);
+
     if (empty($storage_names)){
-        $enable_tv_archive = 0;
+        $allow_pvr = 0;
+    }
+
+    $pvr_storage_names = empty($_POST['pvr_storage_names']) ? array() : $_POST['pvr_storage_names'];
+
+    if (empty($pvr_storage_names)){
+        $allow_pvr = 0;
     }
 
     $enable_monitoring = @intval($_POST['enable_monitoring']);
 
-    $allow_pvr = @intval($_POST['allow_pvr']);
     $allow_local_pvr = @intval($_POST['allow_local_pvr']);
 
     $enable_wowza_load_balancing = @intval($_POST['enable_wowza_load_balancing']);
@@ -257,31 +264,16 @@ if (!$error){
                 }
             }
 
-            //if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if ($enable_tv_archive){
 
-                if ($enable_tv_archive){
-
-                    /*if ($wowza_dvr){
-                        $archive = new WowzaTvArchive();
-                    }else{*/
-                    $archive = new TvArchive();
-                    //}
-
-                    $archive->createTasks($ch_id, $storage_names);
-                }
-            //}
-
-            /*if ($wowza_dvr){
-                $archive = new WowzaTvArchive();
-            }else{
                 $archive = new TvArchive();
+
+                $archive->createTasks($ch_id, $storage_names);
             }
 
-            if ($enable_tv_archive){
-                $archive->createTask($ch_id);
-            }else{
-                $archive->deleteTask($ch_id);
-            }*/
+            if ($allow_pvr){
+                RemotePvr::setAllowedStoragesForChannel($ch_id, $pvr_storage_names);
+            }
 
             if (!empty($_FILES['logo'])){
 
@@ -446,19 +438,15 @@ if (!$error){
                 }
             }
 
-            //if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if ($enable_tv_archive){
+                $archive = new TvArchive();
 
-                if ($enable_tv_archive){
+                $archive->createTasks($ch_id, $storage_names);
+            }
 
-                    /*if ($wowza_dvr){
-                        $archive = new WowzaTvArchive();
-                    }else{*/
-                    $archive = new TvArchive();
-                    //}
-
-                    $archive->createTasks($ch_id, $storage_names);
-                }
-            //}
+            if ($allow_pvr){
+                RemotePvr::setAllowedStoragesForChannel($ch_id, $pvr_storage_names);
+            }
 
             if (!empty($_FILES['logo']['name'])){
 
@@ -570,7 +558,7 @@ $storages = Mysql::getInstance()->from('storages')->where(array('status' => 1, '
 
 $stream_servers = StreamServer::getAll();
 
-$selected_storages = array();
+$selected_storages = $selected_pvr_storages = array();
 
 if (!empty($_GET['id'])){
 
@@ -581,6 +569,8 @@ if (!empty($_GET['id'])){
             return $storage['storage_name'];
         }, $tasks);
     }
+
+    $selected_pvr_storages = array_keys(RemotePvr::getStoragesForChannel((int) $_GET['id']));
 }
 
 ?>
@@ -1476,9 +1466,6 @@ function delete_logo(id){
             <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> onchange="this.checked ? document.getElementById('storage_name').style.display = '' : document.getElementById('storage_name').style.display = 'none'" >
 
             <span id="storage_name" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
-            <!--Wowza DVR:
-            <input name="wowza_dvr" id="wowza_dvr" type="checkbox" <?/* echo @$checked_wowza_dvr */?> >-->
-
                 <table width="100%" style="background-color:#f8f8f8">
                     <? foreach ($storages as $storage){?>
                     <tr>
@@ -1489,29 +1476,28 @@ function delete_logo(id){
                     </tr>
                     <?}?>
                 </table>
-
-
-                <!--<select name="storage_name" <?/*= !empty($name) && !empty($enable_tv_archive) ? 'disabled="disabled"' : '' */?>>
-                    <?/* foreach ($storages as $storage){
-
-                        $selected = '';
-
-                        if (!empty($selected_storage) && $selected_storage == $storage['storage_name']){
-                            $selected = 'selected="selected"';
-                        }
-
-                    echo '<option value="'.$storage['storage_name'].'" '.$selected.'>'.$storage['storage_name'].'</option>';
-                    }*/?>
-                </select>-->
             </span>
            </td>
         </tr>
         <tr>
-            <td align="right">
+            <td align="right" valign="top">
                 <?= _('Allow nPVR')?>:
             </td>
             <td>
-                <input name="allow_pvr" id="allow_pvr" type="checkbox" value="1" <? echo @$checked_allow_pvr ?> >
+                <input name="allow_pvr" id="allow_pvr" type="checkbox" value="1" <? echo @$checked_allow_pvr ?> onchange="this.checked ? document.getElementById('pvr_storage_name').style.display = '' : document.getElementById('pvr_storage_name').style.display = 'none'">
+
+                <span id="pvr_storage_name" style="display: <?echo @$checked_allow_pvr ? '' : 'none' ?>">
+                <table width="100%" style="background-color:#f8f8f8">
+                    <? foreach ($storages as $storage){?>
+                    <tr>
+                        <td width="50%"><?= $storage['storage_name']?>:</td>
+                        <td width="50%">
+                            <input type="checkbox" class="stream_server" name="pvr_storage_names[]" value="<?= $storage['storage_name']?>" <?= (in_array($storage['storage_name'], $selected_pvr_storages) ? 'checked' : '')?>/>
+                        </td>
+                    </tr>
+                    <?}?>
+                </table>
+            </span>
             </td>
         </tr>
         <tr>

@@ -305,7 +305,13 @@ class StreamRecorder extends Master
 
         //var_dump($this->storages);
 
+        $allowed_storages = array_keys(RemotePvr::getStoragesForChannel($user_rec['ch_id']));
+
         foreach ($this->storages as $name => $storage){
+
+            if (!in_array($name, $allowed_storages)){
+                continue;
+            }
 
             if ($storage['load'] < 1){
 
