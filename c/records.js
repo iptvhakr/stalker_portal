@@ -23,10 +23,14 @@
 
             this.superclass.init.call(this);
 
-            var rest_length_block = create_block_element('rest_length_block', this.dom_obj);
+            this.rest_length_block = create_block_element('rest_length_block', this.dom_obj);
 
-            create_inline_element('rest_length_title', rest_length_block).innerHTML = get_word('rest_length_title') + ': ';
-            this.rest_length = create_inline_element('rest_length', rest_length_block);
+            create_inline_element('rest_length_title', this.rest_length_block).innerHTML = get_word('rest_length_title') + ': ';
+            this.rest_length = create_inline_element('rest_length', this.rest_length_block);
+
+            if (!module.remote_pvr){
+                this.rest_length_block.hide();
+            }
 
             this.stop_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('remote_pvr_stop_confirm')});
             this.stop_confirm.getTextDomObj().style.textAlign = "center";

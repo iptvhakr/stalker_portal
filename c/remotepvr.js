@@ -276,6 +276,10 @@
 
     module.remote_pvr = new RemotePvr();
 
+    if (module.records){
+        module.records.rest_length_block.show();
+    }
+
 })();
 
 loader.next();
