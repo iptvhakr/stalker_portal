@@ -129,6 +129,68 @@ class User
         return $fav_video;
     }
 
+    public function getNotEndedVideo(){
+
+        $not_ended_raw = Mysql::getInstance()->from('vclub_not_ended')->where(array('uid' => $this->id))->get()->all();
+
+        if (empty($not_ended_raw)){
+            return array();
+        }
+
+        $not_ended = array();
+
+        foreach ($not_ended_raw as $item){
+            $not_ended[$item['video_id']] = $item;
+        }
+
+        return $not_ended;
+    }
+
+    public function setNotEndedVideo($video_id, $end_time, $episode = 0){
+
+        $not_ended = Mysql::getInstance()->from('vclub_not_ended')
+            ->where(array(
+                'uid'      => $this->id,
+                'video_id' => $video_id
+            ))
+            ->get()
+            ->first();
+
+
+        if (empty($not_ended)) {
+
+            Mysql::getInstance()->insert('vclub_not_ended',
+                array(
+                    'uid'      => $this->id,
+                    'video_id' => $video_id,
+                    'series'   => $episode,
+                    'end_time' => $end_time,
+                    'added'    => 'NOW()'
+                ));
+
+        } else {
+
+            Mysql::getInstance()->update('vclub_not_ended',
+                array(
+                    'series'   => $episode,
+                    'end_time' => $end_time,
+                    'added'    => 'NOW()'
+                ),
+                array(
+                    'uid'      => $this->id,
+                    'video_id' => $video_id
+                ));
+
+        }
+
+        return true;
+    }
+
+    public function setEndedVideo($video_id){
+
+        return Mysql::getInstance()->delete('vclub_not_ended', array('uid' => $this->id, 'video_id' => $video_id))->result();
+    }
+
     public function getServicesByType($type = 'tv', $service_type = null){
 
         $plan = Mysql::getInstance()
