@@ -668,7 +668,7 @@
 
             this.cur_dir_list = data;
 
-            if (this.change_level){
+            if (stb.player.cur_media_item && this.change_level){
                 var contain_playing_item_idx = this.cur_dir_list.getIdxByVal("cmd", stb.player.cur_media_item.cmd);
 
                 _debug('contain_playing_item_idx', contain_playing_item_idx);
@@ -1024,7 +1024,7 @@
 
             this.data_items = this.data_items.map(function(item){
 
-                if (item.cmd == stb.player.cur_media_item.cmd && stb.player.on){
+                if (stb.player.cur_media_item && item.cmd == stb.player.cur_media_item.cmd && stb.player.on){
                     if (stb.player.pause.on){
                         item.paused = 1;
                     }else{
@@ -1122,10 +1122,9 @@
             this.superclass.set_active_row.call(this, num);
 
             _debug('this.data_items[this.cur_row].cmd', this.data_items[this.cur_row].cmd);
-            _debug('stb.player.cur_media_item.cmd', stb.player.cur_media_item.cmd);
             _debug('stb.player.on', stb.player.on);
 
-            if (this.data_items[this.cur_row].cmd == stb.player.cur_media_item.cmd && stb.player.on && stb.player.file_type == 'audio'){
+            if (stb.player.cur_media_item && this.data_items[this.cur_row].cmd == stb.player.cur_media_item.cmd && stb.player.on && stb.player.file_type == 'audio'){
 
                 this.active_row['row'].setAttribute("status", "playing");
 
