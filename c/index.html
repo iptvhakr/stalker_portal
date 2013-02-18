@@ -149,7 +149,7 @@ function init(){
     if (typeof(gSTB) == 'undefined'){
         if (window.innerWidth > 720){
             resolution_prefix = '_720';
-        }else if (window.innerWidth <= 480){
+        }else if (window.innerHeight < 576){
             resolution_prefix = '_480';
         }else{
             resolution_prefix = '';
