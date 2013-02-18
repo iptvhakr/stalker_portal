@@ -449,7 +449,9 @@ class StreamRecorder extends Master
 
             $event = new SysEvent();
             $event->setUserListById($user_record['uid']);
-            $event->sendMsg(_('Stopped recording') . ' — ' . $user_record['program'] . ' ' .  _('on channel') . ' ' . $channel['name']);
+
+            $user = User::getInstance((int) $user_record['uid']);
+            $event->sendMsg($user->getLocalizedText('Stopped recording') . ' — ' . $user_record['program'] . ' ' .  $user->getLocalizedText('on channel') . ' ' . $channel['name']);
         }
         
         return $stopped;
