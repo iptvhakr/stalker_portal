@@ -5,13 +5,8 @@ class RESTCommandAccounts extends RESTCommand
     public function get(RESTRequest $request){
 
         $identifiers = $request->getIdentifiers();
-        //$users_ids = $request->getConvertedIdentifiers();
 
-        if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
-            $users_ids = Stb::getUidByMacs($identifiers);
-        }else{
-            $users_ids = Stb::getUidByAccountNumber($identifiers);
-        }
+        $users_ids = $this->getUsersIdsFromIdentifiers($identifiers);
 
         if (count($identifiers) == 1 && count($users_ids) == 0){
             throw new RESTCommandException('Account not found');
@@ -91,11 +86,7 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('Identifier required');
         }
 
-        if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
-            $users_ids = Stb::getUidByMacs($identifiers);
-        }else{
-            $users_ids = Stb::getUidByAccountNumber($identifiers);
-        }
+        $users_ids = $this->getUsersIdsFromIdentifiers($identifiers);
 
         if (count($identifiers) == 1 && count($users_ids) == 0){
             throw new RESTCommandException('Account not found');
@@ -119,11 +110,7 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('Identifier required');
         }
 
-        if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
-            $users_ids = Stb::getUidByMacs($identifiers);
-        }else{
-            $users_ids = Stb::getUidByAccountNumber($identifiers);
-        }
+        $users_ids = $this->getUsersIdsFromIdentifiers($identifiers);
 
         if (count($identifiers) == 1 && count($users_ids) == 0){
             throw new RESTCommandException('Account not found');
@@ -137,5 +124,13 @@ class RESTCommandAccounts extends RESTCommand
 
         $user = User::getInstance($user_id);
         return $user->delete();
+    }
+
+    protected function getUsersIdsFromIdentifiers($identifiers){
+        if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
+            return Stb::getUidByMacs($identifiers);
+        }else{
+            return Stb::getUidByAccountNumber($identifiers);
+        }
     }
 }
