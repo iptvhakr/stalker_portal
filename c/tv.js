@@ -926,6 +926,11 @@
             var playing_idx = -1;
 
             this.map.map(function(item, idx){
+
+                if (!self.data_items[idx]){
+                    return;
+                }
+
                 if (self.data_items[idx].id != ch_id){
                     self.data_items[idx].now_playing = 0;
                     item.now_playing_block.hide();
