@@ -215,7 +215,7 @@
                         this.color_buttons.get('green') .disable();
                         if (this.data_items[this.cur_row].local == 1){
                             this.color_buttons.get('yellow').disable();
-                        }else{
+                        }else if (module.downloads){
                             this.color_buttons.get('yellow').enable();
                         }
                     }
@@ -224,7 +224,7 @@
                     this.color_buttons.get('green') .disable();
                     if (this.data_items[this.cur_row].local == 1){
                         this.color_buttons.get('yellow').disable();
-                    }else{
+                    }else if (module.downloads){
                         this.color_buttons.get('yellow').enable();
                     }
                 }
