@@ -1,15 +1,12 @@
 <?php
-/*
-    
-*/
+
 error_reporting(E_ALL);
 
 include "./common.php";
 
-$course = new Course();
-$course->getDataFromURI();
+$handlers = Config::get('exchange_rate_classes', array('Course', 'CourseCbr'));
 
-$course = new CourseCbr();
-$course->getDataFromURI();
-
-?>
+foreach ($handlers as $handler){
+    $course = new $handler;
+    $course->getDataFromURI();
+}
