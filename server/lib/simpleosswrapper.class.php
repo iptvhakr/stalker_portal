@@ -12,24 +12,29 @@ class SimpleOssWrapper implements OssWrapperInterface
             return false;
         }
 
-        $data = file_get_contents(Config::get('oss_url').'?mac='.$user->getMac().'&serial_number='.$user->getSerialNumber());
+        $data = file_get_contents(Config::get('oss_url').(strpos(Config::get('oss_url'), '?') > 0 ? '&' : '?' )
+            .'mac='.$user->getMac()
+            .'&serial_number='.$user->getSerialNumber()
+            .'&type='.$user->getStbType()
+            .'&locale='.$user->getLocale()
+        );
 
         if (!$data){
-            return false;
+            return array('status' => 0);
         }
 
         $data = json_decode($data, true);
 
         if (empty($data)){
-            return false;
+            return array('status' => 0);
         }
 
         if (Mysql::$debug){
             var_dump($data);
         }
 
-        if ($data['status'] != 'OK' || empty($data['results'])){
-            return false;
+        if ($data['status'] != 'OK' && empty($data['results']['status'])){
+            return array('status' => 0);
         }
 
         if (array_key_exists(0, $data['results'])){

@@ -68,6 +68,14 @@ class User
         return $this->profile['serial_number'];
     }
 
+    public function getStbType(){
+        return $this->profile['stb_type'];
+    }
+
+    public function getLocale(){
+        return $this->profile['locale'];
+    }
+
     public function setSerialNumber($serial_number){
 
         if ($this->profile['serial_number'] != $serial_number){
@@ -647,7 +655,7 @@ class User
             return OssWrapper::getWrapper()->getUserInfo($this);
         }catch (OssException $e){
             Stb::logOssError($e);
-            return array();
+            return array('status' => 0);
         }
     }
 
