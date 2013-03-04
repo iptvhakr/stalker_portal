@@ -424,8 +424,8 @@ class User
 
     public function getAccountInfo(){
         $info = Mysql::getInstance()
-            ->select('login, fname as full_name, ls as account_number, external_id as tariff_plan, serial_number as stb_sn,
-                mac as stb_mac, stb_type, status, keep_alive>=FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout').') online, ip, version')
+            ->select('login, fname as full_name, phone, ls as account_number, external_id as tariff_plan, serial_number as stb_sn,
+                mac as stb_mac, stb_type, status, keep_alive>=FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout').') online, ip, version, comment')
             ->from('users')
             ->join('tariff_plan', 'tariff_plan_id', 'tariff_plan.id', 'LEFT')
             ->where(array('users.id' => $this->id))
@@ -457,7 +457,7 @@ class User
 
     public static function createAccount($account){
 
-        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'account_number', 'tariff_plan', 'tariff_plan_id', 'stb_mac'), true);
+        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'tariff_plan_id', 'stb_mac', 'comment'), true);
 
         $key_map = array(
             'full_name'      => 'fname',
@@ -507,7 +507,7 @@ class User
 
     public function updateAccount($account){
 
-        $allowed_fields = array_fill_keys(array('password', 'full_name', 'account_number', 'tariff_plan', 'stb_mac'), true);
+        $allowed_fields = array_fill_keys(array('password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'stb_mac', 'comment'), true);
 
         $key_map = array(
             'full_name'      => 'fname',
