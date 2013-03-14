@@ -735,7 +735,7 @@ class Itv extends AjaxResponse
             $result = $result->in('itv.id', $fav);
         }
 
-        if (!Config::getSafe('show_unsubscribed_tv_channels', false)){
+        if (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array()))){
             $result = $result->in('itv.id', $all_user_channels_ids);
         }
 
