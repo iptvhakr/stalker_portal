@@ -26,7 +26,7 @@ function onLoad()
 function submit()
 {
     var erm='';
-    var wr='{"pppoe_dns1":"true"';
+    var wr='{"pppoe_enabled":"true", "pppoe_dns1":"true"';
     var t=document.getElementById("i1").value;
     if(t!=read.result.pppoe_login){wr+=',"pppoe_login":"'+t+'"';}
     t=document.getElementById("i2").value;
