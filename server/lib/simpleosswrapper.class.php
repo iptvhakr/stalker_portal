@@ -19,14 +19,16 @@ class SimpleOssWrapper implements OssWrapperInterface
             .'&locale='.$user->getLocale()
         );
 
+        $strict_check = Config::getSafe('strict_oss_url_check', true);
+
         if (!$data){
-            return array('status' => 0);
+            return $strict_check ? array('status' => 0) : false;
         }
 
         $data = json_decode($data, true);
 
         if (empty($data)){
-            return array('status' => 0);
+            return $strict_check ? array('status' => 0) : false;
         }
 
         if (Mysql::$debug){
@@ -34,7 +36,7 @@ class SimpleOssWrapper implements OssWrapperInterface
         }
 
         if ($data['status'] != 'OK' && empty($data['results']['status'])){
-            return array('status' => 0);
+            return $strict_check ? array('status' => 0) : false;
         }
 
         if (array_key_exists(0, $data['results'])){
