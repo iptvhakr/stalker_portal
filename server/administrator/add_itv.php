@@ -82,14 +82,12 @@ if (!$error){
         $enable_tv_archive = 0;
     }
 
-    $storage_name = empty($_POST['storage_name']) ? '' : $_POST['storage_name'];
-
     $storage_names = empty($_POST['storage_names']) ? array() : $_POST['storage_names'];
 
     $allow_pvr = @intval($_POST['allow_pvr']);
 
     if (empty($storage_names)){
-        $allow_pvr = 0;
+        $enable_tv_archive = 0;
     }
 
     $pvr_storage_names = empty($_POST['pvr_storage_names']) ? array() : $_POST['pvr_storage_names'];
