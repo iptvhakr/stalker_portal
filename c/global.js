@@ -56,6 +56,18 @@ function _log(action, param){
         "tmp_type" : stb.get_current_place()
     };
 
+    if (_log.hasOwnProperty('last_data')
+        && _log.last_data.type == data.type
+        && _log.last_data.action == data.action
+        && _log.last_data.real_action == data.real_action
+        && _log.last_data.param == data.param
+        && _log.last_data.tmp_type == data.tmp_type
+        ){
+        return;
+    }
+
+    _log.last_data = data;
+
     for (var prop in add_data){
         if (add_data.hasOwnProperty(prop)){
             data[prop] = add_data[prop];

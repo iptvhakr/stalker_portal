@@ -64,6 +64,7 @@ function player(){
     this.prev_state = 0;
 
     this.send_last_tv_id_to = 1800000;
+    this.last_tv_id = 0;
     
     this.prev_layer = {};
     
@@ -2395,7 +2396,15 @@ player.prototype.send_last_tv_id = function(id){
         
         this.send_last_tv_id_to
     );
-    
+
+    _debug('this.last_tv_id', this.last_tv_id);
+
+    if (id == this.last_tv_id){
+        return;
+    }
+
+    this.last_tv_id = id;
+
     stb.load(
 
         {

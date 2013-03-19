@@ -377,6 +377,8 @@ class Stb
 
         $profile['play_in_preview_only_by_ok']  = Config::getSafe('play_in_preview_only_by_ok', false);
 
+        $profile['enable_stream_error_logging'] = Config::getSafe('enable_stream_error_logging', false);
+
         return $profile;
     }
 
