@@ -1764,7 +1764,7 @@ function check_kinopoisk_info(orig_name, kinopoisk_id){
         if (result){
 
             if (result.hasOwnProperty('cover_big')){
-                $('.cover_block').html('<img src="'+result['cover_big']+'" width="240" height="320" style="float:left"/>' +
+                $('.cover_block').html('<img src="get_img.php?url='+result['cover_big']+'" width="240" height="320" style="float:left"/>' +
                     '<div style="float:left"><a href="#" class="del_cover">x</a></div>');
                 $('.screenshot').hide();
                 $('.cover_id').val('');
@@ -1780,7 +1780,7 @@ function check_kinopoisk_info(orig_name, kinopoisk_id){
 
             for (var id in result){
                 if (result.hasOwnProperty(id)){
-                    //console.log(id, result[id]);
+
                     $("."+id).val(result[id]);
 
                     if (id == 'kinopoisk_url'){

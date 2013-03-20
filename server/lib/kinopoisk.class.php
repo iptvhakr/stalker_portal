@@ -13,10 +13,15 @@ class Kinopoisk
 
         $cover_big_url = 'http://st.kinopoisk.ru/images/film_big/'.$id.'.jpg';
 
-        $big_cover_headers = get_headers($cover_big_url);
+        $big_cover_headers = get_headers($cover_big_url, 1);
 
-        if ($big_cover_headers !== false && strpos($big_cover_headers[0], '302') === false){
-            $movie_info['cover_big'] = $cover_big_url;
+        if ($big_cover_headers !== false){
+
+            if (strpos($big_cover_headers[0], '302') !== false && !empty($big_cover_headers['Location'])){
+                $movie_info['cover_big'] = $big_cover_headers['Location'];
+            }else{
+                $movie_info['cover_big'] = $cover_big_url;
+            }
         }
 
         $ch = curl_init();
