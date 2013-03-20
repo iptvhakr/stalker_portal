@@ -659,8 +659,11 @@ class Epg
 
         $display_channels_ids = array();
 
-        foreach ($user_channels as $element){
-            $display_channels_ids[] = $element['id'];
+        for ($i=0; $i<count($user_channels); $i++){
+            if (Config::getSafe('enable_numbering_in_order', false)){
+                $user_channels[$i]['number'] = (string) ($i+1);
+            }
+            $display_channels_ids[] = $user_channels[$i]['id'];
         }
 
         $raw_epg = $this->getEpgForChannelsOnPeriod($display_channels_ids, $from, $to);
