@@ -286,6 +286,28 @@ class Kinopoisk
         return array_intersect_key($info, $fields);
     }
 
+    public static function getRatingById($kinopoisk_id){
+
+        $result = array(
+            'kinopoisk_id' => $kinopoisk_id
+        );
+
+        $xml_url = 'http://www.kinopoisk.ru/rating/'.$kinopoisk_id.'.xml';
+
+        $xml = @simplexml_load_file($xml_url);
+
+        if (!$xml){
+            throw new KinopoiskException("Can't get rating from ".$xml_url."; ".implode(', ', libxml_get_errors()), '');
+        }
+
+        $result['rating_kinopoisk']       = (string) $xml->kp_rating;
+        $result['rating_count_kinopoisk'] = (int) $xml->kp_rating->attributes()->num_vote;
+        $result['rating_imdb']            = (string) $xml->imdb_rating;
+        $result['rating_count_imdb']      = (int) $xml->imdb_rating->attributes()->num_vote;;
+
+        return $result;
+    }
+
     private static function getNodeText($node){
 
         $text = html_entity_decode($node->nodeValue);

@@ -21,7 +21,13 @@ $movies = Mysql::getInstance()
 foreach ($movies as $movie){
 
     try{
-        $rating = Kinopoisk::getRatingByName($movie['o_name']);
+
+        if (!empty($movie['kinopoisk_id'])){
+            $rating = Kinopoisk::getRatingById($movie['kinopoisk_id']);
+        }else{
+            $rating = Kinopoisk::getRatingByName($movie['o_name']);
+        }
+
     }catch (KinopoiskException $e){
 
         _log('Error: '.$movie['path'].' ('.$movie['id'].') - '.$e->getMessage());
