@@ -121,6 +121,12 @@ watchdog.prototype.parse_result = function(data){
                 stb.ExecAction('reboot');
                 break;
             }
+            case 'reload_portal':
+            {
+                stb.Stop();
+                window.location = window.location;
+                break;
+            }
             case 'send_msg':
             {
 

@@ -123,6 +123,9 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     	case 'reboot':
                 $event->sendReboot();
     		break;
+        case 'reload_portal':
+            $event->sendReloadPortal();
+            break;
     	case 'update_channels':
                 $event->sendUpdateChannels();
     		break;
@@ -370,6 +373,7 @@ function fill_msg(){
             <option value="">----------
             <option value="send_msg">send_msg
             <option value="reboot">reboot
+            <option value="reload_portal">reload_portal
             <option value="update_channels">update_channels
             <option value="play_channel">play_channel
             <option value="mount_all_storages">mount_all_storages

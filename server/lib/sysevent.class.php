@@ -116,6 +116,11 @@ class SysEvent extends Event
         $this->setEvent('reboot');
         $this->send();
     }
+
+    public function sendReloadPortal(){
+        $this->setEvent('reload_portal');
+        $this->send();
+    }
     
     /**
      * Send "additional services status" event 
