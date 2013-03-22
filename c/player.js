@@ -1087,6 +1087,16 @@ player.prototype.event_callback = function(event, params){
             module.pvr_local.remove_all_with_errors();
             break;
         }
+        case 32: // HDMI on
+        {
+            keydown_observer.emulate_key(key.MENU);
+            break;
+        }
+        case 33: // HDMI off
+        {
+            keydown_observer.emulate_key(key.MENU);
+            break;
+        }
     }
 
     if ([1,2,4,5].indexOf(event) >= 0){
