@@ -14,7 +14,7 @@ var key = {
     NUM8  : 56,
     NUM9  : 57,
     NUM0  : 48,
-    MENU  : 122,
+    MENU  : 122, // F11
     BACK  : 8, // Backspace
     CHANNEL_PREV  : 1009, // Shift+Tab
     CHANNEL_NEXT  : 9, // Tab

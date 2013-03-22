@@ -1130,10 +1130,18 @@ function common_xpcom(){
         _debug('stb.switchPower()');
 
         if(this.power_off){
-            this.StandBy(0);
+            //this.StandBy(0);
             this.power_off = false;
             keydown_observer.emulate_key(key.MENU);
             this.clock && this.clock.show && this.clock.show();
+
+            this.StandBy(0);
+
+            if (!this.user['display_menu_after_loading']){
+                main_menu.hide();
+                stb.player.play_last();
+            }
+
         }else{
             keydown_observer.emulate_key(key.MENU);
             this.StandBy(1);
