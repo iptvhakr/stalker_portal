@@ -96,10 +96,15 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('Only one identifier allowed');
         }
 
-        $user_id = $users_ids[0];
+        $result = true;
 
-        $user = User::getInstance($user_id);
-        return $user->updateAccount($account);
+        foreach($users_ids as $user_id){
+            $user = User::getInstance($user_id);
+            $result = $user->updateAccount($account) && $result;
+            User::clear();
+        }
+
+        return $result;
     }
 
     public function delete(RESTRequest $request){
@@ -120,10 +125,15 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('Only one identifier allowed');
         }
 
-        $user_id = $users_ids[0];
+        $result = true;
 
-        $user = User::getInstance($user_id);
-        return $user->delete();
+        foreach($users_ids as $user_id){
+            $user = User::getInstance($user_id);
+            $result = $user->delete() && $result;
+            User::clear();
+        }
+
+        return $result;
     }
 
     protected function getUsersIdsFromIdentifiers($identifiers){
