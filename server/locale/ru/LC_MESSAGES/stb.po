@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-08 17:18+0200\n"
-"PO-Revision-Date: 2013-02-08 17:18+0200\n"
+"POT-Creation-Date: 2013-03-25 14:37+0200\n"
+"PO-Revision-Date: 2013-03-25 14:38+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -82,7 +82,7 @@ msgid "EPG"
 msgstr "EPG"
 
 #: ../../../administrator/add_epg.php:263
-#: ../../../administrator/add_itv.php:941
+#: ../../../administrator/add_itv.php:929
 #: ../../../administrator/add_karaoke.php:218
 #: ../../../administrator/add_moderator_mac.php:109
 #: ../../../administrator/add_radio.php:137
@@ -108,7 +108,7 @@ msgid "Load EPG"
 msgstr "Загрузить EPG"
 
 #: ../../../administrator/add_epg.php:401
-#: ../../../administrator/add_itv.php:1601
+#: ../../../administrator/add_itv.php:1585
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
 #: ../../../administrator/add_radio.php:272
@@ -124,19 +124,19 @@ msgstr "Сохранить"
 msgid "New"
 msgstr "Новый"
 
-#: ../../../administrator/add_itv.php:119
+#: ../../../administrator/add_itv.php:124
 #: ../../../administrator/add_radio.php:29
 #, php-format
 msgid "Error: channel with number \"%s\" is already in use"
 msgstr "Ошибка: Номер канала \"%s\" уже используется"
 
-#: ../../../administrator/add_itv.php:291
-#: ../../../administrator/add_itv.php:468
+#: ../../../administrator/add_itv.php:281
+#: ../../../administrator/add_itv.php:454
 msgid "Error: could not save logo"
 msgstr "Ошибка: невозможно сохранить логотип"
 
-#: ../../../administrator/add_itv.php:299
-#: ../../../administrator/add_itv.php:478
+#: ../../../administrator/add_itv.php:289
+#: ../../../administrator/add_itv.php:464
 #: ../../../administrator/add_karaoke.php:133
 #: ../../../administrator/add_karaoke.php:158
 #: ../../../administrator/add_moderator_mac.php:41
@@ -148,78 +148,78 @@ msgstr "Ошибка: невозможно сохранить логотип"
 msgid "Error: all fields are required"
 msgstr "Ошибка: необходимо заполнить все поля"
 
-#: ../../../administrator/add_itv.php:627
-#: ../../../administrator/add_itv.php:936
+#: ../../../administrator/add_itv.php:615
+#: ../../../administrator/add_itv.php:924
 msgid "IPTV channels"
 msgstr "IPTV каналы"
 
-#: ../../../administrator/add_itv.php:640
+#: ../../../administrator/add_itv.php:628
 msgid "priority"
 msgstr "приоритет"
 
-#: ../../../administrator/add_itv.php:644
+#: ../../../administrator/add_itv.php:632
 msgid "filter"
 msgstr "фильтр"
 
-#: ../../../administrator/add_itv.php:650
+#: ../../../administrator/add_itv.php:638
 msgid "Temporary HTTP URL"
 msgstr "Временная HTTP ссылка"
 
-#: ../../../administrator/add_itv.php:653
+#: ../../../administrator/add_itv.php:641
 msgid "WOWZA support"
 msgstr "Поддержка WOWZA"
 
-#: ../../../administrator/add_itv.php:658
+#: ../../../administrator/add_itv.php:646
 msgid "Enable monitoring"
 msgstr "Вести мониторинг"
 
-#: ../../../administrator/add_itv.php:664
+#: ../../../administrator/add_itv.php:652
 msgid "Channel URL for monitoring"
 msgstr "URL канала для мониторинга"
 
-#: ../../../administrator/add_itv.php:690
+#: ../../../administrator/add_itv.php:678
 msgid "add new link"
 msgstr "добавить новую ссылку"
 
-#: ../../../administrator/add_itv.php:692
+#: ../../../administrator/add_itv.php:680
 #: ../../../administrator/add_video.php:1296
 msgid "delete"
 msgstr "удалить"
 
-#: ../../../administrator/add_itv.php:759
-#: ../../../administrator/add_itv.php:1025
+#: ../../../administrator/add_itv.php:747
+#: ../../../administrator/add_itv.php:1013
 #: ../../../administrator/add_karaoke.php:526
 #: ../../../administrator/add_video.php:927
 msgid "Do you really want to delete this record?"
 msgstr "Вы действительно хотите удалить эту запись?"
 
-#: ../../../administrator/add_itv.php:903
+#: ../../../administrator/add_itv.php:891
 msgid "Channel with same number already exists!"
 msgstr "Канал с таким номером уже существует!"
 
-#: ../../../administrator/add_itv.php:905
+#: ../../../administrator/add_itv.php:893
 msgid "Shift channel list?"
 msgstr "Сдвинуть список каналов?"
 
-#: ../../../administrator/add_itv.php:941
+#: ../../../administrator/add_itv.php:929
 #: ../../../administrator/add_video.php:650
 msgid "Add"
 msgstr "Добавить"
 
-#: ../../../administrator/add_itv.php:967
-#: ../../../administrator/add_itv.php:1337
+#: ../../../administrator/add_itv.php:955
+#: ../../../administrator/add_itv.php:1325
 #: ../../../administrator/add_radio.php:160
 #: ../../../administrator/add_radio.php:236
 msgid "Number"
 msgstr "Номер"
 
-#: ../../../administrator/add_itv.php:968
-#: ../../../administrator/add_itv.php:1559
+#: ../../../administrator/add_itv.php:956
+#: ../../../administrator/add_itv.php:1543
 msgid "Service code"
 msgstr "Код услуги"
 
-#: ../../../administrator/add_itv.php:969
-#: ../../../administrator/add_itv.php:1345
+#: ../../../administrator/add_itv.php:957
+#: ../../../administrator/add_itv.php:1333
 #: ../../../administrator/add_karaoke.php:803
 #: ../../../administrator/add_moderator_mac.php:132
 #: ../../../administrator/add_moderator_mac.php:205
@@ -228,18 +228,18 @@ msgstr "Код услуги"
 msgid "Name"
 msgstr "Имя"
 
-#: ../../../administrator/add_itv.php:970
+#: ../../../administrator/add_itv.php:958
 #: ../../../administrator/add_radio.php:162
 #: ../../../administrator/add_radio.php:254
 msgid "URL"
 msgstr "URL"
 
-#: ../../../administrator/add_itv.php:971
+#: ../../../administrator/add_itv.php:959
 msgid "xmltv id"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:972
-#: ../../../administrator/add_itv.php:1408
+#: ../../../administrator/add_itv.php:960
+#: ../../../administrator/add_itv.php:1396
 #: ../../../administrator/add_karaoke.php:849
 #: ../../../administrator/add_video.php:2076
 #: ../../../administrator/add_video.php:2085
@@ -248,107 +248,107 @@ msgstr ""
 msgid "Genre"
 msgstr "Жанр"
 
-#: ../../../administrator/add_itv.php:973
+#: ../../../administrator/add_itv.php:961
 msgid "Archive"
 msgstr "Архив"
 
-#: ../../../administrator/add_itv.php:974
-#: ../../../administrator/add_itv.php:1567
+#: ../../../administrator/add_itv.php:962
+#: ../../../administrator/add_itv.php:1551
 #: ../../../administrator/add_radio.php:262
 #: ../../../administrator/add_video.php:884
 #: ../../../administrator/add_video.php:2152
 msgid "Volume correction"
 msgstr "Коррекция звука"
 
-#: ../../../administrator/add_itv.php:975
+#: ../../../administrator/add_itv.php:963
 msgid "Claims about<br>audio/video/epg"
 msgstr "Жалобы на<br>видео/аудио/epg"
 
-#: ../../../administrator/add_itv.php:1015
+#: ../../../administrator/add_itv.php:1003
 #: ../../../administrator/add_karaoke.php:516
 #: ../../../administrator/add_video.php:913
 msgid "Do you really want to reset claims counter?"
 msgstr "Вы действительно хотите сбросить счетчик жалоб?"
 
-#: ../../../administrator/add_itv.php:1245
+#: ../../../administrator/add_itv.php:1233
 msgid "monitoring off"
 msgstr "не мониторится"
 
-#: ../../../administrator/add_itv.php:1251
+#: ../../../administrator/add_itv.php:1239
 msgid "more than an hour ago"
 msgstr "больше часа назад"
 
-#: ../../../administrator/add_itv.php:1255
+#: ../../../administrator/add_itv.php:1243
 msgid "less than a minute ago"
 msgstr "меньше минуты назад"
 
-#: ../../../administrator/add_itv.php:1258
+#: ../../../administrator/add_itv.php:1246
 msgid "minutes ago"
 msgstr "minutes ago"
 
-#: ../../../administrator/add_itv.php:1306
+#: ../../../administrator/add_itv.php:1294
 msgid "Error deleting a logo"
 msgstr "Ошибка при удалении лого"
 
-#: ../../../administrator/add_itv.php:1368
+#: ../../../administrator/add_itv.php:1356
 #: ../../../administrator/add_video.php:2001
 msgid "Age restriction"
 msgstr "Ограничение по возрасту"
 
-#: ../../../administrator/add_itv.php:1384
+#: ../../../administrator/add_itv.php:1372
 msgid "Base channel"
 msgstr "Базовый канал"
 
-#: ../../../administrator/add_itv.php:1392
+#: ../../../administrator/add_itv.php:1380
 msgid "Bonus channel"
 msgstr "Бонусный канал"
 
-#: ../../../administrator/add_itv.php:1400
+#: ../../../administrator/add_itv.php:1388
 msgid "Price"
 msgstr "Цена"
 
-#: ../../../administrator/add_itv.php:1446
+#: ../../../administrator/add_itv.php:1434
 msgid "Links"
 msgstr "Ссылки"
 
-#: ../../../administrator/add_itv.php:1465
+#: ../../../administrator/add_itv.php:1453
 msgid "URL for recording (multicast)"
 msgstr "Адрес для записи (мультикаст)"
 
-#: ../../../administrator/add_itv.php:1473
+#: ../../../administrator/add_itv.php:1461
 msgid "Enable TV archive"
 msgstr "Вести ТВ архив"
 
-#: ../../../administrator/add_itv.php:1511
+#: ../../../administrator/add_itv.php:1482
 msgid "Allow nPVR"
 msgstr "Разрешить nPVR"
 
-#: ../../../administrator/add_itv.php:1519
+#: ../../../administrator/add_itv.php:1503
 msgid "Allow USB PVR"
 msgstr "Разрешить PVR на USB носители"
 
-#: ../../../administrator/add_itv.php:1551
+#: ../../../administrator/add_itv.php:1535
 msgid "EPG correction"
 msgstr "Коррекция EPG"
 
-#: ../../../administrator/add_itv.php:1551
+#: ../../../administrator/add_itv.php:1535
 #: ../../../administrator/add_video.php:2123
 msgid "min"
 msgstr "мин"
 
-#: ../../../administrator/add_itv.php:1575
+#: ../../../administrator/add_itv.php:1559
 msgid "Comments"
 msgstr "Комментарии"
 
-#: ../../../administrator/add_itv.php:1591
+#: ../../../administrator/add_itv.php:1575
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../../../administrator/add_itv.php:1591
+#: ../../../administrator/add_itv.php:1575
 msgid "Only for API"
 msgstr "Только для API"
 
-#: ../../../administrator/add_itv.php:1601
+#: ../../../administrator/add_itv.php:1585
 #: ../../../administrator/add_video.php:602
 msgid "Cancel"
 msgstr "Отмена"
@@ -877,98 +877,98 @@ msgstr "%s событий %s отослано, %s ошибок"
 msgid "File with list is missing"
 msgstr "Отсутствует файл со списком"
 
-#: ../../../administrator/events.php:138
+#: ../../../administrator/events.php:141
 msgid "Error when sending event"
 msgstr "Ошибка при отправке события"
 
-#: ../../../administrator/events.php:194
-#: ../../../administrator/events.php:200
+#: ../../../administrator/events.php:197
+#: ../../../administrator/events.php:203
 #: ../../../administrator/index.php:137
 msgid "Events"
 msgstr "События"
 
-#: ../../../administrator/events.php:205
+#: ../../../administrator/events.php:208
 msgid "New event"
 msgstr "Новое событие"
 
-#: ../../../administrator/events.php:307
+#: ../../../administrator/events.php:310
 msgid "Send"
 msgstr "Отправить"
 
-#: ../../../administrator/events.php:310
+#: ../../../administrator/events.php:313
 msgid "To one"
 msgstr "одному"
 
-#: ../../../administrator/events.php:311
+#: ../../../administrator/events.php:314
 msgid "To all"
 msgstr "Всем"
 
-#: ../../../administrator/events.php:312
+#: ../../../administrator/events.php:315
 msgid "By list"
 msgstr "По списку"
 
-#: ../../../administrator/events.php:313
+#: ../../../administrator/events.php:316
 msgid "By pattern"
 msgstr "По шаблону"
 
-#: ../../../administrator/events.php:314
+#: ../../../administrator/events.php:317
 msgid "To group"
 msgstr "Группе"
 
-#: ../../../administrator/events.php:322
+#: ../../../administrator/events.php:325
 msgid "Load active events"
 msgstr "Загрузить активные события"
 
-#: ../../../administrator/events.php:327
+#: ../../../administrator/events.php:330
 msgid "List"
 msgstr "Список"
 
-#: ../../../administrator/events.php:335
+#: ../../../administrator/events.php:338
 msgid "Pattern"
 msgstr "Шаблон"
 
-#: ../../../administrator/events.php:346
+#: ../../../administrator/events.php:349
 msgid "Group"
 msgstr "Группа"
 
-#: ../../../administrator/events.php:379
+#: ../../../administrator/events.php:383
 msgid "restart on OK"
 msgstr "перезапускать по OK"
 
-#: ../../../administrator/events.php:380
+#: ../../../administrator/events.php:384
 msgid "channels"
 msgstr "каналы"
 
-#: ../../../administrator/events.php:405
+#: ../../../administrator/events.php:409
 #, php-format
 msgid "Active events for %s"
 msgstr "Активные события для %s"
 
-#: ../../../administrator/events.php:405
+#: ../../../administrator/events.php:409
 msgid "clean"
 msgstr "очистить"
 
-#: ../../../administrator/events.php:407
+#: ../../../administrator/events.php:411
 msgid "Valid up to"
 msgstr "Действительно до"
 
-#: ../../../administrator/events.php:408
+#: ../../../administrator/events.php:412
 msgid "Event"
 msgstr "Событие"
 
-#: ../../../administrator/events.php:409
+#: ../../../administrator/events.php:413
 msgid "Message"
 msgstr "Сообщение"
 
-#: ../../../administrator/events.php:419
+#: ../../../administrator/events.php:423
 msgid "sended"
 msgstr "отправлено"
 
-#: ../../../administrator/events.php:419
+#: ../../../administrator/events.php:423
 msgid "not sended"
 msgstr "не отправлено"
 
-#: ../../../administrator/events.php:428
+#: ../../../administrator/events.php:432
 #, php-format
 msgid "There are no active events for %s"
 msgstr "Нет активных событий для %s"
@@ -1130,7 +1130,6 @@ msgstr "отчет формируется по закрытым за месяц 
 #: ../../../administrator/playlist.php:161
 #: ../../../administrator/playlist.php:251
 #: ../../../administrator/reply.php:130
-#: ../../../administrator/send_to.php:161
 msgid "Movie"
 msgstr "Видео"
 
@@ -1170,7 +1169,7 @@ msgid "Sign in"
 msgstr "Вход"
 
 #: ../../../administrator/login.php:57
-#: ../../../administrator/profile.php:365
+#: ../../../administrator/profile.php:366
 msgid "Login"
 msgstr "Логин"
 
@@ -1232,92 +1231,87 @@ msgstr "Плейлист"
 msgid "Playlists"
 msgstr "Плейлисты"
 
-#: ../../../administrator/profile.php:30
-msgid "Tariff plan is changed, please restart your STB"
-msgstr "Тарифный план изменен. Пожалуйста, перезагрузите приставку."
-
-#: ../../../administrator/profile.php:210
+#: ../../../administrator/profile.php:211
 msgid "Change the video output on the"
 msgstr "Поменять видео выход на "
 
-#: ../../../administrator/profile.php:238
+#: ../../../administrator/profile.php:239
 msgid "Disabled"
 msgstr "Отключено"
 
-#: ../../../administrator/profile.php:242
+#: ../../../administrator/profile.php:243
 msgid "Enabled"
 msgstr "Включено"
 
-#: ../../../administrator/profile.php:286
-#: ../../../administrator/profile.php:292
+#: ../../../administrator/profile.php:287
+#: ../../../administrator/profile.php:293
 msgid "User profile"
 msgstr "Профиль пользователя"
 
-#: ../../../administrator/profile.php:297
+#: ../../../administrator/profile.php:298
 msgid "Logs"
 msgstr "Логи"
 
-#: ../../../administrator/profile.php:336
+#: ../../../administrator/profile.php:337
 msgid "Reset to default password?"
 msgstr "Сбросить на пароль по умолчанию?"
 
-#: ../../../administrator/profile.php:336
-#: ../../../administrator/profile.php:340
+#: ../../../administrator/profile.php:337
+#: ../../../administrator/profile.php:341
 msgid "Reset"
 msgstr "Сбросить"
 
-#: ../../../administrator/profile.php:339
+#: ../../../administrator/profile.php:340
 msgid "favorite tv"
 msgstr "избранное тв"
 
-#: ../../../administrator/profile.php:340
+#: ../../../administrator/profile.php:341
 #, php-format
 msgid "%s channels"
 msgstr "%s канала"
 
-#: ../../../administrator/profile.php:340
+#: ../../../administrator/profile.php:341
 msgid "Reset favorite TV channels? The channels will be reset only if immediately restart the stb!"
 msgstr "Сбросить избранные ТВ каналы? Каналы полностью сбросятся только если сразу перезапустить приставку!"
 
-#: ../../../administrator/profile.php:357
+#: ../../../administrator/profile.php:358
 msgid "Full name"
 msgstr "ФИО"
 
-#: ../../../administrator/profile.php:373
+#: ../../../administrator/profile.php:374
 msgid "Account number"
 msgstr "Номер лицевого счета"
 
-#: ../../../administrator/profile.php:381
+#: ../../../administrator/profile.php:382
 msgid "Last change of status"
 msgstr "Изменение статуса"
 
-#: ../../../administrator/profile.php:397
+#: ../../../administrator/profile.php:398
 #: ../../../administrator/reply.php:145
-#: ../../../administrator/send_to.php:177
 msgid "Comment"
 msgstr "Примечание"
 
-#: ../../../administrator/profile.php:448
+#: ../../../administrator/profile.php:449
 msgid "Tariff plan"
 msgstr "Тарифный план"
 
-#: ../../../administrator/profile.php:464
+#: ../../../administrator/profile.php:465
 msgid "Change"
 msgstr "Изменить"
 
-#: ../../../administrator/profile.php:473
+#: ../../../administrator/profile.php:474
 msgid "No packages available"
 msgstr "Нет доступных пакетов"
 
-#: ../../../administrator/profile.php:477
+#: ../../../administrator/profile.php:478
 msgid "Packages"
 msgstr "Пакеты"
 
-#: ../../../administrator/profile.php:503
+#: ../../../administrator/profile.php:504
 msgid "TV subscription"
 msgstr "Подписка на каналы"
 
-#: ../../../administrator/profile.php:506
+#: ../../../administrator/profile.php:507
 msgid "Additional services"
 msgstr "Доп. сервисы"
 
@@ -1335,7 +1329,6 @@ msgid "Send message"
 msgstr "Отправить сообщение"
 
 #: ../../../administrator/reply.php:136
-#: ../../../administrator/send_to.php:167
 msgid "To"
 msgstr "Кому"
 
@@ -1395,7 +1388,6 @@ msgid "All services"
 msgstr "Все услуги"
 
 #: ../../../administrator/services_packages.php:410
-#: ../../../administrator/stream_zones.php:313
 msgid "Selected"
 msgstr "Выбрано"
 
@@ -1602,89 +1594,89 @@ msgstr "Приставки группы"
 msgid "Are you sure you want to remove stb %s from the database?"
 msgstr "Вы действительно хотите удалить приставку %s из базы?"
 
-#: ../../../administrator/storages.php:105
+#: ../../../administrator/storages.php:108
 #, php-format
 msgid "Cache %s is cleared"
 msgstr "Кеш %s сброшен"
 
-#: ../../../administrator/storages.php:110
+#: ../../../administrator/storages.php:113
 #, php-format
 msgid "Storage with id %s not found"
 msgstr "Хранилище с ID %s в базе отсутствует"
 
-#: ../../../administrator/storages.php:117
+#: ../../../administrator/storages.php:120
 msgid "Cache is cleared"
 msgstr "Кеш сброшен"
 
-#: ../../../administrator/storages.php:173
+#: ../../../administrator/storages.php:176
 msgid "Are you sure you want to reset a cache?"
 msgstr "Вы действительно хотите сбросить весь кеш?"
 
-#: ../../../administrator/storages.php:173
+#: ../../../administrator/storages.php:176
 msgid "Clear cache"
 msgstr "Сбросить кеш"
 
-#: ../../../administrator/storages.php:173
+#: ../../../administrator/storages.php:176
 msgid "Are you sure you want to update a cache? This operation will take some time."
 msgstr "Вы действительно хотите обновить весь кеш? Эта операция займет какое-то время."
 
-#: ../../../administrator/storages.php:173
+#: ../../../administrator/storages.php:176
 msgid "Refresh cache"
 msgstr "Обновить кеш"
 
-#: ../../../administrator/storages.php:173
+#: ../../../administrator/storages.php:176
 msgid "Unique movies"
 msgstr "Уникальные фильмы"
 
-#: ../../../administrator/storages.php:173
+#: ../../../administrator/storages.php:176
 msgid "Search in storages"
 msgstr "Поиск по хранилищам"
 
-#: ../../../administrator/storages.php:194
-#: ../../../administrator/storages.php:246
+#: ../../../administrator/storages.php:197
+#: ../../../administrator/storages.php:253
 msgid "Home path"
 msgstr "Домашняя директория"
 
-#: ../../../administrator/storages.php:221
+#: ../../../administrator/storages.php:224
 #, php-format
 msgid "Are you sure you want to change the status of the storage %s?"
 msgstr "Вы действительно хотите изменить статус хранилища %s?"
 
-#: ../../../administrator/storages.php:222
+#: ../../../administrator/storages.php:225
 #, php-format
 msgid "Are you sure you want to reset the cache of the storage %s?"
 msgstr "Вы действительно хотите сбросить кеш хранилища %s?"
 
-#: ../../../administrator/storages.php:222
+#: ../../../administrator/storages.php:225
 msgid "clear cache"
 msgstr "cбросить кеш"
 
-#: ../../../administrator/storages.php:224
+#: ../../../administrator/storages.php:227
 #, php-format
 msgid "Are you sure you want to delete storage %s?"
 msgstr "Вы действительно хотите удалить хранилище %s?"
 
-#: ../../../administrator/storages.php:254
+#: ../../../administrator/storages.php:261
 msgid "Storing content"
 msgstr "Хранение контента"
 
-#: ../../../administrator/storages.php:258
+#: ../../../administrator/storages.php:265
 msgid "Not available for MAG100"
 msgstr "Недоступно для MAG100"
 
-#: ../../../administrator/storages.php:262
+#: ../../../administrator/storages.php:269
 msgid "Record TV"
 msgstr "Запись ТВ"
 
-#: ../../../administrator/storages.php:270
+#: ../../../administrator/storages.php:277
 msgid "Emulation"
 msgstr "Эмуляция"
 
-#: ../../../administrator/storages.php:276
+#: ../../../administrator/storages.php:283
 msgid "External"
 msgstr "Внешнее"
 
-#: ../../../administrator/storages.php:280
+#: ../../../administrator/storages.php:287
 msgid "Only moderators"
 msgstr "Только модераторы"
 
@@ -1889,12 +1881,12 @@ msgid "Excluding"
 msgstr "Исключая"
 
 #: ../../../administrator/unique_video.php:510
-#: ../../../administrator/video_search.php:465
+#: ../../../administrator/video_search.php:519
 msgid "folder"
 msgstr "каталог"
 
 #: ../../../administrator/unique_video.php:511
-#: ../../../administrator/video_search.php:468
+#: ../../../administrator/video_search.php:522
 msgid "Total views per month"
 msgstr "Кол-во просмотров за месяц"
 
@@ -2029,23 +2021,27 @@ msgstr "и еще на"
 msgid "storages"
 msgstr "хранилищах"
 
-#: ../../../administrator/video_search.php:337
+#: ../../../administrator/video_search.php:323
+msgid "and not on server"
+msgstr "и нет на сервере"
+
+#: ../../../administrator/video_search.php:365
 msgid "total views"
 msgstr "просмотров всего"
 
-#: ../../../administrator/video_search.php:338
+#: ../../../administrator/video_search.php:366
 msgid "total views per month"
 msgstr "просмотров за месяц"
 
-#: ../../../administrator/video_search.php:339
+#: ../../../administrator/video_search.php:367
 msgid "last viewed"
 msgstr "последний просмотр"
 
-#: ../../../administrator/video_search.php:466
+#: ../../../administrator/video_search.php:520
 msgid "Number of storages"
 msgstr "Кол-во хранилищ"
 
-#: ../../../administrator/video_search.php:469
+#: ../../../administrator/video_search.php:523
 msgid "Last viewed"
 msgstr "Последний просмотр"
 
@@ -3709,12 +3705,12 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/itv.class.php:1250
+#: ../../../lib/itv.class.php:1254
 #, php-format
 msgid "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1260
+#: ../../../lib/itv.class.php:1264
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
@@ -3726,14 +3722,6 @@ msgstr "идет запись"
 #: ../../../lib/remotepvr.class.php:106
 msgid "scheduled"
 msgstr "запланировано"
-
-#: ../../../lib/streamrecorder.class.php:138
-msgid "Starting recording"
-msgstr "Начинается запись"
-
-#: ../../../lib/streamrecorder.class.php:444
-msgid "Stopped recording"
-msgstr "Остановлена запись"
 
 #. / Minutes
 #: ../../../lib/system.class.php:74
@@ -3753,26 +3741,28 @@ msgstr "сегодня"
 msgid "yesterday"
 msgstr "вчера"
 
-#: ../../../lib/user.class.php:824
-#: ../../../lib/user.class.php:825
+#. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
+#: ../../../lib/user.class.php:911
+#: ../../../lib/user.class.php:912
 #: ../../../lib/video.class.php:95
+#: ../../../lib/vod.class.php:716
 #, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"
 
-#: ../../../lib/user.class.php:834
+#: ../../../lib/user.class.php:921
 msgid "TV channels"
 msgstr "ТВ каналы"
 
-#: ../../../lib/user.class.php:835
+#: ../../../lib/user.class.php:922
 msgid "Movies"
 msgstr "Видео"
 
-#: ../../../lib/user.class.php:836
+#: ../../../lib/user.class.php:923
 msgid "Radio channels"
 msgstr "Радио каналы"
 
-#: ../../../lib/user.class.php:837
+#: ../../../lib/user.class.php:924
 msgid "Modules"
 msgstr "Модули"
 
@@ -3780,8 +3770,8 @@ msgstr "Модули"
 msgid "last week"
 msgstr "7 дней"
 
-#: ../../../lib/weatherco.class.php:140
-#: ../../../lib/weatherco.class.php:161
+#: ../../../lib/weatherco.class.php:190
+#: ../../../lib/weatherco.class.php:211
 msgid "city_name_field"
 msgstr "name"
 
@@ -4236,6 +4226,15 @@ msgstr "З"
 #: ../../../tools/misctranslations.php:152
 msgid "NW"
 msgstr "СЗ"
+
+#~ msgid "Tariff plan is changed, please restart your STB"
+#~ msgstr "Тарифный план изменен. Пожалуйста, перезагрузите приставку."
+
+#~ msgid "Starting recording"
+#~ msgstr "Начинается запись"
+
+#~ msgid "Stopped recording"
+#~ msgstr "Остановлена запись"
 
 #~ msgid "Wrong password"
 #~ msgstr "Неверный пароль"

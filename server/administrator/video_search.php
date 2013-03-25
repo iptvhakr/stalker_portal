@@ -286,14 +286,14 @@ function md5sum(obj, status, media_name, storage_name){
                     <td>
                         <?
                         $rs  = $db->executeQuery("select * from storages where status=1");
-                        
+
+                        $on_storages = @$_GET['on_storages'];
+
                         while(@$rs->next()){
                             $arr=$rs->getCurrentValuesAsHash();
-                            echo '<input type="radio" id="'.$arr['storage_name'].'_on_storage" name="on_storage" value="'.$arr['storage_name'].'"';
-                            
-                            $on_storage = @$_GET['on_storage'];
-                            
-                            if ($arr['storage_name'] == $on_storage){
+                            echo '<input type="checkbox" id="'.$arr['storage_name'].'_on_storage" name="on_storages[]" value="'.$arr['storage_name'].'"';
+
+                            if (in_array($arr['storage_name'], $on_storages)){
                                 echo ' checked';
                             }
                             
@@ -312,6 +312,34 @@ function md5sum(obj, status, media_name, storage_name){
                 <tr>
                     <td>
                         <input type="text" name="total_storages" value="<? echo @$_GET['total_storages']?>" size="5" maxlength="2" /> <?= _('storages')?>
+                    </td>
+                </tr>
+            </table>
+        </td>
+
+        <td valign="top">
+            <table width="100%">
+                <tr>
+                    <th width="100%"><?= _('and not on server')?></th>
+                </tr>
+                <tr>
+                    <td>
+                        <?
+                        $rs  = $db->executeQuery("select * from storages where status=1");
+
+                        $not_on_storages = @$_GET['not_on_storages'];
+
+                        while(@$rs->next()){
+                            $arr=$rs->getCurrentValuesAsHash();
+                            echo '<input type="checkbox" id="'.$arr['storage_name'].'_not_on_storage" name="not_on_storages[]" value="'.$arr['storage_name'].'"';
+
+                            if (in_array($arr['storage_name'], $not_on_storages)){
+                                echo ' checked';
+                            }
+
+                            echo '></input><label for="'.$arr['storage_name'].'_not_on_storage">'.$arr['storage_name'].'</label><br>';
+                        }
+                        ?>
                     </td>
                 </tr>
             </table>
@@ -413,30 +441,48 @@ function check_video_status($id){
     return $rs->getValueByName(0, 'status');
 }
 
-$on_storage = '';
+$on_storages = array();
                             
-if (@$_GET['on_storage']){
-    $on_storage = $_GET['on_storage'];
+if (@$_GET['on_storages']){
+    $on_storages = $_GET['on_storages'];
 }
 
-$sql = "select * from storage_cache where status=1 and media_type='vclub' and storage_name='$on_storage'";
-$rs  = $db->executeQuery($sql);
-$on_storage_ids = $rs->getValuesByName('media_id');
+$not_on_storages = array();
 
-$on_storage_ids_str = implode(",", $on_storage_ids);
-
-if (empty($on_storage_ids_str)){
-    $on_storage_ids_str = '0';
+if (@$_GET['not_on_storages']){
+    $not_on_storages = $_GET['not_on_storages'];
 }
 
-$sortby = '';
+$sql = "select media_id as video_id, path, GROUP_CONCAT(storage_name) as storages, count(storage_name) as on_storages, (count_first_0_5+count_second_0_5) as month_counter, count, last_played from storage_cache,video where video.id=media_id and media_type='vclub' group by media_id";
+
+$having = array();
+
+if (!empty($on_storages)){
+    foreach ($on_storages as $on_storage){
+        $having[] = 'storages like "%'.$on_storage.'%"';
+    }
+}
+
+if (!empty($not_on_storages)){
+    foreach ($not_on_storages as $not_on_storage){
+        $having[] = 'storages not like "%'.$not_on_storage.'%"';
+    }
+}
+
+if (isset($_GET['total_storages']) && $_GET['total_storages'] !== ''){
+    $having[] = "on_storages=".(@intval($_GET['total_storages'])+count($on_storages));
+}
+
+if (!empty($having)){
+    $sql .= " having ".implode(' and ', $having);
+}
 
 if (!empty($_GET['sortby'])){
-    
-    $sortby = 'order by '.$_GET['sortby'].', path';
+
+    $sql .= ' order by '.$_GET['sortby'].', path';
 }
 
-$sql = "select video.id as video_id, video.id as video_id, path, count(storage_cache.id) as on_storages, (count_first_0_5+count_second_0_5) as month_counter, count, last_played from video left join storage_cache on video.id=storage_cache.media_id and storage_cache.status=1 and storage_cache.media_type='vclub' where video.id in ($on_storage_ids_str) group by video.id having on_storages=".(@intval($_GET['total_storages'])+1).' '.$sortby;
+//echo $sql;
 
 $rs = $db->executeQuery($sql);
 $total_items = $rs->getRowCount();
@@ -476,7 +522,7 @@ if (@$_GET['view'] != 'text'){
         echo "<td class='list'>".$arr['video_id']."</td>\n";
         //echo "<td class='list'>".$arr['path']."</td>\n";
         echo "<td class='list'><a href='javascript://' onclick='open_info({$arr['video_id']})'>".get_path_color($arr['video_id'], $arr['path'])."</a></td>\n";
-        echo "<td class='list'>".$arr['on_storages']."</td>\n";
+        echo "<td class='list'>".$arr['on_storages']." (".$arr['storages'].")</td>\n";
         echo "<td class='list'>".$arr['count']."</td>\n";
         echo "<td class='list'>".$arr['month_counter']."</td>\n";
         echo "<td class='list'>".$arr['last_played']."</td>\n";
