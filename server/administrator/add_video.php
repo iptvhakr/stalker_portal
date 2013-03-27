@@ -287,87 +287,43 @@ if (count(@$_POST) > 0){
 
                 if(@$_GET['name'] && !$error){
 
-                    $name = mysql_escape_string(@$_POST['name']);
-                    $o_name = mysql_escape_string(@$_POST['o_name']);
-                    $director = mysql_escape_string(@$_POST['director']);
-                    $year = @$_POST['year'];
-
-                    // disable this video in SD for hd devices
-                    //$sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year'";
-                    //$db->executeQuery($sql);
-
-                    $datetime = date("Y-m-d H:i:s");
-
-                    $query = "insert into video (name,
-                                                 o_name,
-                                                 censored,
-                                                 hd,
-                                                 for_sd_stb,
-                                                 path,
-                                                 protocol,
-                                                 rtsp_url,
-                                                 time,
-                                                 description,
-                                                 genre_id_1,
-                                                 genre_id_2,
-                                                 genre_id_3,
-                                                 genre_id_4,
-                                                 cat_genre_id_1,
-                                                 cat_genre_id_2,
-                                                 cat_genre_id_3,
-                                                 cat_genre_id_4,
-                                                 category_id,
-                                                 director,
-                                                 actors,
-                                                 added,
-                                                 status,
-                                                 year,
-                                                 volume_correction,
-                                                 kinopoisk_id,
-                                                 rating_kinopoisk,
-                                                 rating_count_kinopoisk,
-                                                 rating_imdb,
-                                                 rating_count_imdb,
-                                                 age,
-                                                 rating_mpaa
-                                                 ) 
-                                        values ('".trim(mysql_real_escape_string($name))."',
-                                                '".trim(mysql_real_escape_string($o_name))."',
-                                                '".$censored."',
-                                                '".$hd."',
-                                                '".$for_sd_stb."',
-                                                '".$trans_name."',
-                                                '".$protocol."',
-                                                '".$rtsp_url."',
-                                                '".@$_POST['time']."',
-                                                '".mysql_real_escape_string(@$_POST['description'])."',
-                                                '".$genre_id_1."',
-                                                '".$genre_id_2."',
-                                                '".$genre_id_3."',
-                                                '".$genre_id_4."',
-                                                '".$cat_genre_id_1."',
-                                                '".$cat_genre_id_2."',
-                                                '".$cat_genre_id_3."',
-                                                '".$cat_genre_id_4."',
-                                                '".$category_id."',
-                                                '".$director."',
-                                                '".mysql_real_escape_string(@$_POST['actors'])."',
-                                                '".$datetime."',
-                                                $status,
-                                                '".$year."',
-                                                ".intval($_POST['volume_correction']).",
-                                                '".$_POST['kinopoisk_id']."',
-                                                '".$_POST['rating_kinopoisk']."',
-                                                '".$_POST['rating_count_kinopoisk']."',
-                                                '".$_POST['rating_imdb']."',
-                                                '".$_POST['rating_count_imdb']."',
-                                                '".$_POST['age']."',
-                                                '".$_POST['rating_mpaa']."'
-                                                )";
-                    //echo $query;
-                    $rs = $db->executeQuery($query);
-
-                    $video_id = mysql_insert_id();
+                    $video_id = Mysql::getInstance()->insert(
+                        'video',
+                        array(
+                            'name'           => trim($_POST['name']),
+                            'o_name'         => trim($_POST['o_name']),
+                            'censored'       => $censored,
+                            'hd'             => $hd,
+                            'for_sd_stb'     => $for_sd_stb,
+                            'protocol'       => $protocol,
+                            'rtsp_url'       => $rtsp_url,
+                            'time'           => @$_POST['time'],
+                            'description'    => $_POST['description'],
+                            'genre_id_1'     => $genre_id_1,
+                            'genre_id_2'     => $genre_id_2,
+                            'genre_id_3'     => $genre_id_3,
+                            'genre_id_4'     => $genre_id_4,
+                            'cat_genre_id_1' => $cat_genre_id_1,
+                            'cat_genre_id_2' => $cat_genre_id_2,
+                            'cat_genre_id_3' => $cat_genre_id_3,
+                            'cat_genre_id_4' => $cat_genre_id_4,
+                            'category_id'    => $category_id,
+                            'director'       => $_POST['director'],
+                            'actors'         => $_POST['actors'],
+                            'status'         => $status,
+                            'year'           => $_POST['year'],
+                            'volume_correction' => (int) $_POST['volume_correction'],
+                            'kinopoisk_id'      => $_POST['kinopoisk_id'],
+                            'rating_kinopoisk'  => $_POST['rating_kinopoisk'],
+                            'rating_count_kinopoisk' => $_POST['rating_count_kinopoisk'],
+                            'rating_imdb'    => $_POST['rating_imdb'],
+                            'rating_count_imdb' => $_POST['rating_count_imdb'],
+                            'age'            => $_POST['age'],
+                            'rating_mpaa'    => $_POST['rating_mpaa'],
+                            'path'           => $trans_name,
+                            'added'          => 'NOW()'
+                        )
+                    )->insert_id();
 
                     if(@$_SESSION['upload']){
                         $query = 'DELETE from screenshots where media_id=\''.$video_id.'\' and id not IN ('.implode(',', $_SESSION['upload']).')';
@@ -394,43 +350,49 @@ if (count(@$_POST) > 0){
 
             if (@$_GET['update']){
 
-
                 $video_id = intval(@$_GET['id']);
 
                 if(@$_GET['name']){
-                    $query = "update video set name='".trim(mysql_real_escape_string($_POST['name']))."',
-                                               o_name='".trim(mysql_real_escape_string($_POST['o_name']))."',
-                                               censored='".$censored."',
-                                               hd='".$hd."',
-                                               for_sd_stb='".$for_sd_stb."',
-                                               protocol='".$protocol."',
-                                               rtsp_url='".$rtsp_url."',
-                                               time='".@$_POST['time']."',
-                                               description='".@mysql_real_escape_string($_POST['description'])."',
-                                               genre_id_1='".$genre_id_1."',
-                                               genre_id_2='".$genre_id_2."',
-                                               genre_id_3='".$genre_id_3."',
-                                               genre_id_4='".$genre_id_4."',
-                                               cat_genre_id_1='".$cat_genre_id_1."',
-                                               cat_genre_id_2='".$cat_genre_id_2."',
-                                               cat_genre_id_3='".$cat_genre_id_3."',
-                                               cat_genre_id_4='".$cat_genre_id_4."',
-                                               category_id='".$category_id."',
-                                               director='".@$_POST['director']."',
-                                               actors='".@mysql_real_escape_string($_POST['actors'])."',
-                                               status=$status,
-                                               year='".@$_POST['year']."',
-                                               volume_correction=".intval($_POST['volume_correction']).",
-                                               kinopoisk_id='".$_POST['kinopoisk_id']."',
-                                               rating_kinopoisk='".$_POST['rating_kinopoisk']."',
-                                               rating_count_kinopoisk='".$_POST['rating_count_kinopoisk']."',
-                                               rating_imdb='".$_POST['rating_imdb']."',
-                                               rating_count_imdb='".$_POST['rating_count_imdb']."',
-                                               age='".$_POST['age']."',
-                                               rating_mpaa='".$_POST['rating_mpaa']."'
-                                            where id=".intval(@$_GET['id']);
-                    //echo $query; exit;
-                    $rs=$db->executeQuery($query);
+
+                    Mysql::getInstance()->update(
+                        'video',
+                        array(
+                            'name'           => trim($_POST['name']),
+                            'o_name'         => trim($_POST['o_name']),
+                            'censored'       => $censored,
+                            'hd'             => $hd,
+                            'for_sd_stb'     => $for_sd_stb,
+                            'protocol'       => $protocol,
+                            'rtsp_url'       => $rtsp_url,
+                            'time'           => @$_POST['time'],
+                            'description'    => $_POST['description'],
+                            'genre_id_1'     => $genre_id_1,
+                            'genre_id_2'     => $genre_id_2,
+                            'genre_id_3'     => $genre_id_3,
+                            'genre_id_4'     => $genre_id_4,
+                            'cat_genre_id_1' => $cat_genre_id_1,
+                            'cat_genre_id_2' => $cat_genre_id_2,
+                            'cat_genre_id_3' => $cat_genre_id_3,
+                            'cat_genre_id_4' => $cat_genre_id_4,
+                            'category_id'    => $category_id,
+                            'director'       => $_POST['director'],
+                            'actors'         => $_POST['actors'],
+                            'status'         => $status,
+                            'year'           => $_POST['year'],
+                            'volume_correction' => (int) $_POST['volume_correction'],
+                            'kinopoisk_id'      => $_POST['kinopoisk_id'],
+                            'rating_kinopoisk'  => $_POST['rating_kinopoisk'],
+                            'rating_count_kinopoisk' => $_POST['rating_count_kinopoisk'],
+                            'rating_imdb'    => $_POST['rating_imdb'],
+                            'rating_count_imdb' => $_POST['rating_count_imdb'],
+                            'age'            => $_POST['age'],
+                            'rating_mpaa'    => $_POST['rating_mpaa'],
+                        ),
+                        array(
+                            'id' => (int) $_GET['id']
+                        )
+                    );
+
                     add_video_log('edit', intval(@$_GET['id']));
 
                     $query = 'DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.implode(',', $_SESSION['upload']).')';
