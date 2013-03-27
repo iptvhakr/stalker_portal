@@ -968,9 +968,11 @@ function common_xpcom(){
                     _debug('stb.GetContrast before', stb.GetContrast());
                     _debug('stb.GetSaturation before', stb.GetSaturation());
 
-                    stb.SetBrightness(127);
-                    stb.SetContrast(-27);
-                    stb.SetSaturation(100);
+                    if (this.stb_type == 'MAG200'){
+                        stb.SetBrightness(127);
+                        stb.SetContrast(-27);
+                        stb.SetSaturation(100);
+                    }
 
                     _debug('stb.GetBrightness after', stb.GetBrightness());
                     _debug('stb.GetContrast after', stb.GetContrast());
