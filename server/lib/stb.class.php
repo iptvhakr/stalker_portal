@@ -379,6 +379,8 @@ class Stb
 
         $profile['enable_stream_error_logging'] = Config::getSafe('enable_stream_error_logging', false);
 
+        $profile['always_enabled_subtitles'] = Config::getSafe('always_enabled_subtitles', false);
+
         return $profile;
     }
 

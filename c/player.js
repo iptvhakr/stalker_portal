@@ -3871,7 +3871,9 @@ player.prototype.subtitle_pid = {
     get_all : function(){
         _debug('subtitle_pid.get_all');
 
-        if (stb.player.cur_media_item.cmd.indexOf(' strack:') != -1){
+        _debug('stb.profile[always_enabled_subtitles]', stb.profile['always_enabled_subtitles']);
+
+        if (stb.profile['always_enabled_subtitles'] || stb.player.cur_media_item.cmd.indexOf(' strack:') != -1){
             this.enable();
         }else{
             this.disable();
