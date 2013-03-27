@@ -10,7 +10,7 @@ class VideoGenre
         Stb::getInstance()->initLocale($this->language);
     }
 
-    public function getAll($pretty_id = false, $group = true){
+    public function getAll($pretty_id = false, $group = true, $include_internal_id = false){
 
         $genres = Mysql::getInstance()->from('cat_genre');
 
@@ -21,7 +21,11 @@ class VideoGenre
         $genres = $genres->get()->all();
 
         $genres = array_map(
-            function($item) use ($pretty_id){
+            function($item) use ($pretty_id, $include_internal_id){
+
+                if ($include_internal_id){
+                    $item['_id'] = $item['id'];
+                }
 
                 if ($pretty_id){
                     $item['id'] = preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $item['title']);
@@ -34,6 +38,19 @@ class VideoGenre
             }, $genres);
 
         return $genres;
+    }
+
+    public function getIdMap(){
+
+        $genres = $this->getAll(true, false, true);
+
+        $map = array();
+
+        foreach ($genres as $genre){
+            $map[$genre['_id']] = $genre['id'];
+        }
+
+        return $map;
     }
 
     public function getById($id, $pretty_id = false){

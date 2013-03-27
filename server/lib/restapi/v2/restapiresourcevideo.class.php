@@ -162,9 +162,22 @@ class RESTApiResourceVideo extends RESTApiCollection
         $favorites  = $this->favorites;
         $not_ended  = $this->not_ended;
 
-        $videos = array_map(function($video) use ($fields_map, $favorites, $not_ended){
+        $genre  = new \VideoGenre();
+        $genres_map = $genre->getIdMap();
+
+        $videos = array_map(function($video) use ($fields_map, $favorites, $not_ended, $genres_map){
 
             $new_video = array_intersect_key($video, $fields_map);
+
+            $genre_ids = $new_video['genres_ids'];
+
+            $new_video['genres_ids'] = array();
+
+            foreach ($genre_ids as $genre_id){
+                if (!empty($genres_map[$genre_id])){
+                    $new_video['genres_ids'][] = $genres_map[$genre_id];
+                }
+            }
 
             $new_video['added']         = strtotime($video['added']);
             $new_video['original_name'] = $video['o_name'];
