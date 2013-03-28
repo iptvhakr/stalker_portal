@@ -813,8 +813,9 @@ class Itv extends AjaxResponse
             }
 
             if ($this->response['data'][$i]['lock'] == 1 && !$this->include_censored){
-                //unset($this->response['data'][$i]);
                 array_splice($this->response['data'], $i, 1);
+                $length--;
+                $i--;
                 continue;
             }
             
