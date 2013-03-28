@@ -58,13 +58,16 @@
         this.row_callback_timeout = 500;
         
         this.fav_manage_mode = false;
+        this.auto_play  = true;
         
         this.password_input = new password_input({"parent" : this, "proceed_navigation" : true});
         this.password_input.bind();
         
         this._show = function(genre){
-            
+
             _debug('tv._show', genre);
+
+            _debug('this.auto_play', this.auto_play);
             
             genre = genre || this.genre || this.genres[0];
             
@@ -200,6 +203,9 @@
                 }
                 
                 if (!do_not_reset){
+
+                    this.auto_play = stb.player.on;
+
                     stb.player.stop();
                     //this.last_ch_id = 0;
                 }
@@ -270,7 +276,10 @@
                         return;
                     }
 
+                    _debug('stb.player.on', stb.player.on);
+
                     if (stb.player.on){
+                        this.auto_play = true;
                         stb.player.stop();
                     }
                     
@@ -288,6 +297,7 @@
             (function(){
                 if (module.epg){
                     if (stb.player.on){
+                        this.auto_play = true;
                         stb.player.stop();
                     }
                     
@@ -795,12 +805,15 @@
             var self = this;
 
             _debug('stb.profile[play_in_preview_only_by_ok]', stb.profile['play_in_preview_only_by_ok']);
+            _debug('this.auto_play', this.auto_play);
 
-            if (stb.profile['play_in_preview_only_by_ok']){
+            if (stb.profile['play_in_preview_only_by_ok'] && !this.auto_play){
                 this.short_info_box.innerHTML = '';
                 this.short_epg_loader.start();
                 return;
             }
+
+            this.auto_play = false;
 
             _debug('before set timeout');
             this.row_callback_timer = window.setTimeout(function(){
@@ -1644,6 +1657,7 @@
     tv.init_header_path(word['tv_title']);
     
     tv.hide();
+    tv.auto_play = true;
     
     module.tv = tv;
     
