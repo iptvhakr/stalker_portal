@@ -86,7 +86,7 @@ class AccountInfo
             $page = 1;
         }
 
-        $sliced_packages = array_slice($packages, ($page-1) * 10, 14);
+        $sliced_packages = array_slice($packages, ($page-1) * 14, 14);
 
         //var_dump($packages);
 
