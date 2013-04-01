@@ -351,7 +351,8 @@ class RemotePvr extends AjaxResponse
             ->from('users_rec')
             ->where(array(
                 'uid'     => $this->stb->id,
-                'ended'   => 0
+                'ended'   => 0,
+                'local'   => 1
             ))
             ->get()
             ->all();
