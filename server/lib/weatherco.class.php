@@ -25,11 +25,34 @@ class Weatherco
     );
 
     public function updateFullCurrent(){
-        
-        $xml_resp = simplexml_load_file('http://xml.weather.co.ua/1.2/fullcurrent/');
+
+        $start = microtime(1);
+
+        $content = file_get_contents(
+            'http://xml.weather.co.ua/1.2/fullcurrent/',
+            false,
+            stream_context_create(
+                array(
+                    'http' => array(
+                        'timeout' => 300
+                    )
+                )
+            )
+        );
+
+        $xml_resp = simplexml_load_string($content);
 
         if (!$xml_resp){
-            throw new Exception("Error loading fullcurrent weather");
+
+            echo "Error loading fullcurrent weather\n";
+            echo "Time: ".(microtime(1) - $start)."\n";
+
+            foreach(libxml_get_errors() as $error) {
+                echo "\t", $error->message;
+            }
+
+            //file_put_contents('/var/log/stalkerd/1c_'.date('YmdHis').'.log', $content);
+            exit;
         }
 
         foreach ($xml_resp->current as $current){
@@ -54,10 +77,33 @@ class Weatherco
 
     public function updateFullForecast(){
 
-        $xml_resp = simplexml_load_file('http://xml.weather.co.ua/1.2/fullforecast/');
+        $start = microtime(1);
+
+        $content = file_get_contents(
+            'http://xml.weather.co.ua/1.2/fullforecast/',
+            false,
+            stream_context_create(
+                array(
+                    'http' => array(
+                        'timeout' => 300
+                    )
+                )
+            ));
+
+        $xml_resp = simplexml_load_string($content);
 
         if (!$xml_resp){
-            throw new Exception("Error loading fullforecast weather");
+
+            echo "Error loading fullforecast weather\n";
+            echo "Downloaded in: ".(microtime(1) - $start)."\n";
+            echo "Time: ".(microtime(1) - $start)."\n";
+
+            foreach(libxml_get_errors() as $error) {
+                echo "\t", $error->message;
+            }
+
+            //file_put_contents('/var/log/stalkerd/1f_'.date('YmdHis').'.log', $content);
+            exit;
         }
 
         foreach ($xml_resp->forecast as $forecast){
