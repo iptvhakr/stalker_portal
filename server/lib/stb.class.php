@@ -705,17 +705,26 @@ class Stb
                     //preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
 
                     if (strpos($param, 'http://') !== false){
-                        preg_match("/\/([^\/]+)\/[^\/]+\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+
+                        $video = $this->db->from('video')->where(array('rtsp_url' => $param, 'protocol' => 'custom'))->get()->first();
+
+                        if (empty($video)){
+                            preg_match("/\/([^\/]+)\/[^\/]+\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+                        }
+
                     }else{
                         preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
                     }
-                    
-                    $storage  = $tmp_arr[1];
-                    $media_id = intval($tmp_arr[2]);
-                    
-                    $video = $this->db->from('video')->where(array('id' => $media_id))->get()->first();
-                    
-                    $update_data['storage_name'] = $storage;
+
+                    if (empty($video) && !empty($tmp_arr)){
+
+                        $storage  = $tmp_arr[1];
+                        $media_id = intval($tmp_arr[2]);
+
+                        $video = $this->db->from('video')->where(array('id' => $media_id))->get()->first();
+
+                        $update_data['storage_name'] = $storage;
+                    }
                     
                     if (!empty($video)){
                         
@@ -724,7 +733,7 @@ class Stb
                     }else{
                         $update_data['now_playing_content'] = $param;
                     }
-                    
+
                     break;
                 case 3: // Karaoke
                     

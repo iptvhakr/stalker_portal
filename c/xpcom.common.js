@@ -1643,6 +1643,8 @@ function common_xpcom(){
                     cur_place_num = 1;
                 }else if(this.cur_place == 'radio'){ // Radio
                     cur_place_num = 5;
+                }else if(this.cur_place == 'vclub'){
+                    cur_place_num = 2;
                 }else{
                     cur_place_num = 1;
                 }

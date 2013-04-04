@@ -624,7 +624,7 @@ while(@$rs->next()){
     
     $now_playing_content = $arr['now_playing_content'];
     
-    if ($arr['now_playing_type'] == 2){
+    if ($arr['now_playing_type'] == 2 && $arr['storage_name']){
         $now_playing_content = '['.$arr['storage_name'].'] '.$now_playing_content;
     }
     
