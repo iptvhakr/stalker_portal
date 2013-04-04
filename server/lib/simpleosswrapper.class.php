@@ -17,6 +17,7 @@ class SimpleOssWrapper implements OssWrapperInterface
             .'&serial_number='.$user->getSerialNumber()
             .'&type='.$user->getStbType()
             .'&locale='.$user->getLocale()
+            .'&portal='.(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'])
         );
 
         $strict_check = Config::getSafe('strict_oss_url_check', true);
