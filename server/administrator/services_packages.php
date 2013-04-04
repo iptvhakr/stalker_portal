@@ -13,7 +13,7 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-$packages = Mysql::getInstance()->from('services_package')->get()->all();
+$packages = Mysql::getInstance()->from('services_package')->orderby('external_id')->get()->all();
 
 if (!empty($_POST['add']) && !empty($_POST['name'])){
 
