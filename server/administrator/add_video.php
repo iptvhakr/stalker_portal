@@ -326,10 +326,10 @@ if (count(@$_POST) > 0){
                     )->insert_id();
 
                     if(@$_SESSION['upload']){
-                        $query = 'DELETE from screenshots where media_id=\''.$video_id.'\' and id not IN ('.implode(',', $_SESSION['upload']).')';
+                        $query = 'DELETE from screenshots where media_id=\''.$video_id.'\' and id not IN ('.@implode(',', $_SESSION['upload']).')';
                         $rs=$db->executeQuery($query);
 
-                        $query = 'UPDATE screenshots SET media_id=\''.$video_id.'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
+                        $query = 'UPDATE screenshots SET media_id=\''.$video_id.'\' WHERE id IN ('.@implode(',', $_SESSION['upload']).')';
                         $rs=$db->executeQuery($query);
                         unset($_SESSION['upload']);
                     }
@@ -395,10 +395,10 @@ if (count(@$_POST) > 0){
 
                     add_video_log('edit', intval(@$_GET['id']));
 
-                    $query = 'DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.implode(',', $_SESSION['upload']).')';
+                    $query = 'DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.@implode(',', $_SESSION['upload']).')';
                     $rs=$db->executeQuery($query);
 
-                    $query = 'UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.implode(',', $_SESSION['upload']).')';
+                    $query = 'UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.@implode(',', $_SESSION['upload']).')';
                     //echo $query;
                     $rs=$db->executeQuery($query);
 
