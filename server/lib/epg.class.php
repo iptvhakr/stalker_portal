@@ -72,7 +72,13 @@ class Epg
                 return "\n"._("Source")." ".$setting['uri']." "._("unavailable")."\n";
             }
 
-            if (!preg_match("/200 OK/", $headers[0])){
+            if (preg_match("/301 Moved Permanently/", $headers[0]) && !empty($headers['Location'])){
+
+                $setting['uri'] = $headers['Location'];
+
+                return $this->updateEpgBySetting($setting, $force);
+
+            }elseif (!preg_match("/200 OK/", $headers[0])){
                 return "\n"._("Source")." ".$setting['uri']." "._("unavailable")."\n";
             }
 
