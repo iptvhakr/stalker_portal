@@ -200,7 +200,11 @@ class Itv extends AjaxResponse
                 if (!$key){
                     throw new ItvLinkException('link_fault');
                 }else{
-                    $channel['cmd'] = $channel['cmd'].'?'.$key;
+                    if (Config::getSafe('use_named_wowza_token', false)){
+                        $channel['cmd'] = $channel['cmd'].'?token='.$key;
+                    }else{
+                        $channel['cmd'] = $channel['cmd'].'?'.$key;
+                    }
                 }
             }else{
 
