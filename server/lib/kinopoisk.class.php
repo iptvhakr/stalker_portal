@@ -56,26 +56,6 @@ class Kinopoisk
 
         curl_close($ch);
 
-        /*if (class_exists('tidy')){
-
-            $tidy = new tidy;
-
-            $tidy_config = array(
-                'indent' => true,
-                'bare'   => true,
-                'clean'  => true,
-                'drop-proprietary-attributes' => false,
-                'new-inline-tags' => 'spacer',
-                'new-empty-tags' => 'spacer',
-                'new-blocklevel-tags' => 'spacer',
-                'new-pre-tags' => 'spacer',
-            );
-
-            //$page = $tidy->repairString($page, $tidy_config, 'raw');
-        }else{
-            throw new ErrorException("php-tidy extension not installed.");
-        }*/
-
         //var_dump($page);
 
         libxml_use_internal_errors(true);
@@ -86,7 +66,7 @@ class Kinopoisk
         $xpath = new DomXPath($dom);
 
         // Translated name
-        $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[1]/td/table/tr/td[2]/table/tr[1]/td/h1');
+        $node_list = $xpath->query('//*[@id="headerFilm"]/h1');
 
         if ($node_list !== false && $node_list->length != 0){
             $movie_info['name'] = self::getNodeText($node_list->item(0));
@@ -108,7 +88,7 @@ class Kinopoisk
         }
 
         // Year
-        $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[2]/td[2]/div[1]/table/tr[1]/td[2]/div/a');
+        $node_list = $xpath->query('//*[@id="infoTable"]/table/tr[1]/td[2]/div/a');
 
         if ($node_list !== false && $node_list->length != 0){
             $movie_info['year'] = self::getNodeText($node_list->item(0));
@@ -122,14 +102,14 @@ class Kinopoisk
         }
 
         // Director
-        $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[2]/td[2]/div[1]/table/tr[4]/td[2]/a');
+        $node_list = $xpath->query('//*[@id="infoTable"]/table/tr[4]/td[2]/a');
 
         if ($node_list !== false && $node_list->length != 0){
             $movie_info['director'] = self::getNodeText($node_list->item(0));
         }
 
         // Actors
-        $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[2]/div/span');
+        $node_list = $xpath->query('//*[@id="actorList"]/ul[1]/li');
 
         if ($node_list !== false && $node_list->length != 0){
 
