@@ -56,7 +56,7 @@ class Kinopoisk
 
         curl_close($ch);
 
-        if (class_exists('tidy')){
+        /*if (class_exists('tidy')){
 
             $tidy = new tidy;
 
@@ -74,7 +74,7 @@ class Kinopoisk
             //$page = $tidy->repairString($page, $tidy_config, 'raw');
         }else{
             throw new ErrorException("php-tidy extension not installed.");
-        }
+        }*/
 
         //var_dump($page);
 
@@ -216,6 +216,10 @@ class Kinopoisk
 
         $ch = curl_init();
 
+        if ($ch === false){
+            throw new KinopoiskException("Curl initialization error", curl_error($ch));
+        }
+
         $orig_name = iconv("utf-8", "windows-1251", $orig_name);
 
         $orig_name = urlencode($orig_name);
@@ -251,6 +255,10 @@ class Kinopoisk
         $response = curl_exec($ch);
 
         curl_close($ch);
+
+        if ($response === false){
+            throw new KinopoiskException("Curl exec failure", curl_error($ch));
+        }
 
         if (preg_match("/Location: ([^\s]*)/", $response, $match)){
             $location = $match[1];
