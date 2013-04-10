@@ -96,7 +96,7 @@ a {outline:none; text-decoration:none;}
 .arrow_top_violet {height:42px; width:40px; background:url(img/720/arrow_violet_top.png); margin-top:10px; margin-left:410px;}
 .arrow_top_green {height:42px; width:40px; background:url(img/720/arrow_green_top.png); margin-top:10px; margin-left:410px;}
 .arrow_top_orange {height:42px; width:40px; background:url(img/720/arrow_orange_top.png); margin-top:10px; margin-left:410px;}
-.arrow_top_red {height:42px; width:40px; background:url(img/720/arrow_red_top.png); margin-top:510; margin-left:410px;}
+.arrow_top_red {height:42px; width:40px; margin-top:510; margin-left:410px;}
 .arrow_bottom_gray {height:42px; width:40px; background:url(img/720/arrow_gray_bottom.png); margin-top:65px; margin-left:410px;}
 .arrow_bottom_blue {height:42px; width:40px; background:url(img/720/arrow_blue_bottom.png); margin-top:65px;; margin-left:410px;}
 .arrow_bottom_violet {height:42px; width:40px; background:url(img/720/arrow_violet_bottom.png); margin-top:60px; margin-left:410px;}
@@ -133,7 +133,7 @@ a {outline:none; text-decoration:none;}
 .menu_series {width:420px; height:624px; padding-top:36px; background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #121219), color-stop(0.5, #4c4b60), color-stop(1, #121219));}
 .menustripes_series {width:420px; height:624px; background:url(img/720/menu_stripes.png) right bottom no-repeat;}
 .submenu_series {height:624px; width:200px; padding-top:36px; margin-top:-660px; margin-left:420px; background:url(img/720/black_bg.png);}
-.submenu_series2 {height:624px; width:200px; padding-top:36px,; margin-top:-660px; margin-left:620px; background:url(img/720/green_bg.png);}
+.submenu_series2 {height:624px; width:200px; padding-top:36px; margin-top:-660px; margin-left:620px;}
 .submenu_series_item {width:168px; padding:20px 16px;}
 .submenu_series_item_act {width:172px; padding:20px 12px; background:#672 url(img/720/arrow_green_right.png) right no-repeat; border-left: solid 4px #a8cf32;}
 .submenuseries_shadow_top {position:absolute; height:100px; width:200px; margin-top:-36px; background:url(img/720/submenu_shadow_top.png);}
@@ -143,10 +143,10 @@ a {outline:none; text-decoration:none;}
 .menuseries_separator {height:50px; width:420px; background: url(img/720/menu_separator.png) top;}
 .menuseries_item {height:64px; width:420px; font-size:24px; padding-left:50px; border-left: solid 60px rgba(0,0,0,0); line-height:66px; text-shadow:0 2px 0 #333; text-transform:uppercase;}
 .menuseries_item_act {height:88px; width:300px; font-size:24px; padding-left:110px; padding-right:12px; margin:-12px 0; background: url(img/720/menu_green.png) right center; line-height:90px; text-shadow:0 2px 0 #333; text-transform:uppercase;}
-.menu_continue {height:100%; width:22px; background: url(img/720/menu_continue.png) center no-repeat; margin-left:-40px; margin-right:16px; float:left;}
-.menu_season {height:100%; width:22px; background: url(img/720/menu_season.png) center no-repeat; margin-left:-40px; margin-right:16px; float:left;}
-.menu_quality {height:100%; width:22px; background: url(img/720/menu_quality.png) center no-repeat; margin-left:-40px; margin-right:16px; float:left;}
-.menu_anew {height:100%; width:22px; background: url(img/720/menu_anew.png) center no-repeat; margin-left:-40px; margin-right:16px; float:left;}
+.menu_continue {height:100%; width:22px; margin-left:-40px; margin-right:16px; float:left;}
+.menu_season {height:100%; width:22px; margin-left:-40px; margin-right:16px; float:left;}
+.menu_quality {height:100%; width:22px; margin-left:-40px; margin-right:16px; float:left;}
+.menu_anew {height:100%; width:22px; margin-left:-40px; margin-right:16px; float:left;}
 .submenuseries_title {font-size:23px;}
 
 
@@ -225,7 +225,7 @@ a {outline:none; text-decoration:none;}
  /* MENU SERIES */
  .menu_genres {width:420px; height:624px; padding-top:36px; background:-webkit-gradient(linear, left bottom, left top, color-stop(0, #121219), color-stop(0.5, #4c4b60), color-stop(1, #121219));}
  .menustripes_genres {width:420px; height:624px; background:url(img/720/menu_stripes.png) right bottom no-repeat;}
- .submenu_genres {height:624x; width:267px; padding-top:36px; margin-top:-660px; margin-left:300px; background:url(img/720/black_bg.png);}
+ .submenu_genres {height:624px; width:267px; padding-top:36px; margin-top:-660px; margin-left:300px; background:url(img/720/black_bg.png);}
 
  .submenugenres_shadow_top {position:absolute; height:100px; width:267px; margin-top:-36px; background:url(img/720/submenu_shadow_top.png);}
  .submenugenres_shadow_bottom {position:absolute; height:100px; width:267px; bottom:0px; background:url(img/720/submenu_shadow_bottom.png);}

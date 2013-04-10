@@ -93,7 +93,7 @@ a {outline:none; text-decoration:none;}
 .arrow_top_violet {height:42px; width:40px; background:url(img/576/arrow_violet_top.png); margin-top:20px; margin-left:210px;}
 .arrow_top_green {height:42px; width:40px; background:url(img/576/arrow_green_top.png); margin-top:20px; margin-left:210px;}
 .arrow_top_orange {height:42px; width:40px; background:url(img/576/arrow_orange_top.png); margin-top:20px; margin-left:210px;}
-.arrow_top_red {height:42px; width:40px; background:url(img/576/arrow_red_top.png); margin-top:20px; margin-left:210px;}
+.arrow_top_red {height:42px; width:40px; margin-top:20px; margin-left:210px;}
 .arrow_bottom_gray {height:42px; width:40px; background:url(img/576/arrow_gray_bottom.png); margin-top:60px; margin-left:210px;}
 .arrow_bottom_blue {height:42px; width:40px; background:url(img/576/arrow_blue_bottom.png); margin-top:60px; margin-left:210px;}
 .arrow_bottom_violet {height:42px; width:40px; background:url(img/576/arrow_violet_bottom.png); margin-top:60px; margin-left:210px;}
@@ -111,10 +111,10 @@ a {outline:none; text-decoration:none;}
 .stripeshorizontal_left {width:65px; height:250px; float:left; background:url(img/576/arrow_blue_left.png) right center no-repeat;}
 .stripeshorizontal_right {width:65px; height:250px; float:left; background:url(img/576/arrow_blue_right.png) left center no-repeat;}
 .stripehorizontal_counter {position:absolute; border:solid 2px #ccc; background:#000; padding:6px 10px 2px; font-size:12px; color:#fff; margin-top:-39px; margin-left:-20px;}
-.stripehorizontal_counter_bottom {position:relative; background:url(img/stripe_counter.png) center bottom no-repeat; margin-bottom:-9px; height:12px;}
+.stripehorizontal_counter_bottom {position:relative; background:url(img/576/stripe_counter.png) center bottom no-repeat; margin-bottom:-9px; height:12px;}
 .stripes_horizontal_country {width:210px; font-size:14px; line-height:14px; font-weight:normal;}
 .stripes_horizontal_title {width:210px; height:64px; line-height:20px; overflow:hidden;}
-.stripes_horizontal_rating {height:20px; background:url(img/rating_0.png) no-repeat; padding-left:0px; margin-right:10px; margin-left:0px; font-size:18px; color:#777;}
+.stripes_horizontal_rating {height:20px; background:url(img/576/rating_0.png) no-repeat; padding-left:0px; margin-right:10px; margin-left:0px; font-size:18px; color:#777;}
 .stripes_horizontal_rating_act {height:20px; width:68px; background:url(img/576/rating_1.png) left; margin-left:-106px; float:left;}
 .submenu_bubble {width:260px; border:solid 2px #ccc; background:#000; padding:2px 20px 14px; font-size:18px; color:#fff; margin-top:10px;}
 .submenu_bubble_top {position:relative; background:url(img/576/stripe_counter_top.png) left top no-repeat; margin-bottom:10px; margin-top:-9px; height:12px;}

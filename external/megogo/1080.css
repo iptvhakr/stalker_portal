@@ -95,7 +95,7 @@ a {outline:none; text-decoration:none;}
 .arrow_top_violet {height:63px; width:60px; background:url(img/1080/arrow_violet_top.png); margin-top:12px; margin-left:615px;}
 .arrow_top_green {height:63px; width:60px; background:url(img/1080/arrow_green_top.png); margin-top:12px; margin-left:615px;}
 .arrow_top_orange {height:63px; width:60px; background:url(img/1080/arrow_orange_top.png); margin-top:12px; margin-left:615px;}
-.arrow_top_red {height:63px; width:60px; background:url(img/1080/arrow_red_top.png); margin-top:510; margin-left:615px;}
+.arrow_top_red {height:63px; width:60px; margin-top:510; margin-left:615px;}
 .arrow_bottom_gray {height:63px; width:60px; background:url(img/1080/arrow_gray_bottom.png); margin-top:97.5px; margin-left:615px;}
 .arrow_bottom_blue {height:63px; width:60px; background:url(img/1080/arrow_blue_bottom.png); margin-top:97.5px;; margin-left:615px;}
 .arrow_bottom_violet {height:63px; width:60px; background:url(img/1080/arrow_violet_bottom.png); margin-top:90px; margin-left:615px;}
