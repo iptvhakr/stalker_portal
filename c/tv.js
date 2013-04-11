@@ -794,6 +794,7 @@
             window.clearTimeout(this.row_callback_timer);
 
             if(stb.player.cur_media_item && stb.player.cur_media_item.id && this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on){
+                this.auto_play = false;
                 this.short_epg_loader.start();
                 return;
             }
