@@ -1089,12 +1089,17 @@ player.prototype.event_callback = function(event, params){
         }
         case 32: // HDMI on
         {
-            keydown_observer.emulate_key(key.MENU);
+
+            if (!stb.power_off){
+                keydown_observer.emulate_key(key.MENU);
+            }
             break;
         }
         case 33: // HDMI off
         {
-            keydown_observer.emulate_key(key.MENU);
+            if (!stb.power_off){
+                keydown_observer.emulate_key(key.MENU);
+            }
             break;
         }
     }
