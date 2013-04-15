@@ -471,3 +471,17 @@ $words['parent_password_title'] = _('Parent control');
 $words['password_label'] = _('Password');
 
 $words['encoding_label'] = _('Encoding');
+
+$words['network_folder'] = _('Network folder');
+$words['server_ip'] = _('IP address');
+$words['server_path'] = _('Path');
+$words['local_folder'] = _('Local folder');
+$words['server_type'] = _('Type');
+$words['server_login'] = _('Login');
+$words['server_password'] = _('Password');
+$words['add_folder'] = _('ADD');
+$words['server_ip_placeholder'] = _('Server address');
+$words['server_path_placeholder'] = _('Path to the folder');
+$words['local_folder_placeholder'] = _('Folder name in favorites');
+$words['local_folder_placeholder'] = _('Folder name in favorites');
+$words['error'] = _('error');

@@ -36,6 +36,8 @@
 
             this.init_smb_auth_dialog();
 
+            this.init_share_form();
+
             this.get_smb_passwords();
 
             this.get_favorites();
@@ -175,6 +177,140 @@
             
         };
 
+        this.init_share_form = function(){
+            _debug('media_browser.init_share_form');
+
+            var scope = this;
+
+            this.manage_fav_form = new ModalForm({"title" : get_word('network_folder'), "parent" : this, "id" : "network_folder"});
+            this.manage_fav_form.enableOnExitClose();
+
+            this.manage_fav_form.addItem(new ModalFormInput({
+                "label" : get_word('server_ip'),
+                "name" : "server_ip",
+                "placeholder" : get_word('server_ip_placeholder')
+            }));
+
+            this.manage_fav_form.addItem(new ModalFormInput({
+                "label" : get_word('server_path'),
+                "name" : "server_path",
+                "placeholder" : get_word('server_path_placeholder'),
+                "onchange" : function(){
+                    var server_path = scope.manage_fav_form.getItemByName("server_path").getValue();
+                    var parts = server_path.split('/');
+                    scope.manage_fav_form.getItemByName("local_folder").setValue(parts[parts.length-1]);
+                }
+            }));
+
+            this.manage_fav_form.addItem(new ModalFormInput({
+                "label" : get_word('local_folder'),
+                "name" : "local_folder",
+                "placeholder" : get_word('local_folder_placeholder')
+            }));
+
+            this.manage_fav_form.addItem(new ModalFormSelect({
+                "label" : get_word('server_type'),
+                "name" : "server_type",
+                "options" : [
+                    {
+                        "text"  : "SMB",
+                        "value" : "smb"
+                    },
+                    {
+                        "text"  : "NFS",
+                        "value" : "nfs"
+                    }
+                ]
+            }));
+
+            /*this.manage_fav_form.addItem(new ModalFormInput({
+                "label" : get_word('server_login'),
+                "name" : "login"
+            }));
+
+            this.manage_fav_form.addItem(new ModalFormInput({
+                "label" : get_word('server_password'),
+                "type" : "password",
+                "name" : "password"
+            }));*/
+
+            this.manage_fav_form.addItem(new ModalFormButton({
+                "value" : get_word("cancel_btn"),
+                "name"  : "cancel_btn",
+                "onclick" : function(){
+                    scope.manage_fav_form.hide();
+                }
+            }));
+
+            this.manage_fav_form.addItem(new ModalFormButton({
+                "value" : get_word("add_btn"),
+                "name"  : "add_btn",
+                "onclick" : function(){
+                    /*
+                    {
+                        type:media_favorites,
+                        action:save,
+                        favorites:[
+                            {
+                            "name":"for_test_stb",
+                            "dir":1,
+                            "dir_name":"for_test_stb/",
+                            "fav":1,
+                            "_id":"smb://WORKGROUP/WOMBAT/pub/for_test_stb",
+                            "full_path":"smb://WORKGROUP/WOMBAT/pub/for_test_stb"
+                    }
+                     */
+
+                    var server_ip    = scope.manage_fav_form.getItemByName("server_ip").getValue();
+                    var server_path  = scope.manage_fav_form.getItemByName("server_path").getValue();
+                    var local_folder = scope.manage_fav_form.getItemByName("local_folder").getValue();
+                    var server_type  = scope.manage_fav_form.getItemByName("server_type").getValue();
+
+                    _debug('server_ip', server_ip);
+                    _debug('server_path', server_path);
+                    _debug('local_folder', local_folder);
+                    _debug('server_type', server_type);
+
+                    if (server_path.indexOf('/') === 0){
+                        server_path = server_path.substr(1, server_path.length-1);
+                    }
+
+                    if (server_path.lastIndexOf('/') == server_path.length-1){
+                        server_path = server_path.substr(0, server_path.length-1);
+                    }
+
+                    if (!server_ip || !server_path || !local_folder || local_folder.indexOf('/') != -1){
+                        return scope.manage_fav_form.setStatus(get_word("error"))
+                    }
+
+                    var path = server_type+'://'+server_ip+'/'+server_path;
+
+                    _debug('path', path);
+
+                    var fav_item = {
+                        "name"      : local_folder,
+                        "dir"       : 1,
+                        "dir_name"  : local_folder + (local_folder.lastIndexOf('/') == local_folder.length - 1 ? '' : '/'),
+                        "fav"       : 1,
+                        "do_not_resolve" : 1,
+                        "_id"       : path,
+                        "full_path" : path
+                    };
+
+                    _debug('fav_item', fav_item);
+
+                    scope.favorites.push(fav_item);
+                    scope.save_favorites();
+
+                    scope.load_data();
+
+                    scope.manage_fav_form.hide();
+
+                    return true;
+                }
+            }));
+        };
+
         this.get_smb_passwords = function(){
             _debug('media_browser.get_smb_passwords');
 
@@ -232,7 +368,7 @@
                         _debug("password", password);
 
                         self.smb_auth_dialog.hide();
-                        self.mount_smb_share(login, password);
+                        self.mount_share('smb', login, password);
                     }
                 }
             ));
@@ -327,7 +463,7 @@
 
             if (item && item.hasOwnProperty('full_path')){
 
-                if (item.full_path.indexOf('smb://') == 0){
+                if (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0){
 
                     this.smb_path = this.parse_smb_path(item.full_path).path || '';
 
@@ -592,11 +728,13 @@
             this.fill_page(shares);
         };
 
-        this.mount_smb_share = function(login, password){
-            _debug('media_browser.mount_smb_share');
+        this.mount_share = function(type, login, password){
+            _debug('media_browser.mount_share', type, login, password);
 
             /*login    = login    || "guest";
             password = password || "";*/
+
+            type = type || "smb";
 
             if (login == undefined){
                 var auth_params = this.get_auth_params(this.smb_server_ip, this.smb_share);
@@ -606,14 +744,23 @@
 
             _debug('this.smb_server_ip', this.smb_server_ip);
             _debug('this.smb_share',     this.smb_share);
+            _debug('this.smb_path',      this.smb_path);
             _debug('password', password);
             _debug('login', login);
 
-            var mount_str = 'mount cifs //' + Utf8.encode(this.smb_server_ip + '/' + this.smb_share) + ' /ram/mnt/smb username=' + login + ',password=' + password + ',iocharset=utf8';
+            if (type == 'smb'){
+                var mount_str = 'mount cifs //' + Utf8.encode(this.smb_server_ip + '/' + this.smb_share) + ' /ram/mnt/smb username=' + login + ',password=' + password + ',iocharset=utf8';
+            }else{
+                mount_str = 'mount nfs '+ this.smb_server_ip + ':/' + Utf8.encode(this.smb_share + '/' + this.smb_path) + ' /ram/mnt/smb ro,nolock';
+            }
 
             _debug('mount_str', mount_str);
 
-            var smb_mount_result = stb.RDir(mount_str);
+            try{
+                var smb_mount_result = stb.RDir(mount_str);
+            }catch(e){
+                _debug(e);
+            }
             _debug('smb_mount_result', smb_mount_result);
 
             if (smb_mount_result == "Error: mount failed"){
@@ -624,6 +771,10 @@
 
                 if (login != "guest"){
                     this.save_auth_params(this.smb_server_ip, this.smb_share, login, password)
+                }
+
+                if (type == 'nfs'){
+                    this.last_mounted = this.active_item.full_path;
                 }
 
                 this.in_dir(this.active_item);
@@ -893,7 +1044,7 @@
 
 
             var is_smb = this.dir_hist.some(function(dir){
-                return ['SMB_GROUP', 'SMB_SERVER', 'SMB_SHARE'].indexOf(dir.path) >= 0 || dir.full_path && dir.full_path.indexOf('smb://') == 0;
+                return ['SMB_GROUP', 'SMB_SERVER', 'SMB_SHARE'].indexOf(dir.path) >= 0 || dir.full_path && (dir.full_path.indexOf('smb://') == 0 || dir.full_path.indexOf('nfs://') == 0);
             });
 
              _debug('is_smb', is_smb);
@@ -905,11 +1056,16 @@
             }
 
 
-            if (item.dir_name == 'SMB_SHARE' || item.hasOwnProperty('full_path') && item.full_path.indexOf('smb://') == 0 && this.parse_smb_path(item.full_path).hasOwnProperty('share')){
+            if (item.dir_name == 'SMB_SHARE' || item.hasOwnProperty('full_path') && (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0 && (!this.last_mounted || item.full_path.indexOf(this.last_mounted) == -1)) && this.parse_smb_path(item.full_path).hasOwnProperty('share')){
 
-                stb.ExecAction('make_dir /ram/mnt/smb/');
+                try{
+                    stb.ExecAction('make_dir /ram/mnt/smb/');
 
-                stb.ExecAction('umount_dir /ram/mnt/smb/');
+                    stb.ExecAction('umount_dir /ram/mnt/smb/');
+                    this.last_mounted = '';
+                }catch (e){
+                    _debug(e);
+                }
 
                 if (item.hasOwnProperty('full_path')){
                     var path = this.parse_smb_path(item.full_path);
@@ -917,7 +1073,11 @@
                     _debug('smb path', path);
 
                     if (path.hasOwnProperty('server')){
-                        this.smb_server_ip = this.get_smb_server_ip_by_name(path.server);
+                        if (path.server.match(/^\d+\.\d+\.\d+\.\d+$/)){
+                            this.smb_server_ip = path.server;
+                        }else{
+                            this.smb_server_ip = this.get_smb_server_ip_by_name(path.server);
+                        }
                     }
 
                     if (path.hasOwnProperty('path')){
@@ -935,7 +1095,12 @@
                 }
 
 
-                this.mount_smb_share();
+                if (path && path.hasOwnProperty("proto")){
+                    this.mount_share(path.proto);
+                }else{
+                    this.mount_share();
+                }
+
                 return;
             }
 
@@ -983,7 +1148,9 @@
                 }
             }
 
-            breadcrumbs = breadcrumbs.substr(0, breadcrumbs.length - 1);
+            if (breadcrumbs.lastIndexOf('/') == breadcrumbs.length - 1){
+                breadcrumbs = breadcrumbs.substr(0, breadcrumbs.length - 1);
+            }
 
             this.update_header_path([{"alias" : "breadcrumbs", "item" : breadcrumbs}]);
         };
@@ -1150,6 +1317,12 @@
                 this.color_buttons.get('yellow').enable();
             }else{
                 this.color_buttons.get('yellow').disable();
+            }
+
+            if (this.dir_hist.length == 2 && this.dir_hist[this.dir_hist.length - 1].path == 'FAV'){
+                this.color_buttons.get('blue').enable();
+            }else{
+                this.color_buttons.get('blue').disable();
             }
 
             _debug('this.active_row[row].getAttribute(status)', this.active_row['row'].getAttribute("status"));
@@ -1329,30 +1502,62 @@
         this.parse_smb_path = function(full_path){
             _debug('media_browser.parse_smb_path', full_path);
 
+            var direct_link = false;
+
             var path = {};
 
-            var match = full_path.match("smb://([^\/]*)\/?([^\/]*)\/?([^\/]*)\/?(.*)");
+            var match = full_path.match("://([^\/]*)\/?([^\/]*)\/?([^\/]*)\/?(.*)");
 
             _debug('match', match);
 
             if (match){
 
-                if (match[1]){
-                    path.workgroup = match[1];
+                if (match[1] && match[1].match(/^\d+\.\d+\.\d+\.\d+$/)){
+                    direct_link = true;
                 }
 
-                if (match[2]){
-                    path.server = match[2];
-                }
+                _debug('direct_link', direct_link);
 
-                if (match[3]){
-                    path.share = match[3];
-                }
+                path.proto = full_path.substr(0, full_path.indexOf("://"));
 
-                if (match[4]){
-                    path.path = match[4] + '/';
+                _debug('path.proto', path.proto);
+
+                if (!direct_link){
+                    if (match[1]){
+                        path.workgroup = match[1];
+                    }
+
+                    if (match[2]){
+                        path.server = match[2];
+                    }
+
+                    if (match[3]){
+                        path.share = match[3];
+                    }
+
+                    if (match[4]){
+                        path.path = match[4] + '/';
+                    }
+                }else{
+                    if (match[1]){
+                        path.server = match[1];
+                    }
+
+                    if (match[2]){
+                        path.share = match[2];
+                    }
+
+                    if (match[3]){
+                        path.path = match[3] + '/';
+                    }
+
+                    if (match[4]){
+                        path.path += match[4] + '/';
+                    }
                 }
             }
+
+            _debug('path', path);
 
             return path;
         };
@@ -1536,7 +1741,7 @@
         {"label" : word['play_all'], "cmd" : media_browser.play_all_switch},
         {"label" : word['tv_sort'], "cmd" : media_browser.sort_menu_switcher},
         {"label" : get_word('favorite'), "cmd" : media_browser.add_del_fav},
-        {"label" : word['empty'], "cmd" : ""}
+        {"label" : get_word('add_folder'), "cmd" : function(){media_browser.manage_fav_form.show()}}
     ]);
 
     var sort_menu_map = [

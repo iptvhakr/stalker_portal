@@ -102,3 +102,7 @@
 #media_browser .mb_header_first{
     width: 485px;
 }
+
+#network_folder{
+    margin-top: -198px;
+}
