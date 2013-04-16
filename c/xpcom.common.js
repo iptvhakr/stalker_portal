@@ -996,6 +996,8 @@ function common_xpcom(){
 
                     stb.EnableServiceButton(!!this.user['enable_service_button']);
 
+                    stb.EnableVKButton(true);
+
                 }catch(e){
                     _debug(e);
                 }
