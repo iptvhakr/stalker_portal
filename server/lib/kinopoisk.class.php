@@ -77,7 +77,7 @@ class Kinopoisk
         }
 
         // Original name
-        $node_list = $xpath->query('//*[@id="content_block"]/table[1]/tr/td/div/table/tr[2]/td[1]/table/tr[1]/td/table/tr/td[2]/table/tr[2]/td/table/tr/td[1]/span');
+        $node_list = $xpath->query('//*[@id="headerFilm"]/span');
 
         if ($node_list !== false && $node_list->length != 0){
             $movie_info['o_name'] = self::getNodeText($node_list->item(0));
