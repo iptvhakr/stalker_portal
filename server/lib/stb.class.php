@@ -381,6 +381,8 @@ class Stb
 
         $profile['always_enabled_subtitles'] = Config::getSafe('always_enabled_subtitles', false);
 
+        $profile['enable_service_button'] = Config::getSafe('enable_service_button', false);
+
         return $profile;
     }
 

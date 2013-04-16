@@ -993,6 +993,9 @@ function common_xpcom(){
                     if (this.user['web_proxy_host']){
                         stb.SetWebProxy && stb.SetWebProxy(this.user['web_proxy_host'], this.user['web_proxy_port'], this.user['web_proxy_user'], this.user['web_proxy_pass'], this.user['web_proxy_exclude_list']);
                     }
+
+                    stb.EnableServiceButton(!!this.user['enable_service_button']);
+
                 }catch(e){
                     _debug(e);
                 }
