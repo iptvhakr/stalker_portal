@@ -986,7 +986,6 @@ function common_xpcom(){
 
                     stb.SetupSPdif(this.user['audio_out']);
 
-                    stb.EnableServiceButton(false);
                     stb.EnableAppButton && stb.EnableAppButton(false);
 
                     //stb.SetWebProxy(string proxy_addr,int proxy_port,string user_name,string passwd,string exclude_list);
