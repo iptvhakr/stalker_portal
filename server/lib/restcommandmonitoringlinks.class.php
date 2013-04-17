@@ -15,7 +15,14 @@ class RESTCommandMonitoringLinks extends RESTCommand
             throw new RESTCommandException('Unsupported Accept header, use text/channel-monitoring-id-url');
         }
 
-        $itv_list = Mysql::getInstance()->from('ch_links')->where(array('enable_monitoring' => 1))->orderby('ch_id')->get()->all();
+        $itv_list = Mysql::getInstance()
+            ->select('ch_links.*')
+            ->from('ch_links')
+            ->join('itv', 'ch_links.ch_id', 'itv.id', 'INNER')
+            ->where(array('ch_links.enable_monitoring' => 1))
+            ->orderby('ch_links.ch_id')
+            ->get()
+            ->all();
 
         $itv_list = array_map(function($cmd){
 

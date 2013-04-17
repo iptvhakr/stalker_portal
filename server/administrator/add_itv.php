@@ -11,22 +11,26 @@ $db = new Database();
 
 moderator_access();
 
-if (@$_GET['del']){
-    $query = "delete from itv where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+if (@$_GET['del'] && !empty($_GET['id'])){
+
+    Mysql::getInstance()->delete('ch_links', array('ch_id' => intval($_GET['id'])));
+    Mysql::getInstance()->delete('itv', array('id' => intval($_GET['id'])));
     header("Location: add_itv.php");
+    exit;
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
     $query = "update itv set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
     $rs=$db->executeQuery($query);
     header("Location: add_itv.php");
+    exit;
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
     $query = "update itv set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
     $rs=$db->executeQuery($query);
     header("Location: add_itv.php");
+    exit;
 }
 
 if (isset($_GET['shift']) && isset($_GET['from_num'])){
