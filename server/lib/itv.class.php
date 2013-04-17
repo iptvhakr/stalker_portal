@@ -83,7 +83,15 @@ class Itv extends AjaxResponse
                 $link_id = $link['id'];
 
                 if ($link['status'] == 0){
-                    throw new ItvLinkException('nothing_to_play');
+
+                    $alternative_links = self::getUrlsForChannel($ch_id);
+
+                    if (empty($alternative_links)){
+                        throw new ItvLinkException('nothing_to_play');
+                    }else{
+                        $link    = $alternative_links[0];
+                        $link_id = $link['id'];
+                    }
                 }
 
             }else{
