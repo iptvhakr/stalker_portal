@@ -465,9 +465,9 @@
 
                 if (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0){
 
-                    this.smb_path = this.parse_smb_path(item.full_path).path || '';
+                    this.net_path = this.parse_net_path(item.full_path).path || '';
 
-                    path = '/ram/mnt/smb/' + this.smb_path;
+                    path = '/ram/mnt/smb/' + this.net_path;
                 }else{
                     path = item.full_path;
                 }
@@ -713,7 +713,7 @@
 
             shares.result.shares = shares.result.shares || [];
 
-            this.smb_server_ip = shares.result.serverIP;
+            this.net_server_ip = shares.result.serverIP;
 
             var self = this;
 
@@ -737,21 +737,21 @@
             type = type || "smb";
 
             if (login == undefined){
-                var auth_params = this.get_auth_params(this.smb_server_ip, this.smb_share);
+                var auth_params = this.get_auth_params(this.net_server_ip, this.net_share);
                 login    = auth_params.login;
                 password = auth_params.pass;
             }
 
-            _debug('this.smb_server_ip', this.smb_server_ip);
-            _debug('this.smb_share',     this.smb_share);
-            _debug('this.smb_path',      this.smb_path);
+            _debug('this.net_server_ip', this.net_server_ip);
+            _debug('this.net_share',     this.net_share);
+            _debug('this.net_path',      this.net_path);
             _debug('password', password);
             _debug('login', login);
 
             if (type == 'smb'){
-                var mount_str = 'mount cifs //' + Utf8.encode(this.smb_server_ip + '/' + this.smb_share) + ' /ram/mnt/smb username=' + login + ',password=' + password + ',iocharset=utf8';
+                var mount_str = 'mount cifs //' + Utf8.encode(this.net_server_ip + '/' + this.net_share) + ' /ram/mnt/smb username=' + login + ',password=' + password + ',iocharset=utf8';
             }else{
-                mount_str = 'mount nfs '+ this.smb_server_ip + ':/' + Utf8.encode(this.smb_share + '/' + this.smb_path) + ' /ram/mnt/smb ro,nolock';
+                mount_str = 'mount nfs '+ this.net_server_ip + ':/' + Utf8.encode(this.net_share + '/' + this.net_path) + ' /ram/mnt/smb ro,nolock';
             }
 
             _debug('mount_str', mount_str);
@@ -765,12 +765,16 @@
 
             if (smb_mount_result == "Error: mount failed"){
 
-                this.on = false;
-                this.smb_auth_dialog.show();
+                if (type == 'smb'){
+                    this.on = false;
+                    this.smb_auth_dialog.show();
+                }else{
+                    stb.notice.show(get_word('mount_failed'));
+                }
             }else{
 
                 if (login != "guest"){
-                    this.save_auth_params(this.smb_server_ip, this.smb_share, login, password)
+                    this.save_auth_params(this.net_server_ip, this.net_share, login, password)
                 }
 
                 if (type == 'nfs'){
@@ -1056,7 +1060,7 @@
             }
 
 
-            if (item.dir_name == 'SMB_SHARE' || item.hasOwnProperty('full_path') && (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0 && (!this.last_mounted || item.full_path.indexOf(this.last_mounted) == -1)) && this.parse_smb_path(item.full_path).hasOwnProperty('share')){
+            if (item.dir_name == 'SMB_SHARE' || item.hasOwnProperty('full_path') && (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0 && (!this.last_mounted || item.full_path.indexOf(this.last_mounted) == -1)) && this.parse_net_path(item.full_path).hasOwnProperty('share')){
 
                 try{
                     stb.ExecAction('make_dir /ram/mnt/smb/');
@@ -1068,30 +1072,30 @@
                 }
 
                 if (item.hasOwnProperty('full_path')){
-                    var path = this.parse_smb_path(item.full_path);
+                    var path = this.parse_net_path(item.full_path);
 
-                    _debug('smb path', path);
+                    _debug('net path', path);
 
                     if (path.hasOwnProperty('server')){
                         if (path.server.match(/^\d+\.\d+\.\d+\.\d+$/)){
-                            this.smb_server_ip = path.server;
+                            this.net_server_ip = path.server;
                         }else{
-                            this.smb_server_ip = this.get_smb_server_ip_by_name(path.server);
+                            this.net_server_ip = this.get_smb_server_ip_by_name(path.server);
                         }
                     }
 
                     if (path.hasOwnProperty('path')){
-                        this.smb_path = path.path;
+                        this.net_path = path.path;
                     }else{
-                        this.smb_path = '';
+                        this.net_path = '';
                     }
 
                     if (path.hasOwnProperty('share')){
-                        this.smb_share = path.share;
+                        this.net_share = path.share;
                     }
 
                 }else{
-                    this.smb_share = item.name;
+                    this.net_share = item.name;
                 }
 
 
@@ -1499,8 +1503,8 @@
             return path + '/' + item.name;
         };
 
-        this.parse_smb_path = function(full_path){
-            _debug('media_browser.parse_smb_path', full_path);
+        this.parse_net_path = function(full_path){
+            _debug('media_browser.parse_net_path', full_path);
 
             var direct_link = false;
 

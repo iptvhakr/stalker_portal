@@ -485,3 +485,5 @@ $words['server_path_placeholder'] = _('Path to the folder');
 $words['local_folder_placeholder'] = _('Folder name in favorites');
 $words['local_folder_placeholder'] = _('Folder name in favorites');
 $words['error'] = _('error');
+
+$words['mount_failed'] = _('Mount failed');

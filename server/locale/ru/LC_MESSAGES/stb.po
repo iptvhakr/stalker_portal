@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-11 16:39+0200\n"
-"PO-Revision-Date: 2013-04-11 16:39+0200\n"
+"POT-Creation-Date: 2013-04-16 17:52+0200\n"
+"PO-Revision-Date: 2013-04-16 17:52+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3364,6 +3364,10 @@ msgstr "Путь к папке на сервере"
 #: ../../../lang/stb.php:486
 msgid "Folder name in favorites"
 msgstr "Имя папки в избранном"
+
+#: ../../../lang/stb.php:489
+msgid "Mount failed"
+msgstr "Ошибка монтирования"
 
 #: ../../../lib/account.class.php:18
 #: ../../../lib/account.class.php:39
