@@ -1247,9 +1247,51 @@ class Itv extends AjaxResponse
 
     public static function setChannelLinkStatus($link_id, $status){
 
-        Mysql::getInstance()->update('ch_links', array('status' => $status), array('id' => $link_id));
+        if (strpos($link_id, 's') === 0){ // stream balanser monitoring
 
-        $ch_id = (int) Mysql::getInstance()->from('ch_links')->where(array('id' => $link_id))->get()->first('ch_id');
+            $balanser_link_id = substr($link_id, 1);
+
+            Mysql::getInstance()->update('ch_link_on_streamer', array('monitoring_status' => $status), array('id' => $balanser_link_id));
+
+            $balanser_link = Mysql::getInstance()->from('ch_link_on_streamer')->where(array('id' => $balanser_link_id))->get()->first();
+
+            if (empty($balanser_link)){
+                return false;
+            }
+
+            $link = Mysql::getInstance()->from('ch_links')->where(array('id' => $balanser_link['link_id']))->get()->first();
+
+            if (empty($link)){
+                return false;
+            }
+
+            if ($status == 0){
+
+                $other_good_balanser_links = Mysql::getInstance()
+                    ->from('ch_link_on_streamer')
+                    ->where(array(
+                        'link_id' => $link['id'],
+                        'id!='    => $balanser_link_id,
+                        'monitoring_status' => 1
+                    ))
+                    ->get()
+                    ->all();
+
+                if (empty($other_good_balanser_links)){
+                    Mysql::getInstance()->update('ch_links', array('status' => $status), array('id' => $link['id']));
+                }
+
+            }else{
+                Mysql::getInstance()->update('ch_links', array('status' => $status), array('id' => $link['id']));
+            }
+
+            $ch_id = $link['ch_id'];
+
+        }else{
+            Mysql::getInstance()->update('ch_links', array('status' => $status), array('id' => $link_id));
+
+            $ch_id = (int) Mysql::getInstance()->from('ch_links')->where(array('id' => $link_id))->get()->first('ch_id');
+        }
 
         $channel = Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first();
 
@@ -1281,6 +1323,64 @@ class Itv extends AjaxResponse
         }
 
         return Mysql::getInstance()->update('itv', array('monitoring_status_updated' => 'NOW()'), array('id' => $ch_id));
+    }
+
+    public function getLinksForMonitoring(){
+
+        $monitoring_links = Mysql::getInstance()
+            ->from('ch_links')
+            ->where(array(
+                'enable_monitoring' => 1,
+                'enable_balancer_monitoring' => 0
+            ))
+            ->orderby('ch_id')
+            ->get()
+            ->all();
+
+        $balanser_monitoring_links_raw = Mysql::getInstance()
+            ->select('ch_links.*, streamer_id, ch_link_on_streamer.id as streamer_link_id')
+            ->from('ch_links')
+            ->join('ch_link_on_streamer', 'link_id', 'ch_links.id', 'INNER')
+            ->where(array(
+                'enable_monitoring' => 1,
+                'enable_balancer_monitoring' => 1,
+                'use_load_balancing' => 1
+            ))
+            ->orderby('ch_id')
+            ->get()
+            ->all();
+
+        $servers_map = StreamServer::getIdMap();
+
+        $balanser_monitoring_links = array();
+
+        foreach ($balanser_monitoring_links_raw as $link){
+            if (empty($servers_map[$link['streamer_id']])){
+                continue;
+            }
+
+            $link['url'] = preg_replace('/:\/\/([^\/]*)/', '://'.$servers_map[$link['streamer_id']]['address'], $link['url']);
+            $link['id'] = 's'.$link['streamer_link_id'];
+
+            $balanser_monitoring_links[] = $link;
+        }
+
+        $monitoring_links = array_merge($monitoring_links, $balanser_monitoring_links);
+
+        $monitoring_links = array_map(function($cmd){
+
+            $cmd['monitoring_url'] = trim($cmd['monitoring_url']);
+
+            if (!empty($cmd['monitoring_url'])){
+                $cmd['url'] = $cmd['monitoring_url'];
+            }else if (preg_match("/(\S+:\/\/\S+)/", $cmd['url'], $match)){
+                $cmd['url'] = $match[1];
+            }
+
+            return $cmd;
+        }, $monitoring_links);
+
+        return $monitoring_links;
     }
 }
 

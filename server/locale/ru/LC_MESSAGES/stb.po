@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-16 17:52+0200\n"
-"PO-Revision-Date: 2013-04-16 17:52+0200\n"
+"POT-Creation-Date: 2013-04-17 18:24+0200\n"
+"PO-Revision-Date: 2013-04-17 18:25+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -82,7 +82,7 @@ msgid "EPG"
 msgstr "EPG"
 
 #: ../../../administrator/add_epg.php:263
-#: ../../../administrator/add_itv.php:929
+#: ../../../administrator/add_itv.php:937
 #: ../../../administrator/add_karaoke.php:218
 #: ../../../administrator/add_moderator_mac.php:109
 #: ../../../administrator/add_radio.php:137
@@ -108,7 +108,7 @@ msgid "Load EPG"
 msgstr "Загрузить EPG"
 
 #: ../../../administrator/add_epg.php:401
-#: ../../../administrator/add_itv.php:1585
+#: ../../../administrator/add_itv.php:1593
 #: ../../../administrator/add_karaoke.php:869
 #: ../../../administrator/add_moderator_mac.php:225
 #: ../../../administrator/add_radio.php:272
@@ -124,19 +124,19 @@ msgstr "Сохранить"
 msgid "New"
 msgstr "Новый"
 
-#: ../../../administrator/add_itv.php:124
+#: ../../../administrator/add_itv.php:128
 #: ../../../administrator/add_radio.php:29
 #, php-format
 msgid "Error: channel with number \"%s\" is already in use"
 msgstr "Ошибка: Номер канала \"%s\" уже используется"
 
-#: ../../../administrator/add_itv.php:281
-#: ../../../administrator/add_itv.php:454
+#: ../../../administrator/add_itv.php:286
+#: ../../../administrator/add_itv.php:459
 msgid "Error: could not save logo"
 msgstr "Ошибка: невозможно сохранить логотип"
 
-#: ../../../administrator/add_itv.php:289
-#: ../../../administrator/add_itv.php:464
+#: ../../../administrator/add_itv.php:294
+#: ../../../administrator/add_itv.php:469
 #: ../../../administrator/add_karaoke.php:133
 #: ../../../administrator/add_karaoke.php:158
 #: ../../../administrator/add_moderator_mac.php:41
@@ -148,78 +148,82 @@ msgstr "Ошибка: невозможно сохранить логотип"
 msgid "Error: all fields are required"
 msgstr "Ошибка: необходимо заполнить все поля"
 
-#: ../../../administrator/add_itv.php:615
-#: ../../../administrator/add_itv.php:924
+#: ../../../administrator/add_itv.php:620
+#: ../../../administrator/add_itv.php:932
 msgid "IPTV channels"
 msgstr "IPTV каналы"
 
-#: ../../../administrator/add_itv.php:628
+#: ../../../administrator/add_itv.php:633
 msgid "priority"
 msgstr "приоритет"
 
-#: ../../../administrator/add_itv.php:632
+#: ../../../administrator/add_itv.php:637
 msgid "filter"
 msgstr "фильтр"
 
-#: ../../../administrator/add_itv.php:638
+#: ../../../administrator/add_itv.php:643
 msgid "Temporary HTTP URL"
 msgstr "Временная HTTP ссылка"
 
-#: ../../../administrator/add_itv.php:641
+#: ../../../administrator/add_itv.php:646
 msgid "WOWZA support"
 msgstr "Поддержка WOWZA"
 
-#: ../../../administrator/add_itv.php:646
+#: ../../../administrator/add_itv.php:651
 msgid "Enable monitoring"
 msgstr "Вести мониторинг"
 
-#: ../../../administrator/add_itv.php:652
+#: ../../../administrator/add_itv.php:653
+msgid "Balancer monitoring"
+msgstr "Мониторинг балансера"
+
+#: ../../../administrator/add_itv.php:658
 msgid "Channel URL for monitoring"
 msgstr "URL канала для мониторинга"
 
-#: ../../../administrator/add_itv.php:678
+#: ../../../administrator/add_itv.php:684
 msgid "add new link"
 msgstr "добавить новую ссылку"
 
-#: ../../../administrator/add_itv.php:680
+#: ../../../administrator/add_itv.php:686
 #: ../../../administrator/add_video.php:1258
 msgid "delete"
 msgstr "удалить"
 
-#: ../../../administrator/add_itv.php:747
-#: ../../../administrator/add_itv.php:1013
+#: ../../../administrator/add_itv.php:753
+#: ../../../administrator/add_itv.php:1021
 #: ../../../administrator/add_karaoke.php:526
 #: ../../../administrator/add_video.php:889
 msgid "Do you really want to delete this record?"
 msgstr "Вы действительно хотите удалить эту запись?"
 
-#: ../../../administrator/add_itv.php:891
+#: ../../../administrator/add_itv.php:899
 msgid "Channel with same number already exists!"
 msgstr "Канал с таким номером уже существует!"
 
-#: ../../../administrator/add_itv.php:893
+#: ../../../administrator/add_itv.php:901
 msgid "Shift channel list?"
 msgstr "Сдвинуть список каналов?"
 
-#: ../../../administrator/add_itv.php:929
+#: ../../../administrator/add_itv.php:937
 #: ../../../administrator/add_video.php:612
 msgid "Add"
 msgstr "Добавить"
 
-#: ../../../administrator/add_itv.php:955
-#: ../../../administrator/add_itv.php:1325
+#: ../../../administrator/add_itv.php:963
+#: ../../../administrator/add_itv.php:1333
 #: ../../../administrator/add_radio.php:160
 #: ../../../administrator/add_radio.php:236
 msgid "Number"
 msgstr "Номер"
 
-#: ../../../administrator/add_itv.php:956
-#: ../../../administrator/add_itv.php:1543
+#: ../../../administrator/add_itv.php:964
+#: ../../../administrator/add_itv.php:1551
 msgid "Service code"
 msgstr "Код услуги"
 
-#: ../../../administrator/add_itv.php:957
-#: ../../../administrator/add_itv.php:1333
+#: ../../../administrator/add_itv.php:965
+#: ../../../administrator/add_itv.php:1341
 #: ../../../administrator/add_karaoke.php:803
 #: ../../../administrator/add_moderator_mac.php:132
 #: ../../../administrator/add_moderator_mac.php:205
@@ -228,18 +232,18 @@ msgstr "Код услуги"
 msgid "Name"
 msgstr "Имя"
 
-#: ../../../administrator/add_itv.php:958
+#: ../../../administrator/add_itv.php:966
 #: ../../../administrator/add_radio.php:162
 #: ../../../administrator/add_radio.php:254
 msgid "URL"
 msgstr "URL"
 
-#: ../../../administrator/add_itv.php:959
+#: ../../../administrator/add_itv.php:967
 msgid "xmltv id"
 msgstr ""
 
-#: ../../../administrator/add_itv.php:960
-#: ../../../administrator/add_itv.php:1396
+#: ../../../administrator/add_itv.php:968
+#: ../../../administrator/add_itv.php:1404
 #: ../../../administrator/add_karaoke.php:849
 #: ../../../administrator/add_video.php:2038
 #: ../../../administrator/add_video.php:2047
@@ -248,107 +252,107 @@ msgstr ""
 msgid "Genre"
 msgstr "Жанр"
 
-#: ../../../administrator/add_itv.php:961
+#: ../../../administrator/add_itv.php:969
 msgid "Archive"
 msgstr "Архив"
 
-#: ../../../administrator/add_itv.php:962
-#: ../../../administrator/add_itv.php:1551
+#: ../../../administrator/add_itv.php:970
+#: ../../../administrator/add_itv.php:1559
 #: ../../../administrator/add_radio.php:262
 #: ../../../administrator/add_video.php:846
 #: ../../../administrator/add_video.php:2114
 msgid "Volume correction"
 msgstr "Коррекция звука"
 
-#: ../../../administrator/add_itv.php:963
+#: ../../../administrator/add_itv.php:971
 msgid "Claims about<br>audio/video/epg"
 msgstr "Жалобы на<br>видео/аудио/epg"
 
-#: ../../../administrator/add_itv.php:1003
+#: ../../../administrator/add_itv.php:1011
 #: ../../../administrator/add_karaoke.php:516
 #: ../../../administrator/add_video.php:875
 msgid "Do you really want to reset claims counter?"
 msgstr "Вы действительно хотите сбросить счетчик жалоб?"
 
-#: ../../../administrator/add_itv.php:1233
+#: ../../../administrator/add_itv.php:1241
 msgid "monitoring off"
 msgstr "не мониторится"
 
-#: ../../../administrator/add_itv.php:1239
+#: ../../../administrator/add_itv.php:1247
 msgid "more than an hour ago"
 msgstr "больше часа назад"
 
-#: ../../../administrator/add_itv.php:1243
+#: ../../../administrator/add_itv.php:1251
 msgid "less than a minute ago"
 msgstr "меньше минуты назад"
 
-#: ../../../administrator/add_itv.php:1246
+#: ../../../administrator/add_itv.php:1254
 msgid "minutes ago"
 msgstr "minutes ago"
 
-#: ../../../administrator/add_itv.php:1294
+#: ../../../administrator/add_itv.php:1302
 msgid "Error deleting a logo"
 msgstr "Ошибка при удалении лого"
 
-#: ../../../administrator/add_itv.php:1356
+#: ../../../administrator/add_itv.php:1364
 #: ../../../administrator/add_video.php:1963
 msgid "Age restriction"
 msgstr "Ограничение по возрасту"
 
-#: ../../../administrator/add_itv.php:1372
+#: ../../../administrator/add_itv.php:1380
 msgid "Base channel"
 msgstr "Базовый канал"
 
-#: ../../../administrator/add_itv.php:1380
+#: ../../../administrator/add_itv.php:1388
 msgid "Bonus channel"
 msgstr "Бонусный канал"
 
-#: ../../../administrator/add_itv.php:1388
+#: ../../../administrator/add_itv.php:1396
 msgid "Price"
 msgstr "Цена"
 
-#: ../../../administrator/add_itv.php:1434
+#: ../../../administrator/add_itv.php:1442
 msgid "Links"
 msgstr "Ссылки"
 
-#: ../../../administrator/add_itv.php:1453
+#: ../../../administrator/add_itv.php:1461
 msgid "URL for recording (multicast)"
 msgstr "Адрес для записи (мультикаст)"
 
-#: ../../../administrator/add_itv.php:1461
+#: ../../../administrator/add_itv.php:1469
 msgid "Enable TV archive"
 msgstr "Вести ТВ архив"
 
-#: ../../../administrator/add_itv.php:1482
+#: ../../../administrator/add_itv.php:1490
 msgid "Allow nPVR"
 msgstr "Разрешить nPVR"
 
-#: ../../../administrator/add_itv.php:1503
+#: ../../../administrator/add_itv.php:1511
 msgid "Allow USB PVR"
 msgstr "Разрешить PVR на USB носители"
 
-#: ../../../administrator/add_itv.php:1535
+#: ../../../administrator/add_itv.php:1543
 msgid "EPG correction"
 msgstr "Коррекция EPG"
 
-#: ../../../administrator/add_itv.php:1535
+#: ../../../administrator/add_itv.php:1543
 #: ../../../administrator/add_video.php:2085
 msgid "min"
 msgstr "мин"
 
-#: ../../../administrator/add_itv.php:1559
+#: ../../../administrator/add_itv.php:1567
 msgid "Comments"
 msgstr "Комментарии"
 
-#: ../../../administrator/add_itv.php:1575
+#: ../../../administrator/add_itv.php:1583
 msgid "Logo"
 msgstr "Логотип"
 
-#: ../../../administrator/add_itv.php:1575
+#: ../../../administrator/add_itv.php:1583
 msgid "Only for API"
 msgstr "Только для API"
 
-#: ../../../administrator/add_itv.php:1585
+#: ../../../administrator/add_itv.php:1593
 #: ../../../administrator/add_video.php:564
 msgid "Cancel"
 msgstr "Отмена"
@@ -3736,12 +3740,12 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/itv.class.php:1259
+#: ../../../lib/itv.class.php:1267
 #, php-format
 msgid "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1269
+#: ../../../lib/itv.class.php:1277
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""

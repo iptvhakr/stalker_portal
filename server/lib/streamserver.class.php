@@ -34,9 +34,21 @@ class StreamServer
             ->all();
     }
 
+    public static function getIdMap(){
+        $all_servers = self::getAll();
+
+        $map = array();
+
+        foreach ($all_servers as $server){
+            $map[$server['id']] = $server;
+        }
+
+        return $map;
+    }
+
     public static function getForLink($link_id){
 
-        $streamer_ids = self::getStreamersIdsForLink($link_id);
+        $streamer_ids = self::getGoodStreamersIdsForLink($link_id);
 
         if (empty($streamer_ids)){
             throw new EmptyStreamList();
@@ -111,13 +123,47 @@ class StreamServer
         return $streamers;
     }
 
-    public static function getStreamersIdsForLink($link_id){
+    public static function getGoodStreamersIdsForLink($link_id){
 
-        return Mysql::getInstance()
+        $link = Itv::getLinkById($link_id);
+
+        if (empty($link)){
+            return false;
+        }
+
+        if ($link['enable_monitoring'] && $link['enable_balancer_monitoring']){
+            return Mysql::getInstance()
+                ->from('ch_link_on_streamer')
+                ->where(array(
+                    'link_id' => $link_id,
+                    'monitoring_status' => 1
+                ))
+                ->get()
+                ->all('streamer_id');
+        }else{
+            return Mysql::getInstance()
+                ->from('ch_link_on_streamer')
+                ->where(array('link_id' => $link_id))
+                ->get()
+                ->all('streamer_id');
+        }
+    }
+
+    public static function getStreamersIdMapForLink($link_id){
+
+        $streamers = Mysql::getInstance()
             ->from('ch_link_on_streamer')
             ->where(array('link_id' => $link_id))
             ->get()
-            ->all('streamer_id');
+            ->all();
+
+        $map = array();
+
+        foreach ($streamers as $streamer){
+            $map[$streamer['streamer_id']] = $streamer;
+        }
+
+        return $map;
     }
 
     public static function getLoad($streamer_id, $sessions = null){
