@@ -1429,10 +1429,6 @@ player.prototype.define_media_type = function(cmd){
 
 player.prototype.play_last = function(){
     _debug('player.play_last');
-
-    if (this.pause.on){
-        this.hide_pause();
-    }
     
     this.prev_layer = module.tv;
     this.show_info_after_play();
@@ -1502,6 +1498,10 @@ player.prototype.play = function(item){
 
     window.clearTimeout(this.replay_channel_timer);
     window.clearTimeout(this.archive_continue_dialog_to);
+
+    if (this.pause.on){
+        this.hide_pause();
+    }
 
     if (typeof(item) == 'object'){
         if (!item.hasOwnProperty('cmd')){
