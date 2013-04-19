@@ -151,4 +151,7 @@ _('W');
 /// North-West
 _('NW');
 
-?>
+_('Tariff plan is changed, please restart your STB');
+_('Starting recording');
+_('Stopped recording');
+_('on channel');
