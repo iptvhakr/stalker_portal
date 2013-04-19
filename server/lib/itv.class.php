@@ -642,14 +642,9 @@ class Itv extends AjaxResponse
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
-                $chs = $query->get()->all();
+                $all_ids = $query->get()->all('id');
 
-                foreach ($chs as $ch){
-                    $ch_idx++;
-                    if ($ch['id'] == $last_id){
-                        break;
-                    }
-                }
+                $ch_idx = (int) array_search($last_id, $all_ids) + 1;
 
             }else{
                 $query = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number));
@@ -658,7 +653,13 @@ class Itv extends AjaxResponse
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
-                $ch_idx = $query->get()->count();
+                $all_ids = $query->get()->all('id');
+
+                if (array_search($last_id, $all_ids) !== false){
+                    $ch_idx = count($all_ids);
+                }else{
+                    $ch_idx = 1;
+                }
             }
         }
         
