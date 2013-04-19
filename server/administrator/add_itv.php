@@ -625,7 +625,7 @@ a:hover{
 <script type="text/javascript" src="js/jquery.cookies.2.2.0.js"></script>
 
 <script id="link_item_tmpl" type="text/x-jquery-tmpl">
-    <div>
+    <div id="link_${idx}" class="link" link-id="${idx}">
         <input name="cmd[${idx}]" size="50" type="text" value="${url}"
                style="border-style:solid;border-color: {{if status==1}}#66A566{{else}}#F88787{{/if}}"><br>
         <table>
@@ -650,7 +650,7 @@ a:hover{
                 <td colspan="2">
                     <?= _('Enable monitoring')?>:
                     <input type="checkbox" class="enable_monitoring"  name="enable_monitoring[${idx}]" value="1" {{if enable_monitoring==="1"}}checked{{/if}}>
-                    <span style="display:{{if use_load_balancing==1}} {{else}}none{{/if}}">&nbsp;&nbsp;<?= _('Balancer monitoring')?>:<input type="checkbox" name="enable_balancer_monitoring[${idx}]" value="1" {{if enable_balancer_monitoring==="1"}}checked{{/if}}></span>
+                    <span style="display:{{if use_load_balancing==1 && enable_monitoring==1}} {{else}}none{{/if}}">&nbsp;&nbsp;<?= _('Balancer monitoring')?>:<input type="checkbox" name="enable_balancer_monitoring[${idx}]" value="1" {{if enable_balancer_monitoring==="1"}}checked{{/if}}></span>
                 </td>
             </tr>
             <tr class="monitoring_url_block" style="display:{{if enable_monitoring==1}} {{else}}none{{/if}}; background-color:#f8f8f8">
@@ -781,8 +781,12 @@ a:hover{
 
         $('.use_load_balancing').live('click', function(event){
             if ($(this).attr('checked')){
-                $(this).parent().parent().prev().prev().children().children('span').show();
+
                 $(this).parent().parent().next().show();
+
+                if ($('#link_'+$(this).parents('.link').attr('link-id')).find('.enable_monitoring').attr('checked')){
+                    $(this).parent().parent().prev().prev().children().children('span').show();
+                }
             }else{
                 $(this).parent().parent().next().hide();
                 $(this).parent().parent().prev().prev().children().children('span').hide();
@@ -792,8 +796,12 @@ a:hover{
         $('.enable_monitoring').live('click', function(event){
             if ($(this).attr('checked')){
                 $(this).parent().parent().next().show();
+                if ($('#link_'+$(this).parents('.link').attr('link-id')).find('.use_load_balancing').attr('checked')){
+                    $(this).next().show();
+                }
             }else{
                 $(this).parent().parent().next().hide();
+                $(this).next().hide();
             }
         });
 

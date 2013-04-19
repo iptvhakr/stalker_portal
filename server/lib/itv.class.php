@@ -1359,7 +1359,23 @@ class Itv extends AjaxResponse
                 continue;
             }
 
-            $link['url'] = preg_replace('/:\/\/([^\/]*)/', '://'.$servers_map[$link['streamer_id']]['address'], $link['url']);
+            if ($link['use_http_tmp_link'] == 1 && $link['wowza_tmp_link'] == 0){
+
+                $colon_pos = strpos($servers_map[$link['streamer_id']]['address'], ":");
+
+                if ($colon_pos === false){
+                    $address = $servers_map[$link['streamer_id']]['address'];
+                }else{
+                    $address = substr($servers_map[$link['streamer_id']]['address'], 0, $colon_pos);
+                }
+
+                $link['url']            = preg_replace('/:\/\/([^\/:]*)/', '://'.$address, $link['url']);
+                $link['monitoring_url'] = preg_replace('/:\/\/([^\/:]*)/', '://'.$address, $link['monitoring_url']);
+            }else{
+                $link['url']            = preg_replace('/:\/\/([^\/]*)/', '://'.$servers_map[$link['streamer_id']]['address'], $link['url']);
+                $link['monitoring_url'] = preg_replace('/:\/\/([^\/]*)/', '://'.$servers_map[$link['streamer_id']]['address'], $link['monitoring_url']);
+            }
+
             $link['id'] = 's'.$link['streamer_link_id'];
 
             $balanser_monitoring_links[] = $link;
