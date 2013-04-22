@@ -6,11 +6,9 @@ class RESTApiUserSettings extends RESTApiController
 {
 
     protected $name = 'settings';
-    private $manager;
     private $fields_map;
 
     public function __construct(){
-        $this->manager = \Stb::getInstance();
         $this->fields_map = array_fill_keys(array("parent_password"), true);
     }
 
@@ -37,7 +35,7 @@ class RESTApiUserSettings extends RESTApiController
             throw new RESTBadRequest("Update data is empty");
         }
 
-        return $this->manager->updateById($parent_id, $data);
+        return \Stb::updateById($parent_id, $data);
     }
 
     private function filter($profile){

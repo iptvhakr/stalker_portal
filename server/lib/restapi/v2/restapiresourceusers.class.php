@@ -4,7 +4,6 @@ namespace Stalker\Lib\RESTAPI\v2;
 
 class RESTApiResourceUsers extends RESTApiCollection
 {
-    protected $manager;
 
     public function __construct(array $nested_params, array $external_params){
 
@@ -13,20 +12,11 @@ class RESTApiResourceUsers extends RESTApiCollection
         $this->document->controllers->add(new RESTApiUserSettings());
 
         $this->fields_map = array_fill_keys(array('id', "ls", "status", "mac"), true);
-
-        $this->manager = \Stb::getInstance();
     }
 
     public function getCount(RESTApiRequest $request){
-        return (int) $this->manager->getRawAll()->count()->get()->counter();
+        return (int) \Stb::getRawAll()->count()->get()->counter();
     }
-
-    /*public function get(RESTApiRequest $request){
-
-        $users = $this->manager->getAll($request->getLimit(), $request->getOffset());
-
-        return $this->filter($users);
-    }*/
 
     public function filter($collection){
 

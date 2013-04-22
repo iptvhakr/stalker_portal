@@ -5,14 +5,11 @@ namespace Stalker\Lib\RESTAPI\v2;
 class RESTApiUsersDocument extends RESTApiDocument
 {
     private $fields_map;
-    private $manager;
 
     public function __construct(){
         parent::__construct();
 
         $this->fields_map = array_fill_keys(array('id', "ls", "status", "mac", "fname", "phone", "tariff", "end_date", "account_balance"), true);
-
-        $this->manager = \Stb::getInstance();
     }
 
     public function get(RESTApiRequest $request, $id){

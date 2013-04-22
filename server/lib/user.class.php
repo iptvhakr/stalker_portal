@@ -19,6 +19,10 @@ class User
         return self::$instance;
     }
 
+    public static function isInitialized(){
+        return (bool) self::$instance;
+    }
+
     public static function clear(){
         self::$instance = null;
     }

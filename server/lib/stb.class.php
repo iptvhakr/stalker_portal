@@ -171,10 +171,17 @@ class Stb
     
     public function getStbParams(){
 
-        $user = $this->db->from('users')
-                         ->where(array('mac' => $this->mac))
-                         ->get()
-                         ->first();
+        if (!empty($this->mac)){
+            $user = $this->db->from('users')
+                ->where(array('mac' => $this->mac))
+                ->get()
+                ->first();
+        }elseif (User::isInitialized() && User::getInstance()->getId()){
+            $user = $this->db->from('users')
+                ->where(array('id' => User::getInstance()->getId()))
+                ->get()
+                ->first();
+        }
         
         if (!empty($user)){
             $this->params = $user;
@@ -1447,10 +1454,10 @@ class Stb
     }
 
     public function getAll($limit = null, $offset = null){
-        return $this->getRawAll($limit, $offset)->get()->all();
+        return self::getRawAll($limit, $offset)->get()->all();
     }
 
-    public function getRawAll($limit = null, $offset = null){
+    public static function getRawAll($limit = null, $offset = null){
 
         $result = Mysql::getInstance()->from('users');
 
@@ -1469,7 +1476,7 @@ class Stb
         return Mysql::getInstance()->update('users', $data, array('login' => $login))->result();
     }
 
-    public function updateById($id, $data){
+    public static function updateById($id, $data){
         return Mysql::getInstance()->update('users', $data, array('id' => $id))->result();
     }
 
