@@ -130,6 +130,13 @@
                 if (!this.epg_list_active){
                     this.week_day_action();
                 }else{
+
+                    _debug('this.channel.open', this.channel.open);
+
+                    if (this.channel.open == 0){
+                        return;
+                    }
+
                     if (this.data_items[this.cur_row].rec_id){
                         this.play(this.data_items[this.cur_row].rec_id);
                     }else if(this.data_items[this.cur_row].mark_archive && this.tv_archive){
@@ -365,7 +372,12 @@
 
             this.color_buttons.get('yellow').disable();
 
-            if (now > this.data_items[this.cur_row].start_timestamp){
+            _debug('this.channel.open', this.channel.open);
+
+            if (this.channel.open == 0){
+                this.color_buttons.get('red')  .disable();
+                this.color_buttons.get('green').disable();
+            }else if (now > this.data_items[this.cur_row].start_timestamp){
                 this.color_buttons.get('red')  .disable();
                 this.color_buttons.get('green').disable();
 
