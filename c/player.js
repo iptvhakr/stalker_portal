@@ -28,7 +28,17 @@ function player(){
     this.cur_tv_item;
     this.last_not_locked_tv_item;
     this.need_show_info = 0;
-    
+
+    this.atrack_types = {
+        1 : 'MP2',
+        2 : 'MP3',
+        3 : 'DD',
+        4 : 'AAC',
+        5 : 'PCM',
+        6 : 'OGG',
+        7 : 'DTS'
+    };
+
     this.pause = {"on" : false};
     
     this.rec = {"on" : false,
@@ -3798,8 +3808,12 @@ player.prototype.audio_pid = {
     
     get_all : function(){
         _debug('audio_pid.get_all');
-    
-        var audio_pids = stb.GetAudioPIDs();
+
+        if (stb.GetAudioPIDsEx){
+            var audio_pids = stb.GetAudioPIDsEx();
+        }else{
+            audio_pids = stb.GetAudioPIDs();
+        }
         
         _debug('audio_pids str', audio_pids);
         
@@ -3847,7 +3861,7 @@ player.prototype.audio_pid = {
                 lang = '';
             }
             
-            title = get_word('player_track') + ' ' + (i+1) + lang;
+            title = get_word('player_track') + ' ' + (i+1) + lang + (this.all_pids[i].hasOwnProperty('type') && stb.player.atrack_types.hasOwnProperty(this.all_pids[i].type) ? ' ['+stb.player.atrack_types[this.all_pids[i].type]+']' : '');
             
             map.push({"title" : title, "cmd" : (function(pid){return function(){stb.player.audio_pid.set(pid)}})(this.all_pids[i].pid), "active" : !!this.all_pids[i].selected});
         }
