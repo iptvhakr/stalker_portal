@@ -444,14 +444,19 @@ class User
 
         $packages = $this->getPackages();
 
-        if (count($packages) == 0){
-            $info['subscribed'] = array();
-        }else{
-            $info['subscribed'] = array_values(array_map(function($package){
-                return $package['external_id'];
-            }, array_filter($packages, function($package){
+        $info['subscribed'] = array();
+        $info['subscribed_id'] = array();
+
+        if (count($packages) > 0){
+
+            $subscribed_packages = array_filter($packages, function($package){
                 return $package['optional'] == 1 && $package['subscribed'];
-            })));
+            });
+
+            foreach ($subscribed_packages as $package){
+                $info['subscribed'][]    = $package['external_id'];
+                $info['subscribed_id'][] = $package['package_id'];
+            }
         }
 
         //$info['subscribed'] = $packages;
@@ -614,7 +619,7 @@ class User
 
     public function updateOptionalPackageSubscription($params){
 
-        if (empty($params['subscribe']) && empty($params['unsubscribe'])){
+        if (empty($params['subscribe']) && empty($params['subscribe_ids']) && empty($params['unsubscribe']) && empty($params['unsubscribe_ids'])){
             return false;
         }
 
@@ -636,6 +641,13 @@ class User
             }
         }
 
+        if (!empty($params['subscribe_ids']) && is_array($params['subscribe_ids'])){
+            foreach ($params['subscribe_ids'] as $package_id){
+                $result = $this->subscribeToPackage($package_id, $packages, true);
+                $total_result = $total_result || $result;
+            }
+        }
+
         if (!empty($params['unsubscribe'])){
 
             if (!is_array($params['unsubscribe'])){
@@ -646,6 +658,13 @@ class User
 
             foreach ($user_packages as $user_package){
                 $result = $this->unsubscribeFromPackage($user_package['id'], $packages, true);
+                $total_result = $total_result || $result;
+            }
+        }
+
+        if (!empty($params['unsubscribe_ids']) && is_array($params['unsubscribe_ids'])){
+            foreach ($params['unsubscribe_ids'] as $package_id){
+                $result = $this->unsubscribeFromPackage($package_id, $packages, true);
                 $total_result = $total_result || $result;
             }
         }

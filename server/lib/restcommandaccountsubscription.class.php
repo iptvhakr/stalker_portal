@@ -27,7 +27,8 @@ class RESTCommandAccountSubscription extends RESTCommand
             $info = $user->getAccountInfo();
             $result[] = array(
                 'mac' => $user->getMac(),
-                'subscribed' => $info['subscribed']
+                'subscribed'    => $info['subscribed'],
+                'subscribed_id' => $info['subscribed_id']
             );
             User::clear();
         }
@@ -43,7 +44,7 @@ class RESTCommandAccountSubscription extends RESTCommand
             throw new RESTCommandException('HTTP POST data is empty');
         }
 
-        $account = array_intersect_key($data, array('subscribed' => true));
+        $account = array_intersect_key($data, array('subscribed' => true, 'subscribed_id' => true));
 
         if (empty($account)){
             throw new RESTCommandException('Insert data is empty');
@@ -72,12 +73,17 @@ class RESTCommandAccountSubscription extends RESTCommand
 
             $info = $user->getAccountInfo();
 
-            $unsubscribe = array_diff($info['subscribed'], $data['subscribed']);
+            $subscribe      = empty($data['subscribed']) ? array() : $data['subscribed'];
+            $subscribe_id   = empty($data['subscribed_id']) ? array() : $data['subscribed_id'];
+            $unsubscribe    = empty($data['subscribed']) ? array() : array_diff($info['subscribed'], $data['subscribed']);
+            $unsubscribe_id = empty($data['subscribed_id']) ? array() : array_diff($info['subscribed_id'], $data['subscribed_id']);
 
             $subscribe = $user->updateOptionalPackageSubscription(
                 array(
-                    'subscribe' => $data['subscribed'],
-                    'unsubscribe' => $unsubscribe
+                    'subscribe'       => $subscribe,
+                    'subscribe_ids'   => $subscribe_id,
+                    'unsubscribe'     => $unsubscribe,
+                    'unsubscribe_ids' => $unsubscribe_id
             ));
             $result = $result && $subscribe;
             User::clear();
@@ -94,7 +100,7 @@ class RESTCommandAccountSubscription extends RESTCommand
             throw new RESTCommandException('HTTP PUT data is empty');
         }
 
-        $account = array_intersect_key($data, array('subscribed' => true, 'unsubscribed' => true));
+        $account = array_intersect_key($data, array('subscribed' => true, 'subscribed_id' => true, 'unsubscribed' => true, 'unsubscribed_id' => true));
 
         if (empty($account)){
             throw new RESTCommandException('Insert data is empty');
@@ -116,8 +122,10 @@ class RESTCommandAccountSubscription extends RESTCommand
             throw new RESTCommandException('Only one identifier allowed');
         }
 
-        $subscribed   = empty($data['subscribed']) ? array() : $data['subscribed'];
-        $unsubscribed = empty($data['unsubscribed']) ? array() : $data['unsubscribed'];
+        $subscribed      = empty($data['subscribed']) ? array() : $data['subscribed'];
+        $subscribed_id   = empty($data['subscribed_id']) ? array() : $data['subscribed_id'];
+        $unsubscribed    = empty($data['unsubscribed']) ? array() : $data['unsubscribed'];
+        $unsubscribed_id = empty($data['unsubscribed_id']) ? array() : $data['unsubscribed_id'];
 
         $result = true;
 
@@ -125,8 +133,10 @@ class RESTCommandAccountSubscription extends RESTCommand
             $user = User::getInstance($user_id);
             $subscribe = $user->updateOptionalPackageSubscription(
                 array(
-                    'subscribe'   => $subscribed,
-                    'unsubscribe' => $unsubscribed,
+                    'subscribe'       => $subscribed,
+                    'subscribe_ids'   => $subscribed_id,
+                    'unsubscribe'     => $unsubscribed,
+                    'unsubscribe_ids' => $unsubscribed_id,
                 ));
             $result = $result && $subscribe;
             User::clear();
