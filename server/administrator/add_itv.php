@@ -1233,11 +1233,19 @@ function get_color($channel){
     }
 
     if (time() - strtotime($channel['monitoring_status_updated']) > 3600){
-        return '#f4c430';
+        return '#8B8B8B';
     }
 
     if ($channel['monitoring_status'] == 1){
-        return 'green';
+
+        $disabled_link = Mysql::getInstance()->from('ch_links')->where(array('ch_id' => $channel['id'], 'enable_monitoring' => 1,'status' => 0, ))->get()->all();
+
+        if (!empty($disabled_link)){
+            return '#f4c430';
+        }else{
+            return 'green';
+        }
+
     }else{
         return 'red';
     }
