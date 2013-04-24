@@ -77,7 +77,13 @@
         <exec command="crontab -l | grep -v ${project_path} > /tmp/crontab; crontab /tmp/crontab" checkreturn="true"/>
 
         <!-- create stalker tasks in /etc/cron.d/ -->
-        <copy file="./src/cron" tofile="/etc/cron.d/stalker" overwrite="true">
+        <delete file="/etc/cron.d/stalker" quiet="true" />
+
+        <exec command="echo -n ${project_path} | md5sum | cut -f1 -d' '" outputProperty="path_crc" checkreturn="true" />
+
+        <!-- todo: check another stalker job files -->
+
+        <copy file="./src/cron" tofile="/etc/cron.d/stalker_${path_crc}" overwrite="true">
             <filterchain>
                 <replacetokens>
                     <token key="STALKERD_INDEX_PATH" value="${project_path}"/>
@@ -85,7 +91,7 @@
             </filterchain>
         </copy>
 
-        <chmod file="/etc/cron.d/stalker" mode="0755"/>
+        <chmod file="/etc/cron.d/stalker_${path_crc}" mode="0755"/>
 
         <exec command="start stalkerd"/>
 
