@@ -1,6 +1,7 @@
 #!/bin/bash
 
-API_URL=http://localhost/stalker_portal/api/monitoring_links/
+# Use login and password from the configuration file. (api_auth_login and api_auth_password in server/custom.ini)
+API_URL=http://login:password@localhost/stalker_portal/api/monitoring_links/
 PART=1/1
 
 function get_channels {

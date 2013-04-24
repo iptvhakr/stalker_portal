@@ -21,9 +21,7 @@ class RESTManager
             $request  = new RESTRequest();
             $response->setRequest($request);
 
-            if ($request->getResource() == 'tv_archive' || (empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP']) == $_SERVER['SERVER_ADDR']){
-
-            }else if (!empty(self::$auth_login) && (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) ||
+            if (!empty(self::$auth_login) && (!isset($_SERVER['PHP_AUTH_USER']) || !isset($_SERVER['PHP_AUTH_PW'])) ||
                 !empty(self::$auth_login) && ($_SERVER['PHP_AUTH_USER'] != self::$auth_login || $_SERVER['PHP_AUTH_PW'] != self::$auth_password)){
                 $response->sendAuthRequest();
             }

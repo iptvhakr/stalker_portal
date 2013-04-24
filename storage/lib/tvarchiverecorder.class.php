@@ -29,8 +29,7 @@ class TvArchiveRecorder extends Storage
         }
 
         if (strpos($url, 'rtp://') !== false || strpos($url, 'udp://') !== false){
-            //var_dump('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' -d'.$this->getRecordsPath($task).' -n'.$task['parts_number'].' -c'.TASKS_API_URL.$task['ch_id'].' > /dev/null 2>&1 & echo $!');
-            exec('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' -d'.$this->getRecordsPath($task).' -n'.$task['parts_number'].' -c'.TASKS_API_URL.$task['ch_id'].' > /dev/null 2>&1 & echo $!', $out);
+            exec('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' -d'.$this->getRecordsPath($task).' -n'.$task['parts_number'].' > /dev/null 2>&1 & echo $!', $out);
         }else{
             throw new DomainException('Not supported protocol');
         }
