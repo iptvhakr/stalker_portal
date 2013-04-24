@@ -21,6 +21,7 @@ class Event extends HTTPPush
     
     private $pattern;
     private $db;
+    private $ttl;
     
     public function __construct(){
         $this->db = Mysql::getInstance();
@@ -176,10 +177,19 @@ class Event extends HTTPPush
     /**
      * Set auto hide timeout option. In seconds.
      *
-     * @param int $reboot_after_ok
+     * @param int $timeout
      */
     public function setAutoHideTimeout($timeout){
         $this->param['auto_hide_timeout'] = $timeout;
+    }
+
+    /**
+     * Set event time to live
+     *
+     * @param int $ttl
+     */
+    public function setTtl($ttl){
+        $this->ttl = (int) $ttl;
     }
     
     /**
@@ -188,12 +198,16 @@ class Event extends HTTPPush
      */
     protected function send(){
         if (!$this->param['eventtime']){
-            if ($this->param['event'] == 'send_msg'){
-                $correction = 7*24*3600;
-            }else{
-                $correction = Config::get('watchdog_timeout')*2;
+
+            if (empty($this->ttl)){
+                if ($this->param['event'] == 'send_msg'){
+                    $this->ttl = 7*24*3600;
+                }else{
+                    $this->ttl = Config::get('watchdog_timeout')*2;
+                }
             }
-            $this->setEventTime(date("Y-m-d H:i:s", time() + $correction));
+
+            $this->setEventTime(date("Y-m-d H:i:s", time() + $this->ttl));
         }
         
         if (!$this->param['priority']){

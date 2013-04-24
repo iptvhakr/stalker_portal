@@ -18,6 +18,12 @@ class RESTCommandStbMsg extends RESTCommand
 
         $event = new SysEvent();
 
+        $ttl = (int) $request->getData("ttl");
+
+        if (!empty($ttl)){
+            $event->setTtl($ttl);
+        }
+
         $event->setUserListById($stb_list);
 
         $event->sendMsg($msg);

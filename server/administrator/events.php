@@ -33,6 +33,8 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     }
     
     $event = new SysEvent();
+
+    $event->setTtl($_POST['ttl']);
     
     if (@$_POST['user_list_type'] == 'to_all'){
 
@@ -238,25 +240,29 @@ function enable_disable_mac(){
 }
 
 function check_event(){
-    var event_obj = document.getElementById('event')
-    var need_reboot_cbox = document.getElementById('need_reboot')
+    var event_obj = document.getElementById('event');
+
+    var need_reboot_cbox = document.getElementById('need_reboot');
+
     if (event_obj.options[event_obj.selectedIndex].value == 'send_msg'){
-        document.getElementById('checkbox_need_reboot').style.display = ""
-        document.getElementById('msg_row').style.display = ""
+        document.getElementById('checkbox_need_reboot').style.display = "";
+        document.getElementById('msg_row').style.display = "";
+        document.getElementById('ttl').value = 7*24*3600;
     }else{
         if (need_reboot_cbox.checked){
             need_reboot_cbox.click()
         }
-        document.getElementById('checkbox_need_reboot').style.display = "none"
-        document.getElementById('msg_row').style.display = "none"
+        document.getElementById('checkbox_need_reboot').style.display = "none";
+        document.getElementById('msg_row').style.display = "none";
+        document.getElementById('ttl').value = "<?= Config::getSafe('watchdog_timeout', 120) * 2?>";
     }
     
     if(event_obj.options[event_obj.selectedIndex].value == 'play_channel'){
-        document.getElementById('text_channel').style.display = ""
+        document.getElementById('text_channel').style.display = "";
     }else{
-        document.getElementById('text_channel').style.display = "none"
+        document.getElementById('text_channel').style.display = "none";
     }
-    
+
     if (event_obj.options[event_obj.selectedIndex].value == ''){
         document.getElementById('submit_button').disabled = true
     }else{
@@ -382,6 +388,14 @@ function fill_msg(){
         </select>
         <span style="display:none" id="checkbox_need_reboot"><input type="checkbox" name="need_reboot" id="need_reboot" value="1"> <?= _('restart on OK')?></span>
         <span style="display:none" id="text_channel"><input type="text" name="channel" id="channel" size="5" maxlength="3"> <?= _('channels')?></span>
+    </td>
+</tr>
+<tr>
+    <td align="right">
+        TTL:
+    </td>
+    <td>
+        <input type="text" name="ttl" id="ttl" value="<?= Config::getSafe('watchdog_timeout', 120) * 2?>">, <?= _('s')?>
     </td>
 </tr>
 <tr id="msg_row" style="display:none">
