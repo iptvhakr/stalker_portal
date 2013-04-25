@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Radio extends AjaxResponse
+class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
 {
     public static $instance = NULL;
     

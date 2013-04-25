@@ -1,6 +1,6 @@
 <?php
 
-class TvReminder
+class TvReminder implements \Stalker\Lib\StbApi\TvReminder
 {
     
     private $db;

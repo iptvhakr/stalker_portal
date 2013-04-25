@@ -1,6 +1,6 @@
 <?php
 
-class AccountInfo
+class AccountInfo implements \Stalker\Lib\StbApi\AccountInfo
 {
     private $stb;
 

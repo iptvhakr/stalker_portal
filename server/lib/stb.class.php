@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Stb
+class Stb implements \Stalker\Lib\StbApi\Stb
 {
     public $id  = 0;
     public $mac = '';
@@ -1419,7 +1419,7 @@ class Stb
     }
 
     public function doAuth(){
-        
+
         $login    = $_REQUEST['login'];
         $password = $_REQUEST['password'];
 

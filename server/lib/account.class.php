@@ -1,6 +1,6 @@
 <?php
 
-class Account
+class Account implements \Stalker\Lib\StbApi\Account
 {
     public function subscribeToPackage(){
         $package_id = (int) $_REQUEST['package_id'];

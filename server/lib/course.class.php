@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Course
+class Course implements \Stalker\Lib\StbApi\Course
 {
     public $db;
     public $cache_table;

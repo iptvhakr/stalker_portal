@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Vod extends AjaxResponse
+class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 {
     private static $instance = NULL;
 

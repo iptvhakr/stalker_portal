@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Horoscope extends Widget 
+class Horoscope extends Widget implements \Stalker\Lib\StbApi\Horoscope
 {
     public $widget_name = 'horoscope';
     public $cache_expire = 3600;

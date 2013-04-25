@@ -13,6 +13,7 @@ class DataLoader
     private $type;
     private $action;
     private $context;
+    private $interface;
     private $method;
     
     public function __construct($type, $action){
@@ -25,18 +26,22 @@ class DataLoader
             $this->method  = $this->getMethod();
             
         }catch (Exception $e){
-            trigger_error($e->getTraceAsString());
+            error_log($e->getMessage());
         }
     }
     
     public function getResult(){
-        
+
+        if (empty($this->context) || empty($this->method)){
+            return false;
+        }
+
         try {
             $result = call_user_func(array($this->context, $this->method));
             return $result;
         
         }catch (Exception $e){
-            trigger_error($e->getTraceAsString());
+            error_log($e->getTraceAsString());
         }
     }
     
@@ -45,8 +50,10 @@ class DataLoader
         $class = implode(array_map(function($part){
             return ucfirst($part);
         },explode('_', $this->type)));
-        
-        if (!class_exists($class)){
+
+        $this->interface = "Stalker\\Lib\\StbApi\\".$class;
+
+        if (!interface_exists($this->interface)){
             throw new Exception('Class "'.$class.'" not exist');
         }
         
@@ -78,12 +85,10 @@ class DataLoader
         
         $method = implode($parts);
         
-        if (method_exists($this->context, $method)){
+        if (method_exists($this->interface, $method)){
             return $method;
         }else{
-            throw new Exception('Method "'.$method.'" not exist');
+            throw new Exception('Method "'.$method.'" not exist in '.$this->interface);
         }
     }
 }
-
-?>

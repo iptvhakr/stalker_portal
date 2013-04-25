@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Mastermind extends AjaxResponse 
+class Mastermind extends AjaxResponse implements \Stalker\Lib\StbApi\Mastermind
 {
     private static $instance = NULL;
     

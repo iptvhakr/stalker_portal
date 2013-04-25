@@ -1,6 +1,6 @@
 <?php
 
-class Weatherco
+class Weatherco implements \Stalker\Lib\StbApi\Weatherco
 {
 
     private static $pictures = array(

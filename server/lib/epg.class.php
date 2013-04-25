@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Epg
+class Epg implements \Stalker\Lib\StbApi\Epg
 {
     private $db;
     private $cleaned_epg = array();

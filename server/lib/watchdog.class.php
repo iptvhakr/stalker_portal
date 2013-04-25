@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Watchdog extends AjaxResponse 
+class Watchdog extends AjaxResponse implements \Stalker\Lib\StbApi\Watchdog
 {
     public function __construct(){
         parent::__construct();

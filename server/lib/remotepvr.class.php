@@ -1,6 +1,6 @@
 <?php
 
-class RemotePvr extends AjaxResponse
+class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 {
     public function __construct(){
         parent::__construct();

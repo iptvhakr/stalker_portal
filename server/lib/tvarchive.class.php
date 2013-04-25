@@ -1,6 +1,6 @@
 <?php
 
-class TvArchive extends Master
+class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 {
 
     public function __construct(){

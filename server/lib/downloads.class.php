@@ -1,6 +1,6 @@
 <?php
 
-class Downloads
+class Downloads implements \Stalker\Lib\StbApi\Downloads
 {
 
     public function getAll(){

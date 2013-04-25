@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class VideoMaster extends Master
+class VideoMaster extends Master implements \Stalker\Lib\StbApi\VideoMaster
 {
     public function __construct(){
         

@@ -1,6 +1,6 @@
 <?php
 
-class Anecdote
+class Anecdote implements \Stalker\Lib\StbApi\Anecdote
 {
     private $db;
     private $stb;
@@ -77,9 +77,9 @@ class Anecdote
     }
     
     public function setBookmark(){
-        
+
         $anec_id = intval($_REQUEST['anec_id']);
-        
+
         $bookmark = $this->db->from('anec_bookmark')->where(array('uid' => $this->stb->id))->get()->first();
         
         if (!empty($bookmark)){
@@ -103,9 +103,9 @@ class Anecdote
     }
     
     public function setVote(){
-        
+
         $anec_id = intval($_REQUEST['anec_id']);
-           
+
         if (!$this->isVoted($anec_id)){
             
             $this->db->insert('anec_rating',

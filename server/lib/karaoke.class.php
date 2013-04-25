@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Karaoke extends AjaxResponse 
+class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
 {
     private static $instance = NULL;
     

@@ -1,6 +1,6 @@
 <?php
 
-class MediaFavorites
+class MediaFavorites implements \Stalker\Lib\StbApi\MediaFavorites
 {
     public function getAll(){
         return System::base64_decode(Mysql::getInstance()->from('media_favorites')->where(array('uid' => Stb::getInstance()->id))->get()->first('favorites'));

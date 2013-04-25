@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Cityinfo extends AjaxResponse 
+class Cityinfo extends AjaxResponse implements \Stalker\Lib\StbApi\Cityinfo
 {
     public static $instance = NULL;
     

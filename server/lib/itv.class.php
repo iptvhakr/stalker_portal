@@ -6,7 +6,7 @@
  * @author zhurbitsky@gmail.com
  */
 
-class Itv extends AjaxResponse
+class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 {
     public static $instance = NULL;
     

@@ -175,23 +175,23 @@ abstract class AjaxResponse
         $total_daily_claims = $this->db->from('daily_media_claims')->where(array('date' => 'CURDATE()'))->get()->first();
         
         if (!empty($total_daily_claims)){
-            $this->db->update('daily_media_claims',
+            return $this->db->update('daily_media_claims',
                               array(
                                   $media_type.'_sound' => $total_daily_claims[$media_type.'_sound'] + $sound_counter,
                                   $media_type.'_video' => $total_daily_claims[$media_type.'_video'] + $video_counter,
                                   'no_epg'             => $total_daily_claims['no_epg'] + $no_epg_counter,
                                   'wrong_epg'          => $total_daily_claims['wrong_epg'] + $wrong_epg_counter,
                               ),
-                              array('date' => 'CURDATE()'));
+                              array('date' => 'CURDATE()'))->result();
         }else{
-            $this->db->insert('daily_media_claims',
+            return $this->db->insert('daily_media_claims',
                               array(
                                   $media_type.'_sound' => $sound_counter,
                                   $media_type.'_video' => $video_counter,
                                   'no_epg'             => $no_epg_counter,
                                   'wrong_epg'          => $wrong_epg_counter,
                                   'date'               => 'CURDATE()'
-                              ));
+                              ))->insert_id();
         }
     }
 }

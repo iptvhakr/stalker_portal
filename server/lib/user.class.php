@@ -1,6 +1,6 @@
 <?php
 
-class User
+class User implements \Stalker\Lib\StbApi\User
 {
     private $id;
     private static $instance = null;
