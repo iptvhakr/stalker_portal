@@ -3,7 +3,8 @@
  * Main STB class.
  * 
  * @package stalker_portal
- * @author zhurbitsky@gmail.com
+ * @author Aleksey Zhurbitsky <zhurbitsky@gmail.com>
+ * Special thanks to Ivan Bratash (Johnatan) for the security audit.
  */
 
 class Stb implements \Stalker\Lib\StbApi\Stb
@@ -72,11 +73,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
             $this->mac = @trim(urldecode($_COOKIE['mac']));
-        }else if (!empty($_SERVER['HTTP_TARGET']) && ($_SERVER['HTTP_TARGET'] == 'API' || $_SERVER['HTTP_TARGET'] == 'ADM') || !empty($_GET['type']) && $_GET['type'] == 'stb'){
+        }else if (!empty($_SERVER['TARGET']) && ($_SERVER['TARGET'] == 'API' || $_SERVER['TARGET'] == 'ADM') || !empty($_GET['type']) && $_GET['type'] == 'stb'){
 
         }else{
             $this->mac = '';
-            echo 'Unauthorized request';
+            echo 'Unauthorized request.';
 
             if (!empty($_REQUEST['mac'])){
                 exit;
@@ -263,7 +264,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     
     public function getProfile(){
 
-        if ((empty($_SERVER['HTTP_TARGET']) || ($_SERVER['HTTP_TARGET'] != 'API' && $_SERVER['HTTP_TARGET'] != 'ADM')) && Config::getSafe('enable_mac_format_validation', true) && !Middleware::isValidMAC($this->mac)){
+        if ((empty($_SERVER['TARGET']) || ($_SERVER['TARGET'] != 'API' && $_SERVER['TARGET'] != 'ADM')) && Config::getSafe('enable_mac_format_validation', true) && !Middleware::isValidMAC($this->mac)){
             $this->logNotValidMAC(isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '', isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '');
             return array(
                 'status' => 1

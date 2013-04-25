@@ -1,6 +1,6 @@
 <?php
 
-$_SERVER['HTTP_TARGET'] = 'ADM';
+$_SERVER['TARGET'] = 'ADM';
 
 include "../common.php";
 
