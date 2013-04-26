@@ -4,7 +4,4 @@
 */
 include "../lib/func.php";
 
-$db = new Database();
-
-echo get_last5min_play($db);
-?>
+echo get_last5min_play();

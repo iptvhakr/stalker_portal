@@ -190,14 +190,14 @@ function get_offline_users(){
 $online = get_online_users();
 $offline = get_offline_users();
 
-$cur_tv = get_cur_playing_type($db, 'itv');
-$cur_vclub = get_cur_active_playing_type($db, 'vclub');
+$cur_tv = get_cur_playing_type('itv');
+$cur_vclub = get_cur_active_playing_type('vclub');
 $cur_tv_archive = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2, 'now_playing_type' => 11))->get()->count();
 $cur_records = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2, 'now_playing_type' => 12))->get()->count();
-$cur_aclub = get_cur_active_playing_type($db, 'aclub');
-$cur_karaoke = get_cur_active_playing_type($db, 'karaoke');
-$cur_radio = get_cur_playing_type($db, 'radio');
-$cur_infoportal = get_cur_infoportal($db);
+$cur_aclub = get_cur_active_playing_type('aclub');
+$cur_karaoke = get_cur_active_playing_type('karaoke');
+$cur_radio = get_cur_playing_type('radio');
+$cur_infoportal = get_cur_infoportal();
 
 ?>
 <table width="80%" align="center">

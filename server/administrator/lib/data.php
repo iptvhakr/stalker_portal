@@ -77,12 +77,6 @@ function get_data(){
                     $master = new VideoMaster();
                     $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
                     
-                    /*if(count($good_storages) > 0){
-                        set_video_status($media_id, 1);
-                    }else{
-                        set_video_status($media_id, 0);
-                    }*/
-                    
                     foreach ($good_storages as $name => $data){
                         $arr[] = array(
                             'storage_name' => $name,

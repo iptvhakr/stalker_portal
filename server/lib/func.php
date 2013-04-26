@@ -83,16 +83,20 @@ function transliterate($st) {
 }
 
 function check_db_user_login($login, $pass){
-    $db = new Database();
-    
-    $query = "select * from administrators where login='$login'";
-    $rs=$db->executeQuery($query);
-    $db_pass = $rs->getValueByName(0, 'pass');
-    if ($db_pass == md5($pass)){
-        $_SESSION['uid'] = $rs->getValueByName(0, 'id');
+
+    $user = Mysql::getInstance()
+        ->from('administrators')
+        ->where(array(
+            'login' => $login
+        ))
+        ->get()
+        ->first();
+
+    if ($user['pass'] == md5($pass)){
+        $_SESSION['uid'] = $user['id'];
         $_SESSION['login'] = $login;
-        $_SESSION['pass']  = $db_pass;
-        $_SESSION['access']  = $rs->getValueByName(0, 'access');
+        $_SESSION['pass']  = $user['pass'];
+        $_SESSION['access']  = $user['access'];
         return 1;
     }else{
         return 0;
@@ -100,22 +104,25 @@ function check_db_user_login($login, $pass){
 }
 
 function check_session_user_login(){
-    $db = new Database();
-    
-    $login = @$_SESSION['login'];
-    $pass  = @$_SESSION['pass'];
-    if ($login && $pass){
-        $query = "select * from administrators where login='$login'";
-        $rs=$db->executeQuery($query);
-        $db_pass = $rs->getValueByName(0, 'pass');
-        if ($db_pass == $pass){
-            return 1;
-        }else{
-            return 0;
-        }
+
+    if (empty($_SESSION['login']) || empty($_SESSION['pass'])){
+        return 0;
+    }
+
+    $user = Mysql::getInstance()
+        ->from('administrators')
+        ->where(array(
+            'login' => $_SESSION['login']
+        ))
+        ->get()
+        ->first();
+
+    if ($user['pass'] == $_SESSION['pass']){
+        return 1;
     }else{
         return 0;
     }
+
 }
 
 function moderator_access(){
@@ -134,13 +141,12 @@ function check_access($num = array()){
     }
 }
 
-function get_cur_playing_type($db, $in_param = ''){
-    return get_cur_active_playing_type($db, $in_param);
+function get_cur_playing_type($in_param = ''){
+    return get_cur_active_playing_type($in_param);
 }
 
-function get_cur_active_playing_type($db, $in_param = ''){
+function get_cur_active_playing_type($in_param = ''){
     $now_timestamp = time() - Config::get('watchdog_timeout')*2;
-    $now_time = date("Y-m-d H:i:s", $now_timestamp);
     
     if($in_param == ''){
         $in_param = $_GET['in_param'];
@@ -159,24 +165,33 @@ function get_cur_active_playing_type($db, $in_param = ''){
     }else{
         $type = 100;
     }
-    
-    $sql = "select count(*) as counter from users where UNIX_TIMESTAMP(keep_alive) > $now_timestamp and now_playing_type=$type";
-    $rs=$db->executeQuery($sql);
-    $counter = $rs->getValueByName(0, 'counter');
 
-    return $counter;
+    return Mysql::getInstance()
+        ->from('users')
+        ->count()
+        ->where(array(
+            'UNIX_TIMESTAMP(keep_alive)>' => $now_timestamp,
+            'now_playing_type'            => $type
+        ))
+        ->get()
+        ->counter();
 }
 
-function get_cur_infoportal($db){
-    $now_timestamp = time() - Config::get('watchdog_timeout')*2;
-    $now_time = date("Y-m-d H:i:s", $now_timestamp);
-    $sql = "select count(*) as counter from users where UNIX_TIMESTAMP(keep_alive) > $now_timestamp and now_playing_type>=20 and now_playing_type<=29";
-    $rs=$db->executeQuery($sql);
-    $counter = $rs->getValueByName(0, 'counter');
-    return $counter;
+function get_cur_infoportal(){
+
+    return Mysql::getInstance()
+        ->from('users')
+        ->count()
+        ->where(array(
+            'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+            'now_playing_type>='          => 20,
+            'now_playing_type<='          => 29
+        ))
+        ->get()
+        ->counter();
 }
 
-function get_last5min_play($db, $in_param = ''){
+function get_last5min_play($in_param = ''){
     
     if($in_param == ''){
         $in_param = $_GET['in_param'];
@@ -192,33 +207,56 @@ function get_last5min_play($db, $in_param = ''){
     
     $now_timestamp = time() - 330;
     $now_time = date("Y-m-d H:i:s", $now_timestamp);
-    
-    if ($in_param_arr[$in_param]){
-        //$sql = "select * from user_log where time>'$now_time' and type={$in_param_arr[$in_param]} and (action='play()' or action='play_not_to()') group by mac order by time desc";
-        $sql = "select * from user_log where time>'$now_time' and type={$in_param_arr[$in_param]} and action='play' group by mac order by time desc";
-        $rs=$db->executeQuery($sql);
-        $count = $rs->getRowCount();
-        return $count;
+
+    if (!array_key_exists($in_param, $in_param_arr)){
+        return 0;
     }
+
+    return Mysql::getInstance()
+        ->from('user_log')
+        ->count()
+        ->where(array(
+            'time>'  => $now_time,
+            'type'   => $in_param_arr[$in_param],
+            'action' => 'play'
+        ))
+        ->groupby('mac')
+        ->get()
+        ->counter();
 }
 
-function get_cur_users($db, $in_param = ''){
+function get_cur_users($in_param = ''){
     if($in_param == ''){
         $in_param = $_GET['in_param'];
     }
     
     $now_timestamp = time() - Config::get('watchdog_timeout')*2;
     $now_time = date("Y-m-d H:i:s", $now_timestamp);
-    
+
+
     if ($in_param == 'online'){
-        $sql = "select count(*) as status from users where keep_alive>'$now_time'";
+
+        return Mysql::getInstance()
+            ->from('users')
+            ->count()
+            ->where(array(
+                'keep_alive>' => $now_time
+            ))
+            ->get()
+            ->counter();
+
     }elseif ($in_param == 'offline'){
-        $sql = "select count(*) as status from users where keep_alive<'$now_time'";
-    }
-    if (@$sql){
-        $rs=$db->executeQuery($sql);
-        $status = @$rs->getValueByName(0, 'status');
-        return $status;
+
+        return Mysql::getInstance()
+            ->from('users')
+            ->count()
+            ->where(array(
+                'keep_alive<' => $now_time
+            ))
+            ->get()
+            ->counter();
+    }else{
+        return 0;
     }
 }
 
@@ -275,15 +313,21 @@ function check_keep_alive_txt($time){
 }
 
 function get_sub_channels($id = 0){
-    $db = Database::getInstance();
-    
+
     if ($id == 0){
         $id = intval(@$_GET['id']);
     }
-    
-    $sql = "select * from itv_subscription where uid=$id";
-    $rs = $db->executeQuery($sql);
-    $sub_ch = unserialize(base64_decode($rs->getValueByName(0, 'sub_ch')));
+
+    $sub_ch = Mysql::getInstance()
+        ->from('itv_subscription')
+        ->where(array(
+            'uid' => $id
+        ))
+        ->get()
+        ->first('sub_ch');
+
+    $sub_ch = unserialize(base64_decode($sub_ch));
+
     if (!is_array($sub_ch)){
         return array();
     }else{
@@ -292,15 +336,21 @@ function get_sub_channels($id = 0){
 }
 
 function get_bonus_channels($id = 0){
-    $db = Database::getInstance();
-    
+
     if ($id == 0){
         $id = intval(@$_GET['id']);
     }
-    
-    $sql = "select * from itv_subscription where uid=$id";
-    $rs = $db->executeQuery($sql);
-    $bonus_ch = unserialize(base64_decode($rs->getValueByName(0, 'bonus_ch')));
+
+    $bonus_ch = Mysql::getInstance()
+        ->from('itv_subscription')
+        ->where(array(
+            'uid' => $id
+        ))
+        ->get()
+        ->first('bonus_ch');
+
+    $bonus_ch = unserialize(base64_decode($bonus_ch));
+
     if (!is_array($bonus_ch)){
         return array();
     }else{
@@ -317,31 +367,26 @@ function kop2grn($kops){
     return $grn.'.'.$kop;
 }
 
-function set_video_status($id, $val){
-    $db = Database::getInstance();
-    $query = "update video set status=$val where id=$id";
-    $rs=$db->executeQuery($query);
-}
-
 function set_karaoke_status($id, $val){
-    $db = Database::getInstance();
-    $query = "update karaoke set status=$val where id=$id";
-    $rs=$db->executeQuery($query);
+    return Mysql::getInstance()->update('karaoke', array('status' => $val), array('id' => $id));
 }
 
-function get_storage_use($db, $in_param = ''){
+function get_storage_use($in_param = ''){
     if($in_param == ''){
         $in_param = $_GET['in_param'];
     }
-    
+
     $now_timestamp = time() - Config::get('watchdog_timeout')*2;
     $now_time = date("Y-m-d H:i:s", $now_timestamp);
-    
-    $sql = "select count(*) as counter from users where keep_alive>'$now_time' and storage_name='$in_param' and now_playing_type=2";
 
-    $rs=$db->executeQuery($sql);
-    $status = @$rs->getValueByName(0, 'counter');
-    return $status;
+    return Mysql::getInstance()
+        ->from('users')
+        ->count()
+        ->where(array(
+            'keep_alive>'      => $now_time,
+            'storage_name'     => $in_param,
+            'now_playing_type' => 2
+        ))
+        ->get()
+        ->counter();
 }
-
-?>
