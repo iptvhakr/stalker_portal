@@ -1,5 +1,9 @@
 <?php
+session_start();
+
 include "./common.php";
+
+moderator_access();
 
 ob_start();
 $response = array();

@@ -7,6 +7,8 @@ require_once "./lib/subsys/php.php";
 require_once "./lib/data.php";
 include "./common.php";
 
+moderator_access();
+
 $locale = 'ru_RU.utf8';
 
 setlocale(LC_MESSAGES, $locale);
