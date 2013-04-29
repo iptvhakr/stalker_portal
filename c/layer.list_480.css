@@ -1,3 +1,16 @@
+.text20_white{
+    font-size: 20px;
+    color: #fff;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.uppercase{
+    text-transform: uppercase;
+}
+
 /* LIST LAYER */
 .layer_bg{
     position:absolute;
