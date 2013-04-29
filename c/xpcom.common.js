@@ -1017,7 +1017,7 @@ function common_xpcom(){
             }
         }else if(this.user['status'] == 1){
             stb.loader.stop();
-            this.cut_off();
+            this.cut_off(this.user.hasOwnProperty('block_msg') ? this.user['block_msg'] : '');
         }
 
         this.watchdog.run(this.user['watchdog_timeout'], this.user['timeslot']);

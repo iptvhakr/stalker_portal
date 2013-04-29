@@ -283,7 +283,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }
 
-        $this->getInfoFromOss();
+        $info = $this->getInfoFromOss();
         
         $this->db->update('users', array(
                 'last_start'    => 'NOW()',
@@ -306,6 +306,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         /*$master->checkAllHomeDirs();*/
         
         $profile = $this->params;
+
+        if (array_key_exists('error_msg', $info)){
+            $profile['block_msg'] = $info['error_msg'];
+        }
+
         $profile['storages'] = $master->getStoragesForStb();
         
         $itv = Itv::getInstance();
@@ -1318,7 +1323,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return false;
         }
 
-        return Mysql::getInstance()->update('users', $update_data, array('id' => $this->id));
+        Mysql::getInstance()->update('users', $update_data, array('id' => $this->id));
+
+        return $info;
     }
 
     public static function getUidByLs($ls){

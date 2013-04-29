@@ -36,7 +36,7 @@ class SimpleOssWrapper implements OssWrapperInterface
             var_dump($data);
         }
 
-        if ($data['status'] != 'OK' && empty($data['results']['status'])){
+        if ($data['status'] != 'OK' && empty($data['results'])){
             return $strict_check ? array('status' => 0) : false;
         }
 

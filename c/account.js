@@ -206,7 +206,7 @@
             (function(){
                 this.hide();
                 //main_menu.show();
-                this.get_return_layer().show();
+                this.get_return_layer().show(stb.user.hasOwnProperty('block_msg') ? stb.user['block_msg'] : '');
             }).bind(key.MENU, this).bind(key.EXIT, this).bind(key.LEFT, this);
         };
 
