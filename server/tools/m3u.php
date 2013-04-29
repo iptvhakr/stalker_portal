@@ -5,6 +5,11 @@ ob_start();
 
 include "../common.php";
 
+if (!Config::getSafe('enable_m3u_file', false)){
+    header("HTTP/1.0 404 Not Found");
+    exit;
+}
+
 $channels = Mysql::getInstance()->from('itv')->where(array('status' => 1))->orderby('number')->get()->all();
 
 $m3u_data = "#EXTM3U\n";
