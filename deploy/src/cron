@@ -1,5 +1,3 @@
-#SHELL=/bin/bash
-#MAILTO=""
 1 0 1,16 * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./nulling_video_counters.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 1 5 * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./clear_user_log.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 10 4 * * 1 root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./clear_master_log.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
