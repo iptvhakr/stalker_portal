@@ -96,6 +96,10 @@ class RESTApiResourceTvFavorites extends RESTApiCollection
 
     private function filter($list){
 
+        if (empty($list)){
+            $list = array();
+        }
+
         $list = array_map(function($item){
             return (int) $item;
         }, $list);

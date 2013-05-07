@@ -4,7 +4,7 @@ namespace Stalker\Lib\RESTAPI\v2;
 
 class RESTApiResourceVideoFavorites extends RESTApiCollection
 {
-    protected $params_map = array("users" => "users.login");
+    protected $params_map = array("users" => "users.id");
     private   $user_id;
     private   $manager;
 
@@ -12,14 +12,13 @@ class RESTApiResourceVideoFavorites extends RESTApiCollection
 
         parent::__construct($nested_params, $external_params);
 
-        if (empty($this->nested_params['users.login'])){
+        if (empty($this->nested_params['users.id'])){
             throw new RESTBadRequest("User must be specified");
         }
 
-        $user_login = $this->nested_params['users.login'];
+        $user_id = $this->nested_params['users.id'];
 
-        $stb = \Stb::getInstance();
-        $user = $stb->getByLogin($user_login);
+        $user = \Stb::getById($user_id);
 
         if (empty($user)){
             throw new RESTNotFound("User not found");
@@ -89,6 +88,10 @@ class RESTApiResourceVideoFavorites extends RESTApiCollection
     }
 
     private function filter($list){
+
+        if (empty($list)){
+            $list = array();
+        }
 
         $list = array_map(function($item){
             return (int) $item;
