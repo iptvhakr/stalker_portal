@@ -80,17 +80,13 @@ class Tariff
 
     public static function getPackagesForTariffPlan($plan_id){
 
-        $package_ids = Mysql::getInstance()
-            ->from('package_in_plan')
+        return Mysql::getInstance()
+            ->select('services_package.*, package_in_plan.optional')
+            ->from('services_package')
+            ->join('package_in_plan', 'package_in_plan.package_id', 'services_package.id', 'INNER')
             ->where(array(
                 'plan_id' => $plan_id
             ))
-            ->get()
-            ->all('package_id');
-
-        return Mysql::getInstance()
-            ->from('services_package')
-            ->in('id', $package_ids)
             ->get()
             ->all();
     }
