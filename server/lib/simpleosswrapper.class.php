@@ -17,6 +17,7 @@ class SimpleOssWrapper implements OssWrapperInterface
             .'&serial_number='.$user->getSerialNumber()
             .'&type='.$user->getStbType()
             .'&locale='.$user->getLocale()
+            .'&login='.$user->getLogin()
             .'&portal='.(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'])
         );
 

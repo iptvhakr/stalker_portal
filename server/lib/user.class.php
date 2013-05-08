@@ -80,6 +80,10 @@ class User implements \Stalker\Lib\StbApi\User
         return $this->profile['locale'];
     }
 
+    public function getLogin(){
+        return $this->profile['login'];
+    }
+
     public function setSerialNumber($serial_number){
 
         if ($this->profile['serial_number'] != $serial_number){
