@@ -4,6 +4,9 @@ class VideoCategory
 {
     private $language;
 
+    /**
+     * @deprecated
+     */
     public function setLocale($language){
         $this->language = $language;
 
@@ -21,7 +24,8 @@ class VideoCategory
                     $item['id'] = preg_replace("/_/i", "-", $item['category_alias']);
                 }
 
-                $item['title'] = _($item['category_name']);
+                $item['original_title'] = $item['category_name'];
+                $item['title']          = _($item['category_name']);
 
                 return $item;
             }, $categories);
@@ -32,7 +36,7 @@ class VideoCategory
     public function getById($id, $pretty_id = false){
 
         if ($pretty_id){
-            $this->setLocale('en');
+            //$this->setLocale('en');
             $categories = $this->getAll($pretty_id);
 
             /*var_dump($id, $categories);*/
@@ -47,7 +51,7 @@ class VideoCategory
 
             $categories = array_values($categories);
 
-            return Mysql::getInstance()->from('media_category')->where(array('category_name' => $categories[0]['title']))->get()->first();
+            return Mysql::getInstance()->from('media_category')->where(array('category_name' => $categories[0]['original_title']))->get()->first();
         }else{
             return Mysql::getInstance()->from('media_category')->where(array('id' => intval($id)))->get()->first();
         }

@@ -26,6 +26,7 @@ class RESTApiResourceVideoCategories extends RESTApiCollection
         $categories = array_map(function($category){
 
             unset($category['category_name']);
+            unset($category['original_title']);
             unset($category['category_alias']);
             unset($category['num']);
 

@@ -4,6 +4,9 @@ class VideoGenre
 {
     private $language;
 
+    /**
+     * @deprecated
+     */
     public function setLocale($language){
         $this->language = $language;
 
@@ -31,7 +34,8 @@ class VideoGenre
                     $item['id'] = preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $item['title']);
                 }
 
-                $item['title'] = _($item['title']);
+                $item['original_title'] = $item['title'];
+                $item['title']          = _($item['title']);
                 //unset($item['category_alias']);
 
                 return $item;
@@ -56,11 +60,11 @@ class VideoGenre
     public function getById($id, $pretty_id = false){
 
         if ($pretty_id){
-            $this->setLocale('en');
+            //$this->setLocale('en');
             $genres = $this->getAll($pretty_id);
 
             $genres = array_filter($genres, function($genre) use ($id){
-                return $id == preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['title']);
+                return $id == preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['original_title']);
             });
 
             if (empty($genres)){
@@ -68,7 +72,7 @@ class VideoGenre
             }
 
             $titles = array_map(function($genre){
-                return $genre['title'];
+                return $genre['original_title'];
             }, array_values($genres));
 
             return Mysql::getInstance()->from('cat_genre')->in('title', $titles)->get()->all();
@@ -89,11 +93,11 @@ class VideoGenre
         }
 
         if ($pretty_id){
-            $this->setLocale('en');
+            //$this->setLocale('en');
             $genres = $this->getAll($pretty_id, false);
 
             $genres = array_filter($genres, function($genre) use ($id, $category){
-                return $id == preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['title'])
+                return $id == preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['original_title'])
                     && $genre['category_alias'] == $category['category_alias'];
             });
 
@@ -103,7 +107,7 @@ class VideoGenre
 
             $genres = array_values($genres);
 
-            return Mysql::getInstance()->from('cat_genre')->where(array('title' => $genres[0]['title']))->get()->first();
+            return Mysql::getInstance()->from('cat_genre')->where(array('title' => $genres[0]['original_title']))->get()->first();
         }else{
             return Mysql::getInstance()->from('cat_genre')->where(array('id' => intval($id), 'category_alias' => $category['category_alias']))->get()->first();
         }

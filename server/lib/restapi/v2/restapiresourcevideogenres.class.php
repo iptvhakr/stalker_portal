@@ -27,7 +27,11 @@ class RESTApiResourceVideoGenres extends RESTApiCollection
         $genres = new \VideoGenre();
         $genres->setLocale($request->getLanguage());
 
-        return $this->filter($genres->getAll(true));
+        if (!empty($this->category)){
+            return $this->filter($genres->getByCategoryId($this->nested_params['video.category'], true));
+        }else{
+            return $this->filter($genres->getAll(true));
+        }
     }
 
     private function filter($genres){
@@ -36,6 +40,7 @@ class RESTApiResourceVideoGenres extends RESTApiCollection
 
         $genres = array_map(function($genre){
             unset($genre['category_alias']);
+            unset($genre['original_title']);
             return $genre;
         }, array_filter($genres, function($genre) use ($category) {
             return $category['category_alias'] == $genre['category_alias'] || empty($category);
