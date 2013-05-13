@@ -587,7 +587,7 @@ String.prototype.toTranslit = function(){
         return letter;
     });
 
-    return arr.join('').replace(/[^a-z0-9_-]/i, '');
+    return arr.join('').replace(/[^a-z0-9_-]/ig, '');
 };
 
 /**
