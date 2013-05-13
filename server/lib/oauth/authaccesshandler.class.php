@@ -13,9 +13,11 @@ class AuthAccessHandler extends AccessHandler
     public function checkUserAuth($username, $password, $mac = null, $serial_number = null){
         sleep(1); // anti brute-force delay
 
-        //$possible_user = Mysql::getInstance()->from('users')->where(array('login' => $username))->get()->first();
-
         $user = \User::getByLogin($username);
+
+        if (!$user){
+            $user = \User::authorizeFromOss($username, $password);
+        }
 
         if (!$user){
             return false;

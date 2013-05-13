@@ -586,6 +586,49 @@ class User implements \Stalker\Lib\StbApi\User
         return self::getInstance((int) $user['id']);
     }
 
+    public static function authorizeFromOss($login, $password){
+
+        $oss_wrapper = OssWrapper::getWrapper();
+
+        if (!is_callable(array($oss_wrapper, 'authorize'))){
+            return false;
+        }
+
+        $info = $oss_wrapper->authorize($login, $password);
+
+        if (!$info){
+            return false;
+        }
+
+        $key_map = array(
+            'mac'   => 'stb_mac',
+            'ls'    => 'account_number',
+            'fname' => 'full_name',
+            'tariff'=> 'tariff_plan'
+        );
+
+        $new_account = array();
+
+        foreach ($info as $key => $value){
+            if (array_key_exists($key, $key_map)){
+                $new_account[$key_map[$key]] = $value;
+                unset($new_account[$key]);
+            }else{
+                $new_account[$key] = $value;
+            }
+        }
+        $new_account['login']    = $login;
+        $new_account['password'] = $password;
+
+        $uid = self::createAccount($new_account);
+
+        if (!$uid){
+            return false;
+        }
+
+        return self::getInstance($uid);
+    }
+
     public static function getByMac($mac){
 
         $user = Mysql::getInstance()->from('users')->where(array('mac' => $mac))->get()->first();
