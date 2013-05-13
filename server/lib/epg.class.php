@@ -667,7 +667,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         for ($i=0; $i<count($user_channels); $i++){
             if (Config::getSafe('enable_numbering_in_order', false)){
-                $user_channels[$i]['number'] = (string) ($i+1);
+                $user_channels[$i]['number'] = (string) (($i+1)+($page-1)*10);
             }
             $display_channels_ids[] = $user_channels[$i]['id'];
         }
