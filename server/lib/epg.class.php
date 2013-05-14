@@ -428,7 +428,8 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         }
 
         $epg = $this->db->from('epg')
-            ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
+            /// Mysql time format, see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-format
+            ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"'._('%H:%i').'") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
             ->where(
                 array(
                     'epg.ch_id' => $ch_id,
@@ -515,7 +516,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
             $program = $db
                          ->from('epg')
-                         ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
+                         ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"'._('%H:%i').'") as t_time, TIME_FORMAT(epg.time_to,"'._('%H:%i').'") as t_time_to')
                          ->where(array(
                              'epg.ch_id'     =>  $ch_id,
                              'epg.time_to>'  =>  $from,
@@ -694,10 +695,11 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         $from_ts = strtotime($from);
         $to_ts   = strtotime($to);
 
-        $time_marks[] = date("H:i", $from_ts);
-        $time_marks[] = date("H:i", $from_ts+1800);
-        $time_marks[] = date("H:i", $from_ts+2*1800);
-        $time_marks[] = date("H:i", $from_ts+3*1800);
+        /// Time format. See: http://ua2.php.net/manual/en/function.date.php
+        $time_marks[] = date(_("H:i"), $from_ts);
+        $time_marks[] = date(_("H:i"), $from_ts+1800);
+        $time_marks[] = date(_("H:i"), $from_ts+2*1800);
+        $time_marks[] = date(_("H:i"), $from_ts+3*1800);
 
         if (!$default_page){
             //$ch_idx = 0;
@@ -807,7 +809,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $program = Mysql::getInstance()
                      ->from('epg')
-                     ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"%H:%i") as t_time, TIME_FORMAT(epg.time_to,"%H:%i") as t_time_to')
+                     ->select('epg.*, UNIX_TIMESTAMP(epg.time) as start_timestamp, UNIX_TIMESTAMP(epg.time_to) as stop_timestamp, TIME_FORMAT(epg.time,"'._('%H:%i').'") as t_time, TIME_FORMAT(epg.time_to,"'._('%H:%i').'") as t_time_to')
                      ->where(array(
                          'epg.ch_id'       =>  $ch_id,
                          'epg.time>='      =>  $from,
