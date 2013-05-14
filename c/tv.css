@@ -122,6 +122,9 @@
     color: #99a8b5;
     overflow: hidden;
     height: 150px;
+}
+
+#tv .epg_mask{
     -webkit-mask: -webkit-gradient(linear, left 105, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 
