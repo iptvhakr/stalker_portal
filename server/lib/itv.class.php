@@ -8,7 +8,7 @@
 
 class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 {
-    public static $instance = NULL;
+    public static $instance = null;
     
     private $all_user_channels_ids;
     private $include_censored = true;
@@ -18,7 +18,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
      * @return Itv
      */
     public static function getInstance(){
-        if (self::$instance == NULL)
+        if (self::$instance == null)
         {
             self::$instance = new self;
         }
@@ -454,11 +454,16 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         $this->db->from('itv')
                  ->where(array('status' => 1));
     }
-    
+
+    /**
+     * @param bool $include_censored
+     * @return Mysql $query
+     */
     public function getChannels($include_censored = false){
 
         $all_user_channels_ids = $this->getAllUserChannelsIds();
 
+        /** @var Mysql $query  */
         $query = $this->db->from('itv');
 
         $this->include_censored = $include_censored;
@@ -571,8 +576,17 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     }
     
     public function getGenres(){
-        
-        $genres = $this->db->from('tv_genre')->get()->all();
+
+        $user_genres = $this->getChannels(true)->groupby('tv_genre_id')->get()->all('tv_genre_id');
+
+        /** @var Mysql $genres_query  */
+        $genres_query = $this->db->from('tv_genre');
+
+        if (!Config::getSafe('show_empty_tv_category', true)){
+            $genres_query->in('id', $user_genres);
+        }
+
+        $genres = $genres_query->get()->all();
 
         array_unshift($genres, array('id' => '*', 'title' => $this->all_title));
 
