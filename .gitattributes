@@ -1,0 +1,15 @@
+* text=lf
+
+*.php  text
+*.js   text
+*.html text
+*.css  text
+*.xml  text
+*.sh   text
+*.ini  text
+*.txt  text
+
+*.png binary
+*.jpg binary
+*.gif binary
+*.jar binary
