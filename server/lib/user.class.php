@@ -207,6 +207,13 @@ class User implements \Stalker\Lib\StbApi\User
         return Mysql::getInstance()->delete('vclub_not_ended', array('uid' => $this->id, 'video_id' => $video_id))->result();
     }
 
+    public function updateKeepAlive(){
+
+        return Mysql::getInstance()->update('users',
+            array('keep_alive' => 'NOW()'),
+            array('id' => $this->id));
+    }
+
     public function getServicesByType($type = 'tv', $service_type = null){
 
         $plan = Mysql::getInstance()

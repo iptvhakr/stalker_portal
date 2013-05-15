@@ -10,6 +10,7 @@ class RESTApiResourceUsers extends RESTApiCollection
         parent::__construct($nested_params, $external_params);
         $this->document = new RESTApiUsersDocument();
         $this->document->controllers->add(new RESTApiUserSettings());
+        $this->document->controllers->add(new RESTApiUserPing());
 
         $this->fields_map = array_fill_keys(array('id', "ls", "status", "mac"), true);
     }
