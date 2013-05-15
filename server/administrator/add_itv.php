@@ -1590,7 +1590,7 @@ function delete_logo(id){
         <tr>
             <td align="right"></td>
             <td valign="top" id="logo_block">
-                <img src="<?echo Itv::getLogoUriById(intval($_GET['id']))?>" style="float: left;"/><a href="javascript://" onclick="delete_logo(<?echo intval($_GET['id'])?>); return false;"  style="float: left;">[x]</a>
+                <img src="<?echo Itv::getLogoUriById(intval($_GET['id'])).'?'.time()?>" style="float: left;"/><a href="javascript://" onclick="delete_logo(<?echo intval($_GET['id'])?>); return false;"  style="float: left;">[x]</a>
             </td>
         </tr>
         <?}?>
