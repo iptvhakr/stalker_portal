@@ -45,6 +45,7 @@ table .item_row td {
 
 <?
 $status_arr = array('On','Off');
+$i = 0;
 while(@$rs->next()){
     $i++;
     $arr=$rs->getCurrentValuesAsHash();
