@@ -1189,7 +1189,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             ->from('cities')
             ->where(array('country_id' => $country_id))
             ->like(array(
-                'name'    => $search.'%',
+                'name'    => iconv('windows-1251', 'utf-8', $search).'%',
                 'name_en' => $search.'%'
             ), 'OR ')
             ->limit(3)
