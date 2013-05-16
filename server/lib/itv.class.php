@@ -663,7 +663,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             }else{
                 $query = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number));
 
-                if (Config::get('enable_tariff_plans')){
+                if (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array()))){
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
