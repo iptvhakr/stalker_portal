@@ -116,6 +116,7 @@
     background-image: url("i/25alfa_20.png");
     padding: 5px;
     -webkit-border-radius: 8px;
+    overflow: hidden;
 }
 
 #epg_simple .program_info .time{

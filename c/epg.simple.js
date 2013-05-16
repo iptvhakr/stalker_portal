@@ -447,7 +447,11 @@
             
                 if (!empty(self.data_items) && !empty(self.data_items[self.cur_row])){
                 
-                    self.program_info.innerHTML = '<span class="time">' + self.data_items[self.cur_row]['t_time'] + ' - ' + self.data_items[self.cur_row]['t_time_to'] +'</span> - ' + (self.data_items[self.cur_row]['o_name'] ? self.data_items[self.cur_row]['o_name'] : self.data_items[self.cur_row]['name']);
+                    self.program_info.innerHTML = '<span class="time">'
+                        + self.data_items[self.cur_row]['t_time'] + ' - '
+                        + self.data_items[self.cur_row]['t_time_to']
+                        +'</span> - ' + (self.data_items[self.cur_row]['o_name'] ? self.data_items[self.cur_row]['o_name'] : self.data_items[self.cur_row]['name'])
+                        + (self.data_items[self.cur_row]['descr'] ? ' ('+self.data_items[self.cur_row]['descr']+')' : '');
                 }else{
                     self.program_info.innerHTML = '';
                 }

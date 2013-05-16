@@ -129,6 +129,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 $stop  = strtotime(strval($programme->attributes()->stop));
 
                 $title = strval($programme->title);
+                $descr = strval($programme->desc);
 
                 foreach ($itv_id_arr as $itv_id){
                     $correction_time = $this->getCorrectionTimeByChannelId($itv_id);
@@ -166,7 +167,8 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                                                 'time_to'  => $mysql_stop,
                                                 'duration' => $duration,
                                                 'real_id'  => $real_id,
-                                                'name'  => $title
+                                                'name'  => $title,
+                                                'descr' => $descr
                                                 );
 
                     $this->channels_updated[$itv_id] = 1;

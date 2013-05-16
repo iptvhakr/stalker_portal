@@ -116,15 +116,16 @@
 
 #epg_simple .program_info{
     position: absolute;
-    bottom: 77px;
+    bottom: 73px;
     left: 127px;
-    height: 85px;
+    height: 103px;
     width: 994px;
     font-size: 28px;
     color: #fff;
     background-image: url("i/25alfa_20.png");
-    padding: 5px;
+    padding: 0 5px;
     -webkit-border-radius: 8px;
+    overflow: hidden;
 }
 
 #epg_simple .program_info .time{
