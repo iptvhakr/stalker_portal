@@ -631,7 +631,10 @@
             
             if (!empty(this.active_row['epg_cell']) && !empty(this.active_row['epg_cell'][this.cur_cell_col])){
                 
-                this.program_info.innerHTML = '<span class="time">' + this.active_row['epg_cell'][this.cur_cell_col].data['t_time'] + ' - ' + this.active_row['epg_cell'][this.cur_cell_col].data['t_time_to'] +'</span> - ' + this.active_row['epg_cell'][this.cur_cell_col].data['name'];
+                this.program_info.innerHTML = '<span class="time">' + this.active_row['epg_cell'][this.cur_cell_col].data['t_time']
+                    + ' - ' + this.active_row['epg_cell'][this.cur_cell_col].data['t_time_to'] +'</span> - '
+                    + this.active_row['epg_cell'][this.cur_cell_col].data['name']
+                    + (this.active_row['epg_cell'][this.cur_cell_col].data['descr'] ? ' (' + this.active_row['epg_cell'][this.cur_cell_col].data['descr'] + ')' : '');
                 
                 _debug('on_date', this.active_row['epg_cell'][this.cur_cell_col].data['on_date']);
                 this.on_date.innerHTML = this.active_row['epg_cell'][this.cur_cell_col].data['on_date'];

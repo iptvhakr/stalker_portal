@@ -188,6 +188,7 @@
     width: 1140px;
     font-size: 26px;
     color: #fff;
+    overflow: hidden;
 }
 
 #epg .program_info .time{
