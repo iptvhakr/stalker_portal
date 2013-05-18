@@ -700,6 +700,11 @@
                 var idx = stb.player.channels.getIdxByVal('id', channel.id);
 
                 if (idx !== null){
+
+                    if(stb.player.channels[idx].atrack){
+                        channel.atrack = stb.player.channels[idx].atrack
+                    }
+
                     stb.player.channels[idx].open  = channel.open;
 
                     //var cmd_idx = stb.player.channels[idx].cmds.getIdxByVal('url', channel.cmd);

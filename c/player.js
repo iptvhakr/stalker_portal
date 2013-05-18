@@ -1532,6 +1532,12 @@ player.prototype.play = function(item){
         cmd += ' media_len:'+item.media_len;
     }
 
+    if(item.hasOwnProperty && item.hasOwnProperty('atrack') && item.atrack){
+        cmd = cmd.replace(/atrack:(\d+)/, '');
+        cmd += ' atrack:'+item.atrack;
+        cmd.replace(/\s+/g, ' ');
+    }
+
     _debug('cmd', cmd);
 
     this.active_time_shift = item.hasOwnProperty('live_date');
@@ -3840,8 +3846,39 @@ player.prototype.audio_pid = {
         this.all_pids[this.cur_pid_idx].selected = false;
         this.cur_pid = pid;
         this.cur_pid_idx = this.all_pids.getIdxByVal('pid', this.cur_pid);
-        
+
         stb.SetAudioPID(pid);
+
+        _debug('stb.player.is_tv', stb.player.is_tv);
+
+        if (stb.player.is_tv){
+
+            stb.player.cur_media_item.atrack = pid;
+
+            var idx = stb.player.channels.getIdxByVal('id', stb.player.cur_media_item.id);
+
+            _debug('channels idx', idx);
+
+            if (idx !== null){
+                stb.player.channels[idx].atrack = pid;
+            }
+
+            idx = stb.player.fav_channels.getIdxByVal('id', stb.player.cur_media_item.id);
+
+            _debug('fav_channel idx', idx);
+
+            if (idx !== null){
+                stb.player.fav_channels[idx].atrack = pid;
+            }
+
+            idx = module.tv.data_items.getIdxByVal('id', stb.player.cur_media_item.id);
+
+            _debug('data_items idx', idx);
+
+            if (idx !== null){
+                module.tv.data_items[idx].atrack = pid;
+            }
+        }
     },
     
     get_for_menu : function(){
