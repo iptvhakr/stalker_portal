@@ -214,7 +214,8 @@ if (!$error){
                                         xmltv_id,
                                         service_id,
                                         volume_correction,
-                                        correct_time
+                                        correct_time,
+                                        modified
                                         ) 
                                 values ('".@$_POST['name']."',
                                         '".@$_POST['number']."', 
@@ -243,7 +244,8 @@ if (!$error){
                                         '".@$_POST['xmltv_id']."',
                                         '".trim($_POST['service_id'])."',
                                         ".intval($_POST['volume_correction']).",
-                                        ".intval($_POST['correct_time'])."
+                                        ".intval($_POST['correct_time']).",
+                                        NOW()
                                         )";
             echo $query;
             $rs=$db->executeQuery($query);
@@ -344,7 +346,8 @@ if (!$error){
                                 xmltv_id='".$_POST['xmltv_id']."',
                                 service_id='".trim($_POST['service_id'])."',
                                 volume_correction=".intval($_POST['volume_correction']).",
-                                correct_time=".intval($_POST['correct_time'])."
+                                correct_time=".intval($_POST['correct_time']).",
+                                modified=NOW()
                             where id=".intval(@$_GET['id']);
             //var_dump($query);
             $rs=$db->executeQuery($query);
@@ -614,6 +617,10 @@ a:hover{
 
 .shift_ch{
     cursor:pointer
+}
+
+.last_modified{
+    border-left-color: #F00;
 }
 </style>
 <title>
@@ -960,6 +967,17 @@ a:hover{
 <td align="center">
 
 <?
+
+$last_modified_id = Mysql::getInstance()
+    ->from('itv')
+    ->where(array(
+        'modified!=' => ''
+    ))
+    ->orderby('modified', 'DESC')
+    ->limit(1,0)
+    ->get()
+    ->first('id');
+
 $query = "select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter, media_claims.no_epg, media_claims.wrong_epg from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number";
 
 //echo $query;
@@ -997,12 +1015,13 @@ while(@$rs->next()){
             }
         }
     }
-    
-    /*else{
-        echo 'bgcolor="#ececec"';
-    }*/
+
     echo " >";
-    echo "<td class='list'>".$arr['id']."</td>";
+    echo "<td class='list";
+    if ($last_modified_id == $arr['id']){
+        echo ' last_modified';
+    }
+    echo "'>".$arr['id']."</td>";
     echo "<td class='list'><span class='number'>".$arr['number']."</span> <div style='float:right'><span class='shift_ch' data-direction='1'>&darr;</span> <span class='shift_ch' data-direction='-1'>&uarr;</span></div></td>";
     echo "<td class='list'>".$arr['service_id']."</td>";
     //echo "<td class='list'><a href='".get_screen_name($arr['cmd'])."' >".$arr['name']."</a></td>";
