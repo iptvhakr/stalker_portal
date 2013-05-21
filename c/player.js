@@ -2024,7 +2024,9 @@ player.prototype.init_show_info = function(){
     this.info.time_shift_mark = create_block_element("osd_info_time_shift_mark", this.info['dom_obj']);
     
     this.info.title = create_block_element("osd_info_title", this.info['dom_obj']);
-    
+
+    this.info.logo = create_block_element("osd_info_logo", this.info['dom_obj']);
+
     this.info.epg   = create_block_element("osd_info_epg", this.info['dom_obj']);
     
     this.info.video_container = create_block_element("", this.info['dom_obj']);
@@ -2105,6 +2107,12 @@ player.prototype.show_info = function(item){
 
     if (osd_title_match){
         title = decodeURIComponent(osd_title_match[1].replace(/\+/g, '%20'));
+    }
+
+    if (item.logo && stb.profile['show_tv_channel_logo']){
+        this.info.logo.innerHTML = '<img src="/'+ stb.portal_path  +'/misc/logos/'+(resolution_prefix.substr(1) == 720 ? 320 : 240)+'/' + item.logo + '">';
+    }else{
+        this.info.logo.innerHTML = '';
     }
 
     this.info.title.innerHTML = title;

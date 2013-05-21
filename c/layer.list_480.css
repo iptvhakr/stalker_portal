@@ -474,6 +474,7 @@
     font-size: 20px;
     color: #fff;
     text-shadow: #000 0 1px 0;
+    max-width: 555px;
 }
 
 /* END OSD */
@@ -708,4 +709,10 @@
     height: 25px;
     background-image: url("i_480/tv_table.png");
     background-position: 0 -25px;
+}
+
+.osd_info_logo{
+    position: absolute;
+    top: 42px;
+    right: 45px;
 }

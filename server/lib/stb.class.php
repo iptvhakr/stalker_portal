@@ -277,14 +277,14 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 return array(
                     'status' => 2 // authentication request
                 );
-                
+
             }else{
                 $this->initProfile();
             }
         }
 
         $info = $this->getInfoFromOss();
-        
+
         $this->db->update('users', array(
                 'last_start'    => 'NOW()',
                 'keep_alive'    => 'NOW()',
@@ -304,7 +304,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $master = new VideoMaster();
         /*$master->checkAllHomeDirs();*/
-        
+
         $profile = $this->params;
 
         if (array_key_exists('error_msg', $info)){
@@ -312,12 +312,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
 
         $profile['storages'] = $master->getStoragesForStb();
-        
+
         $itv = Itv::getInstance();
         $profile['last_itv_id'] = $itv->getLastId();
-        
+
         $profile['updated'] = $this->getUpdatedPlaces();
-        
+
         $profile['rtsp_type']  = Config::get('rtsp_type');
         $profile['rtsp_flags'] = Config::get('rtsp_flags');
 
@@ -395,6 +395,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['always_enabled_subtitles'] = Config::getSafe('always_enabled_subtitles', false);
 
         $profile['enable_service_button'] = Config::getSafe('enable_service_button', false);
+
+        $profile['show_tv_channel_logo'] = Config::getSafe('show_tv_channel_logo', true);
 
         return $profile;
     }
