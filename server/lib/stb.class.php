@@ -307,7 +307,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile = $this->params;
 
-        if (array_key_exists('error_msg', $info)){
+        if ($info && array_key_exists('error_msg', $info)){
             $profile['block_msg'] = $info['error_msg'];
         }
 
@@ -335,7 +335,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['update_url']             = self::getImageUpdateUrl(empty($_REQUEST['stb_type']) ? 'mag250' : $_REQUEST['stb_type']);
         $profile['tv_archive_days']        = Config::exist('tv_archive_parts_number') ? Config::get('tv_archive_parts_number') / 24 : 0;
         $profile['tv_archive_hours']       = Config::getSafe('tv_archive_parts_number', 0);
-        $profile['playback_limit']         = (int) Config::get('enable_playback_limit', 0);
+
+        if (!in_array($this->mac, Config::getSafe('playback_limit_whitelist', array()))){
+            $profile['playback_limit'] = (int) Config::get('enable_playback_limit', 0);
+        }else{
+            $profile['playback_limit'] = 0;
+        }
+
         $profile['demo_video_url']         = Config::getSafe('demo_video_url', '');
         $profile['tv_quality_filter']      = Config::get('enable_tv_quality_filter');
         $profile['use_embedded_settings']  = Config::getSafe('use_embedded_settings', false);
