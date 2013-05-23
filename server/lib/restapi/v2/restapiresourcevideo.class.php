@@ -142,13 +142,13 @@ class RESTApiResourceVideo extends RESTApiCollection
         }
 
         if ($request->getParam('sortby') == "name"){
-            if ($request->getLanguage() == 'ru'){
+            if (!$request->getLanguage() || $request->getLanguage() == 'ru'){
                 $videos->orderby("name");
             }else{
                 $videos->orderby("o_name");
             }
         }else{
-            $videos->orderby("added", true);
+            $videos->orderby("added", 'DESC');
         }
 
         return $this->filter($videos->get()->all());
