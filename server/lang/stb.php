@@ -487,3 +487,6 @@ $words['local_folder_placeholder'] = _('Folder name in favorites');
 $words['error'] = _('error');
 
 $words['mount_failed'] = _('Mount failed');
+
+$words['ad_skip'] = _('SKIP');
+$words['commercial'] = _('COMMERCIAL');

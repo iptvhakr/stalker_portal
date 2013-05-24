@@ -893,6 +893,9 @@ function common_xpcom(){
 
                 this.player.setup_rtsp(this.user['rtsp_type'], this.user['rtsp_flags']);
 
+                this.player.ad_indication.init();
+                this.player.ad_skip_indication.init();
+
                 if (this.user.hasOwnProperty('cas_type')){
                     this.player.set_cas(this.user);
                 }

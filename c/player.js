@@ -774,6 +774,8 @@ player.prototype.event_callback = function(event, params){
 
                         _debug('playlist idx', idx);
 
+                        stb.key_lock = false;
+
                         if (idx >= 0 && idx < this.cur_media_item.playlist.length - 1){
 
                             idx++;
@@ -792,8 +794,21 @@ player.prototype.event_callback = function(event, params){
 
                             if (osd_title_match){
                                 cur_media_item.name = decodeURIComponent(osd_title_match[1].replace(/\+/g, '%20'));
-                            }else{
+                            }else if (!cur_media_item.hasOwnProperty('keep_original_name') || !cur_media_item.keep_original_name){
                                 cur_media_item.name = cur_media_item.cmd.substr(this.cur_media_item.cmd.lastIndexOf("/") + 1);
+                            }
+
+                            if (cur_media_item.show_osd){
+                                this.need_show_info = 1;
+                            }
+
+                            if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
+                                delete cur_media_item.media_type;
+                                module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
+                            }
+
+                            if (cur_media_item.hasOwnProperty('ad_must_watch')){
+                                delete cur_media_item.ad_must_watch;
                             }
 
                             /*this.triggerCustomEventListener('audiostop', this.cur_media_item);*/
@@ -978,6 +993,21 @@ player.prototype.event_callback = function(event, params){
             }else{
                 this.cur_media_length = stb.GetMediaLen();
                 this.cur_pos_time = stb.GetPosTime();
+
+                if (this.cur_media_item.hasOwnProperty('ad_must_watch') && this.cur_media_item.ad_must_watch != 'all'){
+
+                    delete this.cur_media_item.ad_must_watch;
+
+                    var lock_time = this.cur_media_length * this.cur_media_item.ad_must_watch / 100;
+
+                    _debug('lock_time', lock_time);
+
+                    this.ad_skip_timer = window.setTimeout(function(){
+                        _debug('can skip');
+                        stb.key_lock = false;
+                        stb.player.ad_skip_indication.show();
+                    }, lock_time*1000);
+                }
             }
             _debug('player.cur_media_length', this.cur_media_length);
             _debug('player.cur_pos_time', this.cur_pos_time);
@@ -1030,7 +1060,9 @@ player.prototype.event_callback = function(event, params){
         }
         case 5: // Not found
         {
-            
+
+            stb.key_lock = false;
+
             var self = this;
             
             if (this.media_type == 'stream'){
@@ -1508,6 +1540,10 @@ player.prototype.play = function(item){
 
     window.clearTimeout(this.replay_channel_timer);
     window.clearTimeout(this.archive_continue_dialog_to);
+    window.clearTimeout(this.ad_skip_timer);
+
+    this.ad_indication.hide();
+    this.ad_skip_indication.hide();
 
     if (this.pause.on){
         this.hide_pause();
@@ -1812,12 +1848,15 @@ player.prototype.stop = function(){
 
     playback_limit.reset();
     this.time_shift_indication.hide();
+    this.ad_indication.hide();
+    this.ad_skip_indication.hide();
 
     this.set_pos_button(0);
 
     window.clearTimeout(this.replay_channel_timer);
     window.clearTimeout(this.emulated_media_len_stop);
     window.clearTimeout(this.archive_continue_dialog_to);
+    window.clearTimeout(this.ad_skip_timer);
 
     this.on_create_link = function(){};
     
@@ -1858,14 +1897,22 @@ player.prototype.stop = function(){
     if (stb.cur_place == 'vclub' && !this.play_auto_ended){
         
         var cur_series = this.cur_media_item.cur_series || 0;
-        var end_time = stb.GetPosTime();
-        
-        module && module.vclub && module.vclub.set_not_ended && module.vclub.set_not_ended(this.cur_media_item.id, cur_series, end_time);
+        var end_time   = stb.GetPosTime();
+
+        if (this.cur_media_item.media_type == 'vclub_ad'){
+            module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, end_time, stb.GetMediaLen());
+        }else{
+            module && module.vclub && module.vclub.set_not_ended && module.vclub.set_not_ended(this.cur_media_item.id, cur_series, end_time);
+        }
     }
 
     if (stb.cur_place == 'vclub' && this.play_auto_ended){
 
-        module && module.vclub && module.vclub.set_ended && module.vclub.set_ended(this.cur_media_item.id);
+        if (this.cur_media_item.media_type == 'vclub_ad'){
+            module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, end_time, stb.GetMediaLen());
+        }else{
+            module && module.vclub && module.vclub.set_ended && module.vclub.set_ended(this.cur_media_item.id);
+        }
     }
     
     this.play_auto_ended = false;
@@ -2564,6 +2611,84 @@ player.prototype.time_shift_indication = {
     }
 };
 
+player.prototype.ad_indication = {
+    on : false,
+
+    init : function(){
+        _debug('ad_indication.init');
+
+        this.ad_indication_container = create_block_element('time_shift_info_container');
+        this.ad_indication_txt = create_block_element('time_shift_info_block', this.ad_indication_container);
+
+        this.ad_indication_txt.innerHTML = get_word('commercial');
+
+        create_block_element('time_shift_info_block_right', this.ad_indication_container);
+
+        this.ad_indication_container.hide();
+    },
+
+    show : function(){
+        _debug('ad_indication.show');
+        this.ad_indication_container.show();
+        this.on = true;
+        this.t_hide();
+    },
+
+    t_hide : function(){
+        _debug('ad_indication.t_hide');
+        window.clearTimeout(this.ad_indication_hide);
+        var self = this;
+        this.ad_indication_hide = window.setTimeout(function(){
+            self.hide();
+        }, 3000);
+    },
+
+    hide : function(){
+        _debug('ad_indication.hide');
+        this.ad_indication_container.hide();
+        this.on = false;
+    }
+};
+
+player.prototype.ad_skip_indication = {
+    on : false,
+
+    init : function(){
+        _debug('ad_skip_indication.init');
+
+        this.ad_skip_indication_container = create_block_element('ad_skip_container');
+        this.ad_skip_indication_txt = create_block_element('ad_skip_block', this.ad_skip_indication_container);
+
+        this.ad_skip_indication_txt.innerHTML = '<div class="ad_skip_txt">'+get_word('ad_skip')+'</div>';
+
+        create_block_element('time_shift_info_block_right', this.ad_skip_indication_container);
+
+        this.ad_skip_indication_container.hide();
+    },
+
+    show : function(){
+        _debug('ad_skip_indication.show');
+        this.ad_skip_indication_container.show();
+        this.on = true;
+        //this.t_hide();
+    },
+
+    t_hide : function(){
+        _debug('ad_skip_indication.t_hide');
+        window.clearTimeout(this.ad_skip_indication_hide);
+        var self = this;
+        this.ad_skip_indication_hide = window.setTimeout(function(){
+            self.hide();
+        }, 3000);
+    },
+
+    hide : function(){
+        _debug('ad_skip_indication.hide');
+        this.ad_skip_indication_container.hide();
+        this.on = false;
+    }
+};
+
 player.prototype.osd_clock = {
     on : false,
 
@@ -2902,7 +3027,7 @@ player.prototype.bind = function(){
 
         cur_media_item.cmd  = cur_media_item.playlist[idx];
 
-        cur_media_item.name = cur_media_item.cmd.substr(this.cur_media_item.cmd.lastIndexOf("/") + 1);
+        //cur_media_item.name = cur_media_item.cmd.substr(this.cur_media_item.cmd.lastIndexOf("/") + 1);
 
         var real_id_match = /real_id=([^&]*)/.exec(cur_media_item.cmd);
 
@@ -2914,8 +3039,23 @@ player.prototype.bind = function(){
 
         if (osd_title_match){
             cur_media_item.name = decodeURIComponent(osd_title_match[1].replace(/\+/g, '%20'));
-        }else{
+        }else if (!cur_media_item.hasOwnProperty('keep_original_name') || !cur_media_item.keep_original_name){
             cur_media_item.name = cur_media_item.cmd.substr(this.cur_media_item.cmd.lastIndexOf("/") + 1);
+        }
+
+        if (cur_media_item.show_osd){
+            stb.Stop();
+            this.need_show_info = 1;
+        }
+
+        if (cur_media_item.hasOwnProperty('ad_must_watch')){
+            delete cur_media_item.ad_must_watch;
+        }
+
+        if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
+            delete cur_media_item.media_type;
+
+            module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen());
         }
 
         this.play(cur_media_item);

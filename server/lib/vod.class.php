@@ -33,23 +33,27 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $forced_storage = $_REQUEST['forced_storage'];
 
-        /*$master = new VideoMaster();
-
-       try {
-           $res = $master->play($media_id, intval($_REQUEST['series']), true, $forced_storage);
-       }catch (Exception $e){
-           trigger_error($e->getMessage());
-       }
-
-       $res['cmd'] = $res['cmd'].$params;
-
-       var_dump($res);
-
-       return $res;*/
-
         $link = $this->getLinkByVideoId($media_id, intval($_REQUEST['series']), $forced_storage);
 
         $link['cmd'] = $link['cmd'] . $params;
+
+        $vclub_ad = new VclubAdvertising();
+
+        if (empty($link['error']) && $vclub_ad->getTotalNumber()){
+
+            $picked_ad = $vclub_ad->getOneRandom();
+
+            $link = array(
+                array(
+                    'id'    => 0,
+                    'ad_id' => $picked_ad['id'],
+                    'ad_must_watch' => $picked_ad['must_watch'],
+                    'type'  => 'ad',
+                    'cmd'   => $picked_ad['url']
+                ),
+                $link
+            );
+        }
 
         var_dump($link);
 

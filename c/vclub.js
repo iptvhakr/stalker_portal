@@ -856,7 +856,7 @@
                         }
                         _debug('url: ', url);
 
-                        if (result.cmd.indexOf('://') != -1 && module.downloads && module.downloads.identical_download_exist(url)){
+                        if (result.hasOwnProperty('cmd') && result.cmd && result.cmd.indexOf('://') != -1 && module.downloads && module.downloads.identical_download_exist(url)){
                             _debug('identical_download_exist!');
 
                             self.download_exist.show();
@@ -874,21 +874,49 @@
 
                             stb.player.on_stop = (function(player){return function(){
                                 _debug('player.on_stop');
-                                player.delete_link(result.cmd);
+                                if (result.hasOwnProperty('cmd')){
+                                    player.delete_link(result.cmd);
+                                }else if (result.length && result[1].cmd){
+                                    player.delete_link(result[1].cmd);
+                                }
                             }})(stb.player);
 
                             stb.player.prev_layer = self;
                             stb.player.need_show_info = 1;
 
-                            if (result.hasOwnProperty('subtitles')){
+                            if (result.length && result.length == 2){
+                                stb.player.need_show_info = 0;
 
-                                var subtitles = result.subtitles.map(function(item, idx){
+                                if (result[1].hasOwnProperty('subtitles')){
+
+                                    stb.player.cur_media_item.subtitles = result[1].subtitles.map(function(item, idx){
+                                        item.pid  = 'external_'+idx;
+                                        item.lang = [item.lang, ''];
+                                        return item;
+                                    });
+                                }
+
+                                stb.player.cur_media_item.cmd = result[0].cmd;
+                                stb.player.cur_media_item.playlist = [result[0].cmd, result[1].cmd];
+                                stb.player.cur_media_item.keep_original_name = true;
+                                stb.player.cur_media_item.ad_must_watch = result[0].ad_must_watch;
+                                stb.player.cur_media_item.show_osd = true;
+                                stb.player.cur_media_item.media_type = 'vclub_ad';
+                                stb.player.cur_media_item.ad_id = result[0].ad_id;
+
+                                stb.key_lock = true;
+
+                                stb.player.play_now(result[0].cmd);
+                                stb.player.ad_indication.show();
+                                return;
+
+                            }else if (result.hasOwnProperty('subtitles')){
+
+                                stb.player.cur_media_item.subtitles = result.subtitles.map(function(item, idx){
                                     item.pid  = 'external_'+idx;
                                     item.lang = [item.lang, ''];
                                     return item;
                                 });
-
-                                stb.player.cur_media_item.subtitles = subtitles;
                             }
 
                             stb.player.play_now(result.cmd);
@@ -974,6 +1002,25 @@
                 _debug('downloads');
                 module.downloads.dialog.show(dialog_options);
             }
+        };
+
+        this.set_ad_ended_time = function(ad_id, end_time, total_time, ended){
+            _debug('vclub.set_not_ended', ad_id, end_time, total_time, ended);
+
+            stb.load(
+                {
+                    "type"       : "vclub_advertising",
+                    "action"     : "set_ad_ended_time",
+                    "ad_id"      : ad_id,
+                    "end_time"   : end_time,
+                    "total_time" : total_time,
+                    "ended"      : ended
+                },
+                function(result){
+                    _debug('on set_ad_ended_time', result);
+                },
+                this
+            );
         };
         
         this.set_not_ended = function(video_id, series, end_time){
