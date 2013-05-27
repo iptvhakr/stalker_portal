@@ -23,4 +23,6 @@ CREATE TABLE IF NOT EXISTS `vclub_ads_log`(
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
 
+DELETE FROM `cities` WHERE country_id=8;
+
 --//@UNDO
