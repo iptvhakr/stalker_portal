@@ -41,7 +41,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         if (empty($link['error']) && $vclub_ad->getTotalNumber()){
 
-            $picked_ad = $vclub_ad->getOneRandom();
+            $picked_ad = $vclub_ad->getOneWeightedRandom();
 
             $link = array(
                 array(

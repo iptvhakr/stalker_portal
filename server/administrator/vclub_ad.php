@@ -116,6 +116,7 @@ a:hover{
             <td><?= _('Must watch')?></td>
             <td style="text-align: center"><?= _('Watch started')?><br>(<?=_('in the last 30 days')?>)</td>
             <td style="text-align: center"><?= _('Watch ended')?><br>(<?=_('in the last 30 days')?>)</td>
+            <td><?= _('Weight')?></td>
             <td>&nbsp;</td>
         </tr>
         <?
@@ -126,6 +127,7 @@ a:hover{
             echo '<td>'.($ad['must_watch']=='all' ? _('All') : $ad['must_watch'].'%').'</td>';
             echo '<td>'.intval($ad['started']).'</td>';
             echo '<td>'.intval($ad['ended']).'</td>';
+            echo '<td>'.$ad['weight'].'</td>';
             echo '<td>';
             echo '<a href="?edit=1&id='.$ad['id'].'">edit</a>&nbsp;';
             echo '<a href="?del=1&id='.$ad['id'].'" onclick="if(confirm(\''._('Do you really want to delete this record?').'\')){return true}else{return false}">del</a>';
@@ -153,6 +155,10 @@ a:hover{
             <tr>
                 <td>Video URL</td>
                 <td><input type="text" name="url" size="37" value="<?echo @$current_ad['url']?>"/></td>
+            </tr>
+            <tr>
+                <td><?= _('Weight')?></td>
+                <td><input type="text" name="weight" size="37" value="<?echo @$current_ad['weight']?>"/></td>
             </tr>
             <tr>
                 <td><?= _('Must watch')?></td>

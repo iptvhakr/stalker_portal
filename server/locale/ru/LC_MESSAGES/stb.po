@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-24 13:03+0200\n"
-"PO-Revision-Date: 2013-05-24 13:03+0200\n"
+"POT-Creation-Date: 2013-05-27 17:09+0200\n"
+"PO-Revision-Date: 2013-05-27 17:09+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1758,7 +1758,7 @@ msgstr "Все каналы"
 #: ../../../administrator/subscribe.php:346
 #: ../../../administrator/subscribe.php:349
 #: ../../../administrator/vclub_ad.php:126
-#: ../../../administrator/vclub_ad.php:161
+#: ../../../administrator/vclub_ad.php:165
 msgid "All"
 msgstr "Все"
 
@@ -2023,7 +2023,7 @@ msgid "Video club advertising"
 msgstr "Реклама в Видео клубе"
 
 #: ../../../administrator/vclub_ad.php:116
-#: ../../../administrator/vclub_ad.php:158
+#: ../../../administrator/vclub_ad.php:162
 msgid "Must watch"
 msgstr "Необходимо просмотреть"
 
@@ -2039,6 +2039,10 @@ msgstr "за последние 30 дней"
 #: ../../../administrator/vclub_ad.php:118
 msgid "Watch ended"
 msgstr "Просмотр завершен"
+
+#: ../../../administrator/vclub_ad.php:158
+msgid "Weight"
+msgstr "Вес"
 
 #: ../../../administrator/videolog.php:50
 #: ../../../administrator/videolog.php:56
@@ -3831,7 +3835,7 @@ msgstr "вчера"
 #: ../../../lib/user.class.php:988
 #: ../../../lib/user.class.php:989
 #: ../../../lib/video.class.php:95
-#: ../../../lib/vod.class.php:720
+#: ../../../lib/vod.class.php:721
 #, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -3852,7 +3856,7 @@ msgstr "Радио каналы"
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/vod.class.php:809
+#: ../../../lib/vod.class.php:810
 msgid "last week"
 msgstr "7 дней"
 

@@ -2,7 +2,7 @@
 
 class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
 {
-    private $allowed_fields = array('title', 'url', 'must_watch');
+    private $allowed_fields = array('title', 'url', 'must_watch', 'weight');
     private $total_ads = null;
 
     public function __construct(){
@@ -61,6 +61,19 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
         return $this->total_ads;
     }
 
+    private function getIdWeightMap(){
+
+        $ads = Mysql::getInstance()->from('vclub_ad')->get()->all();
+
+        $map = array();
+
+        foreach ($ads as $value){
+            $map[$value['id']] = $value['weight'];
+        }
+
+        return $map;
+    }
+
     public function getOneRandom(){
 
         $total_ads = $this->getTotalNumber();
@@ -72,6 +85,34 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
         $picked = rand(0, $this->total_ads-1);
 
         return Mysql::getInstance()->from('vclub_ad')->limit(1, $picked)->get()->first();
+    }
+
+    public function getOneWeightedRandom(){
+
+        $map = $this->getIdWeightMap();
+
+        if (empty($map)){
+            return null;
+        }
+
+        $ad_id =  $this->getRandomWeightedElement($map);
+
+        if (empty($ad_id)){
+            return null;
+        }
+
+        return $this->getById($ad_id);
+    }
+
+    private function getRandomWeightedElement($array){
+        $rand = mt_rand(1, (int) array_sum($array));
+
+        foreach ($array as $key => $value) {
+            $rand -= $value;
+            if ($rand <= 0) {
+                return $key;
+            }
+        }
     }
 
     public function setAdEndedTime(){
