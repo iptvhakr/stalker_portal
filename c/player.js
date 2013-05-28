@@ -996,8 +996,6 @@ player.prototype.event_callback = function(event, params){
 
                 if (this.cur_media_item.hasOwnProperty('ad_must_watch') && this.cur_media_item.ad_must_watch != 'all'){
 
-                    delete this.cur_media_item.ad_must_watch;
-
                     var lock_time = this.cur_media_length * this.cur_media_item.ad_must_watch / 100;
 
                     _debug('lock_time', lock_time);
@@ -1007,6 +1005,8 @@ player.prototype.event_callback = function(event, params){
                         stb.key_lock = false;
                         stb.player.ad_skip_indication.show();
                     }, lock_time*1000);
+
+                    delete this.cur_media_item.ad_must_watch;
                 }
             }
             _debug('player.cur_media_length', this.cur_media_length);
