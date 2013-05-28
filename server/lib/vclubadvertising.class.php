@@ -55,7 +55,7 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
     public function getTotalNumber(){
 
         if ($this->total_ads === null){
-            $this->total_ads = Mysql::getInstance()->from('vclub_ad')->count()->get()->counter();
+            $this->total_ads = Mysql::getInstance()->from('vclub_ad')->where(array('weight!=' => 0))->count()->get()->counter();
         }
 
         return $this->total_ads;

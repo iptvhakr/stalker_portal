@@ -32,6 +32,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
         $params = $tmp_arr[2];
 
         $forced_storage = $_REQUEST['forced_storage'];
+        $disable_ad     = $_REQUEST['disable_ad'];
 
         $link = $this->getLinkByVideoId($media_id, intval($_REQUEST['series']), $forced_storage);
 
@@ -39,7 +40,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $vclub_ad = new VclubAdvertising();
 
-        if (empty($link['error']) && $vclub_ad->getTotalNumber()){
+        if (!$disable_ad && empty($link['error']) && $vclub_ad->getTotalNumber()){
 
             $picked_ad = $vclub_ad->getOneWeightedRandom();
 

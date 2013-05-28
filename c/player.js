@@ -734,41 +734,38 @@ player.prototype.event_callback = function(event, params){
                     }
                 }else{
 
-                    /*if (this.active_time_shift){
-                        this.cur_media_item = module.time_shift.stored_media_item;
-                        this.cur_tv_item    = this.cur_media_item;
-                        this.active_time_shift = false;
-                        this.play_last();
-                        return;
-                    }*/
-                    
-                    if (this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+                    if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
                         _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
                         _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
                         _debug('this.cur_media_item.hasOwnProperty(series)', this.cur_media_item.hasOwnProperty('series'));
-                        
-                        //if (this.cur_media_item.hasOwnProperty('series')){
-                            
-                            _debug('this.cur_media_item.cur_series + 1', this.cur_media_item.cur_series + 1);
-                            
-                            if ((parseInt(this.cur_media_item.cur_series) + 1) <= this.cur_media_item.series.length){
-                                this.cur_media_item.cur_series++;
-                                
-                                _debug('this.cur_media_item.cur_series after', this.cur_media_item.cur_series);
-                                
-                                this.play(this.cur_media_item);
-                                
-                                break;
-                            }
-                        //}
-                        
-                        //this.cur_media_item.series;
-                        //this.cur_media_item.cur_series;
-                        
-                    }
 
-                    if (this.cur_media_item.playlist && this.cur_media_item.playlist.length > 0){
+                        var series_idx = this.cur_media_item.series.indexOf(this.cur_media_item.cur_series);
+
+                        _debug('series_idx before', series_idx);
+
+                        var old_series_idx = series_idx;
+
+                        if (series_idx < this.cur_media_item.series.length-1){
+                            series_idx++;
+                        }
+
+                        _debug('series_idx after', series_idx);
+
+                        if (old_series_idx != series_idx){
+
+                            this.cur_media_item.cur_series = this.cur_media_item.series[series_idx];
+                            this.cur_media_item.disable_ad = true;
+
+                            if (this.cur_media_item.cmd.indexOf('://')){
+                                this.cur_media_item.cmd = '/media/'+this.cur_media_item.id+'.mpg';
+                            }
+
+                            this.play(this.cur_media_item);
+                            break;
+                        }
+
+                    }else if (this.cur_media_item.playlist && this.cur_media_item.playlist.length > 0){
 
                         var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
 
@@ -1732,15 +1729,15 @@ player.prototype.play = function(item){
         
         var series_number = item.cur_series || 0;
         
-        this.create_link('vod', cmd, series_number, item.forced_storage || '');
+        this.create_link('vod', cmd, series_number, item.forced_storage || '', item.disable_ad);
     }
 };
 
-player.prototype.create_link = function(type, uri, series_number, forced_storage){
+player.prototype.create_link = function(type, uri, series_number, forced_storage, disable_ad){
     
     series_number = series_number || "";
     
-    _debug('player.create_link', type, uri, series_number);
+    _debug('player.create_link', type, uri, series_number, forced_storage, disable_ad);
     
     stb.load(
 
@@ -1749,7 +1746,8 @@ player.prototype.create_link = function(type, uri, series_number, forced_storage
             "action" : "create_link",
             "cmd"    : uri,
             "series" : series_number,
-            forced_storage : forced_storage
+            forced_storage : forced_storage,
+            disable_ad : disable_ad || false
         },
         
         function(result){
@@ -2972,7 +2970,7 @@ player.prototype.bind = function(){
 
         _debug('dir', dir);
 
-        if (this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+        if (this.cur_media_item.media_type != 'vclub_ad' && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
             _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
             _debug('this.cur_media_item.series.length', this.cur_media_item.series.length);
@@ -2998,6 +2996,11 @@ player.prototype.bind = function(){
             if (old_series_idx != series_idx){
 
                 this.cur_media_item.cur_series = this.cur_media_item.series[series_idx];
+                this.cur_media_item.disable_ad = true;
+
+                if (this.cur_media_item.cmd.indexOf('://')){
+                    this.cur_media_item.cmd = '/media/'+this.cur_media_item.id+'.mpg';
+                }
 
                 this.play(this.cur_media_item);
             }
