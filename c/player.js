@@ -2643,7 +2643,7 @@ player.prototype.ad_indication = {
 
     hide : function(){
         _debug('ad_indication.hide');
-        this.ad_indication_container.hide();
+        this.ad_indication_container && this.ad_indication_container.hide && this.ad_indication_container.hide();
         this.on = false;
     }
 };
@@ -2682,7 +2682,7 @@ player.prototype.ad_skip_indication = {
 
     hide : function(){
         _debug('ad_skip_indication.hide');
-        this.ad_skip_indication_container.hide();
+        this.ad_skip_indication_container && this.ad_skip_indication_container.hide && this.ad_skip_indication_container.hide();
         this.on = false;
     }
 };
