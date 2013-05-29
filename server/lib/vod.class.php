@@ -38,6 +38,30 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $link['cmd'] = $link['cmd'] . $params;
 
+        if (Config::get('enable_tariff_plans')){
+            $user = User::getInstance(Stb::getInstance()->id);
+
+            $options = $user->getServicesByType('option');
+
+            if ($options && array_search('disable_vclub_ad', $options) !== false){
+                $disable_ad = true;
+            }
+        }
+
+        $moderator_w_disables_ad = Mysql::getInstance()
+            ->from('moderators')
+            ->where(array(
+                'status'           => 1,
+                'mac'              => Stb::getInstance()->mac,
+                'disable_vclub_ad' => 1
+            ))
+            ->get()
+            ->first();
+
+        if (!empty($moderator_w_disables_ad)){
+            $disable_ad = true;
+        }
+
         $vclub_ad = new VclubAdvertising();
 
         if (!$disable_ad && empty($link['error']) && $vclub_ad->getTotalNumber()){

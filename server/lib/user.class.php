@@ -998,7 +998,8 @@ class User implements \Stalker\Lib\StbApi\User
             'tv'     => _('TV channels'),
             'video'  => _('Movies'),
             'radio'  => _('Radio channels'),
-            'module' => _('Modules')
+            'module' => _('Modules'),
+            'option' => _('Options')
         );
 
         return array(

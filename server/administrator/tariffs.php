@@ -332,7 +332,7 @@ $packages = Mysql::getInstance()->select('id, name')->from('services_package')->
                             ></td>
                     </tr>
                     <tr>
-                        <td><?= _('Packages')?></td>
+                        <td style="vertical-align: top"><?= _('Packages')?></td>
                         <td class="package-container"></td>
                     </tr>
                     <tr>

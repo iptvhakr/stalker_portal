@@ -39,6 +39,16 @@ if ($_GET['get'] == 'kinopoisk_info' || $_GET['get'] == 'kinopoisk_rating' || $_
     $response['result'] = Radio::getServices();
 }elseif ($_GET['get'] == 'module_services'){
     $response['result'] = Module::getServices();
+}elseif ($_GET['get'] == 'option_services'){
+    $option_services = Config::getSafe('option_services', array());
+
+    $response['result'] = array_map(function($item){
+
+        return array(
+            'id'   => $item,
+            'name' => $item
+        );
+    }, $option_services);
 }
 
 $output = ob_get_contents();

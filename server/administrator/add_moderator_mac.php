@@ -32,7 +32,7 @@ if (!$error){
     
         if(@$_POST['mac']){
     
-            $query = "insert into moderators (name,mac) values ('".@$_POST['name']."','".@$_POST['mac']."')";
+            $query = "insert into moderators (name,mac,disable_vclub_ad) values ('".@$_POST['name']."','".@$_POST['mac']."', '".@$_POST['disable_vclub_ad']."')";
             //echo $query;
             $rs=$db->executeQuery($query);
             header("Location: add_moderator_mac.php");
@@ -46,7 +46,7 @@ if (!$error){
         
         if(@$_POST['mac']){
             
-            $query = "update moderators set name='".$_POST['name']."', mac='".$_POST['mac']."' where id=".intval(@$_GET['id']);
+            $query = "update moderators set name='".$_POST['name']."', mac='".$_POST['mac']."', disable_vclub_ad='".@$_POST['disable_vclub_ad']."' where id=".intval(@$_GET['id']);
             //echo $query;
             $rs=$db->executeQuery($query);
             header("Location: add_moderator_mac.php");
@@ -163,6 +163,7 @@ if (@$_GET['edit']){
         $arr=$rs->getCurrentValuesAsHash();
         $mac = $arr['mac'];
         $name = $arr['name'];
+        $disable_vclub_ad = $arr['disable_vclub_ad'];
     }
 }
 ?>
@@ -209,14 +210,22 @@ function save(){
            </td>
         </tr>
         <tr>
-           <td align="right">
-            MAC: 
-           </td>
-           <td>
-            <input type="text" name="mac" id="mac" value="<? echo @$mac ?>">
-            <input type="hidden" id="id" value="<? echo @$_GET['id'] ?>">
-            <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
-           </td>
+            <td align="right">
+                MAC:
+            </td>
+            <td>
+                <input type="text" name="mac" id="mac" value="<? echo @$mac ?>">
+                <input type="hidden" id="id" value="<? echo @$_GET['id'] ?>">
+                <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <?= _('Disable Video club ad')?>:
+            </td>
+            <td>
+                <input type="checkbox" name="disable_vclub_ad" value="1" <?= empty($disable_vclub_ad) ? '' : 'checked'?>/>
+            </td>
         </tr>
         <tr>
            <td>

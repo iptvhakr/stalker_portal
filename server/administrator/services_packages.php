@@ -365,6 +365,7 @@ if (@$_GET['edit'] && !empty($id)){
                                 <option value="video">video</option>
                                 <option value="radio">radio</option>
                                 <option value="module">module</option>
+                                <option value="option">option</option>
                             </select>
                         </td>
                     </tr>
