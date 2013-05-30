@@ -64,20 +64,24 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $vclub_ad = new VclubAdvertising();
 
-        if (!$disable_ad && empty($link['error']) && $vclub_ad->getTotalNumber()){
+        if (!$disable_ad && empty($link['error'])){
 
-            $picked_ad = $vclub_ad->getOneWeightedRandom();
+            $video = Video::getById($media_id);
 
-            $link = array(
-                array(
-                    'id'    => 0,
-                    'ad_id' => $picked_ad['id'],
-                    'ad_must_watch' => $picked_ad['must_watch'],
-                    'type'  => 'ad',
-                    'cmd'   => $picked_ad['url']
-                ),
-                $link
-            );
+            $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
+
+            if (!empty($picked_ad)){
+                $link = array(
+                    array(
+                        'id'    => 0,
+                        'ad_id' => $picked_ad['id'],
+                        'ad_must_watch' => $picked_ad['must_watch'],
+                        'type'  => 'ad',
+                        'cmd'   => $picked_ad['url']
+                    ),
+                    $link
+                );
+            }
         }
 
         var_dump($link);

@@ -2,7 +2,7 @@
 
 class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
 {
-    private $allowed_fields = array('title', 'url', 'must_watch', 'weight');
+    private $allowed_fields = array('title', 'url', 'must_watch', 'weight', 'status');
     private $total_ads = null;
 
     public function __construct(){
@@ -11,19 +11,71 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
 
     public function add($data){
 
+        $denied_categories = empty($data['denied_categories']) ? array() : $data['denied_categories'];
+
         $data = array_intersect_key($data, $this->allowed_fields);
 
-        return Mysql::getInstance()->insert('vclub_ad', $data)->insert_id();
+        $ad_id = Mysql::getInstance()->insert('vclub_ad', $data)->insert_id();
+
+        if (empty($ad_id)){
+            return false;
+        }
+
+        if (empty($denied_categories)){
+            return $ad_id;
+        }
+
+        $denied_categories_data = array_map(function($category_id) use ($ad_id){
+            return array(
+                'ad_id'       => $ad_id,
+                'category_id' => $category_id
+            );
+        }, $denied_categories);
+
+        Mysql::getInstance()->insert('vclub_ad_deny_category', $denied_categories_data);
+
+        return $ad_id;
     }
 
     public function updateById($id, $data){
 
+        $new_denied_categories = empty($data['denied_categories']) ? array() : $data['denied_categories'];
+
         $data = array_intersect_key($data, $this->allowed_fields);
 
-        return Mysql::getInstance()->update('vclub_ad', $data, array('id' => $id))->result();
+        $update_result = Mysql::getInstance()->update('vclub_ad', $data, array('id' => $id))->result();
+
+        if (!$update_result){
+            return false;
+        }
+
+        $existed_denied_categories = $this->getDeniedVclubCategoriesForAd($id);
+
+        $need_to_delete = array_diff($existed_denied_categories, $new_denied_categories);
+
+        $need_to_add = array_diff($new_denied_categories, $existed_denied_categories);
+
+        if (!empty($need_to_delete)){
+            Mysql::getInstance()->query('delete from vclub_ad_deny_category where ad_id='.$id.' and category_id in ('.implode(', ', $need_to_delete).')');
+        }
+
+        if (!empty($need_to_add)){
+            $need_to_add = array_map(function($category_id) use ($id){
+                return array(
+                    'ad_id'       => $id,
+                    'category_id' => $category_id
+                );
+            }, $need_to_add);
+
+            Mysql::getInstance()->insert('vclub_ad_deny_category', array_values($need_to_add));
+        }
+
+        return $update_result;
     }
 
     public function delById($id){
+
+        Mysql::getInstance()->delete('vclub_ad_deny_category', array('ad_id' => $id));
 
         return Mysql::getInstance()->delete('vclub_ad', array('id' => $id));
     }
@@ -40,30 +92,29 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
 
     public function getAllWithStatForMonth(){
 
-        /*return Mysql::getInstance()
-            ->select('vclub_ad.*, SUM(watch_complete) ended, count(vclub_ad.id) started')
-            ->from('vclub_ad')
-            ->join('vclub_ads_log', 'vclub_ad.id', 'vclub_ad_id', 'LEFT')
-            ->groupby('vclub_ad_id')
-            ->where(array('vclub_ads_log.added>' => 'FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.(30*24*3600).')'))
-            ->get()
-            ->all();*/
-
         return Mysql::getInstance()->query("SELECT vclub_ad.*, SUM(watch_complete) ended, count(vclub_ad_id) started FROM (vclub_ad) LEFT JOIN vclub_ads_log ON (vclub_ad.id=vclub_ad_id) and (vclub_ads_log.added>FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-2592000)) GROUP BY vclub_ad.id")->all();
     }
 
     public function getTotalNumber(){
 
         if ($this->total_ads === null){
-            $this->total_ads = Mysql::getInstance()->from('vclub_ad')->where(array('weight!=' => 0))->count()->get()->counter();
+            $this->total_ads = Mysql::getInstance()->from('vclub_ad')->where(array('weight!=' => 0, 'status' => 1))->count()->get()->counter();
         }
 
         return $this->total_ads;
     }
 
-    private function getIdWeightMap(){
+    private function getIdWeightMap($category_id){
 
-        $ads = Mysql::getInstance()->from('vclub_ad')->get()->all();
+        $denied_ads = Mysql::getInstance()
+            ->from('vclub_ad_deny_category')
+            ->where(array(
+                'category_id' => $category_id
+            ))
+            ->get()
+            ->all('ad_id');
+
+        $ads = Mysql::getInstance()->from('vclub_ad')->not_in('id', $denied_ads)->where(array('weight!=' => 0, 'status' => 1))->get()->all();
 
         $map = array();
 
@@ -87,9 +138,9 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
         return Mysql::getInstance()->from('vclub_ad')->limit(1, $picked)->get()->first();
     }
 
-    public function getOneWeightedRandom(){
+    public function getOneWeightedRandom($category_id){
 
-        $map = $this->getIdWeightMap();
+        $map = $this->getIdWeightMap($category_id);
 
         if (empty($map)){
             return null;
@@ -137,5 +188,17 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
             'watch_complete' => $ended,
             'added'          => 'NOW()'
         ))->insert_id();
+    }
+
+    public function getDeniedVclubCategoriesForAd($ad_id){
+        $category_ids = Mysql::getInstance()
+            ->from('vclub_ad_deny_category')
+            ->where(array(
+                'ad_id' => $ad_id
+            ))
+            ->get()
+            ->all('category_id');
+
+        return $category_ids;
     }
 }

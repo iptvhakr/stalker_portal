@@ -240,6 +240,11 @@ class Mysql
     }
 
     public function not_in($field, $values){
+
+        if (empty($values)){
+            return $this;
+        }
+
         return $this->in($field, $values, true);
     }
 

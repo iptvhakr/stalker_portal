@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-27 17:09+0200\n"
-"PO-Revision-Date: 2013-05-27 17:09+0200\n"
+"POT-Creation-Date: 2013-05-30 11:14+0200\n"
+"PO-Revision-Date: 2013-05-30 11:15+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -110,7 +110,7 @@ msgstr "Загрузить EPG"
 #: ../../../administrator/add_epg.php:401
 #: ../../../administrator/add_itv.php:1628
 #: ../../../administrator/add_karaoke.php:869
-#: ../../../administrator/add_moderator_mac.php:225
+#: ../../../administrator/add_moderator_mac.php:234
 #: ../../../administrator/add_radio.php:272
 #: ../../../administrator/add_video.php:2147
 msgid "Save"
@@ -118,7 +118,7 @@ msgstr "Сохранить"
 
 #: ../../../administrator/add_epg.php:401
 #: ../../../administrator/add_karaoke.php:869
-#: ../../../administrator/add_moderator_mac.php:225
+#: ../../../administrator/add_moderator_mac.php:234
 #: ../../../administrator/add_radio.php:272
 #: ../../../administrator/add_video.php:2147
 msgid "New"
@@ -226,7 +226,7 @@ msgstr "Код услуги"
 #: ../../../administrator/add_itv.php:1376
 #: ../../../administrator/add_karaoke.php:803
 #: ../../../administrator/add_moderator_mac.php:132
-#: ../../../administrator/add_moderator_mac.php:205
+#: ../../../administrator/add_moderator_mac.php:206
 #: ../../../administrator/add_radio.php:161
 #: ../../../administrator/add_radio.php:244
 msgid "Name"
@@ -453,6 +453,10 @@ msgstr "Порядок заполнения"
 #: ../../../administrator/add_video.php:612
 msgid "Moderators MAC addresses"
 msgstr "MAC адреса модераторов"
+
+#: ../../../administrator/add_moderator_mac.php:224
+msgid "Disable Video club ad"
+msgstr "Отключить рекламу в видео клубе"
 
 #: ../../../administrator/add_radio.php:125
 #: ../../../administrator/add_radio.php:132
@@ -1375,31 +1379,31 @@ msgstr "Краткое описание"
 msgid "Service"
 msgstr "Услуга"
 
-#: ../../../administrator/services_packages.php:373
+#: ../../../administrator/services_packages.php:374
 msgid "Service type"
 msgstr "Тип услуги"
 
-#: ../../../administrator/services_packages.php:376
+#: ../../../administrator/services_packages.php:377
 msgid "periodic"
 msgstr "периодическая"
 
-#: ../../../administrator/services_packages.php:377
+#: ../../../administrator/services_packages.php:378
 msgid "single"
 msgstr "разовая"
 
-#: ../../../administrator/services_packages.php:383
+#: ../../../administrator/services_packages.php:384
 msgid "Rent duration"
 msgstr "Длительность аренды"
 
-#: ../../../administrator/services_packages.php:385
+#: ../../../administrator/services_packages.php:386
 msgid "h"
 msgstr "ч"
 
-#: ../../../administrator/services_packages.php:390
+#: ../../../administrator/services_packages.php:391
 msgid "All services"
 msgstr "Все услуги"
 
-#: ../../../administrator/services_packages.php:410
+#: ../../../administrator/services_packages.php:411
 msgid "Selected"
 msgstr "Выбрано"
 
@@ -1757,8 +1761,8 @@ msgstr "Все каналы"
 
 #: ../../../administrator/subscribe.php:346
 #: ../../../administrator/subscribe.php:349
-#: ../../../administrator/vclub_ad.php:126
-#: ../../../administrator/vclub_ad.php:165
+#: ../../../administrator/vclub_ad.php:136
+#: ../../../administrator/vclub_ad.php:181
 msgid "All"
 msgstr "Все"
 
@@ -2017,32 +2021,37 @@ msgstr "Текущие просмотры на хранилище"
 msgid "Begin"
 msgstr "Начало"
 
-#: ../../../administrator/vclub_ad.php:85
-#: ../../../administrator/vclub_ad.php:91
+#: ../../../administrator/vclub_ad.php:94
+#: ../../../administrator/vclub_ad.php:100
 msgid "Video club advertising"
 msgstr "Реклама в Видео клубе"
 
-#: ../../../administrator/vclub_ad.php:116
-#: ../../../administrator/vclub_ad.php:162
+#: ../../../administrator/vclub_ad.php:125
+#: ../../../administrator/vclub_ad.php:178
 msgid "Must watch"
 msgstr "Необходимо просмотреть"
 
-#: ../../../administrator/vclub_ad.php:117
+#: ../../../administrator/vclub_ad.php:126
 msgid "Watch started"
 msgstr "Просмотр начат"
 
-#: ../../../administrator/vclub_ad.php:117
-#: ../../../administrator/vclub_ad.php:118
+#: ../../../administrator/vclub_ad.php:126
+#: ../../../administrator/vclub_ad.php:127
 msgid "in the last 30 days"
 msgstr "за последние 30 дней"
 
-#: ../../../administrator/vclub_ad.php:118
+#: ../../../administrator/vclub_ad.php:127
 msgid "Watch ended"
 msgstr "Просмотр завершен"
 
-#: ../../../administrator/vclub_ad.php:158
+#: ../../../administrator/vclub_ad.php:128
+#: ../../../administrator/vclub_ad.php:170
 msgid "Weight"
 msgstr "Вес"
+
+#: ../../../administrator/vclub_ad.php:174
+msgid "Deny for video categories"
+msgstr "Запретить для видео категорий"
 
 #: ../../../administrator/videolog.php:50
 #: ../../../administrator/videolog.php:56
@@ -3835,7 +3844,7 @@ msgstr "вчера"
 #: ../../../lib/user.class.php:988
 #: ../../../lib/user.class.php:989
 #: ../../../lib/video.class.php:95
-#: ../../../lib/vod.class.php:721
+#: ../../../lib/vod.class.php:745
 #, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -3856,7 +3865,11 @@ msgstr "Радио каналы"
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/vod.class.php:810
+#: ../../../lib/user.class.php:1002
+msgid "Options"
+msgstr "Опции"
+
+#: ../../../lib/vod.class.php:834
 msgid "last week"
 msgstr "7 дней"
 

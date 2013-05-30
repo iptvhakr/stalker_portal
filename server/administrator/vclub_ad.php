@@ -12,12 +12,22 @@ if (!check_access()){
 }
 
 foreach (@$_POST as $key => $value){
-    $_POST[$key] = trim($value);
+    if (is_string($_POST[$key])){
+        $_POST[$key] = trim($value);
+    }
 }
 
 $id = @intval($_GET['id']);
 
 $ad = new VclubAdvertising();
+
+if (isset($_GET['status']) && !empty($_GET['id'])){
+
+    $ad->updateById((int) $_GET['id'], array('status' => (int) $_GET['status']));
+
+    header("Location: vclub_ad.php");
+    exit;
+};
 
 if (!empty($_POST['add'])){
 
@@ -45,6 +55,15 @@ if (!empty($_GET['edit']) && !empty($id)){
 }
 
 $ads = $ad->getAllWithStatForMonth();
+
+if (!empty($_GET['id'])){
+    $denied_categories = $ad->getDeniedVclubCategoriesForAd((int) $_GET['id']);
+}else{
+    $denied_categories = array();
+}
+
+$video_category = new VideoCategory();
+$video_categories = $video_category->getAll();
 
 ?>
 <html>
@@ -82,6 +101,14 @@ a:hover{
 	text-decoration:underline;
 }
 </style>
+
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+
+        });
+    </script>
+
 <title><?=_('Video club advertising')?></title>
 </head>
 <body>
@@ -93,7 +120,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?=_('Back')?></a>
+        <a href="add_video.php"><< <?=_('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -129,6 +156,7 @@ a:hover{
             echo '<td>'.intval($ad['ended']).'</td>';
             echo '<td>'.$ad['weight'].'</td>';
             echo '<td>';
+            echo '<a href="?status='.intval(!$ad['status']).'&id='.$ad['id'].'" style="color:'.($ad['status'] == 0 ? 'red' : 'green').';font-weight:bold">'.($ad['status'] == 0 ? 'off' : 'on').'</a>&nbsp;';
             echo '<a href="?edit=1&id='.$ad['id'].'">edit</a>&nbsp;';
             echo '<a href="?del=1&id='.$ad['id'].'" onclick="if(confirm(\''._('Do you really want to delete this record?').'\')){return true}else{return false}">del</a>';
             echo '</td>';
@@ -158,7 +186,24 @@ a:hover{
             </tr>
             <tr>
                 <td><?= _('Weight')?></td>
-                <td><input type="text" name="weight" size="37" value="<?echo @$current_ad['weight']?>"/></td>
+                <td><input type="text" name="weight" size="37" value="<?= empty($current_ad) ? '1' : $current_ad['weight'] ?>"/></td>
+            </tr>
+            <tr>
+                <td valign="top"><?= _('Deny for video categories')?></td>
+                <td class="categories-container">
+                    <select name="denied_categories[]" multiple="multiple" size="<?= count($video_categories)?>">
+                        <?
+                        foreach ($video_categories as $video_category){
+                            if (!empty($denied_categories) && in_array($video_category['id'], $denied_categories)){
+                                $selected = 'selected';
+                            }else{
+                                $selected = '';
+                            }
+                            echo '<option value="'.$video_category['id'].'" '.$selected.'>'.$video_category['category_name'].'</option>';
+                        }
+                        ?>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <td><?= _('Must watch')?></td>
