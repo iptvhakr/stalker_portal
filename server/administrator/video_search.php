@@ -283,7 +283,7 @@ function md5sum(obj, status, media_name, storage_name){
                     <th><?= _('On server')?></th>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="padding-left: 20px; text-align: left">
                         <?
                         $rs  = $db->executeQuery("select * from storages where status=1");
 
@@ -310,8 +310,16 @@ function md5sum(obj, status, media_name, storage_name){
                     <th width="100%"><?= _('and on')?></th>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="padding-left: 100px; text-align: left">
                         <input type="text" name="total_storages" value="<? echo @$_GET['total_storages']?>" size="5" maxlength="2" /> <?= _('storages')?>
+                        <br>
+                        <select name="quality">
+                            <option>---</option>
+                            <option value="hd" <?= @$_GET['quality'] == 'hd' ? 'selected' : ''?>>HD</option>
+                            <option value="sd" <?= @$_GET['quality'] == 'sd' ? 'selected' : ''?>>SD</option>
+                        </select><?= _('Quality')?>
+                        <br>
+                        <input type="checkbox" name="on" value="1" <?= @$_GET['on'] || !isset($_GET['total_storages']) ? 'checked' : ''?> /> <?= _('On')?>
                     </td>
                 </tr>
             </table>
@@ -323,7 +331,7 @@ function md5sum(obj, status, media_name, storage_name){
                     <th width="100%"><?= _('and not on server')?></th>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="padding-left: 35px; text-align: left">
                         <?
                         $rs  = $db->executeQuery("select * from storages where status=1");
 
@@ -353,7 +361,7 @@ function md5sum(obj, status, media_name, storage_name){
 </table>
 <script type="text/javascript">
     function sortby(obj){
-        document.location = 'video_search.php?on_storage=<?echo @$_GET['on_storage']?>&total_storages=<?echo @$_GET['total_storages']?>&search=<?echo @$_GET['search']?>&view=<?echo @$_GET['view']?>&sortby='+obj.options[obj.selectedIndex].value;
+        document.location = 'video_search.php?<?= $_SERVER['QUERY_STRING']?>&view=<?echo @$_GET['view']?>&sortby='+obj.options[obj.selectedIndex].value;
     }
 </script>
 <table>
@@ -453,7 +461,21 @@ if (@$_GET['not_on_storages']){
     $not_on_storages = $_GET['not_on_storages'];
 }
 
-$sql = "select media_id as video_id, path, GROUP_CONCAT(storage_name) as storages, count(storage_name) as on_storages, (count_first_0_5+count_second_0_5) as month_counter, count, last_played from storage_cache,video where video.id=media_id and media_type='vclub' group by media_id";
+$sql = "select media_id as video_id, path, GROUP_CONCAT(storage_name) as storages, count(storage_name) as on_storages, (count_first_0_5+count_second_0_5) as month_counter, count, last_played from storage_cache,video where video.id=media_id and media_type='vclub' and storage_cache.status=1";
+
+if (@$_GET['quality'] == 'hd'){
+    $sql .= " and video.hd=1";
+}else if (@$_GET['quality'] == 'sd'){
+    $sql .= " and video.hd=0";
+}
+
+if (@$_GET['on'] || !isset($_GET['total_storages'])){
+    $sql .= " and video.accessed=1";
+}else{
+    $sql .= " and video.accessed=0";
+}
+
+$sql .= " group by media_id";
 
 $having = array();
 
