@@ -24,6 +24,23 @@ class Weatherco implements \Stalker\Lib\StbApi\Weatherco
         5 => '_1_moon_cl.png',
     );
 
+    private $context_params = array(
+        'http' => array(
+            'timeout' => 300
+        )
+    );
+
+    public function __construct(){
+        if (Config::exist('http_proxy')){
+            $this->context_params['http']['proxy'] = Config::get('http_proxy');
+            $this->context_params['http']['request_fulluri'] = true;
+
+            if (Config::exist('http_proxy_login') && Config::exist('http_proxy_password')){
+                $this->context_params['http']['header'] = "Proxy-Authorization: Basic ".base64_encode(Config::get('http_proxy_login').":".Config::get('http_proxy_password'))."\r\n";
+            }
+        }
+    }
+
     public function updateFullCurrent(){
 
         $start = microtime(1);
@@ -31,13 +48,7 @@ class Weatherco implements \Stalker\Lib\StbApi\Weatherco
         $content = file_get_contents(
             'http://xml.weather.co.ua/1.2/fullcurrent/',
             false,
-            stream_context_create(
-                array(
-                    'http' => array(
-                        'timeout' => 300
-                    )
-                )
-            )
+            stream_context_create($this->context_params)
         );
 
         $xml_resp = simplexml_load_string($content);
@@ -82,13 +93,8 @@ class Weatherco implements \Stalker\Lib\StbApi\Weatherco
         $content = file_get_contents(
             'http://xml.weather.co.ua/1.2/fullforecast/',
             false,
-            stream_context_create(
-                array(
-                    'http' => array(
-                        'timeout' => 300
-                    )
-                )
-            ));
+            stream_context_create($this->context_params)
+        );
 
         $xml_resp = simplexml_load_string($content);
 
