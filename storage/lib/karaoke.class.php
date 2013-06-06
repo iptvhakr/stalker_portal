@@ -13,7 +13,7 @@ class Karaoke extends Storage
         $result['series_file'] = array();
         $result['files']  = array();
 
-        var_dump(KARAOKE_STORAGE_DIR.$name);
+        //var_dump(KARAOKE_STORAGE_DIR.$name);
 
         if (is_file(KARAOKE_STORAGE_DIR.$name)){
             $result['files'][] = array('name' => $name, 'md5' => '');
