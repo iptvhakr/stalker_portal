@@ -412,7 +412,7 @@
 .pos_time{
     position: absolute;
     top: 72px;
-    right: 48px;
+    right: 64px;
     font-size: 24px;
     color: #fff;
     text-shadow: #000 0 1px 0;
@@ -731,4 +731,14 @@
     position: absolute;
     top: 49px;
     right: 100px;
+}
+
+img.timeshift_mode{
+    position: relative;
+    top: 22px;
+    right: -30px;
+}
+
+.padding_pos_bar{
+    right: 167px;
 }

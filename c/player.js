@@ -2083,14 +2083,14 @@ player.prototype.init_show_info = function(){
     
     //this.info.pos_time = create_block_element("pos_time", this.info.video_container);
 
-    var pos_time_bar =  create_block_element("pos_time", this.info.video_container);
+    this.pos_time_bar =  create_block_element("pos_time", this.info.video_container);
 
-    this.info.cur_pos_time = create_block_element("cur_pos_time", pos_time_bar);
+    this.info.cur_pos_time = create_block_element("cur_pos_time", this.pos_time_bar);
 
-    var pos_time_separator = create_block_element("pos_time_separator", pos_time_bar);
+    var pos_time_separator = create_block_element("pos_time_separator", this.pos_time_bar);
     pos_time_separator.innerHTML = '/';
 
-    this.info.total_pos_time = create_block_element("total_pos_time", pos_time_bar);
+    this.info.total_pos_time = create_block_element("total_pos_time", this.pos_time_bar);
 
     this.info.pos_series = create_block_element("pos_series", this.info.video_container);
 
@@ -2103,7 +2103,7 @@ player.prototype.init_show_info = function(){
 player.prototype.show_info = function(item){
     _debug('show_info');
     
-    var item = item || this.cur_media_item;
+    item = item || this.cur_media_item;
 
     if(this.info.on){
         window.clearTimeout(this.info.hide_timeout);
@@ -2154,12 +2154,6 @@ player.prototype.show_info = function(item){
         title = decodeURIComponent(osd_title_match[1].replace(/\+/g, '%20'));
     }
 
-    if (item.logo && stb.profile['show_tv_channel_logo']){
-        this.info.logo.innerHTML = '<img src="/'+ stb.portal_path  +'/misc/logos/'+(resolution_prefix.substr(1) == 720 ? 320 : 240)+'/' + item.logo + '">';
-    }else{
-        this.info.logo.innerHTML = '';
-    }
-
     this.info.title.innerHTML = title;
     
     try{
@@ -2181,8 +2175,6 @@ player.prototype.show_info = function(item){
             if (!this.info.video_container.isHidden()){
                 this.info.video_container.hide();
             }
-            
-            //_debug('stb.epg_loader.get_epg(item.id)', stb.epg_loader.get_epg(item.id));
             
             if (item.hasOwnProperty('open') && !item.open){
 
@@ -2206,10 +2198,6 @@ player.prototype.show_info = function(item){
             }
             
             _debug('this.info.video_container.isHidden()', this.info.video_container.isHidden());
-            
-            /*if (this.last_state == 4){
-                this.set_pos_button_to_cur_time();
-            }*/
 
             _debug('this.last_state', this.last_state);
             
@@ -2221,29 +2209,20 @@ player.prototype.show_info = function(item){
                 this.set_pos_button_to_cur_time();
             }
         }
-        
-        /*if(this.info.on){
-            window.clearTimeout(this.info.hide_timeout);
+
+        if (item.logo && stb.profile['show_tv_channel_logo']){
+            this.info.logo.innerHTML = '<img '+(this.active_time_shift ? 'class="timeshift_mode"' : '')+' src="/'+ stb.portal_path  +'/misc/logos/'+(resolution_prefix.substr(1) == 720 ? 320 : 240)+'/' + item.logo + '">';
         }else{
-            this.info.dom_obj.show();
-            this.info.on = true;
-        }*/
-        
-        stb.clock.show();
-        
-        /*var title = '';
-        
-        if (item.hasOwnProperty('number')){
-            title = item.number + '. ';
+            this.info.logo.innerHTML = '';
+        }
+
+        if (this.active_time_shift){
+            this.pos_time_bar.addClass('padding_pos_bar')
+        }else{
+            this.pos_time_bar.removeClass('padding_pos_bar')
         }
         
-        title += item.name;
-        
-        this.info.title.innerHTML = title;*/
-        
-        //if (!this.info.epg.isHidden()){
-        //    this.info.epg.innerHTML = stb.epg_loader.get_epg(item.id);
-        //}
+        stb.clock.show();
         
         if (item.cur_series && parseInt(item.cur_series) > 0){
             this.info.pos_series.innerHTML = item.cur_series + ' ' + get_word('player_series');

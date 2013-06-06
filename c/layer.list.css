@@ -748,3 +748,12 @@
     top: 42px;
     right: 50px;
 }
+
+img.timeshift_mode{
+    position: relative;
+    top: 17px;
+}
+
+.padding_pos_bar{
+    right: 123px;
+}

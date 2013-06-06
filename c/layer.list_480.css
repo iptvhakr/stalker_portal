@@ -751,3 +751,13 @@
     top: 42px;
     right: 45px;
 }
+
+img.timeshift_mode{
+    position: relative;
+    top: 17px;
+    right: 6px;
+}
+
+.padding_pos_bar{
+    right: 124px;
+}
