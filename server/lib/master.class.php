@@ -383,8 +383,23 @@ abstract class Master
             $good_storages = $this->getAllGoodStoragesForMediaFromNet($this->media_name);
             $this->from_cache = false;
         }
-        
+
         $good_storages = $this->sortByLoad($good_storages);
+
+        if (User::isInitialized()){
+
+            $user_agent = User::getUserAgent();
+
+            $filtered_good_storages = array();
+
+            foreach ($good_storages as $storage_name => $storage){
+                if ($this->storages[$storage_name]['user_agent_filter'] == '' || preg_match("/".$this->storages[$storage_name]['user_agent_filter']."/", $user_agent)){
+                    $filtered_good_storages[$storage_name] = $storage;
+                }
+            }
+
+            $good_storages = $filtered_good_storages;
+        }
         
         return $good_storages;
     }

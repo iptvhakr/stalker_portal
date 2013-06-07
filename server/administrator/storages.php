@@ -32,6 +32,7 @@ if (@$_POST['add']){
                 apache_port,
                 nfs_home_path, 
                 max_online,
+                user_agent_filter,
                 for_moderator,
                 for_records,
                 fake_tv_archive,
@@ -46,6 +47,7 @@ if (@$_POST['add']){
                 "'.@$_POST['apache_port'].'",
                 "'.@$_POST['nfs_home_path'].'",
                 "'.@$_POST['max_online'].'",
+                "'.@$_POST['user_agent_filter'].'",
                 "'.@intval($_POST['for_moderator']).'",
                 "'.@intval($_POST['for_records']).'",
                 "'.@intval($_POST['fake_tv_archive']).'",
@@ -69,6 +71,7 @@ if (!empty($id)){
                     apache_port="'.@$_POST['apache_port'].'",
                     nfs_home_path="'.@$_POST['nfs_home_path'].'",
                     max_online="'.@$_POST['max_online'].'",
+                    user_agent_filter="'.@$_POST['user_agent_filter'].'",
                     for_moderator="'.@intval($_POST['for_moderator']).'",
                     for_records="'.@intval($_POST['for_records']).'",
                     fake_tv_archive="'.@intval($_POST['fake_tv_archive']).'",
@@ -256,6 +259,10 @@ a:hover{
                 <tr>
                     <td>Max online</td>
                     <td><input type="text" name="max_online" value="<?echo @$edit_storage['max_online']?>"/></td>
+                </tr>
+                <tr>
+                    <td><?= _('User-Agent Filter')?></td>
+                    <td><input type="text" name="user_agent_filter" value="<?echo @$edit_storage['user_agent_filter']?>"/></td>
                 </tr>
                 <tr>
                     <td><?= _('Storing content')?></td>
