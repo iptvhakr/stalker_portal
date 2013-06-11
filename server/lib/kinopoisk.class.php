@@ -290,8 +290,11 @@ class Kinopoisk
 
         $result['rating_kinopoisk']       = (string) $xml->kp_rating;
         $result['rating_count_kinopoisk'] = (int) $xml->kp_rating->attributes()->num_vote;
-        $result['rating_imdb']            = (string) $xml->imdb_rating;
-        $result['rating_count_imdb']      = (int) $xml->imdb_rating->attributes()->num_vote;;
+
+        if ($xml->imdb_rating){
+            $result['rating_imdb']        = (string) $xml->imdb_rating;
+            $result['rating_count_imdb']  = (int) $xml->imdb_rating->attributes()->num_vote;
+        }
 
         return $result;
     }
