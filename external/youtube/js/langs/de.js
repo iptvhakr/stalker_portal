@@ -22,9 +22,9 @@ var lang = {
 	},
 	"loading": "Loading...",
 	"quality": {
-		"low"   : "Low",
-		"middle": "Middle",
-		"high"  : "High"
+		"low"   : "àNIEDRIG",
+		"middle": "à MITTEL",
+		"high"  : "à HOCH"
 	},
 	"f_category": "Kategorie",
 	"f_quality" : "Qualität",
@@ -101,7 +101,7 @@ var lang = {
 		}
 	},
 	"main_field_search"          : "Suchen Videos",
-	"main_field_users_video"     : "Benutzers Video",
+	"main_field_users_video"     : "Benutzer Video",
 	"as_data"                    : "Datentyp:",
 	"main_field_playlists_search": "Suche nach Playlist"
 };
