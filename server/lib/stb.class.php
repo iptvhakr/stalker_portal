@@ -404,6 +404,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['show_tv_channel_logo'] = Config::getSafe('show_tv_channel_logo', true);
 
+        $profile['enable_hdmi_events_handler'] = Config::getSafe('enable_hdmi_events_handler', true);
+
         return $profile;
     }
 
