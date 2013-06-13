@@ -322,7 +322,7 @@ class User implements \Stalker\Lib\StbApi\User
             ->from('package_in_plan')
             ->join('services_package', 'services_package.id', 'package_in_plan.package_id', 'INNER')
             ->where(array('plan_id' => $plan['id']))
-            ->orderby('package_in_plan.optional, services_package_id')
+            ->orderby('package_in_plan.optional, external_id')
             ->get()
             ->all();
 
