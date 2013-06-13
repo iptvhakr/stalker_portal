@@ -54,6 +54,23 @@ if (isset($_GET['shift']) && isset($_GET['from_num'])){
     exit;
 }
 
+if (@$_GET['restart_all_archives']){
+    $tv_archive = new TvArchive();
+    $result = true;
+    $current_tasks = Mysql::getInstance()->select('ch_id, storage_name')->from('tv_archive')->get()->all();
+    $new_tasks = array();
+    foreach ($current_tasks as $task)
+        $new_tasks[$task['ch_id']][] = $task['storage_name'];
+            foreach (array_keys($new_tasks) as $channel) {
+                $tv_archive->deleteTasks($channel);
+                $result = $tv_archive->createTasks($channel, $new_tasks[$channel]) && $result;
+            }
+    if (!$result)
+        $error = _('TV Archive has NOT been restarted correctly.');
+    else
+        $error = _('TV Archive has been restarted.');
+}
+
 if (!$error){
     
     if (@$_POST['censored'] == 'on'){
@@ -949,7 +966,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a> | <a href="#" class="add_btn"><?= _('Add')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="#" class="add_btn"><?= _('Add')?></a> | <a href="?restart_all_archives=1"><?= _('Restart all TV archives')?></a>
     </td>
 </tr>
 <tr>
