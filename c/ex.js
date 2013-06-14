@@ -11,9 +11,18 @@
             params = '?proxy=http://'+stb.user['web_proxy_host']+':' +stb.user['web_proxy_port'];
         }
 
+        stb.setFrontPanel('.');
+
+        if (!params){
+            params += '?';
+        }else{
+            params += '&';
+        }
+
+        params += 'referrer='+encodeURIComponent(window.location);
+
         _debug('url', '/' + stb.portal_path + '/external/ex/index.html'+params);
 
-        stb.setFrontPanel('.');
         window.location = '/' + stb.portal_path + '/external/ex/index.html'+params;
     }, {layer_name : "ex"});
 
