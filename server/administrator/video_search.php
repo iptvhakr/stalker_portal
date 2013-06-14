@@ -249,6 +249,16 @@ function md5sum(obj, status, media_name, storage_name){
 
 </head>
 <body>
+    <?
+
+    $params = $_GET;
+    $params['view'] = 'text';
+    $text_query = http_build_query($params);
+
+    $text_query = htmlspecialchars($text_query);
+    //var_dump($text_query);
+
+    ?>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
 <tr>
     <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
@@ -257,7 +267,7 @@ function md5sum(obj, status, media_name, storage_name){
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="storages.php"><< <?= _('Back')?></a> | <a href="?<?echo $_SERVER['QUERY_STRING'].'&view=text'?>"><?= _('Plain text')?></a>
+        <a href="storages.php"><< <?= _('Back')?></a> | <a href="?<?= $text_query?>"><?= _('Plain text')?></a>
     </td>
 </tr>
 <tr>
@@ -293,7 +303,7 @@ function md5sum(obj, status, media_name, storage_name){
                             $arr=$rs->getCurrentValuesAsHash();
                             echo '<input type="checkbox" id="'.$arr['storage_name'].'_on_storage" name="on_storages[]" value="'.$arr['storage_name'].'"';
 
-                            if (in_array($arr['storage_name'], $on_storages)){
+                            if ($on_storages && in_array($arr['storage_name'], $on_storages)){
                                 echo ' checked';
                             }
                             
@@ -341,7 +351,7 @@ function md5sum(obj, status, media_name, storage_name){
                             $arr=$rs->getCurrentValuesAsHash();
                             echo '<input type="checkbox" id="'.$arr['storage_name'].'_not_on_storage" name="not_on_storages[]" value="'.$arr['storage_name'].'"';
 
-                            if (in_array($arr['storage_name'], $not_on_storages)){
+                            if ($not_on_storages && in_array($arr['storage_name'], $not_on_storages)){
                                 echo ' checked';
                             }
 
