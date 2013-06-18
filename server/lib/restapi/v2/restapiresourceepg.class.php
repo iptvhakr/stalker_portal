@@ -4,7 +4,7 @@ namespace Stalker\Lib\RESTAPI\v2;
 
 class RESTApiResourceEpg extends RESTApiCollection
 {
-    protected $params_map = array("tv-channels" => "ch_id");
+    protected $params_map = array("tv-channels" => "ch_id", "users" => "users.id");
     private   $manager;
     private   $fields_map;
 
@@ -13,6 +13,7 @@ class RESTApiResourceEpg extends RESTApiCollection
 
         $this->document = new RESTApiEpgDocument();
         $this->document->controllers->add(new RESTApiEpgLink($this->nested_params));
+        $this->document->controllers->add(new RESTApiEpgRecord($this->nested_params));
 
         $this->manager = new \Epg();
 

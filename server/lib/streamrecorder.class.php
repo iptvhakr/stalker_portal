@@ -397,7 +397,7 @@ class StreamRecorder extends Master
                                          ));
 
             //return $this->clients[$file_record['storage_name']]->stopRecording($file_record['id']);
-            var_dump($file_record, $this->clients);
+            //var_dump($file_record, $this->clients);
 
             try{
                 return $this->clients[$file_record['storage_name']]->resource('recorder')->ids($file_record['id'])->update();

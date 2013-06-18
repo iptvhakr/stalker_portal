@@ -18,6 +18,7 @@ class RESTApiResourceTvChannels extends RESTApiCollection
         parent::__construct($nested_params, $external_params);
         $this->document = new RESTApiTvChannelDocument();
         $this->document->controllers->add(new RESTApiTvChannelLink($this->nested_params));
+        $this->document->controllers->add(new RESTApiTvChannelRecord($this->nested_params));
         $this->controllers->add(new RESTApiTvChannelLast($this->nested_params));
 
         $this->fields_map = array_fill_keys(array('id', "name", "number", "archive", "censored"), true);
@@ -102,19 +103,10 @@ class RESTApiResourceTvChannels extends RESTApiCollection
 
             $new_channel['favorite'] = in_array($channel['id'], $fav_channels) ? 1 : 0;
 
-            /*if ($channel['use_http_tmp_link'] || $channel['enable_wowza_load_balancing'] || !in_array($channel['id'], $user_channels)){
-                $new_channel['url'] = "";
-            }else{
-                $new_channel['url'] = $channel['cmd'];
-            }*/
-
-            /*if (preg_match("/(\S+:\/\/\S+)/", $new_channel['url'], $match)){
-                $new_channel['url'] = $match[1];
-            }*/
-
             $new_channel['archive']  = (int) $channel['enable_tv_archive'];
             $new_channel['censored'] = (int) $channel['censored'];
             $new_channel['archive_range'] = \TvArchive::getArchiveRange($channel['id']);
+            $new_channel['pvr']      = (int) $channel['allow_pvr'];
 
             if (!empty($_SERVER['HTTP_UA_RESOLUTION']) && in_array($_SERVER['HTTP_UA_RESOLUTION'], array(120, 160, 240, 320))){
                 $resolution = (int) $_SERVER['HTTP_UA_RESOLUTION'];

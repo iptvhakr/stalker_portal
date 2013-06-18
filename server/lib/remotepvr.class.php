@@ -7,7 +7,7 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
     }
 
     public function createLink(){
-        
+
         preg_match("/\/media\/(\d+).mpg$/", $_REQUEST['cmd'], $tmp_arr);
 
         $media_id = $tmp_arr[1];
@@ -21,10 +21,21 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
             );
         }
 
+        $res = $this->getLinkByRecId($media_id);
+
+        var_dump($res);
+
+        return $res;
+    }
+
+    private function getLinkByRecId($rec_id){
+
+        $item = self::getById($rec_id);
+
         $master = new StreamRecorder();
 
         try {
-            $res = $master->play($media_id, 0, false, $item['storage_name']);
+            $res = $master->play($rec_id, 0, false, $item['storage_name']);
         }catch (Exception $e){
             trigger_error($e->getMessage());
         }
@@ -37,32 +48,49 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
             $res['to_file'] .= '.'.$ext_arr[1];
         }
 
-        var_dump($res);
-
         return $res;
+    }
+
+    public function getUrlByRecId($rec_id){
+
+        $link = $this->getLinkByRecId($rec_id);
+
+        if (empty($link['cmd'])) {
+            throw new Exception("Obtaining url failed");
+        }
+
+        return $link['cmd'];
     }
 
     public static function getById($id){
         //return Mysql::getInstance()->from('users_rec')->where(array('id' => intval($id)))->get()->first();
         return Mysql::getInstance()
-            ->select('users_rec.*, rec_files.storage_name as storage_name')
+            ->select('users_rec.*, rec_files.storage_name as storage_name, itv.name as ch_name')
             ->from('users_rec')
             ->join('rec_files', 'users_rec.file_id', 'rec_files.id', 'LEFT')
+            ->join('itv', 'users_rec.ch_id', 'itv.id', 'LEFT')
             ->where(array('users_rec.id' => intval($id)))
             ->get()
             ->first();
     }
 
+    /**
+     * @return Mysql $this
+     */
+    public function prepareQuery(){
+        return Mysql::getInstance()
+            ->select('users_rec.*, itv.name as ch_name, UNIX_TIMESTAMP(t_start) as t_start_ts')
+            ->from('users_rec')
+            ->join('itv', 'itv.id', 'users_rec.ch_id', 'LEFT')
+            ->orderby('t_start', 'DESC')
+            ->orderby('t_stop', 'DESC');
+    }
+
     public function getOrderedList(){
 
-        $result = $this->db
-                        ->select('users_rec.*, itv.name as ch_name, UNIX_TIMESTAMP(t_start) as t_start_ts')
-                        ->from('users_rec')
-                        ->join('itv', 'itv.id', 'users_rec.ch_id', 'LEFT')
-                        ->where(array('uid' => $this->stb->id))
-                        ->orderby('t_start', 'DESC')
-                        ->orderby('t_stop', 'DESC')
-                        ->limit(self::max_page_items, $this->page * self::max_page_items);
+        $result = $this->prepareQuery()
+            ->where(array('uid' => $this->stb->id))
+            ->limit(self::max_page_items, $this->page * self::max_page_items);
 
         $this->setResponseData($result);
 
@@ -111,22 +139,14 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
     }
 
     public function startRecDeferred(){
+        return $this->startRecDeferredById($_REQUEST['program_id']);
+    }
 
-        $program_id = $_REQUEST['program_id'];
-
-        //$channel = Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first();
-
-        /*if (empty($channel)){
-            return false;
-        }*/
+    public function startRecDeferredById($program_id){
 
         $recorder = new StreamRecorder();
 
         return $recorder->startDeferred($program_id);
-        //if ($recorder->startDeferred($program_id)){
-            //return $this->getRecordingChIds();
-        //    return true;
-        //}
     }
 
     public function stopRecDeferred(){
@@ -141,8 +161,14 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 
     public function startRecNow(){
 
-        $ch_id = intval($_REQUEST['ch_id']);
+        $user_rec_id = $this->startRecNowByChannelId(intval($_REQUEST['ch_id']));
 
+        if ($user_rec_id){
+            return $this->getRecordingChIds(true);
+        }
+    }
+
+    public function startRecNowByChannelId($ch_id){
         $channel = Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first();
 
         if (empty($channel)){
@@ -151,9 +177,9 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 
         $recorder = new StreamRecorder();
 
-        if ($recorder->startNow($channel)){
-            return $this->getRecordingChIds(true);
-        }
+        $user_rec_id = $recorder->startNow($channel);
+
+        return $user_rec_id;
     }
 
     public function setInternalId(){
@@ -301,9 +327,10 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
     }
 
     public function stopRec(){
+        return $this->stopRecById(intval($_REQUEST['rec_id']));
+    }
 
-        $rec_id = intval($_REQUEST['rec_id']);
-
+    public function stopRecById($rec_id){
         $recorder = new StreamRecorder();
 
         return $recorder->stop($rec_id);
@@ -362,7 +389,10 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 
     public function delRec(){
 
-        $rec_id = intval($_REQUEST['rec_id']);
+        return $this->delRecById(intval($_REQUEST['rec_id']));
+    }
+
+    public function delRecById($rec_id){
 
         $recorder = new StreamRecorder();
 
