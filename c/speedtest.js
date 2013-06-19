@@ -14,7 +14,7 @@ function Speedtest(url){
 Speedtest.prototype.start = function(){
     _debug('Speedtest.start');
 
-    var result = this._getResult();
+    var result = this._result = this._getResult();
 
     if (result && result.hasOwnProperty('id')){
         this.stop(result.id);
@@ -27,6 +27,10 @@ Speedtest.prototype.start = function(){
 
 Speedtest.prototype.stop = function(id){
     _debug('Speedtest.stop', id);
+
+    id = id || this._result.id;
+
+    _debug('id', id);
 
     window.clearInterval(this._static._interval);
     parent.stbDownloadManager.DeleteJob(id, false);
@@ -77,7 +81,7 @@ Speedtest.prototype._getResult = function(){
 Speedtest.prototype.check = function(){
     _debug('Speedtest.check');
 
-    var result = this._getResult();
+    var result = this._result = this._getResult();
 
     _debug('this._static._interval', this._static._interval);
 
