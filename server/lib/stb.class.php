@@ -261,8 +261,30 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $master = new VideoMaster();
         return $master->getStoragesForStb();
     }
+
+    private function passAccessFilter(){
+
+        $filter_file = PROJECT_PATH.'/access_filter.php';
+
+        $country = geoip_country_code_by_name($this->ip);
+        $model   = isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '';
+        $mac     = $this->mac;
+
+        if (is_readable($filter_file)){ // load rules file
+            return require_once($filter_file);
+        }
+
+        return true;
+    }
     
     public function getProfile(){
+
+        if (!$this->passAccessFilter()){
+            return array(
+                'status' => 1,
+                'msg'    => 'access denied'
+            );
+        }
 
         if ((empty($_SERVER['TARGET']) || ($_SERVER['TARGET'] != 'API' && $_SERVER['TARGET'] != 'ADM')) && Config::getSafe('enable_mac_format_validation', true) && !Middleware::isValidMAC($this->mac)){
             $this->logNotValidMAC(isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '', isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '');
