@@ -11,6 +11,12 @@
         win_inited : false
     };
 
+    if (stbWindowMgr.InitWebWindow){
+        stbWindowMgr.InitWebWindow(
+            '/home/web/public/app/bookmarks/header.html',
+            '/home/web/public/app/bookmarks/footer.html');
+    }
+
     main_menu.add(get_word('internet'), [], 'mm_ico_internet.png', function(){
 
         stb.EnableVKButton(true);
@@ -22,7 +28,13 @@
         if (module.internet.win_inited && stbWindowMgr.IsWebWindowExist && stbWindowMgr.IsWebWindowExist()){
             stbWindowMgr.raiseWebWindow();
         }else{
-            stbWindowMgr.openWebWindow('http://google.com');
+            if (stbWindowMgr.InitWebWindow){
+                stbWindowMgr.LoadUrl('http://google.com');
+                stbWindowMgr.raiseWebWindow();
+            }else{
+                stbWindowMgr.openWebWindow('http://google.com');
+            }
+
             module.internet.win_inited = true;
         }
     }, {layer_name : "internet"});
