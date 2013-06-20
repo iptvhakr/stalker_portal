@@ -1,0 +1,282 @@
+﻿<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="vars.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="sys.js"></script>
+        <script type="text/javascript" src="player.js"></script>
+        <script type="text/javascript" src="keyhandlers.js"></script>
+        <script type="text/javascript">
+            var stb = gSTB;
+        </script>
+    </head>
+    <body  onload="init()" onkeydown="body_keydown(event)">
+        <div id="black_bg" style="display: none;"><div class="waiting_form" style="padding-bottom: 20px;">Загрузка...</div></div>
+<div class="modal" style="display: none;">
+    <div class="modal_box">
+        <div class="modal_title">Выбор жанра</div>
+        <div class="modal_hr"></div>
+        <div class="modal_list">
+        <!--  <input type="button" value="Авторское кино" />
+          <input type="button" value="Боевики" />
+          <input type="button" value="Военные" />
+          <input type="button" value="Детективы" />
+          <input type="button" value="Для детей" />
+          <input type="button" value="Документальные" />
+          <input type="button" value="Драмы" />
+          <input type="button" value="Комедии" />
+          <input type="button" value="Короткометражки" />
+          <input type="button" value="Мелодрамы" />
+          <input type="button" value="Мировая классика" />
+          <input type="button" value="Приключения" />
+          <input type="button" value="Советское кино" />
+          <input type="button" value="Триллеры" />
+          <input type="button" value="Ужасы" />
+          <input type="button" value="Фантастика" />
+          <input type="button" value="Эротика" />-->
+        </div>
+        <div id="search_layer" class="search_list">
+<!--    
+        <input id="search_line" type="text" name="name">
+        <div class="sub_select">
+            <select id="search_cats" class="select">
+                <option>Первый вариант</option>
+                <option>Второй вариант</option>
+            </select>
+        </div>
+        <div class="sub_select">
+            <select id="search_genre" class="select">
+                <option>Первый вариант</option>
+                <option>Второй вариант</option>
+            </select>
+        </div>
+
+        <div class="sub_select">
+            <select id="search_country" class="select">
+                <option>Первый вариант</option>
+                <option>Второй вариант</option>
+            </select>
+        </div>
+        <div class="search_btn"><input type="button"  value="Отмена" /></div><div class="search_btn"><input type="button" value="Найти" /></div>
+
+-->
+        </div>
+        <div class="modal_hr"></div>
+        <div class="close_btn"><input type="button" class="genrebtn" value="Закрыть" id="modal_exit" onclick="exit_modal()"/></div>
+    </div> 
+</div>
+        <div id="keyboard" class="keyboard_block" style="display: none;">
+            <div id="k0" class="keypad_key_act">а</div>
+            <div id="k1" class="keypad_key">б</div>
+            <div id="k2" class="keypad_key">в</div>
+            <div id="k3" class="keypad_key">г</div>
+            <div id="k4" class="keypad_key">д</div>
+            <div id="k5" class="keypad_key">е</div>
+            <div id="k6" class="keypad_key">ё</div>
+            <div id="k7" class="keypad_key keypad_empty">1</div>
+            <div id="k8" class="keypad_key">2</div>
+            <div id="k9" class="keypad_key">3</div>
+
+            <div id="k10" class="keypad_key">ж</div>
+            <div id="k11" class="keypad_key">з</div>
+            <div id="k12" class="keypad_key">и</div>
+            <div id="k13" class="keypad_key">й</div>
+            <div id="k14" class="keypad_key">к</div>
+            <div id="k15" class="keypad_key">л</div>
+            <div id="k16" class="keypad_key">м</div>
+            <div id="k17" class="keypad_key keypad_empty">4</div>
+            <div id="k18" class="keypad_key">5</div>
+            <div id="k19" class="keypad_key">6</div>
+
+            <div id="k20" class="keypad_key">н</div>
+            <div id="k21" class="keypad_key">о</div>
+            <div id="k22" class="keypad_key">п</div>
+            <div id="k23" class="keypad_key">р</div>
+            <div id="k24" class="keypad_key">с</div>
+            <div id="k25" class="keypad_key">т</div>
+            <div id="k26" class="keypad_key">у</div>
+            <div id="k27" class="keypad_key keypad_empty">7</div>
+            <div id="k28" class="keypad_key">8</div>
+            <div id="k29" class="keypad_key">9</div>
+
+            <div id="k30" class="keypad_key">ф</div>
+            <div id="k31" class="keypad_key">х</div>
+            <div id="k32" class="keypad_key">ц</div>
+            <div id="k33" class="keypad_key">ч</div>
+            <div id="k34" class="keypad_key">ш</div>
+            <div id="k35" class="keypad_key">щ</div>
+            <div id="k36" class="keypad_key">ь</div>
+            <div id="k37" class="keypad_key_null keypad_empty"></div>
+            <div id="k38" class="keypad_key">0</div>
+            <div id="k39" class="keypad_key_null"></div>
+
+            <div id="k40" class="keypad_key">ы</div>
+            <div id="k41" class="keypad_key">ъ</div>
+            <div id="k42" class="keypad_key">э</div>
+            <div id="k43" class="keypad_key">ю</div>
+            <div id="k44" class="keypad_key">я</div>
+            <div id="k45" class="keypad_key">.</div>
+            <div id="k46" class="keypad_key"><img src="img/720/keypad_space.png" /></div>
+            <div id="k47" class="keypad_key_red keypad_empty"><img src="img/720/keypad_left.png" /></div>
+            <div id="k48" class="keypad_key_green"><img src="img/720/keypad_right.png" /></div>
+            <div id="k49" class="keypad_key_yellow"><img src="img/720/keypad_bs.png" /></div>
+        </div>
+    
+
+        <div id="login_page" style="display:none;position: absolute;">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td align="right"><span class="login_text"></span></td>
+                    <td width="10"><input type="text" class="elements" id="login"></td>
+                </tr>
+                <tr>
+                    <td align="right"><span class="login_text"></span></td>
+                    <td><input type="password" id="password" class="elements"></td>
+                </tr>
+                <tr id="ch1">
+                    <td align="right"><span class="login_text"></span></td>
+                    <td><input type="checkbox" class="elements" id="submit" /><label for="checkbox-id"></label></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="btn_div" align="right"><input type="button" class="text elements" value="" id="login_ok" onClick="authentification()"/><input type="button" class="text elements" id="login_cancel" value="" onClick="this.blur();sendreq(iviURL+'categories/', drow_cats);"/></td>
+                </tr>
+            </table>
+        </div>
+        <div id="cats_page" class="container" style="display: none;">
+            <div class="left_block">
+                <div class="logo"></div>
+                <div id="cat_0" title="topmenu" class="menu_act cat_item_text"></div>
+                <div id="cat_1" title="topmenu" class="menu cat_item_text"><!--menu_focus-->
+<!--                <div class="submenu">
+                        <div title="submenu" class="item">Любой жанр</div>
+                        <div title="submenu" class="item_act">Любая страна</div>
+                        <div title="submenu" class="item">Любой год</div>
+                    </div>-->
+                </div>
+                <div id="cat_2" title="topmenu" class="menu cat_item_text"></div>
+                <div id="cat_3" title="topmenu" class="menu cat_item_text"></div>
+                <div id="cat_4" title="topmenu" class="menu cat_item_text"></div>
+                <div class="menu"></div>
+                <div id="cat_5" title="topmenu" class="menu cat_item_text"><div class="ico_search"></div>Поиск</div>
+                
+            </div>
+
+            <div class="main_block" id="pop_layer" style="display: none;">
+<!--                <div class="popular">
+                    <div class="pop_current" id="promo">
+                        <div class="pop_title">Pirates of the Caribbean: The Curse of the Black Pearl</div>
+                    </div>
+                </div>-->
+                <div class="poster_box" id="promo_p0"><!--poster_box_act-->
+<!--                <div class="movie_desc">
+                        <div class="text_title"></div>
+                        <div class="text2"></div>
+                    </div>-->
+                    <div class="poster"></div>
+                </div>
+                <div class="poster_box" id="promo_p1">
+                    <div class="poster"></div>
+                </div>
+                <div class="poster_box"  id="promo_p2"><div class="poster"></div></div>
+                <div class="poster_box"  id="promo_p3"><div class="poster"></div></div>
+                <div class="poster_box"  id="promo_p4"><div class="poster"></div></div>
+                <div class="poster_box"  id="promo_p5"><div class="poster"></div></div>
+                <div class="poster_box"  id="promo_p6"><div class="poster"></div></div>
+                <div class="poster_box"  id="promo_p7"><div class="poster"></div></div>
+
+            </div>
+            <div class="main_block" id="video_layer" style="display: none;">
+            </div>
+        </div>
+        <div id="info_page" style="display: none;">
+            <div class="movie_info_left">
+                <div class="logo"></div>
+                <div class="movie_info_poster"><img id="movie_info_poster" src="0c53da20fbcfb99865ed.0.jpg" /></div>
+            </div>
+            <div class="movie_info">
+                <div id="pgup">Вверх</div>
+                <div id="pgdown">Вниз</div>
+                <div class="movie_info_title"><div id="info_title"></div>
+                    <div class="movie_info_genre"></div>
+                </div>
+                <div class="movie_info_text text22"><div id="descr"></div>
+                </div>
+                <div class="movie_info_right text22">
+                    <div id="film_rates">
+                    </div>
+                    <div id="info_btn_0" class="movie_menu_act">Выбор серии</div>
+                    <div id="info_btn_1" class="movie_menu"><div class="ico_back"></div>Назад</div>
+<!--                    <div id="info_btn_2" class="movie_menu"><div class="ico_home"></div>На главную</div>-->
+                </div>
+            </div>
+        </div>
+        <div id="player_page" style="display:none; position: absolute;">
+            <div id="head">
+                <div id="video_title"></div>
+<!--                <div class="hide">Скрыть - "ОК"</div>-->
+            </div>
+            <div id="player">
+                <div id="setTime">
+                    <div class="btn_red">Скрыть</div>
+                </div>
+                <div id="player_btns">
+                    <div id="btn_bwd"></div>
+                    <div id="btn_play"></div>
+                    <div id="btn_fwd"></div>
+                </div>
+                <div id="playtime" style="float: right;">
+                    <span id="cur_time"></span>&nbsp;/&nbsp;<span id="total_time"></span>
+                </div>
+                <div id="progressbar">
+                    <div id="progress"></div>
+                </div>
+            </div>
+        </div>
+        <div id="mute" style="display:none;"></div>
+        <div id="playingStatus" style="display:none;"></div>
+        <div id="volumeForm" style="display:none;">
+            <div id="volume_bar"><div id="volume_right"></div></div>
+            <div id="volume_num">100%</div>
+        </div>
+        <div id="screenAspect"></div>
+    </body>
+</html>
+
+<!--
+<div class="modal">
+    <div class="modal_box">
+        <div class="modal_title">Поиск</div>
+        <div class="modal_hr"></div>
+        <div class="search_list">
+            <input type="text" id="name" name="name">
+            <div class="sub_select">
+                <select class="select">
+                    <option>Первый вариант</option>
+                    <option>Второй вариант</option>
+                </select>
+            </div>
+            <div class="sub_select">
+                <select class="select">
+                    <option>Первый вариант</option>
+                    <option>Второй вариант</option>
+                </select>
+            </div>
+
+            <div class="sub_select">
+                <select class="select">
+                    <option>Первый вариант</option>
+                    <option>Второй вариант</option>
+                </select>
+            </div>
+            <div class="search_btn"><input type="button" value="Отмена" /></div><div class="search_btn"><input type="button" value="Найти" /></div>
+        </div>
+
+    </div> 
+</div>
+-->

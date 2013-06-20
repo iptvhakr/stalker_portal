@@ -1005,6 +1005,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }
 
+        $idx = array_search('ivi', $disabled_modules);
+
+        if ($idx !== false){
+            array_splice($disabled_modules, $idx, 1);
+        }
+
         return $disabled_modules;
     }
 
