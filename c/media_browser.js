@@ -318,7 +318,11 @@
                 return;
             }
 
-            var smb_data = Utf8.decode(stb.LoadUserData('smb_data')) || "[]";
+            if (gSTB.SetScreenSaverImplUrl){ // check if firmware version 0.2.18 and upper
+                var smb_data = "[]";
+            }else{
+                smb_data = Utf8.decode(stb.LoadUserData('smb_data')) || "[]";
+            }
 
             _debug('smb_data', smb_data);
 
@@ -340,7 +344,9 @@
 
             _debug('smb_passwords', smb_passwords);
 
-            stb.SaveUserData('smb_data',Utf8.encode(smb_passwords));
+            if (!gSTB.SetScreenSaverImplUrl){
+                stb.SaveUserData('smb_data',Utf8.encode(smb_passwords));
+            }
         };
 
         this.init_smb_auth_dialog = function(){
