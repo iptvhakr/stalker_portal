@@ -262,13 +262,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         return $master->getStoragesForStb();
     }
 
-    private function passAccessFilter(){
+    private function passAccessFilter($country, &$model, $mac, $serial_number){
 
         $filter_file = PROJECT_PATH.'/access_filter.php';
-
-        $country = geoip_country_code_by_name($this->ip);
-        $model   = isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '';
-        $mac     = $this->mac;
 
         if (is_readable($filter_file)){ // load rules file
             return require_once($filter_file);
@@ -279,7 +275,14 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     
     public function getProfile(){
 
-        if (!$this->passAccessFilter()){
+        $country = geoip_country_code_by_name($this->ip);
+        $model   = isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '';
+        $serial_number = isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '';
+
+        if (!$this->passAccessFilter($country, $model, $this->mac, $serial_number)){
+
+            $this->logDeniedByFilter($country, $model, $this->mac);
+
             return array(
                 'status' => 1,
                 'msg'    => 'access denied'
@@ -1534,6 +1537,21 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
 
         return Mysql::getInstance()->from('users')->where(array('mac' => $mac))->get()->first();
+    }
+
+    private function logDeniedByFilter($country, $model, $mac){
+        $logger = new Logger();
+        $logger->setPrefix("access_filter_");
+        $date = new DateTime('now', new DateTimeZone(Config::get('default_timezone')));
+
+        $logger->error(sprintf("%s - [%s] country:%s, model:%s, mac:%s, referrer:%s\n",
+            empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP'] ,
+            $date->format('r'),
+            $country,
+            $model,
+            $mac,
+            $_SERVER['HTTP_REFERER']
+        ));
     }
 
     private function logNotValidMAC($sn, $stb_type){
