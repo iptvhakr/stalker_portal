@@ -1672,7 +1672,7 @@ function common_xpcom(){
                     cur_place_num = 10;
                 }else if (this.cur_place == 'epg_simple' || this.cur_place == 'epg'){
                     cur_place_num = 11;
-                }else if (this.cur_place == 'remote_pvr'){
+                }else if (this.cur_place == 'records'){
                     cur_place_num = 12;
                 }
             }
