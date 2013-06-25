@@ -39,7 +39,7 @@ class RESTApiEpgRecord extends RESTApiController
             throw new RESTForbidden("User don't have access to this channel");
         }
 
-        $channel = $itv->getById($ch_id);
+        $channel = \Itv::getById($ch_id);
 
         if (empty($channel)){
             throw new RESTNotFound("Channel not found");

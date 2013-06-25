@@ -1055,7 +1055,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         return $result;
     }
 
-    public function getById($id){
+    public static function getById($id){
         return Mysql::getInstance()->from('itv')->where(array('id' => intval($id)))->get()->first();
     }
 

@@ -33,7 +33,7 @@ class RESTApiTvChannelRecord extends RESTApiController
             throw new RESTForbidden("User don't have access to this channel");
         }
 
-        $channel = $itv->getById($parent_id);
+        $channel = \Itv::getById($parent_id);
 
         if (empty($channel)){
             throw new RESTNotFound("Channel not found");
