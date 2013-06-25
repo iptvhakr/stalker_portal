@@ -21,6 +21,9 @@ get_channels | while read line
 do
     link_id=`echo $line | cut -f1 -d ' ' /dev/stdin`
     url=`echo $line | cut -f2 -d ' ' /dev/stdin`
+
+    url=`echo $url | sed 's/udp\:\/\//udp\:\/\/\@/'`
+    url=`echo $url | sed 's/rtp\:\/\//rtp\:\/\/\@/'`
     
     #echo $link_id
     echo "Start checking $url"
