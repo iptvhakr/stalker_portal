@@ -485,6 +485,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $data['created'] = 'NOW()';
 
+        if (Config::exist('default_stb_status')){
+            $data['status'] = intval(!Config::get('default_stb_status'));
+        }
+
         try{
             OssWrapper::getWrapper()->registerSTB(
                 Stb::getInstance()->mac,
