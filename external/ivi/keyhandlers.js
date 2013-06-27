@@ -136,7 +136,9 @@ function authPage_keyhandler(e){
             }
         break;
         case 27:
-            window.location = "http://freetv.infomir.com.ua/inet-services/public_html/?language="+lang
+            if (back_location){
+                window.location = back_location;
+            }
         break;
         case 37:
             if(e.target.id == 'login_cancel'){
@@ -285,7 +287,9 @@ function catPage_keyhandler(e){
             }
         break;
         case 27:
-            window.location = back_location//"http://freetv.infomir.com.ua/inet-services/public_html/?language="+lang
+            if (back_location){
+                window.location = back_location;
+            }
         break;
         case 37:
             if(left_side){

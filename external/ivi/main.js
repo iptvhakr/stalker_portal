@@ -17,9 +17,14 @@ function init(){
     device = stb.RDir("ModelExt");
     vars.sn = stb.RDir("SerialNumber");
     stb.SetPIG (1,0,0,0);
-    //log(window.location.search)//?referrer=http%3A%2F%2Ffreetv.infomir.com.ua%2Finet-services%2Fpublic_html%2F%3Flanguage%3Dru
-    back_location = decodeURIComponent(window.location.search.match(/\?referrer\=.*/));
-    back_location = back_location.replace(/\?referrer\=/, '')
+
+    var match = '';
+    if (match = /referrer\=([^&]+)/.exec(window.location.search)){
+        back_location = decodeURIComponent(match[1]);
+    }else{
+        back_location = '';
+    }
+
     log('currentLocation: '+back_location);
     stbEvent = {
         onEvent:eventFunc,
