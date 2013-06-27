@@ -145,7 +145,8 @@ hr {color:#000; border:solid 1px; margin:3px 0px;}
 #mute { position:absolute; width:47px; height:41px; top:50px; right:373px; background:url(../img/volume/volume_off.png); }
 /*--- end NEW VOLUME ---*/
 
-#screenAspect { width:206px; height:41px; position:absolute; top:50px; left:100px; z-index: 3; background-repeat:no-repeat;  background-position:50% 50%; }
+/*#screenAspect { width:206px; height:41px; position:absolute; top:50px; left:100px; z-index: 3; background-repeat:no-repeat;  background-position:50% 50%; }*/
+#screenAspect { width:206px; height:41px; position:absolute; top:50px; left:100px; z-index: 3; background-repeat:no-repeat;}
 
 
 #footer_yt .footer_icons { float:left; position: relative; margin: 1px 0 0 7px; background: url(../img/1280/pictog_pas.png) 50% 50% no-repeat; width:53px; height:40px; }

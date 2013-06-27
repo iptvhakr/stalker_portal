@@ -714,6 +714,7 @@ var player_cond = 0,
         stb.SetAspect(aspects[aspect_current].mode);
         log(aspects[aspect_current].mode);
         byID('screenAspect').style.backgroundImage = 'url(' + aspects[aspect_current].img + ')';
+        byID('screenAspect').style.backgroundPosition = '0 -'+(aspect_current*41)+'px';
         byID('screenAspect').style.display = 'block';
         player.dmc_var = setTimeout(function() {byID('screenAspect').style.display = 'none';}, 3000);
     }

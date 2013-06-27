@@ -185,23 +185,12 @@ function fillPage() {
 
     m.html('as_main_field_playlists_search',lang.main_field_playlists_search);
 
-    var img_fit, img_big, img_opt, img_exp;
+    var img_lang = main_lang == 'ru' ? 'ru' : 'en';
 
-    if (win.width == 1920) {
-        img_fit = '../lang/' + main_lang + '/1920/aspect_fit.png';
-        img_big = '../lang/' + main_lang + '/1920/aspect_big.png';
-        img_opt = '../lang/' + main_lang + '/1920/aspect_opt.png';
-        img_exp = '../lang/' + main_lang + '/1920/aspect_exp.png';
-    } else{
-        img_fit = '../lang/' + main_lang + '/aspect_fit.png';
-        img_big = '../lang/' + main_lang + '/aspect_big.png';
-        img_opt = '../lang/' + main_lang + '/aspect_opt.png';
-        img_exp = '../lang/' + main_lang + '/aspect_exp.png';
-    }
-    aspects[0].img = img_fit;
-    aspects[1].img = img_big;
-    aspects[2].img = img_opt;
-    aspects[3].img = img_exp;
+    aspects[0].img = 'img/player/v_btn_'+img_lang+'.png';
+    aspects[1].img = 'img/player/v_btn_'+img_lang+'.png';
+    aspects[2].img = 'img/player/v_btn_'+img_lang+'.png';
+    aspects[3].img = 'img/player/v_btn_'+img_lang+'.png';
 
     items = tmp_items;
     request.itemsPerRequest = items_req;
