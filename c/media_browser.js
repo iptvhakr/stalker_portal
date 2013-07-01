@@ -491,18 +491,22 @@
 
             if (this.change_level){
                 stb.usbdisk.read_dir(path);
+            }else{
+                this.fill_page(this.cur_dir_list);
+                return;
             }
-
             //_debug(txt);
 
             //_debug('stb.storages', stb.storages);
             _debug('stb.usbdisk.dirs', stb.usbdisk.dirs);
 
-            try{
+            /*try{
                 var storage_info = JSON.parse(stb.RDir('get_storage_info'));
             }catch(e){
                 _debug(e);
-            }
+            }*/
+
+            var storage_info = stb.usbdisk.storage_info;
 
             var devices = {};
 
@@ -542,13 +546,15 @@
 
                     _debug('is_playable', is_playable);
 
+                    var dir = {"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]};
+
                     if (is_playable){
-                        new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i], "cmd" : "extBDDVD "+path+'/'+name})
-                    }else{
-                        new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]})
+                        dir.cmd = "extBDDVD "+path+'/'+name
                     }
 
-                    //new_dirs.push({"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]/*, "_id" : this.get_id({"name" : name, "dir_name" : stb.usbdisk.dirs[i]})*/})
+                    //dir._id = this.get_id(dir);
+
+                    new_dirs.push(dir);
                 }
             }
 
@@ -824,6 +830,7 @@
         };
 
         this.fill_page = function(data){
+            _debug('fill_page');
 
             this.total_pages = Math.ceil(data.length/14);
 
@@ -1194,6 +1201,7 @@
         };
         
         this.fill_list = function(data){
+            _debug('fill_list');
             
             this.data_items = data;
 
@@ -1218,12 +1226,6 @@
                 return item;
             });
 
-            this.get_image_list();
-
-            this.get_audio_list();
-            
-            this.get_video_list();
-
             if (!this.change_level){
                 
                 if (this.page_dir > 0){
@@ -1231,6 +1233,12 @@
                 }else{
                     this.cur_row = this.data_items.length - 1;
                 }
+            }else{
+                this.get_image_list();
+
+                this.get_audio_list();
+
+                this.get_video_list();
             }
             
             this.change_level = false;
@@ -1461,6 +1469,16 @@
 
             _debug('this.dir_hist', this.dir_hist);
 
+            _debug('this.full_path', this.full_path);
+            _debug('this.change_level', this.change_level);
+
+            //if (this.full_path && (!this.change_level || this.last_dir_hist && (JSON.stringify(this.last_dir_hist) == JSON.stringify(this.dir_hist)))){
+            if (this.full_path && !this.change_level){
+                return this.full_path + '/' + item.dir_name;
+            }
+
+            //this.last_dir_hist = this.dir_hist.slice(0);
+
             var is_smb = this.dir_hist.some(function(dir){
                 return ['SMB', 'SMB_GROUP', 'SMB_SERVER', 'SMB_SHARE'].indexOf(dir.path) >= 0;
             }) || item.dir_name == 'SMB';
@@ -1482,6 +1500,8 @@
             }
 
             _debug('full_path 2', full_path);
+
+            this.full_path = full_path;
 
             return full_path + '/' + item.dir_name;
         };
