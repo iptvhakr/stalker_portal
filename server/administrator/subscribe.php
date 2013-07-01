@@ -38,8 +38,6 @@ if (@$_GET['save']){
         $bonus = explode(",", $_POST['bonus_ch']);
     }
 
-    $stb = Stb::getInstance();
-    
     /*if (!is_array($sub)){
         $sub = array();
     }*/

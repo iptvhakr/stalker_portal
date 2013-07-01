@@ -8,6 +8,8 @@ interface Stb
 
     public function getStorages();
 
+    public function handshake();
+
     public function log();
 
     public function setVolume();

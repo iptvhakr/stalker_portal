@@ -29,7 +29,6 @@ $add_serv_off_counter = 0;
 if (@$_FILES['userfile']){
     if (is_uploaded_file($_FILES['userfile']['tmp_name'])) {
         $f_cont = file ($_FILES['userfile']['tmp_name']);
-        $stb = Stb::getInstance();
         $log = '';
         $updated = 0;
         $errors = 0;

@@ -18,6 +18,7 @@ function common_xpcom(){
     this.power_off = false;
     this.additional_services_on = 0;
     this.header_ua_ext = [];
+    this.access_token = '';
 
     this.aspect_idx = 0;
     this.aspect_array = [
@@ -260,7 +261,7 @@ function common_xpcom(){
         this.player.bind();
         this.get_server_params();
         this.get_stb_params();
-        this.get_user_profile();
+        this.handshake();
 
         this.watchdog = new watchdog();
 
@@ -665,6 +666,10 @@ function common_xpcom(){
                 req.setRequestHeader("X-User-Agent", stb.header_ua_ext.join('; '));
             }
 
+            if (this.access_token){
+                req.setRequestHeader("Authorization", "Bearer " + this.access_token);
+            }
+
             req.onreadystatechange = function(){
                 if (req.readyState == 4) {
                     if (req.status == 200) {
@@ -746,6 +751,26 @@ function common_xpcom(){
                 }
             }
         );
+    };
+
+    this.handshake = function(){
+        _debug('stb.handshake');
+
+        this.load(
+            {
+                "type"   : "stb",
+                "action" : "handshake"
+            },
+            function(result){
+                _debug('on handshake', result);
+                this.access_token = result.token || '';
+
+                _debug('this.access_token', this.access_token);
+
+                this.get_user_profile();
+            },
+            this
+        )
     };
 
     this.get_user_profile = function(){

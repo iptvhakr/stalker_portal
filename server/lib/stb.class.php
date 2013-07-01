@@ -14,6 +14,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public $ip;
     public $hd  = 0;
     private $user_agent = '';
+    private $access_token = null;
     private $is_moderator = false;
     private $params = array();
     private $db;
@@ -56,6 +57,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $this->user_agent = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
 
+        $this->parseAuthorizationHeader();
+
         if (!empty($debug_key) && $this->checkDebugKey($debug_key)){
 
             if (!empty($_REQUEST['mac'])){
@@ -73,15 +76,18 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
             $this->mac = @trim(urldecode($_COOKIE['mac']));
+
+            if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && !$this->isValidAccessToken($this->access_token)){
+                echo 'Authorization failed.';
+                exit;
+            }
+
         }else if (!empty($_SERVER['TARGET']) && ($_SERVER['TARGET'] == 'API' || $_SERVER['TARGET'] == 'ADM') || !empty($_GET['type']) && $_GET['type'] == 'stb'){
 
         }else{
             $this->mac = '';
             echo 'Unauthorized request.';
-
-            if (!empty($_REQUEST['mac'])){
-                exit;
-            }
+            exit;
         }
 
         $this->mac = strtoupper($this->mac);
@@ -260,6 +266,48 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $master = new VideoMaster();
         return $master->getStoragesForStb();
+    }
+
+    private function isValidAccessToken($access_token, $mac = null){
+
+        if (!$mac){
+            $mac = $this->mac;
+        }
+
+        $valid_user = Mysql::getInstance()
+            ->from('users')
+            ->where(array(
+                'mac'          => $mac,
+                'access_token' => $access_token
+            ))
+            ->get()
+            ->first();
+
+        return !empty($valid_user);
+    }
+
+    private function parseAuthorizationHeader(){
+
+        $headers = getallheaders();
+
+        if (!$headers){
+            return;
+        }
+
+        $auth_header = !empty($headers["Authorization"]) ? $headers["Authorization"] : null;
+
+        if ($auth_header && preg_match('/Bearer\s+(.*)$/i', $auth_header, $matches)){
+            $this->access_token = trim($matches[1]);
+        }
+    }
+
+    public function handshake(){
+
+        $token = strtoupper(md5(mktime(1).uniqid()));
+
+        Mysql::getInstance()->update('users', array('access_token' => $token), array('id' => $this->id));
+
+        return array('token' => $token);
     }
 
     private function passAccessFilter($country, &$model, $mac, $serial_number){
