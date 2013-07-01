@@ -287,6 +287,12 @@ function rebuildCurrentGlobalObj(list) {
                     }
                     images[counter++] = new Image();
                     images[counter - 1].src = tmp_list[i].img;
+
+                    if (list.data.items[i].hasOwnProperty('status')
+                        && list.data.items[i].status.value == 'restricted'
+                        && list.data.items[i].status.reason == 'limitedSyndication' ){
+                        tmp_list[i].restricted = 'limitedSyndication';
+                    }
                 }
             } catch(e){
                 log('\n\n* * * * * * * * * * * * * * *\nExaption: "' + e + '"\n* * * * * * * * * * * * * * *\n')

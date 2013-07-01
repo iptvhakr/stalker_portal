@@ -104,5 +104,7 @@ var lang = {
     "main_field_search":"Поиск по видео",
     "main_field_users_video":"Видео пользователя",
     "as_data":"Данные:",
-    "main_field_playlists_search":"Поиск по плейлистам"
+    "main_field_playlists_search":"Поиск по плейлистам",
+    "video_not_available":"Видео не доступно",
+    "video_not_available_on_device":"Видео не доступно на этом устройстве"
 };

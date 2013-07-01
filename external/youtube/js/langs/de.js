@@ -103,5 +103,7 @@ var lang = {
 	"main_field_search"          : "Suchen Videos",
 	"main_field_users_video"     : "Benutzer Video",
 	"as_data"                    : "Datentyp:",
-	"main_field_playlists_search": "Suche nach Playlist"
+	"main_field_playlists_search": "Suche nach Playlist",
+	"video_not_available"        : "Video ist nicht verfügbar",
+	"video_not_available_on_device" : "Video ist nicht verfügbar, an diesem Gerät"
 };

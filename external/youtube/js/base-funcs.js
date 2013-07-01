@@ -356,7 +356,21 @@ function parseYoutubePage_new(html, playNow) {
         r[i] = unescape(r[i]);
         r[i] = unescape(r[i]);
 
-		var sig = /sig=([^\\]*)/igm.exec(r[i])[1];
+        try{
+            var sig = /sig=([^\\]*)/igm.exec(r[i])[1];
+        }catch(e){
+            player.stop();
+            loading.hide();
+
+            if (player.obj.restricted && player.obj.restricted == 'limitedSyndication'){
+                toast.show(lang.video_not_available_on_device);
+            }else{
+                toast.show(lang.video_not_available);
+            }
+
+            return;
+        }
+
         var link_start = r[i].substring(r[i].indexOf('http://'));
         var link_end = link_start.indexOf('\\');
 

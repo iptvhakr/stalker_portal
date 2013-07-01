@@ -104,5 +104,7 @@ var lang = {
     "main_field_search":"Video search",
     "main_field_users_video":"User's video",
     "as_data":"Data type:",
-    "main_field_playlists_search":"Search by playlists"
+    "main_field_playlists_search":"Search by playlists",
+    "video_not_available":"This video is not available",
+    "video_not_available_on_device":"This video is not available on this device"
 };

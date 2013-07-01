@@ -1139,6 +1139,23 @@ loading = {
         current.loading = false;
     }
 },
+
+toast = {
+    "show" : function(text){
+        byID('toast').innerHTML = text;
+        byID('toast_block').style.display = "block";
+        this.t_hide()
+    },
+    "t_hide" : function(){
+        var self = this;
+        window.clearTimeout(this.hide_timeout);
+        this.hide_timeout = window.setTimeout(function(){self.hide()}, 2000);
+    },
+    "hide" : function(){
+        byID('toast_block').style.display = "none";
+    }
+},
+
 categoryes = {
     "shift":0,
     "draw":function() {
