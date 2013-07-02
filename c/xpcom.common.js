@@ -1672,7 +1672,11 @@ function common_xpcom(){
         if(this.player.media_type == 'stream'){ // TV
             if (this.player.on){
                 if (this.cur_place == 'tv'){
-                    cur_place_num = 1;
+                    if (this.player.active_time_shift){
+                        cur_place_num = 14;
+                    }else{
+                        cur_place_num = 1;
+                    }
                 }else if(this.cur_place == 'radio'){ // Radio
                     cur_place_num = 5;
                 }else if(this.cur_place == 'vclub'){

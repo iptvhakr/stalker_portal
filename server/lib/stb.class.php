@@ -933,11 +933,36 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 case 11:
                     if (preg_match("/http:\/\/([^:\/]*)/", $param, $tmp_arr)){
                          $storage_ip = $tmp_arr[1];
-                         $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip))->get()->first('storage_name');
+                         $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip, 'for_records' => 1))->get()->first('storage_name');
                     }
 
                     $update_data['now_playing_content'] = $param;
+
+                    if (preg_match("/ch_id=(\d+)/", $param, $match)){
+                        $ch_id = $match[1];
+                        $channel = Itv::getById($ch_id);
+                        if (!empty($channel)){
+                            $update_data['now_playing_content'] = $channel['name'];
+                        }
+                    }
                         
+                    break;
+                case 14:
+                    if (preg_match("/http:\/\/([^:\/]*)/", $param, $tmp_arr)){
+                        $storage_ip = $tmp_arr[1];
+                        $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip, 'for_records' => 1))->get()->first('storage_name');
+                    }
+
+                    $update_data['now_playing_content'] = $param;
+
+                    if (preg_match("/\/archive\/(\d+)\//", $param, $match)){
+                        $ch_id = $match[1];
+                        $channel = Itv::getById($ch_id);
+                        if (!empty($channel)){
+                            $update_data['now_playing_content'] = $channel['name'];
+                        }
+                    }
+
                     break;
                 default:
                     $update_data['now_playing_content'] = 'unknown media '.$param;

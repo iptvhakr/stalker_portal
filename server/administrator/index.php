@@ -194,6 +194,7 @@ $cur_tv = get_cur_playing_type('itv');
 $cur_vclub = get_cur_active_playing_type('vclub');
 $cur_tv_archive = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2, 'now_playing_type' => 11))->get()->count();
 $cur_records = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2, 'now_playing_type' => 12))->get()->count();
+$cur_time_shift = Mysql::getInstance()->from('users')->where(array('UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2, 'now_playing_type' => 14))->get()->count();
 $cur_aclub = get_cur_active_playing_type('aclub');
 $cur_karaoke = get_cur_active_playing_type('karaoke');
 $cur_radio = get_cur_playing_type('radio');
@@ -266,9 +267,9 @@ $cur_infoportal = get_cur_infoportal();
 
 <td class="other" width="150" valign="top" style="background-color: whiteSmoke">
 <table width="150"  border="0" align="left" cellpadding="0" cellspacing="0">
-    <tr>
+    <!--<tr>
         <td class="td_stat" height="64" colspan="2"></td>
-    </tr>
+    </tr>-->
     <tr>
         <td class="td_stat"><?= _('tv archive')?>:</td>
         <td class="td_stat"><? echo $cur_tv_archive ?></td>
@@ -291,6 +292,30 @@ $cur_infoportal = get_cur_infoportal();
         }
         ?>
         </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="td_stat"><?= _('timeshift')?>:</td>
+        <td class="td_stat"><? echo $cur_time_shift ?></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <?
+                $sql = "select * from storages where for_records=1";
+                $rs=$db->executeQuery($sql);
+                while(@$rs->next()){
+                    $storage_name = $rs->getCurrentValueByName('storage_name');
+                    $sql_2 = "select count(*) as counter from users where now_playing_type=14 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
+                    $rs_2  = $db->executeQuery($sql_2);
+                    $counter = $rs_2->getValueByName(0, 'counter');
+                    echo '<tr>';
+                    echo '<td class="td_stat" width="80"><b>'.$storage_name.'</b>:</td>';
+                    echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=11   " style="color:black">'.$counter.'</a></td>';
+                    echo '</tr>';
+                }
+                ?>
+            </table>
         </td>
     </tr>
     <tr>

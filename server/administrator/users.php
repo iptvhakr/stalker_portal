@@ -207,6 +207,7 @@ function get_cur_media($media_id){
         10 => _('Media browser'),
         11 => _('Tv archive'),
         12 => _('Records'),
+        14 => _('TimeShift'),
         20 => _('Infoportal'),
         21 => _('Infoportal'),
         22 => _('Infoportal'),
@@ -506,6 +507,10 @@ switch (@$_GET['sort_by']){
             add_where($where, " keep_alive>'$now_time' and now_playing_type=12 order by id");
             break;
         }
+    case 'timeshift':{
+        add_where($where, " keep_alive>'$now_time' and now_playing_type=14 order by id");
+        break;
+    }
     case 'none':{
         }
     default:{
@@ -569,6 +574,7 @@ function sort_page(){
                 <option value="course_page" <?/* if (@$_GET['sort_by'] == 'course_page') echo 'selected' */?>>course_page
                 <option value="ad" <?/* if (@$_GET['sort_by'] == 'ad') echo 'selected' */?>>ad-->
                 <option value="tv_archive" <? if (@$_GET['sort_by'] == 'tv_archive') echo 'selected' ?>>tv_archive
+                <option value="timeshift" <? if (@$_GET['sort_by'] == 'timeshift') echo 'selected' ?>>timeshift
             </select>
             <br>
             <br>
