@@ -91,6 +91,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $res['download_cmd'] = 'http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
             . '/stalker_portal/storage/get.php?filename=' . $filename
             . '&ch_id=' . $program['ch_id']
+            . '&token='.$this->createTemporaryToken()
             . '&start=' . $position
             . '&duration=' . ($stop_timestamp - $start_timestamp)
             . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
@@ -105,6 +106,25 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         var_dump($res);
 
         return $res;
+    }
+
+    private function createTemporaryToken(){
+
+        $key = md5(mktime(1).uniqid());
+
+        $cache = Cache::getInstance();
+
+        $result = $cache->set($key, true, 0, 5);
+
+        if ($result){
+            return $key;
+        }else{
+            return $result;
+        }
+    }
+
+    public static function checkTemporaryToken($token){
+        return Cache::getInstance()->get($token);
     }
 
     public function getUrlByProgramId($program_id){

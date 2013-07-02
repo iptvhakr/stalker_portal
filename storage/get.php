@@ -10,10 +10,11 @@ $filename   = basename($_GET['filename']);
 $ch_id      = intval($_GET['ch_id']);
 $start_time = intval($_GET['start']);
 $duration   = intval($_GET['duration']);
+$token      = $_GET['token'];
 
 $queue = array();
 
-if (empty($filename) || empty($duration)){
+if (empty($filename) || empty($duration) || empty($token)){
     header("HTTP/1.0 400 Bad Request");
     exit;
 }
@@ -24,6 +25,40 @@ if (!file_exists($file) || !is_readable($file)){
     header("HTTP/1.0 404 Not Found");
     exit;
 }
+
+// checking access token
+if (!defined('PORTAL_URL')){
+    header("HTTP/1.0 500 Internal Server Error");
+    error_log('TV archive: PORTAL_URL is not defined');
+    echo 'PORTAL_URL is not defined';
+    exit;
+}
+
+$token_resp = file_get_contents(PORTAL_URL.'/server/api/chk_tmp_archive_link.php?token='.$token);
+
+if ($token_resp === false ){
+    header("HTTP/1.0 500 Internal Server Error");
+    error_log('TV archive: Portal connection failure');
+    echo 'Portal connection failure';
+    exit;
+}
+
+$token_resp = json_decode($token_resp, true);
+
+if ($token_resp === false || !isset($token_resp['result'])){
+    header("HTTP/1.0 500 Internal Server Error");
+    error_log('TV archive: Could not decode portal response');
+    echo 'Could not decode portal response';
+    exit;
+}
+
+if ($token_resp['result'] !== true){
+    header("HTTP/1.0 403 Forbidden");
+    error_log('TV archive: Not valid token '.$token);
+    echo 'Not valid token';
+    exit;
+}
+// end check
 
 while ($duration > 0){
 
