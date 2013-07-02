@@ -282,9 +282,15 @@ var r=window.JsHttpRequest_tmp(id);
 window.JsHttpRequest_tmp=null;
 return r;
 };
-JsHttpRequest.query=function(url,_35,_36,_37){
+JsHttpRequest.query=function(url,_35,_36,_37,headers){
 var req=new this();
 req.caching=!_37;
+headers = headers || {};
+for (var key in headers){
+    if (req.setRequestHeader && headers.hasOwnProperty(key)){
+        req.setRequestHeader(key, headers[key]);
+    }
+}
 req.onreadystatechange=function(){
 if(req.readyState==4){
 _36(req.responseJS,req.responseText);

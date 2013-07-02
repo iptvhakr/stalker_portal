@@ -78,6 +78,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $this->mac = @trim(urldecode($_COOKIE['mac']));
 
             if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && !$this->isValidAccessToken($this->access_token)){
+                error_log("STB authorization failed. MAC: ".$this->mac.", token: ".$this->access_token);
                 echo 'Authorization failed.';
                 exit;
             }

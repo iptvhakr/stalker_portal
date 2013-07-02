@@ -183,7 +183,8 @@ function load(params, callback){
            callback(result);
        },
 
-       true
+       true,
+       {"Authorization" : "Bearer "+_GET.token}
    );
 }
 

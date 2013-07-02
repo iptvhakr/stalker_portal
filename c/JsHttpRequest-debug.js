@@ -405,9 +405,17 @@ JsHttpRequest.clearTimeout = function(id) {
  * Simple interface for most popular use-cases.
  * You may also pass URLs like "GET url" or "script.GET url".
  */
-JsHttpRequest.query = function(url, content, onready, nocache) {
+JsHttpRequest.query = function(url, content, onready, nocache, headers) {
     var req = new this();
     req.caching = !nocache;
+
+    headers = headers || {};
+    for (var key in headers){
+        if (req.setRequestHeader && headers.hasOwnProperty(key)){
+            req.setRequestHeader(key, headers[key]);
+        }
+    }
+
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
             onready(req.responseJS, req.responseText);
