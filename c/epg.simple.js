@@ -35,15 +35,15 @@
         this.fill_info_timer = 0;
         
         this.week = [];
+
+        this.more_on = false;
         
         this.init = function(){
             _debug('epg_simple.init');
             
             this.superclass.init.call(this);
             
-            this.program_info = create_block_element('program_info', this.dom_obj);
-            
-            var week = document.createElement('ul');
+            var week = this.week_block = document.createElement('ul');
             week.addClass('week');
             
             for (var i=0; i<=6; i++){
@@ -55,7 +55,9 @@
             this.dom_obj.appendChild(week);
             
             this.program_info = create_block_element('program_info', this.dom_obj);
-            
+
+            this.full_program_info = create_block_element('full_program_info', this.dom_obj);
+            this.full_program_info.hide();
         };
         
         this.init_page_bar = function(){};
@@ -89,26 +91,21 @@
             _debug('epg_simple.hide');
             
             this.set_passive_row();
+
+            this.more_hide();
             
             this.superclass.hide.call(this, do_not_reset);
         };
         
         this.bind = function(){
             _debug('epg_simple.bind');
-            
-            //this.superclass.bind.call(this);
-            
+
             this.shift_row.bind(key.UP, this, -1);
             this.shift_row.bind(key.DOWN, this, 1);
-            
+
             this.shift_page.bind(key.PAGE_PREV, this, -1);
             this.shift_page.bind(key.PAGE_NEXT, this, 1);
-            
-            /*(function(){
-                this.hide();
-                main_menu.show();
-            }).bind(key.MENU, this).bind(key.EXIT, this);*/
-            
+
             (function(){
 
                 if (single_module){
@@ -121,13 +118,25 @@
             }).bind(key.MENU, this);
             
             (function(){
-                //this.parent.show(true);
+
+                if (this.more_on){
+                    this.more_hide();
+                }else{
+                    this.parent._show.call(this.parent, this.parent.genre);
+                    this.hide();
+                }
+            }).bind(key.EXIT, this);
+
+            (function(){
                 this.parent._show.call(this.parent, this.parent.genre);
                 this.hide();
-            }).bind(key.EXIT, this).bind(key.EPG, this);
+            }).bind(key.EPG, this);
             
             (function(){
-                if (!this.epg_list_active){
+
+                if (this.more_on){
+                    this.more_hide();
+                }else if (!this.epg_list_active){
                     this.week_day_action();
                 }else{
 
@@ -151,10 +160,10 @@
                 }
             }).bind(key.OK, this);
 
-            //this.horizontal_shift.bind(key.LEFT, this, -1);
-
             (function(){
-                if (this.epg_list_active){
+                if (this.more_on){
+                    this.more_hide();
+                }else if (this.epg_list_active){
                     this.horizontal_shift(-1);
                 }else{
                     this.parent._show.call(this.parent, this.parent.genre);
@@ -163,6 +172,8 @@
             }).bind(key.LEFT, this);
 
             this.horizontal_shift.bind(key.RIGHT, this, 1);
+
+            this.more_toggle.bind(key.INFO, this);
         };
 
         /*this.play_from_archive = function(){
@@ -271,7 +282,11 @@
         
         this.shift_row = function(dir){
             _debug('epg_simple.shift_row', dir);
-            
+
+            if (this.more_on){
+                return;
+            }
+
             _debug('this.epg_list_active', this.epg_list_active);
             
             if (this.epg_list_active){
@@ -283,7 +298,11 @@
         
         this.horizontal_shift = function(dir){
             _debug('epg_simple.horizontal_shift', dir);
-            
+
+            if (this.more_on){
+                return;
+            }
+
             if (dir > 0){
                 if (!this.epg_list_active){
                     this.set_active_epg_list();
@@ -570,6 +589,10 @@
         
         this.shift_page = function(dir){
 
+            if (this.more_on){
+                return;
+            }
+
             if (this.epg_list_active){
                 
                 this.page_dir = dir;
@@ -607,7 +630,55 @@
                 _debug('downloads');
                 module.downloads.dialog.show({"secure_url" : true, "parent" : this, "url" : url, "name" : to_filename});
             }
-        }
+        };
+
+        this.more_toggle = function(){
+            _debug('epg_simple.more_toggle');
+
+            if (this.more_on){
+                this.more_hide();
+            }else{
+                this.more_show();
+            }
+        };
+
+        this.more_show = function(){
+            _debug('epg_simple.more_show');
+
+            this.main_container.hide();
+            this.week_block.hide();
+            this.program_info.hide();
+
+            if (this.data_items && this.data_items[this.cur_row]){
+                this.full_program_info.innerHTML = '<span class="time">'
+                    + this.data_items[this.cur_row]['t_time'] + ' - '
+                    + this.data_items[this.cur_row]['t_time_to']
+                    +'</span> - ' + (this.data_items[this.cur_row]['o_name'] ? this.data_items[this.cur_row]['o_name'] : this.data_items[this.cur_row]['name'])
+                    + (this.data_items[this.cur_row]['descr'] ? ' <br>'+this.data_items[this.cur_row]['descr']+'' : '');
+            }
+
+            this.full_program_info.show();
+
+            this.color_buttons.get('red')  .disable();
+            this.color_buttons.get('green').disable();
+
+            this.more_on = true;
+        };
+
+        this.more_hide = function(){
+            _debug('epg_simple.more_hide');
+
+            this.full_program_info.hide();
+            this.full_program_info.innerHTML = '';
+
+            this.week_block.show();
+            this.program_info.show();
+            this.main_container.show();
+
+            this.set_active_row(this.cur_row);
+
+            this.more_on = false;
+        };
     }
     
     EpgSimpleConstructor.prototype = new ListLayer();
@@ -706,7 +777,7 @@
         {"label" : word['epg_record'], "cmd" : (function(){if (epg_simple.recorder){return function(){epg_simple.recorder.add_del()}}else{return ''}})()},
         {"label" : word['epg_remind'], "cmd" : (function(){if (epg_simple.reminder){return function(){epg_simple.reminder.add_del()}}else{return ''}})()},
         {"label" : word['downloads_download'], "cmd" : stb.all_modules.indexOf('downloads') >=0 ? function(){epg_simple.tv_archive.play.call(epg_simple.tv_archive, true, function(url, to_file){epg_simple.add_download.call(epg_simple, url, to_file)})} : ''},
-        {"label" : word['empty'], "cmd" : ''}
+        {"label" : word['epg_more'], "cmd" : epg_simple.more_toggle}
     ]);
     
     epg_simple.hide();

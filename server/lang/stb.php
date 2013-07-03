@@ -223,6 +223,7 @@ $words['epg_on_ch']  = _('on channel');
 $words['epg_now_begins'] = _('now begins');
 $words['epg_on_time'] = _('in');
 $words['epg_started'] = _('started');
+$words['epg_more'] = _('MORE');
 
 /// TRANSLATORS: Search box languages. Comma separated without spaces.
 $words['search_box_languages'] = explode(',', _('search_box_languages'));

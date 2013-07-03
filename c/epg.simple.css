@@ -113,7 +113,7 @@
     color: #808080 !important;
 }
 
-#epg_simple .program_info{
+#epg_simple .program_info, #epg_simple .full_program_info{
     position: absolute;
     bottom: 60px;
     left: 49px;
@@ -127,7 +127,11 @@
     overflow: hidden;
 }
 
-#epg_simple .program_info .time{
+#epg_simple .program_info .time, #epg_simple .full_program_info .time{
     color: #cfeafe;
     font-weight: bold;
+}
+
+#epg_simple .full_program_info{
+    height: 444px;
 }
