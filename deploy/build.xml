@@ -106,7 +106,16 @@
         </copy>
 
         <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
-              dir="${build.dir}" checkreturn="true"/>
+              dir="${build.dir}" checkreturn="false" outputProperty="mysql_init.error.msg" returnProperty="mysql_init.error.code" />
+
+        <if>
+            <not>
+                <equals arg1="${mysql_init.error.code}" arg2="0"/>
+            </not>
+            <then>
+                <fail message="Mysql - ${mysql_init.error.msg}" />
+            </then>
+        </if>
 
         <dbdeploy
                 url="mysql:host=${mysql_host};dbname=${db_name}"
