@@ -18,7 +18,7 @@ img {
 
 input {vertical-align: middle}
 
-.connection_problem_container{
+.connection_problem_container, .authentication_problem_container{
     position: absolute;
     z-index: 1;
     top: 5px;
@@ -27,7 +27,7 @@ input {vertical-align: middle}
     text-align: center;
 }
 
-.connection_problem_block{
+.connection_problem_block, .authentication_problem_block{
     color: #fff;
     border: 2px solid #b22222;
     font-size: 24px;

@@ -269,6 +269,7 @@ function common_xpcom(){
         module.blocking.init_layer();
 
         connection_problem.init();
+        authentication_problem.init();
     };
 
     this.init_auth_dialog = function(){
@@ -592,6 +593,7 @@ function common_xpcom(){
                 this.clock.start();
 
                 connection_problem.refresh_msg();
+                authentication_problem.refresh_msg();
             },
 
             this
@@ -678,10 +680,14 @@ function common_xpcom(){
                             req = null;
                         }catch(er){
                             _debug('req.responseText', req.responseText);
+                            if (req.responseText == 'Authorization failed.'){
+                                authentication_problem.show();
+                            }
                             throw new Error(er);
                         }
                         _debug(result.text);
                         connection_problem.hide();
+                        authentication_problem.hide();
                         callback.call(context, result.js);
                         result = null;
                     } else if (req.status == 0){
@@ -2048,4 +2054,39 @@ var connection_problem = {
         this.dom_obj.hide();
         this.on = false;
     }
+};
+
+var authentication_problem = {
+
+    on: true,
+
+    init : function(){
+        this.dom_obj = create_block_element("authentication_problem_container");
+        this.block_obj = create_block_element("authentication_problem_block", this.dom_obj);
+        this.block_obj.innerHTML = get_word('Authentication problem');
+        this.hide();
+    },
+
+    refresh_msg : function(){
+        this.block_obj.innerHTML = get_word('Authentication problem');
+    },
+
+    show : function(){
+        _debug('authentication_problem.show');
+
+        this.dom_obj.show();
+        this.on = true;
+    },
+
+    hide : function(){
+        _debug('authentication_problem.hide');
+
+        if (!this.on){
+            return;
+        }
+
+        this.dom_obj.hide();
+        this.on = false;
+    }
+
 };

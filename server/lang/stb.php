@@ -430,6 +430,7 @@ $words['mbrowser_sort_by_name'] = _('by name');
 $words['mbrowser_sort_by_date'] = _('by date');
 
 $words['Connection problem'] = _('Connection problem');
+$words['Authentication problem'] = _('Authentication problem');
 
 $words['Account balance'] = _('Account balance');
 

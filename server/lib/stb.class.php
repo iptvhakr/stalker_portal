@@ -275,16 +275,19 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $mac = $this->mac;
         }
 
-        $valid_user = Mysql::getInstance()
+        $user = Mysql::getInstance()
             ->from('users')
             ->where(array(
-                'mac'          => $mac,
-                'access_token' => $access_token
+                'mac' => $mac
             ))
             ->get()
             ->first();
 
-        return !empty($valid_user);
+        if (empty($user)){
+            return false;
+        }
+
+        return empty($user['access_token']) || $user['access_token'] == $access_token;
     }
 
     private function parseAuthorizationHeader(){
@@ -303,6 +306,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
 
     public function handshake(){
+
+        $debug_key = $this->getDebugKey();
+
+        if (!empty($debug_key) && $this->checkDebugKey($debug_key)){
+            return array('token' => $this->getParam('access_token'));
+        }
 
         $token = strtoupper(md5(mktime(1).uniqid()));
 
