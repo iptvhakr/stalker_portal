@@ -82,7 +82,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             if (!empty($link)){
                 $link_id = $link['id'];
 
-                if ($link['status'] == 0){
+                if ($link['status'] == 0 || Config::getSafe('force_ch_link_check', false)){
 
                     $alternative_links = self::getUrlsForChannel($ch_id);
 
@@ -215,6 +215,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                     }
                 }
             }else{
+
+                if (strpos($channel['cmd'], 'rtp://') !== false || strpos($channel['cmd'], 'udp://') !== false){
+                    return $channel;
+                }
 
                 if (Config::getSafe('stream_proxy', '') != ''){
                     preg_match("/http:\/\/([^\/]*)[\/]?([^\s]*)?(\s*)?(.*)?$/", $channel['cmd'], $tmp_url_arr);
