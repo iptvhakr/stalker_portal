@@ -1333,6 +1333,24 @@ function common_xpcom(){
 
                 this.player.channels = result.data || [];
                 this.channels_loaded();
+
+                if (this.player.is_tv){
+
+                    var ch_idx = this.player.channels.getIdxByVal('id', this.player.cur_media_item.id);
+
+                    if (ch_idx !== null){
+                        this.player.cur_media_item = this.player.cur_tv_item = this.player.channels[ch_idx];
+
+                        if (this.player.cur_tv_item.lock != '1'){
+                            this.player.last_not_locked_tv_item = this.player.cur_tv_item;
+                        }
+
+                        if (this.player.on){
+                            this.player.play(this.player.cur_tv_item);
+                        }
+                    }
+
+                }
             },
 
             this
