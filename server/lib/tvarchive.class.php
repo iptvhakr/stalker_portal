@@ -114,7 +114,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $cache = Cache::getInstance();
 
-        $result = $cache->set($key, true, 0, 5);
+        $result = $cache->set($key, true, 0, 28800); // 28800 -  8 hours
 
         if ($result){
             return $key;
@@ -125,6 +125,25 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
     public static function checkTemporaryToken($token){
         return Cache::getInstance()->get($token);
+    }
+
+    private function createTemporaryTimeShiftToken($url){
+
+        $key = md5($url.time().uniqid());
+
+        $cache = Cache::getInstance();
+
+        $result = $cache->set($key, $url, 0, 28800); // 28800 -  8 hours
+
+        if ($result){
+            return $key;
+        }else{
+            return $result;
+        }
+    }
+
+    public static function checkTemporaryTimeShiftToken($key){
+        return Cache::getInstance()->get($key);
     }
 
     public function getUrlByProgramId($program_id){
@@ -206,6 +225,22 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
     /**
      * Return link for current channel and current time
      *
+     * NGINX config:
+     *
+     * location /tslink/ {
+     *
+     *     rewrite ^/tslink/(.*)/archive/(.*) /stalker_portal/server/api/chk_tmp_timeshift_link.php?key=$1 last;
+     *
+     *     proxy_set_header Host 192.168.1.71; # <- portal ip
+     *     proxy_set_header X-Real-IP $remote_addr;
+     *     proxy_pass http://192.168.1.71:88/; # <- portal ip
+     * }
+     *
+     * location /archive/ {
+     *     root /var/www/bb1;
+     *     internal;
+     * }
+     *
      * @return string
      */
     public function getLinkForChannel(){
@@ -235,13 +270,31 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             $filename .= '.mpg';
         }
 
-        return 'ffmpeg http://' . $storage['storage_ip']
-                             . '/archive/'
-                             . $ch_id
-                             . '/'
-                             . $filename
-                             . ' position:' . $position
-                             . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
+
+        if (Config::getSafe('enable_timeshift_tmp_link', false)){
+
+            $redirect_url = '/archive/' . $ch_id . '/' . $filename;
+
+            $link_result = $this->createTemporaryTimeShiftToken($redirect_url);
+
+            return 'ffmpeg http://' . $storage['storage_ip']
+                . '/tslink/'.$link_result
+                . '/archive/'
+                . $ch_id
+                . '/'
+                . $filename
+                . ' position:' . $position
+                . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
+        }else{
+
+            return 'ffmpeg http://' . $storage['storage_ip']
+                . '/archive/'
+                . $ch_id
+                . '/'
+                . $filename
+                . ' position:' . $position
+                . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
+        }
     }
 
     /**
