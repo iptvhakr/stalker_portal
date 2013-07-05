@@ -166,7 +166,14 @@ class AuthAccessHandler extends AccessHandler
     }
 
     public static function setInvalidAccessTokenByUid($uid){
-        return Mysql::getInstance()->update('access_tokens', array('token' => 'invalid', 'refresh_token' => 'invalid'), array('uid' => $uid))->result();
+        return Mysql::getInstance()
+            ->update('access_tokens',
+                array(
+                    'token'         => 'invalid_'.md5(mktime(1).uniqid()),
+                    'refresh_token' => 'invalid'
+                ),
+                array('uid' => $uid))
+            ->result();
     }
 }
 
