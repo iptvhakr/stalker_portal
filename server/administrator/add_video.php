@@ -226,6 +226,12 @@ if (count(@$_POST) > 0){
                 $hd = 0;
             }
 
+            if (@$_POST['high_quality'] == 'on'){
+                $high_quality = 1;
+            }else{
+                $high_quality = 0;
+            }
+
             if (@$_POST['for_sd_stb'] == 'on'){
                 $for_sd_stb = 1;
             }else{
@@ -321,6 +327,7 @@ if (count(@$_POST) > 0){
                             'age'            => $_POST['age'],
                             'rating_mpaa'    => $_POST['rating_mpaa'],
                             'path'           => $trans_name,
+                            'high_quality'   => $high_quality,
                             'added'          => 'NOW()'
                         )
                     )->insert_id();
@@ -387,6 +394,7 @@ if (count(@$_POST) > 0){
                             'rating_count_imdb' => $_POST['rating_count_imdb'],
                             'age'            => $_POST['age'],
                             'rating_mpaa'    => $_POST['rating_mpaa'],
+                            'high_quality'   => $high_quality
                         ),
                         array(
                             'id' => (int) $_GET['id']
@@ -951,6 +959,7 @@ if (@$_GET['edit']){
         $year     = $arr['year'];
         $path     = $arr['path'];
         $hd       = $arr['hd'];
+        $high_quality = $arr['high_quality'];
         $rtsp_url = $arr['rtsp_url'];
         $protocol = $arr['protocol'];
         $rating_mpaa = $arr['rating_mpaa'];
@@ -973,6 +982,11 @@ if (@$_GET['edit']){
         }
         if ($hd){
             $checked_hd = 'checked';
+        }
+        if ($high_quality){
+            $checked_high_quality = 'checked';
+        }else{
+            $checked_high_quality = '';
         }
         if ($for_sd_stb){
             $checked_for_sd_stb = 'checked';
@@ -1983,6 +1997,17 @@ $(function(){
            <td>
             <input name="for_sd_stb" id="for_sd_stb" type="checkbox" <? echo @$checked_for_sd_stb ?> >
            </td>
+        </tr>
+        <?}?>
+
+        <? if (Config::getSafe('enable_video_high_quality_option', false)){ ?>
+        <tr>
+            <td align="right" valign="top">
+                <?= _('High quality')?>:
+            </td>
+            <td>
+                <input name="high_quality" id="high_quality" type="checkbox" <? echo isset($checked_high_quality) ? $checked_high_quality : 'checked' ?> >
+            </td>
         </tr>
         <?}?>
 
