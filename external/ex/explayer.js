@@ -503,7 +503,7 @@ MediaPlayer.EventHandler = function(e){
                 MediaPlayer.domPlayerCurrentTime.className = "time_cur";
                 gSTB.Continue();
                 MediaPlayer.posModFlag = false;
-                MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo(false);},5000);
+                MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo(false);},10);//BAS
                 e.preventDefault();
                 break;
             }
@@ -819,7 +819,10 @@ MediaPlayer.play = function() {
             param = " position:"+this.obj.time;
             break;*/
     }
-    gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + param);
+    if(proxy.length<1){
+    gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + param);}else{
+    gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + param, proxy);
+    }
 };
 
 MediaPlayer.setPos = function(a) {
@@ -938,14 +941,17 @@ MediaPlayer.playPause = function() {
 //      }
     } else {
 //        gSTB.Continue();
-        gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url +' position:'+pause_time_data)
+        if(proxy.length<1){
+        gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url +' position:'+pause_time_data);}else{
+        gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url +' position:'+pause_time_data, proxy);
+        }
 //		this.subscribers[this.EVENT_PAUSE].forEach(function(subscriber){
 			ListPage.subscribeEvents[self.EVENT_PAUSE].call(ListPage, false);
 //		});
                 
         this.runner.start();
 //        }
-        this.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo(false);},10000);
+        this.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo(false);},5000);//bas
     } 
 };
 
@@ -1011,10 +1017,10 @@ MediaPlayer.event = function(e, info) {
                 case MEDIA_TYPE_AUDIO:
                 case MEDIA_TYPE_VIDEO:
                     MediaPlayer.runner.start();
-                    MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo();},10000);
+                    MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo();},5000);//bas
                     break;
                 case MEDIA_TYPE_STREAM:
-                    MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo();},10000);
+                    MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo();},5000);//bas
                     break;                    
             }
             MediaPlayer.playNow = true;
@@ -1632,7 +1638,7 @@ MediaPlayer.setAudioMenu = function(){
             if(fl){
                 this.handle.querySelector('#audioType').src = "img/codec/codec"+audArr[i].type+".png";
                 this.handle.querySelector('#cright').style.display = "block";
-                this.timer.audio = window.setTimeout(function(){MediaPlayer.handle.querySelector('#cright').style.display = "none";},10000);
+                this.timer.audio = window.setTimeout(function(){MediaPlayer.handle.querySelector('#cright').style.display = "none";},5000);//bas
         }
        }
     } else {

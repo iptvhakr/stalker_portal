@@ -28,7 +28,9 @@ ListPage.Info    = new CBase(ListPage);
 
 // получение ссылки на место, куда вернуться после закрытия
 var _GET = {};
-function get_params(){
+_GET['referer'] = '';
+_GET['proxy'] = '';
+(function get_params(){
     var get = new String(window.location);
     var x = get.indexOf('?');
     if (x!=-1){
@@ -44,9 +46,10 @@ function get_params(){
             }
         }
     }
-}
+    proxy = _GET['proxy'];
+})()
 
-get_params();
+
 
 
 /**
@@ -129,9 +132,9 @@ function mainEventListener ( event ) {
             gSTB.StandBy(standby);
             gSTB.ExecAction('front_panel ' + standby ? 'led-on' : 'led-off');
             break;
-    /* case 121: // TV button - for debug
+       case 121: // TV button - for debug
             gSTB.Debug("\n<html><head>\n" + document.head.innerHTML + "\n</head>\n<body>\n" + document.body.innerHTML + "</body>\n</html>\n");
-            break;*/
+            break;
         default:
             if ( currCPage && currCPage.EventHandler instanceof Function ) {
                 currCPage.EventHandler(event);
@@ -417,7 +420,12 @@ MainPage.onInit = function(){
     MainPage.newsList.img1 = MainPage.newsList.Add(element('img', { src:'img/'+screen.height+'/ex_ua_noposter.png',onclick:MainPage.newsList.onClickFunc}), { row:0, column:1, news_link:'#' });
     MainPage.newsList.img2 = MainPage.newsList.Add(element('img', { src:'img/'+screen.height+'/ex_ua_noposter.png',onclick:MainPage.newsList.onClickFunc}), { row:1, column:0, news_link:'#' });
     MainPage.newsList.img3 = MainPage.newsList.Add(element('img', { src:'img/'+screen.height+'/ex_ua_noposter.png',onclick:MainPage.newsList.onClickFunc}), { row:1, column:1, news_link:'#' });
-      
+    /*  
+    MainPage.newsList.handleInner.elchild(element('img', { src:'img/'+screen.height+'/ex_ua_noposter.png',onclick:MainPage.newsList.onClickFunc,className:'img0'}), { row:0, column:0, news_link:'#' });
+    MainPage.newsList.handleInner.elchild(element('img', { src:'img/'+screen.height+'/ex_ua_noposter.png',onclick:MainPage.newsList.onClickFunc,className:'img1'}), { row:0, column:1, news_link:'#' });
+    MainPage.newsList.handleInner.elchild(element('img', { src:'img/'+screen.height+'/ex_ua_noposter.png',onclick:MainPage.newsList.onClickFunc,className:'img2'}), { row:1, column:0, news_link:'#' });
+    MainPage.newsList.handleInner.elchild(element('img', { src:'img/'+screen.height+'/ex_ua_noposter.png',onclick:MainPage.newsList.onClickFunc,className:'img3'}), { row:1, column:1, news_link:'#' });
+      */  
     // потемнение курсора при деактивации списка
     MainPage.newsList.onDeactivate = function(){
           MainPage.handleInner.querySelector('.content .rightContent').className = 'crop rightContent notActive';
@@ -643,6 +651,7 @@ MainPage.EventHandler = function(event){
                 MainPage.typeList.Current().cat.Activate(true);
                 break;
             case KEYS.EXIT:
+            case KEYS.BACK:    
                 MainPage.actionExit();
                 break;
             case KEYS.INFO:
@@ -672,6 +681,7 @@ MainPage.EventHandler = function(event){
                 curr_cat.Current().onclick();
                 break;
             case KEYS.EXIT:
+            case KEYS.BACK:    
                 MainPage.actionExit();
                 break;
             default:
@@ -706,6 +716,7 @@ MainPage.EventHandler = function(event){
                 MainPage.newsList.onClickFunc();
                 break;
             case KEYS.EXIT:
+            case KEYS.BACK:    
                 MainPage.actionExit();
                 break;
             default:
@@ -920,6 +931,8 @@ ListPage.onInit = function(){
             // открытие радио
             if(CSListManager.Current().handleInner.data.url.indexOf(type_info[RADIO_OBJECT].id) !== -1){
                 data.type = RADIO_OBJECT;
+                // It's strange but radio doesn't have add_time value.
+                obj[i].add = '';
             }
             // открытие корневой папки актеров
             if(CSListManager.Current().handleInner.data.url.indexOf(type_info[ACTORS_FOLDER].id) !== -1){
@@ -1006,16 +1019,19 @@ ListPage.onInit = function(){
         echo('list on focus');
         if(ListPage.isVisible){
             echo('ListPage.isVisible');
+            // stop current play
+            MediaPlayer.end();
+            // переустанавливаем счетчик окна
             if ( cat_focus_timer ) {
                 clearTimeout(cat_focus_timer);
             }
             cat_focus_timer = setTimeout(function(){
-                // stop current play
-                MediaPlayer.end();    
                 // show info in preview block
                 try{
-                ListPage.Preview.info(CSListManager.Current().Current().data);
-                } catch(e){ echo('wrong info update time! '+e);}
+                    ListPage.Preview.info(CSListManager.Current().Current().data);
+                } catch(e){
+                    echo('wrong info update time! '+e);
+                }
                 cat_focus_timer = 0;
             },500);
         }
@@ -1276,13 +1292,17 @@ ListPage.actionBack = function(){
         var data = {type:TYPE_BACK};
         CSListManager.Open(data);
     }else{
-    // если мы находимся в режиме просмотра информации о фильме
-    ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, false);
-    ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, true);
-//    ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnEXIT, false);
-    ListPage.Info.Show(false, true);
-    ListPage.SearchBar.Show(true,false);
-    CSListManager.Current().Activate(true);
+        // если мы находимся в режиме просмотра информации о фильме
+        if(ListPage.Info.f3_visibility_flag === true){
+            // возвращаем старое состояние кнопки F3
+            ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnF3, false);
+            ListPage.Info.f3_visibility_flag = false;
+        }
+        ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, false);
+        ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, true);
+        ListPage.Info.Show(false, true);
+        ListPage.SearchBar.Show(true,false);
+        CSListManager.Current().Activate(true);
     }
 }
 
@@ -1382,6 +1402,7 @@ ListPage.EventHandler = function(event){
                 }
                 break;
             case KEYS.EXIT:
+            case KEYS.BACK:    
                 ListPage.actionBack();
                 break;
             case KEYS.F3:
@@ -1864,7 +1885,7 @@ function htmlWhatIsThisParser(html, status){
                 // подгрузка следующей порции при достижении предпоследнего листа
                 echo('iid_scroll=100%=>ajax='+doc.data.url+'?p='+doc.page_index+'&per='+ListPage.ItemsPerPage);
                 ajax ( 'GET', doc.data.url+'?p='+doc.page_index+'&per='+CSListManager.parent.ItemsPerPage, htmlListParser, {
-                    charset:'utf-8', Cookie:"per="+CSListManager.parent.ItemsPerPage
+                    
                 } );
             }
         }
@@ -1879,7 +1900,7 @@ function htmlWhatIsThisParser(html, status){
             if (percentageScrolled == 100 && doc.page_length >= doc.page_index){
                 echo('scroll=100%=>ajax='+doc.data.url+'?p='+doc.page_index+'&per='+CSListManager.parent.ItemsPerPage);
                 ajax ( 'GET', doc.data.url+'?p='+doc.page_index+'&per='+CSListManager.parent.ItemsPerPage, htmlListParser, {
-                        charset:'utf-8', Cookie:"per="+CSListManager.parent.ItemsPerPage
+                        
                     } );
             }
         } 
@@ -2059,19 +2080,19 @@ ListPage.Preview.info = function ( data ) {
  * @param {Object} data media item inner data
  */
 ListPage.Preview.infoFolder = function(data){
-        echo(data, 'infoFolder');
-        CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnF3, true);
-        CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, false);
-        CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, true);
-    	var self = this,
-		size = rigth_menu_text_length,
-		name = data.title.substr(0, size - 1) + (data.title.length > size ? '...' : '');
-                
-	elchild(elclear(this.body), element('div', {}, [
-                element('img', {className: 'itemImg',src:data.img_src}),
-                element('div', {className: 'text'}, [lang.description, element('span', {className: 'txt'}, name.split('').join("\u200B"))]),
-                element('div', {className: 'text'}, [lang.add_time, element('span', {className: 'txt'}, data.addtime)])
-	]));
+    echo(data, 'infoFolder');
+    CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnF3, true);
+    CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, false);
+    CSListManager.parent.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, true);
+    var self = this,
+    size = rigth_menu_text_length,
+    name = data.title.substr(0, size - 1) + (data.title.length > size ? '...' : '');
+        
+    elchild(elclear(this.body), element('div', {}, [
+            element('img', {className: 'itemImg',src:data.img_src}),
+            element('div', {className: 'text'}, [lang.description, element('span', {className: 'txt'}, name.split('').join("\u200B"))]),
+            element('div', {className: 'text'}, [lang.add_time, element('span', {className: 'txt'}, data.addtime)])
+    ]));
 }
 
 
@@ -2132,12 +2153,17 @@ ListPage.Preview.infoBack = function(data){
 
 
 ListPage.Info.start = function(html){
-    echo(html,'ListPage.showInfo');
+    echo('ListPage.Info.start');
     ListPage.SearchBar.Show(false,false);
+    // проверяем, есь ли F3, и если есть - запоминаем это, чтобы показать её при выходе
+    if(!CSListManager.parent.BPanel.btnF3.data.hidden){
+     ListPage.Info.f3_visibility_flag = true;
+     ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnF3, true);
+    }
 //    ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnEXIT, true);
     ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, true);
     ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, false);
-    var mess = element('div', {        className:'messText',         innerHTML:html    });
+    var mess = element('div', { className:'messText', innerHTML:html });
     elchild( elclear(ListPage.infoMessage), mess );
     // пока идет работа с DOM отложим поиск
     setTimeout(function(){
@@ -2145,7 +2171,7 @@ ListPage.Info.start = function(html){
         if(button){
             button.innerHTML = ''; 
         }
-        var img = ListPage.infoMessage.querySelector('img');
+        //var img = ListPage.infoMessage.querySelector('img');
     },600)
     ListPage.Info.Show(true, true);
     ListPage.Info.Activate();
@@ -2201,7 +2227,7 @@ function checkForGiantImg(img_url, max_size, data_from_cache, data_from_browser 
             clearTimeout(timeout);
             var file_size_head = xhr.getResponseHeader("Content-Length");
             echo(xhr.responseText, 'AJAX :: ' + 'head' + ' ' + img_url + ' (status:' + xhr.status + ', length:'+xhr.responseText.length+')'+' file length '+file_size_head);
-            if(file_size_head > max_size){
+            if(!file_size_head || file_size_head > max_size ){
                 echo('I FOUND TOO BIG FILE -_- ');
                 if( data_from_browser !== undefined ){data_from_browser.src   = 'img/'+screen.height+'/ex_ua_noposter.png?100';}  
                 data_from_cache.img_src = 'img/'+screen.height+'/ex_ua_noposter.png?100'; 

@@ -100,23 +100,24 @@ a {text-decoration: none;}
     .volumeContainer{width:300px;}
     #volumeForm {
         position:absolute;
-        width:258px;
-        height:41px;
+        width:270px;
+        height:40px;
         top:35px;
-        left:280px;
+        left:385px;
         z-index:1;
         background-image: url("img/volume/volume_bg.png");
+		border-radius: 5px;
     }
     #volume_bar {
         position:relative;
         width:200px;
-        height:41px;
-        left:47px;
+        height:40px;
+        left:60px;
     }
     #volume_right {
         position:absolute;
         width:195px;              /* шаг в 10px, max: 195px, min: 15px */
-        height:41px;
+        height:40px;
         left:5px;
         background: url("img/volume/volume_bar.png") right no-repeat;
     }
@@ -130,12 +131,13 @@ a {text-decoration: none;}
     }
     #mute {
         position:absolute;
-        width:47px;
-        height:41px;
+        width:60px;
+        height:40px;
         top:35px;
-        left:280px;
+        left:385px;
         background:url("img/volume/volume_off.png");
         z-index: 1;
+		border-radius: 5px;
     }
 /*--- end NEW VOLUME ---*/
 
@@ -170,7 +172,7 @@ a {text-decoration: none;}
         .page#MainPage .rightContent{width: 224px; padding: 0px; background: none;overflow: hidden; font-size: 20px; color: #ffc20e;}
             .page#MainPage .rightContent .hideOldData {background: url(img/720/bg_black.png); display: none; height: 378px; left: 476px; position: absolute; top: 92px; width: 224px;}
             .page#MainPage .rightContent .cslist-main {overflow-y: hidden; height: 360px; text-align:left;line-height: 0px; width: 224px;} 
-                    .page#MainPage .rightContent .cslist-main img {height:130px; width:100px; float:right; margin: 6px; }
+                    .page#MainPage .rightContent .cslist-main img {height:130px; width:100px; float:right; margin: 6px;  position:relative;}
                     .page#MainPage .rightContent .cslist-main a {display: inline-block;line-height:30px; padding: 0px; margin:0; text-decoration:none; color:white; cursor:pointer; overflow:hidden; text-overflow:ellipsis;}
                     
         /* footer */
@@ -192,7 +194,7 @@ a {text-decoration: none;}
         .page#ListPage .header .csbar {padding-right: 10px;}
         
         /* левая колонка */
-        .page#ListPage .mainContent {overflow: hidden; width: 380px; font-size: 22px; color: #ffc20e; padding-right: 15px;}
+        .page#ListPage .mainContent {overflow: hidden; width: 380px; font-size: 22px; color: #ffc20e; padding-right: 15px; vertical-align: top;}
                 .page#ListPage .mainContent .cgmenu-main {width: 380px; height: 371px;}
                 .page#ListPage .mainContent .cslist-main { width: 380px; height: 371px;   text-align:left; overflow-y:scroll; text-align:left;} 
                 .page#ListPage .mainContent .cslist-main a {line-height:53px; margin-top: 0px; padding:0; margin-right:5px; margin-left:0; display:block; text-decoration:none; color:white; cursor:pointer; overflow:hidden; text-overflow:ellipsis} 
@@ -220,7 +222,6 @@ a {text-decoration: none;}
             .page#ListPage .rightContent .info .view .text span { color:white; }
             .page#ListPage .rightContent .info .view .preview_back .text { width: auto; padding: 0px; line-height: 20px;  padding-left: 10px; margin-left: 0px; width: 150px;}
             .page#ListPage .rightContent .info .view .preview_back img { margin-top:5px; padding-right:5px;}
-/*            .page#ListPage .body .content .crop .maxw {width:680px}*/
 
 	        /* footer */
              .page#ListPage .footer .crop .cbpanel-item {padding-right: 10px;}   

@@ -546,9 +546,9 @@ CScrollList.prototype.EventHandler = function ( event, filter ) {
 	if ( this.itemsPerPage === 0 && this.handleInner.firstChild !== null ) this.itemsPerPage = Math.round(this.handleInner.offsetHeight / this.handleInner.firstChild.offsetHeight);
 	// check if there is page items amount available, calculate otherwise
 	if ( this.itemHeight === 0 && this.handleInner.firstChild !== null ) this.itemHeight = this.handleInner.firstChild.offsetHeight;
-	echo(this.handleInner.offsetHeight, 'this.handleInner.offsetHeight');
-	echo(this.itemsPerPage, 'this.itemsPerPage');
-	echo(this.itemHeight, 'this.itemHeight');
+	//echo(this.handleInner.offsetHeight, 'this.handleInner.offsetHeight');
+	//echo(this.itemsPerPage, 'this.itemsPerPage');
+	//echo(this.itemHeight, 'this.itemHeight');
 
 	var found = null;
 	// moving direction

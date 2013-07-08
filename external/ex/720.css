@@ -102,18 +102,19 @@ a {text-decoration: none;}
     .volumeContainer{width:300px;}
     #volumeForm {
         position:absolute;
-        width:258px;
-        height:41px;
+        width:270px;
+        height:40px;
         top:50px;
         left:780px;
         z-index:1;
         background-image: url("img/volume/volume_bg.png");
+		border-radius: 5px;
     }
     #volume_bar {
         position:relative;
         width:200px;
-        height:41px;
-        left:47px;
+        height:40px;
+        left:60px;
     }
     #volume_right {
         position:absolute;
@@ -132,12 +133,13 @@ a {text-decoration: none;}
     }
     #mute {
         position:absolute;
-        width:47px;
+        width:60px;
         height:41px;
         top:50px;
         left:780px;
         background:url("img/volume/volume_off.png");
         z-index: 1;
+		border-radius: 5px;
     }
 /*--- end NEW VOLUME ---*/
 
@@ -172,7 +174,7 @@ a {text-decoration: none;}
         .page#MainPage .rightContent{width: 320px; padding: 0px; background: none;overflow: hidden; font-size: 28px; color: #ffc20e;}
             .page#MainPage .rightContent .hideOldData {background: url(img/720/bg_black.png); display: none; height: 426px; left: 890px; position: absolute; top: 170px; width: 345px;}
             .page#MainPage .rightContent .cslist-main {overflow-y: hidden; height: 420px; text-align:left;line-height: 0px; width: 320px;} 
-                    .page#MainPage .rightContent .cslist-main img {height:185px; width:140px; float:right; margin: 10px; }
+                    .page#MainPage .rightContent .cslist-main img {height:185px; width:140px; float:right; margin: 10px; position:relative;}
                     .page#MainPage .rightContent .cslist-main a {display: inline-block;line-height:54px; padding: 0px; margin:0; text-decoration:none; color:white; cursor:pointer; overflow:hidden; text-overflow:ellipsis;}
                     
         /* footer */

@@ -100,18 +100,19 @@ a {text-decoration: none;}
     .volumeContainer{width:300px;}
     #volumeForm {
         position:absolute;
-        width:258px;
-        height:41px;
+        width:270px;
+        height:40px;
         top:35px;
-        left:280px;
+        left:385px;
         z-index:1;
         background-image: url("img/volume/volume_bg.png");
+		border-radius: 5px;
     }
     #volume_bar {
         position:relative;
         width:200px;
-        height:41px;
-        left:47px;
+        height:40px;
+        left:60px;
     }
     #volume_right {
         position:absolute;
@@ -130,12 +131,13 @@ a {text-decoration: none;}
     }
     #mute {
         position:absolute;
-        width:47px;
-        height:41px;
+        width:60px;
+        height:40px;
         top:35px;
-        left:280px;
+        left:385px;
         background:url("img/volume/volume_off.png");
         z-index: 1;
+		border-radius: 5px;
     }
 /*--- end NEW VOLUME ---*/
 
@@ -170,7 +172,7 @@ a {text-decoration: none;}
         .page#MainPage .rightContent{width: 224px; padding: 0px; background: none;overflow: hidden; font-size: 20px; color: #ffc20e;}
             .page#MainPage .rightContent .hideOldData {background: url(img/720/bg_black.png); display: none; height: 378px; left: 476px; position: absolute; top: 92px; width: 224px;}
             .page#MainPage .rightContent .cslist-main {overflow-y: hidden; height: 275px; text-align:left;line-height: 0px; width: 224px;} 
-                    .page#MainPage .rightContent .cslist-main img {height:125px; width:95px; float:right; margin: 6px; }
+                    .page#MainPage .rightContent .cslist-main img {height:125px; width:95px; float:right; margin: 6px; position:relative;}
                     .page#MainPage .rightContent .cslist-main a {display: inline-block;line-height:30px; padding: 0px; margin:0; text-decoration:none; color:white; cursor:pointer; overflow:hidden; text-overflow:ellipsis;}
                     
         /* footer */
@@ -185,13 +187,14 @@ a {text-decoration: none;}
         .page#ListPage .infoMessage .messText {color: white; font-size: 20px; padding-right: 20px; padding-left: 20px;}
         .page#ListPage .infoMessage .messText h1{color: white; font-size: 24px;}
         .page#ListPage .infoMessage .messText font {color: white !important;} 
+        
         /* шапка*/
-        .page#ListPage .header .logo {width:100px;display: table-cell;   padding-left: 20px;}
+        .page#ListPage .header .logo {width:100px;display: table-cell;  padding-left: 20px;}
         .page#ListPage .header .logo div {background: url("img/576/logo_ex_ua.png") no-repeat; width: 94px; height:19px; margin-left: 0px;}
         .page#ListPage .header .csbar {padding-right: 10px;} 
           
         /* левая колонка */
-        .page#ListPage .mainContent {overflow: hidden; width: 380px; font-size: 22px; color: #ffc20e; padding-right: 15px;}
+        .page#ListPage .mainContent {overflow: hidden; width: 380px; font-size: 22px; color: #ffc20e; padding-right: 15px; vertical-align: top;}
                 .page#ListPage .mainContent .cgmenu-main {width: 380px; height: 294px;}
                 .page#ListPage .mainContent .cslist-main { width: 380px; height: 294px;   text-align:left; overflow-y:scroll; text-align:left;} 
                 .page#ListPage .mainContent .cslist-main a {line-height:42px; margin-top: 0px; padding:0; margin-right:5px; margin-left:0; display:block; text-decoration:none; color:white; cursor:pointer; overflow:hidden; text-overflow:ellipsis} 
@@ -219,8 +222,7 @@ a {text-decoration: none;}
             .page#ListPage .rightContent .info .view .text span { color:white; }
             .page#ListPage .rightContent .info .view .preview_back .text { width: auto; padding: 0px; line-height: 20px; padding-left: 10px; margin-left: 0px; width: 150px;}
             .page#ListPage .rightContent .info .view .preview_back img { margin-top:5px; padding-right:5px;}
-            .page#ListPage .rightContent .info .fleft {float:left}
-/*            .page#ListPage .body .content .crop .maxw {width:680px}*/
+            
 	        /* footer */
              .page#ListPage .footer .crop .cbpanel-item {padding-right: 10px;}   
              .page#ListPage .footer .crop {padding-left: 10px;}   

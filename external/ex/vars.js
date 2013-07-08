@@ -1,7 +1,7 @@
  
 //------------------------------------------------------------------------------
 var     debug   = false,
-        version = '0.63 beta';
+        version = '0.67 beta';
 // Типы узлов
 var TYPE_NONE              = 0,
     ROOT_VIDEO             = 1,
@@ -31,6 +31,7 @@ var TYPE_NONE              = 0,
 var NORMAL_MODE  = 0,
     LSEARCH_MODE = 1,
     environment = {},
+    proxy = '',
     rect = {left:843, top:149, width:400, height:221},
     DEFAULT_AUDIO_LANG_1_IDX    = 1,
     DEFAULT_SUBTITLE_LANG_1_IDX = 0,

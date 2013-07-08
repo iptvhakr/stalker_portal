@@ -157,3 +157,53 @@ var main_page_menu = {
         { type:ROOT_IMAGE,title:'Fashion',url:'508267',rss:'508267',news_cache:[]}
     ]
 };
+
+
+
+
+
+
+//
+//'Accept':'*/*',
+//'Accept-Encoding':'gzip,deflate,sdch',
+//'Accept-Language':'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4',
+//'Connection':'keep-alive',
+//'Cookie':'language=en; vimeo_cart=%7B%22ptv%22%3A%7B%22store%22%3A%22ptv%22%2C%22version%22%3A1%2C%22quantities%22%3A%7B%2286276%22%3A1%7D%2C%22items%22%3A%5B%7B%22id%22%3A86276%7D%5D%2C%22attributes%22%3A%5B%5D%7D%7D; xsrft=7cec78a82fcb4dd9cd11a5b4885fc6f6; has_logged_in=1; stats_start_date=2013%2F06%2F09; stats_end_date=2013%2F06%2F13; html_player=0; pl_volume=57.14285714285714; site_settings=%7B%22browse_format%22%3A%22thumbnail%22%2C%22sticky_page%22%3Anull%7D; __utma=256147786.768767120.1370615499.1370615499.1371627988.2; __utmc=256147786; __utmz=256147786.1371627988.2.2.utmcsr=webdesignerwall.com|utmccn=(referral)|utmcmd=referral|utmcct=/demo/adaptive-design/final.html; __utma=18302654.1294437847.1370511398.1371537253.1371659797.34; __utmb=18302654.16.9.1371659820690; __utmc=18302654; __utmz=18302654.1370511398.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmv=18302654.|2=user_type=basic=1^7=video_count=0=1',
+//'Host':'player.vimeo.com',
+//'Referer':'http://vimeo.com/18439821',
+//'User-Agent':'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'
+//
+
+//function ajax ( method, url, headers ) {
+//	var hname, xhr = new XMLHttpRequest();
+//	xhr.onreadystatechange = function() {
+//		if ( xhr.readyState === 4 ) {
+//			console.log(xhr.getAllResponseHeaders());
+//			console.log('\n ansver \n'+xhr.responseText);
+//		}
+//	};
+//	xhr.open(method, url, true);
+//	// set headers if present
+//	if ( headers ) for ( hname in headers ) {
+//		xhr.setRequestHeader(hname, headers[hname]);
+//	}
+//	xhr.send();
+//	return xhr;
+//}
+//
+//ajax('GET','http://player.vimeo.com/play_redirect?clip_id=18439821&sig=46d6c504ff6c0f3b9c941c087fdf04a0&time=1371659831&quality=hd&codecs=H264,VP8,VP6&type=moogaloop_local&embed_location=&seek=0',{'Accept':'*/*','Accept-Encoding':'gzip,deflate,sdch','Accept-Language':'ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4','Connection':'keep-alive','Cookie':'language=en; imeo_cart=%7B%22ptv%22%3A%7B%22store%22%3A%22ptv%22%2C%22version%22%3A1%2C%22quantities%22%3A%7B%2286276%22%3A1%7D%2C%22items%22%3A%5B%7B%22id%22%3A86276%7D%5D%2C%22attributes%22%3A%5B%5D%7D%7D; xsrft=7cec78a82fcb4dd9cd11a5b4885fc6f6; has_logged_in=1; stats_start_date=2013%2F06%2F09; stats_end_date=2013%2F06%2F13; html_player=0; pl_volume=57.14285714285714; site_settings=%7B%22browse_format%22%3A%22thumbnail%22%2C%22sticky_page%22%3Anull%7D; __utma=256147786.768767120.1370615499.1370615499.1371627988.2; __utmc=256147786; __utmz=256147786.1371627988.2.2.utmcsr=webdesignerwall.com|utmccn=(referral)|utmcmd=referral|utmcct=/demo/adaptive-design/final.html; __utma=18302654.1294437847.1370511398.1371537253.1371659797.34; __utmb=18302654.16.9.1371659820690; __utmc=18302654; __utmz=18302654.1370511398.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmv=18302654.|2=user_type=basic=1^7=video_count=0=1','Host':'player.vimeo.com','Referer':'http://vimeo.com/18439821','User-Agent':'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'});
+//ajax('GET','http://player.vimeo.com/play_redirect?clip_id=46765791&sig=c7ea88d076dde1df918ab46a0fb07e6b&time=1371662689&quality=sd&codecs=H264,VP8,VP6&type=moogaloop_local&embed_location=&seek=0')
+//
+//http://vimeo.com/46765791
+//
+//
+//
+//
+//Host: player.vimeo.com
+//Connection: keep-alive
+//User-Agent: Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36
+//Accept: */*
+//Referer: http://vimeo.com/46765791
+//Accept-Encoding: gzip,deflate,sdch
+//Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4
+//Cookie: language=en; vimeo_cart=%7B%22ptv%22%3A%7B%22store%22%3A%22ptv%22%2C%22version%22%3A1%2C%22quantities%22%3A%7B%2286276%22%3A1%7D%2C%22items%22%3A%5B%7B%22id%22%3A86276%7D%5D%2C%22attributes%22%3A%5B%5D%7D%7D; xsrft=7cec78a82fcb4dd9cd11a5b4885fc6f6; has_logged_in=1; stats_start_date=2013%2F06%2F09; stats_end_date=2013%2F06%2F13; html_player=0; pl_volume=57.14285714285714; __utma=256147786.768767120.1370615499.1370615499.1371627988.2; __utmc=256147786; __utmz=256147786.1371627988.2.2.utmcsr=webdesignerwall.com|utmccn=(referral)|utmcmd=referral|utmcct=/demo/adaptive-design/final.html; site_settings=%7B%22browse_format%22%3A%22thumbnail%22%2C%22sticky_page%22%3Anull%7D; __utma=18302654.1294437847.1370511398.1371537253.1371659797.34; __utmb=18302654.90.9.1371662670590; __utmc=18302654; __utmz=18302654.1370511398.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmv=18302654.|2=user_type=basic=1^7=video_count=0=1
