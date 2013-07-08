@@ -1,4 +1,4 @@
-﻿var login_text_arr = ['Email: ','Пароль: ','Запомнить '],
+var login_text_arr = ['Email: ','Пароль: ','Запомнить '],
 auth_btn_ok = 'Авторизация',
 auth_btn_cansel = 'Войти',
 hello = 'Здравствуйте',

@@ -142,7 +142,8 @@ function startADVplaying(idx){
 }
 
 function get_video_data(text){
-    console.log(text)
+    //console.log(text)
+	var file_dump = JSON.stringify(file);
     file = JSON.parse(text);
     try{
         markTNS('playstart', file.result.tns_id);
@@ -156,6 +157,11 @@ function get_video_data(text){
         );
     }catch(e){log(e)}
     var best_quality = {"idx":0,"type":0};
+	if(!empty(file.error)){
+		newMyAlert(file.error.message,"temp");
+		file = JSON.parse(file_dump);
+		return;
+	}
     if(!empty(file.result.compilation_id)){
         $('video_title').innerHTML = file.result.compilation + ' ' +file.result.title;
     }else{

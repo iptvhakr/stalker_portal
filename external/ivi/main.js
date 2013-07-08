@@ -163,7 +163,7 @@ function drow_promo(text){
 }
 
 function count_filters(text){
-	console.log(text);
+    //console.log(text);
     var ganre_obj = JSON.parse(text);
     filters(ganre_obj[vars.curCatSel-1].genres);
 }
@@ -285,7 +285,7 @@ function filters(arr,category){
             document.getElementsByClassName('modal_title')[0].innerHTML = select_series;
             subcatsArr = arr;
             for(var i = 0; i < arr.length ;i++){
-				console.log(JSON.stringify(arr[i]));
+                //console.log(JSON.stringify(arr[i]));
                 var obj = document.createElement('input');
                 obj.type = 'button';
                 obj.className = 'genrebtn';
@@ -484,7 +484,7 @@ function init_contentlist(text){
             if(dataset[i].genres != undefined){
                 $('video_p'+i).getElementsByClassName('movie_desc')[0].getElementsByClassName('text2')[0].innerHTML += '<br>';
                 for(var y = 0;y < dataset[i].genres.length;y++){
-                    if(genres[dataset[i].genres[y]] != 'undefined'){
+                    if(genres[dataset[i].genres[y]] != undefined){
                         if(y < dataset[i].genres.length-1){
                             $('video_p'+i).getElementsByClassName('movie_desc')[0].getElementsByClassName('text2')[0].innerHTML += genres[dataset[i].genres[y]]+', ';
                         }else{

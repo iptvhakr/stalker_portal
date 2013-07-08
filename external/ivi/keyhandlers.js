@@ -986,14 +986,19 @@ function infoPage_keyhandler(e){
         case 13:
             if($('info_btn_0').className == 'movie_menu_act'){
                 if(typeof(file.seasons_count) == 'undefined'){
-                    if(!empty(reclama.result)){
-                        startADVplaying(0);
+                    if(!empty(reclama)){
+                        if(!empty(reclama.result)){
+                            startADVplaying(0);
+                        }else{
+                            start_playing();
+                            markTNS('player', file.result.tns_id);
+                        }
                     }else{
-                        start_playing();
-                        markTNS('player', file.result.tns_id);
+                        //console.log(iviURL+'videofromcompilation/?id='+file.id);
+                        sendreq(iviURL+'videofromcompilation/?id='+file.id, init_series);
                     }
                 }else{
-					console.log(iviURL+'videofromcompilation/?id='+file.id);
+                    //console.log(iviURL+'videofromcompilation/?id='+file.id);
                     sendreq(iviURL+'videofromcompilation/?id='+file.id, init_series);
                 }
             }else{
