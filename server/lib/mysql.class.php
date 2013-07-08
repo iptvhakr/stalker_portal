@@ -8,8 +8,9 @@
 
 class Mysql
 {
+    private $links = array();
     private $link;
-    
+
     private $charset = 'utf8';
     private static $num_queries = 0;
     private static $cache_hits = 0;
@@ -27,7 +28,7 @@ class Mysql
     private $groupby = array();
     private $limit   = false;
     private $offset  = false;
-    public static $timezone;
+    private $timezone;
     public static $debug = false;
 
     private static $instance = NULL;
@@ -44,41 +45,71 @@ class Mysql
         return self::$instance;
     }
     
-    private function __construct(){
-        
-        $this->link = mysql_connect(Config::get('mysql_host'), Config::get('mysql_user'), Config::get('mysql_pass'));
+    private function __construct(){}
 
-        if (!$this->link){
+    private function getConnectionForWrite(){
+
+        if (!isset($this->links['write'])){
+            $this->links['write'] = $this->getConnection(Config::get('mysql_host'), Config::get('mysql_user'),
+                Config::get('mysql_pass'), Config::get('db_name'));
+        }
+
+        return $this->links['write'];
+    }
+
+    private function getConnectionForRead(){
+
+        if (!Config::exist('read_mysql_host')){
+            $this->links['read'] = $this->getConnectionForWrite();
+        }elseif(!isset($this->links['read'])){
+            $this->links['read'] = $this->getConnection(Config::get('read_mysql_host'), Config::get('read_mysql_user'),
+                Config::get('read_mysql_pass'), Config::get('read_db_name'));
+        }
+
+        return $this->links['read'];
+    }
+
+    private function getConnection($host, $user, $password, $db_name){
+        $link = mysql_connect($host, $user, $password);
+
+        if (!$link){
             throw new MysqlException('Cannot connect to database: '.mysql_error());
         }
 
-        if (Config::get('query_cache') && $this->allow_caching){
-            $this->cache = Cache::getInstance();
-            $this->cache->useCustomCaching(true);
+        mysql_select_db($db_name);
+
+        $this->set_charset($this->charset, $link);
+
+        if (!empty($this->timezone)){
+            $this->query('SET time_zone="'.$this->timezone.'"', $link);
         }
-        
-        if ($this->link){
-            mysql_select_db(Config::get('db_name'));
-        }
-        
-        $this->set_charset($this->charset);
+
+        return $link;
     }
     
-    private function set_charset($charset){
+    private function set_charset($charset, $link = null){
 
-        if (!mysql_set_charset($charset)){
-            throw new Exception('Error: '.mysql_error($this->link));
+        if (!mysql_set_charset($charset, $link)){
+            throw new Exception('Error: '.mysql_error($link));
         }
     }
 
     public function set_timezone($timezone){
+
         if (!empty($timezone)){
-            self::$timezone = $timezone;
-            return $this->query('SET time_zone="'.$timezone.'"');
+            return;
+        }
+
+        $this->timezone = $timezone;
+
+        foreach ($this->links as $link){
+            $this->query('SET time_zone="'.$timezone.'"', $link);
         }
     }
     
     public function select($sql = '*'){
+
+        $this->link = $this->getConnectionForRead();
         
         if(is_string($sql)){
             $sql = explode(',', $sql);
@@ -93,6 +124,8 @@ class Mysql
     }
     
     public function from($tables){
+
+        $this->link = $this->getConnectionForRead();
         
         if (is_string($tables)){
             $tables = array($tables);
@@ -454,6 +487,8 @@ class Mysql
     
     public function insert($table, $keys){
 
+        $this->link = $this->getConnectionForWrite();
+
         $fields = array();
         $values = array();
         
@@ -542,6 +577,8 @@ class Mysql
     }
     
     public function update($table, $values, $where = array()){
+
+        $this->link = $this->getConnectionForWrite();
         
         $this->from[] = $table;
         
@@ -567,6 +604,8 @@ class Mysql
     }
     
     public function delete($table, $where){
+
+        $this->link = $this->getConnectionForWrite();
         
         foreach ($where as $key => $value){
             $this->where(array($key => $value), 'AND ');
@@ -596,13 +635,22 @@ class Mysql
         return $result;
     }
     
-    public function query($sql){
+    public function query($sql, $link = null){
 
         if (self::$debug){
             echo "/* ".$sql." */\n";
         }
+
+        if ($link === null){
+
+            if(preg_match('/^INSERT|^UPDATE|^REPLACE|^SET|^DELETE|^TRUNCATE|^OPTIMIZE/i', $sql)){
+                $link = $this->getConnectionForWrite();
+            }else{
+                $link = $this->getConnectionForRead();
+            }
+        }
         
-        if (Config::get('query_cache') && $this->allow_caching){
+        if (Config::getSafe('query_cache', false) && $this->allow_caching){
             
             $tags = $this->get_tags(get_object_vars($this));
 
@@ -615,7 +663,7 @@ class Mysql
                 if(($result = $this->cache->get($key)) === false){
                     self::$num_queries++;
                     
-                    $result = new MysqlResult(mysql_query($sql, $this->link), $sql, $this->link);
+                    $result = new MysqlResult(mysql_query($sql, $link), $sql, $link);
                     
                     $this->cache->set($key, $result->as_array(true), $tags);
 
@@ -636,12 +684,12 @@ class Mysql
                 
             }
         }
-        
+
         $this->enable_caching();
         
         self::$num_queries++;
         
-        return new MysqlResult(mysql_query($sql, $this->link), $sql, $this->link);
+        return new MysqlResult(mysql_query($sql, $link), $sql, $link);
     }
     
     private function reset_select(){
