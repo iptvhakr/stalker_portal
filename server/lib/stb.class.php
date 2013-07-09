@@ -284,7 +284,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             ->first();
 
         if (empty($user)){
-            return false;
+            return true;
         }
 
         return empty($user['access_token']) || $user['access_token'] == $access_token;
@@ -578,8 +578,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                         'name' => substr($this->mac, 12, 16)
                     ))->insert_id();*/
             $data = array(
-                'mac'  => $this->mac,
-                'name' => substr($this->mac, 12, 16)
+                'mac'          => $this->mac,
+                'access_token' => $this->access_token,
+                'name'         => substr($this->mac, 12, 16)
             );
             $uid = self::create($data);
         }else{
