@@ -333,7 +333,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     
     public function getProfile(){
 
-        $country = @geoip_country_code_by_name($this->ip);
+        if (function_exists('geoip_country_code_by_name')){
+            $country = geoip_country_code_by_name($this->ip);
+        }else{
+            $country = '';
+        }
         $model   = isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '';
         $serial_number = isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '';
 
