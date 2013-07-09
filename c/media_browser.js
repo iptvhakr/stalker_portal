@@ -471,7 +471,7 @@
 
                 if (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0){
 
-                    this.net_path = this.parse_net_path(item.full_path).path || '';
+                    this.net_path = this.parse_net_path(item).path || '';
 
                     path = '/ram/mnt/smb/' + this.net_path;
                 }else{
@@ -1073,7 +1073,7 @@
             }
 
 
-            if (item.dir_name == 'SMB_SHARE' || item.hasOwnProperty('full_path') && (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0 && (!this.last_mounted || item.full_path.indexOf(this.last_mounted) == -1)) && this.parse_net_path(item.full_path).hasOwnProperty('share')){
+            if (item.dir_name == 'SMB_SHARE' || item.hasOwnProperty('full_path') && (item.full_path.indexOf('smb://') == 0 || item.full_path.indexOf('nfs://') == 0 && (!this.last_mounted || item.full_path.indexOf(this.last_mounted) == -1)) && this.parse_net_path(item).hasOwnProperty('share')){
 
                 try{
                     stb.ExecAction('make_dir /ram/mnt/smb/');
@@ -1085,7 +1085,7 @@
                 }
 
                 if (item.hasOwnProperty('full_path')){
-                    var path = this.parse_net_path(item.full_path);
+                    var path = this.parse_net_path(item);
 
                     _debug('net path', path);
 
@@ -1529,8 +1529,12 @@
             return path + '/' + item.name;
         };
 
-        this.parse_net_path = function(full_path){
-            _debug('media_browser.parse_net_path', full_path);
+        this.parse_net_path = function(item){
+            _debug('media_browser.parse_net_path', item);
+
+            var full_path = item.full_path;
+
+            _debug('full_path', full_path);
 
             var direct_link = false;
 
@@ -1552,7 +1556,27 @@
 
                 _debug('path.proto', path.proto);
 
-                if (!direct_link){
+                _debug('this.last_mounted', this.last_mounted);
+
+                if (path.proto == 'nfs'){
+
+                    if (match[1]){
+                        path.server = match[1];
+                    }
+
+                    if (this.last_mounted && full_path.indexOf(this.last_mounted) === 0){
+                        path.path = full_path.replace(this.last_mounted, '')+'/';
+                    }
+
+                    path.share = '';
+
+                    for (var i=2; i<match.length; i++){
+                        if (match[i]){
+                            path.share += match[i] + '/';
+                        }
+                    }
+
+                }else if (!direct_link){
                     if (match[1]){
                         path.workgroup = match[1];
                     }
