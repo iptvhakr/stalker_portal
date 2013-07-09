@@ -53,11 +53,9 @@
             window.resizeTo(screen.width, screen.height);
             // prevent default right-click menu
             window.oncontextmenu = function () { return false; };
-            (new Image()).src = "img/bg.png";
         </script>
     </head>
     <body onload="onPageLoad()" onkeydown="mainEventListener(event);" id="body">
-        <div id ="imgaudio" style="display: none; position: absolute; -webkit-transition: opacity 10s ease;"><img src="img/audio_ico.png" alt=""></div>
         <div id="loading"  >
             <span>Loading ...</span>
         </div>
