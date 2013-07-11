@@ -97,7 +97,7 @@ class Mysql
 
     public function set_timezone($timezone) {
 
-        if (!empty($timezone)) {
+        if (empty($timezone)) {
             return;
         }
 
