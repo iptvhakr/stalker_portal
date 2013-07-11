@@ -193,6 +193,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         return 'http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
             . '/stalker_portal/storage/get.php?filename=' . $filename
             . '&ch_id=' . $program['ch_id']
+            . '&token='.$this->createTemporaryToken()
             . '&start=' . $position
             . '&duration=' . ($stop_timestamp - $start_timestamp)
             . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
