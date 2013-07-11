@@ -298,7 +298,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $cache = Cache::getInstance();
 
-        $result = $cache->set($key, $url, 0, 5);
+        $result = $cache->set($key, $url, 0, Config::getSafe('tv_tmp_link_ttl', 5));
 
         if ($result){
             return $key;
