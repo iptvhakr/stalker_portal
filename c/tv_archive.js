@@ -260,6 +260,29 @@
             return this.parent.ch_name;
         },
 
+        get_next_part_url : function(){
+            _debug('tv_archive.get_next_part_url');
+
+            stb.load(
+                {
+                    "type"   : "tv_archive",
+                    "action" : "get_next_part_url",
+                    "id" :  stb.player.cur_media_item.real_id
+                },
+                function(result){
+                    _debug('on get_next_part_url', result);
+
+                    if (!result){
+                        _debug('no url');
+                        return;
+                    }
+
+                    stb.player.cur_media_item.playlist = [stb.player.cur_media_item.cmd, result];
+
+                    _debug('stb.player.cur_media_item', stb.player.cur_media_item);
+                }
+            )
+        },
 
         init_continue_dialog : function(){
             _debug('tv_archive.init_continue_dialog');
@@ -279,29 +302,7 @@
                     "value" : get_word("archive_yes"),
                     "onclick" : function(){
                         continue_dialog.hide();
-
-                        stb.load(
-                            {
-                                "type"   : "tv_archive",
-                                "action" : "get_next_part_url",
-                                "id" :  stb.player.cur_media_item.real_id
-                            },
-                            function(result){
-                                _debug('on get_next_part_url', result);
-
-                                if (!result){
-                                    _debug('no url');
-                                    return;
-                                }
-
-                                //stb.player.cur_media_item.next = result;
-
-                                stb.player.cur_media_item.playlist = [stb.player.cur_media_item.cmd, result];
-
-                                _debug('stb.player.cur_media_item', stb.player.cur_media_item);
-                            }
-                        )
-
+                        module.tv_archive.get_next_part_url();
                     }
                 }
             ));

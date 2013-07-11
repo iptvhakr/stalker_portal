@@ -1049,7 +1049,11 @@ player.prototype.event_callback = function(event, params){
                 _debug('archive_continue_dialog timeout', (this.cur_media_length - this.cur_pos_time - 60)*1000);
 
                 this.archive_continue_dialog_to = window.setTimeout(function(){
-                    module.tv_archive.continue_dialog.show();
+                    if (stb.profile['tv_archive_continued']){
+                        module.tv_archive.get_next_part_url();
+                    }else{
+                        module.tv_archive.continue_dialog.show();
+                    }
                 }, (this.cur_media_length - this.cur_pos_time - 30)*1000);
             }
 
@@ -2037,7 +2041,11 @@ player.prototype.disable_pause = function(){
         if (module.tv_archive && this.cur_media_item.mark_archive){
             window.clearTimeout(this.archive_continue_dialog_to);
             this.archive_continue_dialog_to = window.setTimeout(function(){
-                module.tv_archive.continue_dialog.show();
+                if (stb.profile['tv_archive_continued']){
+                    module.tv_archive.get_next_part_url();
+                }else{
+                    module.tv_archive.continue_dialog.show();
+                }
             }, (stb.GetMediaLen() - stb.GetPosTime() - 30)*1000);
         }
         
