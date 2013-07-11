@@ -8,8 +8,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 $search = @$_GET['search'];
@@ -34,17 +32,12 @@ if(@$_GET['path']){
 if (isset($_FILES['screenshot'])){
     if (is_uploaded_file($_FILES['screenshot']['tmp_name'])){
         if (preg_match("/jpeg/",$_FILES['screenshot']['type'])){
-       
-            $insert_upload = 'INSERT INTO screenshots (name,
-                                                       size,
-                                                       type
-                                                       )
-                                               VALUES (\''.$_FILES['screenshot']['name'].'\', 
-                                                       \''.$_FILES['screenshot']['size'].'\', 
-                                                       \''.$_FILES['screenshot']['type'].'\'
-                                                       )';
-            //echo $insert_upload;
-            $rs=$db->executeQuery($insert_upload);
+
+            Mysql::getInstance()->insert('screenshots', array(
+                'name' => $_FILES['screenshot']['name'],
+                'size' => $_FILES['screenshot']['size'],
+                'type' => $_FILES['screenshot']['type']
+            ));
         
             $upload_id = mysql_insert_id();
             
@@ -76,8 +69,9 @@ if (isset($_GET['done']) && @$_GET['id']){
 }
 
 if (@$_GET['del']){
-    $query = "delete from karaoke where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+
+    Mysql::getInstance()->delete('karaoke', array('id' => intval(@$_GET['id'])));
+
     header("Location: add_karaoke.php?search=$search&letter=$letter");
 }
 
@@ -101,28 +95,18 @@ if (!$error){
     
         if(@$_GET['name']){
             $datetime = date("Y-m-d H:i:s");
-            $query = "insert into karaoke (name,
-                                           protocol,
-                                           rtsp_url,
-                                           genre_id,
-                                           singer,
-                                           author,
-                                           added,
-                                           status,
-                                           add_by
-                                           ) 
-                                  values ('".@$_GET['name']."',
-                                           '".$protocol."',
-                                           '".$rtsp_url."',
-                                           '".@$_POST['genre_id']."',
-                                           '".@$_POST['singer']."',
-                                           '".@$_POST['author']."',
-                                           '".$datetime."',
-                                           $status,
-                                           ".@$_SESSION['uid']."
-                                           )";
-            //echo $query;
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->insert('karaoke', array(
+                'name'     => @$_GET['name'],
+                'protocol' => $protocol,
+                'rtsp_url' => $rtsp_url,
+                'genre_id' => @$_POST['genre_id'],
+                'singer'   => @$_POST['singer'],
+                'author'   => @$_POST['author'],
+                'added'    => $datetime,
+                'status'   => $status,
+                'add_by'   => @$_SESSION['uid']
+            ));
 
             unset($_SESSION['upload']);
             
@@ -137,17 +121,18 @@ if (!$error){
     if (@$_GET['update']){
         if(@$_GET['name']){
 
-            $query = "update karaoke set name='".$_GET['name']."', 
-                                       protocol='".$protocol."',
-                                       rtsp_url='".$rtsp_url."',
-                                       genre_id='".@$_POST['genre_id']."',
-                                       singer='".@$_POST['singer']."',
-                                       status=$status,
-                                       author='".@$_POST['author']."'
-                                    where id=".intval(@$_GET['id']);
-            
-            //echo $query;
-            $rs=$db->executeQuery($query);
+            Mysql::getInstance()->update('karaoke',
+                array(
+                    'name'     => $_GET['name'],
+                    'protocol' => $protocol,
+                    'rtsp_url' => $rtsp_url,
+                    'genre_id' => @$_POST['genre_id'],
+                    'singer'   => @$_POST['singer'],
+                    'status'   => $status,
+                    'author'   => @$_POST['author']
+                ),
+                array('id' => intval(@$_GET['id']))
+            );
 
             unset($_SESSION['upload']);
             
@@ -270,11 +255,7 @@ if (@$_GET['status']){
     
 }
 
-$query = "select * from karaoke $where";
-//echo $query;
-$rs = $db->executeQuery($query);
-//var_dump($rs);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from karaoke $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
@@ -301,38 +282,41 @@ function page_bar(){
 }
 
 function set_karaoke_accessed($id, $val){
-    global $db;
-    if ($id){
-        $query = "update karaoke set accessed=$val, added=NOW() where id=$id";
-        $rs=$db->executeQuery($query);
+
+    if (!$id){
+        return;
     }
+
+    Mysql::getInstance()->update('karaoke',
+        array(
+            'accessed' => $val,
+            'added'    => 'NOW()'
+        ),
+        array('id' => $id)
+    );
 }
 
 function set_karaoke_done($id, $val){
-    global $db;
-    if ($id){
-        //$query = "update karaoke set done=$val, added=NOW() where id=$id";
-        $query = "update karaoke set done=$val, done_time=NOW() where id=$id";
-        $rs=$db->executeQuery($query);
+
+    if (!$id){
+        return;
     }
+
+    Mysql::getInstance()->update('karaoke',
+        array(
+            'done'      => $val,
+            'done_time' => 'NOW()'
+        ),
+        array('id' => $id)
+    );
 }
 
 function get_karaoke_accessed($id){
-    global $db;
-    
-    $query = "select * from karaoke where id=$id";
-    $rs=$db->executeQuery($query);
-    $accessed = $rs->getValueByName(0, 'accessed');
-    return $accessed;
+    return Mysql::getInstance()->from('karaoke')->where(array('id' => $id))->get()->first('accessed');
 }
 
 function get_done_karaoke($id){
-	$db = Database::getInstance();
-	
-	$query = "select * from karaoke where id=$id";
-    $rs=$db->executeQuery($query);
-    $accessed = $rs->getValueByName(0, 'done');
-    return $accessed;
+    return Mysql::getInstance()->from('karaoke')->where(array('id' => $id))->get()->first('done');
 }
 
 function get_karaoke_accessed_color($id){
@@ -380,17 +364,12 @@ if (!empty($_GET['letter'])){
     $orderby = 'id';
 }
 
-$query = "select karaoke.*,administrators.login, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter
+$all_karaoke = Mysql::getInstance()->query("select karaoke.*,administrators.login, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter
     from karaoke
     left join administrators on administrators.id=karaoke.add_by
     left join media_claims on karaoke.id=media_claims.media_id and media_claims.media_type='karaoke'
-    $where group by karaoke.id, karaoke.add_by order by $orderby LIMIT $page_offset, $MAX_PAGE_ITEMS";
-//echo $query;
-//echo $_GET['search'];
-$rs = $db->executeQuery($query);
-//echo $total_pages;
+    $where group by karaoke.id, karaoke.add_by order by $orderby LIMIT $page_offset, $MAX_PAGE_ITEMS");
 
-//$rs = $db->executeQuery($query);
 ?>
 <table border="0" align="center" width="620">
 <tr>
@@ -493,10 +472,8 @@ echo "<td class='list'><b>"._('When')."</b></td>";
 echo "<td class='list'><b>"._('Claims about<br>audio/video')."</b></td>\n";
 echo "<td class='list'>&nbsp;</td>";
 echo "</tr>";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while ($arr = $all_karaoke->next()){
+
     echo "<tr>\n";
     echo "<td class='list'><a href='javascript://'";
     
@@ -568,14 +545,11 @@ echo "</table>";
 echo "</center>";
 
 if (@$_GET['edit']){
-    $query = "select * from karaoke where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        $name = $arr['name'];
-        //$description = $arr['description'];
-        //$path = $arr['path'];
-        //$fname    = $arr['fname'];
+
+    $arr = Karaoke::getById(intval(@$_GET['id']));
+
+    if (!empty($arr)){
+        $name     = $arr['name'];
         $genre_id = $arr['genre_id'];
         $singer   = $arr['singer'];
         $author   = $arr['author'];
@@ -583,12 +557,11 @@ if (@$_GET['edit']){
         $rtsp_url = $arr['rtsp_url'];
         $protocol = $arr['protocol'];
     }
-    //unset($_SESSION['upload']);
-    $query = "select * from screenshots where media_id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        $_SESSION['upload'][] = $arr['id'];
+
+    $screenshots = Mysql::getInstance()->from('screenshots')->where(array('media_id' => intval(@$_GET['id'])))->get()->all('id');
+
+    if (!empty($screenshots)){
+        $_SESSION['upload'] = $screenshots;
     }
 }
 
@@ -613,39 +586,36 @@ function check_file($id){
 }
 
 function set_status($id, $val){
-    global $db;
-    if ($id){
-        $query = "update karaoke set status=$val where id='$id'";
-        $rs=$db->executeQuery($query);
+
+    if (!$id){
+        return;
     }
+
+    Mysql::getInstance()->update('karaoke', array('status' => $val), array('id' => $id));
 }
 
 function get_status($id = 0){
-    global $db;
-    
-    $query = "select * from karaoke where id='$id'";
-    $rs=$db->executeQuery($query);
-    
-    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
-    
-    if (!empty($rtsp_url)){
+
+    $karaoke = Karaoke::getById($id);
+
+    if (!empty($karaoke['rtsp_url'])){
         return 2;
     }
     
-    return $rs->getValueByName(0, 'status');
+    return $karaoke['status'];
 }
 
 function get_genres(){
-    global $db;
+
     global $genre_id;
     
-    $query = "select * from karaoke_genre";
-    $rs=$db->executeQuery($query);
+    $genres = Mysql::getInstance()->from('karaoke_genre')->get()->all();
+
     $option = '';
     
-    while(@$rs->next()){
+    foreach($genres as $arr){
         $selected = '';
-        $arr=$rs->getCurrentValuesAsHash();
+
         if ($genre_id == $arr['id']){
             $selected = 'selected';
         }
@@ -655,16 +625,7 @@ function get_genres(){
 }
 
 $upload_str = '';
-if(@$_SESSION['upload']){
-    $is_uploaded = 'SELECT id, name, size 
-                    FROM screenshots
-                    WHERE id 
-                    IN ('.@implode(',', @$_SESSION['upload']).')';
-    $rs=$db->executeQuery($is_uploaded);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-    }
-}
+
 
 ?>
 <script type="text/javascript">

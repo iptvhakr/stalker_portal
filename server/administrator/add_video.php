@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = Database::getInstance();
-
 moderator_access();
 
 $search = @$_GET['search'];
@@ -29,22 +27,26 @@ if (@$_GET['id']){
 
 if (@$_GET['reset_sound_vote'] && @$_GET['id']){
 
-    $sql = "update video set vote_sound_good=0, vote_sound_bad=0 where id=".intval($_GET['id']);
-    $rs=$db->executeQuery($sql);
+    Mysql::getInstance()->update('video',
+        array('vote_sound_good' => 0, 'vote_sound_bad' => 0),
+        array('id' => intval($_GET['id'])));
+
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
     exit;
 }
 
 if (@$_GET['reset_video_vote'] && @$_GET['id']){
 
-    $sql = "update video set vote_video_good=0, vote_video_bad=0 where id=".intval($_GET['id']);
-    $rs=$db->executeQuery($sql);
+    Mysql::getInstance()->update('video',
+        array('vote_video_good' => 0, 'vote_video_bad' => 0),
+        array('id' => intval($_GET['id'])));
+
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
     exit;
 }
 
 if (isset($_GET['accessed']) && @$_GET['id']){
-	$_GET['accessed'] = intval($_GET['accessed']);
+    $_GET['accessed'] = intval($_GET['accessed']);
 
     $video_id = intval($_GET['id']);
 
@@ -75,54 +77,11 @@ if (isset($_GET['accessed']) && @$_GET['id']){
 
     }else{
 
-        /*set_accessed(@$_GET['id'], @$_GET['accessed']);
-        $id = $_GET['id'];
-        $path = get_path($_GET['id']);
-
-        $query = 'select * from video where id='.intval($_GET['id']);
-        $rs = $db->executeQuery($query);
-        $video = $rs->getValuesByRow(0);
-
-        $name = mysql_real_escape_string($video['name']);
-        $o_name = mysql_real_escape_string($video['o_name']);
-        $director = mysql_real_escape_string($video['director']);
-
-        $year = $video['year'];
-
-        if ($_GET['accessed'] == 1){
-            add_video_log('on', @$_GET['id']);
-            $sql = "update updated_places set vclub=1";
-            $db->executeQuery($sql);
-
-            if ($video['hd']){
-                // disable this video in SD for hd devices
-                $sql = "update video set disable_for_hd_devices=1 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
-                $db->executeQuery($sql);
-            }
-
-        }else{
-            add_video_log('off', @$_GET['id']);
-
-            if ($video['hd']){
-                $sql = "update video set disable_for_hd_devices=0 where name='$name' and o_name='$o_name' and director='$director' and year='$year' and hd=0";
-                $db->executeQuery($sql);
-            }
-        }*/
-
         if ($_GET['accessed'] == 1){
             Video::switchOnById($video_id);
         }else{
             Video::switchOffById($video_id);
         }
-
-        /*if ($_GET['accessed'] == 1){
-            $master = new VideoMaster();
-            try {
-                $master->startMD5SumInAllStorages($path);
-            }catch (Exception $exception){
-
-            }
-        }*/
     }
 
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@urldecode($_GET['search'])."&page=".@$_GET['page']);
@@ -131,8 +90,9 @@ if (isset($_GET['accessed']) && @$_GET['id']){
 
 if (@$_GET['del']){
     Video::log(intval(@$_GET['id']), _('video deleted'));
-    $query = "delete from video where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+
+    Mysql::getInstance()->delete('video', array('id' => intval(@$_GET['id'])));
+
     header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
     exit;
 }
@@ -143,18 +103,11 @@ if (count(@$_POST) > 0){
             if (is_uploaded_file($_FILES['screenshot']['tmp_name'])){
                 if (preg_match("/jpeg/",$_FILES['screenshot']['type'])){
 
-                    $insert_upload = "INSERT INTO screenshots (name,
-                                                               size,
-                                                               type
-                                                               )
-                                                       VALUES ('".$_FILES['screenshot']['name']."',
-                                                               '".$_FILES['screenshot']['size']."',
-                                                               '".$_FILES['screenshot']['type']."'
-                                                               )";
-                    //echo $insert_upload;
-                    $rs=$db->executeQuery($insert_upload);
-
-                    $upload_id = mysql_insert_id();
+                    $upload_id = Mysql::getInstance()->insert('screenshots', array(
+                        'name' => $_FILES['screenshot']['name'],
+                        'size' => $_FILES['screenshot']['size'],
+                        'type' => $_FILES['screenshot']['type']
+                    ));
 
                     if (empty($_SESSION['upload'])){
                         $_SESSION['upload'] = array();
@@ -270,11 +223,10 @@ if (count(@$_POST) > 0){
                 if ($hd){
                     $trans_name .= '_HD';
                 }
-                $sql = "select * from video where path='".$trans_name."'";
-                $rs = $db->executeQuery($sql);
-                $rows = @$rs->getRowCount();
 
-                if ($rows > 0){
+                $existed = Mysql::getInstance()->from('video')->where(array('path' => $trans_name))->get()->first();
+
+                if (!empty($existed)){
                     $error = _('Error: The folder with that name already exists');
                 }
 
@@ -333,11 +285,10 @@ if (count(@$_POST) > 0){
                     )->insert_id();
 
                     if(@$_SESSION['upload']){
-                        $query = 'DELETE from screenshots where media_id=\''.$video_id.'\' and id not IN ('.@implode(',', $_SESSION['upload']).')';
-                        $rs=$db->executeQuery($query);
+                        Mysql::getInstance()->query('DELETE from screenshots where media_id='.intval($video_id).' and id not IN ('.@implode(',', $_SESSION['upload']).')');
 
-                        $query = 'UPDATE screenshots SET media_id=\''.$video_id.'\' WHERE id IN ('.@implode(',', $_SESSION['upload']).')';
-                        $rs=$db->executeQuery($query);
+                        Mysql::getInstance()->query('UPDATE screenshots SET media_id='.intval($video_id).' WHERE id IN ('.@implode(',', $_SESSION['upload']).')');
+
                         unset($_SESSION['upload']);
                     }
 
@@ -345,7 +296,7 @@ if (count(@$_POST) > 0){
                         Mysql::getInstance()->delete('screenshots', array('media_id' => $video_id));
                     }
 
-                    add_video_log('add', $rs->getLastInsertId());
+                    add_video_log('add', $video_id);
 
                     //header("Location: add_video.php?letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']);
                     //exit;
@@ -403,12 +354,9 @@ if (count(@$_POST) > 0){
 
                     add_video_log('edit', intval(@$_GET['id']));
 
-                    $query = 'DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.@implode(',', $_SESSION['upload']).')';
-                    $rs=$db->executeQuery($query);
+                    Mysql::getInstance()->query('DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.@implode(',', $_SESSION['upload']).')');
 
-                    $query = 'UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.@implode(',', $_SESSION['upload']).')';
-                    //echo $query;
-                    $rs=$db->executeQuery($query);
+                    Mysql::getInstance()->query('UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.@implode(',', $_SESSION['upload']).')');
 
                     unset($_SESSION['upload']);
 
@@ -659,14 +607,11 @@ function page_bar(){
 }
 
 function send_button($id){
-    $db = Database::getInstance();
 
-    $sql = "select * from moderator_tasks where ended=0 and media_id=$id";
-    $rs = $db->executeQuery($sql);
+    $task = Mysql::getInstance()->from('moderator_tasks')->where(array('ended' => 0, 'media_id' => $id))->get()->first();
 
-    if ($rs->getRowCount() > 0){
-        $task_id = $rs->getValueByName(0, 'id');;
-        return "<a href='msgs.php?task=".$task_id."'><font color='#CBCB00'>"._('task')."</font></a>&nbsp;&nbsp;\n";
+    if (!empty($task)){
+        return "<a href='msgs.php?task=".$task['id']."'><font color='#CBCB00'>"._('task')."</font></a>&nbsp;&nbsp;\n";
     }else{
         return "<a href='send_to.php?id=".$id."'>"._('send')."</a>&nbsp;&nbsp;\n";
     }
@@ -689,7 +634,7 @@ if ($search){
     }
     $where .= 'name like "%'.$search.'%" or o_name like "%'.$search.'%" or path like "%'.$search.'%"';
 }
-if (@$_GET['letter']) {
+if (isset($_GET['letter'])) {
 	//$where = 'where name like "'.urldecode($letter).'%"';
     if ($where){
         $where .= ' and ';
@@ -742,9 +687,7 @@ if (@$_GET['status'] == 'closed_n_off'){
     $query = "select * from video $where";
 }
 
-//echo $query."<br>\n";
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query($query)->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
@@ -755,9 +698,8 @@ if (@$_GET['status'] == 'closed_n_off'){
     $query = "select video.*, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter from video left join media_claims on video.id=media_claims.media_id and media_claims.media_type='vclub' $where group by video.id $order_by LIMIT $page_offset, $MAX_PAGE_ITEMS";
 }
 
-//echo $query."<br>\n";
-$rs = $db->executeQuery($query);
-//echo $total_pages;
+$all_video = Mysql::getInstance()->query($query);
+
 ?>
 <table border="0" align="center" width="620">
 <tr>
@@ -858,9 +800,8 @@ echo "<td class='list'><b>"._('Claims about<br>audio/video')."</b></td>\n";
 echo "<td class='list'>&nbsp;</td>\n";
 echo "<td class='list'><b>"._('Turn on date')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
 
-    $arr=$rs->getCurrentValuesAsHash();
+while ($arr = $all_video->next()){
 
     echo "<tr>";
     echo "<td class='list'><a href='videolog.php?id={$arr['id']}'>".$arr['id']."</a></td>\n";
@@ -944,10 +885,11 @@ echo "</table>\n";
 echo "</center>\n";
 
 if (@$_GET['edit']){
-    $query = "select * from video where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $item = $arr=$rs->getCurrentValuesAsHash();
+
+    $arr = $item = Video::getById(intval(@$_GET['id']));
+
+    if (!empty($arr)){
+
         $name = $arr['name'];
         $o_name = $arr['o_name'];
         $censored = $arr['censored'];
@@ -992,20 +934,16 @@ if (@$_GET['edit']){
             $checked_for_sd_stb = 'checked';
         }
     }
-    $query = "select * from screenshots where media_id=".intval(@$_GET['id']);
-    //echo $query;
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        //$_SESSION['upload'][] = $arr['id'];
-    }
 }
 
 function add_video_log($action, $video_id){
-    $db = Database::getInstance();
-    $moderator_id = $_SESSION['uid'];
-    $query = "insert into video_log (action, video_id, moderator_id, actiontime) values ('$action', $video_id, $moderator_id, NOW())";
-    $rs=$db->executeQuery($query);
+
+    Mysql::getInstance()->insert('video_log', array(
+        'action'       => $action,
+        'video_id'     => $video_id,
+        'moderator_id' => $_SESSION['uid'],
+        'actiontime'   => 'NOW()'
+    ));
 }
 
 function check_incoming_path($path){
@@ -1027,18 +965,14 @@ function del_incoming_path($path){
 }
 
 function check_video_status($id){
-    $db = Database::getInstance();
 
-    $query = "select * from video where id=$id";
-    $rs=$db->executeQuery($query);
+    $video = Video::getById($id);
 
-    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
-
-    if (!empty($rtsp_url)){
+    if (!empty($video['rtsp_url'])){
         return 2;
     }
 
-    return $rs->getValueByName(0, 'status');
+    return $video['status'];
 }
 
 function count_series($series){
@@ -1061,42 +995,11 @@ function get_path_color($id, $path){
     return "<span id='path_$id' style='color:".$color."'>$path</span>";
 }
 
-/*function get_path($id){
-    $db = Database::getInstance();
-    
-    $query = "select * from video where id=$id";
-    $rs=$db->executeQuery($query);
-    $old_path = $rs->getValueByName(0, 'path');
-    if ($old_path){
-        return $old_path;
-    }else{
-        return '';
-    }
-}*/
-
-/*function set_status($path, $val){
-    $db = Database::getInstance();
-    if ($path != ''){
-        $query = "update video set status=$val where path='$path'";
-        $rs=$db->executeQuery($query);
-    }
-}*/
-
-/*function set_accessed($id, $val){
-    $db = Database::getInstance();
-    if ($id){
-        $query = "update video set accessed=$val,added=NOW()  where id='$id'";
-        $rs=$db->executeQuery($query);
-    }
-}*/
-
 function get_accessed($id){
-    $db = Database::getInstance();
 
-    $query = "select * from video where id=$id";
-    $rs=$db->executeQuery($query);
-    $accessed = $rs->getValueByName(0, 'accessed');
-    return $accessed;
+    $video = Video::getById($id);
+
+    return $video['accessed'];
 }
 
 function get_accessed_color($id){
@@ -1134,81 +1037,62 @@ function get_accessed_color($id){
 }
 
 function get_genres(){
-    $db = Database::getInstance();
-    global $genre_id;
 
-    $query = "select * from genre order by title";
-    $rs=$db->executeQuery($query);
-    $option = '';
+    $genres = Mysql::getInstance()->from('genre')->orderby('title')->get()->all();
+
     $str = "var all_genres = [ ";
-    while(@$rs->next()){
-        $selected = '';
-        $arr=$rs->getCurrentValuesAsHash();
-        if ($genre_id == $arr['id']){
-            $selected = 'selected';
-        }
-        //$option .= "<option value={$arr['id']} $selected>{$arr['title']}\n";
+
+    foreach($genres as $arr){
         $str .= "{ id : ".$arr['id'].", title : '"._($arr['title'])."'},";
     }
+
     $str = substr($str, 0, strlen($str)-1);
     $str .= " ]";
     return $str;
 }
 
 function get_selected_genres(){
-    $db = Database::getInstance();
+
+    if (empty($_GET['id'])){
+        return '';
+    }
 
     $genre_id = array();
-    $str = '';
-    if (@$_GET['id']){
-        $id = $_GET['id'];
-        $sql = "select * from video where id=".$id;
-        $rs=$db->executeQuery($sql);
-        //if ($rs->getRowCount() == 1){
-            $genre_id[1] = $rs->getValueByName(0, 'genre_id_1');
-            $genre_id[2] = $rs->getValueByName(0, 'genre_id_2');
-            $genre_id[3] = $rs->getValueByName(0, 'genre_id_3');
-            $genre_id[4] = $rs->getValueByName(0, 'genre_id_4');
-        //}
+
+    $id = (int) $_GET['id'];
+
+    $video = Video::getById($id);
 
 
-        $genre_id[1] = $genre_id[1] ? $genre_id[1] : 0;
-        $genre_id[2] = $genre_id[2] ? $genre_id[2] : 0;
-        $genre_id[3] = $genre_id[3] ? $genre_id[3] : 0;
-        $genre_id[4] = $genre_id[4] ? $genre_id[4] : 0;
+    $genre_id[1] = $video['genre_id_1'] ? $video['genre_id_1'] : 0;
+    $genre_id[2] = $video['genre_id_2'] ? $video['genre_id_2'] : 0;
+    $genre_id[3] = $video['genre_id_3'] ? $video['genre_id_3'] : 0;
+    $genre_id[4] = $video['genre_id_4'] ? $video['genre_id_4'] : 0;
 
-        $k=0;
+    $k=0;
 
-        for ($i = 1; $i <= 4; $i++){
-            if ($genre_id[$i] > 0){
-                $k ++;
-            }
+    for ($i = 1; $i <= 4; $i++){
+        if ($genre_id[$i] > 0){
+            $k ++;
         }
-
-        $str  = "var sel_genre_id_1 = ".$genre_id[1]."\n";
-        $str .= "var sel_genre_id_2 = ".$genre_id[2]."\n";
-        $str .= "var sel_genre_id_3 = ".$genre_id[3]."\n";
-        $str .= "var sel_genre_id_4 = ".$genre_id[4]."\n";
-        $str .= "var total_genres   = ".$k."\n";
     }
+
+    $str  = "var sel_genre_id_1 = ".$genre_id[1]."\n";
+    $str .= "var sel_genre_id_2 = ".$genre_id[2]."\n";
+    $str .= "var sel_genre_id_3 = ".$genre_id[3]."\n";
+    $str .= "var sel_genre_id_4 = ".$genre_id[4]."\n";
+    $str .= "var total_genres   = ".$k."\n";
+
     return $str;
 }
 
 function get_categories(){
-    $db = Database::getInstance();
-    global $category_id;
 
-    $query = "select * from media_category order by num";
-    $rs=$db->executeQuery($query);
-    $option = '';
+    $categories = Mysql::getInstance()->from('media_category')->orderby('num')->get()->all();
+
     $str = "var all_categories = [ ";
-    while(@$rs->next()){
-        $selected = '';
-        $arr=$rs->getCurrentValuesAsHash();
-        if ($category_id == $arr['id']){
-            $selected = 'selected';
-        }
-        //$option .= "<option value={$arr['id']} $selected>{$arr['title']}\n";
+
+    foreach($categories as $arr){
         $str .= "{ id : ".$arr['id'].", name : '"._($arr['category_name'])."'},";
     }
     $str = substr($str, 0, strlen($str)-1);
@@ -1217,26 +1101,17 @@ function get_categories(){
 }
 
 function get_selected_cat_genres(){
-    $db = Database::getInstance();
 
     $cat_genre_id = array();
-    $str = '';
-    if (@$_GET['id']){
-        $id = $_GET['id'];
-        $sql = "select * from video where id=".$id;
-        $rs=$db->executeQuery($sql);
-        //if ($rs->getRowCount() == 1){
-            $cat_genre_id[1] = $rs->getValueByName(0, 'cat_genre_id_1');
-            $cat_genre_id[2] = $rs->getValueByName(0, 'cat_genre_id_2');
-            $cat_genre_id[3] = $rs->getValueByName(0, 'cat_genre_id_3');
-            $cat_genre_id[4] = $rs->getValueByName(0, 'cat_genre_id_4');
-        //}
 
+    if (!empty($_GET['id'])){
 
-        $cat_genre_id[1] = $cat_genre_id[1] ? $cat_genre_id[1] : 0;
-        $cat_genre_id[2] = $cat_genre_id[2] ? $cat_genre_id[2] : 0;
-        $cat_genre_id[3] = $cat_genre_id[3] ? $cat_genre_id[3] : 0;
-        $cat_genre_id[4] = $cat_genre_id[4] ? $cat_genre_id[4] : 0;
+        $video = Video::getById((int) $_GET['id']);
+
+        $cat_genre_id[1] = $video['cat_genre_id_1'] ? $video['cat_genre_id_1'] : 0;
+        $cat_genre_id[2] = $video['cat_genre_id_2'] ? $video['cat_genre_id_2'] : 0;
+        $cat_genre_id[3] = $video['cat_genre_id_3'] ? $video['cat_genre_id_3'] : 0;
+        $cat_genre_id[4] = $video['cat_genre_id_4'] ? $video['cat_genre_id_4'] : 0;
 
         $k=0;
 
@@ -1261,14 +1136,12 @@ function get_selected_cat_genres(){
 }
 
 $upload_str = '';
-if(@$_SESSION['upload']){
-    $is_uploaded = 'SELECT id, name, size 
-                    FROM screenshots
-                    WHERE id 
-                    IN ('.@implode(',', @$_SESSION['upload']).')';
-    $rs=$db->executeQuery($is_uploaded);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+
+if(!empty($_SESSION['upload'])){
+
+    $screenshots = Mysql::getInstance()->from('screenshots')->in('id', $_SESSION['upload'])->get()->all();
+
+    foreach($screenshots as $arr){
         $upload_str .= $arr['name'].'.....('._('size').': '.$arr['size'].' B) <a href="del_upload.php?id='.$arr['id'].'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'"> '._('delete').'</a><br>';
     }
 }

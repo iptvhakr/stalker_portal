@@ -8,8 +8,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -113,12 +111,11 @@ if (@$_GET['id']){
     if (!check_access(array(1))){
         $sql .= " and login='".$_SESSION['login']."'";
     }
+
+    $administrators = Mysql::getInstance()->query($sql)->all();
     
-    $rs=$db->executeQuery($sql);
-    
-    
-    while(@$rs->next()){
-        $arr = $rs->getCurrentValuesAsHash();
+    foreach($administrators as $arr){
+
         $uid = $arr['id']
         ?>
         
@@ -134,14 +131,18 @@ if (@$_GET['id']){
                 <td><?= _('Turn on date')?></td>
             </tr>
             <?
-            
-            $sql_done = "select * from karaoke where accessed=1 and status=1 and archived=$archive_id and add_by=$uid";
-            //echo $sql_done;
-            $rs_done = $db->executeQuery($sql_done);
+
+            $done_karaoke = Mysql::getInstance()->from('karaoke')
+                ->where(array(
+                    'accessed' => 1,
+                    'status'   => 1,
+                    'archived' => $archive_id,
+                    'add_by'   => $uid
+                ))
+                ->get();
             
             $num = 0;
-            while(@$rs_done->next()){
-                $arr_done=$rs_done->getCurrentValuesAsHash();
+            while($arr_done = $done_karaoke->next()){
                 $num++;
                 echo "<tr>";
                 echo "<td>$num</td>";
@@ -167,19 +168,17 @@ if (@$_GET['id']){
 else{
     $page=@$_REQUEST['page']+0;
     $MAX_PAGE_ITEMS = 30;
-    
-    $query = "select * from karaoke_archive";
-    $rs = $db->executeQuery($query);
-    $total_items = $rs->getRowCount();
+
+    $total_items = Mysql::getInstance()->count()->from('karaoke_archive')->get()->counter();
     
     $page_offset=$page*$MAX_PAGE_ITEMS;
     $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
     
     $sql = "select * from karaoke_archive LIMIT $page_offset, $MAX_PAGE_ITEMS";
-    $rs  = $db->executeQuery($sql);
+
+    $archive = Mysql::getInstance()->query($sql);
     
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+    while($arr = $archive->next()){
         ?>
         
         <table border="1" width="200" cellspacing="0">

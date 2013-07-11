@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -114,8 +112,7 @@ if ($search){
     $query = "select * from users left join played_video on users.id=played_video.uid where played_video.playtime>'$from_time' group by users.id";
 }
 //echo $query;
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query($query)->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
@@ -124,7 +121,7 @@ $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
 
 $query = "select users.id as id, users.mac as mac, count(played_video.id) as video_counter from users left join played_video on users.id=played_video.uid where played_video.playtime>'$from_time' $where group by users.id order by video_counter desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
-$rs = $db->executeQuery($query);
+$video_users = Mysql::getInstance()->query($query);
 
 ?>
 <table border="0" align="center" width="620">
@@ -155,10 +152,8 @@ echo "<td class='list'><b>id</b></td>\n";
 echo "<td class='list'><b>mac</b></td>\n";
 echo "<td class='list'><b>"._('Views')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $video_users->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['id']."</td>\n";
     echo "<td class='list'>".$arr['mac']."</td>\n";

@@ -8,8 +8,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 ?>
 <html>
@@ -84,33 +82,40 @@ a.msgs:hover, a.msgs:visited, a.msgs:link{
 <?
 $id = @$_GET['id'];
 
-$sql = "select * from moderators_history where id=$id";
-//echo $sql;
-$rs=$db->executeQuery($sql);
+$history = Mysql::getInstance()->from('moderators_history')->where(array('id' => $id))->get()->first();
 
-$id = $rs->getValueByName(0, 'id');
-$send_time = $rs->getValueByName(0, 'send_time');
-$task_id = $rs->getValueByName(0, 'task_id');
+$id         = $history['id'];
+$send_time  = $history['send_time'];
+$task_id    = $history['task_id'];
 $media_name = get_media_name_by_task_id($task_id);
-$from_usr = $rs->getValueByName(0, 'from_usr');
-$from = get_moderator_login_by_id($from_usr);
-$to_usr = $rs->getValueByName(0, 'to_usr');
-$msg = $rs->getValueByName(0, 'comment');
-
-$reply_to = $rs->getValueByName(0, 'reply_to');
+$from_usr   = $history['from_usr'];
+$from       = get_moderator_login_by_id($from_usr);
+$to_usr     = $history['to_usr'];
+$msg        = $history['comment'];
+$reply_to   = $history['reply_to'];
 
 if ($reply_to){
-    $sql = "select * from moderators_history where id=$reply_to";
-    $rs=$db->executeQuery($sql);
-    $reply_to_msg = $rs->getValueByName(0, 'comment');
+
+    $reply_to_msg = Mysql::getInstance()
+        ->from('moderators_history')
+        ->where(array(
+            'id' => $reply_to
+        ))
+        ->get()
+        ->first('comment');
 
     $msg = ">".$reply_to_msg."<br/><br/>".$msg;
 }
 
 if ($to_usr == @$_SESSION['uid']){
-    $sql = "update moderators_history set readed=1, read_time=NOW() where id=$id";
-    //echo $sql;
-    $rs=$db->executeQuery($sql);
+
+    Mysql::getInstance()->update('moderators_history',
+        array(
+            'readed'    => 1,
+            'read_time' => 'NOW()'
+        ),
+        array('id' => $id)
+    );
 }
 ?>
 <table border="0" align="center" width="620">

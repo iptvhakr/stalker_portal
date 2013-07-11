@@ -4,26 +4,14 @@
 */
 include "./common.php";
 
-$db = new Database();
+$from_date = date("Y-m-d H:i:s", time() - 24*60*60);
 
-$from_ts = time() - 24*60*60;
-$from_date = date("Y-m-d H:i:s", $from_ts); 
+Mysql::getInstance()->delete('user_log', array('time<' => $from_date));
 
-$sql = "delete from user_log where time<'$from_date'";
-
-$rs=$db->executeQuery($sql);
-
-$sql = "optimize table user_log";
-$db->executeQuery($sql);
+Mysql::getInstance()->query('optimize table user_log');
 
 $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
-$sql = "delete from readed_anec where readed<'$from_time'";
-$db->executeQuery($sql);
 
-if ($rs){
-    echo 1;
-}else{
-    echo 0;
-}
+Mysql::getInstance()->delete('readed_anec', array('readed<' => $from_time));
 
-?>
+echo 1;

@@ -7,24 +7,9 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 $storage_name = @$_GET['storage'];
-
-$sql = "select * from storages where storage_name='$storage_name'";
-$rs = $db->executeQuery($sql);
-/*if ($rs->getRowCount() != 1){
-    
-    exit();
-}*/
-
-//echo '<pre>';
-//print_r($_FILES);
-//print_r($_SESSION);
-//print_r($_POST);
-//echo '</pre>';
 
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
@@ -295,12 +280,12 @@ function md5sum(obj, status, media_name, storage_name){
                 <tr>
                     <td style="padding-left: 20px; text-align: left">
                         <?
-                        $rs  = $db->executeQuery("select * from storages where status=1");
+                        $storages = Mysql::getInstance()->from('storages')->where(array('status' => 1))->get();
 
                         $on_storages = @$_GET['on_storages'];
 
-                        while(@$rs->next()){
-                            $arr=$rs->getCurrentValuesAsHash();
+                        while($arr = $storages->next()){
+
                             echo '<input type="checkbox" id="'.$arr['storage_name'].'_on_storage" name="on_storages[]" value="'.$arr['storage_name'].'"';
 
                             if ($on_storages && in_array($arr['storage_name'], $on_storages)){
@@ -343,12 +328,12 @@ function md5sum(obj, status, media_name, storage_name){
                 <tr>
                     <td style="padding-left: 35px; text-align: left">
                         <?
-                        $rs  = $db->executeQuery("select * from storages where status=1");
+                        $storages = Mysql::getInstance()->from('storages')->where(array('status' => 1))->get();
 
                         $not_on_storages = @$_GET['not_on_storages'];
 
-                        while(@$rs->next()){
-                            $arr=$rs->getCurrentValuesAsHash();
+                        while($arr = $storages->next()){
+
                             echo '<input type="checkbox" id="'.$arr['storage_name'].'_not_on_storage" name="not_on_storages[]" value="'.$arr['storage_name'].'"';
 
                             if ($not_on_storages && in_array($arr['storage_name'], $not_on_storages)){
@@ -445,18 +430,14 @@ function get_path_color($id, $path){
 }
 
 function check_video_status($id){
-    $db = Database::getInstance();
-    
-    $query = "select * from video where id=$id";
-    $rs=$db->executeQuery($query);
 
-    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
+    $video = Video::getById($id);
 
-    if (!empty($rtsp_url)){
+    if (!empty($video['rtsp_url'])){
         return 2;
     }
 
-    return $rs->getValueByName(0, 'status');
+    return $video['status'];
 }
 
 $on_storages = array();
@@ -515,9 +496,7 @@ if (!empty($_GET['sortby'])){
 }
 
 //echo $sql;
-
-$rs = $db->executeQuery($sql);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query($sql)->count();
 
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
@@ -529,11 +508,9 @@ if (@$_GET['view'] != 'text'){
 }
 
 //echo $sql."<br>";
-$rs  = $db->executeQuery($sql);
+$video = Mysql::getInstance()->query($sql);
 
 $page = @intval($_GET['page']);
-
-//$i = $page*$MAX_PAGE_ITEMS + 1;
 
 if (@$_GET['view'] != 'text'){
     echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
@@ -546,9 +523,7 @@ if (@$_GET['view'] != 'text'){
     echo "<td class='list'><b>"._('Total views per month')."</b></td>\n";
     echo "<td class='list'><b>"._('Last viewed')."</b></td>\n";
     echo "</tr>\n";
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        
+    while($arr = $video->next()){
         echo "<tr>";
         echo "<td class='list'>".$i."</td>\n";
         echo "<td class='list'>".$arr['video_id']."</td>\n";
@@ -606,9 +581,7 @@ if (@$_GET['view'] != 'text'){
     echo "</center>\n";
 }else{
     
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        
+    while($arr = $video->next()){
         echo $i."\t".$arr['path']."\t".$arr['on_storages']."\r\n";
         $i++;
     }

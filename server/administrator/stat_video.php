@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -92,12 +90,8 @@ function count_rate($sarr){
 }
 
 function get_status($id){
-    $db = Database::getInstance();
-    
-    $query = "select * from video where id=$id";
-    $rs=$db->executeQuery($query);
-    $accessed = $rs->getValueByName(0, 'status');
-    return $accessed;
+    $video = Video::getById($id);
+    return $video['status'];
 }
 
 function get_status_color($id){
@@ -130,12 +124,17 @@ function page_bar(){
 }
 
 function count_storages($id){
-    $db = Database::getInstance();
-    
-    $sql = "select count(*) as count from storage_cache where status=1 and media_type='vclub' and media_id=".$id;
-    $rs = $db->executeQuery($sql);
-    $count = $rs->getValueByName(0, 'count');
-    return $count;
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('storage_cache')
+        ->where(array(
+            'status'     => 1,
+            'media_type' => 'vclub',
+            'media_id'   => $id
+        ))
+        ->get()
+        ->counter();
 }
 
 $page=@$_REQUEST['page']+0;
@@ -146,19 +145,13 @@ $where = 'where accessed=1';
 if ($search){
     $where .= ' and name like "%'.$search.'%"';
 }
-/*
-if (@$_GET['letter']) {
-	$where = 'where name like "'.$letter.'%"';
-}*/
 
-$query = "select * from video $where";
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from video $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-//$query = "select * from video $where order by name LIMIT $page_offset, $MAX_PAGE_ITEMS";
+
 if(@$_GET['sort_by'] == 'total_counter'){
     $order = 'order by count desc';
 }else{
@@ -166,8 +159,7 @@ if(@$_GET['sort_by'] == 'total_counter'){
 }
 $query = "select id, name, count, (count_second_0_5+count_first_0_5) as counter, last_played from video $where $order LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
-$rs = $db->executeQuery($query);
-//echo $total_pages;
+$video = Mysql::getInstance()->query($query);
 ?>
 <table border="0" align="center" width="620">
 <tr>
@@ -206,10 +198,8 @@ echo "<td class='list'><b>"._('Total views')."</b></td>\n";
 echo "<td class='list'><b>"._('Last views')."</b></td>\n";
 echo "<td class='list'><b>"._('How many storages')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $video->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['id']."</td>\n";
     echo "<td class='list' style='color:".get_status_color($arr['id'])."'>".$arr['name']."</td>\n";

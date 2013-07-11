@@ -8,8 +8,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -86,35 +84,58 @@ a:hover{
 <?
 
 function get_total_tasks($uid){
-    $db  = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_open_tasks($uid){
-    $db  = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where ended=0 and to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'ended'    => 0,
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_closed_tasks($uid){
-    $db = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where ended=1 and to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'ended'    => 1,
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_rejected_tasks($uid){
-    $db = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where rejected=1 and to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'rejected' => 1,
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function page_bar(){
@@ -145,11 +166,11 @@ if (@$_GET['id']){
     if (!check_access(array(1))){
         $sql .= " and login='".$_SESSION['login']."'";
     }
+
+    $administrators = Mysql::getInstance()->query($sql);
     
-    $rs=$db->executeQuery($sql);
-    
-    while(@$rs->next()){
-        $arr = $rs->getCurrentValuesAsHash();
+    while($arr = $administrators->next()){
+
         $uid = $arr['id']
         ?>
         
@@ -167,18 +188,17 @@ if (@$_GET['id']){
             </tr>
             <?
             
-            $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
-            
-            //$sql = "select * from moderator_tasks where moderator_tasks.ended=1 and rejected=0 and end_time>'$from_time' and moderator_tasks.to_usr=$uid";
-            $sql_done = "select * from moderator_tasks where moderator_tasks.ended=1 and rejected=0 and archived=$archive_id and moderator_tasks.to_usr=$uid";
-            //echo $sql_done;
-            $rs_done = $db->executeQuery($sql_done);
+            $done_tasks = Mysql::getInstance()->from('moderator_tasks')->where(array(
+                'ended'    => 1,
+                'rejected' => 0,
+                'archived' => $archive_id,
+                'to_usr'   => $uid
+            ))->get();
             
             $length = 0;
             $total_length = 0;
             $num = 0;
-            while(@$rs_done->next()){
-                $arr_done=$rs_done->getCurrentValuesAsHash();
+            while($arr_done = $done_tasks->next()){
                 $num++;
                 $length = get_media_length_by_id($arr_done['media_id']);
                 $total_length += $length;
@@ -209,12 +229,16 @@ if (@$_GET['id']){
             <td width="100"><?= _('Duration, min')?></td>
         </tr>
     <?
-    $sql_rej = "select * from moderator_tasks where moderator_tasks.ended=1 and rejected=1 and archived=$archive_id and moderator_tasks.to_usr=$uid";
-    //echo $sql_rej;
-    $rs_rej = $db->executeQuery($sql_rej);
+
+    $rejected_tasks = Mysql::getInstance()->from('moderator_tasks')->where(array(
+        'ended'    => 1,
+        'rejected' => 1,
+        'archived' => $archive_id,
+        'to_usr'   => $uid
+    ))->get();
+
     $num = 0;
-    while(@$rs_rej->next()){
-        $arr_rej=$rs_rej->getCurrentValuesAsHash();
+    while($arr_rej = $rejected_tasks->next()){
         $num++;
         $length = get_media_length_by_id($arr_rej['media_id']);
         echo "<tr>";
@@ -240,19 +264,16 @@ if (@$_GET['id']){
 else{
     $page=@$_REQUEST['page']+0;
     $MAX_PAGE_ITEMS = 30;
-    
-    $query = "select * from tasks_archive";
-    $rs = $db->executeQuery($query);
-    $total_items = $rs->getRowCount();
+
+    $total_items = Mysql::getInstance()->count()->from('tasks_archive')->get()->counter();
     
     $page_offset=$page*$MAX_PAGE_ITEMS;
     $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
-    
-    $sql = "select * from tasks_archive LIMIT $page_offset, $MAX_PAGE_ITEMS";
-    $rs  = $db->executeQuery($sql);
-    
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+
+    $archive_tasks = Mysql::getInstance()->from('tasks_archive')->limit($MAX_PAGE_ITEMS, $page_offset)->get();
+
+    while($arr = $archive_tasks->next()){
+
         ?>
         
         <table border="1" width="200" cellspacing="0">

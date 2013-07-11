@@ -4,8 +4,6 @@
 */
 include "./common.php";
 
-$db = new Database();
-
 $day = date("j");
 
 if ($day <= 15){
@@ -14,12 +12,7 @@ if ($day <= 15){
     $field_name = 'count_second_0_5';
 }
 
-$sql = "update video set $field_name=0";
-$rs=$db->executeQuery($sql);
-if ($rs){
-    echo 1;
-}else{
-    echo 0;
-}
 
-?>
+Mysql::getInstance()->update('video', array($field_name => 0));
+
+echo 1;

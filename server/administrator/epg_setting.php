@@ -12,8 +12,6 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'azmus' && @$_SESSION['login'] != 'vitaxa' && !check_access()){
@@ -25,16 +23,14 @@ foreach (@$_POST as $key => $value){
 }
     
 if (@$_POST['add']){
-    $sql = 'insert into epg_setting (
-                uri,
-                id_prefix
-                ) 
-            values (
-                "'.@$_POST['uri'].'",
-                "'.@$_POST['id_prefix'].'"
-            )';
-    $db->executeQuery($sql);
+
+    Mysql::getInstance()->insert('epg_setting', array(
+        'uri'       => @$_POST['uri'],
+        'id_prefix' => @$_POST['id_prefix']
+    ));
+
     header("Location: epg_setting.php");
+    exit;
 }
 
 $id = @intval($_GET['id']);
@@ -42,21 +38,31 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     
     if (@$_POST['edit']){
-        $sql = 'update epg_setting set uri="'.@$_POST['uri'].'", id_prefix="'.@$_POST['id_prefix'].'" where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->update('epg_setting',
+            array(
+                'uri'       => @$_POST['uri'],
+                'id_prefix' => @$_POST['id_prefix'],
+            ),
+            array('id' => intval($_GET['id']))
+        );
+
         header("Location: epg_setting.php");
+        exit;
     }elseif (@$_GET['del']){
-        $sql = 'delete from epg_setting where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->delete('epg_setting', array('id' => intval($_GET['id'])));
+
         header("Location: epg_setting.php");
+        exit;
     }
 }
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
     $action_value = _('Save');
-    $edit = $db->executeQuery('select * from epg_setting where id='.$id)->getAllValues();
-    $edit = @$edit[0];
+
+    $edit = Mysql::getInstance()->from('epg_setting')->where(array('id' => $id))->get()->first();
 }
 
 if (isset($_GET['update_epg'])){
@@ -71,7 +77,7 @@ if (isset($_GET['update_epg'])){
     $error = $epg->updateEpg($force);
 }
 
-$settings = $db->executeQuery('select * from epg_setting')->getAllValues();
+$settings = Mysql::getInstance()->from('epg_setting')->get()->all();
 
 $debug = '<!--'.ob_get_contents().'-->';
 ob_clean();

@@ -7,8 +7,6 @@ ob_start();
 
 include "./common.php";
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
@@ -18,25 +16,20 @@ if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_acc
 $updated_video = 0;
 $updated_karaoke = 0;
 
-$sql = "select * from video where protocol!='custom'";
+$not_custom_video = Mysql::getInstance()->from('video')->where(array('protocol!=' => 'custom'))->get();
 
-$rs = $db->executeQuery($sql);
-
-while(@$rs->next()){
+while($item = $not_custom_video->next()){
     $master = new VideoMaster();
-    $master->getAllGoodStoragesForMediaFromNet($rs->getCurrentValueByName('id'), true);
+    $master->getAllGoodStoragesForMediaFromNet($item['id'], true);
     unset($master);
     $updated_video++;
 }
 
+$not_custom_karaoke = Mysql::getInstance()->from('karaoke')->where(array('protocol!=' => 'custom'))->get();
 
-$sql = "select * from karaoke where protocol!='custom'";
-
-$rs = $db->executeQuery($sql);
-
-while(@$rs->next()){
+while($item = $not_custom_video->next()){
     $master = new KaraokeMaster();
-    $master->getAllGoodStoragesForMediaFromNet($rs->getCurrentValueByName('id'));
+    $master->getAllGoodStoragesForMediaFromNet($item['id']);
     unset($master);
     $updated_karaoke++;
 }

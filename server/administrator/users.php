@@ -8,8 +8,6 @@ include "./common.php";
 $error = '';
 $last_action = '';
 
-$db = new Database();
-
 moderator_access();
 
 $search = @$_GET['search'];
@@ -30,8 +28,8 @@ if (@$_GET['video_out']){
     }else{
         $new_video_out = 'rca';
     }
-    $sql = "update users set video_out='$new_video_out' where id=$id";
-    $rs=$db->executeQuery($sql);
+
+    Mysql::getInstance()->update('users', array('video_out' => $new_video_out), array('id' => $id));
     
     header("Location: users.php?search=".$_GET['search']."&page=".$_GET['page']);
     exit();
@@ -39,9 +37,8 @@ if (@$_GET['video_out']){
 
 if (@$_GET['del'] && check_access(array(3)) && !Config::getSafe('deny_delete_user', false)){
     $id = intval(@$_GET['id']);
-    
-    $sql = "delete from users where id=$id";
-    $db->executeQuery($sql);
+
+    Mysql::getInstance()->delete('users', array('id' => $id));
     
     header("Location: users.php?search=".$_GET['search']."&page=".$_GET['page']);
     exit();
@@ -138,40 +135,10 @@ function page_bar(){
     return $page_bar;
 }
 
-function get_last_param($mac){
-    global $db;
-    global $last_action;
-    
-    //$sql = "select * from user_log where mac='$mac' and action<>'play_now()' and action<>'create_link()' and action<>'create_link' order by time desc";
-    $sql = "select * from user_log where mac='$mac' and action<>'create_link()' and action<>'create_link' order by time desc";
-    $rs=$db->executeQuery($sql);
-    $param = @$rs->getValueByName(0, 'param');
-    return parse_param($last_action,$param);
-}
-
-function get_last_action($mac){
-    global $db;
-    global $last_action;
-    
-    //$sql = "select * from user_log where mac='$mac' and action<>'play_now()' and action<>'create_link()' and action<>'create_link' order by time desc";
-    $sql = "select * from user_log where mac='$mac' and action<>'create_link()' and action<>'create_link' order by time desc limit 0,1";
-    $rs=$db->executeQuery($sql);
-    $action = @$rs->getValueByName(0, 'action');
-    $last_action = $action;
-    return $action;
-}
-
 function get_last_time($time){
-    global $db;
-    
-    
     $time_ts = datetime2timestamp($time);
     
-    //echo $time.' : '.$time_ts.'<br>';
-    
     $time_now = time();
-    
-    //echo $time_now.'<br>';
     
     $time_delta_s = $time_now - $time_ts;
     $str = '';
@@ -333,25 +300,23 @@ function construct_time(){
 }
 
 function parse_param($action, $param){
-    global $db;
-    $name = '';
-    //if($action == 'play()' || $action == 'play_not_to()'){
+
     if($action == 'play'){
         $sub_param = substr($param, 0, 3);
         
         if ($sub_param == 'rtp'){
-            
-            $query = "select * from itv where cmd='$param'";
-            $rs = $db->executeQuery($query);
-            $name = '['._('Channel').'] '.@$rs->getValueByName(0, 'name');
+
+            $channel = Mysql::getInstance()->from('itv')->where(array('cmd' => $param))->get()->first();
+
+            $name = '['._('Channel').'] '.$channel['name'];
             
         }else if ($sub_param == 'aut'){
             preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr);
             $media_id = $tmp_arr[1];
-            
-            $query = "select * from video where id='$media_id'";
-            $rs = $db->executeQuery($query);
-            $name = '['._('Video').'] '.@$rs->getValueByName(0, 'name');
+
+            $video = Video::getById($media_id);
+
+            $name = '['._('Video').'] '.$video['name'];
             
         }else{
             $name = '';
@@ -394,18 +359,11 @@ function get_user_color($id){
 }
 
 function get_user_status($id){
-    global $db;
-    $query = "select * from users where id='$id'";
-    $rs = $db->executeQuery($query);
-    $status = $rs->getValueByName(0, 'status');
-    return $status;
+    $stb = Stb::getById($id);
+    return $stb['status'];
 }
 
 function set_user_status($id, $status){
-    /*global $db;
-    $query = "update users set status=$status, last_change_status=NOW() where id='$id'";
-    $rs = $db->executeQuery($query);
-    return;*/
     return Mysql::getInstance()->update('users', array('status' => $status, 'last_change_status' => 'NOW()'), array('id' => $id));
 }
 
@@ -520,15 +478,14 @@ switch (@$_GET['sort_by']){
 //echo $where;
 $query = "select * from users $where";
 
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query($query)->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select users.*, tariff_plan.name as tariff_plan_name from users left join tariff_plan on tariff_plan.id=tariff_plan_id $where LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
-$rs = $db->executeQuery($query);
+$users = Mysql::getInstance()->query($query);
 
 function add_where(&$where, $str){
     if ($where){
@@ -623,11 +580,9 @@ echo "<td class='list'><b>"._('Last change<br>of status')."</b></td>\n";
 echo "</tr>\n";
 $i=0+$MAX_PAGE_ITEMS*$page;
 
-while(@$rs->next()){
+while($arr = $users->next()){
     $i++;
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+
     $now_playing_content = $arr['now_playing_content'];
     
     if ($arr['now_playing_type'] == 2 && $arr['storage_name']){

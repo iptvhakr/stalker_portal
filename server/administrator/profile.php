@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 //echo '<pre>';
@@ -77,37 +75,35 @@ if (@$_POST['account']){
 
 if (@$_GET['video_out']){
     $video_out = @$_GET['video_out'];
-    $id = intval(@$_GET['id']);
-    
+    $id = intval($_GET['id']);
+
     if ($video_out == 'svideo'){
         $new_video_out = 'svideo';
     }else{
         $new_video_out = 'rca';
     }
-    $sql = "update users set video_out='$new_video_out' where id=$id";
-    $rs=$db->executeQuery($sql);
-    
-    header("Location: profile.php?id=".@$_GET['id']);
+
+    Mysql::getInstance()->update('users', array('video_out' => $new_video_out), array('id' => $id));
+
+    header("Location: profile.php?id=".$id);
     exit();
 }
 
 if (@$_GET['parent_password'] && $_GET['parent_password'] == 'default'){
-    $id = intval(@$_GET['id']);
-    
-    $sql = "update users set parent_password='0000' where id=$id";
-    $rs=$db->executeQuery($sql);
-    
-    header("Location: profile.php?id=".@$_GET['id']);
+    $id = intval($_GET['id']);
+
+    Mysql::getInstance()->update('users', array('parent_password' => '0000'), array('id' => $id));
+
+    header("Location: profile.php?id=".$id);
     exit();
 }
 
 if (@$_GET['fav_itv'] && $_GET['fav_itv'] == 'default'){
-    $id = intval(@$_GET['id']);
-    
-    $sql = "update fav_itv set fav_ch='' where uid=$id";
-    $rs=$db->executeQuery($sql);
-    
-    header("Location: profile.php?id=".@$_GET['id']);
+    $id = intval($_GET['id']);
+
+    Mysql::getInstance()->update('fav_itv', array('fav_ch' => ''), array('uid' => $id));
+
+    header("Location: profile.php?id=".$id);
     exit();
 }
 
@@ -120,9 +116,8 @@ if (isset($_GET['set_services'])){
     }else{
         $set = 1;
     }
-    
-    $sql = "update users set additional_services_on=$set where id=$id";
-    $rs=$db->executeQuery($sql);
+
+    Mysql::getInstance()->update('users', array('additional_services_on' => $set), array('id' => $id));
     
     header("Location: profile.php?id=".@$_GET['id']);
     exit();
@@ -214,26 +209,22 @@ function get_video_out($video_out, $id){
 }
 
 function get_cost_sub_channels(){
-    global $db,$id;
-    
+
     $sub_ch = get_sub_channels();
+
     if (count($sub_ch) > 0){
-        $sub_ch_str = join(",", get_sub_channels());
-        $sql = "select SUM(cost) as total_cost from itv where id in ($sub_ch_str)";
-        $rs = $db->executeQuery($sql);
-        $total_cost = @$rs->getValueByName(0, 'total_cost');
-        return $total_cost;
+        return Mysql::getInstance()->select('SUM(cost) as total_cost')->from('itv')->in('id', $sub_ch)->get()->first('total_cost');
     }else{
         return 0;
     }
 }
 
 function additional_services_btn(){
-    global $db,$id;
-    
-    $sql = "select * from users where id=".$id;
-    $rs = $db->executeQuery($sql);
-    $additional_services_on = @$rs->getValueByName(0, 'additional_services_on');
+    global $id;
+
+    $stb = Stb::getById($id);
+
+    $additional_services_on = $stb['additional_services_on'];
     if ($additional_services_on == 0){
         $color = 'red';
         $txt = _('Disabled');
@@ -246,23 +237,18 @@ function additional_services_btn(){
     return '<a href="profile.php?id='.$id.'&set_services='.$set.'" style="color:'.$color.'"><b>'.$txt.'</b></a>';
 }
 
+$arr = Stb::getById($id);
 
-$sql = "select * from users where id=$id";
-$rs=$db->executeQuery($sql);
-
-while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        $user = $arr;
-        $mac = $arr['mac'];
-        $ip  = $arr['ip'];
-        $video_out  = $arr['video_out'];
-        $parent_password  = $arr['parent_password'];
-        //$tariff_plan_id  = $arr['tariff_plan_id'];
-        $tariff_plan_id  = User::getInstance((int) $arr['id'])->getProfileParam('tariff_plan_id');
+if (!empty($arr)){
+    $user = $arr;
+    $mac = $arr['mac'];
+    $ip  = $arr['ip'];
+    $video_out  = $arr['video_out'];
+    $parent_password  = $arr['parent_password'];
+    $tariff_plan_id  = User::getInstance((int) $arr['id'])->getProfileParam('tariff_plan_id');
 }
 
-$rs=$db->executeQuery("select * from fav_itv where uid=".$id);
-$fav_ch = $rs->getValueByName(0, 'fav_ch');
+$fav_ch = Mysql::getInstance()->from('fav_itv')->where(array('uid' => $id))->get()->first('fav_ch');
 
 $fav_ch_arr = unserialize(base64_decode($fav_ch));
 

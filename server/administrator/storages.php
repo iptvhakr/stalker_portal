@@ -9,8 +9,6 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'vitaxa' && @$_SESSION['login'] != 'azmus' && !check_access()){
@@ -26,38 +24,25 @@ if (!empty($_POST['nfs_home_path']) && strripos($_POST['nfs_home_path'], '/') !=
 }
     
 if (@$_POST['add']){
-    $sql = 'insert into storages (
-                storage_name, 
-                storage_ip,
-                apache_port,
-                nfs_home_path, 
-                max_online,
-                user_agent_filter,
-                for_moderator,
-                for_records,
-                fake_tv_archive,
-                archive_stream_server,
-                external,
-                for_simple_storage,
-                not_for_mag100
-                )
-            values (
-                "'.@$_POST['storage_name'].'",
-                "'.@$_POST['storage_ip'].'",
-                "'.@$_POST['apache_port'].'",
-                "'.@$_POST['nfs_home_path'].'",
-                "'.@$_POST['max_online'].'",
-                "'.@$_POST['user_agent_filter'].'",
-                "'.@intval($_POST['for_moderator']).'",
-                "'.@intval($_POST['for_records']).'",
-                "'.@intval($_POST['fake_tv_archive']).'",
-                "'.@$_POST['archive_stream_server'].'",
-                "'.@intval($_POST['external']).'",
-                "'.@intval($_POST['for_simple_storage']).'",
-                "'.@intval($_POST['not_for_mag100']).'"
-            )';
-    $db->executeQuery($sql);
+
+    Mysql::getInstance()->insert('storages', array(
+        'storage_name'          => @$_POST['storage_name'],
+        'storage_ip'            => @$_POST['storage_ip'],
+        'apache_port'           => @$_POST['apache_port'],
+        'nfs_home_path'         => @$_POST['nfs_home_path'],
+        'max_online'            => @$_POST['max_online'],
+        'user_agent_filter'     => @$_POST['user_agent_filter'],
+        'for_moderator'         => @intval($_POST['for_moderator']),
+        'for_records'           => @intval($_POST['for_records']),
+        'fake_tv_archive'       => @intval($_POST['fake_tv_archive']),
+        'archive_stream_server' => @$_POST['archive_stream_server'],
+        'external'              => @intval($_POST['external']),
+        'for_simple_storage'    => @intval($_POST['for_simple_storage']),
+        'not_for_mag100'        => @intval($_POST['not_for_mag100'])
+    ));
+
     header("Location: storages.php");
+    exit;
 }
 
 $id = @intval($_GET['id']);
@@ -65,52 +50,65 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
 
     if (@$_POST['edit']){
-        $sql = 'update storages set
-                    storage_name="'.@$_POST['storage_name'].'",
-                    storage_ip="'.@$_POST['storage_ip'].'",
-                    apache_port="'.@$_POST['apache_port'].'",
-                    nfs_home_path="'.@$_POST['nfs_home_path'].'",
-                    max_online="'.@$_POST['max_online'].'",
-                    user_agent_filter="'.@$_POST['user_agent_filter'].'",
-                    for_moderator="'.@intval($_POST['for_moderator']).'",
-                    for_records="'.@intval($_POST['for_records']).'",
-                    fake_tv_archive="'.@intval($_POST['fake_tv_archive']).'",
-                    archive_stream_server="'.@$_POST['archive_stream_server'].'",
-                    external="'.@intval($_POST['external']).'",
-                    for_simple_storage="'.@intval($_POST['for_simple_storage']).'",
-                    not_for_mag100="'.@intval($_POST['not_for_mag100']).'"
-                where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
-        //var_dump($_POST,$sql);
+
+        Mysql::getInstance()->update('storages',
+            array(
+                'storage_name'          => @$_POST['storage_name'],
+                'storage_ip'            => @$_POST['storage_ip'],
+                'apache_port'           => @$_POST['apache_port'],
+                'nfs_home_path'         => @$_POST['nfs_home_path'],
+                'max_online'            => @$_POST['max_online'],
+                'user_agent_filter'     => @$_POST['user_agent_filter'],
+                'for_moderator'         => @intval($_POST['for_moderator']),
+                'for_records'           => @intval($_POST['for_records']),
+                'fake_tv_archive'       => @intval($_POST['fake_tv_archive']),
+                'archive_stream_server' => @$_POST['archive_stream_server'],
+                'external'              => @intval($_POST['external']),
+                'for_simple_storage'    => @intval($_POST['for_simple_storage']),
+                'not_for_mag100'        => @intval($_POST['not_for_mag100'])
+            ),
+            array('id' => intval($_GET['id']))
+        );
+
         header("Location: storages.php");
+        exit;
     }elseif (@$_GET['del']){
-        $sql = 'delete from storages where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->delete('storages', array('id' => intval($_GET['id'])));
+
         header("Location: storages.php");
+        exit;
     }elseif (isset($_GET['status'])){
-        $new_status = $_GET['status'];
-        $sql = 'update storages set status='.$new_status.' where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->update('storages', array('status' => $_GET['status']), array('id' => intval($_GET['id'])));
+
         header("Location: storages.php");
+        exit;
     }
 }
 
 if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
     $action_value = _('Save');
-    $edit_storage = $db->executeQuery('select * from storages where id='.$id)->getAllValues();
-    $edit_storage = @$edit_storage[0];
+    $edit_storage = Mysql::getInstance()->from('storages')->where(array('id' => $id))->get()->first();
 }
 
 if (@$_GET['reset_cache'] && !empty($id)){
-    $storage_name = $db->executeQuery('select * from storages where id='.$id)->getAllValues();
-    $storage_name = @$storage_name[0]['storage_name'];
+
+    $storage = Mysql::getInstance()->from('storages')->where(array('id' => $id))->get()->first();
+    $storage_name = $storage['name'];
+
     if (!empty($storage_name)){
-        $db->executeQuery('update storage_cache set changed="0000-00-00 00:00:00" where storage_name="'.$storage_name.'"');
-        if (!$db->getLastError()){
-            $error = sprintf(_('Cache %s is cleared'), $storage_name);;
-        }else{
-            $error = $db->getLastError();
+
+        $reset_result = Mysql::getInstance()->update('storage_cache',
+            array(
+                'changed' => '0000-00-00 00:00:00'
+            ),
+            array('storage_name' => $storage_name)
+        )->result();
+
+        if ($reset_result){
+            $error = sprintf(_('Cache %s is cleared'), $storage_name);
         }
     }else{
         $error = sprintf(_('Storage with id %s not found'), $id);
@@ -118,15 +116,15 @@ if (@$_GET['reset_cache'] && !empty($id)){
 }
 
 if (@$_GET['reset_all_cache']){
-    $db->executeQuery('update storage_cache set changed="0000-00-00 00:00:00"');
-    if (!$db->getLastError()){
+
+    $reset_result = Mysql::getInstance()->update('storage_cache', array('changed' => '0000-00-00 00:00:00'))->result();
+
+    if ($reset_result){
         $error = _('Cache is cleared');
-    }else{
-        $error = $db->getLastError();
     }
 }
 
-$storages = $db->executeQuery('select * from storages')->getAllValues();
+$storages = Mysql::getInstance()->from('storages')->get()->all();
 
 ?>
 <html>

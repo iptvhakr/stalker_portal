@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_GET['del'] && !empty($_GET['id'])){
@@ -20,15 +18,14 @@ if (@$_GET['del'] && !empty($_GET['id'])){
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
-    $query = "update itv set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    header("Location: add_itv.php");
-    exit;
-}
 
-if (isset($_GET['status']) && @$_GET['id']){
-    $query = "update itv set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+    Mysql::getInstance()->update('itv',
+        array(
+            'status' => intval(@$_GET['status'])
+        ),
+        array('id' => intval(@$_GET['id']))
+    );
+
     header("Location: add_itv.php");
     exit;
 }
@@ -202,72 +199,37 @@ if (!$error){
                     $archive->deleteTasks($ch_id);
                 }
             }
-    
-            $query = "insert into itv (
-                                        name,
-                                        number,
-                                        use_http_tmp_link,
-                                        wowza_tmp_link,
-                                        wowza_dvr,
-                                        censored,
-                                        base_ch,
-                                        bonus_ch,
-                                        hd,
-                                        cost,
-                                        cmd,
-                                        cmd_1,
-                                        cmd_2,
-                                        cmd_3,
-                                        mc_cmd,
-                                        enable_wowza_load_balancing,
-                                        enable_tv_archive,
-                                        allow_pvr,
-                                        allow_local_pvr,
-                                        enable_monitoring,
 
-                                        descr,
-                                        tv_genre_id, 
-                                        status,
-                                        xmltv_id,
-                                        service_id,
-                                        volume_correction,
-                                        correct_time,
-                                        modified
-                                        ) 
-                                values ('".@$_POST['name']."',
-                                        '".@$_POST['number']."', 
-                                        '".$use_http_tmp_link."',
-                                        '".$wowza_tmp_link."',
-                                        '".$wowza_dvr."',
-                                        '".$censored."',
-                                        '".$base_ch."',
-                                        '".$bonus_ch."',
-                                        '".$hd."',
-                                        '".@$_POST['cost']."',
-                                        '".(!empty($_POST['cmd'][0]) ? $_POST['cmd'][0] : "")."',
-                                        '".@$_POST['cmd_1']."',
-                                        '".@$_POST['cmd_2']."',
-                                        '".@$_POST['cmd_3']."',
-                                        '".$mc_cmd."',
-                                        '".$enable_wowza_load_balancing."',
-                                        '".$enable_tv_archive."',
-                                        '".$allow_pvr."',
-                                        '".$allow_local_pvr."',
-                                        '".$enable_monitoring."',
-
-                                        '".@$_POST['descr']."',
-                                        '".@$_POST['tv_genre_id']."', 
-                                        1,
-                                        '".@$_POST['xmltv_id']."',
-                                        '".trim($_POST['service_id'])."',
-                                        ".intval($_POST['volume_correction']).",
-                                        ".intval($_POST['correct_time']).",
-                                        NOW()
-                                        )";
-            echo $query;
-            $rs=$db->executeQuery($query);
-            //var_dump($rs);
-            $ch_id = $rs->getLastInsertId();
+            $ch_id = Mysql::getInstance()->insert('itv', array(
+                'name'                        => $_POST['name'],
+                'number'                      => $_POST['number'],
+                'use_http_tmp_link'           => $use_http_tmp_link,
+                'wowza_tmp_link'              => $wowza_tmp_link,
+                'wowza_dvr'                   => $wowza_dvr,
+                'censored'                    => $censored,
+                'base_ch'                     => $base_ch,
+                'bonus_ch'                    => $bonus_ch,
+                'hd'                          => $hd,
+                'cost'                        => @$_POST['cost'],
+                'cmd'                         => (!empty($_POST['cmd'][0]) ? $_POST['cmd'][0] : ""),
+                'cmd_1'                       => @$_POST['cmd_1'],
+                'cmd_2'                       => @$_POST['cmd_2'],
+                'cmd_3'                       => @$_POST['cmd_3'],
+                'mc_cmd'                      => $mc_cmd,
+                'enable_wowza_load_balancing' => $enable_wowza_load_balancing,
+                'enable_tv_archive'           => $enable_tv_archive,
+                'allow_pvr'                   => $allow_pvr,
+                'allow_local_pvr'             => $allow_local_pvr,
+                'enable_monitoring'           => $enable_monitoring,
+                'descr'                       => @$_POST['descr'],
+                'tv_genre_id'                 => @$_POST['tv_genre_id'],
+                'status'                      => 1,
+                'xmltv_id'                    => @$_POST['xmltv_id'],
+                'service_id'                  => trim($_POST['service_id']),
+                'volume_correction'           => intval($_POST['volume_correction']),
+                'correct_time'                => intval($_POST['correct_time']),
+                'modified'                    => 'NOW()'
+            ))->insert_id();
 
             foreach ($links as $link){
 
@@ -336,38 +298,38 @@ if (!$error){
                 }
             }
 
-            $query = "update itv 
-                                set name='".$_POST['name']."',
-                                cmd='".(!empty($_POST['cmd'][0]) ? $_POST['cmd'][0] : "")."',
-                                cmd_1='".@$_POST['cmd_1']."',
-                                cmd_2='".@$_POST['cmd_2']."',
-                                cmd_3='".@$_POST['cmd_3']."',
-                                mc_cmd='".$mc_cmd."',
-                                enable_wowza_load_balancing='".$enable_wowza_load_balancing."',
-                                enable_tv_archive='".$enable_tv_archive."',
-                                allow_pvr='".$allow_pvr."',
-                                allow_local_pvr='".$allow_local_pvr."',
-                                enable_monitoring='".$enable_monitoring."',
-
-                                wowza_tmp_link='".$wowza_tmp_link."',
-                                wowza_dvr='".$wowza_dvr."',
-                                use_http_tmp_link='".$use_http_tmp_link."',
-                                censored='".$censored."',
-                                base_ch='".$base_ch."',
-                                bonus_ch='".$bonus_ch."', 
-                                hd='".$hd."', 
-                                cost='".$_POST['cost']."', 
-                                number='".$_POST['number']."', 
-                                descr='".$_POST['descr']."', 
-                                tv_genre_id='".$_POST['tv_genre_id']."',
-                                xmltv_id='".$_POST['xmltv_id']."',
-                                service_id='".trim($_POST['service_id'])."',
-                                volume_correction=".intval($_POST['volume_correction']).",
-                                correct_time=".intval($_POST['correct_time']).",
-                                modified=NOW()
-                            where id=".intval(@$_GET['id']);
-            //var_dump($query);
-            $rs=$db->executeQuery($query);
+            Mysql::getInstance()->update('itv',
+                array(
+                    'name'                        => $_POST['name'],
+                    'cmd'                         => (!empty($_POST['cmd'][0]) ? $_POST['cmd'][0] : ""),
+                    'cmd_1'                       => @$_POST['cmd_1'],
+                    'cmd_2'                       => @$_POST['cmd_2'],
+                    'cmd_3'                       => @$_POST['cmd_3'],
+                    'mc_cmd'                      => $mc_cmd,
+                    'enable_wowza_load_balancing' => $enable_wowza_load_balancing,
+                    'enable_tv_archive'           => $enable_tv_archive,
+                    'allow_pvr'                   => $allow_pvr,
+                    'allow_local_pvr'             => $allow_local_pvr,
+                    'enable_monitoring'           => $enable_monitoring,
+                    'wowza_tmp_link'              => $wowza_tmp_link,
+                    'wowza_dvr'                   => $wowza_dvr,
+                    'use_http_tmp_link'           => $use_http_tmp_link,
+                    'censored'                    => $censored,
+                    'base_ch'                     => $base_ch,
+                    'bonus_ch'                    => $bonus_ch,
+                    'hd'                          => $hd,
+                    'cost'                        => $_POST['cost'],
+                    'number'                      => $_POST['number'],
+                    'descr'                       => $_POST['descr'],
+                    'tv_genre_id'                 => $_POST['tv_genre_id'],
+                    'xmltv_id'                    => $_POST['xmltv_id'],
+                    'service_id'                  => trim($_POST['service_id']),
+                    'volume_correction'           => intval($_POST['volume_correction']),
+                    'correct_time'                => intval($_POST['correct_time']),
+                    'modified'                    => 'NOW()'
+                ),
+                array('id' => intval(@$_GET['id']))
+            );
 
             if (!$enable_monitoring){
                 Mysql::getInstance()->update('itv', array('monitoring_status' => 1), array('id' => intval(@$_GET['id'])));
@@ -558,11 +520,9 @@ function handle_upload_logo($file, $ch_id){
 }
 
 function check_number($num){
-    global $db;
-    $total_items = 1;
-    $query = "select * from itv where number=".intval($num);
-    $rs=$db->executeQuery($query);
-    $total_items = $rs->getRowCount();
+
+    $total_items = Mysql::getInstance()->from('itv')->count()->where(array('number' => intval($num)))->get()->count();
+
     if ($total_items > 0){
         return 0;
     }else{
@@ -995,11 +955,8 @@ $last_modified_id = Mysql::getInstance()
     ->get()
     ->first('id');
 
-$query = "select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter, media_claims.no_epg, media_claims.wrong_epg from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number";
+$all_channels = Mysql::getInstance()->query("select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter, media_claims.no_epg, media_claims.wrong_epg from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number");
 
-//echo $query;
-
-$rs=$db->executeQuery($query);
 echo "<center><table class='list item_list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
 echo "<th class='list number_row'><b>id</b></th>";
@@ -1014,10 +971,8 @@ echo "<th class='list'><b>"._('Volume correction')."</b></th>";
 echo "<th class='list'><b>"._('Claims about<br>audio/video/epg')."</b></th>\n";
 echo "<th class='list'><b>&nbsp;</b></th>";
 echo "</tr>";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while ($arr = $all_channels->next()){
+
     echo "<tr ";
     if ($arr['bonus_ch'] == 1){
         echo 'bgcolor="#ffffec"';
@@ -1074,10 +1029,11 @@ while(@$rs->next()){
 echo "</table></center>";
 
 if (@$_GET['edit']){
-    $query = "select * from itv where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+
+    $arr = Itv::getById(intval(@$_GET['id']));
+
+    if (!empty($arr)){
+
         $name     = $arr['name'];
         $number   = $arr['number'];
         $cmd      = $arr['cmd'];
@@ -1244,16 +1200,16 @@ if (@$_GET['edit']){
 }
 
 function get_genres(){
-    global $db;
+
     global $tv_genre_id;
-    
-    $query = "select * from tv_genre";
-    $rs=$db->executeQuery($query);
+
+    $genres = Mysql::getInstance()->from('tv_genre')->get()->all();
+
     $option = '';
     
-    while(@$rs->next()){
+    foreach ($genres as $arr){
         $selected = '';
-        $arr=$rs->getCurrentValuesAsHash();
+
         if ($tv_genre_id == $arr['id']){
             $selected = 'selected';
         }

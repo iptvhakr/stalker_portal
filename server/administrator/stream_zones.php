@@ -9,8 +9,6 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'vitaxa' && @$_SESSION['login'] != 'azmus' && !check_access()){
@@ -22,16 +20,11 @@ foreach (@$_POST as $key => $value){
 }
 
 if (@$_POST['add']){
-    $sql = 'insert into stream_zones (
-                `name`,
-                `default_zone`
-                )
-            values (
-                "'.@$_POST['name'].'",
-                "'.@$_POST['default_zone'].'"
-            )';
-    $rs = $db->executeQuery($sql);
-    $zone_id = $rs->getLastInsertId();
+
+    $zone_id = Mysql::getInstance()->insert('stream_zones', array(
+        'name'         => @$_POST['name'],
+        'default_zone' => @$_POST['default_zone']
+    ))->insert_id();
 
     $countries = empty($_POST['countries']) ? array() : json_decode($_POST['countries'], true);
 
@@ -47,11 +40,14 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
 
     if (@$_POST['edit']){
-        $sql = 'update stream_zones set
-                    name="'.@$_POST['name'].'",
-                    default_zone="'.@$_POST['default_zone'].'"
-                where id='.$id;
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->update('stream_zones',
+            array(
+                'name'         => @$_POST['name'],
+                'default_zone' => @$_POST['default_zone']
+            ),
+            array('id' => $id)
+        );
 
         $new_countries_id = empty($_POST['countries']) ? array() : json_decode($_POST['countries'], true);
 
@@ -71,13 +67,15 @@ if (!empty($id)){
         }
 
         header("Location: stream_zones.php");
+        exit;
     }elseif (@$_GET['del']){
-        $sql = 'delete from stream_zones where id='.$id;
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->delete('stream_zones', array('id' => $id));
 
         Mysql::getInstance()->delete('countries_in_zone', array('zone_id' => $id));
 
         header("Location: stream_zones.php");
+        exit;
     }
 }
 

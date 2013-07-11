@@ -8,52 +8,28 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (count($_POST) > 0){
-    $sql = "insert into moderator_tasks
-                (
-                    to_usr,
-                    media_type,
-                    media_id,
-                    start_time
-                )
-                value
-                (
-                     {$_POST['to_usr']},
-                     2,
-                     {$_POST['id']},
-                     NOW()
-                )
-                ";
-    $rs=$db->executeQuery($sql);
-    
-    $task_id = $rs->getLastInsertId();
-    
-    $sql = "insert into moderators_history
-                (
-                    task_id,
-                    from_usr,
-                    to_usr,
-                    comment,
-                    send_time
-                )
-                value
-                (
-                     $task_id,
-                     {$_SESSION['uid']},
-                     {$_POST['to_usr']},
-                    '{$_POST['comment']}',
-                     NOW()
-                )
-                ";
-    $rs=$db->executeQuery($sql);
+
+    $task_id = Mysql::getInstance()->insert('moderator_tasks', array(
+        'to_usr'     => $_POST['to_usr'],
+        'media_type' => 2,
+        'media_id'   => $_POST['id'],
+        'start_time' => 'NOW()'
+    ))->insert_id();
+
+    Mysql::getInstance()->insert('moderators_history', array(
+        'task_id'   => $task_id,
+        'from_usr'  => $_SESSION['uid'],
+        'to_usr'    => $_POST['to_usr'],
+        'comment'   => $_POST['comment'],
+        'send_time' => 'NOW()'
+    ));
 
     Video::log((int) $_POST['id'], '<a href="msgs.php?task='.$task_id.'">'._('task open').'</a>', (int) $_POST['to_usr']);
 
-    if (!$db->getLastError()){
+    if (!$task_id){
         js_redirect('add_video.php', _('the task has been sent'));
     }else{
         echo _('error');
@@ -126,27 +102,22 @@ a:hover{
 <td>
 <?
 function get_moderators(){
-    global $db;
+
     $opt = '';
-    
-    $sql = "select * from administrators where access=1 or access=2";
-    $rs=$db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+
+    $moderators = Mysql::getInstance()->from('administrators')->in('access', array(1, 2))->get();
+
+    while($arr = $moderators->next()){
         $opt .= "<option value={$arr['id']}>{$arr['login']}\n";
     }
     return $opt;
 }
 
 function get_sended_video(){
-    global $db;
-    $id = @$_GET['id'];
-    
-    $sql = "select * from video where id=$id";
-    $rs=$db->executeQuery($sql);
-    
-    $name = $rs->getValueByName(0, 'name');
-    return $name;
+
+    $video = Video::getById(intval($_GET['id']));
+
+    return $video['name'];
 }
 ?>
 <table border="0" align="center" width="620">

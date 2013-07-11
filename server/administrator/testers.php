@@ -9,8 +9,6 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-$db = Mysql::getInstance();
-
 moderator_access();
 
 //if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
@@ -22,8 +20,8 @@ foreach (@$_POST as $key => $value){
 }
     
 if (@$_POST['add']){
-    
-    $db->insert('testers', array('mac' => Middleware::normalizeMac($_POST['mac'])));
+
+    Mysql::getInstance()->insert('testers', array('mac' => Middleware::normalizeMac($_POST['mac'])));
     
     header("Location: testers.php");
 }
@@ -34,21 +32,21 @@ if (!empty($id)){
     
     if (@$_POST['edit']){
 
-        $db->update('testers',
+        Mysql::getInstance()->update('testers',
                     array('mac' => Middleware::normalizeMac($_POST['mac'])),
                     array('id' => $id));
         
         header("Location: testers.php");
     }elseif (@$_GET['del']){
-        
-        $db->delete('testers', array('id' => $id));
+
+        Mysql::getInstance()->delete('testers', array('id' => $id));
         
         header("Location: testers.php");
     }elseif (isset($_GET['status'])){
         
         $new_status = $_GET['status'];
-        
-        $db->update('testers',
+
+        Mysql::getInstance()->update('testers',
                     array('status' => $new_status),
                     array('id' => $id));
         
@@ -60,10 +58,10 @@ if (@$_GET['edit'] && !empty($id)){
     $action_name = 'edit';
     $action_value = _('Save');
     
-    $edit_tester = $db->from('testers')->where(array('id' => $id))->get()->first();
+    $edit_tester = Mysql::getInstance()->from('testers')->where(array('id' => $id))->get()->first();
 }
 
-$testers = $db->from('testers')->get()->all();
+$testers = Mysql::getInstance()->from('testers')->get()->all();
 
 $debug = '<!--'.ob_get_contents().'-->';
 ob_clean();

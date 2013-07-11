@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -21,10 +19,17 @@ $search = @$_GET['search'];
 $letter = @$_GET['letter'];
 
 if (@$_GET['reset'] && @$_GET['media_type'] && @$_GET['media_id']){
-    
-    $sql = "update media_claims set sound_counter=0, video_counter=0, no_epg=0, wrong_epg=0 where media_type='".$_GET['media_type']."' and media_id=".intval($_GET['media_id']);
-    $db->executeQuery($sql);
-    
+
+    Mysql::getInstance()->update('media_claims',
+        array(
+            'sound_counter' => 0,
+            'video_counter' => 0,
+            'no_epg'        => 0,
+            'wrong_epg'     => 0
+        ),
+        array('media_id' => intval($_GET['media_id']))
+    );
+
     if ($_SERVER['HTTP_REFERER']){
         $location = $_SERVER['HTTP_REFERER'];
     }else{
@@ -123,18 +128,15 @@ $MAX_PAGE_ITEMS = 30;
 
 $where = '';
 
-$query = "select * from daily_media_claims $where";
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from daily_media_claims $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-
 $query = "select * from daily_media_claims $where order by date desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
-//echo $query;
-$rs = $db->executeQuery($query);
-//echo $total_pages;
+
+$all_claims = Mysql::getInstance()->query($query);
+
 ?>
 <table border="0" align="center" width="620">
 <tr>
@@ -156,10 +158,8 @@ echo "<td class='list'><b>"._('Wrong epg')."</b></td>\n";
 echo "<td class='list'><b>"._('Karaoke sound')."</b></td>\n";
 echo "<td class='list'><b>"._('Karaoke video')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $all_claims->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['date']."</td>\n";
     echo "<td class='list'><a href='claims_log.php?date=".$arr['date']."&type=sound&media_type=vclub'>".$arr['vclub_sound']."</a></td>\n";

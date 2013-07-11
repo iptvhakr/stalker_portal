@@ -8,16 +8,15 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 $error_counter = 0;
 
 if (@$_GET['del'] == 1){
     $uid = Middleware::getUidByMac(@$_GET['mac']);
-    $sql = "delete from events where uid=".$uid;
-    $rs=$db->executeQuery($sql);
+
+    Mysql::getInstance()->delete('events', array('uid' => $uid));
+
     header("Location: events.php?mac=".@$_GET['mac']);
     exit;
 }
@@ -109,39 +108,34 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
         }
         
         $sql = "update users set status=1, last_change_status=NOW() where id in (".implode(",", $user_list).")";
-        $db->executeQuery($sql);
+        Mysql::getInstance()->query($sql);
         
         $event->sendCutOff();
     }
     
     switch ($_POST['event']) {
-    	case 'send_msg':
-    		if (@$_POST['need_reboot']){
+        case 'send_msg':
+            if (@$_POST['need_reboot']) {
                 $event->sendMsgAndReboot(@$_POST['msg']);
-            }else{
+            } else {
                 $event->sendMsg(@$_POST['msg']);
             }
-    		break;
-    	case 'reboot':
-                $event->sendReboot();
-    		break;
+            break;
+        case 'reboot':
+            $event->sendReboot();
+            break;
         case 'reload_portal':
             $event->sendReloadPortal();
             break;
-    	case 'update_channels':
-                $event->sendUpdateChannels();
-    		break;
-    	case 'play_channel':
-                $event->sendPlayChannel(@$_POST['channel']);
-    		break;
-        case 'update_image':
-                $event->sendUpdateImage();
+        case 'update_channels':
+            $event->sendUpdateChannels();
             break;
-    }
-    
-    if ($db->getLastError()){
-        echo _('Error when sending event').': '.$db->getLastError();
-        exit;
+        case 'play_channel':
+            $event->sendPlayChannel(@$_POST['channel']);
+            break;
+        case 'update_image':
+            $event->sendUpdateImage();
+            break;
     }
 }
 

@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -118,32 +116,23 @@ $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
 
 $query = "select itv_id, name, count(played_itv.id) as counter from played_itv,itv where played_itv.itv_id=itv.id and  playtime>'$from_time' group by itv_id";
 //echo $query;
-
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query($query)->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-
-
 $query = $query." order by counter desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
-//echo $query;
-$rs = $db->executeQuery($query);
 
-?>
+$played_itv = Mysql::getInstance()->query($query);
 
-<?
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>\n";
 echo "<td class='list'><b>"._('Title')."</b></td>\n";
 echo "<td class='list'><b>"._('Views')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $played_itv->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['itv_id']."</td>\n";
     echo "<td class='list'>".$arr['name']."</td>\n";

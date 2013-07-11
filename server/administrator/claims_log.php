@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -85,8 +83,7 @@ a:hover{
 <?
 
 function get_media_name_by_id($id, $type='vclub'){
-    global $db;
-    
+
     if ($type == 'itv'){
         $table = 'itv';
     }elseif ($type == 'karaoke'){
@@ -94,13 +91,8 @@ function get_media_name_by_id($id, $type='vclub'){
     }else{
         $table = 'video';
     }
-    
-    $sql = "select * from $table where id=$id";
-    
-    $rs=$db->executeQuery($sql);
-    
-    $name = $rs->getValueByName(0, 'name');
-    return $name;
+
+    return Mysql::getInstance()->from($table)->where(array('id' => $id))->get()->first('name');
 }
 
 function page_bar(){
@@ -158,21 +150,14 @@ if (@$_GET['media_type']){
     $where .= ' media_type="'.$_GET['media_type'].'" ';
 }
 
-
-
-$query = "select * from media_claims_log $where";
-//echo $query;
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from media_claims_log $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-
 $query = "select * from media_claims_log $where order by added desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
-//echo $query;
-$rs = $db->executeQuery($query);
-//echo $total_pages;
+
+$all_log = Mysql::getInstance()->query($query);
 ?>
 <table border="0" align="center" width="620">
 <tr>
@@ -190,10 +175,8 @@ echo "<td class='list'><b>"._('Claim on')."</b></td>\n";
 echo "<td class='list'><b>"._('From')."</b></td>\n";
 echo "<td class='list'><b>"._('When')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $all_log->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['media_type']."</td>\n";
     echo "<td class='list'>".get_media_name_by_id($arr['media_id'], $arr['media_type'])."</td>\n";

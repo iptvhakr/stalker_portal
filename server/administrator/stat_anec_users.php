@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -120,16 +118,14 @@ if ($where){
 }
 
 $query = "select mac, count(mac) as count from readed_anec $where group by mac";
-//echo $query;
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query($query)->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select mac, count(mac) as count,max(readed) as readed from readed_anec $where group by mac order by count desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
-//echo $query;
-$rs = $db->executeQuery($query);
+
+$readed_anec = Mysql::getInstance()->query($query);
 
 ?>
 <table border="0" align="center" width="620">
@@ -159,10 +155,9 @@ echo "<td class='list'><b>"._('Views')."</b></td>\n";
 echo "<td class='list'><b>"._('Last view')."</b></td>\n";
 echo "</tr>\n";
 $num = $page_offset;
-while(@$rs->next()){
+while($arr = $readed_anec->next()){
     $num++;
-    $arr=$rs->getCurrentValuesAsHash();
-    
+
     echo "<tr>";
     echo "<td class='list'>".$num."</td>\n";
     echo "<td class='list'>".$arr['mac']."</td>\n";

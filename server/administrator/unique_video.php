@@ -7,24 +7,9 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 $storage_name = @$_GET['storage'];
-
-$sql = "select * from storages where storage_name='$storage_name'";
-$rs = $db->executeQuery($sql);
-/*if ($rs->getRowCount() != 1){
-    
-    exit();
-}*/
-
-//echo '<pre>';
-//print_r($_FILES);
-//print_r($_SESSION);
-//print_r($_POST);
-//echo '</pre>';
 
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
@@ -283,10 +268,11 @@ function md5sum(obj, status, media_name, storage_name){
                 <tr>
                     <td>
                         <?
-                        $rs  = $db->executeQuery("select * from storages where status=1");
+
+                        $storages = Mysql::getInstance()->from('storages')->where(array('status' => 1))->get();
                         
-                        while(@$rs->next()){
-                            $arr=$rs->getCurrentValuesAsHash();
+                        while($arr = $storages->next()){
+
                             echo '<input type="radio" id="'.$arr['storage_name'].'_on_storage" name="on_storage[]" value="'.$arr['storage_name'].'"';
                             
                             $on_storage = array();
@@ -314,10 +300,9 @@ function md5sum(obj, status, media_name, storage_name){
                 <tr>
                     <td>
                         <?
-                        $rs  = $db->executeQuery("select * from storages where status=1");
-                        
-                        while(@$rs->next()){
-                            $arr=$rs->getCurrentValuesAsHash();
+                        $storages = Mysql::getInstance()->from('storages')->where(array('status' => 1))->get();
+
+                        while($arr = $storages->next()){
                             echo '<input type="checkbox" id="'.$arr['storage_name'].'_exclude_storage" name="exclude[]" value="'.$arr['storage_name'].'"';
                             
                             $exclude = array();
@@ -401,42 +386,31 @@ function get_path_color($id, $path){
 }
 
 function check_video_status($id){
-    $db = Database::getInstance();
-    
-    $query = "select * from video where id=$id";
-    $rs=$db->executeQuery($query);
 
-    $rtsp_url = $rs->getValueByName(0, 'rtsp_url');
+    $video = Video::getById($id);
 
-    if (!empty($rtsp_url)){
+    if (!empty($video['rtsp_url'])){
         return 2;
     }
 
-    return $rs->getValueByName(0, 'status');
+    return $video['status'];
 }
 
 $on_storage = array();
                             
-if (@is_array($_GET['on_storage'])){
+if (isset($_GET['on_storage']) && is_array($_GET['on_storage'])){
     $on_storage = $_GET['on_storage'];
 }
 
-$on_storage_q = array();
-
-foreach ($on_storage as $storage){
-    $on_storage_q[] = "'".$storage."'";
-}
-
-$on_storage_str = implode(",", $on_storage_q);
-
-if (empty($on_storage_str)){
-    $on_storage_str = "'0'";
-}
-
-$sql = "select * from storage_cache where media_type='vclub' and status=1 and storage_name in ($on_storage_str)";
-//echo $sql."<br>";
-$rs  = $db->executeQuery($sql);
-$on_storage_ids = $rs->getValuesByName('media_id');
+$on_storage_ids = Mysql::getInstance()
+    ->from('storage_cache')
+    ->where(array(
+        'media_type' => 'vclub',
+        'status'     => 1,
+    ))
+    ->in('storage_name', $on_storage)
+    ->get()
+    ->all('media_id');
 
 $on_storage_ids_str = implode(",", $on_storage_ids);
 
@@ -462,21 +436,9 @@ if (empty($exclude_str)){
     $exclude_str = "'0'";
 }
 
-/*$sql = "select * from storage_cache where status=1 and storage_name in (".$exclude_str.")";
-echo $sql."<br>";
-$rs  = $db->executeQuery($sql);
-$exclude_ids = $rs->getValuesByName('media_id');
-
-$exclude_ids_str = implode(",", $exclude_ids);
-
-if (empty($exclude_ids_str)){
-    $exclude_ids_str = '0';
-}*/
-
 $sql = "select *, count(storage_name) as storages from storage_cache where media_type='vclub' and status=1 and media_id in (".$on_storage_ids_str.") and storage_name not in (".$exclude_str.") group by media_id having storages=1";
 //echo $sql."<br>";
-$rs  = $db->executeQuery($sql);
-$result_ids = $rs->getValuesByName('media_id');
+$result_ids = Mysql::getInstance()->query($sql)->all('media_id');
 
 $result_ids_str = implode(",", $result_ids);
 
@@ -485,8 +447,8 @@ if (empty($result_ids_str)){
 }
 
 $sql = "select * from video where status in(1,3) and accessed=1 and id in(".$result_ids_str.")";
-$rs  = $db->executeQuery($sql);
-$total_items = $rs->getRowCount();
+
+$total_items = Mysql::getInstance()->query($sql)->count();
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $sql = "select *, count_first_0_5+count_second_0_5 as views from video where status in(1,3) and accessed=1 and id in(".$result_ids_str.") order by views";
@@ -496,7 +458,7 @@ if (@$_GET['view'] != 'text'){
 }
 
 //echo $sql."<br>";
-$rs  = $db->executeQuery($sql);
+$video = Mysql::getInstance()->query($sql);
 
 $page = @intval($_GET['page']);
 
@@ -510,8 +472,7 @@ if (@$_GET['view'] != 'text'){
     echo "<td class='list'><b>"._('Movie')." ("._('folder').")</b></td>\n";
     echo "<td class='list'><b>"._('Total views per month')."</b></td>\n";
     echo "</tr>\n";
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+    while($arr = $video->next()){
         
         echo "<tr>";
         echo "<td class='list'>".$i."</td>\n";
@@ -564,9 +525,7 @@ if (@$_GET['view'] != 'text'){
     echo "</center>\n";
 }else{
     
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        
+    while($arr = $video->next()){
         echo $i."\t".$arr['path']."\t".$arr['views']."\r\n";
         $i++;
     }

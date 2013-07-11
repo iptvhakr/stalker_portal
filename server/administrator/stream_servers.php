@@ -9,8 +9,6 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'vitaxa' && @$_SESSION['login'] != 'azmus' && !check_access()){
@@ -22,20 +20,16 @@ foreach (@$_POST as $key => $value){
 }
     
 if (@$_POST['add']){
-    $sql = 'insert into streaming_servers (
-                name,
-                address,
-                max_sessions,
-                stream_zone
-                )
-            values (
-                "'.@$_POST['name'].'",
-                "'.@$_POST['address'].'",
-                "'.@$_POST['max_sessions'].'",
-                "'.@$_POST['stream_zone'].'"
-            )';
-    $db->executeQuery($sql);
+
+    Mysql::getInstance()->insert('streaming_servers', array(
+        'name'         => @$_POST['name'],
+        'address'      => @$_POST['name'],
+        'max_sessions' => @$_POST['max_sessions'],
+        'stream_zone'  => @$_POST['stream_zone']
+    ));
+
     header("Location: stream_servers.php");
+    exit;
 }
 
 $id = @intval($_GET['id']);
@@ -43,24 +37,36 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     
     if (@$_POST['edit']){
-        $sql = 'update streaming_servers set
-                    name="'.@$_POST['name'].'",
-                    address="'.@$_POST['address'].'",
-                    max_sessions="'.@$_POST['max_sessions'].'",
-                    stream_zone="'.@$_POST['stream_zone'].'"
-                where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
-        //var_dump($_POST,$sql);
+
+        Mysql::getInstance()->update('',
+            array(
+                'name'         => @$_POST['name'],
+                'address'      => @$_POST['address'],
+                'max_sessions' => @$_POST['max_sessions'],
+                'stream_zone'  => @$_POST['stream_zone']
+            ),
+            array('id' => intval($_GET['id']))
+        );
+
         header("Location: stream_servers.php");
+        exit;
     }elseif (@$_GET['del']){
-        $sql = 'delete from streaming_servers where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->delete('streaming_servers', array('id' => intval($_GET['id'])));
+
         header("Location: stream_servers.php");
+        exit;
     }elseif (isset($_GET['status'])){
-        $new_status = $_GET['status'];
-        $sql = 'update streaming_servers set status='.$new_status.' where id='.intval($_GET['id']);
-        $db->executeQuery($sql);
+
+        Mysql::getInstance()->update('streaming_servers',
+            array(
+                'status' => $_GET['status']
+            ),
+            array('id' => intval($_GET['id']))
+        );
+
         header("Location: stream_servers.php");
+        exit;
     }
 }
 
@@ -69,7 +75,6 @@ if (@$_GET['edit'] && !empty($id)){
     $action_value = _('Save');
     $edit_streamer = StreamServer::getById($id);
 }
-
 
 $streamers = StreamServer::getAll();
 

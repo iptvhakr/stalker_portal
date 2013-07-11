@@ -7,20 +7,22 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
-if (@$_GET['del']){
-    $query = "delete from main_city_info where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+if (isset($_GET['del'])){
+
+    Mysql::getInstance()->delete('main_city_info', array('id' => intval($_GET['id'])));
+
     header("Location: city_info.php");
+    exit;
 }
 
-if (isset($_GET['status']) && @$_GET['id']){
-    $query = "update main_city_info set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+if (isset($_GET['status']) && isset($_GET['id'])){
+
+    Mysql::getInstance()->update('main_city_info', array('status' => intval($_GET['status'])), array('id' => intval($_GET['id'])));
+
     header("Location: city_info.php");
+    exit;
 }
 
 if (!$error){
@@ -28,19 +30,15 @@ if (!$error){
     if (@$_GET['save'] && !$error){
     
         if(@$_POST['title'] && @$_POST['number']){
-    
-            $query = "insert into main_city_info (
-                                        num,
-                                        title,
-                                        number
-                                        ) 
-                                values ('".@$_POST['num']."', 
-                                        '".@$_POST['title']."', 
-                                        '".@$_POST['number']."'
-                                        )";
-            //echo $query;
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->insert('main_city_info', array(
+                'num'    => @$_POST['num'],
+                'title'  => @$_POST['title'],
+                'number' => @$_POST['number']
+            ));
+
             header("Location: city_info.php");
+            exit;
         }
         else{
             $error = _('Error: all fields are required');
@@ -50,14 +48,18 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_POST['title'] && @$_POST['number']){
-            
-            $query = "update main_city_info 
-                                set num='".$_POST['num']."', 
-                                title='".$_POST['title']."', 
-                                number='".$_POST['number']."'
-                            where id=".intval(@$_GET['id']);
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->update('main_city_info',
+                array(
+                    'num'    => $_POST['num'],
+                    'title'  => $_POST['title'],
+                    'number' => $_POST['number']
+                ),
+                array('id' => intval($_GET['id']))
+            );
+
             header("Location: city_info.php");
+            exit;
         }
         else{
             $error = _('Error: all fields are required');
@@ -133,20 +135,18 @@ a:hover{
 <?
 $query = "select * from main_city_info order by num";
 
-$rs=$db->executeQuery($query);
+$all_info = Mysql::getInstance()->query($query);
+
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
-//echo "<td class='list'><b>id</b></td>";
+
 echo "<td class='list'><b>#</b></td>";
 echo "<td class='list'><b>"._('Department')."</b></td>";
 echo "<td class='list'><b>"._('Number')."</b></td>";
 echo "</tr>";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
+while($arr = $all_info->next()){
     
     echo "<tr>";
-    //echo "<td class='list'>".$arr['id']."</td>";
     echo "<td class='list'>".$arr['num']."</td>";
     echo "<td class='list'>".$arr['title']."</td>";
     echo "<td class='list'>".$arr['number']."</td>";
@@ -158,23 +158,23 @@ while(@$rs->next()){
 echo "</table></center>";
 
 if (@$_GET['edit']){
-    $query = "select * from main_city_info where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        $title = $arr['title'];
+
+    $arr = Mysql::getInstance()->from('main_city_info')->where(array('id' => intval($_GET['id'])))->get()->all();
+
+    if (!empty($arr)){
+        $title  = $arr['title'];
         $number = $arr['number'];
-        $num = $arr['num'];
+        $num    = $arr['num'];
     }
 }
 ?>
 <script>
 function save(){
-    form_ = document.getElementById('form_')
+    form_ = document.getElementById('form_');
     
-    id = document.getElementById('id').value
+    id = document.getElementById('id').value;
     
-    action = 'city_info.php?id='+id
+    action = 'city_info.php?id='+id;
 
     if(document.getElementById('action').value == 'edit'){
         action += '&update=1'
@@ -183,8 +183,8 @@ function save(){
         action += '&save=1'
     }
     
-    form_.action = action
-    form_.method = 'POST'
+    form_.action = action;
+    form_.method = 'POST';
     form_.submit()
 }
 

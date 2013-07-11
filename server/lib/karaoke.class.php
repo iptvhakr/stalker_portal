@@ -21,6 +21,10 @@ class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
     public function __construct(){
         parent::__construct();
     }
+
+    public static function getById($id){
+        return Mysql::getInstance()->from('karaoke')->where(array('id' => (int) $id))->get()->first();
+    }
     
     public function createLink(){
         

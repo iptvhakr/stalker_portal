@@ -11,8 +11,6 @@ if (!check_access(array(3))){
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 
@@ -47,18 +45,31 @@ if (@$_GET['save']){
         $bonus = array();
     }*/
     $bonus_str = base64_encode(serialize($bonus));
+
+    $itv_subscription = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first();
     
-    $sql = "select * from itv_subscription where uid=$uid";
-    $rs  = $db->executeQuery($sql);
-    
-    if ($rs->getRowCount() > 0){
-        $sql = "update itv_subscription set sub_ch='$sub_str', bonus_ch='$bonus_str', addtime=NOW() where uid=$uid";
+    if (!empty($itv_subscription )){
+
+        $result = Mysql::getInstance()->update('itv_subscription',
+            array(
+                'sub_ch'   => $sub_str,
+                'bonus_ch' => $bonus_str,
+                'addtime'  => 'NOW()'
+            ),
+            array('uid' => $uid)
+        )->result();
     }else{
-        $sql = "insert into itv_subscription (uid, sub_ch, bonus_ch, addtime) value ($uid, '$sub_str', '$bonus_str', NOW())";
+
+        $result = Mysql::getInstance()->insert('itv_subscription', array(
+            'uid'      => $uid,
+            'sub_ch'   => $sub_str,
+            'bonus_ch' => $bonus_str,
+            'addtime'  => 'NOW()'
+        ))->insert_id();
     }
     
-    $rs = $db->executeQuery($sql);
-    if (!$db->getLastError()){
+
+    if ($result){
         $event = new SysEvent();
         $event->setUserListById($uid);
         $event->sendUpdateSubscription();
@@ -236,7 +247,7 @@ $sub_ch   = get_sub_channels();
 $bonus_ch = get_bonus_channels();
 
 function get_all_channels_opt(){
-    global $db, $sub_ch, $bonus_ch;
+    global $sub_ch, $bonus_ch;
     $opt = '';
     $total_arr = array_merge($sub_ch, $bonus_ch);
     if (count($total_arr) > 0){
@@ -245,26 +256,28 @@ function get_all_channels_opt(){
     }else{
         $sql = "select * from itv where base_ch=0";
     }
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr = $rs->getCurrentValuesAsHash();
+    $channels = Mysql::getInstance()->query($sql);
+    while($arr = $channels->next()){
         $opt .= "<option value={$arr['id']}>{$arr['number']}. {$arr['name']}\n";
     }
     return $opt;
 }
 
 function get_sub_channels_opt(){
-    global $db, $sub_ch;
+    global $sub_ch;
     $opt = '';
     
     if (count($sub_ch) > 0){
-        $sub_str = join(",",$sub_ch);
-        
-        $sql = "select * from itv where base_ch=0 and id in ($sub_str)";
-        
-        $rs = $db->executeQuery($sql);
-        while(@$rs->next()){
-            $arr = $rs->getCurrentValuesAsHash();
+        $channels = Mysql::getInstance()
+            ->from('itv')
+            ->where(array(
+                'base_ch' => 0
+            ))
+            ->in('id', $sub_ch)
+            ->get();
+
+        while($arr = $channels->next()){
+
             $opt .= "<option value={$arr['id']}>{$arr['number']}. {$arr['name']}\n";
         }
         return $opt;
@@ -274,17 +287,20 @@ function get_sub_channels_opt(){
 }
 
 function get_bonus_channels_opt(){
-    global $db, $bonus_ch;
+    global $bonus_ch;
     $opt = '';
     
     if (count($bonus_ch) > 0){
-        $bonus_str = join(",",$bonus_ch);
-        
-        $sql = "select * from itv where base_ch=0 and id in ($bonus_str)";
-        echo $sql;
-        $rs = $db->executeQuery($sql);
-        while(@$rs->next()){
-            $arr = $rs->getCurrentValuesAsHash();
+
+        $channels = Mysql::getInstance()
+            ->from('itv')
+            ->where(array(
+                'base_ch' => 0
+            ))
+            ->in('id', $bonus_ch)
+            ->get();
+
+        while($arr = $channels->next()){
             $opt .= "<option value={$arr['id']}>{$arr['number']}. {$arr['name']}\n";
         }
         return $opt;

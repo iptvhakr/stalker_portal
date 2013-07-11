@@ -2,17 +2,12 @@
 /*
     online, offline
 */
-include "../lib/func.php";
+include "../common.php";
 
-$db = new Database();
 $in_param = $_GET['in_param'];
 
-$sql = "select * from storage_deny where name='$in_param'";
-$rs=$db->executeQuery($sql);
-$counter = @$rs->getValueByName(0, 'counter');
+$counter = Mysql::getInstance()->from('storage_deny')->where(array('name' => $in_param))->get()->first('counter');
 
-$sql = "update storage_deny set counter=0 where name='$in_param'";
-$db->executeQuery($sql);
+Mysql::getInstance()->update('storage_deny', array('counter' => 0), array('name' => $in_param));
 
 echo $counter;
-?>

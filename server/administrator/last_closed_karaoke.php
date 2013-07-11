@@ -8,8 +8,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_GET['archive'] == 1 && @$_GET['id']){
@@ -26,34 +24,66 @@ if (@$_GET['archive'] == 1 && @$_GET['id']){
     }
     
     // video archive
-    $sql  = "select * from tasks_archive where month=$month and year=$year";
-    $rs   = $db->executeQuery($sql);
+
+    $archive_id = Mysql::getInstance()
+        ->from('tasks_archive')
+        ->where(array(
+            'month' => $month,
+            'year'  => $year
+        ))
+        ->get()
+        ->first('id');
     
-    if (intval($rs->getRowCount()) > 0){
-        $archive_id = $rs->getValueByName(0, 'id');
-    }else{
-        $sql = "insert into tasks_archive (`date`, `year`, `month`) value (NOW(), $year, $month)";
-        $rs  = $db->executeQuery($sql);
-        $archive_id = $rs->getLastInsertId();
-    }
-    
-    $sql = "update moderator_tasks set archived=$archive_id, archived_time=NOW() where archived=0 and ended=1 and to_usr=$id";
-    $rs = $db->executeQuery($sql);
-    
-    // karaoke archive
-    $sql  = "select * from karaoke_archive where month=$month and year=$year";
-    $rs   = $db->executeQuery($sql);
-    
-    if (intval($rs->getRowCount()) > 0){
-        $archive_id = $rs->getValueByName(0, 'id');
-    }else{
-        $sql = "insert into karaoke_archive (`date`, `year`, `month`) value (NOW(), $year, $month)";
-        $rs  = $db->executeQuery($sql);
-        $archive_id = $rs->getLastInsertId();
+    if (empty($archive_id)){
+        $archive_id = Mysql::getInstance()->insert('tasks_archive', array(
+            'date'  => 'NOW()',
+            'year'  => $year,
+            'month' => $month
+        ));
     }
 
-    $sql = "update karaoke set archived=$archive_id, archived_time=NOW() where archived=0 and status=1 and accessed=1";
-    $rs  = $db->executeQuery($sql);
+    Mysql::getInstance()->update('moderator_tasks',
+        array(
+            'archived'      => $archive_id,
+            'archived_time' => 'NOW()'
+        ),
+        array(
+            'archived' => 0,
+            'ended'    => 1,
+            'to_usr'   => $id
+        )
+    );
+
+    // karaoke archive
+
+    $archive_id = Mysql::getInstance()
+        ->from('karaoke_archive')
+        ->where(array(
+            'month' => $month,
+            'year'  => $year
+        ))
+        ->get()
+        ->first('id');
+    
+    if (empty($archive_id)){
+        $archive_id = Mysql::getInstance()->insert('karaoke_archive', array(
+            'date'  => 'NOW()',
+            'year'  => $year,
+            'month' => $month
+        ));
+    }
+
+    Mysql::getInstance()->update('karaoke',
+        array(
+            'archived'      => $archive_id,
+            'archived_time' => 'NOW()'
+        ),
+        array(
+            'archived' => 0,
+            'status'   => 1,
+            'accessed' => 1
+        )
+    );
 
     header("Location: last_closed_tasks.php?id=".$id);
     exit();
@@ -88,50 +118,47 @@ if (isset($_GET['done']) && @$_GET['id']){
 
 
 function set_karaoke_accessed($id, $val){
-    global $db;
-    if ($id){
-        $query = "update karaoke set accessed=$val, added=NOW() where id=$id";
-        $db->executeQuery($query);
+
+    if (!$id){
+        return;
     }
+
+    Mysql::getInstance()->update('karaoke', array('accessed' => $val, 'added' => 'NOW()'), array('id' => $id));
 }
 
 function set_karaoke_done($id, $val){
-    global $db;
-    if ($id){
-        $query = "update karaoke set done=$val, done_time=NOW() where id=$id";
-        $db->executeQuery($query);
+
+    if (!$id){
+        return;
     }
+
+    Mysql::getInstance()->update('karaoke', array('done' => $val, 'done_time' => 'NOW()'), array('id' => $id));
 }
 
 function set_karaoke_returned($id, $val, $txt){
-    global $db;
-    if ($id){
-    	if ($val == 1){
-    		$done = 0;
-    	}else{
-    		$done = 1;
-    	}
-        $query = "update karaoke set returned=$val, reason='$txt', done=$done where id=$id";
-        $db->executeQuery($query);
+
+    if (!$id){
+        return;
     }
+
+    Mysql::getInstance()->update('karaoke',
+        array(
+            'returned' => $val,
+            'reason'   => $txt,
+            'done'     => intval(!$val)
+        ),
+        array('id' => $id)
+    );
 }
 
 function get_karaoke_accessed($id){
-    global $db;
-    
-    $query = "select * from karaoke where id=$id";
-    $rs=$db->executeQuery($query);
-    $accessed = $rs->getValueByName(0, 'accessed');
-    return $accessed;
+    $karaoke = Karaoke::getById($id);
+    return $karaoke['accessed'];
 }
 
 function get_done_karaoke($id){
-    $db = Database::getInstance();
-    
-    $query = "select * from karaoke where id=$id";
-    $rs=$db->executeQuery($query);
-    $accessed = $rs->getValueByName(0, 'done');
-    return $accessed;
+    $karaoke = Karaoke::getById($id);
+    return $karaoke['done'];
 }
 
 function get_karaoke_accessed_color($id){
@@ -306,16 +333,20 @@ if (check_access(array(1))){
             <td>&nbsp;</td>
         </tr>
         <?
-        
-        
-        //$sql_done = "select * from karaoke where status=1 and done=1 and archived=0 and add_by=$uid";
-        $sql_done = "select * from karaoke where archived=0 and add_by=$uid order by name";
-        
-        $rs = $db->executeQuery($sql_done);
-        
+
+        $karaoke = Mysql::getInstance()
+            ->from('karaoke')
+            ->where(array(
+                'archived' => 0,
+                'add_by'   => $uid
+            ))
+            ->orderby('name')
+            ->get();
+
         $num = 0;
-        while(@$rs->next()){
-            $arr_done=$rs->getCurrentValuesAsHash();
+
+        while($arr_done = $karaoke->next()){
+
             $num++;
             
             echo "<tr>";

@@ -6,8 +6,6 @@ ob_start();
 include "./common.php";
 include "./lib/tasks.php";
 
-$db = new Database();
-
 moderator_access();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -170,21 +168,25 @@ a:hover{
 <br>
 <?
 function get_online_users(){
-    global $db;
-
-    $sql = "select count(id) as online from users where UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(now())-".Config::get('watchdog_timeout')*2;
-    $rs=$db->executeQuery($sql);
-    $online = @$rs->getValueByName(0, 'online');
-    return $online;
+    return Mysql::getInstance()
+        ->from('users')
+        ->count()
+        ->where(array(
+            'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(now())-'.Config::get('watchdog_timeout')*2
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_offline_users(){
-    global $db;
-
-    $sql = "select count(id) as offline from users where UNIX_TIMESTAMP(keep_alive)<UNIX_TIMESTAMP(now())-".Config::get('watchdog_timeout')*2;
-    $rs=$db->executeQuery($sql);
-    $offline = @$rs->getValueByName(0, 'offline');
-    return $offline;
+    return Mysql::getInstance()
+        ->from('users')
+        ->count()
+        ->where(array(
+            'UNIX_TIMESTAMP(keep_alive)<=' => 'UNIX_TIMESTAMP(now())-'.Config::get('watchdog_timeout')*2
+        ))
+        ->get()
+        ->counter();
 }
 
 $online = get_online_users();
@@ -229,13 +231,22 @@ $cur_infoportal = get_cur_infoportal();
         <td colspan="2">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <?
-        $sql = "select * from storages";
-        $rs=$db->executeQuery($sql);
-        while(@$rs->next()){
-            $storage_name = $rs->getCurrentValueByName('storage_name');
-            $sql_2 = "select count(*) as counter from users where now_playing_type=2 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
-            $rs_2  = $db->executeQuery($sql_2);
-            $counter = $rs_2->getValueByName(0, 'counter');
+        $storages = Mysql::getInstance()->from('storages')->get()->all();
+
+        foreach($storages as $storage){
+            $storage_name = $storage['storage_name'];
+
+            $counter = Mysql::getInstance()
+                ->from('users')
+                ->count()
+                ->where(array(
+                    'now_playing_type' => 2,
+                    'storage_name'     => $storage_name,
+                    'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout')*2
+                ))
+                ->get()
+                ->counter();
+
             echo '<tr>';
             echo '<td class="td_stat" width="80"><b>'.$storage_name.'</b>:</td>';
             echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=2" style="color:black">'.$counter.'</a></td>';
@@ -278,13 +289,23 @@ $cur_infoportal = get_cur_infoportal();
         <td colspan="2">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
         <?
-        $sql = "select * from storages where for_records=1";
-        $rs=$db->executeQuery($sql);
-        while(@$rs->next()){
-            $storage_name = $rs->getCurrentValueByName('storage_name');
-            $sql_2 = "select count(*) as counter from users where now_playing_type=11 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
-            $rs_2  = $db->executeQuery($sql_2);
-            $counter = $rs_2->getValueByName(0, 'counter');
+
+        $storages = Mysql::getInstance()->from('storages')->where(array('for_records' => 1))->get()->all();
+
+        foreach($storages as $storage){
+            $storage_name = $storage['storage_name'];
+
+            $counter = Mysql::getInstance()
+                ->from('users')
+                ->count()
+                ->where(array(
+                    'now_playing_type' => 11,
+                    'storage_name'     => $storage_name,
+                    'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout')*2
+                ))
+                ->get()
+                ->counter();
+
             echo '<tr>';
             echo '<td class="td_stat" width="80"><b>'.$storage_name.'</b>:</td>';
             echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=11   " style="color:black">'.$counter.'</a></td>';
@@ -302,13 +323,22 @@ $cur_infoportal = get_cur_infoportal();
         <td colspan="2">
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <?
-                $sql = "select * from storages where for_records=1";
-                $rs=$db->executeQuery($sql);
-                while(@$rs->next()){
-                    $storage_name = $rs->getCurrentValueByName('storage_name');
-                    $sql_2 = "select count(*) as counter from users where now_playing_type=14 and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
-                    $rs_2  = $db->executeQuery($sql_2);
-                    $counter = $rs_2->getValueByName(0, 'counter');
+                $storages = Mysql::getInstance()->from('storages')->where(array('for_records' => 1))->get()->all();
+
+                foreach($storages as $storage){
+                    $storage_name = $storage['storage_name'];
+
+                    $counter = Mysql::getInstance()
+                        ->from('users')
+                        ->count()
+                        ->where(array(
+                            'now_playing_type' => 14,
+                            'storage_name'     => $storage_name,
+                            'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout')*2
+                        ))
+                        ->get()
+                        ->counter();
+
                     echo '<tr>';
                     echo '<td class="td_stat" width="80"><b>'.$storage_name.'</b>:</td>';
                     echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=11   " style="color:black">'.$counter.'</a></td>';
@@ -382,12 +412,6 @@ $cur_infoportal = get_cur_infoportal();
     <td width="6%">&nbsp;</td>
     <td width="47%" align="center"><a href="anecdote.php"><?= _('Jokes')?></a></td>
   </tr>
-  
-  <!--<tr>
-    <td align="center"><a href="add_recipes.php">Рецепты</a></td>
-    <td>&nbsp;</td>
-    <td align="center">&nbsp;</td>
-  </tr>-->
 
 </table>
 <br>

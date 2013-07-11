@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -86,51 +84,87 @@ a:hover{
 <?
 
 function get_total_tasks($uid){
-    $db  = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_open_tasks($uid){
-    $db  = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where ended=0 and to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'ended'    => 0,
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_closed_tasks($uid){
-    $db = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where ended=1 and to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'ended'    => 1,
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_rejected_tasks($uid){
-    $db = Database::getInstance();
-    
-    $sql = "select * from moderator_tasks where rejected=1 and to_usr=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('moderator_tasks')
+        ->where(array(
+            'rejected' => 1,
+            'to_usr'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_open_karaoke($uid){
-    $db = Database::getInstance();
-    
-    $sql = "select * from karaoke where add_by=$uid and archived=0";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('karaoke')
+        ->where(array(
+            'add_by'   => $uid,
+            'archived' => 0
+        ))
+        ->get()
+        ->counter();
 }
 
 function get_closed_karaoke($uid){
-    $db = Database::getInstance();
-    
-    $sql = "select * from karaoke where add_by=$uid and archived=0 and accessed=1 and status=1 and done=1";
-    $rs  = $db->executeQuery($sql);
-    return $rs->getRowCount();
+
+    return Mysql::getInstance()
+        ->count()
+        ->from('karaoke')
+        ->where(array(
+            'add_by'   => $uid,
+            'archived' => 0,
+            'accessed' => 1,
+            'status'   => 1,
+            'done'     => 1
+        ))
+        ->get()
+        ->counter();
 }
 
 $sql = "select * from administrators where access=2";
@@ -139,10 +173,9 @@ if (!check_access(array(1))){
     $sql .= " and login='".$_SESSION['login']."'";
 }
 
-$rs  = $db->executeQuery($sql);
+$administrators = Mysql::getInstance()->query($sql);
 
-while(@$rs->next()){
-    $arr=$rs->getCurrentValuesAsHash();
+while($arr = $administrators->next()){
     
     $closed   = get_closed_tasks($arr['id']);
     $rejected = get_rejected_tasks($arr['id']);

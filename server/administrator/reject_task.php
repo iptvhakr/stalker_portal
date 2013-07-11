@@ -8,8 +8,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-//$db = new Database();
-
 moderator_access();
 
 if (@$_GET['id']){

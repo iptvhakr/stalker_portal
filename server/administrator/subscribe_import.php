@@ -11,8 +11,6 @@ if (!check_access(array(3))){
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -69,14 +67,19 @@ if (@$_FILES['userfile']){
                 $mac = Middleware::normalizeMac($mac);
                 
                 if (@array_key_exists($mac, $stb_id_map)){
-                    
-                    $sql = "select * from users where mac='$mac'";
-                    $rs = $db->executeQuery($sql);
-                    $status = $rs->getValueByName(0, 'status');
+
+                    $stb = Stb::getByMac($mac);
+                    $status = $stb['status'];
                     
                     if ($status == 1 && $update_status){
-                        $sql = "update users set status=0, last_change_status=NOW() where mac='$mac'";
-                        $db->executeQuery($sql);
+
+                        Mysql::getInstance()->update('users',
+                            array(
+                                'status'             => 0,
+                                'last_change_status' => 'NOW()'
+                            ),
+                            array('mac' => $mac)
+                        );
                         
                         $event = new SysEvent();
                         $event->setUserListByMac($mac);
@@ -144,7 +147,7 @@ if (@$_FILES['userfile']){
         $stb_id_str = join(",",$stb_id_arr);
         $sql = "update users set additional_services_on=0 where id in ($stb_id_str)";
         //echo $sql;
-        $db->executeQuery($sql);
+        Mysql::getInstance()->query($sql);
     }
     
     if (count($add_services_on) > 0){
@@ -152,7 +155,7 @@ if (@$_FILES['userfile']){
         $add_services_on_str = join(",",$add_services_on);
         $sql = "update users set additional_services_on=1 where id in ($add_services_on_str)";
         //echo $sql;
-        $db->executeQuery($sql);
+        Mysql::getInstance()->query($sql);
     }
 
     //var_dump($result); exit;
@@ -192,18 +195,17 @@ if (@$_FILES['userfile']){
         $event->setUserListById($uid);
         $event->sendMsg('Каналы обновлены согласно подписке.');
         
-        $rs = $db->executeQuery($sql);
-        if (!$db->getLastError()){
+        $result = Mysql::getInstance()->query($sql)->result();
+
+        if ($result){
             $updated++;
 
             if((bool) Config::get('enable_subscription') && $update_fav){
                 $fav_channels = array_unique(array_merge($sub, $bonus, $base_channels));
                 //$fav_channels = array();
                 $data_str = base64_encode(serialize($fav_channels));
-            
-                $sql = "select * from fav_itv where uid='".$uid."'";
-                $rs = $db->executeQuery($sql);
-                $id = intval($rs->getValueByName(0, 'id'));
+
+                $id = Mysql::getInstance()->from('fav_itv')->where(array('uid' => $uid))->get()->first('id');
                 
                 if($id){
                     $sql = "update fav_itv set fav_ch='".$data_str."', addtime=NOW() where uid='".$uid."'";
@@ -211,7 +213,7 @@ if (@$_FILES['userfile']){
                     $sql = "insert into fav_itv (uid, fav_ch, addtime) values ('".$uid."', '".$data_str."', NOW())";
                 }
                 
-                $rs = $db->executeQuery($sql);
+                Mysql::getInstance()->query($sql);
             }
         }
     }
@@ -243,42 +245,43 @@ function merge_services($list1, $list2){
 }
 
 function get_bonus1(){
-    $db = Database::getInstance();
-    $arr = array();
-    $sql = "select * from itv where bonus_ch=1 and cost!=99";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'bonus_ch' => 1,
+            'cost!='   => 99
+        ))
+        ->get()
+        ->all('id');
 }
 
 function get_bonus2(){
-    $db = Database::getInstance();
-    $arr = array();
-    //$sql = "select * from itv where bonus_ch=1 and cost=99";
-    $sql = "select * from itv where cost=99";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'cost'   => 99
+        ))
+        ->get()
+        ->all('id');
 }
 
 function get_service_id_map(){
-    $db = Database::getInstance();
+
     $arr = array();
-    $sql = "select * from itv";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $service_id = $rs->getCurrentValueByName('service_id');
+
+    $channels = Mysql::getInstance()->from('itv')->get();
+
+    while($channel = $channels->next()){
+        $service_id = $channel['service_id'];
         if (strlen($service_id)==5){
-            $arr[$service_id]=$rs->getCurrentValueByName('id');
+            $arr[$service_id] = $channel['id'];
         }elseif (strlen($service_id) == 11){
             $ids = explode(' ', $service_id);
             
             foreach ($ids as $id){
-                $arr[$id]=$rs->getCurrentValueByName('id');
+                $arr[$id] = $channel['id'];
             }
         }
     }
@@ -286,92 +289,100 @@ function get_service_id_map(){
 }
 
 function get_subscription_map(){
-    $db = Database::getInstance();
+
     $arr = array();
-    $sql = "select * from itv_subscription";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[$rs->getCurrentValueByName('uid')]=$rs->getCurrentValueByName('id');
+
+    $itv_subscription = Mysql::getInstance()->from('itv_subscription')->get();
+
+    while($item = $itv_subscription->next()){
+        $arr[$item['uid']] = $item['id'];
     }
     return $arr;
 }
 
 function get_stb_id_map(){
-    $db = Database::getInstance();
+
     $arr = array();
-    $sql = "select * from users";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[$rs->getCurrentValueByName('mac')]=$rs->getCurrentValueByName('id');
+
+    $users = Mysql::getInstance()->from('users')->get();
+
+    while($user = $users->next()){
+        $arr[$user['mac']] = $user['id'];
     }
     return $arr;
 }
 
 function get_all_ch_bonus(){
-    $db = Database::getInstance();
-    $arr = array();
-    $sql = "select * from itv where bonus_ch=1 and base_ch=0";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'bonus_ch' => 1,
+            'base_ch'  => 0
+        ))
+        ->get()
+        ->all('id');
 }
 
 function get_base_channels(){
-    $db = Database::getInstance();
-    $arr = array();
-    $sql = "select * from itv where base_ch=1";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'base_ch'  => 1
+        ))
+        ->get()
+        ->all('id');
 }
 
 function get_all_hd_channels(){
-    $db = Database::getInstance();
-    $arr = array();
-    $sql = "select * from itv where hd=1";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'hd' => 1
+        ))
+        ->get()
+        ->all('id');
 }
 
 
 function get_all_payed_ch(){
-    $db = Database::getInstance();
-    $arr = array();
-    $sql = "select * from itv where base_ch=0 and hd=0 and id not in(270, 271, 272, 273, 274, 275)";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'base_ch' => 0,
+            'hd'      => 0
+        ))
+        ->not_in('id', array(270, 271, 272, 273, 274, 275))
+        ->get()
+        ->all('id');
 }
 
 function get_all_payed_ch_discovery(){
-    $db = Database::getInstance();
-    $arr = array();
-    $sql = "select * from itv where base_ch=0 and hd=0";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'base_ch' => 0,
+            'hd'      => 0
+        ))
+        ->get()
+        ->all('id');
 }
 
 function get_all_payed_ch_100(){
-    $db = Database::getInstance();
-    $arr = array();
-    $sql = "select * from itv where base_ch=0 and hd=0 and id not in(178, 179, 270, 271, 272, 273, 274, 275)";
-    $rs = $db->executeQuery($sql);
-    while(@$rs->next()){
-        $arr[] = intval($rs->getCurrentValueByName('id'));
-    }
-    return $arr;
+
+    return Mysql::getInstance()
+        ->from('itv')
+        ->where(array(
+            'base_ch' => 0,
+            'hd'      => 0
+        ))
+        ->not_in('id', array(178, 179, 270, 271, 272, 273, 274, 275))
+        ->get()
+        ->all('id');
 }
 
 function _log($str){

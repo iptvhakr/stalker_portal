@@ -9,8 +9,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 ?>
@@ -90,14 +88,10 @@ $uid = $_SESSION['uid'];
 
 if (check_access(array(1))){
     $where = 'where access=2 or access=1';
-    //$where_main = '';
 }
 if (check_access(array(2))){
     $where = 'where id='.@$_SESSION['uid'];
-    //$where_main = "and moderator_tasks.to_usr=$uid";
 }
-$sql = "select * from administrators $where order by login";
-$rs=$db->executeQuery($sql);
 
 function get_video_color($video){
 
@@ -115,8 +109,11 @@ function get_video_color($video){
     return '';
 }
 
-while(@$rs->next()){
-    $arr=$rs->getCurrentValuesAsHash();
+$sql = "select * from administrators $where order by login";
+$administrators = Mysql::getInstance()->query($sql);
+
+while($arr = $administrators->next()){
+
     ?>
     
     <table border="0" align="center" width="680">
@@ -134,28 +131,12 @@ while(@$rs->next()){
             <td><b><?= _('Messages')?></b></td>
         </tr>
         <?
-        /*$sql_open = "select * from moderator_tasks 
-                        where 
-                            moderator_tasks.ended=0
-                            and archived=0
-                            and moderator_tasks.to_usr={$arr['id']}";*/
-        
-        /*$sql_open = "select moderator_tasks.*, video.name as name 
-                        from moderator_tasks 
-                        inner join 
-                            video
-                            on media_id=video.id 
-                        where
-                            moderator_tasks.ended=0
-                            and archived=0
-                            and moderator_tasks.to_usr={$arr['id']}";*/
-        
+
         $sql_open = "select moderator_tasks.*, count(moderators_history.id) as counter, video.name as name, video.status as status, video.accessed as accessed from moderator_tasks inner join video on media_id=video.id left join moderators_history on task_id=moderator_tasks.id where moderator_tasks.ended=0 and archived=0 and moderator_tasks.to_usr={$arr['id']} group by moderators_history.task_id";
         
-        $rs_open = $db->executeQuery($sql_open);
+        $open_tasks = Mysql::getInstance()->query($sql_open);
         $num = 1;
-        while(@$rs_open->next()){
-            $arr_open=$rs_open->getCurrentValuesAsHash();
+        while($arr_open = $open_tasks->next()){
             
             echo "<tr ";
             if (is_answered($arr_open['id'])){
@@ -187,17 +168,19 @@ while(@$rs->next()){
         <td><b><?= _('Date')?></b></td>
     </tr>
     
-    <? 
-        $sql_open_karaoke = "select * from karaoke
-                                where
-                                    archived=0
-                                    and accessed=0
-                                    and add_by={$arr['id']}";
-        $rs_open_karaoke = $db->executeQuery($sql_open_karaoke);
+    <?
+        $open_karaoke = Mysql::getInstance()
+            ->from('karaoke')
+            ->where(array(
+                'archived' => 0,
+                'accessed' => 0,
+                'add_by'   => $arr['id']
+            ))
+            ->get();
+
         $num = 1;
-        while(@$rs_open_karaoke->next()){
-            $arr_open_kar = $rs_open_karaoke->getCurrentValuesAsHash();
-            
+        while($arr_open_kar = $open_karaoke->next()){
+
             echo "<tr>";
             echo "<td>".$num.".</td>";
             echo "<td>".$arr_open_kar['name']."</td>";
@@ -226,12 +209,11 @@ while(@$rs->next()){
 <td>
 <?
 if (check_access(array(1))){
-//$sql = "select * from moderator_tasks where ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
-//$sql = "select moderator_tasks.*, video.name as name from moderator_tasks inner join video on media_id=video.id where ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
+
 $sql = "select moderator_tasks.*, video.name as name, administrators.login as login from administrators,moderator_tasks inner join video on media_id=video.id where administrators.id=moderator_tasks.to_usr and  ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
 
-$rs=$db->executeQuery($sql);
-if ($rs->getRowCount() > 0){
+$tasks = Mysql::getInstance()->query($sql);
+if ($tasks->count() > 0){
     
     echo '<center><b><font color="Red">'._('Expired 10 days').'</font></b></center>';
     echo '<table border="1" width="680" cellspacing="0">';
@@ -243,8 +225,8 @@ if ($rs->getRowCount() > 0){
     echo "<td>&nbsp;</td>";
     echo "</tr>";
     $num = 0;
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+    while($arr = $tasks->next()){
+
         $num++;
         echo "<tr>";
         echo "<td>".$num."</td>";
@@ -266,6 +248,6 @@ echo "<br>";
 </tr>
 </table>
 <?
-echo 'queries: '.$db->query_counter.'<br>';
+echo 'queries: '.Mysql::get_num_queries().'<br>';
 echo 'generated in: '.round(microtime(1) - $start_time, 3).'s';
 ?>

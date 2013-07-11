@@ -7,21 +7,17 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 
 if (@$_GET['del']){
-    $query = "delete from moderators where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+    Mysql::getInstance()->delete('moderators', array('id' => intval(@$_GET['id'])));
     header("Location: add_moderator_mac.php");
     exit;
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
-    $query = "update moderators set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+    Mysql::getInstance()->update('moderators', array('status' => intval(@$_GET['status'])), array('id' => intval(@$_GET['id'])));
     header("Location: add_moderator_mac.php");
     exit;
 }
@@ -31,10 +27,13 @@ if (!$error){
     if (@$_GET['save']){
     
         if(@$_POST['mac']){
-    
-            $query = "insert into moderators (name,mac,disable_vclub_ad) values ('".@$_POST['name']."','".@$_POST['mac']."', '".@$_POST['disable_vclub_ad']."')";
-            //echo $query;
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->insert('moderators', array(
+                'name'             => @$_POST['name'],
+                'mac'              => @$_POST['mac'],
+                'disable_vclub_ad' => @$_POST['disable_vclub_ad']
+            ));
+
             header("Location: add_moderator_mac.php");
         }
         else{
@@ -45,10 +44,16 @@ if (!$error){
     if (@$_GET['update']){
         
         if(@$_POST['mac']){
-            
-            $query = "update moderators set name='".$_POST['name']."', mac='".$_POST['mac']."', disable_vclub_ad='".@$_POST['disable_vclub_ad']."' where id=".intval(@$_GET['id']);
-            //echo $query;
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->update('moderators',
+                array(
+                    'name'             => $_POST['name'],
+                    'mac'              => $_POST['mac'],
+                    'disable_vclub_ad' => @$_POST['disable_vclub_ad']
+                ),
+                array('id' => intval(@$_GET['id']))
+            );
+
             header("Location: add_moderator_mac.php");
         }
         else{
@@ -123,9 +128,9 @@ a:hover{
 <tr>
 <td>
 <?
-$query = "select * from moderators";
 
-$rs=$db->executeQuery($query);
+$moderators = Mysql::getInstance()->from('moderators')->get()->all();
+
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
 echo "<td class='list'><b>#</b></td>";
@@ -134,10 +139,8 @@ echo "<td class='list'><b>MAC</b></td>";
 echo "<td class='list'>&nbsp;</td>";
 echo "</tr>";
 $i=1;
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+foreach($moderators as $arr){
+
     echo "<tr>";
     echo "<td class='list'>".$i."</td>";
     echo "<td class='list'>".$arr['name']."</td>";
@@ -157,12 +160,12 @@ while(@$rs->next()){
 echo "</table></center>";
 
 if (@$_GET['edit']){
-    $query = "select * from moderators where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        $mac = $arr['mac'];
-        $name = $arr['name'];
+
+    $arr = Mysql::getInstance()->from('moderators')->where(array('id' => intval(@$_GET['id'])))->get()->all();
+
+    if (!empty($arr)){
+        $mac              = $arr['mac'];
+        $name             = $arr['name'];
         $disable_vclub_ad = $arr['disable_vclub_ad'];
     }
 }

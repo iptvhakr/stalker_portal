@@ -6,8 +6,6 @@ ob_start();
 
 include "./common.php";
 
-$db = new Database();
-
 if (@$_POST['login'] && @$_POST['password']){
     if (check_db_user_login($_POST['login'], $_POST['password'])){
         header("Location: index.php");

@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 $search = @$_GET['search'];
@@ -83,15 +81,6 @@ a:hover{
 </table>
 
 <?
-function get_mac_by_id(){
-    global $db;
-    $id = $_GET['id'];
-    
-    $query = "select * from users where id=$id";
-    $rs = $db->executeQuery($query);
-    $mac = $rs->getValueByName(0, 'mac');
-    return $mac;
-}
 
 function isset_date(){
     if (@$_GET['yy'] && @$_GET['mm'] && @$_GET['dd']){
@@ -146,16 +135,13 @@ $where .= ' order by time desc';
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$query = "select * from user_log $where";
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from user_log $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select * from user_log $where LIMIT $page_offset, $MAX_PAGE_ITEMS";
-
-$rs = $db->executeQuery($query);
+$user_log = Mysql::getInstance()->query($query)->all();
 
 function construct_YY(){
     if (!$_GET['yy']){
@@ -205,7 +191,7 @@ function construct_DD(){
     }else{
         $day = $_GET['dd'];
     }
-    
+    $dd = '';
     for ($i=1;$i<=31;$i++){
         if ($i == $day) {
             $dd .= "<option value='".$i."' selected>".$i."</option>";	
@@ -217,24 +203,34 @@ function construct_DD(){
 }
 
 function parse_param($action, $param){
-    global $db;
-    $name = '';
+
+
     if($action == 'play()' || $action == 'play_not_to()'){
         $sub_param = substr($param, 0, 3);
         
         if ($sub_param == 'rtp'){
-            
-            $query = "select * from itv where cmd='$param'";
-            $rs = $db->executeQuery($query);
-            $name = '['._('Channel').'] '.@$rs->getValueByName(0, 'name');
-            
+
+            $channel = Mysql::getInstance()->from('itv')->where(array('cmd' => $param))->get()->first();
+
+            $name = '['._('Channel').'] ';
+
+            if (!empty($channel)){
+                $name .= $channel['name'];
+            }else{
+                $name .= 'undefined';
+            }
+
         }else if ($sub_param == 'aut'){
             preg_match("/auto \/media\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
             $media_id = $tmp_arr[1];
-            
-            $query = "select * from video where id='$media_id'";
-            $rs = $db->executeQuery($query);
-            $name = '['._('Video').'] '.@$rs->getValueByName(0, 'name');
+
+            $video = Video::getById($media_id);
+
+            $name = '['._('Video').'] ';
+
+            if (!empty($video)){
+                $name .= $video['name'];
+            }
             
         }else{
             $name = '';
@@ -252,9 +248,9 @@ function parse_param($action, $param){
 ?>
 <script>
 function load_log(){
-    yy = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value
-    mm = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value
-    dd = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value
+    yy = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value;
+    mm = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value;
+    dd = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value;
     if (dd < 10){
         dd = '0'+dd
     }
@@ -266,26 +262,8 @@ function load_log(){
 }
 </script>
 <table border="0" align="center" width="620">
- <!--<tr>
-        <td>
-            <form action="" method="GET">
-            <input type="text" name="search" value="<? //echo $search ?>"><input type="submit" value="Поиск">&nbsp;<font color="Gray">поиск по MAC</font>
-            </form>
-        <td>
-    </tr>-->
     <tr>
         <td align="center">
-        <!--<b><?php //echo @$mac?></b>&nbsp;&nbsp;&nbsp;&nbsp;Дата
-        <select name="yy" id="yy">
-            <? //echo construct_YY()?>
-        </select>
-        <select name="mm" id="mm">
-            <? //echo construct_MM()?>
-        </select>
-        <select name="dd" id="dd">
-            <? //echo construct_DD()?>
-        </select>
-        &nbsp;<input type="button" value="Перейти" onclick="load_log()">-->
         <td>
     </tr>
 </table>
@@ -297,10 +275,8 @@ echo "<td class='list'><b>MAC</b></td>\n";
 echo "<td class='list'><b>"._('Action')."</b></td>\n";
 echo "<td class='list'><b>"._('Parameter')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+foreach($user_log as $arr){
+
     echo "<tr>";
     echo "<td class='list' nowrap>".$arr['time']."</td>\n";
     echo "<td class='list' nowrap>".$arr['mac']."</td>\n";

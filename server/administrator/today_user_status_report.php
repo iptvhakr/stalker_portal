@@ -5,15 +5,16 @@ ob_start();
 
 include "./common.php";
 
-$db = new Database();
-
 moderator_access();
 
 $from = mktime(0,0,0,date("n"),date("j"), date("Y"));
-$to   = mktime(23,59,59,date("n"),date("j"), date("Y"));;
+$to   = mktime(23,59,59,date("n"),date("j"), date("Y"));
 
-$query = "select * from users where UNIX_TIMESTAMP(last_change_status)>'$from' and UNIX_TIMESTAMP(last_change_status)<'$to' order by status";
-$rs = $db->executeQuery($query);
+$users = Mysql::getInstance()->from('users')->where(array(
+    'UNIX_TIMESTAMP(last_change_status)>=' => $from,
+    'UNIX_TIMESTAMP(last_change_status)<' => $to
+))->orderby('status')->get();
+
 ?>
 <html>
 <head>
@@ -46,9 +47,9 @@ table .item_row td {
 <?
 $status_arr = array('On','Off');
 $i = 0;
-while(@$rs->next()){
+while($arr = $users->next()){
     $i++;
-    $arr=$rs->getCurrentValuesAsHash();
+
     $status = $status_arr[$arr['status']];
     
     echo '<tr class="item_row">';

@@ -7,15 +7,13 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 $storage_name = @$_GET['storage'];
 
-$sql = "select * from storages where storage_name='$storage_name'";
-$rs = $db->executeQuery($sql);
-if ($rs->getRowCount() != 1){
+$storage = Mysql::getInstance()->from('storages')->where(array('storage_name' => $storage_name))->get()->first();
+
+if (empty($storage)){
     echo '<center><h1>низя!</h1></center>';
     exit();
 }
@@ -119,17 +117,14 @@ $MAX_PAGE_ITEMS = 30;
 
 $where = " where now_playing_type=".intval($_GET['type'])." and storage_name='$storage_name' and UNIX_TIMESTAMP(keep_alive)>UNIX_TIMESTAMP(NOW())-".Config::get('watchdog_timeout')*2;
 
-$query = "select * from users $where";
-
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from users $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select * from users $where order by mac LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
-$rs = $db->executeQuery($query);
+$users = Mysql::getInstance()->query($query);
 
 
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
@@ -138,10 +133,7 @@ echo "<td class='list'><b>MAC</b></td>\n";
 echo "<td class='list'><b>"._('Movie')."</b></td>\n";
 echo "<td class='list'><b>"._('Begin')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $users->next()){
     echo "<tr>";
     echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
     echo "<td class='list'>".$arr['now_playing_content']."</td>\n";

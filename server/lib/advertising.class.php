@@ -8,15 +8,11 @@
 
 class Advertising
 {
-    
-    private $db;
-    
-    public function __construct(){
-        $this->db = Database::getInstance();
-    }
+    public function __construct(){}
     
     public function getMain(){
-        $ad = $this->db->executeQuery('select * from main_page_ad')->getAllValues();
+
+        $ad = Mysql::getInstance()->from('main_page_ad')->get()->all();
         
         if (count($ad) > 0){
             return $ad[0];
@@ -29,7 +25,7 @@ class Advertising
         
         $ad = $this->getMain();
         
-        if (key_exists('text', $ad)){
+        if (array_key_exists('text', $ad)){
             unset($ad['text']);
         }
         
@@ -37,27 +33,32 @@ class Advertising
     }
     
     public function setMain($title = '', $text = '', $video_id = 0){
-        
-        $rows = $this->db->executeQuery("select * from main_page_ad")->getRowCount();
-        
-        $title = mysql_real_escape_string($title);
-        $text  = mysql_real_escape_string($text);
+
+        $rows = Mysql::getInstance()->count()->from('main_page_ad')->get()->counter();
         
         if ($rows > 0){
-        
-            $sql = 'update main_page_ad set title="'.$title.'", text="'.$text.'", video_id='.intval($video_id);
+
+            Mysql::getInstance()->update('main_page_ad',
+                array(
+                    'title'    => $title,
+                    'text'     => $text,
+                    'video_id' => intval($video_id)
+                ),
+                array()
+            );
+
         }else{
-            
-            $sql = 'insert into main_page_ad (title, text, video_id) values ("'.$title.'", "'.$text.'", '.intval($video_id).')';
+
+            Mysql::getInstance()->insert('main_page_ad', array(
+                'title'    => $title,
+                'text'     => $text,
+                'video_id' => intval($video_id)
+            ));
         }
-        
-        $this->db->executeQuery($sql);
     }
     
     public function delMain(){
-        $this->db->executeQuery("delete from main_page_ad");
+        Mysql::getInstance()->query('delete from main_page_ad');
     }
     
 }
-
-?>

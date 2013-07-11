@@ -8,8 +8,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 ?>
 <html>
@@ -96,8 +94,8 @@ $task = @$_GET['task'];
 $uid = $_SESSION['uid'];
 
 $sql = "select * from moderators_history where (task_id=$task and to_usr=$uid) or (task_id=$task and from_usr=$uid) order by send_time desc";
-//echo $sql;
-$rs=$db->executeQuery($sql);
+
+$history = Mysql::getInstance()->query($sql);
 
 ?>
 
@@ -116,8 +114,8 @@ $rs=$db->executeQuery($sql);
 </tr>
 
 <?
-while(@$rs->next()){
-    $arr=$rs->getCurrentValuesAsHash();
+while($arr = $history->next()){
+
     echo "<tr>\n";
     echo "<td align='center'>";
     if ($arr['to_usr'] == @$_SESSION['uid']){

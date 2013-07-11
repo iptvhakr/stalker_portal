@@ -7,20 +7,25 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_GET['del']){
-    $query = "delete from radio where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+
+    Mysql::getInstance()->delete('radio', array('id' => intval(@$_GET['id'])));
+
     header("Location: add_radio.php");
+    exit;
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
-    $query = "update radio set status='".intval(@$_GET['status'])."' where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+
+    Mysql::getInstance()->update('radio',
+        array('status' => intval(@$_GET['status'])),
+        array('id' => intval(@$_GET['id']))
+    );
+
     header("Location: add_radio.php");
+    exit;
 }
 
 if (!$error){
@@ -32,21 +37,16 @@ if (!$error){
     if (@$_GET['save'] && !$error){
     
         if(@$_GET['cmd'] && @$_GET['name']){
-    
-            $query = "insert into radio (
-                                        name,
-                                        number,
-                                        volume_correction,
-                                        cmd
-                                        ) 
-                                values ('".@$_POST['name']."', 
-                                        '".@$_POST['number']."', 
-                                        '".@$_POST['volume_correction']."',
-                                        '".@$_POST['cmd']."'
-                                        )";
-            //echo $query;
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->insert('radio', array(
+                'name'              => @$_POST['name'],
+                'number'            => @$_POST['number'],
+                'volume_correction' => @$_POST['volume_correction'],
+                'cmd'               => @$_POST['cmd']
+            ));
+
             header("Location: add_radio.php");
+            exit;
         }
         else{
             $error = _('Error: all fields are required');
@@ -56,14 +56,17 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_GET['cmd'] && @$_GET['name']){
-            
-            $query = "update radio 
-                                set name='".$_POST['name']."', 
-                                cmd='".$_GET['cmd']."', 
-                                volume_correction='".$_POST['volume_correction']."',
-                                number='".$_POST['number']."'
-                            where id=".intval(@$_GET['id']);
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->update('radio',
+                array(
+                    'name'              => $_POST['name'],
+                    'cmd'               => $_GET['cmd'],
+                    'volume_correction' => $_POST['volume_correction'],
+                    'number'            => $_POST['number']
+                ),
+                array('id' => intval(@$_GET['id']))
+            );
+
             header("Location: add_radio.php");
         }
         else{
@@ -73,16 +76,10 @@ if (!$error){
 }
 
 function check_number($num){
-    global $db;
-    $total_items = 1;
-    $query = "select * from radio where number=".intval($num);
-    $rs=$db->executeQuery($query);
-	$total_items = $rs->getRowCount();
-	if ($total_items > 0){
-	    return 0;
-	}else{
-	    return 1;
-	}
+
+    $radio = Mysql::getInstance()->from('radio')->where(array('number' => intval($num)))->get()->first();
+
+    return empty($radio);
 }
 
 ?>
@@ -151,9 +148,9 @@ a:hover{
 <tr>
 <td>
 <?
-$query = "select * from radio order by number";
 
-$rs=$db->executeQuery($query);
+$all_radio = Mysql::getInstance()->from('radio')->orderby('number')->get()->all();
+
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>";
@@ -161,10 +158,8 @@ echo "<td class='list'><b>"._('Number')."</b></td>";
 echo "<td class='list'><b>"._('Name')."</b></td>";
 echo "<td class='list'><b>"._('URL')."</b></td>";
 echo "</tr>";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+foreach ($all_radio as $arr){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['id']."</td>";
     echo "<td class='list'>".$arr['number']."</td>";
@@ -182,14 +177,14 @@ while(@$rs->next()){
 echo "</table></center>";
 
 if (@$_GET['edit']){
-    $query = "select * from radio where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        $name = $arr['name'];
-        $number = $arr['number'];
-        $cmd = $arr['cmd'];
-        $status = $arr['status'];
+
+    $arr = Mysql::getInstance()->from('radio')->where(array('id' => intval(@$_GET['id'])))->get()->first();
+
+    if (!empty($arr)){
+        $name              = $arr['name'];
+        $number            = $arr['number'];
+        $cmd               = $arr['cmd'];
+        $status            = $arr['status'];
         $volume_correction = $arr['volume_correction'];
     }
 }

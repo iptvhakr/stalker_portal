@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 function page_bar(){
@@ -33,15 +31,15 @@ function page_bar(){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$query = "select * from master_log";
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->count()->from('master_log')->get()->counter();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select * from master_log order by added desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
-$rs = $db->executeQuery($query);
+
+$log = Mysql::getInstance()->query($query);
+
 ?>
 <html>
 <head>
@@ -121,10 +119,8 @@ echo "<tr>";
 echo "<td class='list'><b>"._('Time')."</b></td>\n";
 echo "<td class='list'><b>"._('Message')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $log->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['added']."</td>\n";
     echo "<td class='list'>".$arr['log_txt']."</td>\n";

@@ -7,13 +7,12 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_GET['del']){
-    $query = "delete from anec where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
+
+    Mysql::getInstance()->delete('anec', array('id' => intval($_GET['id'])));
+
     header("Location: anecdote.php");
     exit();
 }
@@ -22,21 +21,14 @@ if (!$error){
     if (@$_GET['save'] && !$error){
     
         if(@$_POST['anec_body']){
-    
-            $query = "insert into anec (
-                                        title,
-                                        anec_body,
-                                        added
-                                        ) 
-                                values ('".@$_POST['title']."', 
-                                        '".@$_POST['anec_body']."',
-                                        NOW()
-                                        )";
-            //echo $query;
-            $rs=$db->executeQuery($query);
-            
-            $sql = "update updated_places set anec=1";
-            $db->executeQuery($sql);
+
+            Mysql::getInstance()->insert('anec', array(
+                'title'     => @$_POST['title'],
+                'anec_body' => @$_POST['anec_body'],
+                'added'     => 'NOW()'
+            ));
+
+            Mysql::getInstance()->update('updated_places', array('anec' => 1));
             
             header("Location: anecdote.php");
             exit();
@@ -49,13 +41,16 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_POST['anec_body']){
-            
-            $query = "update anec 
-                                set title='".$_POST['title']."', 
-                                anec_body='".$_POST['anec_body']."',
-                                added=NOW()
-                            where id=".intval(@$_GET['id']);
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->update('anec',
+                array(
+                    'title'     => $_POST['title'],
+                    'anec_body' => $_POST['anec_body'],
+                    'added'     => 'NOW()'
+                ),
+                array('id' => intval(@$_GET['id']))
+            );
+
             header("Location: anecdote.php");
             exit();
         }
@@ -154,22 +149,18 @@ function page_bar(){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 10;
 
-$query = "select * from anec";
-
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from anec")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=ceil($total_items/$MAX_PAGE_ITEMS);
 
 $query = "select * from anec order by id desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
-$rs=$db->executeQuery($query);
+
+$all_anecs = Mysql::getInstance()->query($query)->all();
 
 echo "<table align='center' class='list' border='0' cellpadding='3' cellspacing='0'>";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+foreach($all_anecs as $arr){
+
     echo "<tr align='center'>";
     
     echo "<table align='center' class='list' width='400'>";
@@ -191,21 +182,21 @@ echo "</table>";
 echo "<center>".page_bar()."</center>";
 
 if (@$_GET['edit']){
-    $query = "select * from anec where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+
+    $arr = Mysql::getInstance()->from('anec')->where(array('id' => intval($_GET['id'])))->get()->first();
+
+    if (!empty($anec)){
         $anec_body = $arr['anec_body'];
     }
 }
 ?>
 <script>
 function save(){
-    form_ = document.getElementById('form_')
+    form_ = document.getElementById('form_');
     
-    id = document.getElementById('id').value
+    id = document.getElementById('id').value;
     
-    action = 'anecdote.php?id='+id
+    action = 'anecdote.php?id='+id;
 
     if(document.getElementById('action').value == 'edit'){
         action += '&update=1'
@@ -214,8 +205,8 @@ function save(){
         action += '&save=1'
     }
     
-    form_.action = action
-    form_.method = 'POST'
+    form_.action = action;
+    form_.method = 'POST';
     form_.submit()
 }
 

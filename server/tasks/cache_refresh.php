@@ -7,34 +7,35 @@ set_time_limit(0);
 
 include "./common.php";
 
-$db = new Database();
-
 $updated_video = 0;
 $updated_karaoke = 0;
 
-$sql = "select * from video where protocol!='custom'";
+$not_custom_video = Mysql::getInstance()
+    ->from('video')
+    ->where(array(
+        'protocol!=' => 'custom'
+    ))
+    ->get();
 
-$rs = $db->executeQuery($sql);
-
-while(@$rs->next()){
+while($video = $not_custom_video->next()){
     $master = new VideoMaster();
-    $master->getAllGoodStoragesForMediaFromNet($rs->getCurrentValueByName('id'), true);
+    $master->getAllGoodStoragesForMediaFromNet($video['id'], true);
     unset($master);
     $updated_video++;
 }
 
+$not_custom_karaoke = Mysql::getInstance()
+    ->from('karaoke')
+    ->where(array(
+        'protocol!=' => 'custom'
+    ))
+    ->get();
 
-$sql = "select * from karaoke where protocol!='custom'";
-
-$rs = $db->executeQuery($sql);
-
-while(@$rs->next()){
+while($karaoke = $not_custom_karaoke->next()){
     $master = new KaraokeMaster();
-    $master->getAllGoodStoragesForMediaFromNet($rs->getCurrentValueByName('id'));
+    $master->getAllGoodStoragesForMediaFromNet($karaoke['id']);
     unset($master);
     $updated_karaoke++;
 }
 
-echo 1
-
-?>
+echo 1;

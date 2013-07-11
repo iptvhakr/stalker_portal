@@ -8,33 +8,20 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (count($_POST) > 0){
-    
-    $sql = "insert into moderators_history
-                (
-                    task_id,
-                    from_usr,
-                    to_usr,
-                    comment,
-                    send_time,
-                    reply_to
-                )
-                value
-                (
-                     {$_POST['task_id']},
-                     {$_SESSION['uid']},
-                     {$_POST['to_usr']},
-                    '{$_POST['comment']}',
-                     NOW(),
-                     {$_POST['reply_to']}
-                )
-                ";
-    $rs=$db->executeQuery($sql);
-    if (!$db->getLastError()){
+
+    $hist_id = Mysql::getInstance()->insert('moderators_history',array(
+        'task_id'   => $_POST['task_id'],
+        'from_usr'  => $_SESSION['uid'],
+        'to_usr'    => $_POST['to_usr'],
+        'comment'   => $_POST['comment'],
+        'send_time' => 'NOW()',
+        'reply_to'  => $_POST['reply_to']
+    ))->insert_id();
+
+    if (!$hist_id){
         js_redirect('tasks.php', _('message sended'));
     }else{
         echo _('error');
@@ -111,9 +98,8 @@ $reply_to = @$_GET['id'];
 $task_id = get_task_id_by_msg_id($reply_to);
 $media_name = get_media_name_by_task_id($task_id);
 
-$sql = "select * from moderators_history where id=$reply_to";
-$rs=$db->executeQuery($sql);
-$to_id = $rs->getValueByName(0, 'from_usr');
+$to_id = Mysql::getInstance()->from('moderators_history')->where(array('id' => $reply_to))->get()->first('from_usr');
+
 $to = get_moderator_login_by_id($to_id);
 
 

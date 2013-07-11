@@ -8,8 +8,6 @@ include "./lib/tasks.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (@$_GET['archive'] == 1 && @$_GET['id']){
@@ -26,34 +24,67 @@ if (@$_GET['archive'] == 1 && @$_GET['id']){
     }
     
     // video archive
-    $sql  = "select * from tasks_archive where month=$month and year=$year";
-    $rs   = $db->executeQuery($sql);
+
+    $archive_id = Mysql::getInstance()
+        ->from('tasks_archive')
+        ->where(array(
+            'month' => $month,
+            'year'  => $year
+        ))
+        ->get()
+        ->first('id');
     
-    if (intval($rs->getRowCount()) > 0){
-        $archive_id = $rs->getValueByName(0, 'id');
-    }else{
-        $sql = "insert into tasks_archive (`date`, `year`, `month`) value (NOW(), $year, $month)";
-        $rs  = $db->executeQuery($sql);
-        $archive_id = $rs->getLastInsertId();
-    }
-    
-    $sql = "update moderator_tasks set archived=$archive_id, archived_time=NOW() where archived=0 and ended=1 and to_usr=$id";
-    $rs = $db->executeQuery($sql);
-    
-    // karaoke archive
-    $sql  = "select * from karaoke_archive where month=$month and year=$year";
-    $rs   = $db->executeQuery($sql);
-    
-    if (intval($rs->getRowCount()) > 0){
-        $archive_id = $rs->getValueByName(0, 'id');
-    }else{
-        $sql = "insert into karaoke_archive (`date`, `year`, `month`) value (NOW(), $year, $month)";
-        $rs  = $db->executeQuery($sql);
-        $archive_id = $rs->getLastInsertId();
+    if (empty($archive_id)){
+        $archive_id = Mysql::getInstance()->insert('tasks_archive', array(
+            'date'  => 'NOW()',
+            'year'  => $year,
+            'month' => $month
+        ));
     }
 
-    $sql = "update karaoke set archived=$archive_id, archived_time=NOW() where archived=0 and status=1 and accessed=1 and done=1";
-    $rs  = $db->executeQuery($sql);
+    Mysql::getInstance()->update('moderator_tasks',
+        array(
+            'archived'      => $archive_id,
+            'archived_time' => 'NOW()'
+        ),
+        array(
+            'archived' => 0,
+            'ended'    => 1,
+            'to_usr'   => $id
+        )
+    );
+    
+    // karaoke archive
+
+    $archive_id = Mysql::getInstance()
+        ->from('karaoke_archive')
+        ->where(array(
+            'month' => $month,
+            'year'  => $year
+        ))
+        ->get()
+        ->first('id');
+
+    if (empty($archive_id)){
+        $archive_id = Mysql::getInstance()->insert('karaoke_archive', array(
+            'date'  => 'NOW()',
+            'year'  => $year,
+            'month' => $month
+        ));
+    }
+
+    Mysql::getInstance()->update('karaoke',
+        array(
+            'archived'      => $archive_id,
+            'archived_time' => 'NOW()'
+        ),
+        array(
+            'archived' => 0,
+            'status'   => 1,
+            'accessed' => 1,
+            'done'     => 1
+        )
+    );
 
     header("Location: last_closed_tasks.php?id=".$id);
     exit();
@@ -170,17 +201,24 @@ if (check_access(array(1))){
         <?
         
         $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
-        
-        //$sql = "select * from moderator_tasks where moderator_tasks.ended=1 and rejected=0 and end_time>'$from_time' and moderator_tasks.to_usr=$uid";
-        $sql = "select * from moderator_tasks where moderator_tasks.ended=1 and rejected=0 and archived=0 and moderator_tasks.to_usr=$uid order by end_time";
-        
-        $rs = $db->executeQuery($sql);
+
+        $tasks = Mysql::getInstance()
+            ->from('moderator_tasks')
+            ->where(array(
+                'ended'    => 1,
+                'rejected' => 0,
+                'archived' => 0,
+                'to_usr'   => $uid
+            ))
+            ->orderby('end_time')
+            ->get();
         
         $length = 0;
         $total_length = 0;
         $num = 0;
-        while(@$rs->next()){
-            $arr=$rs->getCurrentValuesAsHash();
+
+        while($arr = $tasks->next()){
+
             $num++;
             $length = get_media_length_by_id($arr['media_id']);
             $total_length += $length;
@@ -211,12 +249,20 @@ if (check_access(array(1))){
             <td><?= _('Duration, min')?></td>
         </tr>
     <?
-    $sql = "select * from moderator_tasks where moderator_tasks.ended=1 and rejected=1 and archived=0 and moderator_tasks.to_usr=$uid";
-    
-    $rs = $db->executeQuery($sql);
+
+    $tasks = Mysql::getInstance()
+        ->from('moderator_tasks')
+        ->where(array(
+            'ended'    => 1,
+            'rejected' => 1,
+            'archived' => 0,
+            'to_usr'   => $uid
+        ))
+        ->get();
+
     $num = 0;
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+    while($arr = $tasks->next()){
+
         $num++;
         $length = get_media_length_by_id($arr['media_id']);
         echo "<tr>";

@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = Database::getInstance();
-
 moderator_access();
 
 echo '<pre>';
@@ -116,10 +114,6 @@ $genres = Mysql::getInstance()->from('genre')->get()->all();
 
 $from = date("Y-m-d H:i:s", time()-60*60*24*30);
 
-//$query = "select count(played_video.id) as played_counter, genre.title as genre_title from played_video left join video on played_video.video_id=video.id inner join genre on genre.id=genre_id_1 or genre.id=genre_id_2 or genre.id=genre_id_3 or genre.id=genre_id_4 where playtime>'$from' group by genre.title";
-//echo $query;
-//$rs = $db->executeQuery($query);
-
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
 echo "<td class='list'><b>"._('Genre')."</b></td>\n";
@@ -127,10 +121,8 @@ echo "<td class='list'><b>"._('Views')."</b></td>\n";
 echo "<td class='list'><b>"._('Total movies')."</b></td>\n";
 echo "<td class='list'><b>%</b></td>\n";
 echo "</tr>\n";
-//while(@$rs->next()){
-foreach ($genres as $genre){
 
-    //$arr=$rs->getCurrentValuesAsHash();
+foreach ($genres as $genre){
 
     $total_movies_in_genre = Mysql::getInstance()
         ->from('video')

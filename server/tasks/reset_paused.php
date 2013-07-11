@@ -6,18 +6,17 @@ error_reporting(E_ALL);
 
 include "./common.php";
 
-$db = new Database();
-
-$now_timestamp = time() - 86400;
-
-$sql = "select * from vclub_paused where UNIX_TIMESTAMP(pause_time)<$now_timestamp";
-$rs = $db->executeQuery($sql);
-$uid_arr = $rs->getValuesByName('uid');
+$uid_arr = Mysql::getInstance()
+    ->from('vclub_paused')
+    ->where(array(
+        'UNIX_TIMESTAMP(pause_time)<' => time() - 86400
+    ))
+    ->get()
+    ->all('uid');
 
 if (count($uid_arr) > 0){
-    $uid_str = join(",", $uid_arr);
-    $sql = "delete from vclub_paused where uid in ($uid_str)";
-    $db->executeQuery($sql);
+
+    Mysql::getInstance()->query("delete from vclub_paused where uid in (".implode(', ', $uid_arr).")");
     
     $event = new SysEvent();
     $event->setUserListById($uid_arr);
@@ -25,5 +24,3 @@ if (count($uid_arr) > 0){
 }
 
 echo count($uid_arr);
-
-?>

@@ -9,8 +9,6 @@ include "./common.php";
 error_reporting(E_ALL);
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 if (!$error){
@@ -35,9 +33,12 @@ if (!$error){
         
         $time_from = $yy.'-'.$mm.'-'.$dd.' 00:00:00';
         $time_to = $yy.'-'.$mm.'-'.$dd.' 24:00:00';
-        
-        $query = "delete from epg where ch_id=".$_GET['id']." and time > '".$time_from."' and time < '".$time_to."'";
-        $rs=$db->executeQuery($query);
+
+        Mysql::getInstance()->delete('epg', array(
+            'ch_id' => (int) $_GET['id'],
+            'time>' => $time_from,
+            'time<' => $time_to
+        ));
         
         $tmp_epg = preg_split("/\n/", stripslashes(trim($epg)));
         
@@ -52,12 +53,15 @@ if (!$error){
             if (empty($line_arr)){
                 continue;
             }
-            
-            $query = "insert into epg (ch_id, name, time, time_to, duration, real_id) values ('".$_GET['id']."', '".mysql_real_escape_string($line_arr['name'])."', '".$line_arr['time']."', '".$line_arr['time_to']."', '".$line_arr['duration']."', '".$_GET['id'].'_'.strtotime($line_arr['time'])."')";
-                
-            //var_dump($query);
-            
-            $rs=$db->executeQuery($query);
+
+            Mysql::getInstance()->insert('epg', array(
+                'ch_id'    => (int) $_GET['id'],
+                'name'     => $line_arr['name'],
+                'time'     => $line_arr['time'],
+                'time_to'  => $line_arr['time_to'],
+                'duration' => $line_arr['duration'],
+                'real_id'  => $_GET['id'].'_'.strtotime($line_arr['time'])
+            ));
         }
         
         header("Location: add_epg.php?id=".$_GET['id']."&mm=".$_GET['mm']."&dd=".$_GET['dd']."&yy=".$_GET['yy']."&saved=1");
@@ -102,13 +106,11 @@ function get_line($date, $epg_lines, $line_num){
     return false;
 }
 
-function construct_oprion($id = 0){
-    global $db;
+function construct_option($id = 0){
+
     $opt = '';
-    $query = "select * from itv";
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+    $channels = Mysql::getInstance()->from('itv')->get()->all();
+    foreach($channels as $arr){
         if ($id && $id == $arr['id']){
             $opt .= "<option value='".$arr['id']."' selected>".$arr['name']."</option>\n";
         }else{
@@ -180,7 +182,7 @@ function construct_DD(){
 }
 
 function load_epg($id = 0){
-    global $db;
+
     $epg = '';
     if(!$id)return;
     if (@$_GET['yy'] && @$_GET['mm'] && @$_GET['dd']){
@@ -196,12 +198,18 @@ function load_epg($id = 0){
     $time_from = $year.'-'.$month.'-'.$day.' 00:00:00';
     $time_to = $year.'-'.$month.'-'.$day.' 24:00:00';
 
-    $sql = "select * from epg where ch_id=".$id." and time >= '".$time_from."' and time < '".$time_to."' order by time";
-    //echo $sql;
-    $rs=$db->executeQuery($sql);
-    $epg = '';
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
+    $programs = Mysql::getInstance()
+        ->from('epg')
+        ->where(array(
+            'ch_id'  => $id,
+            'time>=' => $time_from,
+            'time<'  => $time_to
+        ))
+        ->orderby('time')
+        ->get()
+        ->all();
+
+    foreach($programs as $arr){
         $epg .= time_mysql2epg($arr['time'])." ".$arr['name']."\n";
     }
     return $epg;
@@ -277,19 +285,16 @@ a:hover{
 <tr>
 <td>
 <?
-$query = "select * from itv";
-
-$rs=$db->executeQuery($query);
 
 if (@$_GET['edit']){
-    $query = "select * from itv where id=".intval(@$_GET['id']);
-    $rs=$db->executeQuery($query);
-    while(@$rs->next()){
-        $arr=$rs->getCurrentValuesAsHash();
-        $name = $arr['name'];
-        $cmd = $arr['cmd'];
-        $descr = $arr['descr'];
-        $status = $arr['status'];
+
+    $channel = Itv::getById(intval(@$_GET['id']));
+
+    if (!empty($channel)){
+        $name   = $channel['name'];
+        $cmd    = $channel['cmd'];
+        $descr  = $channel['descr'];
+        $status = $channel['status'];
     }
 }
 
@@ -360,7 +365,7 @@ function save_epg(){
            <td>
             <!--input type="text" name="name" id="name" value="<?// echo @$name ?>"-->
             <select name="id" id="id">
-                <? echo construct_oprion(@$_GET['id'])?>
+                <? echo construct_option(@$_GET['id'])?>
             </select>
             
             <!--input type="hidden" id="id" value="<?// echo @$_GET['id'] ?>"-->

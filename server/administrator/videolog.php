@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 ?>
@@ -75,23 +73,12 @@ a:hover{
 </table>
 
 <?
-function get_mac_by_id(){
-    global $db;
-    $id = $_GET['id'];
-    
-    $query = "select * from users where id=$id";
-    $rs = $db->executeQuery($query);
-    $mac = $rs->getValueByName(0, 'mac');
-    return $mac;
-}
 
 function get_video_name(){
-    global $db;
     $id = intval($_GET['id']);
-    $query = "select * from video where id=$id";
-    $rs = $db->executeQuery($query);
-    $name = $rs->getValueByName(0, 'name');
-    return $name;
+
+    $video = Video::getById($id);
+    return $video['name'];
 }
 
 function page_bar(){
@@ -119,21 +106,17 @@ $id = intval(@$_GET['id']);
 
 $where .= " where video_id=$id";
 
-$mac = get_mac_by_id();
-
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$query = "select * from video_log $where";
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from video_log $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select video_log.*, administrators.login as login  from video_log left join administrators on video_log.moderator_id=administrators.id $where LIMIT  $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
-$rs = $db->executeQuery($query);
+$video_log = Mysql::getInstance()->query($query);
 
 echo "<center><br>\n";
 echo get_video_name();
@@ -143,10 +126,7 @@ echo "<td class='list'><b>"._('Date')."</b></td>\n";
 echo "<td class='list'><b>"._('Stb action')."</b></td>\n";
 echo "<td class='list'><b>"._('Moderator')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $video_log->next()){
     echo "<tr>";
     echo "<td class='list' nowrap>".$arr['actiontime']."</td>\n";
     echo "<td class='list'>".$arr['action']."</td>\n";

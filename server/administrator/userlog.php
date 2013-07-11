@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 $search = @$_GET['search'];
@@ -81,13 +79,8 @@ a:hover{
 
 <?
 function get_mac_by_id(){
-    global $db;
-    $id = $_GET['id'];
-    
-    $query = "select * from users where id=$id";
-    $rs = $db->executeQuery($query);
-    $mac = $rs->getValueByName(0, 'mac');
-    return $mac;
+    $stb = Stb::getById((int) $_GET['id']);
+    return $stb['mac'];
 }
 
 function isset_date(){
@@ -140,16 +133,14 @@ $where .= " and action<>'create_link()' and action<>'create_link' ";
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$query = "select * from user_log $where";
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->query("select * from user_log $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select * from user_log $where order by time desc LIMIT  $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
-$rs = $db->executeQuery($query);
+$log = Mysql::getInstance()->query($query);
 
 function construct_YY(){
     if (empty($_GET['yy'])){
@@ -213,19 +204,22 @@ function construct_DD(){
 }
 
 function parse_param($action, $param, $type){
-    global $db;
-    $name = '';
-    //if($action == 'play()' || $action == 'play_not_to()' || $action == 'play_now()'){
+
     if($action == 'play'){
         
         switch ($type){
             case 1: // TV
-                $ch_name = '';
-                $sql = "select * from itv where cmd='$param' and status=1";
-                $rs = $db->executeQuery($sql);
+
+                $channel = Mysql::getInstance()
+                    ->from('itv')
+                    ->where(array(
+                        'cmd'    => $param,
+                        'status' => 1
+                    ))
+                    ->get()->first();
                 
-                if ($rs->getRowCount() == 1){
-                    $ch_name = $rs->getValueByName(0, 'name');
+                if (!empty($channel)){
+                    $ch_name = $channel['name'];
                 }else{
                     $ch_name = $param;
                 }
@@ -233,9 +227,7 @@ function parse_param($action, $param, $type){
                 $name = '['._('Channel').'] '.$ch_name;
                 break;
             case 2: // Video Club
-                $video_name = '';
-                
-                //preg_match("/auto \/media\/(\d+).mpg$/", $param, $tmp_arr);
+
                 if (!preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr)){
                     $name = $param;
                     break;
@@ -243,11 +235,10 @@ function parse_param($action, $param, $type){
 
                 $media_id = $tmp_arr[1];
 
-                $sql = "select * from video where id=$media_id";
-                $rs = $db->executeQuery($sql);
-                
-                if ($rs->getRowCount() == 1){
-                    $video_name = $rs->getValueByName(0, 'name');
+                $video = Video::getById($media_id);
+
+                if (!empty($video)){
+                    $video_name = $video['name'];
                 }else{
                     $video_name = $param;
                 }
@@ -255,16 +246,14 @@ function parse_param($action, $param, $type){
                 $name = '['._('Video').'] '.$video_name;
                 break;
             case 3: // Karaoke
-                $karaoke_name = '';
-                
+
                 preg_match("/(\d+)\.[a-z]*$/", $param, $tmp_arr);
                 $karaoke_id = $tmp_arr[1];
-                
-                $sql = "select * from karaoke where id=$karaoke_id";
-                $rs = $db->executeQuery($sql);
-                
-                if ($rs->getRowCount() == 1){
-                    $karaoke_name = $rs->getValueByName(0, 'name');
+
+                $karaoke = Karaoke::getById($karaoke_id);
+
+                if (!empty($karaoke)){
+                    $karaoke_name = $karaoke['name'];
                 }else{
                     $karaoke_name = $param;
                 }
@@ -272,16 +261,14 @@ function parse_param($action, $param, $type){
                 $name = '['._('Karaoke').'] '.$karaoke_name;
                 break;
             case 4: // Audio Club
-                $audio_name = '';
-                
+
                 preg_match("/(\d+).mp3$/", $param, $tmp_arr);
                 $audio_id = $tmp_arr[1];
-                
-                $sql = "select * from audio where id=$audio_id";
-                $rs = $db->executeQuery($sql);
-                
-                if ($rs->getRowCount() == 1){
-                    $audio_name = $rs->getValueByName(0, 'name');
+
+                $audio = Mysql::getInstance()->from('audio')->where(array('id' => $audio_id))->get()->first();
+
+                if (!empty($audio)){
+                    $audio_name = $audio['name'];
                 }else{
                     $audio_name = $param;
                 }
@@ -289,12 +276,11 @@ function parse_param($action, $param, $type){
                 $name = '['._('Audio').'] '.$audio_name;
                 break;
             case 5: // Radio
-                $ch_name = '';
-                $sql = "select * from radio where cmd='$param' and status=1";
-                $rs = $db->executeQuery($sql);
-                
-                if ($rs->getRowCount() == 1){
-                    $ch_name = $rs->getValueByName(0, 'name');
+
+                $radio = Mysql::getInstance()->from('radio')->where(array('cmd' => $param, 'status' => 1))->get()->first();
+
+                if (empty($radio)){
+                    $ch_name = $radio['name'];
                 }else{
                     $ch_name = $param;
                 }
@@ -302,16 +288,22 @@ function parse_param($action, $param, $type){
                 $name = '['._('Radio').'] '.$ch_name;
                 break;
             case 6: // My Records
-                $my_record_name = '';
-                
+
                 preg_match("/\/(\d+).mpg/", $param, $tmp_arr);
                 $my_record_id = $tmp_arr[1];
+
+                $record = Mysql::getInstance()
+                    ->select('t_start, itv.name')
+                    ->from('users_rec')
+                    ->join('itv', 'users_rec.ch_id', 'itv.id', 'INNER')
+                    ->where(array(
+                        'users_rec.id' => $my_record_id
+                    ))
+                    ->get()
+                    ->first();
                 
-                $sql = "select t_start,itv.name from users_rec, itv where users_rec.ch_id=itv.id and users_rec.id=$my_record_id";
-                $rs = $db->executeQuery($sql);
-                
-                if ($rs->getRowCount() == 1){
-                    $my_record_name = $rs->getValueByName(0, 't_start').' '.$rs->getValueByName(0, 'name');
+                if (!empty($record)){
+                    $my_record_name = $record['t_start'].' '.$record['name'];
                 }else{
                     $my_record_name = $param;
                 }
@@ -319,16 +311,19 @@ function parse_param($action, $param, $type){
                 $name = '['._('My records').'] '.$my_record_name;
                 break;
             case 7: // Shared Records
-                $shared_record_name = '';
-                
                 preg_match("/(\d+).mpg$/", $param, $tmp_arr);
                 $shared_record_id = $tmp_arr[1];
-                
-                $sql = "select * from video_records where id=$shared_record_id";
-                $rs = $db->executeQuery($sql);
-                
-                if ($rs->getRowCount() == 1){
-                    $shared_record_name = $rs->getValueByName(0, 'descr');
+
+                $record = Mysql::getInstance()
+                    ->from('video_records')
+                    ->where(array(
+                        'id' => $shared_record_id
+                    ))
+                    ->get()
+                    ->first();
+
+                if (!empty($record)){
+                    $shared_record_name = $record['descr'];
                 }else{
                     $shared_record_name = $param;
                 }
@@ -336,16 +331,14 @@ function parse_param($action, $param, $type){
                 $name = '['._('Records').'] '.$shared_record_name;
                 break;
             case 8: // Video clips
-                $video_name = '';
-                
+
                 preg_match("/(\d+).mpg$/", $param, $tmp_arr);
                 $media_id = $tmp_arr[1];
-                
-                $sql = "select * from video_clips where id=$media_id";
-                $rs = $db->executeQuery($sql);
-                
-                if ($rs->getRowCount() == 1){
-                    $video_name = $rs->getValueByName(0, 'name');
+
+                $video = Mysql::getInstance()->from('video_clips')->where(array('id' => $media_id))->get()->first();
+
+                if (!empty($video)){
+                    $video_name = $video['name'];
                 }else{
                     $video_name = $param;
                 }
@@ -408,10 +401,8 @@ echo "<td class='list'><b>"._('Time')."</b></td>\n";
 echo "<td class='list'><b>"._('Stb action')."</b></td>\n";
 echo "<td class='list'><b>"._('Parameter')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $log->next()){
+
     echo "<tr>";
     echo "<td class='list' nowrap>".$arr['time']."</td>\n";
     echo "<td class='list'>".$arr['action']."</td>\n";

@@ -9,8 +9,6 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-/*$db = new Database();*/
-
 moderator_access();
 
 if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda'  && !check_access()){ 

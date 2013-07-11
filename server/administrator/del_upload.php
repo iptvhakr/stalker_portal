@@ -5,14 +5,12 @@ ob_start();
 
 include "./common.php";
 
-$db = new Database();
-
 moderator_access();
 
 $id = intval($_GET['id']);
 
-$query = 'delete from screenshots where id='.$id;
-$rs=$db->executeQuery($query);
+Mysql::getInstance()->delete('screenshots', array('id' => $id));
+
 unset($_SESSION['upload'][$id]);
 header("Location: add_video.php?&search=".@$_GET['search']."&letter=".@$_GET['letter']."&page=".@$_GET['page']."#form");
 ?>

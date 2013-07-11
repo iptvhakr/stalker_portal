@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -111,12 +109,9 @@ if ($search){
 
 $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
 
-$query_tv = "select * from users where time_last_play_tv<'$from_time' order by id";
-$rs_tv = $db->executeQuery($query_tv);
+$not_active_in_tv = Mysql::getInstance()->from('users')->where(array('time_last_play_tv<' => $from_time))->orderby('id')->get();
 
-$query_video = "select * from users where time_last_play_video<'$from_time' order by id";
-//echo $query_video;
-$rs_video = $db->executeQuery($query_video);
+$not_active_in_video = Mysql::getInstance()->from('users')->where(array('time_last_play_video<' => $from_time))->orderby('id')->get();
 
 ?>
 
@@ -131,10 +126,8 @@ echo "<td class='list'><b>#</b></td>\n";
 echo "<td class='list'><b>mac</b></td>\n";
 echo "<td class='list'><b>"._('Latest TV viewing')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs_tv->next()){
-    
-    $arr=$rs_tv->getCurrentValuesAsHash();
-    
+while($arr = $not_active_in_tv->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$i."</td>\n";
     echo "<td class='list'>".$arr['mac']."</td>\n";
@@ -158,10 +151,8 @@ echo "<td class='list'><b>mac</b></td>\n";
 echo "<td class='list'><b>"._('Latest VIDEO viewing')."</b></td>\n";
 echo "</tr>\n";
 $i = 1;
-while(@$rs_video->next()){
-    
-    $arr_video=$rs_video->getCurrentValuesAsHash();
-    
+while($arr_video = $not_active_in_video->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$i."</td>\n";
     echo "<td class='list'>".$arr_video['mac']."</td>\n";

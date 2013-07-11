@@ -8,8 +8,6 @@ $error = '';
 $action_name = 'add';
 $action_value = 'Добавить';
 
-$db = new Database();
-
 moderator_access();
 
 if (!check_access()){ 

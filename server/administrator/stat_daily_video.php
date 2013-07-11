@@ -7,8 +7,6 @@ include "./common.php";
 
 $error = '';
 
-$db = new Database();
-
 moderator_access();
 
 echo '<pre>';
@@ -106,17 +104,14 @@ function page_bar(){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-
-$query = "select * from daily_played_video";
-
-$rs = $db->executeQuery($query);
-$total_items = $rs->getRowCount();
+$total_items = Mysql::getInstance()->count()->from('daily_played_video')->get()->counter();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
 $query = "select * from daily_played_video order by date desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
-$rs = $db->executeQuery($query);
+$played_video = Mysql::getInstance()->query($query);
+
 ?>
 <table border="0" align="center" width="620">
 <tr>
@@ -131,10 +126,8 @@ echo "<td class='list'><b>id</b></td>\n";
 echo "<td class='list'><b>"._('Day')."</b></td>\n";
 echo "<td class='list'><b>"._('Views')."</b></td>\n";
 echo "</tr>\n";
-while(@$rs->next()){
-    
-    $arr=$rs->getCurrentValuesAsHash();
-    
+while($arr = $played_video->next()){
+
     echo "<tr>";
     echo "<td class='list'>".$arr['id']."</td>\n";
     echo "<td class='list'>".$arr['date']."</td>\n";
