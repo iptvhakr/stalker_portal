@@ -511,6 +511,8 @@ class User implements \Stalker\Lib\StbApi\User
             unset($new_account['tariff_plan']);
         }
 
+        $new_account['created'] = 'NOW()';
+
         $insert_id = Mysql::getInstance()->insert('users', $new_account)->insert_id();
 
         if (!$insert_id){
