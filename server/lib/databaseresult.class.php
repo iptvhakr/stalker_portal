@@ -21,6 +21,14 @@ abstract class DatabaseResult
 
     abstract public function all($field = null);
 
+    abstract public function current();
+
+    abstract public function next();
+
+    abstract public function seek($offset);
+
+    abstract public function counter();
+
     public function insert_id() {
 
         return $this->insert_id;
@@ -65,5 +73,3 @@ abstract class DatabaseResult
         return $this;
     }
 }
-
-?>

@@ -33,14 +33,12 @@ if (isset($_FILES['screenshot'])){
     if (is_uploaded_file($_FILES['screenshot']['tmp_name'])){
         if (preg_match("/jpeg/",$_FILES['screenshot']['type'])){
 
-            Mysql::getInstance()->insert('screenshots', array(
+            $upload_id = Mysql::getInstance()->insert('screenshots', array(
                 'name' => $_FILES['screenshot']['name'],
                 'size' => $_FILES['screenshot']['size'],
                 'type' => $_FILES['screenshot']['type']
-            ));
-        
-            $upload_id = mysql_insert_id();
-            
+            ))->insert_id();
+
             $_SESSION['upload'][] = $upload_id;
             
             $img_path = get_save_folder($upload_id);

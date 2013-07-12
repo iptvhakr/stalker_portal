@@ -71,13 +71,21 @@ class Mysql
     }
 
     private function getConnection($host, $user, $password, $db_name) {
-        $link = mysql_connect($host, $user, $password);
 
-        if (!$link) {
-            throw new MysqlException('Cannot connect to database: ' . mysql_error());
+        if ($pos = strpos($host, ':')){
+            $port = (int) substr($host, $pos + 1);
+            $host = substr($host, 0, $pos);
+        }else{
+            $port = 3306;
         }
 
-        mysql_select_db($db_name);
+        $link = mysqli_connect($host, $user, $password, $db_name, $port);
+
+        mysqli_autocommit($link, true);
+
+        if (!$link) {
+            throw new MysqlException('Connect Error (' . mysqli_connect_errno() . ') ' . mysqli_connect_error());
+        }
 
         $this->set_charset($this->charset, $link);
 
@@ -88,10 +96,10 @@ class Mysql
         return $link;
     }
 
-    private function set_charset($charset, $link = null) {
+    private function set_charset($charset, $link) {
 
-        if (!mysql_set_charset($charset, $link)) {
-            throw new Exception('Error: ' . mysql_error($link));
+        if (!mysqli_set_charset($link, $charset)) {
+            throw new MysqlException("Error loading character set ".$charset.": ".mysqli_error($link));
         }
     }
 
@@ -649,8 +657,6 @@ class Mysql
 
             $tags = $this->get_tags(get_object_vars($this));
 
-            var_dump('????????????????????????', $tags, !preg_match('/^INSERT|^UPDATE|^REPLACE|^SET|^DELETE|^TRUNCATE/i', $sql));
-
             if (!preg_match('/^INSERT|^UPDATE|^REPLACE|^SET|^DELETE|^TRUNCATE/i', $sql)) {
 
                 $key = $this->get_cache_key($sql);
@@ -658,7 +664,7 @@ class Mysql
                 if (($result = $this->cache->get($key)) === false) {
                     self::$num_queries++;
 
-                    $result = new MysqlResult(mysql_query($sql, $link), $sql, $link);
+                    $result = new MysqlResult(mysqli_query($link, $sql), $sql, $link);
 
                     $this->cache->set($key, $result->as_array(true), $tags);
 
@@ -684,7 +690,7 @@ class Mysql
 
         self::$num_queries++;
 
-        return new MysqlResult(mysql_query($sql, $link), $sql, $link);
+        return new MysqlResult(mysqli_query($link, $sql), $sql, $link);
     }
 
     private function reset_select() {
@@ -708,7 +714,7 @@ class Mysql
 
     private function escape_str($str) {
 
-        return mysql_real_escape_string($str, $this->link);
+        return mysqli_real_escape_string($this->link, $str);
     }
 
     private function escape($value) {
@@ -794,5 +800,3 @@ class Mysql
 class MysqlException extends Exception
 {
 }
-
-?>
