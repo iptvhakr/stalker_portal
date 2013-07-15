@@ -174,11 +174,7 @@ HTMLElement.prototype.hide = function(){
 
 HTMLElement.prototype.isHidden = function(){
     try{
-        if (this.style.display == 'none'){
-            return true;
-        }else{
-            return false;
-        }
+        return this.style.display == 'none';
     }catch(e){
         _debug(e);
     }

@@ -3856,10 +3856,12 @@ player.prototype.change_aspect = function(){
         return;
     }
 
-    if (stb.aspect_idx < stb.aspect_array.length-1){
-        stb.aspect_idx++;
-    }else{
-        stb.aspect_idx = 0;
+    if (!this.aspect_info_container.isHidden()){
+        if (stb.aspect_idx < stb.aspect_array.length-1){
+            stb.aspect_idx++;
+        }else{
+            stb.aspect_idx = 0;
+        }
     }
     
     _debug('set aspect', stb.aspect_array[stb.aspect_idx].alias);
