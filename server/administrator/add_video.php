@@ -565,7 +565,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a> | <a href="javascript://" class="goto_form"><?= _('Add')?></a> | <a href="vclub_ad.php"><?= _('Advertising')?></a> | <a href="add_moderator_mac.php"><?= _('Moderators MAC addresses')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="javascript://" class="goto_form"><?= _('Add')?></a> | <a href="vclub_schedule.php"><?= _('Schedule')?></a> | <a href="vclub_ad.php"><?= _('Advertising')?></a> | <a href="add_moderator_mac.php"><?= _('Moderators MAC addresses')?></a>
         <?
         if (check_access(array(1, 2))){
             echo '| <a href="myvideolog.php">'._('My logs').'</a>';
