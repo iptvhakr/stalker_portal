@@ -1624,11 +1624,15 @@ function common_xpcom(){
 
             var epg = this.get_curr_and_next(ch_id);
 
-            _debug('epg', epg);
+            return this.get_osd_info(epg);
+        },
+
+        get_osd_info : function(programs){
+            _debug('epg_loader.get_osd_info', programs);
 
             var epg_str = '';
 
-            epg.map(function(prog, idx){
+            programs.map(function(prog, idx){
 
                 if (idx != 0){
                     epg_str += '<br>';
@@ -1638,6 +1642,18 @@ function common_xpcom(){
             });
 
             return epg_str;
+        },
+
+        get_cur_program : function(ch_id){
+            _debug('epg_loader.get_cur_program', ch_id);
+
+            var epg = this.get_curr_and_next(ch_id);
+
+            if (epg && epg.length > 0){
+                return epg[0];
+            }
+
+            return null;
         }
     };
 

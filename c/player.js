@@ -2107,16 +2107,19 @@ player.prototype.init_show_info = function(){
     this.info.dom_obj.hide();
 };
 
-player.prototype.show_info = function(item){
+player.prototype.show_info = function(item, direct_call){
     _debug('show_info');
     
     item = item || this.cur_media_item;
+    direct_call = direct_call || false;
 
     if(this.info.on){
         window.clearTimeout(this.info.hide_timeout);
+        var show_epg_desc = true;
     }else{
         this.info.dom_obj.show();
         this.info.on = true;
+        show_epg_desc = false;
     }
 
     _debug('item', item);
@@ -2194,7 +2197,19 @@ player.prototype.show_info = function(item){
             }else if (item.hasOwnProperty('error') && item.error){
                 this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('error_channel_'+item.error) + '</span>';
             }else{
-                this.info.epg.innerHTML = stb.epg_loader.get_epg(item.id);
+
+                var epg = stb.epg_loader.get_curr_and_next(item.id);
+
+                /*if (!show_epg_desc || this.info.epg.getAttribute("descr") === "1"){
+                    this.info.epg.innerHTML = stb.epg_loader.get_osd_info(epg);
+                    this.info.epg.setAttribute("descr", "0");
+                }else */if (direct_call && show_epg_desc && epg && epg.length > 0 && epg[0].hasOwnProperty('descr') && epg[0].descr && this.info.epg.getAttribute("descr") !== "1"){
+                    this.info.epg.innerHTML =  epg[0].t_time + ' ' + epg[0].descr;
+                    this.info.epg.setAttribute("descr", "1");
+                }else{
+                    this.info.epg.innerHTML = stb.epg_loader.get_osd_info(epg);
+                    this.info.epg.setAttribute("descr", "0");
+                }
             }
         }else{
             
@@ -2721,7 +2736,7 @@ player.prototype.osd_clock = {
 };
 
 player.prototype.bind = function(){
-    
+
     var self = this;
     
     this.switch_channel.bind(key.UP, self, 1, true);
@@ -2787,7 +2802,7 @@ player.prototype.bind = function(){
 
     //this.show_prev_layer.bind(key.STOP, self);
     
-    this.show_info.bind(key.INFO, self);
+    this.show_info.bind(key.INFO, self, null, true);
     
     this.move_pos.bind(key.FFWD, this, 1);
 
