@@ -2200,10 +2200,7 @@ player.prototype.show_info = function(item, direct_call){
 
                 var epg = stb.epg_loader.get_curr_and_next(item.id);
 
-                /*if (!show_epg_desc || this.info.epg.getAttribute("descr") === "1"){
-                    this.info.epg.innerHTML = stb.epg_loader.get_osd_info(epg);
-                    this.info.epg.setAttribute("descr", "0");
-                }else */if (direct_call && show_epg_desc && epg && epg.length > 0 && epg[0].hasOwnProperty('descr') && epg[0].descr && this.info.epg.getAttribute("descr") !== "1"){
+                if (direct_call && show_epg_desc && epg && epg.length > 0 && epg[0].hasOwnProperty('descr') && epg[0].descr && this.info.epg.getAttribute("descr") !== "1"){
                     this.info.epg.innerHTML =  epg[0].t_time + ' ' + epg[0].descr;
                     this.info.epg.setAttribute("descr", "1");
                 }else{
