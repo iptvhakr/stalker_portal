@@ -32,12 +32,12 @@ if (!$error){
         }
         
         $time_from = $yy.'-'.$mm.'-'.$dd.' 00:00:00';
-        $time_to = $yy.'-'.$mm.'-'.$dd.' 24:00:00';
+        $time_to = $yy.'-'.$mm.'-'.$dd.' 23:59:59';
 
         Mysql::getInstance()->delete('epg', array(
-            'ch_id' => (int) $_GET['id'],
-            'time>' => $time_from,
-            'time<' => $time_to
+            'ch_id'  => (int) $_GET['id'],
+            'time>=' => $time_from,
+            'time<=' => $time_to
         ));
         
         $tmp_epg = preg_split("/\n/", stripslashes(trim($epg)));
@@ -121,7 +121,7 @@ function construct_option($id = 0){
 }
 
 function construct_YY(){
-    if (!$_GET['yy']){
+    if (empty($_GET['yy'])){
         $year = date("Y");
     }else{
         $year = $_GET['yy'];
@@ -147,7 +147,7 @@ function construct_MM(){
         12 => _('December'),
     );
     $mm = '';
-    if (!$_GET['mm']){
+    if (empty($_GET['mm'])){
         $mon = date("n");
     }else{
         $mon = $_GET['mm'];
@@ -163,7 +163,7 @@ function construct_MM(){
 }
 
 function construct_DD(){
-    if (!$_GET['dd']){
+    if (empty($_GET['dd'])){
         $day = date("j");
     }else{
         $day = $_GET['dd'];
@@ -184,7 +184,7 @@ function construct_DD(){
 function load_epg($id = 0){
 
     $epg = '';
-    if(!$id)return;
+    if(!$id) return null;
     if (@$_GET['yy'] && @$_GET['mm'] && @$_GET['dd']){
         $time = mktime (0,0,0,$_GET['mm'],$_GET['dd'],$_GET['yy']);
     }else{
@@ -196,14 +196,14 @@ function load_epg($id = 0){
     $day = date("d",$time);
 
     $time_from = $year.'-'.$month.'-'.$day.' 00:00:00';
-    $time_to = $year.'-'.$month.'-'.$day.' 24:00:00';
+    $time_to = $year.'-'.$month.'-'.$day.' 23:59:59';
 
     $programs = Mysql::getInstance()
         ->from('epg')
         ->where(array(
             'ch_id'  => $id,
             'time>=' => $time_from,
-            'time<'  => $time_to
+            'time<=' => $time_to
         ))
         ->orderby('time')
         ->get()
@@ -301,14 +301,14 @@ if (@$_GET['edit']){
 ?>
 <script>
 function save(){
-    form = document.getElementById('form')
+    form = document.getElementById('form');
     
-    name = document.getElementById('name').value
-    cmd = document.getElementById('cmd').value
-    id = document.getElementById('id').value
-    descr = document.getElementById('descr').value
+    name = document.getElementById('name').value;
+    cmd = document.getElementById('cmd').value;
+    id = document.getElementById('id').value;
+    descr = document.getElementById('descr').value;
     
-    action = 'add_itv.php?name='+name+'&cmd='+cmd+'&id='+id+'&descr='+descr
+    action = 'add_itv.php?name='+name+'&cmd='+cmd+'&id='+id+'&descr='+descr;
     //alert(action)
     if(document.getElementById('action').value == 'edit'){
         action += '&update=1'
@@ -318,32 +318,32 @@ function save(){
     }
     
     //alert(action)
-    form.action = action
-    document.location=action
+    form.action = action;
+    document.location=action;
     //form.submit()
 }
 function load_epg(){
-    form = document.getElementById('form')
-    id = document.getElementById('id').options[document.getElementById('id').selectedIndex].value
-    yy = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value
-    mm = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value
-    dd = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value
+    form = document.getElementById('form');
+    id = document.getElementById('id').options[document.getElementById('id').selectedIndex].value;
+    yy = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value;
+    mm = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value;
+    dd = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value;
     //alert('id:'+id+' yy:'+yy+' mm:'+mm+' dd:'+dd)
-    action = 'add_epg.php?id='+id+'&yy='+yy+'&mm='+mm+'&dd='+dd
+    action = 'add_epg.php?id='+id+'&yy='+yy+'&mm='+mm+'&dd='+dd;
     document.location=action
 }
 function save_epg(){
-    form = document.getElementById('form')
-    id   = document.getElementById('id').options[document.getElementById('id').selectedIndex].value
-    yy   = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value
-    mm   = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value
-    dd   = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value
-    epg  = document.getElementById('epg').value
+    form = document.getElementById('form');
+    id   = document.getElementById('id').options[document.getElementById('id').selectedIndex].value;
+    yy   = document.getElementById('yy').options[document.getElementById('yy').selectedIndex].value;
+    mm   = document.getElementById('mm').options[document.getElementById('mm').selectedIndex].value;
+    dd   = document.getElementById('dd').options[document.getElementById('dd').selectedIndex].value;
+    epg  = document.getElementById('epg').value;
     
-    action = 'add_epg.php?id='+id+'&yy='+yy+'&mm='+mm+'&dd='+dd+'&save=1'
+    action = 'add_epg.php?id='+id+'&yy='+yy+'&mm='+mm+'&dd='+dd+'&save=1';
     //alert(action)
     //document.location=action
-    form.action = action
+    form.action = action;
     form.submit()
 }
 </script>
