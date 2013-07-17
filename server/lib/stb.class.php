@@ -798,7 +798,15 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     if (!empty($_REQUEST['ch_id'])){
                         $ch_name = $this->db->from('itv')->where(array('id' => (int) $_REQUEST['ch_id']))->get()->first('name');
                     }else{
-                        $ch_name = $this->db->from('itv')->where(array('cmd' => $param, 'status' => 1))->get()->first('name');
+                        $ch_name = $this->db
+                            ->from('ch_links')
+                            ->join('itv', 'itv.id', 'ch_links.ch_id', 'INNER')
+                            ->where(array(
+                                'ch_links.url'    => $param,
+                                'ch_links.status' => 1
+                            ))
+                            ->get()
+                            ->first('name');
                     }
 
                     if (empty($ch_name)){
