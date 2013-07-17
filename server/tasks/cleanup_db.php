@@ -23,5 +23,8 @@ Mysql::getInstance()->query('OPTIMIZE TABLE `played_video`');
 Mysql::getInstance()->query('DELETE FROM `played_itv` WHERE `playtime`<FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-2764800)');
 Mysql::getInstance()->query('OPTIMIZE TABLE `played_itv`');
 
+Mysql::getInstance()->query('DELETE FROM `played_tv_archive` WHERE `playtime`<FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-2764800)');
+Mysql::getInstance()->query('OPTIMIZE TABLE `played_tv_archive`');
+
 Mysql::getInstance()->query('DELETE FROM `media_claims_log` WHERE `added`<FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-2592000)');
 Mysql::getInstance()->query('OPTIMIZE TABLE `media_claims_log`');

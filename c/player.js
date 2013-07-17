@@ -74,6 +74,7 @@ function player(){
     this.prev_state = 0;
 
     this.send_last_tv_id_to = 1800000;
+    this.send_played_tv_archive_to = 60000;
     this.last_tv_id = 0;
     
     this.prev_layer = {};
@@ -1043,6 +1044,8 @@ player.prototype.event_callback = function(event, params){
                 this.get_pids();
             }
 
+            window.clearTimeout(this.send_played_tv_archive_timer);
+
             if (module.tv_archive && this.cur_media_item.mark_archive){
                 window.clearTimeout(this.archive_continue_dialog_to);
 
@@ -1055,6 +1058,17 @@ player.prototype.event_callback = function(event, params){
                         module.tv_archive.continue_dialog.show();
                     }
                 }, (this.cur_media_length - this.cur_pos_time - 30)*1000);
+
+                self = this;
+
+                this.send_played_tv_archive_timer = window.setTimeout(
+
+                    function(){
+                        self.send_played_tv_archive(stb.player.cur_media_item.ch_id);
+                    },
+
+                    this.send_played_tv_archive_to
+                );
             }
 
             break;
@@ -1584,6 +1598,10 @@ player.prototype.play = function(item){
 
     this.prev_state = 0;
 
+    if (module.tv_archive && this.cur_media_item.mark_archive && this.cur_media_item.archive_hist_id){
+        this.update_played_tv_archive_end_time(this.cur_media_item.archive_hist_id);
+    }
+
     if (media_len_part){
         this.emulate_media_len = true;
         this.cur_media_length = media_len_part[1];
@@ -1835,6 +1853,11 @@ player.prototype.stop = function(){
         this.triggerCustomEventListener('audiostop', this.cur_media_item);
     }*/
 
+    if (module.tv_archive && this.cur_media_item.mark_archive && this.cur_media_item.archive_hist_id){
+        this.update_played_tv_archive_end_time(this.cur_media_item.archive_hist_id);
+        this.cur_media_item.archive_hist_id = null;
+    }
+
     this.on_stop = undefined;
 
     this.prev_layer = {};
@@ -1919,6 +1942,7 @@ player.prototype.stop = function(){
     this.play_auto_ended = false;
     
     window.clearTimeout(this.send_played_itv_timer);
+    window.clearTimeout(this.send_played_tv_archive_timer);
     window.clearTimeout(this.send_played_video_timer);
     window.clearTimeout(this.replay_channel_timer);
     
@@ -2525,6 +2549,43 @@ player.prototype.send_played_itv = function(id){
         function(result){
             
         }
+    );
+};
+
+player.prototype.send_played_tv_archive = function(id){
+
+    stb.load(
+        {
+            "type"   : "tvarchive",
+            "action" : "set_played",
+            "ch_id"  : id
+        },
+
+        function(result){
+            _debug('on archive set_played', result);
+
+            this.cur_media_item.archive_hist_id = result;
+        },
+
+        this
+    );
+};
+
+player.prototype.update_played_tv_archive_end_time = function(id){
+
+    stb.load(
+        {
+            "type"     : "tvarchive",
+            "action"   : "update_played_end_time",
+            "hist_id"  : id
+        },
+
+        function(result){
+            _debug('on update_played_end_time', result);
+
+        },
+
+        this
     );
 };
 

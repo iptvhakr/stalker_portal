@@ -367,6 +367,27 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         return count($this->getAllTasks($storage['storage_name'])) / count($this->getAllTasks());
     }*/
 
+    public function setPlayed(){
+
+        return $this->db->insert('played_tv_archive', array(
+            'ch_id'    => (int) $_REQUEST['ch_id'],
+            'uid'      => $this->stb->id,
+            'playtime' => 'NOW()'
+        ))->insert_id();
+    }
+
+    public function updatePlayedEndTime(){
+
+        return Mysql::getInstance()->update('played_tv_archive',
+            array(
+                'length' => 'UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(playtime)'
+            ),
+            array(
+                'id' => (int) $_REQUEST['hist_id']
+            )
+        );
+    }
+
     public function createTasks($ch_id, $force_storages = array()){
 
         if (empty($force_storages)){

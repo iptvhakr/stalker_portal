@@ -432,17 +432,23 @@ $cur_infoportal = get_cur_infoportal();
     <td>&nbsp;</td>
     <td align="center"><a href="stat_video_users.php"><?= _('Users statistics for VIDEO')?></a></td>
   </tr>
-  
+
+  <tr>
+      <td align="center"><a href="stat_tv_archive.php"><?= _('TV Archive statistics')?></a></td>
+      <td>&nbsp;</td>
+      <td align="center"><a href="stat_anec_users.php"><?= _('Users statistics for Jokes')?></a></td>
+  </tr>
+
   <tr>
     <td align="center"><a href="stat_moderators.php"><?= _('Moderators statistics')?></a></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="stat_anec_users.php"><?= _('Users statistics for Jokes')?></a></td>
+      <td align="center"><a href="stat_not_active_users.php"><?= _('Inactive users')?></a></td>
   </tr>
   
   <tr>
     <td align="center"><a href="claims.php"><?= _('Claims')?></a></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="stat_not_active_users.php"><?= _('Inactive users')?></a></td>
+    <td align="center"></td>
   </tr>
 </table>
 <br>

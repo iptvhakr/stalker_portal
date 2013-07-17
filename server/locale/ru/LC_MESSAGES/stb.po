@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-15 17:43+0200\n"
-"PO-Revision-Date: 2013-07-15 17:44+0200\n"
+"POT-Creation-Date: 2013-07-16 18:21+0200\n"
+"PO-Revision-Date: 2013-07-16 18:21+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1126,30 +1126,34 @@ msgid "Users statistics for VIDEO"
 msgstr "Абонентская статистика по ВИДЕО"
 
 #: ../../../administrator/index.php:437
-msgid "Moderators statistics"
-msgstr "Статистика Модераторов"
+msgid "TV Archive statistics"
+msgstr "Статистика ТВ Архива"
 
 #: ../../../administrator/index.php:439
 msgid "Users statistics for Jokes"
 msgstr "Абонентская статистика по Анекдотам"
 
+#: ../../../administrator/index.php:443
+msgid "Moderators statistics"
+msgstr "Статистика Модераторов"
+
 #: ../../../administrator/index.php:445
 msgid "Inactive users"
 msgstr "Неактивные абоненты"
 
-#: ../../../administrator/index.php:455
+#: ../../../administrator/index.php:461
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../../../administrator/index.php:459
+#: ../../../administrator/index.php:465
 msgid "Firmware auto update"
 msgstr "Автоматическое обновление прошивки"
 
-#: ../../../administrator/index.php:461
+#: ../../../administrator/index.php:467
 msgid "Storages"
 msgstr "Хранилища"
 
-#: ../../../administrator/index.php:467
+#: ../../../administrator/index.php:473
 msgid "Stream servers"
 msgstr "Сервера вещания"
 
@@ -1565,6 +1569,15 @@ msgstr "Последний просмотр ВИДЕО"
 #: ../../../administrator/stat_tv.php:63
 msgid "TV views statistics per month"
 msgstr "Статистика просмотра TV за месяц"
+
+#: ../../../administrator/stat_tv_archive.php:57
+#: ../../../administrator/stat_tv_archive.php:63
+msgid "TV Archive statistics per month"
+msgstr "Статистика просмотра TV Архива за месяц"
+
+#: ../../../administrator/stat_tv_archive.php:103
+msgid "Total time"
+msgstr "Общее время"
 
 #: ../../../administrator/stat_tv_users.php:56
 #: ../../../administrator/stat_tv_users.php:62

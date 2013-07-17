@@ -9,4 +9,8 @@ interface TvArchive
     public function getLinkForChannel();
 
     public function getNextPartUrl();
+
+    public function setPlayed();
+
+    public function updatePlayedEndTime();
 }
