@@ -280,11 +280,12 @@ if (count(@$_POST) > 0){
                             'rating_mpaa'    => $_POST['rating_mpaa'],
                             'path'           => $trans_name,
                             'high_quality'   => $high_quality,
+                            'comments'       => $_POST['comments'],
                             'added'          => 'NOW()'
                         )
                     )->insert_id();
 
-                    if(@$_SESSION['upload']){
+                    if(!empty($_SESSION['upload'])){
                         Mysql::getInstance()->query('DELETE from screenshots where media_id='.intval($video_id).' and id not IN ('.@implode(',', $_SESSION['upload']).')');
 
                         Mysql::getInstance()->query('UPDATE screenshots SET media_id='.intval($video_id).' WHERE id IN ('.@implode(',', $_SESSION['upload']).')');
@@ -345,7 +346,8 @@ if (count(@$_POST) > 0){
                             'rating_count_imdb' => $_POST['rating_count_imdb'],
                             'age'            => $_POST['age'],
                             'rating_mpaa'    => $_POST['rating_mpaa'],
-                            'high_quality'   => $high_quality
+                            'high_quality'   => $high_quality,
+                            'comments'       => $_POST['comments']
                         ),
                         array(
                             'id' => (int) $_GET['id']
@@ -354,11 +356,13 @@ if (count(@$_POST) > 0){
 
                     add_video_log('edit', intval(@$_GET['id']));
 
-                    Mysql::getInstance()->query('DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.@implode(',', $_SESSION['upload']).')');
+                    if (!empty($_SESSION['upload'])){
+                        Mysql::getInstance()->query('DELETE from screenshots where media_id=\''.intval(@$_GET['id']).'\' and id not IN ('.@implode(',', $_SESSION['upload']).')');
 
-                    Mysql::getInstance()->query('UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.@implode(',', $_SESSION['upload']).')');
+                        Mysql::getInstance()->query('UPDATE screenshots SET media_id=\''.intval(@$_GET['id']).'\' WHERE id IN ('.@implode(',', $_SESSION['upload']).')');
 
-                    unset($_SESSION['upload']);
+                        unset($_SESSION['upload']);
+                    }
 
                     if ((empty($_FILES['screenshot']) || empty($_FILES['screenshot']['tmp_name'])) && empty($_POST['cover_big']) && empty($_POST['cover_id'])){
                         Mysql::getInstance()->delete('screenshots', array('media_id' => intval(@$_GET['id'])));
@@ -918,6 +922,7 @@ if (@$_GET['edit']){
         $for_sd_stb = $arr['for_sd_stb'];
 
         $volume_correction = $arr['volume_correction'];
+        $comments = $arr['comments'];
         $readonly = 'readonly';
         if ($censored){
             $checked = 'checked';
@@ -1988,7 +1993,7 @@ $(function(){
             <?= _('Director')?>:
            </td>
            <td>
-            <input name="director" type="text" class="director" size="40" value="<? echo @$director ?>">
+            <input name="director" type="text" class="director" size="50" value="<? echo @$director ?>">
            </td>
         </tr>
         <tr>
@@ -1996,7 +2001,7 @@ $(function(){
             <?= _('Actors')?>:
            </td>
            <td>
-            <textarea id="actors" name="actors" class="actors" rows="6" cols="30"><? echo @$actors ?></textarea>
+            <textarea id="actors" name="actors" class="actors" rows="6" cols="39"><? echo @$actors ?></textarea>
            </td>
         </tr>
         <tr>
@@ -2004,7 +2009,7 @@ $(function(){
             <?= _('Description')?>:
            </td>
            <td>
-            <textarea id="description" name="description" class="description" rows="10" cols="30"><? echo @$description ?></textarea>
+            <textarea id="description" name="description" class="description" rows="10" cols="39"><? echo @$description ?></textarea>
            </td>
         </tr>
         <tr>
@@ -2012,8 +2017,16 @@ $(function(){
             <?= _('Volume correction')?> (-20...20):
            </td>
            <td>
-            <input id="service_id" name="volume_correction" size="50" type="text" value="<? echo @$volume_correction ?>">
+            <input id="service_id" name="volume_correction" size="4" maxlength="3" type="text" value="<? echo @$volume_correction ?>">
            </td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">
+                <?= _('Comments')?>:
+            </td>
+            <td>
+                <textarea id="comments" name="comments" cols="39" rows="5"><? echo @$comments ?></textarea>
+            </td>
         </tr>
         <tr>
            <td align="right" valign="top">
