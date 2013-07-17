@@ -4,6 +4,7 @@ class RESTResponse
 {
 
     protected $body = array('status' => 'OK', 'results' => '');
+    /** @var  RESTRequest */
     private $request;
     private $content_type = 'application/json';
 
@@ -89,6 +90,10 @@ class RESTResponse
         $response = json_encode($this->body);
         echo $response;
         ob_end_flush();
+
+        if (!Config::getSafe('enable_api_log', true)){
+            return;
+        }
         
         $logger = new Logger();
         $logger->setPrefix("api_");
