@@ -810,7 +810,7 @@ a:hover{
                         inverse = !eventObject.inverse;
                     }
 
-                    table.find('td').filter(function(){
+                    table.find('td.list').filter(function(){
 
                         return $(this).index() === thIndex;
 
@@ -988,19 +988,32 @@ while ($arr = $all_channels->next()){
         }
     }
 
-    echo " >";
-    echo "<td class='list";
+    echo ">";
+    echo "<td class='list" ;
     if ($last_modified_id == $arr['id']){
         echo ' last_modified';
     }
-    echo "'>".$arr['id']."</td>";
+    echo "' height='36'>".$arr['id']."</td>";
     echo "<td class='list'><span class='number'>".$arr['number']."</span> <div style='float:right'><span class='shift_ch' data-direction='1'>&darr;</span> <span class='shift_ch' data-direction='-1'>&uarr;</span></div></td>";
     echo "<td class='list'>".$arr['service_id']."</td>";
-    //echo "<td class='list'><a href='".get_screen_name($arr['cmd'])."' >".$arr['name']."</a></td>";
-    echo "<td class='list' style='color:".get_color($arr)."' title='".get_hint($arr)."'><b>".$arr['name']."</b></td>";
+    echo "<td class='list'>";
+
+    echo '<table cellpadding="0" cellspacing="0">';
+    echo '<tr>';
+    echo '<td>';
+    if ($logo = Itv::getLogoUriById(intval($arr['id']), 120)){
+        echo '<img src ="'.$logo.'"/ >';
+    }
+    echo '</td>';
+    echo '<td>';
+    echo '<b style="color:'.get_color($arr).'" title="'.get_hint($arr).'">'.$arr['name'].'</b>';
+    echo '</td>';
+    echo '</tr>';
+    echo '</table>';
+
+    echo "</td>";
     echo "<td class='list'>".$arr['cmd']."</td>";
     echo "<td class='list'>".$arr['xmltv_id']."</td>";
-    //echo "<td class='list'>".$arr['descr']."</td>";
     echo "<td class='list'>"._($arr['genres_name'])."</td>";
     echo "<td class='list' align='center'>".($arr['enable_tv_archive'] == 1 ? '&bull;' : '')."</td>";
     echo "<td class='list'>".$arr['volume_correction']."</td>";
