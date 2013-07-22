@@ -6,7 +6,8 @@ ob_start();
 include "./common.php";
 include "./lib/tasks.php";
 
-moderator_access();
+Admin::checkAuth();
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
@@ -138,13 +139,13 @@ a:hover{
   <tr>
     <td><div align="center"><a href="add_karaoke.php"><?= _('KARAOKE')?></a></div></td>
     <td>&nbsp;</td>
-    <td align="center"><a href="logout.php">[<?echo $_SESSION['login']?>] <?= _('Logout')?></a></td>
+    <td align="center"><?if (Admin::isSuperUser()){?><a href="administrators.php"><?= _('Administrators')?></a><?}?></td>
   </tr>
   
   <tr>
     <td><div align="center"><a href="add_radio.php"><?= _('RADIO')?></a></div></td>
     <td>&nbsp;</td>
-    <td align="center"></td>
+    <td align="center"><a href="logout.php">[<?echo $_SESSION['login']?>] <?= _('Logout')?></a></td>
   </tr>
   
   <tr>
@@ -157,7 +158,7 @@ a:hover{
     <td><div align="center"><a href="tariffs.php"><?= _('TARIFFS')?></a></div></td>
     <td>&nbsp;</td>
     <td align="center"><?
-    if (check_access(array(1,2))){
+    if (Admin::isAccessAllowed('tasks')){
         echo "<a href='tasks.php'>".sprintf(_('Tasks (new messages: %s)'), get_count_unreaded_msgs_by_uid())."</a>";
     }
     ?></td>
@@ -454,7 +455,6 @@ $cur_infoportal = get_cur_infoportal();
 <br>
 
 
-<? if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || @$_SESSION['login'] == 'azmus' || @$_SESSION['login'] == 'vitaxa' || check_access()){ ?>
 <table width="80%"  border="1" align="center" cellpadding="3" cellspacing="0" class="menu">
 
   <tr>
@@ -462,17 +462,16 @@ $cur_infoportal = get_cur_infoportal();
   </tr>
   
   <tr>
-    <td width="47%" align="center"><a href="setting_common.php"><?= _('Firmware auto update')?></a></td>
+    <td width="47%" align="center"><? if (Admin::isAccessAllowed('setting_common')){?><a href="setting_common.php"><?= _('Firmware auto update')?></a><?}?></td>
     <td width="6%">&nbsp;</td>
-    <td width="47%" align="center"><a href="storages.php"><?= _('Storages')?></a></td>
+    <td width="47%" align="center"><? if (Admin::isAccessAllowed('storages')){?><a href="storages.php"><?= _('Storages')?></a><?}?></td>
   </tr>
 
   <tr>
-    <td width="47%" align="center"><a href="epg_setting.php">EPG</a></td>
+    <td width="47%" align="center"><? if (Admin::isAccessAllowed('epg_setting')){?><a href="epg_setting.php">EPG</a><?}?></td>
     <td width="6%">&nbsp;</td>
-    <td width="47%" align="center"><a href="stream_servers.php"><?= _('Stream servers')?></a></td>
+    <td width="47%" align="center"><? if (Admin::isAccessAllowed('stream_servers')){?><a href="stream_servers.php"><?= _('Stream servers')?></a><?}?></td>
   </tr>
 </table>
-<?}?>
 </body>
 </html>

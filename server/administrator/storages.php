@@ -9,11 +9,9 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'vitaxa' && @$_SESSION['login'] != 'azmus' && !check_access()){
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -24,6 +22,8 @@ if (!empty($_POST['nfs_home_path']) && strripos($_POST['nfs_home_path'], '/') !=
 }
     
 if (@$_POST['add']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     Mysql::getInstance()->insert('storages', array(
         'storage_name'          => @$_POST['storage_name'],
@@ -51,6 +51,8 @@ if (!empty($id)){
 
     if (@$_POST['edit']){
 
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         Mysql::getInstance()->update('storages',
             array(
                 'storage_name'          => @$_POST['storage_name'],
@@ -74,11 +76,15 @@ if (!empty($id)){
         exit;
     }elseif (@$_GET['del']){
 
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         Mysql::getInstance()->delete('storages', array('id' => intval($_GET['id'])));
 
         header("Location: storages.php");
         exit;
     }elseif (isset($_GET['status'])){
+
+        Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
         Mysql::getInstance()->update('storages', array('status' => $_GET['status']), array('id' => intval($_GET['id'])));
 
@@ -94,6 +100,8 @@ if (@$_GET['edit'] && !empty($id)){
 }
 
 if (@$_GET['reset_cache'] && !empty($id)){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     $storage = Mysql::getInstance()->from('storages')->where(array('id' => $id))->get()->first();
     $storage_name = $storage['name'];
@@ -116,6 +124,8 @@ if (@$_GET['reset_cache'] && !empty($id)){
 }
 
 if (@$_GET['reset_all_cache']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_PAGE_ACTION);
 
     $reset_result = Mysql::getInstance()->update('storage_cache', array('changed' => '0000-00-00 00:00:00'))->result();
 

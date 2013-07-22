@@ -9,17 +9,17 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'vitaxa' && @$_SESSION['login'] != 'azmus' && !check_access()){
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
 }
     
 if (@$_POST['add']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     Mysql::getInstance()->insert('streaming_servers', array(
         'name'         => @$_POST['name'],
@@ -38,6 +38,8 @@ if (!empty($id)){
     
     if (@$_POST['edit']){
 
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         Mysql::getInstance()->update('',
             array(
                 'name'         => @$_POST['name'],
@@ -52,11 +54,15 @@ if (!empty($id)){
         exit;
     }elseif (@$_GET['del']){
 
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         Mysql::getInstance()->delete('streaming_servers', array('id' => intval($_GET['id'])));
 
         header("Location: stream_servers.php");
         exit;
     }elseif (isset($_GET['status'])){
+
+        Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
         Mysql::getInstance()->update('streaming_servers',
             array(

@@ -8,9 +8,14 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['archive'] == 1 && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $id = intval(@$_GET['id']);
     
     $year  = date("Y");
@@ -91,6 +96,9 @@ if (@$_GET['archive'] == 1 && @$_GET['id']){
 
 
 if (isset($_GET['accessed']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     set_karaoke_accessed(@$_GET['id'], @$_GET['accessed']);
     $id = @$_GET['id'];
     if ($_GET['accessed'] == 1){
@@ -103,12 +111,18 @@ if (isset($_GET['accessed']) && @$_GET['id']){
 }
 
 if (isset($_GET['returned']) && @$_GET['id']){
-	set_karaoke_returned(@$_GET['id'], @$_GET['returned'],@$_GET['reason']);
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
+    set_karaoke_returned(@$_GET['id'], @$_GET['returned'],@$_GET['reason']);
     header("Location: last_closed_karaoke.php?id=".@$_GET['uid']);
     exit;
 }
 
 if (isset($_GET['done']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     set_karaoke_done(@$_GET['id'], @$_GET['done']);
     $id = @$_GET['id'];
     
@@ -173,7 +187,7 @@ function get_karaoke_accessed_color($id){
     }
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
-    if (check_access(array(1))){
+    if (Admin::isPageActionAllowed()){
         return "<a href='last_closed_karaoke.php?accessed=$accessed&id=$id&uid=".@$_GET['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
     }else{
         return "<font color='$color'><b>$txt</b></font>";
@@ -192,7 +206,7 @@ function get_done_karaoke_color($id){
     }
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
-    if (check_access(array(1))){
+    if (Admin::isPageActionAllowed()){
         return "<a href='last_closed_karaoke.php?done=$done&id=$id&uid=".@$_GET['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
     }else{
     	return "<font color='$color'><b>$txt</b></font>";
@@ -209,7 +223,7 @@ function return_karaoke($id, $returned, $reason){
         $color = '#CBCB00';
         $returned = 1;
 	}
-	if (check_access(array(1))){
+	if (Admin::isPageActionAllowed()){
 		//return "<a href='last_closed_karaoke.php?return=1&id=$id&uid=".@$_GET['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='#CBCB00'>вернуть</font></a>";
 		$str  = "<a href='#' ";
 		if ($returned == 0){
@@ -313,7 +327,7 @@ a.msgs:hover, a.msgs:visited, a.msgs:link{
 
 $where = '';
 
-if (check_access(array(1))){
+if (Admin::isPageActionAllowed()){
     $uid = @$_GET['id'];
 }else{
     $uid = @$_SESSION['uid'];
@@ -369,13 +383,6 @@ if (check_access(array(1))){
     <br>
     <br>
     <table border="0" width="100%">
-    <!--<tr>
-        <td align="right">
-        <?//if (check_access(array(1))){?>
-        <input type="button" value="В архив" onclick="if(confirm('Переместить в архив?')){document.location='last_closed_tasks.php?id=<?//echo @$_GET['id']?>&archive=1';}">
-        <?//}?>
-        </td>
-    </tr>-->
     </table>
     <td>
     </tr>

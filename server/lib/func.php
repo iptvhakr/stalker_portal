@@ -82,6 +82,9 @@ function transliterate($st) {
    return $st;
 }
 
+/**
+ * @deprecated
+ */
 function check_db_user_login($login, $pass){
 
     $user = Mysql::getInstance()
@@ -103,6 +106,9 @@ function check_db_user_login($login, $pass){
     }
 }
 
+/**
+ * @deprecated
+ */
 function check_session_user_login(){
 
     if (empty($_SESSION['login']) || empty($_SESSION['pass'])){
@@ -125,6 +131,9 @@ function check_session_user_login(){
 
 }
 
+/**
+ * @deprecated
+ */
 function moderator_access(){
     if(!check_session_user_login()){
         header("Location: login.php");
@@ -132,6 +141,9 @@ function moderator_access(){
     }
 }
 
+/**
+ * @deprecated
+ */
 function check_access($num = array()){
     $num[] = 0;
     if(in_array($_SESSION['access'], $num)){

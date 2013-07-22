@@ -7,9 +7,13 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['del']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
     Mysql::getInstance()->delete('radio', array('id' => intval(@$_GET['id'])));
 
@@ -18,6 +22,8 @@ if (@$_GET['del']){
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     Mysql::getInstance()->update('radio',
         array('status' => intval(@$_GET['status'])),
@@ -38,6 +44,8 @@ if (!$error){
     
         if(@$_GET['cmd'] && @$_GET['name']){
 
+            Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
             Mysql::getInstance()->insert('radio', array(
                 'name'              => @$_POST['name'],
                 'number'            => @$_POST['number'],
@@ -56,6 +64,8 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_GET['cmd'] && @$_GET['name']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
             Mysql::getInstance()->update('radio',
                 array(

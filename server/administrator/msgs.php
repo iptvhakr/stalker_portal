@@ -8,7 +8,10 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
+
 ?>
 <html>
 <head>

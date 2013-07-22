@@ -3,7 +3,7 @@ session_start();
 
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
 
 ob_start();
 $response = array();

@@ -7,7 +7,9 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 echo '<pre>';
 //print_r($_FILES);
@@ -169,7 +171,7 @@ function get_closed_karaoke($uid){
 
 $sql = "select * from administrators where access=2";
 
-if (!check_access(array(1))){
+if (!Admin::isPageActionAllowed()){
     $sql .= " and login='".$_SESSION['login']."'";
 }
 

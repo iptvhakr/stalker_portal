@@ -9,11 +9,9 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-//if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
-//    exit;
-//}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -21,9 +19,12 @@ foreach (@$_POST as $key => $value){
     
 if (@$_POST['add']){
 
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
     Mysql::getInstance()->insert('testers', array('mac' => Middleware::normalizeMac($_POST['mac'])));
     
     header("Location: testers.php");
+    exit;
 }
 
 $id = @intval($_GET['id']);
@@ -32,6 +33,8 @@ if (!empty($id)){
     
     if (@$_POST['edit']){
 
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         Mysql::getInstance()->update('testers',
                     array('mac' => Middleware::normalizeMac($_POST['mac'])),
                     array('id' => $id));
@@ -39,11 +42,15 @@ if (!empty($id)){
         header("Location: testers.php");
     }elseif (@$_GET['del']){
 
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         Mysql::getInstance()->delete('testers', array('id' => $id));
         
         header("Location: testers.php");
     }elseif (isset($_GET['status'])){
-        
+
+        Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
         $new_status = $_GET['status'];
 
         Mysql::getInstance()->update('testers',
@@ -52,6 +59,8 @@ if (!empty($id)){
         
         header("Location: testers.php");
     }
+
+    exit;
 }
 
 if (@$_GET['edit'] && !empty($id)){

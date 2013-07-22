@@ -3,7 +3,9 @@ ob_start();
 session_start();
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     //$_POST[$key] = trim($value);
@@ -17,7 +19,7 @@ $tariff_plans = Mysql::getInstance()->from('tariff_plan')->get()->all();
 
 if (!empty($_POST['add']) && !empty($_POST['name'])){
 
-    //echo '<pre>';var_dump($_POST);exit;
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     $plan_id = Mysql::getInstance()->insert('tariff_plan', array(
         'name' => $_POST['name'],
@@ -47,6 +49,8 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     if (!empty($_POST['edit']) && !empty($_POST['name'])){
 
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         Mysql::getInstance()->update('tariff_plan', array(
             'name' => $_POST['name'],
             'user_default' => empty($_POST['user_default']) ? 0 : 1,
@@ -71,6 +75,9 @@ if (!empty($id)){
         header("Location: tariffs.php");
         exit;
     }elseif(!empty($_GET['del'])){
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         Mysql::getInstance()->delete('tariff_plan', array('id' => $id));
         Mysql::getInstance()->delete('package_in_plan', array('plan_id' => $id));
 

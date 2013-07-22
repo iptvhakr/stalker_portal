@@ -7,7 +7,9 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 echo '<pre>';
 //print_r($_FILES);
@@ -19,6 +21,8 @@ $search = @$_GET['search'];
 $letter = @$_GET['letter'];
 
 if (@$_GET['reset'] && @$_GET['media_type'] && @$_GET['media_id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     Mysql::getInstance()->update('media_claims',
         array(

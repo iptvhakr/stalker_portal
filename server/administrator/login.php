@@ -6,8 +6,8 @@ ob_start();
 
 include "./common.php";
 
-if (@$_POST['login'] && @$_POST['password']){
-    if (check_db_user_login($_POST['login'], $_POST['password'])){
+if (isset($_POST['login']) && isset($_POST['password'])){
+    if (Admin::checkAuthorization($_POST['login'], $_POST['password'])){
         header("Location: index.php");
         exit();
     }
@@ -34,10 +34,10 @@ td {
     font-size: 14px;
     text-decoration: none;
     color: #000000;
-	border-width: 1px;
+    border-width: 1px;
     border-style: solid;
     border-color: #E5E5E5;
-	background-color:#88BBFF
+    background-color:#88BBFF
 }
 </style>
 <title><?= _('LOGIN')?></title>

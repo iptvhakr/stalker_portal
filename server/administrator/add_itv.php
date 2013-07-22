@@ -7,9 +7,13 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['del'] && !empty($_GET['id'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
     Mysql::getInstance()->delete('ch_links', array('ch_id' => intval($_GET['id'])));
     Mysql::getInstance()->delete('itv', array('id' => intval($_GET['id'])));
@@ -18,6 +22,8 @@ if (@$_GET['del'] && !empty($_GET['id'])){
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     Mysql::getInstance()->update('itv',
         array(
@@ -31,6 +37,8 @@ if (isset($_GET['status']) && @$_GET['id']){
 }
 
 if (isset($_GET['shift']) && isset($_GET['from_num'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     $direction = (int) $_GET['shift'];
     $from_num = (int) $_GET['from_num'];
@@ -52,6 +60,9 @@ if (isset($_GET['shift']) && isset($_GET['from_num'])){
 }
 
 if (@$_GET['restart_all_archives']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_PAGE_ACTION);
+
     $tv_archive = new TvArchive();
     $result = true;
     $current_tasks = Mysql::getInstance()->select('ch_id, storage_name')->from('tv_archive')->get()->all();
@@ -179,6 +190,8 @@ if (!$error){
     }
 
     if (@$_GET['save'] && !$error && !empty($_POST)){
+
+        Admin::checkAccess(AdminAccess::ACCESS_CREATE);
     
         if(@$_GET['name'] && @$_POST['tv_genre_id'] > 0){
 
@@ -277,6 +290,8 @@ if (!$error){
     }
     
     if (@$_GET['update'] && !$error && !empty($_POST)){
+
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
         if(@$_GET['name']){
 
@@ -1019,11 +1034,11 @@ while ($arr = $all_channels->next()){
     echo "<td class='list'>".$arr['volume_correction']."</td>";
     
     echo "<td class='list' align='center'>\n";
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
     echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']." / ".$arr['no_epg']," / ".$arr['wrong_epg']."</span>";
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         echo "</a>";
     }
     echo "</td>\n";
@@ -1322,6 +1337,8 @@ function delete_logo(id){
                 }else{
                     alert('<?= _('Error deleting a logo')?>');
                 }
+            }else{
+                alert('<?= _('Error deleting a logo')?>');
             }
         }
     };

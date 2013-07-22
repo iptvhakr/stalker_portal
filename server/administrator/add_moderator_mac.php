@@ -7,16 +7,23 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
 
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['del']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
     Mysql::getInstance()->delete('moderators', array('id' => intval(@$_GET['id'])));
     header("Location: add_moderator_mac.php");
     exit;
 }
 
 if (isset($_GET['status']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     Mysql::getInstance()->update('moderators', array('status' => intval(@$_GET['status'])), array('id' => intval(@$_GET['id'])));
     header("Location: add_moderator_mac.php");
     exit;

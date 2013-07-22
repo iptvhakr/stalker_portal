@@ -7,7 +7,9 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 //echo '<pre>';
 //print_r($_FILES);
@@ -19,6 +21,8 @@ $search = @$_GET['search'];
 $letter = @$_GET['letter'];
 
 if (!empty($_POST['change_tariff_plan'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
     Mysql::getInstance()->update('users', array('tariff_plan_id' => intval($_POST['tariff_plan_id'])), array('id' => intval($_GET['id'])));
 
@@ -34,6 +38,8 @@ if (!empty($_POST['change_tariff_plan'])){
 }
 
 if (@$_POST['save']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_EDIT);
     
     $stb_groups = new StbGroup();
     $member = $stb_groups->getMemberByUid(intval($_GET['id']));
@@ -49,6 +55,8 @@ if (@$_POST['save']){
 }
 
 if (@$_POST['account']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
     $stb_groups = new StbGroup();
     $member = $stb_groups->getMemberByUid(intval($_GET['id']));
@@ -74,6 +82,9 @@ if (@$_POST['account']){
 
 
 if (@$_GET['video_out']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $video_out = @$_GET['video_out'];
     $id = intval($_GET['id']);
 
@@ -90,6 +101,9 @@ if (@$_GET['video_out']){
 }
 
 if (@$_GET['parent_password'] && $_GET['parent_password'] == 'default'){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $id = intval($_GET['id']);
 
     Mysql::getInstance()->update('users', array('parent_password' => '0000'), array('id' => $id));
@@ -99,6 +113,9 @@ if (@$_GET['parent_password'] && $_GET['parent_password'] == 'default'){
 }
 
 if (@$_GET['fav_itv'] && $_GET['fav_itv'] == 'default'){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $id = intval($_GET['id']);
 
     Mysql::getInstance()->update('fav_itv', array('fav_ch' => ''), array('uid' => $id));
@@ -108,6 +125,9 @@ if (@$_GET['fav_itv'] && $_GET['fav_itv'] == 'default'){
 }
 
 if (isset($_GET['set_services'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $id = intval(@$_GET['id']);
     
     $set = intval($_GET['set_services']);
@@ -124,6 +144,9 @@ if (isset($_GET['set_services'])){
 }
 
 if (isset($_GET['id']) && isset($_GET['package_id']) && isset($_GET['subscribed'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $id = intval($_GET['id']);
     $package_id = intval($_GET['package_id']);
     $subscribed = intval($_GET['subscribed']);
@@ -422,7 +445,7 @@ if (empty($packages)){
     </table>
 </form>
 
-<? if (check_access(array(3)) || @$_SESSION['login'] == 'alex'){ ?>
+<? if (Admin::isPageActionAllowed()){ ?>
 <table cellpadding="0" cellspacing="3" width="641">
     <tr>
         <td class="other">

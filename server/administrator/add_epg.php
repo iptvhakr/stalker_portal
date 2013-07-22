@@ -9,11 +9,15 @@ include "./common.php";
 error_reporting(E_ALL);
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (!$error){
     
     if (@$_GET['save'] && $_GET['yy'] && $_GET['mm'] && $_GET['dd'] && @$_GET['id']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
         
         $epg = $_POST['epg'];
 

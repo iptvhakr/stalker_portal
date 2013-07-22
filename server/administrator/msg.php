@@ -8,7 +8,10 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
+
 ?>
 <html>
 <head>
@@ -151,7 +154,7 @@ if($from_usr != @$_SESSION['uid']){?>
 </tr>
 </table>
 <?
-if (check_access(array(1))){
+if (Admin::isPageActionAllowed()){
 ?>
 <table width="100%" border="0" cellspacing="0">
 <tr>

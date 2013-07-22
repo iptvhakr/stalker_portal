@@ -6,7 +6,9 @@ ob_start();
 
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 function page_bar(){
     global $MAX_PAGE_ITEMS;

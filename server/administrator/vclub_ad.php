@@ -5,11 +5,10 @@ ob_start();
 include "./common.php";
 
 $error = '';
-moderator_access();
 
-if (!check_access()){
-    exit;
-}
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     if (is_string($_POST[$key])){
@@ -23,6 +22,8 @@ $ad = new VclubAdvertising();
 
 if (isset($_GET['status']) && !empty($_GET['id'])){
 
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $ad->updateById((int) $_GET['id'], array('status' => (int) $_GET['status']));
 
     header("Location: vclub_ad.php");
@@ -31,17 +32,23 @@ if (isset($_GET['status']) && !empty($_GET['id'])){
 
 if (!empty($_POST['add'])){
 
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
     $ad->add($_POST);
 
     header("Location: vclub_ad.php");
     exit;
 }else if (!empty($_POST['edit']) && $id){
 
+    Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
     $ad->updateById($id, $_POST);
 
     header("Location: vclub_ad.php");
     exit;
 }else if (!empty($_GET['del']) && $id){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
     $ad->delById($id);
 

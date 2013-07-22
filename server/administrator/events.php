@@ -8,11 +8,16 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 $error_counter = 0;
 
 if (@$_GET['del'] == 1){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
     $uid = Middleware::getUidByMac(@$_GET['mac']);
 
     Mysql::getInstance()->delete('events', array('uid' => $uid));
@@ -23,7 +28,7 @@ if (@$_GET['del'] == 1){
 
 if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
 
-    //var_dump($_POST);exit;
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
     
     if (@$_POST['need_reboot']){
         $reboot_after_ok = 1;

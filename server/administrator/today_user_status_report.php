@@ -5,7 +5,9 @@ ob_start();
 
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 $from = mktime(0,0,0,date("n"),date("j"), date("Y"));
 $to   = mktime(23,59,59,date("n"),date("j"), date("Y"));

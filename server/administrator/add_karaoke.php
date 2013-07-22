@@ -8,7 +8,9 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
@@ -48,6 +50,9 @@ if (isset($_FILES['screenshot'])){
 }
 
 if (isset($_GET['accessed']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     set_karaoke_accessed(@$_GET['id'], @$_GET['accessed']);
     $id = $_GET['id'];
     if ($_GET['accessed'] == 1){
@@ -60,6 +65,9 @@ if (isset($_GET['accessed']) && @$_GET['id']){
 }
 
 if (isset($_GET['done']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     set_karaoke_done(@$_GET['id'], @$_GET['done']);
     $id = $_GET['id'];
     header("Location: add_karaoke.php?letter=".@$_GET['letter']."&search=".@urldecode($_GET['search'])."&page=".@$_GET['page']);
@@ -67,6 +75,8 @@ if (isset($_GET['done']) && @$_GET['id']){
 }
 
 if (@$_GET['del']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
     Mysql::getInstance()->delete('karaoke', array('id' => intval(@$_GET['id'])));
 
@@ -92,6 +102,9 @@ if (!$error){
     if (@$_GET['save']){
     
         if(@$_GET['name']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
             $datetime = date("Y-m-d H:i:s");
 
             Mysql::getInstance()->insert('karaoke', array(
@@ -118,6 +131,8 @@ if (!$error){
     
     if (@$_GET['update']){
         if(@$_GET['name']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
             Mysql::getInstance()->update('karaoke',
                 array(
@@ -329,7 +344,7 @@ function get_karaoke_accessed_color($id){
     }
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         return "<a href='add_karaoke.php?accessed=$accessed&id=$id&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
     }else{
         return "<font color='$color'><b>$txt</b></font>";
@@ -349,7 +364,7 @@ function get_done_karaoke_color($id){
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
     
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
     	return "<a href='add_karaoke.php?done=$done&id=$id&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."'><font color='$color'>$txt</font></a>";
     }else{
         return "<font color='$color'><b>$txt</b></font>";
@@ -487,17 +502,17 @@ while ($arr = $all_karaoke->next()){
     
     echo "<td class='list' align='center'>";
     
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
     echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']."</span>";
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         echo "</a>";
     }
     echo "</td>\n";
     
     echo "<td class='list'><a href='?edit=1&id=".$arr['id']."&search=$search&letter=$letter#form'>edit</a>&nbsp;&nbsp;";
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"add_karaoke.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
     }
     echo get_karaoke_accessed_color($arr['id'])."&nbsp;&nbsp;";

@@ -9,11 +9,9 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -31,25 +29,33 @@ if (empty($group)){
 }
 
 if (@$_POST['add']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
     
     $stb_groups->addMember(array('mac' => Middleware::normalizeMac($_POST['mac']), 'uid' => Middleware::getUidByMac($_POST['mac']), 'stb_group_id' => $_GET['group_id']));
     
     header("Location: stbgroup_members.php?group_id=".@$_GET['group_id']);
+    exit;
 }
 
 if (!empty($id)){
     
     if (@$_POST['edit']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
         
         $stb_groups->setMember(array('mac' => Middleware::normalizeMac($_POST['mac']), 'uid' => Middleware::getUidByMac($_POST['mac'])), $id);
         
         header("Location: stbgroup_members.php?group_id=".@$_GET['group_id']);
     }elseif (@$_GET['del']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
         
         $stb_groups->removeMember($id);
         
         header("Location: stbgroup_members.php?group_id=".@$_GET['group_id']);
     }
+    exit;
 }
 
 if (@$_GET['edit'] && !empty($id)){

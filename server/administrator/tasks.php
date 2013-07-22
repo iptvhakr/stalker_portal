@@ -9,7 +9,9 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 ?>
 <html>
@@ -86,10 +88,10 @@ a.msgs:hover, a.msgs:visited, a.msgs:link{
 $where = '';
 $uid = $_SESSION['uid'];
 
-if (check_access(array(1))){
+/*if (Admin::isPageActionAllowed()){
     $where = 'where access=2 or access=1';
-}
-if (check_access(array(2))){
+}*/
+if (!Admin::isPageActionAllowed()){
     $where = 'where id='.@$_SESSION['uid'];
 }
 
@@ -208,7 +210,7 @@ while($arr = $administrators->next()){
 <tr>
 <td>
 <?
-if (check_access(array(1))){
+if (Admin::isPageActionAllowed()){
 
 $sql = "select moderator_tasks.*, video.name as name, administrators.login as login from administrators,moderator_tasks inner join video on media_id=video.id where administrators.id=moderator_tasks.to_usr and  ended=0 and archived=0 and (UNIX_TIMESTAMP(NOW())-UNIX_TIMESTAMP(start_time))>864000";
 

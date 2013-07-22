@@ -8,9 +8,13 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (count($_POST) > 0){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     $task_id = Mysql::getInstance()->insert('moderator_tasks', array(
         'to_usr'     => $_POST['to_usr'],
@@ -29,10 +33,10 @@ if (count($_POST) > 0){
 
     Video::log((int) $_POST['id'], '<a href="msgs.php?task='.$task_id.'">'._('task open').'</a>', (int) $_POST['to_usr']);
 
-    if (!$task_id){
+    if ($task_id){
         js_redirect('add_video.php', _('the task has been sent'));
     }else{
-        echo _('error');
+        echo 'error';
     }
     exit;
 }
@@ -105,7 +109,7 @@ function get_moderators(){
 
     $opt = '';
 
-    $moderators = Mysql::getInstance()->from('administrators')->in('access', array(1, 2))->get();
+    $moderators = Mysql::getInstance()->from('administrators')->get();
 
     while($arr = $moderators->next()){
         $opt .= "<option value={$arr['id']}>{$arr['login']}\n";

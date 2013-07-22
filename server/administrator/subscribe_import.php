@@ -5,13 +5,11 @@ ob_start();
 
 include "./common.php";
 
-if (!check_access(array(3))){
-    exit;
-}
-
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 echo '<pre>';
 //print_r($_FILES);
@@ -25,6 +23,9 @@ $add_serv_on_counter = 0;
 $add_serv_off_counter = 0;
 
 if (@$_FILES['userfile']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
     if (is_uploaded_file($_FILES['userfile']['tmp_name'])) {
         $f_cont = file ($_FILES['userfile']['tmp_name']);
         $log = '';

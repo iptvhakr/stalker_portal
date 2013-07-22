@@ -12,17 +12,17 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'azmus' && @$_SESSION['login'] != 'vitaxa' && !check_access()){
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
 }
     
 if (@$_POST['add']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     Mysql::getInstance()->insert('epg_setting', array(
         'uri'       => @$_POST['uri'],
@@ -39,6 +39,8 @@ if (!empty($id)){
     
     if (@$_POST['edit']){
 
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         Mysql::getInstance()->update('epg_setting',
             array(
                 'uri'       => @$_POST['uri'],
@@ -50,6 +52,8 @@ if (!empty($id)){
         header("Location: epg_setting.php");
         exit;
     }elseif (@$_GET['del']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
         Mysql::getInstance()->delete('epg_setting', array('id' => intval($_GET['id'])));
 
@@ -66,6 +70,9 @@ if (@$_GET['edit'] && !empty($id)){
 }
 
 if (isset($_GET['update_epg'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_PAGE_ACTION);
+
     $epg = new Epg();
     
     if (isset($_GET['force'])){

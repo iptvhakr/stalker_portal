@@ -8,9 +8,13 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
     $task_id = (int) $_GET['id'];
 

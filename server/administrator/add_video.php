@@ -7,7 +7,9 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
@@ -27,6 +29,8 @@ if (@$_GET['id']){
 
 if (@$_GET['reset_sound_vote'] && @$_GET['id']){
 
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     Mysql::getInstance()->update('video',
         array('vote_sound_good' => 0, 'vote_sound_bad' => 0),
         array('id' => intval($_GET['id'])));
@@ -37,6 +41,8 @@ if (@$_GET['reset_sound_vote'] && @$_GET['id']){
 
 if (@$_GET['reset_video_vote'] && @$_GET['id']){
 
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     Mysql::getInstance()->update('video',
         array('vote_video_good' => 0, 'vote_video_bad' => 0),
         array('id' => intval($_GET['id'])));
@@ -46,6 +52,9 @@ if (@$_GET['reset_video_vote'] && @$_GET['id']){
 }
 
 if (isset($_GET['accessed']) && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $_GET['accessed'] = intval($_GET['accessed']);
 
     $video_id = intval($_GET['id']);
@@ -89,6 +98,9 @@ if (isset($_GET['accessed']) && @$_GET['id']){
 }
 
 if (@$_GET['del']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
     Video::log(intval(@$_GET['id']), _('video deleted'));
 
     Mysql::getInstance()->delete('video', array('id' => intval(@$_GET['id'])));
@@ -98,7 +110,7 @@ if (@$_GET['del']){
 }
 
 if (count(@$_POST) > 0){
-    if (check_access(array(1, 2))){
+    if (Admin::isEditAllowed() || Admin::isCreateAllowed()){
         if (isset($_FILES['screenshot'])){
             if (is_uploaded_file($_FILES['screenshot']['tmp_name'])){
                 if (preg_match("/jpeg/",$_FILES['screenshot']['type'])){
@@ -245,6 +257,8 @@ if (count(@$_POST) > 0){
 
                 if(@$_GET['name'] && !$error){
 
+                    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
                     $video_id = Mysql::getInstance()->insert(
                         'video',
                         array(
@@ -308,6 +322,8 @@ if (count(@$_POST) > 0){
             }
 
             if (@$_GET['update']){
+
+                Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
                 $video_id = intval(@$_GET['id']);
 
@@ -571,7 +587,7 @@ a:hover{
     <td width="100%" align="left" valign="bottom">
         <a href="index.php"><< <?= _('Back')?></a> | <a href="javascript://" class="goto_form"><?= _('Add')?></a> | <a href="vclub_schedule.php"><?= _('Schedule')?></a> | <a href="vclub_ad.php"><?= _('Advertising')?></a> | <a href="add_moderator_mac.php"><?= _('Moderators MAC addresses')?></a>
         <?
-        if (check_access(array(1, 2))){
+        if (Admin::isAccessAllowed('myvideolog')){
             echo '| <a href="myvideolog.php">'._('My logs').'</a>';
         }
         ?>
@@ -824,20 +840,20 @@ while ($arr = $all_video->next()){
     echo "<td class='list'><span id='series_{$arr['id']}'>".count_series($arr['series'])."</span></td>\n";
     echo "<td class='list' align='center'>";
 
-    if (check_access(array(1)) && !empty($arr['media_id'])){
+    if (Admin::isActionAllowed() && !empty($arr['media_id'])){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
     echo "<span style='color:red;font-weight:bold'>".@$arr['sound_counter']." / ".@$arr['video_counter']."</span>";
-    if (check_access(array(1)) && !empty($arr['media_id'])){
+    if (Admin::isActionAllowed() && !empty($arr['media_id'])){
         echo "</a>";
     }
     echo "</td>\n";
 
     echo "<td class='list buttons'>";
-    if (check_access(array(1, 2))){
+    if (Admin::isActionAllowed()){
         echo "<a href='?edit=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."&page=".@$_GET['page']."&#form'>edit</a>&nbsp;&nbsp;\n";
     }
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         echo send_button($arr['id']);
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"add_video.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
     }
@@ -1023,7 +1039,7 @@ function get_accessed_color($id){
 
     $letter = @$_GET['letter'];
     $search = @$_GET['search'];
-    if (check_access(array(1))){
+    if (Admin::isActionAllowed()){
         if ($accessed){
             $class = "switch_button";
             $video_on_task = Mysql::getInstance()->from('video_on_tasks')->where(array('video_id' => $id))->get()->first();
@@ -1140,17 +1156,6 @@ function get_selected_cat_genres(){
     return $str;
 }
 
-$upload_str = '';
-
-if(!empty($_SESSION['upload'])){
-
-    $screenshots = Mysql::getInstance()->from('screenshots')->in('id', $_SESSION['upload'])->get()->all();
-
-    foreach($screenshots as $arr){
-        $upload_str .= $arr['name'].'.....('._('size').': '.$arr['size'].' B) <a href="del_upload.php?id='.$arr['id'].'&search='.@$_GET['search'].'&letter='.@$_GET['letter'].'&page='.@$_GET['page'].'"> '._('delete').'</a><br>';
-    }
-}
-
 ?>
 <script>
 var all_cat_genres = new Array()
@@ -1170,7 +1175,7 @@ if (@$_GET['id']){
     echo "var sel_category_id = 0\n";
 }
 
-if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
+if (Admin::isPageActionAllowed()){
     echo "var can_md5dum=1\n";
 }else{
     echo "var can_md5dum=0\n";
@@ -1220,12 +1225,12 @@ function md5sum(obj, status, media_name, storage_name){
 }
 
 function open_info(id){
-    var info_display = document.getElementById('info_'+id).style.display
+    var info_display = document.getElementById('info_'+id).style.display;
     if (info_display == 'none'){
-        document.getElementById('info_'+id).style.display = ''
-        doLoad('vclub_info', id)
+        document.getElementById('info_'+id).style.display = '';
+        doLoad('vclub_info', id);
     }else{
-        document.getElementById('info_'+id).style.display = 'none'
+        document.getElementById('info_'+id).style.display = 'none';
         document.getElementById('storages_content_'+id).innerHTML = '';
     }
 }
@@ -2041,14 +2046,6 @@ $(function(){
                     echo '<img src="'.$cover_big.'" width="240" height="320" style="float:left"/><div style="float:left"><a href="#" class="del_cover">x</a></div>';
                 }
             ?></div>
-           </td>
-        </tr>
-        <tr style="display: none;">
-           <td align="right">
-
-           </td>
-           <td>
-           <? echo $upload_str ?>
            </td>
         </tr>
         <tr>

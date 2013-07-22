@@ -9,11 +9,9 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -22,10 +20,13 @@ foreach (@$_POST as $key => $value){
 $stb_groups = new StbGroup();
     
 if (@$_POST['add']){
-    
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
     $stb_groups->add($_POST['name']);
     
     header("Location: stbgroups.php");
+    exit;
 }
 
 $id = @intval($_GET['id']);
@@ -33,15 +34,21 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     
     if (@$_POST['edit']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         $stb_groups->set(array('name' => $_POST['name']), $_GET['id']);
         
         header("Location: stbgroups.php");
     }elseif (@$_GET['del']){
-        
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         $stb_groups->del($id);
         
         header("Location: stbgroups.php");
     }
+    exit;
 }
 
 if (@$_GET['edit'] && !empty($id)){

@@ -11,6 +11,11 @@ function get_data(){
         switch ($get){
             case 'del_tv_logo':
                 {
+                    if (!Admin::isEditAllowed('add_itv')){
+                        header($_SERVER["SERVER_PROTOCOL"].' 405 Method Not Allowed');
+                        echo _('Action "edit" denied for page "add_itv"');
+                        exit;
+                    }
                     return Itv::delLogoById(intval($_GET['id']));
                 }
             case 'vclub_info':
@@ -47,7 +52,7 @@ function get_data(){
             case 'startmd5sum':
                 {
                     $resp = array();
-                    if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
+                    if (Admin::isPageActionAllowed('add_video')){
                         $master = new VideoMaster();
                         try {
                             $master->startMD5Sum($data['storage_name'], $data['media_name']);

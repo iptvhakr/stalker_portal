@@ -9,11 +9,9 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -22,7 +20,9 @@ foreach (@$_POST as $key => $value){
 $playlist = new Playlist();
     
 if (@$_POST['add']){
-    
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
     $playlist->add($_POST['name'], $_POST['group_id']);
     
     header("Location: playlists.php");
@@ -33,11 +33,16 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     
     if (@$_POST['edit']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         $playlist->set(array('name' => $_POST['name'], 'group_id' => $_POST['group_id']), $_GET['id']);
         
         header("Location: playlists.php");
     }elseif (@$_GET['del']){
-        
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         $playlist->del($id);
         
         header("Location: playlists.php");

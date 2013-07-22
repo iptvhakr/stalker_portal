@@ -8,34 +8,26 @@ include "./common.php";
 $error = '';
 $last_action = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 $search = @$_GET['search'];
 $letter = @$_GET['letter'];
 
-if (@$_GET['action'] == 'cut_off' && check_access(array(3)) && !Config::getSafe('deny_change_user_status', false)){
+if (@$_GET['action'] == 'cut_off' && !Config::getSafe('deny_change_user_status', false)){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     cut_off_user(@$_GET['id']);
     header("Location: users.php?search=".$_GET['search']);
     exit();
 }
 
-if (@$_GET['video_out']){
-    $video_out = @$_GET['video_out'];
-    $id = intval(@$_GET['id']);
-    
-    if ($video_out == 'svideo'){
-        $new_video_out = 'svideo';
-    }else{
-        $new_video_out = 'rca';
-    }
+if (@$_GET['del'] && !Config::getSafe('deny_delete_user', false)){
 
-    Mysql::getInstance()->update('users', array('video_out' => $new_video_out), array('id' => $id));
-    
-    header("Location: users.php?search=".$_GET['search']."&page=".$_GET['page']);
-    exit();
-}
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
-if (@$_GET['del'] && check_access(array(3)) && !Config::getSafe('deny_delete_user', false)){
     $id = intval(@$_GET['id']);
 
     Mysql::getInstance()->delete('users', array('id' => $id));
@@ -367,16 +359,6 @@ function set_user_status($id, $status){
     return Mysql::getInstance()->update('users', array('status' => $status, 'last_change_status' => 'NOW()'), array('id' => $id));
 }
 
-function get_video_out($video_out, $id){
-    if ($video_out == 'rca'){
-        $change_link = 'video_out=svideo';
-    }else{
-        $change_link = 'video_out=rca';
-    }
-    $link = '<a href="users.php?sort_by='.$_GET['sort_by'].'&page='.$_GET['page'].'&search='.$_GET['search'].'&'.$change_link.'&id='.$id.'">'.$video_out.'</a>';
-    return $link;
-}
-
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
@@ -602,16 +584,14 @@ while($arr = $users->next()){
     echo "<td class='list'>".$now_playing_content."</td>\n";
     echo "<td class='list'>".get_last_time($arr['now_playing_start'])."</td>\n";
     echo "<td class='list'><b>".check_keep_alive_txt($arr['keep_alive'])."</b></td>\n";
-    //echo "<td class='list'>".get_video_out($arr['video_out'], $arr['id'])."</b></td>\n";
-    //echo "<td class='list' nowrap>".$arr['version']."</td>\n";
     echo "<td class='list' nowrap>";
-    if (check_access(array(3)) && !Config::getSafe('deny_change_user_status', false)){
+    if (Admin::isActionAllowed() && !Config::getSafe('deny_change_user_status', false)){
         echo "<a href='users.php?id=".$arr['id']."&search=".@$_GET['search']."&action=cut_off'>".get_user_color($arr['id'])."</a>";
     }else{
         echo "<b>".get_user_color($arr['id'])."</b>";
     }
 
-    if (check_access(array(3)) && !check_keep_alive($arr['keep_alive']) && !Config::getSafe('deny_delete_user', false)){
+    if (Admin::isActionAllowed() && !check_keep_alive($arr['keep_alive']) && !Config::getSafe('deny_delete_user', false)){
         echo "&nbsp;&nbsp;";
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"users.php?del=1&id=".$arr['id']."&page=".@$_GET['page']."&search=".@$_GET['search']."\"}'>del</a>";
     }

@@ -7,9 +7,13 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (isset($_GET['del'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
     Mysql::getInstance()->delete('main_city_info', array('id' => intval($_GET['id'])));
 
@@ -18,6 +22,8 @@ if (isset($_GET['del'])){
 }
 
 if (isset($_GET['status']) && isset($_GET['id'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     Mysql::getInstance()->update('main_city_info', array('status' => intval($_GET['status'])), array('id' => intval($_GET['id'])));
 
@@ -30,6 +36,8 @@ if (!$error){
     if (@$_GET['save'] && !$error){
     
         if(@$_POST['title'] && @$_POST['number']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
             Mysql::getInstance()->insert('main_city_info', array(
                 'num'    => @$_POST['num'],
@@ -48,6 +56,8 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_POST['title'] && @$_POST['number']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
             Mysql::getInstance()->update('main_city_info',
                 array(

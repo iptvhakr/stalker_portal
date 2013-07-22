@@ -8,7 +8,9 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 echo '<pre>';
 //print_r($_FILES);
@@ -108,7 +110,7 @@ if (@$_GET['id']){
     
     $sql = "select * from administrators where access=2";
     
-    if (!check_access(array(1))){
+    if (!Admin::isPageActionAllowed()){
         $sql .= " and login='".$_SESSION['login']."'";
     }
 

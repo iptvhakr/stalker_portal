@@ -9,11 +9,9 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -37,25 +35,33 @@ if (!empty($_POST)){
 }
 
 if (@$_POST['add']){
-    
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
     $playlist->addRecord(array('time' => $time, 'video_id' => $_POST['video_id'], 'playlist_id' => $_GET['playlist_id']));
     
     header("Location: playlist.php?playlist_id=".@$_GET['playlist_id']);
+    exit;
 }
 
 if (!empty($id)){
     
     if (@$_POST['edit']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
         
         $playlist->updateRecord(array('time' => $time, 'video_id' => $_POST['video_id']), $id);
         
         header("Location: playlist.php?playlist_id=".@$_GET['playlist_id']);
     }elseif (@$_GET['del']){
-        
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         $playlist->delRecord($id);
         
         header("Location: playlist.php?playlist_id=".@$_GET['playlist_id']);
     }
+    exit;
 }
 
 if (@$_GET['edit'] && !empty($id)){

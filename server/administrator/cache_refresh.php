@@ -7,11 +7,9 @@ ob_start();
 
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && !check_access()){ 
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 $updated_video = 0;
 $updated_karaoke = 0;

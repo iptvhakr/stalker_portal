@@ -8,9 +8,13 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (count($_POST) > 0){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     $hist_id = Mysql::getInstance()->insert('moderators_history',array(
         'task_id'   => $_POST['task_id'],
@@ -21,10 +25,10 @@ if (count($_POST) > 0){
         'reply_to'  => $_POST['reply_to']
     ))->insert_id();
 
-    if (!$hist_id){
+    if ($hist_id){
         js_redirect('tasks.php', _('message sended'));
     }else{
-        echo _('error');
+        echo 'error';
     }
     exit;
 }

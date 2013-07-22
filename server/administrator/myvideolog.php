@@ -7,7 +7,9 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 ?>
 <html>
@@ -111,7 +113,7 @@ $id = intval(@$_GET['id']);
 
 //$where .= " where video_id=$id";
 
-if (!check_access(array(1))){
+if (!Admin::isPageActionAllowed()){
     $where .= " where moderator_id=".$_SESSION['uid'];
 }
 

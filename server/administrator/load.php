@@ -7,7 +7,7 @@ require_once "./lib/subsys/php.php";
 require_once "./lib/data.php";
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
 
 $locale = 'ru_RU.utf8';
 

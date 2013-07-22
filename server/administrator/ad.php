@@ -8,11 +8,9 @@ $error = '';
 $action_name = 'add';
 $action_value = 'Добавить';
 
-moderator_access();
+Admin::checkAuth();
 
-if (!check_access()){ 
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -26,12 +24,17 @@ $ad = new Advertising();
 //if (!empty($id)){
     
     if (@$_POST['edit'] || @$_POST['add']){
-        
+
+        Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         $ad->setMain(@$_POST['title'], @$_POST['text'], @$_POST['video_id']);
         
         header("Location: ad.php");
     }elseif (@$_GET['del']){
-        
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         $ad->delMain();
         
         header("Location: ad.php");

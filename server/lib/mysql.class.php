@@ -522,7 +522,7 @@ class Mysql
 
                 $multiple_values_str = '';
 
-                $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $fields) . ') values ';
+                $sql = 'INSERT INTO ' . $table . ' (`' . implode('`, `', $fields) . '`) values ';
 
                 $total_result = true;
 
@@ -568,7 +568,7 @@ class Mysql
             $value_str = '(' . implode(', ', $values) . ')';
         }
 
-        $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $fields) . ') value ' . $value_str;
+        $sql = 'INSERT INTO ' . $table . ' (`' . implode('`, `', $fields) . '`) value ' . $value_str;
 
         //echo $sql;
 

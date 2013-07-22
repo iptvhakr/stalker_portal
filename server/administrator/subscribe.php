@@ -5,16 +5,16 @@ ob_start();
 
 include "./common.php";
 
-if (!check_access(array(3))){
-    exit;
-}
-
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 
 if (@$_GET['save']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
     //var_dump($_POST);exit;
 

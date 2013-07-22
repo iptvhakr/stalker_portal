@@ -7,7 +7,9 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 $storage_name = @$_GET['storage'];
 
@@ -71,7 +73,7 @@ a:hover{
 
 <script type="text/javascript">
 <?
-if (@$_SESSION['login'] == 'alex' || @$_SESSION['login'] == 'duda' || check_access()){
+if (Admin::isPageActionAllowed()){
     echo "var can_md5dum=1\n";
 }else{
     echo "var can_md5dum=0\n";

@@ -3,7 +3,9 @@ ob_start();
 session_start();
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     //$_POST[$key] = trim($value);
@@ -16,6 +18,8 @@ $action_value = _('Add');
 $packages = Mysql::getInstance()->from('services_package')->orderby('external_id')->get()->all();
 
 if (!empty($_POST['add']) && !empty($_POST['name'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     $all_services = empty($_POST['all_services']) ? 0 : (int) $_POST['all_services'];
 
@@ -60,6 +64,8 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
     if (!empty($_POST['edit']) && !empty($_POST['name'])){
 
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
         $all_services = empty($_POST['all_services']) ? 0 : (int) $_POST['all_services'];
 
         $data = array(
@@ -99,6 +105,9 @@ if (!empty($id)){
         header("Location: services_packages.php");
         exit;
     }elseif(!empty($_GET['del'])){
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
         Mysql::getInstance()->delete('services_package', array('id' => $id));
         Mysql::getInstance()->delete('service_in_package', array('package_id' => $id));
 

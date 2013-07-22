@@ -8,10 +8,14 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['id']){
     $task_id = intval($_GET['id']);
+
+    Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
     $task = Mysql::getInstance()->from('moderator_tasks')->where(array('id' => $task_id))->get()->first();
 

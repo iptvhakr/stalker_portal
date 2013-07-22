@@ -127,7 +127,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
 
     private function checkDebugKey($key){
-        return (bool) Mysql::getInstance()->from('administrators')->where(array('debug_key' => $key, 'access' => 0))->get()->first();
+        return (bool) Mysql::getInstance()->from('administrators')->where(array('debug_key' => $key, 'login' => 'admin'))->get()->first();
     }
 
     private function getDebugKey(){

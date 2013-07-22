@@ -7,24 +7,15 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['del']){
 
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
     Mysql::getInstance()->delete('help_city_info', array('id' => intval($_GET['id'])));
-
-    header("Location: help_city_info.php");
-    exit;
-}
-
-if (isset($_GET['status']) && @$_GET['id']){
-
-    Mysql::getInstance()->update('help_city_info',
-        array(
-            'status' => intval($_GET['status'])
-        ),
-        array('id' => intval($_GET['id']))
-    );
 
     header("Location: help_city_info.php");
     exit;
@@ -35,6 +26,8 @@ if (!$error){
     if (@$_GET['save'] && !$error){
     
         if(@$_POST['title'] && @$_POST['number']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
             Mysql::getInstance()->insert('help_city_info', array(
                 'num'    => @$_POST['num'],
@@ -53,6 +46,8 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_POST['title'] && @$_POST['number']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
             Mysql::getInstance()->update('help_city_info',
                 array(

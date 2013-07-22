@@ -9,11 +9,9 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda'  && !check_access()){ 
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
@@ -22,6 +20,9 @@ foreach (@$_POST as $key => $value){
 $settings = ImageAutoUpdate::getAll();
 
 if (!empty($_GET['del']) && !empty($_GET['id'])){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
+
     $setting = ImageAutoUpdate::getById((int) $_GET['id']);
     $setting->delete();
 
@@ -32,13 +33,23 @@ if (!empty($_GET['del']) && !empty($_GET['id'])){
 if (!empty($_POST)){
 
     if ($_POST['id'] == 0){
+
+        Admin::checkAccess(AdminAccess::ACCESS_CREATE);
+
         ImageAutoUpdate::create($_POST);
     }else{
+
         $image_update = ImageAutoUpdate::getById((int) $_POST['id']);
 
         if (!empty($_POST['switch_autoupdate'])){
+
+            Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
             $image_update->toggle();
         }else{
+
+            Admin::checkAccess(AdminAccess::ACCESS_EDIT);
+
             $image_update->setSettings($_POST);
         }
     }

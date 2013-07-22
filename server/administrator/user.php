@@ -3,7 +3,9 @@ ob_start();
 session_start();
 include "./common.php";
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     //$_POST[$key] = trim($value);
@@ -24,6 +26,8 @@ if (!empty($_POST)){
         if (!empty($user)){
             $error = _('Error: Login already in use');
         }else{
+
+            Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
             $user_id = \User::createAccount($_POST);
 

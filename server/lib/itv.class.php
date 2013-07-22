@@ -1329,7 +1329,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
             if (Config::exist('administrator_email')){
 
-                $message = sprintf(_('Channel %s set to active because at least one of its URLs became available.'), $channel['number'].' '.$channel['name']);
+                $message = sprintf(_("Channel %s set to active because at least one of its URLs became available."), $channel['number'].' '.$channel['name']);
 
                 mail(Config::get('administrator_email'), 'FreeTV monitoring report: channel enabled', $message);
             }

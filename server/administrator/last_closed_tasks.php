@@ -8,9 +8,14 @@ include "./lib/tasks.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['archive'] == 1 && @$_GET['id']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
     $id = intval(@$_GET['id']);
     
     $year  = date("Y");
@@ -175,14 +180,14 @@ a.msgs:hover, a.msgs:visited, a.msgs:link{
 
 $where = '';
 
-if (check_access(array(1))){
+if (Admin::isPageActionAllowed()){
     $uid = @$_GET['id'];
 }else{
-	if (@$_SESSION['uid'] != @$_GET['id']){
-		$uid = 0;
-	}else{
-		$uid = $_SESSION['uid'];
-	}
+    if (@$_SESSION['uid'] != @$_GET['id']) {
+        $uid = 0;
+    } else {
+        $uid = $_SESSION['uid'];
+    }
 }
 ?>
     
@@ -281,7 +286,7 @@ if (check_access(array(1))){
     <table border="0" width="100%">
     <tr>
         <td align="right">
-        <?if (check_access(array(1))){?>
+        <?if (Admin::isPageActionAllowed()){?>
         <input type="button" value="<?= _('Move to archive')?>" onclick="if(confirm('<?= _('Move to the archive?')?>')){document.location='last_closed_tasks.php?id=<?echo @$_GET['id']?>&archive=1';}">
         <?}?>
         </td>

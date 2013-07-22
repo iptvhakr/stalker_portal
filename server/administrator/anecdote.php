@@ -7,9 +7,13 @@ include "./common.php";
 
 $error = '';
 
-moderator_access();
+Admin::checkAuth();
+
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 if (@$_GET['del']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
     Mysql::getInstance()->delete('anec', array('id' => intval($_GET['id'])));
 
@@ -21,6 +25,8 @@ if (!$error){
     if (@$_GET['save'] && !$error){
     
         if(@$_POST['anec_body']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
             Mysql::getInstance()->insert('anec', array(
                 'title'     => @$_POST['title'],
@@ -41,6 +47,8 @@ if (!$error){
     if (@$_GET['update'] && !$error){
         
         if(@$_POST['anec_body']){
+
+            Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
             Mysql::getInstance()->update('anec',
                 array(
@@ -185,7 +193,7 @@ if (@$_GET['edit']){
 
     $arr = Mysql::getInstance()->from('anec')->where(array('id' => intval($_GET['id'])))->get()->first();
 
-    if (!empty($anec)){
+    if (!empty($arr)){
         $anec_body = $arr['anec_body'];
     }
 }

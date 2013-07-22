@@ -9,17 +9,17 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-moderator_access();
+Admin::checkAuth();
 
-if (@$_SESSION['login'] != 'alex' && @$_SESSION['login'] != 'duda' && @$_SESSION['login'] != 'vitaxa' && @$_SESSION['login'] != 'azmus' && !check_access()){
-    exit;
-}
+Admin::checkAccess(AdminAccess::ACCESS_VIEW);
 
 foreach (@$_POST as $key => $value){
     $_POST[$key] = trim($value);
 }
 
 if (@$_POST['add']){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
     $zone_id = Mysql::getInstance()->insert('stream_zones', array(
         'name'         => @$_POST['name'],
@@ -40,6 +40,8 @@ $id = @intval($_GET['id']);
 if (!empty($id)){
 
     if (@$_POST['edit']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
         Mysql::getInstance()->update('stream_zones',
             array(
@@ -69,6 +71,8 @@ if (!empty($id)){
         header("Location: stream_zones.php");
         exit;
     }elseif (@$_GET['del']){
+
+        Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
         Mysql::getInstance()->delete('stream_zones', array('id' => $id));
 
