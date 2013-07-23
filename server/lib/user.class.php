@@ -529,7 +529,7 @@ class User implements \Stalker\Lib\StbApi\User
 
     public function updateAccount($account){
 
-        $allowed_fields = array_fill_keys(array('password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'stb_mac', 'comment'), true);
+        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'stb_mac', 'comment'), true);
 
         $key_map = array(
             'full_name'      => 'fname',
