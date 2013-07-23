@@ -149,9 +149,19 @@
             <isset property="customization_path"/>
             <then>
                 <resolvepath propertyName="clear_customization_path" file="${customization_path}/"/>
-                <exec command="cp -r ${clear_customization_path}/* ${project_path}" level="info"/>
-            </then>
+                <exec
+                        command="cp -r -v ${clear_customization_path}/* ${project_path}"
+                        returnProperty="copyReturn"
+                        outputProperty="copyOutput"
+                        level="info"/>
 
+                <if>
+                    <equals arg1="${copyReturn}" arg2="0"/>
+                    <then>
+                        <echo msg="Copying: ${copyOutput}"/>
+                    </then>
+                </if>
+            </then>
         </if>
 
         <chmod file="${project_path}/screenshots" mode="0777" />
