@@ -732,7 +732,7 @@ MediaPlayer.prepare = function(obj, play) {
     echo(obj,'prepare '+play);
     clearTimeout(this.timer.showInfo);
     clearTimeout(this.timer.startPlaying);
-    gSTB.Set3DConversionMode(0);
+    gSTB.Set3DConversionMode && gSTB.Set3DConversionMode(0);
 //  this.domTSIndicator.style.display = 'none';
     this.domPlayerTotalTime.innerHTML = "00:00:00";
     this.domPlayerCurrentTime.innerHTML = "00:00:00";
