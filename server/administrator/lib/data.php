@@ -125,14 +125,26 @@ function get_data(){
                         ->get()
                         ->first('category_alias');
 
-                    return array('data' => Mysql::getInstance()
+                    $genres = Mysql::getInstance()
                         ->from('cat_genre')
                         ->where(array(
                             'category_alias' => $category_alias
                         ))
                         ->orderby('title')
                         ->get()
-                        ->all());
+                        ->all();
+
+                    $genres = array_map(function($genre){
+
+                        return array(
+                            'id'     => $genre['id'],
+                            'title'  => _($genre['title']),
+                        );
+
+                    }, $genres);
+
+                    return array('data' => $genres);
+
                     break;
                 }
         }
