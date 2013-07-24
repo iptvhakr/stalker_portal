@@ -119,7 +119,7 @@ if (count(@$_POST) > 0){
                         'name' => $_FILES['screenshot']['name'],
                         'size' => $_FILES['screenshot']['size'],
                         'type' => $_FILES['screenshot']['type']
-                    ));
+                    ))->insert_id();
 
                     if (empty($_SESSION['upload'])){
                         $_SESSION['upload'] = array();
