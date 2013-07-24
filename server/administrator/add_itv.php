@@ -536,7 +536,7 @@ function handle_upload_logo($file, $ch_id){
 
 function check_number($num){
 
-    $total_items = Mysql::getInstance()->from('itv')->count()->where(array('number' => intval($num)))->get()->count();
+    $total_items = Mysql::getInstance()->from('itv')->count()->where(array('number' => intval($num)))->get()->counter();
 
     if ($total_items > 0){
         return 0;
