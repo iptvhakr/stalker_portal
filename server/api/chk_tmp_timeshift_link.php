@@ -8,4 +8,6 @@ if (!$result){
     $result = '/404/';
 }
 
+$result = preg_replace ("/([^\/]+)$/", $_GET['file'], $result);
+
 header("X-Accel-Redirect: ".$result);
