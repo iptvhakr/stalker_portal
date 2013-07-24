@@ -75,6 +75,7 @@ function player(){
 
     this.send_last_tv_id_to = 1800000;
     this.send_played_tv_archive_to = 60000;
+    this.send_played_timeshift_to = 60000;
     this.last_tv_id = 0;
     
     this.prev_layer = {};
@@ -322,6 +323,10 @@ player.prototype.init_time_shift_exit_confirm = function(){
             "value" : get_word("ok_btn"),
             "onclick" : function(){
                 scope.time_shift_exit_confirm.hide();
+
+                if (scope.cur_media_item.timeshift_hist_id){
+                    scope.update_played_timeshift_end_time(scope.cur_media_item.timeshift_hist_id);
+                }
 
                 scope.cur_media_item = module.time_shift.stored_media_item;
                 scope.cur_tv_item    = scope.cur_media_item;
@@ -702,6 +707,8 @@ player.prototype.event_callback = function(event, params){
     }
 
     this.play_initiated = false;
+
+    var self = this;
     
     switch(event){
         case 1: // End of stream
@@ -713,8 +720,6 @@ player.prototype.event_callback = function(event, params){
                 
                 if (this.media_type == 'stream' && (this.is_tv || stb.cur_place == 'radio')){
                     _debug('stream error');
-                    
-                    var self = this;
 
                     if (this.is_tv){
                         stb.log_stream_error(this.cur_tv_item['id'], 1);
@@ -898,8 +903,6 @@ player.prototype.event_callback = function(event, params){
 
                 metadata = JSON.parse(metadata);
 
-                var self = this;
-
                 if (metadata && metadata.hasOwnProperty('titles') && metadata.titles.length > 1){
 
                     var title_idx = self.cur_media_item.cmd.indexOf('?title=');
@@ -964,6 +967,17 @@ player.prototype.event_callback = function(event, params){
 
                 this.time_shift_indication.show();
 
+                window.clearTimeout(this.send_played_timeshift_timer);
+
+                this.send_played_timeshift_timer = window.setTimeout(
+
+                    function(){
+                        self.send_played_timeshift(stb.player.cur_media_item.id);
+                    },
+
+                    this.send_played_timeshift_to
+                );
+
             }else if (this.emulate_media_len && module.tv_archive){
                 /*var global_pos_time = stb.GetPosTime();
                 this.cur_pos_time = global_pos_time - (this.cur_media_item.position ? this.cur_media_item.position : 0);
@@ -979,8 +993,6 @@ player.prototype.event_callback = function(event, params){
                 _debug('this.cur_pos_time 2', this.cur_pos_time);*/
 
                 this.cur_pos_time = module.tv_archive.get_pos_time();
-
-                var self = this;
 
                 clearTimeout(this.emulated_media_len_stop);
                 this.emulated_media_len_stop = window.setTimeout(function(){
@@ -1026,8 +1038,6 @@ player.prototype.event_callback = function(event, params){
                 
                 var time_send_played = (this.cur_media_length*0.7) * 1000;
                 _debug('time_send_played,', time_send_played);
-
-                var self = this;
                 
                 this.send_played_video_timer = window.setTimeout(
                     function(){
@@ -1077,8 +1087,6 @@ player.prototype.event_callback = function(event, params){
         {
 
             stb.key_lock = false;
-
-            var self = this;
             
             if (this.media_type == 'stream'){
 
@@ -1602,6 +1610,11 @@ player.prototype.play = function(item){
         this.update_played_tv_archive_end_time(this.cur_media_item.archive_hist_id);
     }
 
+    if (this.active_time_shift && this.cur_media_item.timeshift_hist_id){
+        this.update_played_timeshift_end_time(this.cur_media_item.timeshift_hist_id);
+        this.cur_media_item.timeshift_hist_id = null;
+    }
+
     if (media_len_part){
         this.emulate_media_len = true;
         this.cur_media_length = media_len_part[1];
@@ -1858,6 +1871,11 @@ player.prototype.stop = function(){
         this.cur_media_item.archive_hist_id = null;
     }
 
+    if (this.active_time_shift && this.cur_media_item.timeshift_hist_id){
+        this.update_played_timeshift_end_time(this.cur_media_item.timeshift_hist_id);
+        this.cur_media_item.timeshift_hist_id = null;
+    }
+
     this.on_stop = undefined;
 
     this.prev_layer = {};
@@ -1943,6 +1961,7 @@ player.prototype.stop = function(){
     
     window.clearTimeout(this.send_played_itv_timer);
     window.clearTimeout(this.send_played_tv_archive_timer);
+    window.clearTimeout(this.send_played_timeshift_timer);
     window.clearTimeout(this.send_played_video_timer);
     window.clearTimeout(this.replay_channel_timer);
     
@@ -2552,11 +2571,47 @@ player.prototype.send_played_itv = function(id){
     );
 };
 
+player.prototype.send_played_timeshift = function(id){
+
+    stb.load(
+        {
+            "type"   : "tv_archive",
+            "action" : "set_played_timeshift",
+            "ch_id"  : id
+        },
+
+        function(result){
+            _debug('on timeshift set_played', result);
+
+            this.cur_media_item.timeshift_hist_id = result;
+        },
+
+        this
+    );
+};
+
+player.prototype.update_played_timeshift_end_time = function(id){
+
+    stb.load(
+        {
+            "type"     : "tv_archive",
+            "action"   : "update_played_timeshift_end_time",
+            "hist_id"  : id
+        },
+
+        function(result){
+            _debug('on update_played_timeshift_end_time', result);
+        },
+
+        this
+    );
+};
+
 player.prototype.send_played_tv_archive = function(id){
 
     stb.load(
         {
-            "type"   : "tvarchive",
+            "type"   : "tv_archive",
             "action" : "set_played",
             "ch_id"  : id
         },
@@ -2575,7 +2630,7 @@ player.prototype.update_played_tv_archive_end_time = function(id){
 
     stb.load(
         {
-            "type"     : "tvarchive",
+            "type"     : "tv_archive",
             "action"   : "update_played_end_time",
             "hist_id"  : id
         },

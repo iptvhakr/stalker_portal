@@ -230,7 +230,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
      *
      * location /tslink/ {
      *
-     *     rewrite ^/tslink/(.*)/archive/(.*) /stalker_portal/server/api/chk_tmp_timeshift_link.php?key=$1 last;
+     *     rewrite ^/tslink/(.+)/archive/(\d+)/(.+) /stalker_portal/server/api/chk_tmp_timeshift_link.php?key=$1&file=$3 last;
      *
      *     proxy_set_header Host 192.168.1.71; # <- portal ip
      *     proxy_set_header X-Real-IP $remote_addr;
@@ -259,7 +259,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $date = new DateTime(date('r'));
         $date->setTimeZone($tz);
 
-        $position = $date->format("i") * 60 + intval($date->format("s"));
+        $position = intval($date->format("i")) * 60 + intval($date->format("s"));
 
         $channel = Itv::getChannelById($ch_id);
 
@@ -379,6 +379,26 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
     public function updatePlayedEndTime(){
 
         return Mysql::getInstance()->update('played_tv_archive',
+            array(
+                'length' => 'UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(playtime)'
+            ),
+            array(
+                'id' => (int) $_REQUEST['hist_id']
+            )
+        );
+    }
+
+    public function setPlayedTimeshift(){
+        return $this->db->insert('played_timeshift', array(
+            'ch_id'    => (int) $_REQUEST['ch_id'],
+            'uid'      => $this->stb->id,
+            'playtime' => 'NOW()'
+        ))->insert_id();
+    }
+
+    public function updatePlayedTimeshiftEndTime(){
+
+        return Mysql::getInstance()->update('played_timeshift',
             array(
                 'length' => 'UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(playtime)'
             ),

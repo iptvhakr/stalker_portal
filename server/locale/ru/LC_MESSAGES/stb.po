@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-22 14:50+0200\n"
-"PO-Revision-Date: 2013-07-22 14:52+0200\n"
+"POT-Creation-Date: 2013-07-23 17:02+0200\n"
+"PO-Revision-Date: 2013-07-23 17:03+0200\n"
 "Last-Translator: alex <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -140,6 +140,7 @@ msgstr "EPG"
 #: ../../../administrator/stat_daily_video.php:70
 #: ../../../administrator/stat_moderators.php:70
 #: ../../../administrator/stat_not_active_users.php:69
+#: ../../../administrator/stat_timeshift.php:70
 #: ../../../administrator/stat_tv.php:70
 #: ../../../administrator/stat_tv_archive.php:70
 #: ../../../administrator/stat_tv_users.php:69
@@ -814,6 +815,7 @@ msgstr "Каталог"
 #: ../../../administrator/myvideolog.php:147
 #: ../../../administrator/services_packages.php:332
 #: ../../../administrator/services_packages.php:361
+#: ../../../administrator/stat_timeshift.php:103
 #: ../../../administrator/stat_tv.php:133
 #: ../../../administrator/stat_tv_archive.php:103
 #: ../../../administrator/stat_video.php:197
@@ -1126,7 +1128,7 @@ msgid "Phone number"
 msgstr "Номер телефона"
 
 #: ../../../administrator/claims.php:82 ../../../administrator/claims.php:88
-#: ../../../administrator/index.php:450
+#: ../../../administrator/index.php:456
 msgid "Claims"
 msgstr "Жалобы"
 
@@ -1284,6 +1286,7 @@ msgstr "каналы"
 #. #-#-#-#-#  10extracted.pot (PACKAGE VERSION)  #-#-#-#-#
 #. / Seconds
 #: ../../../administrator/events.php:397
+#: ../../../administrator/stat_timeshift.php:105
 #: ../../../administrator/stat_tv_archive.php:105
 #: ../../../lib/system.class.php:79
 msgid "s"
@@ -1431,33 +1434,37 @@ msgid "Users statistics for Jokes"
 msgstr "Абонентская статистика по Анекдотам"
 
 #: ../../../administrator/index.php:444
-#: ../../../administrator/stat_moderators.php:59
-#: ../../../administrator/stat_moderators.php:65
-msgid "Moderators statistics"
-msgstr "Статистика Модераторов"
+msgid "TimeShift statistics"
+msgstr "Статистика TimeShift"
 
 #: ../../../administrator/index.php:446
 msgid "Inactive users"
 msgstr "Неактивные абоненты"
 
-#: ../../../administrator/index.php:461
+#: ../../../administrator/index.php:450
+#: ../../../administrator/stat_moderators.php:59
+#: ../../../administrator/stat_moderators.php:65
+msgid "Moderators statistics"
+msgstr "Статистика Модераторов"
+
+#: ../../../administrator/index.php:467
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../../../administrator/index.php:465
+#: ../../../administrator/index.php:471
 #: ../../../administrator/setting_common.php:127
 #: ../../../administrator/setting_common.php:137
 #: ../../../administrator/setting_common.php:263
 msgid "Firmware auto update"
 msgstr "Автоматическое обновление прошивки"
 
-#: ../../../administrator/index.php:467
+#: ../../../administrator/index.php:473
 #: ../../../administrator/storages.php:175
 #: ../../../administrator/storages.php:182
 msgid "Storages"
 msgstr "Хранилища"
 
-#: ../../../administrator/index.php:473
+#: ../../../administrator/index.php:479
 #: ../../../administrator/stream_servers.php:131
 #: ../../../administrator/stream_servers.php:138
 msgid "Stream servers"
@@ -1830,6 +1837,7 @@ msgstr "поиск по mac"
 
 #: ../../../administrator/stat_anec_users.php:156
 #: ../../../administrator/stat_daily_video.php:129
+#: ../../../administrator/stat_timeshift.php:104
 #: ../../../administrator/stat_tv.php:134
 #: ../../../administrator/stat_tv_archive.php:104
 #: ../../../administrator/stat_tv_users.php:151
@@ -1899,6 +1907,16 @@ msgstr "Последний просмотр ТВ"
 msgid "Latest VIDEO viewing"
 msgstr "Последний просмотр ВИДЕО"
 
+#: ../../../administrator/stat_timeshift.php:59
+#: ../../../administrator/stat_timeshift.php:65
+msgid "TimeShift statistics per month"
+msgstr "Статистика просмотра TimeShift за месяц"
+
+#: ../../../administrator/stat_timeshift.php:105
+#: ../../../administrator/stat_tv_archive.php:105
+msgid "Total time"
+msgstr "Общее время"
+
 #: ../../../administrator/stat_tv.php:59 ../../../administrator/stat_tv.php:65
 msgid "TV views statistics per month"
 msgstr "Статистика просмотра TV за месяц"
@@ -1907,10 +1925,6 @@ msgstr "Статистика просмотра TV за месяц"
 #: ../../../administrator/stat_tv_archive.php:65
 msgid "TV Archive statistics per month"
 msgstr "Статистика просмотра TV Архива за месяц"
-
-#: ../../../administrator/stat_tv_archive.php:105
-msgid "Total time"
-msgstr "Общее время"
 
 #: ../../../administrator/stat_tv_users.php:58
 #: ../../../administrator/stat_tv_users.php:64
@@ -4250,11 +4264,10 @@ msgstr "сегодня"
 msgid "yesterday"
 msgstr "вчера"
 
-#. #-#-#-#-#  11extracted.pot (PACKAGE VERSION)  #-#-#-#-#
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
 #: ../../../lib/user.class.php:990 ../../../lib/user.class.php:991
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:749
-#, php-format
+#, no-php-format
 msgid "video_name_format"
 msgstr "%1$s"
 

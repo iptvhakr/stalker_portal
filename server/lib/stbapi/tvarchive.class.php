@@ -12,5 +12,9 @@ interface TvArchive
 
     public function setPlayed();
 
+    public function setPlayedTimeshift();
+
     public function updatePlayedEndTime();
+
+    public function updatePlayedTimeshiftEndTime();
 }

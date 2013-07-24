@@ -441,9 +441,15 @@ $cur_infoportal = get_cur_infoportal();
   </tr>
 
   <tr>
+      <td align="center"><a href="stat_timeshift.php"><?= _('TimeShift statistics')?></a></td>
+      <td>&nbsp;</td>
+      <td align="center"><a href="stat_not_active_users.php"><?= _('Inactive users')?></a></td>
+  </tr>
+
+  <tr>
     <td align="center"><a href="stat_moderators.php"><?= _('Moderators statistics')?></a></td>
     <td>&nbsp;</td>
-      <td align="center"><a href="stat_not_active_users.php"><?= _('Inactive users')?></a></td>
+      <td align="center"></td>
   </tr>
   
   <tr>
