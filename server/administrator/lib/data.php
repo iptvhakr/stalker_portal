@@ -99,7 +99,7 @@ function get_data(){
                             'name' => $data
                         ))
                         ->get()
-                        ->count();
+                        ->counter();
                     break;
                 }
             case 'org_name_chk':
@@ -112,7 +112,7 @@ function get_data(){
                             'year'   => $data['year']
                         ))
                         ->get()
-                        ->count();
+                        ->counter();
                     break;
                 }
             case 'get_cat_genres':
