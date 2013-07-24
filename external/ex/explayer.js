@@ -385,7 +385,7 @@ MediaPlayer.onInit = function() {
             });
             self.ModalMenu.Menu.g3d.slist.Marked(this, true);
             self.ModalMenu.Show(false);
-            gSTB.Set3DConversionMode(this.data);
+            gSTB.Set3DConversionMode && gSTB.Set3DConversionMode(this.data);
             return false;
         }
     });
