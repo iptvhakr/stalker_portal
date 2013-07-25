@@ -292,7 +292,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     private function parseAuthorizationHeader(){
 
-        $headers = getallheaders();
+        if (function_exists('getallheaders')){
+            $headers = getallheaders();
+        }else{
+            $headers = $this->getHttpHeaders();
+        }
 
         if (!$headers){
             return;
@@ -303,6 +307,19 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         if ($auth_header && preg_match('/Bearer\s+(.*)$/i', $auth_header, $matches)){
             $this->access_token = trim($matches[1]);
         }
+    }
+
+    private function getHttpHeaders(){
+
+        $headers = array();
+
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+
+        return $headers;
     }
 
     public function handshake(){
