@@ -162,6 +162,10 @@ player.prototype.init = function(){
                     stb.user.screensaver_delay = params.screensaver_delay;
                     screensaver.restart_timer();
                 }
+
+                if (params.hasOwnProperty("plasma_saving")){
+                    stb.user.plasma_saving = stb.profile.plasma_saving = params.plasma_saving;
+                }
             }
         }
 
@@ -1675,6 +1679,13 @@ player.prototype.play = function(item){
         this.triggerCustomEventListener('audiostart', this.cur_media_item);
     }
 
+    _debug('stb.profile[plasma_saving]', stb.profile['plasma_saving']);
+    _debug('module.tv.on', module.tv.on);
+
+    if(this.is_tv && module.tv && module.tv.on && stb.profile['plasma_saving'] === '1'){
+        module.tv.start_tv_plasma_saving_count();
+    }
+
     this.play_initiated = true;
     
     if (this.media_type == 'stream'){
@@ -1876,6 +1887,10 @@ player.prototype.stop = function(){
         this.cur_media_item.timeshift_hist_id = null;
     }
 
+    if(module.tv && stb.profile['plasma_saving'] === '1'){
+        module.tv.stop_tv_plasma_saving_count();
+    }
+
     this.on_stop = undefined;
 
     this.prev_layer = {};
@@ -2049,6 +2064,10 @@ player.prototype.pause_switch = function(){
         }catch(e){}
         this.pause.on = true;
         this.pause.dom_obj.show();
+
+        if (stb.profile['plasma_saving'] === '1'){
+            this.start_disabling_pause_count();
+        }
     }
 };
 
@@ -2056,6 +2075,8 @@ player.prototype.disable_pause = function(){
     _debug('player.disable_pause');
 
     _debug('this.active_time_shift', this.active_time_shift);
+
+    this.stop_disabling_pause_count();
 
     if (this.active_time_shift){
         _debug('new Date() - module.time_shift.cur_media_item.live_date', (new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime())/1000);
@@ -2104,6 +2125,28 @@ player.prototype.hide_pause = function(){
     _debug('player.hide_pause');
     this.pause.on = false;
     this.pause.dom_obj.hide();
+};
+
+player.prototype.start_disabling_pause_count = function(){
+    _debug('player.start_disabling_pause_count');
+
+    window.clearTimeout(this.disable_pause_to);
+
+    this.disable_pause_to = window.setTimeout(function(){
+
+        _debug('disable_pause fired');
+
+        if (stb.player.pause.on){
+            stb.player.disable_pause();
+        }
+
+    }, stb.profile['plasma_saving_timeout'] * 1000);
+};
+
+player.prototype.stop_disabling_pause_count = function(){
+    _debug('player.stop_disabling_pause_count');
+
+    window.clearTimeout(this.disable_pause_to);
 };
 
 player.prototype.show_info_after_play = function(){

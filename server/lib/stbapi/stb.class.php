@@ -40,6 +40,8 @@ interface Stb
 
     public function setScreensaverDelay();
 
+    public function setPlasmaSaving();
+
     public function setPlaybackBuffer();
 
     public function setSpdifMode();

@@ -163,6 +163,14 @@
                 if (this.cur_view == 'short'){
                     stb.SetTopWin(1);
                     stb.SetViewport(this.preview_pos.xsize, this.preview_pos.ysize, this.preview_pos.x, this.preview_pos.y);
+
+                    _debug('stb.player.on', stb.player.on);
+                    _debug('stb.player.is_tv', stb.player.is_tv);
+
+                    if(stb.player.on && stb.player.is_tv && stb.profile['plasma_saving'] === '1'){
+                        this.start_tv_plasma_saving_count();
+                    }
+
                 }else{
                     stb.SetTopWin(0);
                 }
@@ -924,7 +932,7 @@
                     }else{
                         //if (self.info.on){
                         //    self.info.hide();
-                        //} 
+                        //}
 
                         //self.hide(true);
 
@@ -1459,6 +1467,30 @@
                 this.load = 0;
                 //this.progress.style.width = 0;
             }
+        };
+
+        this.start_tv_plasma_saving_count = function(){
+            _debug('tv.start_tv_plasma_saving_count');
+
+            window.clearTimeout(this.make_fillscreen_to);
+
+            if (this.on && this.cur_view == 'short'){
+                this.make_fillscreen_to = window.setTimeout(function(){
+
+                    _debug('make_fillscreen_to fired');
+
+                    if (module.tv.on && module.tv.cur_view == 'short'){
+                        module.tv.hide(true);
+                    }
+
+                }, stb.profile['plasma_saving_timeout'] * 1000);
+            }
+        };
+
+        this.stop_tv_plasma_saving_count = function(){
+            _debug('tv.stop_tv_plasma_saving_count');
+
+            window.clearTimeout(this.make_fillscreen_to);
         }
     }
     

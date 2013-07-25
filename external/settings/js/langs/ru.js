@@ -171,6 +171,7 @@ var lang = {
 	"Buffer size (s):":"Размер буфера (с):",
 	"Wireless":"Беспроводная сеть",
 	"Multicast proxy URL:":"Адрес мультикаст прокси:",
+	"Plasma display saving:":"Защита от выгорания экрана:",
 	"Screensaver:":"Хранитель экрана:",
 	"min":"мин",
 	"Updating error!":"Ошибка обновления!",

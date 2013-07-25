@@ -496,6 +496,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['tv_archive_continued'] = Config::getSafe('tv_archive_continued', false);
 
+        $profile['plasma_saving_timeout'] = Config::getSafe('plasma_saving_timeout', false);
+
         return $profile;
     }
 
@@ -507,6 +509,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             "test_download_url"    => Config::getSafe('test_download_url', ''),
             "playback_buffer_size" => $this->params['playback_buffer_size'] / 1000,
             "screensaver_delay"    => $this->params['screensaver_delay'],
+            "plasma_saving"        => $this->params['plasma_saving'],
             "spdif_mode"           => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out'],
             "modules"              => $this->getSettingsMenuModules()
         );
@@ -1245,6 +1248,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     public function setScreensaverDelay(){
         return $this->setCommonSettings();
+    }
+
+    public function setPlasmaSaving(){
+
+        return Mysql::getInstance()->update('users',
+            array(
+                'plasma_saving' => (int) $_REQUEST['plasma_saving']
+            ),
+            array('id' => $this->id)
+        );
     }
 
     public function setCommonSettings(){
