@@ -454,6 +454,11 @@
             this.info_box = create_block_element('', this.main_container);
             
             this.short_info_box = create_block_element('vclub_info_box', this.info_box);
+
+            if (!stb.IsEmulator){
+                this.short_info_box.addClass('vclub_info_box_mask');
+            }
+
             this.screenshot_box = create_block_element('vclub_screenshot_box', this.info_box);
         };
         

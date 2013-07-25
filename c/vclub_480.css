@@ -29,6 +29,9 @@
     color: #fff;
     font-size: 16px;
     overflow: hidden;
+}
+
+.vclub_info_box_mask{
     -webkit-mask: -webkit-gradient(linear, left 55, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 

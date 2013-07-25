@@ -30,7 +30,10 @@
     font-size: 25px;
     overflow: hidden;
     padding: 5px;
-    -webkit-mask: -webkit-gradient(linear, left 191, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+}
+
+.vclub_info_box_mask{
+    -webkit-mask: -webkit-gradient(linear, left 191, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
 }
 
 .vclub_info_box span{
