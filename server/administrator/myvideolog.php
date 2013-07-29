@@ -92,7 +92,7 @@ function page_bar(){
     global $MAX_PAGE_ITEMS;
     global $page;
     global $total_pages;
-    
+
     $page_bar = '';
 
     for($i = 1; $i <= $total_pages; $i++){
@@ -130,7 +130,7 @@ if (!empty($_GET['search'])){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
-$total_items = Mysql::getInstance()->query($query)->count();
+$total_items = Mysql::getInstance()->query("select * from video_log $where")->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
