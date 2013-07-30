@@ -1037,7 +1037,7 @@ while ($arr = $all_channels->next()){
     if (Admin::isActionAllowed()){
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to reset claims counter?')."\")){document.location=\"claims.php?reset=1&media_id=".$arr['media_id']."&media_type=".$arr['media_type']."\"}'>";
     }
-    echo "<span style='color:red;font-weight:bold'>".$arr['sound_counter']." / ".$arr['video_counter']." / ".$arr['no_epg']," / ".$arr['wrong_epg']."</span>";
+    echo "<span style='color:red;font-weight:bold'>".$arr['video_counter']." / ".$arr['sound_counter']." / ".$arr['no_epg']," / ".$arr['wrong_epg']."</span>";
     if (Admin::isActionAllowed()){
         echo "</a>";
     }
