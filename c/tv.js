@@ -1540,6 +1540,7 @@
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'number';
+                this.parent.load_params.hd = 0;
                 if (!stb.profile['tv_quality_filter']){
                     this.parent.color_buttons.get('blue').disable();
                 }else{
@@ -1555,6 +1556,7 @@
                 stb.user.fav_itv_on = 0;
                 stb.player.set_fav_status();
                 this.parent.load_params.sortby = 'name';
+                this.parent.load_params.hd = 0;
                 if (!stb.profile['tv_quality_filter']){
                     this.parent.color_buttons.get('blue').disable();
                 }else{
@@ -1570,7 +1572,7 @@
                 stb.user.fav_itv_on = 1;
                 stb.player.set_fav_status();
                 this.parent.load_params.fav = true;
-
+                this.parent.load_params.hd = 0;
                 if (this.parent.cur_view == 'wide'){
                     this.parent.color_buttons.get('blue').enable();
                 }else{
@@ -1583,6 +1585,29 @@
             }
         }
     ];
+
+    if (stb.profile['show_tv_only_hd_filter_option']){
+
+        sort_menu_map.push(
+            {
+                "label"   : get_word('tv_only_hd'),
+                "cmd" : function(){
+
+                    this.parent.load_params.fav = false;
+                    stb.user.fav_itv_on = 0;
+                    stb.player.set_fav_status();
+                    this.parent.load_params.sortby = 'number';
+                    this.parent.load_params.hd = 1;
+                    if (!stb.profile['tv_quality_filter']){
+                        this.parent.color_buttons.get('blue').disable();
+                    }else{
+                        this.parent.fav_menu && this.parent.fav_menu.disable_by_name("fav_manage");
+                    }
+
+                }
+            }
+        );
+    }
 
     if (stb.profile['tv_quality_filter']){
         var filter_menu_map = [

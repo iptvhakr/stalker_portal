@@ -76,6 +76,7 @@ $words['tv_move'] = _('MOVE');
 $words['tv_by_number'] = _('by number');
 $words['tv_by_title'] = _('by title');
 $words['tv_only_favorite'] = _('only favorite');
+$words['tv_only_hd'] = _('HD only');
 $words['tv_list'] = _('list');
 $words['tv_list_w_info'] = _('list + info');
 $words['tv_title'] = _('TV');

@@ -515,6 +515,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['plasma_saving_timeout'] = Config::getSafe('plasma_saving_timeout', false);
 
+        $profile['show_tv_only_hd_filter_option'] = Config::getSafe('show_tv_only_hd_filter_option', false);
+
         return $profile;
     }
 
