@@ -27,6 +27,11 @@ Scrollable.prototype.initScrollbar = function(){
     this.scrollbar = new scrollbar(this.parent, this.dom_obj);
 };
 
+Scrollable.prototype.scrollTop = function(){
+    this.dom_obj.scrollTop = 0;
+    this.scrollbar.refresh();
+}
+
 Scrollable.prototype.scroll = function(dir){
 
     if (dir > 0){

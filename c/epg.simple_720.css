@@ -134,5 +134,17 @@
 }
 
 #epg_simple .full_program_info{
-    height: 563px;
+    height: 529px;
+    top: 85px;
+    width: 1112px;
+    left: 79px;
+}
+
+#epg_simple .full_program_info_content{
+    position: absolute;
+    width: 1083px;
+    height: 524px;
+    overflow: hidden;
+    padding-top: 3px;
+    text-align: justify;
 }

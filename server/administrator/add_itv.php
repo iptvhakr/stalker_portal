@@ -1016,8 +1016,8 @@ while ($arr = $all_channels->next()){
     echo '<table cellpadding="0" cellspacing="0">';
     echo '<tr>';
     echo '<td>';
-    if ($logo = Itv::getLogoUriById(intval($arr['id']), 120)){
-        echo '<img src ="'.$logo.'"/ >';
+    if ($ch_logo = Itv::getLogoUriById(intval($arr['id']), 120)){
+        echo '<img src ="'.$ch_logo.'"/ >';
     }
     echo '</td>';
     echo '<td>';

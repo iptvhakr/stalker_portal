@@ -56,8 +56,9 @@
             
             this.program_info = create_block_element('program_info', this.dom_obj);
 
-            this.full_program_info = create_block_element('full_program_info', this.dom_obj);
-            this.full_program_info.hide();
+            this.full_program_info_container = create_block_element('full_program_info', this.dom_obj);
+            this.full_program_info = new Scrollable(create_block_element("full_program_info_content", this.full_program_info_container), this.full_program_info_container)
+            this.full_program_info_container.hide();
         };
         
         this.init_page_bar = function(){};
@@ -284,6 +285,7 @@
             _debug('epg_simple.shift_row', dir);
 
             if (this.more_on){
+                this.full_program_info.scroll && this.full_program_info.scroll(dir);
                 return;
             }
 
@@ -590,6 +592,7 @@
         this.shift_page = function(dir){
 
             if (this.more_on){
+                this.full_program_info.scrollPage && this.full_program_info.scrollPage(dir);
                 return;
             }
 
@@ -650,14 +653,18 @@
             this.program_info.hide();
 
             if (this.data_items && this.data_items[this.cur_row]){
-                this.full_program_info.innerHTML = '<span class="time">'
+                this.full_program_info.dom_obj.innerHTML = '<span class="time">'
                     + this.data_items[this.cur_row]['t_time'] + ' - '
                     + this.data_items[this.cur_row]['t_time_to']
-                    +'</span> - ' + (this.data_items[this.cur_row]['o_name'] ? this.data_items[this.cur_row]['o_name'] : this.data_items[this.cur_row]['name'])
-                    + (this.data_items[this.cur_row]['descr'] ? ' <br>'+this.data_items[this.cur_row]['descr']+'' : '');
+                    +'</span> - ' + (this.data_items[this.cur_row]['o_name'] ? this.data_items[this.cur_row]['o_name'] : this.data_items[this.cur_row]['name']) + '<br>'
+                    + (this.data_items[this.cur_row]['category'] ? ' <br><span class="time">'+get_word('epg_category')+'</span>: '+this.data_items[this.cur_row]['category']+'' : '')
+                    + (this.data_items[this.cur_row]['director'] ? ' <br><span class="time">'+get_word('epg_director')+'</span>: '+this.data_items[this.cur_row]['director']+'' : '')
+                    + (this.data_items[this.cur_row]['actor'] ? ' <br><span class="time">'+get_word('epg_actors')+'</span>: '+this.data_items[this.cur_row]['actor']+'' : '')
+                    + (this.data_items[this.cur_row]['descr'] ? ' <br><span class="time">'+get_word('epg_desc')+'</span>: '+this.data_items[this.cur_row]['descr']+'' : '');
             }
 
-            this.full_program_info.show();
+            this.full_program_info_container.show();
+            this.full_program_info.scrollTop();
 
             this.color_buttons.get('red')  .disable();
             this.color_buttons.get('green').disable();
@@ -668,8 +675,9 @@
         this.more_hide = function(){
             _debug('epg_simple.more_hide');
 
-            this.full_program_info.hide();
-            this.full_program_info.innerHTML = '';
+            this.full_program_info_container.hide();
+            this.full_program_info.scrollbar.reset();
+            this.full_program_info.dom_obj.innerHTML = '';
 
             this.week_block.show();
             this.program_info.show();

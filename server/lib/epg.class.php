@@ -131,6 +131,36 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 $title = strval($programme->title);
                 $descr = strval($programme->desc);
 
+                $category = array();
+                $director = array();
+                $actor    = array();
+
+                if (!empty($programme->category)){
+
+                    foreach ($programme->category as $_category){
+                        $category[] = strval($_category);
+                    }
+                }
+
+                $category = implode(', ', $category);
+
+                if (!empty($programme->credits->director)){
+
+                    foreach ($programme->credits->director as $_director){
+                        $director[] = strval($_director);
+                    }
+                }
+
+                $director = implode(', ', $director);
+
+                if (!empty($programme->credits->actor)){
+                    foreach ($programme->credits->actor as $_actor){
+                        $actor[] = strval($_actor);
+                    }
+                }
+
+                $actor = implode(', ', $actor);
+
                 foreach ($itv_id_arr as $itv_id){
                     $correction_time = $this->getCorrectionTimeByChannelId($itv_id);
                     $start_ts = $start + $correction_time * 60;
@@ -162,14 +192,17 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                     $this->real_ids[$real_id] = true;
 
                     $data_arr[] = array(
-                                                'ch_id' => $itv_id,
-                                                'time'  => $mysql_start,
-                                                'time_to'  => $mysql_stop,
-                                                'duration' => $duration,
-                                                'real_id'  => $real_id,
-                                                'name'  => $title,
-                                                'descr' => $descr
-                                                );
+                                            'ch_id'    => $itv_id,
+                                            'time'     => $mysql_start,
+                                            'time_to'  => $mysql_stop,
+                                            'duration' => $duration,
+                                            'real_id'  => $real_id,
+                                            'name'     => $title,
+                                            'descr'    => $descr,
+                                            'category' => $category,
+                                            'director' => $director,
+                                            'actor'    => $actor
+                                            );
 
                     $this->channels_updated[$itv_id] = 1;
                 }
