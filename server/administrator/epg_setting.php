@@ -59,6 +59,14 @@ if (!empty($id)){
 
         header("Location: epg_setting.php");
         exit;
+    }elseif (isset($_GET['status'])){
+
+        Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
+        Mysql::getInstance()->update('epg_setting', array('status' => (int) $_GET['status']), array('id' => (int) $_GET['id']));
+
+        header("Location: epg_setting.php");
+        exit;
     }
 }
 
@@ -171,7 +179,16 @@ a:hover{
                 echo '<td>'.$setting['etag'].'</td>';
                 echo '<td>'.$setting['updated'].'</td>';
                 echo '<td>';
-
+                if ($setting['status'] == 1){
+                    $status_str = 'on';
+                    $color = 'Green';
+                    $new_status=0;
+                }else{
+                    $status_str = 'off';
+                    $color = 'Red';
+                    $new_status=1;
+                }
+                echo '<a href="?status='.$new_status.'&id='.$setting['id'].'" style="color:'.$color.'">'.$status_str.'</a>&nbsp;';
                 echo '<a href="?edit=1&id='.$setting['id'].'">edit</a>&nbsp;';
                 echo '<a href="?del=1&id='.$setting['id'].'" onclick="if(confirm(\''._('Do you really want to delete this record?').'\')){return true}else{return false}">del</a>';
                 echo '</td>';

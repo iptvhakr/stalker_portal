@@ -269,7 +269,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
      */
     private function getSettings(){
 
-        return $this->db->from('epg_setting')->get()->all();
+        return $this->db->from('epg_setting')->where(array('status' => 1))->get()->all();
     }
 
     /**
