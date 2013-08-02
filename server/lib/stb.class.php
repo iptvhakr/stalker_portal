@@ -375,6 +375,54 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             );
         }
 
+        $debug_key = $this->getDebugKey();
+
+        if (!empty($debug_key) && $this->checkDebugKey($debug_key)){
+            // emulation
+        }elseif (Config::getSafe('enable_device_id_validation', true) && isset($_REQUEST['device_id'])){
+
+            if ($_REQUEST['device_id']){
+
+                $device = Mysql::getInstance()
+                    ->from('users')
+                    ->where(array(
+                         'device_id' =>  $_REQUEST['device_id']
+                    ))
+                    ->get()
+                    ->first();
+
+                if (!empty($device) && $device['mac'] != $this->mac){
+
+                    $this->logDeviceConflict($_REQUEST['device_id'], $this->mac, $serial_number, $model, 'MAC address mismatch');
+
+                    return array(
+                        'status' => 1,
+                        'msg'    => 'device conflict - MAC address mismatch'
+                    );
+                }
+            }
+
+            if ($this->id){
+
+                if (!$this->getParam('device_id')){
+
+                    Mysql::getInstance()->update('users',
+                        array('device_id' => $_REQUEST['device_id']),
+                        array('id' => $this->id)
+                    );
+
+                } elseif ($this->getParam('device_id') != $_REQUEST['device_id']){
+
+                    $this->logDeviceConflict($_REQUEST['device_id'], $this->mac, $serial_number, $model, 'device_id mismatch');
+
+                    return array(
+                        'status' => 1,
+                        'msg'    => 'device conflict - device_id mismatch'
+                    );
+                }
+            }
+        }
+
         if (!$this->id){
             if (Config::exist('auth_url')){
 
@@ -383,7 +431,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 );
 
             }else{
-                $this->initProfile();
+                $this->initProfile(null, null, $_REQUEST['device_id']);
             }
         }
 
@@ -598,26 +646,29 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         return $user_id;
     }
     
-    private function initProfile($login = null, $password = null){
+    private function initProfile($login = null, $password = null, $device_id = null){
 
         if (empty($login)){
-            /*$uid = $this->db->insert('users', array(
-                        'mac'  => $this->mac,
-                        'name' => substr($this->mac, 12, 16)
-                    ))->insert_id();*/
+
             $data = array(
                 'mac'          => $this->mac,
                 'access_token' => $this->access_token,
-                'name'         => substr($this->mac, 12, 16)
+                'name'         => substr($this->mac, 12, 16),
+                'device_id'    => $device_id
             );
             $uid = self::create($data);
         }else{
+
             Mysql::getInstance()->update('users',
                 array(
-                    'mac'  => $this->mac,
-                    'name' => substr($this->mac, 12, 16)),
+                    'mac'       => $this->mac,
+                    'name'      => substr($this->mac, 12, 16),
+                    'device_id' => $device_id
+                ),
                 array(
-                     'login' => $login));
+                     'login' => $login
+                )
+            );
 
             $uid = intval(Mysql::getInstance()->from('users')->where(array('mac' => $this->mac))->get()->first('id'));
         }
@@ -1604,8 +1655,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     public function doAuth(){
 
-        $login    = $_REQUEST['login'];
-        $password = $_REQUEST['password'];
+        $login     = $_REQUEST['login'];
+        $password  = $_REQUEST['password'];
+        $device_id = $_REQUEST['device_id'];
 
         $data = file_get_contents(Config::get('auth_url').'?login='.$login.'&password='.$password.'&mac='.$this->mac);
 
@@ -1629,7 +1681,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         if ($auth_result == "true"){
             
-            $this->initProfile($login, $password);
+            $this->initProfile($login, $password, $device_id);
 
             return true;
         }else{
@@ -1672,6 +1724,22 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
 
         return Mysql::getInstance()->from('users')->where(array('mac' => $mac))->get()->first();
+    }
+
+    private function logDeviceConflict($device_id, $mac, $serial_number, $model, $msg){
+        $logger = new Logger();
+        $logger->setPrefix("device_id_");
+        $date = new DateTime('now', new DateTimeZone(Config::get('default_timezone')));
+
+        $logger->error(sprintf("%s - [%s] mac:%s, serial_number:%s, model:%s, device_id:%s, reason:%s\n",
+            empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP'] ,
+            $date->format('r'),
+            $mac,
+            $serial_number,
+            $model,
+            $device_id,
+            $msg
+        ));
     }
 
     private function logDeniedByFilter($country, $model, $mac){

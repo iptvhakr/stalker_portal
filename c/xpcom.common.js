@@ -290,10 +290,11 @@ function common_xpcom(){
 
                     stb.load(
                         {
-                            "type"     : "stb",
-                            "action"   : "do_auth",
-                            "login"    : login,
-                            "password" : password
+                            "type"      : "stb",
+                            "action"    : "do_auth",
+                            "login"     : login,
+                            "password"  : password,
+                            'device_id' : stb.GetUID ? stb.GetUID() : ''
                         },
                         function(result){
                             _debug('auth result', result);
@@ -792,7 +793,8 @@ function common_xpcom(){
                 'num_banks'     : this.num_banks,
                 'sn'            : this.serial_number,
                 'stb_type'      : this.type,
-                'image_version' : this.image_version
+                'image_version' : this.image_version,
+                'device_id'     : stb.GetUID ? stb.GetUID() : ''
             },
 
             function(result){
