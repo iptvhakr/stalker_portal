@@ -905,7 +905,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     
                     //preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
 
-                    if (strpos($param, 'http://') !== false){
+                    if (strpos($param, '://') !== false){
 
                         $video = $this->db->from('video')->where(array('rtsp_url' => $param, 'protocol' => 'custom'))->get()->first();
 
