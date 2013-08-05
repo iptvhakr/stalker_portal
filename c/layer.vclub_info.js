@@ -108,7 +108,7 @@ vclub_info.prototype.init = function(){
 vclub_info.prototype.fill = function(item){
     _debug('vclub_info.fill');
     
-    this.film_title.innerHTML = item.name + ' / ' + item.o_name;
+    this.film_title.innerHTML = (item.name == item.o_name) ? item.name : item.name + ' / ' + item.o_name;
 
     var full_info = '<span>' + word['vclub_year'] + ':</span> ' + item.year + '<br>';
 
