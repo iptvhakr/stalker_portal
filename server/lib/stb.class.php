@@ -391,7 +391,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     ->get()
                     ->first();
 
-                if (!empty($device) && $device['mac'] != $this->mac){
+                if (!empty($device) && strtoupper($device['mac']) != $this->mac){
 
                     $this->logDeviceConflict($_REQUEST['device_id'], $this->mac, $serial_number, $model, 'MAC address mismatch');
 
