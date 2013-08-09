@@ -1261,9 +1261,11 @@ function common_xpcom(){
                 }
             };
 
-            //if (gres == 'tvsystem_res'){
-                var gres = screen.height;
-            //}
+            if (typeof(Proxy) !== "undefined" && gSTB && typeof(gSTB.prototype) === "function"){
+                var gres = window.innerHeight;
+            }else{
+                gres = screen.height;
+            }
 
             this.graphic_mode = gres;
 
