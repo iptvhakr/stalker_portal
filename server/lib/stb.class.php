@@ -578,7 +578,14 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             "screensaver_delay"    => $this->params['screensaver_delay'],
             "plasma_saving"        => $this->params['plasma_saving'],
             "spdif_mode"           => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out'],
-            "modules"              => $this->getSettingsMenuModules()
+            "modules"              => $this->getSettingsMenuModules(),
+            'ts_enabled'           => $this->params['ts_enabled'],
+            'ts_enable_icon'       => $this->params['ts_enable_icon'],
+            'ts_path'              => $this->params['ts_path'],
+            'ts_max_length'        => $this->params['ts_max_length'],
+            'ts_buffer_use'        => $this->params['ts_buffer_use'],
+            'ts_action_on_exit'    => $this->params['ts_action_on_exit'],
+            'ts_delay'             => $this->params['ts_delay'],
         );
     }
 
@@ -1328,6 +1335,31 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             ),
             array('id' => $this->id)
         );
+    }
+
+    public function setTimeshiftSettings(){
+
+        $data = $_REQUEST['data'];
+
+        $data = json_decode($data, true);
+
+        if ($data === false){
+            return false;
+        }
+
+        return Mysql::getInstance()->update('users',
+            array(
+                 'ts_enabled'        => $data['ts_enabled'],
+                 'ts_enable_icon'    => $data['ts_enable_icon'],
+                 'ts_path'           => $data['ts_path'],
+                 'ts_max_length'     => $data['ts_max_length'],
+                 'ts_buffer_use'     => $data['ts_buffer_use'],
+                 'ts_action_on_exit' => $data['ts_action_on_exit'],
+                 'ts_delay'          => $data['ts_delay'],
+            ),
+            array('id' => $this->id)
+        );
+
     }
 
     public function setCommonSettings(){

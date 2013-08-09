@@ -9,7 +9,7 @@
         
         this.layer_name = 'tv';
         
-        this.row_blocks  = ['number', 'now_playing', 'fav', 'lock', 'archive', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
+        this.row_blocks  = ['number', 'now_playing', 'fav', 'lock', 'archive', 'local_time_shift', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
         
         this.load_params = {
             'type'   : 'itv',
@@ -746,6 +746,12 @@
 
                 if (stb.profile['play_in_preview_only_by_ok'] && channel.id == stb.player.cur_tv_item.id && stb.player.on){
                     channel.now_playing = 1;
+                }
+
+                if (stb.profile.ts_enable_icon && module.time_shift_local && module.time_shift_local.enabled && channel.allow_local_timeshift == 1 && channel.archive != 1){
+                    channel.local_time_shift = 1;
+                }else{
+                    channel.local_time_shift = 0;
                 }
 
                 return channel;

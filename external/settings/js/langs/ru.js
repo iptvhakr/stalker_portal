@@ -177,5 +177,26 @@ var lang = {
 	"Updating error!":"Ошибка обновления!",
 	"Error":"Ошибка",
 	"Testing":"Тестирование",
-	"Waiting":"Ожидание"
+	"Waiting":"Ожидание",
+
+    "Local TimeShift" : "Локальный TimeShift",
+    "Enable TimeShift:" : "Включить:",
+    "Enable TimeShift icon:" : "Отображать иконку:",
+    "TimeShift location:" : "Расположение файлов:",
+    "TimeShift length:" : "Максимальная длительность:",
+    "Using buffer mode:" : "Режим использования буфера:",
+    "TimeShift on exit:" : "Действие при выходе:",
+    "TimeShift delay:" : "Задержка:",
+    "minutes" : "минут",
+    "hour" : "час",
+    "hours" : "часа",
+    "hours2" : "часов",
+    "None" : "Отсутствует",
+    "Cyclic rewriting" : "Циклическая перезапись",
+    "Stop when full" : "Остановка по заполнению",
+    "Do not save buffer" : "Не сохранять буфер",
+    "Save buffer" : "Сохранять буфер",
+    "Request to save" : "Запрос на сохранение",
+    "By pressing \"Pause\" button" : "По нажатию кнопки пауза",
+    "sec." : "сек."
 };

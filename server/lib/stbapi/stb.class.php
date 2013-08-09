@@ -42,6 +42,8 @@ interface Stb
 
     public function setPlasmaSaving();
 
+    public function setTimeshiftSettings();
+
     public function setPlaybackBuffer();
 
     public function setSpdifMode();

@@ -1,6 +1,6 @@
 /* TV */
 
-#tv .archive_block{
+#tv .archive_block, #tv .local_time_shift_block{
     width: 27px;
     height: 28px;
     background: url("i_720/mb_icons.png") no-repeat -224px 0;
@@ -8,7 +8,7 @@
     margin-top: 4px;
 }
 
-#tv .active_archive_block{
+#tv .active_archive_block, #tv .active_local_time_shift_block{
     width: 27px;
     height: 30px;
     background: url("i_720/mb_icons.png") no-repeat -224px -32px;

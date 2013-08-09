@@ -182,6 +182,14 @@ usbdisk.prototype.read_dir = function(path){
     }
 };
 
+usbdisk.prototype.is_valid_path_for_write = function(path){
+    _debug('usbdisk.is_valid_path_for_write', path);
+
+    return this.storage_info.some(function(storage){
+        return storage.mountPath === path && storage.isReadOnly === 0;
+    })
+};
+
 usbdisk.prototype.add_onmount_callback = function(func){
     _debug('usbdisk.add_onmount_callback');
     

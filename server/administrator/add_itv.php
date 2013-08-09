@@ -129,6 +129,8 @@ if (!$error){
 
     $allow_local_pvr = @intval($_POST['allow_local_pvr']);
 
+    $allow_local_timeshift = @intval($_POST['allow_local_timeshift']);
+
     $enable_wowza_load_balancing = @intval($_POST['enable_wowza_load_balancing']);
 
     if (@$_POST['base_ch'] == 'on'){
@@ -233,6 +235,7 @@ if (!$error){
                 'enable_tv_archive'           => $enable_tv_archive,
                 'allow_pvr'                   => $allow_pvr,
                 'allow_local_pvr'             => $allow_local_pvr,
+                'allow_local_timeshift'       => $allow_local_timeshift,
                 'enable_monitoring'           => $enable_monitoring,
                 'descr'                       => @$_POST['descr'],
                 'tv_genre_id'                 => @$_POST['tv_genre_id'],
@@ -325,6 +328,7 @@ if (!$error){
                     'enable_tv_archive'           => $enable_tv_archive,
                     'allow_pvr'                   => $allow_pvr,
                     'allow_local_pvr'             => $allow_local_pvr,
+                    'allow_local_timeshift'       => $allow_local_timeshift,
                     'enable_monitoring'           => $enable_monitoring,
                     'wowza_tmp_link'              => $wowza_tmp_link,
                     'wowza_dvr'                   => $wowza_dvr,
@@ -1085,6 +1089,7 @@ if (@$_GET['edit']){
         $enable_tv_archive = $arr['enable_tv_archive'];
         $allow_pvr = $arr['allow_pvr'];
         $allow_local_pvr = $arr['allow_local_pvr'];
+        $allow_local_timeshift = $arr['allow_local_timeshift'];
         $enable_monitoring = $arr['enable_monitoring'];
         $monitoring_url = $arr['monitoring_url'];
         $enable_wowza_load_balancing = $arr['enable_wowza_load_balancing'];
@@ -1114,6 +1119,12 @@ if (@$_GET['edit']){
             $checked_allow_local_pvr = 'checked';
         }else{
             $checked_allow_local_pvr = '';
+        }
+
+        if ($allow_local_timeshift){
+            $checked_allow_local_timeshift = 'checked';
+        }else{
+            $checked_allow_local_timeshift = '';
         }
 
         if ($enable_monitoring){
@@ -1200,6 +1211,12 @@ if (@$_GET['edit']){
         $checked_allow_local_pvr = 'checked';
     }else{
         $checked_allow_local_pvr = '';
+    }
+
+    if (@$_POST['allow_local_timeshift']){
+        $checked_allow_local_timeshift = 'checked';
+    }else{
+        $checked_allow_local_timeshift = '';
     }
 
     if (@$_POST['enable_monitoring']){
@@ -1541,6 +1558,15 @@ function delete_logo(id){
                     </tr>
                     <?}?>
                 </table>
+            </span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">
+                <?= _('Allow USB TimeShift')?>:
+            </td>
+            <td>
+                <input name="allow_local_timeshift" id="allow_local_timeshift" type="checkbox" value="1"  <?= isset($checked_allow_local_timeshift) ? $checked_allow_local_timeshift : 'checked' ?> >
             </span>
             </td>
         </tr>

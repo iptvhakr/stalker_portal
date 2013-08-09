@@ -166,6 +166,35 @@ player.prototype.init = function(){
                 if (params.hasOwnProperty("plasma_saving")){
                     stb.user.plasma_saving = stb.profile.plasma_saving = params.plasma_saving;
                 }
+
+                if (params.hasOwnProperty("ts_enable_icon")){
+                    stb.user.ts_enable_icon = stb.profile.ts_enable_icon = params.ts_enable_icon;
+                }
+
+                if (params.hasOwnProperty("ts_path")){
+                    stb.user.ts_path = stb.profile.ts_path = params.ts_path;
+                }
+
+                if (params.hasOwnProperty("ts_max_length")){
+                    stb.user.ts_max_length = stb.profile.ts_max_length = params.ts_max_length;
+                }
+
+                if (params.hasOwnProperty("ts_buffer_use")){
+                    stb.user.ts_buffer_use = stb.profile.ts_buffer_use = params.ts_buffer_use;
+                }
+
+                if (params.hasOwnProperty("ts_action_on_exit")){
+                    stb.user.ts_action_on_exit = stb.profile.ts_action_on_exit = params.ts_action_on_exit;
+                }
+
+                if (params.hasOwnProperty("ts_delay")){
+                    stb.user.ts_delay = stb.profile.ts_delay = params.ts_delay;
+                }
+
+                if (params.hasOwnProperty("ts_enabled")){
+                    stb.user.ts_enabled = stb.profile.ts_enabled = params.ts_enabled;
+                    module.time_shift_local.init();
+                }
             }
         }
 
@@ -326,17 +355,28 @@ player.prototype.init_time_shift_exit_confirm = function(){
         {
             "value" : get_word("ok_btn"),
             "onclick" : function(){
+
                 scope.time_shift_exit_confirm.hide();
 
-                if (scope.cur_media_item.timeshift_hist_id){
-                    scope.update_played_timeshift_end_time(scope.cur_media_item.timeshift_hist_id);
+                if (scope.active_local_time_shift){
+                    module.time_shift_local.disable_mode();
+                    scope.active_local_time_shift = false;
+                    scope.is_tv = true;
+
+                    if (scope.pause.on){
+                        scope.disable_pause();
+                    }
+                }else{
+
+                    if (scope.cur_media_item.timeshift_hist_id){
+                        scope.update_played_timeshift_end_time(scope.cur_media_item.timeshift_hist_id);
+                    }
+
+                    scope.cur_media_item = module.time_shift.stored_media_item;
+                    scope.cur_tv_item    = scope.cur_media_item;
+                    scope.active_time_shift = false;
+                    scope.play_last();
                 }
-
-                scope.cur_media_item = module.time_shift.stored_media_item;
-                scope.cur_tv_item    = scope.cur_media_item;
-                scope.active_time_shift = false;
-                scope.play_last();
-
             }
         }
     ));
@@ -964,7 +1004,20 @@ player.prototype.event_callback = function(event, params){
 
             this.time_shift_indication.hide();
 
-            if (this.active_time_shift && module.time_shift){
+            if (this.is_tv && this.cur_tv_item && this.cur_tv_item.ready_to_timeshift && module.time_shift_local.enabled){
+
+                if (stb.profile.ts_delay !== 'on_pause'){
+                    this.enable_local_timeshift = window.setTimeout(function(){
+                        module.time_shift_local.enable_mode();
+                    }, stb.profile.ts_delay * 1000);
+                }
+            }
+
+            if (this.active_local_time_shift && module.time_shift_local){
+
+                this.time_shift_indication.show();
+
+            }else if (this.active_time_shift && module.time_shift){
 
                 this.cur_pos_time     = module.time_shift.get_pos_time();
                 this.cur_media_length = module.time_shift.get_cur_media_length();
@@ -1168,6 +1221,21 @@ player.prototype.event_callback = function(event, params){
             if (stb.profile['enable_hdmi_events_handler'] && !stb.power_off){
                 keydown_observer.emulate_key(key.MENU);
             }
+            break;
+        }
+        case 36: // local TimeShift
+        {
+            _debug('params', params);
+
+            params = JSON.parse(params);
+
+            if (params.event_code === 3 && this.pause.on && stb.profile.ts_buffer_use === 'cyclic'){
+                this.disable_pause();
+            }else if (params.event_code === 6){
+                this.active_local_time_shift = false;
+                this.is_tv = true;
+            }
+
             break;
         }
     }
@@ -1567,6 +1635,7 @@ player.prototype.play = function(item){
     window.clearTimeout(this.replay_channel_timer);
     window.clearTimeout(this.archive_continue_dialog_to);
     window.clearTimeout(this.ad_skip_timer);
+    window.clearTimeout(this.enable_local_timeshift);
 
     this.ad_indication.hide();
     this.ad_skip_indication.hide();
@@ -1858,6 +1927,13 @@ player.prototype.play_now = function(item){
 
     this.init_con_menu();
 
+    if (module.time_shift_local && module.time_shift_local.enabled && this.cur_media_item.allow_local_timeshift === '1'){
+        _debug('replacing solution to extTimeShift');
+        uri = uri.replace(/^(rtp|ffrt)+\s/, 'extTimeShift ');
+        _debug('uri', uri);
+        this.cur_tv_item.ready_to_timeshift = true;
+    }
+
     try{
 
         if (this.cur_media_item.error){
@@ -1903,6 +1979,8 @@ player.prototype.stop = function(){
 
     this.active_time_shift = false;
 
+    this.active_local_time_shift = false;
+
     playback_limit.reset();
     this.time_shift_indication.hide();
     this.ad_indication.hide();
@@ -1914,6 +1992,7 @@ player.prototype.stop = function(){
     window.clearTimeout(this.emulated_media_len_stop);
     window.clearTimeout(this.archive_continue_dialog_to);
     window.clearTimeout(this.ad_skip_timer);
+    window.clearTimeout(this.enable_local_timeshift);
 
     this.on_create_link = function(){};
     
@@ -2028,11 +2107,17 @@ player.prototype.tick_s = function(record){
 player.prototype.pause_switch = function(){
     _debug('player.pause_switch');
     
-    if (this.is_tv && (!parseInt(this.cur_media_item.enable_tv_archive, 10) || this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
+    if (this.is_tv && (this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
         return;
     }
 
-    if (this.is_tv && !module.time_shift){
+    _debug('module.time_shift', !!module.time_shift);
+    _debug('module.time_shift_local', !!module.time_shift_local);
+    _debug('module.time_shift_local.enabled', !!module.time_shift_local.enabled);
+    _debug('this.cur_media_item.allow_local_timeshift', this.cur_media_item.allow_local_timeshift);
+
+    if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10))
+        ){
         return;
     }
     
@@ -2043,8 +2128,16 @@ player.prototype.pause_switch = function(){
         if (this.is_tv && parseInt(this.cur_media_item.enable_tv_archive, 10) && module.time_shift && !this.prev_layer.on){
             module.time_shift.set_media_item(this.cur_tv_item);
             module.time_shift.get_link_for_channel();
-            //this.is_tv = false;
+
             this.active_time_shift = true;
+        }else if (this.is_tv && parseInt(this.cur_media_item.allow_local_timeshift, 10) && module.time_shift_local && module.time_shift_local.enabled && !this.prev_layer.on){
+
+            _debug('enter in timeshift mode');
+
+            module.time_shift_local.enable_mode();
+
+            this.active_local_time_shift = true;
+
         }else{
             if (!this.cur_media_item.hasOwnProperty('live_date')){
                 this.active_time_shift = false;
@@ -2075,6 +2168,7 @@ player.prototype.disable_pause = function(){
     _debug('player.disable_pause');
 
     _debug('this.active_time_shift', this.active_time_shift);
+    _debug('this.active_local_time_shift', this.active_local_time_shift);
 
     this.stop_disabling_pause_count();
 
@@ -2096,6 +2190,12 @@ player.prototype.disable_pause = function(){
 
         this.is_tv = false;
 
+    }else if (this.active_local_time_shift){
+        this.time_shift_indication.show();
+        try{
+            stb.Continue();
+        }catch(e){}
+        this.is_tv = false;
     }else{
 
         if (this.file_type == 'audio' && this.cur_media_item.playlist){
@@ -2316,12 +2416,12 @@ player.prototype.show_info = function(item, direct_call){
         }
 
         if (item.logo && stb.profile['show_tv_channel_logo']){
-            this.info.logo.innerHTML = '<img '+(this.active_time_shift ? 'class="timeshift_mode"' : '')+' src="/'+ stb.portal_path  +'/misc/logos/'+(resolution_prefix.substr(1) == 720 ? 320 : 240)+'/' + item.logo + '">';
+            this.info.logo.innerHTML = '<img '+(this.active_time_shift || this.active_local_time_shift ? 'class="timeshift_mode"' : '')+' src="/'+ stb.portal_path  +'/misc/logos/'+(resolution_prefix.substr(1) == 720 ? 320 : 240)+'/' + item.logo + '">';
         }else{
             this.info.logo.innerHTML = '';
         }
 
-        if (this.active_time_shift){
+        if (this.active_time_shift || this.active_local_time_shift){
             this.pos_time_bar.addClass('padding_pos_bar')
         }else{
             this.pos_time_bar.removeClass('padding_pos_bar')
@@ -2337,7 +2437,7 @@ player.prototype.show_info = function(item, direct_call){
             this.info.pos_series.innerHTML = '';
         }
 
-        if (item.enable_tv_archive == 1 && module.time_shift){
+        if (item.enable_tv_archive == 1 && module.time_shift || item.allow_local_timeshift == 1 && module.time_shift_local && module.time_shift_local.enabled){
             this.info.time_shift_mark.show();
         }else{
             this.info.time_shift_mark.hide();
@@ -2428,7 +2528,7 @@ player.prototype.switch_channel = function(dir, show_info){
         dir = -1 * dir;
     }
 
-    if (this.active_time_shift){
+    if (this.active_time_shift || this.active_local_time_shift){
         this.time_shift_indication.show();
         return;
     }
@@ -2920,7 +3020,7 @@ player.prototype.bind = function(){
         }else if(this.quick_ch_switch.on){
             this.cancel_quick_ch_switch();
         }else{
-            if (this.active_time_shift){
+            if (this.active_time_shift || this.active_local_time_shift){
                 this.show_time_shift_exit_confirm();
             }else{
                 this.show_prev_layer();
@@ -2979,15 +3079,19 @@ player.prototype.bind = function(){
             this.hide_quick_ch_switch();
         }else  if (this.prev_layer && this.prev_layer.cur_view == 'short' && !this.is_tv){
 
-            if (this.active_time_shift){
+            if (this.active_time_shift || this.active_local_time_shift){
                 this.show_time_shift_exit_confirm();
             }else{
                 this.show_prev_layer();
             }
             
         }else if (this.is_tv){
-            module.tv._show(module.tv.genre);
-            module.tv.set_short_container();
+            if (this.active_local_time_shift){
+                this.show_time_shift_exit_confirm();
+            }else{
+                module.tv._show(module.tv.genre);
+                module.tv.set_short_container();
+            }
         }
         
     }).bind(key.OK, this);
@@ -3389,6 +3493,15 @@ player.prototype.set_pos_button_to_cur_time = function(){
             _debug('this.cur_media_length', this.cur_media_length);
             _debug('this.cur_pos_time',     this.cur_pos_time);
 
+        }else if (this.active_local_time_shift){
+
+            /*var now = new Date();
+            this.cur_media_length = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+            this.cur_pos_time = this.cur_media_length - (stb.GetMediaLen() - stb.GetPosTime());*/
+
+            this.cur_media_length = stb.GetMediaLen();
+            this.cur_pos_time = stb.GetPosTime();
+
         }else if (this.emulate_media_len && module.tv_archive){
             /*var global_pos_time = stb.GetPosTime();
 
@@ -3657,11 +3770,12 @@ player.prototype.move_pos = function(dir){
         return;
     }*/
 
-    if (this.is_tv && (!parseInt(this.cur_media_item.enable_tv_archive, 10) || this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
+    if (this.is_tv && (this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
         return;
     }
 
-    if (this.is_tv && !module.time_shift){
+    if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10))
+        ){
         return;
     }
 
@@ -3679,6 +3793,14 @@ player.prototype.move_pos = function(dir){
         this.cur_media_length = module.time_shift.get_cur_media_length();
         _debug('this.cur_media_length', this.cur_media_length);
         _debug('this.cur_pos_time',     this.cur_pos_time);
+    }else if (this.is_tv && parseInt(this.cur_media_item.allow_local_timeshift, 10) && module.time_shift_local && module.time_shift_local.enabled && !this.prev_layer.on){
+
+        module.time_shift_local.enable_mode();
+
+        this.is_tv = false;
+        this.active_local_time_shift = true;
+        this.cur_pos_time            = stb.GetPosTime();
+        this.cur_media_length        = stb.GetMediaLen();
     }
     
     if (!this.info.on){
