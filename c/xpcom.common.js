@@ -497,7 +497,7 @@ function common_xpcom(){
             this.image_desc    = stb.RDir('ImageDescription').clearnl();
             this.image_date    = stb.RDir('ImageDate').clearnl();
 
-            this.version = 'ImageDescription: ' + this.image_desc + '; ImageDate: ' + this.image_date + '; PORTAL version: '+ver+';';//+stb.Version();
+            this.version = 'ImageDescription: ' + this.image_desc + '; ImageDate: ' + this.image_date + '; PORTAL version: '+ver+'; API Version: ' + stb.Version();
 
             var mtdparts = stb.RDir('getenv mtdparts').clearnl();
 
