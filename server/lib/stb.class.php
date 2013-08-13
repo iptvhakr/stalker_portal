@@ -77,7 +77,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
             $this->mac = @trim(urldecode($_COOKIE['mac']));
 
-            if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && !$this->isValidAccessToken($this->access_token)){
+            if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && $_GET['action'] != 'get_profile' && $_GET['action'] != 'get_localization' && $_GET['action'] != 'do_auth' && !$this->isValidAccessToken($this->access_token)){
                 error_log("STB authorization failed. MAC: ".$this->mac.", token: ".$this->access_token);
                 echo 'Authorization failed.';
                 exit;
@@ -332,8 +332,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $token = strtoupper(md5(mktime(1).uniqid()));
 
-        Mysql::getInstance()->update('users', array('access_token' => $token), array('id' => $this->id));
-
         return array('token' => $token);
     }
 
@@ -433,6 +431,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }else{
                 $this->initProfile(null, null, $_REQUEST['device_id']);
             }
+        }else{
+            Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
         }
 
         $info = $this->getInfoFromOss();
