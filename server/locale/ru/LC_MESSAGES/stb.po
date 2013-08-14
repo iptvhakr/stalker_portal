@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-08 17:32+0300\n"
-"PO-Revision-Date: 2013-08-08 17:33+0300\n"
+"POT-Creation-Date: 2013-08-13 16:47+0300\n"
+"PO-Revision-Date: 2013-08-13 16:48+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr "Реклама в Видео клубе"
 #: ../../../administrator/stat_timeshift.php:70
 #: ../../../administrator/playlists.php:110
 #: ../../../administrator/add_itv.php:948
-#: ../../../administrator/stat_tv.php:70
+#: ../../../administrator/stat_tv.php:86
 #: ../../../administrator/subscribe_import.php:470
 #: ../../../administrator/setting_common.php:268
 #: ../../../administrator/storages.php:187
@@ -104,7 +104,7 @@ msgstr "Назад"
 #: ../../../administrator/services_packages.php:361
 #: ../../../administrator/tasks.php:168
 #: ../../../administrator/stat_timeshift.php:103
-#: ../../../administrator/stat_tv.php:133
+#: ../../../administrator/stat_tv.php:168
 msgid "Title"
 msgstr "Название"
 
@@ -283,7 +283,7 @@ msgstr "Сортировать по"
 #: ../../../administrator/stat_daily_video.php:129
 #: ../../../administrator/stat_tv_users.php:151
 #: ../../../administrator/stat_timeshift.php:104
-#: ../../../administrator/stat_tv.php:134
+#: ../../../administrator/stat_tv.php:169
 msgid "Views"
 msgstr "Просмотров"
 
@@ -2355,9 +2355,13 @@ msgstr "Логотип"
 msgid "Only for API"
 msgstr "Только для API"
 
-#: ../../../administrator/stat_tv.php:59 ../../../administrator/stat_tv.php:65
+#: ../../../administrator/stat_tv.php:75 ../../../administrator/stat_tv.php:81
 msgid "TV views statistics per month"
 msgstr "Статистика просмотра TV за месяц"
+
+#: ../../../administrator/stat_tv.php:153
+msgid "User language"
+msgstr "Язык пользователя"
 
 #: ../../../administrator/subscribe_import.php:485
 #: ../../../administrator/add_karaoke.php:669
@@ -4322,13 +4326,13 @@ msgstr "сегодня"
 msgid "yesterday"
 msgstr "вчера"
 
-#: ../../../lib/itv.class.php:1332
+#: ../../../lib/itv.class.php:1333
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1342
+#: ../../../lib/itv.class.php:1343
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""

@@ -316,9 +316,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         $itv_id = intval($_REQUEST['itv_id']);
         
         $this->db->insert('played_itv', array(
-                                            'itv_id'   => $itv_id,
-                                            'uid'      => $this->stb->id,
-                                            'playtime' => 'NOW()'
+                                            'itv_id'      => $itv_id,
+                                            'uid'         => $this->stb->id,
+                                            'playtime'    => 'NOW()',
+                                            'user_locale' => $this->stb->getParam('locale')
                                         ));
         
         $this->db->update('users',

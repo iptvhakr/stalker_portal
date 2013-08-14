@@ -24,6 +24,22 @@ $letter = @$_GET['letter'];
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript">
+    $(function(){
+
+        var selected_locale = '<?= isset($_GET['locale']) ? $_GET['locale'] : ''?>';
+
+        $('.locale option[value="'+selected_locale+'"]').attr('selected', 'selected');
+
+        $('.locale').change(function(){
+            window.location = 'stat_tv.php?locale='+$(this).find('option:selected').val();
+        });
+
+    });
+</script>
+
 <style type="text/css">
 
 body {
@@ -106,17 +122,15 @@ function page_bar(){
 $page=@$_REQUEST['page']+0;
 $MAX_PAGE_ITEMS = 30;
 
+$where = '';
 
-/*if ($search){
-    $where = 'where name like "%'.$search.'%"';
+if (!empty($_GET['locale'])) {
+    $where = ' and user_locale="'.$_GET['locale'].'"';
 }
-if (@$_GET['letter']) {
-	$where = 'where name like "'.$letter.'%"';
-}*/
 
 $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
 
-$query = "select itv_id, name, count(played_itv.id) as counter from played_itv,itv where played_itv.itv_id=itv.id and  playtime>'$from_time' group by itv_id";
+$query = "select itv_id, name, count(played_itv.id) as counter from played_itv,itv where played_itv.itv_id=itv.id and playtime>'$from_time' $where group by itv_id";
 //echo $query;
 $total_items = Mysql::getInstance()->query($query)->count();
 
@@ -127,7 +141,29 @@ $query = $query." order by counter desc LIMIT $page_offset, $MAX_PAGE_ITEMS";
 
 $played_itv = Mysql::getInstance()->query($query);
 
-echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
+$locales = Mysql::getInstance()
+    ->select('user_locale')
+    ->from('played_itv')
+    ->groupby('user_locale')
+    ->orderby('user_locale')
+    ->get()
+    ->all('user_locale');
+
+?>
+<div style="width: 600px; margin: 0 auto">
+    <?= _('User language')?>: <select class="locale">
+        <option value="">---</option>
+        <?
+            foreach ($locales as $locale){
+                if ($locale){
+                    echo '<option value="'.$locale.'">' . strtoupper(substr($locale, 0, 2)) . '</option>';
+                }
+            }
+        ?>
+    </select>
+</div>
+<?
+echo "<center><table class='list' cellpadding='3' cellspacing='0' width='600'>\n";
 echo "<tr>";
 echo "<td class='list'><b>id</b></td>\n";
 echo "<td class='list'><b>"._('Title')."</b></td>\n";
