@@ -15,7 +15,7 @@ class RESTCommandUsers extends RESTCommandAccounts
     }
 
     protected function getUsersIdsFromIdentifiers($identifiers){
-        if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12){
+        if (!empty($identifiers[0]) && strlen($identifiers[0]) >= 12 && strpos($identifiers[0], ":")){
             return Stb::getUidByMacs($identifiers);
         }else{
             return Stb::getUidByLogin($identifiers);
