@@ -280,7 +280,7 @@
 
                     _debug('this.data_items[this.cur_row]', this.data_items[this.cur_row]);
 
-                    if (this.data_items[this.cur_row].lock == 1 && !this.data_items[this.cur_row].hasOwnProperty('unlocked')){
+                    if (this.data_items[this.cur_row].lock == 1 && !this.data_items[this.cur_row].hasOwnProperty('unlocked') && this.genre.alias !== 'for adults'){
                         return;
                     }
 

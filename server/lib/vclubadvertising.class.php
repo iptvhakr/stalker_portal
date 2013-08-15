@@ -183,7 +183,7 @@ class VclubAdvertising implements \Stalker\Lib\StbApi\VclubAdvertising
             'title'          => $ad['title'],
             'vclub_ad_id'    => $ad_id,
             'uid'            => Stb::getInstance()->id,
-            'watched_percent' => ceil(100*$end_time/$total_time),
+            'watched_percent' => $total_time == 0 ? 0 : ceil(100*$end_time/$total_time),
             'watched_time'   => $end_time,
             'watch_complete' => $ended,
             'added'          => 'NOW()'
