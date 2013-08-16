@@ -8,10 +8,17 @@ function watchdog(){
     this.request_timeout = 30000;
     this.event_active_id = 0;
     this.reboot_after_ok = false;
+    this.running = false;
 }
 
 watchdog.prototype.run = function(timeout, timeslot){
     _debug('watchdog.run', timeout, timeslot);
+
+    _debug('watchdog.running', this.running);
+
+    if (this.running){
+        return;
+    }
 
     this.request_timeout = timeout*1000 || this.request_timeout;
     timeslot = timeslot*1000;
@@ -48,6 +55,8 @@ watchdog.prototype.run = function(timeout, timeslot){
     _debug('date', new Date(now + delay) + " " + new Date(now + delay).getMilliseconds() + "ms");
 
     var self = this;
+
+    this.running = true;
 
     this.send_request(true);
 

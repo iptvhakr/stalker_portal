@@ -300,7 +300,7 @@ function common_xpcom(){
                             _debug('auth result', result);
 
                             if (result){
-                                stb.get_user_profile();
+                                stb.get_user_profile(true);
                                 stb.auth_dialog.hide();
                             }else{
                                 stb.auth_dialog.setStatus(get_word('auth_error'));
@@ -780,21 +780,22 @@ function common_xpcom(){
         )
     };
 
-    this.get_user_profile = function(){
-        _debug('this.get_user_profile');
+    this.get_user_profile = function(auth_second_step){
+        _debug('this.get_user_profile', auth_second_step);
 
         this.load(
 
             {
-                'type'          : 'stb',
-                'action'        : 'get_profile',
-                'hd'            : this.hd,
-                'ver'           : this.version,
-                'num_banks'     : this.num_banks,
-                'sn'            : this.serial_number,
-                'stb_type'      : this.type,
-                'image_version' : this.image_version,
-                'device_id'     : stb.GetUID ? stb.GetUID() : ''
+                'type'             : 'stb',
+                'action'           : 'get_profile',
+                'hd'               : this.hd,
+                'ver'              : this.version,
+                'num_banks'        : this.num_banks,
+                'sn'               : this.serial_number,
+                'stb_type'         : this.type,
+                'image_version'    : this.image_version,
+                'device_id'        : stb.GetUID ? stb.GetUID() : '',
+                'auth_second_step' : auth_second_step ? 1 : 0
             },
 
             function(result){

@@ -433,6 +433,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }else{
             Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
+
+            if (intval($_REQUEST['auth_second_step']) === 0 && Config::exist('auth_url') && strpos(Config::get('auth_url'), 'auth_every_load')){
+                return array(
+                    'status' => 2
+                );
+            }
         }
 
         $info = $this->getInfoFromOss();
