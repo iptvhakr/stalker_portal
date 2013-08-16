@@ -679,7 +679,11 @@ if (@$_GET['status']){
         $where .= 'where ';
     }
 
-    $where .= 'accessed='.$op_accessed;
+    if (isset($op_accessed)){
+        $where .= 'accessed='.$op_accessed;
+    }else if (@$_GET['status'] == 'red'){
+        $where .= 'status=0';
+    }
 
     if (@$_GET['status'] == 'closed_n_off'){
         $where .= ' and video.id=moderator_tasks.media_id and moderator_tasks.media_type=2'
@@ -793,6 +797,7 @@ $all_video = Mysql::getInstance()->query($query);
     <option value="on" <?if (@$_GET['status'] == 'on') echo 'selected'?>>on
     <option value="off" <?if (@$_GET['status'] == 'off') echo 'selected'?>>off
     <option value="closed_n_off" <?if (@$_GET['status'] == 'closed_n_off') echo 'selected'?>>closed and off
+    <option value="red" <?if (@$_GET['status'] == 'red') echo 'selected'?>>red
 </select>&nbsp;&nbsp;&nbsp;
 <?= _('Votes')?>:
 <select id="sort_vote" onchange="change_list()">
