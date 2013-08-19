@@ -23,7 +23,7 @@ if (@$_POST['add']){
 
     Mysql::getInstance()->insert('streaming_servers', array(
         'name'         => @$_POST['name'],
-        'address'      => @$_POST['name'],
+        'address'      => @$_POST['address'],
         'max_sessions' => @$_POST['max_sessions'],
         'stream_zone'  => @$_POST['stream_zone']
     ));
@@ -40,7 +40,7 @@ if (!empty($id)){
 
         Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
-        Mysql::getInstance()->update('',
+        Mysql::getInstance()->update('streaming_servers',
             array(
                 'name'         => @$_POST['name'],
                 'address'      => @$_POST['address'],
