@@ -104,7 +104,7 @@ if (@$_GET['reset_cache'] && !empty($id)){
     Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     $storage = Mysql::getInstance()->from('storages')->where(array('id' => $id))->get()->first();
-    $storage_name = $storage['name'];
+    $storage_name = $storage['storage_name'];
 
     if (!empty($storage_name)){
 
