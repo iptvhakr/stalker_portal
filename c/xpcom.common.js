@@ -894,7 +894,11 @@ function common_xpcom(){
 
         screensaver.init();
 
-        var cut_type = this.type.indexOf('AuraHD') != -1 ? 'AuraHD' : this.type;
+        if (!this.profile['strict_stb_type_check'] && this.user['allowed_stb_types'].indexOf('aurahd') !== -1){
+            var cut_type = this.type.indexOf('AuraHD') != -1 ? 'AuraHD' : this.type;
+        }else{
+            cut_type = this.type;
+        }
 
         if (this.user['allowed_stb_types'] && this.user['allowed_stb_types'].indexOf(cut_type.toLowerCase()) == -1 && !_GET['debug_key']){
 

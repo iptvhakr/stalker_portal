@@ -535,6 +535,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $profile['autoupdate'] = $auto_update_setting;
         }
 
+        $profile['strict_stb_type_check'] = Config::getSafe('strict_stb_type_check', false);
+
         $profile['cas_type']   = Config::getSafe('cas_type', 0);
         $profile['cas_params'] = Config::getSafe('cas_params', array());
         $profile['cas_additional_params'] = Config::getSafe('cas_additional_params', array());
