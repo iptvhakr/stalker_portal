@@ -36,12 +36,12 @@
             }
         };
         
-        this.hide = function(do_not_reset){
+        this.hide = function(do_not_reset, initial){
             _debug('mastermind.hide');
             
             this.superclass.hide.call(this, do_not_reset);
             
-            if (stb.msg.on){
+            if (!initial && stb.msg.on){
                 stb.msg.hide();
             }
         };
@@ -313,8 +313,6 @@
     
     mastermind.init_header_path(word['mastermind_title']);
     
-    mastermind.hide();
-    
     
     /* RATING */
     function rating_constructor(){
@@ -381,7 +379,6 @@
     rating.init_header_path(word['mastermind_rating']);
     
     rating.hide();
-    mastermind.hide();
     
     mastermind.rating = rating;
     /* END RATING */
@@ -451,7 +448,7 @@
     rules.init_header_path(word['mastermind_rules']);
     
     rules.hide();
-    mastermind.hide();
+    mastermind.hide(false, true);
     mastermind.rules = rules;
     /* END RULES */
     

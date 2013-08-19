@@ -27,6 +27,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public $timezone_diff = 0;
     private $stb_lang;
     public $additional_services_on = 0;
+    private static $just_created = false;
 
     //private static $all_modules = array();
     //private static $disabled_modules = array();
@@ -455,14 +456,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'locale'        => $this->locale,
                 'country'       => $country
             ),
-            array('id' => $this->id));
+            array('id' => $this->id)
+        );
 
-        /*setcookie("stb_type",  "");
-        setcookie("sn",        "");
-        setcookie("num_banks", "");*/
+        if (self::$just_created == true && Config::getSafe('enable_welcome_message', false)){
+            $event = new SysEvent();
+            $event->setUserListById($this->id);
+            $event->sendMsg(sprintf(_('Welcome %s<br>We are glad to see you on the Stalker portal!'), $this->getParam('fname')));
+        }
 
         $master = new VideoMaster();
-        /*$master->checkAllHomeDirs();*/
 
         $profile = $this->params;
 
@@ -655,6 +658,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $password = md5(md5($data['password']).$user_id);
             Mysql::getInstance()->update('users', array('password' => $password), array('id' => $user_id));
         }
+
+        self::$just_created = true;
 
         return $user_id;
     }
