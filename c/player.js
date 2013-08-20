@@ -1771,7 +1771,7 @@ player.prototype.play = function(item){
                 stb.setFrontPanel(item.number);
             }
 
-            if (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1){
+            if (!this.active_time_shift && !this.active_local_time_shift && (parseInt(item.use_http_tmp_link) == 1 || parseInt(item.use_load_balancing) == 1)){
                 var self = this;
                 stb.player.on_create_link = function(result){
                     _debug('player.on_create_link', result);
@@ -2176,7 +2176,9 @@ player.prototype.disable_pause = function(){
         _debug('new Date() - module.time_shift.cur_media_item.live_date', (new Date().getTime() - module.time_shift.cur_media_item.live_date.getTime())/1000);
 
         if ((new Date() - module.time_shift.cur_media_item.live_date)/1000 < 5){
-           this.play_last();
+            this.active_time_shift = false;
+            this.is_tv = true;
+            this.play_last();
         }else{
             this.time_shift_indication.show();
             if (this.is_tv){
@@ -2186,9 +2188,9 @@ player.prototype.disable_pause = function(){
                     stb.Continue();
                 }catch(e){}
             }
-        }
 
-        this.is_tv = false;
+            this.is_tv = false;
+        }
 
     }else if (this.active_local_time_shift){
         this.time_shift_indication.show();
@@ -2351,7 +2353,9 @@ player.prototype.show_info = function(item, direct_call){
     }
 
     this.info.title.innerHTML = title;
-    
+
+    _debug('this.is_tv', this.is_tv);
+
     try{
         
         if (stb.cur_place == 'radio'){
