@@ -1004,7 +1004,7 @@ player.prototype.event_callback = function(event, params){
 
             this.time_shift_indication.hide();
 
-            if (this.is_tv && this.cur_tv_item && this.cur_tv_item.ready_to_timeshift && module.time_shift_local.enabled){
+            if (this.is_tv && this.cur_tv_item && this.cur_tv_item.ready_to_timeshift && module.time_shift_local && module.time_shift_local.enabled){
 
                 if (stb.profile.ts_delay !== 'on_pause'){
                     this.enable_local_timeshift = window.setTimeout(function(){
@@ -2113,7 +2113,7 @@ player.prototype.pause_switch = function(){
 
     _debug('module.time_shift', !!module.time_shift);
     _debug('module.time_shift_local', !!module.time_shift_local);
-    _debug('module.time_shift_local.enabled', !!module.time_shift_local.enabled);
+    _debug('module.time_shift_local.enabled', module.time_shift_local ? !!module.time_shift_local.enabled : false);
     _debug('this.cur_media_item.allow_local_timeshift', this.cur_media_item.allow_local_timeshift);
 
     if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10))
