@@ -576,6 +576,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['show_tv_only_hd_filter_option'] = Config::getSafe('show_tv_only_hd_filter_option', false);
 
+        if (Config::getSafe('enable_tariff_plans', false)){
+            $profile['additional_services_on'] = '1';
+        }
+
         return $profile;
     }
 
@@ -798,53 +802,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         
         return true;
     }
-    
-    public function getWatchdog(){
-        
-        $this->db->update('users', 
-                          array('keep_alive'       => 'NOW()',
-                                'ip'               => $this->ip,
-                                'now_playing_type' => intval($_REQUEST['cur_play_type'])
-                               ), 
-                          array('mac' => $this->mac));
-        
-        
-        $events = Event::getAllNotEndedEvents($this->id);
-        
-        $messages = count($events);
-                
-        $res = array();
-        $res['msgs'] = $messages;
-        
-        if ($messages>0){
-            if ($events[0]['sended'] == 0){
-                
-                Event::setSended($events[0]['id']);
-                
-                if($events[0]['need_confirm'] == 0){
-                    Event::setEnded($events[0]['id']);
-                }
-            }
-            
-            if ($events[0]['id'] != @$_REQUEST['event_active_id']){
-                $res['id']    = $events[0]['id'];
-                $res['event'] = $events[0]['event'];
-                $res['need_confirm'] = $events[0]['need_confirm'];
-                $res['msg']   = $events[0]['msg'];
-                $res['reboot_after_ok'] = $events[0]['reboot_after_ok'];
-            }
-        }
-        
-        $res['additional_services_on'] = $this->additional_services_on;
-        
-        $cur_weather = new Curweather();
-        $res['cur_weather'] = $cur_weather->getData();
-        
-        $res['updated'] = $this->getUpdatedPlaces();
-        
-        return $res;
-    }
-    
+
     public function setStreamError(){
 
         if (!Config::getSafe('enable_stream_error_logging', false)){
