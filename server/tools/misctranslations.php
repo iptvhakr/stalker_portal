@@ -155,3 +155,5 @@ _('Tariff plan is changed, please restart your STB');
 _('Starting recording');
 _('Stopped recording');
 _('on channel');
+
+_('Firmware of your STB is outdated.<br>Please update it.');

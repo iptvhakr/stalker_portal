@@ -336,7 +336,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         return array('token' => $token);
     }
 
-    private function passAccessFilter($country, &$model, $mac, $serial_number){
+    private function passAccessFilter($country, &$model, $mac, $serial_number, $version){
 
         $filter_file = PROJECT_PATH.'/access_filter.php';
 
@@ -354,17 +354,32 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }else{
             $country = '';
         }
-        $model   = isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '';
+        $model         = isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '';
         $serial_number = isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '';
+        $version       = isset($_REQUEST['ver']) ? $_REQUEST['ver'] : '';
 
-        if (!$this->passAccessFilter($country, $model, $this->mac, $serial_number)){
+        $filter_response = $this->passAccessFilter($country, $model, $this->mac, $serial_number, $version);
 
-            $this->logDeniedByFilter($country, $model, $this->mac);
+        if (is_array($filter_response)){
+            $filter_result = $filter_response['result'];
+        }else{
+            $filter_result = $filter_response;
+        }
 
-            return array(
+        if (!$filter_result){
+
+            $this->logDeniedByFilter($country, $model, $this->mac, $version);
+
+            $profile = array(
                 'status' => 1,
                 'msg'    => 'access denied'
             );
+
+            if (!empty($filter_response['message'])){
+                $profile['block_msg'] = _($filter_response['message']);
+            }
+
+            return $profile;
         }
 
         if ((empty($_SERVER['TARGET']) || ($_SERVER['TARGET'] != 'API' && $_SERVER['TARGET'] != 'ADM')) && Config::getSafe('enable_mac_format_validation', true) && !Middleware::isValidMAC($this->mac)){
@@ -1745,17 +1760,18 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         ));
     }
 
-    private function logDeniedByFilter($country, $model, $mac){
+    private function logDeniedByFilter($country, $model, $mac, $version){
         $logger = new Logger();
         $logger->setPrefix("access_filter_");
         $date = new DateTime('now', new DateTimeZone(Config::get('default_timezone')));
 
-        $logger->error(sprintf("%s - [%s] country:%s, model:%s, mac:%s, referrer:%s\n",
+        $logger->error(sprintf("%s - [%s] country:%s, model:%s, mac:%s, version:[%s], referrer:%s\n",
             empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['REMOTE_ADDR'] : $_SERVER['HTTP_X_REAL_IP'] ,
             $date->format('r'),
             $country,
             $model,
             $mac,
+            $version,
             $_SERVER['HTTP_REFERER']
         ));
     }

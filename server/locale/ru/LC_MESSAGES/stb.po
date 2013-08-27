@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-16 16:00+0300\n"
-"PO-Revision-Date: 2013-08-16 16:01+0300\n"
+"POT-Creation-Date: 2013-08-23 15:13+0300\n"
+"PO-Revision-Date: 2013-08-23 15:13+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2991,6 +2991,10 @@ msgstr "Остановлена запись"
 msgid "on channel"
 msgstr "на канале"
 
+#: ../../../tools/misctranslations.php:159
+msgid "Firmware of your STB is outdated.<br>Please update it."
+msgstr "Прошивка вашей приставки устарела.<br>Пожалуйста обновите её."
+
 #: ../../../lang/stb.php:10
 msgid "Comfort"
 msgstr "Комфорт"
@@ -4326,7 +4330,7 @@ msgstr "сегодня"
 msgid "yesterday"
 msgstr "вчера"
 
-#: ../../../lib/stb.class.php:465
+#: ../../../lib/stb.class.php:480
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
