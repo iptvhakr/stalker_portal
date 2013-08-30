@@ -143,7 +143,11 @@ if (count(@$_POST) > 0){
         if ((empty($_FILES['screenshot']) || empty($_FILES['screenshot']['tmp_name'])) && !empty($_POST['cover_big'])){
 
             try{
-                $cover = new Imagick($_POST['cover_big']);
+                $tmpfname = tempnam("/tmp", "video_cover");
+                $cover_blob = file_get_contents($_POST['cover_big']);
+                file_put_contents($tmpfname, $cover_blob);
+                $cover = new Imagick($tmpfname);
+                unlink($tmpfname);
             }catch(ImagickException $e){
                 $error = _('Error: '.$e->getMessage());
             }
