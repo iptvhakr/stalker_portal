@@ -6,7 +6,7 @@
 
     var submenu = module.settings_sub || [];
 
-    if (stb.firmware_version < 212 || stb.profile['use_embedded_settings']){
+    if (stb.profile['use_embedded_settings']){
         main_menu.add(word['settings_title'], submenu, 'mm_ico_setting.png', '', {"layer_name" : "settings"});
     }else{
         main_menu.add(word['settings_title'], [], 'mm_ico_setting.png', function(){

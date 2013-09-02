@@ -1,3 +1,5 @@
 #!/bin/sh
 
-wget -q -O - "http://localhost/stalker_portal/server/tools/play.php?mac=$1&ch=$2"
+# play.php <mac> <channel_id>
+
+php ./play.php $1 $2"

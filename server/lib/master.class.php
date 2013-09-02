@@ -823,7 +823,7 @@ abstract class Master
     /**
      * Get soap clients for all good storages
      *
-     * @return array SoapClient for all good storages
+     * @return array RESTClient for all good storages
      */
     protected function getClients(){
         $clients = array();
@@ -842,12 +842,6 @@ abstract class Master
         }
 
         foreach ($this->storages as $name => $storage){
-            //$clients[$name] = new SoapClient('http://localhost'.Config::get('portal_url').'server/storage/storage.wsdl.php?id='.$this->storages[$name]['id']);
-            /*$clients[$name] = new SoapClient(null, array('location' => 'http://'.$storage['storage_ip'].'/stalker_portal/storage/storage.php',
-                                                         'uri' => 'urn:storage',
-                                                         'soap_version' => SOAP_1_1
-                                                   ));*/
-
             $clients[$name] = new RESTClient('http://'.$storage['storage_ip'].'/stalker_portal/storage/rest.php?q=');
         }
         return $clients;

@@ -2,7 +2,7 @@
 
 include "../common.php";
 
-$mac = $_GET['mac'];
-$ch  = $_GET['ch'];
+$mac = $argv[1];
+$ch  = $argv[2];
 
 Mysql::getInstance()->update('last_id', array('last_id' => $ch), array('ident' => $mac));

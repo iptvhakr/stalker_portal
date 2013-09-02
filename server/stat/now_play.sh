@@ -1,3 +1,3 @@
 #!/bin/sh
 
-wget -q -O - http://localhost/stalker_portal/server/stat/now_play.php?in_param=$1
+php ./now_play.php $1

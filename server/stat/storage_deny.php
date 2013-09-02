@@ -4,7 +4,7 @@
 */
 include "../common.php";
 
-$in_param = $_GET['in_param'];
+$in_param = $argv[1];
 
 $counter = Mysql::getInstance()->from('storage_deny')->where(array('name' => $in_param))->get()->first('counter');
 
