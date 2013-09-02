@@ -37,6 +37,8 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
 
+        $overlap_start = Config::getSafe('tv_archive_playback_overlap_start', 0) * 60;
+
         $tz = new DateTimeZone(Stb::$server_timezone);
 
         $date = new DateTime(date('r', strtotime($program['time'])));
@@ -45,7 +47,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $date_to = new DateTime(date('r', strtotime($program['time_to'])));
         $date_to->setTimeZone($tz);
 
-        $start_timestamp = $date->getTimestamp();
+        $start_timestamp = $date->getTimestamp() - $overlap_start;
         $stop_timestamp  = $date_to->getTimestamp() + $overlap;
 
         $channel = Itv::getChannelById($program['ch_id']);
@@ -155,6 +157,8 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
 
+        $overlap_start = Config::getSafe('tv_archive_playback_overlap_start', 0) * 60;
+
         if (Stb::$server_timezone){
 
             $tz = new DateTimeZone(Stb::$server_timezone);
@@ -165,12 +169,12 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             $date_to = new DateTime(date('r', strtotime($program['time_to'])));
             $date_to->setTimeZone($tz);
 
-            $start_timestamp = $date->getTimestamp();
+            $start_timestamp = $date->getTimestamp() - $overlap_start;
             $stop_timestamp  = $date_to->getTimestamp() + $overlap;
 
         }else{
 
-            $start_timestamp = strtotime($program['time']);
+            $start_timestamp = strtotime($program['time']) - $overlap_start;
             $stop_timestamp  = strtotime($program['time_to']) + $overlap;
         }
 
