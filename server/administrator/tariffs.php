@@ -15,7 +15,7 @@ $error = '';
 $action_name = 'add';
 $action_value = _('Add');
 
-$tariff_plans = Mysql::getInstance()->from('tariff_plan')->get()->all();
+$tariff_plans = Mysql::getInstance()->from('tariff_plan')->orderby('external_id')->get()->all();
 
 if (!empty($_POST['add']) && !empty($_POST['name'])){
 
