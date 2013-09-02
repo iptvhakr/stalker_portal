@@ -383,6 +383,14 @@ switch (@$_GET['sort_by']){
             add_where($where, " keep_alive<'$now_time' order by id");
             break;
         }
+    case 'on':{
+        add_where($where, " status=0 order by id");
+        break;
+        }
+    case 'off':{
+        add_where($where, " status=1 order by id");
+        break;
+        }
     case 'iptv':{
             add_where($where, " keep_alive>'$now_time' and now_playing_type=1 order by id");
             break;
@@ -497,6 +505,8 @@ function sort_page(){
                 <option value="none"><?= _('without sorting')?>
                 <option value="online" <? if (@$_GET['sort_by'] == 'online') echo 'selected' ?>>online
                 <option value="offline" <? if (@$_GET['sort_by'] == 'offline') echo 'selected' ?>>offline
+                <option value="on" <? if (@$_GET['sort_by'] == 'on') echo 'selected' ?>>on
+                <option value="off" <? if (@$_GET['sort_by'] == 'off') echo 'selected' ?>>off
                 <option value="iptv" <? if (@$_GET['sort_by'] == 'iptv') echo 'selected' ?>>iptv
                 <option value="video" <? if (@$_GET['sort_by'] == 'video') echo 'selected' ?>>video
                 <option value="radio" <? if (@$_GET['sort_by'] == 'radio') echo 'selected' ?>>radio
