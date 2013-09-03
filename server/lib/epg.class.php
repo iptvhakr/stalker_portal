@@ -101,11 +101,18 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
             $handle = gzopen($setting['uri'], 'r');
 
-            $contents = gzread($handle, 30000000);
+            $tmpfname = tempnam("/tmp", "xmltv");
+            $fp = fopen($tmpfname, "w");
 
+            while (!gzeof($handle)){
+                $contents = gzread($handle, 1000000);
+                fwrite($fp, $contents);
+            }
             gzclose($handle);
 
-            $xml = simplexml_load_string($contents);
+            $xml = simplexml_load_file($tmpfname);
+
+            unlink($tmpfname);
 
         }else{
             $xml = simplexml_load_file($setting['uri']);
