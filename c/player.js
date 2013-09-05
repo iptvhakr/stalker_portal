@@ -2524,11 +2524,11 @@ player.prototype._find_nearest_ch_idx = function(direction, condition){
     return null;
 };
 
-player.prototype.switch_channel = function(dir, show_info){
+player.prototype.switch_channel = function(dir, show_info, do_not_invert){
     
     _debug('switch_channel', dir);
 
-    if (stb.user.invert_channel_switch_direction == 1){
+    if (!do_not_invert && stb.user.invert_channel_switch_direction == 1){
         dir = -1 * dir;
     }
 
@@ -3002,8 +3002,8 @@ player.prototype.bind = function(){
     this.switch_channel.bind(key.UP, self, 1, true);
     this.switch_channel.bind(key.DOWN, self, -1, true);
     
-    this.switch_channel.bind(key.CHANNEL_NEXT, self, 1, true);
-    this.switch_channel.bind(key.CHANNEL_PREV, self, -1, true);
+    this.switch_channel.bind(key.CHANNEL_NEXT, self, 1, true, true);
+    this.switch_channel.bind(key.CHANNEL_PREV, self, -1, true, true);
 
     this.osd_clock.toggle.bind(key.CLOCK, this);
 
