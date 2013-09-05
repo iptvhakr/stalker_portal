@@ -41,13 +41,13 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $tz = new DateTimeZone(Stb::$server_timezone);
 
-        $date = new DateTime(date('r', strtotime($program['time'])));
+        $date = new DateTime(date('r', strtotime($program['time']) - $overlap_start));
         $date->setTimeZone($tz);
 
         $date_to = new DateTime(date('r', strtotime($program['time_to'])));
         $date_to->setTimeZone($tz);
 
-        $start_timestamp = $date->getTimestamp() - $overlap_start;
+        $start_timestamp = $date->getTimestamp();
         $stop_timestamp  = $date_to->getTimestamp() + $overlap;
 
         $channel = Itv::getChannelById($program['ch_id']);
@@ -148,7 +148,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         return Cache::getInstance()->get($key);
     }
 
-    public function getUrlByProgramId($program_id){
+    public function getUrlByProgramId($program_id, $disable_overlap = false){
 
         $program = Epg::getById($program_id);
 
@@ -163,18 +163,18 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
             $tz = new DateTimeZone(Stb::$server_timezone);
 
-            $date = new DateTime(date('r', strtotime($program['time'])));
+            $date = new DateTime(date('r', strtotime($program['time']) - ($disable_overlap ? -$overlap : $overlap_start))); // previous part overlap compensation
             $date->setTimeZone($tz);
 
             $date_to = new DateTime(date('r', strtotime($program['time_to'])));
             $date_to->setTimeZone($tz);
 
-            $start_timestamp = $date->getTimestamp() - $overlap_start;
+            $start_timestamp = $date->getTimestamp();
             $stop_timestamp  = $date_to->getTimestamp() + $overlap;
 
         }else{
 
-            $start_timestamp = strtotime($program['time']) - $overlap_start;
+            $start_timestamp = strtotime($program['time']) - ($disable_overlap ? -$overlap : $overlap_start);
             $stop_timestamp  = strtotime($program['time_to']) + $overlap;
         }
 
@@ -224,7 +224,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             return false;
         }
 
-        return $this->getUrlByProgramId($next['id']);
+        return $this->getUrlByProgramId($next['id'], true);
     }
 
     /**
