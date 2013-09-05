@@ -462,7 +462,7 @@ switch (@$_GET['sort_by']){
     case 'none':{
         }
     default:{
-        
+
     }
 }
 //echo $where;
@@ -472,6 +472,10 @@ $total_items = Mysql::getInstance()->query($query)->count();
 
 $page_offset=$page*$MAX_PAGE_ITEMS;
 $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
+
+if (!$where){
+    $where = 'order by id';
+}
 
 $query = "select users.*, tariff_plan.name as tariff_plan_name from users left join tariff_plan on tariff_plan.id=tariff_plan_id $where LIMIT $page_offset, $MAX_PAGE_ITEMS";
 //echo $query;
