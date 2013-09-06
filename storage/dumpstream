@@ -20,19 +20,26 @@ def main():
     flag  = 0
     f     = 0
     prev_fname  = -1
+    buf   = ''
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind((args.ip_address, args.port))
-    mreq = struct.pack(">4sl", socket.inet_aton(args.ip_address), socket.INADDR_ANY)
-    sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+    sock = get_socket()
 
     while True:
-        buf = sock.recv(1590)
+        try:
+            data = sock.recv(2048)
+            if data and not buf:
+                sys.stderr.write('Start capturing\n')
+            buf = data
+        except socket.timeout:
+            sock.close()
+            buf = ''
+            sys.stderr.write('No data, reconnecting...\n')
+            sock = get_socket()
+            continue
 
-        if buf[0].encode('hex') == '47':
+        if buf[0].encode('hex') == '47':  # UDP
             data = buf
-        else:
+        else:  # RTP
             header_size = 12 + 4 * operator.and_(int(buf[0].encode('hex'), 16), 16)
             seq = int((buf[2:4]).encode('hex'), 16)
 
@@ -87,7 +94,7 @@ class AsyncRmOldFiles(threading.Thread):
                 except ValueError:
                     pass
                 except OSError as error:
-                    sys.stderr.write('Error deleting file '+ file + ' - ' + error)
+                    sys.stderr.write('Error deleting file ' + file + ' - ' + error.message)
 
 def async_rm_old_files():
     AsyncRmOldFiles().start()
@@ -114,6 +121,21 @@ class AsyncOpenUrl(threading.Thread):
 
 def async_open_url(url, params):
     AsyncOpenUrl(url, params).start()
+
+def get_socket():
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        sock.bind((args.ip_address, args.port))
+        mreq = struct.pack(">4sl", socket.inet_aton(args.ip_address), socket.INADDR_ANY)
+        sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
+        sock.settimeout(10)
+    except socket.error as e:
+        sys.stderr.write(e.strerror + ', waiting 30s\n')
+        time.sleep(30)
+        return get_socket()
+
+    return sock
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Stream dump. Can work with rtp and udp streams.')
