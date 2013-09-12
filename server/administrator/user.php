@@ -118,11 +118,11 @@ if (!empty($_POST)){
             <form method="POST">
                 <table class="form">
                     <tr>
-                        <td width="100"><?= _('Login')?></td>
+                        <td width="100"><?= _('Login')?>*</td>
                         <td><input type="text" name="login"></td>
                     </tr>
                     <tr>
-                        <td><?= _('Password')?></td>
+                        <td><?= _('Password')?>*</td>
                         <td><input type="text" name="password"></td>
                     </tr>
                     <tr>
