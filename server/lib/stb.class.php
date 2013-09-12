@@ -115,8 +115,14 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         if (empty($this->id)){
             $this->initLocale($this->stb_lang);
+
+            if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && $_GET['action'] != 'get_profile' && $_GET['action'] != 'get_localization' && $_GET['action'] != 'do_auth' && $_GET['action'] != 'get_events'){
+                error_log("STB not found in the database, authorization failed. MAC: ".$this->mac.", token: ".$this->access_token);
+                echo 'Authorization failed.';
+                exit;
+            }
         }
-        
+
         if ($this->db->from('moderators')->where(array('mac' => $this->mac, 'status' => 1))->get()->count() == 1){
             $this->is_moderator = true;
         }
@@ -438,7 +444,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
 
         if (!$this->id){
-            if (Config::exist('auth_url')){
+
+            $disable_auth_for_models = Config::exist('disable_auth_for_models') ? preg_split("/\s*,\s*/", trim(Config::get('disable_auth_for_models'))) : array();
+
+            if (Config::exist('auth_url') && !in_array($model, $disable_auth_for_models)){
 
                 return array(
                     'status' => 2 // authentication request
@@ -457,8 +466,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }
 
-        $info = $this->getInfoFromOss();
-
         $this->db->update('users', array(
                 'last_start'    => 'NOW()',
                 'keep_alive'    => 'NOW()',
@@ -473,6 +480,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             ),
             array('id' => $this->id)
         );
+
+        $info = $this->getInfoFromOss();
 
         if (self::$just_created == true && Config::getSafe('enable_welcome_message', false)){
             $event = new SysEvent();
@@ -687,6 +696,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     
     private function initProfile($login = null, $password = null, $device_id = null){
 
+        if (!empty($login)){
+            $user = Mysql::getInstance()->from('users')->where(array('login' => $login))->get()->first();
+        }
+
         if (empty($login)){
 
             $data = array(
@@ -696,7 +709,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'device_id'    => $device_id
             );
             $uid = self::create($data);
-        }else{
+        }else if (!empty($user)){
 
             Mysql::getInstance()->update('users',
                 array(
@@ -705,11 +718,20 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     'device_id' => $device_id
                 ),
                 array(
-                     'login' => $login
+                    'login' => $login
                 )
             );
 
             $uid = intval(Mysql::getInstance()->from('users')->where(array('mac' => $this->mac))->get()->first('id'));
+        }else{
+            $data = array(
+                'mac'          => $this->mac,
+                'access_token' => $this->access_token,
+                'name'         => substr($this->mac, 12, 16),
+                'device_id'    => $device_id,
+                'login'        => $login,
+            );
+            $uid = self::create($data);
         }
                 
         $this->getStbParams();        
@@ -1523,6 +1545,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     private function getInfoFromOss(){
 
         $user = User::getInstance($this->id);
+
+        $user->refreshProfile();
 
         $info = $user->getInfoFromOSS();
 

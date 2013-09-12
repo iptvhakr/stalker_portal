@@ -111,6 +111,10 @@ class User implements \Stalker\Lib\StbApi\User
         return $this->profile;
     }
 
+    public function refreshProfile(){
+        $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
+    }
+
     public function getLocalizedText($text){
 
         $current_local = setlocale(LC_MESSAGES, 0);
