@@ -115,6 +115,7 @@
 
                 this.hide();
                 this.parent.hide();
+                this.parent.auto_play = true;
                 main_menu.show();
             }).bind(key.MENU, this);
             
@@ -123,6 +124,7 @@
                 if (this.more_on){
                     this.more_hide();
                 }else{
+                    this.parent.do_not_load = true;
                     this.parent._show.call(this.parent, this.parent.genre);
                     this.hide();
                 }
@@ -167,6 +169,7 @@
                 }else if (this.epg_list_active){
                     this.horizontal_shift(-1);
                 }else{
+                    this.parent.do_not_load = true;
                     this.parent._show.call(this.parent, this.parent.genre);
                     this.hide();
                 }

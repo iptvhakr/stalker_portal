@@ -147,8 +147,12 @@
 
             _debug('do_not_load', do_not_load);
 
-            if (!do_not_load){
+            if (!do_not_load && !this.do_not_load){
                 this.cur_page = 0;
+            }
+
+            if (this.do_not_load){
+                do_not_load = true;
             }
 
             _debug('this.cur_page', this.cur_page);
@@ -185,10 +189,11 @@
             if (!do_not_reset){
                 this.cur_page = 0;
                 this.genre = null;
+                this.do_not_load = false;
             }
             
             this.short_epg_loader.stop();
-            
+
             try{
                 
                 if (this.fav_manage_mode){
@@ -875,7 +880,12 @@
                     stb.player.stop();
                 }*/
 
-                self.check_for_play_in_preview();
+                if (!self.do_not_load){
+                    self.check_for_play_in_preview();
+                }else{
+                    self.check_for_play_in_preview(stb.player.cur_media_item);
+                }
+                self.do_not_load = false;
                 
             },
             this.row_callback_timeout);
