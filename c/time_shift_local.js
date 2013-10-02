@@ -28,7 +28,7 @@
             _debug('stb.profile.ts_action_on_exit', stb.profile.ts_action_on_exit);
             _debug('stb.profile.ts_delay', stb.profile.ts_delay);
 
-            if (!stb.profile.ts_enabled){
+            if (parseInt(stb.profile.ts_enabled, 10) != 1){
                 return;
             }
 
@@ -37,6 +37,7 @@
             }
 
             if (!stb.usbdisk.is_valid_path_for_write(stb.profile.ts_path)){
+                _debug('path not valid');
                 return;
             }
 
