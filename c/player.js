@@ -3056,7 +3056,11 @@ player.prototype.bind = function(){
             }
 
         }else{
-            this.show_prev_layer();
+            if (this.active_time_shift || this.active_local_time_shift){
+                this.show_time_shift_exit_confirm();
+            }else{
+                this.show_prev_layer();
+            }
         }
     }).bind(key.STOP, self);
 
