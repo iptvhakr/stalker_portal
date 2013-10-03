@@ -134,6 +134,8 @@
                 return;
             }
 
+            var current_record = this.data_items[this.cur_row];
+
             stb.player.on_create_link = function(result){
                 _debug('records.on_create_link', result);
 
@@ -153,9 +155,7 @@
                         stb.player.play_now(result.cmd);
                     }else{
 
-                        var url = /(http:\/\/[^\s]*)/.exec(result.cmd)[1];
-
-                        self.add_download.call(self, url, result.to_file);
+                        self.add_download.call(self, current_record.cmd, result.to_file);
                     }
                 }
             };
@@ -262,12 +262,39 @@
             this.superclass.fill_list.call(this, data);
         };
 
+        this.get_link = function(cmd, dummy, callback){
+            _debug('records.get_link', cmd);
+
+            if (cmd.indexOf('://') < 0){
+
+                stb.player.on_create_link = function(result){
+                    _debug('records.on_create_link', result);
+
+                    if (result.cmd){
+                        var match;
+                        if (match = /[\s]([^\s]*)$/.exec(result.cmd)){
+                            result.cmd = match[1];
+                        }
+                    }
+                    callback && callback(result.cmd);
+                }
+
+            }else{
+                callback(cmd);
+                return;
+            }
+
+            stb.player.create_link('remote_pvr', cmd);
+        };
+
         this.add_download = function(url, to_filename){
             _debug('records.add_download', url, to_filename);
 
             if (module.downloads){
                 _debug('downloads');
-                module.downloads.dialog.show({"secure_url" : true, "parent" : this, "url" : url, "name" : to_filename});
+                var dialog_options = {"parent" : this, "secure_url" : true, "name" : to_filename};
+                dialog_options.url = {"type" : "records", "exec" : "module.records.get_link", "scope" : "module.records", "options" : [url]};
+                module.downloads.dialog.show(dialog_options);
             }
         }
     }
