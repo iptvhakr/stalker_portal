@@ -519,9 +519,13 @@
                 }
             }else{
                 if (this.cur_view == 'short'){
-                    this.hide(true);
-                
-                    stb.player.prev_layer = this;
+                    if (this.data_items[this.cur_row].id !== stb.player.cur_media_item.id){
+                        this._play_now(this.data_items[this.cur_row]);
+                    }else{
+                        this.hide(true);
+
+                        stb.player.prev_layer = this;
+                    }
                 }
             }
         };
