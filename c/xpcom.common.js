@@ -948,6 +948,7 @@ function common_xpcom(){
                 this.user['tv_archive_days']   = parseInt(this.user['tv_archive_days'], 10);
                 this.user['screensaver_delay'] = parseInt(this.user['screensaver_delay'], 10);
                 this.user['watchdog_timeout']  = parseInt(this.user['watchdog_timeout'], 10);
+                this.user['tv_playback_retry_limit']  = parseInt(this.user['tv_playback_retry_limit'], 10);
                 this.user['timeslot']          = parseFloat(this.user['timeslot']);
 
                 this.profile['plasma_saving_timeout'] = parseInt(this.profile['plasma_saving_timeout'], 10);

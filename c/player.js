@@ -87,8 +87,9 @@ function player(){
     this.on_create_link = function(){};
     this.last_storage_id = 0;
     
+    this.event1_counter = 0;
     this.event5_counter = 0;
-    
+
     this.play_auto_ended = false;
     
     this.hist_ch_idx = [0,0];
@@ -765,6 +766,23 @@ player.prototype.event_callback = function(event, params){
                 if (this.media_type == 'stream' && (this.is_tv || stb.cur_place == 'radio')){
                     _debug('stream error');
 
+                    this.event1_counter++;
+
+                    _debug('stb.user.tv_playback_retry_limit', stb.user.tv_playback_retry_limit);
+                    _debug('stb.user.fading_tv_retry_timeout', stb.user.fading_tv_retry_timeout);
+                    _debug('this.event1_counter', this.event1_counter);
+
+                    if (stb.user.tv_playback_retry_limit > 0 && this.event1_counter > stb.user.tv_playback_retry_limit){
+                        _debug('stop replay');
+                        return;
+                    }
+
+                    var replay_timeout = 1000;
+
+                    if (stb.user.fading_tv_retry_timeout){
+                        replay_timeout *= this.event1_counter <= 2 ? 1 : 30;
+                    }
+
                     if (this.is_tv){
                         stb.log_stream_error(this.cur_tv_item['id'], 1);
 
@@ -772,14 +790,14 @@ player.prototype.event_callback = function(event, params){
                             function(){
                                 self.play_last();
                             },
-                            1000
+                            replay_timeout
                         );
                     }else{
                         this.replay_channel_timer = window.setTimeout(
                             function(){
                                 self.play_last_radio();
                             },
-                            1000
+                            replay_timeout
                         );
                     }
                 }else{
@@ -1144,11 +1162,27 @@ player.prototype.event_callback = function(event, params){
         {
 
             stb.key_lock = false;
+            this.event5_counter++;
             
             if (this.media_type == 'stream'){
 
                 if (this.is_tv){
                     stb.log_stream_error(this.cur_tv_item['id'], 5);
+                }
+
+                _debug('stb.user.tv_playback_retry_limit', stb.user.tv_playback_retry_limit);
+                _debug('stb.user.fading_tv_retry_timeout', stb.user.fading_tv_retry_timeout);
+                _debug('this.event5_counter', this.event5_counter);
+
+                if (stb.user.tv_playback_retry_limit > 0 && this.event5_counter > stb.user.tv_playback_retry_limit){
+                    _debug('stop replay');
+                    return;
+                }
+
+                var replay_timeout = 5000;
+
+                if (stb.user.fading_tv_retry_timeout){
+                    replay_timeout *= this.event5_counter <= 2 ? 1 : 6;
                 }
 
                 if (this.proto == 'http' && this.is_tv){
@@ -1157,7 +1191,7 @@ player.prototype.event_callback = function(event, params){
                         function(){
                             self.play_last();
                         },
-                        5000
+                        replay_timeout
                     );
 
                 }else{
@@ -1172,9 +1206,7 @@ player.prototype.event_callback = function(event, params){
                 }
                 
             }else{
-            
-                this.event5_counter++;
-                
+
                 stb.remount_storages(
                 
                     function(){
@@ -1971,8 +2003,9 @@ player.prototype.stop = function(){
 
     this.prev_layer = {};
     
+    this.event1_counter = 0;
     this.event5_counter = 0;
-    
+
     this.need_show_info = 0;
     
     this.cur_media_length = 0;

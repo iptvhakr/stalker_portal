@@ -600,6 +600,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['show_tv_only_hd_filter_option'] = Config::getSafe('show_tv_only_hd_filter_option', false);
 
+        $profile['tv_playback_retry_limit'] = Config::getSafe('tv_playback_retry_limit', 0);
+
+        $profile['fading_tv_retry_timeout'] = Config::getSafe('fading_tv_retry_timeout', true);
+
         if (Config::getSafe('enable_tariff_plans', false)){
             $profile['additional_services_on'] = '1';
         }
