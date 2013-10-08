@@ -70,6 +70,10 @@ class RESTApiResourceVideoFavorites extends RESTApiCollection
 
         $favorites = $this->manager->getFavByUid($this->user_id);
 
+        if ($favorites === null){
+            $favorites = array();
+        }
+
         $idx = array_search($new_favorite, $favorites);
 
         if ($idx !== false){

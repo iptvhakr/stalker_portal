@@ -147,6 +147,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 $channel['cmd'] = $link['url'];
                 $channel['use_http_tmp_link']  = $link['use_http_tmp_link'];
                 $channel['wowza_tmp_link']     = $link['wowza_tmp_link'];
+                $channel['nginx_secure_link']  = $link['nginx_secure_link'];
                 $channel['use_load_balancing'] = $link['use_load_balancing'];
             }
         }
@@ -209,11 +210,31 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                     throw new ItvLinkException('link_fault');
                 }else{
                     if (Config::getSafe('use_named_wowza_token', false)){
-                        $channel['cmd'] = $channel['cmd'].'?token='.$key;
+                        $channel['cmd'] = $channel['cmd'].(strpos($channel['cmd'], '?') ? '&' : '?').'token='.$key;
                     }else{
                         $channel['cmd'] = $channel['cmd'].'?'.$key;
                     }
                 }
+            }else if ($channel['nginx_secure_link']){ // http://wiki.nginx.org/HttpSecureLinkModule
+
+                if (preg_match("/:\/\/([^\/]+)\/(\S*)/", $channel['cmd'], $match)){
+
+                    $path   = $match[2];
+                    $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
+                    $secret = Config::get('nginx_secure_link_secret');
+
+                    $hash = base64_encode(md5($secret . $path . $expire, true));
+                    $hash = strtr($hash, '+/', '-_');
+                    $hash = str_replace('=', '', $hash);
+
+                    $new_path = $path.(strpos($channel['cmd'], '?') ? '&' : '?').'st='.$hash.'&e='.$expire;
+
+                    $channel['cmd'] = str_replace($path, $new_path ,$channel['cmd']);
+
+                }else{
+                    throw new ItvLinkException('link_fault');
+                }
+
             }else{
 
                 if (strpos($channel['cmd'], 'rtp://') !== false || strpos($channel['cmd'], 'udp://') !== false){

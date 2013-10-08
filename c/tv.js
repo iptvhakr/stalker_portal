@@ -733,6 +733,7 @@
                         stb.player.channels[idx].cmd               = channel.cmd;
                         stb.player.channels[idx].use_http_tmp_link = channel.use_http_tmp_link;
                         stb.player.channels[idx].wowza_tmp_link    = channel.wowza_tmp_link;
+                        stb.player.channels[idx].nginx_secure_link = channel.nginx_secure_link;
                         stb.player.channels[idx].use_load_balancing= channel.use_load_balancing;
 
                         if (channel.hasOwnProperty('error')){
@@ -747,6 +748,7 @@
                         channel.cmd               = stb.player.channels[idx].cmd;
                         channel.use_http_tmp_link = stb.player.channels[idx].use_http_tmp_link;
                         channel.wowza_tmp_link    = stb.player.channels[idx].wowza_tmp_link;
+                        channel.nginx_secure_link = stb.player.channels[idx].nginx_secure_link;
                         channel.use_load_balancing= stb.player.channels[idx].use_load_balancing;
                     }
 
