@@ -191,8 +191,23 @@ watchdog.prototype.parse_result = function(data){
             }
             case 'update_epg':
             {
-                stb.epg_loader.epg = null;
-                stb.epg_loader.load();
+                _debug('stb.user.timeslot_ratio', stb.user.timeslot_ratio);
+                _debug('stb.user.epg_update_time_range', stb.user.epg_update_time_range);
+
+                if (stb.user.timeslot_ratio){
+                    var delay = stb.user.timeslot_ratio * stb.user.epg_update_time_range;
+                }else{
+                    delay = 0 ;
+                }
+
+                _debug('delay', delay);
+
+                window.clearTimeout(this.update_epg_timeout);
+
+                this.update_epg_timeout = window.setTimeout(function(){
+                    stb.epg_loader.epg = null;
+                    stb.epg_loader.load();
+                }, delay * 1000);
                 break;
             }
             case 'cut_off':

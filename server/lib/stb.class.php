@@ -538,7 +538,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['watchdog_timeout']       = Config::getSafe('watchdog_timeout', 30000);
 
-        $profile['timeslot']               = $this->id * $profile['watchdog_timeout']/ Mysql::getInstance()->select('max(id) as max_id')->from('users')->get()->first('max_id');
+        $max_id = Mysql::getInstance()->select('max(id) as max_id')->from('users')->get()->first('max_id');
+
+        $profile['timeslot_ratio']         = $this->id / $max_id;
+        $profile['timeslot']               = $profile['timeslot_ratio'] * $profile['watchdog_timeout'];
 
         $profile['kinopoisk_rating']       = Config::getSafe('kinopoisk_rating', true);
 
@@ -603,6 +606,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['tv_playback_retry_limit'] = Config::getSafe('tv_playback_retry_limit', 0);
 
         $profile['fading_tv_retry_timeout'] = Config::getSafe('fading_tv_retry_timeout', true);
+
+        $profile['epg_update_time_range'] = floatval(Config::getSafe('epg_update_delay_per_user', 0.2)) * $max_id;
 
         if (Config::getSafe('enable_tariff_plans', false)){
             $profile['additional_services_on'] = '1';

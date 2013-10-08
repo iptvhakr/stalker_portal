@@ -950,6 +950,7 @@ function common_xpcom(){
                 this.user['watchdog_timeout']  = parseInt(this.user['watchdog_timeout'], 10);
                 this.user['tv_playback_retry_limit']  = parseInt(this.user['tv_playback_retry_limit'], 10);
                 this.user['timeslot']          = parseFloat(this.user['timeslot']);
+                this.user['timeslot_ratio']    = parseFloat(this.user['timeslot_ratio']);
 
                 this.profile['plasma_saving_timeout'] = parseInt(this.profile['plasma_saving_timeout'], 10);
 
