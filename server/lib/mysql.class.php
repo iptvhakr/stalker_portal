@@ -690,7 +690,13 @@ class Mysql
 
         self::$num_queries++;
 
-        return new MysqlResult(mysqli_query($link, $sql), $sql, $link);
+        $result = mysqli_query($link, $sql);
+
+        if ($result === false){
+            throw new MysqlException('Query failed by reason : '.mysqli_error($link).' ('.$sql.')');
+        }
+
+        return new MysqlResult($result, $sql, $link);
     }
 
     private function reset_select() {
