@@ -366,6 +366,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $filter_response = $this->passAccessFilter($country, $model, $this->mac, $serial_number, $version);
 
+        $this->params['stb_type'] = $model;
+
         if (is_array($filter_response)){
             $filter_result = $filter_response['result'];
         }else{
@@ -471,7 +473,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'keep_alive'    => 'NOW()',
                 'version'       => @$_REQUEST['ver'],
                 'hd'            => @$_REQUEST['hd'],
-                'stb_type'      => isset($_REQUEST['stb_type']) ? $_REQUEST['stb_type'] : '',
+                'stb_type'      => $model,
                 'serial_number' => isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
                 'num_banks'     => isset($_REQUEST['num_banks']) ? $_REQUEST['num_banks'] : 0,
                 'image_version' => isset($_REQUEST['image_version']) ? $_REQUEST['image_version'] : '',
