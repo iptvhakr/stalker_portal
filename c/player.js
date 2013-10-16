@@ -2237,16 +2237,18 @@ player.prototype.disable_pause = function(){
             this.triggerCustomEventListener('audiocontinue', this.cur_media_item);
         }
 
-        if (module.tv_archive && this.cur_media_item.mark_archive){
-            window.clearTimeout(this.archive_continue_dialog_to);
-            this.archive_continue_dialog_to = window.setTimeout(function(){
-                if (stb.profile['tv_archive_continued']){
-                    module.tv_archive.get_next_part_url();
-                }else{
-                    module.tv_archive.continue_dialog.show();
-                }
-            }, (stb.GetMediaLen() - stb.GetPosTime() - 30)*1000);
-        }
+        try{
+            if (module.tv_archive && this.cur_media_item.mark_archive){
+                window.clearTimeout(this.archive_continue_dialog_to);
+                this.archive_continue_dialog_to = window.setTimeout(function(){
+                    if (stb.profile['tv_archive_continued']){
+                        module.tv_archive.get_next_part_url();
+                    }else{
+                        module.tv_archive.continue_dialog.show();
+                    }
+                }, (stb.GetMediaLen() - stb.GetPosTime() - 30)*1000);
+            }
+        }catch(e){}
         
         try{
             stb.Continue();

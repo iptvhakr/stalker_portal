@@ -285,6 +285,10 @@
 
                     _debug('this.data_items[this.cur_row]', this.data_items[this.cur_row]);
 
+                    this.cur_item = stb.player.cur_media_item.clone();
+
+                    _debug('this.cur_item', this.cur_item);
+
                     if (this.data_items[this.cur_row].lock == 1 && !this.data_items[this.cur_row].hasOwnProperty('unlocked') && this.genre.alias !== 'for adults'){
                         return;
                     }
@@ -889,7 +893,7 @@
                 if (!self.do_not_load){
                     self.check_for_play_in_preview();
                 }else{
-                    self.check_for_play_in_preview(stb.player.cur_media_item);
+                    self.check_for_play_in_preview(self.cur_item || null);
                 }
                 self.do_not_load = false;
                 
@@ -901,9 +905,11 @@
         };
 
         this.check_for_play_in_preview = function(item){
-            _debug('tv.check_for_play_in_preview');
+            _debug('tv.check_for_play_in_preview', item);
 
             item = item || this.data_items[this.cur_row];
+
+            _debug('item', item);
 
             var self = this;
 
