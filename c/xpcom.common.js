@@ -795,6 +795,7 @@ function common_xpcom(){
                 'stb_type'         : this.type,
                 'image_version'    : this.image_version,
                 'device_id'        : stb.GetUID ? stb.GetUID() : '',
+                'signature'        : stb.GetUID ? stb.GetUID(this.access_token) : '',
                 'auth_second_step' : auth_second_step ? 1 : 0
             },
 

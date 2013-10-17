@@ -157,3 +157,4 @@ _('Stopped recording');
 _('on channel');
 
 _('Firmware of your STB is outdated.<br>Please update it.');
+_('Your STB is damaged.<br/> Call the provider.');
