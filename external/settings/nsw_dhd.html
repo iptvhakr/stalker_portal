@@ -25,7 +25,7 @@ function submit()
 {
     var erm="";
     parent.wfl=false;
-    var t1=document.getElementById("i3").value+'.'+document.getElementById("i32").value+'.'+document.getElementById("i33").value+'.'+document.getElementById("i34").value;
+    var t1=document.getElementById("i1").value+'.'+document.getElementById("i12").value+'.'+document.getElementById("i13").value+'.'+document.getElementById("i14").value;
     parent.wset+='"wifi_int_ip":""';
     if(t1!="0.0.0.0"&&t1!=read.result.wifi_int_dns)if(cIP(t1)){parent.wset+=',"wifi_int_dns":"'+t1+'"';}else erm+=menuT[0][1];
     if(erm!="")parent.erMes(parent.t('No correct')+'<br />'+erm,"i"+iid);else {parent.nextMenu('nsw_dhcp.html');}
