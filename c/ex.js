@@ -8,7 +8,11 @@
         var params = '';
 
         if (stb.user['web_proxy_host']){
-            params = '?proxy=http://'+stb.user['web_proxy_host']+':' +stb.user['web_proxy_port'];
+            params += '?proxy=http://';
+            if (stb.user['web_proxy_user']){
+                params += stb.user['web_proxy_user']+':'+stb.user['web_proxy_pass']+'@';
+            }
+            params += stb.user['web_proxy_host']+':' +stb.user['web_proxy_port'];
         }
 
         stb.setFrontPanel('.');
