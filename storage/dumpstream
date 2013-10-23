@@ -67,9 +67,8 @@ def main():
                     f.close()
                     async_rm_old_files()
 
-                    async_open_url(args.callback_url, {'start_time' : int(time.mktime((datetime.datetime.strptime(fname, date_format) - datetime.timedelta(hours=args.pieces_number)).timetuple()))})
-
                     if args.callback_url:
+                        async_open_url(args.callback_url, {'start_time' : int(time.mktime((datetime.datetime.strptime(fname, date_format) - datetime.timedelta(hours=args.pieces_number)).timetuple()))})
                         async_open_url(args.callback_url, {'end_time' : int(time.time())})
 
                 f = open(args.save_directory + fname +'.mpg', 'a')
