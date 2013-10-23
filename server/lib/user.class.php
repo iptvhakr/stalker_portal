@@ -5,6 +5,7 @@ class User implements \Stalker\Lib\StbApi\User
     private $id;
     private static $instance = null;
     private $profile;
+    private $ip;
 
     /**
      * @static
@@ -30,6 +31,7 @@ class User implements \Stalker\Lib\StbApi\User
     private function __construct($uid = 0){
         $this->id = (int) $uid;
         $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
+        $this->ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR'];
 
         if ($this->profile['tariff_plan_id'] == 0){
             $this->profile['tariff_plan_id'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
@@ -211,10 +213,20 @@ class User implements \Stalker\Lib\StbApi\User
         return Mysql::getInstance()->delete('vclub_not_ended', array('uid' => $this->id, 'video_id' => $video_id))->result();
     }
 
+    public function updateIp(){
+
+        return Mysql::getInstance()->update('users',
+            array('ip' => $this->ip),
+            array('id' => $this->id));
+    }
+
     public function updateKeepAlive(){
 
         return Mysql::getInstance()->update('users',
-            array('keep_alive' => 'NOW()'),
+            array(
+                 'keep_alive' => 'NOW()',
+                 'ip' => $this->ip
+            ),
             array('id' => $this->id));
     }
 

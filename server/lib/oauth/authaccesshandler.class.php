@@ -50,6 +50,8 @@ class AuthAccessHandler extends AccessHandler
             $user->updateUserInfoFromOSS();
         }
 
+        $user->updateIp();
+
         return !empty($verified_user);
     }
 
