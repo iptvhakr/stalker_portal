@@ -162,7 +162,7 @@ watchdog.prototype.parse_result = function(data){
                 
                 stb.msg.push(
                     {
-                        msg               : data.msg,
+                        msg               : (data.send_time ? '<span style="color: #555">[' + data.send_time + ']</span> ' : '') + data.msg,
                         auto_hide_timeout : data.auto_hide_timeout || 0
                     }
                 );
