@@ -20,6 +20,7 @@ var key = {
     CHANNEL_NEXT  : 9, // Tab
     EXIT  : 27, // Esc
     REFRESH  : 116, // F5
+    DELETE  : 116, // F5
     UP    : 38, // UP ARROW
     DOWN  : 40, // DOWN ARROW
     LEFT  : 37, // LEFT ARROW
@@ -56,3 +57,8 @@ var key = {
     USB_UNMOUNTED : 2081, // Alt+Q
     USB_MOUNTED   : 2080  // Alt+P
 };
+
+if (typeof(gSTB) != 'undefined' && gSTB.IsEmulator){
+    key.EXIT = key.BACK;
+    key.BACK = key.DELETE;
+}
