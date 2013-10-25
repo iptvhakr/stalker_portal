@@ -472,7 +472,7 @@
                 return;
             }
             
-            if (this.data_items[this.cur_row].lock && this.cur_view != 'short' && this.genre.alias != 'for adults'){
+            if (this.data_items[this.cur_row].lock && this.genre.alias != 'for adults'){
                 var self = this;
                 
                 this.password_input.callback = function(){
