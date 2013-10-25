@@ -141,23 +141,17 @@ password_input.prototype.bind = function(){
 
     (function(){}).bind(key.APP, this);
 
-    (function(){
+    (function(key){
 
         if (this.proceed_navigation){
             this.hide();
-            keydown_observer.emulate_key(key.UP);
+            keydown_observer.emulate_key(key);
         }
 
-    }).bind(key.UP, this);
-
-    (function(){
-
-        if (this.proceed_navigation){
-            this.hide();
-            keydown_observer.emulate_key(key.DOWN);
-        }
-
-    }).bind(key.DOWN, this);
+    }).bind(key.UP, this, key.UP)
+      .bind(key.DOWN, this, key.DOWN)
+      .bind(key.PREV, this, key.PREV)
+      .bind(key.NEXT, this, key.NEXT);
 };
 
 loader.next();

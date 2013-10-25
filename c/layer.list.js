@@ -451,6 +451,9 @@ ListLayer.prototype.set_passive_row = function(){
 
 ListLayer.prototype.shift_row = function(dir){
     _debug('this.loading', this.loading);
+
+    window.clearTimeout(this.row_callback_timer);
+
     if (this.loading){
         return;
     }
