@@ -565,6 +565,7 @@ echo "<td class='list'><b>#</b></td>\n";
 echo "<td class='list'><b>MAC</b></td>\n";
 echo "<td class='list'><b>IP</b></td>\n";
 echo "<td class='list'><b>Login</b></td>\n";
+echo "<td class='list'><b>Account</b></td>\n";
 echo "<td class='list'><b>Name</b></td>\n";
 echo "<td class='list'><b>Tariff</b></td>\n";
 echo "<td class='list'><b>"._('Type')."</b></td>\n";
@@ -592,6 +593,7 @@ while($arr = $users->next()){
     echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['mac']."</a></td>\n";
     echo "<td class='list'><a href='events.php?mac=".$arr['mac']."'>".$arr['ip']."</a></td>\n";
     echo "<td class='list'><a href='profile.php?id=".$arr['id']."'>".$arr['login']."</a></td>\n";
+    echo "<td class='list'>".$arr['ls']."</td>\n";
     echo "<td class='list'>".$arr['fname']."</td>\n";
     echo "<td class='list'>".$arr['tariff_plan_name']."</td>\n";
     echo "<td class='list'>".get_cur_media($arr['now_playing_type'])."</td>\n";
