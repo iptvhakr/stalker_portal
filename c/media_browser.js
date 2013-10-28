@@ -1743,6 +1743,7 @@
             "label" : get_word("mbrowser_sort_by_name"),
             "cmd"   : function(){
                 this.parent.sort_by_date = false;
+                this.parent.change_level = true;
             },
             "selector" : "*"
         },
@@ -1750,6 +1751,7 @@
             "label" : get_word("mbrowser_sort_by_date"),
             "cmd"   : function(){
                 this.parent.sort_by_date = true;
+                this.parent.change_level = true;
             }
         }
     ];
