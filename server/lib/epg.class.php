@@ -767,36 +767,14 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                      'data'           => $result);
     }
 
-    public function getDataTableForSingleChannel(){
-
-        $page  = intval($_REQUEST['p']);
-        $ch_id = intval($_REQUEST['ch_id']);
-        $default_page = false;
-
-        $page_items = 14;
-
-        if ($page == 0){
-
-            $default_page = true;
-
-            //$page = ceil($ch_idx/$page_items);
-
-            if ($page == 0){
-                $page == 1;
-            }
-        }
-    }
-
     public function getWeek(){
 
         $cur_num_day = date('N')-1;
 
-        //$week_short_arr = System::word('week_short_arr');
         $week_short_arr = array(_('Sun'),_('Mon'),_('Tue'),_('Wed'),_('Thu'),_('Fri'),_('Sat'));
 
         array_push($week_short_arr, array_shift($week_short_arr));
 
-        //$month_arr = System::word('month_arr');
         $month_arr = array(_('JANUARY'),_('FEBRUARY'),_('MARCH'),_('APRIL'),_('MAY'),_('JUNE'),_('JULY'),_('AUGUST'),_('SEPTEMBER'),_('OCTOBER'),_('NOVEMBER'),_('DECEMBER'));
 
         $year  = date("Y");
@@ -805,16 +783,14 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $week_days = array();
 
-        //var_dump($cur_num_day);
+        $epg_history_weeks = Config::getSafe('epg_history_weeks', 1);
 
-        for ($i=0; $i<=20; $i++){
-            $w_day   = date("d", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year));
-            $w_month = date("n", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year))-1;
+        for ($i=0; $i<=13+$epg_history_weeks*7; $i++){
+            $w_day   = date("d", mktime (0, 0, 0, $month, $day-$cur_num_day-$epg_history_weeks*7+$i, $year));
+            $w_month = date("n", mktime (0, 0, 0, $month, $day-$cur_num_day-$epg_history_weeks*7+$i, $year))-1;
             $week_days[$i]['f_human'] = $week_short_arr[$i % 7].' '.$w_day.' '.$month_arr[$w_month];
-            $week_days[$i]['f_mysql'] = date("Y-m-d", mktime (0, 0, 0, $month, $day-$cur_num_day-7+$i, $year));
-            //if (intval($cur_num_day) === $i){
+            $week_days[$i]['f_mysql'] = date("Y-m-d", mktime (0, 0, 0, $month, $day-$cur_num_day-$epg_history_weeks*7+$i, $year));
             if ($week_days[$i]['f_mysql'] === date("Y-m-d")){
-                //var_dump($cur_num_day, $i);
                 $week_days[$i]['today'] = 1;
             }else{
                 $week_days[$i]['today'] = 0;
