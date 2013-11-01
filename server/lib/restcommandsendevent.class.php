@@ -6,9 +6,15 @@ class RESTCommandSendEvent extends RESTCommand
 
         $stb_list = $request->getConvertedIdentifiers();
 
+        $identifiers = $request->getIdentifiers();
+
+        if (empty($stb_list) && !empty($identifiers)){
+            throw new RESTCommandException('STB not found');
+        }
+
         $event = new SysEvent();
 
-        if (empty($stb_list)){
+        if (empty($identifiers)){
             $event->setUserListByMac('all');
         }else{
             $event->setUserListById($stb_list);
