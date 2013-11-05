@@ -219,17 +219,17 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
                 if (preg_match("/:\/\/([^\/]+)\/(\S*)/", $channel['cmd'], $match)){
 
-                    $path   = $match[2];
+                    $path   = '/'.$match[2];
                     $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
                     $secret = Config::get('nginx_secure_link_secret');
 
-                    $hash = base64_encode(md5($secret . $path . $expire, true));
+                    $hash = base64_encode(md5($secret . str_replace('/playlist.m3u8', '', $path) . $expire, true));
                     $hash = strtr($hash, '+/', '-_');
                     $hash = str_replace('=', '', $hash);
 
                     $new_path = $path.(strpos($channel['cmd'], '?') ? '&' : '?').'st='.$hash.'&e='.$expire;
 
-                    $channel['cmd'] = str_replace($path, $new_path ,$channel['cmd']);
+                    $channel['cmd'] = str_replace($path, $new_path, $channel['cmd']);
 
                 }else{
                     throw new ItvLinkException('link_fault');
