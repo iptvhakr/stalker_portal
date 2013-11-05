@@ -1022,6 +1022,10 @@ player.prototype.event_callback = function(event, params){
 
             this.time_shift_indication.hide();
 
+            if (this.is_tv){
+                stb.notice.hide();
+            }
+
             if (this.is_tv && this.cur_tv_item && this.cur_tv_item.ready_to_timeshift && module.time_shift_local && module.time_shift_local.enabled){
 
                 if (stb.profile.ts_delay !== 'on_pause'){
@@ -1200,9 +1204,18 @@ player.prototype.event_callback = function(event, params){
                         self.prev_layer.show.call(self.prev_layer, true);
                     }
 
+                    var prev_layer = this.prev_layer && this.prev_layer.layer_name;
+
                     self.stop();
 
                     stb.notice.show(get_word('player_file_missing'));
+
+                    _debug('this.is_tv', this.is_tv);
+                    _debug('prev_layer', prev_layer);
+
+                    if (!this.is_tv && prev_layer == 'tv'){
+                        this.play_last(true);
+                    }
                 }
                 
             }else{
@@ -1595,11 +1608,13 @@ player.prototype.define_media_type = function(cmd){
     }
 };
 
-player.prototype.play_last = function(){
+player.prototype.play_last = function(dont_show_osd){
     _debug('player.play_last');
     
     this.prev_layer = module.tv;
-    this.show_info_after_play();
+    if (!dont_show_osd){
+        this.show_info_after_play();
+    }
     this.play(this.last_not_locked_tv_item || this.cur_tv_item);
 };
 
