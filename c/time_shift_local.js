@@ -7,6 +7,18 @@
     _debug('typeof(timeShift)', typeof(timeShift));
 
     if (typeof(timeShift) === "undefined"){
+        _debug('timeShift not found');
+        return;
+    }
+
+    var allow_local_recording = stb.user['allowed_stb_types_for_local_recording'].some(function(element){
+        return stb.type.toLowerCase().indexOf(element) != -1;
+    });
+
+    _debug('allow_local_recording', allow_local_recording);
+
+    if (!allow_local_recording){
+        _debug('local time-shift not allowed for ' + stb.type);
         return;
     }
 
