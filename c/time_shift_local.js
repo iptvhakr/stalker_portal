@@ -88,15 +88,16 @@
                 var now = new Date();
 
                 var file_path = stb.profile.ts_path
-                    + '/' + this.channel.toTranslit() + '/'
+                    + '/' + this.channel.name.toTranslit() + '/'
                     + now.getFullYear()
                     + '' + this.format_date(now.getMonth() + 1)
-                    + '' + this.format_date(now.getDate())
-                    + '-' + this.format_date(now.getHours())
+                    + '' + this.format_date(now.getDate());
+
+                var file_name = this.format_date(now.getHours())
                     + '' + this.format_date(now.getMinutes())
                     + '' + this.format_date(now.getSeconds());
 
-                result = timeShift.ExitTimeShiftAndSave(file_path);
+                result = timeShift.ExitTimeShiftAndSave(file_path, file_name);
             }
 
             _debug('result', result);
