@@ -836,43 +836,53 @@ function common_xpcom(){
         //_debug('stb.user.image_version:', stb.user['image_version']);
 
         if (this.image_version < 203 && this.image_version != 0){
-            return 0;
+            return;
         }
 
         _debug('checking conditions');
         _debug('typeof stb.user[autoupdate]', typeof(stb.user['autoupdate']));
+        _debug('stb.user[autoupdate] is array', stb.user['autoupdate'] && stb.user['autoupdate'] instanceof Array);
 
-        if (typeof stb.user['autoupdate'] == 'object' &&
-            ((stb.user['autoupdate'].require_image_version != ''     && stb.user['autoupdate'].require_image_version != this.image_version) ||
-            (stb.user['autoupdate'].require_image_date != ''         && stb.user['autoupdate'].require_image_date != this.image_date)) &&
-            ((stb.user['autoupdate'].image_version_contains != ''    && stb.user['autoupdate'].image_version_contains == this.image_version) ||
-            (stb.user['autoupdate'].image_description_contains != '' && this.image_desc.indexOf(stb.user['autoupdate'].image_description_contains) != -1) ||
-            (stb.user['autoupdate'].image_version_contains == '' && stb.user['autoupdate'].image_description_contains == '')
+        if (stb.user['autoupdate'] && stb.user['autoupdate'] instanceof Array){
+            stb.user['autoupdate'].some(function(element){
+                return stb.check_update(element);
+            });
+        }
+    };
+
+    this.check_update = function(params){
+        _debug('stb.check_update', params);
+
+        if (typeof params == 'object' &&
+            ((params.require_image_version != ''     && params.require_image_version != this.image_version) ||
+            (params.require_image_date != ''         && params.require_image_date != this.image_date)) &&
+            ((params.image_version_contains != ''    && params.image_version_contains == this.image_version) ||
+            (params.image_description_contains != '' && this.image_desc.indexOf(params.image_description_contains) != -1) ||
+            (params.image_version_contains == '' && params.image_description_contains == '')
             )){
 
             _debug('checking conditions 2');
 
-            if (this.num_banks == 2 && stb.user['autoupdate'].update_type == 'http_update'){
+            if (this.num_banks == 2 && params.update_type == 'http_update'){
                 try{
                     _debug('this.user[update_url]', this.user['update_url']);
 
                     _debug('stb.user[autoupdate]', stb.user['autoupdate']);
 
                     stbUpdate.startAutoUpdate(this.user['update_url'], false);
-                    //console.log('startAutoUpdate: '+this.user['update_url']);
+
                 }catch(e){
                     _debug(e);
                 }
-            }else if (stb.user['autoupdate'].update_type == 'reboot_dhcp'){
+            }else if (params.update_type == 'reboot_dhcp'){
                 _debug('RebootDHCP');
                 stb.ExecAction('RebootDHCP');
-                //console.log('RebootDHCP');
             }
 
-            return 0;
+            return true;
         }
-        
-        return 1;
+
+        return false;
     };
 
     this.user_init = function(user_data){

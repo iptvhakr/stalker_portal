@@ -145,7 +145,9 @@ h3{
                             <option value="MAG200" {{if stb_type==="MAG200"}}selected{{/if}} >MAG200</option>
                             <option value="MAG245" {{if stb_type==="MAG245"}}selected{{/if}} >MAG245</option>
                             <option value="MAG250" {{if stb_type==="MAG250"}}selected{{/if}} >MAG250</option>
+                            <option value="MAG255" {{if stb_type==="MAG255"}}selected{{/if}} >MAG255</option>
                             <option value="AuraHD0" {{if stb_type==="AuraHD0"}}selected{{/if}} >AuraHD0</option>
+                            <option value="AuraHD1" {{if stb_type==="AuraHD1"}}selected{{/if}} >AuraHD1</option>
                             <option value="AuraHD9" {{if stb_type==="AuraHD9"}}selected{{/if}} >AuraHD9</option>
                         </select>
                     </td>
@@ -231,9 +233,13 @@ h3{
         $('.stb-type').live('change', function(event){
             updateDisabledStbTypes()
         });
+
+        updateDisabledStbTypes();
     });
 
     function updateDisabledStbTypes(){
+
+        return true;
 
         var selected = {};
 

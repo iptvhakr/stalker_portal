@@ -53,7 +53,7 @@ class ImageAutoUpdate
 
         self::checkSettingsStorage();
 
-        return Mysql::getInstance()->from("image_update_settings")->get()->all();
+        return Mysql::getInstance()->from("image_update_settings")->orderby('id')->get()->all();
     }
 
     /**
@@ -65,7 +65,7 @@ class ImageAutoUpdate
             ->from('image_update_settings')
             ->where(array('stb_type' => $stb_type, 'enable' => 1))
             ->get()
-            ->first();
+            ->all();
     }
 
     public static function create($settings){
