@@ -101,7 +101,7 @@ function player(){
     this.init_show_info();
     this.init_quick_ch_switch();
     this.volume.init();
-    this.osd_clock.init();
+
     this.time_shift_indication.init();
     this.progress_bar.init();
 
@@ -1676,7 +1676,7 @@ player.prototype.play = function(item){
     var cmd;
     
     this.on = true;
-    
+    stb.clock.show();
     //this.cur_media_item = item;
 
     window.clearTimeout(this.replay_channel_timer);
@@ -2998,53 +2998,6 @@ player.prototype.ad_skip_indication = {
     }
 };
 
-player.prototype.osd_clock = {
-    on : false,
-
-    init : function(){
-        _debug('osd_clock.init');
-
-        this.dom_obj   = create_block_element('osd_clock_block');
-        this.osd_clock = create_block_element('osd_clock', this.dom_obj);
-        this.dom_obj.hide();
-
-        var self = this;
-
-        stb.clock.addCustomEventListener("tick", function(date){
-            if (self.on){
-                self.osd_clock.innerHTML = get_word('time_format').format(date.hours, date.minutes, date.ap_hours, date.ap_mark);
-            }
-        });
-    },
-
-    show : function(){
-        _debug('osd_clock.show');
-
-        this.osd_clock.innerHTML = get_word('time_format').format(stb.clock.hours, stb.clock.minutes, stb.clock.ap_hours, stb.clock.ap_mark);
-
-        this.dom_obj.show();
-        this.on = true;
-    },
-
-    hide : function(){
-        _debug('osd_clock.hide');
-        this.dom_obj.hide();
-        this.on = false;
-    },
-
-    toggle : function(){
-        _debug('osd_clock.toggle');
-
-        var self = stb.player.osd_clock;
-
-        if (self.on){
-            self.hide();
-        }else{
-            self.show();
-        }
-    }
-};
-
 player.prototype.bind = function(){
 
     var self = this;
@@ -3055,7 +3008,9 @@ player.prototype.bind = function(){
     this.switch_channel.bind(key.CHANNEL_NEXT, self, 1, true, true);
     this.switch_channel.bind(key.CHANNEL_PREV, self, -1, true, true);
 
-    this.osd_clock.toggle.bind(key.CLOCK, this);
+    (function(){
+        stb.player.ClockOnVideo.toggle();
+    }).bind(key.CLOCK, this);
 
     (function(){
         
@@ -4577,6 +4532,40 @@ player.prototype.init_con_menu = function(){
         }
     ];
 
+    var ClockMap = {
+        "title" : get_word('videoClockTitle'),
+        "cmd"   : [
+            {
+                "cmd"   : function(){stb.player.ClockOnVideo.changeType('Off');},
+                "title" : get_word('videoClock_off'),
+                "active": (stb.user.video_clock == 'Off')
+            },
+            {
+                "cmd"   : function(){stb.player.ClockOnVideo.changeType('upRight');},
+                "title" : get_word('videoClock_upRight'),
+                "active": (stb.user.video_clock == 'upRight')
+            },
+            {
+                "cmd"   : function(){stb.player.ClockOnVideo.changeType('upLeft');},
+                "title" : get_word('videoClock_upLeft'),
+                "active": (stb.user.video_clock == 'upLeft')
+            },
+            {
+                "cmd"   : function(){stb.player.ClockOnVideo.changeType('downRight');},
+                "title" : get_word('videoClock_downRight'),
+                "active": (stb.user.video_clock == 'downRight')
+            },
+            {
+                "cmd"   : function(){stb.player.ClockOnVideo.changeType('downLeft');},
+                "title" : get_word('videoClock_downLeft'),
+                "active": (stb.user.video_clock == 'downLeft')
+            }
+
+            ],
+        "type": 'switch'
+    };
+    map = map.concat(ClockMap);
+
     
     this.con_menu.construct(map);
 };
@@ -4847,6 +4836,81 @@ player.prototype.progress_bar = {
         //this.progress.style.width = 0;
     }
 };
+
+//Clock On Video by Agnitumus
+player.prototype.ClockOnVideo = {
+    "on" : false,
+
+    changeType : function(value){
+
+        this.dom_obj.removeClass('onVideo'+stb.user.video_clock);
+
+        stb.user.video_clock = value;
+
+        _debug('player.change_ClockOnVideoType');
+        _debug('set clock Type', stb.user.video_clock);
+
+        stb.load(
+
+            {
+                "type"   : "stb",
+                "action" : "set_clock_on_video",
+                "clockType" : stb.user.video_clock
+            },
+
+            function(result){
+
+            },
+
+            this
+        );
+
+        this.dom_obj.addClass('onVideo'+value);
+        this.Refresh();
+    },
+    Refresh : function (){
+
+        if (stb.user.video_clock == 'Off'){
+            this.dom_obj.hide();
+            this.on = false;
+        }
+        else {
+            this.on = true;
+            this.dom_obj.show();
+        }
+        stb.clock.show();
+    },
+    init : function(){
+        _debug('player.init_ClockOnVideo');
+
+        this.dom_obj   = document.createElement('div');
+        this.dom_obj.className = 'osd_clock_block';
+        document.body.insertBefore(this.dom_obj, document.querySelector('.loader'));
+
+        this.osd_clock = create_block_element('osd_clock', this.dom_obj);
+        this.dom_obj.addClass('onVideo'+stb.user.video_clock);
+        this.Refresh();
+
+        var self = this;
+
+        stb.clock.addCustomEventListener("tick", function(date){
+            if (self.on && stb.player.on){
+                self.osd_clock.innerHTML = get_word('time_format').format(date.hours, date.minutes, date.ap_hours, date.ap_mark);
+            }
+        });
+    },
+    toggle : function(){
+        _debug('ClockOnVideo.toggle');
+
+        if (this.on){
+            this.changeType('Off');
+        }else{
+            this.changeType('upRight');
+        }
+    }
+};
+//END Clock On Video
+
 
 /*
  * END Player

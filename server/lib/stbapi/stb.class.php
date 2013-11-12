@@ -55,4 +55,6 @@ interface Stb
     public function setPlaybackSettings();
 
     public function setStreamError();
+
+    public function setClockOnVideo();
 }

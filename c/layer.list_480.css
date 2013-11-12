@@ -676,8 +676,6 @@
 
 .osd_clock_block{
     position: absolute;
-    top: 95px;
-    right: 95px;
     background: url("i_720/volume_bg.png") right;
     -webkit-border-radius: 8px;
 }

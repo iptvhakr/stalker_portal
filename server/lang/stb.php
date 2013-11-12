@@ -497,3 +497,12 @@ $words['mount_failed'] = _('Mount failed');
 
 $words['ad_skip'] = _('SKIP');
 $words['commercial'] = _('COMMERCIAL');
+
+//Clock On Video by Agnitumus
+$words['videoClockTitle'] =      _('Clock');
+$words['videoClock_off'] =       _('Hidden');
+$words['videoClock_upRight'] =   _('Top Right');
+$words['videoClock_upLeft'] =    _('Top Left');
+$words['videoClock_downRight'] = _('Bottom Right');
+$words['videoClock_downLeft'] =  _('Bottom Left');
+//End Clock On Video

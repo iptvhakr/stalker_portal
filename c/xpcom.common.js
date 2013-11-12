@@ -592,6 +592,7 @@ function common_xpcom(){
                 this.user_init(this.profile);
 
                 this.clock.start();
+                this.player.ClockOnVideo.init();
 
                 connection_problem.refresh_msg();
                 authentication_problem.refresh_msg();

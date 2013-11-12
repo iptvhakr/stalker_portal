@@ -49,3 +49,35 @@ dl.definition_list dd{
     padding: 5px 0;
 
 }
+
+/*
+Clock On Video by Agnitumus
+*/
+
+.onVideoOff {
+    display: none;
+}
+
+.onVideoupRight {
+    top: 127px;
+    right: 130px;
+}
+
+.onVideoupLeft {
+    top: 127px;
+    left: 130px;
+}
+
+.onVideodownRight {
+    bottom: 127px;
+    right: 130px;
+}
+
+.onVideodownLeft {
+    bottom: 127px;
+    left: 130px;
+}
+
+/*
+END Clock On Video
+*/

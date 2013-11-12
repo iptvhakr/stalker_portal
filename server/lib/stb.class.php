@@ -1855,5 +1855,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $e->getTraceAsString()
         ));
     }
+
+    public function setClockOnVideo(){
+        $clockType = stripslashes($_REQUEST['clockType']);
+        $this->db->update('users', array('video_clock' => $clockType), array('mac' => $this->mac));
+        $this->params['video_clock'] = $clockType;
+        return true;
+    }
 }
-?>
