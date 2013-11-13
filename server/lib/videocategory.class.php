@@ -36,13 +36,10 @@ class VideoCategory
     public function getById($id, $pretty_id = false){
 
         if ($pretty_id){
-            //$this->setLocale('en');
             $categories = $this->getAll($pretty_id);
 
-            /*var_dump($id, $categories);*/
-
             $categories = array_filter($categories, function($category) use ($id){
-                return $id == preg_replace("/_/i", "-", $category['category_alias']);
+                return $id == $category['id'];
             });
 
             if (empty($categories)){

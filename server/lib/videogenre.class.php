@@ -36,7 +36,6 @@ class VideoGenre
 
                 $item['original_title'] = $item['title'];
                 $item['title']          = _($item['title']);
-                //unset($item['category_alias']);
 
                 return $item;
             }, $genres);
@@ -60,11 +59,10 @@ class VideoGenre
     public function getById($id, $pretty_id = false){
 
         if ($pretty_id){
-            //$this->setLocale('en');
             $genres = $this->getAll($pretty_id);
 
             $genres = array_filter($genres, function($genre) use ($id){
-                return $id == preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['original_title']);
+                return $id == $genre['id'];
             });
 
             if (empty($genres)){
@@ -86,19 +84,15 @@ class VideoGenre
         $category = new VideoCategory();
         $category = $category->getById($category_id, $pretty_id);
 
-        /*var_dump($category);*/
-
         if (empty($category)){
             return null;
         }
 
         if ($pretty_id){
-            //$this->setLocale('en');
             $genres = $this->getAll($pretty_id, false);
 
             $genres = array_filter($genres, function($genre) use ($id, $category){
-                return $id == preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['original_title'])
-                    && $genre['category_alias'] == $category['category_alias'];
+                return $id == $genre['id'] && $genre['category_alias'] == $category['category_alias'];
             });
 
             if (empty($genres)){
