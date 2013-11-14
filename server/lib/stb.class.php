@@ -623,6 +623,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $profile['additional_services_on'] = '1';
         }
 
+        unset($profile['device_id']);
+        unset($profile['access_token']);
+        unset($profile['serial_number']);
+
         return $profile;
     }
 
