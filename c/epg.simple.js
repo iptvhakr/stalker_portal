@@ -225,8 +225,10 @@
                 return;
             }
 
-            this.data_items[this.cur_row].cmd  = 'auto /media/' + rec_id + '.mpg';
-            this.data_items[this.cur_row].name = this.ch_name + ' — ' + this.data_items[this.cur_row].name;
+            var item = this.data_items[this.cur_row].clone();
+
+            item.cmd  = 'auto /media/' + rec_id + '.mpg';
+            item.name = this.ch_name + ' — ' + this.data_items[this.cur_row].name;
 
             var self = this;
 
@@ -265,7 +267,7 @@
                 stb.player.cur_tv_item = channel;
             }
 
-            stb.player.play(this.data_items[this.cur_row]);
+            stb.player.play(item);
         };
         
         this.set_active_epg_list = function(){
@@ -383,6 +385,8 @@
             if (this.loading || empty(this.data_items)){
                 return;
             }
+
+            _debug('this.data_items[this.cur_row]', this.data_items[this.cur_row]);
             
             this.map[this.prev_row]['row'].setAttribute('active', '');
             this.map[num]['row'].setAttribute('active', 'active');

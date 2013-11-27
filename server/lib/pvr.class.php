@@ -37,7 +37,7 @@ class Pvr extends AjaxResponse implements \Stalker\Lib\StbApi\Pvr
                               'atrack'  => $atrack,
                               'vtrack'  => $vtrack,
                               'uid'     => $this->stb->id
-                          ))->insert_id;
+                          ))->insert_id();
     }
     
     public function getOrderedList(){

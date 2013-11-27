@@ -1880,12 +1880,12 @@ player.prototype.play = function(item){
 
     }else if (stb.cur_place == 'records' || stb.cur_place == 'remote_pvr' || stb.cur_place == 'epg_simple' || stb.cur_place == 'epg'){
 
-        if (item.mark_archive){
+        if (item.mark_archive && !item.mark_rec){
             this.create_link('tv_archive', cmd, 0);
         }else{
             this.create_link('remote_pvr', cmd, 0);
         }
-        
+
     }else{
         
         var series_number = item.cur_series || 0;
