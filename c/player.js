@@ -4573,7 +4573,7 @@ player.prototype.init_con_menu = function(){
 player.prototype.build_con_menu = function(){
     _debug('player.build_con_menu');
     
-    if (this.con_menu.map.length > 1){
+    if (this.con_menu.map.length > 2){
         return;
     }
 
