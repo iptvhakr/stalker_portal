@@ -259,11 +259,7 @@ class Mysql
         $escaped_values = array();
         if (!empty($values)) {
             foreach ($values as $value) {
-                if (is_numeric($value)) {
-                    $escaped_values [] = $value;
-                } else {
-                    $escaped_values [] = "'" . $this->escape_str($value) . "'";
-                }
+                $escaped_values [] = "'" . $this->escape_str($value) . "'";
             }
             $values = implode(",", $escaped_values);
         } else {
