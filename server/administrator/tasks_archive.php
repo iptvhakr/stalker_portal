@@ -67,7 +67,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="stat_moderators.php"><< <?= _('Back')?></a>
+        <a href="<?= isset($_GET['id']) ? 'tasks_archive.php' : 'stat_moderators.php'?>"><< <?= _('Back')?></a>
     </td>
 </tr>
 <tr>
@@ -163,10 +163,10 @@ if (@$_GET['id']){
     
     $archive_id = intval($_GET['id']);
     
-    $sql = "select * from administrators where access=2";
+    $sql = "select * from administrators";
     
     if (!Admin::isPageActionAllowed()){
-        $sql .= " and login='".$_SESSION['login']."'";
+        $sql .= " where login='".$_SESSION['login']."'";
     }
 
     $administrators = Mysql::getInstance()->query($sql);
@@ -272,7 +272,7 @@ else{
     $page_offset=$page*$MAX_PAGE_ITEMS;
     $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
 
-    $archive_tasks = Mysql::getInstance()->from('tasks_archive')->limit($MAX_PAGE_ITEMS, $page_offset)->get();
+    $archive_tasks = Mysql::getInstance()->from('tasks_archive')->orderby('year, month')->limit($MAX_PAGE_ITEMS, $page_offset)->get();
 
     while($arr = $archive_tasks->next()){
 

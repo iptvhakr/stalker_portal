@@ -108,10 +108,10 @@ if (@$_GET['id']){
     
     $archive_id = intval($_GET['id']);
     
-    $sql = "select * from administrators where access=2";
+    $sql = "select * from administrators";
     
     if (!Admin::isPageActionAllowed()){
-        $sql .= " and login='".$_SESSION['login']."'";
+        $sql .= " where login='".$_SESSION['login']."'";
     }
 
     $administrators = Mysql::getInstance()->query($sql)->all();
@@ -176,7 +176,7 @@ else{
     $page_offset=$page*$MAX_PAGE_ITEMS;
     $total_pages=(int)($total_items/$MAX_PAGE_ITEMS+0.999999);
     
-    $sql = "select * from karaoke_archive LIMIT $page_offset, $MAX_PAGE_ITEMS";
+    $sql = "select * from karaoke_archive order by year, month LIMIT $page_offset, $MAX_PAGE_ITEMS";
 
     $archive = Mysql::getInstance()->query($sql);
     

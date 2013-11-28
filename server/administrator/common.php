@@ -21,9 +21,8 @@ if (!empty($_COOKIE['language']) && array_key_exists($_COOKIE['language'], $loca
 
 setcookie("debug_key", "", time() - 3600, "/");
 
-//$locale = 'en_GB.utf8';
-
 setlocale(LC_MESSAGES, $locale);
+setlocale(LC_TIME, $locale);
 putenv('LC_MESSAGES='.$locale);
 bindtextdomain('stb', PROJECT_PATH.'/locale');
 textdomain('stb');

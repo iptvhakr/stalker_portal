@@ -17,15 +17,22 @@ if (@$_GET['archive'] == 1 && @$_GET['id']){
     Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
     $id = intval(@$_GET['id']);
-    
-    $year  = date("Y");
-    $month = date("n");
-    
-    if ($month == 1){
-        $month = 12;
-        $year--;
+
+    if (!empty($_GET['to_date'])){
+
+        $year  = date("Y", strtotime($_GET['to_date']));
+        $month = date("n", strtotime($_GET['to_date']));
+
     }else{
-        $month--;
+        $year  = date("Y");
+        $month = date("n");
+
+        if ($month == 1){
+            $month = 12;
+            $year--;
+        }else{
+            $month--;
+        }
     }
     
     // video archive
@@ -44,7 +51,7 @@ if (@$_GET['archive'] == 1 && @$_GET['id']){
             'date'  => 'NOW()',
             'year'  => $year,
             'month' => $month
-        ));
+        ))->insert_id();
     }
 
     Mysql::getInstance()->update('moderator_tasks',
@@ -75,7 +82,7 @@ if (@$_GET['archive'] == 1 && @$_GET['id']){
             'date'  => 'NOW()',
             'year'  => $year,
             'month' => $month
-        ));
+        ))->insert_id();
     }
 
     Mysql::getInstance()->update('karaoke',
@@ -287,7 +294,23 @@ if (Admin::isPageActionAllowed()){
     <tr>
         <td align="right">
         <?if (Admin::isPageActionAllowed()){?>
-        <input type="button" value="<?= _('Move to archive')?>" onclick="if(confirm('<?= _('Move to the archive?')?>')){document.location='last_closed_tasks.php?id=<?echo @$_GET['id']?>&archive=1';}">
+        <form method="get">
+        <input type="hidden" name="id" value="<?echo @$_GET['id']?>">
+        <input type="hidden" name="archive" value="1">
+        <select name="to_date">
+            <?
+            $prev_month = strtotime('-1 month');
+
+            $archive_slots = array(
+                date('d-m-Y', $prev_month) => strftime('%B %Y', $prev_month),
+                date('d-m-Y') => strftime('%B %Y')
+            );
+
+            foreach($archive_slots as $key => $month){ ?>
+                <option value="<?= $key?>"><?= $month?></option>
+            <? } ?>
+        </select>
+        <input type="submit" value="<?= _('Move to archive')?>" onclick="if(confirm('<?= _('Move to the archive?')?>')){return true}else{return false}">
         <?}?>
         </td>
     </tr>
