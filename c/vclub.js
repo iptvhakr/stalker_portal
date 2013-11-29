@@ -413,6 +413,10 @@
 
             var info = '';
 
+            if (item.rating_kinopoisk && stb.profile['kinopoisk_rating']){
+                info += '<span>' + get_word('vclub_rating') + ': </span>' + item.rating_kinopoisk + '<br>';
+            }
+
             if (item.rent_info){
                 info += get_word('vclub_purchased');
 
@@ -433,11 +437,7 @@
             info += '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str
                 + '<br><span>' + word['vclub_year'] + ': </span>' + item.year
                 + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br>'
-                + '<span>' + word['vclub_director'] + ': </span>' + item.director + '<br>';
-
-            if (item.rating_kinopoisk && stb.profile['kinopoisk_rating']){
-                info += '<span>' + get_word('vclub_rating') + ': </span>' + item.rating_kinopoisk;
-            }
+                + '<span>' + word['vclub_director'] + ': </span>' + item.director;
 
             this.short_info_box.innerHTML = info;
             this.screenshot_box.innerHTML = '<img src="' + item.screenshot_uri + '">';
