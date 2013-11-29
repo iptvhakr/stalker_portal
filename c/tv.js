@@ -471,8 +471,8 @@
                 stb.notice.show(word['msg_channel_not_available']);
                 return;
             }
-            
-            if (this.data_items[this.cur_row].lock && this.genre.alias != 'for adults'){
+
+            if (this.data_items[this.cur_row].lock && !this.data_items[this.cur_row].unlocked && this.genre.alias != 'for adults'){
                 var self = this;
                 
                 this.password_input.callback = function(){
@@ -1107,6 +1107,8 @@
                 _debug('stb.player.fav_channels_ids before', stb.player.fav_channels_ids);
                 
             }
+
+            this.data_items[this.cur_row].unlocked = false;
             
             this.superclass.shift_row.call(this, dir);
             
