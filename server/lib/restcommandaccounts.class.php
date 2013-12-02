@@ -96,6 +96,15 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('Only one identifier allowed');
         }
 
+        if (!empty($account['login'])){
+
+            $user = User::getByLogin($account['login']);
+
+            if (!empty($user) && ($user['id'] != $users_ids[0] || count($users_ids) > 1)){
+                throw new RESTCommandException('Login already in use');
+            }
+        }
+
         $result = true;
 
         foreach($users_ids as $user_id){
