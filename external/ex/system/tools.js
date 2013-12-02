@@ -129,7 +129,6 @@ function loadStyle ( src, onload ) {
 	document.head.appendChild(element('link', {rel:'stylesheet', type:'text/css', href:src}));
 	//elchild(document.head, element('link', {rel:'stylesheet', type:'text/css', href:src}));
 	// run callback if given with dumb image
-	//TODO: investigate and maybe get rid of it
 	if ( onload ) element('img', {onerror:function(){onload();}, src:'***'});
 }
 

@@ -73,7 +73,7 @@ a {text-decoration: none;}
 /* component CBreadCrumb */
 .cbcrumb-main { display:table; border-collapse:separate; border-spacing:4px }
 	.cbcrumb-main .cbcrumb-item { display:table-cell; vertical-align:middle; padding:6px 8px; border-radius:4px; font-size:20px; cursor:pointer; background-image:url("img/bg_white_10.png") }
-	.cbcrumb-main .cbcrumb-item.active  { background-image:url("img/orange_15.png") }
+	.cbcrumb-main .cbcrumb-item.active  { background-image:url("img/orange_30.png") }
 	.cbcrumb-main .cbcrumb-item.divider { display:none; padding:8px }
 	.cbcrumb-main .cbcrumb-item:last-of-type { }
 	.cbcrumb-main .cbcrumb-item .cbcrumb-icon { vertical-align:middle; height:30px }
@@ -260,7 +260,7 @@ a {text-decoration: none;}
 #pageMediaPlayer .player_footer .name {font-size:28px; color:#fff; line-height:36px; width:700px; float:left; overflow:hidden; text-overflow: ellipsis; white-space:nowrap;}
 
 #pageMediaPlayer .cright { position:absolute; bottom:120px; left:0; height:40px; margin-left:50px;}
-#pageMediaPlayer .cright .box {height:20px; margin-right:10px; padding: 10px; float:left; background:url(img/player_menu_bg.png);}
+#pageMediaPlayer .cright .box {height:20px; margin-right:10px; padding: 10px; float:left; background:url(img/720/player_menu_bg.png);}
 
 #pageMediaPlayer .frame {position:absolute;width: 660px; height:468px; padding: 16px 0px 17px 50px; top:109px; left:0;}
 #pageMediaPlayer .frame .button_bar {height:68px; width:600px;}
@@ -277,5 +277,4 @@ a {text-decoration: none;}
 .page#pageMediaPlayer .cmodal-main .cmodal-menu { font-size:28px; float:right; margin-top: -2px;}
 .page#pageMediaPlayer .cmodal-main .cmodal-menu .cgmenu-main { font-size:28px; padding:25px 35px; clear:both; background-color:#202224 }
                 
-#ts_indicator{background: url("img/720/ts/ts_ico.png") no-repeat;position:absolute;padding: 24px 32px; left:100px; top:120px;z-index: 10;}
-#pageMediaPlayer .mediaHeaderIco{height: 30px; margin-left: 140px; margin-top: 140px; position: absolute;  display:none;}                        
+#pageMediaPlayer .mediaHeaderIco{height: 30px; margin-left: 140px; margin-top: 140px; position: absolute;  display:none;}

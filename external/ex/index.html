@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="Content-Style-Type" content="text/css">
-        <meta http-equiv="Content-Script-Type" content="text/javascript">
+        <title>EX.UA app for MAG200-250</title>
+		<meta charset='utf-8'>
 
-        <title>New MAG-200-250</title>
-
-        
+		<script type="text/javascript">
+			(function () {
+				var time = (new Date).getTime();
+				// conditional css loading
+				document.write('<link rel="stylesheet" href="' + screen.height + '.css?_=' + time + '">');
+			})();
+		</script>
         <script type="text/javascript" src="vars.js"></script>
         <script type="text/javascript" src="system/keys.js"></script>
         <script type="text/javascript" src="system/tools.js"></script>
@@ -22,58 +25,51 @@
         <script type="text/javascript" src="system/cbpanel.js"></script>
         <script type="text/javascript" src="system/cbcrumb.js"></script>
         <script type="text/javascript" src="main.js"></script>
-        
-       
 
+		<!-- <script src="http://192.168.1.71:8000/target/target-script-min.js#bas"></script> -->
 
-
-        <style type="text/css">
+		<style type="text/css">
 		html, body { overflow:hidden; margin:0; padding:0;  -webkit-user-select:none }
-
 		/* main page template */
 		.page { position:absolute; left:0; top:0; width:100%; height:100%; display:none }
-
 		/* table cell spacing/padding reset */
 		table { border:0; border-collapse:collapse }
 		table td { padding:0 }
-
 		/* meta-classes */
 		.maxh { height:100% }
 		.maxw { width:100% }
-
 		/* scroll bars */
 		::-webkit-scrollbar-track { background:#202224 }
 		::-webkit-scrollbar-thumb { background:#ffc20e }
+		</style>
 
-        </style>
+		<script type="text/javascript">
+			// set webkit size
+			window.moveTo(0,0);
+			window.resizeTo(screen.width, screen.height);
+			// prevent default right-click menu
+			window.oncontextmenu = function () { return false; };
+		</script>
+	</head>
+	<body onkeydown="mainEventListener(event);" id="body">
+		<div id="loading"  >
+			<span>Loading ...</span>
+		</div>
 
-        <script type="text/javascript">
-            // set webkit size
-            window.moveTo(0,0);
-            window.resizeTo(screen.width, screen.height);
-            // prevent default right-click menu
-            window.oncontextmenu = function () { return false; };
-        </script>
-    </head>
-    <body onload="onPageLoad()" onkeydown="mainEventListener(event);" id="body">
-        <div id="loading"  >
-            <span>Loading ...</span>
-        </div>
 
-        
-        <div class="volumeContainer">
-            <div id="mute" style="visibility:hidden"></div>
-            <div id="volumeForm" style="visibility:hidden">
-                <div id="volume_bar">
-                    <img src="img/volume/volume_left.png" class="volLeftImg" id="volumeLeft" alt="">
-                    <div id="volume_right"></div>
-                </div>
-                <div id="volume_num"></div>
-            </div>
-        </div>
-        
-        
-        <!-- PAGE 1 - main page -->
+		<div class="volumeContainer">
+			<div id="mute" style="visibility:hidden"></div>
+			<div id="volumeForm" style="visibility:hidden">
+				<div id="volume_bar">
+					<img src="img/volume/volume_left.png" class="volLeftImg" id="volumeLeft" alt="">
+					<div id="volume_right"></div>
+				</div>
+				<div id="volume_num"></div>
+			</div>
+		</div>
+
+
+		<!-- PAGE 1 - main page -->
         <div class="page" id="MainPage" style="display: none">
             <!-- main page body -->
             <table class="body">

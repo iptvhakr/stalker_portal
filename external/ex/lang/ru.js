@@ -44,12 +44,7 @@ var lang = {
     'main_menu':'Главное меню'
 }
 
-var LANG_MEDIA_MENU_INFO_ITEM_TOTAL  = 'Записей всего:',
-    LANG_MEDIA_MENU_INFO_ITEM_MARKED = 'Выбрано:',
-    LANG_MEDIA_BTN_BACK  = 'На уровень<br>выше',
-    LANG_MEDIA_BTN_MENU  = 'Настройки',
-    LANG_MEDIA_BTN_F3    = 'Выделить',
-    LANG_MEDIA_DEFAULT_ABORT = 'Отмена',
+var LANG_MEDIA_DEFAULT_ABORT = 'Отмена',
     LANG_MEDIA_DEFAULT_CLOSE = 'Закрыть',
     LANG_MEDIA_DEFAULT_ERROR = 'Ошибка',
     LANG_MEDIA_DEFAULT_OK    = 'Да',
@@ -75,7 +70,6 @@ var mediaInfoMenu_3dview     = 'Режим',
     playerBtnF2sh            = 'Показать<br />плейлист',
     playerBtnF2hd            = 'Скрыть<br />плейлист',
     playingError             = 'Ошибка воспроизведения',
-    err_ERROR                = 'Ошибка',
     mediaInfoMenu_langUnknown= 'неизвестный',
     playerBtnInfo            = 'Скрыть<br />плеер',
     playerBtnMenu            = 'Настройки',
@@ -83,9 +77,7 @@ var mediaInfoMenu_3dview     = 'Режим',
     playlistNext             = "Следующее<br />медиа",
     time_seconds             = 'Сек.',
     LANG_MEDIA_MENU_INFO_DURATION = 'Продолжительность: ',
-    LANG_MEDIA_MENU_INFO_NO  = 'нет',
-    LANG_MEDIA_MENU_NO       = 'Нет',
-    LANG_MEDIA_MENU_OFF      = 'Выкл.';
+    LANG_MEDIA_MENU_NO       = 'Нет';
  
 
 //------------------------------------------------------------------------------

@@ -47,7 +47,7 @@ _GET['proxy'] = '';
         }
     }
     proxy = _GET['proxy'];
-})()
+})();
 
 
 
@@ -55,19 +55,17 @@ _GET['proxy'] = '';
 /**
  * Main page load handler
  */
-function onPageLoad () {
+window.onload = function onPageLoad () {
     echo('******** STB STARTED ********');
     try {
         loading_screen = document.getElementById('loading');
         loading_screen.style.display = 'block';
         curLangIdx = getCurrentLanguage();
-        if(curLangIdx != 'ru'){
+        if(curLangIdx != 'ru' && curLangIdx != 'ua'){
             curLangIdx = 'en';
         }
         // get localization file
         loadScript('lang/' + curLangIdx + '.js', function () {
-            // main css file
-            loadStyle(screen.height + '.css', function () {
                 echo(screen.width + "x" + screen.height, "screen resolution");
                 echo(curLangIdx, "current language");
                 try {
@@ -100,12 +98,11 @@ function onPageLoad () {
                 } catch ( err ) {
                     echo('onPageLoad err '+err);
                 }
-            });
         });
     } catch ( err ) {
         echo('onPageLoad err '+err);
     }
-}
+};
 
 
 function mainEventListener ( event ) {
@@ -230,7 +227,7 @@ MainPage.onInit = function(){
             echo('onMouseOver->MainPage.typeList.Activate(true);');
             MainPage.typeList.Activate(true);
         }
-    }
+    };
     
     // заполняем меню типов контента - (у нас всегда есть только 3 неменяющихся элемента)
     // и в то же время - навешиваем onCkick и onfocus на меню типов контента, категории и новинки
@@ -276,20 +273,20 @@ MainPage.onInit = function(){
                 echo('onMouseOver->cat_'+curr_cat.iid+'.Activate(true);');
                 curr_cat.Activate(true);
             }
-        }
+        };
         
         // навешиваем действие при наведении фокуса (обнвление правого меню)
         cat.onFocus = function(current, prev){
-        MainPage.catOnFocus(current, prev);
-        }
+        	MainPage.catOnFocus(current, prev);
+        };
 
         // изменение вида фокуса при деактивации списка (становится темный фокус)
         cat.onDeactivate = function(){
             MainPage.mainContent_elem.className = 'crop mainContent notActive';
-        }
+        };
         cat.onActivate = function(){
             MainPage.mainContent_elem.className = 'crop mainContent';
-        }  
+        };
         
         // скрываем все, чтобы при старте активировать только нужный
         cat.Show(false);
@@ -330,15 +327,15 @@ MainPage.onInit = function(){
         // задержка на втором меню при onFocus = 500. Изменяем её на 5, чтобы убрать эффект каскада задержек
         MainPage.typeList.actionFlag = true;
         MainPage.catOnFocus(item.cat.Current());
-    }
+    };
     
     MainPage.typeList.onDeactivate = function(){
         MainPage.typeLst_elem.className = 'typeLst notActive';
-    }
+    };
     
     MainPage.typeList.onActivate = function(){
         MainPage.typeLst_elem.className = 'typeLst';
-    }   
+    };
 
 
 /**
@@ -376,7 +373,7 @@ MainPage.onInit = function(){
                 ajax ( 'get', exURL+'/rss/'+item.news_data.rss, MainPage.rssParser,{charset:'utf-8'},'xml' );
             }
         },delay_time);
-    }
+    };
     
     
     // список новых фильмов
@@ -388,7 +385,7 @@ MainPage.onInit = function(){
             echo('onMouseOver->MainPage.newsList.Activate(true);');
             MainPage.newsList.Activate(true);
         }
-    }
+    };
     
     // обработка нажатия на новинку - с последующим определением является ли новинка каталогом либо обьектом
     MainPage.newsList.onClickFunc = function(){
@@ -400,11 +397,11 @@ MainPage.onInit = function(){
             addtime     : '',
             url         : MainPage.newsList.Current().news_link,
             iid         : ''
-        }
+        };
         MainPage.LastActComp = MainPage.newsList;
         MainPage.messageHint = new CModalHint(MainPage, lang.loading);
         CSListManager.Open(data);
-    }
+    };
 
     
     // создание и предварительное заполнение новинок
@@ -430,10 +427,10 @@ MainPage.onInit = function(){
     MainPage.newsList.onDeactivate = function(){
           MainPage.handleInner.querySelector('.content .rightContent').className = 'crop rightContent notActive';
           echo('MainPage.newsList.onDeactivate');
-    }  
+    };
     MainPage.newsList.onActivate = function(){
         MainPage.handleInner.querySelector('.content .rightContent').className = 'crop rightContent';
-    }    
+    };
     
     //    строка поиска и хлебных крошек
     MainPage.SearchBar = new CSearchBar(MainPage);
@@ -444,20 +441,20 @@ MainPage.onInit = function(){
      * запуск поиска
      * @param {String} value введенный поисковый запрос
      */
-    MainPage.SearchBar.onSearch = function ( value ) {
-        echo(value, 'MainPage.SearchBar.onSearch');
-        var data = {
-        title : value,
-        value : encodeURI(value),
-        url   : type_info[ROOT_GLOBAL_SEARCH].url_start + encodeURI(value),
-        type  : ROOT_GLOBAL_SEARCH }
-        
-        ListPage.start(data);
-        MainPage.LastActComp = MainPage.typeList.Current().cat;
-    }
-    
-    
-    /**
+	MainPage.SearchBar.onSearch = function ( value ) {
+		echo(value, 'MainPage.SearchBar.onSearch');
+		var data = {
+			title : value,
+			value : encodeURI(value),
+			url   : type_info[ROOT_GLOBAL_SEARCH].url_start + encodeURI(value),
+			type  : ROOT_GLOBAL_SEARCH
+		};
+		ListPage.start(data);
+		MainPage.LastActComp = MainPage.typeList.Current().cat;
+	};
+
+
+	/**
      *  Get search value if it was changed
      *  @param hint {String} value search value
      */
@@ -488,18 +485,18 @@ MainPage.onInit = function(){
                 }
             });
         }
-    }
+    };
     // при вызове поиска - открытие клавиатуры
     MainPage.SearchBar.onActivate = function(){
        gSTB.EnableVKButton(true);     
-    } 
+    };
     // при деактиваци поиска - активация элемента среднего списка
     MainPage.SearchBar.onDeactivate = function(){
        gSTB.EnableVKButton(false);  
         setTimeout(function(){
             MainPage.typeList.Current().cat.Activate(true);
         },5) 
-    } 
+    };
     
     
 
@@ -520,7 +517,7 @@ MainPage.onInit = function(){
         MainPage.typeList.actionFlag = true;
         MainPage.typeList.Current().cat.onFocus(MainPage.typeList.Current().cat.Current());
         echo('refresh is over main_page_menu.video[0].news_cache[0].img_src='+main_page_menu.video[0].news_cache[0].img_src);
-    }
+    };
     
     
     // панель кнопок
@@ -574,7 +571,7 @@ MainPage.onInit = function(){
         });
         // убрать загрузчик
         if(loading_screen.style.display === 'block'){setTimeout(function(){loading_screen.style.display = 'none';},100)}
-    }
+    };
     
 
     
@@ -589,10 +586,10 @@ MainPage.onInit = function(){
         // показать данные первого типа (т.е заполнение значениями по умолчанию)
         MainPage.typeList.onFocus(MainPage.typeList.FindOne());
         MainPage.typeList.Activate(true, true);
-    }
+    };
     // запускаем отображение первой страницы
     MainPage.start();
-}
+};
 
 
 MainPage.onShow = function(){
@@ -600,7 +597,7 @@ MainPage.onShow = function(){
     if(MainPage.SearchBar.items.hint.value && MainPage.SearchBar.items.hint.value !== lang.lang_default_hint){
         MainPage.SearchBar.items.hint.value = '';
     }
-}
+};
 
 /**
  * Events handler entry point
@@ -740,7 +737,7 @@ MainPage.actionExit = function () {
           MediaPlayer.end();
           window.location = decodeURIComponent(_GET['referrer']);
     });
-}
+};
 
 
 
@@ -903,7 +900,7 @@ ListPage.onInit = function(){
                     url         : '',
                     iid         : '',
                     type        : TYPE_BACK
-                }
+                };
                 // добавим элемент выхода на более верхний уровень
                 somelistItem = element('div',{ className: 'back' },'..');
                 current.Add(somelistItem, {
@@ -989,7 +986,7 @@ ListPage.onInit = function(){
                     url         : '',
                     iid         : '',
                     type        : TYPE_BACK
-                }
+                };
                 // добавим элемент выхода на более верхний уровень
                 somelistItem = element('div',{ className: 'back' },'..');
                 current.Add(somelistItem, {
@@ -1007,15 +1004,16 @@ ListPage.onInit = function(){
         }
         current.Activate(true);
         CSListManager.Current().onFocus(CSListManager.Current().Current(),true);
-    }
+    };
     
     
     
     /**
      * перерисовка правого меню (т.е. постера и описания) при получении соотв. элементом левого меню фокуса
      * @param {Object} current текущий элемент
+	 *  @param {Object} previous предыдущий элемент
      */
-    ListPage.onFocusAction = function(current){
+    ListPage.onFocusAction = function(current, previous){
         echo('list on focus');
         if(ListPage.isVisible){
             echo('ListPage.isVisible');
@@ -1035,7 +1033,7 @@ ListPage.onInit = function(){
                 cat_focus_timer = 0;
             },500);
         }
-    }
+    };
       
        
     /**
@@ -1071,7 +1069,7 @@ ListPage.onInit = function(){
         }
         CSListManager.Open(data);
         ListPage.breadCrumb.Show(true);
-    }
+    };
     
     
     /**
@@ -1105,13 +1103,13 @@ ListPage.onInit = function(){
                 }
             });
         }
-    }
+    };
     
     
     ListPage.SearchBar.onActivate = function () {
         ListPage.breadCrumb.Show(false);
         gSTB.EnableVKButton(true); 
-    }
+    };
     
     
     ListPage.SearchBar.onDeactivate = function(){
@@ -1120,7 +1118,7 @@ ListPage.onInit = function(){
         setTimeout(function(){
             CSListManager.Current().Activate(true);
         },5) 
-    } 
+    };
     
     
     // панель кнопок
@@ -1183,7 +1181,7 @@ ListPage.onInit = function(){
                     url            : obj[cont_type][item].url,
                     size_in_bytes  : obj[cont_type][item].size_in_bytes,
                     resolution     : obj[cont_type][item].resolution
-                }                
+                };
                 // иконка радио
                 if(CSListManager.parentData.type == RADIO_OBJECT){
                     obj[cont_type][item].type = 'stream';
@@ -1236,7 +1234,7 @@ ListPage.onInit = function(){
             CSListManager.Current().Activate(true);
             CSListManager.Current().onFocus(CSListManager.Current().Current(),true);
 //        },100)
-    }
+    };
     
 
 /**
@@ -1247,12 +1245,12 @@ ListPage.onInit = function(){
         echo('we are starting page 2 with type '+data.type);
         ListPage.Show( true, MainPage );
         CSListManager.Open(data);
-    }
+    };
     
     // инициализировать окно preview 
     ListPage.Preview.playerRect = ListPage.Preview.getRect();
     ListPage.Preview.Show(true, false);
-}
+};
 
 ListPage.onShow = function(){
     echo('ListPage onShow'); 
@@ -1268,7 +1266,7 @@ ListPage.onShow = function(){
     MediaPlayer.Subscribe(ListPage, MediaPlayer.EVENT_ERROR);
     MediaPlayer.Subscribe(ListPage, MediaPlayer.EVENT_OK);
     MediaPlayer.Subscribe(ListPage, MediaPlayer.EVENT_EXIT);
-}
+};
 
 
 /*
@@ -1281,7 +1279,7 @@ ListPage.actionExit = function () {
           MediaPlayer.end();
           window.location = decodeURIComponent(_GET['referrer']);
     });
-}
+};
 
 /**
  * выход на предыдущую страницу/переход по спискам текущей страницы
@@ -1304,7 +1302,7 @@ ListPage.actionBack = function(){
         ListPage.SearchBar.Show(true,false);
         CSListManager.Current().Activate(true);
     }
-}
+};
 
 
 /**
@@ -1329,7 +1327,7 @@ ListPage.actionMainMenu = function(){
     echo('---PAGE CHANGE---');
     ListPage.Show(false);
     MainPage.LastActComp.Activate(true,true);
-}
+};
 
 
 /**
@@ -1348,7 +1346,7 @@ ListPage.actionF3 = function(move){
             if ( move !== false ) CSListManager.Current().Focused(CSListManager.Current().Next(), true);
         }
     }
-}
+};
 
 
 /**
@@ -1362,7 +1360,7 @@ ListPage.actionINFO = function(){
     }else{
         ajax ( 'GET', CSListManager.Current().handleInner.data.url, htmlObjectInfoParser );
     }
-}
+};
 
 
 /**
@@ -1447,11 +1445,6 @@ ListPage.EventHandler = function(event){
                 break;
         } 
     }
- 
-//    if ( event.code === KEYS.EXIT ){
-//        // показываем либо скрываем поиск
-//        ListPage.actionExit();
-//    }
 };
 
  
@@ -1497,9 +1490,7 @@ function htmlListParser(html, status){
         add   = html[i].substring(html[i].indexOf('<small>')  +7, html[i].indexOf('</small>'));
         img = img.replace('?100','?400');
         // обьект или папка?
-        if(html[i].indexOf('Articles')<0 && html[i].indexOf('Статей')<0){
-            cat = false;
-        } else { cat = true; }
+		cat = !(html[i].indexOf('Articles')<0 && html[i].indexOf('Статей')<0);
         // некорректное имя
         if(title == '&nbsp;' || title == '' || title == ' ' || title === null || title === undefined){ title = 'unnamed'; }
         cats.push({
@@ -1513,9 +1504,6 @@ function htmlListParser(html, status){
     
     ListPage.addListItems(cats);
     echo('PARSER->ANSWER LENGTH='+cats.length);
-    
-//    date = new Date();
-//    echo('new htmlListParser speed='+(date.getTime()-start));
 }
 
 
@@ -1525,8 +1513,6 @@ function htmlListParser(html, status){
  * @param {int} status статус полученного ответа
  */
 function htmlSearchParser(html, status){
-//    var date = new Date();
-//    var start = date.getTime();
     echo('new htmlSearchParser');
     var cats = [], img, url, title, cat, add;
     try{
@@ -1564,9 +1550,7 @@ function htmlSearchParser(html, status){
         }
         img = img.replace('?100','?400');
         // обьект или папка?
-        if(html[i].indexOf('Articles')<0 && html[i].indexOf('Статей')<0){
-            cat = false;
-        } else { cat = true; }
+		cat = !(html[i].indexOf('Articles')<0 && html[i].indexOf('Статей')<0);
         // некорректное имя
         if(title == '&nbsp;' || title == '' || title == ' ' || title === null || title === undefined){ title = 'unnamed'; }
         
@@ -1581,8 +1565,6 @@ function htmlSearchParser(html, status){
     
     echo('PARSER->ANSWER LENGTH='+cats.length);
     ListPage.addListItems(cats);
-//    date = new Date();
-//    echo('new htmlSearchParser speed='+(date.getTime()-start));
 }
 
 /**
@@ -1599,7 +1581,7 @@ function onClickFunc(url, cat_id, cat_title, type){
         real_cat_id : cat_id,
         title       : cat_title,        
         type        : type
-    }
+    };
     ListPage.start(data);
     MainPage.LastActComp = MainPage.typeList.Current().cat;
 }
@@ -1661,7 +1643,7 @@ function htmlObjectParser(html){
     for(i = 0;i<cats.length;i++){
         var ext = cats[i].name.split('.');
         cats[i].ext = ext[ext.length - 1];
-        echo('['+i+']ext: '+cats[i].ext)
+        echo('['+i+']ext: '+cats[i].ext);
         cats[i].type = "none";
         if(model == 'MAG200'){
             switch(cats[i].ext.toLowerCase()){
@@ -1754,9 +1736,7 @@ function htmlObjectParser(html){
     }
     
     ListPage.addObjectItems(play);
-//        date = new Date();
-//        echo('NEW_htmlObjectParser speed='+(date.getTime()-start));
-}  
+}
 
 
 /**
@@ -1804,7 +1784,7 @@ function htmlActorsParser(html){
         url         : '',
         iid         : '',
         type        : TYPE_BACK
-    }
+    };
     somelistItem = element('div',{
         className: 'back'
     },'..');
@@ -1833,7 +1813,7 @@ function htmlActorsParser(html){
             addtime     : '',
             url         : 'http://www.ex.ua'+tmp[1],
             iid         : counter
-        }
+        };
             
         somelistItem = element('div',{
             className : css_class, 
@@ -1888,7 +1868,7 @@ function htmlWhatIsThisParser(html, status){
                     
                 } );
             }
-        }
+        };
         // навешиваем на csroll слежение за текущей позицией чтобы знать когда дойдем до текущего края и послать запрос на дополнение 
         CSListManager.Current().handleInner.onscroll = function () { 
             echo('on scroll ');
@@ -1903,7 +1883,7 @@ function htmlWhatIsThisParser(html, status){
                         
                     } );
             }
-        } 
+        };
         htmlListParser(html, status);
         return;
     }
@@ -1918,7 +1898,7 @@ function htmlWhatIsThisParser(html, status){
             CSListManager.Current().onFocus = function(current,previous){
                 // обычное поведение правого меню при просмотре списка обьекта
                 ListPage.onFocusAction(current,previous);
-            }
+            };
             ListPage.messageHint = new CModalHint(ListPage, lang.loading);
             htmlObjectParser(html, status);
             return; 
@@ -1947,7 +1927,7 @@ ListPage.Preview.setProgress = function ( value ) {
         // apply
         ListPage.Preview.pgval.style.width = value + '%';
     }
-}
+};
 
 /**
  * Moves the cursor to the given element
@@ -1972,7 +1952,7 @@ ListPage.Preview.setPosition = function ( data ) {
 ListPage.Preview.playPause = function () {
     echo('ListPage.Preview.playPause');
     echo(MediaPlayer.list,'MediaPlayer.list 0');
-    var list = {};
+    var list = [];
     // playing or not
     if ( MediaPlayer.playNow || MediaPlayer.obj !== null ) {
         MediaPlayer.playPause();
@@ -1995,7 +1975,7 @@ ListPage.Preview.playPause = function () {
             if ( file.data.type === MEDIA_TYPE_IMAGE ) ListPage.Preview.player.className = 'player play';
         }
     }
-}
+};
 
 
 /**
@@ -2003,34 +1983,41 @@ ListPage.Preview.playPause = function () {
 * @return {{x:Number,y:Number,a:Number,b:Number}}
 */
 ListPage.Preview.getRect = function () {
-		switch ( environment.tvsystem ) {
-                        case 'NTSC':
-                                return {x:457, y:97, a:218, b:140};
-                        case 'PAL':
-                        case '576-50':
-                        case '576p-50':    
-                                return {x:457, y:108, a:219, b:140};
-			case '720p-50':
-			case '720p-60':
-				switch ( screen.width ) {
-					case 720         : return {x:837, y:129, a:389, b:177};
-					case 1280        : return {x:830, y:129, a:394, b:220};
-				}
-				break;
-			case '1080i-50':
-			case '1080i-60':
-			case '1080p-50':
-			case '1080p-60':
-				switch ( screen.width ) {
-					case 720         : return {x:1253,y:205, a:584, b:260};
-					case 1280        : return {x:1245,y:192, a:588, b:330};
-					case 1920        : return {x:1247,y:194, a:591, b:330};
-				}
-				break;
-		}
-        // just in case
-        return { x:0, y:0, a:0, b:0 };
+	var videoMode = gSTB.RDir('vmode');
+	switch ( videoMode ) {
+		case '480i':
+		case '480p':
+			return {x : 457, y : 97, a : 218, b : 140};
+		case '576i':
+		case '576p':
+			return {x : 457, y : 108, a : 219, b : 140};
+		case '720p':
+		case '720p60':
+			switch ( screen.width ) {
+				case 720         :
+					return {x : 837, y : 129, a : 389, b : 177};
+				case 1280        :
+					return {x : 830, y : 129, a : 394, b : 220};
+			}
+			break;
+		case '1080i':
+		case '1080i60':
+		case '1080p':
+		case '1080p60':
+			switch ( screen.width ) {
+				case 720         :
+					return {x : 1253, y : 205, a : 584, b : 260};
+				case 1280        :
+					return {x : 1245, y : 192, a : 588, b : 330};
+				case 1920        :
+					return {x : 1247, y : 194, a : 591, b : 330};
+			}
+			break;
+	}
+	// just in case
+	return { x : 0, y : 0, a : 0, b : 0 };
 };
+
 
 /**
  * Convert number of bytes into human readable format
@@ -2093,7 +2080,7 @@ ListPage.Preview.infoFolder = function(data){
             element('div', {className: 'text'}, [lang.description, element('span', {className: 'txt'}, name.split('').join("\u200B"))]),
             element('div', {className: 'text'}, [lang.add_time, element('span', {className: 'txt'}, data.addtime)])
     ]));
-}
+};
 
 
 /**
@@ -2136,7 +2123,7 @@ ListPage.Preview.infoFile = function(data){
         echo('name 2= '+name.split('').join("\u200B"));
 	// show images at once
 	if ( data.type === MEDIA_TYPE_IMAGE ){ListPage.Preview.playPause();}
-}
+};
 
 
 
@@ -2149,7 +2136,7 @@ ListPage.Preview.infoBack = function(data){
 		this.infoIcon,
 		element('div', {className: 'text'}, lang.madia_menu_info_back_act)
 	]));
-}
+};
 
 
 ListPage.Info.start = function(html){
@@ -2172,10 +2159,10 @@ ListPage.Info.start = function(html){
             button.innerHTML = ''; 
         }
         //var img = ListPage.infoMessage.querySelector('img');
-    },600)
+    },600);
     ListPage.Info.Show(true, true);
     ListPage.Info.Activate();
-}
+};
 
 
 /**

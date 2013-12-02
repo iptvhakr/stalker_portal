@@ -45,19 +45,14 @@ var lang = {
     'size_in_bytes':'Размер: ',
     'film_description_off':'Close description',
     'main_menu':'Main menu'
-}
+};
 
-var LANG_MEDIA_BTN_BACK              = 'Back',
-    LANG_MEDIA_BTN_MENU              = 'Menu',
-    LANG_MEDIA_BTN_F3                = 'Select',
-    LANG_MEDIA_DEFAULT_ABORT         = 'Cancel',
+var LANG_MEDIA_DEFAULT_ABORT         = 'Cancel',
     LANG_MEDIA_DEFAULT_CLOSE         = 'Close',
     LANG_MEDIA_DEFAULT_ERROR         = 'Error',
     LANG_MEDIA_DEFAULT_OK            = 'Yes',
     LANG_MEDIA_ITEM_WRONG_TYPE       = 'No playable content here.',
-    LANG_MEDIA_MENU_INFO_ITEM_TOTAL  = 'Items total:',
-    LANG_MEDIA_MENU_INFO_ITEM_MARKED = 'Selected:',    
-            //Media Player
+    //Media Player
     playerBtnInfo                    = 'Hide<br />player',
     playerBtnF2sh                    = 'Show<br />playlist',
     playerBtnF2hd                    = 'Hide<br />playlist',
@@ -66,11 +61,9 @@ var LANG_MEDIA_BTN_BACK              = 'Back',
     playlistNext                     = "Next<br />media",
      mediaInfoMenu_3dview            = 'Mode',
     playingError                     = 'play error',
-    err_ERROR                        = 'error',
     mediaInfoMenu_langUnknown        = 'unknown',
     // info
     LANG_MEDIA_MENU_INFO_DURATION    = 'Duration: ',
-    LANG_MEDIA_MENU_INFO_NO          = 'no',
     LANG_MEDIA_MENU_NO               = 'no',
     time_seconds                     = 'Sek.',
     LANG_MEDIA_MENU_OFF              = 'off'

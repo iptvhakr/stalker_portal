@@ -11,7 +11,6 @@
 
 /**
  * Main object gSTB methods declaration
- * TODO: expand description
  * @class gSTB
  */
 var gSTB = {

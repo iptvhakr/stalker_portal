@@ -1,7 +1,7 @@
  
 //------------------------------------------------------------------------------
 var     debug   = false,
-        version = '0.67 beta';
+        version = '0.69 beta';
 // Типы узлов
 var TYPE_NONE              = 0,
     ROOT_VIDEO             = 1,
@@ -24,18 +24,16 @@ var TYPE_NONE              = 0,
     WHAT_IS_THIS_TYPE      = 21,
     ORPHAN_FOLDER          = 22,
     MEDIA_TYPE_STREAM      = 23,  // ??
-    MEDIA_TYPE_NONE        = 0
-    ;
+    MEDIA_TYPE_NONE        = 0;
     
 // VARIABLES
 var NORMAL_MODE  = 0,
     LSEARCH_MODE = 1,
-    environment = {},
     proxy = '',
     rect = {left:843, top:149, width:400, height:221},
     DEFAULT_AUDIO_LANG_1_IDX    = 1,
     DEFAULT_SUBTITLE_LANG_1_IDX = 0,
-    curLangIdx= null,  
+    curLangIdx = null,  
     standby,
     currCPage,
     exURL='http://www.ex.ua',
@@ -51,7 +49,7 @@ var NORMAL_MODE  = 0,
     volume_TIMEOUT        = 2000,
     muteValue             = 0,       // stb.SetMute(muteValue)
     ServiceMenu           = {},
-    pause_time_data       = 0,
+    pauseData     		  = {curTime:0, fileLength:0, paused:false, audioTrack:0}, // use it to restore player position after disconnection from server
     MAX_READABLE_IMAGE_WEIGHT = 500000,  // file size in bytes
     old_system_type = true
     ;    
