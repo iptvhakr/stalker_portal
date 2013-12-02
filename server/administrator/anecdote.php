@@ -29,7 +29,6 @@ if (!$error){
             Admin::checkAccess(AdminAccess::ACCESS_CREATE);
 
             Mysql::getInstance()->insert('anec', array(
-                'title'     => @$_POST['title'],
                 'anec_body' => @$_POST['anec_body'],
                 'added'     => 'NOW()'
             ));
@@ -52,7 +51,6 @@ if (!$error){
 
             Mysql::getInstance()->update('anec',
                 array(
-                    'title'     => $_POST['title'],
                     'anec_body' => $_POST['anec_body'],
                     'added'     => 'NOW()'
                 ),
