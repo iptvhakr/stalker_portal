@@ -4840,8 +4840,13 @@ player.prototype.progress_bar = {
 //Clock On Video by Agnitumus
 player.prototype.ClockOnVideo = {
     "on" : false,
+    "position" : "Off",
 
-    changeType : function(value){
+    changeType : function(value, do_not_save){
+
+        if (!do_not_save){
+            this.position = value;
+        }
 
         this.dom_obj.removeClass('onVideo'+stb.user.video_clock);
 
@@ -4850,20 +4855,22 @@ player.prototype.ClockOnVideo = {
         _debug('player.change_ClockOnVideoType');
         _debug('set clock Type', stb.user.video_clock);
 
-        stb.load(
+        if (!do_not_save){
+            stb.load(
 
-            {
-                "type"   : "stb",
-                "action" : "set_clock_on_video",
-                "clockType" : stb.user.video_clock
-            },
+                {
+                    "type"   : "stb",
+                    "action" : "set_clock_on_video",
+                    "clockType" : stb.user.video_clock
+                },
 
-            function(result){
+                function(result){
 
-            },
+                },
 
-            this
-        );
+                this
+            );
+        }
 
         this.dom_obj.addClass('onVideo'+value);
         this.Refresh();
@@ -4887,6 +4894,10 @@ player.prototype.ClockOnVideo = {
         this.dom_obj.className = 'osd_clock_block';
         document.body.insertBefore(this.dom_obj, document.querySelector('.loader'));
 
+        _debug('stb.user.video_clock', stb.user.video_clock);
+
+        this.position = stb.user.video_clock = stb.user.video_clock || 'Off';
+
         this.osd_clock = create_block_element('osd_clock', this.dom_obj);
         this.dom_obj.addClass('onVideo'+stb.user.video_clock);
         this.Refresh();
@@ -4903,9 +4914,12 @@ player.prototype.ClockOnVideo = {
         _debug('ClockOnVideo.toggle');
 
         if (this.on){
-            this.changeType('Off');
+            this.changeType('Off', true);
         }else{
-            this.changeType('upRight');
+            if (this.position == 'Off'){
+                this.position = 'upRight';
+            }
+            this.changeType(this.position, true);
         }
     }
 };
