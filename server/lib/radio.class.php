@@ -72,7 +72,11 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
                 $user = User::getInstance(Stb::getInstance()->id);
                 $user_channels = $user->getServicesByType('radio');
 
-                return Mysql::getInstance()->from('radio')->where(array('status' => 1))->in('id', $user_channels)->orderby('number');
+                if ($user_channels == 'all'){
+                    return Mysql::getInstance()->from('radio')->where(array('status' => 1))->orderby('number');
+                }else{
+                    return Mysql::getInstance()->from('radio')->where(array('status' => 1))->in('id', $user_channels)->orderby('number');
+                }
             }
         }
 
