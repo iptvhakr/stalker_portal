@@ -62,11 +62,24 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
         if (@$_POST['pattern'] == 'mag100'){
             $user_list = Middleware::getUidsByPattern(array('hd' => 0));
         }else if (@$_POST['pattern'] == 'mag200'){
-            $user_list = Middleware::getUidsByPattern(array('hd' => 1));
-        }else{
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG200'));
+        }else if (@$_POST['pattern'] == 'mag250'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG250'));
+        }else if (@$_POST['pattern'] == 'mag255'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG255'));
+        }else if (@$_POST['pattern'] == 'aurahd0'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'AuraHD0'));
+        }else if (@$_POST['pattern'] == 'aurahd1'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'AuraHD1'));
+        }else if (@$_POST['pattern'] == 'aurahd9'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'AuraHD9'));
+        }
+        else{
             $user_list = array();
         }
-        
+
+        $error = sprintf(_('%s events %s sended, %s errors'), count($user_list), $_POST['event'], $error_counter)."<br>\n".$error;
+
         $event->setUserListById($user_list);
         
     }elseif (@$_POST['user_list_type'] == 'by_group'){
@@ -77,13 +90,20 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
         }else{
             $user_list = array();
         }
-        
+
+        $error = sprintf(_('%s events %s sended, %s errors'), count($user_list), $_POST['event'], $error_counter)."<br>\n".$error;
+
         $event->setUserListById($user_list);
         
     }elseif (@$_POST['user_list_type'] == 'by_user_list'){
         if (@$_FILES['user_list']){
             if (is_uploaded_file($_FILES['user_list']['tmp_name'])) {
                 $f_cont = file ($_FILES['user_list']['tmp_name']);
+
+                if (is_array($f_cont) && isset($f_cont[0]) && substr($f_cont[0], 0, 3) == "\xef\xbb\xbf"){
+                    $f_cont[0] = substr($f_cont[0], 3);
+                }
+
                 foreach ($f_cont as $mac){
             
                     $uid = Middleware::getUidByMac($mac);
@@ -346,6 +366,11 @@ function fill_msg(){
         <select name="pattern">
             <option value="mag100">MAG100</option>
             <option value="mag200">MAG200</option>
+            <option value="mag250">MAG250</option>
+            <option value="mag255">MAG255</option>
+            <option value="aurahd0">AuraHD0</option>
+            <option value="aurahd1">AuraHD1</option>
+            <option value="aurahd9">AuraHD9</option>
         </select>
     </td>
 </tr>
