@@ -41,6 +41,11 @@
                 return;
             }
 
+            if (this.current.error && this.current.error == 'not_configured'){
+                this.dom_obj.innerHTML = '<div class="curweather_descr"><span class="curweather_title">' + get_word('current_weather_not_configured') + '</span></div>';
+                return;
+            }
+
             if (this.dom_obj.isHidden()){
                 this.dom_obj.show();
             }

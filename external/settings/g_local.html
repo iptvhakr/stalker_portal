@@ -217,7 +217,7 @@ function submit()
         wr+='}';
         parent.stb.SetEnv(wr);
     }    
-    parent.load({"type":"stb","action":"set_locale","locale":la,"city":numberC},function(result){if(!result)parent.erMes(parent.t('Saving error'),"i"+iid);else parent.rebut2=true;back();});
+    parent.load({"type":"stb","action":"set_locale","locale":la,"city":numberC},function(result){if(!result)parent.erMes(parent.t('Saving error'),"i"+iid);else parent.rebut2=true;back();parent.stb.SendEventToPortal(JSON.stringify({"type":"settings","refresh_weather":true}));});
 }
 
 function change(a){if(iid>mid-2){if(iid+a<=mid&&iid+a>=mid-1){iid+=a;document.getElementById('i'+iid).focus();}}

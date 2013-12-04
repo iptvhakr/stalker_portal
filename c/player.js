@@ -196,6 +196,10 @@ player.prototype.init = function(){
                     stb.user.ts_enabled = stb.profile.ts_enabled = params.ts_enabled;
                     module.time_shift_local.init();
                 }
+
+                if (params.hasOwnProperty("refresh_weather") && module.curweather){
+                    module.curweather.load.call(module.curweather);
+                }
             }
         }
 

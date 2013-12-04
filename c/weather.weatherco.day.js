@@ -93,6 +93,14 @@
         this.fill = function(data){
             _debug('weatherco_dayweather.fill', data);
 
+            if (data.error && data.error == 'not_configured'){
+                this.map[0].descr.innerHTML = get_word('current_weather_not_configured');
+                this.map[1].descr.innerHTML = get_word('current_weather_not_configured');
+                this.map[2].descr.innerHTML = get_word('current_weather_not_configured');
+                this.map[3].descr.innerHTML = get_word('current_weather_not_configured');
+                return;
+            }
+
             this.update_header_path([{"alias" : "city", "item" : data.city}]);
 
             data = data['forecast'];

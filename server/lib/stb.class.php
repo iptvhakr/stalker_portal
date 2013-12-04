@@ -205,9 +205,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             $this->locale     = (empty($user['locale']) && Config::exist('default_locale')) ? Config::get('default_locale') : $user['locale'];
 
-            $this->city_id    = (empty($user['city_id']) && Config::exist('default_city_id')) ? Config::get('default_city_id') : intval($user['city_id']);
+            if (Config::getSafe('default_city_id', 0) == 0 && $user['city_id'] == 0){
+                $this->city_id = 0;
+            }else{
+                $this->city_id = (empty($user['city_id']) && Config::exist('default_city_id')) ? Config::get('default_city_id') : intval($user['city_id']);
+            }
 
-            $this->country_id = intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
+            $this->country_id = !$this->city_id ? 0 : intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
 
             $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
 

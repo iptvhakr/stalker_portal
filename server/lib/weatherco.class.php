@@ -183,6 +183,10 @@ class Weatherco implements \Stalker\Lib\StbApi\Weatherco
 
         $city_id = Stb::getInstance()->city_id;
 
+        if ($city_id == 0){
+            return array('error' => 'not_configured');
+        }
+
         $cache = Mysql::getInstance()->from('weatherco_cache')->where(array('city_id' => $city_id))->get()->first();
 
         $current = unserialize(System::base64_decode($cache['current']));
@@ -203,6 +207,10 @@ class Weatherco implements \Stalker\Lib\StbApi\Weatherco
     public function getForecast(){
 
         $city_id = Stb::getInstance()->city_id;
+
+        if ($city_id == 0){
+            return array('error' => 'not_configured');
+        }
 
         $cache = Mysql::getInstance()->from('weatherco_cache')->where(array('city_id' => $city_id))->get()->first();
 

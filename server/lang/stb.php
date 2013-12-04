@@ -14,6 +14,7 @@ $words['weather_wind'] = _('Wind');
 $words['weather_speed'] = _('m/s');
 $words['weather_humidity'] = _('Humidity');
 $words['current_weather_unavailable'] = _('Current weather unavailable');
+$words['current_weather_not_configured'] = _('The weather is not configured');
 
 // karaoke
 $words['karaoke_view'] = _('VIEW');
