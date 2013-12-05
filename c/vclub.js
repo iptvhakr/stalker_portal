@@ -966,24 +966,33 @@
             _debug('vclub.add_download', item);
             
             _debug('path: ', this.data_items[this.cur_row].path);
+            _debug('url', url);
+
+            if (this.data_items[this.cur_row].protocol == 'custom'){
+                url = this.data_items[this.cur_row].cmd;
+                var url_match = /(\S+):\/\/(\S+)/.exec(url);
+                _debug('url_match', url_match);
+                if (url_match){
+                    url = url_match[0];
+                }
+            }
 
             var filename = this.data_items[this.cur_row].path;
 
-            if (this.data_items[this.cur_row].cur_series){
+            if (parseInt(this.data_items[this.cur_row].cur_series, 10) != 0){
                 filename += '_E' + this.data_items[this.cur_row].cur_series;
             }
 
             if (url){
                 var ext = /\.(\w*)$/.exec(url);
+                if (!ext){
+                    ext = [,'mpg'];
+                }
             }else{
                 ext = [,'mpg'];
             }
 
-            if (ext){
-                filename += '.'+ext[1];
-            }else{
-                filename = undefined;
-            }
+            filename += '.'+ext[1];
 
             _debug('filename: ', filename);
 
@@ -992,14 +1001,9 @@
             var video_cmd = this.data_items[this.cur_row].cmd;
             var episode   = this.data_items[this.cur_row].cur_series || 0;
 
-            var dialog_options = {"parent" : this, "url" : url, "name" : filename};
+            var dialog_options = {"parent" : this, "url" : url, "name" : filename, "secure_url" : true};
 
             if (!url){
-
-                /*dialog_options.url = function(callback){
-                    self.get_link(video_cmd, episode, callback);
-                };*/
-
                 dialog_options.url = {"secure_url" : true, "type" : "vclub", "exec" : "module.vclub.get_link", "scope" : "module.vclub", "options" : [video_cmd, episode]};
             }
 
