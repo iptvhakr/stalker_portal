@@ -465,6 +465,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             }else{
                 $this->initProfile(null, null, $device_id);
+                $this->params['stb_type'] = $model;
             }
         }else{
             Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
