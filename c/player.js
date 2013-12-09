@@ -1658,7 +1658,7 @@ player.prototype.init_first_channel = function(){
             channel = this.channels[this.ch_idx];
         }
 
-        this.cur_media_item = this.cur_tv_item = this.last_not_locked_tv_item = channel;
+        this.cur_media_item = this.cur_tv_item = this.last_not_locked_tv_item = channel || {};
     }
 };
 
