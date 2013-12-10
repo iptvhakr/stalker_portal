@@ -23,6 +23,10 @@ class RESTApiRequest extends HTTPRequest
             throw new RESTBadRequest("Empty request method");
         }
 
+        if ($this->method == 'OPTIONS'){
+            exit;
+        }
+
         if (!in_array($this->method, array('GET', 'POST', 'PUT', 'DELETE'))){
             throw new RESTNotAllowedMethod("Method not allowed");
         }
