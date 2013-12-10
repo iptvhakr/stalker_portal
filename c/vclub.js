@@ -10,7 +10,7 @@
         
         this.layer_name = 'vclub';
         
-        this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'name', 'today', 'yesterday', 'week_and_more'];
+        this.row_blocks  = ['hd', 'sd', 'fav', 'lock', 'low_quality', 'name', 'today', 'yesterday', 'week_and_more'];
         
         this.load_params = {
             'type'   : 'vod',

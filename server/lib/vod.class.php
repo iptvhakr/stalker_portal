@@ -808,6 +808,12 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             if (@$_REQUEST['sortby'] && @$_REQUEST['sortby'] == 'added') {
                 $this->response['data'][$i] = array_merge($this->response['data'][$i], $this->getAddedArr($this->response['data'][$i]['added']));
             }
+
+            if (Config::getSafe('enable_video_low_quality_option', false)){
+                $this->response['data'][$i]['low_quality'] = intval($this->response['data'][$i]['low_quality']);
+            }else{
+                $this->response['data'][$i]['low_quality'] = 0;
+            }
         }
 
         return $this->response;

@@ -201,6 +201,12 @@ if (count(@$_POST) > 0){
                 $high_quality = 0;
             }
 
+            if (@$_POST['low_quality'] == 'on'){
+                $low_quality = 1;
+            }else{
+                $low_quality = 0;
+            }
+
             if (@$_POST['for_sd_stb'] == 'on'){
                 $for_sd_stb = 1;
             }else{
@@ -298,6 +304,7 @@ if (count(@$_POST) > 0){
                             'rating_mpaa'    => $_POST['rating_mpaa'],
                             'path'           => $trans_name,
                             'high_quality'   => $high_quality,
+                            'low_quality'    => $low_quality,
                             'comments'       => $_POST['comments'],
                             'added'          => 'NOW()'
                         )
@@ -367,6 +374,7 @@ if (count(@$_POST) > 0){
                             'age'            => $_POST['age'],
                             'rating_mpaa'    => $_POST['rating_mpaa'],
                             'high_quality'   => $high_quality,
+                            'low_quality'    => $low_quality,
                             'comments'       => $_POST['comments']
                         ),
                         array(
@@ -931,6 +939,7 @@ if (@$_GET['edit']){
         $path     = $arr['path'];
         $hd       = $arr['hd'];
         $high_quality = $arr['high_quality'];
+        $low_quality  = $arr['low_quality'];
         $rtsp_url = $arr['rtsp_url'];
         $protocol = $arr['protocol'];
         $rating_mpaa = $arr['rating_mpaa'];
@@ -959,6 +968,11 @@ if (@$_GET['edit']){
             $checked_high_quality = 'checked';
         }else{
             $checked_high_quality = '';
+        }
+        if ($low_quality){
+            $checked_low_quality = 'checked';
+        }else{
+            $checked_low_quality = '';
         }
         if ($for_sd_stb){
             $checked_for_sd_stb = 'checked';
@@ -1901,6 +1915,17 @@ $(function(){
                 <input name="high_quality" id="high_quality" type="checkbox" <? echo isset($checked_high_quality) ? $checked_high_quality : 'checked' ?> >
             </td>
         </tr>
+        <?}?>
+
+        <? if (Config::getSafe('enable_video_low_quality_option', false)){ ?>
+            <tr>
+                <td align="right" valign="top">
+                    <?= _('Low quality')?>:
+                </td>
+                <td>
+                    <input name="low_quality" id="low_quality" type="checkbox" <? echo isset($checked_low_quality) ? $checked_low_quality : 'checked' ?> >
+                </td>
+            </tr>
         <?}?>
 
         <tr id="genre_1" style="background-color:#e0e0e0">

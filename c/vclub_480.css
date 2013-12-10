@@ -118,4 +118,19 @@
 .disabled_all_buttons span{
     color: #707070 !important;
 }
+
+#vclub .low_quality_block{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background-image: url("i_480/low_q.png");
+    margin: 2px 0 0 2px;
+}
+#vclub .active_low_quality_block{
+    float: left;
+    width: 20px;
+    height: 20px;
+    background-image: url("i_480/low_q.png");
+    margin: 8px 2px 0 2px;
+}
 /* END VCLUB */
