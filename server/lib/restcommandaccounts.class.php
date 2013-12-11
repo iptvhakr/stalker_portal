@@ -100,7 +100,7 @@ class RESTCommandAccounts extends RESTCommand
 
             $user = User::getByLogin($account['login']);
 
-            if (!empty($user) && ($user['id'] != $users_ids[0] || count($users_ids) > 1)){
+            if (!empty($user) && ($user->getId() != $users_ids[0] || count($users_ids) > 1)){
                 throw new RESTCommandException('Login already in use');
             }
         }
