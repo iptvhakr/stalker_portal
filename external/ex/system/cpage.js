@@ -30,7 +30,8 @@ function CPage ( parent ) {
 }
 
 // extending
-extend(CPage, CBase);
+CPage.prototype = Object.create(CBase.prototype);
+CPage.prototype.constructor = CPage;
 
 
 /**

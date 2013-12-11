@@ -188,20 +188,37 @@ function eventPrepare ( event, stopBubble, label ) {
 }
 
 
+///**
+// * Simple way to implement class inheritance
+// * @param {Object} Child new class
+// * @param {Object} Parent base class
+// */
+//function extend ( Child, Parent ) {
+//	var F = function(){};
+//	F.prototype = Parent.prototype;
+//	Child.prototype = new F();
+//	Child.prototype.constructor = Child;
+//	Child.parent = Parent.prototype;
+//}
+
 /**
- * Simple way to implement class inheritance
- * @param {Object} Child new class
- * @param {Object} Parent base class
+ * Combines two objects and write result to target object
+ * @param {Object} target object to which the data will be transferred
+ * @param {Object} source object from which the data will be transferred
+ * @param [override = true] if set to false target object not rewriting, result of combining returns from function
+ * @returns {Object} combined object
  */
-function extend ( Child, Parent ) {
-	var F = function(){};
-	F.prototype = Parent.prototype;
-	Child.prototype = new F();
-	Child.prototype.constructor = Child;
-	Child.parent = Parent.prototype;
+function extend (target, source, override) {
+	var _target = (override === false ? extend({}, target) : target || {});
+	for (var prop in source) {
+		if ( typeof _target[prop] === 'object' && typeof source[prop] === 'object' && !Array.isArray(_target[prop]) && !Array.isArray(source[prop]) ) {
+			_target[prop] = extend(_target[prop], source[prop], override);
+		} else {
+			_target[prop] = source[prop];
+		}
+	}
+	return _target;
 }
-
-
 /**
  * Ajax request
  * @param {String} method "post", "get" or "head"
@@ -228,3 +245,64 @@ function ajax ( method, url, callback, headers, type ) {
 	xhr.send();
 	return xhr;
 }
+
+/**
+ * Object represents simple event model
+ * @type {{ bind: Function, trigger: Function, inject: Function}}
+ */
+var Events = {
+	/**
+	 * Assign new event to the current object
+	 * @param {String|Object} event Event name or Object where the key is event name and value is handler
+	 * @param {Function} callback Function that will be executed when event was triggered
+	 */
+	bind: function ( event, callback ) {
+		this._events || (this._events = {});
+		if ( typeof event === 'object' ) {
+			for ( var name in event ) {
+				this.bind(name, event[name]);
+			}
+		} else if ( typeof event === 'string' && typeof callback === 'function' ) {
+			if ( this._events[event] === undefined ) {
+				this._events[event] = [];
+			}
+			this._events[event].push(callback);
+		}
+	},
+
+	/**
+	 * Trigger some event
+	 * @param {String} event Name of events which will be triggered
+	 */
+	trigger: function ( event, data ) {
+		var result, results = [], self = this;
+		if ( event !== undefined && this._events !== undefined && this._events[event] !== undefined ) {
+			this._events[event].forEach(function ( ev ) {
+					result = ev.call(self, data);
+					if ( result != undefined ) { results.push(result); }
+				}
+			);
+		}
+		return results;
+	},
+
+	/**
+	 * Remove event handlers for specified event
+	 * @param {String} event Name of removed event
+	 */
+	unbind: function(event){
+		delete this._events[event];
+	},
+
+	/**
+	 * Inject current functionality to another object or function
+	 * @param {Object|Function} obj Object which is embedded functionality
+	 */
+	inject: function( obj ){
+		if (typeof obj === 'function'){
+			extend(obj.prototype, this);
+		}else if (typeof obj === 'object'){
+			extend(obj, this);
+		}
+	}
+};

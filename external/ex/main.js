@@ -4,6 +4,18 @@
  * @mentor DarkPark
  ********************/
 
+// global event
+var stbEvent = {
+	onEvent : function(data){},
+	onMessage: function( from, message, data ){
+		this.trigger(message, {from: from, data: data});
+	},
+	onBroadcastMessage: function( from, message, data ){
+		echo(message, "onBroadcastMessage");
+		this.trigger("broadcast." + message, {from: from, data: data});
+	},
+	event : 0
+};
 
 /** 
  * global Main Page object
@@ -58,14 +70,26 @@ _GET['proxy'] = '';
 window.onload = function onPageLoad () {
     echo('******** STB STARTED ********');
     try {
-        loading_screen = document.getElementById('loading');
-        loading_screen.style.display = 'block';
-        curLangIdx = getCurrentLanguage();
-        if(curLangIdx != 'ru' && curLangIdx != 'ua'){
-            curLangIdx = 'en';
-        }
-        // get localization file
-        loadScript('lang/' + curLangIdx + '.js', function () {
+		loading_screen = document.getElementById('loading');
+		loading_screen.style.display = 'block';
+		var curLangIdx = getCurrentLanguage();
+		if ( curLangIdx != 'ru' && curLangIdx != 'uk' ) { curLangIdx = 'en'; }
+		// get content and interface languages
+		var data = gSTB.LoadUserData('ex.ua.data.json');
+		try {
+			data = JSON.parse(data);
+		} catch ( err ) {
+			echo('JSON.parse(LoadUserData("ex.ua.data.json")); -> ERROR ->' + err);
+			data = {contentLang: curLangIdx, interfaceLang: curLangIdx};
+			gSTB.SaveUserData('ex.ua.data.json', JSON.stringify(data));
+		}
+		echo(data, 'data JSON.parse(LoadUserData("ex.ua.data.json"))');
+		// set content lang
+		type_info = content[data.contentLang].type_info;
+		main_page_menu = content[data.contentLang].main_page_menu;
+
+		// get localization file
+        loadScript('lang/' + data.interfaceLang + '.js', function () {
                 echo(screen.width + "x" + screen.height, "screen resolution");
                 echo(curLangIdx, "current language");
                 try {
@@ -518,13 +542,17 @@ MainPage.onInit = function(){
         MainPage.typeList.Current().cat.onFocus(MainPage.typeList.Current().cat.Current());
         echo('refresh is over main_page_menu.video[0].news_cache[0].img_src='+main_page_menu.video[0].news_cache[0].img_src);
     };
-    
+
+	MainPage.actionLang = function () {
+		echo('MainPage.actionLang');
+		new CModalSelectLang(MainPage, lang.changeLang, '', {});
+	};
     
     // панель кнопок
     MainPage.BPanel = new CButtonPanel(MainPage);
     MainPage.BPanel.Init('img/' + screen.height, MainPage.handleInner.querySelector('#MainPage .footer div.cbpanel-main'));
     MainPage.BPanel.Add(KEYS.REFRESH, 'ico_refresh.png', lang.refresh,   MainPage.actionRefresh);
-
+	MainPage.BPanel.Add(KEYS.F3, 'ico_f3.png', lang.changeLang,   MainPage.actionLang);
 
 /**
  * Парсер для составления списка фильмов/аудио/картинок.
@@ -612,6 +640,9 @@ MainPage.EventHandler = function(event){
     if (event.code === KEYS.REFRESH){
         MainPage.actionRefresh();
     }
+	if (event.code === KEYS.F3){
+		MainPage.actionLang();
+	}
     if ( MainPage.SearchBar.isActive ) {
         switch ( event.code ) {
             case KEYS.RIGHT:

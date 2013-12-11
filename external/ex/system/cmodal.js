@@ -506,682 +506,6 @@ extend(CModalAuth, CModalAlert);
 ///////////////////////////////////////////////////////////////////////////////
 
 
-function CModalMount ( parent ) {
-	// parent constructor
-	CModalBox.call(this, parent);
-
-	/**
-	 * The component inner name
-	 * @type {String}
-	 */
-	this.name = "CModalMount";
-
-	// for limited scopes
-	var self = this;
-
-	var html = element('table', {className:'main maxw'}, [
-		element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_MOUNT_DLG_ADDR),
-			element('td', {className:'data'}, this.url = element('input', {type:'text'}))
-		]),
-		element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_MOUNT_DLG_SHARE),
-			element('td', {className:'data'}, this.folder = element('input', {type:'text'}))
-		]),
-		element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_MOUNT_DLG_LOCAL),
-			element('td', {className:'data'}, this.local = element('input', {type:'text'}))
-		]),
-		element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_MOUNT_DLG_TYPE),
-			element('td', {className:'data'}, this.type = element('select', {}, [
-				element('option', {value:'smb'}, 'SMB'),
-				element('option', {value:'nfs'}, 'NFS')]))
-		]),
-		this.row_user = element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_MOUNT_DLG_USER),
-			element('td', {className:'data'}, this.login = element('input', {type:'text'}))
-		]),
-		this.row_pass = element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_MOUNT_DLG_PASS),
-			element('td', {className:'data'}, this.pass = element('input', {type:'text'}))
-		])
-	]);
-
-	this.type.onchange = function () {
-		echo(this.value);
-		if ( this.value === 'smb' ) {
-			self.row_user.className = self.row_pass.className = '';
-			self.focusList = [self.url, self.folder, self.local, self.type, self.login, self.pass];
-			self.login.disabled = false;
-			self.pass.disabled = false;
-
-		} else {
-			self.row_user.className = self.row_pass.className = 'inactive';
-			self.login.value = self.pass.value = "";
-			self.focusList = [self.url, self.folder, self.local, self.type];
-			self.login.disabled = true;
-			self.pass.disabled = true;
-		}
-	};
-	this.type.onchange();
-	this.type.onkeyup = this.type.onchange;
-
-	this.prepare = function(){
-		self.url.value    = self.url.value.trim();
-		self.folder.value = self.folder.value.trim();
-		self.local.value  = self.local.value.trim();
-		self.login.value  = self.login.value.trim();
-		self.pass.value   = self.pass.value.trim();
-
-		// work with slashes
-		if ( self.folder.value ) {
-			if ( self.type.value === 'nfs' && self.folder.value.charAt(0) !== "/" ) self.folder.value = "/" + self.folder.value;
-			if ( self.type.value === 'smb' && self.folder.value.charAt(0) === "/" ) self.folder.value = self.folder.value.slice(1);
-			if ( self.folder.value.charAt(self.folder.value.length-1) === "/" ) self.folder.value = self.folder.value.slice(0, -1);
-		}
-
-		if ( !self.local.value && self.folder.value ) {
-			var parts = self.folder.value.split("/");
-			self.local.value = parts[parts.length-1];
-		}
-	};
-
-	this.bpanel = new CButtonPanel();
-	this.bpanel.Init(CMODAL_IMG_PATH);
-	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', LANG_MEDIA_DEFAULT_ABORT, function(){
-		// hide and destroy
-		self.Show(false);
-	});
-	this.bpanel.Add(KEYS.F2, 'ico_f2.png', LANG_MEDIA_MOUNT_DLG_OK, function(){
-		var addr;
-
-		gSTB.HideVirtualKeyboard();
-
-		self.prepare();
-
-		// no params
-		if ( !self.url.value || !self.folder.value || !self.local.value ) {
-			// try again
-			new CModalHint(self, LANG_MEDIA_MOUNT_DLG_WRONG, 4000);
-		} else {
-			// check dupes
-			var data, exist, dupl = false;
-			// type dependant
-			smb_array.forEach(function(item){ if ( item.local === self.local.value ) dupl = true; });
-			nfs_array.forEach(function(item){ if ( item.local === self.local.value ) dupl = true; });
-			// found
-			if ( dupl ) {
-				// try again
-				new CModalHint(self, LANG_MEDIA_MOUNT_DLG_DUPL, 4000);
-			} else {
-				// good
-				if ( self.type.value === 'smb' ) {
-					addr = '//' + self.url.value + '/' + self.folder.value;
-					// clear
-					MediaBrowser.UnmountSMB();
-					// try to mount
-					if ( MediaBrowser.MountSMB({
-						url  : addr,
-						login: self.login.value,
-						pass : self.pass.value}) )
-					{
-						// prepare
-						data = {
-							url   : self.url.value,
-							folder: self.folder.value,
-							local : self.local.value,
-							login : self.login.value || "guest",
-							pass  : self.pass.value
-						};
-						// check duplicates
-						exist = false;
-						smb_array.forEach(function(item){
-							var same = true;
-							if ( !exist ) {
-								for ( var name in data ) same = same && data[name] === item[name];
-								if ( same ) exist = true;
-							}
-						});
-						// only if not a duplicate
-						if ( !exist ) {
-							setTimeout(function(){
-								// resave smb data
-								smb_array.push(data);
-								gSTB.SaveUserData('smb_data', JSON.stringify(smb_array));
-								MediaBrowser.Reset();
-								MediaBrowser.FileList.Open({
-									path  : smb_path,
-									url   : addr,
-									folder: self.folder.value,
-									type  : MEDIA_TYPE_SAMBA_SHARE,
-									//type  : MEDIA_TYPE_NET_FOLDER,
-									//smb   : true,
-									name  : self.local.value
-								});
-								echo(smb_array, 'gSTB.SaveUserData');
-							}, 5);
-							self.Show(false);
-						} else {
-							new CModalHint(self, LANG_MEDIA_MOUNT_DLG_DONE, 4000);
-						}
-					} else {
-						new CModalHint(self, LANG_MEDIA_MOUNT_DLG_FAIL, 4000);
-					}
-				} else {
-					// NFS
-					addr = self.url.value + ':' + self.folder.value;
-					// clear
-					MediaBrowser.UnmountNFS();
-					// try to mount
-					if ( MediaBrowser.MountNFS({url:addr}) ) {
-						// prepare
-						data = {
-							url   : self.url.value,
-							folder: self.folder.value,
-							local : self.local.value
-						};
-						// check duplicates
-						exist = false;
-						nfs_array.forEach(function(item){
-							var same = true;
-							if ( !exist ) {
-								for ( var name in data ) same = same && data[name] === item[name];
-								if ( same ) exist = true;
-							}
-						});
-						// only if not a duplicate
-						if ( !exist ) {
-							setTimeout(function(){
-								// resave nfs data
-								nfs_array.push(data);
-								gSTB.SaveUserData('nfs_data', JSON.stringify(nfs_array));
-								MediaBrowser.Reset();
-								MediaBrowser.FileList.Open({
-									path  : nfs_path,
-									url   : addr,
-									folder: self.folder.value,
-									type  : MEDIA_TYPE_NFS_SHARE,
-									//type  : MEDIA_TYPE_NET_FOLDER,
-									//nfs   : true,
-									name  : self.local.value
-								});
-								echo(nfs_array, 'gSTB.SaveUserData');
-							}, 5);
-							// hide and destroy
-							self.Show(false);
-						} else {
-							new CModalHint(self, LANG_MEDIA_MOUNT_DLG_DONE, 4000);
-						}
-					} else {
-						new CModalHint(self, LANG_MEDIA_MOUNT_DLG_FAIL, 4000);
-					}
-				}
-			}
-		}
-	});
-
-	// filling
-	this.SetHeader(LANG_MEDIA_MOUNT_DLG_ON);
-	this.SetContent(html);
-	this.SetFooter(this.bpanel.handle);
-
-	this.onShow = function(){
-		setTimeout(function(){
-			self.url.focus();
-			gSTB.ShowVirtualKeyboard();
-		}, 100);
-	};
-
-	// free resources on hide
-	this.onHide = function(){
-		elclear(self.bpanel.handle);
-		delete self.bpanel;
-		self.Free();
-	};
-
-	// forward events to button panel
-	this.EventHandler = function ( event ) {
-		switch ( event.code ) {
-			case KEYS.CHANNEL_NEXT: // channel+
-			case KEYS.CHANNEL_PREV: // channel-
-				event.preventDefault(); // to suppress tabbing
-				break;
-			case KEYS.UP:
-				self.prepare();
-				self.FocusPrev(event, false);
-				break;
-			case KEYS.DOWN:
-				self.prepare();
-				self.FocusNext(event, self.focusList[self.focusPos] !== self.folder);
-				break;
-			case KEYS.RIGHT:
-			case KEYS.LEFT:
-				//if ( this.focusList[this.focusPos] === self.type ) event.preventDefault();
-				break;
-			case KEYS.OK: // enter
-				if ( self.focusList[self.focusPos] === self.folder ) self.prepare();
-				if ( this.focusList[this.focusPos] === self.local  ) event.preventDefault();
-				if ( this.focusList[this.focusPos] !== self.type   ) self.FocusNext(event);
-				break;
-			default:
-				// forward events to button panel
-				self.bpanel.EventHandler(event);
-		}
-	};
-
-	// build and display
-	this.Init();
-	this.Show(true);
-}
-
-// extending
-extend(CModalMount, CModalBox);
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-function CModalUnmount ( parent ) {
-	// parent constructor
-	CModalBox.call(this, parent);
-
-	/**
-	 * The component inner name
-	 * @type {String}
-	 */
-	this.name = "CModalMount";
-
-	// for limited scopes
-	var self = this;
-
-	var html = element('table', {className:'main maxw'}, [
-		element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_MOUNT_DLG_LOCAL)
-		]),
-		element('tr', {}, [
-			element('td', {className:'data'}, this.local = element('select', {className:'wide'}))
-		]),
-		element('tr', {}, [
-			element('td', {className:'data'}, this.hint = element('div', {className:'hint'}))
-		])
-	]);
-
-	smb_array.forEach(function(item){
-		// select the current one
-		elchild(self.local, element('option', {smb:true, data:item/*, selected:(item === smb_data)*/}, item.local));
-	});
-	nfs_array.forEach(function(item){
-		// select the current one
-		elchild(self.local, element('option', {nfs:true, data:item/*, selected:(item === smb_data)*/}, item.local));
-	});
-
-	this.local.onchange = function () {
-		var option = this.options[this.selectedIndex];
-		if ( option.smb ) self.hint.innerHTML = 'smb://' + option.data.url + '/' + option.data.folder;
-		if ( option.nfs ) self.hint.innerHTML = 'nfs://' + option.data.url + option.data.folder;
-	};
-
-	this.local.onchange();
-	this.local.onkeyup = this.local.onchange;
-
-	this.bpanel = new CButtonPanel();
-	this.bpanel.Init(CMODAL_IMG_PATH);
-	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', LANG_MEDIA_DEFAULT_ABORT, function(){
-		// hide and destroy
-		self.Show(false);
-	});
-	this.bpanel.Add(KEYS.F2, 'ico_f2.png', LANG_MEDIA_MOUNT_DLG_UM, function(){
-		var pos, option = self.local.options[self.local.selectedIndex];
-		if ( option.smb ) {
-			// SMB
-			MediaBrowser.UnmountSMB();
-			pos = smb_array.indexOf(option.data);
-			if ( pos !== -1 ) smb_array.splice(pos, 1);
-			echo(smb_array, 'smb_array saving');
-			gSTB.SaveUserData('smb_data', JSON.stringify(smb_array));
-		} else if ( option.nfs ) {
-			// NFS
-			MediaBrowser.UnmountNFS();
-			pos = nfs_array.indexOf(option.data);
-			if ( pos !== -1 ) nfs_array.splice(pos, 1);
-			echo(nfs_array, 'nfs_array saving');
-			gSTB.SaveUserData('nfs_data', JSON.stringify(nfs_array));
-		}
-		// refresh only root
-		//if ( MediaBrowser.FileList.parentItem.type === MEDIA_TYPE_ROOT ) { MediaBrowser.FileList.Refresh(); }
-		MediaBrowser.Reset();
-		// hide and destroy
-		self.Show(false);
-	});
-
-	// filling
-	this.SetHeader(LANG_MEDIA_MOUNT_DLG_OFF);
-	this.SetContent(html);
-	this.SetFooter(this.bpanel.handle);
-
-	this.onShow = function(){
-		self.local.focus();
-	};
-
-	// free resources on hide
-	this.onHide = function(){
-		elclear(self.bpanel.handle);
-		delete self.bpanel;
-		self.Free();
-	};
-
-	// forward events to button panel
-	this.EventHandler = function ( event ) {
-		if ( !eventPrepare(event, true, 'CModalAlert') ) return;
-
-		switch ( event.code ) {
-			case KEYS.CHANNEL_NEXT: // channel+
-			case KEYS.CHANNEL_PREV: // channel-
-				event.preventDefault(); // to suppress tabbing
-				break;
-			default:
-				// forward events to button panel
-				self.bpanel.EventHandler(event);
-		}
-	};
-
-	// build and display
-	this.Init();
-	this.Show(true);
-}
-
-// extending
-extend(CModalUnmount, CModalBox);
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-function CModalFormat ( parent ) {
-	// parent constructor
-	CModalBox.call(this, parent);
-
-	/**
-	 * The component inner name
-	 * @type {String}
-	 */
-	this.name = "CModalFormat";
-
-	// for limited scopes
-	var self = this;
-
-	var html = element('table', {className:'main maxw'}, [
-		element('tr', {}, [
-			element('td', {colSpan:2, className:'warn', innerHTML:LANG_MEDIA_DISK_FORMAT_WARN})
-		]),
-		element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_DISK_FORMAT_TYPE),
-			element('td', {className:'data'}, this.type = element('select', {className:'wide'}, [
-				element('option', {value:'ext3'},  'EXT3'),
-				element('option', {value:'ext2'},  'EXT2'),
-				element('option', {value:'ntfs'},  'NTFS')
-			]))
-		]),
-		element('tr', {}, [
-			element('td', {className:'name'}, LANG_MEDIA_DISK_FORMAT_PART),
-			element('td', {className:'data'}, this.part = element('select', {className:'wide'}))
-		]),
-		element('tr', {}, [
-			element('td', {colSpan:2}, element('div', {}, element('div', {className:'progressbar'}, element('div', {className:'progressbar_bg maxh'}, [
-				this.line = element('div', {className:'progressbar_line maxh'}),
-				this.text = element('div', {className:'progressbar_digit'})
-			]))))
-		])
-	]);
-
-	self.focusList = [self.type, self.part];
-
-	// fill the select list
-	if ( HDD_INFO.length > 0 ) {
-		for ( var i = 0; i < HDD_INFO.length; i++ ) {
-			// not single partitions (only the hdd itself)
-			if ( HDD_INFO[i].partitionNum === "" ) {
-				this.part.add(new Option(
-					HDD_INFO[i].vendor + ' ' + HDD_INFO[i].model.replace(/\//, '') + '' + (HDD_INFO[i].size != '' ? ' (' + (Math.floor(HDD_INFO[i].size / 1073741824 * 100) / 100) + ' Gb)' : ''),
-					'allHDD|' + (HDD_INFO[i].size != '' ? (Math.floor(HDD_INFO[i].size / 1073741824 * 100) / 100) : 0)));
-			}
-		}
-	}
-
-	this.finish = function(){
-		// reset progress bar and label
-		this.line.style.width = this.text.innerHTML = "";
-		// restore event handling
-		document.addEventListener('keydown', mainEventListener);
-		// enable select boxes
-		this.type.disabled = this.part.disabled = false;
-		// return focus
-		this.type.focus();
-		// clear buttons suppression
-		this.bpanel.Activate(true);
-	};
-
-	this.check = function(){
-		var read_status = {};
-		try {
-			eval('read_status=' + gSTB.RDir('tempfile read hdd_progress'));
-		} catch ( e ) {
-			echo(e, 'tempfile read hdd_progress');
-		}
-		echo(read_status, 'read_status');
-		// beginning
-		if ( read_status.state == 'undefined' ) {
-			// init progress bar and label
-			this.line.style.width = this.text.innerHTML = "0%";
-			// call later (in 5 sec)
-			return window.setTimeout(function(){ self.check() }, 5000);
-		}
-		// done
-		if ( read_status.state === 'complete' ) {
-			this.finish();
-			// update global list
-			//getStorageInfo(); // no need
-			// congratulations
-			return new CModalAlert(this, LANG_MEDIA_DISK_FORMAT_NAME, LANG_MEDIA_DISK_FORMAT_DONE, LANG_MEDIA_DEFAULT_CLOSE, function(){ echo('exit') });
-		}
-		// failure
-		if ( read_status.state == 'error' ) {
-			this.finish();
-			switch ( read_status.stage ) {
-				case "16":
-					new CModalAlert(this, LANG_MEDIA_DISK_FORMAT_FAIL, LANG_MEDIA_DISK_FORMAT_BUSY, LANG_MEDIA_DEFAULT_CLOSE, function(){ echo('exit') });
-					break;
-				case "2":
-				case "22":
-					new CModalAlert(this, LANG_MEDIA_DISK_FORMAT_FAIL, LANG_MEDIA_DISK_FORMAT_WRN1, LANG_MEDIA_DEFAULT_CLOSE, function(){ echo('exit') });
-					break;
-				default :
-					new CModalAlert(this, LANG_MEDIA_DISK_FORMAT_NAME, LANG_MEDIA_DISK_FORMAT_FAIL, LANG_MEDIA_DEFAULT_CLOSE, function(){ echo('exit') });
-			}
-			return;
-		}
-		// update progress bar and label
-		this.line.style.width = this.text.innerHTML = read_status.percent + "%";
-		// call later (in 5 sec)
-		return window.setTimeout(function(){ self.check() }, 5000);
-	};
-
-	this.bpanel = new CButtonPanel();
-	this.bpanel.Init(CMODAL_IMG_PATH);
-	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', LANG_MEDIA_DEFAULT_ABORT, function(){
-		// hide and destroy
-		self.Show(false);
-	});
-	this.bpanel.Add(KEYS.F2, 'ico_f2.png', LANG_MEDIA_DISK_FORMAT_OK, function(){
-		var part = self.part.value.split('|');
-		if ( part[0] ) {
-			if ( self.type.value === "fat32" && parseInt(part[1], 10) > 320 ) {
-				return new CModalAlert(self, LANG_MEDIA_DISK_FORMAT_FAIL, LANG_MEDIA_DISK_FORMAT_WRN2, LANG_MEDIA_DEFAULT_CLOSE, function(){ echo('exit') });
-			}
-
-			new CModalConfirm(self, LANG_MEDIA_DISK_FORMAT_NAME, LANG_MEDIA_DISK_FORMAT_WARN,
-				LANG_MEDIA_DEFAULT_ABORT, function(){},
-				LANG_MEDIA_DISK_FORMAT_OK, function(){
-					// exit from the hdd to root level if necessary
-					if ( MediaBrowser.FileList.mode === MEDIA_TYPE_STORAGE_SATA ) {
-						// go to root
-						MediaBrowser.Reset();
-					}
-
-					// disable main event handling
-					document.removeEventListener('keydown', mainEventListener);
-					// disable select boxes
-					self.type.disabled = self.part.disabled = true;
-					// suppress all bottom buttons
-					self.bpanel.Activate(false);
-					// format command
-					var cmd = 'hdd_format ' + self.type.value + (part[0] !== 'allHDD' ?  ' '+part[0] : '');
-					echo(cmd, 'formatting command');
-					gSTB.RDir(cmd);
-					// start periodical check
-					self.check();
-				}
-			);
-		} else {
-			return new CModalAlert(self, LANG_MEDIA_DISK_FORMAT_FAIL, LANG_MEDIA_DISK_FORMAT_WRN1, LANG_MEDIA_DEFAULT_CLOSE, function(){ echo('exit') });
-		}
-	});
-
-	// filling
-	this.SetHeader(LANG_MEDIA_DISK_FORMAT_NAME);
-	this.SetContent(html);
-	this.SetFooter(this.bpanel.handle);
-
-	this.onShow = function(){
-		self.type.focus();
-	};
-
-	// free resources on hide
-	this.onHide = function(){
-		elclear(self.bpanel.handle);
-		delete self.bpanel;
-		self.Free();
-	};
-
-	// forward events to button panel
-	this.EventHandler = function ( event ) {
-		switch ( event.code ) {
-			case KEYS.CHANNEL_NEXT: // channel+
-			case KEYS.CHANNEL_PREV: // channel-
-				event.preventDefault(); // to suppress tabbing
-				break;
-			case KEYS.UP:
-				self.FocusPrev(event, false);
-				event.preventDefault();
-				break;
-			case KEYS.DOWN:
-				self.FocusNext(event, false);
-				event.preventDefault();
-				break;
-			default:
-				// forward events to button panel
-				self.bpanel.EventHandler(event);
-		}
-	};
-
-	// build and display
-	this.Init();
-	this.Show(true);
-}
-
-// extending
-extend(CModalFormat, CModalBox);
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-function CModalPlayListOpen ( parent ) {
-	// parent constructor
-	CModalBox.call(this, parent);
-
-	this.content.className = this.content.className + ' cmodal-pls';
-	/**
-	 * The component inner name
-	 * @type {String}
-	 */
-	this.name = "CModalPlayListOpen";
-
-	this.utf8 = true;
-
-	// for limited scopes
-	var self = this;
-	// callback on F-button click
-	var func = function ( code ) {
-		setTimeout(function(){
-			var data = self.parent.FileList.Current().data;
-			data.code = code;
-			data.utf8 = self.utf8;
-			self.parent.FileList.Open(data);
-		},5);
-		self.Show(false);
-	};
-
-	this.bpanelMain = new CButtonPanel();
-	this.bpanelMain.Init(CMODAL_IMG_PATH);
-	this.bpanelMain.Add(KEYS.F1, 'ico_f1.png', LANG_MEDIA_PLS_OPEN_F1, func);
-	this.bpanelMain.Add(KEYS.F2, 'ico_f2.png', LANG_MEDIA_PLS_OPEN_F2, func);
-	this.bpanelMain.Add(KEYS.F3, 'ico_f3.png', LANG_MEDIA_PLS_OPEN_F3, func);
-
-	this.bpanelBottom = new CButtonPanel();
-	this.bpanelBottom.Init(CMODAL_IMG_PATH);
-	this.bpanelBottom.Add(KEYS.EXIT, 'ico_exit.png', LANG_MEDIA_DEFAULT_ABORT, function(){
-		// hide and destroy
-		self.Show(false);
-	});
-
-	// filling
-	this.SetHeader(LANG_MEDIA_PLS_OPEN_NAME);
-	this.SetContent([
-		element('div', {className:'block'}, [this.swdiv = element('a', {className:'switch on', onclick:function(){
-			self.Switch();
-		}}), LANG_MEDIA_PLS_OPEN_UTF8]),
-		this.bpanelMain.handle
-	]);
-	this.SetFooter(this.bpanelBottom.handle);
-
-	// free resources on hide
-	this.onHide = function(){
-		elclear(self.bpanelMain.handle);
-		elclear(self.bpanelBottom.handle);
-		delete self.bpanelMain;
-		delete self.bpanelBottom;
-		//self.Dispatch(false);
-		self.Free();
-	};
-
-	// invert flag
-	this.Switch = function(){
-		this.utf8 = !this.utf8;
-		this.swdiv.className = this.utf8 ? 'switch on' : 'switch';
-	};
-
-	// forward events to button panel
-	this.EventHandler = function ( e ) {
-		if ( e.code === KEYS.OK ) this.Switch();
-
-		if ( self.bpanelMain ) self.bpanelMain.EventHandler(e);
-		if ( self.bpanelBottom ) self.bpanelBottom.EventHandler(e);
-	};
-
-	// build and display
-	this.Init();
-	this.Show(true);
-}
-
-// extending
-extend(CModalPlayListOpen, CModalBox);
-
-
-///////////////////////////////////////////////////////////////////////////////
-
-
 function CModalFileSelect ( parent, options ) {
 	// parent constructor
 	CModalBox.call(this, parent);
@@ -1336,3 +660,174 @@ function CModalCreateGroup( parent, label, text, data,toDelete) {
 
 // extending
 extend(CModalCreateGroup, CModalBox);
+
+////////////////////////////////////////////////////////////////////
+
+/**
+ * Show dialog bow for a PVR record edit
+ * @param {CPage|CBase} [parent] object owner (document.body if not set)
+ * @param {Object} data current PVR record data
+ * @param {String} label modal message box text
+ * @param {String} text modal message box text
+ * @class CModalBox
+ * @constructor
+ */
+function CModalSelectLang ( parent, label, text, data ) {
+	// parent constructor
+	CModalBox.call(this, parent);
+	/**
+	 * The component inner name
+	 * @type {String}
+	 */
+	this.name = "CModalSelectLang";
+
+	// for limited scopes
+	var self = this;
+
+	this.$interfaceLang = new CSelectBox(this,
+		{
+			data     : languages,
+			nameField: "label",
+			style    : 'cselect-box-wide',
+			events   : {}
+		});
+
+	this.$contentLang = new CSelectBox(this,
+		{
+			data     : languages,
+			nameField: "label",
+			style    : 'cselect-box-wide',
+			events   : {}
+		});
+
+	var html = element('table', {className: 'main maxw'}, [
+		element('tr', {}, [
+			element('td', {className: 'name'}, lang.interfaceLang),
+			element('td', {className: 'data'}, this.$interfaceLang.parentNode)
+		]),
+		element('tr', {}, [
+			element('td', {className: 'name'}, lang.contentLang),
+			element('td', {className: 'data'}, this.$contentLang.parentNode)
+		])
+	]);
+
+	var currentData = gSTB.LoadUserData('ex.ua.data.json');
+	try {
+		currentData = JSON.parse(currentData);
+	} catch ( err ) {
+		echo('JSON.parse(LoadUserData("ex.ua.data.json")); -> ERROR ->' + err);
+	}
+	echo(currentData, 'data JSON.parse(LoadUserData("ex.ua.data.json"))');
+
+	// set current lang as default
+	for (var i = 0; i < languages.length; i++) {
+		echo('languages[i].langVal === currentData.contentLang/currentData.interfaceLang=>'+languages[i].langVal + ' === ' + currentData.contentLang + ' / ' + currentData.interfaceLang );
+		if ( languages[i].langVal === currentData.contentLang ) { this.$contentLang.SetIndex(i); }
+		if ( languages[i].langVal === currentData.interfaceLang ) { this.$interfaceLang.SetIndex(i); }
+	}
+
+	this.focusList = [
+		[this.$interfaceLang],
+		[this.$contentLang]
+	];
+
+	this.focusPos = 0;
+	this.FocusNext = function ( event, manageVK ) {
+		if ( this.focusList.length > 0 ) {
+			// cycling the index
+			if ( ++this.focusPos >= this.focusList.length ) this.focusPos = 0;
+			// get the next html element in the list
+			var el = this.focusList[this.focusPos][0];
+			// set focus
+			el.focus();
+		}
+	};
+
+	this.FocusPrev = function ( event, manageVK ) {
+		if ( this.focusList.length > 0 ) {
+			// cycling the index
+			if ( --this.focusPos < 0 ) this.focusPos = this.focusList.length - 1;
+			// get the next html element in the list
+			var el = this.focusList[this.focusPos][0];
+			// set focus
+			el.focus();
+		}
+	};
+
+
+	this.saveNewLang = function () {
+		echo('saveNewLang');
+		var dataForSaving = {
+			contentLang: self.$contentLang.GetSelected().langVal,
+			interfaceLang: self.$interfaceLang.GetSelected().langVal
+		};
+		gSTB.SaveUserData('ex.ua.data.json', JSON.stringify(dataForSaving));
+		//self.Show(false);
+		window.location.reload();
+	};
+
+	this.bpanel = new CButtonPanel();
+	this.bpanel.Init(CMODAL_IMG_PATH);
+	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', lang.cancel, function () {
+		self.Show(false);
+	});
+	this.bpanel.Add(KEYS.OK, 'ico_ok.png', lang.apply, function () {
+		self.saveNewLang();
+	});
+
+	// filling
+	this.SetHeader(label);
+	this.SetContent(html);
+	this.SetFooter(this.bpanel.handle);
+
+	this.onShow = function () {
+		self.focusList[self.focusPos][0].focus();
+	};
+
+	// free resources on hide
+	this.onHide = function () {
+		elclear(self.bpanel.handle);
+		delete self.bpanel;
+		self.Free();
+	};
+
+	// forward events to button panel
+	this.EventHandler = function ( event ) {
+		echo('modal eventhandler');
+		if ( !eventPrepare(event, true, 'CModalAlert') ) return;
+		switch ( event.code ) {
+			case KEYS.CHANNEL_NEXT: // channel+
+			case KEYS.CHANNEL_PREV: // channel-
+				event.preventDefault(); // to suppress tabbing
+				break;
+			case KEYS.UP:
+				self.FocusPrev(event, false);
+				event.preventDefault();
+				break;
+			case KEYS.DOWN:
+				self.FocusNext(event, false);
+				event.preventDefault();
+				break;
+			case KEYS.LEFT:
+			case KEYS.RIGHT:
+				this.focusList[this.focusPos][0].EventHandler(event);
+				break;
+			case KEYS.VOLUME_DOWN:
+			case KEYS.VOLUME_UP:
+				event.preventDefault();
+				break;
+			default:
+				// forward events to button panel
+				self.bpanel.EventHandler(event);
+		}
+	};
+
+	// build and display
+	this.Init();
+	this.Show(true);
+
+}
+
+// extending
+CModalSelectLang.prototype = Object.create(CModalBox.prototype);
+CModalSelectLang.prototype.constructor = CModalSelectLang;

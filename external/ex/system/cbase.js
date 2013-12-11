@@ -91,7 +91,7 @@ CBase.prototype.SetParent = function ( parent ) {
 		// store here as well
 		this.parent = parent;
 	}
-}
+};
 
 
 /**
