@@ -114,7 +114,7 @@ function page_bar(){
 
 $genres = Mysql::getInstance()->from('genre')->get()->all();
 
-$from = date("Y-m-d H:i:s", time()-60*60*24*30);
+$from = date("Y-m-d 00:00:00", time()-60*60*24*30);
 
 echo "<center><table class='list' cellpadding='3' cellspacing='0'>\n";
 echo "<tr>";
