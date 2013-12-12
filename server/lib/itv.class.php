@@ -865,6 +865,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 $this->response['data'][$i]['lock'] = 1;
             }
 
+            unset($this->response['data'][$i]['descr']);
+            unset($this->response['data'][$i]['monitoring_url']);
+
             if ($this->response['data'][$i]['lock'] == 1 && !$this->include_censored){
                 array_splice($this->response['data'], $i, 1);
                 $length--;
