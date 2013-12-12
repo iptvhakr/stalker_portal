@@ -1988,8 +1988,9 @@ var screensaver = {
         this.restart_timer();
 
         stb.player.addCustomEventListener("onplay", function(event){
-            if (self.on){
+            if (self.on && stb.player.file_type != 'audio'){
                 self.hide();
+                self.restart_timer.call(self);
             }
         });
 
@@ -2028,13 +2029,30 @@ var screensaver = {
 
         window.clearTimeout(this.activate_timer);
 
-        if (stb.player.on){
-            _debug('stb.player.on', stb.player.on);
+        _debug('stb.player.on', stb.player.on);
+
+        var video_info = {};
+
+        if (stb.GetVideoInfo){
+            video_info = stb.GetVideoInfo();
+            _debug('video_info', video_info);
+
+            try{
+                video_info = eval('('+video_info+')');
+            }catch(e){
+                _debug(e);
+            }
+
+            video_info = video_info || {};
+        }
+
+        _debug('video_info', video_info);
+
+        if (stb.player.on && video_info.frameRate != 0){
             this.restart_timer();
             return;
         }
 
-        //stb.cur_layer && stb.cur_layer.dom_obj.hide();
         this.dom_obj.show();
         this.on = true;
 
