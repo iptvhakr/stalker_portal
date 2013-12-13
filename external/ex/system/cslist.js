@@ -105,8 +105,9 @@ function CScrollList ( parent ) {
 
 
 // extending
-extend(CScrollList, CBase);
-
+//extend(CScrollList, CBase);
+CScrollList.prototype = Object.create(CBase.prototype);
+CScrollList.prototype.constructor = CScrollList;
 
 /**
  * Create a new item and add it to the placeholder

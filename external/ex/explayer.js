@@ -1166,8 +1166,10 @@ function PlayList(parent) {
 }
 
 // extending
-extend(PlayList, CScrollList);
-
+//extend(PlayList, CScrollList);
+// extending
+PlayList.prototype = Object.create(CScrollList.prototype);
+PlayList.prototype.constructor = PlayList;
 
 
 /**

@@ -43,7 +43,7 @@ var lang = {
 	'cancel'                  : 'Отмена',
 	'close'                   : 'Да',
 	'mark'                    : 'Выделить',
-	'unmark'                  : 'Снять выделение',
+	'unmark'                  : 'Снять<br>выделение',
 	'film_description'        : 'Описание',
 	'size_in_bytes'           : 'Размер: ',
 	'film_description_off'    : 'Закрыть описание',

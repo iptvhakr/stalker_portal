@@ -57,8 +57,9 @@ function CSearchBar ( parent ) {
 }
 
 // extending
-extend(CSearchBar, CBase);
-
+//extend(CSearchBar, CBase);
+CSearchBar.prototype = Object.create(CBase.prototype);
+CSearchBar.prototype.constructor = CSearchBar;
 
 /**
  * Component initialization with image path set.

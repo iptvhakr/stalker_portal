@@ -43,9 +43,9 @@ function CGroupMenu ( parent ) {
 
 
 // extending
-//CGroupMenu.prototype = Object.create(CBase.prototype);
-extend(CGroupMenu, CBase);
-
+//extend(CGroupMenu, CBase);
+CGroupMenu.prototype = Object.create(CBase.prototype);
+CGroupMenu.prototype.constructor = CGroupMenu;
 
 /**
  * Finds and returns the group data object

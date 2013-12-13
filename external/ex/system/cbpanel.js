@@ -35,8 +35,9 @@ function CButtonPanel ( parent ) {
 }
 
 // extending
-extend(CButtonPanel, CBase);
-
+//extend(CButtonPanel, CBase);
+CButtonPanel.prototype = Object.create(CBase.prototype);
+CButtonPanel.prototype.constructor = CButtonPanel;
 
 /**
  * Component initialization with image path set.

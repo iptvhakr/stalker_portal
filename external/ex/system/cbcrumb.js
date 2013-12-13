@@ -33,8 +33,9 @@ function CBreadCrumb ( parent ) {
 }
 
 // extending
-extend(CBreadCrumb, CBase);
-
+//extend(CBreadCrumb, CBase);
+CBreadCrumb.prototype = Object.create(CBase.prototype);
+CBreadCrumb.prototype.constructor = CBreadCrumb;
 
 /**
  * Component initialization with image path set.

@@ -1,5 +1,5 @@
 var     debug   = false,
-        version = '0.70 beta';
+        version = 'beta';
 
 // Типы узлов
 var TYPE_NONE              = 0,

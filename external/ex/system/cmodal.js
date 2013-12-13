@@ -46,8 +46,9 @@ function CModal ( parent ) {
 }
 
 // extending
-extend(CModal, CPage);
-
+//extend(CModal, CPage);
+CModal.prototype = Object.create(CPage.prototype);
+CModal.prototype.constructor = CModal;
 
 /**
  * Prepare html and all placeholders
@@ -175,7 +176,9 @@ function CModalBox ( parent ) {
 }
 
 // extending
-extend(CModalBox, CModal);
+//extend(CModalBox, CModal);
+CModalBox.prototype = Object.create(CModal.prototype);
+CModalBox.prototype.constructor = CModalBox;
 
 /**
  * Internal method to update one of the placeholders
@@ -293,8 +296,9 @@ function CModalHint ( parent, data, time ) {
 }
 
 // extending
-extend(CModalHint, CModalBox);
-
+//extend(CModalHint, CModalBox);
+CModalHint.prototype = Object.create(CModalBox.prototype);
+CModalHint.prototype.constructor = CModalHint;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -362,8 +366,9 @@ function CModalAlert ( parent, title, data, btnExitTitle, btnExitClick ) {
 }
 
 // extending
-extend(CModalAlert, CModalBox);
-
+//extend(CModalAlert, CModalBox);
+CModalAlert.prototype = Object.create(CModalBox.prototype);
+CModalAlert.prototype.constructor = CModalAlert;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -409,8 +414,9 @@ function CModalConfirm ( parent, title, data, btnExitTitle, btnExitClick, btnF2T
 }
 
 // extending
-extend(CModalConfirm, CModalAlert);
-
+//extend(CModalConfirm, CModalAlert);
+CModalConfirm.prototype = Object.create(CModalAlert.prototype);
+CModalConfirm.prototype.constructor = CModalConfirm;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -500,8 +506,9 @@ function CModalAuth ( parent, title, lblUser, lblPass, btnExitTitle, btnExitClic
 }
 
 // extending
-extend(CModalAuth, CModalAlert);
-
+//extend(CModalAuth, CModalAlert);
+CModalAuth.prototype = Object.create(CModalAlert.prototype);
+CModalAuth.prototype.constructor = CModalAuth;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -581,8 +588,9 @@ function CModalFileSelect ( parent, options ) {
 }
 
 // extending
-extend(CModalFileSelect, CModalBox);
-
+//extend(CModalFileSelect, CModalBox);
+CModalFileSelect.prototype = Object.create(CModalBox.prototype);
+CModalFileSelect.prototype.constructor = CModalFileSelect;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -659,8 +667,9 @@ function CModalCreateGroup( parent, label, text, data,toDelete) {
 }
 
 // extending
-extend(CModalCreateGroup, CModalBox);
-
+//extend(CModalCreateGroup, CModalBox);
+CModalCreateGroup.prototype = Object.create(CModalBox.prototype);
+CModalCreateGroup.prototype.constructor = CModalCreateGroup;
 ////////////////////////////////////////////////////////////////////
 
 /**
