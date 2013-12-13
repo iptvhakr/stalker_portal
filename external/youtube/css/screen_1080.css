@@ -91,7 +91,6 @@ hr {color:#000; border:solid 1px; margin:3px 0px;}
 #volume_num { position:relative; float:right; top:-50px; font: 37px "Myriad Pro Cond"; font-weight:bold; margin-right:6px;}
 #mute { position:absolute; width:60px; height:60px; top:50px; right:480px; background:url(../img/volume/1920/volume_off.png);}
 /*--- end NEW VOLUME ---*/
-/*#screenAspect { width:300px; height:60px; position:absolute; top:50px; left:200px; z-index: 3; background-repeat:no-repeat; background-position:50% 50%;}*/
 #screenAspect { width:206px; height:41px; position:absolute; top:50px; left:100px; z-index: 3; background-repeat:no-repeat;}
 #footer_yt .footer_icons { float:left; position: relative; margin: 1px 0 0 7px; background: url(../img/1920/pictog_pas.png) 50% 50% no-repeat; width:75px; height:58px; }
 #footer_yt .footer_icons span { width:37px; height:29px; display:block; position:relative; background-color:green; }

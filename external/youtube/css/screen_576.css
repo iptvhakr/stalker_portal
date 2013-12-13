@@ -88,7 +88,6 @@ hr {color:#000; border:solid 1px; margin:3px 0px;}
 #volume_num{position:relative; float:right; top:-37px; font: 26px "Myriad Pro Cond"; font-weight:bold; margin-right:6px; height:41px; line-height:41px;}
 #mute{position:absolute; width:47px; height:41px; top:50px; right:150px; background:url(../img/volume/volume_off.png);}
 /*--- end VOLUME ---*/
-/*#screenAspect { width:206px; height:41px; position:absolute; top:50px; left:100px; z-index: 3; background-repeat:no-repeat;  background-position:50% 50%; }*/
 #screenAspect { width:206px; height:41px; position:absolute; top:50px; left:100px; z-index: 3; background-repeat:no-repeat;}
 #footer_yt .footer_icons span { width:25px; height:16px; display:block; position:relative;}
 #footer_yt .footer_icons .single{background:url(../img/720/pictog_act.png) 0 0 no-repeat; margin:0;}

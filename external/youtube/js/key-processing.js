@@ -199,6 +199,12 @@ function keyProcessing(e) {
                 //case keys.NUM4:
                     settings.options.show();
                 break;
+				case keys.VOL_DOWN:
+					player.pressVolume(-1);
+					break;
+				case keys.VOL_UP:
+					player.pressVolume(1);
+					break;
             }
         break;
         case layers.PLAYER: // playing layer
