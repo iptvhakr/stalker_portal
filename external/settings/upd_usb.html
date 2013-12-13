@@ -46,9 +46,12 @@ function onLoad()
         load();
         sload();
         fusb=true;
-        info[0].innerHTML=parent.t('Current software version:')+' <span class="item_name">'+parent.stb.RDir("ImageVersion")+'&nbsp;&nbsp;&nbsp;</span>'+parent.t('Description:')+' <span class="item_name">'+vers[0]+'</span>';
+        var info_width = document.getElementById("blueback").offsetWidth+'px'
+        info[0].style.width = info_width;
+        info[2].style.width = info_width;
+        info[0].innerHTML=parent.t('Current version:')+' <span class="item_name">'+parent.stb.RDir("ImageVersion")+'&nbsp;&nbsp;&nbsp;</span>'+parent.t('Description:')+' <span class="item_name">'+vers[0]+'</span>';
         info[1].innerHTML=parent.t('Date:')+' <span class="item_name">'+vers[1]+' '+vers[2]+' '+vers[3]+' '+vers[4]+' '+vers[5]+' '+vers[6]+'</span>';
-        info[2].innerHTML=parent.t('Avaliable software version:')+' <span class="item_name">n/a</span>';
+        info[2].innerHTML=parent.t('Available version:')+' <span class="item_name">n/a</span>';
         info[3].innerHTML='<span class="item_name"><br /></span>';
         parent.cont.focus();
         document.getElementById("i1").focus();
@@ -120,11 +123,11 @@ function checkst(){
     chb[1].id='i4';
     chb[1].style.visibility='visible';
     mid=5;flb=true;
-    info[2].innerHTML=parent.t('Avaliable software version:')+' <span class="item_name">'+parent.stbUpdate.getImageVersionStr()+'&nbsp;&nbsp;&nbsp;</span>'+parent.t('Description:')+' <span class="item_name">'+parent.stbUpdate. getImageDescStr()+'</span>';
+    info[2].innerHTML=parent.t('Available version:')+' <span class="item_name">'+parent.stbUpdate.getImageVersionStr()+'&nbsp;&nbsp;&nbsp;</span>'+parent.t('Description:')+' <span class="item_name">'+parent.stbUpdate. getImageDescStr()+'</span>';
     info[3].innerHTML=parent.t('Date:')+' <span class="item_name">'+parent.stbUpdate.getImageDateStr()+'</span>';
     info[4].innerHTML=parent.stbUpdate.getStatusStr();}
     else if(st!=26&&st!=23) {info[3].innerHTML='<span class="item_name">'+parent.t('Update files were not found or damaged!')+'</span>';
-    info[2].innerHTML=parent.t('Avaliable software version:')+' <span class="item_name">n/a</span>';
+    info[2].innerHTML=parent.t('Available version:')+' <span class="item_name">n/a</span>';
     info[4].innerHTML='';
     flb=false;mid=4;chb[1].id='i0';
     chb[1].style.visibility='hidden';
@@ -149,7 +152,7 @@ function on(){
     chb[1].style.visibility='hidden';
     chb[0].id='i4';
     mid=4;
-    info[2].innerHTML=parent.t('Avaliable software version:')+' <span class="item_name">n/a</span>';
+    info[2].innerHTML=parent.t('Available version:')+' <span class="item_name">n/a</span>';
     info[3].innerHTML='<span class="item_name"><br /></span>';
 }
 </script>
@@ -159,7 +162,7 @@ function on(){
         <div id="blueback">
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
           <tr>
-            <td colspan="2" align="left"><div name="info" class="list_head"></div></td>
+            <td colspan="2" align="left"><div name="info" class="list_head" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></div></td>
           </tr>
           <tr>
             <td align="left" colspan="2"><div name="info" class="list_head"></div></td>
@@ -183,7 +186,7 @@ function on(){
             <td colspan="2"><div style="height:2px; background:#FFF; width:100%; margin:5px 0;"></div></td>
           </tr>
           <tr>
-            <td colspan="2"><div name="info" class="list_head"></div></td>
+            <td colspan="2"><div name="info" class="list_head" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></div></td>
           </tr>
           <tr>
             <td align="left" colspan="2"><div name="info" class="list_head"></div></td>
