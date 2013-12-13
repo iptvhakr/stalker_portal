@@ -43,6 +43,16 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('Insert data is empty');
         }
 
+        if (!empty($account['stb_mac'])){
+            $mac = Middleware::normalizeMac($account['stb_mac']);
+
+            if (!$mac){
+                throw new RESTCommandException('Not valid mac address');
+            }
+
+            $account['stb_mac'] = $mac;
+        }
+
         if (empty($account['login'])){
             throw new RESTCommandException('Login required');
         }

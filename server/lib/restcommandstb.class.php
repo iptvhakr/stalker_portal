@@ -77,6 +77,16 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('Insert data is empty');
         }
 
+        if (!empty($data['mac'])){
+            $mac = Middleware::normalizeMac($data['mac']);
+
+            if (!$mac){
+                throw new RESTCommandException('Not valid mac address');
+            }
+
+            $data['mac'] = $mac;
+        }
+
         if (empty($data['mac']) && (empty($data['login']) || empty($data['password']))){
             throw new RESTCommandException('Login and password required');
         }
