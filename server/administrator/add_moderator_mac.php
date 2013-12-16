@@ -168,7 +168,7 @@ echo "</table></center>";
 
 if (@$_GET['edit']){
 
-    $arr = Mysql::getInstance()->from('moderators')->where(array('id' => intval(@$_GET['id'])))->get()->all();
+    $arr = Mysql::getInstance()->from('moderators')->where(array('id' => intval(@$_GET['id'])))->get()->first();
 
     if (!empty($arr)){
         $mac              = $arr['mac'];
