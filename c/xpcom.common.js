@@ -290,11 +290,12 @@ function common_xpcom(){
 
                     stb.load(
                         {
-                            "type"      : "stb",
-                            "action"    : "do_auth",
-                            "login"     : login,
-                            "password"  : password,
-                            'device_id' : stb.GetUID ? stb.GetUID() : ''
+                            "type"       : "stb",
+                            "action"     : "do_auth",
+                            "login"      : login,
+                            "password"   : password,
+                            'device_id'  : stb.GetUID ? stb.GetUID() : '',
+                            'device_id2' : stb.GetUID ? (stb.GetUID(self.access_token) == stb.GetUID(self.access_token, self.access_token) ? '' : stb.GetUID('device_id', self.access_token)) : ''
                         },
                         function(result){
                             _debug('auth result', result);
@@ -796,6 +797,7 @@ function common_xpcom(){
                 'stb_type'         : this.type,
                 'image_version'    : this.image_version,
                 'device_id'        : stb.GetUID ? stb.GetUID() : '',
+                'device_id2'       : stb.GetUID ? (stb.GetUID(this.access_token) == stb.GetUID(this.access_token, this.access_token) ? '' : stb.GetUID('device_id', this.access_token)) : '',
                 'signature'        : stb.GetUID ? stb.GetUID(this.access_token) : '',
                 'auth_second_step' : auth_second_step ? 1 : 0
             },
