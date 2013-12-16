@@ -5,6 +5,7 @@ class RESTRequest extends APIRequest
     private $action;
     private $resource;
     private $identifiers;
+    private $access_token;
     private $data;
     private static $use_mac_identifiers = false;
 
@@ -21,6 +22,8 @@ class RESTRequest extends APIRequest
         if (empty($_GET['q'])){
             throw new RESTRequestException("Empty resource");
         }
+
+        $this->parseAuthorizationHeader();
 
         $requested_uri = $_GET['q'];
 
@@ -55,6 +58,38 @@ class RESTRequest extends APIRequest
         parse_str(file_get_contents("php://input"), $this->data);
     }
 
+    private function parseAuthorizationHeader(){
+
+        if (function_exists('getallheaders')){
+            $headers = getallheaders();
+        }else{
+            $headers = $this->getHttpHeaders();
+        }
+
+        if (!$headers){
+            return;
+        }
+
+        $auth_header = !empty($headers["Authorization"]) ? $headers["Authorization"] : null;
+
+        if ($auth_header && preg_match('/Bearer\s+(.*)$/i', $auth_header, $matches)){
+            $this->access_token = trim($matches[1]);
+        }
+    }
+
+    private function getHttpHeaders(){
+
+        $headers = array();
+
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+
+        return $headers;
+    }
+
     public function getAction(){
         return $this->action;
     }
@@ -65,6 +100,10 @@ class RESTRequest extends APIRequest
 
     public function getIdentifiers(){
         return $this->identifiers;
+    }
+
+    public function getAccessToken(){
+        return $this->access_token;
     }
 
     public static function useMacIdentifiers(){

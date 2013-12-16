@@ -13,10 +13,14 @@ class TvArchiveRecorder extends Storage
 
         $url = $task['cmd'];
 
-        preg_match('/:\/\/([\d\.]+):(\d+)/', $url, $arr);
+        if (!preg_match('/:\/\/([\d\.]+):(\d+)/', $url, $arr)){
+            throw new Exception('URL wrong format');
+        }
 
         $ip   = $arr[1];
         $port = $arr[2];
+
+        $task['ch_id'] = (int) $task['ch_id'];
 
         $pid_file = $this->getRecPidFile($task['ch_id']);
 

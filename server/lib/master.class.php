@@ -841,6 +841,8 @@ abstract class Master
             RESTClient::$from = $this->stb->mac;
         }
 
+        RESTClient::setAccessToken($this->createAccessToken());
+
         foreach ($this->storages as $name => $storage){
             $clients[$name] = new RESTClient('http://'.$storage['storage_ip'].'/stalker_portal/storage/rest.php?q=');
         }
@@ -885,6 +887,27 @@ abstract class Master
         //trigger_error($exception->getMessage()."\n".$exception->getTraceAsString(), E_USER_ERROR);
         echo $exception->getMessage()."\n".$exception->getTraceAsString();
         $this->addToLog($exception->getMessage());
+    }
+
+    private function createAccessToken(){
+
+        $key = md5(mktime(1).uniqid());
+
+        $cache = Cache::getInstance();
+
+        $result = $cache->set($key, 'storage', 0, 30);
+
+        return $key;
+    }
+
+    public static function checkAccessToken($token){
+
+        if (!$token){
+            return false;
+        }
+
+        $val = Cache::getInstance()->get($token);
+        return $val === 'storage';
     }
 }
 

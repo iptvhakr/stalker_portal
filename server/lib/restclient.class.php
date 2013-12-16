@@ -8,8 +8,9 @@ class RESTClient
     private $ids;
     private $data;
     public static $from;
-    private $auth_login;
-    private $auth_password;
+    private static $auth_login;
+    private static $auth_password;
+    private static $access_token;
     private $timeout;
 
     public function __construct($rest_server){
@@ -62,9 +63,13 @@ class RESTClient
 
     public function setAuthParams($login, $password){
         if (!empty($login) && !empty($password)){
-            $this->auth_login = $login;
-            $this->auth_password = $password;
+            self::$auth_login    = $login;
+            self::$auth_password = $password;
         }
+    }
+
+    public static function setAccessToken($token){
+        self::$access_token = $token;
     }
 
     private function execute(){
@@ -78,7 +83,9 @@ class RESTClient
         $headers[] = "Connection: close";
         $headers[] = "X-From: ".self::$from;
 
-        if (!empty(self::$auth_login) && !empty(self::$auth_password)){
+        if (!empty(self::$access_token)){
+            $headers[] = "Authorization: Bearer ".self::$access_token;
+        }elseif (!empty(self::$auth_login) && !empty(self::$auth_password)){
             $headers[] = "Authorization: Basic ".base64_encode(self::$auth_login.":".self::$auth_password);
         }
 
