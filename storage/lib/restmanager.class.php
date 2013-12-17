@@ -33,7 +33,7 @@ class RESTManager
         if (defined('STORAGE_NAME')){
             $storage_name = STORAGE_NAME;
         }else{
-            $storage_name = ($_SERVER['SERVER_NAME'])? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
+            $storage_name = $_SERVER['SERVER_NAME']? $_SERVER['SERVER_NAME'] : $_SERVER['SERVER_ADDR'];
         }
 
         if (!defined('PORTAL_URL')){

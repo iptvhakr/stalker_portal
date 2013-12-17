@@ -895,7 +895,7 @@ abstract class Master
 
         $cache = Cache::getInstance();
 
-        $result = $cache->set($key, 'storage', 0, 30);
+        $result = $cache->set($key, 'storage', 0, 120);
 
         return $key;
     }

@@ -8,27 +8,20 @@ class Recorder extends Storage
      * @param string $url multicast address
      * @param int $rec_id
      * @return string record filename
+     * @throws Exception
      */
     public function start($url, $rec_id){
         
         $this->stop($rec_id);
 
-        $filename = $rec_id.'_'.date("YmdHis").'.mpg';
+        $filename = intval($rec_id).'_'.date("YmdHis").'.mpg';
 
-        preg_match('/:\/\/([\d\.]+):(\d+)/', $url, $arr);
+        if (!preg_match('/:\/\/([\d\.]+):(\d+)/', $url, $arr)){
+            throw new Exception('URL wrong format');
+        }
 
         $ip   = $arr[1];
         $port = $arr[2];
-
-        /*if (strpos($url, 'rtp://') !== false){
-            //exec('nohup dumprtp '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>error.log & echo $!', $out);
-            exec('nohup dumprtp '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>/dev/null & echo $!', $out);
-        }elseif(strpos($url, 'udp://') !== false){
-            //exec('nohup udpdump '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>&1 & echo $!', $out);
-            exec('nohup udpdump '.$ip.' '.$port.' > '.RECORDS_DIR.$filename.' 2>/dev/null & echo $!', $out);
-        }else{
-            throw new DomainException('Not supported protocol');
-        }*/
 
         if (strpos($url, 'rtp://') !== false || strpos($url, 'udp://') !== false){
             exec('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' > '.RECORDS_DIR.$filename.' 2>/dev/null & echo $!', $out);
@@ -60,6 +53,7 @@ class Recorder extends Storage
      *
      * @param int $rec_id
      * @return bool
+     * @throws IOException
      */
     public function stop($rec_id){
         
@@ -95,7 +89,7 @@ class Recorder extends Storage
      */
     public function delete($filename){
         
-        return @unlink(RECORDS_DIR.$filename);
+        return @unlink(RECORDS_DIR.basename($filename));
     }
     
     /**

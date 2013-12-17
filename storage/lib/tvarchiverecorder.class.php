@@ -33,7 +33,15 @@ class TvArchiveRecorder extends Storage
         }
 
         if (strpos($url, 'rtp://') !== false || strpos($url, 'udp://') !== false){
-            exec('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' -d'.$this->getRecordsPath($task).' -n'.$task['parts_number'].' > /dev/null 2>&1 & echo $!', $out);
+
+            $path = $this->getRecordsPath($task);
+
+            if ($path && is_dir($path)){
+                exec('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' -d'.$path.' -n'.intval($task['parts_number']).' > /dev/null 2>&1 & echo $!', $out);
+            }else{
+                throw new Exception('Wrong archive path or permission denied for new folder');
+            }
+
         }else{
             throw new DomainException('Not supported protocol');
         }
@@ -112,7 +120,7 @@ class TvArchiveRecorder extends Storage
      * Return save dir for records
      *
      * @param array $task
-     * @return string
+     * @return string|false
      */
     private function getRecordsPath($task){
 
@@ -120,7 +128,10 @@ class TvArchiveRecorder extends Storage
 
         if (!is_dir($dir)){
             umask(0);
-            mkdir($dir, 0777, true);
+
+            if (!mkdir($dir, 0777, true)){
+                return false;
+            }
         }
 
         return $dir;

@@ -172,6 +172,7 @@ class Vclub extends Storage
      *
      * @param string $name
      * @return boolean
+     * @throws Exception
      */
     public function createDir($name){
         if (!is_dir(VIDEO_STORAGE_DIR.$name)) {
@@ -187,6 +188,7 @@ class Vclub extends Storage
      * Start counting MD5 SUM for media
      *
      * @param string $media_name
+     * @throws Exception
      */
     public function startMD5Sum($media_name){
         
