@@ -755,11 +755,48 @@ function common_xpcom(){
                     for (var i=0; i<result.length; i++){
                         stb.images[i] = new Image();
                         stb.images[i].src = result[i];
-                    	stb.images.onload = function(){};
+                        stb.images.onload = function(){};
                     }
                 }
             }
         );
+    };
+
+    this.hashCode = function(s){
+        return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);
+    };
+
+    this.get_saved_access_token = function(){
+        _debug('stb.get_saved_access_token');
+
+        var file = 'stalker_'+this.hashCode(window.location.origin+window.location.pathname);
+
+        if (!stb.LoadUserData){
+            return;
+        }
+
+        var data = stb.LoadUserData(file) || "{}";
+
+        try{
+            data = JSON.parse(data)
+        }catch(e){
+            _debug(e);
+        }
+        data = data || {};
+
+        return data.token;
+    };
+
+    this.save_access_token = function(){
+        _debug('stb.save_access_token');
+
+        var file = 'stalker_'+this.hashCode(window.location.origin+window.location.pathname);
+
+        if (!stb.SaveUserData){
+            return;
+        }
+
+        stb.SaveUserData(file, JSON.stringify({"token" : this.access_token}));
     };
 
     this.handshake = function(){
@@ -768,7 +805,8 @@ function common_xpcom(){
         this.load(
             {
                 "type"   : "stb",
-                "action" : "handshake"
+                "action" : "handshake",
+                "token"  : this.get_saved_access_token() || ''
             },
             function(result){
                 _debug('on handshake', result);
@@ -922,10 +960,17 @@ function common_xpcom(){
             return;
         }
 
+        if (this.user['store_auth_data_on_stb']){
+            this.save_access_token();
+        }
+
         if (this.user['status'] == 2){
             this.init_auth_dialog();
             this.key_lock = false;
             this.auth_dialog.show();
+
+            loader.append('alert');
+
         }else if (this.user['status'] == 0){
             try{
 
@@ -1077,6 +1122,7 @@ function common_xpcom(){
         }else if(this.user['status'] == 1){
             stb.loader.stop();
             this.cut_off(this.user.hasOwnProperty('block_msg') ? this.user['block_msg'] : '');
+            loader.append('alert');
         }
 
         this.watchdog.run(this.user['watchdog_timeout'], this.user['timeslot']);

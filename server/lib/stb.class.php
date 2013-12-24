@@ -341,12 +341,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return array('token' => $this->getParam('access_token'));
         }
 
+        if (Config::exist('auth_url') && !empty($_REQUEST['token']) && $_REQUEST['token'] == $this->getParam('access_token')){
+            return array('token' => $this->getParam('access_token'));
+        }
+
         $token = strtoupper(md5(mktime(1).uniqid()));
 
         return array('token' => $token);
     }
 
-    private function passAccessFilter($country, &$model, $mac, $serial_number, $version, $device_id, $signature){
+    private function passAccessFilter($country, &$model, $mac, $serial_number, $version, $device_id, $signature, &$force_auth){
 
         $filter_file = PROJECT_PATH.'/access_filter.php';
 
@@ -373,7 +377,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $device_id2    = isset($_REQUEST['device_id2']) ? $_REQUEST['device_id2'] : '';
         $signature     = isset($_REQUEST['signature']) ? $_REQUEST['signature'] : '';
 
-        $filter_response = $this->passAccessFilter($country, $model, $this->mac, $serial_number, $version, $device_id2, $signature);
+        $force_auth = null;
+
+        $filter_response = $this->passAccessFilter($country, $model, $this->mac, $serial_number, $version, $device_id2, $signature, $force_auth);
 
         $this->params['stb_type'] = $model;
 
@@ -476,11 +482,18 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }
 
+        $valid_saved_auth = $this->getParam('access_token') && ($this->access_token == $this->getParam('access_token'));
+
         if (!$this->id){
 
             $disable_auth_for_models = Config::exist('disable_auth_for_models') ? preg_split("/\s*,\s*/", trim(Config::get('disable_auth_for_models'))) : array();
 
-            if (Config::exist('auth_url') && !in_array($model, $disable_auth_for_models)){
+            if (!$valid_saved_auth && Config::exist('auth_url') && (!empty($disable_auth_for_models) && !in_array($model, $disable_auth_for_models) || $force_auth === true)){
+
+                if (Config::getSafe('init_device_before_auth', false)){
+                    $this->initProfile(null, null, $device_id, $device_id2);
+                    $this->getInfoFromOss(!$force_auth);
+                }
 
                 return array(
                     'status' => 2 // authentication request
@@ -493,7 +506,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }else{
             Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
 
-            if (intval($_REQUEST['auth_second_step']) === 0 && Config::exist('auth_url') && strpos(Config::get('auth_url'), 'auth_every_load')){
+            if (!$valid_saved_auth && (intval($_REQUEST['auth_second_step']) === 0) && Config::exist('auth_url') && (strpos(Config::get('auth_url'), 'auth_every_load') || $force_auth === true)){
+                $this->getInfoFromOss(!$force_auth);
                 return array(
                     'status' => 2
                 );
@@ -510,12 +524,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'num_banks'     => isset($_REQUEST['num_banks']) ? $_REQUEST['num_banks'] : 0,
                 'image_version' => isset($_REQUEST['image_version']) ? $_REQUEST['image_version'] : '',
                 'locale'        => $this->locale,
-                'country'       => $country
+                'country'       => $country,
+                'verified'      => $force_auth === false
             ),
             array('id' => $this->id)
         );
 
-        $info = $this->getInfoFromOss();
+        $info = $this->getInfoFromOss(!$force_auth);
 
         if (self::$just_created == true && Config::getSafe('enable_welcome_message', false)){
             $event = new SysEvent();
@@ -647,6 +662,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['epg_update_time_range'] = floatval(Config::getSafe('epg_update_delay_per_user', 0.2)) * $max_id;
 
+        $profile['store_auth_data_on_stb'] = Config::getSafe('store_auth_data_on_stb', true) && Config::exist('auth_url') && $force_auth !== false;
+
         if (Config::getSafe('enable_tariff_plans', false)){
             $profile['additional_services_on'] = '1';
         }
@@ -718,7 +735,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $data['created'] = 'NOW()';
 
-        if (Config::exist('default_stb_status')){
+        if (Config::exist('default_stb_status') && !isset($data['status'])){
             $data['status'] = intval(!Config::get('default_stb_status'));
         }
 
@@ -773,6 +790,18 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 ),
                 array(
                     'login' => $login
+                )
+            );
+
+            $uid = intval(Mysql::getInstance()->from('users')->where(array('mac' => $this->mac))->get()->first('id'));
+        }else if (Config::getSafe('init_device_before_auth', false)){
+
+            Mysql::getInstance()->update('users',
+                array(
+                     'login' => empty($login) ? '' : $login,
+                ),
+                array(
+                     'mac' => $this->mac
                 )
             );
 
@@ -1597,9 +1626,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         return $this->getByUids($uids);
     }
 
-    private function getInfoFromOss(){
+    private function getInfoFromOss($verified){
 
         $user = User::getInstance($this->id);
+
+        if ($verified){
+            $user->setVerified();
+        }
 
         $user->refreshProfile();
 

@@ -19,6 +19,7 @@ class SimpleOssWrapper implements OssWrapperInterface
             .'&locale='.$user->getLocale()
             .'&login='.$user->getLogin()
             .'&portal='.(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'])
+            .'&verified='.intval($user->isVerified())
         );
 
         return $this->parseResult($data, Config::getSafe('strict_oss_url_check', true));

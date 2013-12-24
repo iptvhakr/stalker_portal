@@ -6,6 +6,7 @@ class User implements \Stalker\Lib\StbApi\User
     private static $instance = null;
     private $profile;
     private $ip;
+    private $verified;
 
     /**
      * @static
@@ -33,8 +34,13 @@ class User implements \Stalker\Lib\StbApi\User
         $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
         $this->ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR'];
 
-        if ($this->profile['tariff_plan_id'] == 0){
-            $this->profile['tariff_plan_id'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
+        if (!empty($this->profile)){
+
+            if ($this->profile['tariff_plan_id'] == 0){
+                $this->profile['tariff_plan_id'] = (int) Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('id');
+            }
+
+            $this->verified = $this->profile['verified'] === '1';
         }
     }
 
@@ -84,6 +90,14 @@ class User implements \Stalker\Lib\StbApi\User
 
     public function getLogin(){
         return $this->profile['login'];
+    }
+
+    public function isVerified(){
+        return $this->verified;
+    }
+
+    public function setVerified(){
+        $this->verified = true;
     }
 
     public function setSerialNumber($serial_number){

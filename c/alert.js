@@ -242,6 +242,6 @@ _alert.prototype.bind = function(){
     
 };
 
-stb && stb.init_alerts && stb.init_alerts();
+stb && stb.init_alerts && !stb.notice && stb.init_alerts();
 
 loader.next();
