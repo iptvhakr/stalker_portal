@@ -63,9 +63,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         if (!empty($debug_key) && $this->checkDebugKey($debug_key)){
 
             if (!empty($_REQUEST['mac'])){
-                $this->mac = @trim(urldecode($_REQUEST['mac']));
+                $this->mac = @htmlspecialchars(trim(urldecode($_REQUEST['mac'])));
             }elseif (!empty($_COOKIE['mac'])){
-                $this->mac = @trim(urldecode($_COOKIE['mac']));
+                $this->mac = @htmlspecialchars(trim(urldecode($_COOKIE['mac'])));
             }else{
                 echo 'Identification failed';
                 exit;
@@ -76,7 +76,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
 
         }else if (!empty($_COOKIE['mac']) && empty($_COOKIE['mac_emu'])){
-            $this->mac = @trim(urldecode($_COOKIE['mac']));
+            $this->mac = @htmlspecialchars(trim(urldecode($_COOKIE['mac'])));
 
             if (!empty($_GET['action']) && $_GET['action'] != 'handshake' && $_GET['action'] != 'get_profile' && $_GET['action'] != 'get_localization' && $_GET['action'] != 'do_auth' && !$this->isValidAccessToken($this->access_token)){
                 error_log("STB authorization failed. MAC: ".$this->mac.", token: ".$this->access_token);

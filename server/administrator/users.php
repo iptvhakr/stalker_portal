@@ -580,7 +580,7 @@ $i=0+$MAX_PAGE_ITEMS*$page;
 while($arr = $users->next()){
     $i++;
 
-    $now_playing_content = $arr['now_playing_content'];
+    $now_playing_content = htmlspecialchars($arr['now_playing_content']);
     
     if ($arr['now_playing_type'] == 2 && $arr['storage_name']){
         $now_playing_content = '['.$arr['storage_name'].'] '.$now_playing_content;

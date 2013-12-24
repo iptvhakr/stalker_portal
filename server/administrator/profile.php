@@ -351,7 +351,7 @@ if (empty($packages)){
             </tr>
             <tr>
                 <td>version:</td>
-                <td><?= $arr['version']?></td>
+                <td><?= htmlspecialchars($arr['version'])?></td>
             </tr>
         </table>
         </td>
