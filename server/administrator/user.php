@@ -23,12 +23,17 @@ if (!empty($_POST)){
 
         $user = \User::getByLogin($_POST['login']);
 
-        $mac = Middleware::normalizeMac($_POST['stb_mac']);
+        if (!empty($_POST['stb_mac'])){
+            $mac = Middleware::normalizeMac($_POST['stb_mac']);
+            $_POST['stb_mac'] = $mac;
 
-        $_POST['stb_mac'] = $mac;
+            if (!$mac){
+                $error = _('Error: Not valid mac address');
+            }
+        }
 
-        if (!$mac){
-            $error = _('Error: Not valid mac address');
+        if ($error){
+
         }else if (!empty($user)){
             $error = _('Error: Login already in use');
         }else{

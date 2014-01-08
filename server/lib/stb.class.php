@@ -488,7 +488,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             $disable_auth_for_models = Config::exist('disable_auth_for_models') ? preg_split("/\s*,\s*/", trim(Config::get('disable_auth_for_models'))) : array();
 
-            if (!$valid_saved_auth && Config::exist('auth_url') && (!empty($disable_auth_for_models) && !in_array($model, $disable_auth_for_models) || $force_auth === true)){
+            if (!$valid_saved_auth && Config::exist('auth_url') && (!in_array($model, $disable_auth_for_models) || $force_auth === true)){
 
                 if (Config::getSafe('init_device_before_auth', false)){
                     $this->initProfile(null, null, $device_id, $device_id2);
