@@ -1193,7 +1193,7 @@ player.prototype.event_callback = function(event, params){
                     replay_timeout *= this.event5_counter <= 2 ? 1 : 6;
                 }
 
-                if (this.proto == 'http' && this.is_tv){
+                if (this.is_tv){
 
                     this.replay_channel_timer = window.setTimeout(
                         function(){
