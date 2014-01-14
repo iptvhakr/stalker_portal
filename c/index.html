@@ -221,9 +221,8 @@ function init(){
     }).bind(key.TV);
 
     keydown_observer.addCustomEventListener("keypress", function(event){
-        //_debug('power keypress', event);
 
-        if (stb.power_off){
+        if (stb.power_off && event.key != key.USB_MOUNTED && event.key != key.USB_UNMOUNTED){
             stb.switchPower();
             return false;
         }

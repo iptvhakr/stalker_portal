@@ -31,6 +31,8 @@ var keydown_observer = new function(){
         if (e.altKey){
             code += 2000;
         }
+
+        e.key = code;
         
         _debug('code:', code);
 
@@ -80,8 +82,6 @@ var keydown_observer = new function(){
         }
 
         _debug('keydown handler exit');
-
-        //this.triggerCustomEventListener('keypress', e);
     }
 };
 
