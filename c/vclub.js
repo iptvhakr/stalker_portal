@@ -979,7 +979,7 @@
 
             var filename = this.data_items[this.cur_row].path;
 
-            if (parseInt(this.data_items[this.cur_row].cur_series, 10) != 0){
+            if (this.data_items[this.cur_row].cur_series && parseInt(this.data_items[this.cur_row].cur_series, 10) != 0){
                 filename += '_E' + this.data_items[this.cur_row].cur_series;
             }
 
