@@ -32,7 +32,7 @@ class User implements \Stalker\Lib\StbApi\User
     private function __construct($uid = 0){
         $this->id = (int) $uid;
         $this->profile = Mysql::getInstance()->from('users')->where(array('id' => $this->id))->get()->first();
-        $this->ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR'];
+        $this->ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : @$_SERVER['REMOTE_ADDR'];
 
         if (!empty($this->profile)){
 
@@ -61,7 +61,7 @@ class User implements \Stalker\Lib\StbApi\User
 
     public static function getCountryId(){
 
-        $ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : $_SERVER['REMOTE_ADDR'];
+        $ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : @$_SERVER['REMOTE_ADDR'];
 
         $country_code = @geoip_country_code_by_name($ip);
 
