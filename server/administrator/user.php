@@ -29,6 +29,12 @@ if (!empty($_POST)){
 
             if (!$mac){
                 $error = _('Error: Not valid mac address');
+            }else{
+                $user_by_mac = \User::getByMac($mac);
+
+                if (!empty($user_by_mac)){
+                    $error = _('Error: STB with such MAC address already exists');
+                }
             }
         }
 
