@@ -1978,7 +1978,7 @@ player.prototype.play_now = function(item){
 
     this.init_con_menu();
 
-    if (module.time_shift_local && module.time_shift_local.enabled && this.cur_media_item.allow_local_timeshift === '1'){
+    if (module.time_shift_local && module.time_shift_local.enabled && this.cur_media_item.allow_local_timeshift === '1' && (uri.indexOf('rtp ') === 0 || uri.indexOf('ffrt ') === 0)){
         _debug('replacing solution to extTimeShift');
         uri = uri.replace(/^(rtp|ffrt)+\s/, 'extTimeShift ');
         _debug('uri', uri);
@@ -2168,7 +2168,7 @@ player.prototype.pause_switch = function(){
     _debug('module.time_shift_local.enabled', module.time_shift_local ? !!module.time_shift_local.enabled : false);
     _debug('this.cur_media_item.allow_local_timeshift', this.cur_media_item.allow_local_timeshift);
 
-    if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10))
+    if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10) || (this.cur_media_item.cmd.indexOf('rtp ') == -1 && this.cur_media_item.cmd.indexOf('ffrt ') == -1))
         ){
         return;
     }
@@ -3791,7 +3791,7 @@ player.prototype.move_pos = function(dir){
         return;
     }
 
-    if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10))
+    if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10) || (this.cur_media_item.cmd.indexOf('rtp ') == -1 && this.cur_media_item.cmd.indexOf('ffrt ') == -1))
         ){
         return;
     }

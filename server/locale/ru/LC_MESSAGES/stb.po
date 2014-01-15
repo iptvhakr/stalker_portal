@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-12-09 17:36+0300\n"
-"PO-Revision-Date: 2013-12-09 17:36+0300\n"
+"POT-Creation-Date: 2014-01-14 17:03+0300\n"
+"PO-Revision-Date: 2014-01-14 17:04+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,8 @@ msgstr "Реклама в Видео клубе"
 #: ../../../administrator/administrators.php:146
 #: ../../../administrator/tariffs.php:281
 #: ../../../administrator/stat_not_active_users.php:69
-#: ../../../administrator/user.php:99 ../../../administrator/city_info.php:129
+#: ../../../administrator/user.php:110
+#: ../../../administrator/city_info.php:129
 #: ../../../administrator/reply.php:83
 #: ../../../administrator/video_search.php:257
 #: ../../../administrator/users.php:95
@@ -81,7 +82,7 @@ msgstr "Реклама в Видео клубе"
 #: ../../../administrator/add_itv.php:970
 #: ../../../administrator/stat_tv.php:86
 #: ../../../administrator/subscribe_import.php:470
-#: ../../../administrator/setting_common.php:274
+#: ../../../administrator/setting_common.php:275
 #: ../../../administrator/storages.php:187
 #: ../../../administrator/vclub_schedule.php:79
 #: ../../../administrator/add_karaoke.php:216
@@ -186,8 +187,8 @@ msgstr "Запретить для видео категорий"
 #: ../../../administrator/subscribe.php:375
 #: ../../../administrator/admin_groups.php:95
 #: ../../../administrator/playlists.php:54
-#: ../../../administrator/add_itv.php:1679
-#: ../../../administrator/setting_common.php:182
+#: ../../../administrator/add_itv.php:1680
+#: ../../../administrator/setting_common.php:183
 #: ../../../administrator/storages.php:98
 #: ../../../administrator/add_karaoke.php:843
 msgid "Save"
@@ -665,7 +666,7 @@ msgstr "Настройки"
 #: ../../../administrator/index.php:471
 #: ../../../administrator/setting_common.php:127
 #: ../../../administrator/setting_common.php:137
-#: ../../../administrator/setting_common.php:269
+#: ../../../administrator/setting_common.php:270
 msgid "Firmware auto update"
 msgstr "Автоматическое обновление прошивки"
 
@@ -885,7 +886,7 @@ msgstr "Боевик"
 #: ../../../administrator/testers.php:10
 #: ../../../administrator/administrators.php:9
 #: ../../../administrator/tariffs.php:16 ../../../administrator/user.php:16
-#: ../../../administrator/user.php:160 ../../../administrator/users.php:95
+#: ../../../administrator/user.php:171 ../../../administrator/users.php:95
 #: ../../../administrator/stbgroup_members.php:10
 #: ../../../administrator/stream_servers.php:10
 #: ../../../administrator/stbgroups.php:10
@@ -897,7 +898,7 @@ msgstr "Боевик"
 #: ../../../administrator/playlists.php:10
 #: ../../../administrator/add_itv.php:970
 #: ../../../administrator/setting_common.php:10
-#: ../../../administrator/setting_common.php:296
+#: ../../../administrator/setting_common.php:297
 #: ../../../administrator/storages.php:10
 msgid "Add"
 msgstr "Добавить"
@@ -1054,7 +1055,7 @@ msgstr "Группы администраторов"
 
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
-#: ../../../administrator/user.php:121 ../../../administrator/profile.php:375
+#: ../../../administrator/user.php:132 ../../../administrator/profile.php:375
 #: ../../../administrator/login.php:55 ../../../lang/stb.php:349
 #: ../../../lang/stb.php:362 ../../../lang/stb.php:488
 msgid "Login"
@@ -1069,7 +1070,7 @@ msgid "Group"
 msgstr "Группа"
 
 #: ../../../administrator/administrators.php:195
-#: ../../../administrator/user.php:125 ../../../administrator/login.php:59
+#: ../../../administrator/user.php:136 ../../../administrator/login.php:59
 #: ../../../lang/stb.php:350 ../../../lang/stb.php:363
 #: ../../../lang/stb.php:479 ../../../lang/stb.php:489
 msgid "Password"
@@ -1126,40 +1127,44 @@ msgstr "Последний просмотр ТВ"
 msgid "Latest VIDEO viewing"
 msgstr "Последний просмотр ВИДЕО"
 
-#: ../../../administrator/user.php:27
+#: ../../../administrator/user.php:31
+msgid "Error: Not valid mac address"
+msgstr ""
+
+#: ../../../administrator/user.php:38
 msgid "Error: Login already in use"
 msgstr "Ошибка: Логин уже используется"
 
-#: ../../../administrator/user.php:38
+#: ../../../administrator/user.php:49
 msgid "Error: could not create account"
 msgstr "Ошибка: невозможно создать учетную запись"
 
-#: ../../../administrator/user.php:43
+#: ../../../administrator/user.php:54
 msgid "Error: Not all required fields are filled"
 msgstr "Ошибка: не все обязательные поля заполнены"
 
-#: ../../../administrator/user.php:51 ../../../administrator/user.php:94
+#: ../../../administrator/user.php:62 ../../../administrator/user.php:105
 msgid "User account"
 msgstr "Учетная запись пользователя"
 
-#: ../../../administrator/user.php:129 ../../../administrator/profile.php:367
+#: ../../../administrator/user.php:140 ../../../administrator/profile.php:367
 msgid "Full name"
 msgstr "ФИО"
 
-#: ../../../administrator/user.php:133 ../../../administrator/profile.php:383
+#: ../../../administrator/user.php:144 ../../../administrator/profile.php:383
 #: ../../../lang/stb.php:406
 msgid "Account number"
 msgstr "Номер лицевого счета"
 
-#: ../../../administrator/user.php:137
+#: ../../../administrator/user.php:148
 msgid "MAC"
 msgstr ""
 
-#: ../../../administrator/user.php:141
+#: ../../../administrator/user.php:152
 msgid "Account disabled"
 msgstr "Учетная запись отключена"
 
-#: ../../../administrator/user.php:145 ../../../administrator/profile.php:458
+#: ../../../administrator/user.php:156 ../../../administrator/profile.php:458
 #: ../../../lang/stb.php:379
 msgid "Tariff plan"
 msgstr "Тарифный план"
@@ -1368,7 +1373,7 @@ msgstr "URL"
 #: ../../../administrator/add_video.php:833
 #: ../../../administrator/add_video.php:2056
 #: ../../../administrator/add_itv.php:1011
-#: ../../../administrator/add_itv.php:1645
+#: ../../../administrator/add_itv.php:1646
 msgid "Volume correction"
 msgstr "Коррекция звука"
 
@@ -1511,7 +1516,7 @@ msgid "Turn on"
 msgstr "Включить"
 
 #: ../../../administrator/add_video.php:552
-#: ../../../administrator/add_itv.php:1679 ../../../lang/stb.php:252
+#: ../../../administrator/add_itv.php:1680 ../../../lang/stb.php:252
 #: ../../../lang/stb.php:289
 msgid "Cancel"
 msgstr "Отмена"
@@ -1705,8 +1710,8 @@ msgid "Duration"
 msgstr "Длительность"
 
 #: ../../../administrator/add_video.php:2027
-#: ../../../administrator/add_itv.php:1629 ../../../lang/stb.php:90
-#: ../../../lang/stb.php:306 ../../../lib/user.class.php:964
+#: ../../../administrator/add_itv.php:1630 ../../../lang/stb.php:90
+#: ../../../lang/stb.php:306 ../../../lib/user.class.php:978
 msgid "min"
 msgstr "мин"
 
@@ -1725,7 +1730,7 @@ msgid "Description"
 msgstr "Описание"
 
 #: ../../../administrator/add_video.php:2064
-#: ../../../administrator/add_itv.php:1653
+#: ../../../administrator/add_itv.php:1654
 msgid "Comments"
 msgstr "Комментарии"
 
@@ -2040,7 +2045,7 @@ msgid "Rent duration"
 msgstr "Длительность аренды"
 
 #: ../../../administrator/services_packages.php:395
-#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:960
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:974
 msgid "h"
 msgstr "ч"
 
@@ -2279,7 +2284,7 @@ msgid "Restart all TV archives"
 msgstr "Перезапустить все задания ТВ архива"
 
 #: ../../../administrator/add_itv.php:1005
-#: ../../../administrator/add_itv.php:1637
+#: ../../../administrator/add_itv.php:1638
 msgid "Service code"
 msgstr "Код услуги"
 
@@ -2348,15 +2353,19 @@ msgstr "Разрешить nPVR"
 msgid "Allow USB TimeShift"
 msgstr "Разрешить TimeShift на USB носители"
 
-#: ../../../administrator/add_itv.php:1597
+#: ../../../administrator/add_itv.php:1592
+msgid "only for rtp and ffrt solutions"
+msgstr "только для солюшинов rtp и ffrt"
+
+#: ../../../administrator/add_itv.php:1598
 msgid "Allow USB PVR"
 msgstr "Разрешить PVR на USB носители"
 
-#: ../../../administrator/add_itv.php:1629
+#: ../../../administrator/add_itv.php:1630
 msgid "EPG correction"
 msgstr "Коррекция EPG"
 
-#: ../../../administrator/add_itv.php:1669
+#: ../../../administrator/add_itv.php:1670
 msgid "Logo"
 msgstr "Логотип"
 
@@ -2401,16 +2410,16 @@ msgstr "Включить"
 msgid "STB Model"
 msgstr ""
 
-#: ../../../administrator/setting_common.php:164
-#: ../../../administrator/setting_common.php:168
+#: ../../../administrator/setting_common.php:165
+#: ../../../administrator/setting_common.php:169
 msgid "Required"
 msgstr "Необходимый"
 
-#: ../../../administrator/setting_common.php:172
+#: ../../../administrator/setting_common.php:173
 msgid "Update type"
 msgstr "Вариант обновления"
 
-#: ../../../administrator/setting_common.php:219
+#: ../../../administrator/setting_common.php:220
 msgid "Do you really want to delete this item?"
 msgstr "Вы действительно хотите удалить этот объект?"
 
@@ -3000,7 +3009,8 @@ msgstr "на канале"
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашей приставки устарела.<br>Пожалуйста обновите её."
 
-#: ../../../tools/misctranslations.php:160
+#: ../../../tools/misctranslations.php:160 ../../../lib/stb.class.php:468
+#: ../../../lib/stb.class.php:479
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка повреждена.<br/> Свяжитесь с провайдером."
 
@@ -4367,25 +4377,25 @@ msgstr "сегодня"
 msgid "yesterday"
 msgstr "вчера"
 
-#: ../../../lib/stb.class.php:500
+#: ../../../lib/stb.class.php:538
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
 
-#: ../../../lib/itv.class.php:1354
+#: ../../../lib/itv.class.php:1357
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1364
+#: ../../../lib/itv.class.php:1367
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
 
 #
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:749
-#: ../../../lib/user.class.php:1006 ../../../lib/user.class.php:1007
+#: ../../../lib/user.class.php:1020 ../../../lib/user.class.php:1021
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -4688,7 +4698,7 @@ msgstr "декабрь"
 msgid "[No channel info]"
 msgstr "[телепрограмма отсутствует]"
 
-#: ../../../lib/user.class.php:956 ../../../lib/accountinfo.class.php:34
+#: ../../../lib/user.class.php:970 ../../../lib/accountinfo.class.php:34
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -4696,23 +4706,23 @@ msgstr[0] "%d день"
 msgstr[1] "%d дня"
 msgstr[2] "%d дней"
 
-#: ../../../lib/user.class.php:1016
+#: ../../../lib/user.class.php:1030
 msgid "TV channels"
 msgstr "ТВ каналы"
 
-#: ../../../lib/user.class.php:1017
+#: ../../../lib/user.class.php:1031
 msgid "Movies"
 msgstr "Видео"
 
-#: ../../../lib/user.class.php:1018
+#: ../../../lib/user.class.php:1032
 msgid "Radio channels"
 msgstr "Радио каналы"
 
-#: ../../../lib/user.class.php:1019
+#: ../../../lib/user.class.php:1033
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/user.class.php:1020
+#: ../../../lib/user.class.php:1034
 msgid "Options"
 msgstr "Опции"
 

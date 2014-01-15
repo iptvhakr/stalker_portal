@@ -1589,6 +1589,7 @@ function delete_logo(id){
             </td>
             <td>
                 <input name="allow_local_timeshift" id="allow_local_timeshift" type="checkbox" value="1"  <?= isset($checked_allow_local_timeshift) ? $checked_allow_local_timeshift : 'checked' ?> >
+                <span style="color: #747474">(<?= _('only for rtp and ffrt solutions')?>)</span>
             </span>
             </td>
         </tr>
