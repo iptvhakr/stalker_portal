@@ -468,7 +468,12 @@
             _debug('lock', this.data_items[this.cur_row].lock);
             
             if(!this.data_items[this.cur_row].open){
-                stb.notice.show(word['msg_channel_not_available']);
+
+                if (this.data_items[this.cur_row].hasOwnProperty('error') && this.data_items[this.cur_row].error){
+                    stb.notice.show(get_word('error_channel_'+this.data_items[this.cur_row].error));
+                }else{
+                    stb.notice.show(get_word('msg_channel_not_available'));
+                }
                 return;
             }
 
@@ -712,8 +717,6 @@
         this.sync_channels = function(data){
             _debug('sync_channels');
 
-            var self = this;
-
             data = data.map(function(channel){
 
                 _debug('channel.id', channel.id);
@@ -728,7 +731,6 @@
 
                     stb.player.channels[idx].open  = channel.open;
 
-                    //var cmd_idx = stb.player.channels[idx].cmds.getIdxByVal('url', channel.cmd);
                     var cmd_idx = channel.cmds.getIdxByVal('url', stb.player.channels[idx].cmd);
 
                     _debug('cmd_idx', cmd_idx);
@@ -746,8 +748,6 @@
                             stb.player.channels[idx].error = null;
                         }
 
-                        //stb.player.channels[idx].open = channel.open;
-
                     }else{
                         channel.cmd               = stb.player.channels[idx].cmd;
                         channel.use_http_tmp_link = stb.player.channels[idx].use_http_tmp_link;
@@ -757,6 +757,12 @@
                     }
 
                     stb.player.channels[idx].cmds  = channel.cmds;
+
+                    var fav_idx = stb.player.fav_channels.getIdxByVal('id', channel.id);
+
+                    if (fav_idx !== null){
+                        stb.player.fav_channels[fav_idx] = stb.player.channels.slice(idx, idx+1)[0];
+                    }
                 }
 
                 if (stb.profile['play_in_preview_only_by_ok'] && channel.id == stb.player.cur_tv_item.id && stb.player.on){
@@ -779,9 +785,7 @@
             _debug('tv.fill_short_info');
             
             if (item && !item.open){
-                //this.short_info_box.innerHTML = '<span class="current">' + word['msg_channel_not_available'] + '</span>';
                 if (item.error){
-                    //stb.notice.show(word['player_limit_notice']);
                     this.preview_msg.innerHTML = get_word('error_channel_'+item.error);
                 }else{
                     this.preview_msg.innerHTML = word['msg_channel_not_available'];
@@ -789,8 +793,7 @@
             }
 
             if (item && item.epg){
-                
-                //this.fill_short_epg(item.epg);
+
                 this.short_info_box.innerHTML = '';
                 this.short_epg_loader.start();
             }
