@@ -10,9 +10,15 @@ import argparse
 import signal
 import threading
 import os
-import httplib
-from urlparse import urlparse
-import urllib
+
+if sys.version < '3':
+    import httplib
+    from urlparse import urlparse
+    import urllib
+else:
+    import http.client
+    from urllib.parse import urlparse
+    import urllib.request, urllib.parse, urllib.error
 
 def main():
 
@@ -109,9 +115,15 @@ class AsyncOpenUrl(threading.Thread):
         self.params = params
     def run(self):
         url    = urlparse(self.url)
-        params = urllib.urlencode(self.params)
+        if sys.version < '3':
+            params = urllib.urlencode(self.params)
+        else:
+            params = urllib.parse.urlencode(self.params)
         sys.stderr.write('Sending ' + params + ' to callback url: ' + self.url + '\n')
-        conn   = httplib.HTTPConnection(url.netloc)
+        if sys.version < '3':
+            conn   = httplib.HTTPConnection(url.netloc)
+        else:
+            conn   = http.client.HTTPConnection(url.netloc)
         conn.request('PUT', url.path, params)
         resp   = conn.getresponse()
         data   = resp.read()
