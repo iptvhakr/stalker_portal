@@ -761,7 +761,9 @@
                     var fav_idx = stb.player.fav_channels.getIdxByVal('id', channel.id);
 
                     if (fav_idx !== null){
+                        var fav_num = stb.player.fav_channels[fav_idx].number;
                         stb.player.fav_channels[fav_idx] = stb.player.channels.slice(idx, idx+1)[0];
+                        stb.player.fav_channels[fav_idx].number = fav_num;
                     }
                 }
 
