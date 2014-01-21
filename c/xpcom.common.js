@@ -1004,7 +1004,6 @@ function common_xpcom(){
 
                 stb.user['playback_limit'] = parseInt(this.user['playback_limit'], 10);
 
-                this.user['tv_archive_days']   = parseInt(this.user['tv_archive_days'], 10);
                 this.user['screensaver_delay'] = parseInt(this.user['screensaver_delay'], 10);
                 this.user['watchdog_timeout']  = parseInt(this.user['watchdog_timeout'], 10);
                 this.user['tv_playback_retry_limit']  = parseInt(this.user['tv_playback_retry_limit'], 10);

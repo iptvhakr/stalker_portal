@@ -252,7 +252,8 @@ if (!$error){
                 'service_id'                  => trim($_POST['service_id']),
                 'volume_correction'           => intval($_POST['volume_correction']),
                 'correct_time'                => intval($_POST['correct_time']),
-                'modified'                    => 'NOW()'
+                'modified'                    => 'NOW()',
+                'tv_archive_duration'         => $_POST['tv_archive_duration']
             ))->insert_id();
 
             foreach ($links as $link){
@@ -310,7 +311,7 @@ if (!$error){
 
             $channel = Itv::getChannelById($ch_id);
 
-            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if (!empty($channel) && ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr || $channel['tv_archive_duration'] != $_POST['tv_archive_duration'])){
 
                 if ($channel['enable_tv_archive']){
 
@@ -354,7 +355,8 @@ if (!$error){
                     'service_id'                  => trim($_POST['service_id']),
                     'volume_correction'           => intval($_POST['volume_correction']),
                     'correct_time'                => intval($_POST['correct_time']),
-                    'modified'                    => 'NOW()'
+                    'modified'                    => 'NOW()',
+                    'tv_archive_duration'         => $_POST['tv_archive_duration']
                 ),
                 array('id' => intval(@$_GET['id']))
             );
@@ -1109,6 +1111,7 @@ if (@$_GET['edit']){
         $wowza_tmp_link    = $arr['wowza_tmp_link'];
         $wowza_dvr = $arr['wowza_dvr'];
         $enable_tv_archive = $arr['enable_tv_archive'];
+        $tv_archive_duration = $arr['tv_archive_duration'];
         $allow_pvr = $arr['allow_pvr'];
         $allow_local_pvr = $arr['allow_local_pvr'];
         $allow_local_timeshift = $arr['allow_local_timeshift'];
@@ -1212,6 +1215,7 @@ if (@$_GET['edit']){
     $volume_correction = @$_POST['volume_correction'];
     $correct_time   = @$_POST['correct_time'];
     $monitoring_url = @$_POST['monitoring_url'];
+    $tv_archive_duration = @$_POST['tv_archive_duration'];
 
     if (@$_POST['use_http_tmp_link']){
         $checked_http_tmp_link = 'checked';
@@ -1561,6 +1565,14 @@ function delete_logo(id){
                 </table>
             </span>
            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                <?= _('TV archive duration, h')?>:
+            </td>
+            <td>
+                <input name="tv_archive_duration" id="tv_archive_duration" type="text" value="<?= isset($_GET['id']) ? @$tv_archive_duration : Config::getSafe('tv_archive_parts_number', 168)?>">
+            </td>
         </tr>
         <tr>
             <td align="right" valign="top">

@@ -568,8 +568,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['web_proxy_pass']         = Config::exist('stb_http_proxy_pass') ? Config::get('stb_http_proxy_pass') : '';
         $profile['web_proxy_exclude_list'] = Config::exist('stb_http_proxy_exclude_list') ? Config::get('stb_http_proxy_exclude_list') : '';
         $profile['update_url']             = self::getImageUpdateUrl(empty($_REQUEST['stb_type']) ? 'mag250' : $_REQUEST['stb_type']);
-        $profile['tv_archive_days']        = Config::exist('tv_archive_parts_number') ? Config::get('tv_archive_parts_number') / 24 : 0;
-        $profile['tv_archive_hours']       = Config::getSafe('tv_archive_parts_number', 0);
 
         if (!in_array($this->mac, Config::getSafe('playback_limit_whitelist', array()))){
             $profile['playback_limit'] = (int) Config::get('enable_playback_limit', 0);

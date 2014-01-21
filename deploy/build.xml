@@ -81,8 +81,6 @@
 
         <exec command="echo -n ${project_path} | md5sum | cut -f1 -d' '" outputProperty="path_crc" checkreturn="true" />
 
-        <!-- todo: check another stalker job files -->
-
         <copy file="./src/cron" tofile="/etc/cron.d/stalker_${path_crc}" overwrite="true">
             <filterchain>
                 <replacetokens>
@@ -101,6 +99,14 @@
             <filterchain>
                 <replacetokens>
                     <token key="DB_NAME" value="${db_name}"/>
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <copy file="../db/delta/68-archive_duration.sql.src" tofile="../db/delta/68-archive_duration.sql" overwrite="true">
+            <filterchain>
+                <replacetokens>
+                    <token key="ARCHIVE_DURATION" value="${tv_archive_parts_number}"/>
                 </replacetokens>
             </filterchain>
         </copy>

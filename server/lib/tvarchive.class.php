@@ -32,7 +32,6 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $program = Epg::getById($program_id);
 
-        //$task = $this->getTaskByChannelId($program['ch_id']);
         $task = $this->getLessLoadedTaskByChId($program['ch_id']);
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
@@ -52,7 +51,6 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $channel = Itv::getChannelById($program['ch_id']);
 
-        //$filename = date("Ymd-H", $start_timestamp);
         $filename = $date->format("Ymd-H");
 
         if ($channel['wowza_dvr']){
@@ -60,15 +58,6 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         }else{
             $filename .= '.mpg';
         }
-
-        /*if ($channel['wowza_dvr']){
-
-            $position = $start_timestamp - (time() - Config::get('tv_archive_parts_number') * 3600);
-
-            $res['cmd'] = $channel['mc_cmd']
-                        . 'position:' . $position;
-            
-        }else{*/
 
         $storage = Master::getStorageByName($task['storage_name']);
 
@@ -489,7 +478,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             'id'             => $task_id,
             'ch_id'          => $channel['id'],
             'cmd'            => $cmd,
-            'parts_number'   => Config::get('tv_archive_parts_number')
+            'parts_number'   => $channel['tv_archive_duration']
         );
 
         return $this->clients[$storage_name]->resource('tv_archive_recorder')->create(array('task' => $task));
@@ -575,13 +564,8 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $tasks = array();
 
-        $range = $this->getArchiveRange()*3600;
-
-        $archive_start = date("Y-m-d H:00:00", time() - $range);
-        $archive_end   = date("Y-m-d H:00:00");
-
         $raw_tasks = Mysql::getInstance()
-            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, enable_tv_archive & wowza_dvr as wowza_archive, UNIX_TIMESTAMP("'.$archive_start.'") as start_timestamp, UNIX_TIMESTAMP("'.$archive_end.'") as stop_timestamp')
+            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, itv.tv_archive_duration as parts_number, enable_tv_archive & wowza_dvr as wowza_archive')
             ->from('tv_archive')
             ->join('itv', 'itv.id', 'tv_archive.ch_id', 'LEFT')
             ->where($where);
@@ -593,11 +577,15 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $raw_tasks = $raw_tasks->get()->all();
 
         foreach ($raw_tasks as $task){
-            $task['parts_number'] = Config::get('tv_archive_parts_number');
 
             if (preg_match("/(\S+:\/\/\S+)/", $task['cmd'], $match)){
                 $task['cmd'] = $match[1];
             }
+
+            $hour_start = time() - date("i")*60 - date("s");
+
+            $task['start_timestamp'] = $hour_start - $task['parts_number'] * 3600;
+            $task['stop_timestamp']  = $hour_start;
 
             $tasks[] = $task;
         }
@@ -628,6 +616,11 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         return Mysql::getInstance()->update('tv_archive', array('end_time' => date("Y-m-d H:i:s", $time)), array('ch_id' => intval($ch_id)));
     }
 
+    /**
+     * @deprecated
+     * @param int $ch_id
+     * @return int
+     */
     public static function getArchiveRange($ch_id = 0){
         return (int) Config::get('tv_archive_parts_number');
     }
