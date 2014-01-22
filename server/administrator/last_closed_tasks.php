@@ -201,7 +201,8 @@ if (Admin::isPageActionAllowed()){
     <table border="0" align="center" width="760">
     <tr>
     <td align="center">
-    
+
+    <center><?= _('SD movies')?></center>
     <table border="1" width="100%" cellspacing="0">
         <tr>
             <td>#</td>
@@ -215,13 +216,16 @@ if (Admin::isPageActionAllowed()){
         $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
 
         $tasks = Mysql::getInstance()
+            ->select('video.name, video.time, moderator_tasks.id, start_time, end_time')
             ->from('moderator_tasks')
             ->where(array(
                 'ended'    => 1,
                 'rejected' => 0,
                 'archived' => 0,
-                'to_usr'   => $uid
+                'to_usr'   => $uid,
+                'hd'       => 0
             ))
+            ->join('video', 'video.id', 'media_id', 'INNER')
             ->orderby('end_time')
             ->get();
         
@@ -232,11 +236,11 @@ if (Admin::isPageActionAllowed()){
         while($arr = $tasks->next()){
 
             $num++;
-            $length = get_media_length_by_id($arr['media_id']);
+            $length = $arr['time'];
             $total_length += $length;
             echo "<tr>";
             echo "<td>$num</td>";
-            echo "<td><a href='msgs.php?task={$arr['id']}'>".get_media_name_by_id($arr['media_id'])."</a></td>";
+            echo "<td><a href='msgs.php?task={$arr['id']}'>".$arr['name']."</a></td>";
             echo "<td>".$arr['start_time']."</td>";
             echo "<td>".$arr['end_time']."</td>";
             echo "<td align='right'>".$length."</td>";
@@ -251,6 +255,61 @@ if (Admin::isPageActionAllowed()){
     </table>
     <br>
     <br>
+
+    <center><?= _('HD movies')?></center>
+    <table border="1" width="100%" cellspacing="0">
+        <tr>
+            <td>#</td>
+            <td><?= _('Movie')?></td>
+            <td><?= _('Opening date')?></td>
+            <td><?= _('Closing date')?></td>
+            <td><?= _('Duration, min')?></td>
+        </tr>
+        <?
+
+        $from_time = date("Y-m-d H:i:s",strtotime ("-1 month"));
+
+        $tasks = Mysql::getInstance()
+            ->select('video.name, video.time, moderator_tasks.id, start_time, end_time')
+            ->from('moderator_tasks')
+            ->where(array(
+                'ended'    => 1,
+                'rejected' => 0,
+                'archived' => 0,
+                'to_usr'   => $uid,
+                'hd'       => 1
+            ))
+            ->join('video', 'video.id', 'media_id', 'INNER')
+            ->orderby('end_time')
+            ->get();
+
+        $length = 0;
+        $total_length = 0;
+        $num = 0;
+
+        while($arr = $tasks->next()){
+
+            $num++;
+            $length = $arr['time'];
+            $total_length += $length;
+            echo "<tr>";
+            echo "<td>$num</td>";
+            echo "<td><a href='msgs.php?task={$arr['id']}'>".$arr['name']."</a></td>";
+            echo "<td>".$arr['start_time']."</td>";
+            echo "<td>".$arr['end_time']."</td>";
+            echo "<td align='right'>".$length."</td>";
+            echo "</tr>";
+        }
+        ?>
+    </table>
+    <table border="0" width="100%">
+        <tr>
+            <td  width="100%" align="right"> <?= _('Total duration, min')?>:  <b><? echo $total_length?></b></td>
+        </tr>
+    </table>
+    <br>
+    <br>
+
     <center><?= _('Rejected tasks')?></center>
     <table border="1" width="100%" cellspacing="0">
         <tr>
