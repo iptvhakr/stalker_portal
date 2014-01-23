@@ -32,10 +32,12 @@ def main():
 
     while True:
         try:
-            data = sock.recv(2048)
+            data = bytearray(b" " * 2048)
+            len = sock.recv_into(data)
+
             if data and not buf:
                 sys.stderr.write('Start capturing\n')
-            buf = data
+            buf = data[:len]
         except socket.timeout:
             sock.close()
             buf = ''
@@ -43,11 +45,11 @@ def main():
             sock = get_socket()
             continue
 
-        if buf[0].encode('hex') == '47':  # UDP
+        if buf[0] == 71:  # UDP 0x47
             data = buf
         else:  # RTP
-            header_size = 12 + 4 * operator.and_(int(buf[0].encode('hex'), 16), 16)
-            seq = int((buf[2:4]).encode('hex'), 16)
+            header_size = 12 + 4 * operator.and_(buf[0], 16)
+            seq = int(hex(buf[2])[2:].zfill(2)+hex(buf[3])[2:].zfill(2), 16)
 
             if not flag:
                 eseq = seq
@@ -61,8 +63,6 @@ def main():
             if eseq > 65535:
                 eseq = 0
 
-            #sys.stderr.write(str(seq)+'\n')
-            #sys.stderr.write(buf[:32].encode('hex')+'\n')
             data = buf[header_size:]
 
         if args.save_directory:
@@ -77,12 +77,15 @@ def main():
                         async_open_url(args.callback_url, {'start_time' : int(time.mktime((datetime.datetime.strptime(fname, date_format) - datetime.timedelta(hours=args.pieces_number)).timetuple()))})
                         async_open_url(args.callback_url, {'end_time' : int(time.time())})
 
-                f = open(args.save_directory + fname +'.mpg', 'a')
+                f = open(args.save_directory + fname +'.mpg', 'ab')
 
             prev_fname = fname
             f.write(data)
         else :
-            sys.stdout.write(data)
+            if sys.version < '3':
+                sys.stdout.write(data)
+            else:
+                sys.stdout.buffer.write(data)
 
 class AsyncRmOldFiles(threading.Thread):
     def __init__(self):
