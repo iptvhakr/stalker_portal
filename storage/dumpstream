@@ -4,7 +4,6 @@ import socket
 import sys
 import time
 import struct
-import operator
 import datetime
 import argparse
 import signal
@@ -33,11 +32,11 @@ def main():
     while True:
         try:
             data = bytearray(b" " * 2048)
-            len = sock.recv_into(data)
+            size = sock.recv_into(data)
 
             if data and not buf:
                 sys.stderr.write('Start capturing\n')
-            buf = data[:len]
+            buf = data[:size]
         except socket.timeout:
             sock.close()
             buf = ''
@@ -48,8 +47,8 @@ def main():
         if buf[0] == 71:  # UDP 0x47
             data = buf
         else:  # RTP
-            header_size = 12 + 4 * operator.and_(buf[0], 16)
-            seq = int(hex(buf[2])[2:].zfill(2)+hex(buf[3])[2:].zfill(2), 16)
+            header_size = 12 + 4 * (buf[0] & 16)
+            seq = (buf[2] << 8)+buf[3]
 
             if not flag:
                 eseq = seq
