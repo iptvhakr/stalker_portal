@@ -507,3 +507,5 @@ $words['videoClock_upLeft'] =    _('Top Left');
 $words['videoClock_downRight'] = _('Bottom Right');
 $words['videoClock_downLeft'] =  _('Bottom Left');
 //End Clock On Video
+
+$words['settings_unavailable'] = _('Settings section is currently unavailable');
