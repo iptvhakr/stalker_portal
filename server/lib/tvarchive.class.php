@@ -509,13 +509,11 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             return true;
         }
 
-        Mysql::getInstance()->delete('tv_archive', array('id' => $task_id));
-
-        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 1){
-            return true;
+        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 0){
+            $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($task['ch_id'])->delete();
         }
 
-        return $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($task['ch_id'])->delete();
+        return Mysql::getInstance()->delete('tv_archive', array('id' => $task_id));
     }
 
     /**
