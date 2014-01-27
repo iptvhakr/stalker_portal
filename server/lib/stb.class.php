@@ -882,11 +882,21 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     
     public function setAspect(){
         $aspect = intval($_REQUEST['aspect']);
-        
-        $this->db->update('users', array('aspect' => $aspect), array('mac' => $this->mac));
-        $this->params['aspect'] = $aspect;
-        
+
+        if (!empty($_REQUEST['ch_id'])){
+            $user = User::getByMac($this->mac);
+            $user->setTvChannelAspect((int) $_REQUEST['ch_id'], $aspect);
+        }else{
+            $this->db->update('users', array('aspect' => $aspect), array('mac' => $this->mac));
+            $this->params['aspect'] = $aspect;
+        }
+
         return true;
+    }
+
+    public function getTvAspects(){
+        $user = User::getByMac($this->mac);
+        return $user->getTvChannelsAspect();
     }
     
     public function setFavItvStatus(){

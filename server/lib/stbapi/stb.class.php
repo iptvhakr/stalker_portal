@@ -16,6 +16,8 @@ interface Stb
 
     public function setAspect();
 
+    public function getTvAspects();
+
     public function getLocales();
 
     public function getLocalization();

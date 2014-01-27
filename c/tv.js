@@ -93,6 +93,8 @@
                 this.progress_bar.init(this);
             }
 
+            this.init_aspects();
+
             var scope = this;
 
             this.parent_password_promt = new ModalForm({"title" : get_word('parent_password_title'), "parent" : main_menu});
@@ -228,6 +230,28 @@
             }catch(e){
                 _debug(e);
             }
+        };
+
+        this.init_aspects = function(){
+            _debug('tv.init_aspects');
+
+            stb.load(
+                {
+                    "type"   : "stb",
+                    "action" : "get_tv_aspects"
+                },
+                function(result){
+                    _debug('on get_tv_aspect', result);
+
+                    if (result instanceof Array){
+                        result = {};
+                    }
+
+                    stb.player.ch_aspect = result || {};
+
+                    _debug('stb.player.ch_aspect', stb.player.ch_aspect);
+                }
+            )
         };
 
         this.reset = function(){

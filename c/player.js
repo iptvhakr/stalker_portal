@@ -29,6 +29,9 @@ function player(){
     this.last_not_locked_tv_item;
     this.need_show_info = 0;
 
+    this.ch_aspect = {};
+    this.ch_aspect_idx = 0;
+
     this.atrack_types = {
         1 : 'MP2',
         2 : 'MP3',
@@ -962,6 +965,47 @@ player.prototype.event_callback = function(event, params){
         }
         case 2: // Receive information about stream
         {
+
+            if (this.is_tv){
+
+                _debug('this.ch_aspect[this.cur_media_item.id]', this.ch_aspect[this.cur_media_item.id]);
+
+                if (this.ch_aspect[this.cur_media_item.id] !== undefined){
+
+                    try{
+                        stb.SetAspect(parseInt(this.ch_aspect[this.cur_media_item.id], 10));
+                    }catch(e){
+                        _debug(e);
+                    }
+
+                    this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', this.ch_aspect[this.cur_media_item.id]);
+
+                    _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
+                }else{
+
+                    var cur_aspect = stb.aspect_array[stb.aspect_idx].mode; // default - common aspect
+
+                    _debug('cur_aspect', cur_aspect);
+                    _debug('aspect_alias', stb.aspect_array[stb.aspect_idx].alias);
+
+                    this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', cur_aspect) || 0;
+
+                    try{
+                        stb.SetAspect(cur_aspect);
+                    }catch(e){
+                        _debug(e);
+                    }
+                }
+
+                _debug('this.ch_aspect_idx', this.ch_aspect_idx);
+            }else{
+                _debug('aspect_alias', stb.aspect_array[stb.aspect_idx].alias);
+                try{
+                    stb.SetAspect(stb.aspect_array[stb.aspect_idx].mode);
+                }catch(e){
+                    _debug(e);
+                }
+            }
 
             if (stb.GetMetadataInfo){
                 var metadata = stb.GetMetadataInfo();
@@ -3181,8 +3225,16 @@ player.prototype.bind = function(){
             }
         }
     }).bind(key.BACK, this);
-    
-    this.change_aspect.bind(key.FRAME, this);
+
+    (function(){
+
+        if (this.is_tv){
+            this.change_tv_channel_aspect();
+        }else{
+            this.change_aspect();
+        }
+
+    }).bind(key.FRAME, this);
     
     (function(){
 
@@ -4192,6 +4244,52 @@ player.prototype.change_aspect = function(){
             
         },
         
+        this
+    )
+};
+
+player.prototype.change_tv_channel_aspect = function(){
+    _debug('player.change_tv_channel_aspect');
+
+    if(module.tv && module.tv.on && module.tv.cur_view == 'short'){
+        return;
+    }
+
+    _debug('this.ch_aspect[this.cur_media_item.id]', this.ch_aspect[this.cur_media_item.id]);
+
+    if (this.ch_aspect[this.cur_media_item.id] === undefined){
+        this.ch_aspect[this.cur_media_item.id] = stb.aspect_array[this.ch_aspect_idx].mode;
+    }
+
+    if (!this.aspect_info_container.isHidden()){
+        if (this.ch_aspect_idx < stb.aspect_array.length-1){
+            this.ch_aspect_idx++;
+        }else{
+            this.ch_aspect_idx = 0;
+        }
+    }
+
+    this.ch_aspect[this.cur_media_item.id] = stb.aspect_array[this.ch_aspect_idx].mode;
+
+    _debug('set aspect', stb.aspect_array[this.ch_aspect_idx].alias);
+
+    this.show_aspect_info(get_word('aspect_' + stb.aspect_array[this.ch_aspect_idx].alias).toUpperCase());
+
+    stb.SetAspect(stb.aspect_array[this.ch_aspect_idx].mode);
+
+    stb.load(
+
+        {
+            "type"   : "stb",
+            "action" : "set_aspect",
+            "aspect" : stb.aspect_array[this.ch_aspect_idx].mode,
+            "ch_id"  : this.is_tv ? this.cur_media_item.id : 0
+        },
+
+        function(result){
+
+        },
+
         this
     )
 };

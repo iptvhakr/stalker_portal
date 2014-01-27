@@ -227,6 +227,40 @@ class User implements \Stalker\Lib\StbApi\User
         return Mysql::getInstance()->delete('vclub_not_ended', array('uid' => $this->id, 'video_id' => $video_id))->result();
     }
 
+    public function getTvChannelsAspect(){
+
+        $aspect = Mysql::getInstance()->from('tv_aspect')->where(array('uid' => $this->id))->get()->first('aspect');
+
+        if (empty($aspect)){
+            return array();
+        }
+
+        $aspect = json_decode($aspect, true);
+
+        if (!$aspect){
+            return array();
+        }
+
+        return $aspect;
+    }
+
+    public function setTvChannelAspect($ch_id, $aspect){
+
+        $aspects = $this->getTvChannelsAspect();
+
+        $init_required = empty($aspects);
+
+        $aspects[(int) $ch_id] = (int) $aspect;
+
+        $aspects = json_encode($aspects);
+
+        if ($init_required){
+            return Mysql::getInstance()->insert('tv_aspect', array('aspect' => $aspects, 'uid' => $this->id))->insert_id();
+        }else{
+            return Mysql::getInstance()->update('tv_aspect', array('aspect' => $aspects), array('uid' => $this->id))->result();
+        }
+    }
+
     public function updateIp(){
 
         return Mysql::getInstance()->update('users',

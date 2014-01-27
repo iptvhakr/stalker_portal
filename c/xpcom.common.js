@@ -1003,7 +1003,7 @@ function common_xpcom(){
 
                 this.user.fav_itv_on = parseInt(this.user.fav_itv_on, 10);
 
-                this.user['aspect']    = parseInt(this.user['aspect'],    10);
+                this.user['aspect']    = stb.player.ch_aspect_idx = parseInt(this.user['aspect'],    10);
                 this.user['audio_out'] = parseInt(this.user['audio_out'], 10);
 
                 stb.user['playback_limit'] = parseInt(this.user['playback_limit'], 10);
