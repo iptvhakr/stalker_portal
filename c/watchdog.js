@@ -155,6 +155,7 @@ watchdog.prototype.parse_result = function(data){
                     function(){
                         self.send_confirm(function(){
                             if (data.reboot_after_ok == 1){
+                                stb.Stop();
                                 stb.ExecAction('reboot');
                             }
                         });
@@ -181,6 +182,7 @@ watchdog.prototype.parse_result = function(data){
             case 'update_subscription':
             {
                 if (stb.cur_off_on){
+                    stb.Stop();
                     stb.ExecAction('reboot');
                 }else{
                     stb.load_channels();
