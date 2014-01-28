@@ -646,8 +646,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['show_tv_channel_logo'] = Config::getSafe('show_tv_channel_logo', true);
 
-        $profile['enable_hdmi_events_handler'] = Config::getSafe('enable_hdmi_events_handler', true);
-
         $profile['tv_archive_continued'] = Config::getSafe('tv_archive_continued', false);
 
         $profile['plasma_saving_timeout'] = Config::getSafe('plasma_saving_timeout', false);
@@ -665,6 +663,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         if (Config::getSafe('enable_tariff_plans', false)){
             $profile['additional_services_on'] = '1';
         }
+
+        $profile['hdmi_event_reaction'] = $profile['hdmi_event_reaction'] === null ? (int) Config::getSafe('enable_hdmi_events_handler', true) : (int) $profile['hdmi_event_reaction'];
 
         unset($profile['device_id']);
         unset($profile['device_id2']);
@@ -692,6 +692,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             'ts_buffer_use'        => $this->params['ts_buffer_use'],
             'ts_action_on_exit'    => $this->params['ts_action_on_exit'],
             'ts_delay'             => $this->params['ts_delay'],
+            'hdmi_event_reaction'  => $this->params['hdmi_event_reaction'] === null ? (int) Config::getSafe('enable_hdmi_events_handler', true) : (int) $this->params['hdmi_event_reaction']
         );
     }
 
@@ -1460,6 +1461,18 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             array('id' => $this->id)
         );
 
+    }
+
+    public function setHdmiReaction(){
+
+        $data = (int) $_REQUEST['data'];
+
+        return Mysql::getInstance()->update('users',
+            array(
+                 'hdmi_event_reaction' => $data
+            ),
+            array('id' => $this->id)
+        )->result();
     }
 
     public function setCommonSettings(){

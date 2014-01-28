@@ -198,5 +198,13 @@ var lang = {
     "Save buffer" : "Сохранять буфер",
     "Request to save" : "Запрос на сохранение",
     "By pressing \"Pause\" button" : "По нажатию кнопки пауза",
-    "sec." : "сек."
+    "sec." : "сек.",
+
+    "HDMI event reaction:" : "Реакция на HDMI события:",
+    "Ignore" : "Игнорировать",
+    "Immediately" : "Реагировать сразу",
+    "Delay 1 minute" : "Задержка 1 минута",
+    "Delay 5 minute" : "Задержка 5 минут",
+    "Delay 10 minutes" : "Задержка 10 минут"
+
 };

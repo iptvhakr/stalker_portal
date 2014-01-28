@@ -46,6 +46,8 @@ interface Stb
 
     public function setTimeshiftSettings();
 
+    public function setHdmiReaction();
+
     public function setPlaybackBuffer();
 
     public function setSpdifMode();

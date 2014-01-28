@@ -203,6 +203,10 @@ player.prototype.init = function(){
                 if (params.hasOwnProperty("refresh_weather") && module.curweather){
                     module.curweather.load.call(module.curweather);
                 }
+
+                if (params.hasOwnProperty("hdmi_event_reaction")){
+                    stb.user.hdmi_event_reaction = stb.profile.hdmi_event_reaction = params.hdmi_event_reaction;
+                }
             }
         }
 
@@ -1304,16 +1308,25 @@ player.prototype.event_callback = function(event, params){
         }
         case 32: // HDMI on
         {
-            if (stb.profile['enable_hdmi_events_handler'] && !stb.power_off){
+            window.clearTimeout(this.hdmi_reaction_timer);
+
+            if (stb.profile['hdmi_event_reaction'] == 1 && !stb.power_off){
                 keydown_observer.emulate_key(key.MENU);
             }
             break;
         }
         case 33: // HDMI off
         {
-            if (stb.profile['enable_hdmi_events_handler'] && !stb.power_off){
-                keydown_observer.emulate_key(key.MENU);
+            window.clearTimeout(this.hdmi_reaction_timer);
+
+            if (stb.profile['hdmi_event_reaction']){
+                this.hdmi_reaction_timer = window.setTimeout(function(){
+                    if (!stb.power_off){
+                        keydown_observer.emulate_key(key.MENU);
+                    }
+                }, stb.profile['hdmi_event_reaction'] * 1000);
             }
+
             break;
         }
         case 36: // local TimeShift
