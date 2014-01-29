@@ -393,35 +393,15 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         }
         
         $fav_ch = @$_REQUEST['fav_ch'];
-        
+
         if (empty($fav_ch)){
-            $fav_ch = '';
+            $fav_ch = array();
+        }else{
+            $fav_ch = explode(",", $fav_ch);
         }
 
-        $fav_ch = explode(",", $fav_ch);
-        
         if (is_array($fav_ch)){
-            /*$fav_ch_str = base64_encode(serialize($fav_ch));
-            
-            $fav_itv_arr = $this->db->from('fav_itv')->where(array('uid' => $uid))->get()->first();
-            
-            if (empty($fav_itv_arr)){
-                $this->db->insert('fav_itv',
-                                   array(
-                                        'uid'     => $uid,
-                                        'fav_ch'  => $fav_ch_str,
-                                        'addtime' => 'NOW()'
-                                   ));
-            }else{
-                $this->db->update('fav_itv',
-                                   array(
-                                        'fav_ch'  => $fav_ch_str,
-                                        'addtime' => 'NOW()'
-                                   ),
-                                   array('uid' => $uid));
-            }*/
-
-            return $this->saveFav($fav_ch, $uid);
+            return $this->saveFav(array_unique($fav_ch), $uid);
         }
         
         return true;
