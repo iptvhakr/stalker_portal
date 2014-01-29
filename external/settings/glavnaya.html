@@ -51,6 +51,7 @@
         }
 
         function perehod_vniz(set) {
+            if (parent.pos > parent.punkti.length) return;
             document.getElementById("m1").innerHTML = "";
             parent.pos += set;
             if (parent.pos > 6) {
@@ -63,9 +64,9 @@
             parent.vid += set;
             if (parent.vid >= parent.kol) {
                 parent.vid = parent.kol;
-                parent.st = parent.kol - 6;
+                parent.st = parent.kol - (parent.punkti.length < 6 ? parent.punkti.length : 6);
                 b = 6;
-                parent.pos = 6;
+                parent.pos = parent.punkti.length < 6 ? parent.punkti.length+1 : 6;
                 document.getElementById("m7").innerHTML = "";
             }
             generation(-set);
@@ -94,7 +95,7 @@
         function generation(set) {
             j = parent.st;
             for (i = parent.stel; i <= b; i++) {
-                if (j < parent.kol) {
+                if (j < parent.kol && parent.punkti[j]) {
                     document.getElementById("m" + i).innerHTML = "<div class='menu_icon'><img src='style/" + parent.put + "/" + parent.punkti[j][(parent.vid == j + 1 ? 2 : 1)] + ".png' /></div><div style='margin-top:4px;float:left;'>" + parent.punkti[j][0] + "</div>";
                     j++;
                 } else break;
