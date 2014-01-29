@@ -4,8 +4,6 @@ require_once("./common.php");
 error_reporting(0);
 ob_start();
 
-$chunk_size = 3600;
-
 $filename   = basename($_GET['filename']);
 $ch_id      = intval($_GET['ch_id']);
 $start_time = intval($_GET['start']);
@@ -61,6 +59,12 @@ if ($token_resp['result'] !== true){
 // end check
 
 while ($duration > 0){
+
+    if (file_in_current_hour($file)){
+        $chunk_size = intval(date("i"))*60 + intval(date("s"));
+    }else{
+        $chunk_size = 3600;
+    }
 
     $filesize  = filesize($file);
     $from_byte = intval($start_time * $filesize / $chunk_size);
@@ -193,6 +197,16 @@ function get_next_file($file){
     return str_replace($filename, date("Ymd-H", $filedate), $file);
 }
 
+function file_in_current_hour($file){
+
+    $filename = basename($file);
+    $filename = substr($filename, 0, strpos($filename, "."));
+
+    _log('file: '.$filename." - ".date("Ymd-H")." ".(date("Ymd-H") == $filename));
+
+    return $filename == date("Ymd-H");
+}
+
 function get_content_length($queue){
 
     $length = 0;
@@ -209,4 +223,3 @@ function _log($message){
     //fwrite($stderr, $message."\n");
     //fclose($stderr);
 }
-?>
