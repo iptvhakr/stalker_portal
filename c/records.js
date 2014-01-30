@@ -213,19 +213,20 @@
                     }else{
                         this.color_buttons.get('red')   .enable();
                         this.color_buttons.get('green') .disable();
-                        if (this.data_items[this.cur_row].local == 1){
-                            this.color_buttons.get('yellow').disable();
-                        }else if (module.downloads){
+                        if (module.downloads && this.data_items[this.cur_row].local != 1){
                             this.color_buttons.get('yellow').enable();
+                        }else{
+                            this.color_buttons.get('yellow').disable();
                         }
                     }
                 }else{
                     this.color_buttons.get('red')   .enable();
                     this.color_buttons.get('green') .disable();
-                    if (this.data_items[this.cur_row].local == 1){
-                        this.color_buttons.get('yellow').disable();
-                    }else if (module.downloads){
+
+                    if (module.downloads && this.data_items[this.cur_row].local != 1){
                         this.color_buttons.get('yellow').enable();
+                    }else{
+                        this.color_buttons.get('yellow').disable();
                     }
                 }
             }
@@ -313,7 +314,7 @@
     records.init_color_buttons([
         {"label" : word['remote_pvr_del'], "cmd" : records.del_confirm_toggle},
         {"label" : word['remote_pvr_stop'], "cmd" : records.stop_confirm_toggle},
-        {"label" : word['downloads_download'], "cmd" : module.downloads ? function(){records.play.call(records, false)} : ''},
+        {"label" : word['downloads_download'], "cmd" : function(){module.downloads ? records.play.call(records, false) : ''}},
         {"label" : word['empty'], "cmd" : ''}
     ]);
 
