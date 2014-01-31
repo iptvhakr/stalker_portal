@@ -31,7 +31,17 @@
 
             var ch_idx = stb.player.channels.getIdxById(ch_id);
 
-            var channel = stb.player.channels[ch_idx];
+            _debug('ch_idx', ch_idx);
+
+            if (ch_idx !== null){
+
+                var channel = stb.player.channels[ch_idx];
+
+            }else{
+                ch_idx = module.tv.data_items.getIdxById(ch_id);
+
+                channel = module.tv.data_items[ch_idx];
+            }
 
             _debug('channel', channel);
 

@@ -313,7 +313,7 @@
 
                     _debug('this.cur_item', this.cur_item);
 
-                    if (this.data_items[this.cur_row].lock == 1 && !this.data_items[this.cur_row].hasOwnProperty('unlocked') && this.genre.alias !== 'for adults'){
+                    if (this.data_items[this.cur_row].lock == 1 && !this.data_items[this.cur_row].unlocked && this.genre.alias !== 'for adults'){
                         return;
                     }
 

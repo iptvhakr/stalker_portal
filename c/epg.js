@@ -382,13 +382,12 @@
             
             this.active_row.row.setAttribute('active', 'active');
             
-            //this.set_passive_cell();
-            
-            //this.superclass.set_active_row.call(this, num);
-            //this.post_handling_epg_block(this.active_row, this.data_items[num].epg, true)
-            
             this.ch_id   = this.data_items[num].ch_id;
             this.channel = stb.player.channels[stb.player.channels.getIdxById(this.ch_id)];
+
+            if (!this.channel){
+                this.channel = module.tv.data_items[module.tv.data_items.getIdxById(this.ch_id)];
+            }
 
             this.set_active_cell();
         };
