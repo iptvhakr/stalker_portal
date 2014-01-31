@@ -666,6 +666,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['hdmi_event_reaction'] = $profile['hdmi_event_reaction'] === null ? (int) Config::getSafe('enable_hdmi_events_handler', true) : (int) $profile['hdmi_event_reaction'];
 
+        $profile['account_page_by_password'] = Config::getSafe('account_page_by_password', false);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);

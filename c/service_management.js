@@ -144,6 +144,45 @@
                     }
                 }
             ));
+
+            this.parent_password_promt = new ModalForm({"title" : get_word('parent_password_title'), "parent" : main_menu});
+            this.parent_password_promt.enableOnExitClose();
+
+            this.parent_password_promt.addItem(new ModalFormInput({
+                "label" : get_word('password_label'),
+                "name" : "parent_password",
+                "type" : "password",
+                "onchange" : function(){_debug('change'); scope.parent_password_promt.resetStatus()}
+            }));
+
+            this.parent_password_promt.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        var parent_password = scope.parent_password_promt.getItemByName('parent_password').getValue();
+
+                        _debug('parent_password', parent_password);
+                        _debug('stb.user.parent_password', stb.user.parent_password);
+
+                        if (parent_password == stb.user.parent_password){
+                            scope.parent_password_promt.hide();
+                            scope.parent_password_promt.callback && scope.parent_password_promt.callback();
+                        }else{
+                            scope.parent_password_promt.setStatus(get_word('parent_password_error'));
+                        }
+                    }
+                }
+            ));
+
+            this.parent_password_promt.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.parent_password_promt.hide();
+                    }
+                }
+            ));
         };
 
         this.bind = function(){
@@ -476,8 +515,19 @@
     module.account_menu.push({
         "title" : get_word('SERVICES MANAGEMENT'),
         "cmd"   : function(){
-            main_menu.hide();
-            module.service_management.show();
+
+            _debug('stb.profile[account_page_by_password]', stb.profile['account_page_by_password']);
+
+            if (stb.profile['account_page_by_password']){
+                module.account.parent_password_promt.callback = function(){
+                    main_menu.hide();
+                    module.service_management.show();
+                };
+                module.account.parent_password_promt.show();
+            }else{
+                main_menu.hide();
+                module.service_management.show();
+            }
         }
     })
 

@@ -126,6 +126,15 @@
                     }
                 }
             ));
+
+            this.parent_password_promt.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.parent_password_promt.hide();
+                    }
+                }
+            ));
         };
         
         this.show = function(do_not_load){
