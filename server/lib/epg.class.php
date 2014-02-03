@@ -441,12 +441,18 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $ch_id = intval($_REQUEST['ch_id']);
 
+        $channel = Itv::getById($ch_id);
+
+        if (empty($channel)){
+            return array();
+        }
+
         return $this->db
             ->select('UNIX_TIMESTAMP(time) as start_timestamp, UNIX_TIMESTAMP(time_to) as stop_timestamp, name')
             ->from('epg')
             ->where(array(
-                'ch_id'    => $ch_id
-                //'time<='   => 'NOW()'
+                'ch_id'    => $ch_id,
+                'time>'    => date('Y-m-d H:i:s', strtotime('-'.$channel['tv_archive_duration'].' hours'))
             ))
             ->orderby('time')
             ->get()

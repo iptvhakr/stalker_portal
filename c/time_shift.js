@@ -31,6 +31,11 @@
 
                     this.plt_link = result;
                     this.cur_media_item.cmd = result;
+
+                    if (this.program instanceof Array && this.program.length > 0){
+                        this.on_epg_and_link_available && this.on_epg_and_link_available();
+                        this.on_epg_and_link_available = null;
+                    }
                 },
                 this
             )
@@ -183,6 +188,10 @@
         set_media_item : function(cur_tv_item){
             _debug('time_shift.set_media_item', cur_tv_item);
 
+            this.program = [];
+            this.on_epg_and_link_available = null;
+            this.cur_program = undefined;
+
             this.stored_media_item = cur_tv_item.clone();
 
             this.cur_media_item = cur_tv_item.clone();
@@ -215,6 +224,21 @@
                     _debug('time_shift.get_program result', result);
 
                     this.program = result || [];
+
+                    var now_ts = new Date().getTime()/1000;
+
+                    for (var i = 0; i < this.program.length; i++){
+                        if (this.program[i].start_timestamp < now_ts && this.program[i].stop_timestamp > now_ts){
+                            this.cur_program = this.program[i];
+                            _debug('this.cur_program', this.cur_program);
+                            break;
+                        }
+                    }
+
+                    if (!this.in_process){
+                        this.on_epg_and_link_available && this.on_epg_and_link_available();
+                        this.on_epg_and_link_available = null;
+                    }
                 },
                 this
             );
@@ -459,6 +483,155 @@
             }
 
             return this.cur_media_item.cmd;
+        },
+
+        pos_to_cur_program_begin : function(){
+            _debug('time_shift.pos_to_cur_program_begin');
+
+            var self = this;
+
+            this.on_epg_and_link_available = function(){
+                if (module.time_shift.program.length > 0){
+
+                    var now_ts = new Date().getTime()/1000;
+
+                    for (var i = 0; i < module.time_shift.program.length; i++){
+                        if (module.time_shift.program[i].start_timestamp < now_ts && module.time_shift.program[i].stop_timestamp > now_ts){
+                            self.cur_program = module.time_shift.program[i];
+                            break;
+                        }
+                    }
+
+                    _debug('module.time_shift.cur_program', self.cur_program);
+
+                    if (!self.cur_program){
+                        return;
+                    }
+
+                    var date = new Date(self.cur_program.start_timestamp * 1000);
+
+                    var new_pos_time = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+
+                    _debug('new_pos_time', new_pos_time);
+
+                    if (stb.player.on && stb.player.active_time_shift){
+
+                        _debug('stb.player.info.on', stb.player.info.on);
+
+                        if (!stb.player.info.on){
+                            stb.player.show_info();
+                        }
+
+                        window.clearTimeout(stb.player.info.hide_timeout);
+
+                        stb.player.info.hide_timeout = window.setTimeout(function(){
+                            stb.player.set_pos_and_play();
+                        }, 4000);
+
+                        stb.player.set_pos_button(new_pos_time);
+                    }
+                }
+            }
+        },
+
+        pos_to_previous_program : function(){
+            _debug('time_shift.pos_to_previous_program');
+
+            _debug('this.cur_program', this.cur_program);
+
+            if (!this.cur_program){
+                return;
+            }
+
+            var cur_program;
+
+            var now_ts = new Date().getTime()/1000;
+
+            for (var i = 0; i < module.time_shift.program.length; i++){
+                if (module.time_shift.program[i].stop_timestamp == this.cur_program.start_timestamp){
+                    cur_program = module.time_shift.program[i];
+                    break;
+                }
+            }
+
+            _debug('cur_program', cur_program);
+
+            if (!cur_program){
+                return;
+            }
+
+            var date = new Date(cur_program.start_timestamp * 1000);
+
+            var new_pos_time = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+
+            if (new Date(this.cur_program.start_timestamp * 1000).getDate() != new Date(cur_program.start_timestamp * 1000).getDate()){
+                stb.player.cur_media_length = 86400;
+                module.time_shift.cur_piece_date.setDate(module.time_shift.cur_piece_date.getDate()-1);
+                stb.player.info.pos_series.innerHTML = module.time_shift.get_current_date();
+            }
+
+            this.cur_program = cur_program;
+
+            _debug('new_pos_time', new_pos_time);
+
+            if (stb.player.on && stb.player.active_time_shift){
+
+                _debug('stb.player.info.on', stb.player.info.on);
+
+                stb.player.set_pos_button(new_pos_time);
+            }
+        },
+
+        pos_to_next_program : function(){
+            _debug('time_shift.pos_to_previous_program');
+
+            _debug('this.cur_program', this.cur_program);
+
+            if (!this.cur_program){
+                return;
+            }
+
+            var cur_program;
+
+            var now_ts = new Date().getTime()/1000;
+
+            for (var i = 0; i < module.time_shift.program.length; i++){
+                if (module.time_shift.program[i].start_timestamp == this.cur_program.stop_timestamp && now_ts > module.time_shift.program[i].start_timestamp){
+                    cur_program = module.time_shift.program[i];
+                    break;
+                }
+            }
+
+            _debug('cur_program', cur_program);
+
+            if (!cur_program){
+                return;
+            }
+
+            var date = new Date(cur_program.start_timestamp * 1000);
+
+            var new_pos_time = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+
+            if (new Date(this.cur_program.start_timestamp * 1000).getDate() != new Date(cur_program.start_timestamp * 1000).getDate()){
+
+                if (!module.time_shift.is_last_archive_day()){
+                    _debug('--------------------------------------------------------');
+                    module.time_shift.cur_piece_date.setDate(module.time_shift.cur_piece_date.getDate()+1);
+                    stb.player.cur_media_length = module.time_shift.get_cur_media_length();
+                    stb.player.info.pos_series.innerHTML = module.time_shift.get_current_date();
+                }
+            }
+
+            this.cur_program = cur_program;
+
+            _debug('new_pos_time', new_pos_time);
+
+            if (stb.player.on && stb.player.active_time_shift){
+
+                _debug('stb.player.info.on', stb.player.info.on);
+
+                stb.player.set_pos_button(new_pos_time);
+            }
         }
 
     };

@@ -2571,6 +2571,7 @@ player.prototype.show_info = function(item, direct_call){
 };
 
 player.prototype.hide_info = function(){
+    _debug('player.hide_info');
 
     this.reset_pos_by_numbers();
     this.new_pos_time = 0;
@@ -3313,6 +3314,8 @@ player.prototype.bind = function(){
 
         _debug('dir', dir);
 
+        var self = this;
+
         if (this.cur_media_item.media_type != 'vclub_ad' && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
 
             _debug('this.cur_media_item.cur_series before', this.cur_media_item.cur_series);
@@ -3349,6 +3352,84 @@ player.prototype.bind = function(){
             }
 
             return;
+        }
+
+        _debug('this.active_time_shift', this.active_time_shift);
+
+        if (this.active_time_shift){
+
+            if (!this.pause.on){
+
+                if (module.tv_archive && this.cur_media_item.mark_archive){
+                    window.clearTimeout(this.archive_continue_dialog_to);
+                }
+
+                try{
+                    stb.Pause();
+                }catch(e){
+                    _debug(e);
+                }
+                this.pause.on = true;
+            }
+
+            if (dir > 0){
+                module.time_shift.pos_to_next_program();
+            }else{
+                module.time_shift.pos_to_previous_program();
+            }
+
+            if (!this.info.on){
+                this.show_info();
+            }
+
+            window.clearTimeout(this.info.hide_timeout);
+
+            this.info.hide_timeout = window.setTimeout(function(){
+                stb.player.set_pos_and_play();
+            }, 4000);
+        }
+
+        // start time-shift mode
+        if (this.is_tv && parseInt(this.cur_media_item.enable_tv_archive, 10) && module.time_shift && !this.prev_layer.on){
+
+            if (dir > 0){
+                return;
+            }
+
+            if (!this.pause.on){
+
+                if (module.tv_archive && this.cur_media_item.mark_archive){
+                    window.clearTimeout(this.archive_continue_dialog_to);
+                }
+
+                try{
+                    stb.Pause();
+                }catch(e){
+                    _debug(e);
+                }
+                this.pause.on = true;
+            }
+
+            module.time_shift.set_media_item(this.cur_tv_item);
+            module.time_shift.get_link_for_channel();
+            this.is_tv = false;
+            this.active_time_shift = true;
+            this.cur_pos_time     = module.time_shift.get_pos_time();
+            this.cur_media_length = module.time_shift.get_cur_media_length();
+            _debug('this.cur_media_length', this.cur_media_length);
+            _debug('this.cur_pos_time',     this.cur_pos_time);
+
+            module.time_shift.pos_to_cur_program_begin();
+
+            if (!this.info.on){
+                this.show_info();
+            }
+
+            window.clearTimeout(this.info.hide_timeout);
+
+            this.info.hide_timeout = window.setTimeout(function(){
+                self.hide_info();
+            }, 4000);
         }
 
         if (!this.cur_media_item.playlist){
@@ -3744,9 +3825,11 @@ player.prototype.set_pos_button = function(to_time){
    }
 };
 
-player.prototype.set_pos_and_play = function(reset){
-    _debug('set_pos_and_play');
-    
+player.prototype.set_pos_and_play = function(reset, do_not_hide_info){
+    _debug('set_pos_and_play', reset, do_not_hide_info);
+
+    _debug('this.info.on', this.info.on);
+
     if(!this.info.on){
         return;
     }
@@ -3779,7 +3862,9 @@ player.prototype.set_pos_and_play = function(reset){
 
                 this.play(module.time_shift.cur_media_item);
 
-                this.hide_info();
+                if (!do_not_hide_info){
+                    this.hide_info();
+                }
 
                 this.pos_step  = 10;
                 this.diff_pos  = 0;
@@ -3833,7 +3918,9 @@ player.prototype.set_pos_and_play = function(reset){
     this.disable_pause();
     //this.info.dom_obj.hide();
     //this.info.on = false;
-    this.hide_info();
+    if (!do_not_hide_info){
+        this.hide_info();
+    }
 
     this.pos_step  = 10;
     this.diff_pos  = 0;
