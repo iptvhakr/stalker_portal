@@ -103,7 +103,7 @@
             </filterchain>
         </copy>
 
-        <copy file="../db/delta/68-archive_duration.sql.src" tofile="../db/delta/68-archive_duration.sql" overwrite="true">
+        <copy file="./src/68-archive_duration.sql" tofile="../db/delta/68-archive_duration.sql" overwrite="true">
             <filterchain>
                 <replacetokens>
                     <token key="ARCHIVE_DURATION" value="${tv_archive_parts_number}"/>
