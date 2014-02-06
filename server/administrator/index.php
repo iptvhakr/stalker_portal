@@ -369,7 +369,7 @@ $cur_infoportal = get_cur_infoportal();
                 return $sessions + $streamer['sessions'];
             }, 0);
             ?>
-            <td class="td_stat">сервера вещания:</td>
+            <td class="td_stat"><?= mb_strtolower(_('Stream servers'), 'UTF-8')?>:</td>
             <td class="td_stat"><? echo $streamer_sessions ?></td>
         </tr>
 
