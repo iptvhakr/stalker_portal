@@ -207,6 +207,30 @@ player.prototype.init = function(){
                 if (params.hasOwnProperty("hdmi_event_reaction")){
                     stb.user.hdmi_event_reaction = stb.profile.hdmi_event_reaction = params.hdmi_event_reaction;
                 }
+
+                if (params.hasOwnProperty("pri_audio_lang")){
+                    stb.user.pri_audio_lang = stb.profile.pri_audio_lang = params.pri_audio_lang;
+                }
+
+                if (params.hasOwnProperty("sec_audio_lang")){
+                    stb.user.sec_audio_lang = stb.profile.sec_audio_lang = params.sec_audio_lang;
+                }
+
+                if (params.hasOwnProperty("pri_audio_lang") && params.hasOwnProperty("pri_audio_lang")){
+                    stb.player.set_audio_langs(stb.user.pri_audio_lang, stb.user.sec_audio_lang);
+                }
+
+                if (params.hasOwnProperty("pri_subtitle_lang")){
+                    stb.user.pri_subtitle_lang = stb.profile.pri_subtitle_lang = params.pri_subtitle_lang;
+                }
+
+                if (params.hasOwnProperty("sec_subtitle_lang")){
+                    stb.user.sec_subtitle_lang = stb.profile.sec_subtitle_lang = params.sec_subtitle_lang;
+                }
+
+                if (params.hasOwnProperty("pri_subtitle_lang") && params.hasOwnProperty("sec_subtitle_lang")){
+                    stb.player.set_subtitle_langs(stb.user.pri_subtitle_lang, stb.user.sec_subtitle_lang);
+                }
             }
         }
 
@@ -215,8 +239,8 @@ player.prototype.init = function(){
     }
 };
 
-player.prototype.set_langs = function(pri_lang, sec_lang){
-    _debug('player.set_langs', pri_lang, sec_lang);
+player.prototype.set_audio_langs = function(pri_lang, sec_lang){
+    _debug('player.set_audio_langs', pri_lang, sec_lang);
 
     pri_lang = pri_lang || "";
     sec_lang = sec_lang || "";
@@ -226,6 +250,21 @@ player.prototype.set_langs = function(pri_lang, sec_lang){
 
     try{
         stb.SetAudioLangs(pri_lang, sec_lang);
+    }catch(e){
+        _debug(e);
+    }
+};
+
+player.prototype.set_subtitle_langs = function(pri_lang, sec_lang){
+    _debug('player.set_subtitle_langs', pri_lang, sec_lang);
+
+    pri_lang = pri_lang || "";
+    sec_lang = sec_lang || "";
+
+    _debug('pri_lang', pri_lang);
+    _debug('sec_lang', sec_lang);
+
+    try{
         stb.SetSubtitleLangs(pri_lang, sec_lang);
     }catch(e){
         _debug(e);

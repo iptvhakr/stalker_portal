@@ -1036,18 +1036,30 @@ function common_xpcom(){
 
                 this.locale = this.user.locale;
 
-                var pri_lang = this.lang_map.hasOwnProperty(this.stb_lang) ? this.lang_map[this.stb_lang] : '';
-                var sec_lang = this.lang_map.hasOwnProperty(this.user.stb_lang) ? this.lang_map[this.user.stb_lang] : '';
+                if (!this.user['pri_audio_lang']){
+                    this.user['pri_audio_lang'] = this.lang_map.hasOwnProperty(this.stb_lang) ? this.lang_map[this.stb_lang] : '';
+                    this.user['sec_audio_lang'] = this.lang_map.hasOwnProperty(this.user.stb_lang) ? this.lang_map[this.user.stb_lang] : '';
 
-                if (pri_lang == sec_lang){
-                    var default_lang = this.user['default_locale'].substr(0, 2);
-                    _debug('default_lang', default_lang);
-                    sec_lang = this.lang_map.hasOwnProperty(default_lang) ? this.lang_map[default_lang] : '';
+                    if (this.user['pri_audio_lang'] == this.user['sec_audio_lang']){
+                        var default_lang = this.user['default_locale'].substr(0, 2);
+                        _debug('default_lang', default_lang);
+                        this.user['sec_audio_lang'] = this.lang_map.hasOwnProperty(default_lang) ? this.lang_map[default_lang] : '';
+                    }
                 }
 
-                this.player.set_langs(
-                    pri_lang,
-                    sec_lang
+                this.player.set_audio_langs(
+                    this.user['pri_audio_lang'],
+                    this.user['sec_audio_lang']
+                );
+
+                if (!this.user['pri_subtitle_lang']){
+                    this.user['pri_subtitle_lang'] = this.user['pri_audio_lang'];
+                    this.user['sec_subtitle_lang'] = this.user['sec_audio_lang'];
+                }
+
+                this.player.set_subtitle_langs(
+                    this.user['pri_subtitle_lang'],
+                    this.user['sec_subtitle_lang']
                 );
 
                 this.stb_lang = this.user.stb_lang;

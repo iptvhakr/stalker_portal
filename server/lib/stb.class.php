@@ -694,7 +694,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             'ts_buffer_use'        => $this->params['ts_buffer_use'],
             'ts_action_on_exit'    => $this->params['ts_action_on_exit'],
             'ts_delay'             => $this->params['ts_delay'],
-            'hdmi_event_reaction'  => $this->params['hdmi_event_reaction'] === null ? (int) Config::getSafe('enable_hdmi_events_handler', true) : (int) $this->params['hdmi_event_reaction']
+            'hdmi_event_reaction'  => $this->params['hdmi_event_reaction'] === null ? (int) Config::getSafe('enable_hdmi_events_handler', true) : (int) $this->params['hdmi_event_reaction'],
+            'pri_audio_lang'       => $this->params['pri_audio_lang'],
+            'sec_audio_lang'       => $this->params['sec_audio_lang'],
+            'pri_subtitle_lang'    => $this->params['pri_subtitle_lang'],
+            'sec_subtitle_lang'    => $this->params['sec_subtitle_lang']
         );
     }
 
@@ -1472,6 +1476,19 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         return Mysql::getInstance()->update('users',
             array(
                  'hdmi_event_reaction' => $data
+            ),
+            array('id' => $this->id)
+        )->result();
+    }
+
+    public function setLangPriority(){
+
+        return Mysql::getInstance()->update('users',
+            array(
+                 'pri_audio_lang'    => empty($_REQUEST['pri_audio_lang'])    ? '' : $_REQUEST['pri_audio_lang'],
+                 'sec_audio_lang'    => empty($_REQUEST['sec_audio_lang'])    ? '' : $_REQUEST['sec_audio_lang'],
+                 'pri_subtitle_lang' => empty($_REQUEST['pri_subtitle_lang']) ? '' : $_REQUEST['pri_subtitle_lang'],
+                 'sec_subtitle_lang' => empty($_REQUEST['sec_subtitle_lang']) ? '' : $_REQUEST['sec_subtitle_lang'],
             ),
             array('id' => $this->id)
         )->result();

@@ -48,6 +48,8 @@ interface Stb
 
     public function setHdmiReaction();
 
+    public function setLangPriority();
+
     public function setPlaybackBuffer();
 
     public function setSpdifMode();

@@ -39,6 +39,7 @@ function init_m()
         "net_info":[t('Network info'),"ico_netinfo","ico_netinfo_act","ico_l_netinfo","g_netw.html"],
         "video":[t('Video'),"ico_video","ico_video_act","ico_l_video","g_video.html"],
         "audio":[t('Audio'),"ico_audio","ico_audio_act","ico_l_audio","g_audio.html"],    
+        "playback":[t('Playback'),"ico_video","ico_video_act","ico_l_video","g_play.html"],
         "net":[t('Network'),"ico_net","ico_net_act","ico_l_net","g_nets.html"],
         "advanced":[t('Advanced settings'),"ico_advset","ico_advset_act","ico_l_advset","g_adv.html"],
         "time_shift":[t('Local TimeShift'),"ico_reload","ico_reload_act","ico_l_reload","g_ts.html"],
