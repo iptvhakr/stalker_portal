@@ -72,7 +72,9 @@ class Mysql
 
     private function getConnection($host, $user, $password, $db_name) {
 
-        if ($pos = strpos($host, ':')){
+        $pos = strpos($host, ':');
+
+        if ($pos && $pos != 1){
             $port = (int) substr($host, $pos + 1);
             $host = substr($host, 0, $pos);
         }else{
