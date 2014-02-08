@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-01-23 16:31+0300\n"
-"PO-Revision-Date: 2014-01-23 16:35+0300\n"
+"POT-Creation-Date: 2014-02-08 10:37+0300\n"
+"PO-Revision-Date: 2014-02-08 10:38+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,7 +41,7 @@ msgstr "Реклама в Видео клубе"
 #: ../../../administrator/add_epg.php:275
 #: ../../../administrator/stat_video_users.php:69
 #: ../../../administrator/administrators.php:146
-#: ../../../administrator/tariffs.php:281
+#: ../../../administrator/tariffs.php:292
 #: ../../../administrator/stat_not_active_users.php:69
 #: ../../../administrator/user.php:116
 #: ../../../administrator/city_info.php:129
@@ -94,8 +94,8 @@ msgstr "Назад"
 #: ../../../administrator/last_closed_karaoke.php:344
 #: ../../../administrator/stat_video.php:197
 #: ../../../administrator/karaoke_archive.php:131
-#: ../../../administrator/tariffs.php:300
-#: ../../../administrator/tariffs.php:329
+#: ../../../administrator/tariffs.php:311
+#: ../../../administrator/tariffs.php:342
 #: ../../../administrator/myvideolog.php:147
 #: ../../../administrator/stbgroups.php:131
 #: ../../../administrator/stat_tv_archive.php:103
@@ -144,7 +144,7 @@ msgstr "Все"
 #: ../../../administrator/anecdote.php:177
 #: ../../../administrator/help_city_info.php:150
 #: ../../../administrator/administrators.php:175
-#: ../../../administrator/tariffs.php:310
+#: ../../../administrator/tariffs.php:323
 #: ../../../administrator/city_info.php:164
 #: ../../../administrator/users.php:612
 #: ../../../administrator/other_city_info.php:160
@@ -597,6 +597,12 @@ msgstr "{0}:{1}"
 msgid "records"
 msgstr "записи"
 
+#: ../../../administrator/index.php:372 ../../../administrator/index.php:479
+#: ../../../administrator/stream_servers.php:131
+#: ../../../administrator/stream_servers.php:138
+msgid "Stream servers"
+msgstr "Сервера вещания"
+
 #: ../../../administrator/index.php:399
 msgid "search by MAC or IP"
 msgstr "поиск по MAC или IP"
@@ -675,12 +681,6 @@ msgstr "Автоматическое обновление прошивки"
 #: ../../../administrator/storages.php:182
 msgid "Storages"
 msgstr "Хранилища"
-
-#: ../../../administrator/index.php:479
-#: ../../../administrator/stream_servers.php:131
-#: ../../../administrator/stream_servers.php:138
-msgid "Stream servers"
-msgstr "Сервера вещания"
 
 #: ../../../administrator/help_city_info.php:106
 #: ../../../administrator/help_city_info.php:112
@@ -1082,36 +1082,40 @@ msgstr "Пароль"
 msgid "Password repeat"
 msgstr "Повтор пароля"
 
-#: ../../../administrator/tariffs.php:113
-#: ../../../administrator/tariffs.php:276
+#: ../../../administrator/tariffs.php:124
+#: ../../../administrator/tariffs.php:287
 msgid "TARIFF PLANS"
 msgstr "ТАРИФНЫЕ ПЛАНЫ"
 
-#: ../../../administrator/tariffs.php:264
+#: ../../../administrator/tariffs.php:275
 msgid "optional"
 msgstr "опциональный"
 
-#: ../../../administrator/tariffs.php:276
+#: ../../../administrator/tariffs.php:287
 #: ../../../administrator/setting_common.php:137
 msgid "disabled"
 msgstr "отключено"
 
-#: ../../../administrator/tariffs.php:281
+#: ../../../administrator/tariffs.php:292
 msgid "Services packages"
 msgstr "Пакеты услуг"
 
-#: ../../../administrator/tariffs.php:299
-#: ../../../administrator/tariffs.php:325
+#: ../../../administrator/tariffs.php:310
+#: ../../../administrator/tariffs.php:338
 #: ../../../administrator/services_packages.php:331
 #: ../../../administrator/services_packages.php:357
 msgid "External ID"
 msgstr "Внешний ID"
 
-#: ../../../administrator/tariffs.php:333
+#: ../../../administrator/tariffs.php:312
+msgid "Total users"
+msgstr "Пользователей"
+
+#: ../../../administrator/tariffs.php:346
 msgid "Use as default"
 msgstr "По умолчанию"
 
-#: ../../../administrator/tariffs.php:342
+#: ../../../administrator/tariffs.php:355
 #: ../../../administrator/profile.php:487
 msgid "Packages"
 msgstr "Пакеты"
@@ -1483,37 +1487,37 @@ msgid "Error: insufficient permissions for this action"
 msgstr "Ошибка: недостаточно прав для данного действия"
 
 #: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:774
+#: ../../../lib/epg.class.php:780
 msgid "Sun"
 msgstr "Вс"
 
 #: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:774
+#: ../../../lib/epg.class.php:780
 msgid "Mon"
 msgstr "Пн"
 
 #: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:774
+#: ../../../lib/epg.class.php:780
 msgid "Tue"
 msgstr "Вт"
 
 #: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:774
+#: ../../../lib/epg.class.php:780
 msgid "Wed"
 msgstr "Ср"
 
 #: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:774
+#: ../../../lib/epg.class.php:780
 msgid "Thu"
 msgstr "Чт"
 
 #: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:774
+#: ../../../lib/epg.class.php:780
 msgid "Fri"
 msgstr "Пт"
 
 #: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:774
+#: ../../../lib/epg.class.php:780
 msgid "Sat"
 msgstr "Сб"
 
@@ -1719,7 +1723,7 @@ msgstr "Длительность"
 
 #: ../../../administrator/add_video.php:2027
 #: ../../../administrator/add_itv.php:1642 ../../../lang/stb.php:90
-#: ../../../lang/stb.php:306 ../../../lib/user.class.php:978
+#: ../../../lang/stb.php:306 ../../../lib/user.class.php:1012
 msgid "min"
 msgstr "мин"
 
@@ -2069,7 +2073,7 @@ msgid "Rent duration"
 msgstr "Длительность аренды"
 
 #: ../../../administrator/services_packages.php:395
-#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:974
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1008
 msgid "h"
 msgstr "ч"
 
@@ -3344,79 +3348,79 @@ msgstr "аренда заканчивается через"
 msgid "Your STB is blocked.<br/> Call the provider."
 msgstr "Ваша приставка отключена.<br/> Свяжитесь с провайдером."
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "JANUARY"
 msgstr "ЯНВАРЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "FEBRUARY"
 msgstr "ФЕВРАЛЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "MARCH"
 msgstr "МАРТА"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "APRIL"
 msgstr "АПРЕЛЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "MAY"
 msgstr "МАЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "JUNE"
 msgstr "ИЮНЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "JULY"
 msgstr "ИЮЛЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "AUGUST"
 msgstr "АВГУСТА"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "SEPTEMBER"
 msgstr "СЕНТЯБРЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "OCTOBER"
 msgstr "ОКТЯБРЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "NOVEMBER"
 msgstr "НОЯБРЯ"
 
-#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:778
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
 msgid "DECEMBER"
 msgstr "ДЕКАБРЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:577
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
 msgid "SUNDAY"
 msgstr "ВОСКРЕСЕНЬЕ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:577
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
 msgid "MONDAY"
 msgstr "ПОНЕДЕЛЬНИК"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:577
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
 msgid "TUESDAY"
 msgstr "ВТОРНИК"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:577
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
 msgid "WEDNESDAY"
 msgstr "СРЕДА"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:577
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
 msgid "THURSDAY"
 msgstr "ЧЕТВЕРГ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:577
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
 msgid "FRIDAY"
 msgstr "ПЯТНИЦА"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:577
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
 msgid "SATURDAY"
 msgstr "СУББОТА"
 
@@ -4414,20 +4418,20 @@ msgstr "вчера"
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
 
-#: ../../../lib/itv.class.php:1357
+#: ../../../lib/itv.class.php:1337
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1367
+#: ../../../lib/itv.class.php:1347
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
 
 #
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:749
-#: ../../../lib/user.class.php:1020 ../../../lib/user.class.php:1021
+#: ../../../lib/user.class.php:1054 ../../../lib/user.class.php:1055
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -4730,7 +4734,7 @@ msgstr "декабрь"
 msgid "[No channel info]"
 msgstr "[телепрограмма отсутствует]"
 
-#: ../../../lib/user.class.php:970 ../../../lib/accountinfo.class.php:34
+#: ../../../lib/user.class.php:1004 ../../../lib/accountinfo.class.php:34
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -4738,23 +4742,23 @@ msgstr[0] "%d день"
 msgstr[1] "%d дня"
 msgstr[2] "%d дней"
 
-#: ../../../lib/user.class.php:1030
+#: ../../../lib/user.class.php:1064
 msgid "TV channels"
 msgstr "ТВ каналы"
 
-#: ../../../lib/user.class.php:1031
+#: ../../../lib/user.class.php:1065
 msgid "Movies"
 msgstr "Видео"
 
-#: ../../../lib/user.class.php:1032
+#: ../../../lib/user.class.php:1066
 msgid "Radio channels"
 msgstr "Радио каналы"
 
-#: ../../../lib/user.class.php:1033
+#: ../../../lib/user.class.php:1067
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/user.class.php:1034
+#: ../../../lib/user.class.php:1068
 msgid "Options"
 msgstr "Опции"
 
@@ -4832,13 +4836,13 @@ msgstr ""
 msgid "Exec time"
 msgstr ""
 
-#: ../../../lib/epg.class.php:474 ../../../lib/epg.class.php:561
-#: ../../../lib/epg.class.php:830
+#: ../../../lib/epg.class.php:480 ../../../lib/epg.class.php:567
+#: ../../../lib/epg.class.php:836
 msgid "%H:%i"
 msgstr ""
 
-#: ../../../lib/epg.class.php:741 ../../../lib/epg.class.php:742
-#: ../../../lib/epg.class.php:743 ../../../lib/epg.class.php:744
+#: ../../../lib/epg.class.php:747 ../../../lib/epg.class.php:748
+#: ../../../lib/epg.class.php:749 ../../../lib/epg.class.php:750
 msgid "H:i"
 msgstr ""
 

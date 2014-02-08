@@ -106,6 +106,17 @@ $user_default_tariff_id = Mysql::getInstance()->from('tariff_plan')->where(array
 
 $packages = Mysql::getInstance()->select('id, name')->from('services_package')->get()->all();
 
+function get_users_count_in_tariff($tariff){
+
+    $tariff_ids = array($tariff['id']);
+
+    if ($tariff['user_default'] == 1){
+        $tariff_ids[] = 0;
+    }
+
+    return Mysql::getInstance()->from('users')->count()->in('tariff_plan_id', $tariff_ids)->get()->counter();
+}
+
 ?>
 <html>
 <head>
@@ -298,6 +309,7 @@ $packages = Mysql::getInstance()->select('id, name')->from('services_package')->
                 <tr>
                     <td><?= _('External ID')?></td>
                     <td><?= _('Title')?></td>
+                    <td><?= _('Total users')?></td>
                     <td>&nbsp;</td>
                 </tr>
                 <?
@@ -305,6 +317,7 @@ $packages = Mysql::getInstance()->select('id, name')->from('services_package')->
                     echo '<tr '.($plan['user_default'] == 1 ? 'style="background-color: #ecffec;"' : '').'>';
                     echo '<td>'.$plan['external_id'].'</td>';
                     echo '<td>'.$plan['name'].'</td>';
+                    echo '<td style="color: #555">'.get_users_count_in_tariff($plan).'</td>';
                     echo '<td>';
                     echo '<a href="?edit=1&id='.$plan['id'].'">edit</a>&nbsp;';
                     echo '<a href="?del=1&id='.$plan['id'].'" onclick="if(confirm(\''._('Do you really want to delete this record?').'\')){return true}else{return false}">del</a>';
