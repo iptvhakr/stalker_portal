@@ -668,6 +668,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['account_page_by_password'] = Config::getSafe('account_page_by_password', false);
 
+        $profile['tester'] = Mysql::getInstance()->from('testers')->where(array('mac' => $this->mac, 'status' => 1))->get()->first() != null;
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);
