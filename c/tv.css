@@ -285,4 +285,32 @@
     border-radius: 3px;
 }
 
+#tv .logo_block{
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin: 5px 0 0 4px;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+#tv .logo_block img{
+    width: 20px;
+    height: 20px;
+}
+
+#tv .active_logo_block{
+    width: 27px;
+    height: 27px;
+    float: left;
+    margin: 8px 2px 0 0;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+#tv .active_logo_block img{
+    width: 27px;
+    height: 27px;
+}
+
 /* END TV */

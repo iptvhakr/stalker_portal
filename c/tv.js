@@ -9,8 +9,8 @@
         
         this.layer_name = 'tv';
         
-        this.row_blocks  = ['number', 'now_playing', 'fav', 'lock', 'archive', 'local_time_shift', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
-        
+        this.row_blocks  = ['number', 'logo', 'now_playing', 'fav', 'lock', 'archive', 'local_time_shift', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
+
         this.load_params = {
             'type'   : 'itv',
             'action' : 'get_ordered_list'
@@ -1179,6 +1179,37 @@
                     this.handling_block(cur_row_data[this.row_blocks[j]], this.map[this.cur_row], this.row_blocks[j]);
                     
                     this.handling_block(next_row_data[this.row_blocks[j]], this.map[cur_row_num], this.row_blocks[j]);
+                }
+            }
+        };
+
+        this.handling_block = function(data, row_items, block_name){
+            this.superclass.handling_block.call(this, data, row_items, block_name);
+
+            var block_obj = row_items[block_name+'_block'];
+
+            if (stb.profile['show_channel_logo_in_preview']){
+
+                if (block_name == 'logo'){
+                    if (data){
+                        if (block_obj.isHidden()){
+                            block_obj.show();
+                        }
+
+                        block_obj.innerHTML = '<img src="/'+ stb.portal_path  +'/misc/logos/120/' + data + '">';
+                    }else{
+                        if (!block_obj.isHidden()){
+                            block_obj.hide();
+                        }
+
+                        block_obj.innerHTML = '';
+                    }
+                }
+            }else{
+                if (block_name == 'logo'){
+                    if (!block_obj.isHidden()){
+                        block_obj.hide();
+                    }
                 }
             }
         };

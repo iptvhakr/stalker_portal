@@ -670,6 +670,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['tester'] = Mysql::getInstance()->from('testers')->where(array('mac' => $this->mac, 'status' => 1))->get()->first() != null;
 
+        $profile['show_channel_logo_in_preview'] = Config::getSafe('show_channel_logo_in_preview', false);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);
