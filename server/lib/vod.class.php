@@ -781,7 +781,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                 $this->response['data'][$i]['position'] = 0;
             }
 
-            if (!empty($not_ended[$this->response['data'][$i]['id']])){
+            if (!empty($not_ended[$this->response['data'][$i]['id']]) && !empty($this->response['data'][$i]['series'])){
                 $this->response['data'][$i]['cur_series'] = $not_ended[$this->response['data'][$i]['id']]['series'];
             }
 
