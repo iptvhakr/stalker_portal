@@ -14,7 +14,9 @@ class RESTManager
         try{
             $request  = new RESTRequest();
 
-            self::checkAccess($request->getAccessToken());
+            if ($request->getAction() != 'get' || !in_array($request->getResource(), array('vclub', 'karaoke'))){
+                self::checkAccess($request->getAccessToken());
+            }
 
             $cmd_r  = new RESTCommandResolver();
             $cmd    = $cmd_r->getCommand($request);

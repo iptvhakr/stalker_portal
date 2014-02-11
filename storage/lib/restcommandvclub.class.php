@@ -12,7 +12,7 @@ class RESTCommandVclub extends RESTCommand
         
         $identifiers = $request->getIdentifiers();
 
-        if (empty($identifiers[0])){
+        if (empty($identifiers[0]) || $identifiers[0] == '.' || $identifiers[0] == '..'){
             throw new ErrorException('Empty media_name');
         }
 
