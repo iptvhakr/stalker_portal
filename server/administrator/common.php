@@ -4,10 +4,13 @@ $_SERVER['TARGET'] = 'ADM';
 
 include "../common.php";
 
-$locales = array(
-    'en' => 'en_GB.utf8',
-    'ru' => 'ru_RU.utf8'
-);
+$locales = array();
+
+$allowed_locales = Config::get("allowed_locales");
+
+foreach ($allowed_locales as $lang => $locale){
+    $locales[substr($locale, 0, 2)] = $locale;
+}
 
 $accept_language = !empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $_SERVER["HTTP_ACCEPT_LANGUAGE"] : null;
 

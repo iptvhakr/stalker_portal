@@ -1,0 +1,4846 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: stalker_portal\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-17 12:42+0300\n"
+"PO-Revision-Date: 2014-02-17 12:43+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;dgettext\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: ../../..\n"
+
+#: ../../../administrator/reject_task.php:32
+msgid "task rejected"
+msgstr "завдання відхилено"
+
+#: ../../../administrator/vclub_ad.php:119
+#: ../../../administrator/vclub_ad.php:125
+msgid "Video club advertising"
+msgstr "Реклама в Відео клубі"
+
+#: ../../../administrator/vclub_ad.php:130
+#: ../../../administrator/last_closed_karaoke.php:298
+#: ../../../administrator/stat_video.php:69
+#: ../../../administrator/anecdote.php:118
+#: ../../../administrator/userlog.php:66
+#: ../../../administrator/help_city_info.php:117
+#: ../../../administrator/unique_video.php:245
+#: ../../../administrator/master_log.php:92
+#: ../../../administrator/all_userlog.php:69
+#: ../../../administrator/stream_zones.php:238
+#: ../../../administrator/claims.php:93 ../../../administrator/testers.php:125
+#: ../../../administrator/karaoke_archive.php:70
+#: ../../../administrator/add_epg.php:275
+#: ../../../administrator/stat_video_users.php:69
+#: ../../../administrator/administrators.php:146
+#: ../../../administrator/tariffs.php:292
+#: ../../../administrator/stat_not_active_users.php:69
+#: ../../../administrator/user.php:116
+#: ../../../administrator/city_info.php:129
+#: ../../../administrator/reply.php:83
+#: ../../../administrator/video_search.php:257
+#: ../../../administrator/users.php:95
+#: ../../../administrator/stbgroup_members.php:119
+#: ../../../administrator/msgs.php:78 ../../../administrator/claims_log.php:69
+#: ../../../administrator/other_city_info.php:127
+#: ../../../administrator/stat_anec_users.php:70
+#: ../../../administrator/add_radio.php:144
+#: ../../../administrator/myvideolog.php:61
+#: ../../../administrator/stream_servers.php:143
+#: ../../../administrator/stbgroups.php:112
+#: ../../../administrator/playlist.php:147
+#: ../../../administrator/stat_tv_archive.php:70
+#: ../../../administrator/add_video.php:600
+#: ../../../administrator/events.php:229
+#: ../../../administrator/videolog.php:61
+#: ../../../administrator/stat_video_genres.php:71
+#: ../../../administrator/stat_daily_video.php:70
+#: ../../../administrator/tasks_archive.php:70
+#: ../../../administrator/send_to.php:91
+#: ../../../administrator/add_moderator_mac.php:121
+#: ../../../administrator/cache_refresh.php:87
+#: ../../../administrator/msg.php:69 ../../../administrator/profile.php:307
+#: ../../../administrator/services_packages.php:313
+#: ../../../administrator/stat_moderators.php:70
+#: ../../../administrator/users_on_storage.php:78
+#: ../../../administrator/stat_tv_users.php:69
+#: ../../../administrator/epg_setting.php:147
+#: ../../../administrator/subscribe.php:324
+#: ../../../administrator/admin_groups.php:197
+#: ../../../administrator/tasks.php:70
+#: ../../../administrator/last_closed_tasks.php:158
+#: ../../../administrator/stat_timeshift.php:70
+#: ../../../administrator/playlists.php:110
+#: ../../../administrator/add_itv.php:972
+#: ../../../administrator/stat_tv.php:86
+#: ../../../administrator/subscribe_import.php:470
+#: ../../../administrator/setting_common.php:275
+#: ../../../administrator/storages.php:187
+#: ../../../administrator/vclub_schedule.php:79
+#: ../../../administrator/add_karaoke.php:216
+msgid "Back"
+msgstr "Назад"
+
+#: ../../../administrator/vclub_ad.php:148
+#: ../../../administrator/vclub_ad.php:184
+#: ../../../administrator/last_closed_karaoke.php:344
+#: ../../../administrator/stat_video.php:197
+#: ../../../administrator/karaoke_archive.php:131
+#: ../../../administrator/tariffs.php:311
+#: ../../../administrator/tariffs.php:342
+#: ../../../administrator/myvideolog.php:147
+#: ../../../administrator/stbgroups.php:131
+#: ../../../administrator/stat_tv_archive.php:103
+#: ../../../administrator/add_video.php:830
+#: ../../../administrator/add_video.php:1778
+#: ../../../administrator/services_packages.php:332
+#: ../../../administrator/services_packages.php:361
+#: ../../../administrator/tasks.php:168
+#: ../../../administrator/stat_timeshift.php:103
+#: ../../../administrator/stat_tv.php:169
+msgid "Title"
+msgstr "Назва"
+
+#: ../../../administrator/vclub_ad.php:150
+#: ../../../administrator/vclub_ad.php:216
+msgid "Must watch"
+msgstr "Необхідно переглянути"
+
+#: ../../../administrator/vclub_ad.php:151
+msgid "Watch started"
+msgstr "Перегляд розпочато"
+
+#: ../../../administrator/vclub_ad.php:151
+#: ../../../administrator/vclub_ad.php:152
+msgid "in the last 30 days"
+msgstr "за останні 30 днів"
+
+#: ../../../administrator/vclub_ad.php:152
+msgid "Watch ended"
+msgstr "Перегляд завершено"
+
+#: ../../../administrator/vclub_ad.php:153
+#: ../../../administrator/vclub_ad.php:195
+msgid "Weight"
+msgstr "Вага"
+
+#: ../../../administrator/vclub_ad.php:161
+#: ../../../administrator/vclub_ad.php:219
+#: ../../../administrator/subscribe.php:360
+#: ../../../administrator/subscribe.php:363
+#: ../../../lib/ajaxresponse.class.php:44
+msgid "All"
+msgstr "Всi"
+
+#: ../../../administrator/vclub_ad.php:168
+#: ../../../administrator/anecdote.php:177
+#: ../../../administrator/help_city_info.php:150
+#: ../../../administrator/administrators.php:175
+#: ../../../administrator/tariffs.php:323
+#: ../../../administrator/city_info.php:164
+#: ../../../administrator/users.php:612
+#: ../../../administrator/other_city_info.php:160
+#: ../../../administrator/playlist.php:181
+#: ../../../administrator/add_video.php:875
+#: ../../../administrator/services_packages.php:342
+#: ../../../administrator/epg_setting.php:193
+#: ../../../administrator/admin_groups.php:223
+#: ../../../administrator/playlists.php:139
+#: ../../../administrator/add_itv.php:780
+#: ../../../administrator/add_itv.php:1076
+#: ../../../administrator/add_karaoke.php:516 ../../../lang/stb.php:248
+msgid "Do you really want to delete this record?"
+msgstr "Ви дійсно бажаєте видалити цей запис?"
+
+#: ../../../administrator/vclub_ad.php:199
+msgid "Deny for video categories"
+msgstr "Заборонити для відео категорій"
+
+#: ../../../administrator/vclub_ad.php:236
+#: ../../../administrator/anecdote.php:248
+#: ../../../administrator/help_city_info.php:232
+#: ../../../administrator/stream_zones.php:88
+#: ../../../administrator/testers.php:68
+#: ../../../administrator/add_epg.php:410
+#: ../../../administrator/administrators.php:90
+#: ../../../administrator/tariffs.php:91
+#: ../../../administrator/city_info.php:246
+#: ../../../administrator/stbgroup_members.php:63
+#: ../../../administrator/other_city_info.php:242
+#: ../../../administrator/add_radio.php:277
+#: ../../../administrator/stream_servers.php:81
+#: ../../../administrator/stbgroups.php:56
+#: ../../../administrator/playlist.php:69
+#: ../../../administrator/add_video.php:2089
+#: ../../../administrator/events.php:439
+#: ../../../administrator/add_moderator_mac.php:244
+#: ../../../administrator/services_packages.php:121
+#: ../../../administrator/epg_setting.php:75
+#: ../../../administrator/subscribe.php:375
+#: ../../../administrator/admin_groups.php:95
+#: ../../../administrator/playlists.php:54
+#: ../../../administrator/add_itv.php:1692
+#: ../../../administrator/setting_common.php:183
+#: ../../../administrator/storages.php:98
+#: ../../../administrator/add_karaoke.php:843
+msgid "Save"
+msgstr "Зберегти"
+
+#: ../../../administrator/last_closed_karaoke.php:201
+#: ../../../administrator/add_karaoke.php:358
+msgid "done"
+msgstr "зроблено"
+
+#: ../../../administrator/last_closed_karaoke.php:205
+#: ../../../administrator/add_karaoke.php:362
+msgid "not done"
+msgstr "незроблене"
+
+#: ../../../administrator/last_closed_karaoke.php:218
+msgid "returned"
+msgstr "в поверненні"
+
+#: ../../../administrator/last_closed_karaoke.php:222
+msgid "return"
+msgstr "повернення"
+
+#: ../../../administrator/last_closed_karaoke.php:232
+msgid "Return reason"
+msgstr "Причина повернення"
+
+#: ../../../administrator/last_closed_karaoke.php:287
+#: ../../../administrator/last_closed_karaoke.php:293
+msgid "Completed Karaoke tasks"
+msgstr "Виконані Караоке ролики"
+
+#: ../../../administrator/last_closed_karaoke.php:318
+msgid "report generated by closed-month clips"
+msgstr "звіт формується за закритими за місяць роликам"
+
+#: ../../../administrator/last_closed_karaoke.php:345
+#: ../../../administrator/karaoke_archive.php:132
+#: ../../../administrator/tasks.php:169
+#: ../../../administrator/add_karaoke.php:482
+#: ../../../administrator/add_karaoke.php:807
+msgid "Performer"
+msgstr "Виконавець"
+
+#: ../../../administrator/last_closed_karaoke.php:346
+#: ../../../administrator/karaoke_archive.php:133
+#: ../../../administrator/add_video.php:838
+msgid "Turn on date"
+msgstr "Дата включення"
+
+#: ../../../administrator/stat_video.php:58
+#: ../../../administrator/stat_video.php:64
+msgid "Video views statistics per month"
+msgstr "Статистика перегляду ВІДЕО за місяць"
+
+#: ../../../administrator/stat_video.php:69
+msgid "By days"
+msgstr "По днях"
+
+#: ../../../administrator/stat_video.php:69
+msgid "By genres"
+msgstr "За жанрами"
+
+#: ../../../administrator/stat_video.php:170
+#: ../../../administrator/index.php:399
+#: ../../../administrator/unique_video.php:330
+#: ../../../administrator/stat_video_users.php:145
+#: ../../../administrator/video_search.php:355
+#: ../../../administrator/users.php:502 ../../../administrator/users.php:554
+#: ../../../administrator/stat_anec_users.php:146
+#: ../../../administrator/myvideolog.php:78
+#: ../../../administrator/add_video.php:744
+#: ../../../administrator/stat_tv_users.php:141
+#: ../../../administrator/add_karaoke.php:391
+msgid "Search"
+msgstr "Пошук"
+
+#: ../../../administrator/stat_video.php:170
+msgid "search by movie title"
+msgstr "пошук по \"назві фільму\""
+
+#: ../../../administrator/stat_video.php:185
+#: ../../../administrator/video_search.php:367
+msgid "Sort by"
+msgstr "Сортувати по"
+
+#: ../../../administrator/stat_video.php:187
+#: ../../../administrator/stat_video.php:198
+#: ../../../administrator/stat_video_users.php:155
+#: ../../../administrator/stat_anec_users.php:156
+#: ../../../administrator/stat_tv_archive.php:104
+#: ../../../administrator/stat_video_genres.php:122
+#: ../../../administrator/stat_daily_video.php:129
+#: ../../../administrator/stat_tv_users.php:151
+#: ../../../administrator/stat_timeshift.php:104
+#: ../../../administrator/stat_tv.php:170
+msgid "Views"
+msgstr "Переглядів"
+
+#: ../../../administrator/stat_video.php:188
+#: ../../../administrator/stat_video.php:199
+#: ../../../administrator/video_search.php:524
+msgid "Total views"
+msgstr "Просмотров всего"
+
+#: ../../../administrator/stat_video.php:200
+msgid "Last views"
+msgstr "Переглядів всього"
+
+#: ../../../administrator/stat_video.php:201
+msgid "How many storages"
+msgstr "На скількох сховищах"
+
+#: ../../../administrator/anecdote.php:42
+#: ../../../administrator/anecdote.php:64
+#: ../../../administrator/help_city_info.php:42
+#: ../../../administrator/help_city_info.php:65
+#: ../../../administrator/city_info.php:52
+#: ../../../administrator/city_info.php:75
+#: ../../../administrator/other_city_info.php:52
+#: ../../../administrator/other_city_info.php:75
+#: ../../../administrator/add_radio.php:60
+#: ../../../administrator/add_radio.php:83
+#: ../../../administrator/add_video.php:331
+#: ../../../administrator/add_video.php:403
+#: ../../../administrator/add_moderator_mac.php:47
+#: ../../../administrator/add_moderator_mac.php:67
+#: ../../../administrator/add_itv.php:300
+#: ../../../administrator/add_itv.php:481
+#: ../../../administrator/add_karaoke.php:128
+#: ../../../administrator/add_karaoke.php:156
+msgid "Error: all fields are required"
+msgstr "Помилка: необхідно заповнити всі поля"
+
+#: ../../../administrator/anecdote.php:106
+#: ../../../administrator/anecdote.php:113
+#: ../../../administrator/index.php:414
+msgid "Jokes"
+msgstr "Анекдоти"
+
+#: ../../../administrator/anecdote.php:236
+msgid "Joke"
+msgstr "Анекдот"
+
+#: ../../../administrator/anecdote.php:248
+#: ../../../administrator/help_city_info.php:232
+#: ../../../administrator/add_epg.php:410
+#: ../../../administrator/city_info.php:246
+#: ../../../administrator/other_city_info.php:242
+#: ../../../administrator/add_radio.php:277
+#: ../../../administrator/add_video.php:2089
+#: ../../../administrator/add_moderator_mac.php:244
+#: ../../../administrator/add_karaoke.php:843
+msgid "New"
+msgstr "Новий"
+
+#: ../../../administrator/userlog.php:55 ../../../administrator/userlog.php:61
+msgid "User logs"
+msgstr "Логи користувачів"
+
+#: ../../../administrator/userlog.php:160
+#: ../../../administrator/all_userlog.php:161
+#: ../../../administrator/add_epg.php:140 ../../../administrator/users.php:198
+#: ../../../administrator/add_video.php:513
+msgid "January"
+msgstr "Cічень"
+
+#: ../../../administrator/userlog.php:161
+#: ../../../administrator/all_userlog.php:162
+#: ../../../administrator/add_epg.php:141 ../../../administrator/users.php:199
+#: ../../../administrator/add_video.php:514
+msgid "February"
+msgstr "Лютий"
+
+#: ../../../administrator/userlog.php:162
+#: ../../../administrator/all_userlog.php:163
+#: ../../../administrator/add_epg.php:142 ../../../administrator/users.php:200
+#: ../../../administrator/add_video.php:515
+msgid "March"
+msgstr "Березень"
+
+#: ../../../administrator/userlog.php:163
+#: ../../../administrator/all_userlog.php:164
+#: ../../../administrator/add_epg.php:143 ../../../administrator/users.php:201
+#: ../../../administrator/add_video.php:516
+msgid "April"
+msgstr "Квітень"
+
+#: ../../../administrator/userlog.php:164
+#: ../../../administrator/all_userlog.php:165
+#: ../../../administrator/add_epg.php:144 ../../../administrator/users.php:202
+#: ../../../administrator/add_video.php:517 ../../../lib/gismeteo.class.php:31
+msgid "May"
+msgstr "Травень"
+
+#: ../../../administrator/userlog.php:165
+#: ../../../administrator/all_userlog.php:166
+#: ../../../administrator/add_epg.php:145 ../../../administrator/users.php:203
+#: ../../../administrator/add_video.php:518
+msgid "June"
+msgstr "Червень"
+
+#: ../../../administrator/userlog.php:166
+#: ../../../administrator/all_userlog.php:167
+#: ../../../administrator/add_epg.php:146 ../../../administrator/users.php:204
+#: ../../../administrator/add_video.php:519
+msgid "July"
+msgstr "Липень"
+
+#: ../../../administrator/userlog.php:167
+#: ../../../administrator/all_userlog.php:168
+#: ../../../administrator/add_epg.php:147 ../../../administrator/users.php:205
+#: ../../../administrator/add_video.php:520
+msgid "August"
+msgstr "Серпень"
+
+#: ../../../administrator/userlog.php:168
+#: ../../../administrator/all_userlog.php:169
+#: ../../../administrator/add_epg.php:148 ../../../administrator/users.php:206
+#: ../../../administrator/add_video.php:521
+msgid "September"
+msgstr "Вересень"
+
+#: ../../../administrator/userlog.php:169
+#: ../../../administrator/all_userlog.php:170
+#: ../../../administrator/add_epg.php:149 ../../../administrator/users.php:207
+#: ../../../administrator/add_video.php:522
+msgid "October"
+msgstr "Жовтень"
+
+#: ../../../administrator/userlog.php:170
+#: ../../../administrator/all_userlog.php:171
+#: ../../../administrator/add_epg.php:150 ../../../administrator/users.php:208
+#: ../../../administrator/add_video.php:523
+msgid "November"
+msgstr "Листопад"
+
+#: ../../../administrator/userlog.php:171
+#: ../../../administrator/all_userlog.php:172
+#: ../../../administrator/add_epg.php:151 ../../../administrator/users.php:209
+#: ../../../administrator/add_video.php:524
+msgid "December"
+msgstr "Грудень"
+
+#: ../../../administrator/userlog.php:229
+#: ../../../administrator/all_userlog.php:217
+#: ../../../administrator/add_epg.php:367 ../../../administrator/users.php:303
+msgid "Channel"
+msgstr "Канал"
+
+#: ../../../administrator/userlog.php:248
+#: ../../../administrator/all_userlog.php:231
+#: ../../../administrator/users.php:159 ../../../administrator/users.php:311
+msgid "Video"
+msgstr "Відео"
+
+#: ../../../administrator/userlog.php:263 ../../../administrator/users.php:160
+#: ../../../administrator/stat_moderators.php:237
+msgid "Karaoke"
+msgstr "Караоке"
+
+#: ../../../administrator/userlog.php:278 ../../../administrator/users.php:161
+#: ../../../lang/stb.php:58
+msgid "Audio"
+msgstr "Аудіо"
+
+#: ../../../administrator/userlog.php:290 ../../../administrator/users.php:162
+msgid "Radio"
+msgstr "Радіо"
+
+#: ../../../administrator/userlog.php:313 ../../../administrator/users.php:163
+msgid "My records"
+msgstr "Мої записи"
+
+#: ../../../administrator/userlog.php:333 ../../../administrator/users.php:164
+#: ../../../administrator/users.php:168
+msgid "Records"
+msgstr "Записи"
+
+#: ../../../administrator/userlog.php:348
+msgid "Clip"
+msgstr "Кліп"
+
+#: ../../../administrator/userlog.php:385
+#: ../../../administrator/claims.php:155
+#: ../../../administrator/add_epg.php:381 ../../../administrator/msgs.php:114
+#: ../../../administrator/myvideolog.php:146
+#: ../../../administrator/add_video.php:585
+#: ../../../administrator/videolog.php:127 ../../../administrator/msg.php:141
+#: ../../../administrator/tasks.php:170 ../../../administrator/tasks.php:225
+#: ../../../administrator/vclub_schedule.php:114
+msgid "Date"
+msgstr "Дата"
+
+#: ../../../administrator/userlog.php:395
+msgid "Go"
+msgstr "Перейти"
+
+#: ../../../administrator/userlog.php:402
+#: ../../../administrator/master_log.php:121
+#: ../../../administrator/all_userlog.php:275
+#: ../../../administrator/playlist.php:166
+#: ../../../administrator/playlist.php:198
+msgid "Time"
+msgstr "Час"
+
+#: ../../../administrator/userlog.php:403
+#: ../../../administrator/videolog.php:128
+msgid "Stb action"
+msgstr "Дія"
+
+#: ../../../administrator/userlog.php:404
+#: ../../../administrator/all_userlog.php:278
+msgid "Parameter"
+msgstr "Параметр"
+
+#: ../../../administrator/index.php:17
+msgid "Stalker MW admin interface"
+msgstr "Stalker MW адмін інтерфейс"
+
+#: ../../../administrator/index.php:124
+msgid "Sections"
+msgstr "Розділи"
+
+#: ../../../administrator/index.php:128 ../../../administrator/add_itv.php:634
+#: ../../../administrator/add_itv.php:967
+msgid "IPTV channels"
+msgstr "IPTV канали"
+
+#: ../../../administrator/index.php:130 ../../../administrator/users.php:84
+#: ../../../administrator/users.php:90
+msgid "Users"
+msgstr "Користувачі"
+
+#: ../../../administrator/index.php:134
+#: ../../../administrator/add_video.php:575
+#: ../../../administrator/add_video.php:595
+msgid "VIDEO CLUB"
+msgstr "ВІДЕО КЛУБ"
+
+#: ../../../administrator/index.php:136 ../../../administrator/events.php:218
+#: ../../../administrator/events.php:224
+#: ../../../administrator/profile.php:307
+msgid "Events"
+msgstr "Події"
+
+#: ../../../administrator/index.php:140
+#: ../../../administrator/add_karaoke.php:204
+#: ../../../administrator/add_karaoke.php:211 ../../../lang/stb.php:27
+msgid "KARAOKE"
+msgstr "КАРАОКЕ"
+
+#: ../../../administrator/index.php:142
+#: ../../../administrator/administrators.php:98
+#: ../../../administrator/administrators.php:141
+msgid "Administrators"
+msgstr "Адміністратори"
+
+#: ../../../administrator/index.php:146 ../../../lang/stb.php:70
+msgid "RADIO"
+msgstr "РАДІО"
+
+#: ../../../administrator/index.php:148
+msgid "Logout"
+msgstr "вихід"
+
+#: ../../../administrator/index.php:158
+msgid "TARIFFS"
+msgstr "ТАРИФИ"
+
+#: ../../../administrator/index.php:162
+#, php-format
+msgid "Tasks (new messages: %s)"
+msgstr "Завдання (є нові повідомлення: %s)"
+
+#: ../../../administrator/index.php:224
+msgid "tv"
+msgstr "тб"
+
+#: ../../../administrator/index.php:228
+msgid "videoclub"
+msgstr "відеоклуб"
+
+#: ../../../administrator/index.php:265 ../../../administrator/tasks.php:164
+msgid "karaoke"
+msgstr "караоке"
+
+#: ../../../administrator/index.php:269
+msgid "radio"
+msgstr "радіо"
+
+#: ../../../administrator/index.php:273
+msgid "infoportal"
+msgstr "інфопортал"
+
+#: ../../../administrator/index.php:286
+msgid "tv archive"
+msgstr "тб архів"
+
+#: ../../../administrator/index.php:320
+#, fuzzy
+msgid "timeshift"
+msgstr "{0}:{1}"
+
+#: ../../../administrator/index.php:353
+msgid "records"
+msgstr "записи"
+
+#: ../../../administrator/index.php:372 ../../../administrator/index.php:479
+#: ../../../administrator/stream_servers.php:131
+#: ../../../administrator/stream_servers.php:138
+msgid "Stream servers"
+msgstr "Сервера мовлення"
+
+#: ../../../administrator/index.php:399
+msgid "search by MAC or IP"
+msgstr "пошук по MAC або IP"
+
+#: ../../../administrator/index.php:408 ../../../administrator/users.php:170
+#: ../../../administrator/users.php:171 ../../../administrator/users.php:172
+#: ../../../administrator/users.php:173 ../../../administrator/users.php:174
+#: ../../../administrator/users.php:175
+msgid "Infoportal"
+msgstr "Інфопортал"
+
+#: ../../../administrator/index.php:412
+msgid "City help"
+msgstr "Міська довідка"
+
+#: ../../../administrator/index.php:422
+msgid "Statistics"
+msgstr "Статистика"
+
+#: ../../../administrator/index.php:426
+msgid "Video statistics"
+msgstr "Статистика Відео"
+
+#: ../../../administrator/index.php:428
+msgid "Users statistics for TV"
+msgstr "Абонентська статистика по ТБ"
+
+#: ../../../administrator/index.php:432
+msgid "TV statistics"
+msgstr "Статистика ТБ"
+
+#: ../../../administrator/index.php:434
+msgid "Users statistics for VIDEO"
+msgstr "Абонентська статистика по ВІДЕО"
+
+#: ../../../administrator/index.php:438
+msgid "TV Archive statistics"
+msgstr "Статистика ТБ Архіву"
+
+#: ../../../administrator/index.php:440
+msgid "Users statistics for Jokes"
+msgstr "Абонентська статистика по Анекдотах"
+
+#: ../../../administrator/index.php:444
+msgid "TimeShift statistics"
+msgstr "Статистика TimeShift"
+
+#: ../../../administrator/index.php:446
+msgid "Inactive users"
+msgstr "Неактивні абоненти"
+
+#: ../../../administrator/index.php:450
+#: ../../../administrator/stat_moderators.php:59
+#: ../../../administrator/stat_moderators.php:65
+msgid "Moderators statistics"
+msgstr "Статистика Модераторів"
+
+#: ../../../administrator/index.php:456 ../../../administrator/claims.php:82
+#: ../../../administrator/claims.php:88
+msgid "Claims"
+msgstr "Скарги"
+
+#: ../../../administrator/index.php:467
+msgid "Settings"
+msgstr "Налаштування"
+
+#: ../../../administrator/index.php:471
+#: ../../../administrator/setting_common.php:127
+#: ../../../administrator/setting_common.php:137
+#: ../../../administrator/setting_common.php:270
+msgid "Firmware auto update"
+msgstr "Автоматичне оновлення прошивки"
+
+#: ../../../administrator/index.php:473
+#: ../../../administrator/storages.php:175
+#: ../../../administrator/storages.php:182
+msgid "Storages"
+msgstr "Сховище інформації"
+
+#: ../../../administrator/help_city_info.php:106
+#: ../../../administrator/help_city_info.php:112
+#: ../../../administrator/city_info.php:129
+#: ../../../administrator/other_city_info.php:127
+msgid "Information services"
+msgstr "Довідкові служби"
+
+#: ../../../administrator/help_city_info.php:117
+#: ../../../administrator/city_info.php:117
+#: ../../../administrator/city_info.php:124
+#: ../../../administrator/other_city_info.php:127
+msgid "Emergency services"
+msgstr "Єкстрені служби"
+
+#: ../../../administrator/help_city_info.php:117
+#: ../../../administrator/city_info.php:129
+#: ../../../administrator/other_city_info.php:116
+#: ../../../administrator/other_city_info.php:122
+msgid "Other services"
+msgstr "Інші служби"
+
+#: ../../../administrator/help_city_info.php:140
+#: ../../../administrator/help_city_info.php:212
+#: ../../../administrator/city_info.php:154
+#: ../../../administrator/city_info.php:226
+#: ../../../administrator/other_city_info.php:150
+#: ../../../administrator/other_city_info.php:222
+msgid "Department"
+msgstr "Служба"
+
+#: ../../../administrator/help_city_info.php:141
+#: ../../../administrator/help_city_info.php:204
+#: ../../../administrator/city_info.php:155
+#: ../../../administrator/city_info.php:218
+#: ../../../administrator/other_city_info.php:151
+#: ../../../administrator/other_city_info.php:214
+#: ../../../administrator/add_radio.php:167
+#: ../../../administrator/add_radio.php:241
+#: ../../../administrator/add_itv.php:1006
+#: ../../../administrator/add_itv.php:1414
+msgid "Number"
+msgstr "Номер"
+
+#: ../../../administrator/help_city_info.php:222
+#: ../../../administrator/city_info.php:236
+#: ../../../administrator/other_city_info.php:232
+#: ../../../administrator/profile.php:399
+msgid "Phone number"
+msgstr "Номер телефону"
+
+#: ../../../administrator/unique_video.php:24
+#: ../../../administrator/unique_video.php:240
+msgid "Search unique movies"
+msgstr "Пошук унікальних фільмів"
+
+#: ../../../administrator/unique_video.php:101
+#: ../../../administrator/video_search.php:101
+#: ../../../administrator/add_video.php:1365
+#: ../../../administrator/subscribe.php:82 ../../../lang/stb.php:335
+#: ../../../lang/stb.php:495
+msgid "error"
+msgstr "помилка"
+
+#: ../../../administrator/unique_video.php:104
+#: ../../../administrator/unique_video.php:180
+#: ../../../administrator/unique_video.php:197
+#: ../../../administrator/video_search.php:104
+#: ../../../administrator/video_search.php:181
+#: ../../../administrator/video_search.php:198
+#: ../../../administrator/add_video.php:1296
+#: ../../../administrator/add_video.php:1320
+#: ../../../administrator/add_video.php:1368
+msgid "counting"
+msgstr "йде підрахунок"
+
+#: ../../../administrator/unique_video.php:134
+#: ../../../administrator/video_search.php:134
+#: ../../../administrator/add_video.php:1398
+#: ../../../administrator/add_karaoke.php:709
+msgid "Error: The file or directory may contain invalid characters"
+msgstr "Помилка: Можливо файл або директорія містять заборонені символи"
+
+#: ../../../administrator/unique_video.php:165
+#: ../../../administrator/video_search.php:166
+#: ../../../administrator/add_video.php:1279
+#: ../../../administrator/add_karaoke.php:668 ../../../lang/stb.php:448
+msgid "Server"
+msgstr "Сервер"
+
+#: ../../../administrator/unique_video.php:166
+#: ../../../administrator/video_search.php:167
+#: ../../../administrator/add_video.php:829
+#: ../../../administrator/add_video.php:1280
+msgid "Folder"
+msgstr "Каталог"
+
+#: ../../../administrator/unique_video.php:167
+#: ../../../administrator/video_search.php:168
+#: ../../../administrator/add_video.php:835
+#: ../../../administrator/add_video.php:1281
+msgid "Series"
+msgstr "Серії"
+
+#: ../../../administrator/unique_video.php:175
+#: ../../../administrator/video_search.php:176
+#: ../../../administrator/add_video.php:1291
+msgid "check"
+msgstr "перевірити"
+
+#: ../../../administrator/unique_video.php:177
+#: ../../../administrator/video_search.php:178
+#: ../../../administrator/add_video.php:1293
+msgid "count md5 sum"
+msgstr "порахувати MD5 суму"
+
+#: ../../../administrator/unique_video.php:226
+#: ../../../administrator/video_search.php:227 ../../../lang/stb.php:336
+msgid "waiting..."
+msgstr "очікування..."
+
+#: ../../../administrator/unique_video.php:230
+#: ../../../administrator/video_search.php:231
+msgid "You are not authorized for this action"
+msgstr "У Вас немає прав на цю дію"
+
+#: ../../../administrator/unique_video.php:245
+#: ../../../administrator/video_search.php:257
+msgid "Plain text"
+msgstr "У текстовому вигляді"
+
+#: ../../../administrator/unique_video.php:268
+#: ../../../administrator/video_search.php:280
+msgid "On server"
+msgstr "На сервері"
+
+#: ../../../administrator/unique_video.php:300
+msgid "Excluding"
+msgstr "Виключаючи"
+
+#: ../../../administrator/unique_video.php:474
+#: ../../../administrator/reply.php:120
+#: ../../../administrator/video_search.php:522
+#: ../../../administrator/playlist.php:167
+#: ../../../administrator/playlist.php:257
+#: ../../../administrator/tasks_archive.php:187
+#: ../../../administrator/tasks_archive.php:237
+#: ../../../administrator/tasks_archive.php:287
+#: ../../../administrator/send_to.php:136
+#: ../../../administrator/stat_moderators.php:199
+#: ../../../administrator/users_on_storage.php:135
+#: ../../../administrator/tasks.php:130 ../../../administrator/tasks.php:224
+#: ../../../administrator/last_closed_tasks.php:209
+#: ../../../administrator/last_closed_tasks.php:263
+#: ../../../administrator/last_closed_tasks.php:317
+msgid "Movie"
+msgstr "Відео"
+
+#: ../../../administrator/unique_video.php:474
+#: ../../../administrator/video_search.php:522
+msgid "folder"
+msgstr "каталог"
+
+#: ../../../administrator/unique_video.php:475
+#: ../../../administrator/video_search.php:525
+msgid "Total views per month"
+msgstr "Кількість переглядів за місяць"
+
+#: ../../../administrator/unique_video.php:499
+#: ../../../administrator/video_search.php:554
+#: ../../../administrator/add_video.php:895
+#: ../../../administrator/add_karaoke.php:532
+msgid "Loading"
+msgstr "Завантаження"
+
+#: ../../../administrator/unique_video.php:502
+#: ../../../administrator/video_search.php:557
+#: ../../../administrator/add_video.php:898
+#: ../../../administrator/add_karaoke.php:535
+msgid "Not found"
+msgstr "Не знайдено"
+
+#: ../../../administrator/master_log.php:81
+#: ../../../administrator/master_log.php:87
+msgid "Master-storage logs"
+msgstr "Логи майстра сховищ"
+
+#: ../../../administrator/master_log.php:122
+#: ../../../administrator/events.php:451
+msgid "Message"
+msgstr "Повідомлення"
+
+#: ../../../administrator/all_userlog.php:57
+#: ../../../administrator/all_userlog.php:64
+msgid "All users log"
+msgstr "Усі логи користувачів"
+
+#: ../../../administrator/all_userlog.php:277
+#: ../../../administrator/myvideolog.php:149
+#: ../../../tools/misctranslations.php:67
+msgid "Action"
+msgstr "Бойовик"
+
+#: ../../../administrator/stream_zones.php:10
+#: ../../../administrator/testers.php:10
+#: ../../../administrator/administrators.php:9
+#: ../../../administrator/tariffs.php:16 ../../../administrator/user.php:16
+#: ../../../administrator/user.php:177 ../../../administrator/users.php:95
+#: ../../../administrator/stbgroup_members.php:10
+#: ../../../administrator/stream_servers.php:10
+#: ../../../administrator/stbgroups.php:10
+#: ../../../administrator/playlist.php:10
+#: ../../../administrator/add_video.php:600
+#: ../../../administrator/services_packages.php:16
+#: ../../../administrator/epg_setting.php:13
+#: ../../../administrator/admin_groups.php:9
+#: ../../../administrator/playlists.php:10
+#: ../../../administrator/add_itv.php:972
+#: ../../../administrator/setting_common.php:10
+#: ../../../administrator/setting_common.php:297
+#: ../../../administrator/storages.php:10
+msgid "Add"
+msgstr "Додати"
+
+#: ../../../administrator/stream_zones.php:226
+#: ../../../administrator/stream_zones.php:233
+msgid "Stream zones"
+msgstr "Зони мовлення"
+
+#: ../../../administrator/stream_zones.php:257
+#: ../../../administrator/stream_zones.php:285
+#: ../../../administrator/add_radio.php:168
+#: ../../../administrator/add_radio.php:249
+#: ../../../administrator/stream_servers.php:162
+#: ../../../administrator/stream_servers.php:203
+#: ../../../administrator/stbgroups.php:155
+#: ../../../administrator/add_moderator_mac.php:144
+#: ../../../administrator/add_moderator_mac.php:216
+#: ../../../administrator/admin_groups.php:215
+#: ../../../administrator/admin_groups.php:238
+#: ../../../administrator/playlists.php:129
+#: ../../../administrator/playlists.php:153
+#: ../../../administrator/add_itv.php:1008
+#: ../../../administrator/add_itv.php:1422
+#: ../../../administrator/storages.php:206
+#: ../../../administrator/storages.php:252
+#: ../../../administrator/vclub_schedule.php:113
+#: ../../../administrator/add_karaoke.php:777
+msgid "Name"
+msgstr "Ім'я"
+
+#: ../../../administrator/stream_zones.php:271
+#, php-format
+msgid "Are you sure you want to delete record %s?"
+msgstr "Ви дійсно бажаєте видалити запис %s?"
+
+#: ../../../administrator/stream_zones.php:290
+msgid "Default zone"
+msgstr "Зона за умовчанням"
+
+#: ../../../administrator/stream_zones.php:306
+msgid "Countries"
+msgstr "Країни"
+
+#: ../../../administrator/stream_zones.php:315
+#: ../../../administrator/services_packages.php:420
+msgid "Selected"
+msgstr "Вибрано"
+
+#: ../../../administrator/claims.php:93
+msgid "Log"
+msgstr "Лог"
+
+#: ../../../administrator/claims.php:156
+msgid "Video-club sound"
+msgstr "Відео-клуб звук"
+
+#: ../../../administrator/claims.php:157
+msgid "Video-club video"
+msgstr "Відео-клуб відео"
+
+#: ../../../administrator/claims.php:158
+msgid "TV sound"
+msgstr "ТБ звук"
+
+#: ../../../administrator/claims.php:159
+msgid "TV video"
+msgstr "ТБ відео"
+
+#: ../../../administrator/claims.php:160
+msgid "No epg"
+msgstr "Відсутнє EPG"
+
+#: ../../../administrator/claims.php:161
+msgid "Wrong epg"
+msgstr "EPG не співпадає"
+
+#: ../../../administrator/claims.php:162
+msgid "Karaoke sound"
+msgstr "Караоке звук"
+
+#: ../../../administrator/claims.php:163
+msgid "Karaoke video"
+msgstr "Караоке відео"
+
+#: ../../../administrator/testers.php:114
+#: ../../../administrator/testers.php:120 ../../../administrator/users.php:95
+msgid "Testers"
+msgstr "Тестувальники"
+
+#: ../../../administrator/testers.php:163
+#, php-format
+msgid "Are you sure you want to change the status of the tester %s?"
+msgstr "Ви дійсно бажаєте змінити статус тестувальника %s?"
+
+#: ../../../administrator/testers.php:165
+#, php-format
+msgid "Are you sure you want to remove the tester %s?"
+msgstr "Ви дійсно бажаєте видалити тестувальника %s?"
+
+#: ../../../administrator/karaoke_archive.php:59
+#: ../../../administrator/karaoke_archive.php:65
+msgid "Karaoke Archive"
+msgstr "Архів Караоке"
+
+#: ../../../administrator/add_epg.php:263
+#: ../../../administrator/add_epg.php:270
+msgid "EPG"
+msgstr "EPG"
+
+#: ../../../administrator/add_epg.php:282
+msgid "Saving was successful"
+msgstr "Збереження пройшло успішно"
+
+#: ../../../administrator/add_epg.php:394
+msgid "Load EPG"
+msgstr "Завантажити EPG"
+
+#: ../../../administrator/stat_video_users.php:58
+#: ../../../administrator/stat_video_users.php:64
+msgid "Users video views statistics per month"
+msgstr "Статистика перегляду ВІДЕО за місяць"
+
+#: ../../../administrator/stat_video_users.php:134
+#, no-php-format
+msgid "Counting if the movie playback is more than 70% of the total duration"
+msgstr ""
+"Переглядом вважається програвання фільму більше ніж 70% від загальної "
+"тривалості"
+
+#: ../../../administrator/stat_video_users.php:145
+#: ../../../administrator/stat_anec_users.php:146
+#: ../../../administrator/stat_tv_users.php:141
+msgid "search by mac"
+msgstr "пошук по mac"
+
+#: ../../../administrator/close_task.php:25
+msgid "task done"
+msgstr "завдання виконано"
+
+#: ../../../administrator/administrators.php:35
+msgid "Password can not be blank"
+msgstr ""
+
+#: ../../../administrator/administrators.php:39
+#: ../../../administrator/administrators.php:64
+msgid "Passwords do not match"
+msgstr ""
+
+#: ../../../administrator/administrators.php:146
+#: ../../../administrator/admin_groups.php:111
+#: ../../../administrator/admin_groups.php:192
+msgid "Administrators groups"
+msgstr "Групи адміністраторів"
+
+#: ../../../administrator/administrators.php:164
+#: ../../../administrator/administrators.php:191
+#: ../../../administrator/user.php:138 ../../../administrator/profile.php:375
+#: ../../../administrator/login.php:55 ../../../lang/stb.php:349
+#: ../../../lang/stb.php:362 ../../../lang/stb.php:488
+msgid "Login"
+msgstr "Логін"
+
+#: ../../../administrator/administrators.php:165
+#: ../../../administrator/administrators.php:206
+#: ../../../administrator/events.php:379
+#: ../../../administrator/profile.php:413
+#: ../../../administrator/playlists.php:157
+msgid "Group"
+msgstr "Група"
+
+#: ../../../administrator/administrators.php:195
+#: ../../../administrator/user.php:142 ../../../administrator/login.php:59
+#: ../../../lang/stb.php:350 ../../../lang/stb.php:363
+#: ../../../lang/stb.php:479 ../../../lang/stb.php:489
+msgid "Password"
+msgstr "Пароль"
+
+#: ../../../administrator/administrators.php:199
+msgid "Password repeat"
+msgstr "Повтор паролю"
+
+#: ../../../administrator/tariffs.php:124
+#: ../../../administrator/tariffs.php:287
+msgid "TARIFF PLANS"
+msgstr "ТАРИФНІ ПЛАНИ"
+
+#: ../../../administrator/tariffs.php:275
+msgid "optional"
+msgstr "опціональний"
+
+#: ../../../administrator/tariffs.php:287
+#: ../../../administrator/setting_common.php:137
+msgid "disabled"
+msgstr "відключено"
+
+#: ../../../administrator/tariffs.php:292
+msgid "Services packages"
+msgstr "пакети послуг"
+
+#: ../../../administrator/tariffs.php:310
+#: ../../../administrator/tariffs.php:338
+#: ../../../administrator/services_packages.php:331
+#: ../../../administrator/services_packages.php:357
+msgid "External ID"
+msgstr "Зовнішній ID"
+
+#: ../../../administrator/tariffs.php:312
+msgid "Total users"
+msgstr "Користувачів"
+
+#: ../../../administrator/tariffs.php:346
+msgid "Use as default"
+msgstr "За умовчанням"
+
+#: ../../../administrator/tariffs.php:355
+#: ../../../administrator/profile.php:487
+msgid "Packages"
+msgstr "Пакети"
+
+#: ../../../administrator/stat_not_active_users.php:58
+#: ../../../administrator/stat_not_active_users.php:64
+msgid "Inactive users per month"
+msgstr "Неактивні абоненти за місяць"
+
+#: ../../../administrator/stat_not_active_users.php:129
+msgid "Latest TV viewing"
+msgstr "Останній перегляд ТБ"
+
+#: ../../../administrator/stat_not_active_users.php:153
+msgid "Latest VIDEO viewing"
+msgstr "Останній перегляд ВІДЕО"
+
+#: ../../../administrator/user.php:31
+msgid "Error: Not valid mac address"
+msgstr "Помилка: невірний формат MAC адреси"
+
+#: ../../../administrator/user.php:36
+msgid "Error: STB with such MAC address already exists"
+msgstr "Помилка: приставка з такою MAC адресою вже існує"
+
+#: ../../../administrator/user.php:44
+msgid "Error: Login already in use"
+msgstr "Помилка: Логін вже використовується"
+
+#: ../../../administrator/user.php:55
+msgid "Error: could not create account"
+msgstr "Помилка: неможливо створити обліковий запис"
+
+#: ../../../administrator/user.php:60
+msgid "Error: Not all required fields are filled"
+msgstr "Помилка: не всі обов'язкові поля заповнені"
+
+#: ../../../administrator/user.php:68 ../../../administrator/user.php:111
+msgid "User account"
+msgstr "Обліковий запис користувача"
+
+#: ../../../administrator/user.php:146 ../../../administrator/profile.php:367
+msgid "Full name"
+msgstr "ПІБ"
+
+#: ../../../administrator/user.php:150 ../../../administrator/profile.php:383
+#: ../../../lang/stb.php:406
+msgid "Account number"
+msgstr "Номер особового рахунку"
+
+#: ../../../administrator/user.php:154
+msgid "MAC"
+msgstr ""
+
+#: ../../../administrator/user.php:158
+msgid "Account disabled"
+msgstr "Обліковий запис відключено"
+
+#: ../../../administrator/user.php:162 ../../../administrator/profile.php:458
+#: ../../../lang/stb.php:379
+msgid "Tariff plan"
+msgstr "Тарифний план"
+
+#: ../../../administrator/reply.php:29
+msgid "message sended"
+msgstr "повідомлення надіслано"
+
+#: ../../../administrator/reply.php:72 ../../../administrator/reply.php:78
+msgid "Send message"
+msgstr "Надіслати повідомлення"
+
+#: ../../../administrator/reply.php:126 ../../../administrator/send_to.php:142
+msgid "To"
+msgstr "Кому"
+
+#: ../../../administrator/reply.php:135 ../../../administrator/send_to.php:152
+#: ../../../administrator/profile.php:407
+msgid "Comment"
+msgstr "Примітка"
+
+#: ../../../administrator/reply.php:143 ../../../administrator/events.php:335
+#: ../../../administrator/send_to.php:160
+msgid "Send"
+msgstr "Надіслати"
+
+#: ../../../administrator/video_search.php:24
+#: ../../../administrator/video_search.php:252
+msgid "Search movies on storages"
+msgstr "Пошук фільмів по сховищах"
+
+#: ../../../administrator/video_search.php:307
+msgid "and on"
+msgstr "і ще на"
+
+#: ../../../administrator/video_search.php:311
+msgid "storages"
+msgstr "сховищах"
+
+#: ../../../administrator/video_search.php:317
+msgid "Quality"
+msgstr "Якість"
+
+#: ../../../administrator/video_search.php:319
+msgid "On"
+msgstr "Включений"
+
+#: ../../../administrator/video_search.php:328
+msgid "and not on server"
+msgstr "і немає на сервері"
+
+#: ../../../administrator/video_search.php:370
+msgid "total views"
+msgstr "переглядів всього"
+
+#: ../../../administrator/video_search.php:371
+msgid "total views per month"
+msgstr "переглядів за місяць"
+
+#: ../../../administrator/video_search.php:372
+msgid "last viewed"
+msgstr "останній перегляд"
+
+#: ../../../administrator/video_search.php:523
+msgid "Number of storages"
+msgstr "Кількість сховищ"
+
+#: ../../../administrator/video_search.php:526
+msgid "Last viewed"
+msgstr "Останній перегляд"
+
+#: ../../../administrator/users.php:95
+#: ../../../administrator/stbgroups.php:101
+#: ../../../administrator/stbgroups.php:107
+msgid "Stb groups"
+msgstr "Групи приставок"
+
+#: ../../../administrator/users.php:95
+msgid "All logs"
+msgstr "Усі логи"
+
+#: ../../../administrator/users.php:95
+msgid "Report"
+msgstr "Звіт"
+
+#: ../../../administrator/users.php:95
+#: ../../../administrator/subscribe_import.php:459
+#: ../../../administrator/subscribe_import.php:465
+msgid "Subscription import"
+msgstr "Імпорт підписки на канали"
+
+#: ../../../administrator/users.php:158 ../../../lang/stb.php:83
+msgid "TV"
+msgstr "ТБ"
+
+#: ../../../administrator/users.php:166
+msgid "Media browser"
+msgstr "Медіа Браузер"
+
+#: ../../../administrator/users.php:167
+msgid "Tv archive"
+msgstr "Тб архів"
+
+#: ../../../administrator/users.php:169
+#, fuzzy
+msgid "TimeShift"
+msgstr "час"
+
+#: ../../../administrator/users.php:502
+msgid "search by MAC, IP, login or account number"
+msgstr "Пошук по MAC, IP, логіну або номеру особистого рахунку"
+
+#: ../../../administrator/users.php:509
+msgid "without sorting"
+msgstr "без сортування"
+
+#: ../../../administrator/users.php:554
+msgid "search inactive users"
+msgstr "пошук неактивних користувачів"
+
+#: ../../../administrator/users.php:571
+#: ../../../administrator/claims_log.php:174 ../../../lang/stb.php:385
+#: ../../../lang/stb.php:487
+msgid "Type"
+msgstr "Тип"
+
+#: ../../../administrator/users.php:572 ../../../administrator/msgs.php:116
+#: ../../../administrator/claims_log.php:175
+#: ../../../administrator/msg.php:145
+msgid "Media"
+msgstr "Медіа"
+
+#: ../../../administrator/users.php:573
+msgid "Time from<br>last playback"
+msgstr "Час з<br>останнього<br>перегляду<br>чч:мм:сс"
+
+#: ../../../administrator/users.php:576
+msgid "Last change<br>of status"
+msgstr "Остання<br>зміна<br>статусу"
+
+#: ../../../administrator/stbgroup_members.php:108
+#: ../../../administrator/stbgroup_members.php:114
+msgid "Stb in group"
+msgstr "Приставки групи"
+
+#: ../../../administrator/stbgroup_members.php:153
+#, php-format
+msgid "Are you sure you want to remove stb %s from the database?"
+msgstr "Ви дійсно бажаєте видалити приставку %s з бази?"
+
+#: ../../../administrator/msgs.php:67 ../../../administrator/msgs.php:73
+msgid "My messages"
+msgstr "Мої повідомлення"
+
+#: ../../../administrator/msgs.php:115
+#: ../../../administrator/claims_log.php:177
+#: ../../../administrator/msg.php:149
+msgid "From"
+msgstr "Від"
+
+#: ../../../administrator/claims_log.php:58
+#: ../../../administrator/claims_log.php:64
+msgid "Claims log"
+msgstr "Лог скарг"
+
+#: ../../../administrator/claims_log.php:176
+msgid "Claim on"
+msgstr "Скарга на"
+
+#: ../../../administrator/claims_log.php:178
+#: ../../../administrator/add_karaoke.php:484
+msgid "When"
+msgstr "Коли"
+
+#: ../../../administrator/stat_anec_users.php:59
+#: ../../../administrator/stat_anec_users.php:65
+msgid "Monthly jokes views statistics"
+msgstr "Статистика перегляду Анекдотів за місяць"
+
+#: ../../../administrator/stat_anec_users.php:136
+msgid "Counting at least 5 jokes"
+msgstr "Переглядом вважається перегляд мінімум 5 анекдотів"
+
+#: ../../../administrator/stat_anec_users.php:157
+msgid "Last view"
+msgstr "Останній перегляд"
+
+#: ../../../administrator/add_radio.php:40
+#: ../../../administrator/add_itv.php:161
+#, php-format
+msgid "Error: channel with number \"%s\" is already in use"
+msgstr "Помилка: Номер каналу \"%s\" вже використовується"
+
+#: ../../../administrator/add_radio.php:132
+#: ../../../administrator/add_radio.php:139
+msgid "RADIO channels"
+msgstr "РАДІО канали"
+
+#: ../../../administrator/add_radio.php:169
+#: ../../../administrator/add_radio.php:259
+#: ../../../administrator/add_itv.php:1009
+msgid "URL"
+msgstr "URL"
+
+#: ../../../administrator/add_radio.php:267
+#: ../../../administrator/add_video.php:833
+#: ../../../administrator/add_video.php:2056
+#: ../../../administrator/add_itv.php:1013
+#: ../../../administrator/add_itv.php:1658
+msgid "Volume correction"
+msgstr "Корекція звуку"
+
+#: ../../../administrator/myvideolog.php:50
+#: ../../../administrator/myvideolog.php:56
+msgid "Movie log"
+msgstr "Відео лог"
+
+#: ../../../administrator/myvideolog.php:148
+#: ../../../administrator/videolog.php:129
+msgid "Moderator"
+msgstr "Модератор"
+
+#: ../../../administrator/stream_servers.php:143
+msgid "Zones"
+msgstr "Зони"
+
+#: ../../../administrator/stream_servers.php:163
+#: ../../../administrator/stream_servers.php:207
+msgid "Address"
+msgstr "Адреса"
+
+#: ../../../administrator/stream_servers.php:164
+#: ../../../administrator/stream_servers.php:211
+msgid "Max sessions"
+msgstr ""
+
+#: ../../../administrator/stream_servers.php:187
+#, php-format
+msgid "Are you sure you want to change the status of the server %s?"
+msgstr "Ви дійсно бажаєте змінити статус сервера %s?"
+
+#: ../../../administrator/stream_servers.php:189
+#, php-format
+msgid "Are you sure you want to delete server %s?"
+msgstr "Ви дійсно бажаєте видалити сервер %s?"
+
+#: ../../../administrator/stream_servers.php:215
+msgid "Stream zone"
+msgstr "Зона мовлення"
+
+#: ../../../administrator/stbgroups.php:141
+#, php-format
+msgid "Are you sure you want to delete the group %s from the database?"
+msgstr "Ви дійсно бажаєте видалити групу %s з бази?"
+
+#: ../../../administrator/playlist.php:136
+#: ../../../administrator/playlist.php:142
+msgid "Playlist"
+msgstr "Плейлист"
+
+#: ../../../administrator/stat_tv_archive.php:59
+#: ../../../administrator/stat_tv_archive.php:65
+msgid "TV Archive statistics per month"
+msgstr "Статистика перегляду TV Архіву за місяць"
+
+#: ../../../administrator/stat_tv_archive.php:105
+#: ../../../administrator/stat_timeshift.php:105
+msgid "Total time"
+msgstr "Загальний час"
+
+#: ../../../administrator/stat_tv_archive.php:105
+#: ../../../administrator/events.php:422
+#: ../../../administrator/stat_timeshift.php:105
+#: ../../../lib/system.class.php:79
+msgid "s"
+msgstr "с"
+
+#: ../../../administrator/add_video.php:104
+msgid "video deleted"
+msgstr "відео видалено"
+
+#: ../../../administrator/add_video.php:134
+#, php-format
+msgid "Error during file moving from %s to %s"
+msgstr "Помилка при переміщенні файлу з %s у %s"
+
+#: ../../../administrator/add_video.php:152
+msgid "Error: "
+msgstr "Помилка: "
+
+#: ../../../administrator/add_video.php:158
+msgid "Error: could not resize cover"
+msgstr "Помилка: неможливо змінити розмір обкладинки"
+
+#: ../../../administrator/add_video.php:175
+msgid "Error: could not save cover image"
+msgstr "Помилка: неможливо зберегти обкладинку"
+
+#: ../../../administrator/add_video.php:252
+msgid "Error: The folder with that name already exists"
+msgstr "Помилка: папка з такою назвою вже існує"
+
+#: ../../../administrator/add_video.php:263
+msgid "Error creating the folder on moderator storage"
+msgstr "Помилка при створенні папки на модераторському сховищі"
+
+#: ../../../administrator/add_video.php:424
+#: ../../../administrator/add_video.php:1246
+msgid "Error: insufficient permissions for this action"
+msgstr "Помилка: недостатньо прав для даної дії"
+
+#: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:780
+msgid "Sun"
+msgstr "Нд"
+
+#: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:780
+msgid "Mon"
+msgstr "Пн"
+
+#: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:780
+msgid "Tue"
+msgstr "Вт"
+
+#: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:780
+msgid "Wed"
+msgstr "Ср"
+
+#: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:780
+msgid "Thu"
+msgstr "Чт"
+
+#: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:780
+msgid "Fri"
+msgstr "Пт"
+
+#: ../../../administrator/add_video.php:509 ../../../lib/gismeteo.class.php:29
+#: ../../../lib/epg.class.php:780
+msgid "Sat"
+msgstr "Сб"
+
+#: ../../../administrator/add_video.php:549
+msgid "Turn on"
+msgstr "Включити"
+
+#: ../../../administrator/add_video.php:552
+#: ../../../administrator/add_itv.php:1692 ../../../lang/stb.php:252
+#: ../../../lang/stb.php:289
+msgid "Cancel"
+msgstr "Відміна"
+
+#: ../../../administrator/add_video.php:580
+msgid "Schedule turn the video on"
+msgstr "Розклад включення"
+
+#: ../../../administrator/add_video.php:600
+msgid "Schedule"
+msgstr "Розклад"
+
+#: ../../../administrator/add_video.php:600
+msgid "Advertising"
+msgstr "Реклама"
+
+#: ../../../administrator/add_video.php:600
+#: ../../../administrator/add_moderator_mac.php:109
+#: ../../../administrator/add_moderator_mac.php:116
+msgid "Moderators MAC addresses"
+msgstr "MAC адреси модераторів"
+
+#: ../../../administrator/add_video.php:603
+msgid "My logs"
+msgstr "Мої логи"
+
+#: ../../../administrator/add_video.php:646
+msgid "task"
+msgstr " завдання"
+
+#: ../../../administrator/add_video.php:648
+msgid "send"
+msgstr "відправити"
+
+#: ../../../administrator/add_video.php:744
+msgid "search by file name of movie name"
+msgstr "пошук по \"фізичній назві\" і по \"назві фільму\""
+
+#: ../../../administrator/add_video.php:806
+#: ../../../administrator/events.php:452 ../../../administrator/tasks.php:132
+msgid "Status"
+msgstr "Статус"
+
+#: ../../../administrator/add_video.php:814
+msgid "Votes"
+msgstr "Голосування"
+
+#: ../../../administrator/add_video.php:817
+msgid "good sound"
+msgstr "добрий звук"
+
+#: ../../../administrator/add_video.php:818
+msgid "bad sound"
+msgstr "поганий звук"
+
+#: ../../../administrator/add_video.php:819
+msgid "good video"
+msgstr "добре відео"
+
+#: ../../../administrator/add_video.php:820
+msgid "bad video"
+msgstr "погане відео"
+
+#: ../../../administrator/add_video.php:831
+#: ../../../administrator/add_video.php:1794
+msgid "Original title"
+msgstr "Оригінальна назва"
+
+#: ../../../administrator/add_video.php:832
+msgid "Restriction"
+msgstr "Обмеження"
+
+#: ../../../administrator/add_video.php:834
+#: ../../../administrator/tasks_archive.php:190
+#: ../../../administrator/tasks_archive.php:240
+#: ../../../administrator/tasks_archive.php:290
+#: ../../../administrator/last_closed_tasks.php:212
+#: ../../../administrator/last_closed_tasks.php:266
+#: ../../../administrator/last_closed_tasks.php:320
+msgid "Duration, min"
+msgstr "Тривалість, хв"
+
+#: ../../../administrator/add_video.php:836
+#: ../../../administrator/add_karaoke.php:485
+msgid "Claims about<br>audio/video"
+msgstr "Скарги на<br>відео/аудіо"
+
+#: ../../../administrator/add_video.php:861
+#: ../../../administrator/add_itv.php:1066
+#: ../../../administrator/add_karaoke.php:506
+msgid "Do you really want to reset claims counter?"
+msgstr "Ви дійсно бажаєте скинути лічильник скарг?"
+
+#: ../../../administrator/add_video.php:1071
+#, php-format
+msgid "turn on %s"
+msgstr "увімкнеться %s"
+
+#: ../../../administrator/add_video.php:1242
+msgid "please wait"
+msgstr "зачекайте"
+
+#: ../../../administrator/add_video.php:1450
+msgid "Not available"
+msgstr "Не доступно"
+
+#: ../../../administrator/add_video.php:1453
+#: ../../../administrator/services_packages.php:411
+msgid "Available"
+msgstr "Доступно"
+
+#: ../../../administrator/add_video.php:1798
+msgid "autofill"
+msgstr "автозаповнення"
+
+#: ../../../administrator/add_video.php:1806
+msgid "Kinopoisk ID"
+msgstr "Кинопоиск ID"
+
+#: ../../../administrator/add_video.php:1809
+#: ../../../administrator/add_video.php:1810
+msgid "For unlock please delete Name and Original name fields"
+msgstr "Для розблокування очистіть поля Назва та Оригінальна назва"
+
+#: ../../../administrator/add_video.php:1817
+msgid "Kinopoisk rating"
+msgstr "Рейтинг КиноПоиск"
+
+#: ../../../administrator/add_video.php:1827
+msgid "Age rating"
+msgstr "Віковий рейтинг"
+
+#: ../../../administrator/add_video.php:1845 ../../../lang/stb.php:95
+msgid "Rating MPAA"
+msgstr "Рейтинг MPAA"
+
+#: ../../../administrator/add_video.php:1861
+#: ../../../administrator/add_karaoke.php:787
+msgid "Protocol"
+msgstr "Протокол"
+
+#: ../../../administrator/add_video.php:1877
+#: ../../../administrator/add_karaoke.php:802
+msgid "include solution"
+msgstr "включаючи солюшен"
+
+#: ../../../administrator/add_video.php:1883
+#: ../../../administrator/add_itv.php:1445
+msgid "Age restriction"
+msgstr "Обмеження за віком"
+
+#: ../../../administrator/add_video.php:1901
+msgid "Only for MAG100"
+msgstr "Тільки для MAG100"
+
+#: ../../../administrator/add_video.php:1912
+#, fuzzy
+msgid "High quality"
+msgstr "висока якість"
+
+#: ../../../administrator/add_video.php:1923
+msgid "Low quality"
+msgstr "Низька якість"
+
+#: ../../../administrator/add_video.php:1933
+#: ../../../administrator/add_video.php:1942
+#: ../../../administrator/add_video.php:1951
+#: ../../../administrator/add_video.php:1960
+msgid "old genre"
+msgstr "старий жанр"
+
+#: ../../../administrator/add_video.php:1970 ../../../lang/stb.php:229
+msgid "Category"
+msgstr "Категорія"
+
+#: ../../../administrator/add_video.php:1980
+#: ../../../administrator/add_video.php:1989
+#: ../../../administrator/add_video.php:1998
+#: ../../../administrator/add_video.php:2007
+#: ../../../administrator/stat_video_genres.php:121
+#: ../../../administrator/add_itv.php:1011
+#: ../../../administrator/add_itv.php:1485
+#: ../../../administrator/add_karaoke.php:823 ../../../lang/stb.php:88
+msgid "Genre"
+msgstr "Жанр"
+
+#: ../../../administrator/add_video.php:2016 ../../../lang/stb.php:87
+msgid "Year"
+msgstr "Рік"
+
+#: ../../../administrator/add_video.php:2024 ../../../lang/stb.php:472
+msgid "Duration"
+msgstr "Тривалість"
+
+#: ../../../administrator/add_video.php:2027
+#: ../../../administrator/add_itv.php:1642 ../../../lang/stb.php:90
+#: ../../../lang/stb.php:306 ../../../lib/user.class.php:1012
+msgid "min"
+msgstr "хв"
+
+#: ../../../administrator/add_video.php:2032 ../../../lang/stb.php:91
+#: ../../../lang/stb.php:230
+msgid "Director"
+msgstr "Режисер"
+
+#: ../../../administrator/add_video.php:2040 ../../../lang/stb.php:231
+msgid "Actors"
+msgstr "Актори"
+
+#: ../../../administrator/add_video.php:2048 ../../../lang/stb.php:232
+#: ../../../lang/stb.php:387
+msgid "Description"
+msgstr "Опис"
+
+#: ../../../administrator/add_video.php:2064
+#: ../../../administrator/add_itv.php:1666
+msgid "Comments"
+msgstr "Коментарі"
+
+#: ../../../administrator/add_video.php:2072
+msgid "Cover"
+msgstr "Обкладинка"
+
+#: ../../../administrator/add_video.php:2097
+#: ../../../administrator/add_karaoke.php:851
+msgid "Form filling order"
+msgstr "Порядок заповнення"
+
+#: ../../../administrator/add_video.php:2098
+msgid ""
+"1. Upload cover.<br>2. Fill form.<br>3. Save.<br>4. Put the converted in "
+"folder<br>&nbsp;&nbsp;&nbsp;&nbsp;specified in the column \"Folder\".<br>5. "
+"If necessary, edit or delete a record.<br>6. Click on folder name.<br>7. If "
+"the file is physically present in the directory,<br>&nbsp;&nbsp;&nbsp;&nbsp;"
+"it is green, if there is no - in red."
+msgstr ""
+"1. Прикріпити скріншоти.<br>           2. Заповнити поля.<br>           3. "
+"Зберегти.<br>           4. Помістити конвертований файл в папку, "
+"<br>           &nbsp;&nbsp;&nbsp;&nbsp;зазначену в колонці \"Каталог"
+"\"<br>           5. При необхідності редагувати або видалити запис."
+"<br>           6. Якщо файл фізично присутній в директорії, то він "
+"<br>            &nbsp;&nbsp;&nbsp;&nbsp;відображається зеленим кольором, "
+"якщо відсутній - червоним."
+
+#: ../../../administrator/events.php:81 ../../../administrator/events.php:94
+#: ../../../administrator/events.php:121
+#, php-format
+msgid "%s events %s sended, %s errors"
+msgstr "%s подій %s відіслано, %s помилок"
+
+#: ../../../administrator/events.php:125
+msgid "File with list is missing"
+msgstr "Відсутній файл зі списком"
+
+#: ../../../administrator/events.php:229
+msgid "New event"
+msgstr "Нова подія"
+
+#: ../../../administrator/events.php:338
+msgid "To one"
+msgstr "одному"
+
+#: ../../../administrator/events.php:339
+msgid "To all"
+msgstr "Всім"
+
+#: ../../../administrator/events.php:340
+msgid "By list"
+msgstr "За списком"
+
+#: ../../../administrator/events.php:341
+msgid "By pattern"
+msgstr "За шаблоном"
+
+#: ../../../administrator/events.php:342
+msgid "To group"
+msgstr "Групі"
+
+#: ../../../administrator/events.php:350
+msgid "Load active events"
+msgstr "Завантажити активні події"
+
+#: ../../../administrator/events.php:355
+msgid "List"
+msgstr "Список"
+
+#: ../../../administrator/events.php:363
+msgid "Pattern"
+msgstr "Шаблон"
+
+#: ../../../administrator/events.php:413
+msgid "restart on OK"
+msgstr "перезапускати по OK"
+
+#: ../../../administrator/events.php:414
+msgid "channels"
+msgstr "канали"
+
+#: ../../../administrator/events.php:447
+#, php-format
+msgid "Active events for %s"
+msgstr "Активні події для %s"
+
+#: ../../../administrator/events.php:447
+msgid "clean"
+msgstr "очистити"
+
+#: ../../../administrator/events.php:449
+msgid "Valid up to"
+msgstr "Дійсне до"
+
+#: ../../../administrator/events.php:450
+msgid "Event"
+msgstr "Подія"
+
+#: ../../../administrator/events.php:461
+msgid "sended"
+msgstr "відправлено"
+
+#: ../../../administrator/events.php:461
+msgid "not sended"
+msgstr "не відправлено"
+
+#: ../../../administrator/events.php:470
+#, php-format
+msgid "There are no active events for %s"
+msgstr "Немає активних подій для %s"
+
+#: ../../../administrator/videolog.php:50
+#: ../../../administrator/videolog.php:56
+msgid "Video log"
+msgstr "Відео лог"
+
+#: ../../../administrator/stat_video_genres.php:59
+#: ../../../administrator/stat_video_genres.php:66
+msgid "Video views statistics by genres per month"
+msgstr "Статистика перегляду ВІДЕО за жанрами за місяць"
+
+#: ../../../administrator/stat_video_genres.php:123
+msgid "Total movies"
+msgstr "Всього фільмів"
+
+#: ../../../administrator/stat_daily_video.php:59
+#: ../../../administrator/stat_daily_video.php:65
+msgid "Daily video views statistics"
+msgstr "Статистика перегляду ВІДЕО по днях"
+
+#: ../../../administrator/stat_daily_video.php:128
+#: ../../../lib/gismeteo.class.php:30
+msgid "Day"
+msgstr "День"
+
+#: ../../../administrator/tasks_archive.php:59
+#: ../../../administrator/tasks_archive.php:65
+msgid "Video tasks archive"
+msgstr "Архів Відео завдань"
+
+#: ../../../administrator/tasks_archive.php:183
+#: ../../../administrator/last_closed_tasks.php:205
+msgid "SD movies"
+msgstr "SD фільми"
+
+#: ../../../administrator/tasks_archive.php:188
+#: ../../../administrator/tasks_archive.php:238
+#: ../../../administrator/tasks_archive.php:288
+#: ../../../administrator/tasks.php:131 ../../../administrator/tasks.php:226
+#: ../../../administrator/last_closed_tasks.php:210
+#: ../../../administrator/last_closed_tasks.php:264
+#: ../../../administrator/last_closed_tasks.php:318
+msgid "Opening date"
+msgstr "Дата відкриття"
+
+#: ../../../administrator/tasks_archive.php:189
+#: ../../../administrator/tasks_archive.php:239
+#: ../../../administrator/tasks_archive.php:289
+#: ../../../administrator/last_closed_tasks.php:211
+#: ../../../administrator/last_closed_tasks.php:265
+#: ../../../administrator/last_closed_tasks.php:319
+msgid "Closing date"
+msgstr "Дата закриття"
+
+#: ../../../administrator/tasks_archive.php:226
+#: ../../../administrator/tasks_archive.php:276
+#: ../../../administrator/last_closed_tasks.php:253
+#: ../../../administrator/last_closed_tasks.php:307
+msgid "Total duration, min"
+msgstr "Сумарна тривалість, хв"
+
+#: ../../../administrator/tasks_archive.php:233
+#: ../../../administrator/last_closed_tasks.php:259
+msgid "HD movies"
+msgstr "HD фільми"
+
+#: ../../../administrator/tasks_archive.php:283
+#: ../../../administrator/last_closed_tasks.php:313
+msgid "Rejected tasks"
+msgstr "Відхилені завдання"
+
+#: ../../../administrator/send_to.php:34
+msgid "task open"
+msgstr "завдання відкрито"
+
+#: ../../../administrator/send_to.php:37
+msgid "the task has been sent"
+msgstr "завдання відправлено"
+
+#: ../../../administrator/send_to.php:80 ../../../administrator/send_to.php:86
+msgid "Create task"
+msgstr "Створити завдання"
+
+#: ../../../administrator/add_moderator_mac.php:234
+msgid "Disable Video club ad"
+msgstr "Відключити рекламу у відео клубі"
+
+#: ../../../administrator/cache_refresh.php:35
+#, php-format
+msgid "Updated %s videos and %s karaokes"
+msgstr "Оновлено %s відео і %s караоке"
+
+#: ../../../administrator/cache_refresh.php:76
+#: ../../../administrator/cache_refresh.php:82
+msgid "Storage cache refresh"
+msgstr "Оновлення кеша сховищ"
+
+#: ../../../administrator/msg.php:58 ../../../administrator/msg.php:64
+msgid "View message"
+msgstr "Перегляд повідомлення"
+
+#: ../../../administrator/msg.php:133
+msgid "Reply"
+msgstr "Відповісти"
+
+#: ../../../administrator/msg.php:162
+msgid "Are you sure you want to close this task?"
+msgstr "Ви дійсно бажаєте закрити це завдання?"
+
+#: ../../../administrator/msg.php:162
+msgid "Task accomplished"
+msgstr "Завдання виконано"
+
+#: ../../../administrator/msg.php:163
+msgid "Are you sure you want to reject this task?"
+msgstr "Ви дійсно бажаєте відхилити це завдання?"
+
+#: ../../../administrator/msg.php:163
+msgid "Task rejected"
+msgstr "Завдання відхилено"
+
+#: ../../../administrator/profile.php:229
+msgid "Change the video output on the"
+msgstr "Змінити відео вихід на "
+
+#: ../../../administrator/profile.php:253 ../../../lang/stb.php:305
+msgid "Disabled"
+msgstr "Відключено"
+
+#: ../../../administrator/profile.php:257
+msgid "Enabled"
+msgstr "Включено"
+
+#: ../../../administrator/profile.php:296
+#: ../../../administrator/profile.php:302
+msgid "User profile"
+msgstr "Профіль користувача"
+
+#: ../../../administrator/profile.php:307
+#: ../../../administrator/storages.php:187
+msgid "Logs"
+msgstr "Логи"
+
+#: ../../../administrator/profile.php:346
+msgid "Reset to default password?"
+msgstr "Скинути на пароль за умовчанням?"
+
+#: ../../../administrator/profile.php:346
+#: ../../../administrator/profile.php:350
+msgid "Reset"
+msgstr "Скинути"
+
+#: ../../../administrator/profile.php:349
+msgid "favorite tv"
+msgstr "вибране тб"
+
+#: ../../../administrator/profile.php:350
+#, php-format
+msgid "%s channels"
+msgstr "%s каналів"
+
+#: ../../../administrator/profile.php:350
+msgid ""
+"Reset favorite TV channels? The channels will be reset only if immediately "
+"restart the stb!"
+msgstr ""
+"Скинути вибрані ТБ канали? Канали повністю скинуться тільки якщо відразу "
+"перезапустити приставку!"
+
+#: ../../../administrator/profile.php:391
+msgid "Last change of status"
+msgstr "Зміна статусу"
+
+#: ../../../administrator/profile.php:474
+msgid "Change"
+msgstr "Змінити"
+
+#: ../../../administrator/profile.php:483
+msgid "No packages available"
+msgstr "Немає доступних пакетів"
+
+#: ../../../administrator/profile.php:513
+msgid "TV subscription"
+msgstr "Підписка на канали"
+
+#: ../../../administrator/profile.php:516
+msgid "Additional services"
+msgstr "Дод. сервіси"
+
+#: ../../../administrator/services_packages.php:130
+#: ../../../administrator/services_packages.php:308
+msgid "SERVICES PACKAGES"
+msgstr "ПАКЕТИ ПОСЛУГ"
+
+#: ../../../administrator/services_packages.php:365
+msgid "Short description"
+msgstr "Короткий опис"
+
+#: ../../../administrator/services_packages.php:369
+msgid "Service"
+msgstr "Послуга"
+
+#: ../../../administrator/services_packages.php:383
+msgid "Service type"
+msgstr "Тип послуги"
+
+#: ../../../administrator/services_packages.php:386
+msgid "periodic"
+msgstr "періодична"
+
+#: ../../../administrator/services_packages.php:387
+msgid "single"
+msgstr "разова"
+
+#: ../../../administrator/services_packages.php:393
+msgid "Rent duration"
+msgstr "Тривалість оренди"
+
+#: ../../../administrator/services_packages.php:395
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1008
+msgid "h"
+msgstr "г"
+
+#: ../../../administrator/services_packages.php:400
+msgid "All services"
+msgstr "Всі послуги"
+
+#: ../../../administrator/login.php:43
+msgid "LOGIN"
+msgstr "ВХІД"
+
+#: ../../../administrator/login.php:52 ../../../administrator/login.php:64
+msgid "Sign in"
+msgstr "Вхід"
+
+#: ../../../administrator/stat_moderators.php:70
+msgid "Video archive"
+msgstr "Архів Відео"
+
+#: ../../../administrator/stat_moderators.php:70
+msgid "Karaoke archive"
+msgstr "Архів караоке"
+
+#: ../../../administrator/stat_moderators.php:203
+#: ../../../administrator/stat_moderators.php:241
+msgid "Total"
+msgstr "Всього"
+
+#: ../../../administrator/stat_moderators.php:211
+#: ../../../administrator/stat_moderators.php:249
+msgid "Opened"
+msgstr "Відкрито"
+
+#: ../../../administrator/stat_moderators.php:219
+#: ../../../administrator/stat_moderators.php:257
+msgid "Closed"
+msgstr "Закрыто"
+
+#: ../../../administrator/stat_moderators.php:227
+msgid "Rejected"
+msgstr "Відхилено"
+
+#: ../../../administrator/users_on_storage.php:67
+#: ../../../administrator/users_on_storage.php:73
+msgid "Current views on storage"
+msgstr "Поточні перегляди на сховищі"
+
+#: ../../../administrator/users_on_storage.php:136
+msgid "Begin"
+msgstr "Початок"
+
+#: ../../../administrator/stat_tv_users.php:58
+#: ../../../administrator/stat_tv_users.php:64
+msgid "Users TV views statistics per month"
+msgstr "Статистика перегляду TV користувачами за місяць"
+
+#: ../../../administrator/stat_tv_users.php:132
+msgid "Counting if channel is playing more than 30 minutes"
+msgstr "Переглядом вважається відтворення каналу більше ніж 30 хв"
+
+#: ../../../administrator/epg_setting.php:136
+#: ../../../administrator/epg_setting.php:142
+msgid "EPG settings"
+msgstr "Налаштування EPG"
+
+#: ../../../administrator/epg_setting.php:147
+msgid "Update EPG"
+msgstr "Оновити EPG"
+
+#: ../../../administrator/epg_setting.php:147
+msgid "Force update EPG"
+msgstr "Примусово перезавантажити EPG"
+
+#: ../../../administrator/epg_setting.php:169
+#: ../../../administrator/epg_setting.php:211
+msgid "ID prefix"
+msgstr ""
+
+#: ../../../administrator/epg_setting.php:171
+msgid "Updated"
+msgstr "Оновлено"
+
+#: ../../../administrator/today_user_status_report.php:24
+#, php-format
+msgid "Report for the stb status changed on %s on %s"
+msgstr "Звіт за зміненими статусам приставок за %s на %s"
+
+#: ../../../administrator/today_user_status_report.php:40
+#, php-format
+msgid "Report of the stb status changing on %s on %s"
+msgstr "Звіт за зміненими статусам приставок за %s на %s"
+
+#: ../../../administrator/today_user_status_report.php:45
+msgid "Current status"
+msgstr "Поточний статус"
+
+#: ../../../administrator/today_user_status_report.php:46
+msgid "Time of change"
+msgstr "Час зміни"
+
+#: ../../../administrator/subscribe.php:78
+msgid "Updated according to the subscription channels."
+msgstr "Канали оновлені згідно підписки."
+
+#: ../../../administrator/subscribe.php:80
+msgid "Subscription saved"
+msgstr "Підписка збережена"
+
+#: ../../../administrator/subscribe.php:313
+#: ../../../administrator/subscribe.php:319
+msgid "TV channels subscription"
+msgstr "Підписка на канали"
+
+#: ../../../administrator/subscribe.php:348
+msgid "All channels"
+msgstr "Всі канали"
+
+#: ../../../administrator/subscribe.php:382
+msgid "Subscription"
+msgstr "Підписка"
+
+#: ../../../administrator/subscribe.php:387
+msgid "Bonus"
+msgstr "Бонус"
+
+#: ../../../administrator/tasks.php:59 ../../../administrator/tasks.php:65
+msgid "Tasks"
+msgstr "Завдання"
+
+#: ../../../administrator/tasks.php:125
+msgid "video"
+msgstr "відео"
+
+#: ../../../administrator/tasks.php:133
+msgid "Messages"
+msgstr "Повідомлення"
+
+#: ../../../administrator/tasks.php:220
+msgid "Expired 10 days"
+msgstr "Минуло 10 діб"
+
+#: ../../../administrator/tasks.php:239
+msgid "reject"
+msgstr "відхилити"
+
+#: ../../../administrator/last_closed_tasks.php:147
+#: ../../../administrator/last_closed_tasks.php:153
+msgid "Completed tasks"
+msgstr "Виконані завдання"
+
+#: ../../../administrator/last_closed_tasks.php:178
+msgid "report generated by closed-month movies"
+msgstr "звіт формується по закритих за місяць фільмах"
+
+#: ../../../administrator/last_closed_tasks.php:372
+msgid "Move to archive"
+msgstr "До архіву"
+
+#: ../../../administrator/last_closed_tasks.php:372
+msgid "Move to the archive?"
+msgstr "Перемістити в архів?"
+
+#: ../../../administrator/stat_timeshift.php:59
+#: ../../../administrator/stat_timeshift.php:65
+msgid "TimeShift statistics per month"
+msgstr "Статистика перегляду TimeShift за місяць"
+
+#: ../../../administrator/playlists.php:99
+#: ../../../administrator/playlists.php:105
+msgid "Playlists"
+msgstr "Плейлисты"
+
+#: ../../../administrator/add_itv.php:77
+msgid "TV Archive has NOT been restarted correctly."
+msgstr "Під час перезапуску ТБ архіву виникли неполадки."
+
+#: ../../../administrator/add_itv.php:79
+msgid "TV Archive has been restarted."
+msgstr "ТБ архів був успішно перезапущений."
+
+#: ../../../administrator/add_itv.php:292
+#: ../../../administrator/add_itv.php:471
+msgid "Error: could not save logo"
+msgstr "Помилка: неможливо зберегти логотип"
+
+#: ../../../administrator/add_itv.php:647
+msgid "priority"
+msgstr "пріоритет"
+
+#: ../../../administrator/add_itv.php:651
+msgid "filter"
+msgstr "фільтр"
+
+#: ../../../administrator/add_itv.php:657
+msgid "Temporary HTTP URL"
+msgstr "Тимчасове HTTP посилання"
+
+#: ../../../administrator/add_itv.php:666
+msgid "WOWZA support"
+msgstr "Підтримка WOWZA"
+
+#: ../../../administrator/add_itv.php:670
+msgid "NGINX secure link"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:678
+msgid "Enable monitoring"
+msgstr "Вести моніторинг"
+
+#: ../../../administrator/add_itv.php:680
+msgid "Balancer monitoring"
+msgstr "Моніторинг балансера"
+
+#: ../../../administrator/add_itv.php:685
+msgid "Channel URL for monitoring"
+msgstr "URL каналу для моніторингу"
+
+#: ../../../administrator/add_itv.php:711
+msgid "add new link"
+msgstr "додати нове посилання"
+
+#: ../../../administrator/add_itv.php:713
+msgid "delete"
+msgstr "видалити"
+
+#: ../../../administrator/add_itv.php:934
+msgid "Channel with same number already exists!"
+msgstr "Канал з таким номером вже існує!"
+
+#: ../../../administrator/add_itv.php:936
+msgid "Shift channel list?"
+msgstr "Зсунути список каналів?"
+
+#: ../../../administrator/add_itv.php:972
+msgid "Restart all TV archives"
+msgstr "Перезапустити всі завдання ТБ архіву"
+
+#: ../../../administrator/add_itv.php:1007
+#: ../../../administrator/add_itv.php:1650
+msgid "Service code"
+msgstr "Код послуги"
+
+#: ../../../administrator/add_itv.php:1010
+msgid "xmltv id"
+msgstr ""
+
+#: ../../../administrator/add_itv.php:1012
+msgid "Archive"
+msgstr "Архів"
+
+#: ../../../administrator/add_itv.php:1014
+msgid "Claims about<br>audio/video/epg"
+msgstr "Скарги на<br>відео/аудіо/epg"
+
+#: ../../../administrator/add_itv.php:1320
+msgid "monitoring off"
+msgstr "не моніториться"
+
+#: ../../../administrator/add_itv.php:1326
+msgid "more than an hour ago"
+msgstr "більше години тому"
+
+#: ../../../administrator/add_itv.php:1330
+msgid "less than a minute ago"
+msgstr "менше хвилини тому"
+
+#: ../../../administrator/add_itv.php:1333
+msgid "minutes ago"
+msgstr "хвилин тому"
+
+#: ../../../administrator/add_itv.php:1381
+#: ../../../administrator/add_itv.php:1384
+msgid "Error deleting a logo"
+msgstr "Помилка при видаленні лого"
+
+#: ../../../administrator/add_itv.php:1461
+msgid "Base channel"
+msgstr "Базовий канал"
+
+#: ../../../administrator/add_itv.php:1469
+msgid "Bonus channel"
+msgstr "Бонусний канал"
+
+#: ../../../administrator/add_itv.php:1477
+msgid "Price"
+msgstr "Ціна"
+
+#: ../../../administrator/add_itv.php:1523
+msgid "Links"
+msgstr "Посилання"
+
+#: ../../../administrator/add_itv.php:1542
+msgid "URL for recording (multicast)"
+msgstr "Адреса для запису (мультикаст)"
+
+#: ../../../administrator/add_itv.php:1550
+msgid "Enable TV archive"
+msgstr "Вести ТБ архів"
+
+#: ../../../administrator/add_itv.php:1571
+msgid "TV archive duration, h"
+msgstr "Тривалість ТБ архіву, г"
+
+#: ../../../administrator/add_itv.php:1579
+msgid "Allow nPVR"
+msgstr "Дозволити nPVR"
+
+#: ../../../administrator/add_itv.php:1600
+msgid "Allow USB TimeShift"
+msgstr "Дозволити TimeShift на USB носії"
+
+#: ../../../administrator/add_itv.php:1604
+msgid "only for rtp and ffrt solutions"
+msgstr "тільки для солюшенів rtp і ffrt"
+
+#: ../../../administrator/add_itv.php:1610
+msgid "Allow USB PVR"
+msgstr "Дозволити PVR на USB носії"
+
+#: ../../../administrator/add_itv.php:1642
+msgid "EPG correction"
+msgstr "Корекція EPG"
+
+#: ../../../administrator/add_itv.php:1682
+msgid "Logo"
+msgstr "Логотип"
+
+#: ../../../administrator/stat_tv.php:75 ../../../administrator/stat_tv.php:81
+msgid "TV views statistics per month"
+msgstr "Статистика перегляду TV за місяць"
+
+#: ../../../administrator/stat_tv.php:154
+msgid "User language"
+msgstr "Мова користувача"
+
+#: ../../../administrator/subscribe_import.php:485
+#: ../../../administrator/add_karaoke.php:669
+msgid "File"
+msgstr "Файл"
+
+#: ../../../administrator/subscribe_import.php:490
+msgid "Update status"
+msgstr "Оновлювати статус"
+
+#: ../../../administrator/subscribe_import.php:494
+msgid "Update favorites"
+msgstr "Оновлювати вибране"
+
+#: ../../../administrator/subscribe_import.php:498
+msgid "Import"
+msgstr "Імпорт"
+
+#: ../../../administrator/setting_common.php:137
+msgid "enabled"
+msgstr "включено"
+
+#: ../../../administrator/setting_common.php:138
+msgid "Disable"
+msgstr "Відключити"
+
+#: ../../../administrator/setting_common.php:138
+msgid "Enable"
+msgstr "Включити"
+
+#: ../../../administrator/setting_common.php:142
+msgid "STB Model"
+msgstr ""
+
+#: ../../../administrator/setting_common.php:165
+#: ../../../administrator/setting_common.php:169
+msgid "Required"
+msgstr "Необхідний"
+
+#: ../../../administrator/setting_common.php:173
+msgid "Update type"
+msgstr "Варіант оновлення"
+
+#: ../../../administrator/setting_common.php:220
+msgid "Do you really want to delete this item?"
+msgstr "Ви дійсно бажаєте видалити цей об'єкт?"
+
+#: ../../../administrator/storages.php:119
+#, php-format
+msgid "Cache %s is cleared"
+msgstr "Кеш %s скинутий"
+
+#: ../../../administrator/storages.php:122
+#, php-format
+msgid "Storage with id %s not found"
+msgstr "Сховище з ID %s в базі відсутнє"
+
+#: ../../../administrator/storages.php:133
+msgid "Cache is cleared"
+msgstr "Кеш скинуто"
+
+#: ../../../administrator/storages.php:187
+msgid "Are you sure you want to reset a cache?"
+msgstr "Ви дійсно бажаєте скинути весь кеш?"
+
+#: ../../../administrator/storages.php:187
+msgid "Clear cache"
+msgstr "скинути кеш"
+
+#: ../../../administrator/storages.php:187
+msgid ""
+"Are you sure you want to update a cache? This operation will take some time."
+msgstr "Ви дійсно бажаєте оновити весь кеш? Ця операція займе якийсь час."
+
+#: ../../../administrator/storages.php:187
+msgid "Refresh cache"
+msgstr "Оновити кеш"
+
+#: ../../../administrator/storages.php:187
+msgid "Unique movies"
+msgstr "Унікальні фільми"
+
+#: ../../../administrator/storages.php:187
+msgid "Search in storages"
+msgstr "Пошук по сховищах"
+
+#: ../../../administrator/storages.php:208
+#: ../../../administrator/storages.php:264
+msgid "Home path"
+msgstr "Домашня директорія"
+
+#: ../../../administrator/storages.php:235
+#, php-format
+msgid "Are you sure you want to change the status of the storage %s?"
+msgstr "Ви дійсно бажаєте змінити статус сховища %s?"
+
+#: ../../../administrator/storages.php:236
+#, php-format
+msgid "Are you sure you want to reset the cache of the storage %s?"
+msgstr "Ви дійсно бажаєте скинути кеш сховища %s?"
+
+#: ../../../administrator/storages.php:236
+msgid "clear cache"
+msgstr "скинути кеш"
+
+#: ../../../administrator/storages.php:238
+#, php-format
+msgid "Are you sure you want to delete storage %s?"
+msgstr "Ви дійсно бажаєте видалити сховище %s?"
+
+#: ../../../administrator/storages.php:272
+msgid "User-Agent Filter"
+msgstr ""
+
+#: ../../../administrator/storages.php:276
+msgid "Storing content"
+msgstr "Зберігання контенту"
+
+#: ../../../administrator/storages.php:280
+msgid "Not available for MAG100"
+msgstr "Недоступне для MAG100"
+
+#: ../../../administrator/storages.php:284
+msgid "Record TV"
+msgstr "Запис ТВ"
+
+#: ../../../administrator/storages.php:292
+msgid "Emulation"
+msgstr "Емуляція"
+
+#: ../../../administrator/storages.php:298
+msgid "External"
+msgstr "Зовнішнє"
+
+#: ../../../administrator/storages.php:302
+msgid "Only moderators"
+msgstr "Тільки модератори"
+
+#: ../../../administrator/vclub_schedule.php:68
+#: ../../../administrator/vclub_schedule.php:74
+msgid "Video Schedule"
+msgstr "Розклад включення відео"
+
+#: ../../../administrator/add_karaoke.php:391
+msgid "search by clip name"
+msgstr "пошук по \"назві ролику\""
+
+#: ../../../administrator/add_karaoke.php:480 ../../../lang/stb.php:287
+msgid "File name"
+msgstr "Назва файлу"
+
+#: ../../../administrator/add_karaoke.php:481
+msgid "Song name"
+msgstr "Назва композиції"
+
+#: ../../../administrator/add_karaoke.php:483
+msgid "Posted by"
+msgstr "Додав"
+
+#: ../../../administrator/add_karaoke.php:815
+msgid "Author"
+msgstr "Автор"
+
+#: ../../../administrator/lib/data.php:16
+msgid "Action \"edit\" denied for page \"add_itv\""
+msgstr ""
+
+#: ../../../tools/misctranslations.php:9
+msgid "biography"
+msgstr "біографія"
+
+#: ../../../tools/misctranslations.php:10
+msgid "action"
+msgstr "бойовик"
+
+#: ../../../tools/misctranslations.php:11
+msgid "western"
+msgstr "вестерн"
+
+#: ../../../tools/misctranslations.php:12
+msgid "military"
+msgstr "військовий"
+
+#: ../../../tools/misctranslations.php:13
+msgid "detective"
+msgstr "детектив"
+
+#: ../../../tools/misctranslations.php:14
+#: ../../../tools/misctranslations.php:96
+msgid "children's"
+msgstr "дитяче"
+
+#: ../../../tools/misctranslations.php:15
+msgid "house/country"
+msgstr "дім/дача"
+
+#: ../../../tools/misctranslations.php:16
+msgid "drama"
+msgstr "драма"
+
+#: ../../../tools/misctranslations.php:17
+msgid "foreign"
+msgstr "зарубіжні"
+
+#: ../../../tools/misctranslations.php:18
+msgid "health"
+msgstr "здоров'я"
+
+#: ../../../tools/misctranslations.php:19
+msgid "art"
+msgstr "мистецтво"
+
+#: ../../../tools/misctranslations.php:20
+msgid "historical"
+msgstr "історичний"
+
+#: ../../../tools/misctranslations.php:21
+msgid "history"
+msgstr "історія"
+
+#: ../../../tools/misctranslations.php:22
+msgid "yoga"
+msgstr "йога"
+
+#: ../../../tools/misctranslations.php:23
+msgid "catastrophe"
+msgstr "катастрофи"
+
+#: ../../../tools/misctranslations.php:24
+msgid "comedy"
+msgstr "комедія"
+
+#: ../../../tools/misctranslations.php:25
+msgid "criminal"
+msgstr "кримінал"
+
+#: ../../../tools/misctranslations.php:26
+msgid "cookery"
+msgstr "кулінарія"
+
+#: ../../../tools/misctranslations.php:27
+msgid "melodrama"
+msgstr "мелодрама"
+
+#: ../../../tools/misctranslations.php:28
+msgid "mysticism"
+msgstr "містика"
+
+#: ../../../tools/misctranslations.php:29
+msgid "musical"
+msgstr "музичний"
+
+#: ../../../tools/misctranslations.php:30
+#: ../../../tools/misctranslations.php:98
+msgid "science"
+msgstr "наука"
+
+#: ../../../tools/misctranslations.php:31
+msgid "ours"
+msgstr "наші"
+
+#: ../../../tools/misctranslations.php:32
+msgid "teach"
+msgstr "навчальне"
+
+#: ../../../tools/misctranslations.php:33
+msgid "hunting"
+msgstr "полювання"
+
+#: ../../../tools/misctranslations.php:34
+msgid "adventure"
+msgstr "пригоди"
+
+#: ../../../tools/misctranslations.php:35
+msgid "nature"
+msgstr "природа"
+
+#: ../../../tools/misctranslations.php:36
+msgid "travels"
+msgstr "подорожі"
+
+#: ../../../tools/misctranslations.php:37
+msgid "fishing"
+msgstr "риболовля"
+
+#: ../../../tools/misctranslations.php:38
+msgid "series"
+msgstr "серіал"
+
+#: ../../../tools/misctranslations.php:39
+msgid "sketch-show"
+msgstr "скетч-шоу"
+
+#: ../../../tools/misctranslations.php:40
+msgid "sport"
+msgstr "спорт"
+
+#: ../../../tools/misctranslations.php:41
+msgid "dancing"
+msgstr "танці"
+
+#: ../../../tools/misctranslations.php:42
+msgid "show"
+msgstr "телешоу"
+
+#: ../../../tools/misctranslations.php:43
+msgid "technique"
+msgstr "техніка"
+
+#: ../../../tools/misctranslations.php:44
+msgid "thriller"
+msgstr "трилер"
+
+#: ../../../tools/misctranslations.php:45
+msgid "horror"
+msgstr "жахи"
+
+#: ../../../tools/misctranslations.php:46
+msgid "fiction"
+msgstr "фантастика"
+
+#: ../../../tools/misctranslations.php:47
+msgid "aerobics"
+msgstr "фітнес"
+
+#: ../../../tools/misctranslations.php:48
+msgid "fantasy"
+msgstr "фентезі"
+
+#: ../../../tools/misctranslations.php:49
+msgid "erotica"
+msgstr "еротика"
+
+#: ../../../tools/misctranslations.php:50
+msgid "humourist"
+msgstr "гумористи"
+
+#: ../../../tools/misctranslations.php:55
+msgid "Cartoon"
+msgstr "Мультфільми"
+
+#: ../../../tools/misctranslations.php:56
+msgid "Ours cinema"
+msgstr "Наше кіно"
+
+#: ../../../tools/misctranslations.php:57
+msgid "World cinema"
+msgstr "Світове кіно"
+
+#: ../../../tools/misctranslations.php:58
+#: ../../../tools/misctranslations.php:69
+msgid "Documentary"
+msgstr "Документальне"
+
+#: ../../../tools/misctranslations.php:59
+#: ../../../tools/misctranslations.php:75
+msgid "Humour"
+msgstr "Гумор"
+
+#: ../../../tools/misctranslations.php:60
+msgid "Hobbies"
+msgstr "Хоббі"
+
+#: ../../../tools/misctranslations.php:61
+msgid "Our Serial"
+msgstr "Наш Серіал"
+
+#: ../../../tools/misctranslations.php:62
+msgid "Foreign Serial"
+msgstr "Іноземний Серіал"
+
+#: ../../../tools/misctranslations.php:68
+msgid "Detective"
+msgstr "Детектив"
+
+#: ../../../tools/misctranslations.php:70
+msgid "Drama"
+msgstr "Драма"
+
+#: ../../../tools/misctranslations.php:71
+msgid "Historical"
+msgstr "Історичний"
+
+#: ../../../tools/misctranslations.php:72
+msgid "Clips"
+msgstr "Кліпи"
+
+#: ../../../tools/misctranslations.php:73
+msgid "Comedy"
+msgstr "Комедія"
+
+#: ../../../tools/misctranslations.php:74
+msgid "Melodrama"
+msgstr "Мелодрама"
+
+#: ../../../tools/misctranslations.php:76
+msgid "Adventures"
+msgstr "Пригоди"
+
+#: ../../../tools/misctranslations.php:77
+msgid "Thriller"
+msgstr "Триллер"
+
+#: ../../../tools/misctranslations.php:78
+msgid "Horrors"
+msgstr "Жахи"
+
+#: ../../../tools/misctranslations.php:79
+msgid "Fiction"
+msgstr "Фантастика"
+
+#: ../../../tools/misctranslations.php:80
+msgid "Erotica"
+msgstr "Еротика"
+
+#: ../../../tools/misctranslations.php:81
+msgid "Fantasy"
+msgstr "Фентезі"
+
+#: ../../../tools/misctranslations.php:82
+msgid "Animation"
+msgstr "Анімація"
+
+#: ../../../tools/misctranslations.php:83
+msgid "Childrens"
+msgstr "Дитячий"
+
+#: ../../../tools/misctranslations.php:84
+msgid "Musical"
+msgstr "Музичний"
+
+#: ../../../tools/misctranslations.php:85
+msgid "Western"
+msgstr "Вестерн"
+
+#: ../../../tools/misctranslations.php:86
+msgid "Serial"
+msgstr "Серіал"
+
+#: ../../../tools/misctranslations.php:87
+msgid "Sports"
+msgstr "Спорт"
+
+#: ../../../tools/misctranslations.php:88
+msgid "Teach"
+msgstr "Навчальне"
+
+#: ../../../tools/misctranslations.php:89
+msgid "Information"
+msgstr "Інформаційний"
+
+#: ../../../tools/misctranslations.php:94
+msgid "information"
+msgstr "інформаційний"
+
+#: ../../../tools/misctranslations.php:95
+msgid "entertainments"
+msgstr "розваги"
+
+#: ../../../tools/misctranslations.php:97
+msgid "cinema"
+msgstr "кіно"
+
+#: ../../../tools/misctranslations.php:99
+msgid "sports"
+msgstr "спорт"
+
+#: ../../../tools/misctranslations.php:100
+msgid "music"
+msgstr "музика"
+
+#: ../../../tools/misctranslations.php:101
+msgid "business"
+msgstr "бізнес"
+
+#: ../../../tools/misctranslations.php:102
+msgid "culture"
+msgstr "культура"
+
+#: ../../../tools/misctranslations.php:103
+msgid "for adults"
+msgstr "для дорослих"
+
+#: ../../../tools/misctranslations.php:104
+msgid "information-entertaining"
+msgstr "інформаційно-розважальний"
+
+#: ../../../tools/misctranslations.php:105
+msgid "religion"
+msgstr "релігія"
+
+#: ../../../tools/misctranslations.php:106
+msgid "social"
+msgstr "соціальний"
+
+#: ../../../tools/misctranslations.php:107
+msgid "woman's"
+msgstr "женский"
+
+#: ../../../tools/misctranslations.php:108
+msgid "scientific-entertainment"
+msgstr "науково-розважальний"
+
+#: ../../../tools/misctranslations.php:113
+msgid "Pop"
+msgstr "Поп"
+
+#: ../../../tools/misctranslations.php:114
+msgid "Rock"
+msgstr "Рок"
+
+#: ../../../tools/misctranslations.php:115
+msgid "Chanson"
+msgstr "Шансон"
+
+#: ../../../tools/misctranslations.php:116
+msgid "From cartoon films"
+msgstr "З мультфільмів"
+
+#: ../../../tools/misctranslations.php:117
+msgid "Nurseries"
+msgstr "Дитячі"
+
+#: ../../../tools/misctranslations.php:118
+msgid "National"
+msgstr "Народні"
+
+#: ../../../tools/misctranslations.php:119
+msgid "Jazz"
+msgstr "Джаз"
+
+#: ../../../tools/misctranslations.php:120
+msgid "From films"
+msgstr "З кінофільмів"
+
+#: ../../../tools/misctranslations.php:125
+msgid "Clear"
+msgstr "Ясно"
+
+#: ../../../tools/misctranslations.php:126
+msgid "Partly Cloudy"
+msgstr "Мінлива хмарність"
+
+#: ../../../tools/misctranslations.php:127
+msgid "Cloudy"
+msgstr "Хмарно"
+
+#: ../../../tools/misctranslations.php:128
+msgid "Overcast"
+msgstr "Похмуро"
+
+#: ../../../tools/misctranslations.php:129
+msgid "Little rain"
+msgstr "Короткочасний дощ"
+
+#: ../../../tools/misctranslations.php:130
+msgid "Rain"
+msgstr "Дощ"
+
+#: ../../../tools/misctranslations.php:131
+msgid "Thunderstorm"
+msgstr "Гроза"
+
+#: ../../../tools/misctranslations.php:132
+msgid "Hail"
+msgstr "Похмуро"
+
+#: ../../../tools/misctranslations.php:133
+msgid "Sleet"
+msgstr "Мокрий сніг"
+
+#: ../../../tools/misctranslations.php:134
+msgid "Snow"
+msgstr "Сніг"
+
+#: ../../../tools/misctranslations.php:135
+msgid "Snowfall"
+msgstr "Снігопад"
+
+#: ../../../tools/misctranslations.php:138
+msgid "N"
+msgstr "Пн"
+
+#: ../../../tools/misctranslations.php:140
+msgid "NE"
+msgstr "ПнСх"
+
+#: ../../../tools/misctranslations.php:142
+msgid "E"
+msgstr "Сх"
+
+#: ../../../tools/misctranslations.php:144
+msgid "SE"
+msgstr "ПдЗх"
+
+#: ../../../tools/misctranslations.php:146
+msgid "S"
+msgstr "Пд"
+
+#: ../../../tools/misctranslations.php:148
+msgid "SW"
+msgstr "ПдЗх"
+
+#: ../../../tools/misctranslations.php:150
+msgid "W"
+msgstr "Зх"
+
+#: ../../../tools/misctranslations.php:152
+msgid "NW"
+msgstr "ПнЗх"
+
+#: ../../../tools/misctranslations.php:154
+msgid "Tariff plan is changed, please restart your STB"
+msgstr "Тарифний план змінено. Будь ласка, перезавантажте приставку."
+
+#: ../../../tools/misctranslations.php:155
+msgid "Starting recording"
+msgstr "Починається запис"
+
+#: ../../../tools/misctranslations.php:156
+msgid "Stopped recording"
+msgstr "Зупинено запис"
+
+#: ../../../tools/misctranslations.php:157 ../../../lang/stb.php:224
+msgid "on channel"
+msgstr "на каналі"
+
+#: ../../../tools/misctranslations.php:159
+msgid "Firmware of your STB is outdated.<br>Please update it."
+msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
+
+#: ../../../tools/misctranslations.php:160 ../../../lib/stb.class.php:468
+#: ../../../lib/stb.class.php:479
+msgid "Your STB is damaged.<br/> Call the provider."
+msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
+
+#: ../../../lang/stb.php:10
+msgid "Comfort"
+msgstr "Комфорт"
+
+#: ../../../lang/stb.php:11
+msgid "Pressure"
+msgstr "Тиск"
+
+#: ../../../lang/stb.php:12 ../../../lang/stb.php:177
+msgid "mm Hg"
+msgstr "мм. рт.ст."
+
+#: ../../../lang/stb.php:13
+msgid "Wind"
+msgstr "Вітер"
+
+#: ../../../lang/stb.php:14 ../../../lang/stb.php:179
+msgid "m/s"
+msgstr "м/с"
+
+#: ../../../lang/stb.php:15
+msgid "Humidity"
+msgstr "Вологість"
+
+#: ../../../lang/stb.php:16
+msgid "Current weather unavailable"
+msgstr "Поточна погода недоступна"
+
+#: ../../../lang/stb.php:17
+msgid "The weather is not configured"
+msgstr "Погода не настроєна"
+
+#: ../../../lang/stb.php:20 ../../../lang/stb.php:73 ../../../lang/stb.php:98
+#: ../../../lang/stb.php:187
+msgid "VIEW"
+msgstr "ВІДОБРАЖЕННЯ"
+
+#: ../../../lang/stb.php:21 ../../../lang/stb.php:74 ../../../lang/stb.php:99
+msgid "SORT"
+msgstr "СОРТИРОВКА"
+
+#: ../../../lang/stb.php:22 ../../../lang/stb.php:100
+msgid "SEARCH"
+msgstr "ПОШУК"
+
+#: ../../../lang/stb.php:23
+msgid "PICKING"
+msgstr "ВИБІРКА"
+
+#: ../../../lang/stb.php:24 ../../../lang/stb.php:104
+msgid "BY LETTER"
+msgstr "ПО ЛІТЕРІ"
+
+#: ../../../lang/stb.php:25
+msgid "BY NAME"
+msgstr "по виконавцю"
+
+#: ../../../lang/stb.php:26
+msgid "BY TITLE"
+msgstr "за назвою"
+
+#: ../../../lang/stb.php:30
+msgid "PAGE"
+msgstr "С"
+
+#: ../../../lang/stb.php:31
+msgid "FROM"
+msgstr "З"
+
+#: ../../../lang/stb.php:32
+msgid "FOUND"
+msgstr "ЗНАЙДЕНО"
+
+#: ../../../lang/stb.php:33 ../../../lang/stb.php:132
+msgid "RECORDS"
+msgstr "ЗАПИСИ"
+
+#: ../../../lang/stb.php:34
+msgid "LOADING..."
+msgstr "ЗАВАНТАЖЕННЯ..."
+
+#: ../../../lang/stb.php:35
+msgid "Loading..."
+msgstr "Завантаження..."
+
+#: ../../../lang/stb.php:38
+msgid "Media Browser"
+msgstr "Медіа Браузер"
+
+#: ../../../lang/stb.php:39
+msgid "connected"
+msgstr "підключено"
+
+#: ../../../lang/stb.php:40
+msgid "disconnected"
+msgstr "відключено"
+
+#: ../../../lang/stb.php:41
+msgid "not found"
+msgstr "не знайдено"
+
+#: ../../../lang/stb.php:43
+msgid "USB drive"
+msgstr "USB пристрій"
+
+#: ../../../lang/stb.php:46
+msgid "The number of connections is limited. <br> Try again later"
+msgstr "Кількість підключень обмежена.<br>Спробуйте пізніше"
+
+#: ../../../lang/stb.php:47
+msgid "File missing"
+msgstr "Файл відсутній"
+
+#: ../../../lang/stb.php:48 ../../../lib/account.class.php:80
+#: ../../../lib/account.class.php:114
+msgid "Server error"
+msgstr "Помилка сервера"
+
+#: ../../../lang/stb.php:49 ../../../lang/stb.php:424
+msgid "Access denied"
+msgstr "Доступ заборонено"
+
+#: ../../../lang/stb.php:50
+msgid "Server unavailable"
+msgstr "Сервер недоступний"
+
+#: ../../../lang/stb.php:51
+msgid "part"
+msgstr "серія"
+
+#: ../../../lang/stb.php:52
+msgid "Track"
+msgstr "Доріжка"
+
+#: ../../../lang/stb.php:53
+msgid "Off"
+msgstr "Відключити"
+
+#: ../../../lang/stb.php:54
+msgid "Subtitles"
+msgstr "Субтитри"
+
+#: ../../../lang/stb.php:55
+msgid "Complain"
+msgstr "Поскаржитись"
+
+#: ../../../lang/stb.php:56
+msgid "on sound"
+msgstr "на звук"
+
+#: ../../../lang/stb.php:57
+msgid "on video"
+msgstr "на зображення"
+
+#: ../../../lang/stb.php:59
+msgid "Thank you, your opinion will be taken into account"
+msgstr "Дякуємо, Ваша думка буде врахована"
+
+#: ../../../lang/stb.php:60
+msgid "one series"
+msgstr "одну серію"
+
+#: ../../../lang/stb.php:61
+msgid "continuously"
+msgstr "безперервно"
+
+#: ../../../lang/stb.php:63
+msgid "fit on"
+msgstr "вмістити"
+
+#: ../../../lang/stb.php:64
+msgid "zoom"
+msgstr "збільшений"
+
+#: ../../../lang/stb.php:65
+msgid "optimal"
+msgstr "оптимальний"
+
+#: ../../../lang/stb.php:66
+msgid "stretch"
+msgstr "розтягнути"
+
+#: ../../../lang/stb.php:67
+msgid "combined"
+msgstr "комбінований"
+
+#: ../../../lang/stb.php:75 ../../../lang/stb.php:101
+msgid "FAVORITE"
+msgstr "ВИБРАНЕ"
+
+#: ../../../lang/stb.php:76
+msgid "MOVE"
+msgstr "РУХАТИ"
+
+#: ../../../lang/stb.php:77
+msgid "by number"
+msgstr "за номером"
+
+#: ../../../lang/stb.php:78 ../../../lang/stb.php:110
+msgid "by title"
+msgstr "по імені"
+
+#: ../../../lang/stb.php:79
+msgid "only favorite"
+msgstr "лише вибране"
+
+#: ../../../lang/stb.php:80 ../../../lang/stb.php:113
+msgid "HD only"
+msgstr "тільки HD"
+
+#: ../../../lang/stb.php:81 ../../../lang/stb.php:117
+msgid "list"
+msgstr "список"
+
+#: ../../../lang/stb.php:82 ../../../lang/stb.php:118
+msgid "list + info"
+msgstr "список з інфо"
+
+#: ../../../lang/stb.php:86
+msgid "information about the movie"
+msgstr "інформація про фільм"
+
+#: ../../../lang/stb.php:89
+msgid "Length"
+msgstr "Час"
+
+#: ../../../lang/stb.php:92
+msgid "Cast"
+msgstr "У ролях"
+
+#: ../../../lang/stb.php:93
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: ../../../lang/stb.php:94
+msgid "Age"
+msgstr "Вік"
+
+#: ../../../lang/stb.php:102
+msgid "OTHER"
+msgstr "ІНШІ"
+
+#: ../../../lang/stb.php:103
+msgid "FIND"
+msgstr "ЗНАЙТИ"
+
+#: ../../../lang/stb.php:105
+msgid "BY GENRE"
+msgstr "ЗА ЖАНРОМ"
+
+#: ../../../lang/stb.php:106
+msgid "BY YEAR"
+msgstr "ЗА РОКОМ"
+
+#: ../../../lang/stb.php:107
+msgid "BY RATING"
+msgstr "ЗА РЕЙТИНГОМ"
+
+#: ../../../lang/stb.php:108
+msgid "search"
+msgstr "пошук"
+
+#: ../../../lang/stb.php:109
+msgid "picking"
+msgstr "вибірка"
+
+#: ../../../lang/stb.php:111
+msgid "by addtime"
+msgstr "по додаванню"
+
+#: ../../../lang/stb.php:112
+msgid "rating"
+msgstr "за популярністю"
+
+#: ../../../lang/stb.php:114
+msgid "favorite only"
+msgstr "лише вибране"
+
+#: ../../../lang/stb.php:115
+msgid "purchased"
+msgstr "придбане"
+
+#: ../../../lang/stb.php:116
+msgid "not ended"
+msgstr "недоглянуті"
+
+#: ../../../lang/stb.php:119
+msgid "VIDEOCLUB"
+msgstr "ВІДЕОКЛУБ"
+
+#: ../../../lang/stb.php:120
+msgid "Purchased"
+msgstr "Придбано"
+
+#: ../../../lang/stb.php:121
+msgid "rent expires in"
+msgstr "оренда закінчується через"
+
+#: ../../../lang/stb.php:124
+msgid "Your STB is blocked.<br/> Call the provider."
+msgstr "Ваша приставка відключена.<br/> Зв'яжіться з провайдером."
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "JANUARY"
+msgstr "СІЧНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "FEBRUARY"
+msgstr "ЛЮТОГО"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "MARCH"
+msgstr "БЕРЕЗНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "APRIL"
+msgstr "КВІТНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "MAY"
+msgstr "ТРАВНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "JUNE"
+msgstr "ЧЕРВНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "JULY"
+msgstr "ЛИПНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "AUGUST"
+msgstr "СЕРПНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "SEPTEMBER"
+msgstr "ВЕРЕСНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "OCTOBER"
+msgstr "ЖОВТНЯ"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "NOVEMBER"
+msgstr "ЛИСТОПАДА"
+
+#: ../../../lang/stb.php:125 ../../../lib/epg.class.php:784
+msgid "DECEMBER"
+msgstr "ГРУДНЯ"
+
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
+msgid "SUNDAY"
+msgstr "НЕДІЛЯ"
+
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
+msgid "MONDAY"
+msgstr "ПОНЕДІЛОК"
+
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
+msgid "TUESDAY"
+msgstr "ВІВТОРОК"
+
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
+msgid "WEDNESDAY"
+msgstr "СЕРЕДА"
+
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
+msgid "THURSDAY"
+msgstr "ЧЕТВЕР"
+
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
+msgid "FRIDAY"
+msgstr "П'ЯТНИЦЯ"
+
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:583
+msgid "SATURDAY"
+msgstr "СУБОТА"
+
+#: ../../../lang/stb.php:135
+msgid "BACK"
+msgstr "НАЗАД"
+
+#: ../../../lang/stb.php:136
+msgid "ABOUT MOVIE"
+msgstr "ПРО ФІЛЬМ"
+
+#: ../../../lang/stb.php:137
+msgid "TV GUIDE"
+msgstr "ТВ ГІД"
+
+#: ../../../lang/stb.php:138 ../../../lang/stb.php:384
+msgid "PACKAGE INFO"
+msgstr "ПРО ПАКЕТ"
+
+#: ../../../lang/stb.php:141
+msgid "SETTINGS"
+msgstr "НАЛАШТУВАННЯ"
+
+#: ../../../lang/stb.php:142 ../../../lang/stb.php:162
+#: ../../../lang/stb.php:264
+msgid "CANCEL"
+msgstr "ВІДМІНА"
+
+#: ../../../lang/stb.php:143 ../../../lang/stb.php:273
+msgid "SAVE"
+msgstr "ЗБЕРЕГТИ"
+
+#: ../../../lang/stb.php:144
+msgid "Current password"
+msgstr "Поточний пароль"
+
+#: ../../../lang/stb.php:145
+msgid "PARENTAL SETTINGS"
+msgstr "БАТЬКІВСЬКІ НАЛАШТУВАННЯ"
+
+#: ../../../lang/stb.php:146
+msgid "PARENTAL"
+msgstr "БАТЬКІВСЬКІ"
+
+#: ../../../lang/stb.php:147
+msgid "New password"
+msgstr "Новий пароль"
+
+#: ../../../lang/stb.php:148
+msgid "Repeat new password"
+msgstr "Повтор нового паролю"
+
+#: ../../../lang/stb.php:150
+msgid "Settings saved"
+msgstr "Параметри збережено"
+
+#: ../../../lang/stb.php:151
+msgid "Settings saved.<br>The STB will be rebooted. Press OK."
+msgstr "Параметри збережено.<br>Приставка буде перезавантажена. Натисніть OK."
+
+#: ../../../lang/stb.php:152
+msgid "Error filling fields"
+msgstr "Помилка заповнення полів"
+
+#: ../../../lang/stb.php:153
+msgid "Saving error"
+msgstr "Помилка при збереженні"
+
+#: ../../../lang/stb.php:155
+msgid "LOCALIZATION"
+msgstr "ЛОКАЛІЗАЦІЯ"
+
+#: ../../../lang/stb.php:156
+msgid "Language of the interface"
+msgstr "Мова інтерфейсу"
+
+#: ../../../lang/stb.php:157
+msgid "Country"
+msgstr "Країна"
+
+#: ../../../lang/stb.php:158
+msgid "City"
+msgstr "Місто"
+
+#: ../../../lang/stb.php:159
+msgid "Use PAGE-/+ buttons to move through several menu items"
+msgstr "Кнопки PAGE-/+ для переміщення по декількох пунктах"
+
+#: ../../../lang/stb.php:161
+msgid "SOFTWARE UPDATE"
+msgstr "ОНОВЛЕННЯ ПО"
+
+#: ../../../lang/stb.php:163
+msgid "START UPDATE"
+msgstr "ОНОВИТИ"
+
+#: ../../../lang/stb.php:164
+msgid "From HTTP"
+msgstr "Використовуючи HTTP"
+
+#: ../../../lang/stb.php:165
+msgid "From USB"
+msgstr "Використовуючи USB"
+
+#: ../../../lang/stb.php:166 ../../../lib/epg.class.php:72
+#: ../../../lib/epg.class.php:82 ../../../lib/epg.class.php:97
+msgid "Source"
+msgstr "Джерело"
+
+#: ../../../lang/stb.php:167
+msgid "Method select"
+msgstr "Вибір методу"
+
+#: ../../../lang/stb.php:169
+msgid "EMPTY"
+msgstr "ПУСТО"
+
+#: ../../../lang/stb.php:171 ../../../lib/coursecbr.class.php:31
+#: ../../../lib/course.class.php:30
+msgid "Exchange rate on"
+msgstr "Курс НБУ на"
+
+#: ../../../lang/stb.php:172
+msgid "NBU exchange rate on"
+msgstr "Курс НБУ на"
+
+#: ../../../lang/stb.php:173
+msgid "CBR exchange rate on"
+msgstr "Курс ЦБР на"
+
+#: ../../../lang/stb.php:175
+msgid "WEATHER"
+msgstr "ПОГОДА"
+
+#: ../../../lang/stb.php:176
+msgid "pres.:"
+msgstr "тиск:"
+
+#: ../../../lang/stb.php:178
+msgid "wind:"
+msgstr "вітер:"
+
+#: ../../../lang/stb.php:181
+msgid "INFOPORTAL"
+msgstr "ІНФОПОРТАЛ"
+
+#: ../../../lang/stb.php:183
+msgid "CITY INFO"
+msgstr "МІСЬКА ДОВІДКА"
+
+#: ../../../lang/stb.php:184
+msgid "emergency"
+msgstr "екстрені"
+
+#: ../../../lang/stb.php:185
+msgid "help"
+msgstr "довідкові"
+
+#: ../../../lang/stb.php:186
+msgid "other"
+msgstr "різні"
+
+#: ../../../lang/stb.php:189
+msgid "HOROSCOPE"
+msgstr "ГОРОСКОП"
+
+#: ../../../lang/stb.php:191
+msgid "JOKES"
+msgstr "АНЕКДОТИ"
+
+#: ../../../lang/stb.php:193
+msgid "GOTO"
+msgstr "ПЕРЕХІД"
+
+#: ../../../lang/stb.php:194
+msgid "LIKE"
+msgstr "ПОДОБАЄТЬСЯ"
+
+#: ../../../lang/stb.php:195
+msgid "BOOKMARK"
+msgstr "ЗАКЛАДКА"
+
+#: ../../../lang/stb.php:196
+msgid "TO BOOKMARK"
+msgstr "ДО ЗАКЛАДКИ"
+
+#: ../../../lang/stb.php:198
+msgid "JOKE"
+msgstr "АНЕКДОТ"
+
+#: ../../../lang/stb.php:200
+msgid "MASTERMIND"
+msgstr "ГРА БИКИ ТА КОРОВИ"
+
+#: ../../../lang/stb.php:201
+msgid "RULES"
+msgstr "ПРАВИЛА"
+
+#: ../../../lang/stb.php:202
+msgid "RATING"
+msgstr "РЕЙТИНГ"
+
+#: ../../../lang/stb.php:204
+msgid "B"
+msgstr "Б"
+
+#: ../../../lang/stb.php:206
+msgid "C"
+msgstr "К"
+
+#: ../../../lang/stb.php:208
+msgid ""
+"Your task is to guess the number of unduplicated four digits, the first of "
+"them - not zero. Every your guess will be compared with the number put forth "
+"a STB. If you guessed a digit, but it is not in place, then it is a COW (C). "
+"If you guessed, and a number, and its location, this BULL (B)."
+msgstr ""
+"Ваше завдання вгадати число з чотирьох неповторюваних чисел, причому перша з "
+"них - не нуль. Кожне Ваше припущення буде порівнюватися з числом, яке "
+"загадала приставка. Якщо Ви відгадали цифру, але вона стоїть не на своєму "
+"місці, то це КОРОВА (К). Якщо Ви відгадали і цифру, і її місце, то це БИК "
+"(Б)."
+
+#: ../../../lang/stb.php:209
+msgid "Moving the cursor"
+msgstr "Переміщення курсора"
+
+#: ../../../lang/stb.php:210
+msgid "Enter numbers into cells"
+msgstr "Введення цифр в клітинки"
+
+#: ../../../lang/stb.php:211
+msgid "Confirmation of the step"
+msgstr "Підтвердження ходу"
+
+#: ../../../lang/stb.php:213
+msgid "Moving through the pages of history moves"
+msgstr "Переміщення по сторінках історії ходів"
+
+#: ../../../lang/stb.php:215
+msgid "Service is disabled"
+msgstr "Послуга відключена"
+
+#: ../../../lang/stb.php:216
+msgid "Channel is not available"
+msgstr "Підписка на послугу відсутня"
+
+#: ../../../lang/stb.php:218
+msgid "TV Guide"
+msgstr "ТВ Гід"
+
+#: ../../../lang/stb.php:219
+msgid "RECORD"
+msgstr "ЗАПИСАТИ"
+
+#: ../../../lang/stb.php:220
+msgid "REMIND"
+msgstr "НАГАДАТИ"
+
+#: ../../../lang/stb.php:221
+msgid "Memo"
+msgstr "Нагадування"
+
+#: ../../../lang/stb.php:222
+msgid "Goto channel"
+msgstr "Перейти на канал"
+
+#: ../../../lang/stb.php:223
+msgid "Close"
+msgstr "Закрити вікно"
+
+#: ../../../lang/stb.php:225
+msgid "now begins"
+msgstr "зараз починається"
+
+#: ../../../lang/stb.php:226
+msgid "in"
+msgstr "в"
+
+#: ../../../lang/stb.php:227
+msgid "started"
+msgstr "почалося"
+
+#: ../../../lang/stb.php:228
+msgid "MORE"
+msgstr "ДЕТАЛЬНІШЕ"
+
+#: ../../../lang/stb.php:235
+msgid "search_box_languages"
+msgstr "ua,en"
+
+#: ../../../lang/stb.php:238
+msgid "date_format"
+msgstr "{0}, {1} {2}, {3}р."
+
+#: ../../../lang/stb.php:241
+msgid "time_format"
+msgstr "{0}:{1}"
+
+#: ../../../lang/stb.php:243
+msgid "Timezone"
+msgstr "Часовий пояс"
+
+#: ../../../lang/stb.php:244
+msgid "NTP Server"
+msgstr "NTP Сервер"
+
+#: ../../../lang/stb.php:246 ../../../lang/stb.php:293
+msgid "DELETE"
+msgstr "ВИДАЛИТИ"
+
+#: ../../../lang/stb.php:247
+msgid "STOP"
+msgstr "ЗУПИНИТИ"
+
+#: ../../../lang/stb.php:249
+msgid "Do you really want to stop this record?"
+msgstr "Ви дійсно бажаєте зупинити цей запис?"
+
+#: ../../../lang/stb.php:251 ../../../lang/stb.php:370
+msgid "Confirm"
+msgstr "Підтвердження"
+
+#: ../../../lang/stb.php:254 ../../../lang/stb.php:400
+msgid "Server error. Try again later."
+msgstr "Помилка сервера. Повторіть спробу пізніше."
+
+#: ../../../lang/stb.php:255
+msgid "RECORDING DURATION"
+msgstr "ТРИВАЛІСТЬ ЗАПИСИ, г"
+
+#: ../../../lang/stb.php:257
+msgid "FREE on the server, h"
+msgstr "ВІЛЬНО на сервері, г"
+
+#: ../../../lang/stb.php:259
+msgid "Recording this channel is forbidden"
+msgstr "Запис цього каналу заборонено"
+
+#: ../../../lang/stb.php:261
+msgid "Buffer size"
+msgstr "Розмір буфера"
+
+#: ../../../lang/stb.php:262
+msgid "Time, sec"
+msgstr "Час, с"
+
+#: ../../../lang/stb.php:263
+msgid "PLAYBACK"
+msgstr "ВІДТВОРЕННЯ"
+
+#: ../../../lang/stb.php:265
+msgid "EXIT"
+msgstr "ВИХІД"
+
+#: ../../../lang/stb.php:266 ../../../lang/stb.php:430
+msgid "YES"
+msgstr "ТАК"
+
+#: ../../../lang/stb.php:267
+msgid "CLOSE"
+msgstr "ЗАКРИТИ"
+
+#: ../../../lang/stb.php:268
+msgid "OK"
+msgstr "ОК"
+
+#: ../../../lang/stb.php:269
+msgid "PAY"
+msgstr "СПЛАТИТИ"
+
+#: ../../../lang/stb.php:270
+msgid "PLAY"
+msgstr "ВІДТВОРИТИ"
+
+#: ../../../lang/stb.php:271
+msgid "START"
+msgstr "СТАРТ"
+
+#: ../../../lang/stb.php:272 ../../../lang/stb.php:490
+msgid "ADD"
+msgstr "ДОДАТИ"
+
+#: ../../../lang/stb.php:275
+msgid "Audio out"
+msgstr "Аудіо виходи"
+
+#: ../../../lang/stb.php:276
+msgid "Analog only"
+msgstr "Тільки аналогові"
+
+#: ../../../lang/stb.php:277
+msgid "Analog and S/PDIF 2-channel PCM"
+msgstr "Аналогові та 2-x канальний PCM в S/PDIF"
+
+#: ../../../lang/stb.php:278
+msgid "S/PDIF raw or 2-channel PCM"
+msgstr "S/PDIF не декодований (RAW) або S/PDIF PCM"
+
+#: ../../../lang/stb.php:280
+msgid "GAME"
+msgstr "ГРА"
+
+#: ../../../lang/stb.php:283
+msgid "DOWNLOADS"
+msgstr "ЗАВАНТАЖЕННЯ"
+
+#: ../../../lang/stb.php:284
+msgid "Not found mounted devices"
+msgstr "Не знайдені зовнішні носії"
+
+#: ../../../lang/stb.php:285
+msgid "Add download"
+msgstr "Додати завантаження"
+
+#: ../../../lang/stb.php:286
+msgid "Device"
+msgstr "Пристрій"
+
+#: ../../../lang/stb.php:288
+msgid "Ok"
+msgstr "Ок"
+
+#: ../../../lang/stb.php:290
+msgid "CREATE"
+msgstr "СТВОРИТИ"
+
+#: ../../../lang/stb.php:291
+msgid "MOVE UP"
+msgstr "ВГОРУ"
+
+#: ../../../lang/stb.php:292
+msgid "MOVE DOWN"
+msgstr "ВНИЗ"
+
+#: ../../../lang/stb.php:294
+msgid "RECORDING"
+msgstr "ЗАПИС"
+
+#: ../../../lang/stb.php:295
+msgid "DOWNLOAD"
+msgstr "ЗАВАНТАЖИТИ"
+
+#: ../../../lang/stb.php:296
+msgid "RECORDING AND FILE"
+msgstr "ЗАПИС І ФАЙЛ"
+
+#: ../../../lang/stb.php:298
+msgid "Duration of continuous playback"
+msgstr "Тривалість безперервного відтворення"
+
+#: ../../../lang/stb.php:299
+msgid "Without limit"
+msgstr "Обмеження відключено"
+
+#: ../../../lang/stb.php:300
+msgid "hours"
+msgstr "г"
+
+#: ../../../lang/stb.php:301
+msgid ""
+"Reached limit the duration of continuous playback. To continue playback, "
+"press the OK or EXIT."
+msgstr ""
+"Досягнуто ліміт тривалості безперервного відтворення. Для продовження "
+"відтворення натисніть OK або EXIT."
+
+#: ../../../lang/stb.php:303
+msgid "GENERAL SETTINGS"
+msgstr "ЗАГАЛЬНІ"
+
+#: ../../../lang/stb.php:304
+msgid "Screensaver interval"
+msgstr "Інтервал запуску зберігача екрану"
+
+#: ../../../lang/stb.php:308
+msgid "DEMO VIDEO"
+msgstr "ВІДЕО ІНСТРУКЦІЯ"
+
+#: ../../../lang/stb.php:309
+msgid "ACCOUNT"
+msgstr "ОСОБИСТИЙ КАБІНЕТ"
+
+#: ../../../lang/stb.php:310
+msgid "Coming soon"
+msgstr "З'явиться найближчим часом"
+
+#: ../../../lang/stb.php:312
+msgid "INFORMATION"
+msgstr "ІНФОРМАЦІЯ"
+
+#: ../../../lang/stb.php:313
+msgid "PAYMENT"
+msgstr "ОПЛАТА"
+
+#: ../../../lang/stb.php:314
+msgid "AGREEMENT"
+msgstr "ДОГОВІР"
+
+#: ../../../lang/stb.php:315
+msgid "TERMS OF USE"
+msgstr "ПРАВИЛА"
+
+#: ../../../lang/stb.php:317
+msgid "Video instruction"
+msgstr "Відео інструкція"
+
+#: ../../../lang/stb.php:320
+msgid "QUALITY"
+msgstr "ЯКІСТЬ"
+
+#: ../../../lang/stb.php:321
+msgid "low"
+msgstr "низьке"
+
+#: ../../../lang/stb.php:322
+msgid "medium"
+msgstr "середнє"
+
+#: ../../../lang/stb.php:323
+msgid "high"
+msgstr "високе"
+
+#: ../../../lang/stb.php:325
+msgid "add"
+msgstr "додати"
+
+#: ../../../lang/stb.php:326
+msgid "del"
+msgstr "видалити"
+
+#: ../../../lang/stb.php:328
+msgid "internet"
+msgstr "інтернет"
+
+#: ../../../lang/stb.php:330
+msgid "NETWORK STATUS"
+msgstr "СТАН МЕРЕЖІ"
+
+#: ../../../lang/stb.php:331
+msgid "REFRESH"
+msgstr "ОНОВИТИ"
+
+#: ../../../lang/stb.php:333
+msgid "Speed test"
+msgstr "Тест швидкості"
+
+#: ../../../lang/stb.php:334
+msgid "testing..."
+msgstr "тестування..."
+
+#: ../../../lang/stb.php:338
+msgid "UP"
+msgstr "ВКЛ"
+
+#: ../../../lang/stb.php:339
+msgid "DOWN"
+msgstr "ВИКЛ"
+
+#: ../../../lang/stb.php:341
+msgid "stopped"
+msgstr "зупинено"
+
+#: ../../../lang/stb.php:342
+msgid "waiting queue"
+msgstr "очікування"
+
+#: ../../../lang/stb.php:343
+msgid "running"
+msgstr "завантаження"
+
+#: ../../../lang/stb.php:344
+msgid "completed"
+msgstr "закінчено"
+
+#: ../../../lang/stb.php:345
+msgid "temporary error"
+msgstr "тимчасова помилка"
+
+#: ../../../lang/stb.php:346
+msgid "permanent error"
+msgstr "помилка"
+
+#: ../../../lang/stb.php:348
+msgid "Authentication"
+msgstr "Вхід"
+
+#: ../../../lang/stb.php:351
+msgid "Error"
+msgstr "помилка"
+
+#: ../../../lang/stb.php:353
+msgid "Play this url or start download?"
+msgstr "Програти або завантажити це посилання?"
+
+#: ../../../lang/stb.php:354
+msgid "Play"
+msgstr "Програти"
+
+#: ../../../lang/stb.php:356
+msgid "Download"
+msgstr "Завантажити"
+
+#: ../../../lang/stb.php:357
+msgid "Play all"
+msgstr "ГРАТИ ВСЕ"
+
+#: ../../../lang/stb.php:358
+msgid "on"
+msgstr "вкл"
+
+#: ../../../lang/stb.php:359
+msgid "off"
+msgstr "викл"
+
+#: ../../../lang/stb.php:361
+msgid "Network authentication"
+msgstr "Мережевий вхід"
+
+#: ../../../lang/stb.php:365
+msgid "Do you really want to exit?"
+msgstr "Ви дійсно бажаєте вийти?"
+
+#: ../../../lang/stb.php:367
+msgid "There is an active downloads from this server"
+msgstr "Існує активне завантаження з вибраного сервера"
+
+#: ../../../lang/stb.php:369
+msgid "Alert"
+msgstr "Попередження"
+
+#: ../../../lang/stb.php:371
+msgid "Notice"
+msgstr "Повідомлення"
+
+#: ../../../lang/stb.php:372
+msgid "Select"
+msgstr "Вибір"
+
+#: ../../../lang/stb.php:374
+msgid "Favorites"
+msgstr "Вибране"
+
+#: ../../../lang/stb.php:376
+msgid "Your STB is not supported"
+msgstr "Ваша приставка не підтримується"
+
+#: ../../../lang/stb.php:378
+msgid "Phone"
+msgstr "Телефон"
+
+#: ../../../lang/stb.php:380
+msgid "User"
+msgstr "Користувач"
+
+#: ../../../lang/stb.php:381
+msgid "SERVICES MANAGEMENT"
+msgstr "УПРАВЛІННЯ ПОСЛУГАМИ"
+
+#: ../../../lang/stb.php:382
+msgid "SUBSCRIBE"
+msgstr "ПІДКЛЮЧИТИ"
+
+#: ../../../lang/stb.php:383
+msgid "UNSUBSCRIBE"
+msgstr "ВІДКЛЮЧИТИ"
+
+#: ../../../lang/stb.php:386
+msgid "Content"
+msgstr "Містить"
+
+#: ../../../lang/stb.php:389
+msgid "Are you really want to subscribe to this service?"
+msgstr "Ви дійсно бажаєте підключити дану послугу?"
+
+#: ../../../lang/stb.php:390
+msgid "Are you really want to unsubscribe from this service?"
+msgstr "Ви дійсно бажаєте відключити дану послугу?"
+
+#: ../../../lang/stb.php:391
+msgid "The service costs {0}"
+msgstr "Вартість послуги {0}"
+
+#: ../../../lang/stb.php:393
+msgid "You have successfully subscribed to the service."
+msgstr "Ви успішно підключили дану послугу."
+
+#: ../../../lang/stb.php:394
+msgid "You have successfully unsubscribed from the service."
+msgstr "Ви успішно відключили дану послугу."
+
+#: ../../../lang/stb.php:396
+msgid "You have successfully subscribed to the service.  STB will be rebooted."
+msgstr "Ви успішно підключили дану послугу. Приставка буде перезавантажена."
+
+#: ../../../lang/stb.php:397
+msgid ""
+"You have successfully unsubscribed from the service. STB will be rebooted."
+msgstr "Ви успішно відключили дану послугу. Приставка буде перезавантажена."
+
+#: ../../../lang/stb.php:399
+msgid "An error in the management of subscriptions."
+msgstr "Помилка під час керування послугами."
+
+#: ../../../lang/stb.php:401
+msgid "package_price_measurement"
+msgstr "грн"
+
+#: ../../../lang/stb.php:402
+msgid "Do you really want to rent this movie?"
+msgstr "Ви дійсно хочете придбати даний фільм?"
+
+#: ../../../lang/stb.php:403
+msgid "The movie costs {0}"
+msgstr "Вартість фільму {0}"
+
+#: ../../../lang/stb.php:404
+msgid "Rent duration: {0}h"
+msgstr "Тривалість оренди: {0}г"
+
+#: ../../../lang/stb.php:408
+msgid "End date"
+msgstr "Закінчення дії"
+
+#: ../../../lang/stb.php:411
+msgid "3D mode"
+msgstr "3D режим"
+
+#: ../../../lang/stb.php:413
+msgid "mode {0}"
+msgstr "режим {0}"
+
+#: ../../../lang/stb.php:415
+msgid "no epg"
+msgstr "відсутня програма передач"
+
+#: ../../../lang/stb.php:416
+msgid "wrong epg"
+msgstr "програма передач не співпадає"
+
+#: ../../../lang/stb.php:418
+msgid "Part"
+msgstr "Розділ"
+
+#: ../../../lang/stb.php:420
+msgid "Channel not available"
+msgstr "Канал недоступний"
+
+#: ../../../lang/stb.php:421
+msgid "Channel temporary unavailable"
+msgstr "Канал тимчасово недоступний"
+
+#: ../../../lang/stb.php:422
+msgid "Channel not available for this region"
+msgstr "Канал недоступний для даного регіону"
+
+#: ../../../lang/stb.php:423
+msgid "Channel not available. Server error."
+msgstr "Канал недоступний. Помилка сервера."
+
+#: ../../../lang/stb.php:426
+msgid "Account info"
+msgstr "Інформація"
+
+#: ../../../lang/stb.php:427
+msgid "Payment"
+msgstr "Продовжити"
+
+#: ../../../lang/stb.php:429
+msgid "Continue playing?"
+msgstr "Програма закінчується. Продовжити відтворення?"
+
+#: ../../../lang/stb.php:431
+msgid "NO"
+msgstr "НІ"
+
+#: ../../../lang/stb.php:433
+msgid "Do you want to quit the Time Shift mode?"
+msgstr "Вийти з режиму Time Shift?"
+
+#: ../../../lang/stb.php:435
+msgid "by name"
+msgstr "за назвою"
+
+#: ../../../lang/stb.php:436
+msgid "by date"
+msgstr "за датою"
+
+#: ../../../lang/stb.php:438
+msgid "Connection problem"
+msgstr "Помилка підключення"
+
+#: ../../../lang/stb.php:439
+msgid "Authentication problem"
+msgstr "Помилка аутентифікації"
+
+#: ../../../lang/stb.php:441
+msgid "Account balance"
+msgstr "Баланс"
+
+#: ../../../lang/stb.php:444
+msgid "Start recording on the server?"
+msgstr "Розпочати запис на сервері?"
+
+#: ../../../lang/stb.php:445
+msgid "Do you really want to schedule a recording on the server?"
+msgstr "Ви дійсно бажаєте запланувати запис на сервер?"
+
+#: ../../../lang/stb.php:446
+msgid "Select where to save the record"
+msgstr "Куди зберегти запис?"
+
+#: ../../../lang/stb.php:447
+msgid "USB Storage"
+msgstr "USB пристрій"
+
+#: ../../../lang/stb.php:449 ../../../lang/stb.php:485
+msgid "Path"
+msgstr "Шлях"
+
+#: ../../../lang/stb.php:450
+msgid "Filename"
+msgstr "Назва файлу"
+
+#: ../../../lang/stb.php:451
+msgid "USB Device"
+msgstr "пристрій"
+
+#: ../../../lang/stb.php:453
+msgid "rec_stop_msg"
+msgstr "Зупинено запис — {0} на каналі {1}"
+
+#: ../../../lang/stb.php:455
+msgid "The recorded file is missing"
+msgstr "Записаний файл відсутній"
+
+#: ../../../lang/stb.php:456
+msgid "Recording is not finished yet"
+msgstr "Запис ще не завершився"
+
+#: ../../../lang/stb.php:457
+msgid "The channel already has a scheduled recording"
+msgstr "Канал вже має запланований запис"
+
+#: ../../../lang/stb.php:459
+msgid "PVR Error: Wrong parameter"
+msgstr "Помилка PVR: Невірний параметр"
+
+#: ../../../lang/stb.php:460
+msgid "PVR Error: Not enough memory to complete the operation"
+msgstr "Помилка PVR: Недостатньо пам'яті для виконання операції"
+
+#: ../../../lang/stb.php:461
+msgid "PVR Error: Incorrect recording range"
+msgstr "Помилка PVR: Невірний діапазон записи"
+
+#: ../../../lang/stb.php:462
+msgid "PVR Error: Task not found"
+msgstr "Помилка PVR: Завдання не знайдено"
+
+#: ../../../lang/stb.php:463
+msgid "PVR Error: Wrong filename"
+msgstr "Помилка PVR: Невірне ім'я файлу"
+
+#: ../../../lang/stb.php:464
+msgid "PVR Error: Record file already exists"
+msgstr "Помилка PVR: Файл вже існує"
+
+#: ../../../lang/stb.php:465
+msgid "PVR Error: Error opening channel URL"
+msgstr "Помилка PVR: Помилка відкриття URL"
+
+#: ../../../lang/stb.php:466
+msgid "PVR Error: Error opening file"
+msgstr "Помилка PVR: Помилка відкриття файлу"
+
+#: ../../../lang/stb.php:467
+msgid "PVR Error: Exceeded the maximum number simultaneous recordings"
+msgstr "Помилка PVR: Перевищено максимальну кількість одночасних записів"
+
+#: ../../../lang/stb.php:468
+msgid "PVR Error: End of stream"
+msgstr "Помилка PVR: Отримано кінець потоку"
+
+#: ../../../lang/stb.php:469
+msgid "PVR Error: Error writing to file"
+msgstr "Помилка PVR: Помилка запису в файл"
+
+#: ../../../lang/stb.php:470
+msgid "Start time"
+msgstr "Початок"
+
+#: ../../../lang/stb.php:471
+msgid "End time"
+msgstr "Завершення"
+
+#: ../../../lang/stb.php:474
+msgid "Recording"
+msgstr "Запис"
+
+#: ../../../lang/stb.php:475
+msgid "Recording on USB device interrupted"
+msgstr "Запис на USB пристрій перервано"
+
+#: ../../../lang/stb.php:477
+msgid "Wrong"
+msgstr "Невірно"
+
+#: ../../../lang/stb.php:478
+msgid "Parent control"
+msgstr "Батьківський контроль"
+
+#: ../../../lang/stb.php:481
+msgid "Encoding"
+msgstr "Кодування"
+
+#: ../../../lang/stb.php:483
+msgid "Network folder"
+msgstr "Мережева папка"
+
+#: ../../../lang/stb.php:484
+msgid "IP address"
+msgstr "IP адреса"
+
+#: ../../../lang/stb.php:486
+msgid "Local folder"
+msgstr "Назва папки"
+
+#: ../../../lang/stb.php:491
+msgid "Server address"
+msgstr "Адреса сервера"
+
+#: ../../../lang/stb.php:492
+msgid "Path to the folder"
+msgstr "Шлях до папки на сервері"
+
+#: ../../../lang/stb.php:493 ../../../lang/stb.php:494
+msgid "Folder name in favorites"
+msgstr "Назва папки в обраному"
+
+#: ../../../lang/stb.php:497
+msgid "Mount failed"
+msgstr "Помилка монтування"
+
+#: ../../../lang/stb.php:499
+msgid "SKIP"
+msgstr "ПРОПУСТИТИ"
+
+#: ../../../lang/stb.php:500
+msgid "COMMERCIAL"
+msgstr "РЕКЛАМА"
+
+#: ../../../lang/stb.php:503
+msgid "Clock"
+msgstr "Годинник"
+
+#: ../../../lang/stb.php:504
+msgid "Hidden"
+msgstr "Приховані"
+
+#: ../../../lang/stb.php:505
+msgid "Top Right"
+msgstr "Зверху справа"
+
+#: ../../../lang/stb.php:506
+msgid "Top Left"
+msgstr "Зверху зліва"
+
+#: ../../../lang/stb.php:507
+msgid "Bottom Right"
+msgstr "Знизу праворуч"
+
+#: ../../../lang/stb.php:508
+msgid "Bottom Left"
+msgstr "Знизу зліва"
+
+#: ../../../lang/stb.php:511
+msgid "Settings section is currently unavailable"
+msgstr "Розділ налаштувань в даний момент недоступний"
+
+#: ../../../lib/system.class.php:74
+msgid "m"
+msgstr "х"
+
+#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:838
+msgid "today"
+msgstr "сьогодні"
+
+#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:841
+msgid "yesterday"
+msgstr "вчора"
+
+#: ../../../lib/stb.class.php:538
+#, php-format
+msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
+msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
+
+#: ../../../lib/itv.class.php:1337
+#, php-format
+msgid ""
+"Channel %s set to active because at least one of its URLs became available."
+msgstr ""
+
+#: ../../../lib/itv.class.php:1347
+#, php-format
+msgid "Channel %s set to inactive because all its URLs are not available."
+msgstr ""
+
+#
+#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:749
+#: ../../../lib/user.class.php:1054 ../../../lib/user.class.php:1055
+#, php-format
+msgid "video_name_format"
+msgstr "%1$s"
+
+#: ../../../lib/vod.class.php:844
+msgid "last week"
+msgstr "7 днів"
+
+#: ../../../lib/account.class.php:18 ../../../lib/account.class.php:39
+#: ../../../lib/account.class.php:60 ../../../lib/account.class.php:90
+#: ../../../lib/account.class.php:141
+msgid "This operation is temporarily unavailable."
+msgstr "Операція тимчасово недоступна."
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Night"
+msgstr "Ніч"
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Morning"
+msgstr "Ранок"
+
+#: ../../../lib/gismeteo.class.php:30
+msgid "Evening"
+msgstr "Вечір"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Jan"
+msgstr "Січ"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Feb"
+msgstr "Лют"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Mar"
+msgstr "Бер"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Apr"
+msgstr "Кві"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Jun"
+msgstr "Чер"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Jul"
+msgstr "Лип"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Aug"
+msgstr "Сер"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Sep"
+msgstr "Вер"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Oct"
+msgstr "Жов"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Nov"
+msgstr "Лис"
+
+#: ../../../lib/gismeteo.class.php:31
+msgid "Dec"
+msgstr "Гру"
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "clear"
+msgstr "ясно"
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "partly cloudy"
+msgstr "мала хмарність"
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "cloudy"
+msgstr "хмарно"
+
+#: ../../../lib/gismeteo.class.php:32
+msgid "overcast"
+msgstr "похмуро"
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "rain"
+msgstr "дощ"
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "rainfall"
+msgstr "злива"
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "snow"
+msgstr "сніг"
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "thunderstorm"
+msgstr "гроза"
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "no data"
+msgstr "немає даних"
+
+#: ../../../lib/gismeteo.class.php:33
+msgid "w/o precipitation"
+msgstr "без опадів"
+
+#: ../../../lib/gismeteo.class.php:107
+msgid "pressure"
+msgstr "тиск"
+
+#: ../../../lib/gismeteo.class.php:107
+msgid "wind"
+msgstr "вітер"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_1l"
+msgstr "А"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_2l"
+msgstr "Б"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_3l"
+msgstr "В"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_4l"
+msgstr "Г"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_5l"
+msgstr "Ґ"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_6l"
+msgstr "Д"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_7l"
+msgstr "Е"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_8l"
+msgstr "Є"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_9l"
+msgstr "Ж"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_10l"
+msgstr "З"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_11l"
+msgstr "И"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_12l"
+msgstr "І"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_13l"
+msgstr "Ї"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_14l"
+msgstr "Й"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_15l"
+msgstr "К"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_16l"
+msgstr "Л"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_17l"
+msgstr "М"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_18l"
+msgstr "Н"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_19l"
+msgstr "О"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_20l"
+msgstr "П"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_21l"
+msgstr "Р"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_22l"
+msgstr "С"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_23l"
+msgstr "Т"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_24l"
+msgstr "У"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_25l"
+msgstr "Ф"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_26l"
+msgstr "Х"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_27l"
+msgstr "Ц"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_28l"
+msgstr "Ч"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_29l"
+msgstr "Ш"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_30l"
+msgstr "Щ"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_31l"
+msgstr "Ь"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_32l"
+msgstr "Ю"
+
+#: ../../../lib/ajaxresponse.class.php:40
+msgid "ABC_33l"
+msgstr "Я"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "january"
+msgstr "січень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "february"
+msgstr "лютий"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "march"
+msgstr "березень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "april"
+msgstr "квітень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "may"
+msgstr "травень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "june"
+msgstr "червень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "july"
+msgstr "липень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "august"
+msgstr "серпень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "september"
+msgstr "вересень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "october"
+msgstr "жовтень"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "november"
+msgstr "листопад"
+
+#: ../../../lib/ajaxresponse.class.php:42
+msgid "december"
+msgstr "грудень"
+
+#: ../../../lib/ajaxresponse.class.php:46
+msgid "[No channel info]"
+msgstr "[телепрограма відсутня]"
+
+#: ../../../lib/user.class.php:1004 ../../../lib/accountinfo.class.php:34
+#, php-format
+msgid "%d day"
+msgid_plural "%d days"
+msgstr[0] "%d день"
+msgstr[1] "%d дня"
+msgstr[2] "%d днів"
+
+#: ../../../lib/user.class.php:1064
+msgid "TV channels"
+msgstr "ТБ канали"
+
+#: ../../../lib/user.class.php:1065
+msgid "Movies"
+msgstr "Відео"
+
+#: ../../../lib/user.class.php:1066
+msgid "Radio channels"
+msgstr "Радіо канали"
+
+#: ../../../lib/user.class.php:1067
+msgid "Modules"
+msgstr "Модулі"
+
+#: ../../../lib/user.class.php:1068
+msgid "Options"
+msgstr "Опції"
+
+#: ../../../lib/accountinfo.class.php:34
+msgid "end_date_format"
+msgstr "d.m.Y"
+
+#: ../../../lib/accountinfo.class.php:47
+#, php-format
+msgid "account_payment_info"
+msgstr "Інформація про оплату"
+
+#: ../../../lib/accountinfo.class.php:57
+#, php-format
+msgid "account_agreement_info"
+msgstr "Договір"
+
+#: ../../../lib/accountinfo.class.php:67
+#, php-format
+msgid "account_terms_info"
+msgstr "Правила користування"
+
+#: ../../../lib/accountinfo.class.php:97
+msgid "Subscribed"
+msgstr "Підключено"
+
+#: ../../../lib/accountinfo.class.php:99
+msgid "Not subscribed"
+msgstr "Не підключено"
+
+#: ../../../lib/remotepvr.class.php:132
+msgid "recording"
+msgstr "Йде запис"
+
+#: ../../../lib/remotepvr.class.php:134
+msgid "scheduled"
+msgstr "Заплановано"
+
+#: ../../../lib/weatherco.class.php:196 ../../../lib/weatherco.class.php:221
+msgid "city_name_field"
+msgstr "name"
+
+#: ../../../lib/admin.class.php:177
+#, php-format
+msgid "Action \"%s\" denied for page \"%s\""
+msgstr ""
+
+#: ../../../lib/epg.class.php:72 ../../../lib/epg.class.php:82
+msgid "unavailable"
+msgstr "недоступний"
+
+#: ../../../lib/epg.class.php:97
+msgid "not changed"
+msgstr "не змінився"
+
+#: ../../../lib/epg.class.php:246
+msgid "Errors"
+msgstr "Помилок"
+
+#: ../../../lib/epg.class.php:248
+#, php-format
+msgid "Successful: %s channels"
+msgstr "Успішно: %s каналів"
+
+#: ../../../lib/epg.class.php:249
+#, php-format
+msgid "Deleted: %s records"
+msgstr "Видалено: %s записів"
+
+#: ../../../lib/epg.class.php:250
+msgid "Queries"
+msgstr ""
+
+#: ../../../lib/epg.class.php:251
+msgid "Exec time"
+msgstr ""
+
+#: ../../../lib/epg.class.php:480 ../../../lib/epg.class.php:567
+#: ../../../lib/epg.class.php:836
+msgid "%H:%i"
+msgstr ""
+
+#: ../../../lib/epg.class.php:747 ../../../lib/epg.class.php:748
+#: ../../../lib/epg.class.php:749 ../../../lib/epg.class.php:750
+msgid "H:i"
+msgstr ""

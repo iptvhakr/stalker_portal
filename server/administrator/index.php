@@ -84,11 +84,11 @@ a:hover{
 <script type="text/javascript">
 
     $(function(){
-        $('.lang').click(function(e){
-            var lang = $(e.target).attr('lang');
+        $('.langs').change(function(e){
+            var lang = $('.langs option:selected').val().substr(0, 2);
             $.cookies.set('language', lang, {expiresAt: new Date( 2037, 1, 1 )});
             document.location = document.location;
-        });
+        })
     });
 
 </script>
@@ -97,7 +97,17 @@ a:hover{
 
 <body>
 <div style="width: 80%; margin:0 auto; text-align: right">
-    <a href="javascript://" class="lang" lang="en">en</a> | <a href="javascript://" class="lang" lang="ru">ru</a>
+    <select class="langs">
+        <?
+        /**
+         * @var $locale
+         * @var $allowed_locales
+         */
+        foreach ($allowed_locales as $lang => $loc){
+            echo '<option value="'.$loc.'" '.($locale == $loc ? 'selected' : '').'>'.$lang.'</option>';
+        }
+        ?>
+    </select>
 </div>
 <br>
 <br>
