@@ -160,7 +160,7 @@ class Admin
     }
 
     public static function isEditAllowed($page = null){
-        return self::isAllowed(AdminAccess::ACCESS_EDIT, $page = null);
+        return self::isAllowed(AdminAccess::ACCESS_EDIT, $page);
     }
 
     public static function isAccessAllowed($page = null){
