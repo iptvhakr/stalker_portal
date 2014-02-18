@@ -211,5 +211,11 @@ var lang = {
     "Primary audio language:" : "Основной язык аудиодорожки:",
     "Secondary audio language:" : "Дополнительный язык аудиодорожки:",
     "Primary subtitle language:" : "Основной язык субтитров:",
-    "Secondary subtitle language:" : "Дополнительный язык субтитров:"
+    "Secondary subtitle language:" : "Дополнительный язык субтитров:",
+
+    "Portal" : "Портал",
+    "Open after loading:" : "Отобразить после загрузки:",
+    "Play in preview only by OK:" : "Проигрывать каналы только по OK:",
+    "Main menu" : "Главное меню",
+    "Last TV channel" : "Последний ТВ канал"
 };

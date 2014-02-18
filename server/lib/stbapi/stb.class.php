@@ -54,6 +54,8 @@ interface Stb
 
     public function setSpdifMode();
 
+    public function setPortalPrefs();
+
     public function setCommonSettings();
 
     public function setParentPassword();

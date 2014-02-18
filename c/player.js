@@ -231,6 +231,10 @@ player.prototype.init = function(){
                 if (params.hasOwnProperty("pri_subtitle_lang") && params.hasOwnProperty("sec_subtitle_lang")){
                     stb.player.set_subtitle_langs(stb.user.pri_subtitle_lang, stb.user.sec_subtitle_lang);
                 }
+
+                if (params.hasOwnProperty("play_in_preview_by_ok")){
+                    stb.user.play_in_preview_only_by_ok = stb.profile.play_in_preview_only_by_ok = params.play_in_preview_by_ok;
+                }
             }
         }
 

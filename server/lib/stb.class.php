@@ -559,7 +559,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['locale'] = $this->locale;
         $profile['stb_lang'] = $this->stb_lang;
 
-        $profile['display_menu_after_loading'] = Config::get('display_menu_after_loading');
+        $profile['display_menu_after_loading'] = empty($this->params['show_after_loading']) ? Config::getSafe('display_menu_after_loading', false) : $this->params['show_after_loading'] == 'main_menu';
+
         $profile['record_max_length']          = intval(Config::get('record_max_length'));
 
         $profile['web_proxy_host']         = Config::exist('stb_http_proxy_host') ? Config::get('stb_http_proxy_host') : '';
@@ -636,7 +637,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['invert_channel_switch_direction']  = Config::getSafe('invert_channel_switch_direction', false);
 
-        $profile['play_in_preview_only_by_ok']  = Config::getSafe('play_in_preview_only_by_ok', false);
+        $profile['play_in_preview_only_by_ok'] = $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok'];
 
         $profile['enable_stream_error_logging'] = Config::getSafe('enable_stream_error_logging', false);
 
@@ -683,26 +684,28 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public function getSettingsProfile(){
 
         return array(
-            "parent_password"      => $this->params['parent_password'],
-            "update_url"           => self::getImageUpdateUrl($this->params['stb_type']),
-            "test_download_url"    => Config::getSafe('test_download_url', ''),
-            "playback_buffer_size" => $this->params['playback_buffer_size'] / 1000,
-            "screensaver_delay"    => $this->params['screensaver_delay'],
-            "plasma_saving"        => $this->params['plasma_saving'],
-            "spdif_mode"           => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out'],
-            "modules"              => $this->getSettingsMenuModules(),
-            'ts_enabled'           => $this->params['ts_enabled'],
-            'ts_enable_icon'       => $this->params['ts_enable_icon'],
-            'ts_path'              => $this->params['ts_path'],
-            'ts_max_length'        => $this->params['ts_max_length'],
-            'ts_buffer_use'        => $this->params['ts_buffer_use'],
-            'ts_action_on_exit'    => $this->params['ts_action_on_exit'],
-            'ts_delay'             => $this->params['ts_delay'],
-            'hdmi_event_reaction'  => $this->params['hdmi_event_reaction'] === null ? (int) Config::getSafe('enable_hdmi_events_handler', true) : (int) $this->params['hdmi_event_reaction'],
-            'pri_audio_lang'       => $this->params['pri_audio_lang'],
-            'sec_audio_lang'       => $this->params['sec_audio_lang'],
-            'pri_subtitle_lang'    => $this->params['pri_subtitle_lang'],
-            'sec_subtitle_lang'    => $this->params['sec_subtitle_lang']
+            "parent_password"       => $this->params['parent_password'],
+            "update_url"            => self::getImageUpdateUrl($this->params['stb_type']),
+            "test_download_url"     => Config::getSafe('test_download_url', ''),
+            "playback_buffer_size"  => $this->params['playback_buffer_size'] / 1000,
+            "screensaver_delay"     => $this->params['screensaver_delay'],
+            "plasma_saving"         => $this->params['plasma_saving'],
+            "spdif_mode"            => $this->params['audio_out'] == 0 ? "1" : $this->params['audio_out'],
+            "modules"               => $this->getSettingsMenuModules(),
+            'ts_enabled'            => $this->params['ts_enabled'],
+            'ts_enable_icon'        => $this->params['ts_enable_icon'],
+            'ts_path'               => $this->params['ts_path'],
+            'ts_max_length'         => $this->params['ts_max_length'],
+            'ts_buffer_use'         => $this->params['ts_buffer_use'],
+            'ts_action_on_exit'     => $this->params['ts_action_on_exit'],
+            'ts_delay'              => $this->params['ts_delay'],
+            'hdmi_event_reaction'   => $this->params['hdmi_event_reaction'] === null ? (int) Config::getSafe('enable_hdmi_events_handler', true) : (int) $this->params['hdmi_event_reaction'],
+            'pri_audio_lang'        => $this->params['pri_audio_lang'],
+            'sec_audio_lang'        => $this->params['sec_audio_lang'],
+            'pri_subtitle_lang'     => $this->params['pri_subtitle_lang'],
+            'sec_subtitle_lang'     => $this->params['sec_subtitle_lang'],
+            'show_after_loading'    => empty($this->params['show_after_loading']) ? (Config::getSafe('display_menu_after_loading', false) ? 'main_menu' : 'last_channel') : $this->params['show_after_loading'],
+            'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok']
         );
     }
 
@@ -1496,6 +1499,19 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             ),
             array('id' => $this->id)
         )->result();
+    }
+
+    public function setPortalPrefs(){
+
+        $show_after_loading = $_REQUEST['show_after_loading'];
+        $play_in_preview_by_ok = intval($_REQUEST['play_in_preview_by_ok']);
+
+        return Mysql::getInstance()->update('users',
+            array(
+                 'show_after_loading'    => $show_after_loading,
+                 'play_in_preview_by_ok' => $play_in_preview_by_ok
+            ),
+            array('id' => $this->id));
     }
 
     public function setCommonSettings(){
