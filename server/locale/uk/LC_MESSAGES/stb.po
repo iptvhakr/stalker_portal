@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-17 12:42+0300\n"
-"PO-Revision-Date: 2014-02-17 12:43+0300\n"
+"POT-Creation-Date: 2014-02-18 11:07+0300\n"
+"PO-Revision-Date: 2014-02-18 11:07+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -253,7 +253,7 @@ msgid "By genres"
 msgstr "За жанрами"
 
 #: ../../../administrator/stat_video.php:170
-#: ../../../administrator/index.php:399
+#: ../../../administrator/index.php:409
 #: ../../../administrator/unique_video.php:330
 #: ../../../administrator/stat_video_users.php:145
 #: ../../../administrator/video_search.php:355
@@ -325,7 +325,7 @@ msgstr "Помилка: необхідно заповнити всі поля"
 
 #: ../../../administrator/anecdote.php:106
 #: ../../../administrator/anecdote.php:113
-#: ../../../administrator/index.php:414
+#: ../../../administrator/index.php:424
 msgid "Jokes"
 msgstr "Анекдоти"
 
@@ -509,174 +509,174 @@ msgstr "Параметр"
 msgid "Stalker MW admin interface"
 msgstr "Stalker MW адмін інтерфейс"
 
-#: ../../../administrator/index.php:124
+#: ../../../administrator/index.php:134
 msgid "Sections"
 msgstr "Розділи"
 
-#: ../../../administrator/index.php:128 ../../../administrator/add_itv.php:634
+#: ../../../administrator/index.php:138 ../../../administrator/add_itv.php:634
 #: ../../../administrator/add_itv.php:967
 msgid "IPTV channels"
 msgstr "IPTV канали"
 
-#: ../../../administrator/index.php:130 ../../../administrator/users.php:84
+#: ../../../administrator/index.php:140 ../../../administrator/users.php:84
 #: ../../../administrator/users.php:90
 msgid "Users"
 msgstr "Користувачі"
 
-#: ../../../administrator/index.php:134
+#: ../../../administrator/index.php:144
 #: ../../../administrator/add_video.php:575
 #: ../../../administrator/add_video.php:595
 msgid "VIDEO CLUB"
 msgstr "ВІДЕО КЛУБ"
 
-#: ../../../administrator/index.php:136 ../../../administrator/events.php:218
+#: ../../../administrator/index.php:146 ../../../administrator/events.php:218
 #: ../../../administrator/events.php:224
 #: ../../../administrator/profile.php:307
 msgid "Events"
 msgstr "Події"
 
-#: ../../../administrator/index.php:140
+#: ../../../administrator/index.php:150
 #: ../../../administrator/add_karaoke.php:204
 #: ../../../administrator/add_karaoke.php:211 ../../../lang/stb.php:27
 msgid "KARAOKE"
 msgstr "КАРАОКЕ"
 
-#: ../../../administrator/index.php:142
+#: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
 #: ../../../administrator/administrators.php:141
 msgid "Administrators"
 msgstr "Адміністратори"
 
-#: ../../../administrator/index.php:146 ../../../lang/stb.php:70
+#: ../../../administrator/index.php:156 ../../../lang/stb.php:70
 msgid "RADIO"
 msgstr "РАДІО"
 
-#: ../../../administrator/index.php:148
+#: ../../../administrator/index.php:158
 msgid "Logout"
 msgstr "вихід"
 
-#: ../../../administrator/index.php:158
+#: ../../../administrator/index.php:168
 msgid "TARIFFS"
 msgstr "ТАРИФИ"
 
-#: ../../../administrator/index.php:162
+#: ../../../administrator/index.php:172
 #, php-format
 msgid "Tasks (new messages: %s)"
 msgstr "Завдання (є нові повідомлення: %s)"
 
-#: ../../../administrator/index.php:224
+#: ../../../administrator/index.php:234
 msgid "tv"
 msgstr "тб"
 
-#: ../../../administrator/index.php:228
+#: ../../../administrator/index.php:238
 msgid "videoclub"
 msgstr "відеоклуб"
 
-#: ../../../administrator/index.php:265 ../../../administrator/tasks.php:164
+#: ../../../administrator/index.php:275 ../../../administrator/tasks.php:164
 msgid "karaoke"
 msgstr "караоке"
 
-#: ../../../administrator/index.php:269
+#: ../../../administrator/index.php:279
 msgid "radio"
 msgstr "радіо"
 
-#: ../../../administrator/index.php:273
+#: ../../../administrator/index.php:283
 msgid "infoportal"
 msgstr "інфопортал"
 
-#: ../../../administrator/index.php:286
+#: ../../../administrator/index.php:296
 msgid "tv archive"
 msgstr "тб архів"
 
-#: ../../../administrator/index.php:320
+#: ../../../administrator/index.php:330
 #, fuzzy
 msgid "timeshift"
 msgstr "{0}:{1}"
 
-#: ../../../administrator/index.php:353
+#: ../../../administrator/index.php:363
 msgid "records"
 msgstr "записи"
 
-#: ../../../administrator/index.php:372 ../../../administrator/index.php:479
+#: ../../../administrator/index.php:382 ../../../administrator/index.php:489
 #: ../../../administrator/stream_servers.php:131
 #: ../../../administrator/stream_servers.php:138
 msgid "Stream servers"
 msgstr "Сервера мовлення"
 
-#: ../../../administrator/index.php:399
+#: ../../../administrator/index.php:409
 msgid "search by MAC or IP"
 msgstr "пошук по MAC або IP"
 
-#: ../../../administrator/index.php:408 ../../../administrator/users.php:170
+#: ../../../administrator/index.php:418 ../../../administrator/users.php:170
 #: ../../../administrator/users.php:171 ../../../administrator/users.php:172
 #: ../../../administrator/users.php:173 ../../../administrator/users.php:174
 #: ../../../administrator/users.php:175
 msgid "Infoportal"
 msgstr "Інфопортал"
 
-#: ../../../administrator/index.php:412
+#: ../../../administrator/index.php:422
 msgid "City help"
 msgstr "Міська довідка"
 
-#: ../../../administrator/index.php:422
+#: ../../../administrator/index.php:432
 msgid "Statistics"
 msgstr "Статистика"
 
-#: ../../../administrator/index.php:426
+#: ../../../administrator/index.php:436
 msgid "Video statistics"
 msgstr "Статистика Відео"
 
-#: ../../../administrator/index.php:428
+#: ../../../administrator/index.php:438
 msgid "Users statistics for TV"
 msgstr "Абонентська статистика по ТБ"
 
-#: ../../../administrator/index.php:432
+#: ../../../administrator/index.php:442
 msgid "TV statistics"
 msgstr "Статистика ТБ"
 
-#: ../../../administrator/index.php:434
+#: ../../../administrator/index.php:444
 msgid "Users statistics for VIDEO"
 msgstr "Абонентська статистика по ВІДЕО"
 
-#: ../../../administrator/index.php:438
+#: ../../../administrator/index.php:448
 msgid "TV Archive statistics"
 msgstr "Статистика ТБ Архіву"
 
-#: ../../../administrator/index.php:440
+#: ../../../administrator/index.php:450
 msgid "Users statistics for Jokes"
 msgstr "Абонентська статистика по Анекдотах"
 
-#: ../../../administrator/index.php:444
+#: ../../../administrator/index.php:454
 msgid "TimeShift statistics"
 msgstr "Статистика TimeShift"
 
-#: ../../../administrator/index.php:446
+#: ../../../administrator/index.php:456
 msgid "Inactive users"
 msgstr "Неактивні абоненти"
 
-#: ../../../administrator/index.php:450
+#: ../../../administrator/index.php:460
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
 msgid "Moderators statistics"
 msgstr "Статистика Модераторів"
 
-#: ../../../administrator/index.php:456 ../../../administrator/claims.php:82
+#: ../../../administrator/index.php:466 ../../../administrator/claims.php:82
 #: ../../../administrator/claims.php:88
 msgid "Claims"
 msgstr "Скарги"
 
-#: ../../../administrator/index.php:467
+#: ../../../administrator/index.php:477
 msgid "Settings"
 msgstr "Налаштування"
 
-#: ../../../administrator/index.php:471
+#: ../../../administrator/index.php:481
 #: ../../../administrator/setting_common.php:127
 #: ../../../administrator/setting_common.php:137
 #: ../../../administrator/setting_common.php:270
 msgid "Firmware auto update"
 msgstr "Автоматичне оновлення прошивки"
 
-#: ../../../administrator/index.php:473
+#: ../../../administrator/index.php:483
 #: ../../../administrator/storages.php:175
 #: ../../../administrator/storages.php:182
 msgid "Storages"
@@ -3084,7 +3084,7 @@ msgstr "ВІДОБРАЖЕННЯ"
 
 #: ../../../lang/stb.php:21 ../../../lang/stb.php:74 ../../../lang/stb.php:99
 msgid "SORT"
-msgstr "СОРТИРОВКА"
+msgstr "СОРТУВАННЯ"
 
 #: ../../../lang/stb.php:22 ../../../lang/stb.php:100
 msgid "SEARCH"
@@ -3709,7 +3709,7 @@ msgstr "ДЕТАЛЬНІШЕ"
 
 #: ../../../lang/stb.php:235
 msgid "search_box_languages"
-msgstr "ua,en"
+msgstr "uk,en"
 
 #: ../../../lang/stb.php:238
 msgid "date_format"

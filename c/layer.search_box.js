@@ -269,6 +269,236 @@ function search_box(parent, options){
                 }
             ]
         },
+
+        { "lang" : "uk",
+           "map" : [
+                {
+                    "letter" : "1",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("1")}
+                },
+                {
+                    "letter" : "2",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("2")}
+                },
+                {
+                    "letter" : "3",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("3")}
+                },
+                {
+                    "letter" : "4",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("4")}
+                },
+                {
+                    "letter" : "5",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("5")}
+                },
+                {
+                    "letter" : "6",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("6")}
+                },
+                {
+                    "letter" : "7",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("7")}
+                },
+                {
+                    "letter" : "8",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("8")}
+                },
+                {
+                    "letter" : "9",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("9")}
+                },
+                {
+                    "letter" : "0",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("0")}
+                },
+                {
+                    "letter" : "&larr;",
+                    "cells"  : 2,
+                    "cmd"    : function(){this.del()}
+                },
+                {
+                    "letter" : "Й",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Й")}
+                },
+                {
+                    "letter" : "Ц",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ц")}
+                },
+                {
+                    "letter" : "У",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("У")}
+                },
+                {
+                    "letter" : "К",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("К")}
+                },
+                {
+                    "letter" : "Е",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Е")}
+                },
+                {
+                    "letter" : "Н",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Н")}
+                },
+                {
+                    "letter" : "Г",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Г")}
+                },
+                {
+                    "letter" : "Ш",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ш")}
+                },
+                {
+                    "letter" : "Щ",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Щ")}
+                },
+                {
+                    "letter" : "З",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("З")}
+                },
+                {
+                    "letter" : "Х",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Х")}
+                },
+                {
+                    "letter" : "Ї",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ї")}
+                },
+                {
+                    "letter" : "Ф",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ф")}
+                },
+                {
+                    "letter" : "І",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("І")}
+                },
+                {
+                    "letter" : "В",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("В")}
+                },
+                {
+                    "letter" : "А",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("А")}
+                },
+                {
+                    "letter" : "П",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("П")}
+                },
+                {
+                    "letter" : "Р",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Р")}
+                },
+                {
+                    "letter" : "О",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("О")}
+                },
+                {
+                    "letter" : "Л",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Л")}
+                },
+                {
+                    "letter" : "Д",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Д")}
+                },
+                {
+                    "letter" : "Ж",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ж")}
+                },
+                {
+                    "letter" : "English",
+                    "cells"  : 2,
+                    "cmd"    : function(){this.change_lang()}
+                },
+                {
+                    "letter" : "Я",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Я")}
+                },
+                {
+                    "letter" : "Ч",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ч")}
+                },
+                {
+                    "letter" : "С",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("С")}
+                },
+                {
+                    "letter" : "М",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("М")}
+                },
+                {
+                    "letter" : "И",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("И")}
+                },
+                {
+                    "letter" : "Т",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Т")}
+                },
+                {
+                    "letter" : "Ь",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ь")}
+                },
+                {
+                    "letter" : "Б",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Б")}
+                },
+                {
+                    "letter" : "Ю",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Ю")}
+                },
+                {
+                    "letter" : "Є",
+                    "cells"  : 1,
+                    "cmd"    : function(){this.add("Є")}
+                },
+                {
+                    "letter" : "Пробел",
+                    "cells"  : 2,
+                    "cmd"    : function(){this.add(" ")}
+                }
+            ]
+        },
         
         { "lang" : "en",
            "map" : [
@@ -438,9 +668,19 @@ function search_box(parent, options){
                     "cmd"    : function(){this.add(":")}
                 },
                 {
-                    "letter" : (function(self){if (self.languages.indexOf('ru') >= 0){ return "Русский"} return '';})(this),
+                    "letter" : (function(self){
+                        if (self.languages.indexOf('ru') >= 0){
+                            return "Русский"
+                        }else if(self.languages.indexOf('uk') >= 0){
+                            return "Укр"
+                        }
+                        return '';
+                    })(this),
                     "cells"  : 2,
-                    "cmd"    : (function(self){if (self.languages.indexOf('ru') >= 0){return function(){self.change_lang()}}})(this)
+                    "cmd"    : (function(self){
+                        if (self.languages.indexOf('ru') >= 0 || self.languages.indexOf('uk') >= 0){
+                            return function(){self.change_lang()}}
+                    })(this)
                 },
                 {
                     "letter" : "Z",
