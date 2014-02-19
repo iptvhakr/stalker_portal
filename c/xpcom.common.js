@@ -2024,7 +2024,9 @@ var screensaver = {
     init : function(){
         //_debug('screensaver.init');
 
-        //return;
+        if (gSTB.SetScreenSaverTime){
+            gSTB.SetScreenSaverTime(0);
+        }
 
         if (this.dom_obj){
             _debug('exit screensaver.init');

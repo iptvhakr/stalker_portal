@@ -318,7 +318,7 @@
                 return;
             }
 
-            if (gSTB.SetScreenSaverImplUrl){ // check if firmware version 0.2.18 and upper
+            if (gSTB.SetScreenSaverImplUrl || gSTB.SetScreenSaverInitAttr){ // check if firmware version 0.2.18 and upper
                 var smb_data = "[]";
             }else{
                 smb_data = Utf8.decode(stb.LoadUserData('smb_data')) || "[]";
