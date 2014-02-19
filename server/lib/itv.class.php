@@ -667,9 +667,18 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 $ch_idx = (int) array_search($last_id, $all_ids) + 1;
 
             }else{
+
+                $user = User::getInstance(Stb::getInstance()->id);
+                $options = $user->getServicesByType('option');
+                if ($options && array_search('show_unsubscribed_tv_channels', $options) !== false){
+                    $show_unsubscribed_tv_channels_option = true;
+                }else{
+                    $show_unsubscribed_tv_channels_option = false;
+                }
+
                 $query = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number));
 
-                if (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array()))){
+                if (!$show_unsubscribed_tv_channels_option && (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array())))){
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
@@ -747,6 +756,14 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $fav_str = 'null';
         }
 
+        $user = User::getInstance(Stb::getInstance()->id);
+        $options = $user->getServicesByType('option');
+        if ($options && array_search('show_unsubscribed_tv_channels', $options) !== false){
+            $show_unsubscribed_tv_channels_option = true;
+        }else{
+            $show_unsubscribed_tv_channels_option = false;
+        }
+
         $result = $this->getData();
 
         if (@$_REQUEST['sortby']){
@@ -768,7 +785,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $result = $result->in('itv.id', $fav);
         }
 
-        if (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array()))){
+        if (!$show_unsubscribed_tv_channels_option && (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array())))){
             $result = $result->in('itv.id', $all_user_channels_ids);
         }
 
