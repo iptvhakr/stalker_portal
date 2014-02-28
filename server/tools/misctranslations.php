@@ -72,6 +72,7 @@ _('Historical');
 _('Clips');
 _('Comedy');
 _('Melodrama');
+_('Romantic');
 _('Humour');
 _('Adventures');
 _('Thriller');

@@ -695,7 +695,7 @@ function common_xpcom(){
                         result = null;
                     } else if (req.status == 0){
                         console.log('Abort request');
-                        connection_problem.show();
+                        //connection_problem.show();
                     }else{
                         connection_problem.show();
                         console.log('req.status: '+req.status);
