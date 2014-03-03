@@ -1114,6 +1114,13 @@ function common_xpcom(){
 
                     stb.EnableServiceButton(!!this.user['enable_service_button']);
 
+                    if (gSTB.SetSettingsInitAttr){
+                        gSTB.SetSettingsInitAttr(JSON.stringify({
+                            url: '/home/web/system/settings/index.html',
+                            backgroundColor: '#000'
+                        }));
+                    }
+
                     stb.EnableVKButton(true);
 
                 }catch(e){
