@@ -189,6 +189,8 @@
                 }else{
                     stb.SetTopWin(0);
                 }
+
+                stb.EnableVKButton(false);
             }catch(e){
                 _debug(e);
             }
@@ -236,6 +238,7 @@
                 
                 stb.SetTopWin(0);
                 stb.SetPIG(1, -1, -1, -1);
+                stb.EnableVKButton(true);
             }catch(e){
                 _debug(e);
             }
