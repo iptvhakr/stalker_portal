@@ -5,7 +5,7 @@ API_URL=http://login:password@localhost/stalker_portal/api/monitoring_links/
 PART=1/1
 
 function get_channels {
-    curl -H "Accept: text/channel-monitoring-id-url,part=$PART" --request GET $API_URL 2>/dev/null
+    curl -H "Accept: text/channel-monitoring-id-url,part=$PART" --globoff --request GET $API_URL 2>/dev/null
 }
 
 function set_ok {
