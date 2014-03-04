@@ -76,7 +76,12 @@
                 function(result){
                     _debug('on load_queue', result);
 
-                    this._queue = result && JSON.parse(result) || [];
+                    try{
+                        this._queue = result && JSON.parse(result) || [];
+                    }catch (e){
+                        _debug("Parse error", e);
+                        this._queue = [];
+                    }
 
                     this._queue = this._queue.map(function(item){
                         //if (item.state != 3 && item.state != 0){
