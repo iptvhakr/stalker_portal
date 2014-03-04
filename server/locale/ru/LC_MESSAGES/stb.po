@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-08 10:37+0300\n"
-"PO-Revision-Date: 2014-02-08 10:38+0300\n"
+"POT-Creation-Date: 2014-03-03 16:45+0300\n"
+"PO-Revision-Date: 2014-03-03 16:45+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -253,7 +253,7 @@ msgid "By genres"
 msgstr "По жанрам"
 
 #: ../../../administrator/stat_video.php:170
-#: ../../../administrator/index.php:399
+#: ../../../administrator/index.php:409
 #: ../../../administrator/unique_video.php:330
 #: ../../../administrator/stat_video_users.php:145
 #: ../../../administrator/video_search.php:355
@@ -325,7 +325,7 @@ msgstr "Ошибка: необходимо заполнить все поля"
 
 #: ../../../administrator/anecdote.php:106
 #: ../../../administrator/anecdote.php:113
-#: ../../../administrator/index.php:414
+#: ../../../administrator/index.php:424
 msgid "Jokes"
 msgstr "Анекдоты"
 
@@ -509,174 +509,174 @@ msgstr "Параметр"
 msgid "Stalker MW admin interface"
 msgstr "Stalker MW админ интерфейс"
 
-#: ../../../administrator/index.php:124
+#: ../../../administrator/index.php:134
 msgid "Sections"
 msgstr "Разделы"
 
-#: ../../../administrator/index.php:128 ../../../administrator/add_itv.php:634
+#: ../../../administrator/index.php:138 ../../../administrator/add_itv.php:634
 #: ../../../administrator/add_itv.php:967
 msgid "IPTV channels"
 msgstr "IPTV каналы"
 
-#: ../../../administrator/index.php:130 ../../../administrator/users.php:84
+#: ../../../administrator/index.php:140 ../../../administrator/users.php:84
 #: ../../../administrator/users.php:90
 msgid "Users"
 msgstr "Пользователи"
 
-#: ../../../administrator/index.php:134
+#: ../../../administrator/index.php:144
 #: ../../../administrator/add_video.php:575
 #: ../../../administrator/add_video.php:595
 msgid "VIDEO CLUB"
 msgstr "ВИДЕО КЛУБ"
 
-#: ../../../administrator/index.php:136 ../../../administrator/events.php:218
+#: ../../../administrator/index.php:146 ../../../administrator/events.php:218
 #: ../../../administrator/events.php:224
 #: ../../../administrator/profile.php:307
 msgid "Events"
 msgstr "События"
 
-#: ../../../administrator/index.php:140
+#: ../../../administrator/index.php:150
 #: ../../../administrator/add_karaoke.php:204
 #: ../../../administrator/add_karaoke.php:211 ../../../lang/stb.php:27
 msgid "KARAOKE"
 msgstr "КАРАОКЕ"
 
-#: ../../../administrator/index.php:142
+#: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
 #: ../../../administrator/administrators.php:141
 msgid "Administrators"
 msgstr "Администраторы"
 
-#: ../../../administrator/index.php:146 ../../../lang/stb.php:70
+#: ../../../administrator/index.php:156 ../../../lang/stb.php:70
 msgid "RADIO"
 msgstr "РАДИО"
 
-#: ../../../administrator/index.php:148
+#: ../../../administrator/index.php:158
 msgid "Logout"
 msgstr "Выход"
 
-#: ../../../administrator/index.php:158
+#: ../../../administrator/index.php:168
 msgid "TARIFFS"
 msgstr "ТАРИФЫ"
 
-#: ../../../administrator/index.php:162
+#: ../../../administrator/index.php:172
 #, php-format
 msgid "Tasks (new messages: %s)"
 msgstr "Задания (новые сообщения: %s)"
 
-#: ../../../administrator/index.php:224
+#: ../../../administrator/index.php:234
 msgid "tv"
 msgstr "тв"
 
-#: ../../../administrator/index.php:228
+#: ../../../administrator/index.php:238
 msgid "videoclub"
 msgstr "видеоклуб"
 
-#: ../../../administrator/index.php:265 ../../../administrator/tasks.php:164
+#: ../../../administrator/index.php:275 ../../../administrator/tasks.php:164
 msgid "karaoke"
 msgstr "караоке"
 
-#: ../../../administrator/index.php:269
+#: ../../../administrator/index.php:279
 msgid "radio"
 msgstr "радио"
 
-#: ../../../administrator/index.php:273
+#: ../../../administrator/index.php:283
 msgid "infoportal"
 msgstr "инфопортал"
 
-#: ../../../administrator/index.php:286
+#: ../../../administrator/index.php:296
 msgid "tv archive"
 msgstr "тв архив"
 
-#: ../../../administrator/index.php:320
+#: ../../../administrator/index.php:330
 #, fuzzy
 msgid "timeshift"
 msgstr "{0}:{1}"
 
-#: ../../../administrator/index.php:353
+#: ../../../administrator/index.php:363
 msgid "records"
 msgstr "записи"
 
-#: ../../../administrator/index.php:372 ../../../administrator/index.php:479
+#: ../../../administrator/index.php:382 ../../../administrator/index.php:489
 #: ../../../administrator/stream_servers.php:131
 #: ../../../administrator/stream_servers.php:138
 msgid "Stream servers"
 msgstr "Сервера вещания"
 
-#: ../../../administrator/index.php:399
+#: ../../../administrator/index.php:409
 msgid "search by MAC or IP"
 msgstr "поиск по MAC или IP"
 
-#: ../../../administrator/index.php:408 ../../../administrator/users.php:170
+#: ../../../administrator/index.php:418 ../../../administrator/users.php:170
 #: ../../../administrator/users.php:171 ../../../administrator/users.php:172
 #: ../../../administrator/users.php:173 ../../../administrator/users.php:174
 #: ../../../administrator/users.php:175
 msgid "Infoportal"
 msgstr "Инфопортал"
 
-#: ../../../administrator/index.php:412
+#: ../../../administrator/index.php:422
 msgid "City help"
 msgstr "Городская справка"
 
-#: ../../../administrator/index.php:422
+#: ../../../administrator/index.php:432
 msgid "Statistics"
 msgstr "Статистика"
 
-#: ../../../administrator/index.php:426
+#: ../../../administrator/index.php:436
 msgid "Video statistics"
 msgstr "Статистика Видео"
 
-#: ../../../administrator/index.php:428
+#: ../../../administrator/index.php:438
 msgid "Users statistics for TV"
 msgstr "Абонентская статистика по ТВ"
 
-#: ../../../administrator/index.php:432
+#: ../../../administrator/index.php:442
 msgid "TV statistics"
 msgstr "Статистика ТВ"
 
-#: ../../../administrator/index.php:434
+#: ../../../administrator/index.php:444
 msgid "Users statistics for VIDEO"
 msgstr "Абонентская статистика по ВИДЕО"
 
-#: ../../../administrator/index.php:438
+#: ../../../administrator/index.php:448
 msgid "TV Archive statistics"
 msgstr "Статистика ТВ Архива"
 
-#: ../../../administrator/index.php:440
+#: ../../../administrator/index.php:450
 msgid "Users statistics for Jokes"
 msgstr "Абонентская статистика по Анекдотам"
 
-#: ../../../administrator/index.php:444
+#: ../../../administrator/index.php:454
 msgid "TimeShift statistics"
 msgstr "Статистика TimeShift"
 
-#: ../../../administrator/index.php:446
+#: ../../../administrator/index.php:456
 msgid "Inactive users"
 msgstr "Неактивные абоненты"
 
-#: ../../../administrator/index.php:450
+#: ../../../administrator/index.php:460
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
 msgid "Moderators statistics"
 msgstr "Статистика Модераторов"
 
-#: ../../../administrator/index.php:456 ../../../administrator/claims.php:82
+#: ../../../administrator/index.php:466 ../../../administrator/claims.php:82
 #: ../../../administrator/claims.php:88
 msgid "Claims"
 msgstr "Жалобы"
 
-#: ../../../administrator/index.php:467
+#: ../../../administrator/index.php:477
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../../../administrator/index.php:471
+#: ../../../administrator/index.php:481
 #: ../../../administrator/setting_common.php:127
 #: ../../../administrator/setting_common.php:137
 #: ../../../administrator/setting_common.php:270
 msgid "Firmware auto update"
 msgstr "Автоматическое обновление прошивки"
 
-#: ../../../administrator/index.php:473
+#: ../../../administrator/index.php:483
 #: ../../../administrator/storages.php:175
 #: ../../../administrator/storages.php:182
 msgid "Storages"
@@ -2598,7 +2598,7 @@ msgid "detective"
 msgstr "детектив"
 
 #: ../../../tools/misctranslations.php:14
-#: ../../../tools/misctranslations.php:96
+#: ../../../tools/misctranslations.php:97
 msgid "children's"
 msgstr "детское"
 
@@ -2663,7 +2663,7 @@ msgid "musical"
 msgstr "музыкальный"
 
 #: ../../../tools/misctranslations.php:30
-#: ../../../tools/misctranslations.php:98
+#: ../../../tools/misctranslations.php:99
 msgid "science"
 msgstr "наука"
 
@@ -2765,7 +2765,7 @@ msgid "Documentary"
 msgstr "Документальное"
 
 #: ../../../tools/misctranslations.php:59
-#: ../../../tools/misctranslations.php:75
+#: ../../../tools/misctranslations.php:76
 msgid "Humour"
 msgstr "Юмор"
 
@@ -2805,243 +2805,247 @@ msgstr "Комедия"
 msgid "Melodrama"
 msgstr "Мелодрама"
 
-#: ../../../tools/misctranslations.php:76
+#: ../../../tools/misctranslations.php:75
+msgid "Romantic"
+msgstr "Романтика"
+
+#: ../../../tools/misctranslations.php:77
 msgid "Adventures"
 msgstr "Приключения"
 
-#: ../../../tools/misctranslations.php:77
+#: ../../../tools/misctranslations.php:78
 msgid "Thriller"
 msgstr "Триллер"
 
-#: ../../../tools/misctranslations.php:78
+#: ../../../tools/misctranslations.php:79
 msgid "Horrors"
 msgstr "Ужасы"
 
-#: ../../../tools/misctranslations.php:79
+#: ../../../tools/misctranslations.php:80
 msgid "Fiction"
 msgstr "Фантастика"
 
-#: ../../../tools/misctranslations.php:80
+#: ../../../tools/misctranslations.php:81
 msgid "Erotica"
 msgstr "Эротика"
 
-#: ../../../tools/misctranslations.php:81
+#: ../../../tools/misctranslations.php:82
 msgid "Fantasy"
 msgstr "Фэнтези"
 
-#: ../../../tools/misctranslations.php:82
+#: ../../../tools/misctranslations.php:83
 msgid "Animation"
 msgstr "Анимация"
 
-#: ../../../tools/misctranslations.php:83
+#: ../../../tools/misctranslations.php:84
 msgid "Childrens"
 msgstr "Детский"
 
-#: ../../../tools/misctranslations.php:84
+#: ../../../tools/misctranslations.php:85
 msgid "Musical"
 msgstr "Музыкальный"
 
-#: ../../../tools/misctranslations.php:85
+#: ../../../tools/misctranslations.php:86
 msgid "Western"
 msgstr "Вестерн"
 
-#: ../../../tools/misctranslations.php:86
+#: ../../../tools/misctranslations.php:87
 msgid "Serial"
 msgstr "Сериал"
 
-#: ../../../tools/misctranslations.php:87
+#: ../../../tools/misctranslations.php:88
 msgid "Sports"
 msgstr "Спорт"
 
-#: ../../../tools/misctranslations.php:88
+#: ../../../tools/misctranslations.php:89
 msgid "Teach"
 msgstr "Обучающее"
 
-#: ../../../tools/misctranslations.php:89
+#: ../../../tools/misctranslations.php:90
 msgid "Information"
 msgstr "Информационный"
 
-#: ../../../tools/misctranslations.php:94
+#: ../../../tools/misctranslations.php:95
 msgid "information"
 msgstr "информационный"
 
-#: ../../../tools/misctranslations.php:95
+#: ../../../tools/misctranslations.php:96
 msgid "entertainments"
 msgstr "развлечения"
 
-#: ../../../tools/misctranslations.php:97
+#: ../../../tools/misctranslations.php:98
 msgid "cinema"
 msgstr "кино"
 
-#: ../../../tools/misctranslations.php:99
+#: ../../../tools/misctranslations.php:100
 msgid "sports"
 msgstr "спорт"
 
-#: ../../../tools/misctranslations.php:100
+#: ../../../tools/misctranslations.php:101
 msgid "music"
 msgstr "музыка"
 
-#: ../../../tools/misctranslations.php:101
+#: ../../../tools/misctranslations.php:102
 msgid "business"
 msgstr "бизнес"
 
-#: ../../../tools/misctranslations.php:102
+#: ../../../tools/misctranslations.php:103
 msgid "culture"
 msgstr "культура"
 
-#: ../../../tools/misctranslations.php:103
+#: ../../../tools/misctranslations.php:104
 msgid "for adults"
 msgstr "для взрослых"
 
-#: ../../../tools/misctranslations.php:104
+#: ../../../tools/misctranslations.php:105
 msgid "information-entertaining"
 msgstr "информационно-развлекательный"
 
-#: ../../../tools/misctranslations.php:105
+#: ../../../tools/misctranslations.php:106
 msgid "religion"
 msgstr "религия"
 
-#: ../../../tools/misctranslations.php:106
+#: ../../../tools/misctranslations.php:107
 msgid "social"
 msgstr "социальный"
 
-#: ../../../tools/misctranslations.php:107
+#: ../../../tools/misctranslations.php:108
 msgid "woman's"
 msgstr "женский"
 
-#: ../../../tools/misctranslations.php:108
+#: ../../../tools/misctranslations.php:109
 msgid "scientific-entertainment"
 msgstr "научно-развлекательный"
 
-#: ../../../tools/misctranslations.php:113
+#: ../../../tools/misctranslations.php:114
 msgid "Pop"
 msgstr "Поп"
 
-#: ../../../tools/misctranslations.php:114
+#: ../../../tools/misctranslations.php:115
 msgid "Rock"
 msgstr "Рок"
 
-#: ../../../tools/misctranslations.php:115
+#: ../../../tools/misctranslations.php:116
 msgid "Chanson"
 msgstr "Шансон"
 
-#: ../../../tools/misctranslations.php:116
+#: ../../../tools/misctranslations.php:117
 msgid "From cartoon films"
 msgstr "Из мультфильмов"
 
-#: ../../../tools/misctranslations.php:117
+#: ../../../tools/misctranslations.php:118
 msgid "Nurseries"
 msgstr "Детские"
 
-#: ../../../tools/misctranslations.php:118
+#: ../../../tools/misctranslations.php:119
 msgid "National"
 msgstr "Народные"
 
-#: ../../../tools/misctranslations.php:119
+#: ../../../tools/misctranslations.php:120
 msgid "Jazz"
 msgstr "Джаз"
 
-#: ../../../tools/misctranslations.php:120
+#: ../../../tools/misctranslations.php:121
 msgid "From films"
 msgstr "Из кинофильмов"
 
-#: ../../../tools/misctranslations.php:125
+#: ../../../tools/misctranslations.php:126
 msgid "Clear"
 msgstr "Ясно"
 
-#: ../../../tools/misctranslations.php:126
+#: ../../../tools/misctranslations.php:127
 msgid "Partly Cloudy"
 msgstr "Переменная облачность"
 
-#: ../../../tools/misctranslations.php:127
+#: ../../../tools/misctranslations.php:128
 msgid "Cloudy"
 msgstr "Облачно"
 
-#: ../../../tools/misctranslations.php:128
+#: ../../../tools/misctranslations.php:129
 msgid "Overcast"
 msgstr "Пасмурно"
 
-#: ../../../tools/misctranslations.php:129
+#: ../../../tools/misctranslations.php:130
 msgid "Little rain"
 msgstr "Кратковременный дождь"
 
-#: ../../../tools/misctranslations.php:130
+#: ../../../tools/misctranslations.php:131
 msgid "Rain"
 msgstr "Дождь"
 
-#: ../../../tools/misctranslations.php:131
+#: ../../../tools/misctranslations.php:132
 msgid "Thunderstorm"
 msgstr "Гроза"
 
-#: ../../../tools/misctranslations.php:132
+#: ../../../tools/misctranslations.php:133
 msgid "Hail"
 msgstr "Пасмурно"
 
-#: ../../../tools/misctranslations.php:133
+#: ../../../tools/misctranslations.php:134
 msgid "Sleet"
 msgstr "Мокрый снег"
 
-#: ../../../tools/misctranslations.php:134
+#: ../../../tools/misctranslations.php:135
 msgid "Snow"
 msgstr "Снег"
 
-#: ../../../tools/misctranslations.php:135
+#: ../../../tools/misctranslations.php:136
 msgid "Snowfall"
 msgstr "Снегопад"
 
-#: ../../../tools/misctranslations.php:138
+#: ../../../tools/misctranslations.php:139
 msgid "N"
 msgstr "С"
 
-#: ../../../tools/misctranslations.php:140
+#: ../../../tools/misctranslations.php:141
 msgid "NE"
 msgstr "СВ"
 
-#: ../../../tools/misctranslations.php:142
+#: ../../../tools/misctranslations.php:143
 msgid "E"
 msgstr "В"
 
-#: ../../../tools/misctranslations.php:144
+#: ../../../tools/misctranslations.php:145
 msgid "SE"
 msgstr "ЮВ"
 
-#: ../../../tools/misctranslations.php:146
+#: ../../../tools/misctranslations.php:147
 msgid "S"
 msgstr "Ю"
 
-#: ../../../tools/misctranslations.php:148
+#: ../../../tools/misctranslations.php:149
 msgid "SW"
 msgstr "ЮЗ"
 
-#: ../../../tools/misctranslations.php:150
+#: ../../../tools/misctranslations.php:151
 msgid "W"
 msgstr "З"
 
-#: ../../../tools/misctranslations.php:152
+#: ../../../tools/misctranslations.php:153
 msgid "NW"
 msgstr "СЗ"
 
-#: ../../../tools/misctranslations.php:154
+#: ../../../tools/misctranslations.php:155
 msgid "Tariff plan is changed, please restart your STB"
 msgstr "Тарифный план изменен. Пожалуйста, перезагрузите приставку."
 
-#: ../../../tools/misctranslations.php:155
+#: ../../../tools/misctranslations.php:156
 msgid "Starting recording"
 msgstr "Начинается запись"
 
-#: ../../../tools/misctranslations.php:156
+#: ../../../tools/misctranslations.php:157
 msgid "Stopped recording"
 msgstr "Остановлена запись"
 
-#: ../../../tools/misctranslations.php:157 ../../../lang/stb.php:224
+#: ../../../tools/misctranslations.php:158 ../../../lang/stb.php:224
 msgid "on channel"
 msgstr "на канале"
 
-#: ../../../tools/misctranslations.php:159
+#: ../../../tools/misctranslations.php:160
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашей приставки устарела.<br>Пожалуйста обновите её."
 
-#: ../../../tools/misctranslations.php:160 ../../../lib/stb.class.php:468
+#: ../../../tools/misctranslations.php:161 ../../../lib/stb.class.php:468
 #: ../../../lib/stb.class.php:479
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка повреждена.<br/> Свяжитесь с провайдером."
@@ -4418,13 +4422,13 @@ msgstr "вчера"
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
 
-#: ../../../lib/itv.class.php:1337
+#: ../../../lib/itv.class.php:1354
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1347
+#: ../../../lib/itv.class.php:1364
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
