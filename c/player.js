@@ -838,7 +838,10 @@ player.prototype.event_callback = function(event, params){
                     }
 
                     if (this.is_tv){
-                        stb.log_stream_error(this.cur_tv_item['id'], 1);
+
+                        if (stb.profile['enable_stream_error_logging']){
+                            stb.log_stream_error(this.cur_tv_item['id'], 1);
+                        }
 
                         this.replay_channel_timer = window.setTimeout(
                             function(){
@@ -1265,7 +1268,7 @@ player.prototype.event_callback = function(event, params){
             
             if (this.media_type == 'stream'){
 
-                if (this.is_tv){
+                if (this.is_tv && stb.profile['enable_stream_error_logging']){
                     stb.log_stream_error(this.cur_tv_item['id'], 5);
                 }
 
@@ -1385,6 +1388,13 @@ player.prototype.event_callback = function(event, params){
                 this.is_tv = true;
             }
 
+            break;
+        }
+        case 129: // Stream losses
+        {
+            if (this.is_tv && stb.profile['enable_stream_losses_logging']){
+                stb.log_stream_error(this.cur_tv_item['id'], 129);
+            }
             break;
         }
     }

@@ -673,6 +673,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['show_channel_logo_in_preview'] = Config::getSafe('show_channel_logo_in_preview', false);
 
+        $profile['enable_stream_losses_logging'] = Config::getSafe('enable_stream_losses_logging', false);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);

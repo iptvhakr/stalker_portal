@@ -1596,12 +1596,6 @@ function common_xpcom(){
 
     this.log_stream_error = function(ch_id, event){
 
-        _debug('stb.profile[enable_stream_error_logging]', stb.profile['enable_stream_error_logging']);
-
-        if (!stb.profile['enable_stream_error_logging']){
-            return;
-        }
-
         this.load(
             {
                 "type"   : "stb",
