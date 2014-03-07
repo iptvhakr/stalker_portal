@@ -10,7 +10,13 @@ class RESTCommandStreamRecorder extends RESTCommand
 
     public function get(RESTRequest $request){
 
-        return $this->manager->getTasks();
+        $identifiers = $request->getIdentifiers();
+
+        if (empty($identifiers)){
+            return $this->manager->getTasks();
+        }
+
+        return $this->manager->getRecordingInfo($identifiers[0]);
     }
 
     public function update(RESTRequest $request){
@@ -31,14 +37,14 @@ class RESTCommandStreamRecorder extends RESTCommand
             throw new RESTCommandException('Empty identifiers');
         }
 
-        if ($put['action'] == 'start'){
+        if ($put['action'] == 'started'){
             foreach($identifiers as $identifier){
-                $this->manager->startDeferredNow(intval(($identifier)));
+                $this->manager->setStarted(intval(($identifier)));
             }
             return true;
-        }elseif ($put['action'] == 'stop'){
+        }elseif ($put['action'] == 'ended'){
             foreach($identifiers as $identifier){
-                $this->manager->stopAndUsrMsg(intval(($identifier)));
+                $this->manager->setEnded(intval(($identifier)));
             }
             return true;
         }else{

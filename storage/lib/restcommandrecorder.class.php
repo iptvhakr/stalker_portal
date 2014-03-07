@@ -19,6 +19,8 @@ class RESTCommandRecorder extends RESTCommand
 
         $url    = $request->getData('url');
         $rec_id = intval($request->getData('rec_id'));
+        $start_delay = intval($request->getData('start_delay'));
+        $duration    = intval($request->getData('duration'));
 
         if (empty($url)){
             throw new ErrorException('Empty url');
@@ -28,7 +30,15 @@ class RESTCommandRecorder extends RESTCommand
             throw new ErrorException('Empty rec_id');
         }
 
-        return $this->manager->start($url, $rec_id);
+        if (empty($duration)){
+            throw new ErrorException('Empty recording duration');
+        }
+
+        if ($start_delay < 0){
+            $start_delay = 0;
+        }
+
+        return $this->manager->start($url, $rec_id, $start_delay, $duration);
     }
 
     /**
@@ -47,8 +57,12 @@ class RESTCommandRecorder extends RESTCommand
         }
 
         $rec_id = intval($identifiers[0]);
-
-        return $this->manager->stop($rec_id);
+        $stop_time = intval($request->getData('stop_time'));
+        if ($stop_time){
+            return $this->manager->updateStopTime($rec_id, $stop_time);
+        }else{
+            return $this->manager->stop($rec_id);
+        }
     }
 
     /**

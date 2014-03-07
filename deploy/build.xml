@@ -42,7 +42,7 @@
                 name="build.dbdeploy.undofile"
                 value="deploy/scripts/undo-${DSTAMP}${TSTAMP}.sql"/>
 
-        <exec command="stop stalkerd"/>
+        <exec command="stop stalkerd" level="info"/>
 
         <property
                 name="nodejs.bin"
@@ -64,14 +64,8 @@
             </then>
         </if>
 
-        <copy file="./src/stalkerd.conf" tofile="/etc/init/stalkerd.conf" overwrite="true">
-            <filterchain>
-                <replacetokens>
-                    <token key="STALKERD_INDEX_PATH" value="${project_path}/daemon/index.js"/>
-                    <token key="NODEJS_BIN" value="${nodejs.bin}"/>
-                </replacetokens>
-            </filterchain>
-        </copy>
+        <!-- remove deprecated daemon -->
+        <delete file="/etc/init/stalkerd.conf" quiet="true" />
 
         <!-- removing stalker tasks from crontab -->
         <exec command="crontab -l | grep -v ${project_path} > /tmp/crontab; crontab /tmp/crontab" checkreturn="true"/>
@@ -90,8 +84,6 @@
         </copy>
 
         <chmod file="/etc/cron.d/stalker_${path_crc}" mode="0755"/>
-
-        <exec command="start stalkerd"/>
 
         <copy file="./src/stalkerd" tofile="/etc/logrotate.d/stalkerd" overwrite="true"/>
 
