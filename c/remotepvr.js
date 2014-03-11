@@ -6,6 +6,8 @@
 
     function RemotePvr(){
 
+        this.stop_timeouts = {};
+
         this.duration_input = new DurationInputBox({"max_val" : stb.user['record_max_length']});
 
         this.stop_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('remote_pvr_stop_confirm')});
@@ -86,7 +88,9 @@
 
                                         if (stop_t < 0) stop_t = 0;
 
-                                        window.setTimeout(function(){
+                                        window.clearTimeout(self.stop_timeouts[rec_id]);
+
+                                        self.stop_timeouts[rec_id] = window.setTimeout(function(){
                                             _debug('delete rec');
                                             _debug('rec_id', rec_id);
                                             var idx = stb.recordings.getIdxByVal('id', rec_id);
@@ -128,6 +132,8 @@
         this.start_rec = function(ch_id){
             _debug('remote_pvr.start_rec', ch_id);
 
+            var self = this;
+
             stb.load(
                 {
                     "type"   : "remote_pvr",
@@ -150,15 +156,15 @@
                         stb.recordings = local_recordings.concat(result);
                         _debug('stb.recordings', stb.recordings);
 
-                        var record = stb.recordings[stb.recordings.getIdxByVal('ch_id', ch_id)];
+                        var rec_idx = stb.recordings.getIdxByVal('ch_id', ch_id);
+
+                        var record = stb.recordings[rec_idx];
 
                         _debug('record', record);
 
-                        stb.player.show_rec_icon(stb.recordings[stb.recordings.getIdxByVal('ch_id', ch_id)]);
+                        stb.player.show_rec_icon(record);
 
-                        var self = this;
-
-                        window.setTimeout(function(){
+                        self.stop_timeouts[record.id] = window.setTimeout(function(){
                             _debug('delete rec');
                             _debug('record.id', record.id);
                             var idx = stb.recordings.getIdxByVal('id', record.id);

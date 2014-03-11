@@ -74,12 +74,14 @@ class StreamRecorder extends Master
 
         $channel = Itv::getChannelById($user_record['ch_id']);
 
-        $event = new SysEvent();
-        $event->setUserListById($user_record['uid']);
-        $event->setAutoHideTimeout(300);
-        User::clear();
-        $user = User::getInstance((int) $user_record['uid']);
-        $event->sendMsg($user->getLocalizedText('Starting recording') . ' — ' . $user_record['program'] . ' ' .  $user->getLocalizedText('on channel') . ' ' . $channel['name']);
+        if (!empty($user_record['program_real_id'])){
+            $event = new SysEvent();
+            $event->setUserListById($user_record['uid']);
+            $event->setAutoHideTimeout(300);
+            User::clear();
+            $user = User::getInstance((int) $user_record['uid']);
+            $event->sendMsg($user->getLocalizedText('Starting recording') . ' — ' . $user_record['program'] . ' ' .  $user->getLocalizedText('on channel') . ' ' . $channel['name']);
+        }
 
         return true;
     }
