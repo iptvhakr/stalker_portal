@@ -3143,6 +3143,10 @@ player.prototype.bind = function(){
             this.set_pos_and_play(true);
         }else if(this.quick_ch_switch.on){
             this.cancel_quick_ch_switch();
+        }else if(this.is_tv){
+            this.hide_info();
+            module.tv._show();
+            module.tv.set_short_container();
         }else{
             if (this.active_time_shift || this.active_local_time_shift){
                 this.show_time_shift_exit_confirm();
