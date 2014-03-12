@@ -103,6 +103,14 @@
             </filterchain>
         </copy>
 
+        <property name="mysql_host" value="${mysql_host}" override="true">
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="p:" replace="" ignoreCase="true"/>
+                </replaceregexp>
+            </filterchain>
+        </property>
+
         <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
               dir="${build.dir}" checkreturn="false" outputProperty="mysql_init.error.msg" returnProperty="mysql_init.error.code" />
 
