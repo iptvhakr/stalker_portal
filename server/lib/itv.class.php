@@ -11,6 +11,8 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     public static $instance = null;
     
     private $all_user_channels_ids;
+    private $censored_list = null;
+    private $censored_exclude_list = null;
     private $include_censored = true;
 
     /**
@@ -469,28 +471,29 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $all_user_channels_ids = $this->getAllUserChannelsIds();
 
+        if (!$include_censored){
+            $censored_origin = Mysql::getInstance()->from('itv')->where(array('censored' => 1))->get()->all('id');
+            $censored_list = $this->getCensoredList();
+            $censored_exclude_list = $this->getCensoredExcludeList();
+
+            $censored_real = array_values(array_diff(array_merge($censored_origin, $censored_list), $censored_exclude_list));
+        }
+
         /** @var Mysql $query  */
         $query = $this->db->from('itv');
 
         $this->include_censored = $include_censored;
         
         if (!$include_censored){
-            $query->where(array('censored' => 0));
+            $query->not_in('id', $censored_real);
         }
                         
         if (!$this->stb->isModerator()){
             $query->where(array('status' => 1));
         }
 
-        if (Config::get('enable_tv_quality_filter')){
-            //$query->where(array('quality' => $this->stb->getParam('tv_quality')));
-        }
+        $query->in('id', $all_user_channels_ids);
 
-        //if (Config::get('enable_tariff_plans')){
-            $query->in('id', $all_user_channels_ids);
-        //}
-
-        
         return $query;
     }
 
@@ -543,19 +546,11 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         if (empty($fav_str)){
             $fav_str = 'null';
         }
-        
-        $fav_channels = $this->getChannels()
-                                            ->in('id' , $fav_ids)
-                                            ->orderby('field(id,'.$fav_str.')');
-                                            //->get()
-                                            //->all();
-        
-        /*for ($i=0; $i<count($fav_channels); $i++){
-            $fav_channels[$i]['number'] = $i+1;
-        }
-        
-        return $fav_channels;   */
-        
+
+        $fav_channels = $this->getChannels(true)->in('id', $fav_ids)->orderby('field(id,' . $fav_str . ')');
+
+        $this->include_censored = false;
+
         $this->setResponseData($fav_channels);
         
         return $this->getResponse('prepareData');
@@ -804,13 +799,13 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $epg = new Epg();
 
-        //$qualities = array('high' => 1, 'medium' => 2, 'low' => 3);
-
         $quality = $this->stb->getParam('tv_quality');
 
         $length = count($this->response['data']);
 
         $enable_numbering_in_order = Config::getSafe('enable_numbering_in_order', false);
+
+        $excluded = 0;
 
         for ($i = 0; $i < $length; $i++){
 
@@ -869,6 +864,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 array_splice($this->response['data'], $i, 1);
                 $length--;
                 $i--;
+                $excluded++;
                 continue;
             }
             
@@ -885,7 +881,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             }
             
             if (@$_REQUEST['fav'] || $enable_numbering_in_order){
-                $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)));
+                $this->response['data'][$i]['number'] = strval(($i+1) + (self::max_page_items * ($this->page)) + (!empty($_REQUEST['fav']) ? $excluded : 0));
             }
             
             //$this->response['data'][$i]['genres_str'] = $this->getGenreById($this->response['data'][$i]['id']);
@@ -1118,6 +1114,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     }
 
     private function getCensoredExcludeList(){
+
+        if ($this->censored_exclude_list !== null){
+            return $this->censored_exclude_list;
+        }
         
         $list = Mysql::getInstance()->from('censored_channels')->where(array('uid' => $this->stb->id))->get()->first('exclude');
 
@@ -1155,6 +1155,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     }
 
     private function getCensoredList(){
+
+        if ($this->censored_list !== null){
+            return $this->censored_list;
+        }
 
         $list = Mysql::getInstance()->from('censored_channels')->where(array('uid' => $this->stb->id))->get()->first('list');
 
