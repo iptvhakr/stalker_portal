@@ -900,9 +900,8 @@ function common_xpcom(){
                 (params.require_image_date != ''    && params.require_image_date != this.image_date)
             ) &&
             (
-                (params.image_version_contains != ''     && params.image_version_contains == this.image_version) &&
-                (params.image_description_contains != '' && this.image_desc.indexOf(params.image_description_contains) != -1) ||
-                (params.image_version_contains == ''     && params.image_description_contains == '')
+                (params.image_version_contains == ''     || params.image_version_contains == this.image_version) &&
+                (params.image_description_contains == '' || this.image_desc.indexOf(params.image_description_contains) != -1)
             )
            ){
 
