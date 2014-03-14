@@ -344,6 +344,15 @@ function parseYoutubePage(html, playNow) {
 
 function parseYoutubePage_new(html, playNow) {
     var s = /"url_encoded_fmt_stream_map": "(.*?)"/.exec(html);
+
+    if (!s || Array.isArray(s) && !s[1]){
+        log('\n\ns is null\n\n');
+        player.stop();
+        loading.hide();
+        toast.show(!s ? lang.video_not_available : lang.video_not_available_on_device);
+        return;
+    }
+
     log('\n\n'+s.length+'\n\n');
     log('\n\n'+s[1]+'\n\n');
     var str = '({';
