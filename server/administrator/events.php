@@ -179,6 +179,12 @@ $events = Event::getAllNotEndedEvents($uid);
 $debug = '<!--'.ob_get_contents().'-->';
 ob_clean();
 echo $debug;
+
+if (!empty($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'events.php') === false){
+    $_SESSION['back_url'] = $_SERVER['HTTP_REFERER'];
+}elseif (empty($_SERVER['HTTP_REFERER'])){
+    $_SESSION['back_url'] = 'index.php';
+}
 ?>
 <html>
 <head>
@@ -226,7 +232,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a> | <a href="events.php"><?= _('New event')?></a>
+        <a href="<?= empty($_SESSION['back_url'])? 'index.php' : $_SESSION['back_url']?>"><< <?= _('Back')?></a> | <a href="events.php"><?= _('New event')?></a>
     </td>
 </tr>
 <tr>
