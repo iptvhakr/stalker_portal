@@ -31,6 +31,10 @@ if (@$_GET['del'] && !Config::getSafe('deny_delete_user', false)){
     $id = intval(@$_GET['id']);
 
     Mysql::getInstance()->delete('users', array('id' => $id));
+
+    Mysql::getInstance()->delete('fav_itv', array('uid' => $id));
+    Mysql::getInstance()->delete('fav_vclub', array('uid' => $id));
+    Mysql::getInstance()->delete('media_favorites', array('uid' => $id));
     
     header("Location: users.php?search=".$_GET['search']."&page=".$_GET['page']);
     exit();
@@ -607,7 +611,7 @@ while($arr = $users->next()){
         echo "<b>".get_user_color($arr['id'])."</b>";
     }
 
-    if (Admin::isActionAllowed() && !check_keep_alive($arr['keep_alive']) && !Config::getSafe('deny_delete_user', false)){
+    if (Admin::isActionAllowed() && !Config::getSafe('deny_delete_user', false)){
         echo "&nbsp;&nbsp;";
         echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"users.php?del=1&id=".$arr['id']."&page=".@$_GET['page']."&search=".@$_GET['search']."\"}'>del</a>";
     }
