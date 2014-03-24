@@ -521,11 +521,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'hd'            => @$_REQUEST['hd'],
                 'stb_type'      => $model,
                 'serial_number' => isset($_REQUEST['sn']) ? $_REQUEST['sn'] : '',
-                'num_banks'     => isset($_REQUEST['num_banks']) ? $_REQUEST['num_banks'] : 0,
+                'num_banks'     => isset($_REQUEST['num_banks']) ? (int) $_REQUEST['num_banks'] : 0,
                 'image_version' => isset($_REQUEST['image_version']) ? $_REQUEST['image_version'] : '',
                 'locale'        => $this->locale,
                 'country'       => $country,
-                'verified'      => $force_auth === false
+                'verified'      => (int) ($force_auth === false)
             ),
             array('id' => $this->id)
         );

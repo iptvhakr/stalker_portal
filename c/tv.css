@@ -1,19 +1,33 @@
 /* TV */
 
-#tv .archive_block{
+#tv .pvr_block{
+    width: 22px;
+    height: 26px;
+    background: url("i/mb_icon_rec.png") no-repeat;
+    float: left;
+    margin: 4px 0 0 2px;
+}
+
+#tv .active_pvr_block{
+    width: 22px;
+    height: 26px;
+    background : url("i/mb_icon_rec.png") no-repeat 0 -26px;
+    float: left;
+    margin: 11px 0 0 2px;
+}
+
+#tv .archive_block, #tv .local_time_shift_block{
     width: 21px;
     height: 22px;
-    background-image: url("i/mb_icons.png");
-    background-position: -175px 0;
+    background: url("i/mb_icons.png") no-repeat -175px 0;
     float: left;
     margin-top: 4px;
 }
 
-#tv .active_archive_block{
+#tv .active_archive_block, #tv .active_local_time_shift_block{
     width: 23px;
     height: 30px;
-    background-image: url("i/mb_icons.png");
-    background-position: -175px -22px;
+    background: url("i/mb_icons.png") no-repeat -175px -22px;
     float: left;
     margin-top: 7px;
 }
@@ -44,6 +58,7 @@
     float: left;
     width: 290px;
     height: 26px;
+    padding-left: 3px;
 }
 
 #tv .short_container .active_name_block{

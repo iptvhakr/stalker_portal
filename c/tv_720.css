@@ -1,5 +1,21 @@
 /* TV */
 
+#tv .pvr_block{
+    width: 22px;
+    height: 34px;
+    background: url("i_720/mb_icon_rec.png") no-repeat 0 0;
+    float: left;
+    margin: 3px 0 0 4px;
+}
+
+#tv .active_pvr_block{
+    width: 22px;
+    height: 34px;
+    background: url("i_720/mb_icon_rec.png") no-repeat 0 -34px;
+    float: left;
+    margin: 10px 0 0 2px;
+}
+
 #tv .archive_block, #tv .local_time_shift_block{
     width: 27px;
     height: 28px;
@@ -40,6 +56,7 @@
     float: left;
     width: 290px;
     height: 26px;*/
+    padding-left: 3px;
 }
 
 #tv .short_container .active_name_block{
