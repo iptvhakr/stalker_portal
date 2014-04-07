@@ -7,6 +7,5 @@
     missingok
     sharedscripts
     postrotate
-	restart stalkerd > /dev/null
     endscript
 }
