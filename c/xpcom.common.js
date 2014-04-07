@@ -1906,7 +1906,6 @@ function common_xpcom(){
             this.day   = this.current_date.getDay();
 
             this.hours = this.current_date.getHours();
-            this.hours = this.current_date.getHours();
 
             if (this.hours > 11){
                 this.ap_mark = 'PM';
@@ -1914,15 +1913,7 @@ function common_xpcom(){
                 this.ap_mark = 'AM';
             }
 
-            if (this.hours > 12){
-                this.ap_hours = this.hours - 12;
-            }else{
-                this.ap_hours = this.hours;
-            }
-
-            if (this.ap_hours == 12){
-                this.ap_hours = 0
-            }
+            this.ap_hours = this.hours % 12 || 12;
 
             this.minutes = this.current_date.getMinutes();
             if (this.minutes<10){
