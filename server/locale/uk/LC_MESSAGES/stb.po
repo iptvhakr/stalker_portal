@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-02-18 11:07+0300\n"
-"PO-Revision-Date: 2014-02-18 11:07+0300\n"
+"POT-Creation-Date: 2014-04-07 15:25+0300\n"
+"PO-Revision-Date: 2014-04-07 15:25+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgstr "Реклама в Відео клубі"
 #: ../../../administrator/city_info.php:129
 #: ../../../administrator/reply.php:83
 #: ../../../administrator/video_search.php:257
-#: ../../../administrator/users.php:95
+#: ../../../administrator/users.php:99
 #: ../../../administrator/stbgroup_members.php:119
 #: ../../../administrator/msgs.php:78 ../../../administrator/claims_log.php:69
 #: ../../../administrator/other_city_info.php:127
@@ -59,7 +59,7 @@ msgstr "Реклама в Відео клубі"
 #: ../../../administrator/playlist.php:147
 #: ../../../administrator/stat_tv_archive.php:70
 #: ../../../administrator/add_video.php:600
-#: ../../../administrator/events.php:229
+#: ../../../administrator/events.php:235
 #: ../../../administrator/videolog.php:61
 #: ../../../administrator/stat_video_genres.php:71
 #: ../../../administrator/stat_daily_video.php:70
@@ -68,7 +68,7 @@ msgstr "Реклама в Відео клубі"
 #: ../../../administrator/add_moderator_mac.php:121
 #: ../../../administrator/cache_refresh.php:87
 #: ../../../administrator/msg.php:69 ../../../administrator/profile.php:307
-#: ../../../administrator/services_packages.php:313
+#: ../../../administrator/services_packages.php:343
 #: ../../../administrator/stat_moderators.php:70
 #: ../../../administrator/users_on_storage.php:78
 #: ../../../administrator/stat_tv_users.php:69
@@ -101,8 +101,8 @@ msgstr "Назад"
 #: ../../../administrator/stat_tv_archive.php:103
 #: ../../../administrator/add_video.php:830
 #: ../../../administrator/add_video.php:1778
-#: ../../../administrator/services_packages.php:332
-#: ../../../administrator/services_packages.php:361
+#: ../../../administrator/services_packages.php:362
+#: ../../../administrator/services_packages.php:393
 #: ../../../administrator/tasks.php:168
 #: ../../../administrator/stat_timeshift.php:103
 #: ../../../administrator/stat_tv.php:169
@@ -146,11 +146,11 @@ msgstr "Всi"
 #: ../../../administrator/administrators.php:175
 #: ../../../administrator/tariffs.php:323
 #: ../../../administrator/city_info.php:164
-#: ../../../administrator/users.php:612
+#: ../../../administrator/users.php:616
 #: ../../../administrator/other_city_info.php:160
 #: ../../../administrator/playlist.php:181
 #: ../../../administrator/add_video.php:875
-#: ../../../administrator/services_packages.php:342
+#: ../../../administrator/services_packages.php:374
 #: ../../../administrator/epg_setting.php:193
 #: ../../../administrator/admin_groups.php:223
 #: ../../../administrator/playlists.php:139
@@ -180,7 +180,7 @@ msgstr "Заборонити для відео категорій"
 #: ../../../administrator/stbgroups.php:56
 #: ../../../administrator/playlist.php:69
 #: ../../../administrator/add_video.php:2089
-#: ../../../administrator/events.php:439
+#: ../../../administrator/events.php:445
 #: ../../../administrator/add_moderator_mac.php:244
 #: ../../../administrator/services_packages.php:121
 #: ../../../administrator/epg_setting.php:75
@@ -257,7 +257,7 @@ msgstr "За жанрами"
 #: ../../../administrator/unique_video.php:330
 #: ../../../administrator/stat_video_users.php:145
 #: ../../../administrator/video_search.php:355
-#: ../../../administrator/users.php:502 ../../../administrator/users.php:554
+#: ../../../administrator/users.php:506 ../../../administrator/users.php:558
 #: ../../../administrator/stat_anec_users.php:146
 #: ../../../administrator/myvideolog.php:78
 #: ../../../administrator/add_video.php:744
@@ -351,120 +351,120 @@ msgstr "Логи користувачів"
 
 #: ../../../administrator/userlog.php:160
 #: ../../../administrator/all_userlog.php:161
-#: ../../../administrator/add_epg.php:140 ../../../administrator/users.php:198
+#: ../../../administrator/add_epg.php:140 ../../../administrator/users.php:202
 #: ../../../administrator/add_video.php:513
 msgid "January"
 msgstr "Cічень"
 
 #: ../../../administrator/userlog.php:161
 #: ../../../administrator/all_userlog.php:162
-#: ../../../administrator/add_epg.php:141 ../../../administrator/users.php:199
+#: ../../../administrator/add_epg.php:141 ../../../administrator/users.php:203
 #: ../../../administrator/add_video.php:514
 msgid "February"
 msgstr "Лютий"
 
 #: ../../../administrator/userlog.php:162
 #: ../../../administrator/all_userlog.php:163
-#: ../../../administrator/add_epg.php:142 ../../../administrator/users.php:200
+#: ../../../administrator/add_epg.php:142 ../../../administrator/users.php:204
 #: ../../../administrator/add_video.php:515
 msgid "March"
 msgstr "Березень"
 
 #: ../../../administrator/userlog.php:163
 #: ../../../administrator/all_userlog.php:164
-#: ../../../administrator/add_epg.php:143 ../../../administrator/users.php:201
+#: ../../../administrator/add_epg.php:143 ../../../administrator/users.php:205
 #: ../../../administrator/add_video.php:516
 msgid "April"
 msgstr "Квітень"
 
 #: ../../../administrator/userlog.php:164
 #: ../../../administrator/all_userlog.php:165
-#: ../../../administrator/add_epg.php:144 ../../../administrator/users.php:202
+#: ../../../administrator/add_epg.php:144 ../../../administrator/users.php:206
 #: ../../../administrator/add_video.php:517 ../../../lib/gismeteo.class.php:31
 msgid "May"
 msgstr "Травень"
 
 #: ../../../administrator/userlog.php:165
 #: ../../../administrator/all_userlog.php:166
-#: ../../../administrator/add_epg.php:145 ../../../administrator/users.php:203
+#: ../../../administrator/add_epg.php:145 ../../../administrator/users.php:207
 #: ../../../administrator/add_video.php:518
 msgid "June"
 msgstr "Червень"
 
 #: ../../../administrator/userlog.php:166
 #: ../../../administrator/all_userlog.php:167
-#: ../../../administrator/add_epg.php:146 ../../../administrator/users.php:204
+#: ../../../administrator/add_epg.php:146 ../../../administrator/users.php:208
 #: ../../../administrator/add_video.php:519
 msgid "July"
 msgstr "Липень"
 
 #: ../../../administrator/userlog.php:167
 #: ../../../administrator/all_userlog.php:168
-#: ../../../administrator/add_epg.php:147 ../../../administrator/users.php:205
+#: ../../../administrator/add_epg.php:147 ../../../administrator/users.php:209
 #: ../../../administrator/add_video.php:520
 msgid "August"
 msgstr "Серпень"
 
 #: ../../../administrator/userlog.php:168
 #: ../../../administrator/all_userlog.php:169
-#: ../../../administrator/add_epg.php:148 ../../../administrator/users.php:206
+#: ../../../administrator/add_epg.php:148 ../../../administrator/users.php:210
 #: ../../../administrator/add_video.php:521
 msgid "September"
 msgstr "Вересень"
 
 #: ../../../administrator/userlog.php:169
 #: ../../../administrator/all_userlog.php:170
-#: ../../../administrator/add_epg.php:149 ../../../administrator/users.php:207
+#: ../../../administrator/add_epg.php:149 ../../../administrator/users.php:211
 #: ../../../administrator/add_video.php:522
 msgid "October"
 msgstr "Жовтень"
 
 #: ../../../administrator/userlog.php:170
 #: ../../../administrator/all_userlog.php:171
-#: ../../../administrator/add_epg.php:150 ../../../administrator/users.php:208
+#: ../../../administrator/add_epg.php:150 ../../../administrator/users.php:212
 #: ../../../administrator/add_video.php:523
 msgid "November"
 msgstr "Листопад"
 
 #: ../../../administrator/userlog.php:171
 #: ../../../administrator/all_userlog.php:172
-#: ../../../administrator/add_epg.php:151 ../../../administrator/users.php:209
+#: ../../../administrator/add_epg.php:151 ../../../administrator/users.php:213
 #: ../../../administrator/add_video.php:524
 msgid "December"
 msgstr "Грудень"
 
 #: ../../../administrator/userlog.php:229
 #: ../../../administrator/all_userlog.php:217
-#: ../../../administrator/add_epg.php:367 ../../../administrator/users.php:303
+#: ../../../administrator/add_epg.php:367 ../../../administrator/users.php:307
 msgid "Channel"
 msgstr "Канал"
 
 #: ../../../administrator/userlog.php:248
 #: ../../../administrator/all_userlog.php:231
-#: ../../../administrator/users.php:159 ../../../administrator/users.php:311
+#: ../../../administrator/users.php:163 ../../../administrator/users.php:315
 msgid "Video"
 msgstr "Відео"
 
-#: ../../../administrator/userlog.php:263 ../../../administrator/users.php:160
+#: ../../../administrator/userlog.php:263 ../../../administrator/users.php:164
 #: ../../../administrator/stat_moderators.php:237
 msgid "Karaoke"
 msgstr "Караоке"
 
-#: ../../../administrator/userlog.php:278 ../../../administrator/users.php:161
+#: ../../../administrator/userlog.php:278 ../../../administrator/users.php:165
 #: ../../../lang/stb.php:58
 msgid "Audio"
 msgstr "Аудіо"
 
-#: ../../../administrator/userlog.php:290 ../../../administrator/users.php:162
+#: ../../../administrator/userlog.php:290 ../../../administrator/users.php:166
 msgid "Radio"
 msgstr "Радіо"
 
-#: ../../../administrator/userlog.php:313 ../../../administrator/users.php:163
+#: ../../../administrator/userlog.php:313 ../../../administrator/users.php:167
 msgid "My records"
 msgstr "Мої записи"
 
-#: ../../../administrator/userlog.php:333 ../../../administrator/users.php:164
-#: ../../../administrator/users.php:168
+#: ../../../administrator/userlog.php:333 ../../../administrator/users.php:168
+#: ../../../administrator/users.php:172
 msgid "Records"
 msgstr "Записи"
 
@@ -518,8 +518,8 @@ msgstr "Розділи"
 msgid "IPTV channels"
 msgstr "IPTV канали"
 
-#: ../../../administrator/index.php:140 ../../../administrator/users.php:84
-#: ../../../administrator/users.php:90
+#: ../../../administrator/index.php:140 ../../../administrator/users.php:88
+#: ../../../administrator/users.php:94
 msgid "Users"
 msgstr "Користувачі"
 
@@ -529,8 +529,8 @@ msgstr "Користувачі"
 msgid "VIDEO CLUB"
 msgstr "ВІДЕО КЛУБ"
 
-#: ../../../administrator/index.php:146 ../../../administrator/events.php:218
-#: ../../../administrator/events.php:224
+#: ../../../administrator/index.php:146 ../../../administrator/events.php:224
+#: ../../../administrator/events.php:230
 #: ../../../administrator/profile.php:307
 msgid "Events"
 msgstr "Події"
@@ -607,10 +607,10 @@ msgstr "Сервера мовлення"
 msgid "search by MAC or IP"
 msgstr "пошук по MAC або IP"
 
-#: ../../../administrator/index.php:418 ../../../administrator/users.php:170
-#: ../../../administrator/users.php:171 ../../../administrator/users.php:172
-#: ../../../administrator/users.php:173 ../../../administrator/users.php:174
-#: ../../../administrator/users.php:175
+#: ../../../administrator/index.php:418 ../../../administrator/users.php:174
+#: ../../../administrator/users.php:175 ../../../administrator/users.php:176
+#: ../../../administrator/users.php:177 ../../../administrator/users.php:178
+#: ../../../administrator/users.php:179
 msgid "Infoportal"
 msgstr "Інфопортал"
 
@@ -741,7 +741,7 @@ msgstr "Пошук унікальних фільмів"
 #: ../../../administrator/video_search.php:101
 #: ../../../administrator/add_video.php:1365
 #: ../../../administrator/subscribe.php:82 ../../../lang/stb.php:335
-#: ../../../lang/stb.php:495
+#: ../../../lang/stb.php:496
 msgid "error"
 msgstr "помилка"
 
@@ -767,7 +767,7 @@ msgstr "Помилка: Можливо файл або директорія мі
 #: ../../../administrator/unique_video.php:165
 #: ../../../administrator/video_search.php:166
 #: ../../../administrator/add_video.php:1279
-#: ../../../administrator/add_karaoke.php:668 ../../../lang/stb.php:448
+#: ../../../administrator/add_karaoke.php:668 ../../../lang/stb.php:449
 msgid "Server"
 msgstr "Сервер"
 
@@ -869,7 +869,7 @@ msgid "Master-storage logs"
 msgstr "Логи майстра сховищ"
 
 #: ../../../administrator/master_log.php:122
-#: ../../../administrator/events.php:451
+#: ../../../administrator/events.php:457
 msgid "Message"
 msgstr "Повідомлення"
 
@@ -888,7 +888,7 @@ msgstr "Бойовик"
 #: ../../../administrator/testers.php:10
 #: ../../../administrator/administrators.php:9
 #: ../../../administrator/tariffs.php:16 ../../../administrator/user.php:16
-#: ../../../administrator/user.php:177 ../../../administrator/users.php:95
+#: ../../../administrator/user.php:177 ../../../administrator/users.php:99
 #: ../../../administrator/stbgroup_members.php:10
 #: ../../../administrator/stream_servers.php:10
 #: ../../../administrator/stbgroups.php:10
@@ -946,7 +946,7 @@ msgid "Countries"
 msgstr "Країни"
 
 #: ../../../administrator/stream_zones.php:315
-#: ../../../administrator/services_packages.php:420
+#: ../../../administrator/services_packages.php:452
 msgid "Selected"
 msgstr "Вибрано"
 
@@ -987,7 +987,7 @@ msgid "Karaoke video"
 msgstr "Караоке відео"
 
 #: ../../../administrator/testers.php:114
-#: ../../../administrator/testers.php:120 ../../../administrator/users.php:95
+#: ../../../administrator/testers.php:120 ../../../administrator/users.php:99
 msgid "Testers"
 msgstr "Тестувальники"
 
@@ -1060,13 +1060,13 @@ msgstr "Групи адміністраторів"
 #: ../../../administrator/administrators.php:191
 #: ../../../administrator/user.php:138 ../../../administrator/profile.php:375
 #: ../../../administrator/login.php:55 ../../../lang/stb.php:349
-#: ../../../lang/stb.php:362 ../../../lang/stb.php:488
+#: ../../../lang/stb.php:362 ../../../lang/stb.php:489
 msgid "Login"
 msgstr "Логін"
 
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
-#: ../../../administrator/events.php:379
+#: ../../../administrator/events.php:385
 #: ../../../administrator/profile.php:413
 #: ../../../administrator/playlists.php:157
 msgid "Group"
@@ -1075,7 +1075,7 @@ msgstr "Група"
 #: ../../../administrator/administrators.php:195
 #: ../../../administrator/user.php:142 ../../../administrator/login.php:59
 #: ../../../lang/stb.php:350 ../../../lang/stb.php:363
-#: ../../../lang/stb.php:479 ../../../lang/stb.php:489
+#: ../../../lang/stb.php:480 ../../../lang/stb.php:490
 msgid "Password"
 msgstr "Пароль"
 
@@ -1103,12 +1103,13 @@ msgstr "пакети послуг"
 
 #: ../../../administrator/tariffs.php:310
 #: ../../../administrator/tariffs.php:338
-#: ../../../administrator/services_packages.php:331
-#: ../../../administrator/services_packages.php:357
+#: ../../../administrator/services_packages.php:361
+#: ../../../administrator/services_packages.php:389
 msgid "External ID"
 msgstr "Зовнішній ID"
 
 #: ../../../administrator/tariffs.php:312
+#: ../../../administrator/services_packages.php:363
 msgid "Total users"
 msgstr "Користувачів"
 
@@ -1197,7 +1198,7 @@ msgstr "Кому"
 msgid "Comment"
 msgstr "Примітка"
 
-#: ../../../administrator/reply.php:143 ../../../administrator/events.php:335
+#: ../../../administrator/reply.php:143 ../../../administrator/events.php:341
 #: ../../../administrator/send_to.php:160
 msgid "Send"
 msgstr "Надіслати"
@@ -1247,72 +1248,72 @@ msgstr "Кількість сховищ"
 msgid "Last viewed"
 msgstr "Останній перегляд"
 
-#: ../../../administrator/users.php:95
+#: ../../../administrator/users.php:99
 #: ../../../administrator/stbgroups.php:101
 #: ../../../administrator/stbgroups.php:107
 msgid "Stb groups"
 msgstr "Групи приставок"
 
-#: ../../../administrator/users.php:95
+#: ../../../administrator/users.php:99
 msgid "All logs"
 msgstr "Усі логи"
 
-#: ../../../administrator/users.php:95
+#: ../../../administrator/users.php:99
 msgid "Report"
 msgstr "Звіт"
 
-#: ../../../administrator/users.php:95
+#: ../../../administrator/users.php:99
 #: ../../../administrator/subscribe_import.php:459
 #: ../../../administrator/subscribe_import.php:465
 msgid "Subscription import"
 msgstr "Імпорт підписки на канали"
 
-#: ../../../administrator/users.php:158 ../../../lang/stb.php:83
+#: ../../../administrator/users.php:162 ../../../lang/stb.php:83
 msgid "TV"
 msgstr "ТБ"
 
-#: ../../../administrator/users.php:166
+#: ../../../administrator/users.php:170
 msgid "Media browser"
 msgstr "Медіа Браузер"
 
-#: ../../../administrator/users.php:167
+#: ../../../administrator/users.php:171
 msgid "Tv archive"
 msgstr "Тб архів"
 
-#: ../../../administrator/users.php:169
+#: ../../../administrator/users.php:173
 #, fuzzy
 msgid "TimeShift"
 msgstr "час"
 
-#: ../../../administrator/users.php:502
+#: ../../../administrator/users.php:506
 msgid "search by MAC, IP, login or account number"
 msgstr "Пошук по MAC, IP, логіну або номеру особистого рахунку"
 
-#: ../../../administrator/users.php:509
+#: ../../../administrator/users.php:513
 msgid "without sorting"
 msgstr "без сортування"
 
-#: ../../../administrator/users.php:554
+#: ../../../administrator/users.php:558
 msgid "search inactive users"
 msgstr "пошук неактивних користувачів"
 
-#: ../../../administrator/users.php:571
+#: ../../../administrator/users.php:575
 #: ../../../administrator/claims_log.php:174 ../../../lang/stb.php:385
-#: ../../../lang/stb.php:487
+#: ../../../lang/stb.php:488
 msgid "Type"
 msgstr "Тип"
 
-#: ../../../administrator/users.php:572 ../../../administrator/msgs.php:116
+#: ../../../administrator/users.php:576 ../../../administrator/msgs.php:116
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/msg.php:145
 msgid "Media"
 msgstr "Медіа"
 
-#: ../../../administrator/users.php:573
+#: ../../../administrator/users.php:577
 msgid "Time from<br>last playback"
 msgstr "Час з<br>останнього<br>перегляду<br>чч:мм:сс"
 
-#: ../../../administrator/users.php:576
+#: ../../../administrator/users.php:580
 msgid "Last change<br>of status"
 msgstr "Остання<br>зміна<br>статусу"
 
@@ -1447,7 +1448,7 @@ msgid "Total time"
 msgstr "Загальний час"
 
 #: ../../../administrator/stat_tv_archive.php:105
-#: ../../../administrator/events.php:422
+#: ../../../administrator/events.php:428
 #: ../../../administrator/stat_timeshift.php:105
 #: ../../../lib/system.class.php:79
 msgid "s"
@@ -1567,7 +1568,7 @@ msgid "search by file name of movie name"
 msgstr "пошук по \"фізичній назві\" і по \"назві фільму\""
 
 #: ../../../administrator/add_video.php:806
-#: ../../../administrator/events.php:452 ../../../administrator/tasks.php:132
+#: ../../../administrator/events.php:458 ../../../administrator/tasks.php:132
 msgid "Status"
 msgstr "Статус"
 
@@ -1635,7 +1636,7 @@ msgid "Not available"
 msgstr "Не доступно"
 
 #: ../../../administrator/add_video.php:1453
-#: ../../../administrator/services_packages.php:411
+#: ../../../administrator/services_packages.php:443
 msgid "Available"
 msgstr "Доступно"
 
@@ -1718,7 +1719,7 @@ msgstr "Жанр"
 msgid "Year"
 msgstr "Рік"
 
-#: ../../../administrator/add_video.php:2024 ../../../lang/stb.php:472
+#: ../../../administrator/add_video.php:2024 ../../../lang/stb.php:473
 msgid "Duration"
 msgstr "Тривалість"
 
@@ -1782,76 +1783,76 @@ msgstr "%s подій %s відіслано, %s помилок"
 msgid "File with list is missing"
 msgstr "Відсутній файл зі списком"
 
-#: ../../../administrator/events.php:229
+#: ../../../administrator/events.php:235
 msgid "New event"
 msgstr "Нова подія"
 
-#: ../../../administrator/events.php:338
+#: ../../../administrator/events.php:344
 msgid "To one"
 msgstr "одному"
 
-#: ../../../administrator/events.php:339
+#: ../../../administrator/events.php:345
 msgid "To all"
 msgstr "Всім"
 
-#: ../../../administrator/events.php:340
+#: ../../../administrator/events.php:346
 msgid "By list"
 msgstr "За списком"
 
-#: ../../../administrator/events.php:341
+#: ../../../administrator/events.php:347
 msgid "By pattern"
 msgstr "За шаблоном"
 
-#: ../../../administrator/events.php:342
+#: ../../../administrator/events.php:348
 msgid "To group"
 msgstr "Групі"
 
-#: ../../../administrator/events.php:350
+#: ../../../administrator/events.php:356
 msgid "Load active events"
 msgstr "Завантажити активні події"
 
-#: ../../../administrator/events.php:355
+#: ../../../administrator/events.php:361
 msgid "List"
 msgstr "Список"
 
-#: ../../../administrator/events.php:363
+#: ../../../administrator/events.php:369
 msgid "Pattern"
 msgstr "Шаблон"
 
-#: ../../../administrator/events.php:413
+#: ../../../administrator/events.php:419
 msgid "restart on OK"
 msgstr "перезапускати по OK"
 
-#: ../../../administrator/events.php:414
+#: ../../../administrator/events.php:420
 msgid "channels"
 msgstr "канали"
 
-#: ../../../administrator/events.php:447
+#: ../../../administrator/events.php:453
 #, php-format
 msgid "Active events for %s"
 msgstr "Активні події для %s"
 
-#: ../../../administrator/events.php:447
+#: ../../../administrator/events.php:453
 msgid "clean"
 msgstr "очистити"
 
-#: ../../../administrator/events.php:449
+#: ../../../administrator/events.php:455
 msgid "Valid up to"
 msgstr "Дійсне до"
 
-#: ../../../administrator/events.php:450
+#: ../../../administrator/events.php:456
 msgid "Event"
 msgstr "Подія"
 
-#: ../../../administrator/events.php:461
+#: ../../../administrator/events.php:467
 msgid "sended"
 msgstr "відправлено"
 
-#: ../../../administrator/events.php:461
+#: ../../../administrator/events.php:467
 msgid "not sended"
 msgstr "не відправлено"
 
-#: ../../../administrator/events.php:470
+#: ../../../administrator/events.php:476
 #, php-format
 msgid "There are no active events for %s"
 msgstr "Немає активних подій для %s"
@@ -2044,41 +2045,41 @@ msgstr "Підписка на канали"
 msgid "Additional services"
 msgstr "Дод. сервіси"
 
-#: ../../../administrator/services_packages.php:130
-#: ../../../administrator/services_packages.php:308
+#: ../../../administrator/services_packages.php:160
+#: ../../../administrator/services_packages.php:338
 msgid "SERVICES PACKAGES"
 msgstr "ПАКЕТИ ПОСЛУГ"
 
-#: ../../../administrator/services_packages.php:365
+#: ../../../administrator/services_packages.php:397
 msgid "Short description"
 msgstr "Короткий опис"
 
-#: ../../../administrator/services_packages.php:369
+#: ../../../administrator/services_packages.php:401
 msgid "Service"
 msgstr "Послуга"
 
-#: ../../../administrator/services_packages.php:383
+#: ../../../administrator/services_packages.php:415
 msgid "Service type"
 msgstr "Тип послуги"
 
-#: ../../../administrator/services_packages.php:386
+#: ../../../administrator/services_packages.php:418
 msgid "periodic"
 msgstr "періодична"
 
-#: ../../../administrator/services_packages.php:387
+#: ../../../administrator/services_packages.php:419
 msgid "single"
 msgstr "разова"
 
-#: ../../../administrator/services_packages.php:393
+#: ../../../administrator/services_packages.php:425
 msgid "Rent duration"
 msgstr "Тривалість оренди"
 
-#: ../../../administrator/services_packages.php:395
+#: ../../../administrator/services_packages.php:427
 #: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1008
 msgid "h"
 msgstr "г"
 
-#: ../../../administrator/services_packages.php:400
+#: ../../../administrator/services_packages.php:432
 msgid "All services"
 msgstr "Всі послуги"
 
@@ -2597,7 +2598,7 @@ msgid "detective"
 msgstr "детектив"
 
 #: ../../../tools/misctranslations.php:14
-#: ../../../tools/misctranslations.php:96
+#: ../../../tools/misctranslations.php:97
 msgid "children's"
 msgstr "дитяче"
 
@@ -2662,7 +2663,7 @@ msgid "musical"
 msgstr "музичний"
 
 #: ../../../tools/misctranslations.php:30
-#: ../../../tools/misctranslations.php:98
+#: ../../../tools/misctranslations.php:99
 msgid "science"
 msgstr "наука"
 
@@ -2764,7 +2765,7 @@ msgid "Documentary"
 msgstr "Документальне"
 
 #: ../../../tools/misctranslations.php:59
-#: ../../../tools/misctranslations.php:75
+#: ../../../tools/misctranslations.php:76
 msgid "Humour"
 msgstr "Гумор"
 
@@ -2804,243 +2805,247 @@ msgstr "Комедія"
 msgid "Melodrama"
 msgstr "Мелодрама"
 
-#: ../../../tools/misctranslations.php:76
+#: ../../../tools/misctranslations.php:75
+msgid "Romantic"
+msgstr ""
+
+#: ../../../tools/misctranslations.php:77
 msgid "Adventures"
 msgstr "Пригоди"
 
-#: ../../../tools/misctranslations.php:77
+#: ../../../tools/misctranslations.php:78
 msgid "Thriller"
 msgstr "Триллер"
 
-#: ../../../tools/misctranslations.php:78
+#: ../../../tools/misctranslations.php:79
 msgid "Horrors"
 msgstr "Жахи"
 
-#: ../../../tools/misctranslations.php:79
+#: ../../../tools/misctranslations.php:80
 msgid "Fiction"
 msgstr "Фантастика"
 
-#: ../../../tools/misctranslations.php:80
+#: ../../../tools/misctranslations.php:81
 msgid "Erotica"
 msgstr "Еротика"
 
-#: ../../../tools/misctranslations.php:81
+#: ../../../tools/misctranslations.php:82
 msgid "Fantasy"
 msgstr "Фентезі"
 
-#: ../../../tools/misctranslations.php:82
+#: ../../../tools/misctranslations.php:83
 msgid "Animation"
 msgstr "Анімація"
 
-#: ../../../tools/misctranslations.php:83
+#: ../../../tools/misctranslations.php:84
 msgid "Childrens"
 msgstr "Дитячий"
 
-#: ../../../tools/misctranslations.php:84
+#: ../../../tools/misctranslations.php:85
 msgid "Musical"
 msgstr "Музичний"
 
-#: ../../../tools/misctranslations.php:85
+#: ../../../tools/misctranslations.php:86
 msgid "Western"
 msgstr "Вестерн"
 
-#: ../../../tools/misctranslations.php:86
+#: ../../../tools/misctranslations.php:87
 msgid "Serial"
 msgstr "Серіал"
 
-#: ../../../tools/misctranslations.php:87
+#: ../../../tools/misctranslations.php:88
 msgid "Sports"
 msgstr "Спорт"
 
-#: ../../../tools/misctranslations.php:88
+#: ../../../tools/misctranslations.php:89
 msgid "Teach"
 msgstr "Навчальне"
 
-#: ../../../tools/misctranslations.php:89
+#: ../../../tools/misctranslations.php:90
 msgid "Information"
 msgstr "Інформаційний"
 
-#: ../../../tools/misctranslations.php:94
+#: ../../../tools/misctranslations.php:95
 msgid "information"
 msgstr "інформаційний"
 
-#: ../../../tools/misctranslations.php:95
+#: ../../../tools/misctranslations.php:96
 msgid "entertainments"
 msgstr "розваги"
 
-#: ../../../tools/misctranslations.php:97
+#: ../../../tools/misctranslations.php:98
 msgid "cinema"
 msgstr "кіно"
 
-#: ../../../tools/misctranslations.php:99
+#: ../../../tools/misctranslations.php:100
 msgid "sports"
 msgstr "спорт"
 
-#: ../../../tools/misctranslations.php:100
+#: ../../../tools/misctranslations.php:101
 msgid "music"
 msgstr "музика"
 
-#: ../../../tools/misctranslations.php:101
+#: ../../../tools/misctranslations.php:102
 msgid "business"
 msgstr "бізнес"
 
-#: ../../../tools/misctranslations.php:102
+#: ../../../tools/misctranslations.php:103
 msgid "culture"
 msgstr "культура"
 
-#: ../../../tools/misctranslations.php:103
+#: ../../../tools/misctranslations.php:104
 msgid "for adults"
 msgstr "для дорослих"
 
-#: ../../../tools/misctranslations.php:104
+#: ../../../tools/misctranslations.php:105
 msgid "information-entertaining"
 msgstr "інформаційно-розважальний"
 
-#: ../../../tools/misctranslations.php:105
+#: ../../../tools/misctranslations.php:106
 msgid "religion"
 msgstr "релігія"
 
-#: ../../../tools/misctranslations.php:106
+#: ../../../tools/misctranslations.php:107
 msgid "social"
 msgstr "соціальний"
 
-#: ../../../tools/misctranslations.php:107
+#: ../../../tools/misctranslations.php:108
 msgid "woman's"
 msgstr "женский"
 
-#: ../../../tools/misctranslations.php:108
+#: ../../../tools/misctranslations.php:109
 msgid "scientific-entertainment"
 msgstr "науково-розважальний"
 
-#: ../../../tools/misctranslations.php:113
+#: ../../../tools/misctranslations.php:114
 msgid "Pop"
 msgstr "Поп"
 
-#: ../../../tools/misctranslations.php:114
+#: ../../../tools/misctranslations.php:115
 msgid "Rock"
 msgstr "Рок"
 
-#: ../../../tools/misctranslations.php:115
+#: ../../../tools/misctranslations.php:116
 msgid "Chanson"
 msgstr "Шансон"
 
-#: ../../../tools/misctranslations.php:116
+#: ../../../tools/misctranslations.php:117
 msgid "From cartoon films"
 msgstr "З мультфільмів"
 
-#: ../../../tools/misctranslations.php:117
+#: ../../../tools/misctranslations.php:118
 msgid "Nurseries"
 msgstr "Дитячі"
 
-#: ../../../tools/misctranslations.php:118
+#: ../../../tools/misctranslations.php:119
 msgid "National"
 msgstr "Народні"
 
-#: ../../../tools/misctranslations.php:119
+#: ../../../tools/misctranslations.php:120
 msgid "Jazz"
 msgstr "Джаз"
 
-#: ../../../tools/misctranslations.php:120
+#: ../../../tools/misctranslations.php:121
 msgid "From films"
 msgstr "З кінофільмів"
 
-#: ../../../tools/misctranslations.php:125
+#: ../../../tools/misctranslations.php:126
 msgid "Clear"
 msgstr "Ясно"
 
-#: ../../../tools/misctranslations.php:126
+#: ../../../tools/misctranslations.php:127
 msgid "Partly Cloudy"
 msgstr "Мінлива хмарність"
 
-#: ../../../tools/misctranslations.php:127
+#: ../../../tools/misctranslations.php:128
 msgid "Cloudy"
 msgstr "Хмарно"
 
-#: ../../../tools/misctranslations.php:128
+#: ../../../tools/misctranslations.php:129
 msgid "Overcast"
 msgstr "Похмуро"
 
-#: ../../../tools/misctranslations.php:129
+#: ../../../tools/misctranslations.php:130
 msgid "Little rain"
 msgstr "Короткочасний дощ"
 
-#: ../../../tools/misctranslations.php:130
+#: ../../../tools/misctranslations.php:131
 msgid "Rain"
 msgstr "Дощ"
 
-#: ../../../tools/misctranslations.php:131
+#: ../../../tools/misctranslations.php:132
 msgid "Thunderstorm"
 msgstr "Гроза"
 
-#: ../../../tools/misctranslations.php:132
+#: ../../../tools/misctranslations.php:133
 msgid "Hail"
 msgstr "Похмуро"
 
-#: ../../../tools/misctranslations.php:133
+#: ../../../tools/misctranslations.php:134
 msgid "Sleet"
 msgstr "Мокрий сніг"
 
-#: ../../../tools/misctranslations.php:134
+#: ../../../tools/misctranslations.php:135
 msgid "Snow"
 msgstr "Сніг"
 
-#: ../../../tools/misctranslations.php:135
+#: ../../../tools/misctranslations.php:136
 msgid "Snowfall"
 msgstr "Снігопад"
 
-#: ../../../tools/misctranslations.php:138
+#: ../../../tools/misctranslations.php:139
 msgid "N"
 msgstr "Пн"
 
-#: ../../../tools/misctranslations.php:140
+#: ../../../tools/misctranslations.php:141
 msgid "NE"
 msgstr "ПнСх"
 
-#: ../../../tools/misctranslations.php:142
+#: ../../../tools/misctranslations.php:143
 msgid "E"
 msgstr "Сх"
 
-#: ../../../tools/misctranslations.php:144
+#: ../../../tools/misctranslations.php:145
 msgid "SE"
 msgstr "ПдЗх"
 
-#: ../../../tools/misctranslations.php:146
+#: ../../../tools/misctranslations.php:147
 msgid "S"
 msgstr "Пд"
 
-#: ../../../tools/misctranslations.php:148
+#: ../../../tools/misctranslations.php:149
 msgid "SW"
 msgstr "ПдЗх"
 
-#: ../../../tools/misctranslations.php:150
+#: ../../../tools/misctranslations.php:151
 msgid "W"
 msgstr "Зх"
 
-#: ../../../tools/misctranslations.php:152
+#: ../../../tools/misctranslations.php:153
 msgid "NW"
 msgstr "ПнЗх"
 
-#: ../../../tools/misctranslations.php:154
+#: ../../../tools/misctranslations.php:155
 msgid "Tariff plan is changed, please restart your STB"
 msgstr "Тарифний план змінено. Будь ласка, перезавантажте приставку."
 
-#: ../../../tools/misctranslations.php:155
+#: ../../../tools/misctranslations.php:156
 msgid "Starting recording"
 msgstr "Починається запис"
 
-#: ../../../tools/misctranslations.php:156
+#: ../../../tools/misctranslations.php:157
 msgid "Stopped recording"
 msgstr "Зупинено запис"
 
-#: ../../../tools/misctranslations.php:157 ../../../lang/stb.php:224
+#: ../../../tools/misctranslations.php:158 ../../../lang/stb.php:224
 msgid "on channel"
 msgstr "на каналі"
 
-#: ../../../tools/misctranslations.php:159
+#: ../../../tools/misctranslations.php:160
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:160 ../../../lib/stb.class.php:468
+#: ../../../tools/misctranslations.php:161 ../../../lib/stb.class.php:468
 #: ../../../lib/stb.class.php:479
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
@@ -3775,7 +3780,7 @@ msgstr "ВІДТВОРЕННЯ"
 msgid "EXIT"
 msgstr "ВИХІД"
 
-#: ../../../lang/stb.php:266 ../../../lang/stb.php:430
+#: ../../../lang/stb.php:266 ../../../lang/stb.php:431
 msgid "YES"
 msgstr "ТАК"
 
@@ -3799,7 +3804,7 @@ msgstr "ВІДТВОРИТИ"
 msgid "START"
 msgstr "СТАРТ"
 
-#: ../../../lang/stb.php:272 ../../../lang/stb.php:490
+#: ../../../lang/stb.php:272 ../../../lang/stb.php:491
 msgid "ADD"
 msgstr "ДОДАТИ"
 
@@ -4188,215 +4193,219 @@ msgstr "Інформація"
 msgid "Payment"
 msgstr "Продовжити"
 
-#: ../../../lang/stb.php:429
+#: ../../../lang/stb.php:428
+msgid "Reload portal"
+msgstr "Перезапуск"
+
+#: ../../../lang/stb.php:430
 msgid "Continue playing?"
 msgstr "Програма закінчується. Продовжити відтворення?"
 
-#: ../../../lang/stb.php:431
+#: ../../../lang/stb.php:432
 msgid "NO"
 msgstr "НІ"
 
-#: ../../../lang/stb.php:433
+#: ../../../lang/stb.php:434
 msgid "Do you want to quit the Time Shift mode?"
 msgstr "Вийти з режиму Time Shift?"
 
-#: ../../../lang/stb.php:435
+#: ../../../lang/stb.php:436
 msgid "by name"
 msgstr "за назвою"
 
-#: ../../../lang/stb.php:436
+#: ../../../lang/stb.php:437
 msgid "by date"
 msgstr "за датою"
 
-#: ../../../lang/stb.php:438
+#: ../../../lang/stb.php:439
 msgid "Connection problem"
 msgstr "Помилка підключення"
 
-#: ../../../lang/stb.php:439
+#: ../../../lang/stb.php:440
 msgid "Authentication problem"
 msgstr "Помилка аутентифікації"
 
-#: ../../../lang/stb.php:441
+#: ../../../lang/stb.php:442
 msgid "Account balance"
 msgstr "Баланс"
 
-#: ../../../lang/stb.php:444
+#: ../../../lang/stb.php:445
 msgid "Start recording on the server?"
 msgstr "Розпочати запис на сервері?"
 
-#: ../../../lang/stb.php:445
+#: ../../../lang/stb.php:446
 msgid "Do you really want to schedule a recording on the server?"
 msgstr "Ви дійсно бажаєте запланувати запис на сервер?"
 
-#: ../../../lang/stb.php:446
+#: ../../../lang/stb.php:447
 msgid "Select where to save the record"
 msgstr "Куди зберегти запис?"
 
-#: ../../../lang/stb.php:447
+#: ../../../lang/stb.php:448
 msgid "USB Storage"
 msgstr "USB пристрій"
 
-#: ../../../lang/stb.php:449 ../../../lang/stb.php:485
+#: ../../../lang/stb.php:450 ../../../lang/stb.php:486
 msgid "Path"
 msgstr "Шлях"
 
-#: ../../../lang/stb.php:450
+#: ../../../lang/stb.php:451
 msgid "Filename"
 msgstr "Назва файлу"
 
-#: ../../../lang/stb.php:451
+#: ../../../lang/stb.php:452
 msgid "USB Device"
 msgstr "пристрій"
 
-#: ../../../lang/stb.php:453
+#: ../../../lang/stb.php:454
 msgid "rec_stop_msg"
 msgstr "Зупинено запис — {0} на каналі {1}"
 
-#: ../../../lang/stb.php:455
+#: ../../../lang/stb.php:456
 msgid "The recorded file is missing"
 msgstr "Записаний файл відсутній"
 
-#: ../../../lang/stb.php:456
+#: ../../../lang/stb.php:457
 msgid "Recording is not finished yet"
 msgstr "Запис ще не завершився"
 
-#: ../../../lang/stb.php:457
+#: ../../../lang/stb.php:458
 msgid "The channel already has a scheduled recording"
 msgstr "Канал вже має запланований запис"
 
-#: ../../../lang/stb.php:459
+#: ../../../lang/stb.php:460
 msgid "PVR Error: Wrong parameter"
 msgstr "Помилка PVR: Невірний параметр"
 
-#: ../../../lang/stb.php:460
+#: ../../../lang/stb.php:461
 msgid "PVR Error: Not enough memory to complete the operation"
 msgstr "Помилка PVR: Недостатньо пам'яті для виконання операції"
 
-#: ../../../lang/stb.php:461
+#: ../../../lang/stb.php:462
 msgid "PVR Error: Incorrect recording range"
 msgstr "Помилка PVR: Невірний діапазон записи"
 
-#: ../../../lang/stb.php:462
+#: ../../../lang/stb.php:463
 msgid "PVR Error: Task not found"
 msgstr "Помилка PVR: Завдання не знайдено"
 
-#: ../../../lang/stb.php:463
+#: ../../../lang/stb.php:464
 msgid "PVR Error: Wrong filename"
 msgstr "Помилка PVR: Невірне ім'я файлу"
 
-#: ../../../lang/stb.php:464
+#: ../../../lang/stb.php:465
 msgid "PVR Error: Record file already exists"
 msgstr "Помилка PVR: Файл вже існує"
 
-#: ../../../lang/stb.php:465
+#: ../../../lang/stb.php:466
 msgid "PVR Error: Error opening channel URL"
 msgstr "Помилка PVR: Помилка відкриття URL"
 
-#: ../../../lang/stb.php:466
+#: ../../../lang/stb.php:467
 msgid "PVR Error: Error opening file"
 msgstr "Помилка PVR: Помилка відкриття файлу"
 
-#: ../../../lang/stb.php:467
+#: ../../../lang/stb.php:468
 msgid "PVR Error: Exceeded the maximum number simultaneous recordings"
 msgstr "Помилка PVR: Перевищено максимальну кількість одночасних записів"
 
-#: ../../../lang/stb.php:468
+#: ../../../lang/stb.php:469
 msgid "PVR Error: End of stream"
 msgstr "Помилка PVR: Отримано кінець потоку"
 
-#: ../../../lang/stb.php:469
+#: ../../../lang/stb.php:470
 msgid "PVR Error: Error writing to file"
 msgstr "Помилка PVR: Помилка запису в файл"
 
-#: ../../../lang/stb.php:470
+#: ../../../lang/stb.php:471
 msgid "Start time"
 msgstr "Початок"
 
-#: ../../../lang/stb.php:471
+#: ../../../lang/stb.php:472
 msgid "End time"
 msgstr "Завершення"
 
-#: ../../../lang/stb.php:474
+#: ../../../lang/stb.php:475
 msgid "Recording"
 msgstr "Запис"
 
-#: ../../../lang/stb.php:475
+#: ../../../lang/stb.php:476
 msgid "Recording on USB device interrupted"
 msgstr "Запис на USB пристрій перервано"
 
-#: ../../../lang/stb.php:477
+#: ../../../lang/stb.php:478
 msgid "Wrong"
 msgstr "Невірно"
 
-#: ../../../lang/stb.php:478
+#: ../../../lang/stb.php:479
 msgid "Parent control"
 msgstr "Батьківський контроль"
 
-#: ../../../lang/stb.php:481
+#: ../../../lang/stb.php:482
 msgid "Encoding"
 msgstr "Кодування"
 
-#: ../../../lang/stb.php:483
+#: ../../../lang/stb.php:484
 msgid "Network folder"
 msgstr "Мережева папка"
 
-#: ../../../lang/stb.php:484
+#: ../../../lang/stb.php:485
 msgid "IP address"
 msgstr "IP адреса"
 
-#: ../../../lang/stb.php:486
+#: ../../../lang/stb.php:487
 msgid "Local folder"
 msgstr "Назва папки"
 
-#: ../../../lang/stb.php:491
+#: ../../../lang/stb.php:492
 msgid "Server address"
 msgstr "Адреса сервера"
 
-#: ../../../lang/stb.php:492
+#: ../../../lang/stb.php:493
 msgid "Path to the folder"
 msgstr "Шлях до папки на сервері"
 
-#: ../../../lang/stb.php:493 ../../../lang/stb.php:494
+#: ../../../lang/stb.php:494 ../../../lang/stb.php:495
 msgid "Folder name in favorites"
 msgstr "Назва папки в обраному"
 
-#: ../../../lang/stb.php:497
+#: ../../../lang/stb.php:498
 msgid "Mount failed"
 msgstr "Помилка монтування"
 
-#: ../../../lang/stb.php:499
+#: ../../../lang/stb.php:500
 msgid "SKIP"
 msgstr "ПРОПУСТИТИ"
 
-#: ../../../lang/stb.php:500
+#: ../../../lang/stb.php:501
 msgid "COMMERCIAL"
 msgstr "РЕКЛАМА"
 
-#: ../../../lang/stb.php:503
+#: ../../../lang/stb.php:504
 msgid "Clock"
 msgstr "Годинник"
 
-#: ../../../lang/stb.php:504
+#: ../../../lang/stb.php:505
 msgid "Hidden"
 msgstr "Приховані"
 
-#: ../../../lang/stb.php:505
+#: ../../../lang/stb.php:506
 msgid "Top Right"
 msgstr "Зверху справа"
 
-#: ../../../lang/stb.php:506
+#: ../../../lang/stb.php:507
 msgid "Top Left"
 msgstr "Зверху зліва"
 
-#: ../../../lang/stb.php:507
+#: ../../../lang/stb.php:508
 msgid "Bottom Right"
 msgstr "Знизу праворуч"
 
-#: ../../../lang/stb.php:508
+#: ../../../lang/stb.php:509
 msgid "Bottom Left"
 msgstr "Знизу зліва"
 
-#: ../../../lang/stb.php:511
+#: ../../../lang/stb.php:512
 msgid "Settings section is currently unavailable"
 msgstr "Розділ налаштувань в даний момент недоступний"
 
@@ -4417,13 +4426,13 @@ msgstr "вчора"
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
 
-#: ../../../lib/itv.class.php:1337
+#: ../../../lib/itv.class.php:1360
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1347
+#: ../../../lib/itv.class.php:1370
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""

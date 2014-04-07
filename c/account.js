@@ -106,13 +106,11 @@
                 module.account.show(module.blocking);
             }).bind(key.INFO, module.blocking).bind(key.YELLOW, module.blocking);
 
-            var blocking_buttons = create_block_element('blocking_buttons', module.blocking.dom_obj);
-
-            var blocking_account_info = create_block_element('blocking_account_info', blocking_buttons);
-            blocking_account_info.innerHTML = '<div class="color_btn blue"></div> '+get_word('blocking_account_payment');
-
-            var blocking_account_payment = create_block_element('blocking_account_payment', blocking_buttons);
+            var blocking_account_payment = create_block_element('blocking_account_info', module.blocking.blocking_buttons);
             blocking_account_payment.innerHTML = '<div class="color_btn yellow"></div> '+get_word('blocking_account_info');
+
+            var blocking_account_info = create_block_element('blocking_account_payment', module.blocking.blocking_buttons);
+            blocking_account_info.innerHTML = '<div class="color_btn blue"></div> '+get_word('blocking_account_payment');
 
             var scope = this;
 

@@ -425,6 +425,7 @@ $words['error_channel_access_denied'] = _('Access denied');
 
 $words['blocking_account_info'] = _('Account info');
 $words['blocking_account_payment'] = _('Payment');
+$words['blocking_account_reboot'] = _('Reload portal');
 
 $words['archive_continue_playing_text'] = _('Continue playing?');
 $words['archive_yes'] = _('YES');

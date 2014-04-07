@@ -18,6 +18,11 @@
 
                 this.dom_obj  = create_block_element('cut_off', document.body);
                 this.text_msg = create_block_element('cut_off_text', this.dom_obj);
+                this.blocking_buttons = create_block_element('blocking_buttons', this.dom_obj);
+
+                this.blocking_account_reboot = create_block_element('blocking_account_reboot', this.blocking_buttons);
+                this.blocking_account_reboot.innerHTML = '<div class="color_btn red"></div> '+get_word('blocking_account_reboot');
+
                 this.hide();
             }
         },
@@ -26,6 +31,7 @@
             _debug('blocking.show');
             this.init_layer();
             this.text_msg.innerHTML = msg || get_word('cut_off_msg');
+            this.blocking_account_reboot.innerHTML = '<div class="color_btn red"></div> '+get_word('blocking_account_reboot');
             this.dom_obj.show();
             this.on = true;
             stb.load_account_modules();
@@ -43,6 +49,11 @@
                     window.location = window.referrer
                 }
             }).bind(key.EXIT, this);
+
+            (function(){
+                _debug('blocking key.red');
+                window.location = window.location;
+            }).bind(key.RED, this);
         }
     };
     

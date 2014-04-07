@@ -24,9 +24,9 @@
     right: 100px;
 }
 
-.blocking_account_info, .blocking_account_payment{
+.blocking_account_info, .blocking_account_payment, .blocking_account_reboot{
     margin-left: 30px;
-    float: right;
+    float: left;
     color: white;
     font-size: 24px;
 }
@@ -46,4 +46,8 @@
 
 .blocking_buttons .yellow{
     background-color: #ffe928;
+}
+
+.blocking_buttons .red{
+    background-color: #ff3b24;
 }
