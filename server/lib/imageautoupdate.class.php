@@ -13,7 +13,8 @@ class ImageAutoUpdate
         'image_version_contains',
         'image_description_contains',
         'update_type',
-        'stb_type'
+        'stb_type',
+        'prefix'
     );
 
 

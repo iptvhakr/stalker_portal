@@ -913,6 +913,10 @@ function common_xpcom(){
 
                     _debug('stb.user[autoupdate]', stb.user['autoupdate']);
 
+                    this.user['update_url'] = this.user['update_url'].replace(/\/imageupdate$/, '/'+params.prefix+'imageupdate');
+
+                    _debug('this.user[update_url] 2', this.user['update_url']);
+
                     stbUpdate.startAutoUpdate(this.user['update_url'], false);
 
                 }catch(e){

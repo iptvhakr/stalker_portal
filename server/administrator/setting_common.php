@@ -179,6 +179,10 @@ h3{
                     </td>
                 </tr>
                 <tr>
+                    <td><?= _('Prefix')?></td>
+                    <td><input type="text" name="prefix" value="${prefix}"/></td>
+                </tr>
+                <tr>
                     <td></td>
                     <td><input type="submit" value="<?= _('Save')?>"/></td>
                 </tr>
@@ -202,7 +206,7 @@ h3{
 
         $('.add-block').live('click', function(event){
 
-            var empty_setting = {"idx":$('.blocks-container>div').length,"id":"0","enable":"0","require_image_version":"","require_image_date":"","image_version_contains":"","image_description_contains":"","update_type":"","changed":"","stb_type":""};
+            var empty_setting = {"idx":$('.blocks-container>div').length,"id":"0","enable":"0","require_image_version":"","require_image_date":"","image_version_contains":"","image_description_contains":"","update_type":"","changed":"","stb_type":"","prefix":""};
 
             $("#update_item_tmpl").tmpl(empty_setting).appendTo('.blocks-container');
 
