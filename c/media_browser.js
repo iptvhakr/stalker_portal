@@ -19,10 +19,11 @@
         this.favorites    = [];
         this.change_level = true;
         this.sort_by_date = false;
+        this.mount_points = {};
         
         this.superclass = ListLayer.prototype;
 
-        this.dir_hist = [{"path" : "/media/", "page" : 1, "row" : 1}];
+        this.dir_hist = [{"path" : "", "page" : 1, "row" : 1}];
 
         this.image_extensions = stb.usbdisk.image_ext.split(' ') || [];
         this.audio_extensions = stb.usbdisk.audio_ext.split(' ') || [];
@@ -482,77 +483,80 @@
                 var path = this.compile_path();
             }
 
-            //var path = this.compile_path();
-
             this.path = path;
 
             _debug('path', path);
 
+            var dirs = [];
+            var files = [];
+            var devices = {};
 
-            if (this.change_level){
+            if (this.dir_hist.length == 1){
+
+                this.mount_points = {};
+
+                dirs.push("UPnP/");
+                devices['UPnP'] = {"mountPath" : '/media/UPnP/'};
+                this.mount_points['/media/UPnP/'] = 'UPnP';
+
+                var storage_info = stb.usbdisk.storage_info;
+
+                if (storage_info){
+                    for (var i=0; i<storage_info.length; i++){
+
+                        var dev_name = storage_info[i].vendor
+                                + ' ' + storage_info[i].model
+                                + (storage_info[i].label ? '(' + storage_info[i].label + ')' : '')
+                                + (storage_info.length > 1 ? ' #' + storage_info[i].partitionNum : '');
+
+                        devices[dev_name] = {"mountPath" : storage_info[i].mountPath + '/'};
+
+                        this.mount_points[storage_info[i].mountPath + '/'] = dev_name;
+
+                        dirs.push(dev_name + '/');
+                    }
+                }
+
+            }else if (this.change_level){
                 stb.usbdisk.read_dir(path);
+                dirs = stb.usbdisk.dirs;
+                files = stb.usbdisk.files;
             }else{
                 this.fill_page(this.cur_dir_list);
                 return;
             }
-            //_debug(txt);
 
-            //_debug('stb.storages', stb.storages);
-            _debug('stb.usbdisk.dirs', stb.usbdisk.dirs);
-
-            /*try{
-                var storage_info = JSON.parse(stb.RDir('get_storage_info'));
-            }catch(e){
-                _debug(e);
-            }*/
-
-            var storage_info = stb.usbdisk.storage_info;
-
-            var devices = {};
-
-            if (storage_info){
-                for (var i=0; i<storage_info.length; i++){
-                    devices['USB-' + storage_info[i].sn + '-' + storage_info[i].partitionNum] = storage_info[i].vendor
-                            + ' ' + storage_info[i].model
-                            + (storage_info[i].label ? '(' + storage_info[i].label + ')' : '')
-                            + (storage_info.length > 1 ? ' #' + storage_info[i].partitionNum : '');
-                }
-            }
+            _debug('dirs', dirs);
+            _debug('devices', devices);
 
             if (this.dir_hist.length == 1){
-                stb.usbdisk.dirs = stb.usbdisk.dirs.filter(function(el){return !stb.storages.hasOwnProperty(el.substr(0, el.length-1))});
+                dirs = dirs.filter(function(el){return !stb.storages.hasOwnProperty(el.substr(0, el.length-1))});
             }
 
-            _debug('stb.usbdisk.dirs 2', stb.usbdisk.dirs);
+            _debug('dirs 2', dirs);
 
             var new_dirs = [];
 
-            for (var i=0; i < stb.usbdisk.dirs.length; i++){
-                if (!empty(stb.usbdisk.dirs[i])){
+            for (var i=0; i < dirs.length; i++){
+                if (!empty(dirs[i])){
 
-                    if (devices[stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1)]){
-                        var name = devices[stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1)];
-                    }else{
-                        name = stb.usbdisk.dirs[i].substring(0, stb.usbdisk.dirs[i].length - 1);
-                    }
+                    var name = dirs[i].substring(0, dirs[i].length - 1);
 
-                    if (name == 'av'){
-                        name = 'UPnP';
-                    }else if (name.indexOf('USB-') == 0 || name.indexOf('tmp-smb') == 0 || name.indexOf('SAMBA') == 0){
+                    if (name.indexOf('USB-') == 0 || name.indexOf('tmp-smb') == 0 || name.indexOf('SAMBA') == 0){
                         continue;
                     }
 
-                    var is_playable = this.is_playable_folder(path+'/'+name);
+                    var dir = {"name" : name, "dir" : 1, "dir_name" : devices[name] ? devices[name].mountPath : dirs[i]};
 
-                    _debug('is_playable', is_playable);
+                    if (this.dir_hist.length > 1){
+                        var is_playable = this.is_playable_folder(path+'/'+name);
 
-                    var dir = {"name" : name, "dir" : 1, "dir_name" : stb.usbdisk.dirs[i]};
+                        _debug('is_playable', is_playable);
 
-                    if (is_playable){
-                        dir.cmd = "extBDDVD "+path+'/'+name
+                        if (is_playable){
+                            dir.cmd = "extBDDVD "+path+'/'+name
+                        }
                     }
-
-                    //dir._id = this.get_id(dir);
 
                     new_dirs.push(dir);
                 }
@@ -560,20 +564,20 @@
 
             var new_files = [];
 
-            for (var i=0; i < stb.usbdisk.files.length; i++){
-                if (!empty(stb.usbdisk.files[i]) && ['srt', 'sub', 'ass'].indexOf(stb.usbdisk.files[i].name.substring(stb.usbdisk.files[i].name.lastIndexOf('.')+1)) == -1){
+            for (var i=0; i < files.length; i++){
+                if (!empty(files[i]) && ['srt', 'sub', 'ass'].indexOf(files[i].name.substring(files[i].name.lastIndexOf('.')+1)) == -1){
 
-                    if (stb.usbdisk.files[i].name.toLowerCase().indexOf('.iso') == stb.usbdisk.files[i].name.length-4){
+                    if (files[i].name.toLowerCase().indexOf('.iso') == files[i].name.length-4){
                         var solution = 'extBDDVD';
                     }else{
                         solution = 'auto';
                     }
 
                     new_files.push({
-                        "name" : stb.usbdisk.files[i].name,
-                        "cmd" : (solution + " " + path + stb.usbdisk.files[i].name),
-                        "size" : stb.usbdisk.files[i].size,
-                        "last_modified" : (stb.usbdisk.files[i].last_modified || 0)
+                        "name" : files[i].name,
+                        "cmd" : (solution + " " + path + files[i].name),
+                        "size" : files[i].size,
+                        "last_modified" : (files[i].last_modified || 0)
                     });
                 }
             }
@@ -1158,7 +1162,7 @@
             for(var i=1; i<this.dir_hist.length; i++){
                 if (this.dir_hist[i].path == 'SMB_GROUP'){
                 
-                }else if (['SMB', 'SMB_SERVER', 'SMB_SHARE', 'FAV'].indexOf(this.dir_hist[i].path) >= 0 || this.dir_hist[i].path.indexOf('USB-') === 0){
+                }else if (['SMB', 'SMB_SERVER', 'SMB_SHARE', 'FAV'].indexOf(this.dir_hist[i].path) >= 0 || this.dir_hist[i].path.indexOf('USB-') === 0 || this.mount_points[this.dir_hist[i].path]){
                     breadcrumbs += this.dir_hist[i].param + '/';
                 }else{
                     breadcrumbs += this.dir_hist[i].path;
