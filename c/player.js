@@ -1033,12 +1033,13 @@ player.prototype.event_callback = function(event, params){
                     _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
                 }else{
 
-                    var cur_aspect = stb.aspect_array[stb.aspect_idx].mode; // default - common aspect
+                    // default aspect for TV - FIT
 
-                    _debug('cur_aspect', cur_aspect);
-                    _debug('aspect_alias', stb.aspect_array[stb.aspect_idx].alias);
+                    var cur_aspect = 0x10;
 
-                    this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', cur_aspect) || 0;
+                    this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', cur_aspect);
+
+                    _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
 
                     try{
                         stb.SetAspect(cur_aspect);
