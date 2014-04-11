@@ -943,7 +943,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $this->response['data'][$i]['allow_pvr'] = $this->response['data'][$i]['allow_pvr']==0 ? '' : '1';
             $this->response['data'][$i]['allow_local_pvr'] = $this->response['data'][$i]['allow_local_pvr']==0 ? '' : '1';
 
-            $this->response['data'][$i]['pvr'] = (int) ($this->response['data'][$i]['allow_pvr'] || $this->response['data'][$i]['allow_local_pvr']);
+            $this->response['data'][$i]['pvr'] = (int) (Config::getSafe('show_tv_channel_pvr_icon', true)
+                && ($this->response['data'][$i]['allow_pvr'] || $this->response['data'][$i]['allow_local_pvr'])
+            );
         }
 
         return $this->response;
