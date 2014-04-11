@@ -15,7 +15,8 @@ class AccountInfo implements \Stalker\Lib\StbApi\AccountInfo
         $info = array(
             'fname' => $user->getProfileParam('fname'),
             'phone' => $user->getProfileParam('phone'),
-            'ls' => $user->getProfileParam('ls')
+            'ls'    => $user->getProfileParam('ls'),
+            'mac'   => $user->getProfileParam('mac')
         );
 
         if (is_array($oss_info)){
