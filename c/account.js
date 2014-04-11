@@ -319,17 +319,56 @@
             this.update_header_path([{"alias" : "tab", "item" : word['account_info']}]);
             this.color_buttons.get('red').disable();
             this.color_buttons.get('green').enable();
+            this.color_buttons.get('green').setText(get_word('account_payment'));
             this.color_buttons.get('yellow').enable();
             this.color_buttons.get('blue').enable();
         }},
         {"label" : word['account_payment'], "cmd" : function(){
-            account.tab['payment'].show();
-            account.cur_tab = 'payment';
-            this.update_header_path([{"alias" : "tab", "item" : word['account_payment']}]);
-            this.color_buttons.get('red').enable();
-            this.color_buttons.get('green').disable();
-            this.color_buttons.get('yellow').enable();
-            this.color_buttons.get('blue').enable();
+
+            if (stb.profile['external_payment_page_url'] && !account.tab['payment'].dom_obj.isHidden()){
+                _debug('stb.profile[external_payment_page_url]', stb.profile['external_payment_page_url']);
+
+                if (!module.internet || !module.internet.win_inited){
+                    if (stbWindowMgr.InitWebWindow){
+                        stbWindowMgr.InitWebWindow(
+                            '/home/web/public/app/bookmarks/header.html',
+                            '/home/web/public/app/bookmarks/footer.html');
+                    }
+                }
+
+                if (stbWindowMgr.openWebFace){
+                    stbWindowMgr.openWebFace('/home/web/public/app/ibman/index.html?mode=2&url='+encodeURIComponent(stb.profile['external_payment_page_url']));
+                    module.internet.win_inited = true;
+                }else{
+                    if (stbWindowMgr.InitWebWindow){
+                        stbWindowMgr.LoadUrl(stb.profile['external_payment_page_url']);
+                        stbWindowMgr.raiseWebWindow();
+                    }else{
+                        stbWindowMgr.openWebWindow(stb.profile['external_payment_page_url']);
+                    }
+
+                    module.internet.win_inited = true;
+                }
+
+            }else{
+
+                account.tab['payment'].show();
+                account.cur_tab = 'payment';
+                this.update_header_path([{"alias" : "tab", "item" : word['account_payment']}]);
+                this.color_buttons.get('red').enable();
+                if (stb.profile['external_payment_page_url']){
+                    this.color_buttons.get('green').enable();
+                }else{
+                    this.color_buttons.get('green').disable();
+                }
+                this.color_buttons.get('yellow').enable();
+                this.color_buttons.get('blue').enable();
+            }
+
+            if (stb.profile['external_payment_page_url']){
+                this.color_buttons.get('green').setText(get_word('account_pay'));
+            }
+
         }},
         {"label" : word['account_agreement'], "cmd" : function(){
             account.tab['agreement'].show();
@@ -337,6 +376,7 @@
             this.update_header_path([{"alias" : "tab", "item" : word['account_agreement']}]);
             this.color_buttons.get('red').enable();
             this.color_buttons.get('green').enable();
+            this.color_buttons.get('green').setText(get_word('account_payment'));
             this.color_buttons.get('yellow').disable();
             this.color_buttons.get('blue').enable();
         }},
@@ -346,6 +386,7 @@
             this.update_header_path([{"alias" : "tab", "item" : word['account_terms']}]);
             this.color_buttons.get('red').enable();
             this.color_buttons.get('green').enable();
+            this.color_buttons.get('green').setText(get_word('account_payment'));
             this.color_buttons.get('yellow').enable();
             this.color_buttons.get('blue').disable();
         }}
