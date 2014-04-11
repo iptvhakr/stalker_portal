@@ -9,7 +9,7 @@ class RESTApiUsersDocument extends RESTApiDocument
     public function __construct(){
         parent::__construct();
 
-        $this->fields_map = array_fill_keys(array('id', "ls", "status", "mac", "fname", "phone", "tariff", "end_date", "account_balance"), true);
+        $this->fields_map = array_fill_keys(array('id', "ls", "status", "mac", "fname", "phone", "tariff_plan", "end_date", "account_balance"), true);
     }
 
     public function get(RESTApiRequest $request, $id){

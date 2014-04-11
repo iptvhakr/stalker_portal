@@ -311,6 +311,7 @@ $words['coming_soon']        = _('Coming soon');
 
 $words['account_info']      = _('INFORMATION');
 $words['account_payment']   = _('PAYMENT');
+$words['account_pay']       = _('PAY');
 $words['account_agreement'] = _('AGREEMENT');
 $words['account_terms']     = _('TERMS OF USE');
 

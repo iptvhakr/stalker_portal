@@ -29,6 +29,7 @@
 
         if (stbWindowMgr.openWebFace){
             stbWindowMgr.openWebFace('/home/web/public/app/ibman/index.html?mode=2&url='+encodeURIComponent('http://google.com'));
+            module.internet.win_inited = true;
         }else if (module.internet.win_inited && stbWindowMgr.IsWebWindowExist && stbWindowMgr.IsWebWindowExist()){
             stbWindowMgr.raiseWebWindow();
         }else{
