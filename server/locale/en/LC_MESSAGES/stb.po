@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-05-14 13:59+0200\n"
-"PO-Revision-Date: 2013-05-14 14:00+0200\n"
-"Last-Translator: alex <zhurbitsky@gmail.com>\n"
+"PO-Revision-Date: 2014-04-14 10:45+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;dgettext\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-Country: UKRAINE\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: ../../..\n"
 
 #: ../../../administrator/add_epg.php:134
@@ -709,7 +709,12 @@ msgid "Cover"
 msgstr ""
 
 #: ../../../administrator/add_video.php:2156
-msgid "1. Upload cover.<br>2. Fill form.<br>3. Save.<br>4. Put the converted in folder<br>&nbsp;&nbsp;&nbsp;&nbsp;specified in the column \"Folder\".<br>5. If necessary, edit or delete a record.<br>6. Click on folder name.<br>7. If the file is physically present in the directory,<br>&nbsp;&nbsp;&nbsp;&nbsp;it is green, if there is no - in red."
+msgid ""
+"1. Upload cover.<br>2. Fill form.<br>3. Save.<br>4. Put the converted in "
+"folder<br>&nbsp;&nbsp;&nbsp;&nbsp;specified in the column \"Folder\".<br>5. "
+"If necessary, edit or delete a record.<br>6. Click on folder name.<br>7. If "
+"the file is physically present in the directory,<br>&nbsp;&nbsp;&nbsp;&nbsp;"
+"it is green, if there is no - in red."
 msgstr ""
 
 #: ../../../administrator/all_userlog.php:57
@@ -782,8 +787,7 @@ msgstr ""
 msgid "Phone number"
 msgstr ""
 
-#: ../../../administrator/claims.php:73
-#: ../../../administrator/claims.php:79
+#: ../../../administrator/claims.php:73 ../../../administrator/claims.php:79
 #: ../../../administrator/index.php:394
 msgid "Claims"
 msgstr ""
@@ -884,8 +888,7 @@ msgstr ""
 msgid "Error when sending event"
 msgstr ""
 
-#: ../../../administrator/events.php:199
-#: ../../../administrator/events.php:205
+#: ../../../administrator/events.php:199 ../../../administrator/events.php:205
 #: ../../../administrator/index.php:137
 msgid "Events"
 msgstr ""
@@ -1170,13 +1173,11 @@ msgstr ""
 msgid "LOGIN"
 msgstr ""
 
-#: ../../../administrator/login.php:54
-#: ../../../administrator/login.php:66
+#: ../../../administrator/login.php:54 ../../../administrator/login.php:66
 msgid "Sign in"
 msgstr ""
 
-#: ../../../administrator/login.php:57
-#: ../../../administrator/profile.php:366
+#: ../../../administrator/login.php:57 ../../../administrator/profile.php:366
 msgid "Login"
 msgstr ""
 
@@ -1189,8 +1190,7 @@ msgstr ""
 msgid "Master-storage logs"
 msgstr ""
 
-#: ../../../administrator/msg.php:57
-#: ../../../administrator/msg.php:63
+#: ../../../administrator/msg.php:57 ../../../administrator/msg.php:63
 msgid "View message"
 msgstr ""
 
@@ -1214,8 +1214,7 @@ msgstr ""
 msgid "Task rejected"
 msgstr ""
 
-#: ../../../administrator/msgs.php:66
-#: ../../../administrator/msgs.php:72
+#: ../../../administrator/msgs.php:66 ../../../administrator/msgs.php:72
 msgid "My messages"
 msgstr ""
 
@@ -1278,7 +1277,9 @@ msgid "%s channels"
 msgstr ""
 
 #: ../../../administrator/profile.php:341
-msgid "Reset favorite TV channels? The channels will be reset only if immediately restart the stb!"
+msgid ""
+"Reset favorite TV channels? The channels will be reset only if immediately "
+"restart the stb!"
 msgstr ""
 
 #: ../../../administrator/profile.php:358
@@ -1293,8 +1294,7 @@ msgstr ""
 msgid "Last change of status"
 msgstr ""
 
-#: ../../../administrator/profile.php:398
-#: ../../../administrator/reply.php:145
+#: ../../../administrator/profile.php:398 ../../../administrator/reply.php:145
 msgid "Comment"
 msgstr ""
 
@@ -1330,8 +1330,7 @@ msgstr ""
 msgid "message sended"
 msgstr ""
 
-#: ../../../administrator/reply.php:81
-#: ../../../administrator/reply.php:87
+#: ../../../administrator/reply.php:81 ../../../administrator/reply.php:87
 msgid "Send message"
 msgstr ""
 
@@ -1514,8 +1513,7 @@ msgstr ""
 msgid "Latest VIDEO viewing"
 msgstr ""
 
-#: ../../../administrator/stat_tv.php:59
-#: ../../../administrator/stat_tv.php:65
+#: ../../../administrator/stat_tv.php:59 ../../../administrator/stat_tv.php:65
 msgid "TV views statistics per month"
 msgstr ""
 
@@ -1624,7 +1622,8 @@ msgid "Clear cache"
 msgstr ""
 
 #: ../../../administrator/storages.php:176
-msgid "Are you sure you want to update a cache? This operation will take some time."
+msgid ""
+"Are you sure you want to update a cache? This operation will take some time."
 msgstr ""
 
 #: ../../../administrator/storages.php:176
@@ -1798,8 +1797,7 @@ msgstr ""
 msgid "Use as default"
 msgstr ""
 
-#: ../../../administrator/tasks.php:59
-#: ../../../administrator/tasks.php:65
+#: ../../../administrator/tasks.php:59 ../../../administrator/tasks.php:65
 msgid "Tasks"
 msgstr ""
 
@@ -1825,8 +1823,7 @@ msgid "Video tasks archive"
 msgstr ""
 
 #: ../../../administrator/testers.php:107
-#: ../../../administrator/testers.php:113
-#: ../../../administrator/users.php:106
+#: ../../../administrator/testers.php:113 ../../../administrator/users.php:106
 msgid "Testers"
 msgstr ""
 
@@ -1909,8 +1906,7 @@ msgstr ""
 msgid "Error: Not all required fields are filled"
 msgstr ""
 
-#: ../../../administrator/user.php:47
-#: ../../../administrator/user.php:90
+#: ../../../administrator/user.php:47 ../../../administrator/user.php:90
 msgid "User account"
 msgstr ""
 
@@ -1922,28 +1918,23 @@ msgstr ""
 msgid "Account disabled"
 msgstr ""
 
-#: ../../../administrator/userlog.php:55
-#: ../../../administrator/userlog.php:61
+#: ../../../administrator/userlog.php:55 ../../../administrator/userlog.php:61
 msgid "User logs"
 msgstr ""
 
-#: ../../../administrator/userlog.php:289
-#: ../../../administrator/users.php:202
+#: ../../../administrator/userlog.php:289 ../../../administrator/users.php:202
 msgid "Audio"
 msgstr ""
 
-#: ../../../administrator/userlog.php:302
-#: ../../../administrator/users.php:203
+#: ../../../administrator/userlog.php:302 ../../../administrator/users.php:203
 msgid "Radio"
 msgstr ""
 
-#: ../../../administrator/userlog.php:319
-#: ../../../administrator/users.php:204
+#: ../../../administrator/userlog.php:319 ../../../administrator/users.php:204
 msgid "My records"
 msgstr ""
 
-#: ../../../administrator/userlog.php:336
-#: ../../../administrator/users.php:205
+#: ../../../administrator/userlog.php:336 ../../../administrator/users.php:205
 #: ../../../administrator/users.php:209
 msgid "Records"
 msgstr ""
@@ -2060,8 +2051,7 @@ msgstr ""
 msgid "Pressure"
 msgstr ""
 
-#: ../../../lang/stb.php:12
-#: ../../../lang/stb.php:175
+#: ../../../lang/stb.php:12 ../../../lang/stb.php:175
 msgid "mm Hg"
 msgstr ""
 
@@ -2069,8 +2059,7 @@ msgstr ""
 msgid "Wind"
 msgstr ""
 
-#: ../../../lang/stb.php:14
-#: ../../../lang/stb.php:177
+#: ../../../lang/stb.php:14 ../../../lang/stb.php:177
 msgid "m/s"
 msgstr ""
 
@@ -2082,21 +2071,16 @@ msgstr ""
 msgid "Current weather unavailable"
 msgstr ""
 
-#: ../../../lang/stb.php:19
-#: ../../../lang/stb.php:72
-#: ../../../lang/stb.php:96
+#: ../../../lang/stb.php:19 ../../../lang/stb.php:72 ../../../lang/stb.php:96
 #: ../../../lang/stb.php:185
 msgid "VIEW"
 msgstr ""
 
-#: ../../../lang/stb.php:20
-#: ../../../lang/stb.php:73
-#: ../../../lang/stb.php:97
+#: ../../../lang/stb.php:20 ../../../lang/stb.php:73 ../../../lang/stb.php:97
 msgid "SORT"
 msgstr ""
 
-#: ../../../lang/stb.php:21
-#: ../../../lang/stb.php:98
+#: ../../../lang/stb.php:21 ../../../lang/stb.php:98
 msgid "SEARCH"
 msgstr ""
 
@@ -2104,8 +2088,7 @@ msgstr ""
 msgid "PICKING"
 msgstr ""
 
-#: ../../../lang/stb.php:23
-#: ../../../lang/stb.php:102
+#: ../../../lang/stb.php:23 ../../../lang/stb.php:102
 msgid "BY LETTER"
 msgstr ""
 
@@ -2129,8 +2112,7 @@ msgstr "OF"
 msgid "FOUND"
 msgstr ""
 
-#: ../../../lang/stb.php:32
-#: ../../../lang/stb.php:130
+#: ../../../lang/stb.php:32 ../../../lang/stb.php:130
 msgid "RECORDS"
 msgstr "RECORDINGS"
 
@@ -2170,14 +2152,12 @@ msgstr ""
 msgid "File missing"
 msgstr ""
 
-#: ../../../lang/stb.php:47
-#: ../../../lib/account.class.php:80
+#: ../../../lang/stb.php:47 ../../../lib/account.class.php:80
 #: ../../../lib/account.class.php:114
 msgid "Server error"
 msgstr ""
 
-#: ../../../lang/stb.php:48
-#: ../../../lang/stb.php:417
+#: ../../../lang/stb.php:48 ../../../lang/stb.php:417
 msgid "Access denied"
 msgstr ""
 
@@ -2245,8 +2225,7 @@ msgstr ""
 msgid "combined"
 msgstr ""
 
-#: ../../../lang/stb.php:74
-#: ../../../lang/stb.php:99
+#: ../../../lang/stb.php:74 ../../../lang/stb.php:99
 msgid "FAVORITE"
 msgstr ""
 
@@ -2258,8 +2237,7 @@ msgstr ""
 msgid "by number"
 msgstr ""
 
-#: ../../../lang/stb.php:77
-#: ../../../lang/stb.php:108
+#: ../../../lang/stb.php:77 ../../../lang/stb.php:108
 msgid "by title"
 msgstr ""
 
@@ -2267,13 +2245,11 @@ msgstr ""
 msgid "only favorite"
 msgstr ""
 
-#: ../../../lang/stb.php:79
-#: ../../../lang/stb.php:115
+#: ../../../lang/stb.php:79 ../../../lang/stb.php:115
 msgid "list"
 msgstr ""
 
-#: ../../../lang/stb.php:80
-#: ../../../lang/stb.php:116
+#: ../../../lang/stb.php:80 ../../../lang/stb.php:116
 msgid "list + info"
 msgstr ""
 
@@ -2453,8 +2429,7 @@ msgstr ""
 msgid "TV GUIDE"
 msgstr ""
 
-#: ../../../lang/stb.php:136
-#: ../../../lang/stb.php:377
+#: ../../../lang/stb.php:136 ../../../lang/stb.php:377
 msgid "PACKAGE INFO"
 msgstr ""
 
@@ -2462,14 +2437,12 @@ msgstr ""
 msgid "SETTINGS"
 msgstr ""
 
-#: ../../../lang/stb.php:140
-#: ../../../lang/stb.php:160
+#: ../../../lang/stb.php:140 ../../../lang/stb.php:160
 #: ../../../lang/stb.php:257
 msgid "CANCEL"
 msgstr ""
 
-#: ../../../lang/stb.php:141
-#: ../../../lang/stb.php:266
+#: ../../../lang/stb.php:141 ../../../lang/stb.php:266
 msgid "SAVE"
 msgstr ""
 
@@ -2651,7 +2624,11 @@ msgid "C"
 msgstr ""
 
 #: ../../../lang/stb.php:206
-msgid "Your task is to guess the number of unduplicated four digits, the first of them - not zero. Every your guess will be compared with the number put forth a STB. If you guessed a digit, but it is not in place, then it is a COW (C). If you guessed, and a number, and its location, this BULL (B)."
+msgid ""
+"Your task is to guess the number of unduplicated four digits, the first of "
+"them - not zero. Every your guess will be compared with the number put forth "
+"a STB. If you guessed a digit, but it is not in place, then it is a COW (C). "
+"If you guessed, and a number, and its location, this BULL (B)."
 msgstr ""
 
 #: ../../../lang/stb.php:207
@@ -2741,8 +2718,7 @@ msgstr ""
 msgid "NTP Server"
 msgstr ""
 
-#: ../../../lang/stb.php:239
-#: ../../../lang/stb.php:286
+#: ../../../lang/stb.php:239 ../../../lang/stb.php:286
 msgid "DELETE"
 msgstr ""
 
@@ -2754,13 +2730,11 @@ msgstr ""
 msgid "Do you really want to stop this record?"
 msgstr ""
 
-#: ../../../lang/stb.php:244
-#: ../../../lang/stb.php:363
+#: ../../../lang/stb.php:244 ../../../lang/stb.php:363
 msgid "Confirm"
 msgstr ""
 
-#: ../../../lang/stb.php:247
-#: ../../../lang/stb.php:393
+#: ../../../lang/stb.php:247 ../../../lang/stb.php:393
 msgid "Server error. Try again later."
 msgstr ""
 
@@ -2792,8 +2766,7 @@ msgstr ""
 msgid "EXIT"
 msgstr ""
 
-#: ../../../lang/stb.php:259
-#: ../../../lang/stb.php:423
+#: ../../../lang/stb.php:259 ../../../lang/stb.php:423
 msgid "YES"
 msgstr ""
 
@@ -2817,8 +2790,7 @@ msgstr ""
 msgid "START"
 msgstr ""
 
-#: ../../../lang/stb.php:265
-#: ../../../lang/stb.php:482
+#: ../../../lang/stb.php:265 ../../../lang/stb.php:482
 msgid "ADD"
 msgstr ""
 
@@ -2899,7 +2871,9 @@ msgid "hours"
 msgstr ""
 
 #: ../../../lang/stb.php:294
-msgid "Reached limit the duration of continuous playback. To continue playback, press the OK or EXIT."
+msgid ""
+"Reached limit the duration of continuous playback. To continue playback, "
+"press the OK or EXIT."
 msgstr ""
 
 #: ../../../lang/stb.php:296
@@ -3131,7 +3105,8 @@ msgid "You have successfully subscribed to the service.  STB will be rebooted."
 msgstr ""
 
 #: ../../../lang/stb.php:390
-msgid "You have successfully unsubscribed from the service. STB will be rebooted."
+msgid ""
+"You have successfully unsubscribed from the service. STB will be rebooted."
 msgstr ""
 
 #: ../../../lang/stb.php:392
@@ -3246,8 +3221,7 @@ msgstr ""
 msgid "USB Storage"
 msgstr ""
 
-#: ../../../lang/stb.php:441
-#: ../../../lang/stb.php:477
+#: ../../../lang/stb.php:441 ../../../lang/stb.php:477
 #, fuzzy
 msgid "Path"
 msgstr "Title"
@@ -3368,8 +3342,7 @@ msgstr ""
 msgid "Path to the folder"
 msgstr ""
 
-#: ../../../lang/stb.php:485
-#: ../../../lang/stb.php:486
+#: ../../../lang/stb.php:485 ../../../lang/stb.php:486
 msgid "Folder name in favorites"
 msgstr ""
 
@@ -3377,10 +3350,8 @@ msgstr ""
 msgid "Mount failed"
 msgstr ""
 
-#: ../../../lib/account.class.php:18
-#: ../../../lib/account.class.php:39
-#: ../../../lib/account.class.php:60
-#: ../../../lib/account.class.php:90
+#: ../../../lib/account.class.php:18 ../../../lib/account.class.php:39
+#: ../../../lib/account.class.php:60 ../../../lib/account.class.php:90
 #: ../../../lib/account.class.php:141
 msgid "This operation is temporarily unavailable."
 msgstr ""
@@ -3608,8 +3579,7 @@ msgstr ""
 msgid "[No channel info]"
 msgstr ""
 
-#: ../../../lib/epg.class.php:72
-#: ../../../lib/epg.class.php:82
+#: ../../../lib/epg.class.php:72 ../../../lib/epg.class.php:82
 msgid "unavailable"
 msgstr ""
 
@@ -3640,17 +3610,14 @@ msgid "Exec time"
 msgstr ""
 
 #. / Mysql time format, see https://dev.mysql.com/doc/refman/5.5/en/date-and-time-functions.html#function_date-format
-#: ../../../lib/epg.class.php:432
-#: ../../../lib/epg.class.php:519
+#: ../../../lib/epg.class.php:432 ../../../lib/epg.class.php:519
 #: ../../../lib/epg.class.php:812
 msgid "%H:%i"
 msgstr "%h:%i %p"
 
 #. / Time format. See: http://ua2.php.net/manual/en/function.date.php
-#: ../../../lib/epg.class.php:699
-#: ../../../lib/epg.class.php:700
-#: ../../../lib/epg.class.php:701
-#: ../../../lib/epg.class.php:702
+#: ../../../lib/epg.class.php:699 ../../../lib/epg.class.php:700
+#: ../../../lib/epg.class.php:701 ../../../lib/epg.class.php:702
 msgid "H:i"
 msgstr "h:i A"
 
@@ -3760,7 +3727,8 @@ msgstr ""
 
 #: ../../../lib/itv.class.php:1310
 #, php-format
-msgid "Channel %s set to active because at least one of its URLs became available."
+msgid ""
+"Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
 #: ../../../lib/itv.class.php:1320
@@ -3790,10 +3758,8 @@ msgid "yesterday"
 msgstr ""
 
 #. / TRANSLATORS: "%2$s" - original video name, "%1$s" - video name.
-#: ../../../lib/user.class.php:981
-#: ../../../lib/user.class.php:982
-#: ../../../lib/video.class.php:95
-#: ../../../lib/vod.class.php:716
+#: ../../../lib/user.class.php:981 ../../../lib/user.class.php:982
+#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:716
 #, no-php-format
 msgid "video_name_format"
 msgstr "%2$s"
@@ -3818,8 +3784,7 @@ msgstr ""
 msgid "last week"
 msgstr ""
 
-#: ../../../lib/weatherco.class.php:186
-#: ../../../lib/weatherco.class.php:207
+#: ../../../lib/weatherco.class.php:186 ../../../lib/weatherco.class.php:207
 msgid "city_name_field"
 msgstr "name_en"
 
@@ -4021,11 +3986,11 @@ msgstr ""
 
 #: ../../../tools/misctranslations.php:61
 msgid "Our Serial"
-msgstr ""
+msgstr "Our Series"
 
 #: ../../../tools/misctranslations.php:62
 msgid "Foreign Serial"
-msgstr ""
+msgstr "Foreign Series"
 
 #: ../../../tools/misctranslations.php:68
 msgid "Detective"
@@ -4093,7 +4058,7 @@ msgstr ""
 
 #: ../../../tools/misctranslations.php:86
 msgid "Serial"
-msgstr ""
+msgstr "Series"
 
 #: ../../../tools/misctranslations.php:87
 msgid "Sports"
@@ -4286,4 +4251,3 @@ msgstr ""
 #: ../../../tools/misctranslations.php:156
 msgid "Stopped recording"
 msgstr ""
-
