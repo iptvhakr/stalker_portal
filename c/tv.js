@@ -191,6 +191,7 @@
                 }
 
                 stb.EnableVKButton(false);
+                stb.EnableServiceButton(false);
             }catch(e){
                 _debug(e);
             }
@@ -239,6 +240,7 @@
                 stb.SetTopWin(0);
                 stb.SetPIG(1, -1, -1, -1);
                 stb.EnableVKButton(true);
+                stb.EnableServiceButton(!!stb.user['enable_service_button']);
             }catch(e){
                 _debug(e);
             }
