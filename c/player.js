@@ -2101,7 +2101,46 @@ player.prototype.play_now = function(item){
         if (this.cur_media_item.error){
             stb.Stop();
         }else{
-            stb.Play(uri);
+            var use_proxy = false;
+
+            if (stb.user['web_proxy_host']){
+
+                if (stb.user['web_proxy_exclude_list']){
+                    var web_proxy_exclude_list = stb.user['web_proxy_exclude_list'].split(' ').filter(function(p){return p});
+
+                    _debug('web_proxy_exclude_list', web_proxy_exclude_list);
+
+                    if (web_proxy_exclude_list){
+                        var result = /:\/\/([^\/]+)/.exec(uri);
+                        if (result){
+                            var host = result[1];
+
+                            _debug('host', host);
+
+                            use_proxy = !web_proxy_exclude_list.some(function(mask){
+                                return host.indexOf(mask) !== -1;
+                            });
+                        }
+                    }
+                }
+            }
+
+            _debug('use_proxy', use_proxy);
+
+            if (use_proxy){
+
+                var proxy_addr = 'http://';
+                if (stb.user['web_proxy_user']){
+                    proxy_addr += stb.user['web_proxy_user']+':'+stb.user['web_proxy_pass']+'@';
+                }
+                proxy_addr += stb.user['web_proxy_host']+':' +stb.user['web_proxy_port'];
+
+                _debug('proxy_addr', proxy_addr);
+
+                stb.Play(uri, proxy_addr);
+            }else{
+                stb.Play(uri);
+            }
         }
     }catch(e){_debug(e)}
 };
