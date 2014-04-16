@@ -67,6 +67,10 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
             $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG250'));
         }else if (@$_POST['pattern'] == 'mag255'){
             $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG255'));
+        }else if (@$_POST['pattern'] == 'mag270'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG270'));
+        }else if (@$_POST['pattern'] == 'mag275'){
+            $user_list = Middleware::getUidsByPattern(array('stb_type' => 'MAG275'));
         }else if (@$_POST['pattern'] == 'aurahd0'){
             $user_list = Middleware::getUidsByPattern(array('stb_type' => 'AuraHD0'));
         }else if (@$_POST['pattern'] == 'aurahd1'){
@@ -374,6 +378,8 @@ function fill_msg(){
             <option value="mag200">MAG200</option>
             <option value="mag250">MAG250</option>
             <option value="mag255">MAG255</option>
+            <option value="mag270">MAG270</option>
+            <option value="mag275">MAG275</option>
             <option value="aurahd0">AuraHD0</option>
             <option value="aurahd1">AuraHD1</option>
             <option value="aurahd9">AuraHD9</option>
