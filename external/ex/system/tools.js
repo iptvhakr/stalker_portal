@@ -3,37 +3,8 @@
  * @author DarkPark
  */
 
-/**
- * Dumps the given data (json format), its type and optional title to console
- * @param data mixed value to be printed
- * @param {String} [title] optional string for additional info
- */
-function echo ( data, title ) {
-	// works only in debug mode with data present
-	if ( !window.debug || data === undefined ) return false;
-	// print to Weinre console if possible as well
-	//if ( window.WeinreConsoleReady ) console.info(title || "", data);
-	// console colors
-	var red   = '\033[31m',
-		bold  = '\033[1m',
-		cyan  = '\033[36m',
-		green = '\033[32m',
-		reset = '\033[0m';
-	// info of the var type
-	var type = Object.prototype.toString.call(data).match(/\s([a-z|A-Z]+)/)[1];
-	// add custom colors (red for errors)
-	if ( type === 'Error' ) type = red + type + reset; else type = green + type + reset;
-	// prepare
-	if ( data instanceof Object || data instanceof Array ) {
-		// complex object
-		data = data.nodeName ? data.outerHTML : JSON.stringify(data, null, 4);
-	}
-	title = title || '';
-	// combine all together and print result
-	gSTB.Debug('[' + type + "]\t" + (title ? bold + title + green + ":\t" + reset : '') + data);
-	// ok
-	return data;
-}
+// debug print blank placeholder for release builds
+if ( window.echo === undefined ) { window.echo = function ( data, title ) {}; }
 
 
 /**

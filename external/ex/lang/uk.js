@@ -46,9 +46,10 @@ var lang = {
 	'unmark'                  : 'Зняти виділення',
 	'film_description'        : 'Опис',
 	'size_in_bytes'           : 'Розмiр: ',
-	'film_description_off'    : 'Закрити опис',
-	'main_menu'               : 'Головне меню',
-	'apply'                   : 'Застосувати'
+	'film_description_off'    : 'Закрити<br>опис',
+	'main_menu'               : 'Головне<br>меню',
+	'apply'                   : 'Застосувати',
+	'toFiles'                 : 'Перейти<br>до файлiв'
 };
 
 var LANG_MEDIA_DEFAULT_ABORT = 'Відміна',
@@ -66,21 +67,19 @@ var LANG_MEDIA_MENU_GROUPS = {
     gins      : 'Виділене',
     gaudio    : 'Звукові доріжки',
     gsubtitle : 'Субтитри',
-    gts       : 'TimeShift',
-    gtsend    : 'TimeShift буфер',
     g3d       : '3D режим',
     gslideOn  : 'Слайдшоу'
 };
     
 var mediaInfoMenu_3dview     = 'Режим',
-    playerBtnF2sh            = 'Показати <br />плейлист',
-    playerBtnF2hd            = 'Приховати<br />плейлист',
+    playerBtnF2sh            = 'Показати<br>плейлист',
+    playerBtnF2hd            = 'Приховати<br>плейлист',
     playingError             = 'Помилка відтворення',
     mediaInfoMenu_langUnknown= 'невідомий',
-    playerBtnInfo            = 'Приховати <br />плеєр',
+    playerBtnInfo            = 'Приховати<br>плеєр',
     playerBtnMenu            = 'Параметри',
-    playlistPrev             = 'Попереднє <br />медіа',
-    playlistNext             = 'Наступне <br />медіа',
+    playlistPrev             = 'Попереднє<br>медіа',
+    playlistNext             = 'Наступне<br>медіа',
     time_seconds             = 'Сек.',
     LANG_MEDIA_MENU_INFO_DURATION = 'Тривалість: ',
     LANG_MEDIA_MENU_NO       = 'Нi';

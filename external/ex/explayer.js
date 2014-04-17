@@ -7,10 +7,10 @@ var stbEvent = {};
 var MediaPlayer = new CPage();
 
 // получение переменных среды
-var environment = (function ( global ) {
+var environment = (function () {
 	var varList = ["lang_audiotracks", "audio_initial_volume", "graphicres",
-		"subtitles_on", "lang_subtitles", "language", "subtitles_on"];
-	var query = '{"varList":["' + varList.join('","') + '"]}', environment;
+			"subtitles_on", "lang_subtitles", "language", "subtitles_on"],
+		query = '{"varList":["' + varList.join('","') + '"]}', environment, prevPlayerVolume;
 	try {
 		environment = JSON.parse(gSTB.GetEnv(query)).result;
 		if ( !environment.lang_audiotracks ) environment.lang_audiotracks = DEFAULT_AUDIO_LANG_1_IDX;
@@ -20,12 +20,17 @@ var environment = (function ( global ) {
 			environment.lang_subtitles = -1;
 		}
 		environment.subtitles_on = environment.subtitles_on == "true";
-		if ( environment.audio_initial_volume && environment.audio_initial_volume >= 0 && environment.audio_initial_volume <= 100 ) {global.curVolume = environment.audio_initial_volume}
+		prevPlayerVolume = gSTB.GetVolume();
+		if ( prevPlayerVolume >= 0 && prevPlayerVolume <= 100 ) {
+			volume.currVol = prevPlayerVolume;
+		} else if ( environment.audio_initial_volume && environment.audio_initial_volume >= 0 && environment.audio_initial_volume <= 100 ) {
+			volume.currVol = environment.audio_initial_volume
+		}
 	} catch ( e ) {
 		echo(e, "Environment load");
 	}
 	return environment;
-})(window);
+})();
 
 
 /**
@@ -41,21 +46,18 @@ MediaPlayer.EVENT_ERROR    = 5;
 MediaPlayer.EVENT_OK       = 6;
 MediaPlayer.EVENT_EXIT     = 7;
 
-MediaPlayer.onInit = function() {
-    var self = this;
-    var defLang = "";
-    for (var i=0; i<iso639.length; i++) {
-        for (var j=0; j<iso639[i].code.length; j++) {
-            if (iso639[i].code[j] === environment.language){
-                defLang = iso639[i].code[0];
-                break;
-            }
-        }
-        if(defLang !== ""){
-            break;
-        }
-    }
-    
+MediaPlayer.onInit = function () {
+	var self = this, defLang = "";
+
+	for ( var i = 0; i < iso639.length; i++ ) {
+		for ( var j = 0; j < iso639[i].code.length; j++ ) {
+			if ( iso639[i].code[j] === environment.language ) {
+				defLang = iso639[i].code[0];
+				break;
+			}
+		}
+		if ( defLang !== "" ) { break; }
+	}
 
     gSTB.InitPlayer();
     gSTB.SetVideoControl(0); 
@@ -68,11 +70,10 @@ MediaPlayer.onInit = function() {
     gSTB.SetWinAlphaLevel(1, 255);
     gSTB.SetChromaKey(1, 0xFFFFFF);
     gSTB.SetPIG(1, 0, 0, 0);
-    gSTB.SetAudioLangs(environment.lang_audiotracks === ""? "" : iso639[environment.lang_audiotracks].code[0],defLang);
-    gSTB.SetSubtitleLangs(environment.lang_subtitles === "" || environment.lang_subtitles === -1? "" : iso639[environment.lang_subtitles].code[0],defLang);
+	gSTB.SetAudioLangs(environment.lang_audiotracks === "" ? "" : iso639[environment.lang_audiotracks].code[0], defLang);
+	gSTB.SetSubtitleLangs((environment.lang_subtitles === "" || environment.lang_subtitles === -1) ? "" : iso639[environment.lang_subtitles].code[0], defLang);
 
-
-    this.countError = 0;
+	this.countError = 0;
     this.pos = 0;
     this.posTime = "";
     this.posMod = 0;    
@@ -81,17 +82,15 @@ MediaPlayer.onInit = function() {
     this.totalTime = 0;
     this.infoFlag = true;
     this.coord = {};
-    this.oldSol = "";
-    this.oldURL = "";
     this.playNow = false;
     this.posModFlag = false;
     this.fullScreen = true;
     this.type = null;               // type of the object: "media", "image" ...
     this.obj = null;
     this.timer = {};
-    this.interval = {};
     this.slideOn = 0;
-    
+	this.currLang = 'en';
+
     /**
      * list of callback events with their subscribers
      * @type {Object}
@@ -99,9 +98,7 @@ MediaPlayer.onInit = function() {
     this.subscribers = {};
     this.SubscribersReset();
     this.playListShow = false;
-    this.ts_active = false;
     this.subtitles_on = environment.subtitles_on;
-    
     this.aspects = [
         {
             name: "fit",
@@ -125,7 +122,6 @@ MediaPlayer.onInit = function() {
         }
     ];
     this.activeAspect = 0;
-    
     this.progress = {
         480: 620,
         576: 620,
@@ -134,21 +130,16 @@ MediaPlayer.onInit = function() {
     };
     
     //dom objects
-    this.domPlayerREW = this.handle.querySelector('#playerREW');
-    this.domPlayerFFWD = this.handle.querySelector('#playerFFWD');
-    this.domPlayerName = this.handle.querySelector('#playerName');
-    this.domPlayerTotalTime = this.handle.querySelector('#playerTotalTime');
-    this.domPlayerCurrentTime = this.handle.querySelector('#playerCurrentTime');
-    this.domPlayerBar = this.handle.querySelector('#playerBar');
-    this.domPlayerTitle = this.handle.querySelector('#playerTitle');
-    this.domPlayerBufferBar = this.handle.querySelector('#playerBufferBar');
-    this.domPlayerProgressBar = this.handle.querySelector('#playerProgressBar');
-    this.domPlayerHeader = this.handle.querySelector('#playerHeader');
-    this.domPlayerFooter = this.handle.querySelector('#playerFooter');
-    this.domTSIndicator = this.handle.querySelector('#ts_indicator');
-    this.domPlayerList = this.handle.querySelector('#playerListBox');
-    this.domPlayerClock = this.handle.querySelector('#playerClock');
-    this.domChannelNumber = this.handle.querySelector('.channelNumber');
+    this.$PlayerTotalTime = this.handle.querySelector('#playerTotalTime');
+    this.$PlayerCurrentTime = this.handle.querySelector('#playerCurrentTime');
+    this.$PlayerBar = this.handle.querySelector('#playerBar');
+    this.$PlayerTitle = this.handle.querySelector('#playerTitle');
+    this.$PlayerBufferBar = this.handle.querySelector('#playerBufferBar');
+    this.$PlayerProgressBar = this.handle.querySelector('#playerProgressBar');
+    this.$PlayerHeader = this.handle.querySelector('#playerHeader');
+    this.$PlayerFooter = this.handle.querySelector('#playerFooter');
+    this.$PlayerList = this.handle.querySelector('#playerListBox');
+	this.$SlideContainer = this.handle.querySelector('#slideContainer');
 
     this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
     this.handle.querySelector('#playerHeaderSetting').innerHTML = playerBtnMenu;
@@ -161,15 +152,15 @@ MediaPlayer.onInit = function() {
     
     this.init = [];
     this.init[MEDIA_TYPE_VIDEO] = function(refresh) {
-        self.domPlayerTotalTime.innerHTML = "00:00:00";
-        self.domPlayerCurrentTime.innerHTML = "00:00:00";
-        self.domPlayerBufferBar.style.width = '0px';
-        self.domPlayerProgressBar.style.width = '0px';
+        self.$PlayerTotalTime.innerHTML = "00:00:00";
+        self.$PlayerCurrentTime.innerHTML = "00:00:00";
+        self.$PlayerBufferBar.style.width = '0px';
+        self.$PlayerProgressBar.style.width = '0px';
         if (!refresh) {
-            self.domPlayerBar.style.display = "block";
-            self.domPlayerCurrentTime.style.display = "block";
-            self.domPlayerBufferBar.style.display = "none";
-            self.domPlayerProgressBar.style.display = "block";
+            self.$PlayerBar.style.display = "block";
+            self.$PlayerCurrentTime.style.display = "block";
+            self.$PlayerBufferBar.style.display = "none";
+            self.$PlayerProgressBar.style.display = "block";
             self.handle.querySelector("#playerPause").style.display = "block";
             self.handle.querySelector("#playerREW").style.display = "block";
             self.handle.querySelector("#playerFFWD").style.display = "block";
@@ -177,18 +168,22 @@ MediaPlayer.onInit = function() {
             self.handle.querySelector("#playerCurrentTime").style.display = "block";
             self.handle.querySelector("#playerSlash").style.display = "block";
         }
-        
         self.curTime = 0;
         self.totalTime = 0;
         self.posIntervals = [0, 10, 20];
     };
-    this.init[MEDIA_TYPE_AUDIO] = this.init[MEDIA_TYPE_VIDEO];
+
+	this.init[MEDIA_TYPE_AUDIO] = function(refresh){
+		self.init[MEDIA_TYPE_VIDEO](refresh);
+		self.$SlideContainer.style.visibility = 'visible';
+	};
+
     this.init[MEDIA_TYPE_STREAM] = function(refresh) {
         if (!refresh) {
-            self.domPlayerBar.style.display = "none";
-            self.domPlayerCurrentTime.style.display = "none";
-            self.domPlayerBufferBar.style.display = "none";
-            self.domPlayerProgressBar.style.display = "none";
+            self.$PlayerBar.style.display = "none";
+            self.$PlayerCurrentTime.style.display = "none";
+            self.$PlayerBufferBar.style.display = "none";
+            self.$PlayerProgressBar.style.display = "none";
             self.handle.querySelector("#playerHideplist").style.display = "none";
             self.handle.querySelector("#playerPause").style.display = "none";
             self.handle.querySelector("#playerREW").style.display = "none";
@@ -200,10 +195,10 @@ MediaPlayer.onInit = function() {
     };
 
     this.init[MEDIA_TYPE_IMAGE] = function() {
-        self.domPlayerBar.style.display = "none";
-        self.domPlayerCurrentTime.style.display = "none";
-        self.domPlayerBufferBar.style.display = "none";
-        self.domPlayerProgressBar.style.display = "none";
+        self.$PlayerBar.style.display = "none";
+        self.$PlayerCurrentTime.style.display = "none";
+        self.$PlayerBufferBar.style.display = "none";
+        self.$PlayerProgressBar.style.display = "none";
         self.handle.querySelector("#playerPause").style.display = "none";
         self.handle.querySelector("#playerREW").style.display = "none";
         self.handle.querySelector("#playerFFWD").style.display = "none";
@@ -224,10 +219,8 @@ MediaPlayer.onInit = function() {
      */
     this.ModalMenu.Menu = new CGroupMenu(this.ModalMenu);
     this.ModalMenu.Menu.Init(this.handle.querySelector('div.cgmenu-main'));
-    
-    this.ModalMenu.onShow = function() {        
-        this.Menu.Activate();
-    };
+
+	this.ModalMenu.onShow = function () { this.Menu.Activate(); };
 
     this.ModalMenu.Init(element('div', {className: "cmodal-menu"}, this.ModalMenu.Menu.handle));
     this.ModalMenu.EventHandler = function(event) {
@@ -249,6 +242,12 @@ MediaPlayer.onInit = function() {
             self.ModalMenu.Menu.gaudio.slist.Marked(this, true);
             self.ModalMenu.Show(false);
             gSTB.SetAudioPID(this.data);
+			clearTimeout(self.timer.audio);
+			self.handle.querySelector('#audioText').innerHTML = this.innerHTML;
+			self.handle.querySelector('#cright').style.display = 'block';
+			self.timer.audio = setTimeout(function () {
+				MediaPlayer.handle.querySelector('#cright').style.display = 'none';
+			}, 5000);
             return false;
         }
     });
@@ -297,6 +296,20 @@ MediaPlayer.onInit = function() {
             self.ModalMenu.Menu.gslideOn.slist.Marked(this, true);
             self.ModalMenu.Show(false);
             self.slideOn = this.data;
+			clearTimeout(self.timer.slideShow);
+			if ( self.slideOn > 0 ) {
+				self.timer.slideShow = window.setTimeout(function () {
+					if ( MediaPlayer.list.length > 1 && MediaPlayer.fullScreen ) {
+						if ( self.PlayList.playIndex + 1 < self.list.length ) {
+							self.PlayList.playIndex++;
+							self.PlayList.Focused(self.PlayList.handle.children[self.PlayList.playIndex], true);
+							self.prepare(self.list[self.PlayList.activeItem.data.index], true);
+							ListPage.Preview.setPosition(self.obj);
+						}
+					}
+				}, self.slideOn * 1000);
+			}
+			// prevent page reload
             return false;
         }
     });
@@ -305,7 +318,7 @@ MediaPlayer.onInit = function() {
     this.ModalMenu.Menu.gslideOn.i3 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '3 ' + time_seconds, {data: 3});
     this.ModalMenu.Menu.gslideOn.i5 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '5 ' + time_seconds, {data: 5});
     this.ModalMenu.Menu.gslideOn.i10 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '10 ' + time_seconds, {data: 10});
-    this.ModalMenu.Menu.gslideOn.i30 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '20 ' + time_seconds, {data: 20});
+    this.ModalMenu.Menu.gslideOn.i20 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '20 ' + time_seconds, {data: 20});
     this.ModalMenu.Menu.gslideOn.i30 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '30 ' + time_seconds, {data: 30});
     echo('MediaPlayer.modalInit = {};');
     
@@ -314,13 +327,13 @@ MediaPlayer.onInit = function() {
 	this.modalInit[MEDIA_TYPE_STREAM] = function () {
 		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gaudio, false);
 		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gsubtitle, false);
-		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gts, false);
-		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gtsend, false);
+//		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gts, false);
+//		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gtsend, false);
 		self.ModalMenu.Menu.Switch(self.ModalMenu.Menu.gaudio, false);
-		self.ModalMenu.Menu.gts.slist.Marked(self.ModalMenu.Menu.gts.ion, false);
-		self.ModalMenu.Menu.gts.slist.Marked(self.ModalMenu.Menu.gts.ioff, true);
-		self.ModalMenu.Menu.gtsend.slist.Marked(self.ModalMenu.Menu.gtsend.iciclick, true);
-		self.ModalMenu.Menu.gtsend.slist.Marked(self.ModalMenu.Menu.gtsend.istop, false);
+//		self.ModalMenu.Menu.gts.slist.Marked(self.ModalMenu.Menu.gts.ion, false);
+//		self.ModalMenu.Menu.gts.slist.Marked(self.ModalMenu.Menu.gts.ioff, true);
+//		self.ModalMenu.Menu.gtsend.slist.Marked(self.ModalMenu.Menu.gtsend.iciclick, true);
+//		self.ModalMenu.Menu.gtsend.slist.Marked(self.ModalMenu.Menu.gtsend.istop, false);
 	};
 	this.modalInit[MEDIA_TYPE_IMAGE] = function () {
 		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gslideOn, false);
@@ -350,85 +363,85 @@ MediaPlayer.EventHandler = function(e){
     switch (e.code) {
         case KEYS.UP:
         case KEYS.DOWN:
-            if (MediaPlayer.playListShow && MediaPlayer.infoFlag) {
-                MediaPlayer.PlayList.EventHandler(e);
+            if (this.playListShow && this.infoFlag) {
+				this.PlayList.EventHandler(e);
             }
             break;
         case KEYS.PAGE_DOWN:
-            if (MediaPlayer.list.length > 1 && MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length) {
-                //MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.Next(), true);
-				MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex + 1], true);
-				MediaPlayer.PlayList.Open(MediaPlayer.PlayList.activeItem.data);
+            if (this.list.length > 1 && this.PlayList.playIndex + 1 < this.list.length) {
+				this.PlayList.Focused(this.PlayList.handle.children[this.PlayList.playIndex + 1], true);
+				this.PlayList.Open(this.PlayList.activeItem.data);
             }
             e.preventDefault();
             break;
         case KEYS.PAGE_UP:
-            if (MediaPlayer.list.length > 1 && MediaPlayer.PlayList.playIndex > 0) {
-                //MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.Next("", true), true);
-				MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex - 1], true);
-                MediaPlayer.PlayList.Open(MediaPlayer.PlayList.activeItem.data);
+            if (this.list.length > 1 && this.PlayList.playIndex > 0) {
+				this.PlayList.Focused(this.PlayList.handle.children[this.PlayList.playIndex - 1], true);
+				this.PlayList.Open(this.PlayList.activeItem.data);
             }
             e.preventDefault();
             break;
         case KEYS.OK: // Ok/enter
             echo('MediaPlayer.KEYS.OK;');
-            if(MediaPlayer.posModFlag){
+            if(this.posModFlag){
                 clearTimeout(this.timer.setPos);
                 echo(MediaPlayer.pos, 'set pos:');
-                gSTB.SetPosTime(MediaPlayer.pos);
-                MediaPlayer.pos = 0;
-                MediaPlayer.posTime = "";
-                MediaPlayer.posMod = 0;
-                MediaPlayer.domPlayerCurrentTime.className = "time_cur";
+                gSTB.SetPosTime(this.pos);
+				this.pos = 0;
+				this.posTime = "";
+				this.posMod = 0;
+				this.$PlayerCurrentTime.className = "time_cur";
                 gSTB.Continue();
-                MediaPlayer.posModFlag = false;
-				MediaPlayer.timer.showInfo = setTimeout(function () {
+				this.posModFlag = false;
+				clearTimeout(this.timer.showInfo);
+				this.timer.showInfo = setTimeout(function () {
+					echo('showInfo_1');
 					MediaPlayer.showInfo(false);
 				}, 5);
                 e.preventDefault();
                 break;
             }
-            if(MediaPlayer.playListShow && MediaPlayer.infoFlag){
-                MediaPlayer.PlayList.EventHandler(e);
+            if(this.playListShow && this.infoFlag){
+				this.PlayList.EventHandler(e);
                 echo('MediaPlayer.PlayList.EventHandler(e);');
                 break;
             }
-            ListPage.subscribeEvents[MediaPlayer.EVENT_OK].call(ListPage);/*BAS*/
+            ListPage.subscribeEvents[this.EVENT_OK].call(ListPage);
             break;
         case KEYS.INFO:
-            MediaPlayer.showInfo();
+			this.showInfo();
             break;
         case KEYS.MENU:
-            MediaPlayer.ModalMenu.Show(true);
+			this.ModalMenu.Show(true);
             break;
         case KEYS.BACK:
         case KEYS.EXIT: // Exit
-            MediaPlayer.exit();                        
+			this.exit();
             break;                    
         case KEYS.FRAME: // Fullscreen
-            MediaPlayer.aspect();
+			this.aspect();
             break;
         case KEYS.PLAY_PAUSE:
-            MediaPlayer.playPause();
+			this.playPause();
             break;
         case KEYS.STOP:
-            MediaPlayer.exit();
+			this.exit();
             break;
         case KEYS.LEFT:
         case KEYS.REWIND:
-            switch (MediaPlayer.type) {
+            switch (this.type) {
 				case MEDIA_TYPE_VIDEO:
 				case MEDIA_TYPE_AUDIO:
-					MediaPlayer.setPos(-1);
+					this.setPos(-1);
 					break;
 			}
 			break;
 		case KEYS.RIGHT:
 		case KEYS.FORWARD:
-			switch ( MediaPlayer.type ) {
+			switch ( this.type ) {
 				case MEDIA_TYPE_VIDEO:
 				case MEDIA_TYPE_AUDIO:
-					MediaPlayer.setPos(1);
+					this.setPos(1);
 					break;
 			}
 			break;
@@ -436,48 +449,48 @@ MediaPlayer.EventHandler = function(e){
 		case KEYS.CHANNEL_PREV:
 			break;
 		case KEYS.NUM0:
-			MediaPlayer.setPosTime("0");
+			this.setPosTime("0");
 			break;
 		case KEYS.NUM1:
-			MediaPlayer.setPosTime("1");
+			this.setPosTime("1");
             break;
         case KEYS.NUM2:
-            MediaPlayer.setPosTime("2");
+			this.setPosTime("2");
             break;
         case KEYS.NUM3:
-            MediaPlayer.setPosTime("3");
+			this.setPosTime("3");
             break;
         case KEYS.NUM4:
-            MediaPlayer.setPosTime("4");
+			this.setPosTime("4");
             break;
         case KEYS.NUM5:
-            MediaPlayer.setPosTime("5");
+			this.setPosTime("5");
             break;
         case KEYS.NUM6:
-            MediaPlayer.setPosTime("6");
+			this.setPosTime("6");
             break;
         case KEYS.NUM7:
-            MediaPlayer.setPosTime("7");
+			this.setPosTime("7");
             break;
         case KEYS.NUM8:
-            MediaPlayer.setPosTime("8");
+			this.setPosTime("8");
             break;
         case KEYS.NUM9:
-            MediaPlayer.setPosTime("9");
+			this.setPosTime("9");
             break;
-            
         case KEYS.F2:
-            if (MediaPlayer.list.length > 1) {
-                if (MediaPlayer.playListShow && MediaPlayer.infoFlag) {
-                    MediaPlayer.playListShow = false;
-                    MediaPlayer.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
-                    MediaPlayer.domPlayerList.style.display = "none";
+            if (this.list.length > 1) {
+                if (this.playListShow && this.infoFlag) {
+					this.playListShow = false;
+					this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
+					this.$PlayerList.style.display = "none";
                 } else {
-                    MediaPlayer.playListShow = true;
-                    MediaPlayer.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2hd;
-                    MediaPlayer.showInfo(true);
-                    MediaPlayer.domPlayerList.style.display = "block";
-                    MediaPlayer.PlayList.Refresh();
+					this.playListShow = true;
+					this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2hd;
+					this.showInfo(true);
+					this.$PlayerList.style.display = "block";
+					this.PlayList.Refresh();
+					this.PlayList.SetPosition(this.PlayList.Current(), true, true);
                 }
             }
             break;
@@ -497,228 +510,232 @@ MediaPlayer.EventHandler = function(e){
  * @param {Boolean} show show player
  * @return {Boolean} all prepare's done
  */
-MediaPlayer.preparePlayer = function(list, parent, fullScreen, play, show) {
-    echo(list,'MediaPlayer.preparePlayer->list to play ' + play);
-    if(list.length === 0 || !parent){
-        return false;
-    }
-    this.playListShow = false;
-    this.domPlayerList.style.display = "none";
-    this.parent = parent;
-    play = play === true;
-    this.fullScreen = fullScreen !== false;
-    this.fullScreen = !this.fullScreen;
-    this.PlayList.playIndex = 0;
-    this.list = list;
-    this.PlayList.Reset();
-    for(var i=0; i<this.list.length; i++){
-        this.PlayList.Add(list[i].name, {index : i, url: list[i].url}, {stared:false});
-        if(this.list[i].play){
-            this.PlayList.playIndex = i;
-        }
-    }    
-    if(!this.prepare(this.list[this.PlayList.playIndex], play)){
-        return false;
-    }
-    this.PlayList.activeItem = this.PlayList.handle.children[this.PlayList.playIndex];
-    this.domPlayerList.style.display = "none";
-    if (this.list.length > 1) {
-        this.handle.querySelector('#playerHideplist').style.display = "block";
-        this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
-    } else {
-        this.handle.querySelector('#playerHideplist').style.display = "none";
-    }
-    if (show) {
-        this.Show(true, parent);
-    }
-    if(play) {ListPage.Preview.setPosition(this.obj);}
+MediaPlayer.preparePlayer = function ( list, parent, fullScreen, play, show ) {
+	echo(list, 'MediaPlayer.preparePlayer->list to play ' + play);
+	if ( list.length === 0 || !parent ) { return false; }
+	this.playListShow = false;
+	this.$PlayerList.style.display = "none";
+	this.parent = parent;
+	play = play === true;
+	this.fullScreen = fullScreen !== false;
+	this.fullScreen = !this.fullScreen;
+	this.PlayList.playIndex = 0;
+	this.list = list;
+	this.PlayList.Reset();
+	for ( var i = 0; i < this.list.length; i++ ) {
+		this.PlayList.Add(list[i].name, {index: i, url: list[i].url}, {stared: false});
+		if ( this.list[i].play ) { this.PlayList.playIndex = i; }
+	}
+	if ( !this.prepare(this.list[this.PlayList.playIndex], play) ) { return false; }
+	this.PlayList.activeItem = this.PlayList.handle.children[this.PlayList.playIndex];
+	this.$PlayerList.style.display = "none";
+	if ( this.list.length > 1 ) {
+		this.handle.querySelector('#playerHideplist').style.display = "block";
+		this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
+	} else {
+		this.handle.querySelector('#playerHideplist').style.display = "none";
+	}
+	if ( show ) { this.Show(true, parent); }
+	if ( play ) {ListPage.Preview.setPosition(this.obj);}
 	this.changeScreenMode(fullScreen);
-    return true;
+	return true;
 };
 
-MediaPlayer.prepare = function(obj, play) {
-    echo(obj,'prepare '+play);
-    clearTimeout(this.timer.showInfo);
-    clearTimeout(this.timer.startPlaying);
-    gSTB.Set3DConversionMode && gSTB.Set3DConversionMode(0); // добавленно для совместимости с 12 версией портала
-    this.domPlayerTotalTime.innerHTML = "00:00:00";
-    this.domPlayerCurrentTime.innerHTML = "00:00:00";
-    this.domPlayerBufferBar.style.width = '0px';
-    this.domPlayerProgressBar.style.width = '0px';
-    this.pos = 0;
-    this.curTime = 0;
-    this.totalTime = 0;
-    this.infoFlag = true;
-    this.countError = 0;
-    this.obj = obj;    
-    this.domPlayerTitle.innerHTML = obj.name;
-    this.domPlayerHeader.style.display = "block";
-    this.domPlayerFooter.style.display = "block";
-    if (this.type !== obj.type) {
-        this.type = obj.type;
-        if (typeof this.init[this.type] === 'function') {
-            this.init[this.type]();
-        } else {
-            return false;
-        }
-        for(var a = 0; a<this.ModalMenu.Menu.handleInner.children.length; a++){
-            this.ModalMenu.Menu.Hidden(this.ModalMenu.Menu.handleInner.children[a],true);
-    }
-         echo('this.type='+this.type);
-        if (typeof this.modalInit[this.type] === 'function') {
-            this.modalInit[this.type]();
-        } else {
-            return false;
-        }
-    }
-    if (play) {
-        this.timer.startPlaying = window.setTimeout(function(){MediaPlayer.play();},100);
-    }    
-    return true;
+MediaPlayer.prepare = function ( obj, play ) {
+	echo(obj, 'prepare ' + play);
+	clearTimeout(this.timer.showInfo);
+	clearTimeout(this.timer.startPlaying);
+	if (gSTB.Set3DConversionMode) {gSTB.Set3DConversionMode(0);} // добавленно для совместимости с 12 версией портала
+	this.$PlayerTotalTime.innerHTML = "00:00:00";
+	this.$PlayerCurrentTime.innerHTML = "00:00:00";
+	this.$PlayerBufferBar.style.width = '0px';
+	this.$PlayerProgressBar.style.width = '0px';
+	this.pos = 0;
+	this.curTime = 0;
+	this.totalTime = 0;
+	this.infoFlag = true;
+	this.countError = 0;
+	this.obj = obj;
+	this.$PlayerTitle.innerHTML = obj.name;
+	this.$PlayerHeader.style.display = "block";
+	this.$PlayerFooter.style.display = "block";
+	if ( this.type !== obj.type ) {
+		this.$SlideContainer.style.visibility = 'hidden';
+		this.type = obj.type;
+		if ( typeof this.init[this.type] === 'function' ) {
+			this.init[this.type]();
+		} else {
+			return false;
+		}
+		for ( var a = 0; a < this.ModalMenu.Menu.handleInner.children.length; a++ ) {
+			this.ModalMenu.Menu.Hidden(this.ModalMenu.Menu.handleInner.children[a], true);
+		}
+		echo('this.type=' + this.type);
+		if ( typeof this.modalInit[this.type] === 'function' ) {
+			this.modalInit[this.type]();
+		} else {
+			return false;
+		}
+	}
+	if ( play ) {
+		this.timer.startPlaying = window.setTimeout(function () {MediaPlayer.play();}, 100);
+	}
+	return true;
 };
 
 MediaPlayer.play = function () {
 	if ( !this.obj ) { return false; }
 	gSTB.SetMode(1);
 	var param = "";
+	clearTimeout(this.timer.slideShow);
 	switch ( this.type ) {
 		case MEDIA_TYPE_STREAM:
 			break;
 		case MEDIA_TYPE_IMAGE:
 			this.obj.sol = "jpeg";
-			if ( this.slideOn > 0 )this.timer.slideShow = window.setTimeout(function () {
-				if ( MediaPlayer.list.length > 1 && MediaPlayer.fullScreen ) {
-					if ( MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length ) {
-						MediaPlayer.PlayList.playIndex++;
-						MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex], true);
-						MediaPlayer.prepare(MediaPlayer.list[MediaPlayer.PlayList.activeItem.data.index], true);
-						ListPage.Preview.setPosition(MediaPlayer.obj);
+			if ( this.slideOn > 0 ) {
+				this.timer.slideShow = window.setTimeout(function () {
+					if ( MediaPlayer.list.length > 1 && MediaPlayer.fullScreen ) {
+						if ( MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length ) {
+							MediaPlayer.PlayList.playIndex++;
+							MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex], true);
+							MediaPlayer.prepare(MediaPlayer.list[MediaPlayer.PlayList.activeItem.data.index], true);
+							ListPage.Preview.setPosition(MediaPlayer.obj);
+						}
 					}
-				}
-			}, this.slideOn * 1000);
+				}, this.slideOn * 1000);
+			}
 			break;
 	}
-	if ( proxy.length < 1 ) {
+	if ( deviceProxy.length < 1 ) {
 		gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + param);
 	} else {
-		gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + param, proxy);
+		gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + param, deviceProxy);
 	}
 };
 
-MediaPlayer.setPos = function(a) {
-    if (!this.playNow) {
-        return;
-    }
-    this.posModFlag = true;
-    clearTimeout(this.timer.setPos);
-    clearTimeout(this.timer.showInfo);
-    this.posTime = "";
-    this.runner.stop(); 
-    if (this.pos === 0) {
-        this.curTime = gSTB.GetPosTime();
-        this.posIntervals.splice(0, 1);
-        this.posIntervals[3] = this.posIntervals[2] + 10;
-        this.infoFlag = false;
-        this.showInfo(true);               
-        this.pos = this.curTime;
-    }
-    if (this.posMod !== a) {
-        this.posMod = a;
-        this.posIntervals = [0, 10, 20];
-    } else {
-        this.posIntervals.splice(0, 1);
-        this.posIntervals[this.posIntervals.length] = this.posIntervals[this.posIntervals.length - 1] + 10;
-    }
-    var to = 0;
-    for (var i = 0; i < this.posIntervals.length; i++) {
-        to += a * this.posIntervals[i];
-    }
-    if (to > 1800) {
-        to = 1800;
-    }
-    if (to < -1800) {
-        to = -1800;
-    }
-    this.pos += to;    
-    if (this.pos > this.totalTime) {
-        this.pos = this.totalTime - 30;
-    }
-    if (this.pos < 0) {
-        this.pos = 3;
-    }
-    var curTime = this.parseTime(this.pos);
-    this.domPlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
-    var px = Math.round(this.pos / this.totalTime * this.progress[screen.height]);
-    this.domPlayerProgressBar.style.width = px + 'px';
-    this.timer.setPos = window.setTimeout(function() {
-        gSTB.SetPosTime(MediaPlayer.pos);
-        MediaPlayer.pos = 0;
-        MediaPlayer.domPlayerCurrentTime.className = "time_cur";
-        MediaPlayer.posMod = 0;
-        gSTB.Continue();
-        MediaPlayer.posModFlag = false;
-    }, 2000);
+MediaPlayer.setPos = function ( a ) {
+	if ( !this.playNow ) { return; }
+	this.posModFlag = true;
+	clearTimeout(this.timer.setPos);
+	clearTimeout(this.timer.showInfo);
+	this.posTime = "";
+	this.runner.stop();
+	if ( this.pos === 0 ) {
+		this.curTime = gSTB.GetPosTime();
+		this.posIntervals.splice(0, 1);
+		this.posIntervals[3] = this.posIntervals[2] + 10;
+		this.infoFlag = false;
+		this.showInfo(true, 0, false);
+		this.pos = this.curTime;
+	}
+	if ( this.posMod !== a ) {
+		this.posMod = a;
+		this.posIntervals = [0, 10, 20];
+	} else {
+		this.posIntervals.splice(0, 1);
+		this.posIntervals[this.posIntervals.length] = this.posIntervals[this.posIntervals.length - 1] + 10;
+	}
+	var to = 0;
+	for ( var i = 0; i < this.posIntervals.length; i++ ) {
+		to += a * this.posIntervals[i];
+	}
+	if ( to > 1800 ) { to = 1800; }
+	if ( to < -1800 ) { to = -1800; }
+	this.pos += to;
+	if ( this.pos > this.totalTime ) { this.pos = this.totalTime - 30; }
+	if ( this.pos < 0 ) { this.pos = 3; }
+	var curTime = this.parseTime(this.pos);
+	this.$PlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
+	var px = Math.round(this.pos / this.totalTime * this.progress[screen.height]);
+	this.$PlayerProgressBar.style.width = px + 'px';
+	this.timer.setPos = window.setTimeout(function () {
+		gSTB.SetPosTime(MediaPlayer.pos);
+		MediaPlayer.pos = 0;
+		MediaPlayer.$PlayerCurrentTime.className = "time_cur";
+		MediaPlayer.posMod = 0;
+		gSTB.Continue();
+		MediaPlayer.posModFlag = false;
+	}, 2000);
 };
 
-MediaPlayer.setPosTime = function(a) {
-    if (!this.playNow) {
-        return;
-    }
-    this.posModFlag = true;
-    this.showInfo(true);
-    this.posMod = 0;
-    clearTimeout(this.timer.setPos);
-    clearTimeout(this.timer.showInfo);
-    this.runner.stop(); 
-    this.posTime += a;
-    echo(this.posTime, 'this.posTime');
-    this.pos = this.splitTime(this.posTime);
-    if (this.pos > this.totalTime) {
-        this.pos = this.totalTime - 30;
-    }
-    var curTime = this.parseTime(this.pos);
-    this.domPlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
-    this.domPlayerCurrentTime.className = "time_cur input";
-    var px = Math.round(this.pos / this.totalTime * this.progress[screen.height]);
-    this.domPlayerProgressBar.style.width = px + 'px';
-    this.timer.setPos = window.setTimeout(function() {
-        echo(MediaPlayer.pos, 'set pos:');
-        gSTB.SetPosTime(MediaPlayer.pos);
-        MediaPlayer.pos = 0;
-        MediaPlayer.posTime = "";
-        MediaPlayer.posMod = 0;
-        MediaPlayer.domPlayerCurrentTime.className = "time_cur";
-        gSTB.Continue();
-        MediaPlayer.posModFlag = false;
-    }, 2000);
+MediaPlayer.setPosTime = function ( a ) {
+	if ( !this.playNow ) { return; }
+	this.posModFlag = true;
+	this.showInfo(true, 0, false);
+	this.posMod = 0;
+	clearTimeout(this.timer.setPos);
+	clearTimeout(this.timer.showInfo);
+	this.runner.stop();
+	this.posTime += a;
+	echo(this.posTime, 'this.posTime');
+	this.pos = this.splitTime(this.posTime);
+	if ( this.pos > this.totalTime ) { this.pos = this.totalTime - 30; }
+	var curTime = this.parseTime(this.pos);
+	this.$PlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
+	this.$PlayerCurrentTime.className = "time_cur input";
+	var px = Math.round(this.pos / this.totalTime * this.progress[screen.height]);
+	this.$PlayerProgressBar.style.width = px + 'px';
+	this.timer.setPos = window.setTimeout(function () {
+		echo(MediaPlayer.pos, 'set pos:');
+		gSTB.SetPosTime(MediaPlayer.pos);
+		MediaPlayer.pos = 0;
+		MediaPlayer.posTime = "";
+		MediaPlayer.posMod = 0;
+		MediaPlayer.$PlayerCurrentTime.className = "time_cur";
+		gSTB.Continue();
+		MediaPlayer.posModFlag = false;
+	}, 2000);
 };
 
 MediaPlayer.playPause = function () {
-	echo(pauseData.paused,'!!! pauseData.paused:');
+	echo(pauseData.paused, 'old state -> pauseData.paused:');
 	var self = this;
-	if ( !this.playNow ) { return; }
+	if ( !this.playNow ) {
+		if ( this.type === MEDIA_TYPE_IMAGE ) { // slide show
+			if ( this.timer.slideShow ) {
+				clearTimeout(this.timer.slideShow);
+				this.timer.slideShow = null;
+			} else if ( this.slideOn > 0 )
+				this.timer.slideShow = setTimeout(function () {
+				if ( self.list.length > 1 && self.fullScreen ) {
+					if ( self.PlayList.playIndex + 1 < self.list.length ) {
+						self.PlayList.playIndex++;
+						self.PlayList.Focused(self.PlayList.handle.children[self.PlayList.playIndex], true);
+						self.prepare(self.list[self.PlayList.activeItem.data.index], true);
+						ListPage.Preview.setPosition(self.obj);
+					}
+				}
+			}, this.slideOn * 1000);
+		} else {
+			return;
+		}
+	}
 	if ( gSTB.IsPlaying() ) {
-		this.showInfo(true);
+		this.showInfo(true, 0, false);
 		if ( !pauseData.paused ) {
 			pauseData = {
-				paused     : true,
-				curTime    : gSTB.GetPosTime(),
-				fileLength : gSTB.GetMediaLen(),
-				audioTrack : gSTB.GetAudioPID()
+				paused    : true,
+				curTime   : gSTB.GetPosTime(),
+				fileLength: gSTB.GetMediaLen(),
+				audioTrack: gSTB.GetAudioPID()
 			};
 		}
 		gSTB.Pause();
 		ListPage.subscribeEvents[self.EVENT_PAUSE].call(ListPage, true);
 		this.runner.stop();
 	} else {
-		if ( proxy.length < 1 ) {
+		if ( deviceProxy.length < 1 ) {
 			gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + ' position:' + pauseData.curTime);
 		} else {
-			gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + ' position:' + pauseData.curTime, proxy);
+			gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + ' position:' + pauseData.curTime, deviceProxy);
 		}
 		ListPage.subscribeEvents[self.EVENT_PAUSE].call(ListPage, false);
 		this.runner.start();
-		this.timer.showInfo = window.setTimeout(function () {MediaPlayer.showInfo(false);}, 5000);//bas
+		this.timer.showInfo = window.setTimeout(function () {
+			echo('showInfo_2');
+			MediaPlayer.showInfo(false);
+		}, 5000);//bas
 	}
 };
 
@@ -727,7 +744,7 @@ MediaPlayer.event = function ( e, info ) {
 	echo(info, 'event useless info:');
 	e = parseInt(e);
 	switch ( e ) {
-		case 1:
+		case 1: // The player reached the end of the media content or detected a discontinuity of the stream.
 			switch ( MediaPlayer.type ) {
 				case MEDIA_TYPE_STREAM:
 					MediaPlayer.countError++;
@@ -757,7 +774,7 @@ MediaPlayer.event = function ( e, info ) {
 					break;
 			}
 			break;
-		case 2:
+		case 2: // Information on audio and video tracks of the media content is received.
 			switch ( MediaPlayer.type ) {
 				case MEDIA_TYPE_AUDIO:
 				case MEDIA_TYPE_VIDEO:
@@ -767,7 +784,7 @@ MediaPlayer.event = function ( e, info ) {
 						MediaPlayer.totalTime = gSTB.GetMediaLen();
 						echo("MediaPlayer.curTime : " + MediaPlayer.curTime + " MediaPlayer.totalTime : " + MediaPlayer.totalTime);
 						var curTime = MediaPlayer.parseTime(MediaPlayer.totalTime);
-						MediaPlayer.domPlayerTotalTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
+						MediaPlayer.$PlayerTotalTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
 						MediaPlayer.setAudioMenu();
 					} else {
 						echo('restore audio track, reset pause');
@@ -777,7 +794,7 @@ MediaPlayer.event = function ( e, info ) {
 					break;
 			}
 			break;
-		case 4:
+		case 4: // Video and/or audio playback has begun.
 			if ( !MediaPlayer.playNow )
 			// call subscriber hook
 				ListPage.subscribeEvents[MediaPlayer.EVENT_START].call(ListPage);
@@ -785,15 +802,15 @@ MediaPlayer.event = function ( e, info ) {
 				case MEDIA_TYPE_AUDIO:
 				case MEDIA_TYPE_VIDEO:
 					MediaPlayer.runner.start();
-					MediaPlayer.timer.showInfo = window.setTimeout(function () {MediaPlayer.showInfo();}, 5000);//bas
+					MediaPlayer.timer.showInfo = window.setTimeout(function () {echo('showInfo_3'); MediaPlayer.showInfo(false);}, 5000);//bas
 					break;
 				case MEDIA_TYPE_STREAM:
-					MediaPlayer.timer.showInfo = window.setTimeout(function () {MediaPlayer.showInfo();}, 5000);//bas
+					MediaPlayer.timer.showInfo = window.setTimeout(function () {echo('showInfo_4'); MediaPlayer.showInfo(false);}, 5000);//bas
 					break;
 			}
 			MediaPlayer.playNow = true;
 			break;
-		case 5:
+		case 5: // Error when opening the content: content not found on the server or connection with the server was rejected.
 			// call subscriber hook
 			ListPage.subscribeEvents[MediaPlayer.EVENT_ERROR].call(ListPage);
 			switch ( MediaPlayer.type ) {
@@ -819,32 +836,29 @@ MediaPlayer.event = function ( e, info ) {
 					break;
 			}
 			break;
-		case 6:
-			// "Dual Mono" sound
-//            if (stbEventCallback_DualMono) {
-//                eval(stbEventCallback_DualMono);
-//            }
-			break;
+		case 6:   // "Dual Mono" sound
+		case 7:   // Detected information about video content.
+		case 8:   // Error occurred while loading external subtitles.
+		case 9:   // STB EVENT TRACKS INFO UPDATED
+		case 32:  // connect HDMI device
+		case 33:  // disconnect HDMI device
 		case 35:
-			break;
 		case 34:
 			break;
 	}
 };
 
-MediaPlayer.aspect = function() {
-    clearTimeout(this.timer.hideAspect);
-    this.activeAspect++;
-    if (this.activeAspect >= this.aspects.length) {
-        this.activeAspect = 0;
-    }
-    var ico = document.getElementById("mediaHeader_Aspect");
-    gSTB.SetAspect(this.aspects[this.activeAspect].mode);
-    ico.innerHTML = '<img src="lang/' + curLangIdx + '/' + this.aspects[this.activeAspect].img + '">';
-    ico.style.display = "inline";
-    this.timer.hideAspect = window.setTimeout(function() {
-        document.getElementById("mediaHeader_Aspect").style.display = "none";
-    }, 2000);
+MediaPlayer.aspect = function () {
+	clearTimeout(this.timer.hideAspect);
+	this.activeAspect++;
+	if ( this.activeAspect >= this.aspects.length ) { this.activeAspect = 0; }
+	var $ico = this.handle.querySelector(".mediaHeaderIco");
+	gSTB.SetAspect(this.aspects[this.activeAspect].mode);
+	$ico.innerHTML = '<img src="lang/' + this.currLang + '/' + (screen.width === 1920 ? '1920/' : '') + this.aspects[this.activeAspect].img + '">';
+	$ico.style.display = "inline";
+	this.timer.hideAspect = window.setTimeout(function () {
+		$ico.style.display = "none";
+	}, 2000);
 };
 
 
@@ -855,8 +869,9 @@ MediaPlayer.end = function () {
 	ListPage.subscribeEvents[self.EVENT_STOP].call(ListPage);
 	this.obj = null;
 	this.runner.stop();
-	for (var i in this.timer) { clearTimeout(this.timer[i]); }
-	for (var j in this.timer) { clearInterval(this.interval[j]); }
+	for ( var i in this.timer ) {
+		if ( this.timer.hasOwnProperty(i) ) {clearTimeout(this.timer[i]);}
+	}
 	gSTB.Stop();
 	gSTB.SetMode(0);
 	this.playNow = false;
@@ -866,6 +881,7 @@ MediaPlayer.end = function () {
 MediaPlayer.exit = function () {
 	var self = this;
 	this.handle.querySelector('#cright').style.display = "none";
+	this.handle.querySelector(".mediaHeaderIco").style.display = "none";
 	if ( this.end() ) {
 		// call all subscribers hooks
 		ListPage.subscribeEvents[self.EVENT_EXIT].call(ListPage);
@@ -911,29 +927,39 @@ MediaPlayer.changeScreenMode = function ( fullScreen ) {
 	}
 };
 
-MediaPlayer.showInfo = function ( show, hidetime ) {
+
+MediaPlayer.showInfo = function ( show, hidetime, showHeader ) {
 	clearTimeout(this.timer.showInfo);
 	if ( show === false || show === true ) {
 		if ( show === this.infoFlag ) { return; }
 		this.infoFlag = !show;
 	}
 	if ( this.infoFlag ) {
-		this.domPlayerHeader.style.display = "none";
-		this.domPlayerList.style.display = "none";
-		this.domPlayerFooter.style.display = "none";
+		this.$PlayerHeader.style.display = "none";
+		this.$PlayerList.style.display = "none";
+		this.playListShow = false;
+		this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
+		this.$PlayerFooter.style.display = "none";
+		if ( this.type !== MEDIA_TYPE_AUDIO ) { this.$SlideContainer.style.visibility = 'hidden'; }
 	} else {
-		this.domPlayerHeader.style.display = "block";
-		if ( this.playListShow ) {
-			this.domPlayerList.style.display = "block";
-			this.PlayList.Refresh();
-		}
-		this.domPlayerFooter.style.display = "block";
+//		if ( showHeader !== false ) {
+			this.$PlayerHeader.style.display = "block";
+			if ( this.playListShow ) {
+				this.$PlayerList.style.display = "block";
+				this.PlayList.Refresh();
+			}
+			if ( this.type === MEDIA_TYPE_AUDIO ) { this.$SlideContainer.style.visibility = 'visible'; }
+//		} else {
+//			this.$PlayerHeader.style.display = 'none';
+//		}
+		this.$PlayerFooter.style.display = "block";
 	}
 	this.infoFlag = !this.infoFlag;
 	if ( hidetime ) {
-		this.timer.showInfo = window.setTimeout(function () {MediaPlayer.showInfo(!MediaPlayer.infoFlag);}, hidetime);
+		this.timer.showInfo = window.setTimeout(function () {echo('showInfo_5'); MediaPlayer.showInfo(!MediaPlayer.infoFlag);}, hidetime);
 	}
 };
+
 
 MediaPlayer.parseTime = function ( a ) {
 	var h, m, s;
@@ -981,8 +1007,8 @@ MediaPlayer.runner = {
 		var persent = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * 100);
 		// call all subscribers hooks
 		ListPage.subscribeEvents[MediaPlayer.EVENT_PROGRESS].call(ListPage, persent);
-		MediaPlayer.domPlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
-		MediaPlayer.domPlayerProgressBar.style.width = px + 'px';
+		MediaPlayer.$PlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
+		MediaPlayer.$PlayerProgressBar.style.width = px + 'px';
 		this.id = window.setInterval(function () {
 			MediaPlayer.curTime = gSTB.GetPosTime();
 			if ( MediaPlayer.curTime > MediaPlayer.totalTime ) { MediaPlayer.curTime = MediaPlayer.totalTime; }
@@ -992,8 +1018,8 @@ MediaPlayer.runner = {
 			ListPage.subscribeEvents[MediaPlayer.EVENT_PROGRESS].call(ListPage, persent);
 			var px = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * MediaPlayer.progress[screen.height]);
 			var curTime = MediaPlayer.parseTime(MediaPlayer.curTime);
-			MediaPlayer.domPlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
-			MediaPlayer.domPlayerProgressBar.style.width = px + 'px';
+			MediaPlayer.$PlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
+			MediaPlayer.$PlayerProgressBar.style.width = px + 'px';
 		}, 1000);
 		this.run = true;
 	},
@@ -1025,14 +1051,12 @@ MediaPlayer.SubscribersReset = function( ) {
  * @param {CBase|CPage|Object} subscriber
  * @param {Number} eventType event id (see MediaPlayer.EVENT_START and so on)
  */
-MediaPlayer.Subscribe = function(subscriber, eventType) {
+MediaPlayer.Subscribe = function ( subscriber, eventType ) {
 	// valid subscriber and has associated method
-    if (subscriber.subscribeEvents && subscriber.subscribeEvents[eventType] instanceof Function) {
-		// doesn't already have it
-		if ( this.subscribers[eventType].indexOf(subscriber) === -1 ) {
-			// subscribe
-			this.subscribers[eventType].push(subscriber);
-	}
+	if ( subscriber.subscribeEvents && subscriber.subscribeEvents[eventType] instanceof Function ) {
+		if ( this.subscribers[eventType].indexOf(subscriber) === -1 ) {   // if doesn't already have it
+			this.subscribers[eventType].push(subscriber);                 // subscribe
+		}
 	}
 };
 
@@ -1041,79 +1065,72 @@ MediaPlayer.Subscribe = function(subscriber, eventType) {
  * @param {CBase|CPage|Object} subscriber
  * @param {Number} eventType event id (see MediaPlayer.EVENT_START and so on)
  */
-MediaPlayer.Unsubscribe = function(subscriber, eventType) {
-	// find
-	var index = this.subscribers[eventType].indexOf(subscriber);
-	// and remove
-	if ( index !== -1 ) this.subscribers[eventType].splice(index, 1);
+MediaPlayer.Unsubscribe = function ( subscriber, eventType ) {
+	var index = this.subscribers[eventType].indexOf(subscriber);       // find
+	if ( index !== -1 ) this.subscribers[eventType].splice(index, 1);  // and remove
 };
 
-MediaPlayer.setAudioMenu = function(){
-    try{
-        var audArr = eval(gSTB.GetAudioPIDsEx());
-    } catch(e){
-        var audArr = [];
-        echo(e);
-    }
-    var currAud = gSTB.GetAudioPID();
-    this.ModalMenu.Menu.gaudio.slist.Clear();
-    echo(audArr,'audArr');
-    echo('audio add');
-    echo('this.subtitles_on='+this.subtitles_on+' currAud='+currAud);
-    if(audArr.length > 0 && audArr[0] && audArr[0].pid){
-        echo('there is another audio');
-        for(var i=0; i<audArr.length; i++){
-            var lang_info  = getLanguageNameByCode(audArr[i].lang);
-            if(!lang_info){
-                lang_info    = [];
-                lang_info[0] = mediaInfoMenu_langUnknown + ' ("' + getIso639LangCode(audArr[i].lang) + '")';
-                lang_info[1] = "null";
-            }
-            var fl = currAud === audArr[i].pid;
-            this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gaudio, lang_info[1], lang_info[0], {data: audArr[i].pid, marked : fl});
-            if(fl){
-                this.handle.querySelector('#audioType').src = "img/codec/codec"+audArr[i].type+".png";
-                this.handle.querySelector('#cright').style.display = "block";
-                this.timer.audio = window.setTimeout(function(){MediaPlayer.handle.querySelector('#cright').style.display = "none";},5000);//bas
-        }
-       }
-    } else {
-        echo('no other audio');
-        this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gaudio, "no", LANG_MEDIA_MENU_NO, {disabled : true});
-    }
-    var currSub = gSTB.GetSubtitlePID();
-    echo('gSTB.GetSubtitlePID()='+currSub);
-    try{
-        var subArr = eval(gSTB.GetSubtitlePIDs());
-        echo(subArr,'normal subArr');
-    } catch(e){
-        echo(subArr,'error subArr');
-        var subArr = [];
-        echo(e);
-    }
-    this.ModalMenu.Menu.gsubtitle.slist.Clear();
-    echo(subArr,'subArr');
-    if(this.subtitles_on){        
-        gSTB.SetSubtitles(true);
-    } else {        
-        gSTB.SetSubtitles(false);
-    }
-    if(subArr.length > 0){
-        this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "OFF", LANG_MEDIA_MENU_OFF, {data : "OFF", marked : this.subtitles_on !== true});
-        for(var i=0; i<subArr.length; i++){
-            lang_info  = getLanguageNameByCode(subArr[i].lang);
-            echo(lang_info,'lang_info');
-            if(!lang_info){
-                lang_info = [];
-                lang_info[0] = mediaInfoMenu_langUnknown + '&nbsp;("' + getIso639LangCode(subArr[i].lang) + '")';
-                lang_info[1] = "null";
-            }
-            this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, lang_info[1], lang_info[0], {data: subArr[i].pid, marked : currSub === subArr[i].pid && this.subtitles_on === true});
-        }
-    } else {
-        this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "no", LANG_MEDIA_MENU_NO, {disabled : true});
-        echo('no subtitles');
-    }
+/**
+ *  Set audio menu
+ */
+MediaPlayer.setAudioMenu = function () {
+	var audArr = [], currAud, subArr = [], lang_info, i;
+	try {
+		audArr = eval(gSTB.GetAudioPIDsEx());
+	} catch ( e ) {
+		echo(e);
+	}
+	currAud = gSTB.GetAudioPID();
+	this.ModalMenu.Menu.gaudio.slist.Clear();
+	echo(audArr, 'audArr: (this.subtitles_on=' + this.subtitles_on + ' currAud=' + currAud + ')');
+	if ( audArr.length > 0 && audArr[0] && audArr[0].pid ) {
+		echo('there is another audio');
+		for ( i = 0; i < audArr.length; i++ ) {
+			lang_info = getLanguageNameByCode(audArr[i].lang);
+			if ( !lang_info ) {
+				lang_info = [];
+				lang_info[0] = mediaInfoMenu_langUnknown + ' ("' + getIso639LangCode(audArr[i].lang) + '")';
+				lang_info[1] = "null";
+			}
+			var fl = currAud === audArr[i].pid;
+			this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gaudio, lang_info[1], lang_info[0], {data: audArr[i].pid, marked: fl});
+			if ( fl ) {
+				this.handle.querySelector('#audioType').src = "img/codec/codec" + audArr[i].type + ".png";
+				this.handle.querySelector('#audioText').innerHTML = lang_info[0];
+				this.handle.querySelector('#cright').style.display = "block";
+				this.timer.audio = window.setTimeout(function () {MediaPlayer.handle.querySelector('#cright').style.display = "none";}, 5000);
+			}
+		}
+	} else {
+		echo('no other audio');
+		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gaudio, "no", LANG_MEDIA_MENU_NO, {disabled: true});
+	}
+	var currSub = gSTB.GetSubtitlePID();
+	echo('gSTB.GetSubtitlePID()=' + currSub);
+	try {
+		subArr = eval(gSTB.GetSubtitlePIDs());
+	} catch ( e ) {
+		echo(subArr, 'error subArr');
+	}
+	this.ModalMenu.Menu.gsubtitle.slist.Clear();
+	echo(subArr, 'subArr');
+	gSTB.SetSubtitles(!!this.subtitles_on);
+	if ( subArr.length > 0 ) {
+		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "OFF", LANG_MEDIA_MENU_OFF, {data: "OFF", marked: this.subtitles_on !== true});
+		for ( i = 0; i < subArr.length; i++ ) {
+			lang_info = getLanguageNameByCode(subArr[i].lang);
+			echo(lang_info, 'lang_info');
+			if ( !lang_info ) {
+				lang_info = [];
+				lang_info.push(mediaInfoMenu_langUnknown + '&nbsp;("' + getIso639LangCode(subArr[i].lang) + '")');
+				lang_info.push("null");
+			}
+			this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, lang_info[1], lang_info[0], {data: subArr[i].pid, marked: currSub === subArr[i].pid && this.subtitles_on === true});
+		}
+	} else {
+		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "no", LANG_MEDIA_MENU_NO, {disabled: true});
+		echo('no subtitles');
+	}
 };
 
 
@@ -1166,8 +1183,6 @@ function PlayList(parent) {
 }
 
 // extending
-//extend(PlayList, CScrollList);
-// extending
 PlayList.prototype = Object.create(CScrollList.prototype);
 PlayList.prototype.constructor = PlayList;
 
@@ -1180,29 +1195,26 @@ PlayList.prototype.constructor = PlayList;
  * @return {Node}
  */
 PlayList.prototype.Add = function ( name, attrs, states ) {
-	var self = this;
-
 	// html prepare
-	var body = element('div', {className : 'data'}, name);
-	var star = element('div', {className : 'star'});
-
+	var item,
+		body = element('div', {className: 'data'}, name),
+		star = element('div', {className: 'star'});
 	// actual filling
-	var item = CScrollList.prototype.Add.call(this, [body, star], {
-		star          : star,
-		data          : {index : attrs.index || attrs.index === 0 ? attrs.index : '', url : attrs.url ? attrs.url : "", pos : attrs.pos || attrs.pos === 0 ? attrs.pos : "", parentI : attrs.parentI || attrs.parentI === 0 ? attrs.parentI : ""},
-		disabled      : attrs.disabled ? true : false,
-		focused       : attrs.focused ? true : false,
-		marked        : attrs.marked ? true : false,
+	item = CScrollList.prototype.Add.call(this, [body, star], {
+		star         : star,
+		data         : {index: attrs.index || attrs.index === 0 ? attrs.index : '', url: attrs.url ? attrs.url : "", pos: attrs.pos || attrs.pos === 0 ? attrs.pos : "", parentI: attrs.parentI || attrs.parentI === 0 ? attrs.parentI : ""},
+		disabled     : attrs.disabled ? true : false,
+		focused      : attrs.focused ? true : false,
+		marked       : attrs.marked ? true : false,
 		// handlers
-		onclick       : function () {
+		onclick      : function () {
 			// open or enter the item
 			this.self.Open(this.data);
 			return false;
 		},
-		oncontextmenu : function () {
-			return false;
-		}
+		oncontextmenu: function () { return false; }
 	});
+
 	return item;
 };
 
@@ -1220,13 +1232,12 @@ PlayList.prototype.Clear = function() {
 
 PlayList.prototype.Open = function(data) {
     echo(data, 'PlayList.Open :: data');
-    echo(MediaPlayer.list,'MediaPlayer.list');
+//    echo(MediaPlayer.list,'MediaPlayer.list');
     MediaPlayer.prepare(MediaPlayer.list[data.index], true);
-    echo(MediaPlayer.list,'MediaPlayer.list');
+//    echo(MediaPlayer.list,'MediaPlayer.list');
     this.playIndex = data.index;
     this.parentIndex = data.parentI;
-    // B_A_S CAREFULL !!! 
-    ListPage.Preview.setPosition(this.parent.obj);
+    ListPage.Preview.setPosition(this.parent.obj); // B_A_S CAREFULL !!!
     echo(MediaPlayer.list,'MediaPlayer.list');
 };
 
@@ -1237,6 +1248,7 @@ PlayList.prototype.Reset = function() {
     this.Clear();
 };
 
+
 PlayList.prototype.Refresh = function() {
     this.Activate();
     this.Focused(this.activeItem, true);
@@ -1244,42 +1256,32 @@ PlayList.prototype.Refresh = function() {
 
 function getLanguageNameByCode ( code ) {
 	if ( code.length ) {
-		for (var i = 0; i < iso639.length; i++) {
-			ref_codes = iso639[i].code;
-			for (var j = 0; j < ref_codes.length; j++) {
-				if ( ref_codes[j] == code[0].toLowerCase() ) {
-					code = [];
-					code[0] = iso639[i].name;
-					code[1] = i;
-					return code;
-				}
+		for ( var i = 0; i < iso639.length; i++ ) {
+			for ( var j = 0; j < iso639[i].code.length; j++ ) {
+				if ( iso639[i].code[j] == code[0].toLowerCase() ) { return [iso639[i].name, i]; }
 			}
 		}
 	}
 	return null;
 }
 
-function getIso639LangCode(langArr){
-    var code = "";
-    for (var i=0; i<langArr.length; i++) {
-        if (langArr[i]) {
-            code = langArr[i];
-            break;
-        }
-    }
-    return code;
+function getIso639LangCode ( langArr ) {
+	var code = '';
+	for ( var i = 0; i < langArr.length; i++ ) {
+		if ( langArr[i] ) {
+			code = langArr[i];
+			break;
+		}
+	}
+	return code;
 }
 
 
-MediaPlayer.addPreviewList = function ( file ) {
+MediaPlayer.addPreviewList = function ( ) {
 	var list = [];
-	if ( file ) {
-		file.play = true;
-		list.push(file);
-	}
 	// get all marked items
-	var items = CSListManager.Current().Find({marked : true});
-	echo('FIND marked items?');
+	var items = CSListManager.Current().Find({marked: true});
+	echo('FOUND marked items?');
 	// no marked so take all available
 	if ( items.length === 0 ) {
 		echo('NOPE');
@@ -1295,8 +1297,8 @@ MediaPlayer.addPreviewList = function ( file ) {
 			list.push(item.data);
 		}
 	});
-	// fullscreen
-	// send to player and start
-	//    MediaPlayer.preparePlayer(list, ListPage, true, true, true);
+
 	return list;
 };
+
+// SetPosition

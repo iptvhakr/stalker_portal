@@ -46,9 +46,10 @@ var lang = {
 	'unmark'                  : 'Снять<br>выделение',
 	'film_description'        : 'Описание',
 	'size_in_bytes'           : 'Размер: ',
-	'film_description_off'    : 'Закрыть описание',
-	'main_menu'               : 'Главное меню',
-	'apply'                   : 'Применить'
+	'film_description_off'    : 'Закрыть<br>описание',
+	'main_menu'               : 'Главное<br>меню',
+	'apply'                   : 'Применить',
+	'toFiles'                 : 'Перейти<br>к файлам'
 };
 
 var LANG_MEDIA_DEFAULT_ABORT = 'Отмена',
@@ -66,21 +67,19 @@ var LANG_MEDIA_MENU_GROUPS = {
     gins      : 'Выделенное',
     gaudio    : 'Звуковые дорожки',
     gsubtitle : 'Субтитры',
-    gts       : 'TimeShift',
-    gtsend    : 'TimeShift буфер',
     g3d       : '3D режим',
     gslideOn  : 'Слайдшоу'
 };
 
 var mediaInfoMenu_3dview     = 'Режим',
-    playerBtnF2sh            = 'Показать<br />плейлист',
-    playerBtnF2hd            = 'Скрыть<br />плейлист',
+    playerBtnF2sh            = 'Показать<br>плейлист',
+    playerBtnF2hd            = 'Скрыть<br>плейлист',
     playingError             = 'Ошибка воспроизведения',
     mediaInfoMenu_langUnknown= 'неизвестный',
-    playerBtnInfo            = 'Скрыть<br />плеер',
+    playerBtnInfo            = 'Скрыть<br>плеер',
     playerBtnMenu            = 'Настройки',
-    playlistPrev             = "Предыдущее<br />медиа",
-    playlistNext             = "Следующее<br />медиа",
+    playlistPrev             = "Предыдущее<br>медиа",
+    playlistNext             = "Следующее<br>медиа",
     time_seconds             = 'Сек.',
     LANG_MEDIA_MENU_INFO_DURATION = 'Продолжительность: ',
     LANG_MEDIA_MENU_NO       = 'Нет';

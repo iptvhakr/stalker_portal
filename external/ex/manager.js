@@ -96,8 +96,7 @@ CSListManager.Open = function ( data ) {
     if(data.type !== MEDIA_TYPE_VIDEO && data.type !== MEDIA_TYPE_AUDIO && data.type !== MEDIA_TYPE_IMAGE){
         elclear(ListPage.Preview.body);
     }
-    var self            = this,
-        levelChange     = this.Build(data);
+    var levelChange     = this.Build(data);
         this.parentData = data;
 
     // level not changed
@@ -481,16 +480,15 @@ CSListManager.openUnknownType = function(data){
  */
 CSListManager.openFile = function ( data ) {
     echo(data,'openFile');
-    var self = this,
-    list = [];
+    var list = [];
 
 	// playing video (showing a picture) or not
 	if ( MediaPlayer.playNow || MediaPlayer.obj !== null ) {
 		MediaPlayer.changeScreenMode(true);
 		MediaPlayer.Show(true, this.parent);
 		// autohide info panel
-		MediaPlayer.showInfo(true);
-		MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo(false);},3000);
+//		MediaPlayer.showInfo(true);
+//		MediaPlayer.timer.showInfo = window.setTimeout(function(){MediaPlayer.showInfo(false);},3000);
 		// stay here
 		return this.LEVEL_CHANGE_NONE;
 	}

@@ -37,15 +37,36 @@ function CGroupMenu ( parent ) {
 	 */
 	this.active = false;
 
+	/**
+	 * move focus to the first marked item in the group
+	 * @type {Boolean}
+	 */
+	this.autoFocus = true;
+
 	//this.onEvent(this.EventHandler);
 	//this.events.keydown = this.EventHandler;
 }
 
 
 // extending
-//extend(CGroupMenu, CBase);
 CGroupMenu.prototype = Object.create(CBase.prototype);
 CGroupMenu.prototype.constructor = CGroupMenu;
+
+
+/**
+ * Component initialization with its placeholder.
+ * Should be called once before use just after constructor invoke and all hooks preparation.
+ * @param {Node} handle component placeholder (it should be an empty div element)
+ */
+CGroupMenu.prototype.Init = function ( handle ) {
+	CBase.prototype.Init.call(this, handle);
+
+	this.handle.onclick = function(event){
+		// stop click
+		event.stopPropagation();
+	};
+};
+
 
 /**
  * Finds and returns the group data object
@@ -70,29 +91,38 @@ CGroupMenu.prototype.GetGroup = function ( gid ) {
  * @return {Node|Boolean} group data object
  */
 CGroupMenu.prototype.AddGroup = function ( gid, title, options ) {
+	var self = this;
 	// valid gid and not already exist
 	if ( gid && !this.GetGroup(gid) ) {
 		// CScrollList placeholder
-		var hlist = element('div', {className:'cslist-main'});
+		var aleft, aright,
+			hlist = element('div', {className:'cslist-main'});
 		// create html
 		var group = element('table', {
-			gid     : gid,
-			slist   : new CScrollList(),
-			options : options || {}
-		}, [
-			// title row
-			element('tr', {className:'title'}, [
-				element('td', {className:'side'}, element('p')), // arrow left
-				element('td', null, title),                      // group title
-				element('td', {className:'side'}, element('p'))  // arrow right
-			]),
-			// group items row
-			element('tr', {className:'ilist'}, element('td', {colSpan:3}, hlist))
-		]);
+				gid     : gid,
+				slist   : new CScrollList(),
+				options : options || {}
+			}, [
+				// title row
+				element('tr', {className:'title'}, [
+					element('td', {className:'side', onclick:function(){
+						self.Switch(self.Next({hidden:false}, true), true);
+					}}, aleft = element('p')),  // arrow left
+					element('td', null, title),                               // group title
+					element('td', {className:'side', onclick:function(){
+						self.Switch(self.Next({hidden:false}), true);
+					}}, aright = element('p'))  // arrow right
+				]),
+				// group items row
+				element('tr', {className:'ilist'}, element('td', {colSpan:3}, hlist))
+			]
+		);
 		// correct group attributes if necessary
 		group.options.hidden = group.options.hidden ? true : false;
 		// create scroll list
 		group.slist.Init(hlist);
+		group.aleft  = aleft;
+		group.aright = aright;
 		//group.slist.Activate(true, false);
 		// add to dom
 		elchild(this.handleInner, group);
@@ -121,7 +151,7 @@ CGroupMenu.prototype.Hidden = function ( group, state ) {
  * Fill the given group with specified item
  * @param {Object} group group data object
  * @param {String|Number} iid unique name of the group item
- * @param {String|Node|Array} body group item title or complex content
+ * @param {String|HTMLElement|Array} body group item title or complex content
  * @param {Object} [options] group item additional attributes (hidden, marked, focused, disabled)
  * @return {Node} created and added group item
  */
@@ -132,8 +162,24 @@ CGroupMenu.prototype.AddItem = function ( group, iid, body, options ) {
 	options.iid = iid;
 	// default handler for each item if not overwritten
 	if ( group.options.onclick && !options.onclick ) options.onclick = group.options.onclick;
+	if ( options.icon ) {
+		body = element('div', {className:'short'}, body);
+		body.style.backgroundImage    = 'url("' + options.icon + '")';
+		body.style.backgroundPosition = 'right';
+		body.style.backgroundRepeat   = 'no-repeat';
+	}
 	// add item to the group list
 	return group.slist.Add(body, options);
+};
+
+
+/**
+ * Apply visual styles for group arrows
+ * depending on the neighbour groups activity
+ */
+CGroupMenu.prototype.ApplyArrows = function () {
+	this.activeGroup.aright.className = this.Next({hidden:false})       ? 'active' : '';
+	this.activeGroup.aleft.className  = this.Next({hidden:false}, true) ? 'active' : '';
 };
 
 
@@ -156,7 +202,16 @@ CGroupMenu.prototype.Switch = function ( group, activate ) {
 		// show it
 		this.activeGroup.style.display = 'table';
 		// set focus and active state if necessary
-		if ( activate ) this.activeGroup.slist.Activate();
+		if ( activate ) {
+			this.activeGroup.slist.Activate();
+			// sync focus to marked item
+			if ( this.autoFocus && Array.isArray(this.activeGroup.slist.states.marked) ) {
+				// get the first marked and focus it
+				this.activeGroup.slist.Focused(this.activeGroup.slist.states.marked[0], true);
+			}
+		}
+		// apply visual styles for group arrows
+		this.ApplyArrows();
 		// ok
 		return true;
 	}
@@ -172,7 +227,14 @@ CGroupMenu.prototype.Switch = function ( group, activate ) {
  */
 CGroupMenu.prototype.Activate = function ( active, setFocus ) {
 	var status = false;
-	if ( this.activeGroup !== null ) status = this.activeGroup.slist.Activate(active, setFocus);
+	if ( this.activeGroup !== null ) {
+		status = this.activeGroup.slist.Activate(active, setFocus);
+	}
+	// sync focus to marked item
+	if ( this.autoFocus && Array.isArray(this.activeGroup.slist.states.marked) ) {
+		// get the first marked and focus it
+		this.activeGroup.slist.Focused(this.activeGroup.slist.states.marked[0], true);
+	}
 	return status;
 };
 
@@ -196,7 +258,9 @@ CGroupMenu.prototype.Next = function ( filter, reverse ) {
 			// suitable by default
 			match = true;
 			// check all the filter attributes (all should match)
-			for ( var attr in filter ) match = match && (pointer.options[attr] === filter[attr]);
+			for ( var attr in filter ) if ( filter.hasOwnProperty(attr) ) {
+				match = match && (pointer.options[attr] === filter[attr]);
+			}
 			// suitable item is found
 			if ( match ) return pointer;
 		}

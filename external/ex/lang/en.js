@@ -49,9 +49,10 @@ var lang = {
 	'unmark'                  : 'Unselect',
 	'film_description'        : 'Description',
 	'size_in_bytes'           : 'Размер: ',
-	'film_description_off'    : 'Close description',
-	'main_menu'               : 'Main menu',
-	'apply'                   : 'Apply'
+	'film_description_off'    : 'Close<br>description',
+	'main_menu'               : 'Main<br>menu',
+	'apply'                   : 'Apply',
+	'toFiles'                 : 'Jump to<br> files'
 };
 
 var LANG_MEDIA_DEFAULT_ABORT         = 'Cancel',
@@ -60,13 +61,13 @@ var LANG_MEDIA_DEFAULT_ABORT         = 'Cancel',
     LANG_MEDIA_DEFAULT_OK            = 'Yes',
     LANG_MEDIA_ITEM_WRONG_TYPE       = 'No playable content here.',
     //Media Player
-    playerBtnInfo                    = 'Hide<br />player',
-    playerBtnF2sh                    = 'Show<br />playlist',
-    playerBtnF2hd                    = 'Hide<br />playlist',
+    playerBtnInfo                    = 'Hide<br>player',
+    playerBtnF2sh                    = 'Show<br>playlist',
+    playerBtnF2hd                    = 'Hide<br>playlist',
     playerBtnMenu                    = 'Settings',
-    playlistPrev                     = "Previous<br />media",
-    playlistNext                     = "Next<br />media",
-     mediaInfoMenu_3dview            = 'Mode',
+    playlistPrev                     = "Previous<br>media",
+    playlistNext                     = "Next<br>media",
+    mediaInfoMenu_3dview             = 'Mode',
     playingError                     = 'play error',
     mediaInfoMenu_langUnknown        = 'unknown',
     // info
@@ -83,8 +84,6 @@ var LANG_MEDIA_MENU_GROUPS = {
     gins      : 'Selected',
     gaudio    : 'Sound',
     gsubtitle : 'Subtitles',
-    gts       : 'TimeShift',
-    gtsend    : 'TimeShift buffer',
     g3d       : '3D mode',
     gslideOn  : 'Slide show'
 };

@@ -2,18 +2,113 @@
  * Main STB objects declaration
  * not included directly anywhere
  * used for IDE autocompletion
+ * also enables the desktop browser emulation
  * @author DarkPark
- *
- * work is in progress
- * the last function - stbDownloadManager
  */
+
+var ENVIRONMENT = localStorage.getItem('ENVIRONMENT');
+if (ENVIRONMENT) {
+	ENVIRONMENT = JSON.parse(localStorage.getItem('ENVIRONMENT'));
+} else {
+	ENVIRONMENT = {
+		"bootdelay"             : "1",
+		"baudrate"              : "115200",
+		"board"                 : "mag250",
+		"monitor_base"          : "0xA0000000",
+		"monitor_len"           : "0x00050000",
+		"monitor_sec"           : "1:0-4",
+		"loadaddr"              : "0x80000000",
+		"unprot"                : "protect off $monitor_sec",
+		"update"                : "erase $monitor_sec;cp.b $load_addr $monitor_base $monitor_len;protect on $monitor_sec",
+		"mem"                   : "mem=160m bigphysarea=2048",
+		"console"               : "ttyAS0",
+		"ethinit"               : "nwhwconf=device:eth0",
+		"autoconf"              : "off",
+		"mtdparts"              : "mtdparts=stm-nand-flex.1:4M(Kernel),120M(RootFs),4M(Kernel2),120M(RootFs2),-(Userfs)",
+		"mtdids"                : "nand0=stm-nand-flex.1",
+		"partition"             : "nand0,0",
+		"nfsargs"               : "setenv bootargs ${ethinit},hwaddr:${ethaddr} root=/dev/nfs nfsroot=${rootpath} ip=${ipaddr}::${gatewayip}:${netmask}:::${autoconf} ${mem}",
+		"flashargs"             : "setenv bootargs ${ethinit},hwaddr:${ethaddr} root=/dev/mtdblock6 rootfstype=jffs2 ${mem}  ip=none",
+		"flashargs2"            : "setenv bootargs ${ethinit},hwaddr:${ethaddr} root=/dev/mtdblock8 rootfstype=jffs2 ${mem}  ip=none",
+		"addmisc"               : "setenv bootargs ${bootargs} ${mtdparts} console=${console},${baudrate} ",
+		"kernel"                : "uImage",
+		"flash_self"            : "run flashargs addmisc; mtdparts default; setenv partition nand0,0 ;fsload ${kernel}; bootm; run net ",
+		"flash_self2"           : "run flashargs2 addmisc; mtdparts default; setenv partition nand0,2 ;fsload ${kernel}; bootm; run net ",
+		"net"                   : "dhcp; run nfsargs addmisc; bootm; reset",
+		"componentout"          : "YPrPb",
+		"bootupgrade"           : "no",
+		"do_factory_reset"      : "1",
+		"serial#"               : "052012B031491",
+		"Boot_Version"          : "008",
+		"wifi_ssid"             : "default_ssid",
+		"wifi_auth"             : "wpa2psk",
+		"wifi_enc"              : "tkip",
+		"wifi_int_ip"           : "0.0.0.0",
+		"update_url"            : "igmp://224.50.0.51:9001",
+		"bootstrap_url"         : "igmp://224.50.0.50:9000",
+		"use_portal_dhcp"       : "true",
+		"video_clock"           : "0",
+		"ntpurl"                : "africa.pool.ntp.org",
+		"settMaster"            : "1",
+		"betaupdate_cond"       : "1",
+		"timezone_conf_int"     : "plus_02_00_13",
+		"ts_icon"               : "true",
+		"ts_path"               : "/media/HDD-SATA-1",
+		"ts_endType"            : "1",
+		"upnp_conf"             : "lan",
+		"front_panel"           : "0",
+		"screen_clock"          : "0",
+		"timezone_conf"         : "Europe/Kiev",
+		"Ver_Forced"            : "no",
+		"autoupdate_cond"       : "2",
+		"audio_dyn_range_comp"  : "OFF",
+		"audio_operational_mode": "RF_MODDE",
+		"audio_stereo_out_mode" : "STEREO",
+		"aspect_ratio"          : "default",
+		"audio_initial_volume"  : "70",
+		"ts_time"               : "900",
+		"ts_exitType"           : "2",
+		"ts_lag"                : "0",
+		"lang_audiotracks"      : "0",
+		"Image_Date"            : "Fri Jul 5 18:28:28 EEST 2013",
+		"Image_Version"         : "216",
+		"Image_Desc"            : "0.2.18-alpha3-250",
+		"stdin"                 : "serial",
+		"stdout"                : "serial",
+		"stderr"                : "serial",
+		"bootcmd"               : "run net",
+		"ethaddr"               : "00:1a:79:04:c9:48",
+		"debug_name"            : "bas",
+		"ssaverDelay"           : "1800",
+		"ssaverName"            : "abstract",
+		"debug"                 : "1",
+		"ts_on"                 : "true",
+		"lang_subtitles"        : "1",
+		"subtitles_on"          : "true",
+		"tvsystem"              : "1080p-60",
+		"graphicres"            : "1280",
+		"language"              : "en"
+	};
+	localStorage.setItem('ENVIRONMENT', JSON.stringify(ENVIRONMENT));
+}
 
 
 /**
  * Main object gSTB methods declaration
+ * TODO: expand description
  * @class gSTB
  */
 var gSTB = {
+
+	GetSystemPaths:
+		function () { return '{"result":{"root":"/home/web/","media":"/media/"}}'; },
+
+	GetDefaultUpdateUrl:
+		function () { return 'http://aurahd.infomir.com.ua/imageupdate'; },
+
+	GetHashVersion1:
+		function ( data ) {},
+
 	CloseWebWindow:
 		function () {},
 
@@ -73,7 +168,7 @@ var gSTB = {
 	/**
 	 * Enables or disables automatic start of Service Menu by pressing "SET" ("service" on old RC) button.
 	 * If button "SET" ("service" on old RC) is already used by JavaScript code, there may be a conflict.
-	 * To avoid this conflict JavaScript code should disable automatic start of Service Menu and call directly function stb.StartLocalCfg every time it is required.
+	 * To avoid this conflict JavaScript code should disable automatic start of Service Menu and call directly function gSTB.StartLocalCfg every time it is required.
 	 * @param {Boolean} bEnable flag: true - enable automatic start; false - disable automatic start
 	 */
 	EnableServiceButton:
@@ -103,10 +198,14 @@ var gSTB = {
 	/**
 	 * Enables or disables automatic show/hide of virtual keyboard by pressing "KB" ("empty" on old RC) button.
 	 * If button "KB" ("empty" on old RC) is already used by JavaScript code, there may be a conflict.
-	 * To avoid this conflict JavaScript code should disable automatic start of virtual keyboard and call directly functions stb.ShowVirtualKeyboard or stb.HideVirtualKeyboard every time it is required.
+	 * To avoid this conflict JavaScript code should disable automatic start of virtual keyboard and call directly functions gSTB.ShowVirtualKeyboard or gSTB.HideVirtualKeyboard every time it is required.
 	 * @param {Boolean} bEnable false - disable automatic show/hide; true - enable automatic show/hide
 	 */
 	EnableVKButton:
+		function ( bEnable ) {},
+
+
+	EnableTvButton:
 		function ( bEnable ) {},
 
 
@@ -114,7 +213,7 @@ var gSTB = {
 	 * Performs the script /home/default/action.sh with the parameters set
 	 * @param {String} action contains parameters for the script
 	 * @example
-	 *   stb.ExecAction("param 23 s") calls shell command "/home/default/action.sh param 23 s"
+	 *   gSTB.ExecAction("param 23 s") calls shell command "/home/default/action.sh param 23 s"
 	 */
 	ExecAction:
 		function ( action ) {},
@@ -166,11 +265,11 @@ var gSTB = {
 
 	/**
 	 * Receive the number (PID) of the current audio track.
-	 * The list of all audio tracks determined by the player can be received with stb.GetAudioPIDs.
+	 * The list of all audio tracks determined by the player can be received with gSTB.GetAudioPIDs.
 	 * @return {Number} Current audio track number (0..0x1fff)
 	 */
 	GetAudioPID:
-		function () {},
+		function () { return 0; },
 
 
 	/**
@@ -218,7 +317,7 @@ var gSTB = {
 	 * @return {Number} Contrast of video output in SD mode (-128..127)
 	 */
 	GetContrast:
-		function () {},
+		function () { return 0; },
 
 
 	/**
@@ -242,7 +341,7 @@ var gSTB = {
 	 * @return {String} info
 	 */
 	GetDeviceImageVersion:
-		function () { return ""; },
+		function () { return '218'; },
 
 
 	/**
@@ -250,7 +349,7 @@ var gSTB = {
 	 * @return {String} info
 	 */
 	GetDeviceImageVersionCurrent:
-		function () { return ""; },
+		function () { return '0.2.16-250 Tue Apr 9 18:10:19 EEST 2013'; },
 
 
 	/**
@@ -258,7 +357,7 @@ var gSTB = {
 	 * @return {String} info
 	 */
 	GetDeviceMacAddress:
-		function () { return ""; },
+		function () { return '00:00:00:00:00:00'; },
 
 
 	/**
@@ -266,10 +365,15 @@ var gSTB = {
 	 * @return {String} info
 	 */
 	GetDeviceModel:
-		function () { return ""; },
+		function () { return 'MAG250'; },
 
+
+	/**
+	 * STV model name
+	 * @return {String}
+	 */
 	GetDeviceModelExt:
-		function () {},
+		function () { return 'AuraHD1' },
 
 
 	/**
@@ -277,7 +381,7 @@ var gSTB = {
 	 * @return {String} the number
 	 */
 	GetDeviceSerialNumber:
-		function () { return ""; },
+		function () { return '052012B031491'; },
 
 
 	/**
@@ -308,7 +412,14 @@ var gSTB = {
 	 *     {"result":{"a":"b","b":"","timezone_conf_int":"plus_02_00_13","wifi_ssid":"default_ssid","update":"erase $monitor_sec;cp.b $load_addr $monitor_base $monitor_len;protect on $monitor_sec"},"errMsg":""}
 	 */
 	GetEnv:
-		function ( strVal ) { return ""; },
+		function ( strVal ) {
+			var request = JSON.parse(strVal),
+				result  = {};
+			request.varList.forEach(function(item){
+				result[item] = ENVIRONMENT[item] || '';
+			});
+			return JSON.stringify({result:result});
+		},
 
 
 	GetExtProtocolList:
@@ -382,7 +493,7 @@ var gSTB = {
 	 * false – the content is displayed in a full screen mode.
 	 */
 	GetPIG:
-		function () {},
+		function () { return true; },
 
 
 	/**
@@ -455,7 +566,7 @@ var gSTB = {
 	 *   {"result": ["ARCHIVE", "EDDY", "SANDBOX"], "errMsg": ""}
 	 */
 	GetSmbServers:
-		function ( args ) {},
+		function ( args ) { return ''; },
 
 
 	/**
@@ -468,7 +579,7 @@ var gSTB = {
 	 *   {"result": {"shares": ["share", "photo"], "serverIP": "192.168.100.1"}, "errMsg": ""}
 	 */
 	GetSmbShares:
-		function ( args ) {},
+		function ( args ) { return ''; },
 
 
 	/**
@@ -493,7 +604,7 @@ var gSTB = {
 
 	/**
 	 * Receive the number (PID) of the current subtitles track.
-	 * The list of all subtitles track determined by the player can be received with stb.GetSubtitlePIDs.
+	 * The list of all subtitles track determined by the player can be received with gSTB.GetSubtitlePIDs.
 	 * @return {Number} Current subtitles track number (0..0x1fff)
 	 */
 	GetSubtitlePID:
@@ -564,7 +675,7 @@ var gSTB = {
 	 *   {"errMsg": "",	"result": {"wep128-key1": "46f04863257ac8040905ea0002"}}
 	 */
 	GetWepKey128ByPassPhrase:
-		function ( passPhrase ) {},
+		function ( passPhrase ) { return ''; },
 
 
 	/**
@@ -681,6 +792,13 @@ var gSTB = {
 	IsFolderExist:
 		function ( fileName ) { return true; },
 
+	/**
+	 * Checks if the given file has UTF8 encoding
+	 * @param {String} fileName
+	 * @return {boolean}
+	 */
+	IsFileUTF8Encoded:
+		function ( fileName ) { return true; },
 
 	/**
 	 * This function indicating that internal portal been started.
@@ -709,19 +827,25 @@ var gSTB = {
 	 * Returns the list of directories and files having the extension set with SetListFilesExt, located in the directory dirName.
 	 * This function is realized only for the browser based on WebKit. For browsers based on FireFox such function can be realized using the function RDir with the parameter "rdir".
 	 * @param {String} dirName Route to the directory the contents whereof must be received.
+	 * @param {Boolean} lastModified Flag is the last modification time is necessary
 	 * @return {String} The string in the following form is returned:
 	 *   var dirs = ["dir1/", ..., "dirN/",	""]
 	 *   var files = [{"name":"fileName1", "size":size1}, ..., {"name":"fileNameM", "size":sizeM}]
 	 *   where dirN – the name of N-sub-directory, fileNameM and sizeM – name and size of M-file.
 	 */
 	ListDir:
-		function ( dirName ) {},
+		function ( dirName, lastModified ) {
+			if ( dirName.indexOf('system/pages/screensaver') !== -1 ) {
+				return 'var dirs = ["abstract/", "blank/", "clock/", ""]; var files = [{}]';
+			}
+			return 'var dirs = []; var files = [{}]';
+		},
 
 
 	/**
 	 * Load CAS settings from the set file.
 	 * See instruction on adjusting CAS Verimatrix in the supplement.
-	 * The call of the function becomes effective only if made before stb.SetCASType.
+	 * The call of the function becomes effective only if made before gSTB.SetCASType.
 	 * Platforms: MAG100, MAG200
 	 * @param {String} iniFileName URL of the settings file in the root file system
 	 */
@@ -743,8 +867,26 @@ var gSTB = {
 	LoadURL:
 		function ( strVal ) {},
 
+	/**
+	 * Load selected configuration file from folder /home/web/system/config
+ 	 * @param {String} strVal file name
+	 * @returns {String} text file content
+	 * @example LoadWebconfigData('default.ini');
+	 */
+	LoadWebconfigData:	// TODO: useless function
+		function ( strVal ){
+			return localStorage.getItem(strVal) || '';
+		},
+
+	/**
+	 * Load file from mnt/Userfs/data
+	 * @param {String} strVal file name
+	 * @returns {String} file content
+	 */
 	LoadUserData:
-		function ( strVal ) {},
+		function ( strVal ) {
+			return localStorage.getItem(strVal) || '';
+		},
 
 	/**
 	 * Pauses current playback.
@@ -757,16 +899,16 @@ var gSTB = {
 	/**
 	 * Starts playing media content as specified in playStr
 	 * Can use the given proxy server for http playback
-	 * Proxy server settings are valid till the next call of stb.Play()
+	 * Proxy server settings are valid till the next call of gSTB.Play()
 	 * @param {String} playStr in the format: "solution URL [atrack:anum] [vtrack:vnum] [strack:snum] [subURL:subtitleUrl]"
 	 * <p>solution - Media content type. Depends on the IPTV-device type (see Appendix 2 for the table of supported formats and the description of media content types)</p>
 	 * <p>URL - Address of the content to be started for playing. Depends on the type (see more detailed information in Appendix 2)</p>
 	 * <p>atrack:anum - Sets the number(PID) of audio track (optional parameter)</p>
 	 * <p>vtrack:vnum - Sets the number(PID) of audio track (optional parameter)</p>
 	 * <p>strack:snum - Sets the number(PID) of subtitle track (optional parameter)</p>
-	 * <p>subURL:subtitleURL - Sets the URL of external subtitles file. See stb.LoadExternalSubtitles (optional parameter)</p>
+	 * <p>subURL:subtitleURL - Sets the URL of external subtitles file. See gSTB.LoadExternalSubtitles (optional parameter)</p>
 	 * @param {String} [proxy_params] in the format: "http://[username[:password]@]proxy_addr:proxy_port"
-	 * <p>Proxy server settings are affect only http playback and valid till the next call of stb.Play().</p>
+	 * <p>Proxy server settings are affect only http playback and valid till the next call of gSTB.Play().</p>
 	 */
 	Play:
 		function ( playStr, proxy_params ) {},
@@ -774,7 +916,7 @@ var gSTB = {
 
 	/**
 	 * Play media content of the preset type (solution) from the preset URL.
-	 * @param {String} Solution Corresponds to the parameter solution from the function stb.Play
+	 * @param {String} Solution Corresponds to the parameter solution from the function gSTB.Play
 	 * @param {String} URL Address of the content to be started for playing. Depends on the type. See more detailed information in supplement 2.
 	 */
 	PlaySolution:
@@ -783,17 +925,17 @@ var gSTB = {
 	/**
 	 * Performs script /home/default/rdir.cgi with set parameters and return the standard output of this script.
 	 * The rdir.cgi supplied with the root file system has several commands preset:
-	 * 	 stb.RDir("SerialNumber",x) – x returns serial number of this device to x.
-	 * 	 stb.RDir("MACAddress",x) - receive MAC address
-	 * 	 stb.RDir("IPAddress",x) - receive IP addressадрес
-	 * 	 stb.RDir("HardwareVersion",x) – receive hardware version
-	 * 	 stb.RDir("Vendor",x) – receive the name of STB manufacturer
-	 * 	 stb.RDir("Model ",x) – receive the name of STB pattern
-	 * 	 stb.RDir("ImageVersion",x) – receive the version of the software flash imagestb.RDir("ImageDescription",x) – receive the information on the image of the software flash
-	 * 	 stb.RDir("ImageDate",x) – receive the date of creation of the flash software image.
-	 * 	 stb.RDir("getenv v_name",x) – receive the value of environment variable with the name v_name. See detailed description of operations with environment variables in supplement 11.
-	 * 	 stb.RDir("setenv v_name value") – set environment variable with the name v_name to the value value. See detailed description of operations with environment variables in supplement 11.
-	 * 	 stb.RDir("ResolveIP hostname") – resolve hostname to IP address.
+	 * 	 gSTB.RDir("SerialNumber",x) – x returns serial number of this device to x.
+	 * 	 gSTB.RDir("MACAddress",x) - receive MAC address
+	 * 	 gSTB.RDir("IPAddress",x) - receive IP address
+	 * 	 gSTB.RDir("HardwareVersion",x) – receive hardware version
+	 * 	 gSTB.RDir("Vendor",x) – receive the name of STB manufacturer
+	 * 	 gSTB.RDir("Model ",x) – receive the name of STB pattern
+	 * 	 gSTB.RDir("ImageVersion",x) – receive the version of the software flash image gSTB.RDir("ImageDescription",x) – receive the information on the image of the software flash
+	 * 	 gSTB.RDir("ImageDate",x) – receive the date of creation of the flash software image.
+	 * 	 gSTB.RDir("getenv v_name",x) – receive the value of environment variable with the name v_name. See detailed description of operations with environment variables in supplement 11.
+	 * 	 gSTB.RDir("setenv v_name value") – set environment variable with the name v_name to the value value. See detailed description of operations with environment variables in supplement 11.
+	 * 	 gSTB.RDir("ResolveIP hostname") – resolve hostname to IP address.
 	 * @param {String} value contains parameters with which the script /home/default/rdi.cgi is started
 	 * @return {String} standard output received by performing the script with parameters set
 	 */
@@ -821,9 +963,15 @@ var gSTB = {
 	Rotate:
 		function ( Angle ) {},
 
-
+	/**
+	 * Save file at mnt/Userfs/data
+	 * @param filename file name
+	 * @param filedata data for saving
+	 */
 	SaveUserData:
-		function ( filename, filedata ) {},
+		function ( filename, filedata ) {
+			localStorage.setItem(filename, filedata);
+		},
 
 
 	/**
@@ -855,7 +1003,7 @@ var gSTB = {
 
 	/**
 	 * Set additional CAS parameters.
-	 * Call of the function becomes effective only if made before stb.SetCASType.
+	 * Call of the function becomes effective only if made before gSTB.SetCASType.
 	 * Platforms: MAG200
 	 * @param {String} paramName Additional parameter name
 	 * @param {String} paramValue Additional parameter value
@@ -875,7 +1023,7 @@ var gSTB = {
 
     /**
      * Set video picture format.
-     * MAG100 ignores aspH. MAG200 uses aspL only in windows mode, while aslH only in full screen mode, see. stb.SetPIG
+     * MAG100 ignores aspH. MAG200 uses aspL only in windows mode, while aslH only in full screen mode, see. gSTB.SetPIG
      * @param {Number} Aspect Sets the video picture format. Consists of 2 tetrads:
      * | 7 6 5 4 | 3 2 1 0 |
      * |  aspH   |  aspL   |
@@ -934,8 +1082,8 @@ var gSTB = {
 	 *   2 – can switch to 720p-50, 1080i-50, 1080p-50 modes;
 	 *   4 – can switch to 720p-60, 1080i-60, 1080p-60.
 	 *     for example:
-	 *     stb.SetAutoFrameRate(0) disables auto frame rate switching.
-	 *     stb.SetAutoFrameRate(7) enables switching to frame rates 24,50 and 60.
+	 *     gSTB.SetAutoFrameRate(0) disables auto frame rate switching.
+	 *     gSTB.SetAutoFrameRate(7) enables switching to frame rates 24,50 and 60.
 	 */
 	SetAutoFrameRate:
 		function ( mode ) {},
@@ -973,7 +1121,7 @@ var gSTB = {
 	 *   Soft mode: RC4, AES;
 	 *   Hard mode: AES, DVB-CSA.
 	 * This mode is set only once after the start of the portal.
-	 * The call of the function becomes effective only if it is called before stb.SetCASType.
+	 * The call of the function becomes effective only if it is called before gSTB.SetCASType.
 	 * PLatforms: MAG100, MAG200
 	 * @param {Number} isSoftware 0 –use hard descrambling; 1 – use soft descrambling.
 	 * In the absence of this call soft descrambling is used. Only soft descrambling can be used for MAG100.
@@ -984,7 +1132,7 @@ var gSTB = {
 
 	/**
 	 * Set CAS server parameters.
-	 * Call of the function becomes effective only if made before stb.SetCASType.
+	 * Call of the function becomes effective only if made before gSTB.SetCASType.
 	 * Platforms: MAG100, MAG200
 	 * @param {String} serverAddr CAS server URL
 	 * @param {Number} serverPort CAS server port
@@ -1058,14 +1206,27 @@ var gSTB = {
 
 	/**
 	 * Setting up values of specified boot loader’s variables.
-	 * @param {String} Args Each pair's name is referencing name of variable. And pair value will be used as new value of variable.
+	 * @param {String} envList Each pair's name is referencing name of variable. And pair value will be used as new value of variable.
 	 * If referencing variable does not exist it will be created. If new value is empty string then value will be deleted.
 	 *   Format: JSON object, which holding only pairs. Each pair has string value. Each pair name is referencing variable name. And pair value will set new value.
 	 *   Example: {"a34":"b34", "c34":"", "c34":"d34"}
 	 * @return {Boolean} Result of operation
 	 */
 	SetEnv:
-		function ( Args ) { return true; },
+		function ( envList ) {
+			if ( envList ) {
+				envList = JSON.parse(envList);
+				if ( envList ) for ( var name in envList ) {
+					if ( envList[name] === '' ) {
+						delete ENVIRONMENT[name];
+					} else {
+						ENVIRONMENT[name] = envList[name];
+					}
+				}
+				localStorage.setItem('ENVIRONMENT', JSON.stringify(ENVIRONMENT));
+			}
+			return true;
+		},
 
 
 	/**
@@ -1084,7 +1245,7 @@ var gSTB = {
 	 * Set HDMI audio format.
 	 * @param {Number} type can be one of:
 	 * 0 – HDMI transmits PCM audio;
-	 * 1 – HDMI transmits SPdif audio (in that case SPDif output mode is set by stb.SetupSPdif)
+	 * 1 – HDMI transmits SPdif audio (in that case SPDif output mode is set by gSTB.SetupSPdif)
 	 */
 	SetHDMIAudioOut:
 		function ( type ) {},
@@ -1094,7 +1255,7 @@ var gSTB = {
 
 
 	/**
-	 * Set the list of file extensions for returning to the function stb.ListDir.
+	 * Set the list of file extensions for returning to the function gSTB.ListDir.
 	 * This function is realized only for the browser based on WebKit.
 	 * @param {String} fileExts List of files extensions followed by a space. For example: ".mkv .mov .mpg"
 	 */
@@ -1122,7 +1283,7 @@ var gSTB = {
     /**
      * Switch on (mode=1) or switch off (mode=0) the mode ChromaKey for the video window.
      * @param {Number} Mode ChromaKey mode for the video window: 0 – off; 1 – on.
-     * The parameters set by stb.SetChromaKey ostb.SetTransparentColor shall be valid if the on-mode is used.
+     * The parameters set by gSTB.SetChromaKey gSTB.SetTransparentColor shall be valid if the on-mode is used.
      */
 	SetMode:
 		function ( Mode ) {},
@@ -1140,6 +1301,12 @@ var gSTB = {
 	SetMute:
 		function ( Mute ) {},
 
+	/**
+	 * True to apply new native string handling without utf8/utf16 encoding/decoding
+	 * @param {Boolean} boolVal true - all string manipulations are with utf16 strings
+	 */
+	SetNativeStringMode:
+		function ( boolVal ) {},
 
 	SetObjectCacheCapacities:
 		function ( intVal1, intVal2, intVal3 ) {},
@@ -1202,6 +1369,30 @@ var gSTB = {
 	 */
 	SetSaturation:
 		function ( Sat ) {},
+
+
+	/**
+	 * Time to screensaver activation on idle
+	 * @param {Number} timeSec 0 - disable SS, 1-59 value ceiling to 60
+	 */
+	SetScreenSaverTime:
+		function ( timeSec ) {},
+
+
+	/**
+	 * Set screensaver window init parameters
+	 * @param {Object} options parameters from windowInit function
+	 */
+	SetScreenSaverInitAttr:
+		function ( options ) {},
+
+
+	/**
+	 * Set system settings init parameters
+	 * @param {Object} options parameters from windowInit function
+	 */
+	SetSettingsInitAttr:
+		function ( options ) {},
 
 
 	/**
@@ -1321,8 +1512,8 @@ var gSTB = {
 
 	/**
 	 * Sets the colour considered transparent at the moment.
-	 * The function is a special case of stb.SetChromaKey.
-	 * Any changes on the screen are visible only provided the ChromaKey mode is switched on by functions stb.SetMode or stb.SetWinMode.
+	 * The function is a special case of gSTB.SetChromaKey.
+	 * Any changes on the screen are visible only provided the ChromaKey mode is switched on by functions gSTB.SetMode or gSTB.SetWinMode.
 	 * @param {Number} Color Colour in RGB format that can be considered transparent (0..0xffffff)
 	 * @constructor
 	 */
@@ -1378,7 +1569,7 @@ var gSTB = {
      * Sets the video window control mode
      * @param {Number} Mode Control mode:
      * 0 – the device automatically switches on the video window at the beginning of playing and switches it off when stops,
-     * 1 – API user uses stb.SetVideoState for instructing whether to show the video window or not.
+     * 1 – API user uses gSTB.SetVideoState for instructing whether to show the video window or not.
      */
 	SetVideoControl:
 		function ( Mode ) {},
@@ -1408,7 +1599,7 @@ var gSTB = {
 
 	/**
 	 * Sets volume level
-	 * @param {type} Volume Volume level: 0 - no sound; 100 - maximal level
+	 * @param {Number} Volume Volume level: 0 - no sound; 100 - maximal level
 	 */
 	SetVolume:
 		function ( Volume ) {},
@@ -1420,7 +1611,7 @@ var gSTB = {
 
 	/**
 	 * Given proxy settings are only applied to http:// or https:// requests of the browser, but not applied to content playback from http server.
-	 * For this purpose please use extended stb.Play using proxy server.
+	 * For this purpose please use extended gSTB.Play using proxy server.
 	 * @param {String} proxy_addr Proxy server address.
 	 * @param {Number} proxy_port Proxy server port.
 	 * @param {String} user_name Username for proxy server. Can be empty.
@@ -1445,7 +1636,7 @@ var gSTB = {
      * Switch on or switch off the ChromaKey mode for the preset window
      * @param {Number} winNum The number of the window for which this function is used: 0 – graphic window; 1 – video window.
      * @param {Number} Mode ChromaKey mode for video window: 0 – off; 1 – on.
-     * The parameters set by stb.SetChromaKey or stb.SetTransparentColor shall be active in the on-mode
+     * The parameters set by gSTB.SetChromaKey or gSTB.SetTransparentColor shall be active in the on-mode
      */
 	SetWinMode:
 		function ( winNum, Mode ) {},
@@ -1453,8 +1644,8 @@ var gSTB = {
 
 	/**
 	 * Show text string as a subtitle on screen.
-	 * In case when start and end equal 0, text is shown on screen immediately until next stb.ShowSubtitle is called or 30 seconds elapsed.
-	 * If this function was called then subtitles will work only via stb.ShowSubtitle until next call of stb.Play.
+	 * In case when start and end equal 0, text is shown on screen immediately until next gSTB.ShowSubtitle is called or 30 seconds elapsed.
+	 * If this function was called then subtitles will work only via gSTB.ShowSubtitle until next call of gSTB.Play.
 	 * @param {Number} start String presentation start time in ms from start of current media.
 	 * @param {Number} end String presentation end time in ms from start of current media.
 	 * @param {String} text This text will be shown on screen as a subtitle.
@@ -1487,10 +1678,12 @@ var gSTB = {
 
 	/**
 	 * Start local configuration menu (Service Menu).
-	 * Result of this function is similar to pressing "SET" ("service" on old RC) button, if automatic appearance of Service Menu is disabled via stb.EnableServiceButton.
+	 * Result of this function is similar to pressing "SET" ("service" on old RC) button, if automatic appearance of Service Menu is disabled via gSTB.EnableServiceButton.
 	 */
 	StartLocalCfg:
-		function () {},
+		function () {
+			//window.location = getScriptPath() + 'system/settings/index.html';
+		},
 
 
 	/**
@@ -1525,7 +1718,7 @@ var gSTB = {
 	/**
 	 * Write the file of portal settings /etc/stb_params.
 	 * It must be kept in mind that the values PORTAL_IP, PORTAL_1, PORTAL_2 are used in the starting portal stored in /home/web of the root file system,
-	 * therefore it is desirable to receive source values of these parameters via stb.ReadCFG before making the call and add them to the string cfg.
+	 * therefore it is desirable to receive source values of these parameters via gSTB.ReadCFG before making the call and add them to the string cfg.
 	 * @param {String} Cfg The data to be stored in the file
 	 */
 	WriteCFG:
@@ -1539,7 +1732,30 @@ var gSTB = {
 	 * @param {String} prefs Data to be saved in the file of browser settings
 	 */
 	WritePrefs:
-		function ( prefs ) {}
+		function ( prefs ) {},
+
+
+	/**
+	 * Get current input language
+	 */
+	GetInputLang:
+		function () {},
+
+
+	/**
+	 * Set new input language
+	 * @param {String} langId Language id to be set as input language
+	 */
+	SetInputLang:
+		function ( langId ) {},
+
+
+	/**
+	 * Set the user interface language
+	 * @param {String} langId Attention! This function also causes SetInputLang()
+	 */
+	SetUiLang:
+		function ( langId ) {}
 };
 
 
@@ -1548,6 +1764,42 @@ var gSTB = {
  * @class stbWebWindow
  */
 var stbWebWindow = {
+
+	/**
+	 * Get the window id
+	 * @return {Number}
+	 */
+	windowId:
+		function () { return 0; },
+
+	/**
+	 * Sends a message to the given window
+	 * @param {Number} windowId
+	 * @param {String} message
+	 * @param {String} data
+	 */
+	messageSend:
+		function ( windowId, message, data ) {},
+
+	/**
+	 * Sends a message to all windows
+	 * @param {String} message
+	 * @param {String} data
+	 */
+	messageBroadcast:
+		function ( message, data ) {},
+
+	close:
+		function () {
+			window.location = PATH_ROOT + 'services.html';
+		},
+
+	SendVirtualKeypress:
+		function ( text, id ) {},
+
+	SetGeometry:
+		function ( x, y, w, h ) {},
+
 	/**
 	 * Apply the given mode to the web window
 	 * @param {Boolean} fullScreen mode (true - maximize)
@@ -1619,6 +1871,94 @@ var stbWebWindow = {
  * @class stbWindowMgr
  */
 var stbWindowMgr = {
+
+	/**
+	 * Returns the created window numeric id, -1 if window can't be created
+	 * can immediately show window and set geometry
+	 * @param {String} options json data
+	 *     {url:'', x:0, y:0, width:screen.width, heigh:screen.heigh, "transparent":true, "visible":true, "backgroundColor":'#fff', "api":{"init":inherit, "include":["stbTimeShift"], "exclude":["stbRecordManager"]}}
+	 *     api.init = all|none|inherit (default:inherit)
+	 * @return {Number}
+	 */
+	windowInit:
+		function ( options ) { return 0; },
+
+	/**
+	 * Apply window options
+	 * @param {Number} windowId
+	 * @param {String} options json data
+	 * @return {Boolean} operation status
+	 */
+	windowAttr:
+		function ( windowId, options ) { return true; },
+
+	/**
+	 * Gets all available window data
+	 * @param {Number} windowId
+	 * @return {String} json data like "{url:'', state:'', api ...}"
+	 */
+	windowInfo:
+		function ( windowId ) { return ''; },
+
+	/**
+	 * Alias for windowAttr(id, '{"visible":true}')
+	 * @param {Number} windowId
+	 * @return {Boolean} operation status
+	 */
+	windowShow:
+		function ( windowId ) { return true; },
+
+	/**
+	 * alias for windowAttr(id, '{"visible":false}')
+	 * @param {Number} windowId
+	 * @return {Boolean} operation status
+	 */
+	windowHide:
+		function ( windowId ) { return true; },
+
+	/**
+	 * Closes the given window
+	 * @param {Number} windowId
+	 * @return {Boolean} operation status
+	 */
+	windowClose:
+		function ( windowId ) { return true; },
+
+	/**
+	 * Reloads or loads a new address
+	 * alias for windowAttr(id, '{"url":'some address ...'}')
+	 * @param {Number} windowId
+	 * @param {String} url
+	 * @return {Boolean} operation status
+	 */
+	windowLoad:
+		function ( windowId, url ) { return true; },
+
+	/**
+	 * Gets the current active window id
+	 * @return {Number}
+	 */
+	windowActive:
+		function () { return 0; },
+
+	/**
+	 * All window ids
+	 * @return {String} json data like "[1,2,3]"
+	 */
+	windowList:
+		function () { return ''; },
+
+	setBookmarkImplUrl:
+		function ( url ) {},
+
+	openDownloadManager:
+		function ( url ) {
+			window.location = url;
+		},
+
+	GetFocusedInputInfo:
+		function () {},
+
 	/**
 	 * Adds the current page as a bookmark to the bookmark manager
 	 */
@@ -1628,6 +1968,15 @@ var stbWindowMgr = {
 	closeWebWindow:
 		function () {},
 
+	closeWindow:
+		function ( handle ) {},
+
+	getCurrWebUrl:
+		function () {},
+
+	getCurrentTitle:
+		function () {},
+
 	/**
 	 * Init web browser window without displaying
 	 * @param {String} urlTop full file path to the top frame (default: file:///home/web/public/app/bookmarks/header.html)
@@ -1635,6 +1984,21 @@ var stbWindowMgr = {
 	 */
 	InitWebWindow:
 		function ( urlTop, urlBottom ) {},
+
+
+	/**
+	 * Set internet browser main window init parameters
+	 * @param {Object} options parameters from windowInit function
+	 */
+	setWebFaceInitAttr:
+		function ( options ) {},
+
+	/**
+	 * New web browser window initialization
+	 * @param url
+	 */
+	initWebWindow:
+		function ( url ) {},
 
 	IsWebVkWindowExist:
 		function () {},
@@ -1664,12 +2028,30 @@ var stbWindowMgr = {
 	openWebWindow:
 		function ( strVal ) {},
 
+	openWebFace:
+		function ( url ) {},
+
 	/**
-	 * Raises the web browser window in case not active
+	 * Send the new web browser content window to top
 	 */
 	raiseWebWindow:
 		function () {},
 
+	/**
+	 * Send the new web browser control window to top
+	 */
+	raiseWebFaceWindow:
+		function () {},
+
+	resizeWebWindow:
+		function ( x, y, w, h ) {},
+
+	/**
+	 * Sets the "manual" position VK, which override the behavior GetFocusedInputInfo ()
+	 * @param {String} strVal defines the hint for positioning. Valid values: "none", "topleft", "topright", "top", "bottomleft", "bottomright", "bottom"
+	 * @param {Number} [intVal1] coordinates X sets topleft VK. If the coordinates are equal to -1 "manual" setting mode is canceled coordinates (GetFocusedInputInfo () will give the coordinates of the active element)
+	 * @param {Number} [intVal2] coordinates Y sets topleft VK. If the coordinates are equal to -1 "manual" setting mode is canceled coordinates (GetFocusedInputInfo () will give the coordinates of the active element)
+	 */
 	SetVirtualKeyboardCoord:
 		function ( strVal, intVal1, intVal2 ) {},
 
@@ -1688,8 +2070,13 @@ var stbWindowMgr = {
 	VkSetFocus:
 		function ( boolVal ) {},
 
-	setVirtualKeyboardImplUrl:
-		function ( url ) {}
+
+	/**
+	 * Set VK window init parameters
+	 * @param {Object} options parameters from windowInit function
+	 */
+	setVirtualKeyboardInitAttr:
+		function ( options ) {}
 };
 
 
@@ -1749,7 +2136,7 @@ var stbDownloadManager = {
 
 	/**
 	 * Get info about queue of jobs.
-	 * @param {String} idList If list is not empty information for given jobs will be returned. Whole queue will be returned in other case.
+	 * @param {String} [idList] If list is not empty information for given jobs will be returned. Whole queue will be returned in other case.
 	 *   @example "1.0, 2.0, 3.0"
 	 * @return {String} Contain JavaScript array of objects. Size of the array depends on operation’s result.
 	 * Each object should have these fields:
@@ -1765,7 +2152,7 @@ var stbDownloadManager = {
 	 *   attempt - number of the download attempt
 	 */
 	GetQueueInfo:
-		function ( idList ) { return ""; },
+		function ( idList ) { return '[]'; },
 
 	InvalidateCatalog:
 		function ( strVal ) {},
@@ -1806,7 +2193,15 @@ var stbDownloadManager = {
  *
  * @class stbWildWebWindow
  */
-var stbWildWebWindow = {};
+var stbWildWebWindow = {
+
+	GetZoomFactor:
+		function(){},
+
+	IsFullScreenMode:
+		function(){}
+
+};
 
 
 /**
@@ -1817,6 +2212,26 @@ var stbWildWebWindow = {};
  * @class stbEvent
  */
 var stbEvent = {
+
+	/**
+	 * Receive a message from a window
+	 * @param {Number} windowId
+	 * @param {String} message
+	 * @param {String} data
+	 */
+	onMessage:
+		function ( windowId, message, data ) {},
+
+	/**
+	 * Receive a broadcast message from a window
+	 *		storage.mount
+	 *		storage.unmount
+	 * @param {Number} windowId
+	 * @param {String} message
+	 * @param {String} data
+	 */
+	onBroadcastMessage:
+		function ( windowId, message, data ) {},
 
 	/**
 	 * The function to be called when getting the player event.
@@ -1845,6 +2260,13 @@ var stbEvent = {
 	event: 0,
 
 	/**
+	 * USB device mount/unmount
+	 * @param {Number} state 0 - mount off, 1 - mount on
+	 */
+	onMount:
+		function ( state ) {},
+
+	/**
 	 * Callback on current web document loading
 	 * triggers every time the document loading progress changes
 	 * @param {Number} progress loading stage value (0-100)
@@ -1858,11 +2280,25 @@ var stbEvent = {
 	onWindowActivated:
 		function () {},
 
+	/**
+	 * Callback on internet browser link clicked to ask user what to do with link: play or download
+	 * It is also used to start playing a downloaded item
+	 */
 	onMediaAvailable:
 		function () {},
 
+	/**
+	 * !!! deprecated
+	 */
 	onScreenSaverOverride:
 		function () {},
+
+	/**
+	 * Callback on screensaver activation/deactivation
+	 * @param {Boolean} state true - activation, false - deactivation
+	 */
+	onScreenSaverActivation:
+		function ( state ) {},
 
 	/**
 	 * Callback fired on lost/restore local network connection
@@ -1953,12 +2389,12 @@ var stbUpdate = {
 	 *   -1: not defined
 	 *   1: Signature init error (final state error)
 	 *   2: Wrong device model
-	 *   3: Section size exceed partition size on FLASH
+	 *   3: Section size exceeds partition size on FLASH
 	 *   4: Required FLASH section not found. Aborting update
-	 *   5: Updating Kernel
-	 *   6: Updating Image
+	 *   5: Updating kernel
+	 *   6: Updating image
 	 *   7: Internal error (final state error)
-	 *   8: Inspecting environment section
+	 *   8: Inspecting firmware
 	 *   9: Updating environment variables
 	 *   10: Updating Bootstrap section
 	 *   11: Skipping Bootstrap section
@@ -1967,7 +2403,7 @@ var stbUpdate = {
 	 *   14: Updating second boot
 	 *   15: Updating logotype
 	 *   16: Update finished OK (final state OK)
-	 *   17: Wrong Signature (final state OK)
+	 *   17: Wrong signature (final state OK)
 	 *   18: Erasing flash section
 	 *   19: Flash write error (final state error)
 	 *   20: File write error (final state error)
@@ -1977,7 +2413,7 @@ var stbUpdate = {
 	 *   23: File check finished
 	 *   24: File check finished (final state OK)
 	 *   25: File not found (final state error)
-	 *   26: Preparing for work
+	 *   26: Initialising
 	 *   27: Read error (final state error)
 	 */
 	getStatus:
@@ -2100,7 +2536,7 @@ var pvrManager = {
 	 *     See CreateTask.
 	 */
 	GetAllTasks:
-		function () { return ""; },
+		function () { return '[]'; },
 
 	/**
 	 * Get task list by identifier list.
@@ -2179,3 +2615,82 @@ var timeShift = {
 	SetSlidingMode:
 		function ( OnOff ) {}
 };
+
+
+/**
+ * Global key-value storage
+ * @class stbStorage
+ */
+var stbStorage = {
+
+	/**
+	 * Remove all the keys
+	 */
+	clear:
+		function () {},
+
+	/**
+	 * Get the total number of keys
+	 * @returns {Number}
+	 */
+	count:
+		function () { return 0; },
+
+	/**
+	 * Get the given key value by its name
+	 * @param {String} keyName
+	 * @return {string} key value
+	 */
+	get:
+		function ( keyName ) { return ''; },
+
+	/**
+	 * Check the given key existence
+	 * @param {String} keyName
+	 * @return {Boolean} true if present
+	 */
+	has:
+		function ( keyName ) { return true; },
+
+	/**
+	 * Get the list of all keys as a JSON string in this format:
+	 * { "errCode" : 0, "errMsg" : "", "result" : ["key1", "key2"] }
+	 * @return {String}
+	 */
+	keys:
+		function () { return ''; },
+
+	/**
+	 * Create or update the given key
+	 * @param {String} keyName
+	 * @param {String|Number} keyValue
+	 */
+	set:
+		function ( keyName, keyValue ) {},
+
+	/**
+	 * Remove the given key
+	 * @param {String} keyName
+	 * @return {Boolean} operation status - true on successful deletion
+	 */
+	unset:
+		function ( keyName ) { return true; }
+
+};
+
+
+if ( DEBUG_NAME && DEBUG_SERVER ) {
+	['gSTB', 'stbWebWindow', 'stbWindowMgr', 'stbDownloadManager', 'stbWildWebWindow', 'stbUpdate', 'pvrManager', 'timeShift', 'stbStorage'].forEach(function(name){
+		var obj = window[name];
+		for ( var method in obj ) {
+			if ( obj.hasOwnProperty(method) && typeof obj[method] === 'function' ) {
+				obj[method] = function(name, method){
+					return function(){
+						//console.log(method);
+						return proxy.call(name + '.' + method, Array.prototype.slice.call(arguments));
+					}
+				}(name, method);
+			}
+		}
+	});
+}

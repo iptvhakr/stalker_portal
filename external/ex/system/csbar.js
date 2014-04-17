@@ -57,7 +57,6 @@ function CSearchBar ( parent ) {
 }
 
 // extending
-//extend(CSearchBar, CBase);
 CSearchBar.prototype = Object.create(CBase.prototype);
 CSearchBar.prototype.constructor = CSearchBar;
 
@@ -164,13 +163,13 @@ CSearchBar.prototype.SetHint = function ( hint ) {
  * @param {Event} event global event object
  */
 CSearchBar.prototype.EventHandler = function ( event ) {
-    echo('CSearchBar.prototype.EventHandler event.keyCode='+event.keyCode+' event.code'+event.code);
+	echo('CSearchBar.prototype.EventHandler event.keyCode=' + event.keyCode + ' event.code' + event.code);
 	switch ( event.keyCode ) {
 		case KEYS.LEFT:
 		case KEYS.RIGHT:
 		case KEYS.UP:
 		case KEYS.DOWN:
-			return false;
+//			event.stopPropagation();
 			break;
 		case KEYS.EXIT:
 			this.Activate(false);
@@ -182,16 +181,13 @@ CSearchBar.prototype.EventHandler = function ( event ) {
 			break;
 		case KEYS.OK:
 			this.Activate(false);
-			// hook
-			if ( this.onSearch instanceof Function ) this.onSearch(this.items.text.value);
-			// set icon
-			this.items.icon.firstChild.src = this.items.text.value ? this.path + '/ico_filter.png' : this.path + '/ico_search2.png';
+			if ( this.onSearch instanceof Function ) this.onSearch(this.items.text.value);	// hook
+			this.items.icon.firstChild.src = this.items.text.value ? this.path + '/ico_filter.png' : this.path + '/ico_search2.png';	// set icon
 			event.stopPropagation();
 			break;
 		default:
-                        echo('prototype.default');
-			// hide or show default hint state
-			this.items.hint.value = this.items.text.value === '' ? this.hint : "";
+			echo('prototype.default');
+			this.items.hint.value = this.items.text.value === '' ? this.hint : "";// hide or show default hint state
 			// hint callback set
 			if ( this.onHint instanceof Function ) {
 				if ( this.items.hint.value == this.hint ) {
@@ -201,7 +197,7 @@ CSearchBar.prototype.EventHandler = function ( event ) {
 					clearTimeout(this.timer);
 				}
 				var self = this;
-				this.timer = setTimeout(function(){
+				this.timer = setTimeout(function () {
 					self.onHint.call(self, self.items.text.value);
 				}, 300);
 			}
@@ -222,4 +218,4 @@ CSearchBar.prototype.Activate = function ( active, manageFocus ) {
 	CBase.prototype.Activate.call(this, active);
 
 	if ( active ) this.ShowInput(true, manageFocus);
-}
+};
