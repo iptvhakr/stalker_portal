@@ -327,14 +327,15 @@ function common_xpcom(){
 
     this.get_server_params = function(){
 
-        var pattern = /http:\/\/([^\/]*)\/([\w\/]+)*\/([\w\/]+)\/(.)*/;
+        var pattern = /(https?):\/\/([^\/]*)\/([\w\/]+)*\/([\w\/]+)\/(.)*/;
 
-        this.portal_ip   = document.URL.replace(pattern, "$1");
-        this.portal_path = document.URL.replace(pattern, "$2");
+        this.portal_protocol = document.URL.replace(pattern, "$1");
+        this.portal_ip   = document.URL.replace(pattern, "$2");
+        this.portal_path = document.URL.replace(pattern, "$3");
 
         _debug('stb.portal_path:', this.portal_path);
 
-        this.ajax_loader = 'http://'+this.portal_ip+'/'+this.portal_path+'/server/load.php';
+        this.ajax_loader = this.portal_protocol+'://'+this.portal_ip+'/'+this.portal_path+'/server/load.php';
 
         _debug('stb.ajax_loader:', this.ajax_loader);
     };
