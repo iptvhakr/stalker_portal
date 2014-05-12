@@ -10,7 +10,7 @@ class Course implements \Stalker\Lib\StbApi\Course
 {
     public $db;
     public $cache_table;
-    public $content_url = 'http://www.bank.gov.ua/control/uk/curmetal/detail/currency?period=daily';
+    public $content_url = 'http://www.bank.gov.ua/control/en/curmetal/detail/currency?period=daily';
     public $codes = array(840, 978, 643);
     
     public function __construct(){
@@ -26,7 +26,7 @@ class Course implements \Stalker\Lib\StbApi\Course
         $result = array();
         $content = file_get_contents($this->content_url);
         if ($content){
-            preg_match("/<td class=\"date\">([\d,\.]+)<\/td>/",$content,$arr);
+            preg_match("/([\d]{2}\.[\d]{2}\.[\d]{4})<\/b>/",$content,$arr);
             $result['title'] = _('Exchange rate on').' '.$arr[1];
             $result['on_date'] = $arr[1];
             $result['data'] = array();
