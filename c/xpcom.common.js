@@ -653,19 +653,26 @@ function common_xpcom(){
         var callback = arguments[1];
 
         var context = window;
+        var method = 'GET';
 
         if (arguments.length == 3){
             context = arguments[2];
+        }
+
+        if (arguments.length == 4){
+            method = arguments[3];
         }
 
         try{
 
             var req = new XMLHttpRequest();
 
-            //req.open("POST", this.ajax_loader + '?JsHttpRequest='+(new Date().getTime())+'-xml', true);
-            //req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-            req.open("GET", this.ajax_loader + '?' + this.params_to_query(params), true);
+            if (method == 'POST'){
+                req.open("POST", this.ajax_loader + '?JsHttpRequest='+(new Date().getTime())+'-xml', true);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            }else{
+                req.open("GET", this.ajax_loader + '?' + this.params_to_query(params), true);
+            }
 
             if (this.header_ua_ext.length > 0){
                 req.setRequestHeader("X-User-Agent", stb.header_ua_ext.join('; '));
@@ -704,8 +711,11 @@ function common_xpcom(){
                     req = null;
                 }
             };
-            req.send(null);
-            //req.send(this.params_to_query(params));
+            if (method == 'POST'){
+                req.send(this.params_to_query(params));
+            }else{
+                req.send(null);
+            }
         }catch(e){
             req = null;
             console.log(e);
@@ -1153,6 +1163,8 @@ function common_xpcom(){
         this.watchdog.run(this.user['watchdog_timeout'], this.user['timeslot']);
     };
 
+    this.on_first_menu_show = function(){};
+
     this.post_loading_handle = function(){
         _debug('stb.post_loading_handle');
 
@@ -1169,6 +1181,7 @@ function common_xpcom(){
 
         if (this.user['display_menu_after_loading'] || !this.player.channels || this.player.channels.length == 0){
             main_menu.show();
+            this.on_first_menu_show();
         }else{
             this.player.first_play();
         }
@@ -1659,8 +1672,10 @@ function common_xpcom(){
             _debug('typeof(this.epg)', typeof(this.epg));
         },
 
-        get_curr_and_next : function(ch_id, from_ts){
-            _debug('epg_loader.get_curr_and_next', ch_id);
+        get_curr_and_next : function(ch_id, from_ts, length){
+            _debug('epg_loader.get_curr_and_next', ch_id, from_ts, length);
+
+            length = length || 2;
 
             ch_id = ''+ch_id;
 
@@ -1687,15 +1702,21 @@ function common_xpcom(){
                         }else if (this.epg[ch_id][i]['start_timestamp'] == now){
                             _debug('==');
                             result.push(this.epg[ch_id][i]);
-                            if (typeof(this.epg[ch_id][i+1]) == 'object'){
-                                result.push(this.epg[ch_id][i+1]);
+
+                            for (var j = 0; j < length - 1; j++){
+                                if (typeof(this.epg[ch_id][i+1+j]) == 'object'){
+                                    result.push(this.epg[ch_id][i+1+j]);
+                                }
                             }
                             return result;
                         }else{
                             if (typeof(this.epg[ch_id][i-1]) == 'object'){
                                 result.push(this.epg[ch_id][i-1]);
-                                if (typeof(this.epg[ch_id][i]) == 'object'){
-                                    result.push(this.epg[ch_id][i]);
+
+                                for (var j = 0; j < length - 1; j++){
+                                    if (typeof(this.epg[ch_id][i + j]) == 'object'){
+                                        result.push(this.epg[ch_id][i + j]);
+                                    }
                                 }
                             }else{
                                 result.push(this.epg[ch_id][i]);
@@ -2001,6 +2022,36 @@ function common_xpcom(){
             time += m;
 
             return time;
+        },
+
+        convert_timestamp_to_human_time : function(timestamp){
+
+            var date = new Date(parseInt(timestamp, 10)*1000);
+
+            var hours = date.getHours();
+
+            if (hours > 11){
+                var ap_mark = 'PM';
+            }else{
+                ap_mark = 'AM';
+            }
+
+            var ap_hours = hours % 12 || 12;
+
+            if (hours<10){
+                hours = '0'+hours;
+            }
+
+            if (ap_hours<10){
+                ap_hours = '0'+ap_hours;
+            }
+
+            var minutes = date.getMinutes();
+            if (minutes<10){
+                minutes = '0'+minutes;
+            }
+
+            return get_word('time_format').format(hours, minutes, ap_hours, ap_mark);
         },
 
         format_XX : function(value){

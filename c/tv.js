@@ -9,7 +9,7 @@
         
         this.layer_name = 'tv';
         
-        this.row_blocks  = ['number', 'logo', 'now_playing', 'fav', 'lock', 'archive', 'pvr', 'local_time_shift', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
+        this.row_blocks  = ['number', 'logo', 'now_playing', 'fav', 'lock', 'scrambled', 'archive', 'pvr', 'local_time_shift', 'name', 'quality_high', 'quality_medium', 'quality_low','cur_playing'];
 
         this.load_params = {
             'type'   : 'itv',
@@ -1454,22 +1454,26 @@
                 _debug('tv.short_epg_loader.load');
                 
                 if (this.parent && this.parent.data_items && this.parent.cur_row >= 0){
-                
-                    stb.load(
-                        {
-                            "type"   : "itv",
-                            "action" : "get_short_epg",
-                            "ch_id"  : this.parent.data_items[this.parent.cur_row].id
-                        },
-                        
-                        function(result){
-                            _debug('tv.short_epg_loader.load callback');
-                            
-                            this.fill(result);
-                        },
-                        
-                        this
-                    )
+
+                    if (this.parent.data_items[this.parent.cur_row].type == 'dvb'){
+                        this.fill(stb.epg_loader.get_curr_and_next(this.parent.data_items[this.parent.cur_row].id, false, 5));
+                    }else{
+                        stb.load(
+                            {
+                                "type"   : "itv",
+                                "action" : "get_short_epg",
+                                "ch_id"  : this.parent.data_items[this.parent.cur_row].id
+                            },
+
+                            function(result){
+                                _debug('tv.short_epg_loader.load callback');
+
+                                this.fill(result);
+                            },
+
+                            this
+                        )
+                    }
                 }
             },
             

@@ -216,6 +216,52 @@
             stb.player.play(this.data_items[this.cur_row]);
         };*/
 
+        this.load_data = function(){
+            _debug('epg_simple.load_data');
+
+            if (this.channel.type == 'dvb'){
+
+                if (typeof(dvbManager) === 'undefined' || !module.dvb){
+                    return;
+                }
+
+                var date_parts = this.load_params['date'].split('-');
+
+                var date = new Date();
+                date.setYear(date_parts[0]);
+                date.setMonth(date_parts[1]-1);
+                date.setDate(date_parts[2]);
+                date.setHours(0);
+                date.setMinutes(0);
+                date.setSeconds(0);
+
+                _debug('date', date);
+
+                this.set_passive_row();
+                this.set_total_items(-1);
+
+                var result = module.dvb.get_epg_for_page(this.channel['dvb_id'], date, this.cur_page, this.total_rows);
+
+                this.break_filling_list = false;
+
+                this.result = result;
+                this.total_pages = Math.ceil(result.total_items/this.total_rows);
+
+                if (result.selected_item !=0 || result.cur_page !=0){
+                    this.cur_row  = result.selected_item-1;
+                    this.cur_page = result.cur_page;
+                }else if (this.cur_page == 0){
+                    this.cur_page = 1
+                }
+
+                this.set_total_items(result.total_items);
+
+                this.fill_list(result.data);
+            }else{
+                this.superclass.load_data.call(this);
+            }
+        };
+
         this.play = function(rec_id){
             _debug('epg_simple.play', rec_id);
 
@@ -592,6 +638,8 @@
             
             if (this.epg_list_active){
                 this.set_active_row(this.cur_row);
+            }else{
+                this.set_passive_row();
             }
 
         };

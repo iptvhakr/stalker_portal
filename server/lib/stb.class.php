@@ -602,7 +602,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,AuraHD')));
+        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,MAG254,MAG255,MAG270,MAG275,AuraHD')));
 
         $profile['allowed_stb_types_for_local_recording'] = array_map(function($item){
             return strtolower(trim($item));
@@ -1281,6 +1281,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     private function getDisabledModules(){
 
         return self::getDisabledModulesByUid($this->id);
+    }
+
+    public static function getAvailableModulesByUid($uid){
+
+        return array_values(array_diff(Config::getSafe('all_modules', array()), self::getDisabledModulesByUid($uid)));
     }
 
     public static function getDisabledModulesByUid($uid){

@@ -667,7 +667,30 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $all_user_ids = Itv::getInstance()->getAllUserChannelsIds();
 
+        $dvb_channels = Itv::getInstance()->getDvbChannels();
+        $dvb_ch_idx = null;
+
         $channel = Itv::getChannelById($ch_id);
+
+        if (empty($channel)){
+            foreach ($dvb_channels as $dvb_channel){
+                if ($dvb_channel['id'] == $ch_id){
+                    $channel = $dvb_channel;
+                    break;
+                }
+            }
+
+            for ($i = 0; $i < count($dvb_channels); $i++){
+                if ($dvb_channels[$i]['id'] == $ch_id){
+                    $channel = $dvb_channels[$i];
+                    $dvb_ch_idx = $i;
+                }
+            }
+
+            if ($dvb_ch_idx != null){
+                $dvb_ch_idx++;
+            }
+        }
 
         $total_channels = Itv::getInstance()
                                    ->getChannels()
@@ -675,6 +698,10 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                                    ->in('id', $all_user_ids)
                                    ->get()
                                    ->count();
+
+        $total_iptv_channels = $total_channels;
+
+        $total_channels += count($dvb_channels);
 
         $ch_idx = Itv::getInstance()
                                    ->getChannels()
@@ -684,6 +711,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                                    ->get()
                                    ->count();
 
+        $ch_idx += $dvb_ch_idx;
 
         if ($ch_idx === false){
             $ch_idx = 0;
@@ -710,7 +738,28 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                                    ->get()
                                    ->all();
 
-        //$display_channels_ids = array_map(function($element){return $element['id'];}, $user_channels);
+        $total_iptv_pages = ceil($total_iptv_channels/$page_items);
+
+        if (count($user_channels) < $page_items){
+
+            if ($page == $total_iptv_pages){
+                $dvb_part_length = $page_items - $total_iptv_channels % $page_items;
+            }else{
+                $dvb_part_length = $page_items;
+            }
+
+            if ($page > $total_iptv_pages){
+                $dvb_part_offset = ($page - $total_iptv_pages - 1) * $page_items + ($page_items - ($total_iptv_channels) % $page_items);
+            }else{
+                $dvb_part_offset = 0;
+            }
+
+            if (isset($_REQUEST['p'])){
+                $dvb_channels = array_splice($dvb_channels, $dvb_part_offset, $dvb_part_length);
+            }
+
+            $user_channels = array_merge($user_channels, $dvb_channels);
+        }
 
         $display_channels_ids = array();
 
@@ -730,12 +779,14 @@ class Epg implements \Stalker\Lib\StbApi\Epg
             $channel = $user_channels[array_search($id, $display_channels_ids)];
 
             $result[] = array(
-                              'ch_id'  => $id,
+                              'ch_id'   => $id,
                               //'name'  => Itv::getChannelNameById($id),
-                              'name'   => $channel['name'],
-                              'number' => $channel['number'],
+                              'name'    => $channel['name'],
+                              'number'  => $channel['number'],
+                              'ch_type' => isset($channel['type']) && $channel['type'] == 'dvb' ? 'dvb' : 'iptv',
+                              'dvb_id'  => isset($channel['type']) && $channel['type'] == 'dvb' ? $channel['dvb_id'] : null,
                               'epg_container' => 1,
-                              'epg'    => $epg);
+                              'epg'     => $epg);
         }
 
         $time_marks = array();

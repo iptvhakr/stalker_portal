@@ -315,13 +315,15 @@
             var date_from = new Date(year, month, day, hours, minutes);
             var from = date_from.getFullYear()+'-'+this.format_date(date_from.getMonth()+1)+'-'+this.format_date(date_from.getDate())+' '+this.format_date(date_from.getHours())+':'+this.format_date(date_from.getMinutes())+':00';
             _debug('from', from);
+            this.load_params['from_ts'] = date_from.getTime();
             this.load_params['from'] = from;
-            
+
             var date_to = new Date(year, month, day, hours, minutes+90);
             var to = date_to.getFullYear()+'-'+this.format_date(date_to.getMonth()+1)+'-'+this.format_date(date_to.getDate())+' '+this.format_date(date_to.getHours())+':'+this.format_date(date_to.getMinutes())+':00';
             _debug('to', to);
+            this.load_params['to_ts'] = date_to.getTime();
             this.load_params['to'] = to;
-            
+
         };
         
         this.load_data = function(){
@@ -340,9 +342,27 @@
             
             this.superclass.load_data.call(this);
         };
+
+        this.fill_dvb_epg = function(data){
+            _debug('epg.fill_dvb_epg');
+
+            if (!module.dvb){
+                return;
+            }
+
+            for (var i=0; i<data.length; i++){
+                if(data[i].ch_type == 'dvb'){
+                    data[i].epg = module.dvb.get_epg_for_table(data[i].dvb_id, this.load_params['from_ts']/1000, this.load_params['to_ts']/1000);
+                }
+            }
+
+            return data;
+        };
         
         this.fill_list = function(data){
             _debug('epg.fill_list');
+
+            data = this.fill_dvb_epg(data);
             
             this.superclass.fill_list.call(this, data);
             
@@ -564,7 +584,7 @@
                 this.cur_cell_col = this.active_row['epg_cell'].length - 1;
             }else{
                 
-                if (empty(this.active_row['epg_cell'][this.cur_cell_col])){
+                if (this.active_row['epg_cell'] && empty(this.active_row['epg_cell'][this.cur_cell_col])){
                     this.cur_cell_col = this.active_row['epg_cell'].length - 1;
                 }
             }

@@ -216,5 +216,14 @@ var lang = {
     "Open after loading:": "Відобразити після завантаження:",
     "Play in preview only by OK:": "Програвати канали тільки по OK:",
     "Main menu": "Головне меню",
-    "Last TV channel": "Останній ТВ канал"
+    "Last TV channel": "Останній ТВ канал",
+
+    "Start scan" : "Сканувати",
+    "Stop scan" : "Зупинити",
+    "Frequency" : "Частота",
+    "Total found" : "Всього знайдено",
+    "Last found" : "Останній знайдений",
+    "Clear list" : "Очистити список",
+    "Signal type:" : "Тип сигналу:",
+    "Antenna power supply:" : "Включити живлення антени:"
 };

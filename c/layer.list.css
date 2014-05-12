@@ -48,13 +48,17 @@
     margin: 3px 0 0 4px;
 }
 
-.lock_block{
+.lock_block, .scrambled_block{
     width: 19px;
     height: 22px;
-    background-image: url("i/mb_icons.png");
-    background-position: -73px 0px;
+    background: url("i/mb_icons.png") no-repeat  -73px 0;
+    /*background-position: -73px 0px;*/
     float: left;
     margin-top: 3px;
+}
+
+.scrambled_block{
+    background: url("i/mb_icon_scrambled.png") no-repeat;
 }
 
 .name_block, .title_block{
@@ -195,13 +199,17 @@
     float:left;
 }
 
-.active_lock_block{
+.active_lock_block, .active_scrambled_block{
     width: 16px;
     height: 30px;
-    background-image: url("i/mb_icons.png");
-    background-position: -75px -22px;
+    background: url("i/mb_icons.png") no-repeat -75px -22px;
+    /*background-position: -75px -22px;*/
     margin-top: 6px;
     float:left;
+}
+
+.active_scrambled_block{
+    background: url("i/mb_icon_scrambled.png") no-repeat -2px -22px;
 }
 
 .active_name_block, .active_title_block{

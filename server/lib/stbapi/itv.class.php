@@ -33,4 +33,6 @@ interface Itv
     public function getAllChannels();
 
     public function getFavIds();
+
+    public function saveDvbChannels();
 }

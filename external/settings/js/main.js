@@ -29,6 +29,16 @@ var load_fl=false;
    }
 })();
 
+var stbEvent = {
+    event : 0,
+    onBroadcastMessage : function(e){
+        console.log(e);
+    },
+    onMessage : function(e){
+        console.log(e);
+    }
+};
+
 function init_m()
 {
     if(load_fl){
@@ -44,19 +54,29 @@ function init_m()
         "net":[t('Network'),"ico_net","ico_net_act","ico_l_net","g_nets.html"],
         "advanced":[t('Advanced settings'),"ico_advset","ico_advset_act","ico_l_advset","g_adv.html"],
         "time_shift":[t('Local TimeShift'),"ico_reload","ico_reload_act","ico_l_reload","g_ts.html"],
+        "dvb":[t('DVB'),"ico_reboot","ico_reboot_act","ico_l_reboot","g_dvb.html"],
         "servers":[t('Servers'),"ico_server","ico_server_act","ico_l_server","g_serv.html"],
         "dev_info":[t('Device info'),"ico_sysinfo","ico_sysinfo_act","ico_l_sysinfo","g_dev.html"],
         "reload":[t('Reload portal'),"ico_exit","ico_exit_act","ico_l_exit",2],
         "internal_portal":[t('Go to the inner portal'),"ico_switch","ico_switch_act","ico_l_switch",1],
         "reboot":[t('Reboot device'),"ico_reboot","ico_reboot_act","ico_l_reboot",3]
+    };
+
+    if (!_GET['dvb_supported_scan_types']){
+        delete punktiT.dvb;
     }
+
     punkti=[];
     var cache=[];
     for(var i=0;i<prof.modules.length;i++){
-        punkti[i]=punktiT[prof.modules[i].name];
-        cache[i]=new Image();
-        cache[i].src="style/"+parent.put+"/"+punkti[i][1]+'.png';
-        cache[i].src="style/"+parent.put+"/"+punkti[i][2]+'.png';
+        if (!_GET['dvb_supported_scan_types'] && prof.modules[i].name == 'dvb'){
+            continue;
+        }
+        var idx = punkti.length;
+        punkti[idx]=punktiT[prof.modules[i].name];
+        cache[idx]=new Image();
+        cache[idx].src="style/"+parent.put+"/"+punkti[idx][1]+'.png';
+        cache[idx].src="style/"+parent.put+"/"+punkti[idx][2]+'.png';
     }    
     //punkti[-1]=[t('default'),"ico_empty","ico_empty_act",""];
     kol=punkti.length;

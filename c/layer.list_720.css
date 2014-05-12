@@ -47,13 +47,17 @@
     margin: 4px 0 0 2px;
 }
 
-.lock_block{
+.lock_block, .scrambled_block{
     width: 19px;
     height: 25px;
     background: url("i_720/mb_icons.png") no-repeat -93px 0;
     /*background-position: -93px 0;*/
     float: left;
     margin: 4px 0 0 2px;
+}
+
+.scrambled_block{
+    background: url("i_720/mb_icon_scrambled.png") no-repeat;
 }
 
 .name_block, .title_block{
@@ -191,13 +195,17 @@
     float: left;
 }
 
-.active_lock_block{
+.active_lock_block, .active_scrambled_block{
     width: 16px;
     height: 30px;
     background: url("i_720/mb_icons.png") no-repeat -95px -32px;
     /*background-position: -95px -32px;*/
     margin: 7px 0 0 2px;
     float: left;
+}
+
+.active_scrambled_block{
+    background: url("i_720/mb_icon_scrambled.png") no-repeat -2px -31px;
 }
 
 .active_name_block, .active_title_block{

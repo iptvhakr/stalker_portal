@@ -235,8 +235,40 @@ player.prototype.init = function(){
                 if (params.hasOwnProperty("play_in_preview_by_ok")){
                     stb.user.play_in_preview_only_by_ok = stb.profile.play_in_preview_only_by_ok = params.play_in_preview_by_ok;
                 }
+
+                if (params.hasOwnProperty("dvb_type") && module.dvb){
+                    module.dvb.set_scan_type(params.dvb_type);
+                }
+
+                if (params.hasOwnProperty("dvb_antenna_power") && module.dvb){
+                    module.dvb.set_antenna_power(params.dvb_antenna_power);
+                }
+
+                if (params.hasOwnProperty("start_dvb_scan") && module.dvb){
+                    module.dvb.scan(params.dvb_type);
+                }
+
+                if (params.hasOwnProperty("stop_dvb_scan") && module.dvb){
+                    module.dvb.stop_scan();
+                }
+
+                if (params.hasOwnProperty("update_dvb_channels") && module.dvb){
+                    module.dvb.init_channels();
+                }
+
+                if (params.hasOwnProperty("clear_dvb_channels") && module.dvb){
+                    module.dvb.clear_dvb_channels();
+                }
             }
-        }
+        };
+
+        stbEvent.onBroadcastMessage = function(win_id, msg){
+            _debug('stbEvent.onBroadcastMessage', win_id, msg);
+        };
+
+        stbEvent.onMessage = function(win_id, msg){
+            _debug('stbEvent.onMessage', win_id, msg);
+        };
 
     }catch(e){
         _debug(e);
@@ -1391,6 +1423,33 @@ player.prototype.event_callback = function(event, params){
 
             break;
         }
+        case 40: // Scanning DVB Channel in progress (STB_EVENT_DVB_SCAN_PROGRESS)
+        {
+            _debug('params', params);
+            module.dvb && module.dvb.on_scan_result("progress", params);
+            break;
+        }
+        case 41: // Scanning DVB Channel found (STB_EVENT_DVB_SCAN_FOUND)
+        {
+            _debug('params', params);
+            module.dvb && module.dvb.on_scan_result("found", params);
+            break;
+        }
+        case 42: // DVB EPG update (STB_EVENT_DVB_EPG_UPDATE)
+        {
+            _debug('params', params);
+
+            params = JSON.parse(params) || [];
+
+            module.dvb && module.dvb.update_epg(params.id);
+
+            break;
+        }
+        case 43: // Antena power off
+        {
+            _debug('params', params);
+            break;
+        }
         case 129: // Stream losses
         {
             if (this.is_tv && stb.profile['enable_stream_losses_logging']){
@@ -1705,7 +1764,7 @@ player.prototype.define_media_type = function(cmd){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
+        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke'){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -2590,6 +2649,32 @@ player.prototype.show_info = function(item, direct_call){
 
             }else if (item.hasOwnProperty('error') && item.error){
                 this.info.epg.innerHTML = '<span style="color:#ffb0b0">' + get_word('error_channel_'+item.error) + '</span>';
+            }else if (item.type && item.type == 'dvb' && typeof(dvbManager) !== 'undefined'){
+
+                epg = dvbManager.GetEPGBrief(item.dvb_id);
+                _debug('epg', epg);
+
+                try{
+                    epg = JSON.parse(epg);
+                    epg = epg.events || [];
+                }catch(e){
+                    _debug(e);
+                    epg = [];
+                }
+
+                epg = epg.slice(0, 2);
+
+                if (epg.length > 0){
+                    this.info.epg.innerHTML = epg.reduce(function(prev, program){
+
+                        return prev
+                            + stb.clock.convert_timestamp_to_human_time(program.start)
+                            + ' ' + program.name + '<br>';
+                    }, '');
+                }else{
+                    this.info.epg.innerHTML = '';
+                }
+
             }else{
 
                 var epg = stb.epg_loader.get_curr_and_next(item.id);
