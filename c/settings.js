@@ -30,7 +30,7 @@
             if (connection_problem && connection_problem.on){
                 stb.notice.show(get_word('settings_unavailable'));
             }else{
-                var url = "http://" + stb.portal_ip +  "/" + stb.portal_path + "/external/settings/index.html?ajax_loader=" + stb.ajax_loader;
+                var url = window.location.protocol+"//" + stb.portal_ip +  "/" + stb.portal_path + "/external/settings/index.html?ajax_loader=" + stb.ajax_loader;
                 url += '&language=' + stb.stb_lang;
                 url += '&token=' + stb.access_token;
                 url += '&pri_audio_lang=' + stb.user['pri_audio_lang'];
