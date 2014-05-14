@@ -72,29 +72,47 @@
             var ch_id      = this.get_ch_id();
             var program_id = this.get_item().id;
             var program_real_id = this.get_item().real_id;
+            var program_name = this.get_item().name;
+            var program_time = this.get_item().t_time;
             var fire_ts    = this.get_item().start_timestamp;
+            var channel    = this.get_channel();
             
             _debug('ch_id', ch_id);
             _debug('program_id', program_id);
             _debug('program_real_id', program_real_id);
             _debug('fire_ts', fire_ts);
+            _debug('channel', channel);
             
             stb.load(
                 {
                     "type"        : "tvreminder",
                     "action"      : "add",
                     "ch_id"       : ch_id,
-                    "program_id"  : program_real_id
+                    "program_id"  : program_real_id,
+                    "fire_ts"     : fire_ts,
+                    "program_name" : channel.type == 'dvb' ? encodeURIComponent(program_name) : ''
                 },
                 
-                function(result){
-                    _debug('epg.reminder.add result', result);
-                    
-                    if (empty(result)){
+                function(memo){
+                    _debug('epg.reminder.add result', memo);
+
+                    if (channel.type == 'dvb'){
+
+                        memo = {
+                            fire_ts     : fire_ts,
+                            t_fire_time : program_time,
+                            itv_name    : channel.name,
+                            ch_id       : ch_id,
+                            program_name  : program_name,
+                            tv_program_id : program_id,
+                            tv_program_real_id : program_real_id
+                        };
+
+                    }else if (empty(memo)){
                         return;
                     }
-                    
-                    var memo = result;
+
+                    _debug('memo', memo);
                     
                     var timestamp = (new Date().getTime())/1000;
                     
@@ -230,6 +248,12 @@
             _debug('epg_reminder.get_ch_id');
             
             return this.parent.data_items[this.parent.cur_row].ch_id;
+        },
+
+        get_channel : function(){
+            _debug('epg_reminder.get_channel');
+
+            return this.parent.channel;
         },
         
         get_item : function(){

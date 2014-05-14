@@ -133,7 +133,7 @@
         },
 
         get_epg_for_page : function(dvb_ch_id, date, page_number, items_per_page){
-            _debug('dvb.get_epg', dvb_ch_id, date, page_number, items_per_page);
+            _debug('dvb.get_epg_for_page', dvb_ch_id, date, page_number, items_per_page);
 
             if (page_number == 0){
                 var default_selected = true;
@@ -158,38 +158,45 @@
 
             var epg = [];
 
-            if (!stb.epg_loader.epg[ch_id]){
-                return epg;
-            }
+            if (stb.epg_loader.epg[ch_id]){
 
-            var length = stb.epg_loader.epg[ch_id].length;
+                var length = stb.epg_loader.epg[ch_id].length;
 
-            _debug('from_ts', from_ts);
-            _debug('to_ts', to_ts);
-            _debug('epg length', length);
+                _debug('from_ts', from_ts);
+                _debug('to_ts', to_ts);
+                _debug('epg length', length);
 
-            var selected_item_idx = 0;
+                var selected_item_idx = 0;
 
-            for (var i = 0; i<length; i++){
+                var memo = module.epg_reminder && module.epg_reminder.memos || [];
 
-                if (stb.epg_loader.epg[ch_id][i].start_timestamp < from_ts){
-                    continue;
+                for (var i = 0; i<length; i++){
+
+                    if (stb.epg_loader.epg[ch_id][i].start_timestamp < from_ts){
+                        continue;
+                    }
+
+                    if (stb.epg_loader.epg[ch_id][i].start_timestamp > to_ts){
+                        _debug('break', i);
+                        break;
+                    }
+
+                    if (default_selected && stb.epg_loader.epg[ch_id][i].start_timestamp < now_ts && stb.epg_loader.epg[ch_id][i].stop_timestamp > now_ts){
+                        selected_item_idx = epg.length;
+                    }
+
+                    var idx = epg.length;
+
+                    epg[idx] = stb.epg_loader.epg[ch_id][i];
+
+                    epg[idx].open = now_ts > stb.epg_loader.epg[ch_id][i].start_timestamp ? 0 : 1;
+
+                    if (epg[idx].open){
+                        var memo_idx = memo.getIdxByVal('tv_program_real_id', epg[idx].real_id);
+
+                        epg[idx].mark_memo = memo_idx !== null ? 1 : 0;
+                    }
                 }
-
-                if (stb.epg_loader.epg[ch_id][i].start_timestamp > to_ts){
-                    _debug('break', i);
-                    break;
-                }
-
-                if (default_selected && stb.epg_loader.epg[ch_id][i].start_timestamp < now_ts && stb.epg_loader.epg[ch_id][i].stop_timestamp > now_ts){
-                    selected_item_idx = epg.length;
-                }
-
-                var idx = epg.length;
-
-                epg[idx] = stb.epg_loader.epg[ch_id][i];
-
-                epg[idx].open = now_ts > stb.epg_loader.epg[ch_id][i].start_timestamp ? 0 : 1;
             }
 
             _debug('epg.length', epg.length);
