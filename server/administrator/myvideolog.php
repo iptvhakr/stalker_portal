@@ -75,7 +75,7 @@ a:hover{
     <tr>
         <td>
            <form>
-               <input type="text" name="search" value="<?= !empty($_GET['search']) ? $_GET['search'] : '' ?>"><input type="submit" value="<?= _('Search')?>">
+               <input type="text" name="search" value="<?= !empty($_GET['search']) ? $_GET['search'] : '' ?>"><input type="submit" value="<?= htmlspecialchars(_('Search'), ENT_QUOTES)?>">
            </form>
         </td>
     </tr>

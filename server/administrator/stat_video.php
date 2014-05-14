@@ -167,7 +167,7 @@ $video = Mysql::getInstance()->query($query);
 <tr>
 <td>
 <form action="" method="GET">
-<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by movie title')?></font>
+<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= htmlspecialchars(_('Search'), ENT_QUOTES)?>">&nbsp;<font color="Gray"><?= _('search by movie title')?></font>
 </form>
 </td>
 </tr>

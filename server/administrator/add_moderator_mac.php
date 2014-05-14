@@ -241,7 +241,7 @@ function save(){
            <td>
            </td>
            <td>
-            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_moderator_mac.php'">
+            <input type="button" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>" onclick="save()">&nbsp;<input type="button" value="<?= htmlspecialchars(_('New'), ENT_QUOTES)?>" onclick="document.location='add_moderator_mac.php'">
            </td>
         </tr>
     </table>

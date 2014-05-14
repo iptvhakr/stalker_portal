@@ -184,7 +184,7 @@ a:hover{
 </tr>
 <tr>
     <td width="100%" align="left" valign="bottom">
-        <a href="index.php"><< <?= _('Back')?></a> | <a href="master_log.php"><?= _('Logs')?></a> | <a href="?reset_all_cache=1" onclick="if(confirm('<?= _('Are you sure you want to reset a cache?')?>')){return true}else{return false}"><?= _('Clear cache')?></a> | <a href="cache_refresh.php" onclick="if(confirm('<?= _('Are you sure you want to update a cache? This operation will take some time.')?>')){return true}else{return false}"><?= _('Refresh cache')?></a> | <a href="unique_video.php"><?= _('Unique movies')?></a> | <a href="video_search.php"><?= _('Search in storages')?></a>
+        <a href="index.php"><< <?= _('Back')?></a> | <a href="master_log.php"><?= _('Logs')?></a> | <a href="?reset_all_cache=1" onclick="if(confirm('<?= htmlspecialchars(_('Are you sure you want to reset a cache?'), ENT_QUOTES)?>')){return true}else{return false}"><?= _('Clear cache')?></a> | <a href="cache_refresh.php" onclick="if(confirm('<?= htmlspecialchars(_('Are you sure you want to update a cache? This operation will take some time.'), ENT_QUOTES)?>')){return true}else{return false}"><?= _('Refresh cache')?></a> | <a href="unique_video.php"><?= _('Unique movies')?></a> | <a href="video_search.php"><?= _('Search in storages')?></a>
     </td>
 </tr>
 <tr>

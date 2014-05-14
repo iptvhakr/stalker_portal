@@ -343,11 +343,11 @@ if (empty($packages)){
             </tr>
             <tr>
                 <td>pass:</td>
-                <td>[<?echo $parent_password?>] <a href="#" onclick="if(confirm('<?= _('Reset to default password?')?>')){document.location='profile.php?parent_password=default&id=<?echo $id?>'}"><?= _('Reset')?></a></td>
+                <td>[<?echo $parent_password?>] <a href="#" onclick="if(confirm('<?= htmlspecialchars(_('Reset to default password?'), ENT_QUOTES)?>')){document.location='profile.php?parent_password=default&id=<?echo $id?>'}"><?= htmlspecialchars(_('Reset'), ENT_QUOTES)?></a></td>
             </tr>
             <tr>
                 <td><?= _('favorite tv')?>:</td>
-                <td>[<? printf(_('%s channels'), $fav_ch_count)?>] <a href="#" onclick="if(confirm('<?= _('Reset favorite TV channels? The channels will be reset only if immediately restart the stb!')?>')){document.location='profile.php?fav_itv=default&id=<?echo $id?>'}"><?= _('Reset')?></a></td>
+                <td>[<? printf(_('%s channels'), $fav_ch_count)?>] <a href="#" onclick="if(confirm('<?= htmlspecialchars(_('Reset favorite TV channels? The channels will be reset only if immediately restart the stb!'), ENT_QUOTES)?>')){document.location='profile.php?fav_itv=default&id=<?echo $id?>'}"><?= _('Reset')?></a></td>
             </tr>
             <tr>
                 <td>version:</td>
@@ -471,7 +471,7 @@ if (empty($packages)){
 
                             ?>
                         </select>
-                        <input type="submit" name="change_tariff_plan" value="<?= _('Change')?>">
+                        <input type="submit" name="change_tariff_plan" value="<?= htmlspecialchars(_('Change'), ENT_QUOTES)?>">
                     </form>
                 </td>
             </tr>

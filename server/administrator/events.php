@@ -357,7 +357,7 @@ function fill_msg(){
         MAC:
     </td>
     <td>
-        <input type="text" name="mac" id="mac" value="<? echo @$mac?>">&nbsp;<input type="button" value="<?= _('Load active events')?>" onclick="load_events_by_mac()">
+        <input type="text" name="mac" id="mac" value="<? echo @$mac?>">&nbsp;<input type="button" value="<?= htmlspecialchars(_('Load active events'), ENT_QUOTES)?>" onclick="load_events_by_mac()">
     </td>
 </tr>
 <tr id="user_list_row" style="display:none">
@@ -448,7 +448,7 @@ function fill_msg(){
 <tr>
     <td align="left"></td>
     <td>
-        <input type="submit" id="submit_button" disabled="disabled" value="<?= _('Save')?>">
+        <input type="submit" id="submit_button" disabled="disabled" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>">
     </td>
 </tr>
 </form>

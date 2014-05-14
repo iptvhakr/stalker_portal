@@ -391,7 +391,7 @@ function save_epg(){
                 <? echo construct_DD()?>
            </select>
             <!--input id="cmd" type="text" value="<?// echo @$cmd ?>"-->&nbsp;
-            <input type="button" value="<?= _('Load EPG')?>" onclick="load_epg()">
+            <input type="button" value="<?= htmlspecialchars(_('Load EPG'), ENT_QUOTES)?>" onclick="load_epg()">
            </td>
         </tr>
         <tr>
@@ -407,7 +407,7 @@ function save_epg(){
            <td>
            </td>
            <td>
-            <input type="submit" value="<?= _('Save')?>" onclick="save_epg()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_epg.php'">
+            <input type="submit" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>" onclick="save_epg()">&nbsp;<input type="button" value="<?= htmlspecialchars(_('New'), ENT_QUOTES)?>" onclick="document.location='add_epg.php'">
            </td>
         </tr>
     </table>

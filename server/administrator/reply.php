@@ -140,7 +140,7 @@ $to = get_moderator_login_by_id($to_id);
 <tr>
     <td></td>
     <td>
-        <input type="submit" value="<?= _('Send')?>">
+        <input type="submit" value="<?= htmlspecialchars(_('Send'), ENT_QUOTES)?>">
     </td>
 </tr>
 

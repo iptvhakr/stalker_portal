@@ -272,7 +272,7 @@ function get_users_count_in_tariff($tariff){
 
         $(function(){
             $('.package-container').packagePicker({
-                optional_title: '<?= _('optional')?>',
+                optional_title: '<?= htmlspecialchars(_('optional'), ENT_QUOTES)?>',
                 packages : <?= json_encode($packages)?>,
                 default_packages : <?= json_encode($default_packages)?>
             });

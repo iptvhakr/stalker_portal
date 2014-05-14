@@ -233,7 +233,7 @@ a:hover{
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit" value="<?= _('Save')?>"/></td>
+                <td><input type="submit" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>"/></td>
             </tr>
         </table>
     </form>

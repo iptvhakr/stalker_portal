@@ -392,7 +392,7 @@ function load_log(){
         <select name="dd" id="dd">
             <? echo construct_DD()?>
         </select>
-        &nbsp;<input type="button" value="<?= _('Go')?>" onclick="load_log()">
+        &nbsp;<input type="button" value="<?= htmlspecialchars(_('Go'), ENT_QUOTES)?>" onclick="load_log()">
         <td>
     </tr>
 </table>

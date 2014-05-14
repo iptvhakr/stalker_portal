@@ -495,7 +495,7 @@ $id = intval(@$_GET['id']);
 </tr>
 <tr>
     <td></td>
-    <td><input type="submit" value="<?= _('Import')?>"></td>
+    <td><input type="submit" value="<?= htmlspecialchars(_('Import'), ENT_QUOTES)?>"></td>
 </tr>
 <table>
 </form>

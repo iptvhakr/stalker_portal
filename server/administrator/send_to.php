@@ -157,7 +157,7 @@ function get_sended_video(){
 <tr>
     <td></td>
     <td>
-        <input type="submit" value="<?= _('Send')?>">
+        <input type="submit" value="<?= htmlspecialchars(_('Send'), ENT_QUOTES)?>">
     </td>
 </tr>
 

@@ -708,9 +708,9 @@ a:hover{
             </tr>
         </table>
 
-        <button href="javascript://" class="add_ch_url"><?=_('add new link')?></button>
+        <button href="javascript://" class="add_ch_url"><?= _('add new link')?></button>
         {{if idx>0}}
-        <button href="javascript://" class="del_ch_url"><?=_('delete')?></button>
+        <button href="javascript://" class="del_ch_url"><?= _('delete')?></button>
         {{/if}}
         <hr>
     </div>
@@ -777,7 +777,7 @@ a:hover{
         });
 
         $('.del_ch_url').live('click', function(event){
-            if (confirm("<?= _('Do you really want to delete this record?')?>")){
+            if (confirm("<?= htmlspecialchars(_('Do you really want to delete this record?'), ENT_QUOTES)?>")){
                 $(this).closest('div').remove();
             }
             return false;
@@ -931,9 +931,9 @@ a:hover{
             });
 
             if (direction < 0 && number_error){
-                alert('<?= _('Channel with same number already exists!')?>');
+                alert('<?= htmlspecialchars(_('Channel with same number already exists!'), ENT_QUOTES)?>');
             }else{
-                if (confirm('<?= _('Shift channel list?')?>')){
+                if (confirm('<?= htmlspecialchars(_('Shift channel list?'), ENT_QUOTES)?>')){
                     window.location = 'add_itv.php?shift='+direction+'&from_num='+from_num;
                 }
             }
@@ -1073,7 +1073,7 @@ while ($arr = $all_channels->next()){
     
     echo "<td class='list' nowrap><a href='?edit=1&id=".$arr['id']."#form'>edit</a>&nbsp;&nbsp;";
     //echo "<a href='?del=1&id=".$arr['id']."' >del</a>&nbsp;&nbsp;";
-    echo "<a href='#' onclick='if(confirm(\""._('Do you really want to delete this record?')."\")){document.location=\"add_itv.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
+    echo "<a href='#' onclick='if(confirm(\"".htmlspecialchars(_('Do you really want to delete this record?'), ENT_QUOTES)."\")){document.location=\"add_itv.php?del=1&id=".$arr['id']."&letter=".@$_GET['letter']."&search=".@$_GET['search']."\"}'>del</a>&nbsp;&nbsp;\n";
     if ($arr['status']){
         echo "<a href='?status=0&id=".$arr['id']."'><font color='Green'>on</font></a>&nbsp;&nbsp;";
     }else{
@@ -1378,10 +1378,10 @@ function delete_logo(id){
                     //set_cat_genres(resp)
                     document.getElementById('logo_block').innerHTML = '';
                 }else{
-                    alert('<?= _('Error deleting a logo')?>');
+                    alert('<?= htmlspecialchars(_('Error deleting a logo'), ENT_QUOTES)?>');
                 }
             }else{
-                alert('<?= _('Error deleting a logo')?>');
+                alert('<?= htmlspecialchars(_('Error deleting a logo'), ENT_QUOTES)?>');
             }
         }
     };
@@ -1689,7 +1689,7 @@ function delete_logo(id){
            <td>
            </td>
            <td>
-            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('Cancel')?>" onclick="document.location='add_itv.php'">
+            <input type="button" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>" onclick="save()">&nbsp;<input type="button" value="<?= htmlspecialchars(_('Cancel'), ENT_QUOTES)?>" onclick="document.location='add_itv.php'">
            </td>
         </tr>
     </table>

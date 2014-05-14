@@ -369,7 +369,7 @@ if (Admin::isPageActionAllowed()){
                 <option value="<?= $key?>"><?= $month?></option>
             <? } ?>
         </select>
-        <input type="submit" value="<?= _('Move to archive')?>" onclick="if(confirm('<?= _('Move to the archive?')?>')){return true}else{return false}">
+        <input type="submit" value="<?= htmlspecialchars(_('Move to archive'), ENT_QUOTES)?>" onclick="if(confirm('<?= _('Move to the archive?')?>')){return true}else{return false}">
         <?}?>
         </td>
     </tr>

@@ -503,7 +503,7 @@ function sort_page(){
     <tr>
         <td>
             <form action="" method="GET">
-            <input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by MAC, IP, login or account number')?></font>
+            <input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= htmlspecialchars(_('Search'), ENT_QUOTES)?>">&nbsp;<font color="Gray"><?= _('search by MAC, IP, login or account number')?></font>
             </form>
         <td>
     </tr>
@@ -555,7 +555,7 @@ function sort_page(){
             <select name="ii" id="ii">
                 <? echo construct_II()?>
             </select>
-            <input type="submit" value="<?= _('Search')?>"> <font color="Gray"><?= _('search inactive users')?></font>
+            <input type="submit" value="<?= htmlspecialchars(_('Search'), ENT_QUOTES)?>"> <font color="Gray"><?= _('search inactive users')?></font>
             </form>
         <td>
     </tr>

@@ -406,7 +406,7 @@ $cur_infoportal = get_cur_infoportal();
 </td>
 <td class="other" width="100">
 <form action="users.php" method="GET">
-<input type="text" name="search" value=""><input type="submit" value="<?= _('Search')?>"><br><font color="Gray"><?= _('search by MAC or IP')?></font>
+<input type="text" name="search" value=""><input type="submit" value="<?= htmlspecialchars(_('Search'), ENT_QUOTES)?>"><br><font color="Gray"><?= _('search by MAC or IP')?></font>
 </form>
 </td>
 

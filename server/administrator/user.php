@@ -174,7 +174,7 @@ if (!empty($_POST)){
                     </tr>
                     <tr>
                         <td></td>
-                        <td><input type="submit" value="<?= _('Add')?>"/></td>
+                        <td><input type="submit" value="<?= htmlspecialchars(_('Add'), ENT_QUOTES)?>"/></td>
                     </tr>
                 </table>
             </form>

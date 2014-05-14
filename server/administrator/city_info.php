@@ -243,7 +243,7 @@ function popup(src){
            <td>
            </td>
            <td>
-            <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='city_info.php'">
+            <input type="button" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>" onclick="save()">&nbsp;<input type="button" value="<?= htmlspecialchars(_('New'), ENT_QUOTES)?>" onclick="document.location='city_info.php'">
            </td>
         </tr>
     </table>

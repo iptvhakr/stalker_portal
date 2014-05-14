@@ -186,7 +186,7 @@ h3{
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="<?= _('Save')?>"/></td>
+                    <td><input type="submit" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>"/></td>
                 </tr>
             </table>
         </form>
@@ -223,7 +223,7 @@ h3{
 
             var item = $(this);
 
-            if (confirm('<?= _('Do you really want to delete this item?')?>')){
+            if (confirm('<?= htmlspecialchars(_('Do you really want to delete this item?'), ENT_QUOTES)?>')){
                 if (item.attr('href').indexOf('&id=0') != -1){
                     item.parent().parent().remove();
                     updateDisabledStbTypes();
@@ -300,7 +300,7 @@ h3{
 
         </div>
 
-        <input type="button" value="<?= _('Add')?>" class="add-block">
+        <input type="button" value="<?= htmlspecialchars(_('Add'), ENT_QUOTES)?>" class="add-block">
     </td>
 </tr>
 </table>

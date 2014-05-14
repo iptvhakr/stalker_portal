@@ -98,10 +98,10 @@ function doLoad(get, data){
                 
                 if (get == 'startmd5sum'){
                     if (req.responseJS.error){
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('error')?>';
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= htmlspecialchars(_('error'), ENT_QUOTES)?>';
                         alert(req.responseJS.error);
                     }else{
-                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= _('counting')?>';
+                        document.getElementById('md5sum_link_'+data.media_name+'_'+data.storage_name).innerHTML = '<?= htmlspecialchars(_('counting'), ENT_QUOTES)?>';
                     }
                 }
                 
@@ -131,7 +131,7 @@ function doLoad(get, data){
                 
             }else{
                 if (get == 'vclub_info'){
-                    alert('<?= _('Error: The file or directory may contain invalid characters')?>')
+                    alert('<?= htmlspecialchars(_('Error: The file or directory may contain invalid characters'), ENT_QUOTES)?>')
                 }
             }
         }
@@ -163,9 +163,9 @@ function display_info(arr, id){
         
         var md5sum = '';
         var table  = '<tr>';
-        table += '<td class="list2" width="70"><?= _('Server')?></td>';
-        table += '<td class="list2" width="200"><?= _('Folder')?></td>';
-        table += '<td class="list2" width="60"><?= _('Series')?></td>';
+        table += '<td class="list2" width="70"><?= htmlspecialchars(_('Server'), ENT_QUOTES)?></td>';
+        table += '<td class="list2" width="200"><?= htmlspecialchars(_('Folder'), ENT_QUOTES)?></td>';
+        table += '<td class="list2" width="60"><?= htmlspecialchars(_('Series'), ENT_QUOTES)?></td>';
         table += '<td class="list2">&nbsp;</td>';
         table += '</tr>';
         
@@ -173,12 +173,12 @@ function display_info(arr, id){
             var md5btn_txt = '';
             if (arr[i]['files'][0]['status'] == 'done'){
                 if (arr[i]['files'][0]['md5'] != ''){
-                    md5btn_txt = '<?= _('check')?>'
+                    md5btn_txt = '<?= htmlspecialchars(_('check'), ENT_QUOTES)?>'
                 }else{
-                    md5btn_txt = '<?= _('count md5 sum')?>'
+                    md5btn_txt = '<?= htmlspecialchars(_('count md5 sum'), ENT_QUOTES)?>'
                 }
             }else{
-                md5btn_txt = '<?= _('counting')?>'
+                md5btn_txt = '<?= htmlspecialchars(_('counting'), ENT_QUOTES)?>'
             }
             table +='<tr>';
                  table +='<td class="list2"><b>'+arr[i]['storage_name']+'</b></td>';
@@ -195,7 +195,7 @@ function display_info(arr, id){
                 if(arr[i]['files'][j]['status'] == 'done'){
                     md5sum = arr[i]['files'][j]['md5'];
                 }else{
-                    md5sum = '<?= _('counting')?>...';
+                    md5sum = '<?= htmlspecialchars(_('counting'), ENT_QUOTES)?>...';
                 }
                 
                 table +='<td nowrap width="100%" align="right"><sub><b>'+arr[i]['files'][j]['name']+'</b> '+md5sum+'</sub></td>';
@@ -224,11 +224,11 @@ function display_info(arr, id){
 function md5sum(obj, status, media_name, storage_name){
     if (can_md5dum){
         if (status == 'done'){
-            obj.innerHTML = '<?= _('waiting...')?>'
+            obj.innerHTML = '<?= htmlspecialchars(_('waiting...'), ENT_QUOTES)?>'
             doLoad('startmd5sum',{'media_name':media_name, 'storage_name':storage_name})
         }
     }else{
-        alert('<?= _('You are not authorized for this action')?>')
+        alert('<?= htmlspecialchars(_('You are not authorized for this action'), ENT_QUOTES)?>')
     }
 }
 
@@ -352,7 +352,7 @@ function md5sum(obj, status, media_name, storage_name){
     </tr>
     <tr>
         <td colspan="2">
-            <input type="submit" value="<?= _('Search')?>" name="search" />
+            <input type="submit" value="<?= htmlspecialchars(_('Search'), ENT_QUOTES)?>" name="search" />
         </td>
     </tr>
 </table>

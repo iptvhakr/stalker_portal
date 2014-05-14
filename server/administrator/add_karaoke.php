@@ -388,7 +388,7 @@ $all_karaoke = Mysql::getInstance()->query("select karaoke.*,administrators.logi
 <tr>
 <td>
 <form action="" method="GET">
-<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= _('Search')?>">&nbsp;<font color="Gray"><?= _('search by clip name')?></font>
+<input type="text" name="search" value="<? echo $search ?>"><input type="submit" value="<?= htmlspecialchars(_('Search'), ENT_QUOTES)?>">&nbsp;<font color="Gray"><?= _('search by clip name')?></font>
 </form>
 <td>
 </tr>
@@ -665,8 +665,8 @@ function display_info(arr, id){
         
         
         table  = '<tr>'
-        table += '<td class="list2" width="70"><?= _('Server')?></td>'
-        table += '<td class="list2" width="70"><?= _('File')?></td>'
+        table += '<td class="list2" width="70"><?= htmlspecialchars(_('Server'), ENT_QUOTES)?></td>'
+        table += '<td class="list2" width="70"><?= htmlspecialchars(_('File'), ENT_QUOTES)?></td>'
         table += '</tr>'
         
         for (i=0; i<arr.length; i++){
@@ -706,7 +706,7 @@ function doLoad(get, data){
                 
             }else{
                 if (get == 'karaoke_info'){
-                    alert('<?= _('Error: The file or directory may contain invalid characters')?>')
+                    alert('<?= htmlspecialchars(_('Error: The file or directory may contain invalid characters'), ENT_QUOTES)?>')
                 }
             }
         }
@@ -840,7 +840,7 @@ function check_protocol(){
            <td>
            </td>
            <td>
-           <input type="button" value="<?= _('Save')?>" onclick="save()">&nbsp;<input type="button" value="<?= _('New')?>" onclick="document.location='add_karaoke.php'">
+           <input type="button" value="<?= htmlspecialchars(_('Save'), ENT_QUOTES)?>" onclick="save()">&nbsp;<input type="button" value="<?= htmlspecialchars(_('New'), ENT_QUOTES)?>" onclick="document.location='add_karaoke.php'">
            </td>
         </tr>
         <tr>
