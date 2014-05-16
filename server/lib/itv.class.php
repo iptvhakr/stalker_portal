@@ -590,6 +590,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $genres = $genres_query->get()->all();
 
+        if (in_array('dvb', stb::getAvailableModulesByUid($this->stb->id))){
+            array_unshift($genres, array('id' => 'dvb', 'title' => _('DVB')));
+        }
+
         array_unshift($genres, array('id' => '*', 'title' => $this->all_title));
 
         $genres = array_map(function($item){
@@ -616,7 +620,11 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $last_id = $this->getLastId();
         }
 
-        $dvb_channels = $this->getDvbChannels();
+        if (empty($_REQUEST['genre']) || $_REQUEST['genre'] == '*' || $_REQUEST['genre'] == 'dvb'){
+            $dvb_channels = $this->getDvbChannels();
+        }else{
+            $dvb_channels = array();
+        }
 
         $tv_number = $this->db->from('itv')->where(array('id' => $last_id))->get()->first('number');
 
@@ -885,11 +893,11 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $total_iptv_channels = (int) $this->response['total_items'];
 
-        if (@$_REQUEST['sortby'] != 'name'){
+        if (@$_REQUEST['sortby'] != 'name' && (empty($_REQUEST['genre']) || $_REQUEST['genre'] == '*' || $_REQUEST['genre'] == 'dvb')){
             $this->response['total_items'] += count($dvb_channels);
         }
 
-        if (((count($this->response['data']) < self::max_page_items) && !empty($dvb_channels) || !isset($_REQUEST['p'])) && @$_REQUEST['sortby'] != 'name'){
+        if (((count($this->response['data']) < self::max_page_items) && !empty($dvb_channels) || !isset($_REQUEST['p'])) && @$_REQUEST['sortby'] != 'name' && (empty($_REQUEST['genre']) || $_REQUEST['genre'] == '*' || $_REQUEST['genre'] == 'dvb')){
 
             if (!empty($_REQUEST['fav'])){
                 $dvb_channels = array_values(array_filter($dvb_channels, function($channel) use ($fav){
@@ -905,7 +913,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 $dvb_part_length = self::max_page_items;
             }
 
-            if ($this->page > $total_iptv_pages-1){
+            if (!empty($_REQUEST['genre']) && $_REQUEST['genre'] == 'dvb'){
+                $dvb_part_offset = $this->page * self::max_page_items;
+            }elseif($this->page > $total_iptv_pages-1){
                 $dvb_part_offset = ($this->page - $total_iptv_pages) * self::max_page_items + (self::max_page_items - $total_iptv_channels % self::max_page_items);
             }else{
                 $dvb_part_offset = 0;
@@ -1502,6 +1512,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $channel['dvb_id'] = $channel['id'];
             $channel['id'] = (int) str_replace(array('T', 'C', '_'), '', $channel['id']);
             $channel['scrambled'] = $channel['scrambled'] == 'true' ? 1 : 0;
+            $channel['tv_genre_id'] = 'dvb';
 
             unset($channel['isRadio']);
             unset($channel['symrate']);
