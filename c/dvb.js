@@ -30,6 +30,15 @@
             dvbManager.StartChannelScan(dvb_type);
         },
 
+        manual_scan : function(dvb_type, frequency, bandwidth){
+            _debug('dvb.scan', dvb_type, frequency, bandwidth);
+
+            frequency = parseInt(frequency, 10);
+            bandwidth = parseInt(bandwidth, 10);
+
+            dvbManager.StartChannelScanManual(frequency, frequency, dvb_type, bandwidth, 1000);
+        },
+
         on_scan_result : function(state, e){
             _debug('dvb.on_scan_result', state, e);
 

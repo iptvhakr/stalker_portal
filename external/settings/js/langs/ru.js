@@ -226,5 +226,7 @@ var lang = {
     "Last found" : "Последний найденный",
     "Clear list" : "Очистить список",
     "Signal type:" : "Тип сигнала:",
-    "Antenna power supply:" : "Включить питание антенны:"
+    "Antenna power supply:" : "Включить питание антенны:",
+    "Manual scan" : "Ручное сканирование",
+    "List is cleared" : "Список очищен"
 };

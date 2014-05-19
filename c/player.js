@@ -248,6 +248,10 @@ player.prototype.init = function(){
                     module.dvb.scan(params.dvb_type);
                 }
 
+                if (params.hasOwnProperty("start_manual_dvb_scan") && module.dvb){
+                    module.dvb.manual_scan(params.dvb_type, params.freq, params.band);
+                }
+
                 if (params.hasOwnProperty("stop_dvb_scan") && module.dvb){
                     module.dvb.stop_scan();
                 }
