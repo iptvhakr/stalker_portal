@@ -58,7 +58,7 @@ var _GET = {referer: '', deviceProxy: ''};
 		}
 	}
 	deviceProxy = _GET['proxy'];
-})();
+})();p
 
 
 

@@ -1,0 +1,15 @@
+﻿var main_gallery = "Geben&nbsp;Sie&nbsp;Benutzer&nbsp;ID",
+	main_search = "Suchen",
+	slideshow = "Slideshow",
+	sl_delay = "Slideshow verzug:",
+	page = "Seite",
+	of = "aus",
+	user_header = "Fotogalerie anzeigen ",
+	total = "nur",
+	albums = "Alben",
+	s_res_for = "Suchergebnisse",
+	null_result = "Gefunden",//"No result for this keyword";
+	fotos_text = "Foto:",//Fotos:
+	empty_album = "Kein Foto",
+	sec = 's.',
+	min = 'min.';

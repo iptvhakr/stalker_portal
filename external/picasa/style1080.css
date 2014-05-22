@@ -1,7 +1,3 @@
-body{
-    overflow: hidden;
-}
-
 @charset "utf-8";
 
 .t13w {font-size:13px; color:#FFF;}
@@ -55,20 +51,6 @@ body{
 }
 .enlarge1{
     -webkit-transform:scale(1.3);
-}
-#inform{
-    position: absolute;
-    z-index: 999;
-    font-size: 28px;
-    color: #000;
-    top: 859px;
-    width: 1910px;
-    height: 220px;
-    display: none;
-    text-align: center;
-    background-color: #666666;
-    opacity: 0.7;
-    vertical-align: middle;
 }
 #headerText{width:500px; line-height:28px;}
 #mb_header_pc {position:absolute; width:1905px; height:96px;  top:0px;
@@ -146,6 +128,22 @@ body{
     background:url(img/pc_ico.png) no-repeat;
     background-position:-2px -16px;
     float:left;}
+
+#inform{
+    position: absolute;
+    z-index: 999;
+    font-size: 28px;
+    color: #000;
+    top: 880px;
+    width: 1920px;
+    height: 200px;
+    display: none;
+    text-align: center;
+    background-color: #666666;
+    opacity: 0.7;
+    vertical-align: middle;
+}
+
 
 #mainPage {left:249px; top:270px; width:1524px; position:absolute;}
 #pc_authbox0 {height:201px; width:930px; background:url(img/pc_auth_1920.png) no-repeat; margin-left: 440px; top:0px; position:absolute; /*opacity:1; -webkit-transition:all 500ms linearcubic-bezier(0.5, 1, 0.5, 1)*/; }

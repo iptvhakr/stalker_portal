@@ -1,0 +1,15 @@
+﻿var main_gallery = "Публічна&nbsp;галерея.&nbsp;Введіть&nbsp;ID",
+	main_search = "Пошук",
+	slideshow = "Слайдшоу",
+	sl_delay = "Затримка слайдшоу:",
+	page = "Сторінка ",
+	of = " з ",
+	user_header = "Галерея користувача ",
+	total = "всього",
+	albums = "Альбоми",
+	s_res_for = "Результати пошуку",
+	null_result = "Ничого не знайдено",//"No result for this keyword";
+	fotos_text = "Фото:",//Fotos:
+	empty_album = "Немає фотографій",//'Album is empty'
+	sec = 'сек.',
+	min = 'хв.';

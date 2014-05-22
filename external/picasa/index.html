@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Picasa on MAG</title>
+		<script type="text/javascript">
+			function loader() {
+				try {
+					stb = gSTB;
+				} catch(error) {
+					STB_EMULATION = true;
+				}
+				if (!STB_EMULATION) {
+					stb.EnableVKButton(true);
+					stb.EnableServiceButton(true);
+					continueLoad();
+				}
+			}
+
+			(new Image()).src = "img/footer_bg.png";
+			(new Image()).src = "img/picasaweblogo-ru.png";
+		</script>
+		<script type="text/javascript" src="event.js"></script>
+		<script type="text/javascript" src="main.js"></script>
+		<script type="text/javascript" src="footer.js"></script>
+	</head>
+    <body text="#fff" onload="loader()" onkeypress="getkeydown(event)" onkeyup="getkeyup(event)" style="overflow:hidden;">
+		<img id="bg" src="img/bg.png" style="width: 98%; height: 98%;position: absolute; z-index: -4;">
+
+		<div id="mb_header_pc">
+			<div class="header_pc">
+				<div class="t20g" id="headerText">
+					<span class="pc_category" id="owner"></span>
+				</div>
+			</div>
+		</div>
+
+		<div id="loading" style="width:100%; height:100%; background-color:#000; position:absolute; top:0; left:0; z-index:2010;">
+			<span style="position: absolute; color:#ccc; font-family: 'Ubuntu'; font-size: 36px; width: 100%; text-align: center; bottom: 205px;">Loading...</span>
+		</div>
+
+		<div id="blackScreen" style="background-color: #000; width: 99%; height:98%; position: absolute; z-index: 999; overflow: hidden; display: none;">
+			<div style="left:43%; top:48%; position: absolute; -webkit-border-radius: 4px; border-width: 2px ">
+				<!--<img id="loading_pict" src="img/loading.gif">-->
+				<!--<span>Loading...</span>-->
+			</div>
+		</div>
+
+		<div id="mainPage">
+			<img id="mosaic" src="img/mosaic6.jpg" style="margin-top: 22px;" align="left">
+			<div id="pc_authbox0">
+				<div class="pc_auth_logo"></div>
+				<div class="pc_auth_name"><span id="main_textU" class="text_main bold">Public&nbsp;album.&nbsp;Enter&nbsp;user&nbsp;ID</span></div>
+				<div class="pc_authinput">
+					<div class="left_input input_245">
+						<input name="textfield" id="mainPage_holder_0" type="text" class="pc_input_245" value="">
+						<div class= "right_input"></div>
+					</div>
+				</div>
+			</div>
+			<div id="pc_authbox1">
+				<div class="pc_auth_logo"></div>
+				<div class="pc_auth_name">
+					<span id="main_textS" class="text_main bold">Search</span>
+				</div>
+				<div class="pc_authinput">
+					<div class="left_input input_245">
+						<input name="textfield" type="text" id="mainPage_holder_1" class="pc_input_245" value="">
+						<div class= "right_input"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="pc_main">
+			<div class="t18w" id="album_count">Альбомы</div>
+			<div class="pc_album_box_act" id="album_0">
+				<div class="t17blue box_date" id="tags_20"></div>
+				<div class="t17blue box_qtyph" id="tags_30"></div>
+				<div class="pc_album_box_frame" id="picture_0"></div>
+				<div class="t18blue shadow_w bold" id="tags_00" style="-webkit-text-overflow:clip; overflow: hidden;"></div>
+				<div class="t17w box_date tags"  id="tags_10"></div>
+			</div>
+
+			<div class="pc_album_box_line"></div>
+			<div class="pc_album_box" id="album_1">
+				<div class="t17w box_date" id="tags_21"></div>
+				<div class="t17w box_qtyph" id="tags_31"></div>
+				<div class="pc_album_box_frame" id="picture_1">></div>
+				<div class="t18w shadow_b bold" id="tags_01" style="-webkit-text-overflow:clip; overflow: hidden;"></div>
+				<div class="t17w box_date tags"  id="tags_11"></div>
+			</div>
+
+			<div class="pc_album_box_line"></div>
+			<div class="pc_album_box" id="album_2">
+				<div class="t17w box_date" id="tags_22"></div>
+				<div class="t17w box_qtyph" id="tags_32"></div>
+				<div class="pc_album_box_frame" id="picture_2"></div>
+				<div class="t18w shadow_b bold" id="tags_02" style="-webkit-text-overflow:clip; overflow: hidden;"></div>
+				<div class="t17w box_date tags"  id="tags_12"></div>
+			</div>
+
+			<div class="pc_album_box_line"></div>
+			<div class="pc_album_box" id="album_3">
+				<div class="t17w box_date" id="tags_23"></div>
+				<div class="t17w box_qtyph" id="tags_33"></div>
+				<div class="pc_album_box_frame" id="picture_3"></div>
+				<div class="t18w shadow_b bold" id="tags_03" style="-webkit-text-overflow:clip; overflow: hidden;"></div>
+				<div class="t17w box_date tags"  id="tags_13"></div>
+			</div>
+		</div>
+
+		<div class="pc_pagecount" id="pageIndicator" style="display: none;">
+			<div align="center" id="pageIndCont"></div>
+		</div>
+
+		<div  id="search_form">
+			<div>
+				<img id="selectionSearch" src="img/pc_item.png">
+			</div>
+			<table class="search_form" border="0" style=" table-layout: fixed;">
+				<tr>
+					<td align="center" valign="middle" id="fotoS_00"></td>
+					<td align="center" valign="middle" id="fotoS_01"></td>
+					<td align="center" valign="middle" id="fotoS_02"></td>
+					<td align="center" valign="middle" id="fotoS_03"></td>
+				</tr>
+
+				<tr>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_00" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_01" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_02"  style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_03"  style="vertical-align: middle;"></div></td>
+				</tr>
+
+				<tr>
+					<td align="center" valign="middle" ><div class="text_title" id="subscriptS_20" style="vertical-align: middle;"></div> </td>
+					<td align="center" valign="middle" ><div class="text_title" id="subscriptS_21" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle" ><div class="text_title" id="subscriptS_22" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle" ><div class="text_title" id="subscriptS_23" style="vertical-align: middle;"></div></td>
+				</tr>
+
+				<tr>
+					<td align="center" valign="middle" id="fotoS_10"></td>
+					<td align="center" valign="middle" id="fotoS_11"></td>
+					<td align="center" valign="middle" id="fotoS_12"></td>
+					<td align="center" valign="middle" id="fotoS_13"></td>
+				</tr>
+
+				<tr>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_10" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_11" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_12" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_13" style="vertical-align: middle;"></div></td>
+				</tr>
+
+				<tr>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_30" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_31" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_32" style="vertical-align: middle;"></div></td>
+					<td align="center" valign="middle"><div class="text_title" id="subscriptS_33" style="vertical-align: middle;"></div></td>
+				</tr>
+			</table>
+		</div>
+
+		<div id="pictureBig_0" style="height:556px; width:680px; position: absolute;"></div>
+		<div id="pictureBig_1" style="height:556px; width:680px; position: absolute;"> </div>
+
+
+		<div id="aspectInd"></div>
+		<div id="paused"></div>
+
+		<!--Footer-->
+		<div id="footer">
+			<span class="footer_btn_yt btn_red_yt" id="red_butt"></span>
+			<span class="footer_text" id="red"></span>
+
+			<span class="footer_btn_yt btn_green_yt" id="green_butt"></span>
+			<span class="footer_text" id="green"></span>
+
+			<span class="footer_btn_yt btn_yellow_yt" id="yellow_butt"></span>
+			<span class="footer_text" id="yellow"></span>
+
+			<span class="footer_btn_yt btn_blue_yt" id="blue_butt" style="display: none;"></span>
+			<span class="footer_text" id="blue"></span>
+		</div>
+		<!--End Footer-->
+
+		<!--Alert form-->
+		<div id="alert">
+			<img src="img/alert.png" style="width: 300px; height: 150px; position:absolute;">
+			<div id="alertText" style="padding-left: 70px; padding-top: 70px; position: absolute;z-index: 999; font-size: 18px; color: #000; width: 230px; height: 80px; "></div>
+		</div>
+		<div id="inform"></div>
+	</body>
+</html>
