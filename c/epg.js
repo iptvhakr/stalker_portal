@@ -347,7 +347,7 @@
             _debug('epg.fill_dvb_epg');
 
             if (!module.dvb){
-                return;
+                return data;
             }
 
             for (var i=0; i<data.length; i++){

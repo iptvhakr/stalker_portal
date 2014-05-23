@@ -1,6 +1,6 @@
 (function(){
 
-    if (typeof(dvbManager) === "undefined" || dvbManager.GetSupportedScanTypes().length == 0){
+    if (typeof(dvbManager) === "undefined" || JSON.parse(dvbManager.GetSupportedScanTypes()).length == 0){
         return;
     }
 
