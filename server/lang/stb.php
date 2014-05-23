@@ -514,3 +514,5 @@ $words['settings_unavailable'] = _('Settings section is currently unavailable');
 
 $words['no_dvb_channels_title'] = _('No channels available');
 $words['go_to_dvb_settings'] = _('You can configure DVB channels in the settings menu');
+
+$words['apps_title'] = _('Applications');

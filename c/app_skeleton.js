@@ -1,5 +1,10 @@
 (function(){
 
+    if (!stb.startAplication){
+        loader.next();
+        return;
+    }
+
     var app_name = "App Name";
     var app_id   = "com.app";
     var app_install_url = "";
