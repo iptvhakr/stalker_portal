@@ -677,6 +677,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['external_payment_page_url'] = sprintf(Config::getSafe('external_payment_page_url', ''), $this->getParam('ls'));
 
+        $profile['max_local_recordings'] = Config::getSafe('max_local_recordings', 10);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);

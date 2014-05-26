@@ -625,7 +625,8 @@
     module.pvr_local = new PvrLocal();
 
     if (typeof(pvrManager) != "undefined"){
-        pvrManager.SetMaxRecordingCnt(10);
+        _debug('stb.user[max_local_recordings]', stb.user['max_local_recordings']);
+        pvrManager.SetMaxRecordingCnt(parseInt(stb.user['max_local_recordings'], 10));
         var active_tasks = JSON.parse(pvrManager.GetAllTasks()) || [];
     }else{
         active_tasks = [];
