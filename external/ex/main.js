@@ -39,7 +39,7 @@ ListPage.Info    = new CBase(ListPage);
 
 
 // получение ссылки на место, куда вернуться после закрытия
-var _GET = {referer: '', deviceProxy: ''};
+var _GET = {referer: '', proxy: ''};
 (function get_params () {
 	var get, x, l, i;
 	get = String(window.location);
@@ -58,7 +58,7 @@ var _GET = {referer: '', deviceProxy: ''};
 		}
 	}
 	deviceProxy = _GET['proxy'];
-})();p
+})();
 
 
 
