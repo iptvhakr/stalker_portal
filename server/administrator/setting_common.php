@@ -172,6 +172,10 @@ h3{
                     <td><input type="text" name="image_version_contains" value="${image_version_contains}"/></td>
                 </tr>
                 <tr>
+                    <td><?= _('Required')?> HardwareVersion</td>
+                    <td><input type="text" name="hardware_version_contains" value="${hardware_version_contains}"/></td>
+                </tr>
+                <tr>
                     <td><?= _('Update type')?></td>
                     <td>
                         <select name="update_type">

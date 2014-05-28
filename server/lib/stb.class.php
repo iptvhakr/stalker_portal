@@ -525,7 +525,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'image_version' => isset($_REQUEST['image_version']) ? $_REQUEST['image_version'] : '',
                 'locale'        => $this->locale,
                 'country'       => $country,
-                'verified'      => (int) ($force_auth === false)
+                'verified'      => (int) ($force_auth === false),
+                'hw_version'    => isset($_REQUEST['hw_version']) ? $_REQUEST['hw_version'] : ''
             ),
             array('id' => $this->id)
         );

@@ -501,6 +501,8 @@ function common_xpcom(){
 
             this.version = 'ImageDescription: ' + this.image_desc + '; ImageDate: ' + this.image_date + '; PORTAL version: '+ver+'; API Version: ' + stb.Version();
 
+            this.hw_version = stb.GetDeviceVersionHardware ? stb.GetDeviceVersionHardware() : '';
+
             var mtdparts = stb.RDir('getenv mtdparts').clearnl();
 
             this.num_banks = mtdparts.indexOf('RootFs2') > 0 ? 2 : 1;
@@ -848,7 +850,8 @@ function common_xpcom(){
                 'device_id'        : stb.GetUID ? stb.GetUID() : '',
                 'device_id2'       : stb.GetUID ? (stb.GetUID(this.access_token) == stb.GetUID(this.access_token, this.access_token) ? '' : stb.GetUID('device_id', this.access_token)) : '',
                 'signature'        : stb.GetUID ? stb.GetUID(this.access_token) : '',
-                'auth_second_step' : auth_second_step ? 1 : 0
+                'auth_second_step' : auth_second_step ? 1 : 0,
+                'hw_version'       : this.hw_version
             },
 
             function(result){
@@ -885,6 +888,7 @@ function common_xpcom(){
         _debug('this.image_desc:', this.image_desc);
         _debug('this.image_date:', this.image_date);
         _debug('this.num_banks:', this.num_banks);
+        _debug('this.hw_version:', this.hw_version);
         //_debug('stb.user.image_version:', stb.user['image_version']);
 
         if (this.image_version < 203 && this.image_version != 0){
@@ -912,7 +916,8 @@ function common_xpcom(){
             ) &&
             (
                 (params.image_version_contains == ''     || params.image_version_contains == this.image_version) &&
-                (params.image_description_contains == '' || this.image_desc.indexOf(params.image_description_contains) != -1)
+                (params.image_description_contains == '' || this.image_desc.indexOf(params.image_description_contains) != -1) &&
+                (params.hardware_version_contains == ''  || this.hw_version.indexOf(params.hardware_version_contains) != -1)
             )
            ){
 

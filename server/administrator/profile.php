@@ -353,6 +353,10 @@ if (empty($packages)){
                 <td>version:</td>
                 <td><?= htmlspecialchars($arr['version'])?></td>
             </tr>
+            <tr>
+                <td>hardware:</td>
+                <td><?= htmlspecialchars($arr['hw_version'])?></td>
+            </tr>
         </table>
         </td>
         <td>
