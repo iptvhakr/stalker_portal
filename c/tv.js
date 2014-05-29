@@ -670,7 +670,9 @@
             
             this.superclass.set_short_container.apply(this);
 
-            if (!stb.profile['tv_quality_filter']){
+            if (this.load_params.fav){
+                this.color_buttons.get('blue').enable();
+            }else if (!stb.profile['tv_quality_filter']){
                 this.color_buttons && this.color_buttons.get('blue').disable();
             }else{
                 this.fav_menu && this.fav_menu.disable_by_name("fav_manage");
@@ -1160,14 +1162,14 @@
                 var next_row_data = this.data_items[this.cur_row];
                 var next_number   = next_row_data.number;
                 var next_item_id  = this.data_items[this.cur_row].id;
-                
+
                 _debug('cur_number', cur_number);
                 
                 _debug('next_row_data.number before', next_row_data.number);
                 
                 next_row_data.number = cur_number;
                 cur_row_data.number  = next_number;
-                
+
                 _debug('next_row_data.number after', next_row_data.number);
                 
                 var next_row_fav_idx = stb.player.fav_channels_ids.indexOf(next_item_id);
@@ -1177,6 +1179,22 @@
                 
                 this.data_items[this.cur_row] = cur_row_data;
                 this.data_items[cur_row_num] = next_row_data;
+
+                if (this.data_items[this.cur_row].hasOwnProperty('open') && !this.data_items[this.cur_row].open){
+                    this.map[this.cur_row]['row'].addClass('close');
+                    this.active_row['row'].addClass('close');
+                }else{
+                    this.map[this.cur_row]['row'].removeClass('close');
+                    this.active_row['row'].removeClass('close');
+                }
+
+                if (this.data_items[cur_row_num].hasOwnProperty('open') && !this.data_items[cur_row_num].open){
+                    this.map[cur_row_num]['row'].addClass('close');
+                }else{
+                    this.map[cur_row_num]['row'].removeClass('close');
+                }
+
+                this.active_row['number_block'].innerHTML = next_number;
                                 
                 _debug('stb.player.fav_channels_ids after', stb.player.fav_channels_ids);
                 
@@ -1233,7 +1251,7 @@
         this.switch_fav_manage_mode = function(){
             _debug('tv.switch_fav_manage_mode');
             
-            if (this.load_params.fav != true || this.cur_view != 'wide'){
+            if (this.load_params.fav != true){
                 return;
             }
             
@@ -1243,10 +1261,11 @@
             if (this.fav_manage_mode){
                 stb.player.save_fav_ids();
                 this.active_row['row'].setClass('active_row_bg');
-                
-                /*this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.delClass();
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.delClass();
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.delClass();*/
+
+                if (this.data_items[this.cur_row].hasOwnProperty('open') && !this.data_items[this.cur_row].open){
+                    this.active_row['row'].addClass('close');
+                }
+
                 this.color_buttons.get('red')   .enable();
                 this.color_buttons.get('green') .enable();
                 this.color_buttons.get('yellow').enable();
@@ -1257,10 +1276,10 @@
                 
             }else{
                 this.active_row['row'].setClass('moved_active_row_bg');
-                
-                /*this.color_buttons[this.color_buttons.getIdxByVal('color', 'red')].text_obj.setClass('disable_color_btn_text');
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'green')].text_obj.setClass('disable_color_btn_text');
-                this.color_buttons[this.color_buttons.getIdxByVal('color', 'yellow')].text_obj.setClass('disable_color_btn_text');*/
+
+                if (this.data_items[this.cur_row].hasOwnProperty('open') && !this.data_items[this.cur_row].open){
+                    this.active_row['row'].addClass('close');
+                }
 
                 this.color_buttons.get('red')   .disable();
                 this.color_buttons.get('green') .disable();
@@ -1681,15 +1700,12 @@
                 stb.player.set_fav_status();
                 this.parent.load_params.fav = true;
                 this.parent.load_params.hd = 0;
-                if (this.parent.cur_view == 'wide'){
-                    this.parent.color_buttons.get('blue').enable();
-                }else{
-                    if (!stb.profile['tv_quality_filter']){
-                        this.parent.color_buttons.get('blue').disable();
-                    }else{
-                        this.parent.fav_menu && this.parent.fav_menu.disable_by_name("fav_manage");
-                    }
+
+                this.parent.color_buttons.get('blue').enable();
+                if (stb.profile['tv_quality_filter']){
+                    this.parent.fav_menu && this.parent.fav_menu.disable_by_name("fav_manage");
                 }
+
             }
         }
     ];

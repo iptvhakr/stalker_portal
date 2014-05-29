@@ -152,6 +152,16 @@
     padding: 5px 0 0 13px;
 }
 
+.short_container .moved_active_row_bg{
+    position: absolute;
+    width: 282px;
+    height: 54px;
+    left: 54px;
+    background: url("i_480/mb_table_act06.png") no-repeat;
+    background-position: 0 3px;
+    padding: 10px 0 0 8px;
+}
+
 .middle_container .active_row_bg{
     position: absolute;
     width: 350px;
@@ -227,7 +237,7 @@
     color: #808080 !important;
 }*/
 
-.active_row_bg.close .active_name_block{
+.active_row_bg.close .active_name_block, .moved_active_row_bg.close .active_name_block{
     color: #808080 !important;
 }
 
