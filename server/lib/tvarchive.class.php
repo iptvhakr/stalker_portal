@@ -79,7 +79,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $res['cmd'] .= ' media_len:' . ($stop_timestamp - $start_timestamp);
 
-        $res['download_cmd'] = 'http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
+        $res['download_cmd'] = Config::getSafe('tv_archive_player_solution', 'ffmpeg').' http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
             . '/stalker_portal/storage/get.php?filename=' . $filename
             . '&ch_id=' . $program['ch_id']
             . '&token='.$this->createTemporaryToken()
