@@ -331,7 +331,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
      *
      * @param string $date
      * @param int $itv_id
-     * @return MysqlResult
+     * @return array|null
      */
     private function getProgramIdsForClean($date, $itv_id){
 
@@ -360,6 +360,25 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 ))
                 ->get()
                 ->all('id');
+
+            $last_program = Mysql::getInstance()
+                ->from('epg')
+                ->where(array(
+                     'ch_id' => $itv_id
+                ))
+                ->orderby('time', 'DESC')
+                ->limit(1, 0)
+                ->get()
+                ->first();
+
+            if (!empty($last_program) && strtotime($last_program['time_to']) > $date){
+                Mysql::getInstance()->update(
+                    array(
+                         'time_to' => date("Y-m-d H:i:s", $date)
+                    ),
+                    array('id' => $last_program['id'])
+                );
+            }
 
             return $need_to_delete;
         }
