@@ -371,10 +371,10 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 ->get()
                 ->first();
 
-            if (!empty($last_program) && strtotime($last_program['time_to']) > $date){
-                Mysql::getInstance()->update(
+            if (!empty($last_program) && strtotime($last_program['time_to']) > $real_date){
+                Mysql::getInstance()->update('epg',
                     array(
-                         'time_to' => date("Y-m-d H:i:s", $date)
+                         'time_to' => date("Y-m-d H:i:s", $real_date)
                     ),
                     array('id' => $last_program['id'])
                 );
