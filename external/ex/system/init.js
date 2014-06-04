@@ -87,7 +87,7 @@ if ( window.gSTB === undefined ) {
 
 	// new way of string handling
 	// all strings are in UTF-16
-	gSTB.SetNativeStringMode(true);
+    gSTB.SetNativeStringMode && gSTB.SetNativeStringMode(true);
 
 	// check mode
 	(function(){
