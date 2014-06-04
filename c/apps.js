@@ -160,6 +160,15 @@
         this.bind = function(){
             _debug('apps.bind');
 
+            var self = this;
+
+            keydown_observer.addCustomEventListener("keypress", function(event){
+                if (self.on){
+                    event.preventDefault();
+                }
+                return true;
+            });
+
             this.shift_horizontal.bind(key.LEFT, this, -1).bind(key.RIGHT, this, 1);
 
             this.shift_vertical.bind(key.UP, this, -1).bind(key.DOWN, this, 1);
