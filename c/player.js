@@ -1674,8 +1674,60 @@ player.prototype.volume = new function(){
         
         this.container.hide();
         this.mute.on = true;
+
+        this.start_move_mute_countdown();
     };
-    
+
+    this.start_move_mute_countdown = function(){
+        _debug('volume.start_move_mute_counting');
+
+        if (stb.profile['plasma_saving'] === '1'){
+
+            window.clearTimeout(this.move_mute_to);
+
+            var self = this;
+
+            if (!this.mute.on){
+                return;
+            }
+
+            this.move_mute_to = window.setTimeout(function(){
+
+                _debug('move_mute_to fired');
+                _debug('stb.player.on', stb.player.on);
+                _debug('self.mute.on', self.mute.on);
+
+                if (!self.mute.on){
+                    return;
+                }
+
+                self.start_move_mute();
+
+            }, stb.profile['plasma_saving_timeout'] * 1000);
+        }
+    };
+
+    this.start_move_mute = function(){
+        _debug('volume.start_move_mute');
+
+        var self = this;
+
+        this.move_mute_interval = window.setInterval(function(){
+
+            self.mute.dom_obj.style.left = Math.floor(Math.random()*200) + 'px';
+
+        }, 10000);
+    };
+
+    this.stop_move_mute = function(){
+        _debug('volume.stop_move_mute');
+
+        window.clearInterval(this.move_mute_interval);
+        window.clearTimeout(this.move_mute_to);
+
+        this.mute.dom_obj.style.left = 0;
+    };
+
     this.hide_mute = function(){
         _debug('volume.hide_mute');
         
@@ -1686,6 +1738,7 @@ player.prototype.volume = new function(){
         }
         
         this.mute.dom_obj.hide();
+        this.stop_move_mute();
         this.container.show();
         
         this.update_bar(this.level);
@@ -1867,6 +1920,10 @@ player.prototype.play = function(item){
 
     if (this.pause.on){
         this.hide_pause();
+    }
+
+    if (this.volume.mute.on){
+        this.volume.start_move_mute_countdown();
     }
 
     if (typeof(item) == 'object'){
@@ -2229,6 +2286,7 @@ player.prototype.stop = function(){
 
     if(module.tv && stb.profile['plasma_saving'] === '1'){
         module.tv.stop_tv_plasma_saving_count();
+        this.volume.stop_move_mute();
     }
 
     this.on_stop = undefined;

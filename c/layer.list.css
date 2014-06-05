@@ -562,6 +562,7 @@
 	left: 0;
 	top: 0;
 	background: url("i/volume_off.png");
+    -webkit-transition: all 5s;
 }
 /* END VOLUME */
 
