@@ -703,6 +703,8 @@ if (@$_GET['status']){
         $where .= 'accessed='.$op_accessed;
     }else if (@$_GET['status'] == 'red'){
         $where .= 'status=0';
+    }else if (@$_GET['status'] == 'sd_double_hd'){
+        $where .= 'disable_for_hd_devices=1';
     }
 
     if (@$_GET['status'] == 'closed_n_off'){
@@ -818,6 +820,7 @@ $all_video = Mysql::getInstance()->query($query);
     <option value="off" <?if (@$_GET['status'] == 'off') echo 'selected'?>>off
     <option value="closed_n_off" <?if (@$_GET['status'] == 'closed_n_off') echo 'selected'?>>closed and off
     <option value="red" <?if (@$_GET['status'] == 'red') echo 'selected'?>>red
+    <option value="sd_double_hd" <?if (@$_GET['status'] == 'sd_double_hd') echo 'selected'?>>sd_double_hd
 </select>&nbsp;&nbsp;&nbsp;
 <?= _('Votes')?>:
 <select id="sort_vote" onchange="change_list()">
