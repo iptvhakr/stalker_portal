@@ -1144,6 +1144,9 @@ player.prototype.event_callback = function(event, params){
         }
         case 4: // Playback started
         {
+            this.event1_counter = 0;
+            this.event5_counter = 0;
+
             this.triggerCustomEventListener('event_4', this.cur_media_item);
             if (stb.user['enable_buffering_indication']){
                 this.progress_bar.stop();
