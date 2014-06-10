@@ -85,6 +85,7 @@ $words['tv_title'] = _('TV');
 // vclub info
 $words['vclub_info'] = _('information about the movie');
 $words['vclub_year'] = _('Year');
+$words['vclub_country'] = _('Country');
 $words['vclub_genre'] = _('Genre');
 $words['vclub_length'] = _('Length');
 $words['vclub_minutes'] = _('min');

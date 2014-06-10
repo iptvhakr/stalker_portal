@@ -94,6 +94,13 @@ class Kinopoisk
             $movie_info['year'] = self::getNodeText($node_list->item(0));
         }
 
+        // Country
+        $node_list = $xpath->query('//*[@id="infoTable"]/table/tr[2]/td[2]/div');
+
+        if ($node_list !== false && $node_list->length != 0){
+            $movie_info['country'] = self::getNodeText($node_list->item(0));
+        }
+
         // Duration
         $node_list = $xpath->query('//*[@id="runtime"]');
 

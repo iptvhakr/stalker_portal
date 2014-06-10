@@ -434,8 +434,13 @@
                 info += '<span>' + get_word('vclub_rating_mpaa') + ': </span>' + item.rating_mpaa + '<br>';
             }
 
-            info += '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str
-                + '<br><span>' + word['vclub_year'] + ': </span>' + item.year
+            info += '<span>' + word['vclub_genre'] + ': </span>' + item.genres_str;
+
+            if (item.country){
+                info += '<br><span>' + word['vclub_country'] + ': </span>' + item.country
+            }
+
+            info += '<br><span>' + word['vclub_year'] + ': </span>' + item.year
                 + ' <span>' + word['vclub_length'] + ': </span>' + item.time + ' ' + word['vclub_minutes'] + '.<br>'
                 + '<span>' + word['vclub_director'] + ': </span>' + item.director;
 

@@ -306,6 +306,7 @@ if (count(@$_POST) > 0){
                             'high_quality'   => $high_quality,
                             'low_quality'    => $low_quality,
                             'comments'       => $_POST['comments'],
+                            'country'        => $_POST['country'],
                             'added'          => 'NOW()'
                         )
                     )->insert_id();
@@ -375,7 +376,8 @@ if (count(@$_POST) > 0){
                             'rating_mpaa'    => $_POST['rating_mpaa'],
                             'high_quality'   => $high_quality,
                             'low_quality'    => $low_quality,
-                            'comments'       => $_POST['comments']
+                            'comments'       => $_POST['comments'],
+                            'country'        => $_POST['country']
                         ),
                         array(
                             'id' => (int) $_GET['id']
@@ -947,6 +949,7 @@ if (@$_GET['edit']){
         $actors   = $arr['actors'];
         $time     = $arr['time'];
         $year     = $arr['year'];
+        $country  = $arr['country'];
         $path     = $arr['path'];
         $hd       = $arr['hd'];
         $high_quality = $arr['high_quality'];
@@ -2028,6 +2031,14 @@ $(function(){
            </td>
            <td>
             <input name="year" class="year" type="text" size="4" value="<? echo @$year ?>">
+           </td>
+        </tr>
+        <tr>
+           <td align="right" valign="top">
+           <?= _('Country')?>:
+           </td>
+           <td>
+            <input name="country" class="country" type="text" size="50" value="<? echo @$country ?>">
            </td>
         </tr>
         <tr>

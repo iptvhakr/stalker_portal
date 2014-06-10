@@ -112,8 +112,13 @@ vclub_info.prototype.fill = function(item){
 
     var full_info = '<span>' + word['vclub_year'] + ':</span> ' + item.year + '<br>';
 
-    full_info += '<span>' + word['vclub_genre'] + ':</span> ' + item.genres_str + '<br>' +
-                     '<span>' + word['vclub_length'] + ':</span> ' + item.time + ' ' + (empty(item.series) ? (word['vclub_minutes'] + '.') : '') + '<br>';
+    full_info += '<span>' + word['vclub_genre'] + ':</span> ' + item.genres_str + '<br>';
+
+    if (item.country){
+        full_info += '<span>' + word['vclub_country'] + ':</span> ' + item.country + '<br>';
+    }
+
+    full_info += '<span>' + word['vclub_length'] + ':</span> ' + item.time + ' ' + (empty(item.series) ? (word['vclub_minutes'] + '.') : '') + '<br>';
 
     if (item.age){
         full_info += '<span>' + get_word('vclub_age') + ': </span>' + item.age + '<br>';
