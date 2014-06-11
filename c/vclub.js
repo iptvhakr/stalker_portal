@@ -752,6 +752,13 @@
             
             _debug('lock', this.data_items[this.cur_row].lock);
 
+            _debug('this.load_params[category]', this.load_params['category']);
+
+            if (this.load_params['category'] == 'coming_soon'){
+                stb.notice.show(get_word('coming_soon_video'));
+                return;
+            }
+
             var self = this;
 
             if (this.data_items[this.cur_row].for_rent && !this.data_items[this.cur_row].hasOwnProperty('rent_info')){

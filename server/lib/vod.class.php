@@ -570,7 +570,9 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $where['year'] = $_REQUEST['years'];
         }
 
-        if (@$_REQUEST['category'] && @$_REQUEST['category'] !== '*') {
+        if (!empty($_REQUEST['category']) && $_REQUEST['category'] == 'coming_soon'){
+            $ids = Mysql::getInstance()->from('moderator_tasks')->where(array('ended' => 0, 'media_type' => 2))->get()->all('media_id');
+        }elseif (@$_REQUEST['category'] && @$_REQUEST['category'] !== '*') {
             $where['category_id'] = intval($_REQUEST['category']);
         }
 
@@ -624,6 +626,10 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             ->from('video')
             ->where($where)
             ->where($where_genre, 'OR ');
+
+        if (isset($ids)){
+            $data->in('id', $ids);
+        }
 
         if (!empty($genres_ids) && is_array($genres_ids)) {
 
@@ -865,6 +871,15 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $item['title'] = _($item['title']);
             return $item;
         }, $categories);
+
+
+        if (Config::getSafe('enable_coming_soon_section', false)){
+            $categories[] = array(
+                'id'    => 'coming_soon',
+                'title' => _('coming soon'),
+                'alias' => 'coming_soon'
+            );
+        }
 
         return $categories;
     }
