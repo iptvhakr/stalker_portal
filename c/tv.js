@@ -400,8 +400,7 @@
                 if (this.quick_ch_switch.on){
                     this.del_quick_go_ch();
                 }else if (stb.profile['play_in_preview_only_by_ok']){
-                    this.cur_page = 0;
-                    this.load_data();
+                    this.hide(true);
                 }
             }).bind(key.BACK, this);
             
