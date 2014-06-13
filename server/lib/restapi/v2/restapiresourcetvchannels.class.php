@@ -12,11 +12,12 @@ class RESTApiResourceTvChannels extends RESTApiCollection
     private   $favorite_filter_enabled = false;
     private   $genre_id;
     private   $fields_map;
+    private   $channel_id;
 
     public function __construct(array $nested_params, array $external_params){
 
         parent::__construct($nested_params, $external_params);
-        $this->document = new RESTApiTvChannelDocument();
+        $this->document = new RESTApiTvChannelDocument($this, $external_params);
         $this->document->controllers->add(new RESTApiTvChannelLink($this->nested_params));
         $this->document->controllers->add(new RESTApiTvChannelRecord($this->nested_params));
         $this->controllers->add(new RESTApiTvChannelLast($this->nested_params));
@@ -51,6 +52,10 @@ class RESTApiResourceTvChannels extends RESTApiCollection
         }
     }
 
+    public function setChannelId($id){
+        $this->channel_id = (int) $id;
+    }
+
     public function getCount(RESTApiRequest $request){
         $counter = $this->manager->getRawAllUserChannels($this->user_id)->count();
 
@@ -60,6 +65,10 @@ class RESTApiResourceTvChannels extends RESTApiCollection
 
         if ($this->genre_id){
             $counter->where(array('tv_genre_id' => $this->genre_id));
+        }
+
+        if (!empty($this->channel_id)){
+            $counter->where(array('id' => $this->channel_id));
         }
 
         return (int) $counter->get()->counter();
@@ -85,6 +94,10 @@ class RESTApiResourceTvChannels extends RESTApiCollection
             $channels->where(array('tv_genre_id' => $this->genre_id));
         }
 
+        if (!empty($this->channel_id)){
+            $channels->where(array('id' => $this->channel_id));
+        }
+
         return $this->filter($channels->get()->all());
     }
 
@@ -107,6 +120,12 @@ class RESTApiResourceTvChannels extends RESTApiCollection
             $new_channel['censored'] = (int) $channel['censored'];
             $new_channel['archive_range'] = (int) $channel['tv_archive_duration'];
             $new_channel['pvr']      = (int) $channel['allow_pvr'];
+
+            if ($channel['enable_monitoring']){
+                $new_channel['monitoring_status'] = (int) $channel['monitoring_status'];
+            }else{
+                $new_channel['monitoring_status'] = 1;
+            }
 
             if (!empty($_SERVER['HTTP_UA_RESOLUTION']) && in_array($_SERVER['HTTP_UA_RESOLUTION'], array(120, 160, 240, 320))){
                 $resolution = (int) $_SERVER['HTTP_UA_RESOLUTION'];
