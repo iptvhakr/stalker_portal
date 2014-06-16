@@ -11,7 +11,8 @@ abstract class Storage{
         'mp4',
         'mov',
         'm2ts',
-        'flv'
+        'flv',
+        'm4v'
     );
 
     protected $media_ext_str = '';
