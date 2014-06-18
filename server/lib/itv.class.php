@@ -66,13 +66,13 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         $link_id = 0;
         $load = 0;
 
-        preg_match("/\/ch\/(\d+)$/", $_REQUEST['cmd'], $tmp_arr);
+        preg_match("/\/ch\/(\d+)(.*)/", $_REQUEST['cmd'], $tmp_arr);
 
         if (empty($tmp_arr)){
             $error = 'nothing_to_play';
         }
 
-        //$ch_id = intval($tmp_arr[1]);
+        $extra = $tmp_arr[2];
 
         $link_id = intval($tmp_arr[1]);
         $link = \Itv::getLinkById($link_id);
@@ -117,7 +117,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $res = array(
             'id'          => $ch_id,
-            'cmd'         => empty($error) ? $cmd : '',
+            'cmd'         => empty($error) ? $cmd.$extra : '',
             'streamer_id' => $streamer_id,
             'link_id'     => $link_id,
             'load'        => $load,
@@ -277,7 +277,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                             $solution = 'ffrt';
                         }
 
-                        $channel['cmd'] = $solution.' http://'.$streamer.'/ch/'.$link_result.' '.$tmp_url_arr[4];
+                        $channel['cmd'] = $solution.' http://'.$streamer.'/ch/'.$link_result.(empty($tmp_url_arr[4]) ? '' : ' '.$tmp_url_arr[4]);
                     }
                 }
             }
