@@ -361,25 +361,6 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 ->get()
                 ->all('id');
 
-            $last_program = Mysql::getInstance()
-                ->from('epg')
-                ->where(array(
-                     'ch_id' => $itv_id
-                ))
-                ->orderby('time', 'DESC')
-                ->limit(1, 0)
-                ->get()
-                ->first();
-
-            if (!empty($last_program) && strtotime($last_program['time_to']) > $real_date){
-                Mysql::getInstance()->update('epg',
-                    array(
-                         'time_to' => date("Y-m-d H:i:s", $real_date)
-                    ),
-                    array('id' => $last_program['id'])
-                );
-            }
-
             return $need_to_delete;
         }
 
