@@ -1862,7 +1862,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $device_id  = $_REQUEST['device_id'];
         $device_id2 = $_REQUEST['device_id2'];
 
-        $data = file_get_contents(Config::get('auth_url').'?login='.$login.'&password='.$password.'&mac='.$this->mac);
+        $data = file_get_contents(Config::get('auth_url').'?login='.$login.'&password='.$password.'&mac='.$this->mac.'&ip='.$this->ip);
 
         if (!$data){
             return false;
