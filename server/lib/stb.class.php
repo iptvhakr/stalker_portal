@@ -826,15 +826,31 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             $uid = intval(Mysql::getInstance()->from('users')->where(array('mac' => $this->mac))->get()->first('id'));
         }else{
+
+            $user = Mysql::getInstance()->from('users')->where(array('mac' => $this->mac))->get()->first();
+
             $data = array(
-                'mac'          => $this->mac,
                 'access_token' => $this->access_token,
-                'name'         => substr($this->mac, 12, 16),
                 'device_id'    => $device_id,
                 'device_id2'   => $device_id2,
                 'login'        => $login,
             );
-            $uid = self::create($data);
+
+            if (empty($user)){
+                $data['mac']  = $this->mac;
+                $data['name'] = substr($this->mac, 12, 16);
+
+                $uid = self::create($data);
+            }else{
+
+                Mysql::getInstance()->update('users',
+                    $data,
+                    array(
+                        'mac' => $this->mac
+                    )
+                );
+                $uid = $user['id'];
+            }
         }
                 
         $this->getStbParams();        
