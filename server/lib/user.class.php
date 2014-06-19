@@ -48,6 +48,10 @@ class User implements \Stalker\Lib\StbApi\User
         return $this->id;
     }
 
+    public function getIp(){
+        return $this->ip;
+    }
+
     public static function getUserAgent(){
 
         $ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
