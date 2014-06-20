@@ -173,6 +173,13 @@ abstract class AjaxResponse
         }
         
         $total_daily_claims = $this->db->from('daily_media_claims')->where(array('date' => 'CURDATE()'))->get()->first();
+
+        if (Config::exist('administrator_email')){
+
+            $message = sprintf(_("New claim on %s - %s. From %s"), $media_type, $type, $this->stb->mac);
+
+            mail(Config::get('administrator_email'), 'New claim on '.$media_type.' - '.$type, $message);
+        }
         
         if (!empty($total_daily_claims)){
             return $this->db->update('daily_media_claims',
