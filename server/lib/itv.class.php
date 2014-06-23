@@ -155,7 +155,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             }
         }
 
-        if (empty($link_id)){
+        if (empty($link_id) || empty($link)){
             throw new ItvChannelTemporaryUnavailable();
         }
 
@@ -217,6 +217,14 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                     }else{
                         $channel['cmd'] = $channel['cmd'].'?'.$key;
                     }
+                }
+            }else if ($link['flussonic_tmp_link']){
+                $key = $this->createTemporaryLink("1");
+
+                if (!$key){
+                    throw new ItvLinkException('link_fault');
+                }else{
+                    $channel['cmd'] = $channel['cmd'].(strpos($channel['cmd'], '?') ? '&' : '?').'token='.$key;
                 }
             }else if ($channel['nginx_secure_link']){ // http://wiki.nginx.org/HttpSecureLinkModule
 

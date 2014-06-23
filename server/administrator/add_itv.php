@@ -176,6 +176,7 @@ if (!$error){
             'priority'          => array_key_exists($key, $_POST['priority']) ? (int) $_POST['priority'][$key] : 0,
             'use_http_tmp_link' => !empty($_POST['use_http_tmp_link']) && array_key_exists($key, $_POST['use_http_tmp_link']) ? (int) $_POST['use_http_tmp_link'][$key] : 0,
             'wowza_tmp_link'    => !empty($_POST['wowza_tmp_link']) && array_key_exists($key, $_POST['wowza_tmp_link']) ? (int) $_POST['wowza_tmp_link'][$key] : 0,
+            'flussonic_tmp_link' => !empty($_POST['flussonic_tmp_link']) && array_key_exists($key, $_POST['flussonic_tmp_link']) ? (int) $_POST['flussonic_tmp_link'][$key] : 0,
             'nginx_secure_link' => !empty($_POST['nginx_secure_link']) && array_key_exists($key, $_POST['nginx_secure_link']) ? (int) $_POST['nginx_secure_link'][$key] : 0,
             'user_agent_filter' => array_key_exists($key, $_POST['user_agent_filter']) ? $_POST['user_agent_filter'][$key] : '',
             'monitoring_url'    => array_key_exists($key, $_POST['monitoring_url']) ? $_POST['monitoring_url'][$key] : '',
@@ -667,6 +668,10 @@ a:hover{
                             <td width="40%"><input type="checkbox" name="wowza_tmp_link[${idx}]" value="1" {{if wowza_tmp_link==="1"}}checked{{/if}}></td>
                         </tr>
                         <tr>
+                            <td>&nbsp;&nbsp;<?= _('Flussonic support')?>:</td>
+                            <td width="40%"><input type="checkbox" name="flussonic_tmp_link[${idx}]" value="1" {{if flussonic_tmp_link==="1"}}checked{{/if}}></td>
+                        </tr>
+                        <tr>
                             <td>&nbsp;&nbsp;<?= _('NGINX secure link')?>:</td>
                             <td><input type="checkbox" name="nginx_secure_link[${idx}]" value="1" {{if nginx_secure_link==="1"}}checked{{/if}}></td>
                         </tr>
@@ -769,7 +774,7 @@ a:hover{
 
             var idx = $('.links_block>div').length;
 
-            var link = {"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"nginx_secure_link":0,"user_agent_filter":"","idx":idx,"monitoring_url":"", "use_load_balancing":0,"enable_monitoring":0,"enable_balancer_monitoring":0};
+            var link = {"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"flussonic_tmp_link":0,"nginx_secure_link":0,"user_agent_filter":"","idx":idx,"monitoring_url":"", "use_load_balancing":0,"enable_monitoring":0,"enable_balancer_monitoring":0};
 
             $("#link_item_tmpl").tmpl(link).appendTo('.links_block');
 
@@ -788,7 +793,7 @@ a:hover{
         }
 
         if (links.length == 0){
-            links = [{"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"nginx_secure_link":0,"user_agent_filter":"","monitoring_url":"","use_load_balancing":0,"enable_monitoring":0,"enable_balancer_monitoring":0}];
+            links = [{"url":"","priority":0,"status":1,"use_http_tmp_link":0,"wowza_tmp_link":0,"flussonic_tmp_link":0,"nginx_secure_link":0,"user_agent_filter":"","monitoring_url":"","use_load_balancing":0,"enable_monitoring":0,"enable_balancer_monitoring":0}];
         }
 
         links = links.map(function(link, idx){
