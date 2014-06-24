@@ -189,7 +189,7 @@ if (isset($_GET['edit']) && !empty($id)){
                 <table class="form">
                     <tr>
                         <td width="100"><?= _('Login')?></td>
-                        <td><input type="text" name="login" value="<?= @$edit_admin['login']?>" autocomplete="off" /></td>
+                        <td><input type="text" name="login" value="<?= @$edit_admin['login']?>" <?= @$edit_admin['login'] == 'admin' ? 'readonly="readonly" style="color:#777"' : '' ?> autocomplete="off" /></td>
                     </tr>
                     <tr>
                         <td><?= _('Password')?></td>

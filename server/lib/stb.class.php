@@ -833,7 +833,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'access_token' => $this->access_token,
                 'device_id'    => $device_id,
                 'device_id2'   => $device_id2,
-                'login'        => $login,
+                //'login'        => $login,
             );
 
             if (empty($user)){
