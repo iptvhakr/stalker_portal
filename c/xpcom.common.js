@@ -2270,6 +2270,10 @@ var authentication_problem = {
 
         this.dom_obj.show();
         this.on = true;
+
+        if (stb.player && stb.player.on){
+            stb.player.stop();
+        }
     },
 
     hide : function(){

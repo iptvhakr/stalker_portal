@@ -1906,6 +1906,11 @@ player.prototype.first_play = function(){
 
 player.prototype.play = function(item){
     _debug('player.play', item);
+
+    if (authentication_problem && authentication_problem.on){
+        _debug('Authentication problem, player disabled');
+        return;
+    }
     
     var cmd;
     
