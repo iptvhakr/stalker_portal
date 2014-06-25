@@ -218,8 +218,8 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                         $channel['cmd'] = $channel['cmd'].'?'.$key;
                     }
                 }
-            }else if ($link['flussonic_tmp_link']){
-                $key = $this->createTemporaryLink("1");
+            }else if (!empty($link) && $link['flussonic_tmp_link']){
+                $key = $this->createTemporaryLink($this->stb->id);
 
                 if (!$key){
                     throw new ItvLinkException('link_fault');
