@@ -342,7 +342,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
 
         if (Config::exist('auth_url') && !empty($_REQUEST['token']) && $_REQUEST['token'] == $this->getParam('access_token')){
-            return array('token' => $this->getParam('access_token'));
+            return array('token' => $this->getParam('access_token'), 'not_valid' => 1);
         }
 
         $token = strtoupper(md5(mktime(1).uniqid()));
@@ -482,7 +482,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }
 
-        $valid_saved_auth = $this->getParam('access_token') && ($this->access_token == $this->getParam('access_token'));
+        $valid_saved_auth = $this->getParam('access_token') && ($this->access_token == $this->getParam('access_token')) && !intval($_REQUEST['not_valid_token']);
 
         if (!$this->id){
 
@@ -1878,7 +1878,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $device_id  = $_REQUEST['device_id'];
         $device_id2 = $_REQUEST['device_id2'];
 
-        $data = file_get_contents(Config::get('auth_url').'?login='.$login.'&password='.$password.'&mac='.$this->mac.'&ip='.$this->ip);
+        $data = file_get_contents(Config::get('auth_url').(strpos(Config::get('auth_url'), '?') > 0 ? '&' : '?' ).'login='.$login.'&password='.$password.'&mac='.$this->mac.'&ip='.$this->ip);
 
         if (!$data){
             return false;

@@ -825,6 +825,8 @@ function common_xpcom(){
                 _debug('on handshake', result);
                 this.access_token = result.token || '';
 
+                this.not_valid_token = result.not_valid || 0;
+
                 _debug('this.access_token', this.access_token);
 
                 this.get_user_profile();
@@ -851,7 +853,8 @@ function common_xpcom(){
                 'device_id2'       : stb.GetUID ? (stb.GetUID(this.access_token) == stb.GetUID(this.access_token, this.access_token) ? '' : stb.GetUID('device_id', this.access_token)) : '',
                 'signature'        : stb.GetUID ? stb.GetUID(this.access_token) : '',
                 'auth_second_step' : auth_second_step ? 1 : 0,
-                'hw_version'       : this.hw_version
+                'hw_version'       : this.hw_version,
+                'not_valid_token'  : this.not_valid_token ? 1 : 0
             },
 
             function(result){
