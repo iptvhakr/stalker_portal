@@ -48,6 +48,9 @@ _('aerobics');
 _('fantasy');
 _('erotica');
 _('humourist');
+_('foreign cartoons');
+_('our cartoons');
+_('cartoon series');
 
 /**
  * media_category table
