@@ -342,12 +342,18 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
 
         if (Config::exist('auth_url') && !empty($_REQUEST['token']) && $_REQUEST['token'] == $this->getParam('access_token')){
-            return array('token' => $this->getParam('access_token'), 'not_valid' => 1);
+            return array('token' => $this->getParam('access_token'));
         }
 
         $token = strtoupper(md5(mktime(1).uniqid()));
 
-        return array('token' => $token);
+        $response = array('token' => $token);
+
+        if (Config::exist('auth_url') && !empty($_REQUEST['token']) && $_REQUEST['token'] != $this->getParam('access_token')){
+            $response['not_valid'] = 1;
+        }
+
+        return $response;
     }
 
     private function passAccessFilter($country, &$model, $mac, $serial_number, $version, $device_id, $signature, &$force_auth){
