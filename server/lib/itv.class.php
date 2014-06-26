@@ -285,7 +285,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                             $solution = 'ffrt';
                         }
 
-                        $channel['cmd'] = $solution.' http://'.$streamer.'/ch/'.$link_result.(empty($tmp_url_arr[4]) ? '' : ' '.$tmp_url_arr[4]);
+                        $channel['cmd'] = $solution.' http://'.$streamer.'/ch/'.$link_result
+                            .(empty($tmp_url_arr[4]) ? '' : $tmp_url_arr[4])
+                            .(empty($tmp_url_arr[5]) ? '' : $tmp_url_arr[5]);
                     }
                 }
             }
