@@ -563,7 +563,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $tasks = array();
 
         $raw_tasks = Mysql::getInstance()
-            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, itv.tv_archive_duration as parts_number, enable_tv_archive & wowza_dvr as wowza_archive')
+            ->select('tv_archive.id as id, itv.id as ch_id, itv.mc_cmd as cmd, itv.tv_archive_duration as parts_number')
             ->from('tv_archive')
             ->join('itv', 'itv.id', 'tv_archive.ch_id', 'LEFT')
             ->where($where);
@@ -580,10 +580,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 $task['cmd'] = $match[1];
             }
 
-            $hour_start = time() - date("i")*60 - date("s");
-
-            $task['start_timestamp'] = $hour_start - $task['parts_number'] * 3600;
-            $task['stop_timestamp']  = $hour_start;
+            $task['ch_id'] = (int) $task['ch_id'];
 
             $tasks[] = $task;
         }

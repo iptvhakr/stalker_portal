@@ -2,28 +2,33 @@
 
 class TvArchiveTasks
 {
-    private $tasks_api_url;
+    private static $tasks_api_url;
 
-    public function __construct($tasks_api_url){
-        $this->tasks_api_url = $tasks_api_url;
+    public function __construct(){}
+
+    public function setApiUrl($tasks_api_url){
+        self::$tasks_api_url = $tasks_api_url;
     }
 
     public function add($task){
 
-        if (!key_exists('id', $task)){
+        if (!array_key_exists('id', $task)){
             return false;
         }
 
-        $cached = $this->getCacheFile();
+        $cached = $this->getFromCache();
 
-        $tasks = array_map(function($item) use ($task){
+        $need_to_add = true;
+
+        $tasks = array_map(function($item) use ($task, &$need_to_add){
             if ($item['id'] == $task['id']){
+                $need_to_add = false;
                 return $task;
             }
             return $item;
         }, $cached);
 
-        if (count($cached) != count($tasks)){
+        if ($need_to_add){
             $tasks[] = $task;
         }
 
@@ -32,18 +37,18 @@ class TvArchiveTasks
 
     public function del($ch_id){
 
-        $cached = $this->getCacheFile();
+        $cached = $this->getFromCache();
 
-        $tasks = array_filter($cached, function($item) use ($ch_id){
+        $tasks = array_values(array_filter($cached, function($item) use ($ch_id){
             return $item['ch_id'] != $ch_id;
-        });
+        }));
 
         return $this->saveToCache($tasks);
     }
 
     public function sync(){
 
-        $content = file_get_contents($this->tasks_api_url);
+        $content = file_get_contents(self::$tasks_api_url);
 
         if ($content === false){
             return $this->getFromCache();
@@ -51,7 +56,7 @@ class TvArchiveTasks
 
         $content = json_decode($content, true);
 
-        if ($content === null || !key_exists('results', $content)){
+        if ($content === null || !array_key_exists('results', $content)){
             return false;
         }
 

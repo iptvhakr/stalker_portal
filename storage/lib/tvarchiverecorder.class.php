@@ -8,6 +8,7 @@ class TvArchiveRecorder extends Storage
      *
      * @param array $task
      * @return bool
+     * @throws Exception
      */
     public function start($task){
 
@@ -62,6 +63,9 @@ class TvArchiveRecorder extends Storage
             throw new IOException('PID file is not created');
         }
 
+        $archive = new TvArchiveTasks();
+        $archive->add($task);
+
         return true;
     }
 
@@ -101,6 +105,9 @@ class TvArchiveRecorder extends Storage
         $pid = intval(file_get_contents($pid_file));
 
         unlink($pid_file);
+
+        $archive = new TvArchiveTasks();
+        $archive->del($ch_id);
 
         return posix_kill($pid, 9);
     }

@@ -13,6 +13,7 @@ class RESTCommandTvArchiveRecorder extends RESTCommand
      *
      * @param RESTRequest $request
      * @return bool
+     * @throws ErrorException
      */
     public function create(RESTRequest $request){
 
@@ -30,6 +31,7 @@ class RESTCommandTvArchiveRecorder extends RESTCommand
      *
      * @param RESTRequest $request
      * @return bool
+     * @throws ErrorException
      */
     public function delete(RESTRequest $request){
 
