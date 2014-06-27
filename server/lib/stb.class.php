@@ -1080,7 +1080,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     if (!empty($video)){
                         
                         $update_data['now_playing_content'] = $video['name'];
-                        $update_data['hd_content']          = $video['hd'];
+                        $update_data['hd_content']          = (int) $video['hd'];
                     }else{
                         $update_data['now_playing_content'] = $param;
                     }
@@ -1241,9 +1241,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             
             $update_data['now_playing_content'] = '';
             $update_data['storage_name'] = '';
-            $update_data['hd_content'] = '';
-            $update_data['now_playing_link_id'] = '';
-            $update_data['now_playing_streamer_id'] = '';
+            $update_data['hd_content'] = 0;
+            $update_data['now_playing_link_id'] = 0;
+            $update_data['now_playing_streamer_id'] = 0;
 
             $type = 0;
         }

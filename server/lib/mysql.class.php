@@ -803,4 +803,11 @@ class Mysql
 
 class MysqlException extends Exception
 {
+    protected $message = "";
+    protected $code = 0;
+
+    public function __construct($message){
+        $this->message = $message;
+        error_log($message);
+    }
 }
