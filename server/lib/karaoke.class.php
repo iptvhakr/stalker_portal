@@ -154,7 +154,7 @@ class Karaoke extends AjaxResponse implements \Stalker\Lib\StbApi\Karaoke
     
     public function setClaim(){
         
-        return $this->setClaimGlobal('vclub');
+        return $this->setClaimGlobal('karaoke');
     }
 
     public function getRawAll(){

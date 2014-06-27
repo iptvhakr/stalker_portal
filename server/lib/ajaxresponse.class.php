@@ -174,9 +174,28 @@ abstract class AjaxResponse
         
         $total_daily_claims = $this->db->from('daily_media_claims')->where(array('date' => 'CURDATE()'))->get()->first();
 
+        $media_name = 'undefined';
+
+        if ($media_type == 'itv'){
+            $media = Itv::getById($id);
+            if (!empty($media['name'])){
+                $media_name = $media['name'];
+            }
+        }elseif($media_type == 'vclub'){
+            $media = Video::getById($id);
+            if (!empty($media['name'])){
+                $media_name = $media['name'];
+            }
+        }elseif($media_type == 'karaoke'){
+            $media = Karaoke::getById($id);
+            if (!empty($media['name'])){
+                $media_name = $media['name'];
+            }
+        }
+
         if (Config::exist('administrator_email')){
 
-            $message = sprintf(_("New claim on %s - %s. From %s"), $media_type, $type, $this->stb->mac);
+            $message = sprintf(_("New claim on %s - %s (%s, id: %s). From %s"), $media_type, $type, $media_name, $id, $this->stb->mac);
 
             mail(Config::get('administrator_email'), 'New claim on '.$media_type.' - '.$type, $message);
         }

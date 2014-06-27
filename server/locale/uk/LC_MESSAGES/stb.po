@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-24 18:02+0300\n"
-"PO-Revision-Date: 2014-06-24 18:03+0300\n"
+"POT-Creation-Date: 2014-06-27 15:44+0300\n"
+"PO-Revision-Date: 2014-06-27 15:44+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3071,8 +3071,8 @@ msgstr "на каналі"
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:468
-#: ../../../lib/stb.class.php:479
+#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:474
+#: ../../../lib/stb.class.php:485
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
 
@@ -4459,22 +4459,22 @@ msgstr "сьогодні"
 msgid "yesterday"
 msgstr "вчора"
 
-#: ../../../lib/stb.class.php:539
+#: ../../../lib/stb.class.php:545
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
 
-#: ../../../lib/itv.class.php:602
+#: ../../../lib/itv.class.php:604
 msgid "DVB"
 msgstr ""
 
-#: ../../../lib/itv.class.php:1596
+#: ../../../lib/itv.class.php:1598
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1606
+#: ../../../lib/itv.class.php:1608
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
@@ -4788,10 +4788,10 @@ msgstr "грудень"
 msgid "[No channel info]"
 msgstr "[телепрограма відсутня]"
 
-#: ../../../lib/ajaxresponse.class.php:179
+#: ../../../lib/ajaxresponse.class.php:198
 #, php-format
-msgid "New claim on %s - %s. From %s"
-msgstr "Нова скарга на %s - %s. Від %s"
+msgid "New claim on %s - %s (%s, id: %s). From %s"
+msgstr "Нова скарга на %s - %s (%s, id: %s). Від %s"
 
 #: ../../../lib/user.class.php:1008 ../../../lib/accountinfo.class.php:35
 #, php-format
