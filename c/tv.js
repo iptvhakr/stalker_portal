@@ -819,6 +819,10 @@
                     channel.local_time_shift = 0;
                 }
 
+                if (channel.pvr == 1 && (channel.allow_local_pvr == 0 || !module.pvr_local) && (channel.allow_pvr == 0 || !module.remote_pvr)){
+                    channel.pvr = 0;
+                }
+
                 return channel;
             });
 
