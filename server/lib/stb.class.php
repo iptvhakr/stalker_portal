@@ -686,6 +686,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['max_local_recordings'] = Config::getSafe('max_local_recordings', 10);
 
+        $profile['tv_channel_default_aspect'] = Config::getSafe('tv_channel_default_aspect', 'fit');
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);

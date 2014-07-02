@@ -1048,6 +1048,13 @@ function common_xpcom(){
                     }
                 }
 
+                var aspect_idx = this.aspect_array.getIdxByVal('alias', this.profile['tv_channel_default_aspect']);
+                if (aspect_idx === null){
+                    this.profile['tv_channel_default_aspect'] = 0x10;
+                }else{
+                    this.profile['tv_channel_default_aspect'] = this.aspect_array[aspect_idx].mode;
+                }
+
                 _debug('this.user[update_url]', this.user['update_url']);
 
                 if (['MAG200', 'MAG245', 'MAG250', 'MAG254', 'MAG255', 'MAG270', 'MAG275'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){

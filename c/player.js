@@ -1069,9 +1069,9 @@ player.prototype.event_callback = function(event, params){
                     _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
                 }else{
 
-                    // default aspect for TV - FIT
+                    _debug('this.profile[tv_channel_default_aspect]', stb.profile['tv_channel_default_aspect']);
 
-                    var cur_aspect = 0x10;
+                    var cur_aspect = stb.profile['tv_channel_default_aspect'];
 
                     this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', cur_aspect);
 
