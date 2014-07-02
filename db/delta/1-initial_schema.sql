@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `video`(
     `rtsp_url` varchar(255) NOT NULL default '',
     `censored` tinyint default 0, /* 0-off, 1-on */
     `hd` tinyint default 0,
-    `series` text NOT NULL default '',
+    `series` text NOT NULL,
     `volume_correction` int NOT NULL default 0,
     `category_id` int NOT NULL default 0,
     `genre_id` int NOT NULL default 0,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `video`(
     `vote_sound_bad` int NOT NULL default 0,
     `vote_video_good` int NOT NULL default 0,
     `vote_video_bad` int NOT NULL default 0,
-    `rate` text NOT NULL default '',
+    `rate` text NOT NULL,
     `last_rate_update` date,
     `last_played` date,
     PRIMARY KEY (`id`),
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `itv`(
     `number` int NOT NULL default 0,
     `censored` tinyint default 0,
     `cmd` varchar(128) NOT NULL default '',
-    `descr` text NOT NULL default '',
+    `descr` text NOT NULL,
     `cost` int NOT NULL default 0,
     `count` int  NOT NULL default 0,
     `status` tinyint unsigned NOT NULL default 1,
@@ -260,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `events`(
     `uid` int NOT NULL default 0,
     `type` varchar(128) NOT NULL default '',
     `event` varchar(128) NOT NULL default '',
-    `msg` text NOT NULL default '',
+    `msg` text NOT NULL,
     `rec_id` int NOT NULL default 0,
     `sended` tinyint default 0,
     `need_confirm` tinyint default 0,
@@ -279,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `events`(
 CREATE TABLE IF NOT EXISTS `fav_itv`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
-    `fav_ch` text NOT NULL default '',
+    `fav_ch` text NOT NULL,
     `addtime` datetime,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`uid`)
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `album`(
 CREATE TABLE IF NOT EXISTS `playlist`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
-    `tracks` text NOT NULL default '',
+    `tracks` text NOT NULL,
     `addtime` datetime,
     `edittime` datetime,
     PRIMARY KEY (`id`)
@@ -341,7 +341,7 @@ CREATE TABLE IF NOT EXISTS `radio`(
 CREATE TABLE IF NOT EXISTS `fav_vclub`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
-    `fav_video` text NOT NULL default '',
+    `fav_video` text NOT NULL,
     `addtime` datetime,
     `edittime` datetime,
     PRIMARY KEY (`id`),
@@ -467,7 +467,7 @@ CREATE TABLE IF NOT EXISTS `moderators_history`(
     `task_id` int NOT NULL default 0,
     `from_usr` int NOT NULL default 0,
     `to_usr` int NOT NULL default 0,
-    `comment` text NOT NULL default '',
+    `comment` text NOT NULL,
     `send_time` datetime,
     `readed` tinyint default 0,
     `reply_to` int NOT NULL default 0,
@@ -495,8 +495,8 @@ CREATE TABLE IF NOT EXISTS `daily_played_video`(
 CREATE TABLE IF NOT EXISTS `itv_subscription`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
-    `sub_ch` text NOT NULL default '',
-    `bonus_ch` text NOT NULL default '',
+    `sub_ch` text NOT NULL,
+    `bonus_ch` text NOT NULL,
     `addtime` datetime,
     PRIMARY KEY (`id`),
     UNIQUE KEY (`uid`)
@@ -586,7 +586,7 @@ CREATE TABLE IF NOT EXISTS `storage_deny`(
 CREATE TABLE IF NOT EXISTS `rss_cache_weather`(
     `id` int NOT NULL auto_increment,
     `url` varchar(255) NOT NULL default '',
-    `content` text not NULL default '',
+    `content` text not NULL,
     `crc` varchar(64) NOT NULL default '',
     `updated` datetime,
     UNIQUE KEY (`crc`),
@@ -596,7 +596,7 @@ CREATE TABLE IF NOT EXISTS `rss_cache_weather`(
 CREATE TABLE IF NOT EXISTS `rss_cache_horoscope`(
     `id` int NOT NULL auto_increment,
     `url` varchar(255) NOT NULL default '',
-    `content` text not NULL default '',
+    `content` text not NULL,
     `crc` varchar(64) NOT NULL default '',
     `updated` datetime,
     UNIQUE KEY (`crc`),
@@ -641,7 +641,7 @@ CREATE TABLE IF NOT EXISTS `help_city_info`(
 CREATE TABLE IF NOT EXISTS `anec`(
     `id` int NOT NULL auto_increment,
     `title` varchar(255) NOT NULL default '',
-    `anec_body` text NOT NULL default '',
+    `anec_body` text NOT NULL,
     `added` datetime,
     PRIMARY KEY (`id`),
     KEY `added` (`added`)
@@ -681,7 +681,7 @@ CREATE TABLE IF NOT EXISTS `loading_fail`(
 CREATE TABLE IF NOT EXISTS `gapi_cache_cur_weather`(
     `id` int NOT NULL auto_increment,
     `url` varchar(255) NOT NULL default '',
-    `content` text not NULL default '',
+    `content` text not NULL,
     `crc` varchar(64) NOT NULL default '',
     `updated` datetime,
     UNIQUE KEY (`crc`),
@@ -691,7 +691,7 @@ CREATE TABLE IF NOT EXISTS `gapi_cache_cur_weather`(
 CREATE TABLE IF NOT EXISTS `gismeteo_day_weather`(
     `id` int NOT NULL auto_increment,
     `url` varchar(255) NOT NULL default '',
-    `content` text not NULL default '',
+    `content` text not NULL,
     `crc` varchar(64) NOT NULL default '',
     `updated` datetime,
     UNIQUE KEY (`crc`),
@@ -731,7 +731,7 @@ CREATE TABLE IF NOT EXISTS `vclub_not_ended`(
 CREATE TABLE IF NOT EXISTS `course_cache`(
     `id` int NOT NULL auto_increment,
     `url` varchar(255) NOT NULL default '',
-    `content` text not NULL default '',
+    `content` text not NULL,
     `crc` varchar(64) NOT NULL default '',
     `updated` datetime,
     UNIQUE KEY (`crc`),
@@ -753,15 +753,15 @@ CREATE TABLE IF NOT EXISTS `recipes`(
     `recipe_cat_id_3` int NOT NULL default 0,
     `recipe_cat_id_4` int NOT NULL default 0,
     `name` varchar(255) NOT NULL default '',
-    `descr` text not NULL default '',
-    `ingredients` text not NULL default '',
+    `descr` text not NULL,
+    `ingredients` text not NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `fav_recipes`(
     `id` int NOT NULL auto_increment,
     `uid` int NOT NULL default 0,
-    `fav_recipes` text NOT NULL default '',
+    `fav_recipes` text NOT NULL,
     `addtime` datetime,
     `edittime` datetime,
     PRIMARY KEY (`id`)
