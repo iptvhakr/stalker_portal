@@ -1052,47 +1052,7 @@ player.prototype.event_callback = function(event, params){
         case 2: // Receive information about stream
         {
 
-            if (this.is_tv){
-
-                _debug('this.ch_aspect[this.cur_media_item.id]', this.ch_aspect[this.cur_media_item.id]);
-
-                if (this.ch_aspect[this.cur_media_item.id] !== undefined){
-
-                    try{
-                        stb.SetAspect(parseInt(this.ch_aspect[this.cur_media_item.id], 10));
-                    }catch(e){
-                        _debug(e);
-                    }
-
-                    this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', this.ch_aspect[this.cur_media_item.id]);
-
-                    _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
-                }else{
-
-                    _debug('this.profile[tv_channel_default_aspect]', stb.profile['tv_channel_default_aspect']);
-
-                    var cur_aspect = stb.profile['tv_channel_default_aspect'];
-
-                    this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', cur_aspect);
-
-                    _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
-
-                    try{
-                        stb.SetAspect(cur_aspect);
-                    }catch(e){
-                        _debug(e);
-                    }
-                }
-
-                _debug('this.ch_aspect_idx', this.ch_aspect_idx);
-            }else{
-                _debug('aspect_alias', stb.aspect_array[stb.aspect_idx].alias);
-                try{
-                    stb.SetAspect(stb.aspect_array[stb.aspect_idx].mode);
-                }catch(e){
-                    _debug(e);
-                }
-            }
+            this.set_media_aspect();
 
             if (stb.GetMetadataInfo){
                 var metadata = stb.GetMetadataInfo();
@@ -1374,6 +1334,14 @@ player.prototype.event_callback = function(event, params){
                         }  
                     }
                 )
+            }
+            break;
+        }
+        case 7: // video content info
+        {
+            if (this.con_menu.map.length < 3){
+                this.get_pids();
+                this.set_media_aspect();
             }
             break;
         }
@@ -4702,6 +4670,52 @@ player.prototype.get_pids = function(){
         this.build_con_menu();
     }catch(e){
         _debug(e);
+    }
+};
+
+player.prototype.set_media_aspect = function(){
+    _debug('player.set_media_aspect');
+
+    if (this.is_tv){
+
+        _debug('this.ch_aspect[this.cur_media_item.id]', this.ch_aspect[this.cur_media_item.id]);
+
+        if (this.ch_aspect[this.cur_media_item.id] !== undefined){
+
+            try{
+                stb.SetAspect(parseInt(this.ch_aspect[this.cur_media_item.id], 10));
+            }catch(e){
+                _debug(e);
+            }
+
+            this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', this.ch_aspect[this.cur_media_item.id]);
+
+            _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
+        }else{
+
+            _debug('this.profile[tv_channel_default_aspect]', stb.profile['tv_channel_default_aspect']);
+
+            var cur_aspect = stb.profile['tv_channel_default_aspect'];
+
+            this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', cur_aspect);
+
+            _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
+
+            try{
+                stb.SetAspect(cur_aspect);
+            }catch(e){
+                _debug(e);
+            }
+        }
+
+        _debug('this.ch_aspect_idx', this.ch_aspect_idx);
+    }else{
+        _debug('aspect_alias', stb.aspect_array[stb.aspect_idx].alias);
+        try{
+            stb.SetAspect(stb.aspect_array[stb.aspect_idx].mode);
+        }catch(e){
+            _debug(e);
+        }
     }
 };
 
