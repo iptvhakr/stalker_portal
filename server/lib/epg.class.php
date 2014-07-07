@@ -543,6 +543,13 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         if (empty($channels_ids)){
             $channels_ids = Itv::getInstance()->getAllUserChannelsIds();
+
+            $channels_ids = Mysql::getInstance()
+                ->from('itv')
+                ->in('id', $channels_ids)
+                ->where(array('xmltv_id!=' => ''))
+                ->get()
+                ->all('id');
         }
 
         if (empty($from)){
@@ -667,6 +674,15 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $all_user_ids = Itv::getInstance()->getAllUserChannelsIds();
 
+        $all_user_ids_with_epg = Mysql::getInstance()
+            ->from('itv')
+            ->in('id', $all_user_ids)
+            ->where(array('xmltv_id!=' => ''))
+            ->get()
+            ->all('id');
+
+        $all_user_ids_with_epg = array_fill_keys($all_user_ids_with_epg, 1);
+
         $dvb_channels = Itv::getInstance()->getDvbChannels();
         $dvb_ch_idx = null;
 
@@ -786,7 +802,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                               'ch_type' => isset($channel['type']) && $channel['type'] == 'dvb' ? 'dvb' : 'iptv',
                               'dvb_id'  => isset($channel['type']) && $channel['type'] == 'dvb' ? $channel['dvb_id'] : null,
                               'epg_container' => 1,
-                              'epg'     => $epg);
+                              'epg'     => isset($all_user_ids_with_epg[$id]) ? $epg : array());
         }
 
         $time_marks = array();
@@ -869,6 +885,13 @@ class Epg implements \Stalker\Lib\StbApi\Epg
     public function getSimpleDataTable(){
 
         $ch_id = intval($_REQUEST['ch_id']);
+
+        $channel = Itv::getById($ch_id);
+
+        if (empty($channel['xmltv_id'])){
+            $ch_id = 0;
+        }
+
         $date  = $_REQUEST['date'];
         $page  = intval($_REQUEST['p']);
 

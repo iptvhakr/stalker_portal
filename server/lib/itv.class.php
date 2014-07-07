@@ -1216,6 +1216,12 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     public function getShortEpg(){
         
         $ch_id = intval($_REQUEST['ch_id']);
+
+        $channel = Itv::getById($ch_id);
+
+        if (empty($channel['xmltv_id'])){
+            return array();
+        }
         
         $epg = new Epg();
         
