@@ -9,6 +9,7 @@
         this.layer_name = 'account';
         this.tab        = {};
         this.cur_tab    = 'main';
+        this.account_data = {};
 
         this.superclass = SimpleLayer.prototype;
 
@@ -28,7 +29,20 @@
                     "action" : "get_main_info"
                 },
                 function(result){
+                    this.account_data = result;
                     this.fill_main_info(result);
+
+                    if (this.account_data['account_payment_info']){
+                        this.tab['payment'].content.dom_obj.innerHTML = this.account_data['account_payment_info'];
+                    }
+
+                    if (this.account_data['account_agreement_info']){
+                        this.tab['agreement'].content.dom_obj.innerHTML = this.account_data['account_agreement_info'];
+                    }
+
+                    if (this.account_data['account_terms_info']){
+                        this.tab['terms'].content.dom_obj.innerHTML = this.account_data['account_terms_info'];
+                    }
                 },
                 this
             );
@@ -45,7 +59,9 @@
                     "action" : "get_payment_info"
                 },
                 function(result){
-                    this.tab['payment'].content.dom_obj.innerHTML = result;
+                    if (!this.account_data['account_payment_info']){
+                        this.tab['payment'].content.dom_obj.innerHTML = result;
+                    }
                 },
                 this
             );
@@ -61,7 +77,9 @@
                     "action" : "get_agreement_info"
                 },
                 function(result){
-                    this.tab['agreement'].content.dom_obj.innerHTML = result;
+                    if (!this.account_data['account_agreement_info']){
+                        this.tab['agreement'].content.dom_obj.innerHTML = result;
+                    }
                 },
                 this
             );
@@ -77,7 +95,9 @@
                     "action" : "get_terms_info"
                 },
                 function(result){
-                    this.tab['terms'].content.dom_obj.innerHTML = result;
+                    if (!this.account_data['account_terms_info']){
+                        this.tab['terms'].content.dom_obj.innerHTML = result;
+                    }
                 },
                 this
             );
@@ -174,7 +194,20 @@
                     "action" : "get_main_info"
                 },
                 function(result){
+                    this.account_data = result;
                     this.fill_main_info(result);
+
+                    if (this.account_data['account_payment_info']){
+                        this.tab['payment'].content.dom_obj.innerHTML = this.account_data['account_payment_info'];
+                    }
+
+                    if (this.account_data['account_agreement_info']){
+                        this.tab['agreement'].content.dom_obj.innerHTML = this.account_data['account_agreement_info'];
+                    }
+
+                    if (this.account_data['account_terms_info']){
+                        this.tab['terms'].content.dom_obj.innerHTML = this.account_data['account_terms_info'];
+                    }
                 },
                 this
             );
