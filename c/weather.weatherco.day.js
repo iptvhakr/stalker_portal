@@ -1,10 +1,14 @@
 /**
+ * @deprecated
  * Day weather in infoportal.
  * 
  */
 
 (function(){
-    
+
+    loader.next();
+    return;
+
     function WeathercoDayweatherConstructor(){
         
         this.layer_name = 'weatherco_dayweather';
@@ -160,5 +164,3 @@
     })
     
 })();
-
-loader.next();

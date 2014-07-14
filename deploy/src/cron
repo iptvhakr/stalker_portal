@@ -7,8 +7,8 @@
 0 4 * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_epg.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 10 0,2,6 * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_horoscope.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 1 */10 * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_course.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
-1,30 * * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_weatherco_fullcurrent.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
-10 * * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_weatherco_fullforecast.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
+1,30 * * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_weather_current.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
+10 * * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./update_weather_forecast.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 0 14 * * * root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./video_schedule.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 10 2 * * * root cd @STALKERD_INDEX_PATH@/server/tools/; php ./update_kinopoisk_rating.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log
 10 5 * * 1 root cd @STALKERD_INDEX_PATH@/server/tasks/; php ./cleanup_db.php 1>>/var/log/stalkerd/cron.log 2>>/var/log/stalkerd/cron_error.log

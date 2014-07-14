@@ -8,7 +8,5 @@ sleep(rand(0, 300));
 
 include "./common.php";
 
-$weather = new Weatherco();
+$weather = new Weather();
 $weather->updateFullCurrent();
-
-?>

@@ -2,7 +2,7 @@
 
 namespace Stalker\Lib\StbApi;
 
-interface Weatherco
+interface Weather
 {
     public function getCurrent();
 

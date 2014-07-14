@@ -22,6 +22,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     private $locale;
     private $country_id;
     public $city_id;
+    public $openweathermap_city_id;
     public $timezone;
     public static $server_timezone;
     public $timezone_diff = 0;
@@ -165,6 +166,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         return $this->user_agent;
     }
 
+    public function getStbLanguage(){
+        return $this->stb_lang;
+    }
+
     public function setParam($key, $value){
 
         if (!array_key_exists($key, $this->params)){
@@ -209,6 +214,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 $this->city_id = 0;
             }else{
                 $this->city_id = (empty($user['city_id']) && Config::exist('default_city_id')) ? Config::get('default_city_id') : intval($user['city_id']);
+            }
+
+            if (Config::getSafe('default_openweathermap_city_id', 0) == 0 && $user['openweathermap_city_id'] == 0){
+                $this->openweathermap_city_id = 0;
+            }else{
+                $this->openweathermap_city_id = (empty($user['openweathermap_city_id']) && Config::exist('default_openweathermap_city_id')) ? Config::get('default_openweathermap_city_id') : intval($user['openweathermap_city_id']);
             }
 
             $this->country_id = !$this->city_id ? 0 : intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
@@ -1426,9 +1437,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $locale  = $_REQUEST['locale'];
         $city_id = intval($_REQUEST['city']);
 
+        $weather = new Weather();
+
         if (in_array($locale, Config::get('allowed_locales'))){
 
-            return $this->db->update('users', array('locale' => $locale, 'city_id' => $city_id), array('id' => $this->id));
+            return $this->db->update('users', array('locale' => $locale, $weather->getCityFieldName() => $city_id), array('id' => $this->id));
         }
 
         return false;
@@ -1575,6 +1588,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         return $result;
     }
 
+    /**
+     * @deprecated
+     * @return array
+     */
     public function searchCountries(){
 
         $search = $_REQUEST['search'];
@@ -1607,19 +1624,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $country_id = intval($_REQUEST['country_id']);
 
-        $result = array();
+        $weather = new Weather();
 
-        /// TRANSLATORS: don't translate this.
-        $cities = Mysql::getInstance()->from('cities')->where(array('country_id' => $country_id))->orderby('name_en')->get()->all();
-
-        foreach ($cities as $city){
-            $selected = ($this->city_id == $city['id'])? 1 : 0;
-            //$city_name = empty($city[_('city_name_field')]) ? $city['name_en'] : $city[_('city_name_field')];
-            $city_name = $city['name_en'];
-            $result[] = array('label' => $city_name , 'value' => $city['id'], 'timezone' => $city['timezone'], 'selected' => $selected);
-        }
-
-        return $result;
+        return $weather->getCities($country_id);
     }
 
     public function searchCities(){
@@ -1631,25 +1638,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return array();
         }
 
-        $cities = Mysql::getInstance()
-            ->select('id, name_en')
-            ->from('cities')
-            ->where(array('country_id' => $country_id))
-            ->like(array(
-                'name'    => iconv('windows-1251', 'utf-8', $search).'%',
-                'name_en' => $search.'%'
-            ), 'OR ')
-            ->limit(3)
-            ->get()
-            ->all();
+        $weather = new Weather();
 
-        $result = array();
-        
-        foreach ($cities as $city){
-            $result[] = array('label' => $city['name_en'] , 'value' => $city['id']);
-        }
-
-        return $result;
+        return $weather->getCities($country_id, $search);
     }
 
     public function getTimezones(){
