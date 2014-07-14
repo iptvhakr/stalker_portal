@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-06-27 15:44+0300\n"
-"PO-Revision-Date: 2014-06-27 15:44+0300\n"
+"POT-Creation-Date: 2014-07-14 12:46+0300\n"
+"PO-Revision-Date: 2014-07-14 12:46+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1043,7 +1043,7 @@ msgstr "завдання виконано"
 
 #: ../../../administrator/administrators.php:35
 msgid "Password can not be blank"
-msgstr ""
+msgstr "Канали з PVR"
 
 #: ../../../administrator/administrators.php:39
 #: ../../../administrator/administrators.php:64
@@ -1489,37 +1489,37 @@ msgid "Error: insufficient permissions for this action"
 msgstr "Помилка: недостатньо прав для даної дії"
 
 #: ../../../administrator/add_video.php:512 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:831
+#: ../../../lib/epg.class.php:842
 msgid "Sun"
 msgstr "Нд"
 
 #: ../../../administrator/add_video.php:513 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:831
+#: ../../../lib/epg.class.php:842
 msgid "Mon"
 msgstr "Пн"
 
 #: ../../../administrator/add_video.php:514 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:831
+#: ../../../lib/epg.class.php:842
 msgid "Tue"
 msgstr "Вт"
 
 #: ../../../administrator/add_video.php:515 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:831
+#: ../../../lib/epg.class.php:842
 msgid "Wed"
 msgstr "Ср"
 
 #: ../../../administrator/add_video.php:516 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:831
+#: ../../../lib/epg.class.php:842
 msgid "Thu"
 msgstr "Чт"
 
 #: ../../../administrator/add_video.php:517 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:831
+#: ../../../lib/epg.class.php:842
 msgid "Fri"
 msgstr "Пт"
 
 #: ../../../administrator/add_video.php:518 ../../../lib/gismeteo.class.php:29
-#: ../../../lib/epg.class.php:831
+#: ../../../lib/epg.class.php:842
 msgid "Sat"
 msgstr "Сб"
 
@@ -3071,8 +3071,8 @@ msgstr "на каналі"
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:474
-#: ../../../lib/stb.class.php:485
+#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:485
+#: ../../../lib/stb.class.php:496
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
 
@@ -3378,79 +3378,79 @@ msgstr "оренда закінчується через"
 msgid "Your STB is blocked.<br/> Call the provider."
 msgstr "Ваша приставка відключена.<br/> Зв'яжіться з провайдером."
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "JANUARY"
 msgstr "СІЧНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "FEBRUARY"
 msgstr "ЛЮТОГО"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "MARCH"
 msgstr "БЕРЕЗНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "APRIL"
 msgstr "КВІТНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "MAY"
 msgstr "ТРАВНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "JUNE"
 msgstr "ЧЕРВНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "JULY"
 msgstr "ЛИПНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "AUGUST"
 msgstr "СЕРПНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "SEPTEMBER"
 msgstr "ВЕРЕСНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "OCTOBER"
 msgstr "ЖОВТНЯ"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "NOVEMBER"
 msgstr "ЛИСТОПАДА"
 
-#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:835
+#: ../../../lang/stb.php:126 ../../../lib/epg.class.php:846
 msgid "DECEMBER"
 msgstr "ГРУДНЯ"
 
-#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:583
+#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:590
 msgid "SUNDAY"
 msgstr "НЕДІЛЯ"
 
-#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:583
+#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:590
 msgid "MONDAY"
 msgstr "ПОНЕДІЛОК"
 
-#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:583
+#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:590
 msgid "TUESDAY"
 msgstr "ВІВТОРОК"
 
-#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:583
+#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:590
 msgid "WEDNESDAY"
 msgstr "СЕРЕДА"
 
-#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:583
+#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:590
 msgid "THURSDAY"
 msgstr "ЧЕТВЕР"
 
-#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:583
+#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:590
 msgid "FRIDAY"
 msgstr "П'ЯТНИЦЯ"
 
-#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:583
+#: ../../../lang/stb.php:127 ../../../lib/epg.class.php:590
 msgid "SATURDAY"
 msgstr "СУБОТА"
 
@@ -4459,7 +4459,7 @@ msgstr "сьогодні"
 msgid "yesterday"
 msgstr "вчора"
 
-#: ../../../lib/stb.class.php:545
+#: ../../../lib/stb.class.php:556
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
@@ -4468,13 +4468,17 @@ msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас �
 msgid "DVB"
 msgstr ""
 
-#: ../../../lib/itv.class.php:1598
+#: ../../../lib/itv.class.php:608
+msgid "Channels with PVR"
+msgstr ""
+
+#: ../../../lib/itv.class.php:1608
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1608
+#: ../../../lib/itv.class.php:1618
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
@@ -4856,7 +4860,7 @@ msgstr "Йде запис"
 msgid "scheduled"
 msgstr "Заплановано"
 
-#: ../../../lib/weatherco.class.php:196 ../../../lib/weatherco.class.php:221
+#: ../../../lib/weatherco.class.php:131 ../../../lib/weatherco.class.php:156
 msgid "city_name_field"
 msgstr "name"
 
@@ -4895,12 +4899,12 @@ msgstr ""
 msgid "Exec time"
 msgstr ""
 
-#: ../../../lib/epg.class.php:480 ../../../lib/epg.class.php:567
-#: ../../../lib/epg.class.php:887
+#: ../../../lib/epg.class.php:480 ../../../lib/epg.class.php:574
+#: ../../../lib/epg.class.php:905
 msgid "%H:%i"
 msgstr ""
 
-#: ../../../lib/epg.class.php:798 ../../../lib/epg.class.php:799
-#: ../../../lib/epg.class.php:800 ../../../lib/epg.class.php:801
+#: ../../../lib/epg.class.php:809 ../../../lib/epg.class.php:810
+#: ../../../lib/epg.class.php:811 ../../../lib/epg.class.php:812
 msgid "H:i"
 msgstr ""

@@ -604,6 +604,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             array_unshift($genres, array('id' => 'dvb', 'title' => _('DVB')));
         }
 
+        if (Config::getSafe('show_pvr_filter_in_genres_list', false)){
+            array_unshift($genres, array('id' => 'pvr', 'title' => _('Channels with PVR')));
+        }
+
         array_unshift($genres, array('id' => '*', 'title' => $this->all_title));
 
         $genres = array_map(function($item){
@@ -792,11 +796,16 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             //$where['quality'] = $quality;
         }
         
-        if (@$_REQUEST['genre'] && @$_REQUEST['genre'] !== '*'){
+        if (!empty($_REQUEST['genre']) && $_REQUEST['genre'] !== '*' && $_REQUEST['genre'] !== 'pvr'){
             
             $genre = intval($_REQUEST['genre']);
             
             $where['tv_genre_id'] = $genre;
+        }elseif(!empty($_REQUEST['genre']) && $_REQUEST['genre'] == 'pvr'){
+            $where_or = array(
+                'allow_pvr' => 1,
+                'allow_local_pvr' => 1
+            );
         }
 
         if ((empty($_REQUEST['genre']) || $_REQUEST['genre'] == '*') && !Config::getSafe('show_adult_tv_channels_in_common_list', true)){
@@ -804,11 +813,17 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         }
         
         $offset = $this->getOffset($where);
-        
-        return $this->db
-                        ->from('itv')
-                        ->where($where)
-                        ->limit(self::max_page_items, $offset);
+
+        $this->db
+            ->from('itv')
+            ->where($where)
+            ->limit(self::max_page_items, $offset);
+
+        if (isset($where_or)){
+            $this->db->where($where_or, 'OR ');
+        }
+
+        return $this->db;
     }
     
     public function getOrderedList(){
