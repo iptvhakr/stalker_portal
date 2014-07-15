@@ -15,6 +15,9 @@ if (@$_GET['del'] && !empty($_GET['id'])){
 
     Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
+    $tv_archive = new TvArchive();
+    $tv_archive->deleteTasks(intval($_GET['id']));
+
     Mysql::getInstance()->delete('ch_links', array('ch_id' => intval($_GET['id'])));
     Mysql::getInstance()->delete('itv', array('id' => intval($_GET['id'])));
     header("Location: add_itv.php");
