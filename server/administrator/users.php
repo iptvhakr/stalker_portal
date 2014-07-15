@@ -589,6 +589,8 @@ while($arr = $users->next()){
     if ($arr['now_playing_type'] == 2 && $arr['storage_name']){
         $now_playing_content = '['.$arr['storage_name'].'] '.$now_playing_content;
     }
+
+    $status = check_keep_alive($arr['keep_alive']);
     
     echo "<tr>";
     //echo "<td class='list'>".$arr['id']."</td>\n";
@@ -600,10 +602,10 @@ while($arr = $users->next()){
     echo "<td class='list'>".$arr['ls']."</td>\n";
     echo "<td class='list'>".$arr['fname']."</td>\n";
     echo "<td class='list'>".$arr['tariff_plan_name']."</td>\n";
-    echo "<td class='list'>".get_cur_media($arr['now_playing_type'])."</td>\n";
-    echo "<td class='list'>".$now_playing_content."</td>\n";
+    echo "<td class='list'>".(!$status && Config::getSafe('hide_media_info_for_offline_stb', false) ? '--' : get_cur_media($arr['now_playing_type']))."</td>\n";
+    echo "<td class='list'>".(!$status && Config::getSafe('hide_media_info_for_offline_stb', false) ? '' : $now_playing_content)."</td>\n";
     echo "<td class='list'>".get_last_time($arr['now_playing_start'])."</td>\n";
-    echo "<td class='list'><b>".check_keep_alive_txt($arr['keep_alive'])."</b></td>\n";
+    echo "<td class='list'><b>".($status ? '<font color="Green">online</font>' : '<font color="Red">offline</font>')."</b></td>\n";
     echo "<td class='list' nowrap>";
     if (Admin::isActionAllowed() && !Config::getSafe('deny_change_user_status', false)){
         echo "<a href='users.php?id=".$arr['id']."&search=".@$_GET['search']."&action=cut_off'>".get_user_color($arr['id'])."</a>";
