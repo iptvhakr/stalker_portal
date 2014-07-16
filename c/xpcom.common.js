@@ -1850,6 +1850,8 @@ function common_xpcom(){
                     cur_place_num = 5;
                 }else if(this.cur_place == 'vclub'){
                     cur_place_num = 2;
+                }else if (this.cur_place == 'epg_simple' || this.cur_place == 'epg'){ // TV archive
+                    cur_place_num = 11;
                 }else{
                     cur_place_num = 1;
                 }
@@ -1868,7 +1870,7 @@ function common_xpcom(){
                     cur_place_num = 9;
                 }else if(this.cur_place == 'media_browser'){
                     cur_place_num = 10;
-                }else if (this.cur_place == 'epg_simple' || this.cur_place == 'epg'){
+                }else if (this.cur_place == 'epg_simple' || this.cur_place == 'epg'){ // TV archive
                     cur_place_num = 11;
                 }else if (this.cur_place == 'records'){
                     cur_place_num = 12;
