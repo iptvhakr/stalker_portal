@@ -1618,7 +1618,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
                 $message = sprintf(_("Channel %s set to active because at least one of its URLs became available."), $channel['number'].' '.$channel['name']);
 
-                mail(Config::get('administrator_email'), 'FreeTV monitoring report: channel enabled', $message);
+                mail(Config::get('administrator_email'), 'Channels monitoring report: channel enabled', $message);
             }
 
         }else if (empty($good_links) && $channel['monitoring_status'] == 1){
@@ -1628,7 +1628,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
                 $message = sprintf(_('Channel %s set to inactive because all its URLs are not available.'), $channel['number'].' '.$channel['name']);
 
-                mail(Config::get('administrator_email'), 'FreeTV monitoring report: channel disabled', $message);
+                mail(Config::get('administrator_email'), 'Channels monitoring report: channel disabled', $message);
             }
         }
 
