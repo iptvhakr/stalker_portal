@@ -8,43 +8,43 @@ class Openweathermap extends WeatherProvider
             'cloud' => 0,
         ),
         '02' => array( // few clouds
-            'cloud' => 1,
+            'cloud' => 10,
         ),
         '03' => array( // scattered clouds
-            'cloud' => 2,
+            'cloud' => 20,
         ),
         '04' => array( // broken clouds
-            'cloud' => 3,
+            'cloud' => 30,
         ),
         '09' => array( // shower rain
-            'cloud' => 4,
+            'cloud' => 40,
         ),
         '10' => array( // rain
-            'cloud' => 5,
+            'cloud' => 50,
         ),
         '11' => array( // thunderstorm
-            'cloud' => 6,
+            'cloud' => 60,
         ),
         '13' => array( // snow
-            'cloud' => 9,
+            'cloud' => 90,
         ),
         '50' => array( // mist
-            'cloud' => 3,
+            'cloud' => 30,
         ),
         '906' => array( // hail
-            'cloud' => 7,
+            'cloud' => 70,
         ),
         '611' => array( // sleet
-            'cloud' => 8,
+            'cloud' => 80,
         ),
         '612' => array( // shower sleet
-            'cloud' => 8,
+            'cloud' => 80,
         ),
         '621' => array( // shower snow
-            'cloud' => 10,
+            'cloud' => 100,
         ),
         '622' => array( // heavy shower snow
-            'cloud' => 10,
+            'cloud' => 100,
         )
     );
 
