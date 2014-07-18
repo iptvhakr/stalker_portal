@@ -197,7 +197,7 @@ abstract class AjaxResponse
 
             $message = sprintf(_("New claim on %s - %s (%s, id: %s). From %s"), $media_type, $type, $media_name, $id, $this->stb->mac);
 
-            mail(Config::get('administrator_email'), 'New claim on '.$media_type.' - '.$type, $message);
+            mail(Config::get('administrator_email'), 'New claim on '.$media_type.' - '.$type, $message, "Content-type: text/html; charset=UTF-8\r\n");
         }
         
         if (!empty($total_daily_claims)){
