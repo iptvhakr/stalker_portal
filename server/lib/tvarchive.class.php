@@ -137,9 +137,11 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         return Cache::getInstance()->get($key);
     }
 
-    public function getUrlByProgramId($program_id, $disable_overlap = false){
+    public function getUrlByProgramId($program_id, $disable_overlap = false, $program = array()){
 
-        $program = Epg::getById($program_id);
+        if (empty($program)){
+            $program = Epg::getById($program_id);
+        }
 
         //$task = $this->getTaskByChId($program['ch_id']);
         $task = $this->getLessLoadedTaskByChId($program['ch_id']);
@@ -204,16 +206,48 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $program = Epg::getByRealId($program_id);
 
         if (empty($program)){
-            return false;
-        }
 
-        $next = Mysql::getInstance()->from('epg')->where(array('ch_id' => $program['ch_id'], 'time>' => $program['time']))->orderby('time')->limit(1)->get()->first();
+            if (preg_match("/(\d+)_(\d+)/", $program_id, $match)){
+
+                $next = Mysql::getInstance()
+                    ->from('epg')
+                    ->where(
+                        array(
+                             'ch_id' => (int) $match[1],
+                             'time>' => date("Y-m-d H:i:s", (int) $match[2])
+                        )
+                    )
+                    ->orderby('time')
+                    ->limit(1)
+                    ->get()
+                    ->first();
+
+            }else{
+                return false;
+            }
+        }else{
+            $next = Mysql::getInstance()->from('epg')->where(array('ch_id' => $program['ch_id'], 'time>' => $program['time']))->orderby('time')->limit(1)->get()->first();
+        }
 
         if (empty($next)){
             return false;
         }
 
-        return $this->getUrlByProgramId($next['id'], true);
+        if ($next['time'] != $program['time_to'] && !isset($match)){
+
+            $program = array(
+                'name'    => '['._('Break in the program').']',
+                'ch_id'   => $next['ch_id'],
+                'time'    => $program['time_to'],
+                'time_to' => $next['time'],
+                'real_id' => $next['ch_id'].'_'.strtotime($program['time_to'])
+            );
+
+            return $this->getUrlByProgramId(0, true, $program);
+
+        }else{
+            return $this->getUrlByProgramId($next['id'], true);
+        }
     }
 
     /**
