@@ -274,7 +274,7 @@ echo "<center><table class='list' cellpadding='3' cellspacing='0' width='620'>\n
 echo "<tr>";
 echo "<td class='list'><b>"._('Time')."</b></td>\n";
 echo "<td class='list'><b>MAC</b></td>\n";
-echo "<td class='list'><b>"._('Action')."</b></td>\n";
+echo "<td class='list'><b>"._('Stb action')."</b></td>\n";
 echo "<td class='list'><b>"._('Parameter')."</b></td>\n";
 echo "</tr>\n";
 foreach($user_log as $arr){
