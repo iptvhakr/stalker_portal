@@ -70,6 +70,12 @@ var loader = {
     head : document.getElementsByTagName("head")[0],
     max_load_percent : 50,
     step : 0,
+    template : 'default',
+
+    set_template : function(template){
+        _debug('loader.set_template', template);
+        this.template = template;
+    },
     
     add : function(modules){
         _debug('loader.add');
@@ -104,14 +110,26 @@ var loader = {
         _debug('loader.append');
         
         stb.loader.add_pos(this.step, 'append '+module);
-        
+
+        this.append_style(module);
+
+        this.append_javascript(module);
+    },
+
+    append_style : function(module){
+        _debug('loader.append_style', module);
+
         var _style = document.createElement('link');
         _style.type = "text/css";
         _style.rel = "stylesheet";
-        _style.href = module + resolution_prefix +".css";
+        _style.href = 'template/' + this.template + '/' + module + resolution_prefix +".css";
         this.head.appendChild(_style);
         _debug('append', _style.href);
-        
+    },
+
+    append_javascript : function(module){
+        _debug('loader.append_javascript', module);
+
         var _script = document.createElement('script');
         _script.type = "text/javascript";
         _script.src  = module + ".js";
@@ -244,7 +262,7 @@ function init(){
 
 </head>
 <body>
-<img src="i/loading_bg.gif" width="0" height="0"/>
-<img src="i/loading.png" width="0" height="0"/>
+<!--<img src="i/loading_bg.gif" width="0" height="0"/>
+<img src="i/loading.png" width="0" height="0"/>-->
 </body>
 </html>

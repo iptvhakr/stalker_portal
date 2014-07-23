@@ -894,15 +894,17 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $gmode = $_REQUEST['gmode'];
 
         $prefix = $gmode ? '_'.$gmode : '';
+
+        $template = Mysql::getInstance()->from('settings')->get()->first('default_template');
         
-        $dir = PROJECT_PATH.'/../c/i'.$prefix.'/';
+        $dir = PROJECT_PATH.'/../c/template/'.$template.'/i'.$prefix.'/';
         $files = array();
 
         if (is_dir($dir)) {
             if ($dh = opendir($dir)) {
                 while (($file = readdir($dh)) !== false) {
                     if (is_file($dir.$file)){
-                        $files[] = 'i'.$prefix.'/'.$file;
+                        $files[] = 'template/'.$template.'/i'.$prefix.'/'.$file;
                     }
                 }
                 closedir($dh);
@@ -1305,15 +1307,18 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         
         return 1;
     }
-    
+
     public function getModules(){
+
+        $template = Mysql::getInstance()->from('settings')->get()->first('default_template');
 
         return array(
             'all_modules'        => Config::get('all_modules'),
             'switchable_modules' => Config::get('disabled_modules'),
             'disabled_modules'   => $this->getDisabledModules(),
-            'restricted_modules' => $this->getRestrictedModules()
-            );
+            'restricted_modules' => $this->getRestrictedModules(),
+            'template'           => $template
+        );
     }
 
     private function getDisabledModules(){

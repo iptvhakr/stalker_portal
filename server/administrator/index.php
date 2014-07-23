@@ -488,6 +488,11 @@ $cur_infoportal = get_cur_infoportal();
     <td width="6%">&nbsp;</td>
     <td width="47%" align="center"><? if (Admin::isAccessAllowed('stream_servers')){?><a href="stream_servers.php"><?= _('Stream servers')?></a><?}?></td>
   </tr>
+  <tr>
+    <td width="47%" align="center"><? if (Admin::isAccessAllowed('themes')){?><a href="themes.php"><?= _('Themes')?></a><?}?></td>
+    <td width="6%">&nbsp;</td>
+    <td width="47%" align="center">&nbsp;</td>
+  </tr>
 </table>
 </body>
 </html>

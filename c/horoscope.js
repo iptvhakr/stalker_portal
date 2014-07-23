@@ -38,7 +38,7 @@
             
             for (var i=0; i<=2; i++){
                 var li = document.createElement('li');
-                li.style.background = 'url(i'+resolution_prefix+'/horoscope_menu_button_1_' + (i+1) + '_a.png)';
+                li.style.background = 'url(template/'+loader.template+'/i'+resolution_prefix+'/horoscope_menu_button_1_' + (i+1) + '_a.png)';
                 menu.appendChild(li);
                 this.menu_map.push(li);
             }
@@ -130,9 +130,9 @@
                     letter = 'b';
                 }
                 
-                _debug('url(i'+ resolution_prefix +'/horoscope_menu_button_1_' + this.items_map[i] + '_' + letter +'.png)');
+                _debug('url(template/'+loader.template+'/i'+ resolution_prefix +'/horoscope_menu_button_1_' + this.items_map[i] + '_' + letter +'.png)');
                 
-                this.menu_map[i].style.background = 'url(i' + resolution_prefix + '/horoscope_menu_button_1_' + this.items_map[i] + '_' + letter +'.png)';
+                this.menu_map[i].style.background = 'url(template/'+loader.template+'/i' + resolution_prefix + '/horoscope_menu_button_1_' + this.items_map[i] + '_' + letter +'.png)';
             }
         };
         

@@ -367,6 +367,11 @@ function common_xpcom(){
                     return self.disabled_modules.indexOf(module) == -1;
                 });
 
+                loader.set_template(result.template);
+
+                loader.append_style('load_bar');
+                loader.append_style('blocking');
+
                 loader.add(this.all_modules);
             },
 
@@ -764,6 +769,7 @@ function common_xpcom(){
             },
 
             function(result){
+                _debug('on get_preload_images', result);
                 if (result != null){
                     for (var i=0; i<result.length; i++){
                         stb.images[i] = new Image();

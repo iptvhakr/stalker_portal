@@ -24,7 +24,7 @@ load_bar.prototype.init = function(){
     var _style = document.createElement('link');
     _style.type = "text/css";
     _style.rel = "stylesheet";
-    _style.href = 'load_bar' + resolution_prefix+".css";
+    _style.href = 'template/default/load_bar' + resolution_prefix+".css";
     document.getElementsByTagName("head")[0].appendChild(_style);
 
     this.dom_obj = create_block_element('loader');

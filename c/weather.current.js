@@ -60,7 +60,7 @@
                 this.dom_obj.show();
             }
             
-            var cur = '<div class="curweather_img"><img src="i' + resolution_prefix + '/' + this.current.pict + '"/></div>';
+            var cur = '<div class="curweather_img"><img src="template/' + loader.template + '/i' + resolution_prefix + '/' + this.current.pict + '"/></div>';
             cur += '<div class="city">' + this.current.city + '</div>';
             cur += '<div class="curweather_descr">' + this.current.t +'&deg; C<br>';
             cur += this.current.cloud_str + '<br>';

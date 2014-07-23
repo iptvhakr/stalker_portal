@@ -147,7 +147,7 @@ class Middleware
     /**
      * Clean perhaps "dirty" array of mac addresses
      *
-     * @param array $mac
+     * @param array $macs
      * @return array clean mac address array
      */
     public static function normalizeMacArray($macs){
@@ -178,6 +178,29 @@ class Middleware
                               'type' => $type
                           ));
     }
-}
 
-?>
+    public static function getThemes(){
+
+        $path = realpath(PROJECT_PATH.'/../c/template/');
+
+        if (!$path){
+            return array();
+        }
+
+        $items = scandir($path);
+
+        if (!$items){
+            return array();
+        }
+
+        $themes = array();
+
+        foreach ($items as $item){
+            if ($item != '.' && $item != '..' && is_dir($path.'/'.$item)){
+                $themes[] = $item;
+            }
+        }
+
+        return $themes;
+    }
+}
