@@ -215,7 +215,7 @@ class Openweathermap extends WeatherProvider
                 'max' => round($content['main']['temp_max'])
             );
         }elseif (isset($content['main']['temp'])){
-            $weather['t'] = $content['main']['temp'];
+            $weather['t'] = round($content['main']['temp']);
         }
 
         if (isset($content['main']['pressure'])){
