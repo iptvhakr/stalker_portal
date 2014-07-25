@@ -21,6 +21,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public $lang;
     private $locale;
     private $country_id;
+    private $openweathermap_country_id;
     public $city_id;
     public $openweathermap_city_id;
     public $timezone;
@@ -223,6 +224,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
 
             $this->country_id = !$this->city_id ? 0 : intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
+
+            $this->openweathermap_country_id = !$this->openweathermap_city_id ? 0 : intval(Mysql::getInstance()->from('all_cities')->where(array('id' => $this->openweathermap_city_id))->get()->first('country_id'));
 
             $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
 
@@ -1586,7 +1589,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $countries = Mysql::getInstance()->from('countries')->orderby('name_en')->get()->all();
 
         foreach ($countries as $country){
-            $selected = ($this->country_id == $country['id'])? 1 : 0;
+            if (Config::getSafe('weather_provider', 'openweathermap') == 'openweathermap'){
+                $selected = ($this->openweathermap_country_id == $country['id'])? 1 : 0;
+            }else{
+                $selected = ($this->country_id == $country['id'])? 1 : 0;
+            }
             $result[] = array('label' => $country['name_en'], 'value' => $country['id'], 'selected' => $selected);
         }
 

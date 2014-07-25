@@ -294,8 +294,6 @@ class Openweathermap extends WeatherProvider
             );
         }
 
-        $tod_arr   = array(3 => 'Night', 9 => 'Morning', 15 => 'Day', 21=> 'Evening');
-
         $city  = Mysql::getInstance()->from('all_cities')->where(array('id' => $city_id))->get()->first();
 
         $weather['city'] = $city[Stb::getInstance()->getStbLanguage() == 'ru' ? 'name_ru' : 'name'];
@@ -305,12 +303,12 @@ class Openweathermap extends WeatherProvider
 
             $that = $this;
 
-            $weather['forecast'] = array_map(function($day) use ($tod_arr, $that, $target_timezone){
+            $weather['forecast'] = array_map(function($day) use ($that, $target_timezone){
 
                     $date = new DateTime('@'.$day['dt'], new DateTimeZone('UTC'));
                     $date->setTimeZone(new DateTimeZone($target_timezone));
 
-                    $day['title'] = _($tod_arr[$date->format('G')]).' '.$date->format('j').' '._($date->format('M')).', '._($date->format('D'));
+                    $day['title'] = _($that->getDayPart($date->format('G'))).' '.$date->format('j').' '._($date->format('M')).', '._($date->format('D'));
 
                     $day['cloud_str']  = _($day['cloud_str']);
 
@@ -362,27 +360,12 @@ class Openweathermap extends WeatherProvider
         $weather['city_id'] = $id;
         $weather['forecast'] = array();
 
-        $target_timezone = Mysql::getInstance()
-            ->from('all_cities')
-            ->where(array('id' => $id))
-            ->get()
-            ->first('timezone');
-
         if ($content && !empty($content['list'])){
-
-            $date = new DateTime('@'.$content['list'][0]['dt'], new DateTimeZone('UTC'));
-            $date->setTimeZone(new DateTimeZone($target_timezone));
-
-            if (!in_array(intval($date->format('G')), array(3,9,15,21))){
-                $add_idx = 1;
-            }else{
-                $add_idx = 0;
-            }
 
             $indexes = array();
 
             for ($i=0; $i<4; $i++){
-                $indexes[] = $i * 2 + $add_idx;
+                $indexes[] = $i * 2 + 1;
             }
 
             foreach ($indexes as $idx){
@@ -471,5 +454,19 @@ class Openweathermap extends WeatherProvider
 
     public function getCityFieldName(){
         return 'openweathermap_city_id';
+    }
+
+    public function getDayPart($hour){
+        if ($hour >= 6 && $hour < 12){
+            return 'Morning';
+        }elseif ($hour >= 12 && $hour < 18){
+            return 'Day';
+        }elseif ($hour >= 18 && $hour < 24){
+            return 'Evening';
+        }elseif ($hour >= 0 && $hour < 6){
+            return 'Night';
+        }else{
+            return '';
+        }
     }
 }
