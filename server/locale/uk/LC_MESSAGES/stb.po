@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-07-18 12:48+0300\n"
-"PO-Revision-Date: 2014-07-18 12:48+0300\n"
+"POT-Creation-Date: 2014-07-25 13:41+0300\n"
+"PO-Revision-Date: 2014-07-25 13:42+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,6 +40,7 @@ msgstr "Реклама в Відео клубі"
 #: ../../../administrator/karaoke_archive.php:70
 #: ../../../administrator/add_epg.php:275
 #: ../../../administrator/stat_video_users.php:69
+#: ../../../administrator/themes.php:99
 #: ../../../administrator/administrators.php:146
 #: ../../../administrator/tariffs.php:292
 #: ../../../administrator/stat_not_active_users.php:69
@@ -170,6 +171,7 @@ msgstr "Заборонити для відео категорій"
 #: ../../../administrator/stream_zones.php:88
 #: ../../../administrator/testers.php:68
 #: ../../../administrator/add_epg.php:410
+#: ../../../administrator/themes.php:139
 #: ../../../administrator/administrators.php:90
 #: ../../../administrator/tariffs.php:91
 #: ../../../administrator/city_info.php:246
@@ -496,6 +498,7 @@ msgid "Time"
 msgstr "Час"
 
 #: ../../../administrator/userlog.php:403
+#: ../../../administrator/all_userlog.php:277
 #: ../../../administrator/videolog.php:128
 msgid "Stb action"
 msgstr "Дія"
@@ -681,6 +684,11 @@ msgstr "Автоматичне оновлення прошивки"
 #: ../../../administrator/storages.php:182
 msgid "Storages"
 msgstr "Сховище інформації"
+
+#: ../../../administrator/index.php:492 ../../../administrator/themes.php:71
+#: ../../../administrator/themes.php:94
+msgid "Templates"
+msgstr "Зовнішній вигляд"
 
 #: ../../../administrator/help_city_info.php:106
 #: ../../../administrator/help_city_info.php:112
@@ -878,12 +886,6 @@ msgstr "Повідомлення"
 msgid "All users log"
 msgstr "Усі логи користувачів"
 
-#: ../../../administrator/all_userlog.php:277
-#: ../../../administrator/myvideolog.php:149
-#: ../../../tools/misctranslations.php:70
-msgid "Action"
-msgstr "Бойовик"
-
 #: ../../../administrator/stream_zones.php:10
 #: ../../../administrator/testers.php:10
 #: ../../../administrator/administrators.php:9
@@ -1040,6 +1042,18 @@ msgstr "пошук по mac"
 #: ../../../administrator/close_task.php:25
 msgid "task done"
 msgstr "завдання виконано"
+
+#: ../../../administrator/themes.php:85 ../../../lang/stb.php:41
+msgid "not found"
+msgstr "не знайдено"
+
+#: ../../../administrator/themes.php:120
+msgid "Theme"
+msgstr "Тема"
+
+#: ../../../administrator/themes.php:132
+msgid "Preview"
+msgstr "Попередній перегляд"
 
 #: ../../../administrator/administrators.php:35
 msgid "Password can not be blank"
@@ -1398,6 +1412,11 @@ msgstr "Відео лог"
 #: ../../../administrator/videolog.php:129
 msgid "Moderator"
 msgstr "Модератор"
+
+#: ../../../administrator/myvideolog.php:149
+#: ../../../tools/misctranslations.php:70
+msgid "Action"
+msgstr "Бойовик"
 
 #: ../../../administrator/stream_servers.php:143
 msgid "Zones"
@@ -3071,8 +3090,8 @@ msgstr "на каналі"
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:485
-#: ../../../lib/stb.class.php:496
+#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:488
+#: ../../../lib/stb.class.php:499
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
 
@@ -3172,10 +3191,6 @@ msgstr "підключено"
 #: ../../../lang/stb.php:40
 msgid "disconnected"
 msgstr "відключено"
-
-#: ../../../lang/stb.php:41
-msgid "not found"
-msgstr "не знайдено"
 
 #: ../../../lang/stb.php:43
 msgid "USB drive"
@@ -4459,7 +4474,7 @@ msgstr "сьогодні"
 msgid "yesterday"
 msgstr "вчора"
 
-#: ../../../lib/stb.class.php:556
+#: ../../../lib/stb.class.php:559
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
@@ -4864,7 +4879,7 @@ msgstr "Заплановано"
 msgid "city_name_field"
 msgstr "name"
 
-#: ../../../lib/tvarchive.class.php:221
+#: ../../../lib/tvarchive.class.php:239
 msgid "Break in the program"
 msgstr "Розрив у програмі"
 
@@ -4912,3 +4927,6 @@ msgstr ""
 #: ../../../lib/epg.class.php:811 ../../../lib/epg.class.php:812
 msgid "H:i"
 msgstr ""
+
+#~ msgid "Themes"
+#~ msgstr "Шаблони"

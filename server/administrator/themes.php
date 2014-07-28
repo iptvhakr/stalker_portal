@@ -68,7 +68,7 @@ $themes = Middleware::getThemes();
             text-decoration:underline;
         }
     </style>
-    <title><?= _('Themes')?></title>
+    <title><?= _('Templates')?></title>
 
     <script src="js/jquery-1.7.1.min.js"></script>
 
@@ -91,7 +91,7 @@ $themes = Middleware::getThemes();
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="700">
     <tr>
         <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
-            <font size="5px" color="White"><b>&nbsp;<?= _('Themes')?>&nbsp;</b></font>
+            <font size="5px" color="White"><b>&nbsp;<?= _('Templates')?>&nbsp;</b></font>
         </td>
     </tr>
     <tr>
