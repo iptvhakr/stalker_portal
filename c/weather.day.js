@@ -123,9 +123,10 @@
                 if (data[i].h){
                     descr += '<div class="day_weather_sub">' + word['weather_humidity'].toLowerCase() + ': ' + (data[i].h.hasOwnProperty('min') ? data[i].h.min + '-' + data[i].h.max : data[i].h) + '%</div> ';
                 }
-                descr += '<div class="day_weather_sub" style="float: left; margin-left: 5px">' + word['dayweather_wind'] + '</div> ';
-                descr += '<div class="wind_direction_'+data[i].w_rumb_str+'">&uarr;</div>';
-                descr += '<div style="float:left;margin-left: 2px"> ' + (data[i].wind.hasOwnProperty('min') ? data[i].wind.min + '-' + data[i].wind.max  : data[i].wind) + ' <span class="day_weather_sub">' + word['dayweather_speed'] + '</span></div>';
+                descr += '<div class="day_weather_sub" style="margin-left: 5px">' + word['dayweather_wind'];
+                descr += '<span class="wind_direction_'+data[i].w_rumb_str+'">&uarr;</span>';
+                descr += '<span style="margin-left: 2px"> ' + (data[i].wind.hasOwnProperty('min') ? data[i].wind.min + '-' + data[i].wind.max  : data[i].wind) + ' <span class="day_weather_sub">' + word['dayweather_speed'] + '</span></span>';
+                descr += '</div>';
 
                 this.map[i].descr.innerHTML = descr;
 

@@ -90,49 +90,49 @@
 
 .weather_forecast .wind_direction_N{
     -webkit-transform: rotate(180deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
 .weather_forecast .wind_direction_NE{
     -webkit-transform: rotate(225deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
 .weather_forecast .wind_direction_E{
     -webkit-transform: rotate(270deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
 .weather_forecast .wind_direction_SE{
     -webkit-transform: rotate(315deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
 .weather_forecast .wind_direction_S{
     -webkit-transform: rotate(0deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
 .weather_forecast .wind_direction_SW{
     -webkit-transform: rotate(45deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
 .weather_forecast .wind_direction_W{
     -webkit-transform: rotate(90deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
 .weather_forecast .wind_direction_NW{
     -webkit-transform: rotate(135deg);
-    float: left;
+    display: inline-block;
     margin: 0 5px 0 8px;
 }
 
