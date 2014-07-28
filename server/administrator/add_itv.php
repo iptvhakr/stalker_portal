@@ -1363,8 +1363,8 @@ function save(){
     }
     
     //alert(action)
-    form_.action = action;
-    form_.method = 'POST';
+    form_.setAttribute('action', action);
+    form_.setAttribute('method', 'POST');
     //document.location=action
     form_.submit()
 }
