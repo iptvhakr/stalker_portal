@@ -1477,15 +1477,14 @@ function hint(){
 }
 
 function save(){
-    form_ = document.getElementById('form_')
+    var form_ = document.getElementById('form_');
 
-    name = document.getElementById('name').value
+    var name = document.getElementById('name').value;
 
-    id = document.getElementById('id').value
-    description = document.getElementById('description').value
+    var id = document.getElementById('id').value;
+    var description = document.getElementById('description').value;
 
-    action = 'add_video.php?name='+name+'&id='+id+'&letter=<? echo @$_GET['letter'] ?>&search=<? echo @$_GET['search']?>&page=<? echo @$_GET['page'] ?>'
-
+    var action = 'add_video.php?name='+name+'&id='+id+'&letter=<? echo @$_GET['letter'] ?>&search=<? echo @$_GET['search']?>&page=<? echo @$_GET['page'] ?>';
 
     if(document.getElementById('action').value == 'edit'){
         action += '&update=1'
@@ -1494,9 +1493,9 @@ function save(){
         action += '&save=1'
     }
 
-    form_.action = action
-    form_.method = 'POST'
-    form_.submit()
+    form_.setAttribute('action', action);
+    form_.setAttribute('method', 'POST');
+    form_.submit();
 }
 
 function genre_proc(num){

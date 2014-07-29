@@ -235,9 +235,9 @@ function sub(form){
 
 
     var form_ = document.getElementById('sub_form');
-    
-    form_.action = form_.action +'?save=1';
-    form_.method = 'POST';
+
+    form_.setAttribute('action', form_.action +'?save=1');
+    form_.setAttribute('method', 'POST');
     form_.submit();
 }
 </script>

@@ -740,11 +740,9 @@ function save(){
     else{
         action += '&save=1'
     }
-    
-    //alert(action)
-    form_.action = action
-    form_.method = 'POST'
-    //document.location=action
+
+    form_.setAttribute('action', action);
+    form_.setAttribute('method', 'POST');
     form_.submit()
 }
 

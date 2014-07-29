@@ -210,9 +210,9 @@ function save(){
     else{
         action += '&save=1'
     }
-    
-    form_.action = action;
-    form_.method = 'POST';
+
+    form_.setAttribute('action', action);
+    form_.setAttribute('method', 'POST');
     form_.submit()
 }
 

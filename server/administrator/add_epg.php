@@ -322,7 +322,7 @@ function save(){
     }
     
     //alert(action)
-    form.action = action;
+    form.setAttribute('action', action);
     document.location=action;
     //form.submit()
 }
@@ -347,7 +347,7 @@ function save_epg(){
     action = 'add_epg.php?id='+id+'&yy='+yy+'&mm='+mm+'&dd='+dd+'&save=1';
     //alert(action)
     //document.location=action
-    form.action = action;
+    form.setAttribute('action', action);
     form.submit()
 }
 </script>
