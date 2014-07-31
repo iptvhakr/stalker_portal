@@ -1199,9 +1199,11 @@ function common_xpcom(){
             return;
         }
 
-        this.player.init_first_channel();
+        if (module.tv){
+            this.player.init_first_channel();
+        }
 
-        if (this.user['display_menu_after_loading'] || !this.player.channels || this.player.channels.length == 0){
+        if (this.user['display_menu_after_loading'] || !this.player.channels || this.player.channels.length == 0 || !module.tv){
             main_menu.show();
             this.on_first_menu_show();
         }else{

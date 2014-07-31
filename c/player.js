@@ -2007,7 +2007,7 @@ player.prototype.play = function(item){
     }
 
     _debug('stb.profile[plasma_saving]', stb.profile['plasma_saving']);
-    _debug('module.tv.on', module.tv.on);
+    _debug('module.tv.on', module.tv && module.tv.on);
 
     if(this.is_tv && module.tv && module.tv.on && stb.profile['plasma_saving'] === '1'){
         module.tv.start_tv_plasma_saving_count();
