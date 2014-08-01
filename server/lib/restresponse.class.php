@@ -74,7 +74,7 @@ class RESTResponse
                 }
 
                 $body = array_reduce($channels, function($prev, $curr){
-                    return $prev.$curr['id'].' '.$curr['url']."\n";
+                    return $prev.$curr['id'].' '.$curr['url'].(isset($curr['type']) ? ' '.$curr['type'] : '')."\n";
                 }, '');
 
                 header("Content-Type: text/plain");

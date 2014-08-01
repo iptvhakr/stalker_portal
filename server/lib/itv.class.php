@@ -1632,7 +1632,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             }
         }
 
-        return Mysql::getInstance()->update('itv', array('monitoring_status_updated' => 'NOW()'), array('id' => $ch_id));
+        return Mysql::getInstance()->update('itv', array('monitoring_status_updated' => 'NOW()'), array('id' => $ch_id))->result();
     }
 
     public function getLinksForMonitoring(){
@@ -1701,6 +1701,12 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 $cmd['url'] = $cmd['monitoring_url'];
             }else if (preg_match("/(\S+:\/\/\S+)/", $cmd['url'], $match)){
                 $cmd['url'] = $match[1];
+            }
+
+            if ($cmd['flussonic_tmp_link']){
+                $cmd['type'] = 'flussonic_health';
+            }else{
+                $cmd['type'] = 'stream';
             }
 
             return $cmd;
