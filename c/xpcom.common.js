@@ -1087,7 +1087,7 @@ function common_xpcom(){
                     this.user['sec_audio_lang']
                 );
 
-                if (!this.user['pri_subtitle_lang']){
+                if (!this.user['pri_subtitle_lang'] && !this.user['sec_subtitle_lang'] && stb.profile['always_enabled_subtitles']){
                     this.user['pri_subtitle_lang'] = this.user['pri_audio_lang'];
                     this.user['sec_subtitle_lang'] = this.user['sec_audio_lang'];
                 }

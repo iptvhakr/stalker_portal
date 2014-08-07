@@ -304,8 +304,21 @@ player.prototype.set_subtitle_langs = function(pri_lang, sec_lang){
     _debug('pri_lang', pri_lang);
     _debug('sec_lang', sec_lang);
 
+    if (!pri_lang && sec_lang){
+        pri_lang = sec_lang;
+    }else if (!sec_lang && pri_lang){
+        sec_lang = pri_lang;
+    }
+
     try{
-        stb.SetSubtitleLangs(pri_lang, sec_lang);
+        if (!pri_lang){
+            this.subtitle_pid.disable();
+            stb.profile['always_enabled_subtitles'] = 0;
+        }else{
+            this.subtitle_pid.enable();
+            stb.profile['always_enabled_subtitles'] = 1;
+            stb.SetSubtitleLangs(pri_lang, sec_lang);
+        }
     }catch(e){
         _debug(e);
     }

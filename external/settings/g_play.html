@@ -333,13 +333,16 @@
 
         for (var i=0; i < iso639.length; i++){
             options[options.length] = iso639[i].code[0];
-            //options[options.length] = iso639[i].id + (iso639[i].nativeName ? ' ('+iso639[i].nativeName+')' : '');
             options[options.length] = iso639[i].id;
         }
 
-        menuT = menuT.map(function(item){
-            return item.concat(options);
-        });
+        menuT[0] = menuT[0].concat(options);
+        menuT[1] = menuT[1].concat(options);
+
+        options.unshift('', 'Off');
+
+        menuT[2] = menuT[2].concat(options);
+        menuT[3] = menuT[3].concat(options);
 
         var mid = menuT.length + 2;
         var pread = [0,1,2,3];
@@ -367,6 +370,11 @@
                 pri_subtitle_lang : document.getElementById("i3").value,
                 sec_subtitle_lang : document.getElementById("i4").value
             };
+
+            parent._GET['pri_audio_lang']    = parent.prof.pri_audio_lang    = save_data['pri_audio_lang'];
+            parent._GET['sec_audio_lang']    = parent.prof.sec_audio_lang    = save_data['sec_audio_lang'];
+            parent._GET['pri_subtitle_lang'] = parent.prof.pri_subtitle_lang = save_data['pri_subtitle_lang'];
+            parent._GET['sec_subtitle_lang'] = parent.prof.sec_subtitle_lang = save_data['sec_subtitle_lang'];
 
             save_data.type   = "stb";
             save_data.action = "set_lang_priority";
