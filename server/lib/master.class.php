@@ -798,7 +798,7 @@ abstract class Master
      *
      * @param string $storage_name
      */
-    private function incrementStorageDeny($storage_name){
+    protected function incrementStorageDeny($storage_name){
         
         $storage = $this->db->from('storage_deny')->where(array('name' => $storage_name))->get()->first();
         
@@ -922,6 +922,16 @@ class MasterException extends Exception{
 
     public function getStorageName(){
         return $this->storage_name;
+    }
+
+}
+
+class StorageSessionLimitException extends MasterException{
+
+    public $message = 'Session limit';
+
+    public function __construct($storage_name){
+        $this->storage_name = $storage_name;
     }
 
 }

@@ -32,6 +32,8 @@ class RESTApiEpgLink extends RESTApiController
         try{
             $archive = new \TvArchive();
             $url = $archive->getUrlByProgramId(intval($epg['id']));
+        }catch(\StorageSessionLimitException $e){
+            throw new RESTTemporaryUnavailable("Session limit");
         }catch(\Exception $e){
             throw new RESTServerError("Failed to obtain url");
         }

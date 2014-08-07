@@ -32,7 +32,13 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $program = Epg::getById($program_id);
 
-        $task = $this->getLessLoadedTaskByChId($program['ch_id']);
+        try{
+            $task = $this->getLessLoadedTaskByChId($program['ch_id']);
+        }catch (StorageSessionLimitException $e){
+            $res['error']        = 'limit';
+            $res['storage_name'] = $e->getStorageName();
+            return $res;
+        }
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
 
@@ -143,7 +149,6 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             $program = Epg::getById($program_id);
         }
 
-        //$task = $this->getTaskByChId($program['ch_id']);
         $task = $this->getLessLoadedTaskByChId($program['ch_id']);
 
         $overlap = Config::getSafe('tv_archive_playback_overlap', 0) * 60;
@@ -233,20 +238,26 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             return false;
         }
 
-        if ($next['time'] != $program['time_to'] && !isset($match)){
+        try{
 
-            $program = array(
-                'name'    => '['._('Break in the program').']',
-                'ch_id'   => $next['ch_id'],
-                'time'    => $program['time_to'],
-                'time_to' => $next['time'],
-                'real_id' => $next['ch_id'].'_'.strtotime($program['time_to'])
-            );
+            if ($next['time'] != $program['time_to'] && !isset($match)){
 
-            return $this->getUrlByProgramId(0, true, $program);
+                $program = array(
+                    'name'    => '['._('Break in the program').']',
+                    'ch_id'   => $next['ch_id'],
+                    'time'    => $program['time_to'],
+                    'time_to' => $next['time'],
+                    'real_id' => $next['ch_id'].'_'.strtotime($program['time_to'])
+                );
 
-        }else{
-            return $this->getUrlByProgramId($next['id'], true);
+                return $this->getUrlByProgramId(0, true, $program);
+
+            }else{
+                return $this->getUrlByProgramId($next['id'], true);
+            }
+
+        }catch (StorageSessionLimitException $e){
+            return false;
         }
     }
 
@@ -275,8 +286,8 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $ch_id = intval($_REQUEST['ch_id']);
 
-        //$task = $this->getTaskByChId($ch_id);
-        $task = $this->getLessLoadedTaskByChId($ch_id);
+        $task = $this->getLessLoadedTaskByChId($ch_id, true);
+
         $storage = Master::getStorageByName($task['storage_name']);
 
         //$channel = Itv::getChannelById($ch_id);
@@ -335,7 +346,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         return Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->first();
     }
 
-    private function getLessLoadedTaskByChId($ch_id){
+    private function getLessLoadedTaskByChId($ch_id, $ignore_session_limit = false){
 
         $tasks = Mysql::getInstance()->from('tv_archive')->where(array('ch_id' => $ch_id))->get()->all();
 
@@ -359,6 +370,11 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         }
 
         var_dump($tasks_map, $intersection);
+
+        if ($this->storages[$intersection[0]]['load'] >= 1 && !$ignore_session_limit){
+            $this->incrementStorageDeny($intersection[0]);
+            throw new StorageSessionLimitException($intersection[0]);
+        }
 
         return $tasks_map[$intersection[0]];
     }

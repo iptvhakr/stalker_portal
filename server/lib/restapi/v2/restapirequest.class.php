@@ -175,3 +175,7 @@ class RESTNotAcceptable extends RESTRequestException{
 class RESTServerError extends RESTRequestException{
     protected $code = "500 Internal Server Error";
 }
+
+class RESTTemporaryUnavailable extends RESTRequestException{
+    protected $code = "503 Service Unavailable";
+}
