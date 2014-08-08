@@ -314,7 +314,7 @@
         
         this.hide = function(do_not_reset){
             
-            _debug('vclub.hide');
+            _debug('vclub.hide', do_not_reset);
             
             if(!do_not_reset){
                 this.search_box && this.search_box.reset && this.search_box.reset();
@@ -332,6 +332,10 @@
             this.storage_switch.on && this.storage_switch.hide && this.storage_switch.hide();
 
             stb.player.pause && stb.player.pause.on && stb.player.hide_pause();
+
+            if (!do_not_reset && stb.player.on){
+                stb.player.stop && stb.player.stop();
+            }
 
             this.clear_short_info();
             
