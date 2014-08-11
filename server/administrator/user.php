@@ -156,7 +156,7 @@ if (!empty($_POST)){
                     </tr>
                     <tr>
                         <td><?= _('Account disabled')?></td>
-                        <td><input type="checkbox" name="status" value="1"></td>
+                        <td><input type="checkbox" name="status" value="0"></td>
                     </tr>
                     <tr>
                         <td><?= _('Tariff plan')?></td>
