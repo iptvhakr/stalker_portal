@@ -118,14 +118,26 @@
             }
         };
         
-        this.show = function(){
-            _debug('epg.show');
+        this.show = function(player_overlay_mode){
+            _debug('epg.show', player_overlay_mode);
             
             this.cur_page = 0;
             
             this.parent.on = false;
             
             this.set_date_period();
+
+            this.player_overlay_mode = player_overlay_mode;
+
+            if (player_overlay_mode){
+                this.dom_obj.style.background = 'none';
+                this.color_buttons.buttons_bar.hide();
+                this.header_path.hide();
+            }else{
+                this.dom_obj.style.background = '';
+                this.color_buttons.buttons_bar.show();
+                this.header_path.show();
+            }
             
             this.superclass.show.call(this, false);
         };
@@ -136,6 +148,9 @@
             this.superclass.hide.call(this, do_not_reset);
             
             this.live_line.stop();
+
+            this.program_info.innerHTML = '';
+            this.on_date.innerHTML = '';
         };
         
         this.init = function(){
@@ -187,16 +202,20 @@
                 }
 
                 this.hide();
-                this.parent.hide();
+                if (!this.player_overlay_mode){
+                    this.parent.hide();
+                }
                 main_menu.show();
             }).bind(key.MENU, this);
             
             (function(){
 
                 if (!this.active_row['epg_cell'][this.cur_cell_col]){
-                    this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
-                    this.parent.data_items[this.parent.cur_row].id = 0;
-                    this.parent.show(true);
+                    if (!this.player_overlay_mode){
+                        this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
+                        this.parent.data_items[this.parent.cur_row].id = 0;
+                        this.parent.show(true);
+                    }
                     this.hide();
                     return;
                 }
@@ -216,9 +235,11 @@
 
                     if (now > this.active_row['epg_cell'][this.cur_cell_col].data.start_timestamp && now < this.active_row['epg_cell'][this.cur_cell_col].data.stop_timestamp){
 
-                        this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
-                        this.parent.data_items[this.parent.cur_row].id = 0;
-                        this.parent.show(true);
+                        if (!this.player_overlay_mode){
+                            this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
+                            this.parent.data_items[this.parent.cur_row].id = 0;
+                            this.parent.show(true);
+                        }
                         this.hide();
                     }
                 }
@@ -226,9 +247,10 @@
 
 
             (function(){
-                this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
-                //this.parent.show(true);
-                this.parent._show.call(this.parent, this.parent.genre);
+                if (!this.player_overlay_mode){
+                    this.parent.load_params['from_ch_id'] = this.data_items[this.cur_row].ch_id;
+                    this.parent._show.call(this.parent, this.parent.genre);
+                }
                 this.hide();
             }).bind(key.EXIT, this);
             
@@ -237,6 +259,28 @@
             
             this.horizontal_cell_shift.bind(key.RIGHT, this, 1);
             this.horizontal_cell_shift.bind(key.LEFT, this, -1);
+
+            (function(){})
+                .bind(key.CHANNEL_NEXT, this)
+                .bind(key.CHANNEL_PREV, this)
+                .bind(key.FFWD, this)
+                .bind(key.REW, this)
+                .bind(key.REC, this)
+                .bind(key.PAUSE, this)
+                .bind(key.BACK, this)
+                .bind(key.APP, this)
+                .bind(key.AUDIO, this)
+                .bind(key.NUM0, this)
+                .bind(key.NUM1, this)
+                .bind(key.NUM2, this)
+                .bind(key.NUM3, this)
+                .bind(key.NUM4, this)
+                .bind(key.NUM5, this)
+                .bind(key.NUM6, this)
+                .bind(key.NUM7, this)
+                .bind(key.NUM8, this)
+                .bind(key.NUM9, this)
+                .bind(key.INFO, this);
         };
 
         this.play = function(rec_id){

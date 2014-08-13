@@ -185,10 +185,13 @@
     bottom: 77px;
     left: 70px;
     height: 98px;
-    width: 1140px;
+    width: 1130px;
     font-size: 26px;
     color: #fff;
     overflow: hidden;
+    background-image: url("i/25alfa_20.png");
+    border-radius: 8px;
+    padding: 0 5px;
 }
 
 #epg .program_info .time{

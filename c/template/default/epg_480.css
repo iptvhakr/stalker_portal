@@ -181,11 +181,14 @@
     position: absolute;
     bottom:50px;
     left: 50px;
-    height: 70px;
-    width: 632px;
+    height: 80px;
+    width: 622px;
     font-size: 20px;
     color: #fff;
     overflow: hidden;
+    background-image: url("i/25alfa_20.png");
+    border-radius: 8px;
+    padding: 0 5px;
 }
 
 #epg .program_info .time{

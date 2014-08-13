@@ -3721,6 +3721,17 @@ player.prototype.bind = function(){
         this.play(cur_media_item);
 
     }).bind(key.NEXT, this, 1).bind(key.PREV, this, -1);
+
+    (function(){
+        if (this.is_tv && module.epg){
+            if (module.epg.on){
+                module.epg.hide();
+            }else{
+                module.epg.ch_id = this.cur_tv_item.id;
+                module.epg.show(true);
+            }
+        }
+    }).bind(key.EPG, this);
 };
 
 player.prototype.numpad_key_handler = function(num){
