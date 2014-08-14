@@ -78,8 +78,13 @@ class SimpleOssWrapper implements OssWrapperInterface
         return true;
     }
 
-    public function getPackagePrice($ext_package_id){
-        return 0;
+    public function getPackagePrice($ext_package_id, $package_id){
+
+        return (float) Mysql::getInstance()
+            ->from('services_package')
+            ->where(array('id' => $package_id))
+            ->get()
+            ->first('price');
     }
 
     public function subscribeToPackage($ext_package_id){
@@ -113,19 +118,19 @@ class SimpleOssWrapper implements OssWrapperInterface
         $data = file_get_contents($url);
 
         if (!$data){
-            return false;
+            throw new OssFault('Server error, no data');
         }
 
         $data = json_decode($data, true);
 
         if (empty($data)){
-            return false;
+            throw new OssFault('Server error, wrong format');
         }
 
         var_dump($data);
 
         if ($data['status'] != 'OK' || empty($data['results'])){
-            return false;
+            throw new OssError('Server error or empty results');
         }
 
         return $data['results'];

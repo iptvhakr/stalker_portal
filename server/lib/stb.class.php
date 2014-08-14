@@ -1099,6 +1099,40 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                         
                         $update_data['now_playing_content'] = $video['name'];
                         $update_data['hd_content']          = (int) $video['hd'];
+
+                        if (Config::getSafe('enable_tariff_plans', false)){
+
+                            $user = User::getInstance(Stb::getInstance()->id);
+                            $package = $user->getPackageByServiceId($video['id']);
+
+                            if (!empty($package) && $package['service_type'] == 'single'){
+
+                                $video_rent_history = Mysql::getInstance()
+                                    ->from('video_rent_history')
+                                    ->where(array(
+                                        'video_id' => $video['id'],
+                                        'uid'      => Stb::getInstance()->id
+                                    ))
+                                    ->orderby('rent_date', 'DESC')
+                                    ->get()
+                                    ->first();
+
+                                if (!empty($video_rent_history)){
+
+                                    $rent_data_update = array();
+
+                                    if ($video_rent_history['start_watching_date'] == '0000-00-00 00:00:00'){
+                                        $rent_data_update['start_watching_date'] = 'NOW()';
+                                    }
+
+                                    //$rent_data_update['watched'] = $video_rent_history['watched'] + 1;
+                                    if (!empty($rent_data_update)){
+                                        Mysql::getInstance()->update('video_rent_history', $rent_data_update, array('id' => $video_rent_history['id']));
+                                    }
+                                }
+                            }
+                        }
+
                     }else{
                         $update_data['now_playing_content'] = $param;
                     }

@@ -502,7 +502,7 @@ class User implements \Stalker\Lib\StbApi\User
 
         $package = Mysql::getInstance()->from('services_package')->where(array('id' => $package_id))->get()->first();
 
-        return OssWrapper::getWrapper()->getPackagePrice($package['external_id']);
+        return OssWrapper::getWrapper()->getPackagePrice($package['external_id'], $package['id']);
     }
 
     public function getAccountInfo(){

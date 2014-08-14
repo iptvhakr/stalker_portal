@@ -29,6 +29,7 @@ if (!empty($_POST['add']) && !empty($_POST['name'])){
         'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
         'type' => $_POST['package_type'],
         'rent_duration' => $_POST['rent_duration'],
+        'price' => $_POST['price'],
         'all_services' => $all_services
     );
 
@@ -74,6 +75,7 @@ if (!empty($id)){
             'external_id' => empty($_POST['external_id']) ? '' : $_POST['external_id'],
             'type' => $_POST['package_type'],
             'rent_duration' => $_POST['rent_duration'],
+            'price' => $_POST['price'],
             'all_services' => $all_services
         );
 
@@ -278,8 +280,10 @@ function get_users_count_in_tariff($tariff){
 
                 if (type == 'single'){
                     $('.rent-duration-block').show();
+                    $('.price-block').show();
                 }else{
                     $('.rent-duration-block').hide();
+                    $('.price-block').hide();
                 }
             });
 
@@ -425,6 +429,13 @@ function get_users_count_in_tariff($tariff){
                         <td align="right"><?= _('Rent duration')?></td>
                         <td>
                             <input type="text" name="rent_duration" size="7" value="<?= @$edit_package['rent_duration']?>"> <?= _('h')?>
+                        </td>
+                    </tr>
+
+                    <tr style="display: none" class="price-block">
+                        <td align="right"><?= _('Price')?></td>
+                        <td>
+                            <input type="number" min="0" step="0.01" name="price" value="<?= @$edit_package['price']?>">
                         </td>
                     </tr>
 

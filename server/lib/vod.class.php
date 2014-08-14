@@ -235,7 +235,6 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $field_name = 'count_second_0_5';
         }
 
-        //$video = $this->db->getFirstData('video', array('id' => $video_id));
         $video = $this->db->from('video')->where(array('id' => $video_id))->get()->first();
 
         $this->db->update('video',
@@ -258,7 +257,6 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             array('time_last_play_video' => 'NOW()'),
             array('id' => $this->stb->id));
 
-        //$today_record = $this->db->getFirstData('daily_played_video', array('date' => 'CURDATE()'));
         $today_record = $this->db->from('daily_played_video')->where(array('date' => date('Y-m-d')))->get()->first();
 
         if (empty($today_record)) {
@@ -282,11 +280,6 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         }
 
-        /*$played_video = $this->db->getData('stb_played_video',
-        array(
-            'uid' => $this->stb->id,
-            'video_id' => $video_id
-        ));*/
         $played_video = $this->db->from('stb_played_video')
             ->where(array(
             'uid' => $this->stb->id,
@@ -313,6 +306,29 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
                     'video_id' => $video_id
                 ));
 
+        }
+
+        if (Config::getSafe('enable_tariff_plans', false)){
+
+            $user = User::getInstance(Stb::getInstance()->id);
+            $package = $user->getPackageByServiceId($video['id']);
+
+            if (!empty($package) && $package['service_type'] == 'single'){
+
+                $video_rent_history = Mysql::getInstance()
+                    ->from('video_rent_history')
+                    ->where(array(
+                        'video_id' => $video['id'],
+                        'uid'      => Stb::getInstance()->id
+                    ))
+                    ->orderby('rent_date', 'DESC')
+                    ->get()
+                    ->first();
+
+                if (!empty($video_rent_history)){
+                    Mysql::getInstance()->update('video_rent_history', array('watched' => $video_rent_history['watched'] + 1), array('id' => $video_rent_history['id']));
+                }
+            }
         }
 
         return true;
