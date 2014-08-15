@@ -881,7 +881,11 @@ class User implements \Stalker\Lib\StbApi\User
         }
     }
 
-    public function getPackageByServiceId($service_id){
+    public function getPackageByVideoId($video_id){
+        return $this->getPackageByServiceId($video_id, 'video');
+    }
+
+    public function getPackageByServiceId($service_id, $type){
 
         $user_packages = $this->getPackages();
 
@@ -906,7 +910,10 @@ class User implements \Stalker\Lib\StbApi\User
         return Mysql::getInstance()
             ->select('services_package.*')
             ->from('services_package')
-            ->where(array('service_id' => $service_id))
+            ->where(array(
+                'service_id'            => $service_id,
+                'services_package.type' => $type
+            ))
             ->join('service_in_package', 'services_package.id', 'package_id', 'INNER')
             ->in('services_package.id', $user_packages_ids)
             ->get()
@@ -928,7 +935,7 @@ class User implements \Stalker\Lib\StbApi\User
             ->get()
             ->first();
 
-        $package = $this->getPackageByServiceId($video_id);
+        $package = $this->getPackageByVideoId($video_id);
 
         if (empty($package)){
             return false;

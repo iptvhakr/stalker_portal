@@ -1103,7 +1103,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                         if (Config::getSafe('enable_tariff_plans', false)){
 
                             $user = User::getInstance(Stb::getInstance()->id);
-                            $package = $user->getPackageByServiceId($video['id']);
+                            $package = $user->getPackageByVideoId($video['id']);
 
                             if (!empty($package) && $package['service_type'] == 'single'){
 

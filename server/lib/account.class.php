@@ -74,7 +74,7 @@ class Account implements \Stalker\Lib\StbApi\Account
 
         try{
 
-            $package = $user->getPackageByServiceId($video_id);
+            $package = $user->getPackageByVideoId($video_id);
 
             if (empty($package)){
                 throw new Exception(_('Server error'));
@@ -108,7 +108,7 @@ class Account implements \Stalker\Lib\StbApi\Account
 
         try{
 
-            $package = $user->getPackageByServiceId($video_id);
+            $package = $user->getPackageByVideoId($video_id);
 
             if (empty($package)){
                 throw new Exception(_('Server error'));

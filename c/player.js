@@ -2146,7 +2146,7 @@ player.prototype.create_link = function(type, uri, series_number, forced_storage
 
                 _debug('this.last_storage_id', this.last_storage_id);
 
-                if (result.cmd && result.cmd.indexOf('http://') === -1){
+                if (result.cmd && result.cmd.indexOf('://') === -1){
                     stb.Mount(result.cmd);
                 }
             }
