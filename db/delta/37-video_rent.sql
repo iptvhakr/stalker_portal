@@ -28,3 +28,12 @@ CREATE TABLE IF NOT EXISTS `video_rent_history`(
 ALTER TABLE `image_update_settings` ADD `stb_type` VARCHAR(64) NOT NULL DEFAULT '';
 
 --//@UNDO
+
+ALTER TABLE `services_package` DROP `rent_duration`;
+
+DROP TABLE `video_rent`;
+DROP TABLE `video_rent_history`;
+
+ALTER TABLE `image_update_settings` DROP `stb_type`;
+
+--

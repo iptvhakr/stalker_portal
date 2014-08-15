@@ -26,3 +26,10 @@ CREATE TABLE IF NOT EXISTS `vclub_ads_log`(
 DELETE FROM `cities` WHERE country_id=8;
 
 --//@UNDO
+
+ALTER TABLE `itv` DROP `modified`;
+
+DROP TABLE `vclub_ad`;
+DROP TABLE `vclub_ads_log`;
+
+--

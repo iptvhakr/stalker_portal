@@ -21,3 +21,13 @@ ALTER TABLE `ch_links` ADD `enable_monitoring` tinyint default 0;
 
 UPDATE `itv` SET monitoring_status=1;
 --//@UNDO
+
+DROP TABLE `stream_zones`;
+
+DROP TABLE `countries_in_zone`;
+
+ALTER TABLE `streaming_servers` DROP `stream_zone`;
+
+ALTER TABLE `ch_links` DROP `enable_monitoring`;
+
+--

@@ -12,3 +12,15 @@ ALTER TABLE `itv` ADD `allow_local_timeshift` tinyint NOT NULL default 0;
 UPDATE `itv` SET `allow_local_timeshift`=`allow_local_pvr`;
 
 --//@UNDO
+
+ALTER TABLE `users` DROP `ts_enabled`;
+ALTER TABLE `users` DROP `ts_enable_icon`;
+ALTER TABLE `users` DROP `ts_path`;
+ALTER TABLE `users` DROP `ts_max_length`;
+ALTER TABLE `users` DROP `ts_buffer_use`;
+ALTER TABLE `users` DROP `ts_action_on_exit`;
+ALTER TABLE `users` DROP `ts_delay`;
+
+ALTER TABLE `itv` DROP `allow_local_timeshift`;
+
+--

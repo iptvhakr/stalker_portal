@@ -15,3 +15,10 @@ CREATE TABLE IF NOT EXISTS `censored_channels`(
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --//@UNDO
+
+ALTER TABLE `users` DROP `stb_type`;
+ALTER TABLE `users` DROP `serial_number`;
+ALTER TABLE `events` DROP `auto_hide_timeout`;
+ALTER TABLE `storages` DROP `not_for_mag100`;
+
+--

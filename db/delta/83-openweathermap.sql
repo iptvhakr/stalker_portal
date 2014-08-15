@@ -21387,3 +21387,14 @@ INSERT INTO all_cities (id, name, name_ru, country, country_id, admin1_code, adm
 
 
 --//@UNDO
+
+DROP TABLE `all_cities`;
+
+ALTER TABLE `weatherco_cache` DROP `updated_forecast`;
+ALTER TABLE `weatherco_cache` DROP `updated_current`;
+
+DROP TABLE `openweathermap_cache`;
+
+ALTER TABLE `users` DROP `openweathermap_city_id`;
+
+--

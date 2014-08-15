@@ -17,3 +17,15 @@ INSERT INTO `itv_subscription` SELECT * FROM `tmp_itv_subscription`;
 DROP TABLE `tmp_itv_subscription`;
 
 --//@UNDO
+
+ALTER TABLE `storages` DROP `fake_tv_archive`;
+
+ALTER TABLE `video` DROP `kinopoisk_id`;
+ALTER TABLE `video` DROP `rating_kinopoisk`;
+ALTER TABLE `video` DROP `rating_count_kinopoisk`;
+ALTER TABLE `video` DROP `rating_imdb`;
+ALTER TABLE `video` DROP `rating_count_imdb`;
+
+ALTER TABLE `video` DROP `rating_last_update`;
+
+--

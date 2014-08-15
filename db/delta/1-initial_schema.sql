@@ -931,4 +931,16 @@ CREATE TABLE IF NOT EXISTS `cities`(
     KEY `country_id` (`country_id`),
     KEY `timezone` (`timezone`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 --//@UNDO
+
+TRUNCATE `genre`;
+TRUNCATE `cat_genre`;
+TRUNCATE `itv`;
+TRUNCATE `tv_genre`;
+TRUNCATE `karaoke_genre`;
+TRUNCATE `administrators`;
+TRUNCATE `media_category`;
+TRUNCATE `generation_time`;
+
+--

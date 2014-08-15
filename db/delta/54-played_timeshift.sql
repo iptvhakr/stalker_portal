@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS `played_timeshift`(
 );
 
 --//@UNDO
+
+DROP TABLE `played_timeshift`;
+
+--

@@ -10,3 +10,7 @@ CREATE TABLE IF NOT EXISTS `played_tv_archive`(
 );
 
 --//@UNDO
+
+DROP TABLE `played_tv_archive`;
+
+--

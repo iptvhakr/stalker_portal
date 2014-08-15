@@ -23,3 +23,8 @@ CREATE TABLE IF NOT EXISTS `video_on_tasks`(
     PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 --//@UNDO
+
+ALTER TABLE `users` DROP `login`;
+ALTER TABLE `users` DROP `password`;
+
+--

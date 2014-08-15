@@ -7,3 +7,7 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`default_template`) VALUE ('default');
 
 --//@UNDO
+
+DROP TABLE `settings`;
+
+--

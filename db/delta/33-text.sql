@@ -48,3 +48,8 @@ UPDATE `itv` SET allow_pvr=1 WHERE mc_cmd!='';
 ALTER TABLE `video_log` ADD `video_name` varchar(128) not null default '';
 
 --//@UNDO
+
+ALTER TABLE `itv` DROP `allow_pvr`;
+ALTER TABLE `video_log` DROP `video_name`;
+
+--

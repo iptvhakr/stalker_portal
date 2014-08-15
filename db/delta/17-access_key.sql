@@ -13,3 +13,9 @@ CREATE TABLE IF NOT EXISTS `developer_api_key`(
     UNIQUE KEY (`api_key`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 --//@UNDO
+
+ALTER TABLE `access_tokens` DROP `secret_key`;
+ALTER TABLE `access_tokens` DROP `time_delta`;
+ALTER TABLE `access_tokens` DROP `started`;
+
+--

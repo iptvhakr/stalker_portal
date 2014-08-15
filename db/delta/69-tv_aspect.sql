@@ -10,3 +10,7 @@ CREATE TABLE `tv_aspect` (
 );
 
 --//@UNDO
+
+DROP TABLE `tv_aspect`;
+
+--

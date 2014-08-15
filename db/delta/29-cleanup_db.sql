@@ -49,3 +49,12 @@ ALTER TABLE `users` ADD `now_playing_link_id` int not null default 0;
 ALTER TABLE `users` ADD `now_playing_streamer_id` int not null default 0;
 
 --//@UNDO
+
+DROP TABLE `ch_links`;
+DROP TABLE `streaming_servers`;
+DROP TABLE `ch_link_on_streamer`;
+
+ALTER TABLE `users` DROP `now_playing_link_id`;
+ALTER TABLE `users` DROP `now_playing_streamer_id`;
+
+--

@@ -45,3 +45,6 @@ CREATE TABLE IF NOT EXISTS `user_package_subscription`(
 
 ALTER TABLE `users` ADD `tariff_plan_id` int not null default 0;
 --//@UNDO
+ALTER TABLE `access_tokens` DROP `refresh_token`;
+ALTER TABLE `users` DROP `tariff_plan_id`;
+--

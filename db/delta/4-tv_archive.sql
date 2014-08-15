@@ -12,3 +12,7 @@ CREATE TABLE IF NOT EXISTS `tv_archive`(
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --//@UNDO
+
+ALTER TABLE `itv` DROP `enable_tv_archive`;
+
+--

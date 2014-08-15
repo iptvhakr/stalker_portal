@@ -15,3 +15,19 @@ ALTER TABLE `storages` ADD INDEX status_simple (`status`, `for_simple_storage`);
 ALTER TABLE `radio` ADD `volume_correction` int NOT NULL default 0;
 
 --//@UNDO
+
+ALTER TABLE `itv` DROP INDEX base_ch;
+ALTER TABLE `ch_links` DROP INDEX ch_id;
+ALTER TABLE `ch_links` DROP INDEX ch_id_status;
+
+ALTER TABLE `epg` DROP INDEX real_id;
+
+ALTER TABLE `tv_reminder` DROP INDEX tv_program_real_id;
+ALTER TABLE `tv_reminder` DROP INDEX ch_id_real_id;
+ALTER TABLE `tv_reminder` DROP INDEX mac_time;
+
+ALTER TABLE `storages` DROP INDEX status_simple;
+
+ALTER TABLE `radio` DROP `volume_correction`;
+
+--
