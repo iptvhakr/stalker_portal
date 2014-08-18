@@ -1180,6 +1180,26 @@ function common_xpcom(){
             stb.loader.stop();
             this.cut_off(this.user.hasOwnProperty('block_msg') ? this.user['block_msg'] : '');
             loader.append('alert');
+
+            if (this.user['portal_disabled']){
+
+                this.portal_status_interval = window.setInterval(function(){
+                    stb.load(
+                        {
+                            "type"   : "stb",
+                            "action" : "check_portal_status"
+                        },
+                        function(result){
+                            _debug('on check_portal_status', result);
+
+                            if (result){
+                                window.clearInterval(stb.portal_status_interval);
+                                window.location = window.location;
+                            }
+                        }
+                    )
+                }, 60000);
+            }
         }
 
         this.watchdog.run(this.user['watchdog_timeout'], this.user['timeslot']);

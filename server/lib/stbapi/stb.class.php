@@ -20,6 +20,8 @@ interface Stb
 
     public function getLocales();
 
+    public function checkPortalStatus();
+
     public function getLocalization();
 
     public function getModules();

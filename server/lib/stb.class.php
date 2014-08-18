@@ -113,7 +113,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         }
         
         $this->db = Mysql::getInstance();
-        $this->getStbParams();
+        try{
+            $this->getStbParams();
+        }catch (MysqlException $e){
+            echo $e->getMessage().PHP_EOL;
+            return;
+        }
 
         if (empty($this->id)){
             $this->initLocale($this->stb_lang);
@@ -384,6 +389,23 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
     
     public function getProfile(){
+
+        $debug_key = $this->getDebugKey();
+
+        if (Config::getSafe('disable_portal', false) && (empty($debug_key) || !$this->checkDebugKey($debug_key))){
+
+            try{
+                Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
+            }catch (MysqlException $e){
+                echo $e->getMessage().PHP_EOL;
+            }
+
+            return array(
+                'status'          => 1,
+                'block_msg'       => _('The portal is temporarily unavailable.<br>Please try again later.<br>Sorry for the inconvenience.'),
+                'portal_disabled' => true
+            );
+        }
 
         if (function_exists('geoip_country_code_by_name')){
             $country = geoip_country_code_by_name($this->ip);
@@ -882,6 +904,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         if (empty($login)){
             $this->db->insert('updated_places', array('uid' => $this->id));
         }
+    }
+
+    public function checkPortalStatus(){
+        return !Config::getSafe('disable_portal', false);
     }
     
     public function getLocalization(){
