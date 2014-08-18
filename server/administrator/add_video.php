@@ -674,7 +674,7 @@ if ($search){
     }else{
         $where .= 'where ';
     }
-    $where .= 'name like "%'.$search.'%" or o_name like "%'.$search.'%" or path like "%'.$search.'%"';
+    $where .= 'name like "%'.$search.'%" or o_name like "%'.$search.'%" or path like "%'.$search.'%" or video.id like "%'.$search.'%"';
 }
 if (isset($_GET['letter'])) {
 	//$where = 'where name like "'.urldecode($letter).'%"';
