@@ -4058,7 +4058,7 @@ player.prototype.set_pos_button = function(to_time){
             _debug('this.info.pos_bar.clientWidth', this.info.pos_bar.clientWidth);
             _debug('this.info.pos_bar.isHidden()', this.info.pos_bar.isHidden());
             _debug('this.info.pos_bar.style.display', this.info.pos_bar.style.display);
-            to_pos = Math.round((this.info.pos_bar.offsetWidth - 42) * to_time / this.cur_media_length);
+            to_pos = Math.round((this.info.pos_bar.offsetWidth - (this.info.pos_button.offsetWidth + 12)) * to_time / this.cur_media_length);
         }
         
         _debug('to_pos', to_pos);
