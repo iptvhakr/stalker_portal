@@ -35,7 +35,7 @@ function common_xpcom(){
 
     this.cur_place = '';
 
-    this.load_step = Math.ceil(50/4);
+    this.load_step = Math.ceil(50/3);
 
     this.recordings = [];
 
@@ -1164,9 +1164,7 @@ function common_xpcom(){
 
                 this.get_modules();
 
-                //this.mount_home_dir(this.user['storages']);
                 this.set_storages(this.user['storages']);
-                stb.loader.add_pos(this.load_step, 'call stb.mount_home_dir');
 
                 this.load_channels();
                 this.load_fav_channels();
@@ -1231,6 +1229,10 @@ function common_xpcom(){
         }
     };
 
+    /**
+     * @deprecated
+     * @param storages
+     */
     this.mount_home_dir = function(storages){
         _debug('stb.mount_home_dir: ', storages);
 
