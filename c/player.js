@@ -3326,6 +3326,9 @@ player.prototype.bind = function(){
         }else{
             if (this.active_time_shift || this.active_local_time_shift){
                 this.show_time_shift_exit_confirm();
+            }else if (this.prev_layer.layer_name == 'epg' && this.prev_layer.player_overlay_mode){
+                module.epg.show(false, true);
+                this.play_last();
             }else{
                 this.show_prev_layer();
             }
@@ -3728,7 +3731,7 @@ player.prototype.bind = function(){
                 module.epg.hide();
             }else{
                 module.epg.ch_id = this.cur_tv_item.id;
-                module.epg.show(true);
+                module.epg.show(false, true);
             }
         }
     }).bind(key.EPG, this);

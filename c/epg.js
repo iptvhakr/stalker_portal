@@ -118,8 +118,8 @@
             }
         };
         
-        this.show = function(player_overlay_mode){
-            _debug('epg.show', player_overlay_mode);
+        this.show = function(do_not_load, player_overlay_mode){
+            _debug('epg.show', do_not_load, player_overlay_mode);
             
             this.cur_page = 0;
             
