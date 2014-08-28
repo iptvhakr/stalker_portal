@@ -3734,7 +3734,7 @@ player.prototype.bind = function(){
                 module.epg.show(false, true);
             }
         }
-    }).bind(key.EPG, this);
+    }).bind(key.EPG, this).bind(key.BLUE, this);
 };
 
 player.prototype.numpad_key_handler = function(num){
