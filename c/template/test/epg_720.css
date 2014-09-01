@@ -25,25 +25,25 @@
     font-size: 26px;
     width: 280px;
     text-overflow: ellipsis;
-    font-family: "Myriad Pro Cond", serif;
+    /*font-family: "Myriad Pro Cond", serif;*/
     float: left;
-    margin: 7px 6px 0 3px;
+    margin: 4px 4px 0 3px;
 }
 
 #epg .number_block{
-    margin: 6px 0 0 4px;
+    margin: 6px 0 0 6px;
     background-position: -112px 0;
     width: 44px;
 }
 
 #epg .active_name_block, #epg .blue_row_bg[active="active"] .name_block{
-    padding-left: 3px;
+    padding-left: 1px;
 }
 
 #epg .blue_row_bg[active="active"] .name_block{
     font-size: 26px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    text-shadow: none;
 }
 
 #epg .epg_container_block{
@@ -53,7 +53,7 @@
 }
 
 #epg .active_number_block, #epg .blue_row_bg[active="active"] .number_block{
-    margin: 3px 0 0 4px;
+    margin: 3px 0 0 6px;
 }
 
 #epg .blue_row_bg[active="active"] .number_block{
@@ -85,7 +85,7 @@
 #epg .program .marks{
     position: absolute;
     top: 2px;
-    left: 1px;
+    right: 2px;
 }
 
 #epg .program .marks div{
@@ -114,6 +114,7 @@
 
 #epg .blue_row_bg .program{
     color: #bcc7d6;
+    text-shadow: #0f385a 1px 2px 0;
 }
 
 #epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
@@ -121,11 +122,16 @@
 }
 
 #epg .program_txt{
-    padding: 8px 2px 0 2px;
+    padding: 5px 2px 0 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:pre;
-    font-family: "Myriad Pro Cond", sans-serif;
+    text-shadow: #0f385a 1px 2px 0;
+    /*font-family: "Myriad Pro Cond", sans-serif;*/
+}
+
+#epg .blue_row_bg[active="active"] .program_txt {
+    text-shadow: none;
 }
 
 #epg .program_separator{
@@ -162,7 +168,7 @@
 }
 
 #epg .active_row_bg .program .rarr, #epg .blue_row_bg[active="active"] .program .rarr{
-    background-position: 12px -1px;
+    background-position: 13px -1px;
 }
 
 #epg .program[rel="active"]{
@@ -241,8 +247,8 @@
 
 #epg .live_line{
     position: absolute;
-    background-color: rgba(255, 0, 0, 0.4);
-    width: 2px;
+    background-color: rgba(227, 147, 34, 0.4);
+    width: 4px;
     height: 448px;
     -webkit-transition: all 0.2s linear;
 }

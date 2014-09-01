@@ -24,7 +24,7 @@
 .lang_container ul li{
     float: left;
     width: 30px;
-    height: 18px;
+    height: 20px;
     /*margin: 1px 1px 0 0;*/
     border: 0 solid #fff;
     text-align: center;
@@ -32,7 +32,8 @@
     color: #fff;
     white-space: pre;
     overflow: hidden;
-    padding: 2px 0 0 0;
+    padding: 0 0 0 0;
+    line-height: 19px;
 }
 
 .lang_container ul li[rel="double_cell"]{

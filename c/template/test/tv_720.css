@@ -35,7 +35,7 @@
 #tv .name_block{
     color: #fff;
     font-size: 26px;
-    text-shadow: #122946 0 -1px 0;
+    /*text-shadow: #122946 0 -1px 0;*/
     /*margin: 4px 0 0 3px;*/
     padding-left: 3px;
     white-space: pre;
@@ -61,8 +61,13 @@
 
 #tv .short_container .active_name_block{
     width: auto;
-    margin-top: 11px;
+    margin-top: 6px;
     float: none;
+}
+
+#tv .wide_container .active_name_block{
+    font-size: 26px;
+    line-height: 32px;
 }
 
 #tv .wide_container .blue_row_bg{

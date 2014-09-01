@@ -12,7 +12,6 @@
     position: absolute;
     left: 49px;
     top: 92px;
-    width: 263px;
     height: 34px;
     background-image: url("i/tv_table.png");
     background-position: 0 -1px;
@@ -24,9 +23,9 @@
     font-size: 20px;
     width: 132px;
     text-overflow: ellipsis;
-    font-family: "Myriad Pro Cond";
+    /*font-family: "Myriad Pro Cond";*/
     float: left;
-    margin: 3px 6px 0 3px;
+    margin: 2px 6px 0 3px;
 }
 
 #epg .active_name_block, #epg .blue_row_bg[active="active"] .name_block{
@@ -36,7 +35,7 @@
 #epg .blue_row_bg[active="active"] .name_block{
     font-size: 22px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    text-shadow: none;
 }
 
 #epg .epg_container_block{
@@ -45,18 +44,22 @@
     float: left;
 }
 
+#epg .number_block{
+    margin-top: 5px;
+}
+
 #epg .active_number_block, #epg .blue_row_bg[active="active"] .number_block{
-    margin: 1px 0 0 4px;
+    margin: 0 0 0 4px;
 }
 
 #epg .blue_row_bg[active="active"] .number_block{
     width: 34px;
-    height: 29px;
+    height: 27px;
     background-image: url("i/mb_icons.png");
     background-position: -92px -21px;
     color: #fff;
     text-shadow: #122946 0 -1px 0;
-    padding-top: 2px;
+    padding-top: 4px;
 }
 
 #epg .active_epg_container_block, #epg .blue_row_bg[active="active"] .epg_container_block{
@@ -107,6 +110,7 @@
 
 #epg .blue_row_bg .program{
     color: #bcc7d6;
+    text-shadow: #0f385a 1px 2px 0;
 }
 
 #epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
@@ -114,11 +118,16 @@
 }
 
 #epg .program_txt{
-    padding: 6px 2px 0 2px;
+    padding: 4px 2px 0 2px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:pre;
-    font-family: "Myriad Pro Cond", sans-serif;
+    text-shadow: #0f385a 1px 2px 0;
+    /*font-family: "Myriad Pro Cond", sans-serif;*/
+}
+
+#epg .blue_row_bg[active="active"] .program_txt {
+    text-shadow: none;
 }
 
 #epg .program_separator{
@@ -151,11 +160,11 @@
 }
 
 #epg .blue_row_bg .program .rarr{
-    background-position: 10px -36px;
+    background-position: 11px -36px;
 }
 
 #epg .active_row_bg .program .rarr, #epg .blue_row_bg[active="active"] .program .rarr{
-    background-position: 10px -1px;
+    background-position: 12px -1px;
 }
 
 #epg .program[rel="active"]{
@@ -232,8 +241,8 @@
 
 #epg .live_line{
     position: absolute;
-    background-color: rgba(255, 0, 0, 0.4);
-    width: 2px;
+    background-color: rgba(227, 147, 34, 0.4);
+    width: 4px;
     height: 339px;
     -webkit-transition: all 0.2s linear;
 }

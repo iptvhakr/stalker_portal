@@ -63,8 +63,8 @@
 .name_block, .title_block{
     color: #fff;
     font-size: 26px;
-    text-shadow: #122946 0 -1px 0;
-    margin: 5px 2px 0 3px;
+    text-shadow: #0f385a 1px 2px 0;
+    margin: 0 2px 0 3px;
     padding-left: 3px;
     white-space: pre;
     overflow: hidden;
@@ -81,17 +81,17 @@
 
 .number_block{
     background: url("i_720/mb_icons.png") no-repeat -111px 0;
-    /*background-position: -111px 0;*/
     width: 45px;
     height: 29px;
     float: left;
     margin: 4px 0 0 4px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    /*text-shadow: #fff 0 1px 0;*/
     font-size: 24px;
     text-align: center;
     white-space: pre;
     overflow: hidden;
+    line-height: 29px;
 }
 
 .wide_container{
@@ -219,10 +219,11 @@
 }
 
 .active_name_block, .active_title_block{
-    font-size: 26px;
+    font-size: 28px;
+    font-weight: bold;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
-    margin: 11px 25px 0 2px;
+    /*text-shadow: #fff 0 1px 0;*/
+    margin: 6px 25px 0 2px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -238,9 +239,8 @@
 
 .active_number_block{
     width: 45px;
-    height: 33px;
+    height: 34px;
     background: url("i_720/mb_icons.png") no-repeat -111px -31px;
-    /*background-position: -111px -31px;*/
     margin: 8px 2px 0 0;
     float: left;
     font-size: 24px;
@@ -249,7 +249,7 @@
     text-align: center;
     white-space: pre;
     overflow: hidden;
-    padding-top: 2px;
+    padding-top: 1px;
 }
 
 
@@ -288,17 +288,18 @@
 }
 
 .disable_color_btn_text{
-    color: #707070 !important;
+    color: #999 !important;
+    text-shadow: rgba(0, 50, 80, 0.5) -1px -1px 0 !important;
 }
 
 .mb_header_first{
     position: absolute;
     left: 213px;
-    top: 40px;
+    top: 34px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: "Myriad Pro", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 30px;
     color: #fff;
 }
@@ -352,11 +353,11 @@
 
 .color_button_bar span{
     font-size: 22px;
-    color: #001a33;
-    text-shadow: #fff 0 1px 0;
+    color: #fff;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     float: left;
-    margin: 14px 0 0 8px;
-    font-weight: bold;
+    margin: 11px 0 0 8px;
+    /*font-weight: bold;*/
 }
 
 .color_button_bar span sup{
@@ -452,7 +453,9 @@
 }
 
 .cur_pos_time[active="active"]{
-    border: 1px solid #fff;
+    border: 1px solid #4da8c4;
+    background-color: #005378;
+    border-radius: 4px;
 }
 
 .pos_time_separator{
@@ -592,7 +595,7 @@
 }
 
 .ears_left div{
-    margin-left: 35px;
+    margin-left: 25px;
     font: 22px Arial, Helvetica, sans-serif;
     color: #fff;
 }
@@ -613,7 +616,7 @@
 }
 
 .ears_right div{
-    margin-left: 4px;
+    margin-left: 14px;
     font: 22px Arial, Helvetica, sans-serif;
     color: #fff;
     text-align: center;

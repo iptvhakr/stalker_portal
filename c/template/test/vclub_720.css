@@ -62,11 +62,14 @@
     right: 1px;
     top: 0;
     width: 194px;
-    height: 28px;
+    height: 34px;
     background-image: url("i_720/mb_table02.png");
     background-position: 202px 0;
-    padding: 8px 0 0 6px;
-    color: #122f59;
+    padding: 2px 0 0 6px;
+    color: #fff;
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    overflow: hidden;
 }
 
 .yesterday_block{
@@ -74,11 +77,14 @@
     right: 1px;
     top: 0;
     width: 194px;
-    height: 28px;
+    height: 34px;
     background-image: url("i_720/mb_table03.png");
     background-position: 202px 0;
-    padding: 8px 0 0 6px;
+    padding: 2px 0 0 6px;
     color: #fff;
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    overflow: hidden;
 }
 
 .week_and_more_block{
@@ -86,13 +92,13 @@
     right: 1px;
     top: 0;
     width: 194px;
-    height: 28px;
+    height: 34px;
     background-image: url("i_720/mb_table04.png");
     background-position: 202px 0;
-    padding: 8px 0 0 6px;
+    padding: 2px 0 0 6px;
     color: #fff;
-    font-family: "Myriad Pro Cond", sans-serif;
-    font-size: 20px;
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
     overflow: hidden;
 }
 
@@ -101,14 +107,15 @@
     right: 23px;
     top: 4px;
     width: 201px;
-    height: 36px;
+    height: 42px;
     background-image: url("i_720/mb_table_act02.png");
     background-position: 219px -4px;
-    padding: 15px 0 0 8px;
-    color: #000;
-    font-family: "Myriad Pro Cond", sans-serif;
-    font-size: 20px;
+    padding: 9px 0 0 8px;
+    color: #002864;
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
     overflow: hidden;
+    font-weight: bold;
 }
 
 .disabled_all_buttons span{

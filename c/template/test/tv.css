@@ -35,8 +35,8 @@
 #tv .name_block{
     color: #fff;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
-    margin: 3px 0 0 3px;
+    /*text-shadow: #122946 0 -1px 0;
+    margin: 3px 0 0 3px;*/
     padding-left: 3px;
     white-space: pre;
     overflow: hidden;
@@ -46,24 +46,24 @@
 }
 
 #tv .active_name_block{
-    font-size: 22px;
+    /*font-size: 22px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    text-shadow: #fff 0 1px 0;*/
     /*margin-top: 8px;
     margin-right: 25px;*/
     margin: 0 15px 0 0;
-    white-space: pre;
+    /*white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
     float: left;
     width: 290px;
-    height: 26px;
+    height: 26px;*/
     padding-left: 3px;
 }
 
 #tv .short_container .active_name_block{
     width: auto;
-    margin-top: 9px;
+    margin-top: 7px;
     float: none;
 }
 

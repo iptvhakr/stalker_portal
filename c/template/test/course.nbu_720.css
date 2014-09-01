@@ -36,7 +36,7 @@
 .uarr{
     font-size: 18px;
     font-weight: bold;
-    color: #0f0;
+    color: #38fc3d;
     float: left;
     width: 8px;
 }
@@ -44,7 +44,7 @@
 .darr{
     font-size: 18px;
     font-weight: bold;
-    color: #f00;
+    color: #fd5454;
     float: left;
     width: 8px;
 }
@@ -72,7 +72,7 @@
 
 .course_block .course_trend{
     text-align: left;
-    margin: 0 0 0 4px;
+    margin: 2px 0 0 4px;
     width: 56px;
     font-family: "Myriad Pro Cond", serif;
 }

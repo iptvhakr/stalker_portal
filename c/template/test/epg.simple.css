@@ -31,8 +31,8 @@
 #epg_simple .name_block{
     color: #fff;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
-    margin: 3px 0 0 3px;
+    text-shadow: #0f385a 1px 2px 0;
+    margin: 1px 0 0 3px;
     padding-left: 3px;
     white-space: pre;
     overflow: hidden;
@@ -76,7 +76,8 @@
 
 #epg_simple .blue_row_bg[active="active"] .name_block{
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    text-shadow: none;
+    font-weight: bold;
 }
 
 #epg_simple .week{
@@ -88,21 +89,21 @@
 
 #epg_simple .week li{
     width: 175px;
-    height: 28px;
+    height: 30px;
     margin: 0 0 1px 0;
-    background-image: url("i/tv_table.png");
-    background-position: 0 -36px;
+    background: url("i/tv_table.png") no-repeat 0 -36px;
     color: #fff;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
-    padding: 5px 0 0 1px;
+    text-shadow: #0f385a 1px 2px 0;
+    padding: 3px 0 0 1px;
     text-align: center;
 }
 
 #epg_simple .week li[active="active"]{
     background-position: 0 -1px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    text-shadow: none;
+    font-weight: bold;
 }
 
 #epg_simple .week li[rel="close"]{
@@ -123,7 +124,7 @@
     color: #fff;
     background-image: url("i/25alfa_20.png");
     padding: 0 5px;
-    -webkit-border-radius: 8px;
+    border-radius: 8px;
     overflow: hidden;
 }
 

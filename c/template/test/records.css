@@ -43,10 +43,10 @@
 #records .ch_name_block{
     color: #99A8B5;
     font-size: 20px;
-    margin: 3px 103px 0 3px;
+    margin: 0 103px 0 3px;
     overflow: hidden;
     padding-left: 3px;
-    text-shadow: 0 -1px 0 #122946;
+    text-shadow: #0f385a 1px 2px 0;
     white-space: pre;
 }
 
@@ -62,10 +62,11 @@
     color: #808080;
     font-size: 22px;
     margin-right: 130px;
-    margin-top: 8px;
+    margin-top: 6px;
     overflow: hidden;
-    text-shadow: 0 1px 0 #FFFFFF;
+    text-shadow: none;
     white-space: pre;
+    font-weight: bold;
 }
 
 /*#records .active_row_bg[rel="close"] .active_ch_name_block{

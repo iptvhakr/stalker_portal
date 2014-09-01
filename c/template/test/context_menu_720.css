@@ -22,12 +22,23 @@
     height: 30px;
     background: url(i_720/v_menu_2a.png) bottom left;
     padding: 0 15px 0 15px;
-    font-size: 24px;
+    font-size: 23px;
     color: #fff;
+    text-shadow: #1b4e70 1px 2px 0;
+}
+
+.con_menu_container td.active{
+    color: #08385b;
+    text-shadow: none;
 }
 
 .con_menu_main_active .con_menu_container td.active{
     background: url(i_720/v_menu_2a.png) top left;
+}
+
+.con_menu_container td span{
+    display: block;
+    margin-top: -4px;
 }
 
 .con_menu_main_active .v_menu1_center_r {background:url(i_720/v_menu_2a.png) right;}
@@ -43,8 +54,9 @@
     height: 30px;
     background: url(i_720/v_menu_2b.png) bottom left;
     padding: 0 15px 0 15px;
-    font-size: 24px;
-    color: #000;
+    font-size: 23px;
+    color: #fff;
+    text-shadow: #1b4e70 1px 2px 0;
 }
 
 .con_menu_main_passive .con_menu_container td.active{
@@ -83,16 +95,23 @@
 
 .sub_menu_container td{
     height: 25px;
-    background: url(i_720/v_menu_5.png);
-    background-position: right -25px;
+    background: url(i_720/v_menu_5.png) no-repeat right -25px;
     padding: 0 15px 0 5px;
-    font-size: 20px;
-    color: #000;
+    font-size: 18px;
+    color: #fff;
+    text-shadow: #1b4e70 1px 2px 0;
 }
 
 .sub_menu_container td.active{
     background: url(i_720/v_menu_5.png) top right;
-    color: #fff;
+    color: #08385b;
+    text-shadow: none;
+}
+
+.sub_menu_container td span{
+    display: block;
+    margin-top: -2px;
+    float: left;
 }
 
 .sub_menu_container .space{

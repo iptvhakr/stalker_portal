@@ -28,7 +28,7 @@
 
 .main_menu_date_bar{
     position: absolute;
-    width: 524px;
+    width: 600px;
     top: 38px;
     right: 0;
     font-family: "Roboto", sans-serif;
@@ -140,7 +140,7 @@
     margin-left: 14px;
     /*padding-left: 14px;
     padding-top: 8px;*/
-    padding: 3px 0 5px 14px;
+    padding: 3px 0 5px 20px;
     overflow: hidden;
     white-space: pre;
     text-overflow: ellipsis;
@@ -151,7 +151,8 @@
     text-shadow: #c79b00 1px 2px 0;
     background: url(i_720/mm_vert_cell.png) top left;
     background-position: 0 -2px;
-    /*padding-top: 8px;*/
+    padding-top: 4px;
+    height: 37px;
     font-weight: bold;
     font-family: "Roboto", sans-serif;
 }

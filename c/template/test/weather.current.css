@@ -4,19 +4,19 @@
     top : 113px;
     width: 203px;
     color: #fff;
-    text-shadow: #000 0 -1px 0;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     font-size: 18px;
-    background-image: url("i/25alfa_20.png");
+    /*background-image: url("i/25alfa_20.png");
     -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    -webkit-border-radius: 10px;*/
 }
 
 .curweather_block .city{
     position: absolute;
     top: 2px;
     right: 2px;
-    font-family: "Myriad Pro Cond", sans-serif;
-    color: #99a8b5;
+    font-family: "Roboto", sans-serif;
+    /*color: #99a8b5;*/
 }
 
 .curweather_block .curweather_img{
@@ -32,8 +32,8 @@
 
 
 .curweather_block .curweather_title{
-    font-family: "Myriad Pro Cond", sans-serif;
-    color: #99a8b5;
+    font-family: "Roboto", sans-serif;
+    /*color: #99a8b5;*/
 }
 
 .curweather_block .wind_direction_N{

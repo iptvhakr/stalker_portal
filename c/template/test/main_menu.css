@@ -9,25 +9,30 @@
 }
 
 .main_menu_date{
-    font-family: "Trebuchet ms" bold;
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
     font-size: 15px;
-    color: #99a8b5;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
+    color: #fff;
 }
 
 .main_menu_time{
     font-weight: bold;
     font-size: 21px;
-    color: #ccd6de;
     margin-left: 8px;
     /*margin-right: 65px;*/
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
+    color: #fff;
 }
 
 .main_menu_date_bar{
     position: absolute;
-    width: 364px;
+    width: 400px;
     top: 38px;
     right: 0;
-    font-family: "Myriad Pro Cond";
+    font-family: "Roboto", sans-serif;
+    text-align: right;
+    padding-right: 65px;
 }
 
 .mm_menu_hor{
@@ -60,22 +65,26 @@
     float: left;
     width: 220px;
     height: 162px;
-    font: 35px "Myriad Pro Cond";
+    font: 18px "Roboto";
     color: #fff;
     text-transform: uppercase;
     text-align: center;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
+    line-height: 38px;
 }
 
 .menu_hor_cell_act{
     float: left;
     width: 220px;
     height: 162px;
-    font: 35px "Myriad Pro Cond";
+    font: 20px "Roboto";
     color: #fff;
-    text-shadow: #122946 1px 1px 0;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     text-transform: uppercase;
     text-align: center;
     background: url(i/mm_hor_bg1.png) no-repeat;
+    font-weight: bold;
+    line-height: 38px;
 }
 
 .menu_hor_cell_img{
@@ -113,16 +122,16 @@
 }
 
 .mm_menu_vert_body .mm_vert_container div{
-    height: 30px;
-    width: 235px;
-    font: 20px "Myriad Pro";
+    height: 34px;
+    width: 233px;
+    font: 20px "Roboto";
     color: #ffffff;
     text-transform: uppercase;
-    text-shadow: #1f3c62 0px -1px 0;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     background: url(i/mm_vert_cell.png) bottom left;
     margin-left: 8px;
-    padding-left: 9px;
-    padding-top: 8px;
+    padding-left: 11px;
+    padding-top: 4px;
     overflow: hidden;
     white-space: pre;
     text-overflow: ellipsis;
@@ -130,9 +139,9 @@
 
 .mm_menu_vert_body .mm_vert_container .active{
     color: #002864;
-    text-shadow: #ffffff 0px 1px 0;
+    text-shadow: #c79b00 1px 2px 0;
     background: url(i/mm_vert_cell.png) top left;
-    padding-top: 8px;
+    font-weight: bold;
 }
 
 .main_menu_ver

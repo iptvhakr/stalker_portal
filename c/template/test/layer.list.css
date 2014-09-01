@@ -64,8 +64,8 @@
 .name_block, .title_block{
     color: #fff;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
-    margin: 3px 0 0 3px;
+    text-shadow: #0f385a 1px 2px 0;
+    margin: 1px 0 0 3px;
     padding-left: 3px;
     white-space: pre;
     overflow: hidden;
@@ -81,19 +81,18 @@
 }
 
 .number_block{
-    background-image: url("i/mb_icons.png");
-    background-position: -92px 0;
+    background: url("i/mb_icons.png") no-repeat -92px 0;
     width: 34px;
-    height: 20px;
+    height: 21px;
     float: left;
     margin: 4px 0 0 4px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    /*text-shadow: #fff 0 1px 0;*/
     font-size: 18px;
     text-align: center;
     white-space: pre;
     overflow: hidden;
-    padding-top: 1px;
+    line-height: 21px;
 }
 
 .wide_container{
@@ -224,10 +223,10 @@
 
 .active_name_block, .active_title_block{
     font-size: 22px;
+    font-weight: bold;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
-    margin-top: 8px;
-    margin-right: 25px;
+    /*text-shadow: #fff 0 1px 0;*/
+    margin: 6px 25px 0 0;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -243,18 +242,17 @@
 
 .active_number_block{
     width: 34px;
-    height: 27px;
-    background-image: url("i/mb_icons.png");
-    background-position: -92px -21px;
+    height: 29px;
+    background: url("i/mb_icons.png") no-repeat -92px -21px;
     margin: 6px 2px 0 0;
-    float:left;
+    float: left;
     font-size: 20px;
     color: #fff;
     text-shadow: #122946 0 -1px 0;
     text-align: center;
     white-space: pre;
     overflow: hidden;
-    padding-top: 4px;
+    padding-top: 2px;
 }
 
 
@@ -297,17 +295,18 @@
 }
 
 .disable_color_btn_text{
-    color: #707070 !important;
+    color: #999 !important;
+    text-shadow: rgba(0, 50, 80, 0.5) -1px -1px 0 !important;
 }
 
 .mb_header_first{
     position: absolute;
     left: 190px;
-    top: 37px;
+    top: 33px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: "Myriad Pro Cond", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 24px;
     color: #fff;
 }
@@ -361,11 +360,11 @@
 
 .color_button_bar span{
     font-size: 15px;
-    color: #001a33;
-    text-shadow: #fff 0 1px 0;
+    color: #fff;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     float: left;
     margin: 13px 0 0 8px;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 .color_button_bar span sup{
@@ -435,10 +434,10 @@
 
 .pos_button{
     position: absolute;
-    width: 30px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background: url("i/osd_line_pos.png");
-    margin: 6px 0 0 6px;
+    margin: 5px 0 0 6px;
     left: 0;
 }
 
@@ -637,14 +636,14 @@
 
 .ears_arrow_left{
     width: 15px;
-    height: 18px;
+    height: 28px;
     background-image: url("i/ears_arrow_l.png");
     margin: 15px 0;
 }
 
 .ears_arrow_right{
     width: 15px;
-    height: 18px;
+    height: 28px;
     background-image: url("i/ears_arrow_r.png");
     margin: 15px 0;
 }
