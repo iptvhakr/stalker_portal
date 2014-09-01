@@ -11,7 +11,7 @@
 
         _debug('url', url);
         window.location = url;
-    }, {layer_name : "zoombytv"});
+    }, {layer_name : "pomogator"});
 
     loader.next();
 })();
