@@ -3413,7 +3413,7 @@ player.prototype.bind = function(){
             this.con_menu && this.con_menu.show && this.con_menu.show();
         }
         
-    }).bind(key.APP, this).bind(key.AUDIO, this);
+    }).bind(key.APP, this).priority_bind(key.AUDIO, this);
     
     
     (function(){

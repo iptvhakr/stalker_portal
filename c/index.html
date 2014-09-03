@@ -241,6 +241,23 @@ function init(){
         
     }).bind(key.TV);
 
+    (function(){
+        if (module.radio && !module.radio.on){
+
+            keydown_observer.emulate_key(key.MENU);
+
+            main_menu.hide();
+            module.radio.show();
+            module.radio.cur_view = 'short';
+
+            module.radio.shift_row_callback = function(){
+                module.radio.play();
+                module.radio.shift_row_callback = null;
+                module.radio.cur_view = 'wide';
+            };
+        }
+    }).bind(key.AUDIO);
+
     keydown_observer.addCustomEventListener("keypress", function(event){
 
         if (stb.power_off && event.key != key.USB_MOUNTED && event.key != key.USB_UNMOUNTED){
