@@ -56,6 +56,12 @@ BaseLayer.prototype.init = function(){
     this.dom_obj.addClass(this.class_name);
     
     this.dom_obj.id = this.layer_name;
+
+    this.logo_dom_obj = create_block_element('main_logo', this.dom_obj);
+
+    if (stb.user && stb.user.portal_logo_url){
+        this.logo_dom_obj.style.background = 'url('+stb.user.portal_logo_url+') no-repeat';
+    }
 };
 
 BaseLayer.prototype.create_block = function(class_name, is_active){

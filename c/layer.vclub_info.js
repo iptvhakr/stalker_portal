@@ -63,11 +63,20 @@ vclub_info.prototype.reset = function(){
 };
 
 vclub_info.prototype.init = function(){
-    
-    this.dom_obj.innerHTML = '<div class="mb_header_first">' + word['vclub_title'] + ' / <span>' + word['vclub_info'] + '</span></div>';
-    
-    //create_block_element('ears_back', this.dom_obj);
-    
+
+    this.logo_dom_obj = create_block_element('main_logo', this.dom_obj);
+
+    if (stb.user && stb.user.portal_logo_url){
+        this.logo_dom_obj.style.background = 'url('+stb.user.portal_logo_url+') no-repeat';
+    }
+
+    this.header_path = create_block_element('mb_header_first', this.dom_obj);
+    this.path_container = document.createElement('span');
+    this.header_path.innerHTML = word['vclub_title'] + ' / ';
+    this.header_path.appendChild(this.path_container);
+
+    this.path_container.innerHTML = word['vclub_info'];
+
     var ears_left_container = create_block_element('ears_left_container');
     
     this.left_ear = create_block_element('ears_left');
