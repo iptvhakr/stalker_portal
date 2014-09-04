@@ -8,9 +8,8 @@
     right: 1px;
     top: 0;
     width: 194px;
-    height: 28px;
-    padding: 8px 0 0 6px;
-    font-family: "Myriad Pro Cond", sans-serif;
+    height: 31px;
+    padding: 5px 0 0 6px;
     font-size: 20px;
 }
 
@@ -25,7 +24,7 @@
 }
 
 #service_management .active_name_block{
-    margin-top: 0;
+    margin-top: -5px;
 }
 
 #service_management .active_description_block{
@@ -46,11 +45,10 @@
     right: 23px;
     top: 4px;
     width: 201px;
-    height: 36px;
+    height: 39px;
     background: url("i_720/mb_table_act02.png") 219px -4px;
-    padding: 15px 0 0 8px;
-    color: #000;
-    font-family: "Myriad Pro Cond", sans-serif;
+    padding: 12px 0 0 8px;
+    color: #002864;
     font-size: 20px;
     overflow: hidden;
 }
@@ -60,11 +58,10 @@
     right: 23px;
     top: 4px;
     width: 201px;
-    height: 36px;
+    height: 39px;
     background: url("i_720/mb_table_act02.png") 219px -4px;
-    padding: 15px 0 0 8px;
-    color: #000;
-    font-family: "Myriad Pro Cond", sans-serif;
+    padding: 12px 0 0 8px;
+    color: #002864;
     font-size: 20px;
     overflow: hidden;
 }
