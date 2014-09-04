@@ -1054,15 +1054,15 @@ class User implements \Stalker\Lib\StbApi\User
 
         if ($package['type'] == 'tv'){
 
-            $services = $services->from('itv')->orderby('name')->get()->all('name');
+            $services = $services->from('itv')->where(array('status' => 1))->orderby('name')->get()->all('name');
 
         }elseif($package['type'] == 'radio'){
 
-            $services = $services->from('radio')->orderby('name')->get()->all('name');
+            $services = $services->from('radio')->where(array('status' => 1))->orderby('name')->get()->all('name');
 
         }elseif($package['type'] == 'video'){
 
-            $services = $services->from('video')->orderby(sprintf(_('video_name_format'), 'name', 'o_name'))
+            $services = $services->from('video')->where(array('status' => 1))->orderby(sprintf(_('video_name_format'), 'name', 'o_name'))
                 ->get()->all(sprintf(_('video_name_format'), 'name', 'o_name'));
 
         }else{
