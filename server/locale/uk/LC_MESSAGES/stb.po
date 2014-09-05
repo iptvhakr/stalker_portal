@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-18 12:30+0300\n"
-"PO-Revision-Date: 2014-08-18 12:31+0300\n"
+"POT-Creation-Date: 2014-09-05 13:25+0300\n"
+"PO-Revision-Date: 2014-09-05 13:26+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr "Реклама в Відео клубі"
 #: ../../../administrator/karaoke_archive.php:70
 #: ../../../administrator/add_epg.php:275
 #: ../../../administrator/stat_video_users.php:69
-#: ../../../administrator/themes.php:99
+#: ../../../administrator/themes.php:130
 #: ../../../administrator/administrators.php:146
 #: ../../../administrator/tariffs.php:292
 #: ../../../administrator/stat_not_active_users.php:69
@@ -171,7 +171,6 @@ msgstr "Заборонити для відео категорій"
 #: ../../../administrator/stream_zones.php:88
 #: ../../../administrator/testers.php:68
 #: ../../../administrator/add_epg.php:410
-#: ../../../administrator/themes.php:139
 #: ../../../administrator/administrators.php:90
 #: ../../../administrator/tariffs.php:91
 #: ../../../administrator/city_info.php:246
@@ -685,8 +684,8 @@ msgstr "Автоматичне оновлення прошивки"
 msgid "Storages"
 msgstr "Сховище інформації"
 
-#: ../../../administrator/index.php:492 ../../../administrator/themes.php:71
-#: ../../../administrator/themes.php:94
+#: ../../../administrator/index.php:492 ../../../administrator/themes.php:106
+#: ../../../administrator/themes.php:125
 msgid "Templates"
 msgstr "Зовнішній вигляд"
 
@@ -1043,17 +1042,21 @@ msgstr "пошук по mac"
 msgid "task done"
 msgstr "завдання виконано"
 
-#: ../../../administrator/themes.php:85 ../../../lang/stb.php:41
+#: ../../../administrator/themes.php:116 ../../../lang/stb.php:41
 msgid "not found"
 msgstr "не знайдено"
 
-#: ../../../administrator/themes.php:120
-msgid "Theme"
-msgstr "Тема"
+#: ../../../administrator/themes.php:149
+msgid "CURRENT THEME"
+msgstr "Поточний скін"
 
-#: ../../../administrator/themes.php:132
-msgid "Preview"
-msgstr "Попередній перегляд"
+#: ../../../administrator/themes.php:151 ../../../administrator/themes.php:161
+msgid "preview not available"
+msgstr "предпросмотр недоступний"
+
+#: ../../../administrator/themes.php:166
+msgid "Apply"
+msgstr "Застосувати"
 
 #: ../../../administrator/administrators.php:35
 msgid "Password can not be blank"
@@ -3091,8 +3094,8 @@ msgstr "на каналі"
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:501
-#: ../../../lib/stb.class.php:512
+#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:510
+#: ../../../lib/stb.class.php:521
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
 
@@ -4475,7 +4478,7 @@ msgstr "сьогодні"
 msgid "yesterday"
 msgstr "вчора"
 
-#: ../../../lib/stb.class.php:396
+#: ../../../lib/stb.class.php:405
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -4483,7 +4486,7 @@ msgstr ""
 "Портал тимчасово недоступний.<br>Будь ласка, спробуйте пізніше.<br>Приносимо "
 "вибачення за незручності."
 
-#: ../../../lib/stb.class.php:572
+#: ../../../lib/stb.class.php:581
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"
@@ -4936,6 +4939,12 @@ msgstr ""
 #: ../../../lib/epg.class.php:795 ../../../lib/epg.class.php:796
 msgid "H:i"
 msgstr ""
+
+#~ msgid "Theme"
+#~ msgstr "Тема"
+
+#~ msgid "Preview"
+#~ msgstr "Попередній перегляд"
 
 #~ msgid "Themes"
 #~ msgstr "Шаблони"
