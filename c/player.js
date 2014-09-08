@@ -4703,19 +4703,25 @@ player.prototype.get_pids = function(){
 player.prototype.set_media_aspect = function(){
     _debug('player.set_media_aspect');
 
-    if (this.is_tv){
+    _debug('this.cur_media_item.mark_archive', this.cur_media_item.mark_archive);
 
-        _debug('this.ch_aspect[this.cur_media_item.id]', this.ch_aspect[this.cur_media_item.id]);
+    if (this.is_tv || module.tv_archive && this.cur_media_item.mark_archive){
 
-        if (this.ch_aspect[this.cur_media_item.id] !== undefined){
+        var ch_id = this.is_tv ? this.cur_media_item.id : this.cur_media_item.ch_id;
+
+        _debug('ch_id', ch_id);
+
+        _debug('this.ch_aspect[ch_id]', this.ch_aspect[ch_id]);
+
+        if (this.ch_aspect[ch_id] !== undefined){
 
             try{
-                stb.SetAspect(parseInt(this.ch_aspect[this.cur_media_item.id], 10));
+                stb.SetAspect(parseInt(this.ch_aspect[ch_id], 10));
             }catch(e){
                 _debug(e);
             }
 
-            this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', this.ch_aspect[this.cur_media_item.id]);
+            this.ch_aspect_idx = stb.aspect_array.getIdxByVal('mode', this.ch_aspect[ch_id]);
 
             _debug('aspect_alias', stb.aspect_array[this.ch_aspect_idx].alias);
         }else{
