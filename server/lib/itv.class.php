@@ -665,7 +665,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
                 $query = $this->db->from('itv')->where($where)->in('itv.id', $fav);
 
-                if (Config::get('enable_tariff_plans')){
+                if (Config::getSafe('enable_tariff_plans', false) && !Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
@@ -689,7 +689,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
                 $query = $this->db->from('itv')->where($where)->orderby('name');
 
-                if (Config::get('enable_tariff_plans')){
+                if (Config::getSafe('enable_tariff_plans', false) && !Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
@@ -1154,7 +1154,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
     public function getAllUserChannelsIdsByUid($uid){
 
-        if (Config::getSafe('enable_tariff_plans', false)){
+        if (Config::getSafe('enable_tariff_plans', false) && !Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){
 
             $user = User::getInstance(Stb::getInstance()->id);
             $subscription = $user->getServicesByType('tv');

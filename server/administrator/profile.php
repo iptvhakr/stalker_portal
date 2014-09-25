@@ -456,6 +456,13 @@ if (empty($packages)){
         <table align="center" width="80%">
 
             <? if (Config::getSafe('enable_tariff_plans', false)){?>
+
+            <? if (Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){?>
+            <tr align="center">
+                <td><a href="subscribe.php?id=<?echo $id?>"><?= _('TV subscription')?></a> (<?echo kop2grn(get_cost_sub_channels())?>)</td>
+            </tr>
+            <?}?>
+
             <tr>
                 <td align="center">
                     <form method="post">
