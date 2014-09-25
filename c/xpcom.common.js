@@ -1158,6 +1158,13 @@ function common_xpcom(){
 
                     stb.EnableVKButton(true);
 
+                    if (gSTB.SetLedIndicatorLevels && this.user.hasOwnProperty('default_led_level') && this.user.hasOwnProperty('standby_led_level')){
+                        _debug('this.user[default_led_level]', parseInt(this.user['default_led_level'], 10));
+                        _debug('this.user[standby_led_level]', parseInt(this.user['standby_led_level'], 10));
+                        gSTB.SetLedIndicatorMode(1);
+                        gSTB.SetLedIndicatorLevels(parseInt(this.user['default_led_level'], 10), parseInt(this.user['standby_led_level'], 10));
+                    }
+
                 }catch(e){
                     _debug(e);
                 }

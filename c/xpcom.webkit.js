@@ -8,6 +8,14 @@ function webkit_xpcom(){
 
         gSTB.StandBy(par);
 
+        if (gSTB.SetLedIndicatorMode){
+            gSTB.SetLedIndicatorMode(par ? 2 : 1);
+        }
+
+        if (gSTB.SetLedIndicatorLevels){
+            return;
+        }
+
         _debug('gSTB.RDir(HardwareVersion).substr(0, 3)', gSTB.RDir('HardwareVersion').substr(0, 3));
 
         if (['0.1', '0.2'].indexOf(gSTB.RDir('HardwareVersion').substr(0, 3)) == -1){
