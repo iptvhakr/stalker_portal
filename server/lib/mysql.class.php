@@ -723,14 +723,15 @@ class Mysql
 
     private function escape($value) {
 
-        //if(is_int($value) || strpos($value, '+')){
+
         if (is_int($value)) {
 
             return $value;
-            //}elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && !strpos($value, '+')){
-        } elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()')) && strpos(strtoupper(trim($value)), 'UNIX_TIMESTAMP') === false) {
+
+        } elseif (!in_array(strtoupper(trim($value)), array('NOW()', 'CURDATE()', 'CURTIME()'))) {
 
             $value = "'" . $this->escape_str($value) . "'";
+
         } else {
 
             $this->disable_caching();

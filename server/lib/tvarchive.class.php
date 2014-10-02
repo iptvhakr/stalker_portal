@@ -421,14 +421,21 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
     public function updatePlayedEndTime(){
 
-        return Mysql::getInstance()->update('played_tv_archive',
-            array(
-                'length' => 'UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(playtime)'
-            ),
-            array(
-                'id' => (int) $_REQUEST['hist_id']
-            )
-        );
+        $played_tv_archive = Mysql::getInstance()->from('played_tv_archive')->where(array('id' => (int) $_REQUEST['hist_id']))->get()->first();
+
+        if (!empty($played_tv_archive)){
+
+            return Mysql::getInstance()->update('played_tv_archive',
+                array(
+                     'length' => time()- $played_tv_archive['playtime']
+                ),
+                array(
+                     'id' => (int) $_REQUEST['hist_id']
+                )
+            );
+        }
+
+        return false;
     }
 
     public function setPlayedTimeshift(){
@@ -441,14 +448,21 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
     public function updatePlayedTimeshiftEndTime(){
 
-        return Mysql::getInstance()->update('played_timeshift',
-            array(
-                'length' => 'UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(playtime)'
-            ),
-            array(
-                'id' => (int) $_REQUEST['hist_id']
-            )
-        );
+        $played_timeshift = Mysql::getInstance()->from('played_timeshift')->where(array('id' => (int) $_REQUEST['hist_id']))->get()->first();
+
+        if (!empty($played_timeshift)){
+
+            return Mysql::getInstance()->update('played_timeshift',
+                array(
+                     'length' => time() - $played_timeshift['playtime']
+                ),
+                array(
+                     'id' => (int) $_REQUEST['hist_id']
+                )
+            );
+        }
+
+        return false;
     }
 
     public function createTasks($ch_id, $force_storages = array()){

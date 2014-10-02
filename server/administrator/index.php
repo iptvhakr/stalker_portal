@@ -183,7 +183,7 @@ function get_online_users(){
         ->from('users')
         ->count()
         ->where(array(
-            'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(now())-'.Config::get('watchdog_timeout')*2
+            'UNIX_TIMESTAMP(keep_alive)>' => time()-Config::get('watchdog_timeout')*2
         ))
         ->get()
         ->counter();
@@ -194,7 +194,7 @@ function get_offline_users(){
         ->from('users')
         ->count()
         ->where(array(
-            'UNIX_TIMESTAMP(keep_alive)<=' => 'UNIX_TIMESTAMP(now())-'.Config::get('watchdog_timeout')*2
+            'UNIX_TIMESTAMP(keep_alive)<=' => time()-Config::get('watchdog_timeout')*2
         ))
         ->get()
         ->counter();
@@ -253,7 +253,7 @@ $cur_infoportal = get_cur_infoportal();
                 ->where(array(
                     'now_playing_type' => 2,
                     'storage_name'     => $storage_name,
-                    'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout')*2
+                    'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2
                 ))
                 ->get()
                 ->counter();
@@ -312,7 +312,7 @@ $cur_infoportal = get_cur_infoportal();
                 ->where(array(
                     'now_playing_type' => 11,
                     'storage_name'     => $storage_name,
-                    'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout')*2
+                    'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2
                 ))
                 ->get()
                 ->counter();
@@ -345,7 +345,7 @@ $cur_infoportal = get_cur_infoportal();
                         ->where(array(
                             'now_playing_type' => 14,
                             'storage_name'     => $storage_name,
-                            'UNIX_TIMESTAMP(keep_alive)>' => 'UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout')*2
+                            'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2
                         ))
                         ->get()
                         ->counter();

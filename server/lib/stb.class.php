@@ -724,8 +724,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['tv_channel_default_aspect'] = Config::getSafe('tv_channel_default_aspect', 'fit');
 
-        $profile['default_led_level'] = Config::get('default_led_level', 10);
-        $profile['standby_led_level'] = Config::get('standby_led_level', 90);
+        $profile['default_led_level'] = Config::getSafe('default_led_level', 10);
+        $profile['standby_led_level'] = Config::getSafe('standby_led_level', 90);
 
         unset($profile['device_id']);
         unset($profile['device_id2']);

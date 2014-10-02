@@ -51,7 +51,7 @@ class Storage
             ->count()
             ->where(array(
                 'storage_id' => $this->storage['id'],
-                'added>'     => 'FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.$this->stat_period.')'
+                'added>'     => date('Y-m-d H:i:s', time() - $this->stat_period)
             ))
             ->get()->counter();
 

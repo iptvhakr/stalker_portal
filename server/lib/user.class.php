@@ -946,7 +946,7 @@ class User implements \Stalker\Lib\StbApi\User
             'video_id'      => $video_id,
             'price'         => $price,
             'rent_date'     => 'NOW()',
-            'rent_end_date' => 'FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())+'.($package['rent_duration']*3600).')'
+            'rent_end_date' => date('Y-m-d H:i:s', time() + $package['rent_duration']*3600)
         );
 
         $rent_history_id = Mysql::getInstance()->insert('video_rent_history', $rent_data)->insert_id();

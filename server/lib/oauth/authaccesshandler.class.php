@@ -67,7 +67,7 @@ class AuthAccessHandler extends AccessHandler
             'refresh_token' => md5($token.''.uniqid()),
             'secret_key'    => md5($token.microtime(1)),
             'started' => 'NOW()',
-            'expires' => 'FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())+'.$this->token_expire.')'
+            'expires' => date('Y-m-d H:i:s', time() + $this->token_expire)
         );
 
         if (empty($token_record)){
