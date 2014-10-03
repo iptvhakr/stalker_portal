@@ -352,7 +352,7 @@ $cur_infoportal = get_cur_infoportal();
 
                     echo '<tr>';
                     echo '<td class="td_stat" width="80"><b>'.$storage_name.'</b>:</td>';
-                    echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=11   " style="color:black">'.$counter.'</a></td>';
+                    echo '<td class="td_stat"><a href="users_on_storage.php?storage='.$storage_name.'&type=14   " style="color:black">'.$counter.'</a></td>';
                     echo '</tr>';
                 }
                 ?>
