@@ -519,3 +519,5 @@ $words['go_to_dvb_settings'] = _('You can configure DVB channels in the settings
 $words['apps_title'] = _('Applications');
 
 $words['coming_soon_video'] = _('Video will be available soon');
+
+$words['app_install_confirm'] = _('Install application?');

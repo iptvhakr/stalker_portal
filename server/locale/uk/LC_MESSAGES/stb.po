@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-18 12:30+0300\n"
-"PO-Revision-Date: 2014-08-18 12:31+0300\n"
+"POT-Creation-Date: 2014-10-06 17:34+0300\n"
+"PO-Revision-Date: 2014-10-06 17:34+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1132,7 +1132,7 @@ msgid "Use as default"
 msgstr "За умовчанням"
 
 #: ../../../administrator/tariffs.php:355
-#: ../../../administrator/profile.php:491
+#: ../../../administrator/profile.php:498
 msgid "Packages"
 msgstr "Пакети"
 
@@ -1190,7 +1190,7 @@ msgstr ""
 msgid "Account disabled"
 msgstr "Обліковий запис відключено"
 
-#: ../../../administrator/user.php:162 ../../../administrator/profile.php:462
+#: ../../../administrator/user.php:162 ../../../administrator/profile.php:469
 #: ../../../lang/stb.php:381
 msgid "Tariff plan"
 msgstr "Тарифний план"
@@ -2053,19 +2053,20 @@ msgstr ""
 msgid "Last change of status"
 msgstr "Зміна статусу"
 
-#: ../../../administrator/profile.php:478
-msgid "Change"
-msgstr "Змінити"
-
-#: ../../../administrator/profile.php:487
-msgid "No packages available"
-msgstr "Немає доступних пакетів"
-
-#: ../../../administrator/profile.php:517
+#: ../../../administrator/profile.php:462
+#: ../../../administrator/profile.php:524
 msgid "TV subscription"
 msgstr "Підписка на канали"
 
-#: ../../../administrator/profile.php:520
+#: ../../../administrator/profile.php:485
+msgid "Change"
+msgstr "Змінити"
+
+#: ../../../administrator/profile.php:494
+msgid "No packages available"
+msgstr "Немає доступних пакетів"
+
+#: ../../../administrator/profile.php:527
 msgid "Additional services"
 msgstr "Дод. сервіси"
 
@@ -3091,8 +3092,8 @@ msgstr "на каналі"
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:501
-#: ../../../lib/stb.class.php:512
+#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:510
+#: ../../../lib/stb.class.php:521
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
 
@@ -4463,6 +4464,10 @@ msgstr "Додатки"
 msgid "Video will be available soon"
 msgstr "Відео буде доступо найближчим часом"
 
+#: ../../../lang/stb.php:523
+msgid "Install application?"
+msgstr "Встановити додаток?"
+
 #: ../../../lib/system.class.php:74
 msgid "m"
 msgstr "х"
@@ -4475,7 +4480,7 @@ msgstr "сьогодні"
 msgid "yesterday"
 msgstr "вчора"
 
-#: ../../../lib/stb.class.php:396
+#: ../../../lib/stb.class.php:405
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -4483,7 +4488,7 @@ msgstr ""
 "Портал тимчасово недоступний.<br>Будь ласка, спробуйте пізніше.<br>Приносимо "
 "вибачення за незручності."
 
-#: ../../../lib/stb.class.php:572
+#: ../../../lib/stb.class.php:581
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас в порталі Stalker!"

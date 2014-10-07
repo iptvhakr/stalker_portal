@@ -9,7 +9,7 @@
     var app_id   = "com.app";
     var app_install_url = "";
 
-    var install_confirm = new ModalForm({"title" : get_word('Install application?'), "parent" : main_menu});
+    var install_confirm = new ModalForm({"title" : get_word('app_install_confirm'), "parent" : main_menu});
     install_confirm.enableOnExitClose();
 
     install_confirm.addItem(new ModalFormButton(
