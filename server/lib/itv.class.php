@@ -604,7 +604,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             array_unshift($genres, array('id' => 'dvb', 'title' => _('DVB')));
         }
 
-        if (Config::getSafe('show_pvr_filter_in_genres_list', false)){
+        if (Config::getSafe('show_pvr_filter_in_genres_list', false)
+            && in_array(Stb::getInstance()->getParam('stb_type'), explode(',', Config::get('allowed_stb_types_for_local_recording')))
+        ){
             array_unshift($genres, array('id' => 'pvr', 'title' => _('Channels with PVR')));
         }
 
@@ -619,7 +621,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         return $genres;
     }
     
-    private function getOffset($where = array()){
+    private function getOffset($where = array(), $where_or = array()){
         
         if (!$this->load_last_page){
             return $this->page * self::max_page_items;
@@ -665,6 +667,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
                 $query = $this->db->from('itv')->where($where)->in('itv.id', $fav);
 
+                if (!empty($where_or)){
+                    $query->where($where_or, 'OR ');
+                }
+
                 if (Config::getSafe('enable_tariff_plans', false) && !Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){
                     $query->in('itv.id', $all_user_channels_ids);
                 }
@@ -688,6 +694,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             if ($sortby == 'name'){
 
                 $query = $this->db->from('itv')->where($where)->orderby('name');
+
+                if (!empty($where_or)){
+                    $query->where($where_or, 'OR ');
+                }
 
                 if (Config::getSafe('enable_tariff_plans', false) && !Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){
                     $query->in('itv.id', $all_user_channels_ids);
@@ -733,6 +743,10 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 }
 
                 $query = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number));
+
+                if (!empty($where_or)){
+                    $query->where($where_or, 'OR ');
+                }
 
                 if (!$show_unsubscribed_tv_channels_option && (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array())))){
                     $query->in('itv.id', $all_user_channels_ids);
@@ -812,7 +826,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $where['tv_genre_id!='] = (int) Mysql::getInstance()->from('tv_genre')->where(array('title' => 'for adults'))->get()->first('id');
         }
         
-        $offset = $this->getOffset($where);
+        $offset = $this->getOffset($where, isset($where_or) ? $where_or : array());
 
         $this->db
             ->from('itv')
