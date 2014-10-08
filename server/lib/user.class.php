@@ -455,10 +455,17 @@ class User implements \Stalker\Lib\StbApi\User
             }
         }
 
-        return Mysql::getInstance()->insert('user_package_subscription', array(
+        $return = Mysql::getInstance()->insert('user_package_subscription', array(
             'user_id' => $this->id,
             'package_id' => $package_id
         ))->insert_id();
+
+        $event = new SysEvent();
+        $event->setUserListById($this->id);
+        $event->setTtl(Config::get('watchdog_timeout') * 2);
+        $event->sendMsgAndReboot($this->getLocalizedText('Services are updated according to the subscription. The STB will be rebooted.'));
+
+        return $return;
     }
 
     public function unsubscribeFromPackage($package_id, $packages = null, $force_no_check_billing = false){
@@ -492,10 +499,17 @@ class User implements \Stalker\Lib\StbApi\User
             }
         }
 
-        return Mysql::getInstance()->delete('user_package_subscription', array(
+        $result = Mysql::getInstance()->delete('user_package_subscription', array(
             'user_id' => $this->id,
             'package_id' => $package_id
         ))->result();
+
+        $event = new SysEvent();
+        $event->setUserListById($this->id);
+        $event->setTtl(Config::get('watchdog_timeout') * 2);
+        $event->sendMsgAndReboot($this->getLocalizedText('Services are updated according to the subscription. The STB will be rebooted.'));
+
+        return $result;
     }
 
     public function getPriceForPackage($package_id){

@@ -73,7 +73,7 @@ class RESTCommandAccountSubscription extends RESTCommand
 
             $info = $user->getAccountInfo();
 
-            $subscribe      = empty($data['subscribed']) ? array() : $data['subscribed'];
+            $subscribe      = empty($data['subscribed']) ? array() : array_unique($data['subscribed']);
             $subscribe_id   = empty($data['subscribed_id']) ? array() : $data['subscribed_id'];
             $unsubscribe    = empty($data['subscribed']) ? array() : array_diff($info['subscribed'], $data['subscribed']);
             $unsubscribe_id = empty($data['subscribed_id']) ? array() : array_diff($info['subscribed_id'], $data['subscribed_id']);

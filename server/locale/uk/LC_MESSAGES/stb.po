@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-06 17:34+0300\n"
-"PO-Revision-Date: 2014-10-06 17:34+0300\n"
+"POT-Creation-Date: 2014-10-08 13:22+0300\n"
+"PO-Revision-Date: 2014-10-08 13:22+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1749,7 +1749,7 @@ msgstr "Тривалість"
 
 #: ../../../administrator/add_video.php:2048
 #: ../../../administrator/add_itv.php:1650 ../../../lang/stb.php:91
-#: ../../../lang/stb.php:307 ../../../lib/user.class.php:1023
+#: ../../../lang/stb.php:307 ../../../lib/user.class.php:1037
 msgid "min"
 msgstr "хв"
 
@@ -2100,7 +2100,7 @@ msgid "Rent duration"
 msgstr "Тривалість оренди"
 
 #: ../../../administrator/services_packages.php:431
-#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1019
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1033
 msgid "h"
 msgstr "г"
 
@@ -3088,11 +3088,16 @@ msgstr "Зупинено запис"
 msgid "on channel"
 msgstr "на каналі"
 
-#: ../../../tools/misctranslations.php:163
+#: ../../../tools/misctranslations.php:162
+msgid ""
+"Services are updated according to the subscription. The STB will be rebooted."
+msgstr "Послуги оновлено згідно з підпискою. Приставка буде перезавантажена."
+
+#: ../../../tools/misctranslations.php:164
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашої приставки застаріла.<br>Будь ласка обновіть її."
 
-#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:510
+#: ../../../tools/misctranslations.php:165 ../../../lib/stb.class.php:510
 #: ../../../lib/stb.class.php:521
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
@@ -4497,24 +4502,24 @@ msgstr "Ласкаво просимо, %s<br>Ми раді бачити Вас �
 msgid "DVB"
 msgstr ""
 
-#: ../../../lib/itv.class.php:608
+#: ../../../lib/itv.class.php:610
 msgid "Channels with PVR"
 msgstr ""
 
-#: ../../../lib/itv.class.php:1619
+#: ../../../lib/itv.class.php:1633
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1629
+#: ../../../lib/itv.class.php:1643
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
 
 #
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:771
-#: ../../../lib/user.class.php:1065 ../../../lib/user.class.php:1066
+#: ../../../lib/user.class.php:1079 ../../../lib/user.class.php:1080
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -4826,7 +4831,7 @@ msgstr "[телепрограма відсутня]"
 msgid "New claim on %s - %s (%s, id: %s). From %s"
 msgstr "Нова скарга на %s - %s (%s, id: %s). Від %s"
 
-#: ../../../lib/user.class.php:1015 ../../../lib/accountinfo.class.php:35
+#: ../../../lib/user.class.php:1029 ../../../lib/accountinfo.class.php:35
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -4834,23 +4839,23 @@ msgstr[0] "%d день"
 msgstr[1] "%d дня"
 msgstr[2] "%d днів"
 
-#: ../../../lib/user.class.php:1075
+#: ../../../lib/user.class.php:1089
 msgid "TV channels"
 msgstr "ТБ канали"
 
-#: ../../../lib/user.class.php:1076
+#: ../../../lib/user.class.php:1090
 msgid "Movies"
 msgstr "Відео"
 
-#: ../../../lib/user.class.php:1077
+#: ../../../lib/user.class.php:1091
 msgid "Radio channels"
 msgstr "Радіо канали"
 
-#: ../../../lib/user.class.php:1078
+#: ../../../lib/user.class.php:1092
 msgid "Modules"
 msgstr "Модулі"
 
-#: ../../../lib/user.class.php:1079
+#: ../../../lib/user.class.php:1093
 msgid "Options"
 msgstr "Опції"
 
