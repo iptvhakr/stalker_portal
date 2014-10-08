@@ -72,6 +72,11 @@ function init_m()
         if (!_GET['dvb_supported_scan_types'] && prof.modules[i].name == 'dvb'){
             continue;
         }
+
+        if (gSTB.IsEmulator && ['lock', 'lang', 'video', 'portal', 'dev_info', 'reload', 'reboot'].indexOf(prof.modules[i].name) == -1){
+            continue;
+        }
+
         var idx = punkti.length;
         punkti[idx]=punktiT[prof.modules[i].name];
         cache[idx]=new Image();
