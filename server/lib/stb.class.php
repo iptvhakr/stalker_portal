@@ -60,6 +60,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $this->user_agent = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
 
+        if (!empty($_SERVER['HTTP_X_USER_AGENT'])){
+            $this->user_agent .= '; '.$_SERVER['HTTP_X_USER_AGENT'];
+        }
+
         $this->parseAuthorizationHeader();
 
         if (!empty($debug_key) && $this->checkDebugKey($debug_key)){
@@ -251,6 +255,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             Mysql::getInstance()->set_timezone($offset);
 
             $this->additional_services_on = $user['additional_services_on'];
+
+            if (!empty($user['country'])){
+                $this->user_agent .= '; Country: '.$user['country'];
+            }
 
             $this->initLocale($this->stb_lang);
         }

@@ -65,15 +65,20 @@ class User implements \Stalker\Lib\StbApi\User
 
     public static function getCountryId(){
 
-        $ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : @$_SERVER['REMOTE_ADDR'];
-
-        $country_code = @geoip_country_code_by_name($ip);
+        $country_code = self::getCountryCode();
 
         if (empty($country_code)){
             return 0;
         }
 
         return (int) Mysql::getInstance()->from('countries')->where(array('iso2' => $country_code))->get()->first('id');
+    }
+
+    public static function getCountryCode(){
+
+        $ip = !empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : @$_SERVER['REMOTE_ADDR'];
+
+        return @geoip_country_code_by_name($ip);
     }
 
     public function getMac(){

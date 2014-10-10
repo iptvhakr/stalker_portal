@@ -510,12 +510,16 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
     public static function getFilteredUserChannelsIds(){
 
-        $user_agent = User::getUserAgent();
+        $user_agent = Stb::getInstance()->getUserAgent();
 
         $all_links = Mysql::getInstance()->from('ch_links')->groupby('ch_id')->get()->all();
 
-        $user_links = array_filter($all_links, function($link) use ($user_agent){
-            return $link['user_agent_filter'] == '' || preg_match("/".$link['user_agent_filter']."/", $user_agent);
+        $disable_channel_filter_for_macs = Config::getSafe('disable_channel_filter_for_macs', array());
+
+        $mac = Stb::getInstance()->mac;
+
+        $user_links = array_filter($all_links, function($link) use ($user_agent, $disable_channel_filter_for_macs, $mac){
+            return $link['user_agent_filter'] == '' || in_array($mac, $disable_channel_filter_for_macs) || preg_match("/".$link['user_agent_filter']."/", $user_agent);
         });
 
         //var_dump($user_links);
@@ -1449,7 +1453,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
     public static function getUrlsForChannel($ch_id){
 
-        $user_agent = User::getUserAgent();
+        $user_agent = Stb::getInstance()->getUserAgent();
 
         $channel_links = Mysql::getInstance()
             ->from('ch_links')
@@ -1458,8 +1462,12 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             ->get()
             ->all();
 
-        $user_channel_links = array_filter($channel_links, function($link) use ($user_agent){
-            return $link['user_agent_filter'] != '' && preg_match("/".$link['user_agent_filter']."/", $user_agent);
+        $disable_channel_filter_for_macs = Config::getSafe('disable_channel_filter_for_macs', array());
+
+        $mac = Stb::getInstance()->mac;
+
+        $user_channel_links = array_filter($channel_links, function($link) use ($user_agent, $disable_channel_filter_for_macs, $mac){
+            return in_array($mac, $disable_channel_filter_for_macs) || $link['user_agent_filter'] != '' && preg_match("/".$link['user_agent_filter']."/", $user_agent);
         });
 
         if (empty($user_channel_links)){
