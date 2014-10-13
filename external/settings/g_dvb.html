@@ -79,23 +79,13 @@
 
             var save_data = {
                 "dvb_type"          : dvb_type,
-                "dvb_antenna_power" : document.getElementById("i2").checked
+                "dvb_antenna_power" : document.getElementById("i2").checked,
+                "type"              : "settings"
             };
 
-            save_data.type   = "stb";
-            save_data.action = "set_dvb_prefs";
-
-            parent.load(
-                save_data,
-                function (result) {
-                    save_data.type = "settings";
-                    save_data.action = undefined;
-                    parent.stb.SendEventToPortal(JSON.stringify(save_data));
-
-                    back();
-                    stop_auto_scan();
-                }
-            );
+            parent.stb.SendEventToPortal(JSON.stringify(save_data));
+            back();
+            stop_auto_scan();
         }
 
         function clear_channel_list(){
