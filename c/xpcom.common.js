@@ -1044,7 +1044,7 @@ function common_xpcom(){
 
                 this.profile['plasma_saving_timeout'] = parseInt(this.profile['plasma_saving_timeout'], 10);
 
-                //this.user['update_url'] = this.profile['update_url'] ? this.profile['update_url'] + this.type.substr(3) + '/imageupdate' : 'http://mag.infomir.com.ua/' + this.type.substr(3) + '/imageupdate';
+                this.profile['ts_enable_icon'] = parseInt(this.profile['ts_enable_icon'], 10);
 
                 if (!this.user['update_url']){
                     try{
