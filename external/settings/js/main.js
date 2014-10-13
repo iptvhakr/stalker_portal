@@ -131,6 +131,7 @@ function onLoad()
     cont=document.getElementById("cont");
     cont.width=w;
     cont.height=h;
+    cont.focus();
     langv();
 }
 
