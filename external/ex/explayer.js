@@ -68,7 +68,6 @@ MediaPlayer.onInit = function () {
     gSTB.SetMode(0);
     gSTB.SetWinAlphaLevel(0, 255);
     gSTB.SetWinAlphaLevel(1, 255);
-    gSTB.SetChromaKey(1, 0xFFFFFF);
     gSTB.SetPIG(1, 0, 0, 0);
 	gSTB.SetAudioLangs(environment.lang_audiotracks === "" ? "" : iso639[environment.lang_audiotracks].code[0], defLang);
 	gSTB.SetSubtitleLangs((environment.lang_subtitles === "" || environment.lang_subtitles === -1) ? "" : iso639[environment.lang_subtitles].code[0], defLang);
@@ -177,22 +176,6 @@ MediaPlayer.onInit = function () {
 		self.init[MEDIA_TYPE_VIDEO](refresh);
 		self.$SlideContainer.style.visibility = 'visible';
 	};
-
-    this.init[MEDIA_TYPE_STREAM] = function(refresh) {
-        if (!refresh) {
-            self.$PlayerBar.style.display = "none";
-            self.$PlayerCurrentTime.style.display = "none";
-            self.$PlayerBufferBar.style.display = "none";
-            self.$PlayerProgressBar.style.display = "none";
-            self.handle.querySelector("#playerHideplist").style.display = "none";
-            self.handle.querySelector("#playerPause").style.display = "none";
-            self.handle.querySelector("#playerREW").style.display = "none";
-            self.handle.querySelector("#playerFFWD").style.display = "none";
-            self.handle.querySelector("#playerTotalTime").style.display = "none";
-            self.handle.querySelector("#playerCurrentTime").style.display = "none";
-            self.handle.querySelector("#playerSlash").style.display = "none";
-        }    
-    };
 
     this.init[MEDIA_TYPE_IMAGE] = function() {
         self.$PlayerBar.style.display = "none";
@@ -324,17 +307,6 @@ MediaPlayer.onInit = function () {
     
     this.modalInit = {};
 
-	this.modalInit[MEDIA_TYPE_STREAM] = function () {
-		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gaudio, false);
-		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gsubtitle, false);
-//		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gts, false);
-//		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gtsend, false);
-		self.ModalMenu.Menu.Switch(self.ModalMenu.Menu.gaudio, false);
-//		self.ModalMenu.Menu.gts.slist.Marked(self.ModalMenu.Menu.gts.ion, false);
-//		self.ModalMenu.Menu.gts.slist.Marked(self.ModalMenu.Menu.gts.ioff, true);
-//		self.ModalMenu.Menu.gtsend.slist.Marked(self.ModalMenu.Menu.gtsend.iciclick, true);
-//		self.ModalMenu.Menu.gtsend.slist.Marked(self.ModalMenu.Menu.gtsend.istop, false);
-	};
 	this.modalInit[MEDIA_TYPE_IMAGE] = function () {
 		self.ModalMenu.Menu.Hidden(self.ModalMenu.Menu.gslideOn, false);
 		self.ModalMenu.Menu.Switch(self.ModalMenu.Menu.gslideOn, false);
@@ -541,7 +513,14 @@ MediaPlayer.preparePlayer = function ( list, parent, fullScreen, play, show ) {
 	return true;
 };
 
-MediaPlayer.prepare = function ( obj, play ) {
+/**
+ * prepare player interface for new data
+ * @param {Object} obj file data
+ * @param {boolean} play launch content
+ * @param {boolean} [slideShow] hide info for slide show
+ * @returns {boolean}
+ */
+MediaPlayer.prepare = function ( obj, play, slideShow ) {
 	echo(obj, 'prepare ' + play);
 	clearTimeout(this.timer.showInfo);
 	clearTimeout(this.timer.startPlaying);
@@ -557,8 +536,8 @@ MediaPlayer.prepare = function ( obj, play ) {
 	this.countError = 0;
 	this.obj = obj;
 	this.$PlayerTitle.innerHTML = obj.name;
-	this.$PlayerHeader.style.display = "block";
-	this.$PlayerFooter.style.display = "block";
+	this.$PlayerHeader.style.display = slideShow ? 'none' : 'block';
+	this.$PlayerFooter.style.display = slideShow ? 'none' : 'block';
 	if ( this.type !== obj.type ) {
 		this.$SlideContainer.style.visibility = 'hidden';
 		this.type = obj.type;
@@ -584,28 +563,23 @@ MediaPlayer.prepare = function ( obj, play ) {
 };
 
 MediaPlayer.play = function () {
+	var param = '';
 	if ( !this.obj ) { return false; }
 	gSTB.SetMode(1);
-	var param = "";
 	clearTimeout(this.timer.slideShow);
-	switch ( this.type ) {
-		case MEDIA_TYPE_STREAM:
-			break;
-		case MEDIA_TYPE_IMAGE:
-			this.obj.sol = "jpeg";
-			if ( this.slideOn > 0 ) {
-				this.timer.slideShow = window.setTimeout(function () {
-					if ( MediaPlayer.list.length > 1 && MediaPlayer.fullScreen ) {
-						if ( MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length ) {
-							MediaPlayer.PlayList.playIndex++;
-							MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex], true);
-							MediaPlayer.prepare(MediaPlayer.list[MediaPlayer.PlayList.activeItem.data.index], true);
-							ListPage.Preview.setPosition(MediaPlayer.obj);
-						}
-					}
-				}, this.slideOn * 1000);
-			}
-			break;
+	if ( this.type === MEDIA_TYPE_IMAGE ) {
+		this.obj.sol = "jpeg";
+		if ( this.slideOn > 0 ) {
+			this.timer.slideShow = window.setTimeout(function () {
+				if ( MediaPlayer.list.length > 1 && MediaPlayer.fullScreen && MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length ) {
+					MediaPlayer.PlayList.playIndex++;
+					MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex], true);
+					MediaPlayer.prepare(MediaPlayer.list[MediaPlayer.PlayList.activeItem.data.index], true, true);
+					ListPage.Preview.setPosition(MediaPlayer.obj);
+				}
+			}, this.slideOn * 1000);
+		}
+
 	}
 	if ( deviceProxy.length < 1 ) {
 		gSTB.Play((this.obj.sol ? this.obj.sol + ' ' : 'auto ') + this.obj.url + param);
@@ -745,34 +719,19 @@ MediaPlayer.event = function ( e, info ) {
 	e = parseInt(e);
 	switch ( e ) {
 		case 1: // The player reached the end of the media content or detected a discontinuity of the stream.
-			switch ( MediaPlayer.type ) {
-				case MEDIA_TYPE_STREAM:
-					MediaPlayer.countError++;
-					if ( MediaPlayer.countError < 5 ) {
-						MediaPlayer.play();
-					} else {
-						// call subscriber hooks
-						ListPage.subscribeEvents[MediaPlayer.EVENT_ERROR].call(ListPage);
-						new CModalHint(currCPage, playingError, 3000);
-					}
-					break;
-				default:
-					if ( MediaPlayer.list.length > 1 /*&& MediaPlayer.fullScreen*/ ) {
-						if ( MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length ) {
-							MediaPlayer.PlayList.playIndex++;
-							MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex], true);
-							MediaPlayer.prepare(MediaPlayer.list[MediaPlayer.PlayList.activeItem.data.index], true);
-							ListPage.Preview.setPosition(MediaPlayer.obj);
-							break;
-						}
-					}
-					if ( currCPage === MediaPlayer ) {
-						MediaPlayer.exit();
-					} else {
-						MediaPlayer.end();
-					}
-					break;
+			if ( MediaPlayer.list.length > 1 && MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length ) {
+				MediaPlayer.PlayList.playIndex++;
+				MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex], true);
+				MediaPlayer.prepare(MediaPlayer.list[MediaPlayer.PlayList.activeItem.data.index], true);
+				ListPage.Preview.setPosition(MediaPlayer.obj);
+				break;
 			}
+			if ( currCPage === MediaPlayer ) {
+				MediaPlayer.exit();
+			} else {
+				MediaPlayer.end();
+			}
+
 			break;
 		case 2: // Information on audio and video tracks of the media content is received.
 			switch ( MediaPlayer.type ) {
@@ -804,9 +763,6 @@ MediaPlayer.event = function ( e, info ) {
 					MediaPlayer.runner.start();
 					MediaPlayer.timer.showInfo = window.setTimeout(function () {echo('showInfo_3'); MediaPlayer.showInfo(false);}, 5000);//bas
 					break;
-				case MEDIA_TYPE_STREAM:
-					MediaPlayer.timer.showInfo = window.setTimeout(function () {echo('showInfo_4'); MediaPlayer.showInfo(false);}, 5000);//bas
-					break;
 			}
 			MediaPlayer.playNow = true;
 			break;
@@ -815,7 +771,6 @@ MediaPlayer.event = function ( e, info ) {
 			ListPage.subscribeEvents[MediaPlayer.EVENT_ERROR].call(ListPage);
 			switch ( MediaPlayer.type ) {
 				case MEDIA_TYPE_VIDEO:
-				case MEDIA_TYPE_STREAM:
 				case MEDIA_TYPE_AUDIO:
 					if ( MediaPlayer.list.length > 1 && MediaPlayer.fullScreen ) {
 						if ( MediaPlayer.PlayList.playIndex + 1 < MediaPlayer.list.length ) {
@@ -942,21 +897,20 @@ MediaPlayer.showInfo = function ( show, hidetime, showHeader ) {
 		this.$PlayerFooter.style.display = "none";
 		if ( this.type !== MEDIA_TYPE_AUDIO ) { this.$SlideContainer.style.visibility = 'hidden'; }
 	} else {
-//		if ( showHeader !== false ) {
-			this.$PlayerHeader.style.display = "block";
-			if ( this.playListShow ) {
-				this.$PlayerList.style.display = "block";
-				this.PlayList.Refresh();
-			}
-			if ( this.type === MEDIA_TYPE_AUDIO ) { this.$SlideContainer.style.visibility = 'visible'; }
-//		} else {
-//			this.$PlayerHeader.style.display = 'none';
-//		}
+		this.$PlayerHeader.style.display = "block";
+		if ( this.playListShow ) {
+			this.$PlayerList.style.display = "block";
+			this.PlayList.Refresh();
+		}
+		if ( this.type === MEDIA_TYPE_AUDIO ) { this.$SlideContainer.style.visibility = 'visible'; }
 		this.$PlayerFooter.style.display = "block";
 	}
 	this.infoFlag = !this.infoFlag;
 	if ( hidetime ) {
-		this.timer.showInfo = window.setTimeout(function () {echo('showInfo_5'); MediaPlayer.showInfo(!MediaPlayer.infoFlag);}, hidetime);
+		this.timer.showInfo = window.setTimeout(function () {
+			echo('showInfo_5');
+			MediaPlayer.showInfo(!MediaPlayer.infoFlag);
+		}, hidetime);
 	}
 };
 
@@ -995,16 +949,16 @@ MediaPlayer.splitTime = function ( a ) {
 };
 
 MediaPlayer.runner = {
-	id    : {},
-	run   : false,
-	start : function () {
+	id   : {},
+	run  : false,
+	start: function () {
 		if ( this.run ) { return; }
 		MediaPlayer.curTime = gSTB.GetPosTime();
 		if ( MediaPlayer.curTime > MediaPlayer.totalTime ) { MediaPlayer.curTime = MediaPlayer.totalTime; }
 		if ( MediaPlayer.curTime < 0 ) { MediaPlayer.curTime = 0; }
-		var px = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * MediaPlayer.progress[screen.height]);
-		var curTime = MediaPlayer.parseTime(MediaPlayer.curTime);
-		var persent = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * 100);
+		var px = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * MediaPlayer.progress[screen.height]),
+			curTime = MediaPlayer.parseTime(MediaPlayer.curTime),
+			persent = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * 100);
 		// call all subscribers hooks
 		ListPage.subscribeEvents[MediaPlayer.EVENT_PROGRESS].call(ListPage, persent);
 		MediaPlayer.$PlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
@@ -1016,14 +970,14 @@ MediaPlayer.runner = {
 			var persent = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * 100);
 			// call all subscribers hooks
 			ListPage.subscribeEvents[MediaPlayer.EVENT_PROGRESS].call(ListPage, persent);
-			var px = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * MediaPlayer.progress[screen.height]);
-			var curTime = MediaPlayer.parseTime(MediaPlayer.curTime);
+			var px = Math.round(MediaPlayer.curTime / MediaPlayer.totalTime * MediaPlayer.progress[screen.height]),
+				curTime = MediaPlayer.parseTime(MediaPlayer.curTime);
 			MediaPlayer.$PlayerCurrentTime.innerHTML = curTime.hour + ':' + curTime.min + ':' + curTime.sec;
 			MediaPlayer.$PlayerProgressBar.style.width = px + 'px';
 		}, 1000);
 		this.run = true;
 	},
-	stop  : function () {
+	stop : function () {
 		if ( this.run ) {
 			this.run = false;
 			clearInterval(this.id);
@@ -1277,15 +1231,18 @@ function getIso639LangCode ( langArr ) {
 }
 
 
-MediaPlayer.addPreviewList = function ( ) {
-	var list = [];
-	// get all marked items
-	var items = CSListManager.Current().Find({marked: true});
+MediaPlayer.addPreviewList = function () {
+	var list = [],
+		items = CSListManager.Current().Find({marked: true});// get all marked items
+
 	echo('FOUND marked items?');
 	// no marked so take all available
 	if ( items.length === 0 ) {
 		echo('NOPE');
 		items = Array.prototype.slice.call(CSListManager.Current().handleInner.children);
+	}
+	if ( items.indexOf(CSListManager.Current().Current()) === -1 ) {
+		items.unshift(CSListManager.Current().Current()); // add current focused item to list
 	}
 	// prepare play list
 	items.forEach(function ( item ) {

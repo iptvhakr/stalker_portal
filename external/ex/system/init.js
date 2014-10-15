@@ -84,10 +84,11 @@ if ( window.gSTB === undefined ) {
 	});
 
 } else {
-
-	// new way of string handling
-	// all strings are in UTF-16
-    gSTB.SetNativeStringMode && gSTB.SetNativeStringMode(true);
+	if ( typeof gSTB.SetNativeStringMode === 'function' ) {
+		// new way of string handling
+		// all strings are in UTF-16
+		gSTB.SetNativeStringMode(true);
+	}
 
 	// check mode
 	(function(){

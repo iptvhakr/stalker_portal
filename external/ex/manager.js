@@ -23,7 +23,7 @@ CSListManager.init = function(handleInner, parentPage){
         */
     CSListManager.src = [];
     
-    this.playable = [MEDIA_TYPE_VIDEO, MEDIA_TYPE_AUDIO, MEDIA_TYPE_IMAGE/*, MEDIA_TYPE_STREAM*/];
+    this.playable = [MEDIA_TYPE_VIDEO, MEDIA_TYPE_AUDIO, MEDIA_TYPE_IMAGE];
         /**
         * Флаг отображающий состояние видимости компонента поиска
         * @type {Boolean}

@@ -683,7 +683,8 @@ MainPage.EventHandler = function ( event ) {
 				MainPage.actionExit();
 				break;
 			case KEYS.INFO:
-				new CModalAlert(MainPage, 'Info', 'Program version: ' + version, lang.back_action, function () {});
+				var refererPage = (_GET['referrer'] || '').indexOf('online-media.infomir.com.ua') === -1 ? '' : '<br>Source: Online media';
+				new CModalAlert(MainPage, 'Info', 'Program version: ' + version + refererPage, lang.back_action, function () {});
 				break;
 			default:
 				MainPage.typeList.EventHandler(event);
@@ -1069,7 +1070,7 @@ ListPage.onInit = function(){
     this.SearchBar = new CSearchBar(ListPage);
     this.SearchBar.Init('img/' + screen.height, ListPage.handleInner.querySelector('.header .csbar'), lang.list_default_hint);
     this.SearchBar.showAttr = 'table-cell';
-   
+
     /**
      * запуск поиска
      * @param {String} value введенный поисковый запрос
@@ -1336,7 +1337,6 @@ ListPage.actionBack = function(){
         ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, true);
 		ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOKINFO, true);
         ListPage.Info.Show(false, true);
-        ListPage.SearchBar.Show(true,false);
         CSListManager.Current().Activate(true);
     }
 };

@@ -1,4 +1,4 @@
-var version = '2.01.03';
+var version = '2.01.05';
 
 // Типы узлов
 var TYPE_NONE              = 0,
@@ -21,7 +21,6 @@ var TYPE_NONE              = 0,
     LOCAL_SEARCH_ROOT      = 20,
     WHAT_IS_THIS_TYPE      = 21,
     ORPHAN_FOLDER          = 22,
-    MEDIA_TYPE_STREAM      = 23,  // ??
     MEDIA_TYPE_NONE        = 0;
     
 // VARIABLES
