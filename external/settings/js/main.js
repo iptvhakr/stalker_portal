@@ -73,7 +73,7 @@ function init_m()
             continue;
         }
 
-        if (gSTB.IsEmulator && ['lock', 'lang', 'video', 'portal', 'dev_info', 'reload', 'reboot'].indexOf(prof.modules[i].name) == -1){
+        if (gSTB.IsEmulator && ['lock', 'lang', 'playback', 'portal', 'dev_info', 'reload', 'reboot'].indexOf(prof.modules[i].name) == -1){
             continue;
         }
 
