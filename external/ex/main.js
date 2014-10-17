@@ -2224,7 +2224,7 @@ function htmlObjectInfoParser(html){
         });
         return;
     }
-    html = html[1].split('td');
+    html = html[2].split('td');
     if(html[1] == null){
         html[1] = html[0];
     }
