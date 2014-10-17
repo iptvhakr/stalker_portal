@@ -78,9 +78,12 @@ class StreamServer
 
     private static function filterByCountry($streamers, $country_id){
 
-        $streamers = array_map(function($streamer){
+        $streamer_ids = array();
+
+        $streamers = array_map(function($streamer) use (&$streamer_ids){
 
             $streamer['countries'] = StreamServer::getCountries($streamer['stream_zone']);
+            $streamer_ids[] = $streamer['id'];
 
             return $streamer;
         }, $streamers);
@@ -95,6 +98,7 @@ class StreamServer
                 ->from('streaming_servers')
                 ->join('stream_zones', 'stream_zone', 'stream_zones.id', 'LEFT')
                 ->where(array('default_zone' => 1))
+                ->in('streaming_servers.id', $streamer_ids)
                 ->get()
                 ->all();
         }
