@@ -427,7 +427,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
             return Mysql::getInstance()->update('played_tv_archive',
                 array(
-                     'length' => time()- $played_tv_archive['playtime']
+                     'length' => time() - strtotime($played_tv_archive['playtime'])
                 ),
                 array(
                      'id' => (int) $_REQUEST['hist_id']
@@ -454,7 +454,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
             return Mysql::getInstance()->update('played_timeshift',
                 array(
-                     'length' => time() - $played_timeshift['playtime']
+                     'length' => time() - strtotime($played_timeshift['playtime'])
                 ),
                 array(
                      'id' => (int) $_REQUEST['hist_id']
