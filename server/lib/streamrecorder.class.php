@@ -371,7 +371,7 @@ class StreamRecorder extends Master
                                  array(
                                      't_stop'  => 'NOW()',
                                      'ended'   => 1,
-                                     'length'  => time() - $user_record['t_start']
+                                     'length'  => time() - strtotime($user_record['t_start'])
                                  ),
                                  array(
                                      'id' => $user_rec_id,
@@ -383,7 +383,7 @@ class StreamRecorder extends Master
                                          array(
                                              't_stop' => 'NOW()',
                                              'ended'  => 1,
-                                             'length' => time() - $file_record['t_start']
+                                             'length' => time() - strtotime($file_record['t_start'])
                                          ),
                                          array(
                                              'id' => $file_record['id'],
