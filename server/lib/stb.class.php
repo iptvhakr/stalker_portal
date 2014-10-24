@@ -1108,18 +1108,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     break;
                 case 2: // Video Club
                     
-                    //preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
-
                     if (strpos($param, '://') !== false){
 
                         $video = $this->db->from('video')->where(array('rtsp_url' => $param, 'protocol' => 'custom'))->get()->first();
 
                         if (empty($video)){
-                            preg_match("/\/([^\/]+)\/[^\/]+\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+                            preg_match("/\/([^\/]+)\/[^\/]+\/(\d+)\.[a-z0-9]*$/", $param, $tmp_arr);
                         }
 
                     }else{
-                        preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z]*$/", $param, $tmp_arr);
+                        preg_match("/auto \/media\/([\S\s]+)\/(\d+)\.[a-z0-9]*$/", $param, $tmp_arr);
                     }
 
                     if (empty($video) && !empty($tmp_arr)){
