@@ -31,23 +31,23 @@ if (@$_POST['add']){
 
 $id = @intval($_GET['id']);
 
-if (!empty($id)){
-    
-    if (@$_POST['edit']){
+$id = @intval($_GET['id']);
+$action  = (@$_POST['edit'] || @$_GET['del']);
+if (!empty($id) && $action){
+
+    if ($action == 'edit' && @$_POST['name']){
 
         Admin::checkAccess(AdminAccess::ACCESS_EDIT);
-
         $stb_groups->set(array('name' => $_POST['name']), $_GET['id']);
-        
-        header("Location: stbgroups.php");
-    }elseif (@$_GET['del']){
+
+    }elseif ($action == 'del'){
 
         Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
         $stb_groups->del($id);
-        
-        header("Location: stbgroups.php");
+
     }
+    header("Location: stbgroups.php");
     exit;
 }
 
