@@ -30,9 +30,8 @@ if (@$_POST['add']){
 }
 
 $id = @intval($_GET['id']);
+$action  = !empty($_POST['edit']) ? 'edit': (!empty($_GET['del']) ? 'del': FALSE);
 
-$id = @intval($_GET['id']);
-$action  = (@$_POST['edit'] || @$_GET['del']);
 if (!empty($id) && $action){
 
     if ($action == 'edit' && @$_POST['name']){
