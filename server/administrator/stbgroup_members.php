@@ -33,28 +33,26 @@ if (@$_POST['add']){
     Admin::checkAccess(AdminAccess::ACCESS_CREATE);
     
     $stb_groups->addMember(array('mac' => Middleware::normalizeMac($_POST['mac']), 'uid' => Middleware::getUidByMac($_POST['mac']), 'stb_group_id' => $_GET['group_id']));
-    
+
     header("Location: stbgroup_members.php?group_id=".@$_GET['group_id']);
     exit;
 }
 
-if (!empty($id)){
-    
-    if (@$_POST['edit']){
+$action  = !empty($_POST['edit']) ? 'edit': (!empty($_GET['del']) ? 'del': FALSE);
+if (!empty($id) && $action){
+
+    if ($action == 'edit'){
 
         Admin::checkAccess(AdminAccess::ACCESS_EDIT);
-        
         $stb_groups->setMember(array('mac' => Middleware::normalizeMac($_POST['mac']), 'uid' => Middleware::getUidByMac($_POST['mac'])), $id);
         
-        header("Location: stbgroup_members.php?group_id=".@$_GET['group_id']);
-    }elseif (@$_GET['del']){
+    }else{
 
         Admin::checkAccess(AdminAccess::ACCESS_DELETE);
-        
         $stb_groups->removeMember($id);
-        
-        header("Location: stbgroup_members.php?group_id=".@$_GET['group_id']);
+
     }
+    header("Location: stbgroup_members.php?group_id=".@$_GET['group_id']);
     exit;
 }
 
