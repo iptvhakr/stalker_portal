@@ -305,11 +305,11 @@ if (!$error){
         }
     }
     
-    if (@$_GET['update'] && !$error && !empty($_POST)){
+    if (@$_GET['update']&& !$error && !empty($_POST)){
 
         Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
-        if(@$_GET['name']){
+        if(@$_GET['name'] && @$_POST['tv_genre_id'] > 0){
 
             $ch_id = intval(@$_GET['id']);
 
@@ -1006,7 +1006,7 @@ $last_modified_id = Mysql::getInstance()
     ->get()
     ->first('id');
 
-$all_channels = Mysql::getInstance()->query("select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter, media_claims.no_epg, media_claims.wrong_epg from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' inner join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number");
+$all_channels = Mysql::getInstance()->query("select itv.*, tv_genre.title as genres_name, media_claims.media_type, media_claims.media_id, media_claims.sound_counter, media_claims.video_counter, media_claims.no_epg, media_claims.wrong_epg from itv left join media_claims on itv.id=media_claims.media_id and media_claims.media_type='itv' left join tv_genre on itv.tv_genre_id=tv_genre.id group by itv.id order by number");
 
 echo "<center><table class='list item_list' cellpadding='3' cellspacing='0'>";
 echo "<tr>";
@@ -1023,7 +1023,10 @@ echo "<th class='list'><b>"._('Claims about<br>audio/video/epg')."</b></th>\n";
 echo "<th class='list'><b>&nbsp;</b></th>";
 echo "</tr>";
 while ($arr = $all_channels->next()){
-
+/*if ($arr['id'] == 2) {
+    var_dump($arr);
+    exit;
+}*/
     echo "<tr ";
     if ($arr['bonus_ch'] == 1){
         echo 'bgcolor="#ffffec"';
@@ -1065,7 +1068,7 @@ while ($arr = $all_channels->next()){
     echo "</td>";
     echo "<td class='list'>".$arr['cmd']."</td>";
     echo "<td class='list'>".$arr['xmltv_id']."</td>";
-    echo "<td class='list'>"._($arr['genres_name'])."</td>";
+    echo "<td class='list'>".(!empty($arr['genres_name'])? _($arr['genres_name']): '----')."</td>";
     echo "<td class='list' align='center'>".($arr['enable_tv_archive'] == 1 ? '&bull;' : '')."</td>";
     echo "<td class='list'>".$arr['volume_correction']."</td>";
     
@@ -1432,7 +1435,7 @@ function delete_logo(id){
            <td>
             <input type="text" name="name" id="name" value="<? echo @htmlspecialchars($name) ?>">
             <input type="hidden" id="id" value="<? echo @$_GET['id'] ?>">
-            <input type="hidden" id="action" value="<? if(@$_GET['edit']){echo "edit";} ?>">
+            <input type="hidden" id="action" value="<? if(@$_GET['edit'] || @$_GET['update']){echo 'edit';} ?>">
            </td>
         </tr>
         
@@ -1494,7 +1497,7 @@ function delete_logo(id){
            </td>
            <td>
             <select name="tv_genre_id">
-                <option value="0"/>-----------
+                <option value="0">-----------
                 <?echo get_genres()?>
             </select>
            </td>
