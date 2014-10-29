@@ -1023,10 +1023,6 @@ echo "<th class='list'><b>"._('Claims about<br>audio/video/epg')."</b></th>\n";
 echo "<th class='list'><b>&nbsp;</b></th>";
 echo "</tr>";
 while ($arr = $all_channels->next()){
-/*if ($arr['id'] == 2) {
-    var_dump($arr);
-    exit;
-}*/
     echo "<tr ";
     if ($arr['bonus_ch'] == 1){
         echo 'bgcolor="#ffffec"';
