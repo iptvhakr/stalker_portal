@@ -1,2 +1,5 @@
 
 /.idea
+/admin/vendor
+/admin/composer.lock
+/admin/composer.phar
