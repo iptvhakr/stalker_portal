@@ -155,28 +155,20 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $overlap_start = Config::getSafe('tv_archive_playback_overlap_start', 0) * 60;
 
-        if (Stb::$server_timezone){
+        $tz = new DateTimeZone(Stb::$server_timezone);
 
-            $tz = new DateTimeZone(Stb::$server_timezone);
+        $date = new DateTime(date('r', strtotime($program['time']) - ($disable_overlap ? -$overlap : $overlap_start))); // previous part overlap compensation
+        $date->setTimeZone($tz);
 
-            $date = new DateTime(date('r', strtotime($program['time']) - ($disable_overlap ? -$overlap : $overlap_start))); // previous part overlap compensation
-            $date->setTimeZone($tz);
+        $date_to = new DateTime(date('r', strtotime($program['time_to'])));
+        $date_to->setTimeZone($tz);
 
-            $date_to = new DateTime(date('r', strtotime($program['time_to'])));
-            $date_to->setTimeZone($tz);
-
-            $start_timestamp = $date->getTimestamp();
-            $stop_timestamp  = $date_to->getTimestamp() + $overlap;
-
-        }else{
-
-            $start_timestamp = strtotime($program['time']) - ($disable_overlap ? -$overlap : $overlap_start);
-            $stop_timestamp  = strtotime($program['time_to']) + $overlap;
-        }
+        $start_timestamp = $date->getTimestamp();
+        $stop_timestamp  = $date_to->getTimestamp() + $overlap;
 
         $channel = Itv::getChannelById($program['ch_id']);
 
-        $filename = date("Ymd-H", $start_timestamp);
+        $filename = $date->format("Ymd-H");
 
         if ($channel['wowza_dvr']){
             $filename .= '.mp4';
