@@ -1,14 +1,12 @@
 .curweather_block{
     position: absolute;
-    right: 112px;
+    right: 60px;
     top : 135px;
     width: 293px;
     color: #fff;
     text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     font-size: 24px;
-    /*background-image: url("i_720/25alfa_20.png");
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;*/
+    text-align: left;
 }
 
 .curweather_block .city{
@@ -21,12 +19,17 @@
 .curweather_block .curweather_img{
     position: absolute;
     top : 5px;
-    left: 5px;
+    right: 5px;
 }
 
 .curweather_block .curweather_descr{
     margin: 85px 0 0 0;
     padding: 0 0 8px 8px;
+    text-align: right;
+}
+
+.curweather_block .curweather_wind{
+    float: right;
 }
 
 .curweather_block .curweather_title{

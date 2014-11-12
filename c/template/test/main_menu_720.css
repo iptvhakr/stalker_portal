@@ -48,8 +48,8 @@
     position: absolute;
     width: 320px;
     height: 210px;
-    bottom: 60px;
-    left: 0;
+    bottom: 74px;
+    left: -10px;
     background: url(i_720/mm_hor_left.png);
 }
 
@@ -57,8 +57,8 @@
     position: absolute;
     width: 320px;
     height: 210px;
-    bottom: 60px;
-    right: 0;
+    bottom: 74px;
+    right: -10px;
     background: url(i_720/mm_hor_right.png);
 }
 
@@ -131,16 +131,16 @@
 
 .mm_menu_vert_body .mm_vert_container div{
     height: 38px;
-    width: 346px;
+    width: 356px;
     font: 26px "Roboto";
     color: #ffffff;
     text-transform: uppercase;
     text-shadow:  rgba(0, 50, 80, 0.5) 1px 2px 0;
     background: url(i_720/mm_vert_cell.png) bottom left;
-    margin-left: 14px;
+    /*margin-left: 14px;*/
     /*padding-left: 14px;
     padding-top: 8px;*/
-    padding: 3px 0 5px 20px;
+    padding: 3px 0 5px 34px;
     overflow: hidden;
     white-space: pre;
     text-overflow: ellipsis;

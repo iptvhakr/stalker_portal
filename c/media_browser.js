@@ -1774,7 +1774,7 @@
     
     /* END MEDIA BROWSER */
     
-    main_menu.add(word['mbrowser_title'], [], 'mm_ico_usb.png', function(){
+    main_menu.add(word['mbrowser_title'], [], 'mm_ico_mb.png', function(){
             main_menu.hide();
             module.media_browser.show();
     },
