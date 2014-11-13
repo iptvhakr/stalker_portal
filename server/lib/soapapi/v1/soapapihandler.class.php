@@ -176,6 +176,10 @@ class SoapApiHandler
     }
 }
 
+/**
+ * @pw_complex stringArray
+ */
+class stringArray {}
 
 /**
  * AccountInfo complex type
