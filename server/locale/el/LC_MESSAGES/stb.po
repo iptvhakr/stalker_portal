@@ -3,17 +3,18 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-05-24 13:59+0200\n"
-"PO-Revision-Date: 2014-05-27 14:48+0300\n"
-"Last-Translator: George Sat \n"
-"Language-Team: \n"
+"PO-Revision-Date: 2014-11-18 12:05+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
+"Language-Team: Greek-MAG-infomir <georgesat20@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: _;gettext;gettext_noop;dgettext\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
+"Language: el_GR\n"
 "X-Poedit-SearchPath-0: ../../..\n"
 
 #: ../../../administrator/add_epg.php:134
@@ -338,7 +339,7 @@ msgstr "Διόρθωση Προγράμματος Τηλεόρασης"
 #: ../../../administrator/add_itv.php:1559
 #: ../../../administrator/add_video.php:2085
 msgid "min"
-msgstr "ελάχιστο"
+msgstr "λεπτά"
 
 #: ../../../administrator/add_itv.php:1583
 msgid "Comments"
@@ -2086,7 +2087,7 @@ msgstr "Ο καιρός τώρα δεν είναι διαθέσιμος"
 #: ../../../lang/stb.php:19 ../../../lang/stb.php:72 ../../../lang/stb.php:96
 #: ../../../lang/stb.php:185
 msgid "VIEW"
-msgstr "ΘΕΑ"
+msgstr "ΠΡΟΒΟΛΗ"
 
 #: ../../../lang/stb.php:20 ../../../lang/stb.php:73 ../../../lang/stb.php:97
 msgid "SORT"
@@ -2404,60 +2405,60 @@ msgstr "ΔΕΚΕΜΒΡΙΟΣ"
 
 #: ../../../lang/stb.php:124
 msgid "SUNDAY"
-msgstr "ΚΥΡΙΑΚΉ"
+msgstr "ΚΥΡΙΑΚΗ"
 
 #: ../../../lang/stb.php:124
 msgid "MONDAY"
-msgstr "ΔΕΥΤΈΡΑ"
+msgstr "ΔΕΥΤΕΡΑ"
 
 #: ../../../lang/stb.php:124
 msgid "TUESDAY"
-msgstr "ΤΡΊΤΗ"
+msgstr "ΤΡΙΤΗ"
 
 #: ../../../lang/stb.php:124
 msgid "WEDNESDAY"
-msgstr "ΤΕΤΆΡΤΗ"
+msgstr "ΤΕΤΑΡΤΗ"
 
 #: ../../../lang/stb.php:124
 msgid "THURSDAY"
-msgstr "ΠΈΜΠΤΗ"
+msgstr "ΠΕΜΠΤΗ"
 
 #: ../../../lang/stb.php:124
 msgid "FRIDAY"
-msgstr "ΠΑΡΑΣΚΕΥΉ"
+msgstr "ΠΑΡΑΣΚΕΥΗ"
 
 #: ../../../lang/stb.php:124
 msgid "SATURDAY"
-msgstr "ΣΆΒΒΑΤΟ"
+msgstr "ΣΑΒΒΑΤΟ"
 
 #: ../../../lang/stb.php:133
 msgid "BACK"
-msgstr "ΕΠΙΣΤΡΟΦΉ"
+msgstr "ΕΠΙΣΤΡΟΦΗ"
 
 #: ../../../lang/stb.php:134
 msgid "ABOUT MOVIE"
-msgstr "ΣΧΕΤΙΚΆ ΜΕ ΤΗΝ ΤΑΙΝΙΑ"
+msgstr "ΣΧΕΤΙΚΑ ΜΕ ΤΗΝ ΤΑΙΝΙΑ"
 
 #: ../../../lang/stb.php:135
 msgid "TV GUIDE"
-msgstr "ΠΡΌΓΡΑΜΜΑ ΤΗΛΕΌΡΑΣΗΣ"
+msgstr "ΠΡΟΓΡΑΜΜΑ ΤΗΛΕΟΡΑΣΗΣ"
 
 #: ../../../lang/stb.php:136 ../../../lang/stb.php:377
 msgid "PACKAGE INFO"
-msgstr "ΠΛΗΡΟΦΟΡΊΕΣ ΠΑΚΈΤΟΥ"
+msgstr "ΠΛΗΡΟΦΟΡΙΕΣ ΠΑΚΕΤΟΥ"
 
 #: ../../../lang/stb.php:139
 msgid "SETTINGS"
-msgstr "ΡΥΘΜΊΣΕΙΣ"
+msgstr "ΡΥΘΜΙΣΕΙΣ"
 
 #: ../../../lang/stb.php:140 ../../../lang/stb.php:160
 #: ../../../lang/stb.php:257
 msgid "CANCEL"
-msgstr "ΑΚΎΡΩΣΗ"
+msgstr "ΑΚΥΡΩΣΗ"
 
 #: ../../../lang/stb.php:141 ../../../lang/stb.php:266
 msgid "SAVE"
-msgstr "ΑΠΟΘΉΚΕΥΣΗ"
+msgstr "ΑΠΟΘΗΚΕΥΣΗ"
 
 #: ../../../lang/stb.php:142
 msgid "Current password"
@@ -2465,11 +2466,11 @@ msgstr "τρέχον κωδικός πρόσβασης"
 
 #: ../../../lang/stb.php:143
 msgid "PARENTAL SETTINGS"
-msgstr "ΓΟΝΙΚΈΣ ΡΥΘΜΊΣΕΙΣ"
+msgstr "ΓΟΝΙΚΕΣ ΡΥΘΜΙΣΕΙΣ"
 
 #: ../../../lang/stb.php:144
 msgid "PARENTAL"
-msgstr "ΓΟΝΙΚΌΣ"
+msgstr "ΓΟΝΙΚΟΣ"
 
 #: ../../../lang/stb.php:145
 msgid "New password"
@@ -2501,7 +2502,7 @@ msgid "LOCALIZATION"
 msgstr "ΕΝΤΟΠΙΣΜΟΣ"
 
 #: ../../../lang/stb.php:154
-msgid "Language of the interface"
+msgid "Γλώσσα περιβάλλοντος"
 msgstr "Γλώσσα του interface"
 
 #: ../../../lang/stb.php:155
@@ -3250,7 +3251,7 @@ msgstr "Αποθήκευση USB"
 #: ../../../lang/stb.php:441 ../../../lang/stb.php:477
 #, fuzzy
 msgid "Path"
-msgstr "Title"
+msgstr "Διαδρομή"
 
 #: ../../../lang/stb.php:442
 msgid "Filename"
@@ -3311,7 +3312,7 @@ msgstr "Σφάλμα PVR: Σφάλμα στο ανοιγμά του αρχείο
 
 #: ../../../lang/stb.php:459
 msgid "PVR Error: Exceeded the maximum number simultaneous recordings"
-msgstr ""
+msgstr "PVR Error: Exceeded the maximum number simultaneous recordings"
 
 #: ../../../lang/stb.php:460
 msgid "PVR Error: End of stream"
@@ -3405,7 +3406,7 @@ msgstr "Πληροφορίες_πληρωμής_λογαριασμού"
 #: ../../../lib/accountinfo.class.php:57
 #, php-format
 msgid "account_agreement_info"
-msgstr "Πλητοφορίες_συμφωνίας_λογαριασμού"
+msgstr "Πληροφορίες_συμφωνίας_λογαριασμού"
 
 #. / sptintf format: 1-account_number, 2-full name, 3-login, 4-mac
 #: ../../../lib/accountinfo.class.php:67
