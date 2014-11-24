@@ -22,14 +22,18 @@
 .curweather_block .curweather_img{
     position: absolute;
     top : 5px;
-    left: 5px;
+    right: 5px;
 }
 
 .curweather_block .curweather_descr{
     margin: 85px 0 0 0;
     padding: 0 0 3px 3px;
+    text-align: right;
 }
 
+.curweather_block .curweather_wind{
+    float: right;
+}
 
 .curweather_block .curweather_title{
     font-family: "Roboto", sans-serif;

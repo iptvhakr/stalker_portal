@@ -303,8 +303,8 @@
 }
 
 .disable_color_btn_text{
-    color: #999 !important;
-    text-shadow: rgba(0, 50, 80, 0.5) -1px -1px 0 !important;
+    color: #29699D !important;
+    text-shadow: none !important;
 }
 
 .mb_header_first{
@@ -614,7 +614,7 @@
 }
 
 .ears_left div{
-    margin-left: 20px;
+    margin-left: 13px;
     font: 18px Arial, Helvetica, sans-serif;
     color: #fff;
 }
@@ -635,7 +635,7 @@
 }
 
 .ears_right div{
-    margin-left: 7px;
+    margin-left: 14px;
     font: 18px Arial, Helvetica, sans-serif;
     color: #fff;
     text-align: center;

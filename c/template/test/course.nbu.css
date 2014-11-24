@@ -1,7 +1,7 @@
 .course_block{
     position: absolute;
     left: 17px;
-    top : 140px;
+    top : 210px;
     width: 205px;
     color: #fff;
     text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
@@ -11,6 +11,7 @@
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;*/
     padding: 0 0 3px 0;
+    text-align: left;
 }
 
 .course_title, .course_date{
@@ -59,13 +60,13 @@
 
 .course_block .course_currency{
     width: 70px;
-    text-align: right;
+    text-align: left;
 }
 
 .course_block .course_value{
     width: 80px;
     margin: 0 0 0 4px;
-    text-align: right;
+    text-align: left;
 }
 
 .course_block .course_trend{

@@ -115,7 +115,7 @@
     /*font-size: 22px;
     color: #002864;
     text-shadow: #fff 0 1px 0;*/
-    font-size: 18px;
+    font-size: 16px;
     color: #284b82;
     /*margin-top: 8px;
     margin-right: 25px;*/
@@ -124,7 +124,7 @@
     width: 469px;
     float: left;
     text-overflow: ellipsis;
-    margin: -5px 0 0 0;
+    margin: -8px 0 0 3px;
 }
 
 .tv_timetable{

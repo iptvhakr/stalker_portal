@@ -48,7 +48,7 @@
     width: 220px;
     height: 162px;
     bottom: 40px;
-    left: 0;
+    left: -23px;
     background: url(i/mm_hor_left.png);
 }
 
@@ -57,7 +57,7 @@
     width: 220px;
     height: 162px;
     bottom: 40px;
-    left: 500px;
+    right: -23px;
     background: url(i/mm_hor_right.png);
 }
 
@@ -110,7 +110,7 @@
 }
 
 .mm_menu_vert_bottom{
-    height: 17px;
+    height: 23px;
     width: 260px;
     background: url(i/mm_hor_bg3.png) bottom;
 }
@@ -123,14 +123,13 @@
 
 .mm_menu_vert_body .mm_vert_container div{
     height: 34px;
-    width: 233px;
+    width: 241px;
     font: 20px "Roboto";
     color: #ffffff;
     text-transform: uppercase;
     text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     background: url(i/mm_vert_cell.png) bottom left;
-    margin-left: 8px;
-    padding-left: 11px;
+    padding-left: 19px;
     padding-top: 4px;
     overflow: hidden;
     white-space: pre;

@@ -95,8 +95,9 @@
     background-position: 102px 0;
     padding: 3px 0 0 6px;
     color: #fff;
-    font-family: "Roboto", sans-serif;
+    font-family: "Myriad Pro Cond", sans-serif;
     overflow: hidden;
+    font-size: 18px;
     /*float: right;
     margin: 0px 0 0 4px;*/
 }
@@ -111,9 +112,10 @@
     background-position: 118px -4px;
     padding: 11px 0 0 8px;
     color: #002864;
-    font-family: "Roboto", sans-serif;
+    font-family: "Myriad Pro Cond", sans-serif;
     overflow: hidden;
     font-weight: bold;
+    font-size: 18px;
 }
 
 .disabled_all_buttons span{

@@ -296,8 +296,8 @@
 }
 
 .disable_color_btn_text{
-    color: #999 !important;
-    text-shadow: rgba(0, 50, 80, 0.5) -1px -1px 0 !important;
+    color: #29699D !important;
+    text-shadow: none !important;
 }
 
 .mb_header_first{
