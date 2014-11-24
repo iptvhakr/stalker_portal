@@ -767,7 +767,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             'pri_subtitle_lang'     => $this->params['pri_subtitle_lang'],
             'sec_subtitle_lang'     => $this->params['sec_subtitle_lang'],
             'show_after_loading'    => empty($this->params['show_after_loading']) ? (Config::getSafe('display_menu_after_loading', false) ? 'main_menu' : 'last_channel') : $this->params['show_after_loading'],
-            'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok']
+            'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok'],
+            'hide_adv_mc_settings'  => Config::getSafe('hide_adv_mc_settings', false)
         );
     }
 

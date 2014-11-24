@@ -41,6 +41,14 @@
                 }
             }
 
+            if (prof.hide_adv_mc_settings){
+                ['igmp_block', 'mcproxy_option', 'mcproxy_addr'].map(function(id){
+                    document.getElementById(id).parentNode.removeChild(document.getElementById(id));
+                })
+            }
+
+            document.getElementById('blueback').style.display = 'block';
+
         });
         var step;
         function onLoad() {
@@ -80,11 +88,13 @@
                 wr += '"input_buffer_size":"' + gr * 1000 + '"';
                 parent.stb.SetBufferSize(gr * 1000, by);
             }
-            var t = document.getElementById("i3").value;
-            if (t != read.result.igmp_conf) {
-                wf = true;
-                wr += (pr ? ',' : '') + '"igmp_conf":"' + t + '"';
-                pr = true;
+            if (document.getElementById("i3")){
+                var t = document.getElementById("i3").value;
+                if (t != read.result.igmp_conf) {
+                    wf = true;
+                    wr += (pr ? ',' : '') + '"igmp_conf":"' + t + '"';
+                    pr = true;
+                }
             }
             t = document.getElementById("i4").value;
             if (t != read.result.upnp_conf) {
@@ -92,19 +102,23 @@
                 wr += (pr ? ',' : '') + '"upnp_conf":"' + t + '"';
                 pr = true;
             }
-            t = document.getElementById("i5").checked;
-            if (t != (read.result.mc_proxy_enabled == "true" ? true : false)) {
-                wf = true;
-                wr += (pr ? ',' : '') + '"mc_proxy_enabled":"' + t + '"';
-                pr = true;
-                parent.stb.EnableMulticastProxy(t);
+            if (document.getElementById("i5")){
+                t = document.getElementById("i5").checked;
+                if (t != (read.result.mc_proxy_enabled == "true" ? true : false)) {
+                    wf = true;
+                    wr += (pr ? ',' : '') + '"mc_proxy_enabled":"' + t + '"';
+                    pr = true;
+                    parent.stb.EnableMulticastProxy(t);
+                }
             }
-            t = document.getElementById("i6").value;
-            if (t != read.result.mc_proxy_url)if (!(url.test(t) || regURLrf.test(t) || regURL.test(t) || t == ''))erm += parent.t("No correct") + "<br />" + parent.t("Multicast proxy URL:"); else {
-                wf = true;
-                wr += (pr ? ',' : '') + '"mc_proxy_url":"' + t + '"';
-                pr = true;
-                parent.stb.SetMulticastProxyURL(t);
+            if (document.getElementById("i6")){
+                t = document.getElementById("i6").value;
+                if (t != read.result.mc_proxy_url)if (!(url.test(t) || regURLrf.test(t) || regURL.test(t) || t == ''))erm += parent.t("No correct") + "<br />" + parent.t("Multicast proxy URL:"); else {
+                    wf = true;
+                    wr += (pr ? ',' : '') + '"mc_proxy_url":"' + t + '"';
+                    pr = true;
+                    parent.stb.SetMulticastProxyURL(t);
+                }
             }
             wr += '}';
             t = document.getElementById("i2").value;
@@ -172,7 +186,7 @@
     </script>
     <meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
 <body onload="onLoad()" onkeydown="pressKey(event);">
-<div id="blueback">
+<div id="blueback" style="display: none">
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
             <td align="right"><span id="t1"></span></td>
@@ -187,7 +201,7 @@
                 <div class="sub_select"><select id="i2"></select></div>
             </td>
         </tr>
-        <tr>
+        <tr id="igmp_block">
             <td align="right"><span id="t3"></span></td>
             <td>
                 <div class="sub_select"><select id="i3"></select></div>
@@ -199,11 +213,11 @@
                 <div class="sub_select"><select id="i4"></select></div>
             </td>
         </tr>
-        <tr id="ch1">
+        <tr id="mcproxy_option">
             <td align="right"><span id="t5"></span></td>
             <td><input type="checkbox" id="i5"/><label></label></td>
         </tr>
-        <tr>
+        <tr id="mcproxy_addr">
             <td align="right"><span id="t6"></span></td>
             <td><input type="text" class="input-text" id="i6"></td>
         </tr>
