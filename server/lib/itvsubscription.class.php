@@ -77,14 +77,6 @@ class ItvSubscription
             return false;
         }
 
-        //Mysql::$debug = true;
-
-        /*$result = Mysql::getInstance();
-
-        if (!empty($uids)){
-            $result = $result->in('uid', $uids);
-        }*/
-
         if (!array_key_exists('bonus_ch', $data) || !is_array($data['bonus_ch'])){
             $data['bonus_ch'] = array();
         }
@@ -110,17 +102,12 @@ class ItvSubscription
             $subscription = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first();
 
             if (empty($subscription)){
-
-                $data['uid'] = $uid;
-
-                $result = Mysql::getInstance()->insert('itv_subscription', $data);
+                $result = Mysql::getInstance()->insert('itv_subscription', array_merge($data, array('uid' => $uid)));
             }else{
                 $result = Mysql::getInstance()->update('itv_subscription', $data, array('uid' => $uid));
             }
 
         }
-
-        //$result = $result->update('itv_subscription', $data);
 
         if (!$result){
             return false;
