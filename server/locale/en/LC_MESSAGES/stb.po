@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-18 11:11+0300\n"
-"PO-Revision-Date: 2014-11-18 11:11+0300\n"
+"POT-Creation-Date: 2014-11-26 12:31+0300\n"
+"PO-Revision-Date: 2014-11-26 12:32+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr ""
 #: ../../../administrator/playlist.php:147
 #: ../../../administrator/stat_tv_archive.php:70
 #: ../../../administrator/add_video.php:610
-#: ../../../administrator/events.php:239
+#: ../../../administrator/events.php:245
 #: ../../../administrator/videolog.php:61
 #: ../../../administrator/stat_video_genres.php:71
 #: ../../../administrator/stat_daily_video.php:70
@@ -82,7 +82,7 @@ msgstr ""
 #: ../../../administrator/add_itv.php:980
 #: ../../../administrator/stat_tv.php:86
 #: ../../../administrator/subscribe_import.php:470
-#: ../../../administrator/setting_common.php:285
+#: ../../../administrator/setting_common.php:286
 #: ../../../administrator/storages.php:187
 #: ../../../administrator/vclub_schedule.php:79
 #: ../../../administrator/add_karaoke.php:216
@@ -181,7 +181,7 @@ msgstr ""
 #: ../../../administrator/stbgroups.php:55
 #: ../../../administrator/playlist.php:69
 #: ../../../administrator/add_video.php:2110
-#: ../../../administrator/events.php:451
+#: ../../../administrator/events.php:460
 #: ../../../administrator/add_moderator_mac.php:244
 #: ../../../administrator/services_packages.php:123
 #: ../../../administrator/epg_setting.php:75
@@ -189,7 +189,7 @@ msgstr ""
 #: ../../../administrator/admin_groups.php:95
 #: ../../../administrator/playlists.php:54
 #: ../../../administrator/add_itv.php:1699
-#: ../../../administrator/setting_common.php:193
+#: ../../../administrator/setting_common.php:194
 #: ../../../administrator/storages.php:98
 #: ../../../administrator/add_karaoke.php:841
 msgid "Save"
@@ -531,8 +531,8 @@ msgstr ""
 msgid "VIDEO CLUB"
 msgstr ""
 
-#: ../../../administrator/index.php:146 ../../../administrator/events.php:228
-#: ../../../administrator/events.php:234
+#: ../../../administrator/index.php:146 ../../../administrator/events.php:234
+#: ../../../administrator/events.php:240
 #: ../../../administrator/profile.php:307
 msgid "Events"
 msgstr ""
@@ -674,7 +674,7 @@ msgstr ""
 #: ../../../administrator/index.php:481
 #: ../../../administrator/setting_common.php:127
 #: ../../../administrator/setting_common.php:137
-#: ../../../administrator/setting_common.php:280
+#: ../../../administrator/setting_common.php:281
 msgid "Firmware auto update"
 msgstr ""
 
@@ -876,7 +876,7 @@ msgid "Master-storage logs"
 msgstr ""
 
 #: ../../../administrator/master_log.php:122
-#: ../../../administrator/events.php:463
+#: ../../../administrator/events.php:472
 msgid "Message"
 msgstr ""
 
@@ -901,7 +901,7 @@ msgstr ""
 #: ../../../administrator/playlists.php:10
 #: ../../../administrator/add_itv.php:980
 #: ../../../administrator/setting_common.php:10
-#: ../../../administrator/setting_common.php:307
+#: ../../../administrator/setting_common.php:308
 #: ../../../administrator/storages.php:10
 msgid "Add"
 msgstr ""
@@ -1077,7 +1077,7 @@ msgstr ""
 
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
-#: ../../../administrator/events.php:391
+#: ../../../administrator/events.php:400
 #: ../../../administrator/profile.php:417
 #: ../../../administrator/playlists.php:157
 msgid "Group"
@@ -1209,7 +1209,7 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: ../../../administrator/reply.php:143 ../../../administrator/events.php:345
+#: ../../../administrator/reply.php:143 ../../../administrator/events.php:351
 #: ../../../administrator/send_to.php:160
 msgid "Send"
 msgstr ""
@@ -1463,7 +1463,7 @@ msgid "Total time"
 msgstr ""
 
 #: ../../../administrator/stat_tv_archive.php:105
-#: ../../../administrator/events.php:434
+#: ../../../administrator/events.php:443
 #: ../../../administrator/stat_timeshift.php:105
 #: ../../../lib/system.class.php:79
 msgid "s"
@@ -1583,7 +1583,7 @@ msgid "search by file name of movie name"
 msgstr ""
 
 #: ../../../administrator/add_video.php:818
-#: ../../../administrator/events.php:464 ../../../administrator/tasks.php:132
+#: ../../../administrator/events.php:473 ../../../administrator/tasks.php:132
 msgid "Status"
 msgstr ""
 
@@ -1785,86 +1785,86 @@ msgid ""
 "it is green, if there is no - in red."
 msgstr ""
 
-#: ../../../administrator/events.php:85 ../../../administrator/events.php:98
-#: ../../../administrator/events.php:125
+#: ../../../administrator/events.php:91 ../../../administrator/events.php:104
+#: ../../../administrator/events.php:131
 #, php-format
 msgid "%s events %s sended, %s errors"
 msgstr ""
 
-#: ../../../administrator/events.php:129
+#: ../../../administrator/events.php:135
 msgid "File with list is missing"
 msgstr ""
 
-#: ../../../administrator/events.php:239
+#: ../../../administrator/events.php:245
 msgid "New event"
 msgstr ""
 
-#: ../../../administrator/events.php:348
+#: ../../../administrator/events.php:354
 msgid "To one"
 msgstr ""
 
-#: ../../../administrator/events.php:349
+#: ../../../administrator/events.php:355
 msgid "To all"
 msgstr ""
 
-#: ../../../administrator/events.php:350
+#: ../../../administrator/events.php:356
 msgid "By list"
 msgstr ""
 
-#: ../../../administrator/events.php:351
+#: ../../../administrator/events.php:357
 msgid "By pattern"
 msgstr ""
 
-#: ../../../administrator/events.php:352
+#: ../../../administrator/events.php:358
 msgid "To group"
 msgstr ""
 
-#: ../../../administrator/events.php:360
+#: ../../../administrator/events.php:366
 msgid "Load active events"
 msgstr ""
 
-#: ../../../administrator/events.php:365
+#: ../../../administrator/events.php:371
 msgid "List"
 msgstr ""
 
-#: ../../../administrator/events.php:373
+#: ../../../administrator/events.php:379
 msgid "Pattern"
 msgstr ""
 
-#: ../../../administrator/events.php:425
+#: ../../../administrator/events.php:434
 msgid "restart on OK"
 msgstr ""
 
-#: ../../../administrator/events.php:426
+#: ../../../administrator/events.php:435
 msgid "channels"
 msgstr ""
 
-#: ../../../administrator/events.php:459
+#: ../../../administrator/events.php:468
 #, php-format
 msgid "Active events for %s"
 msgstr ""
 
-#: ../../../administrator/events.php:459
+#: ../../../administrator/events.php:468
 msgid "clean"
 msgstr ""
 
-#: ../../../administrator/events.php:461
+#: ../../../administrator/events.php:470
 msgid "Valid up to"
 msgstr ""
 
-#: ../../../administrator/events.php:462
+#: ../../../administrator/events.php:471
 msgid "Event"
 msgstr ""
 
-#: ../../../administrator/events.php:473
+#: ../../../administrator/events.php:482
 msgid "sended"
 msgstr ""
 
-#: ../../../administrator/events.php:473
+#: ../../../administrator/events.php:482
 msgid "not sended"
 msgstr ""
 
-#: ../../../administrator/events.php:482
+#: ../../../administrator/events.php:491
 #, php-format
 msgid "There are no active events for %s"
 msgstr ""
@@ -2461,21 +2461,21 @@ msgstr ""
 msgid "STB Model"
 msgstr ""
 
-#: ../../../administrator/setting_common.php:167
-#: ../../../administrator/setting_common.php:171
-#: ../../../administrator/setting_common.php:175
+#: ../../../administrator/setting_common.php:168
+#: ../../../administrator/setting_common.php:172
+#: ../../../administrator/setting_common.php:176
 msgid "Required"
 msgstr ""
 
-#: ../../../administrator/setting_common.php:179
+#: ../../../administrator/setting_common.php:180
 msgid "Update type"
 msgstr ""
 
-#: ../../../administrator/setting_common.php:188
+#: ../../../administrator/setting_common.php:189
 msgid "Prefix"
 msgstr ""
 
-#: ../../../administrator/setting_common.php:230
+#: ../../../administrator/setting_common.php:231
 msgid "Do you really want to delete this item?"
 msgstr ""
 
@@ -4498,7 +4498,7 @@ msgstr ""
 
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:771
 #: ../../../lib/user.class.php:1084 ../../../lib/user.class.php:1085
-#, fuzzy, php-format
+#, php-format
 msgid "video_name_format"
 msgstr "%2$s"
 
