@@ -19,7 +19,7 @@
 .active_dir_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 2px 2px 0 6px;
     float:left;
     background-image: url("i/mb_icons.png");
     background-position: -126px -21px;
@@ -28,7 +28,7 @@
 .active_back_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 2px 2px 0 6px;
     float:left;
     background-image: url("i/mb_icons.png");
     background-position: -150px -21px;
@@ -46,7 +46,7 @@
 #media_browser .active_playing_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 2px 2px 0 6px;
     float: left;
     background-image: url("i/mb_player.png");
     background-position: 0 -21px;
@@ -64,7 +64,7 @@
 #media_browser .active_paused_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 2px 2px 0 6px;
     float:left;
     background-image: url("i/mb_player.png");
     background-position: -24px -21px;
@@ -88,7 +88,7 @@
     width: 550px;
     border: 1px solid #002864;
     background-color: #0077BB;
-    -webkit-border-radius: 2px;
+    border-radius: 2px;
     float: left;
     overflow: hidden;
 }

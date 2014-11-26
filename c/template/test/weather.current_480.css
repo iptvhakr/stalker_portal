@@ -4,35 +4,41 @@
     top : 83px;
     width: 190px;
     color: #fff;
-    text-shadow: #000 0 -1px 0;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     font-size: 16px;
-    background-image: url("i_480/25alfa_20.png");
+    /*background-image: url("i_480/25alfa_20.png");
     -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
+    -webkit-border-radius: 10px;*/
 }
 
 .curweather_block .city{
+    display: none;
     position: absolute;
     top: 2px;
     right: 2px;
-    font-family: "Myriad Pro Cond", sans-serif;
-    color: #99a8b5;
+    font-family: "Roboto", sans-serif;
+    /*color: #99a8b5;*/
 }
 
 .curweather_block .curweather_img{
     position: absolute;
     top : 5px;
-    left: 5px;
+    right: 5px;
 }
 
 .curweather_block .curweather_descr{
     margin: 85px 0 0 0;
     padding: 0 0 3px 3px;
+    text-align: right;
+}
+
+.curweather_block .curweather_wind{
+    float: right;
 }
 
 .curweather_block .curweather_title{
-    font-family: "Myriad Pro Cond", sans-serif;
-    color: #99a8b5;
+    font-family: "Roboto", sans-serif;
+    /*color: #99a8b5;*/
 }
 
 .curweather_block .wind_direction_N{

@@ -1,10 +1,10 @@
 #records .t_start_block{
     position: absolute;
-    right: 2px;
+    right: 1px;
     top: 0;
     width: 96px;
     height: 25px;
-    background: url("i_480/mb_table.png") 102px -90px;
+    background: url("i_480/mb_table.png") 101px -75px;
     padding: 3px 0 0 4px;
     color: #fff;
     font-family: "Myriad Pro Cond", sans-serif;
@@ -35,7 +35,7 @@
     overflow: hidden;
     padding: 3px 0 0 4px;
     position: absolute;
-    right: 12px;
+    right: 8px;
     top: 7px;
     width: 105px;
 }
@@ -43,10 +43,10 @@
 #records .ch_name_block{
     color: #99A8B5;
     font-size: 20px;
-    margin: 3px 103px 0 3px;
+    margin: -1px 103px 0 3px;
     overflow: hidden;
     padding-left: 3px;
-    text-shadow: 0 -1px 0 #122946;
+    text-shadow: #0f385a 1px 2px 0;
     white-space: pre;
 }
 
@@ -62,10 +62,12 @@
     color: #808080;
     font-size: 22px;
     margin-right: 130px;
-    margin-top: 8px;
+    margin-top: 5px;
     overflow: hidden;
-    text-shadow: 0 1px 0 #FFFFFF;
+    text-shadow: none;
     white-space: pre;
+    font-weight: bold;
+    margin-left: 3px;
 }
 
 /*#records .active_row_bg[rel="close"] .active_ch_name_block{
@@ -89,7 +91,7 @@
     overflow: hidden;
     padding: 3px 0 0 4px;
     position: absolute;
-    right: 12px;
+    right: 8px;
     top: 21px;
     width: 105px;
 }

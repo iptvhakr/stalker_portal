@@ -71,8 +71,8 @@
 .name_block, .title_block{
     color: #fff;
     font-size: 18px;
-    text-shadow: #122946 0 -1px 0;
-    margin: 3px 0 0 3px;
+    text-shadow: #0f385a 1px 2px 0;
+    margin: 0px 0 0 3px;
     padding-left: 5px;
     white-space: pre;
     overflow: hidden;
@@ -91,16 +91,15 @@
     background-image: url("i_480/mb_icons.png");
     background-position: -92px 0;
     width: 34px;
-    height: 19px;
+    height: 21px;
     float: left;
     margin: 1px 0 0 5px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    /*text-shadow: #fff 0 1px 0;*/
     font-size: 17px;
     text-align: center;
     white-space: pre;
     overflow: hidden;
-    padding-top: 2px;
 }
 
 .wide_container{
@@ -147,7 +146,7 @@
     height: 49px;
     left: 55px;
     background: url("i_480/mb_table_act.png") left top no-repeat;
-    padding: 5px 0 0 13px;
+    padding: 7px 0 0 8px;
 }
 
 .wide_container .moved_active_row_bg{
@@ -205,7 +204,7 @@
     height: 31px;
     background-image: url("i_480/mb_icons.png");
     background-position: -24px -21px;
-    margin: 5px 2px 0 0;
+    margin: 2px 2px 0 6px;
     float:left;
 }
 
@@ -213,8 +212,7 @@
     width: 27px;
     height: 31px;
     background-image: url("i_480/mb_icons.png");
-    background-position: -48px -21px;
-    margin-top:2px;
+    background-position: -48px -20px;
     float:left;
 }
 
@@ -222,7 +220,7 @@
     width: 16px;
     height: 30px;
     background: url("i_480/mb_icons.png") no-repeat -75px -22px;
-    margin-top: 3px;
+    margin-top: 4px;
     float:left;
 }
 
@@ -232,9 +230,10 @@
 
 .active_name_block, .active_title_block{
     font-size: 22px;
+    font-weight: bold;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
-    margin-top: 6px;
+    /*text-shadow: #fff 0 1px 0;*/
+    margin-top: 5px;
     margin-right: 25px;
     white-space: pre;
     overflow: hidden;
@@ -251,10 +250,10 @@
 
 .active_number_block{
     width: 34px;
-    height: 27px;
+    height: 29px;
     background-image: url("i_480/mb_icons.png");
     background-position: -92px -21px;
-    margin: 2px 3px 0 7px;
+    margin: 1px 3px 0 7px;
     float:left;
     font-size: 20px;
     color: #fff;
@@ -262,7 +261,7 @@
     text-align: center;
     white-space: pre;
     overflow: hidden;
-    padding-top: 4px;
+    padding-top: 2px;
 }
 
 
@@ -305,7 +304,8 @@
 }
 
 .disable_color_btn_text{
-    color: #707070 !important;
+    color: #29699D !important;
+    text-shadow: none !important;
 }
 
 .mb_header_first{
@@ -336,15 +336,15 @@
 
 .color_button_bar{
     position: absolute;
-    width: 580px;
+    width: 690px;
     height: 40px;
     background-image: url("i_480/footer_bg.png");
     top: 435px;
-    padding-left: 70px;
+    padding-left: 30px;
 }
 
 .color_button_bar table{
-    width: 570px;
+    width: 668px;
     height: 40px;
     border: 0;
     border-collapse:collapse;
@@ -369,11 +369,11 @@
 
 .color_button_bar span{
     font-size: 13px;
-    color: #001a33;
-    text-shadow: #fff 0 1px 0;
+    color: #fff;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     float: left;
-    margin: 13px 0 0 8px;
-    font-weight: bold;
+    margin: 12px 0 0 8px;
+    /*font-weight: bold;*/
 }
 
 .color_button_bar span sup{
@@ -601,22 +601,21 @@
 /* EARS */
 .ears_left_container{
     position: absolute;
-    left: 0;
+    left: 20px;
     top: 58px;
 }
 
 .ears_left{
     width: 40px;
-    padding-left: 20px;
     height: 350px;
-    background-image: url("i_480/ears2.png");
+    background-image: url("i_480/ears.png");
     background-position: left center;
     vertical-align: middle;
     display: table-cell;
 }
 
 .ears_left div{
-    margin-left: 20px;
+    margin-left: 14px;
     font: 18px Arial, Helvetica, sans-serif;
     color: #fff;
 }
@@ -628,16 +627,16 @@
 }
 
 .ears_right{
-    width: 60px;
+    width: 40px;
     height:350px;
-    background-image: url("i_480/ears2.png");
+    background-image: url("i_480/ears.png");
     background-position: right center;
     vertical-align: middle;
     display: table-cell;
 }
 
 .ears_right div{
-    margin-left: 7px;
+    margin-left: 13px;
     font: 18px Arial, Helvetica, sans-serif;
     color: #fff;
     text-align: center;
@@ -646,16 +645,16 @@
 
 .ears_arrow_left{
     width: 15px;
-    height: 18px;
+    height: 28px;
     background-image: url("i_480/ears_arrow_l.png");
-    margin: 15px 0;
+    margin: 15px 0 0 0;
 }
 
 .ears_arrow_right{
     width: 15px;
-    height: 18px;
+    height: 28px;
     background-image: url("i_480/ears_arrow_r.png");
-    margin: 15px 0;
+    margin: 15px 0 0 0;
 }
 /* END EARS */
 

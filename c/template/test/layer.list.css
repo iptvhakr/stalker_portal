@@ -212,7 +212,7 @@
     height: 31px;
     background-image: url("i/mb_icons.png");
     background-position: -48px -21px;
-    margin-top:6px;
+    margin-top:4px;
     float:left;
 }
 
@@ -221,7 +221,7 @@
     height: 30px;
     background: url("i/mb_icons.png") no-repeat -75px -22px;
     /*background-position: -75px -22px;*/
-    margin-top: 6px;
+    margin: 6px 2px 0 2px;
     float:left;
 }
 
@@ -234,7 +234,7 @@
     font-weight: bold;
     color: #002864;
     /*text-shadow: #fff 0 1px 0;*/
-    margin: 6px 25px 0 0;
+    margin: 6px 25px 0 2px;
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -646,14 +646,14 @@
     width: 15px;
     height: 28px;
     background-image: url("i/ears_arrow_l.png");
-    margin: 15px 0;
+    margin: 15px 0 0 0;
 }
 
 .ears_arrow_right{
     width: 15px;
     height: 28px;
     background-image: url("i/ears_arrow_r.png");
-    margin: 15px 0;
+    margin: 15px 0 0 0;
 }
 /* END EARS */
 

@@ -38,7 +38,7 @@
 #epg .blue_row_bg[active="active"] .name_block{
     font-size: 19px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
+    text-shadow: none;
 }
 
 #epg .epg_container_block{
@@ -53,13 +53,16 @@
 
 #epg .blue_row_bg[active="active"] .number_block{
     width: 34px;
-    height: 22px;
-    background-image: url("i_480/mb_icons2.png");
+    height: 20px;
+    /*background-image: url("i_480/mb_icons2.png");
     background-position: 0 3px;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
+    background-image: none;
+    background-color: #005378;
+    border-radius: 2px;
     color: #fff;
     text-shadow: #122946 0 -1px 0;
-    padding-top: 3px;
+    margin-top: 2px;
 }
 
 #epg .active_epg_container_block, #epg .blue_row_bg[active="active"] .epg_container_block{
@@ -111,6 +114,7 @@
 
 #epg .blue_row_bg .program{
     color: #bcc7d6;
+    text-shadow: #0f385a 1px 2px 0;
 }
 
 #epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
@@ -122,14 +126,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:pre;
+    text-shadow: #0f385a 1px 2px 0;
     font-family: "Myriad Pro Cond", sans-serif;
+}
+
+#epg .blue_row_bg[active="active"] .program_txt {
+    text-shadow: none;
 }
 
 #epg .program_separator{
     float: left;
     background-image: url("i_480/tv_table_separator.png");
     width: 2px;
-    height: 33px;
+    height: 23px;
 }
 
 #epg .program .larr{
@@ -140,7 +149,7 @@
 }
 
 #epg .blue_row_bg .program .larr{
-    background-position: 0 -25px;
+    background-position: 2px -25px;
 }
 
 #epg .active_row_bg .program .larr, #epg .blue_row_bg[active="active"] .program .larr{
@@ -149,13 +158,13 @@
 
 #epg .program .rarr{
     background-image: url("i_480/tv_table_arrows.png");
-    height: 25px;
+    height: 23px;
     width: 10px;
     float: right;
 }
 
 #epg .blue_row_bg .program .rarr{
-    background-position: 10px -25px;
+    background-position: 12px -25px;
 }
 
 #epg .active_row_bg .program .rarr, #epg .blue_row_bg[active="active"] .program .rarr{
@@ -238,8 +247,8 @@
 
 #epg .live_line{
     position: absolute;
-    background-color: rgba(255, 0, 0, 0.4);
+    background-color: rgba(227, 147, 34, 0.4);
     width: 2px;
-    height: 250px;
+    height: 248px;
     -webkit-transition: all 0.2s linear;
 }

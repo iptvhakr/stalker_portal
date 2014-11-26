@@ -11,6 +11,7 @@
     height: 282px;
     background-image: url("i_480/25alfa_20.png");
     color: #fff;
+    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
 }
 
 .weather_forecast .weather_col_1{
@@ -63,11 +64,9 @@
     top: 158px;
     right: 0;
     width: 100%;
-    text-align:right;
-    color: #0042FF;
+    text-align: right;
     font-size: 32px;
-    text-shadow: 1px 1px 4px #ccc;
-    font-family: "Myriad Pro Cond", sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: bold;
 }
 
