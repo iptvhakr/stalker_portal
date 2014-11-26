@@ -653,11 +653,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD')));
+        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320')));
 
         $profile['allowed_stb_types_for_local_recording'] = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types_for_local_recording', 'MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD')));
+        },explode(',', Config::getSafe('allowed_stb_types_for_local_recording', 'MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320')));
 
         $auto_update_setting = ImageAutoUpdate::getSettingByStbType($this->params['stb_type']);
 
@@ -776,8 +776,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         if (strpos($stb_model, 'AuraHD') !== false){
             $stb_type = 'aurahd';
-        }else{
+        }elseif (strpos($stb_model, 'MAG') === 0){
             $stb_type = substr($stb_model, 3);
+        }else{
+            $stb_type = strtolower($stb_model);
         }
 
         return Config::getSafe('update_url', '') != '' ? Config::get('update_url').$stb_type.'/imageupdate' : '';
