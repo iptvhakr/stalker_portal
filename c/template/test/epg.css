@@ -21,11 +21,11 @@
 
 #epg .name_block, #epg .active_name_block{
     font-size: 20px;
-    width: 132px;
+    width: 129px;
     text-overflow: ellipsis;
     /*font-family: "Myriad Pro Cond";*/
     float: left;
-    margin: 2px 6px 0 3px;
+    margin: 2px 9px 0 3px;
 }
 
 #epg .active_name_block, #epg .blue_row_bg[active="active"] .name_block{
@@ -134,7 +134,7 @@
     float: left;
     background-image: url("i/tv_table_separator.png");
     width: 2px;
-    height: 33px;
+    height: 30px;
 }
 
 #epg .program .larr{
@@ -243,6 +243,6 @@
     position: absolute;
     background-color: rgba(227, 147, 34, 0.4);
     width: 4px;
-    height: 339px;
+    height: 338px;
     -webkit-transition: all 0.2s linear;
 }
