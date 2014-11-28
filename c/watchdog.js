@@ -160,10 +160,10 @@ watchdog.prototype.parse_result = function(data){
                             }
                         });
                     });
-                
+
                 stb.msg.push(
                     {
-                        msg               : (data.send_time ? '<span style="color: #555">[' + data.send_time + ']</span> ' : '') + data.msg,
+                        msg               : (data.send_time ? '<span style="color: #555">[' + data.send_time + ']</span> ' : '') + data.msg.replace('%mac%', stb.mac).replace('%sn%', stb.serial_number),
                         auto_hide_timeout : data.auto_hide_timeout || 0
                     }
                 );
