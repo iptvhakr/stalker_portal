@@ -694,9 +694,9 @@
                 return;
             }
 
-            var self = this;
-
-            servers = servers.result.map(function(server){
+            servers = servers.result.filter(function(server){
+                return server;
+            }).map(function(server){
                 return {"name" : server, "dir" : 1, "dir_name" : "SMB_SERVER"/*, "_id" : self.get_id({"name" : server, "dir_name" : "SMB_SERVER"})*/}
             });
 
