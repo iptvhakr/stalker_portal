@@ -48,7 +48,7 @@
     width: 220px;
     height: 162px;
     bottom: 40px;
-    left: -23px;
+    left: 160px;
     background: url(i/mm_hor_left.png);
 }
 
@@ -57,7 +57,7 @@
     width: 220px;
     height: 162px;
     bottom: 40px;
-    right: -23px;
+    right: 161px;
     background: url(i/mm_hor_right.png);
 }
 
@@ -105,12 +105,12 @@
 .mm_menu_vert{
     position: absolute;
     width: 260px;
-    bottom: 202px;
+    bottom: 190px;
     left: 230px;
 }
 
 .mm_menu_vert_bottom{
-    height: 23px;
+    height: 32px;
     width: 260px;
     background: url(i/mm_hor_bg3.png) bottom;
 }
@@ -118,7 +118,7 @@
 .mm_menu_vert_body{
     width: 260px;
     background: url(i/mm_hor_bg3.png) top;
-    padding-top: 19px;
+    padding-top: 36px;
 }
 
 .mm_menu_vert_body .mm_vert_container div{

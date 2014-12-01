@@ -48,7 +48,7 @@
     width: 220px;
     height: 138px;
     bottom: 49px;
-    left: -23px;
+    left: 160px;
     background: url(i_480/mm_hor_left.png);
 }
 
@@ -57,7 +57,7 @@
     width: 220px;
     height: 138px;
     bottom: 49px;
-    right: -23px;
+    right: 158px;
     background: url(i_480/mm_hor_right.png);
 }
 
@@ -103,12 +103,12 @@
 .mm_menu_vert{
     position: absolute;
     width: 260px;
-    bottom: 178px;
+    bottom: 160px;
     left: 230px;
 }
 
 .mm_menu_vert_bottom{
-    height: 23px;
+    height: 32px;
     width: 260px;
     background: url(i_480/mm_hor_bg3.png) bottom;
 }
@@ -116,11 +116,11 @@
 .mm_menu_vert_body{
     width: 260px;
     background: url(i_480/mm_hor_bg3.png) top;
-    padding-top: 21px;
+    padding-top: 32px;
 }
 
 .mm_menu_vert_body .mm_vert_container div{
-    height: 23px;
+    height: 25px;
     width: 238px;
     font: 18px "Roboto";
     color: #ffffff;
@@ -128,7 +128,7 @@
     text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     background: url(i_480/mm_vert_cell.png) bottom left;
     padding-left: 22px;
-    padding-top: 3px;
+    padding-top: 1px;
     overflow: hidden;
     white-space: pre;
     text-overflow: ellipsis;
