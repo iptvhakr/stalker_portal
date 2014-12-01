@@ -8,6 +8,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 300px;
+    height: 24px;
     float: left;
 }
 

@@ -1,6 +1,6 @@
 .course_block{
     position: absolute;
-    left: 17px;
+    left: 25px;
     top : 160px;
     width: 205px;
     color: #fff;
@@ -16,6 +16,7 @@
 
 .course_title, .course_date{
     /*color: #99A8B5;*/
+    font-size: 15px;
 }
 
 .course_block dt{

@@ -146,7 +146,7 @@
     height: 49px;
     left: 55px;
     background: url("i_480/mb_table_act.png") left top no-repeat;
-    padding: 7px 0 0 8px;
+    padding: 5px 0 0 10px;
 }
 
 .wide_container .moved_active_row_bg{
@@ -173,10 +173,10 @@
     position: absolute;
     width: 350px;
     height: 49px;
-    left: 54px;
+    left: 55px;
     background: url("i_480/mb_table_act.png");
     background-position: 0 -162px;
-    padding: 5px 0 0 13px;
+    padding: 5px 0 0 10px;
 }
 
 .short_container .active_row_bg{
@@ -186,7 +186,7 @@
     left: 54px;
     background: url("i_480/mb_table_act.png");
     background-position: 0 -108px;
-    padding: 8px 0 0 8px;
+    padding: 5px 0 0 8px;
     margin-top: 2px;
 }
 
@@ -194,8 +194,8 @@
     width: 24px;
     height: 31px;
     background-image: url("i_480/mb_icons.png");
-    background-position: 0px -21px;
-    margin: 5px 2px 0 0;
+    background-position: 0 -21px;
+    margin: 3px 3px 0 5px;
     float:left;
 }
 
@@ -204,7 +204,7 @@
     height: 31px;
     background-image: url("i_480/mb_icons.png");
     background-position: -24px -21px;
-    margin: 2px 2px 0 6px;
+    margin: 3px 3px 0 5px;
     float:left;
 }
 
@@ -214,13 +214,14 @@
     background-image: url("i_480/mb_icons.png");
     background-position: -48px -20px;
     float:left;
+    margin-top: 1px;
 }
 
 .active_lock_block, .active_scrambled_block{
     width: 16px;
     height: 30px;
     background: url("i_480/mb_icons.png") no-repeat -75px -22px;
-    margin-top: 4px;
+    margin: 4px 2px 0 0;
     float:left;
 }
 
@@ -233,7 +234,7 @@
     font-weight: bold;
     color: #002864;
     /*text-shadow: #fff 0 1px 0;*/
-    margin-top: 5px;
+    margin-top: 3px;
     margin-right: 25px;
     white-space: pre;
     overflow: hidden;
@@ -253,7 +254,7 @@
     height: 29px;
     background-image: url("i_480/mb_icons.png");
     background-position: -92px -21px;
-    margin: 1px 3px 0 7px;
+    margin: 4px 3px 0 7px;
     float:left;
     font-size: 20px;
     color: #fff;
@@ -401,7 +402,7 @@
    /* position: absolute;
     top: 18px;
     left: 21px;*/
-    margin: 18px 0 0 21px;
+    margin: 21px 0 0 21px;
     font-size: 20px;
     color: #99A8B5;
     font-family: "Myriad Pro Cond", sans-serif;
@@ -420,9 +421,9 @@
     /*position: absolute;
     top: 14px;
     left: 60px;*/
-    margin: 14px 0 0 2px;
+    margin: 10px 0 0 2px;
     float: left;
-    width: 600px;
+    width: 595px;
     font-size: 25px;
     font-weight: bold;
     color: #fff;
@@ -443,10 +444,10 @@
 
 .pos_button{
     position: absolute;
-    width: 30px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background: url("i_480/osd_line_pos.png");
-    margin: 6px 0 0 6px;
+    margin: 5px 0 0 6px;
     left: 0;
 }
 
