@@ -231,7 +231,7 @@
 
 .active_name_block, .active_title_block{
     font-size: 22px;
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: #002864;
     /*text-shadow: #fff 0 1px 0;*/
     margin-top: 3px;
@@ -648,14 +648,14 @@
     width: 15px;
     height: 28px;
     background-image: url("i_480/ears_arrow_l.png");
-    margin: 15px 0 0 0;
+    margin: 10px 0 0 0;
 }
 
 .ears_arrow_right{
     width: 15px;
     height: 28px;
     background-image: url("i_480/ears_arrow_r.png");
-    margin: 15px 0 0 0;
+    margin: 10px 0 0 0;
 }
 /* END EARS */
 

@@ -228,7 +228,7 @@
 
 .active_name_block, .active_title_block{
     font-size: 28px;
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: #002864;
     /*text-shadow: #fff 0 1px 0;*/
     margin: 6px 25px 0 2px;
