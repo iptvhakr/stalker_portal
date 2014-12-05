@@ -67,6 +67,42 @@ $themes = Middleware::getThemes();
             font-weight: bold;
             text-decoration:underline;
         }
+
+        .template{
+            width: 350px;
+            height: 220px;
+            border: 1px solid #fff;
+            float: left;
+            margin: 0 10px 50px 10px;
+            cursor: pointer;
+        }
+
+        .apply-btn{
+            visibility: hidden;
+        }
+
+        .template:hover, .template[data-selected="true"]{
+            border: 1px solid #88BBFF;
+        }
+
+        .template[data-selected="true"] .apply-btn{
+            visibility: visible;
+        }
+
+        .template-title{
+            height: 20px;
+            width: 200px;
+            position: relative;
+            top: -8px;
+            background-color: #fff;
+            font-weight: bold;
+        }
+
+        .template-preview{
+            width: 320px;
+            height: 180px;
+            border: 1px solid #ccc;
+        }
     </style>
     <title><?= _('Templates')?></title>
 
@@ -76,19 +112,23 @@ $themes = Middleware::getThemes();
         $(function(){
             var default_template = '<?= $default_template?>';
 
-            $('.template_preview img').live('error', function(){
-                alert('qqq');
-            });
-
-            $('.template_select').change(function(){
+            /*$('.template_select').change(function(){
                 var template = $('.template_select option:selected').val();
                 $('.template_preview').html('<img onerror="$(\'.template_preview\').text(\'<?= _('not found')?>\')" src="../../c/template/'+template+'/preview.png"/>');
-            }).change();
+            }).change();*/
+
+            $('.template').click(function(){
+                $('.template').each(function(){
+                    $(this).removeAttr('data-selected');
+                });
+
+                $(this).attr('data-selected', 'true');
+            });
         });
     </script>
 </head>
 <body>
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="700">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="750">
     <tr>
         <td align="center" valign="middle" width="100%" bgcolor="#88BBFF">
             <font size="5px" color="White"><b>&nbsp;<?= _('Templates')?>&nbsp;</b></font>
@@ -114,32 +154,31 @@ $themes = Middleware::getThemes();
     </tr>
     <tr>
         <td align="center">
-            <form method="POST">
-            <table class='form' width="400px">
-                <tr>
-                    <td align="right" width="80px"><?= _('Theme')?>:</td>
-                    <td>
-                        <select class="template_select" name="template">
-                            <?
-                            foreach ($themes as $theme){
-                                echo '<option value="'.$theme.'" '.($default_template == $theme ? 'selected' : '').'>'.$theme.'</option>';
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" valign="top"><?= _('Preview')?>:</td>
-                    <td>
-                        <div class="template_preview" style="width: 320px; height: 240px; border: 1px solid #ccc"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="<?= _('Save')?>"/></td>
-                </tr>
-            </table>
-            </form>
+
+            <b><?= _('CURRENT THEME')?>: <span class="current-skin"><?= ucwords(str_replace('_', ' ', $default_template))?></span></b>
+            <div class="template_preview" style="width: 160px; height: 90px; border: 1px solid #ccc;margin-top: 10px">
+                <img width="160" height="90" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="../../c/template/<?=$default_template?>/preview.png"/>
+            </div>
+
+            <div class="preview-list" style="margin-top: 60px">
+                <?
+                foreach ($themes as $theme){
+                    ?>
+                    <div class="template">
+                        <div class="template-title"><?= ucwords(str_replace('_', ' ', $theme))?></div>
+                        <div class="template-preview">
+                            <img width="320" height="180" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="../../c/template/<?=$theme?>/preview.png"/>
+                        </div>
+
+                        <form method="POST">
+                            <input class="template_select" name="template" value="<?= $theme?>" type="hidden">
+                            <input type="submit" class="apply-btn" value="<?= _('Apply')?>" style="margin-top: 30px"/>
+                        </form>
+                    </div>
+                    <?
+                }
+                ?>
+            </div>
         </td>
     </tr>
 </table>

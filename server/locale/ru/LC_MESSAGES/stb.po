@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-10-08 13:20+0300\n"
-"PO-Revision-Date: 2014-10-08 13:21+0300\n"
+"POT-Creation-Date: 2014-08-18 12:29+0300\n"
+"PO-Revision-Date: 2014-08-18 12:30+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1046,13 +1046,17 @@ msgstr "задание выполнено"
 msgid "not found"
 msgstr "не найдено"
 
-#: ../../../administrator/themes.php:120
-msgid "Theme"
-msgstr "Тема"
+#: ../../../administrator/themes.php:149
+msgid "CURRENT THEME"
+msgstr "ТЕКУЩИЙ СКИН"
 
-#: ../../../administrator/themes.php:132
-msgid "Preview"
-msgstr "Предпросмотр"
+#: ../../../administrator/themes.php:151 ../../../administrator/themes.php:161
+msgid "preview not available"
+msgstr "предпросмотр недоступен"
+
+#: ../../../administrator/themes.php:166
+msgid "Apply"
+msgstr "Применить"
 
 #: ../../../administrator/administrators.php:35
 msgid "Password can not be blank"
@@ -1131,7 +1135,7 @@ msgid "Use as default"
 msgstr "По умолчанию"
 
 #: ../../../administrator/tariffs.php:355
-#: ../../../administrator/profile.php:498
+#: ../../../administrator/profile.php:491
 msgid "Packages"
 msgstr "Пакеты"
 
@@ -1189,7 +1193,7 @@ msgstr ""
 msgid "Account disabled"
 msgstr "Учетная запись отключена"
 
-#: ../../../administrator/user.php:162 ../../../administrator/profile.php:469
+#: ../../../administrator/user.php:162 ../../../administrator/profile.php:462
 #: ../../../lang/stb.php:381
 msgid "Tariff plan"
 msgstr "Тарифный план"
@@ -1748,7 +1752,7 @@ msgstr "Длительность"
 
 #: ../../../administrator/add_video.php:2048
 #: ../../../administrator/add_itv.php:1650 ../../../lang/stb.php:91
-#: ../../../lang/stb.php:307 ../../../lib/user.class.php:1037
+#: ../../../lang/stb.php:307 ../../../lib/user.class.php:1023
 msgid "min"
 msgstr "мин"
 
@@ -2061,11 +2065,15 @@ msgstr "Подписка на каналы"
 msgid "Change"
 msgstr "Изменить"
 
-#: ../../../administrator/profile.php:494
+#: ../../../administrator/profile.php:487
 msgid "No packages available"
 msgstr "Нет доступных пакетов"
 
-#: ../../../administrator/profile.php:527
+#: ../../../administrator/profile.php:517
+msgid "TV subscription"
+msgstr "Подписка на каналы"
+
+#: ../../../administrator/profile.php:520
 msgid "Additional services"
 msgstr "Доп. сервисы"
 
@@ -2099,7 +2107,7 @@ msgid "Rent duration"
 msgstr "Длительность аренды"
 
 #: ../../../administrator/services_packages.php:431
-#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1033
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1019
 msgid "h"
 msgstr "ч"
 
@@ -3098,8 +3106,8 @@ msgstr "Услуги обновлены согласно подписке. Пр�
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашей приставки устарела.<br>Пожалуйста обновите её."
 
-#: ../../../tools/misctranslations.php:165 ../../../lib/stb.class.php:510
-#: ../../../lib/stb.class.php:521
+#: ../../../tools/misctranslations.php:164 ../../../lib/stb.class.php:501
+#: ../../../lib/stb.class.php:512
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Ваша приставка повреждена.<br/> Свяжитесь с провайдером."
 
@@ -4486,7 +4494,7 @@ msgstr "сегодня"
 msgid "yesterday"
 msgstr "вчера"
 
-#: ../../../lib/stb.class.php:405
+#: ../../../lib/stb.class.php:396
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -4494,7 +4502,7 @@ msgstr ""
 "Портал временно недоступен.<br>Пожалуйста, повторите попытку позже."
 "<br>Приносим извинения за неудобства."
 
-#: ../../../lib/stb.class.php:581
+#: ../../../lib/stb.class.php:572
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
@@ -4503,24 +4511,24 @@ msgstr "Добро пожаловать %s<br>Мы рады видеть Вас 
 msgid "DVB"
 msgstr ""
 
-#: ../../../lib/itv.class.php:610
+#: ../../../lib/itv.class.php:608
 msgid "Channels with PVR"
 msgstr "Каналы с PVR"
 
-#: ../../../lib/itv.class.php:1633
+#: ../../../lib/itv.class.php:1619
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 
-#: ../../../lib/itv.class.php:1643
+#: ../../../lib/itv.class.php:1629
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
 
 #
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:771
-#: ../../../lib/user.class.php:1079 ../../../lib/user.class.php:1080
+#: ../../../lib/user.class.php:1065 ../../../lib/user.class.php:1066
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -4832,7 +4840,7 @@ msgstr "[телепрограмма отсутствует]"
 msgid "New claim on %s - %s (%s, id: %s). From %s"
 msgstr "Новая жалоба на %s - %s (%s, id: %s). От %s"
 
-#: ../../../lib/user.class.php:1029 ../../../lib/accountinfo.class.php:35
+#: ../../../lib/user.class.php:1015 ../../../lib/accountinfo.class.php:35
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -4840,23 +4848,23 @@ msgstr[0] "%d день"
 msgstr[1] "%d дня"
 msgstr[2] "%d дней"
 
-#: ../../../lib/user.class.php:1089
+#: ../../../lib/user.class.php:1075
 msgid "TV channels"
 msgstr "ТВ каналы"
 
-#: ../../../lib/user.class.php:1090
+#: ../../../lib/user.class.php:1076
 msgid "Movies"
 msgstr "Видео"
 
-#: ../../../lib/user.class.php:1091
+#: ../../../lib/user.class.php:1077
 msgid "Radio channels"
 msgstr "Радио каналы"
 
-#: ../../../lib/user.class.php:1092
+#: ../../../lib/user.class.php:1078
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/user.class.php:1093
+#: ../../../lib/user.class.php:1079
 msgid "Options"
 msgstr "Опции"
 

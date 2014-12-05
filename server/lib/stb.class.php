@@ -735,6 +735,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['default_led_level'] = Config::getSafe('default_led_level', 10);
         $profile['standby_led_level'] = Config::getSafe('standby_led_level', 90);
 
+        if (Config::exist('portal_logo_url')){
+            $profile['portal_logo_url'] = Config::get('portal_logo_url');
+        }
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);
