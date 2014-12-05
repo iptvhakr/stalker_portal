@@ -155,7 +155,7 @@ $themes = Middleware::getThemes();
     <tr>
         <td align="center">
 
-            <b><?= _('CURRENT THEME')?>: <span class="current-skin"><?= strtoupper($default_template)?></span></b>
+            <b><?= _('CURRENT THEME')?>: <span class="current-skin"><?= ucwords(str_replace('_', ' ', $default_template))?></span></b>
             <div class="template_preview" style="width: 160px; height: 90px; border: 1px solid #ccc;margin-top: 10px">
                 <img width="160" height="90" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="../../c/template/<?=$default_template?>/preview.png"/>
             </div>
@@ -165,7 +165,7 @@ $themes = Middleware::getThemes();
                 foreach ($themes as $theme){
                     ?>
                     <div class="template">
-                        <div class="template-title"><?= strtoupper($theme)?></div>
+                        <div class="template-title"><?= ucwords(str_replace('_', ' ', $theme))?></div>
                         <div class="template-preview">
                             <img width="320" height="180" onerror="$(this).parent().text('<?= _('preview not available')?>')" src="../../c/template/<?=$theme?>/preview.png"/>
                         </div>
