@@ -247,9 +247,9 @@ BaseLayer.prototype.init_left_ear = function(txt){
     var text_element = create_block_element();
     text_element.innerHTML = txt;
     
-    this.left_ear.appendChild(left_arrow);
+    this.left_ear.appendChild(left_arrow.addClass('top_arrow'));
     this.left_ear.appendChild(text_element);
-    this.left_ear.appendChild(left_arrow.cloneNode(true));
+    this.left_ear.appendChild(left_arrow.cloneNode(true).replaceClass('top_arrow', 'bottom_arrow'));
     
     ears_left_container.appendChild(this.left_ear);
     
@@ -265,10 +265,9 @@ BaseLayer.prototype.init_right_ear = function(txt){
     var right_arrow = create_block_element('ears_arrow_right');
     var text_element = create_block_element();
     text_element.innerHTML = txt;
-    
-    this.right_ear.appendChild(right_arrow);
+    this.right_ear.appendChild(right_arrow.addClass('top_arrow'));
     this.right_ear.appendChild(text_element);
-    this.right_ear.appendChild(right_arrow.cloneNode(true));
+    this.right_ear.appendChild(right_arrow.cloneNode(true).replaceClass('top_arrow', 'bottom_arrow'));
     
     ears_right_container.appendChild(this.right_ear);
     

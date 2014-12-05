@@ -648,14 +648,18 @@
     width: 15px;
     height: 28px;
     background-image: url("i_480/ears_arrow_l.png");
-    margin: 10px 0 0 0;
+    margin: 15px 0 0 0;
 }
 
 .ears_arrow_right{
     width: 15px;
     height: 28px;
     background-image: url("i_480/ears_arrow_r.png");
-    margin: 10px 0 0 0;
+    margin: 15px 0 0 0;
+}
+
+.ears_arrow_right.top_arrow{
+    margin-top: 0;
 }
 /* END EARS */
 
