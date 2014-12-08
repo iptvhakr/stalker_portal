@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-05 12:06+0300\n"
-"PO-Revision-Date: 2014-12-05 12:06+0300\n"
+"POT-Creation-Date: 2014-12-08 11:41+0300\n"
+"PO-Revision-Date: 2014-12-08 11:41+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -735,7 +735,7 @@ msgstr "Номер"
 #: ../../../administrator/help_city_info.php:222
 #: ../../../administrator/city_info.php:236
 #: ../../../administrator/other_city_info.php:232
-#: ../../../administrator/profile.php:403
+#: ../../../administrator/profile.php:411
 msgid "Phone number"
 msgstr "Номер телефону"
 
@@ -920,6 +920,7 @@ msgstr "Зони мовлення"
 #: ../../../administrator/stbgroups.php:154
 #: ../../../administrator/add_moderator_mac.php:144
 #: ../../../administrator/add_moderator_mac.php:216
+#: ../../../administrator/profile.php:508
 #: ../../../administrator/admin_groups.php:215
 #: ../../../administrator/admin_groups.php:238
 #: ../../../administrator/playlists.php:129
@@ -1075,7 +1076,7 @@ msgstr "Групи адміністраторів"
 
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
-#: ../../../administrator/user.php:138 ../../../administrator/profile.php:379
+#: ../../../administrator/user.php:138 ../../../administrator/profile.php:387
 #: ../../../administrator/login.php:55 ../../../lang/stb.php:351
 #: ../../../lang/stb.php:364 ../../../lang/stb.php:491
 msgid "Login"
@@ -1084,7 +1085,7 @@ msgstr "Логін"
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
 #: ../../../administrator/events.php:400
-#: ../../../administrator/profile.php:417
+#: ../../../administrator/profile.php:425
 #: ../../../administrator/playlists.php:157
 msgid "Group"
 msgstr "Група"
@@ -1135,7 +1136,7 @@ msgid "Use as default"
 msgstr "За умовчанням"
 
 #: ../../../administrator/tariffs.php:355
-#: ../../../administrator/profile.php:498
+#: ../../../administrator/profile.php:506
 msgid "Packages"
 msgstr "Пакети"
 
@@ -1176,11 +1177,11 @@ msgstr "Помилка: не всі обов'язкові поля заповн�
 msgid "User account"
 msgstr "Обліковий запис користувача"
 
-#: ../../../administrator/user.php:146 ../../../administrator/profile.php:371
+#: ../../../administrator/user.php:146 ../../../administrator/profile.php:379
 msgid "Full name"
 msgstr "ПІБ"
 
-#: ../../../administrator/user.php:150 ../../../administrator/profile.php:387
+#: ../../../administrator/user.php:150 ../../../administrator/profile.php:395
 #: ../../../lang/stb.php:408
 msgid "Account number"
 msgstr "Номер особового рахунку"
@@ -1193,7 +1194,7 @@ msgstr ""
 msgid "Account disabled"
 msgstr "Обліковий запис відключено"
 
-#: ../../../administrator/user.php:162 ../../../administrator/profile.php:469
+#: ../../../administrator/user.php:162 ../../../administrator/profile.php:477
 #: ../../../lang/stb.php:381
 msgid "Tariff plan"
 msgstr "Тарифний план"
@@ -1211,7 +1212,7 @@ msgid "To"
 msgstr "Кому"
 
 #: ../../../administrator/reply.php:135 ../../../administrator/send_to.php:152
-#: ../../../administrator/profile.php:411
+#: ../../../administrator/profile.php:419
 msgid "Comment"
 msgstr "Примітка"
 
@@ -2052,24 +2053,33 @@ msgstr ""
 "Скинути вибрані ТБ канали? Канали повністю скинуться тільки якщо відразу "
 "перезапустити приставку!"
 
-#: ../../../administrator/profile.php:395
+#: ../../../administrator/profile.php:403
 msgid "Last change of status"
 msgstr "Зміна статусу"
 
-#: ../../../administrator/profile.php:462
-#: ../../../administrator/profile.php:524
+#: ../../../administrator/profile.php:470
+#: ../../../administrator/profile.php:532
 msgid "TV subscription"
 msgstr "Підписка на канали"
 
-#: ../../../administrator/profile.php:485
+#: ../../../administrator/profile.php:493
 msgid "Change"
 msgstr "Змінити"
 
-#: ../../../administrator/profile.php:494
+#: ../../../administrator/profile.php:502
 msgid "No packages available"
 msgstr "Немає доступних пакетів"
 
-#: ../../../administrator/profile.php:527
+#: ../../../administrator/profile.php:509
+msgid "Optional"
+msgstr "Опціональний"
+
+#: ../../../administrator/profile.php:510
+#: ../../../lib/accountinfo.class.php:98
+msgid "Subscribed"
+msgstr "Підключено"
+
+#: ../../../administrator/profile.php:535
 msgid "Additional services"
 msgstr "Дод. сервіси"
 
@@ -4880,10 +4890,6 @@ msgstr "Договір"
 #, php-format
 msgid "account_terms_info"
 msgstr "Правила користування"
-
-#: ../../../lib/accountinfo.class.php:98
-msgid "Subscribed"
-msgstr "Підключено"
 
 #: ../../../lib/accountinfo.class.php:100
 msgid "Not subscribed"

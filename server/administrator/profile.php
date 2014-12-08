@@ -505,9 +505,9 @@ if (empty($packages)){
                     <table align="center" class="list" cellspacing="0" cellpadding="3">
                         <caption><?= _('Packages')?></caption>
                         <tr>
-                            <th>Название</th>
-                            <th>Опциональный</th>
-                            <th>Подписан</th>
+                            <th><?= _('Name')?></th>
+                            <th><?= _('Optional')?></th>
+                            <th><?= _('Subscribed')?></th>
                         </tr>
                         <?
                         foreach ($packages as $package){
