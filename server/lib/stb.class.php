@@ -1114,7 +1114,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
                     break;
                 case 2: // Video Club
-                    
+
+                    $param = preg_replace('/\s+position:\d+/', '', $param);
+
                     if (strpos($param, '://') !== false){
 
                         $video = $this->db->from('video')->where(array('rtsp_url' => $param, 'protocol' => 'custom'))->get()->first();
