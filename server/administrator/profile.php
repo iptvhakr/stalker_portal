@@ -357,6 +357,14 @@ if (empty($packages)){
                 <td>hardware:</td>
                 <td><?= htmlspecialchars($arr['hw_version'])?></td>
             </tr>
+            <tr>
+                <td>model:</td>
+                <td><?= htmlspecialchars($arr['stb_type'])?></td>
+            </tr>
+            <tr>
+                <td>locale:</td>
+                <td><?= htmlspecialchars($arr['locale'])?></td>
+            </tr>
         </table>
         </td>
         <td>
