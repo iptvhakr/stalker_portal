@@ -659,6 +659,12 @@ class User implements \Stalker\Lib\StbApi\User
             unset($new_account['password']);
         }
 
+        if (!empty($new_account['mac'])){
+            $new_account['access_token'] = '';
+            $new_account['device_id'] = '';
+            $new_account['device_id2'] = '';
+        }
+
         if (empty($new_account)){
             return true;
         }
