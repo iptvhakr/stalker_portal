@@ -172,6 +172,7 @@
 
         <chmod file="${project_path}/screenshots" mode="0777" />
         <chmod file="${project_path}/misc/logos" mode="0777" />
+        <chmod file="${project_path}/misc/audio_covers" mode="0777" />
 
         <exec command="/etc/init.d/apache2 restart" level="info"/>
 
