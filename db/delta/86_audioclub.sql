@@ -16,6 +16,7 @@ CREATE TABLE `audio_albums` (
 
 CREATE TABLE `audio_compositions` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `number` int NOT NULL DEFAULT 0,
   `name` varchar(128) NOT NULL DEFAULT '',
   `album_id` int NOT NULL DEFAULT 0,
   `language_id` int NOT NULL DEFAULT 0,
