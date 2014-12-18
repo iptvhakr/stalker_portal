@@ -521,3 +521,16 @@ $words['apps_title'] = _('Applications');
 $words['coming_soon_video'] = _('Video will be available soon');
 
 $words['app_install_confirm'] = _('Install application?');
+
+$words['audioclub_title'] = _('AUDIO CLUB');
+$words['track_search'] = _('TRACK SEARCH');
+$words['album_search'] = _('ALBUM SEARCH');
+$words['add_to_playlist'] = _('ADD TO PLAYLIST');
+$words['playlist'] = _('PLAYLIST');
+$words['audioclub_year'] = _('Year');
+$words['audioclub_country'] = _('Country');
+$words['audioclub_languages'] = _('Language');
+$words['audioclub_language'] = _('Language');
+$words['audioclub_performer'] = _('Artist');
+$words['audioclub_album'] = _('Album');
+$words['audioclub_tracks'] = _('Compositions');

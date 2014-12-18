@@ -432,7 +432,7 @@ $all_countries = Mysql::getInstance()->from('countries')->orderby('name')->get()
 
                         while ($album = $albums->next()){
                             echo "<tr>";
-                            echo "<td class='list'><a href='audio_track.php?album_id=".$album['id']."'>".$album['name']."-".$album['performer_name']."</a></td>\n";
+                            echo "<td class='list'><a href='audio_track.php?album_id=".$album['id']."'>".$album['performer_name']."-".$album['name']."</a></td>\n";
                             echo "<td class='list'>".count_album_tracks($album['id'])."</td>\n";
                             echo "<td class='list'>".implode(', ', get_album_genres($album['id']))."</td>\n";
                             echo "<td class='list'>".$album['album_year']."</td>\n";
@@ -585,7 +585,7 @@ $all_countries = Mysql::getInstance()->from('countries')->orderby('name')->get()
                     <td>
                         <? if (!empty($current_album['cover'])){ ?>
                             <div class="cover_block">
-                                <img src="<?= Config::get('portal_url').'misc/audio_covers/'.ceil($current_album['id']).'/'.$current_album['cover']?>" style="float: left"/>
+                                <img src="<?= Config::get('portal_url').'misc/audio_covers/'.ceil($current_album['id']/100).'/'.$current_album['cover']?>" style="float: left"/>
                                 <div style="float:left"><a href="#" class="del_cover">x</a></div>
                             </div>
                         <? } ?>
