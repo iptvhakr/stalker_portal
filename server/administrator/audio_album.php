@@ -320,7 +320,9 @@ function get_album_genres($album_id){
         ->get()
         ->all('name');
 
-    return $genres;
+    return array_map(function($genre){
+        return _($genre);
+    }, $genres);
 }
 
 function count_album_tracks($album_id){
@@ -432,10 +434,10 @@ $all_countries = Mysql::getInstance()->from('countries')->orderby('name')->get()
 
                         while ($album = $albums->next()){
                             echo "<tr>";
-                            echo "<td class='list'><a href='audio_track.php?album_id=".$album['id']."'>".$album['performer_name']."-".$album['name']."</a></td>\n";
+                            echo "<td class='list'><a href='audio_track.php?album_id=".$album['id']."'>".$album['performer_name']." - ".$album['name']."</a></td>\n";
                             echo "<td class='list'>".count_album_tracks($album['id'])."</td>\n";
                             echo "<td class='list'>".implode(', ', get_album_genres($album['id']))."</td>\n";
-                            echo "<td class='list'>".$album['album_year']."</td>\n";
+                            echo "<td class='list'>"._($album['album_year'])."</td>\n";
                             echo "<td class='list'>".$album['album_country']."</td>\n";
                             echo "<td class='list'>".implode(', ', get_album_languages($album['id']))."</td>\n";
 
@@ -523,7 +525,7 @@ $all_countries = Mysql::getInstance()->from('countries')->orderby('name')->get()
                                         }else{
                                             $selected = '';
                                         }
-                                        echo '<option value="'.$genre['id'].'" '.$selected.'>'.$genre['name'].'</option>';
+                                        echo '<option value="'.$genre['id'].'" '.$selected.'>'._($genre['name']).'</option>';
                                     }
                                     ?>
                                 </select>

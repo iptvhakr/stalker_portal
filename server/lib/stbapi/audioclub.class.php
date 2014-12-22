@@ -29,4 +29,12 @@ interface Audioclub
     public function getYearsList();*/
 
     public function getTrackList();
+
+    public function getUserPlaylists();
+
+    public function createPlaylist();
+
+    public function addTrackToPlaylist();
+
+    public function removeFromPlaylist();
 }

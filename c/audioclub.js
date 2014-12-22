@@ -27,6 +27,8 @@
 
             this.set_middle_container();
 
+            this.init_modal_windows();
+
             var self = this;
 
             stb.player.addCustomEventListener("audiostart", function(item){
@@ -144,6 +146,152 @@
             });
         };
 
+        this.init_modal_windows = function(){
+            _debug('audioclub.init_modal_windows');
+
+            var scope = this;
+
+            /* NEW PLAYLIST DIALOG */
+            this.new_playlist_dialog = new ModalForm({"title" : get_word('audioclub_new_playlist')});
+
+            this.new_playlist_dialog.enableOnExitClose();
+
+            this.new_playlist_dialog.addItem(new ModalFormInput({"label" : get_word('playlist_name')+':', "name" : "playlist_name"}));
+
+            this.new_playlist_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.new_playlist_dialog.hide();
+                    }
+                }
+            ));
+
+            this.new_playlist_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        var name = scope.new_playlist_dialog.getItemByName("playlist_name").getValue();
+
+                        _debug('name', name);
+
+                        if (name){
+                            stb.load(
+                                {
+                                    "type"     : "audioclub",
+                                    "action"   : "create_playlist",
+                                    "name"     : name,
+                                    "track_id" : scope.new_playlist_dialog.track_id
+                                },
+                                function(result){
+                                    if (result){
+                                        scope.new_playlist_dialog.hide();
+                                    }else{
+                                        stb.msg.push({
+                                            msg : get_word('audioclub_saving_error')
+                                        })
+                                    }
+                                },
+                                this
+                            );
+                        }
+
+                    }
+                }
+            ));
+
+            /* SELECT PLAYLIST DIALOG */
+            this.select_playlist_dialog = new ModalForm({"title" : get_word('audioclub_select_playlist')});
+
+            this.select_playlist_dialog.enableOnExitClose();
+
+            this.select_playlist_dialog.addItem(new ModalFormSelect({"label" : get_word('audioclub_playlist')+':', "name" : "playlist_id"}));
+
+            this.select_playlist_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.select_playlist_dialog.hide();
+                    }
+                }
+            ));
+
+            this.select_playlist_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        var playlist_id = scope.select_playlist_dialog.getItemByName("playlist_id").getValue();
+
+                        if (playlist_id == -1){
+                            scope.new_playlist_dialog.track_id = scope.select_playlist_dialog.track_id;
+                            scope.new_playlist_dialog.show();
+                            scope.select_playlist_dialog.hide();
+                            return;
+                        }
+
+                        stb.load(
+                            {
+                                "type"        : "audioclub",
+                                "action"      : "add_track_to_playlist",
+                                "playlist_id" : playlist_id,
+                                "track_id"    : scope.select_playlist_dialog.track_id
+                            },
+                            function(result){
+                                if (result){
+                                    scope.select_playlist_dialog.hide();
+                                }else{
+                                    stb.msg.push({
+                                        msg : get_word('audioclub_saving_error')
+                                    })
+                                }
+                            },
+                            this
+                        );
+                    }
+                }
+            ));
+
+            /* REMOVE FROM PLAYLIST CONFIRM */
+            this.remove_from_playlist_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('remove_from_playlist_confirm')});
+
+            this.remove_from_playlist_confirm.enableOnExitClose();
+
+            this.remove_from_playlist_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.remove_from_playlist_confirm.hide();
+                    }
+                }
+            ));
+
+            this.remove_from_playlist_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        stb.load(
+                            {
+                                "type"   : "audioclub",
+                                "action" : "remove_from_playlist",
+                                "playlist_id" : this.load_params['playlist_id'],
+                                "track_id" : this.data_items[this.cur_row].id
+                            },
+                            function(result){
+                                _debug('remove_from_playlist result');
+                                this.load_data();
+                            },
+                            scope
+                        );
+
+                        scope.remove_from_playlist_confirm.hide();
+                    }
+                }
+            ));
+        };
+
         this._show = function(category){
             _debug('audioclub._show', category);
 
@@ -159,15 +307,15 @@
         this.hide = function(do_not_reset){
             _debug('audioclub.hide', do_not_reset);
 
-            if (!do_not_reset && stb.player.on){
-                //stb.player.stop && stb.player.stop();
-            }
-
             this.clear_short_info();
 
             this.history = [];
 
-            this.update_header_path([{"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
+            this.update_header_path([{"alias" : "playlist", "item" : ''}, {"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
+
+            this.new_playlist_dialog.hide();
+            this.select_playlist_dialog.hide();
+            this.remove_from_playlist_confirm.hide();
 
             this.superclass.hide.call(this, do_not_reset);
         };
@@ -189,6 +337,8 @@
                 this.hide();
                 main_menu.show();
             }).bind(key.MENU, this);
+
+            (function(){}).bind(key.RIGHT, this);
 
             this.back.bind(key.EXIT, this).bind(key.LEFT, this);
         };
@@ -231,13 +381,19 @@
                 this.update_header_path([{"alias" : "year", "item" : this.data_items[this.cur_row].name}]);
                 this.load_params['year_id'] = this.data_items[this.cur_row].id;
                 this.load_params['category'] = 'albums';
+            }else if(this.data_items[this.cur_row].is_playlist){
+                this.update_header_path([{"alias" : "playlist", "item" : this.data_items[this.cur_row].name}]);
+                this.load_params['playlist_id'] = this.data_items[this.cur_row].id;
+                this.load_params['action'] = 'get_track_list';
             }else{
-                this.update_header_path([{"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
+                this.update_header_path([{"alias" : "playlist", "item" : ''}, {"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
 
                 if (this.category.alias == 'years'){
                     this.load_params['year_id'] = this.data_items[this.cur_row].id;
                 }
             }
+
+            this.cur_page = 1;
 
             this.load_data();
         };
@@ -252,6 +408,7 @@
                     "type"     : "audioclub",
                     "action"   : "get_track_list",
                     "album_id" : this.load_params['album_id'],
+                    "playlist_id" : this.load_params['playlist_id'],
                     "as_playlist" : 1
                 },
                 function(result){
@@ -293,6 +450,18 @@
                     this.active_row.seek_bar_block.childNodes[0].style.width = 0;
                 }
                 window.clearInterval(this.seek_bar_interval);
+            }
+
+            if (this.data_items[this.cur_row].is_track){
+                this.color_buttons.get('yellow').enable();
+            }else{
+                this.color_buttons.get('yellow').disable();
+            }
+
+            if (this.load_params['playlist_id']){
+                this.color_buttons.get('yellow').text_obj.innerHTML = get_word('remove_from_playlist');
+            }else{
+                this.color_buttons.get('yellow').text_obj.innerHTML = get_word('add_to_playlist');
             }
         };
 
@@ -353,7 +522,7 @@
 
             _debug('level', level);
 
-            this.update_header_path([{"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
+            this.update_header_path([{"alias" : "playlist", "item" : ''}, {"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
 
             if (level){
                 this.load_params = level.load_params;
@@ -366,8 +535,9 @@
                 }
             }
 
-
-            this.load_data();
+            if (level){
+                this.load_data();
+            }
 
             this.load_params['row'] = 0;
         };
@@ -420,6 +590,8 @@
             this.short_info_box.innerHTML = info;
             if (item.cover_uri){
                 this.screenshot_box.innerHTML = '<img src="' + item.cover_uri + '">';
+            }else{
+                this.screenshot_box.innerHTML = '';
             }
         };
 
@@ -446,6 +618,8 @@
         this.fill_list = function(data){
             _debug('audioclub.fill_list');
 
+            this.dom_obj.setAttribute('data-place', this.load_params['category'] || "");
+
             data = data.map(function(item){
 
                 if (stb.player.cur_media_item && stb.player.cur_media_item.is_track && item.id == stb.player.cur_media_item.id && stb.player.on){
@@ -460,6 +634,46 @@
             });
 
             this.superclass.fill_list.call(this, data);
+        };
+
+        this.add_del_to_playlist = function(){
+            _debug('audioclub.add_del_to_playlist');
+
+            if (this.load_params['playlist_id']){ // remove from playlist
+
+                this.remove_from_playlist_confirm.show();
+
+            }else{ // add to playlist
+                stb.load(
+                    {
+                        "type"   : "audioclub",
+                        "action" : "get_user_playlists"
+                    },
+                    function(result){
+                        _debug('user_playlists result', result);
+
+                        if (result.length == 0){
+                            this.new_playlist_dialog.track_id = this.data_items[this.cur_row].id;
+                            this.new_playlist_dialog.show()
+                        }else{
+
+                            var options = result.map(function(playlist){
+                                return {
+                                    "value" : playlist.id,
+                                    "text"  : playlist.name
+                                };
+                            });
+
+                            options.unshift({"value" : -1, "text" : get_word('audioclub_create_new')});
+
+                            this.select_playlist_dialog.getItemByName('playlist_id').setOptions(options);
+                            this.select_playlist_dialog.track_id = this.data_items[this.cur_row].id;
+                            this.select_playlist_dialog.show();
+                        }
+                    },
+                    this
+                )
+            }
         }
     }
 
@@ -470,10 +684,10 @@
     audioclub.init_left_ear(word['ears_back']);
 
     audioclub.init_color_buttons([
-        {"label" : get_word('track_search'),     "cmd" : audioclub.track_search},
-        {"label" : get_word('album_search'),     "cmd" : audioclub.album_search},
+        {"label" : ''/*get_word('track_search')*/,     "cmd" : audioclub.track_search},
+        {"label" : ''/*get_word('album_search')*/,     "cmd" : audioclub.album_search},
         {"label" : get_word('add_to_playlist'),  "cmd" : audioclub.add_del_to_playlist},
-        {"label" : get_word('playlist'),         "cmd" : audioclub.playlist}
+        {"label" : ''/*get_word('playlist')*/,         "cmd" : audioclub.playlist}
     ]);
 
     audioclub.bind();
@@ -525,7 +739,7 @@
                 );
             }
 
-            main_menu.add(get_word('audioclub_title'), map, 'mm_ico_audioclub.png', '', module.audioclub);
+            main_menu.add(get_word('audioclub_title'), map, 'mm_ico_audio.png', '', module.audioclub);
 
             loader.next();
         }

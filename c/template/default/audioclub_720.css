@@ -8,6 +8,18 @@
     background-position: 202px 0;
     padding: 8px 0 0 6px;
     color: #fff;
+    overflow: hidden;
+    font-family: "Myriad Pro Cond", sans-serif;
+    white-space: pre;
+    text-overflow: ellipsis;
+}
+
+#audioclub[data-place="albums"] .name_block{
+    margin-right: 201px;
+}
+
+#audioclub[data-place="albums"] .active_name_block{
+    margin-right: 229px;
 }
 
 #audioclub .active_genres_block{
@@ -23,6 +35,8 @@
     font-family: "Myriad Pro Cond", sans-serif;
     font-size: 20px;
     overflow: hidden;
+    white-space: pre;
+    text-overflow: ellipsis;
 }
 
 .audioclub_info_box{

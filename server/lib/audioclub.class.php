@@ -11,14 +11,6 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
 
         return array(
             array(
-                'alias' => 'albums',
-                'title' => _('Albums')
-            ),
-            array(
-                'alias' => 'performers',
-                'title' => _('Artists')
-            ),
-            array(
                 'alias' => 'genres',
                 'title' => _('Genres')
             ),
@@ -27,9 +19,17 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
                 'title' => _('Years')
             ),
             array(
+                'alias' => 'albums',
+                'title' => _('Albums')
+            ),
+            array(
+                'alias' => 'performers',
+                'title' => _('Artists')
+            ),
+            array(
                 'alias' => 'playlists',
                 'title' => _('Playlists')
-            )
+            ),
         );
 
     }
@@ -46,6 +46,8 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             return $this->getGenresList();
         }elseif ($category == 'years'){
             return $this->getYearsList();
+        }elseif ($category == 'playlists'){
+            return $this->getPlaylistList();
         }
     }
 
@@ -97,7 +99,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             $this->response['data'][$i]['is_album'] = true;
         }
 
-        if (isset($_REQUEST['row'])){
+        if (!empty($_REQUEST['row'])){
             $this->response['selected_item'] = $_REQUEST['row']+1;
             $this->response['cur_page']      = $this->cur_page == 0 ? 1 : $this->cur_page;
         }
@@ -120,7 +122,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             $this->response['data'][$i]['is_performer'] = true;
         }
 
-        if (isset($_REQUEST['row'])){
+        if (!empty($_REQUEST['row'])){
             $this->response['selected_item'] = $_REQUEST['row']+1;
             $this->response['cur_page']      = $this->cur_page == 0 ? 1 : $this->cur_page;
         }
@@ -140,10 +142,11 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
         $this->setResponseData($result);
 
         for ($i = 0; $i < count($this->response['data']); $i++) {
+            $this->response['data'][$i]['name']     = _($this->response['data'][$i]['name']);
             $this->response['data'][$i]['is_genre'] = true;
         }
 
-        if (isset($_REQUEST['row'])){
+        if (!empty($_REQUEST['row'])){
             $this->response['selected_item'] = $_REQUEST['row']+1;
             $this->response['cur_page']      = $this->cur_page == 0 ? 1 : $this->cur_page;
         }
@@ -157,16 +160,41 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
 
         $result = Mysql::getInstance()
             ->from('audio_years')
+            ->orderby('name', 'DESC')
+            ->limit(self::max_page_items, $offset);
+
+        $this->setResponseData($result);
+
+        for ($i = 0; $i < count($this->response['data']); $i++) {
+            $this->response['data'][$i]['name'] = _($this->response['data'][$i]['name']);
+            $this->response['data'][$i]['is_year'] = true;
+        }
+
+        if (!empty($_REQUEST['row'])){
+            $this->response['selected_item'] = $_REQUEST['row']+1;
+            $this->response['cur_page']      = $this->cur_page == 0 ? 1 : $this->cur_page;
+        }
+
+        return $this->response;
+    }
+
+    public function getPlaylistList(){
+
+        $offset = $this->page * self::max_page_items;
+
+        $result = Mysql::getInstance()
+            ->from('audio_playlists')
+            ->where(array('user_id' => $this->stb->id))
             ->orderby('name')
             ->limit(self::max_page_items, $offset);
 
         $this->setResponseData($result);
 
         for ($i = 0; $i < count($this->response['data']); $i++) {
-            $this->response['data'][$i]['is_year'] = true;
+            $this->response['data'][$i]['is_playlist'] = true;
         }
 
-        if (isset($_REQUEST['row'])){
+        if (!empty($_REQUEST['row'])){
             $this->response['selected_item'] = $_REQUEST['row']+1;
             $this->response['cur_page']      = $this->cur_page == 0 ? 1 : $this->cur_page;
         }
@@ -178,26 +206,35 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
 
         $album_id = empty($_REQUEST['album_id']) ? 0 : (int) $_REQUEST['album_id'];
 
-        $album = Mysql::getInstance()
-        ->select('audio_albums.*,
-            audio_performers.name as performer_name,
-            audio_years.name as album_year,
-            countries.name as album_country
-        ')
-        ->from('audio_albums')
-        ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
-        ->join('audio_years', 'audio_albums.year_id', 'audio_years.id', 'LEFT')
-        ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT')
-        ->where(array('audio_albums.id' => $album_id))
-        ->get()->first();
+        $playlist_id = empty($_REQUEST['playlist_id']) ? 0 : (int) $_REQUEST['playlist_id'];
+
+        if ($playlist_id){
+            $playlist_tracks = Mysql::getInstance()
+                ->from('audio_playlist_tracks')
+                ->where(array('playlist_id' => $playlist_id))
+                ->orderby('added')
+                ->get()
+                ->all('track_id');
+        }
 
         $offset = $this->page * self::max_page_items;
 
         $result = Mysql::getInstance()->from('audio_compositions')
             ->select('audio_compositions.*, audio_languages.name as language')
-            ->where(array('album_id' => $album_id, 'audio_compositions.status' => 1))
-            ->join('audio_languages', 'audio_compositions.language_id', 'audio_languages.id', 'LEFT')
-            ->orderby('number');
+            ->where(array('audio_compositions.status' => 1))
+            ->join('audio_languages', 'audio_compositions.language_id', 'audio_languages.id', 'LEFT');
+
+        if ($album_id){
+            $result->where(array('album_id' => $album_id))
+                ->orderby('number');
+        }
+
+        if ($playlist_id && isset($playlist_tracks)){
+            $result->in('audio_compositions.id', $playlist_tracks);
+            if (!empty($playlist_tracks)){
+                $result->orderby('field(audio_compositions.id,' . implode(',', $playlist_tracks) . ')');
+            }
+        }
 
         if (empty($_REQUEST['as_playlist'])){
             $result->limit(self::max_page_items, $offset);
@@ -205,16 +242,55 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
 
         $this->setResponseData($result);
 
+        if ($album_id){
+            $album_ids = array($album_id);
+        }else{
+            $album_ids = array();
+            for ($i = 0; $i < count($this->response['data']); $i++) {
+                $album_ids[] = $this->response['data'][$i]['album_id'];
+            }
+
+            $album_ids = array_unique($album_ids);
+        }
+
+        $albums_map = array();
+
+        if (!empty($album_ids)){
+            $albums = Mysql::getInstance()
+                ->select('audio_albums.*,
+                    audio_performers.name as performer_name,
+                    audio_years.name as album_year,
+                    countries.name as album_country
+                ')
+                ->from('audio_albums')
+                ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
+                ->join('audio_years', 'audio_albums.year_id', 'audio_years.id', 'LEFT')
+                ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT')
+                ->in('audio_albums.id', $album_ids)
+                ->get()->all();
+
+            foreach ($albums as $album){
+                $albums_map[$album['id']] = $album;
+            }
+        }
+
         for ($i = 0; $i < count($this->response['data']); $i++) {
-            $this->response['data'][$i]['name']           = $this->response['data'][$i]['number'].'. '.$this->response['data'][$i]['name'];
-            $this->response['data'][$i]['performer_name'] = $album['performer_name'];
+
+            $item = $this->response['data'][$i];
+
+            if ($playlist_id){
+                $this->response['data'][$i]['name'] = (isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['performer_name'].' - ' : '').$this->response['data'][$i]['name'];
+            }else{
+                $this->response['data'][$i]['name'] = $this->response['data'][$i]['number'].'. '.$this->response['data'][$i]['name'];
+            }
+            $this->response['data'][$i]['performer_name'] = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['performer_name'] : '';
             $this->response['data'][$i]['cmd']            = $this->response['data'][$i]['url'];
-            $this->response['data'][$i]['album_name']     = $album['name'];
-            $this->response['data'][$i]['album_year']     = $album['album_year'];
-            $this->response['data'][$i]['album_country']  = $album['album_country'];
+            $this->response['data'][$i]['album_name']     = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['name'] : '';
+            $this->response['data'][$i]['album_year']     = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['album_year'] : '';
+            $this->response['data'][$i]['album_country']  = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['album_country'] : '';
             $this->response['data'][$i]['cover_uri']      = Config::get('portal_url').'misc/audio_covers/'
-                .ceil($album_id/100)
-                .'/'.$album['cover'];
+                .ceil($item['album_id']/100)
+                .'/'.(isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['cover'] : '0.jpg');
             $this->response['data'][$i]['is_track']       = true;
             $this->response['data'][$i]['is_audio']       = true;
         }
@@ -223,7 +299,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
     }
 
     public function getAlbumGenres($album_id){
-        return Mysql::getInstance()
+        $genres = Mysql::getInstance()
              ->select('audio_genres.name')
              ->from('audio_genre')
              ->where(array('album_id' => $album_id))
@@ -231,6 +307,10 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
              ->orderby('audio_genres.name')
              ->get()
              ->all('name');
+
+        return array_map(function($genre){
+            return _($genre);
+        }, $genres);
     }
 
     function countAlbumTracks($album_id){
@@ -252,5 +332,71 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             ->groupby('audio_languages.name')
             ->get()
             ->all('name');
+    }
+
+    function getUserPlaylists(){
+
+        $playlists = Mysql::getInstance()
+            ->from('audio_playlists')
+            ->where(array('user_id' => $this->stb->id))
+            ->orderby('name')
+            ->get()
+            ->all();
+
+        return $playlists;
+    }
+
+    function createPlaylist(){
+
+        if (empty($_REQUEST['name'])){
+            return false;
+        }
+
+        $playlist_id = Mysql::getInstance()
+            ->insert('audio_playlists', array(
+                'user_id'  => $this->stb->id,
+                'name'     => $_REQUEST['name'],
+                'modified' => 'NOW()'
+            ))->insert_id();
+
+        if (!$playlist_id){
+            return false;
+        }
+
+        if ($_REQUEST['track_id']){
+
+            Mysql::getInstance()->insert('audio_playlist_tracks', array(
+                'playlist_id' => $playlist_id,
+                'track_id'    => (int) $_REQUEST['track_id'],
+                'added'       => 'NOW()'
+            ));
+        }
+
+        return $playlist_id;
+    }
+
+    function addTrackToPlaylist(){
+
+        if (empty($_REQUEST['track_id']) || empty($_REQUEST['playlist_id'])){
+            return false;
+        }
+
+        return Mysql::getInstance()->insert('audio_playlist_tracks', array(
+            'playlist_id' => (int) $_REQUEST['playlist_id'],
+            'track_id'    => (int) $_REQUEST['track_id'],
+            'added'       => 'NOW()'
+        ))->insert_id();
+    }
+
+    function removeFromPlaylist(){
+
+        if (empty($_REQUEST['track_id']) || empty($_REQUEST['playlist_id'])){
+            return false;
+        }
+
+        return Mysql::getInstance()->delete('audio_playlist_tracks', array(
+            'playlist_id' => (int) $_REQUEST['playlist_id'],
+            'track_id'    => (int) $_REQUEST['track_id']
+        ))->result();
     }
 }

@@ -112,6 +112,45 @@ _("woman's");
 _('scientific-entertainment');
 
 /**
+ * audio_genres table
+ */
+
+_('Alternative Rock');
+_('Blues');
+_('Children\'s Music');
+_('Jazz');
+_('Disco');
+_('Indie');
+_('Country');
+_('Classical');
+_('Latin Music');
+_('Easy Listening');
+_('Metal');
+_('Hillbilly music');
+_('Pop');
+_('Oldies');
+_('Rock');
+_('Adult Contemporary');
+_('Soul and R&B');
+_('Themes music');
+_('Hip Hop');
+_('Electronic');
+
+/**
+ * audio_years table
+ */
+
+_('1920s and earlier');
+_('1930s');
+_('1940s');
+_('1950s');
+_('1960s');
+_('1970s');
+_('1980s');
+_('1990s');
+_('2000s');
+
+/**
  * karaoke_genre table
  */
 _('Pop');
