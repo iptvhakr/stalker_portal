@@ -90,7 +90,8 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
 
             $this->response['data'][$i]['genres'] = implode(', ', $this->getAlbumGenres($this->response['data'][$i]['id']));
             $this->response['data'][$i]['tracks'] = $this->countAlbumTracks($this->response['data'][$i]['id']);
-            $this->response['data'][$i]['languages'] = implode(', ', $this->getAlbumLanguages($this->response['data'][$i]['id']));
+            $this->response['data'][$i]['languages']  = implode(', ', $this->getAlbumLanguages($this->response['data'][$i]['id']));
+            $this->response['data'][$i]['album_year'] = _($this->response['data'][$i]['album_year']);
 
             $this->response['data'][$i]['cover_uri'] = Config::get('portal_url').'misc/audio_covers/'
                 .ceil($this->response['data'][$i]['id']/100)
@@ -286,7 +287,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             $this->response['data'][$i]['performer_name'] = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['performer_name'] : '';
             $this->response['data'][$i]['cmd']            = $this->response['data'][$i]['url'];
             $this->response['data'][$i]['album_name']     = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['name'] : '';
-            $this->response['data'][$i]['album_year']     = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['album_year'] : '';
+            $this->response['data'][$i]['album_year']     = isset($albums_map[$item['album_id']]) ? _($albums_map[$item['album_id']]['album_year']) : '';
             $this->response['data'][$i]['album_country']  = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['album_country'] : '';
             $this->response['data'][$i]['cover_uri']      = Config::get('portal_url').'misc/audio_covers/'
                 .ceil($item['album_id']/100)
