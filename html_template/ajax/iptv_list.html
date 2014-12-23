@@ -1,0 +1,438 @@
+<div class="row header_title">
+    <div class="col-xs-10 col-sm-2">
+        <h3>Список каналов</h3>
+    </div>
+</div>
+
+<div id="iptv_list">
+    <div class="row">
+        <div class="col-xs-8 col-sm-12">
+            <div class="col-xs-3 col-sm-2 filter">
+                <span class="col-xs-4 col-sm-4">Жанр:</span>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                    <span>Информационный</span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="#">
+                            <span>информационный</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>развлечения</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>детское</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>кино</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>наука</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>спорт</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>музыка</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>бизнес</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>культура</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>для взрослых</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-3 col-sm-2 no-padding">
+                <div class="col-xs-3 col-sm-5 filter no-padding">
+                    <span class="col-xs-4 col-sm-5 no-padding">Архив:</span>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                        <span>Все</span>
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="#">
+                                <span>Все</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <span>Да</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <span>Нет</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xs-3 col-sm-7 filter no-padding">
+                    <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                        <span>Все</span>
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="#">
+                                <span>Все</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                <span>Включен</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span>Отключен</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-3 no-padding">
+                <div class="input-group col-sm-9 pull-left">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    <input type="text" placeholder="Введите имя либо номер канала..." class="form-control" data-original-title="" title="">
+                </div>
+                <button type="button" class="btn btn-default">Поиск</button>
+            </div>
+            <a href="ajax/add_channel.html" class="btn btn-success pull-right ajax-link">Добавить</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-content">
+                    <div class="col-xs-3 col-sm-1 pull-left">
+                        <span>1-4 из 4</span>
+                    </div>
+                    <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                            <span>Атрибуты</span>
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="all" checked="checked"> Все
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="logo" checked="checked"> Лого
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="number" checked="checked"> Номер
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="name" checked="checked"> Название
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="genre" checked="checked"> Жанр
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="tv-archive" checked="checked"> ТВ-архив
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="url" checked="checked"> URL
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="state" checked="checked"> Статус
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                            <thead>
+                                <tr>
+                                    <th data-filter="logo">Лого</th>
+                                    <th data-filter="number">Номер</th>
+                                    <th data-filter="name">Название</th>
+                                    <th data-filter="genre">Жанр</th>
+                                    <th data-filter="tv-archive">ТВ-архив</th>
+                                    <th data-filter="url">URL</th>
+                                    <th data-filter="state">Статус</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Start: list_row -->
+                                <tr>
+                                    <td><img class="img-rounded" src="./img/ictv_logo.png" alt=""></td>
+                                    <td><a href="#">1</a></td>
+                                    <td><a href="#">Украина</a></td>
+                                    <td>Информационный</td>
+                                    <td>Да</td>
+                                    <td>ffrt2 rtmp://wms002.pik-tv.com/live/piktv3pik3t</td>
+                                    <td>Включен</td>
+                                    <td>
+                                        <div class="col-xs-3 col-sm-8">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                <i class="pull-right fa fa-cog"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Изменить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="ajax/iptv_list_move.html" class="ajax-link">
+                                                        <span>Переместить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Удалить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Отключить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Добавить EPG</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img class="img-rounded" src="./img/ictv_logo.png" alt=""></td>
+                                    <td><a href="#">2</a></td>
+                                    <td><a href="#">Интер</a></td>
+                                    <td>Информационный</td>
+                                    <td>Да</td>
+                                    <td>ffrt2 rtmp://wms002.pik-tv.com/live/piktv3pik3t</td>
+                                    <td>Включен</td>
+                                    <td>
+                                        <div class="col-xs-3 col-sm-8">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                <i class="pull-right fa fa-cog"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Изменить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="ajax/iptv_list_move.html" class="ajax-link">
+                                                        <span>Переместить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Удалить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Отключить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Добавить EPG</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img class="img-rounded" src="./img/ictv_logo.png" alt=""></td>
+                                    <td><a href="#">3</a></td>
+                                    <td><a href="#">Новый</a></td>
+                                    <td>Информационный</td>
+                                    <td>Да</td>
+                                    <td>ffrt2 rtmp://wms002.pik-tv.com/live/piktv3pik3t</td>
+                                    <td>Включен</td>
+                                    <td>
+                                        <div class="col-xs-3 col-sm-8">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                <i class="pull-right fa fa-cog"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Изменить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="ajax/iptv_list_move.html" class="ajax-link">
+                                                        <span>Переместить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Удалить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Отключить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Добавить EPG</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img class="img-rounded" src="./img/ictv_logo.png" alt=""></td>
+                                    <td><a href="#">4</a></td>
+                                    <td><a href="#">1+1</a></td>
+                                    <td>Информационный</td>
+                                    <td>Да</td>
+                                    <td>ffrt2 rtmp://wms002.pik-tv.com/live/piktv3pik3t</td>
+                                    <td>Включен</td>
+                                    <td>
+                                        <div class="col-xs-3 col-sm-8">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                <i class="pull-right fa fa-cog"></i>
+                                            </a>
+                                            <ul class="dropdown-menu pull-right">
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Изменить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="ajax/iptv_list_move.html" class="ajax-link">
+                                                        <span>Переместить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Удалить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Отключить</span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#">
+                                                        <span>Добавить EPG</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- End: list_row -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        LoadDataTablesScripts(TestTable1);
+        $('#datatable-1').toggleCollumn('all', true);
+    })
+</script>
