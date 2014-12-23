@@ -1,0 +1,99 @@
+{% extends 'layout.twig' %}
+{% set title = 'users' %}
+
+{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+
+{% block content %}
+    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Логи</h3>
+        </div>
+    </div>
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <thead>
+                                    <tr>
+                                        <th data-filter="time">Время</th>
+                                        <th data-filter="mac">MAC</th>
+                                        <th data-filter="action">Действие</th>
+                                        <th data-filter="object">Объект</th>
+                                        <th data-filter="type">Тип</th>
+                                        <th data-filter="param">Параметр</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if attribute(app, 'logList') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.logList %}
+                                            <tr>
+                                                <td>{{ item.time }}</td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.uid }}" >{{ item.mac }}</a></td>
+                                                <td>{{ item.action }}</td>
+                                                <td>{{ item.object }}</td>
+                                                <td>{{ item.type }}</td>
+                                                <td>{{ item.param }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var uid = json.data[i].uid;
+                        var mac = json.data[i].mac;
+                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+uid+'" >'+mac+'</a>';
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs-json"
+                },
+                "deferLoading":{{ app.totalRecords }},
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                    {"data": "time"},
+                    {"data": "mac"},
+                    {"data": "action"},
+                    {"data": "object"},
+                    {"data": "type"},
+                    {"data": "param"}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true{#,
+                "aoColumnDefs": [
+                    {"searchable": false, "targets": [1]}
+                ]#}
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

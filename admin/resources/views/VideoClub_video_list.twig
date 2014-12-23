@@ -1,0 +1,620 @@
+{% extends 'layout.twig' %}
+
+{% set title = 'video-club' %}
+{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+
+{% block content %}
+    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Список видео</h3>
+        </div>
+    </div>
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-8 col-sm-12">
+
+                <div class="col-xs-3 col-sm-2 no-padding">
+                    <div class="col-xs-3 col-sm-7 filter no-padding" data-tvfilter="status_id">
+                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
+                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'status_id') is defined %}
+                            {% set f_status_id = app['filters']['status_id'] %}
+                        {% else %}
+                            {% set f_status_id = 0 %}
+                        {% endif %}
+                        {% set list_f = list %}                       
+                        {% for item in app.allStatus %}
+                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
+                            {% if f_status_id == item['id'] %}                       
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>{{ item['title'] }}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% autoescape false %}
+                            {% if f_status_id == 0 %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Все</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="dropdown-menu pull-right">
+                                {{ list_f }}
+                            </ul>
+                        {% endautoescape %}
+                    </div>
+                </div>
+                {#<div class="col-sm-3 no-padding">
+                    <div class="input-group col-sm-9 pull-left">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" placeholder="Введите имя либо номер канала..." class="form-control" data-original-title="" title="">
+                    </div>
+                    <button type="button" class="btn btn-default">Поиск</button>
+                </div>#}
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video" class="btn btn-success pull-right">Добавить</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                {% if app['allVideo'] %}
+                    <div class="box">
+
+                            <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Атрибуты</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="all"> Все
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="name" checked="checked"> Каталог
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="name" checked="checked"> Название
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="o_name"> Оригинальное название
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="time" checked="checked"> Длительность
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="series" checked="checked"> Серии
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="tasks" checked="checked"> Задания
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="year" checked="checked"> Год
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="added" checked="checked"> Дата запуска
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="complaints" checked="checked"> Жалобы
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="status" checked="checked"> Статус
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="operations" checked="checked"> Действия
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        <div class="box-content">
+                            <div class="box-content no-padding">
+                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                    <thead>
+                                        <tr>
+                                            <th data-filter="path">Каталог</th>
+                                            <th data-filter="name">Название</th>
+                                            <th data-filter="o_name">Оригинальное название</th>
+                                            <th data-filter="time">Длительность, мин</th>
+                                            <th data-filter="series">Серии</th>
+                                            <th data-filter="tasks">Задания</th>
+                                            <th data-filter="year">Год</th>
+                                            <th data-filter="added">Дата запуска</th>
+                                            <th data-filter="complaints">Жалобы</th>
+                                            <th data-filter="status">Статус</th>
+                                            <th data-filter="operations">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allVideo %}
+                                            <tr data-videoid="{{ item.id }}">
+                                                <td><a href="video-club/video-info" class="main_ajax" data-videoid="{{ item.id }}">{{ item.path }}</a></td>
+                                                <td><a href="#" data-fieldname="name">{{ item.name }}</a></td>
+                                                <td><a href="#">{{ item.o_name }}</a></td>
+                                                <td data-filter="time">{{ item.time }}</td>
+                                                <td data-filter="series">{{ item.series }}</td>
+                                                <td data-filter="tasks">                                                   
+                                                    {% if item['task']|length > 0 %}
+                                                        {% for task_item in item['task']%}
+                                                            <a href="?task={{ task_item['id'] }}">№{{ task_item['id'] }} {% if task_item['end_time'] %}(окончание {{ task_item['end_time']|date('d-m-Y') }}){% endif %}</a>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        Нет заданий
+                                                    {% endif%}
+                                                </td>
+                                                <td data-filter="year">{{ item.year }}</td>
+                                                <td data-filter="added">{{ item.added }}</td>
+                                                <td data-filter="complaints">
+                                                    {% if item.video_counter or item.sound_counter%}
+                                                        {% if item.video_counter %}видео - {{ item.video_counter }} {% endif %}
+                                                        {% if item.sound_counter%}звук - {{ item.sound_counter }}{% endif %}
+                                                    {% else %}
+                                                        0
+                                                    {% endif %}
+                                                </td>
+                                                <td data-filter="status">{% if item.accessed %}<span class="txt-success">Опубликовано</span>{% elseif item.task_id %}<span class="txt-info">Запланированно</span>{% else %}Не опубликовано{% endif %}</td>
+                                                <td data-filter="operations">
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id={{ item.id }}">
+                                                                    <span>Изменить</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.accessed %}disable{% else %}enable{% endif %}-video" data-videoid="{{ item.id }}">
+                                                                    <span>{% if item.accessed %}Отключить{% else %}Включить{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks" data-videoid="{{ item.id }}">
+                                                                    <span>Отправить задание</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-logs?video_id={{ item.id }}">
+                                                                    <span>История</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video" data-videoid="{{ item.id }}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+            
+    <div id="modalbox_ad">
+        <div class="devoops-modal add-tasks">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span>Создать задачу</span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box-content">
+                    <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks" method="POST">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label col-sm-offset-1">Название видео</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <span class="col-xs-12 col-sm-12">
+                                    <input type="hidden" name="id">
+                                    <span class="txt-default">Название видео</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label col-sm-offset-1">Кому</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-10">
+                                    <select class="populate placeholder" name="to_usr" id="s2_video_moderators" required="">
+                                        {% if app['allModerators'] %}
+                                            {% for m_item in app.allModerators %}
+                                                <option value="{{m_item.id}}">{{m_item.login}}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label col-sm-offset-1">Описание задания</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class="col-xs-10 col-sm-10">
+                                    <textarea class="col-xs-12 col-sm-12" name="comment" rows="6" required=""></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="box-content">
+                    <div class="row">
+                        <div class="col-xs-10 col-sm-2 pull-right no-padding">&nbsp;</div>
+                        <div class="col-xs-10 col-sm-5 pull-right no-padding">
+                            <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
+                            <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+            
+<script type="text/javascript" defer>
+
+    function TestTable1() {
+        $('#datatable-1').dataTable({
+            "language": {
+                "url": "./plugins/datatables/lang/ru_RU.json"
+            },
+            "bFilter": true,
+            "bPaginate": true,
+            "bInfo":     true,
+            "aoColumnDefs": [ 
+                { "targets": [ 2 ], "visible": false},
+                { "targets": [ -1 ], "orderable": false},
+                { "searchable": false, "targets": [ 3, 4, 5, 6, 7, 8, 9 ] },
+                { "width": "15%", "targets": [ 0, 1, 2 ] },
+                { "width": "12%", "targets": [ 3 ] },
+                { "width": "10%", "targets": [ 7 ] },
+                { "width": "5%", "targets": [ -1 ] }
+            ]
+        });
+    }
+
+    function DemoSelect2() {
+        $('#s2_video_moderators').select2({minimumResultsForSearch: -1});
+    }
+
+    function yelp() {
+        $(document).ready(function () {
+            LoadDataTablesScripts(TestTable1);
+            LoadSelect2Script(DemoSelect2);
+           $(document).on('click', "a.main_ajax", function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                var _this = $(this);
+
+                if (_this.attr('href').search("enable") != -1 && !_this.data('video_on_date')) {
+                    setEnableDatePicker(_this);
+                    return false;
+                }
+
+                if (_this.attr('href').search("create-tasks") != -1 && !_this.data('sendData')) {
+                    showTaskForm(_this);
+                    return false;
+                }
+
+                if (!_this.data('atcion')) {
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'POST',
+                        data: $(this).data(),
+                        success: function (data) {
+                            if (data.success) {
+                                for (var key in data) {
+                                    _this.data(key, data[key]);
+                                }
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof(data.responseJSON) == 'object') {
+                                errAction +=  data.responseJSON.action + 'Error';
+                                for (var key in data.responseJSON) {
+                                    _this.data(key, data.responseJSON[key]);
+                                }
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction]($(_this));
+                            } else {
+                                alert('Some network error');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                } 
+
+                if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                    window[$(this).data('action')]($(this));
+                }
+                _this.closest('div.open').removeClass('open');
+                return false;
+            });
+
+            $(document).on('click', "#apply_enable_date", function(e){
+                e.stopPropagation();
+                e.preventDefault();
+                $("a[data-videoid='" + $("#modalbox input[type='hidden']").val() + "'][href*='enable']")
+                        .data('video_on_date', $("#modalbox input[type='text']").val())
+                        .click();
+                $("div[id*='datepicker']").hide().remove();
+                closeModalBox();
+                $("div[id*='datepicker']").remove();
+                return false;
+            });
+            $(document).on('click', "#reset_enable_date, #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                if (e.currentTarget != e.target) {
+                    return;
+                }
+                e.stopPropagation();
+                e.preventDefault();
+                $("div[id*='datepicker']").hide().remove();
+                closeModalBox();
+                return false;
+            });
+            
+            $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
+                var sendData = {
+                    id: $("#modalbox_ad input[type='hidden']").val(),
+                    to_usr: $("#modalbox_ad select").val(),
+                    comment: $("#modalbox_ad textarea").val(),
+                };
+                
+                e.stopPropagation();
+                e.preventDefault();
+                var linkObj = $("a[data-videoid='" + $("#modalbox_ad input[type='hidden']").val() + "'][href*='create']");
+                hideTaskForm(linkObj);
+                linkObj.data('sendData', sendData).click();
+                return false;
+            });
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", yelp, false);
+
+    var setMD5Error = function(obj){
+        if ($(obj).data("error")) {
+            $(obj).replaceWith('<span class="txt-danger"> &nbsp;' + $(obj).data("error") + '&nbsp; </span>');
+        }
+
+    }
+
+    var videoinfo = function (obj){
+        $('#modalbox').show();
+        $('#modalbox').find('.modal-header-name span').text($(obj).data('title'));
+        var baseInfo = $(obj).data('base_info');
+        if (typeof(baseInfo) == 'string') {
+            $('#modalbox').find('.devoops-modal-inner').append('<span>' + baseInfo + '</span>');
+        } else if (typeof(baseInfo) == 'object') {
+            var table = $('<table class="video_info"></table>').appendTo($('#modalbox').find('.devoops-modal-inner'));
+            table.append('<tr><td>Сервер</td><td>Каталог</td><td>Серии</td><td>&nbsp;</td></tr>');
+            $.each(baseInfo, function(index, value){
+                var trStr = '<tr><td>'+ value.storage_name +'</td><td>'+ value.path +'</td><td>'+ value.series +'</td>';
+                    trStr += '<td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-md5">посчитать MD5 сумму</a></td></tr>';
+                table.append(trStr);
+                table.find('a').data('storage_name', value.storage_name);
+                table.find('a').data('media_name', value.path);
+                if (value.files.length > 0 ) {
+                    var filesStr = '';
+                    $.each(value.files, function(f_index, f_value){
+                        filesStr += '<span>' + f_value.name + '</span>';
+                    });
+                    table.append('<tr><td colspan="4">' + filesStr + '</td></tr>');
+                }
+            });
+        };
+    }
+
+    var videoremove = function (obj){
+        var cRow = $(obj).closest('tr');
+        $('#datatable-1').DataTable().row(cRow).remove().draw( false );
+
+    }
+    var videoenable = function (obj){
+        $(obj).removeData('video_on_date');
+        var cCeill = $(obj).closest('tr').find('td[data-filter="status"]');
+        if (cCeill.length > 0) {
+            $('#datatable-1').DataTable().cell( cCeill ).data($(obj).data('status')).draw();
+        } else {
+            dataTableSetData($(obj).data('videoid'), "tasks", $(obj).data('status'));
+        }
+        $(obj).attr('href', $(obj).attr('href').replace('enable-video', 'disable-video'));
+        $(obj).text($(obj).data('title'));
+    }
+    var videodisable = function (obj){
+        var cCeill = $(obj).closest('tr').find('td[data-filter="status"]');
+        if (cCeill.length > 0) {
+            $('#datatable-1').DataTable().cell( cCeill ).data('Не опубликовано').draw();
+        } else {
+            dataTableSetData($(obj).data('videoid'), "tasks", 'Не опубликовано');
+        }
+        $(obj).attr('href', $(obj).attr('href').replace('disable-video', 'enable-video'));
+        $(obj).text($(obj).data('title'));
+    }
+    
+    var createtasks = function (obj){
+        $(obj).removeData('sendData');
+        var newTitle = "<a href='?"+ $(obj).data('task_id') +"'>№" + $(obj).data('task_id')+ "</a>";
+        var cCeill = $(obj).closest('tr').closest('tr').find('td[data-filter="tasks"]');
+        if (cCeill.length > 0) {
+            $('#datatable-1').DataTable().cell( cCeill ).data(newTitle).draw();
+        } else {
+            dataTableSetData($(obj).data('videoid'), "tasks", newTitle);
+        }
+    }
+
+    function closeModalBox(){
+        $("#modalbox").hide();
+        $('#modalbox').find('.modal-header-name span').empty();
+        $('#modalbox').find('.devoops-modal-inner').empty();
+        $('#modalbox').find('.devoops-modal-bottom').empty();
+    }
+
+    function setEnableDatePicker(obj){
+        $('#modalbox').find('.modal-header-name span').text('Расписание включения');
+        $('#modalbox').find('.devoops-modal-inner')
+                .append("<input type='hidden' name='link_id' value='" + obj.data('videoid') + "'>")
+                .append("<input type='text' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='video_on_date'>");
+        $('#modalbox').find('.devoops-modal-bottom')
+                .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">Отмена</button>')
+                .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">Включить</button>');
+        $('#modalbox').find('.devoops-modal').width(350);
+        $(".datepicker").datepicker({
+                language    : 'ru',
+                dateFormat  : 'dd-mm-yy',
+                firstDay    : 1,
+                minDate     : new Date()
+            }
+    {#                    {
+                dayNamesMin : [
+                    '<?= htmlspecialchars(_('Sun'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('Mon'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('Tue'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('Wed'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('Thu'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('Fri'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('Sat'), ENT_QUOTES)?>'
+                ],
+                monthNames  : [
+                    '<?= htmlspecialchars(_('January'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('February'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('March'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('April'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('May'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('June'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('July'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('August'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('September'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('October'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('November'), ENT_QUOTES)?>',
+                    '<?= htmlspecialchars(_('December'), ENT_QUOTES)?>'
+                ]
+            }#}
+            );
+        $("div[id*='datepicker']").addClass('dp_white');
+        $(obj).closest('div.open').removeClass('open');
+        $('#modalbox').show();
+    }
+
+    function showTaskForm(obj){
+        var showName = $(obj).closest('tr').find('a[data-fieldname="name"]').text();
+        $('#modalbox_ad').find('input[type="hidden"]').val($(obj).data('videoid')).next().text(showName);
+        $('#modalbox_ad').show();
+        $(obj).closest('div.open').removeClass('open');
+    }
+    
+    function hideTaskForm(obj){
+        
+        $('#modalbox_ad').find('input[type="hidden"]').val('').next().text('');
+        $('#modalbox_ad').find('textarea').val('');
+        $('#modalbox_ad').hide();
+        $(obj).closest('div.open').removeClass('open');
+    }
+    
+    function dataTableSetData(video_id, field, new_data){
+        return false; // bug
+        var rowNum = null, cellNum = null;
+        $.each($('#datatable-1').DataTable().context[0].aoData, function(index, tdData){
+            if (tdData._aData[0].display.search('data-videoid="'+video_id+'"') != -1) {
+                rowNum = index;
+                $.each(tdData.anCells, function(in_index, in_data){
+                    if ($(in_data).attr('data-filter') == field) {
+                        cellNum = in_index;
+                        return false;
+                    }
+                });
+                return false;
+            }
+        });
+{#        var dtTable = $('#datatable-1').DataTable().fnDataUpdate(new_data, rowNum, cellNum );#}
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,345 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+
+{% set active = 'tv-channels' %}
+{% set title = 'tv-channels' %}
+
+{% block content %}
+    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Список каналов</h3>
+        </div>
+    </div>
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-8 col-sm-12">
+                {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+                {% if app['allGenres'] %}
+                    <div class="col-xs-3 col-sm-2 filter" data-tvfilter="tv_genre_id">
+                        <span class="col-xs-4 col-sm-4">Жанр:</span>
+
+                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'tv_genre_id') is defined %}
+                            {% set f_tv_genre_id = app['filters']['tv_genre_id'] %}
+                        {% else %}
+                            {% set f_tv_genre_id = 0 %}
+                        {% endif %}
+
+                        {% set list_f = list %}
+                        {% for item in app.allGenres %}
+                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item.id ~ '"><span>' ~ item.title ~ '</span></a></li>') | trans %}
+                            {% if f_tv_genre_id == item.id %}                       
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>{{item.title}}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% autoescape false %}
+                            {% if f_tv_genre_id == 0%}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Все</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="dropdown-menu pull-right">
+                                {{list_f}}
+                            </ul>
+                        {% endautoescape %}
+                    </div>
+                {% endif %}
+                <div class="col-xs-3 col-sm-2 no-padding">
+                    <div class="col-xs-3 col-sm-5 filter no-padding" data-tvfilter="archive_id">
+                        <span class="col-xs-4 col-sm-5 no-padding">Архив:</span>
+                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'archive_id') is defined %}
+                            {% set f_archive_id = app['filters']['archive_id'] %}
+                        {% else %}
+                            {% set f_archive_id = 0 %}
+                        {% endif %}
+
+                        {% set list_f = list %}
+                        {% for item in app.allArchive %}
+                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
+                            {% if f_archive_id == item['id'] %}                       
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>{{item['title']}}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% autoescape false %}
+                            {% if f_archive_id == 0%}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Все</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="dropdown-menu pull-right">
+                                {{list_f}}
+                            </ul>
+                        {% endautoescape %}
+                    </div>
+                    <div class="col-xs-3 col-sm-7 filter no-padding" data-tvfilter="status_id">
+                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
+                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'status_id') is defined %}
+                            {% set f_status_id = app['filters']['status_id'] %}
+                        {% else %}
+                            {% set f_status_id = 0 %}
+                        {% endif %}
+                        {% set list_f = list %}                       
+                        {% for item in app.allStatus %}
+                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
+                            {% if f_status_id == item['id'] %}                       
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>{{item['title']}}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% autoescape false %}
+                            {% if f_status_id == 0%}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Все</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="dropdown-menu pull-right">
+                                {{list_f}}
+                            </ul>
+                        {% endautoescape %}
+                    </div>
+                </div>
+                {#<div class="col-sm-3 no-padding">
+                    <div class="input-group col-sm-9 pull-left">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" placeholder="Введите имя либо номер канала..." class="form-control" data-original-title="" title="">
+                    </div>
+                    <button type="button" class="btn btn-default">Поиск</button>
+                </div>#}
+                <a href="{{app.request.baseUrl}}/tv-channels/add-channel" class="btn btn-success pull-right">Добавить</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                {% if app['allChannels'] %}
+                    <div class="box">
+                        <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                <span>Атрибуты</span>
+                                <i class="fa fa-chevron-down"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="all" checked="checked"> Все
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="logo" checked="checked"> Лого
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="number" checked="checked"> Номер
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="name" checked="checked"> Название
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="genres_name" checked="checked"> Жанр
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="enable_tv_archive" checked="checked"> ТВ-архив
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="cmd" checked="checked"> URL
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+
+                                </li>
+
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="status" checked="checked"> Статус
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" value="operations" checked="checked"> Действия
+                                            <i class="fa fa-square-o"></i>
+                                        </label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="box-content">
+                            <div class="box-content no-padding">
+                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                    <thead>
+                                        <tr>
+                                            <th data-filter="logo">Лого</th>
+                                            <th data-filter="number">Номер</th>
+                                            <th data-filter="name">Название</th>
+                                            <th data-filter="genres_name">Жанр</th>
+                                            <th data-filter="enable_tv_archive">ТВ-архив</th>
+                                            <th data-filter="cmd">URL</th>
+                                            <th data-filter="status">Статус</th>
+                                            <th data-filter="operations">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allChannels %}
+                                            <tr>
+                                                <td><img class="img-rounded channel-logo" src="{% if item.logo %}{{item.logo}}?{{ random(100000) }}{% endif %}" alt=""></td>
+                                                <td><a href="#">{{item.number}}</a></td>
+                                                <td><a href="#">{{item.name}}</a></td>
+                                                <td>{{item.genres_name}}</td>
+                                                <td>{% if item.enable_tv_archive %}Да{% else %}Нет{% endif %}</td>
+                                                <td>{{item.cmd}}</td>
+                                                <td>{% if item.status %}Включен{% else %}Отключен{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id={{item.id}}">
+                                                                    <span>Изменить</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{app.request.baseUrl}}/tv-channels/move-channel">
+                                                                    <span>Переместить</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{app.request.baseUrl}}/tv-channels/remove-channel?id={{item.id}}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{app.request.baseUrl}}/tv-channels/{% if item.status %}disable{% else %}enable{% endif %}-channel?id={{item.id}}">
+                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <span>Добавить EPG</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').dataTable({
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo":     true,
+                "aoColumnDefs": [ 
+                    { "targets": [ 0, -1 ], "orderable": false},
+                    { "searchable": false, "targets": [ 0, 3, 4, 5, 6, 7] }
+                ]
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'GET',
+                        success: function (data) {
+                            if (data.success) {
+                                if (data.action == 'remove') {
+                                    _this.closest('tr').remove();
+                                } else {
+                                    _this.closest('td').prev('td').text(data.status);
+                                    _this.text(data.action);
+                                    _this.attr('href', _this.attr('href').replace(data.urlactfrom, data.urlactto))
+                                }
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function () {
+                            alert('Some network error');
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+    </script>
+{% endblock %}

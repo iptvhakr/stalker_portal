@@ -1,0 +1,201 @@
+{
+    "1": {
+        "name": "Администратор",
+        "alias": "auth-user",
+        "icon": "",
+        "icon2": "fa fa-cog pull-right",
+        "action": {
+            "1": {
+                "name": "Профиль",
+                "alias": "auth-user-profile",
+                "icon": "fa fa-user"
+            },
+            "2": {
+                "name": "Сообщения",
+                "alias": "auth-user-messages",
+                "icon": "fa fa-envelope"
+            },
+            "3": {
+                "name": "Задания",
+                "alias": "auth-user-tasks",
+                "icon": "fa fa-tasks"
+            },
+            "4": {
+                "name": "Настройки",
+                "alias": "auth-user-settings",
+                "icon": "fa fa-cog"
+            },
+            "5": {
+                "name": "Выход",
+                "alias": "auth-user-logout",
+                "icon": "fa fa-power-off"
+            }
+        }
+    },
+    "2": {
+        "name": "IPTV каналы",
+        "alias": "tv-channels",
+        "icon": "fa fa-desktop",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список каналов",
+                "alias": "iptv-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Добавить канал",
+                "alias": "add-channel",
+                "icon": ""
+            },
+            "3": {
+                "name": "Переместить канал",
+                "alias": "move-channel",
+                "icon": ""
+            },
+            "4": {
+                "name": "EPG",
+                "alias": "epg",
+                "icon": ""
+            }
+        }
+    },
+    "3": {
+        "name": "Видео клуб",
+        "alias": "video-club",
+        "icon": "fa fa-video-camera",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список фильмов",
+                "alias": "video-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Добавить фильм",
+                "alias": "add-video",
+                "icon": ""
+            },
+            "3": {
+                "name": "Расписание",
+                "alias": "video-schedule",
+                "icon": ""
+            },
+            "4": {
+                "name": "Реклама",
+                "alias": "video-advertise",
+                "icon": ""
+            },
+            "5": {
+                "name": "Адреса модераторов",
+                "alias": "video-moderators-addresses",
+                "icon": ""
+            },
+            "6": {
+                "name": "Логи видео",
+                "alias": "video-logs",
+                "icon": ""
+            }
+        }
+    },
+    "4": {
+        "name": "Караоке",
+        "alias": "karaoke",
+        "icon": "fa fa-microphone",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "5": {
+        "name": "Радио",
+        "alias": "radio",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "6": {
+        "name": "Тарифы",
+        "alias": "tariffs",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "7": {
+        "name": "Пользователи",
+        "alias": "users",
+        "icon": "fa fa-columns",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список пользователей",
+                "alias": "users-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Группы приставок",
+                "alias": "users-consoles-groups",
+                "icon": ""
+            },
+            "3": {
+                "name": "Логи",
+                "alias": "users-consoles-logs",
+                "icon": ""
+            },
+            "4": {
+                "name": "Отчет",
+                "alias": "users-consoles-report",
+                "icon": ""
+            }
+        }
+    },
+    "8": {
+        "name": "События",
+        "alias": "events",
+        "icon": "fa fa-columns",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "9": {
+        "name": "Администраторы",
+        "alias": "admins",
+        "icon": "fa fa-users",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "10": {
+        "name": "Инфопортал",
+        "alias": "infoportal",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "11": {
+        "name": "Статистика",
+        "alias": "statistics",
+        "icon": "fa fa-microphone",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "12": {
+        "name": "Настройки",
+        "alias": "settings",
+        "icon": "fa fa-columns",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "13": {
+        "name": "Справка",
+        "alias": "information",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    }
+}

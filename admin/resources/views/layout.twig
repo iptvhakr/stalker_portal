@@ -1,2 +1,45 @@
-{% block content %}
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+            <meta charset="utf-8">
+            <title>{{title}}</title>
+            {% include "basic_templates/meta.twig" %}
+            {% include "basic_templates/css.twig" %}
+        {% endblock head %}
+    </head>
+    <body>
+        {% block container %}
+            {% block header %}
+                {% include "basic_templates/header.twig" %}
+            {% endblock header %}
+
+            {% block maincontainer %}
+                <!--Start Container-->
+                <div id="main" class="container-fluid">
+                    <div class="row">
+                        {% block sidebar %}
+                            {% include "basic_templates/sidebar.twig" %}
+                        {% endblock sidebar %}
+                        <!--Start Content-->
+                        <div id="content" class="col-xs-12 col-sm-10">
+                            <div class="preloader">
+                                <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader"/>
+                            </div>
+                            <div id="ajax-content">
+                                {% block content %}
+                                {% endblock content %}
+                            </div>
+                        </div>
+                        <!--End Content-->
+                    </div>
+                </div>
+                <!--End Container-->
+            {% endblock maincontainer %}
+
+            {% block footer %}
+                {% include "basic_templates/footer_js.twig" %}
+            {% endblock footer %}
+        {% endblock container %}
+    </body>
+</html>

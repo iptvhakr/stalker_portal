@@ -1,0 +1,444 @@
+{% extends 'layout.twig' %}
+{% set title = 'users' %}
+
+{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+
+{% block content %}
+    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Пользователи</h3>
+        </div>
+    </div>
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-8 col-sm-12">
+
+                <div class="col-xs-3 col-sm-7 no-padding">
+                    <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="status_id">
+                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
+                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'status_id') is defined %}
+                            {% set f_status_id = app['filters']['status_id'] %}
+                        {% else %}
+                            {% set f_status_id = 0 %}
+                        {% endif %}
+                        {% set list_f = list %}                       
+                        {% for item in app.allStatus %}
+                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
+                            {% if f_status_id == item['id'] %}                       
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>{{ item['title'] }}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% autoescape false %}
+                            {% if f_status_id == 0 %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Все</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="dropdown-menu pull-right">
+                                {{ list_f }}
+                            </ul>
+                        {% endautoescape %}
+                    </div>
+                    <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="state_id">
+                        <span class="col-xs-4 col-sm-4 no-padding">Состояние:</span>
+                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'state_id') is defined %}
+                            {% set f_state_id = app['filters']['state_id'] %}
+                        {% else %}
+                            {% set f_state_id = 0 %}
+                        {% endif %}
+                        {% set list_f = list %}                       
+                        {% for item in app.allState %}
+                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
+                            {% if f_state_id == item['id'] %}                       
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>{{ item['title'] }}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% autoescape false %}
+                            {% if f_state_id == 0 %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Все</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="dropdown-menu pull-right">
+                                {{ list_f }}
+                            </ul>
+                        {% endautoescape %}
+                    </div>
+                    <div class="col-xs-3 col-sm-6 filter no-padding" data-tvfilter="time_period">
+                        <div class="col-xs-3 col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
+                            <input class="col-xs-3 col-sm-12 filter" placeholder="С" type="text" id="datepicker_from" name="interval_from" value="{{ app['filters']['interval_from'] }}">
+                        </div>
+                        <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="time_period">
+                            <input class="col-xs-3 col-sm-12 filter" placeholder="По" type="text" id="datepicker_to" name="interval_to" value="{{ app['filters']['interval_to'] }}">
+                        </div>
+                        <span class="col-xs-3 col-sm-6 filter">
+                            поиск неактивных
+                        </span>
+                    </div>
+                </div>
+
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-users" class="btn btn-success pull-right">Добавить</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Атрибуты</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="all"> Все
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="mac" checked="checked"> MAC
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="ip" checked="checked"> IP
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="login" checked="checked"> Логин
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="ls" checked="checked"> Лицевой счет
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="fname" checked="checked"> ФИО
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="last_change_status" checked="checked"> Последнее изменение
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="state" checked="checked"> Состояние
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="status" checked="checked"> Статус
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="operations" checked="checked"> Действия
+                                                <i class="fa fa-square-o"></i>
+                                            </label>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <thead>
+                                    <tr>
+                                        <th data-filter="mac">MAC</th>
+                                        <th data-filter="ip">IP</th>
+                                        <th data-filter="login">Логин</th>
+                                        <th data-filter="ls">Лицевой счет</th>
+                                        <th data-filter="fname">ФИО</th>
+                                        <th data-filter="last_change_status">Последнее изменение</th>
+                                        <th data-filter="state">Состояние</th>
+                                        <th data-filter="status">Статус</th>
+                                        <th data-filter="operations">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if attribute(app, 'allUsers') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allUsers %}
+                                            <tr data-userid="{{ item.id }}">
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}" >{{ item.mac }}</a></td>
+                                                <td>{{ item.ip }}</td>
+                                                <td>{{ item.login }}</td>
+                                                <td>{{ item.ls }}</td>
+                                                <td>{{ item.fname }}</td>
+                                                <td>{{ item.last_change_status }}</td>
+                                                <td>{% if item.state %}<span class="txt-success">Online</span>{% else %}<span class="txt-danger">Offline</span>{% endif %}</td>
+                                                <td class="data-filter-status">{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}">
+                                                                    <span>Подробнее</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-messge" data-userid="{{ item.id }}">
+                                                                    <span>Отправить сообщение</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user" data-userid="{{ item.id }}" data-userstatus="{{ item.status }}">
+                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user" data-userid="{{ item.id }}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- End: list_row -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var status = json.data[i].status;
+                        var state = json.data[i].state;
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id=" + id + "'>\n\
+                                                                    <span>Подробнее</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-messge' data-userid='" + id + "'>\n\
+                                                                    <span>Отправить сообщение</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user' data-userid='" + id + "' data-userstatus='" + status + "'>\n\
+                                                                    <span>" + (status != 0 ? "Отключить" : "Включить") + "</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user' data-userid='" + id + "'>\n\
+                                                                    <span>Удалить</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                        json.data[i].state = state != 0 ? "<span class='txt-success'>Online</span>" : "<span class='txt-danger'>Offline</span>";
+                        json.data[i].status = status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>";
+                        
+                        var mac = json.data[i].mac;
+                        
+                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-list-json",
+                    "data": function (d) {
+                        var RegExp = /video_id=(\d+)/;
+                        if (video_id = RegExp.exec(window.location.href)) {
+                            d.video_id = video_id[1];
+                        }
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+
+                        $('input[id^="datepicker_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
+                        });
+                    }
+                },
+                "deferLoading":{{ app.totalRecords }},
+                        "language": {
+                            "url": "./plugins/datatables/lang/ru_RU.json"
+                        },
+                "columns": [
+                    {"data": "mac"},
+                    {"data": "ip"},
+                    {"data": "login"},
+                    {"data": "ls"},
+                    {"data": "fname"},
+                    {"data": "last_change_status"},
+                    {"data": "state"},
+                    {"data": "status"},
+                    {"data": "operations"}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    {"searchable": false, "targets": [3, 4, 5, 6, 7, 8]},
+                    {"sortable": false, "targets": [-1]},
+                    {className: "data-filter-status", "targets": [-2 ]}
+                ]
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $("#datepicker_from").datepicker({
+                    numberOfMonths: 1,
+                    language: 'ru',
+                    dateFormat: 'dd/mm/yy',
+                    onClose: function (selectedDate) {
+                        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
+                        $('#datatable-1').DataTable().ajax.reload();
+                    }
+                });
+                $("#datepicker_to").datepicker({
+                    numberOfMonths: 1,
+                    language: 'ru',
+                    dateFormat: 'dd/mm/yy',
+                    onClose: function (selectedDate) {
+                        $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
+                        $('#datatable-1').DataTable().ajax.reload();
+                    }
+                });
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    if (_this.attr('href').search("enable") != -1 && !_this.data('video_on_date')) {
+                        setEnableDatePicker(_this);
+                        return false;
+                    }
+
+                    if (_this.attr('href').search("create-tasks") != -1 && !_this.data('sendData')) {
+                        showTaskForm(_this);
+                        return false;
+                    }
+
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'POST',
+                        data: $(this).data(),
+                        success: function (data) {
+                            if (data.success) {
+                                for (var key in data) {
+                                    _this.data(key, data[key]);
+                                }
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof (data.responseJSON) == 'object') {
+                                errAction += data.responseJSON.action + 'Error';
+                                for (var key in data.responseJSON) {
+                                    _this.data(key, data.responseJSON[key]);
+                                }
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction]($(_this));
+                            } else {
+                                alert('Some network error');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var toggleUserStatus = function (obj) {
+            var a_obj = $(obj);
+            a_obj.text(a_obj.data('title'));
+            a_obj.closest('tr').find('td.data-filter-status').html(a_obj.data('status'));
+            a_obj.closest('div.open').removeClass('open');
+        }
+
+        var removeUser = function (obj) {
+            var cRow = $(obj).closest('tr');
+            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
+        }
+    </script>
+{% endblock %}

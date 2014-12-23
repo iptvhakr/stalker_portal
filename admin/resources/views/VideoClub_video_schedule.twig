@@ -1,0 +1,225 @@
+{% extends 'layout.twig' %}
+{% set title = 'video-club' %}
+
+{% block content %}
+    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Рассписание</h3>
+        </div>
+    </div>
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            {% if app['allTasks'] %}
+                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                    <thead>
+                                        <tr>
+                                            <th data-filter="task_added">Дата</th>
+                                            <th data-filter="name">Название</th>
+                                            <th data-filter="o_name">Оригинальное название</th>
+                                            <th data-filter="time">Длительность, мин</th>
+                                            <th data-filter="tasks">Задания</th>
+                                            <th data-filter="year">Год</th>
+                                            <th data-filter="operations">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allTasks %}
+                                            <tr data-videoid="{{ item.video_id }}">
+                                                <td data-filter="task_added">{{ item.task_added|date('Y-m-d') }}</td>
+                                                <td data-filter="name"><a href="video-club/edit-video?id={{ item.video_id }}" data-fieldname="name">{{ item.name }}</a></td>
+                                                <td data-filter="o_name">{{ item.o_name }}</td>
+                                                <td data-filter="time">{{ item.time }}</td>
+                                                <td data-filter="tasks">
+                                                    <a href="?task={{ item['id'] }}">№{{ item['id'] }} (запланированно на {{ item['date_on']|date('d-m-Y') }})</a>                                                        
+                                                </td>
+                                                <td data-filter="year">{{ item.year }}</td>
+                                                <td data-filter="operations">
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="{{ item.video_id }}" data-taskid="{{ item.task_id }}" data-video_on_date="{{ date()|date("y-m-d") }}" data-curr_on_date="{{ item['date_on']|date('d-m-Y') }}">
+                                                                    <span>Редактировать</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="{{ item.video_id }}" data-video_on_date="{{ date()|date("y-m-d") }}">
+                                                                    <span>Опубликовать</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="{{ item.task_id }}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <h3>Ничего не запланированно</h3>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    if (_this.data('curr_on_date') && !_this.data('waiting')) {
+                        setEnableDatePicker(_this);
+                        return false;
+                    }
+
+                    if (!_this.data('atcion')) {
+                        $.ajax({
+                            url: $(this).attr('href'),
+                            type: 'POST',
+                            data: $(this).data(),
+                            success: function (data) {
+                                if (data.success) {
+                                    for (var key in data) {
+                                        _this.data(key, data[key]);
+                                    }
+                                } else {
+                                    alert('Some server error');
+                                }
+                            },
+                            error: function (data) {
+                                var errAction = '';
+                                if (typeof (data.responseJSON) == 'object') {
+                                    errAction += data.responseJSON.action + 'Error';
+                                    for (var key in data.responseJSON) {
+                                        _this.data(key, data.responseJSON[key]);
+                                    }
+                                }
+                                if ($.isFunction(window[errAction])) {
+                                    window[errAction]($(_this));
+                                } else {
+                                    alert('Some network error');
+                                }
+                            },
+                            dataType: "json",
+                            async: false
+                        });
+                    }
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+                
+                $(document).on('click', "#apply_enable_date", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("a[data-videoid='" + $("#modalbox input[type='hidden']").val() + "'][href*='enable']")
+                            .data('video_on_date', $("#modalbox input[type='text']").val()).data('waiting', true)
+                            .click();
+                    $("div[id*='datepicker']").hide().remove();
+                    closeModalBox();
+                    $("div[id*='datepicker']").remove();
+                    return false;
+                });
+                $(document).on('click', "#reset_enable_date, #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("div[id*='datepicker']").hide().remove();
+                    closeModalBox();
+                    return false;
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var removeTasks = function (obj) {
+            $(obj).closest('tr').remove();
+        }
+
+        var videoenable = function (obj) {
+            if ($(obj).data('waiting')) {
+                $(obj).closest('tr').find('td[data-filter="tasks"]').children('a').html($(obj).data('status'));
+                $(obj).removeData('waiting');
+                $(obj).data('curr_on_date', $(obj).data('date_on'));
+            } else {
+                $(obj).closest('tr').remove();
+            }
+        }
+
+        function setEnableDatePicker(obj) {
+            $('#modalbox').find('.modal-header-name span').text('Расписание включения');
+            $('#modalbox').find('.devoops-modal-inner')
+                    .append("<input type='hidden' name='link_id' value='" + obj.data('videoid') + "'>")
+                    .append("<input type='text' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='video_on_date' value='"+ obj.data('curr_on_date') +"'>");
+            $('#modalbox').find('.devoops-modal-bottom')
+                    .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">Отмена</button>')
+                    .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">Включить</button>');
+            $('#modalbox').find('.devoops-modal').width(350);
+            $(".datepicker").datepicker({
+                language: 'ru',
+                dateFormat: 'dd-mm-yy',
+                firstDay: 1,
+                minDate: new Date()
+            }
+        {#                    {
+                    dayNamesMin : [
+                        '<?= htmlspecialchars(_('Sun'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('Mon'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('Tue'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('Wed'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('Thu'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('Fri'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('Sat'), ENT_QUOTES)?>'
+                    ],
+                    monthNames  : [
+                        '<?= htmlspecialchars(_('January'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('February'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('March'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('April'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('May'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('June'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('July'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('August'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('September'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('October'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('November'), ENT_QUOTES)?>',
+                        '<?= htmlspecialchars(_('December'), ENT_QUOTES)?>'
+                    ]
+                }#}
+                    );
+            $("div[id*='datepicker']").addClass('dp_white');
+            $(obj).closest('div.open').removeClass('open');
+            $('#modalbox').show();
+        }
+        
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+    </script>
+
+{% endblock %}

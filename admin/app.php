@@ -1,9 +1,10 @@
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 
-define('PROJECT_PATH', realpath(dirname(__FILE__).'/../'));
+define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../server/'));
 $app = new Silex\Application();
 
 $app['debug'] = true;
@@ -19,18 +20,18 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.options' => array(
-        'cache'            => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
+        'cache' => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
         'strict_variables' => true
     ),
-    'twig.path' => __DIR__.'/resources/views',
+    'twig.path' => __DIR__ . '/resources/views',
 ));
 
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-    $translator->addLoader('yaml', new YamlFileLoader());
+            $translator->addLoader('yaml', new YamlFileLoader());
 
-    //$translator->addResource('yaml', __DIR__.'/resources/locales/ru.yml', 'ru');
+            //$translator->addResource('yaml', __DIR__.'/resources/locales/ru.yml', 'ru');
 
-    return $translator;
-}));
+            return $translator;
+        }));
 
 return require_once 'controllers.php';

@@ -1,0 +1,334 @@
+{% extends 'layout.twig' %}
+{% set title = 'radio' %}
+
+{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+
+{% block content %}
+    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Радио</h3>
+        </div>
+    </div>
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-8 col-sm-12">
+
+                <div class="col-xs-3 col-sm-7 no-padding">
+                    <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="status_id">
+                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
+                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'status_id') is defined %}
+                            {% set f_status_id = app['filters']['status_id'] %}
+                        {% else %}
+                            {% set f_status_id = 0 %}
+                        {% endif %}
+                        {% set list_f = list %}                       
+                        {% for item in app.allStatus %}
+                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
+                            {% if f_status_id == item['id'] %}                       
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>{{ item['title'] }}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% autoescape false %}
+                            {% if f_status_id == 0 %}
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                    <span>Все</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+                            {% endif %}
+                            <ul class="dropdown-menu pull-right">
+                                {{ list_f }}
+                            </ul>
+                        {% endautoescape %}
+                    </div>
+                </div>
+
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-radio" class="btn btn-success pull-right">Добавить</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                            <span>Атрибуты</span>
+                            <i class="fa fa-chevron-down"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="all"> Все
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="id" checked="checked"> ID
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="number" checked="checked"> Номер
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="name" checked="checked"> Имя
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="cmd" checked="checked"> URL
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="volume_correction" checked="checked"> Звук
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="status" checked="checked"> Состояние
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="operations" checked="checked"> Действия
+                                        <i class="fa fa-square-o"></i>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <thead>
+                                    <tr>
+                                        <th data-filter="id">ID</th>
+                                        <th data-filter="number">Номер</th>
+                                        <th data-filter="name">Имя</th>
+                                        <th data-filter="cmd">URL</th>
+                                        <th data-filter="volume_correction">Звук</th>
+                                        <th data-filter="status">Состояние</th>
+                                        <th data-filter="operations">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if attribute(app, 'allRadio') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allRadio %}
+                                            <tr data-radioid="{{ item.id }}">
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.number }}</td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id={{ item.id }}" >{{ item.name }}</a></td>
+                                                <td>{{ item.cmd }}</td>
+                                                <td>{{ item.volume_correction }}</td>
+                                                <td class="data-filter-status">{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id={{ item.id }}">
+                                                                    <span>Подробнее</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-radio" data-radioid="{{ item.id }}" data-radiostatus="{{ item.status }}">
+                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-radio" data-radioid="{{ item.id }}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- End: list_row -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var status = json.data[i].status;
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id=" + id + "'>\n\
+                                                                    <span>Подробнее</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-radio' data-radioid='" + id + "' data-radiostatus='" + status + "'>\n\
+                                                                    <span>" + (status != 0 ? "Отключить" : "Включить") + "</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-radio' data-radioid='" + id + "'>\n\
+                                                                    <span>Удалить</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                        json.data[i].status = status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>";
+
+                        var name = json.data[i].name;
+
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id=' + id + '" >' + name + '</a>';
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/radio-list-json",
+                    "data": function (d) {
+                        var RegExp = /video_id=(\d+)/;
+                        if (video_id = RegExp.exec(window.location.href)) {
+                            d.video_id = video_id[1];
+                        }
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                        "language": {
+                            "url": "./plugins/datatables/lang/ru_RU.json"
+                        },
+                "columns": [
+                    {"data": "id"},
+                    {"data": "number"},
+                    {"data": "name"},
+                    {"data": "cmd"},
+                    {"data": "volume_correction"},
+                    {"data": "status"},
+                    {"data": "operations"}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    {"searchable": false, "targets": [-1, -2]},
+                    {"sortable": false, "targets": [-1]},
+                    {className: "data-filter-status", "targets": [-2]}
+                ]
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'POST',
+                        data: $(this).data(),
+                        success: function (data) {
+                            if (data.success) {
+                                for (var key in data) {
+                                    _this.data(key, data[key]);
+                                }
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof (data.responseJSON) == 'object') {
+                                errAction += data.responseJSON.action + 'Error';
+                                for (var key in data.responseJSON) {
+                                    _this.data(key, data.responseJSON[key]);
+                                }
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction]($(_this));
+                            } else {
+                                alert('Some network error');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var toggleRadioStatus = function (obj) {
+            var a_obj = $(obj);
+            a_obj.text(a_obj.data('title'));
+            a_obj.closest('tr').find('td.data-filter-status').html(a_obj.data('status'));
+            a_obj.closest('div.open').removeClass('open');
+        }
+
+        var removeRadio = function (obj) {
+            var cRow = $(obj).closest('tr');
+            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
+        }
+    </script>
+{% endblock %}

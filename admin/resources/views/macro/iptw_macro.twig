@@ -1,0 +1,39 @@
+{# empty Twig template #}
+{% extends 'layout.twig' %}
+
+    {% macro input_checkbox(value, name, key) %}
+        {% if attribute(value, key) is defined %}
+            <div class="toggle-switch toggle-switch-success">
+                <label>
+                    {{ form_widget(value[key]) }}
+                    <div class="toggle-switch-inner"></div>
+                    <div class="toggle-switch-switch"></div>
+                    <div class="bg-danger">
+                        {{ form_errors(value[key]) }}
+                    </div>
+                </label>
+            </div>
+        {% else %}
+            <div class="toggle-switch toggle-switch-success">
+                <label>
+                    <input type="checkbox" name="form[{{ name }}][{{ key }}]" id="form_{{ name }}_{{ key }}">
+                    <div class="toggle-switch-inner"></div>
+                    <div class="toggle-switch-switch"></div>
+                </label>
+            </div>    
+        {% endif %}
+    {% endmacro %}
+
+    {% macro input_hidden(value, name, key, label) %}
+        {% if attribute(value, key) is defined %}
+            {% if label %}
+                <label data-field="form[{{ name }}]">{{ value[key].vars.value }}</label>
+            {% endif %}
+            {{ form_widget(value[key]) }}
+            <div class="bg-danger">
+                {{ form_errors(value[key]) }}
+            </div>
+        {% else %}
+            <input type="hidden" id="form_{{ name }}_{{ key }}" name="form[{{ name }}][{{ key }}]">
+        {% endif %}
+    {% endmacro %}

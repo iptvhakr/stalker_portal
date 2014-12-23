@@ -23,9 +23,12 @@
     },
     "autoload": {
         "psr-0": {
-            "": "./src"
+            "": "./src",
+            "Controller": "./src/Controller",
+            "Model": "./src/Model"
         },
         "classmap": [
+            "../server/lib/",
             "../server/lib/mysql.class.php",
             "../server/lib/mysqlresult.class.php",
             "../server/lib/config.class.php",
