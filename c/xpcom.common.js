@@ -7,7 +7,7 @@ function common_xpcom(){
     this.user = {};
     this.mac = '';
     this.ip  = '';
-    this.hd  = 0;
+    this.hd  = 1;
     this.type  = '';
     this.version    = '';
     this.ajax_loader  = '';
@@ -511,12 +511,6 @@ function common_xpcom(){
             var mtdparts = stb.RDir('getenv mtdparts').clearnl();
 
             this.num_banks = mtdparts.indexOf('RootFs2') > 0 ? 2 : 1;
-
-            if (this.type == 'MAG200' || this.type == 'MAG250' || this.type.indexOf('AuraHD') != -1){
-                this.hd = 1;
-            }else{
-                this.hd = 0;
-            }
 
             if (this.graphic_mode >= 720){
                 _debug('gSTB.SetObjectCacheCapacities');
@@ -1063,7 +1057,7 @@ function common_xpcom(){
 
                 _debug('this.user[update_url]', this.user['update_url']);
 
-                if (['MAG200', 'MAG245', 'MAG250', 'MAG254', 'MAG255', 'MAG270', 'MAG275'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
+                if (['MAG200', 'MAG245', 'MAG250', 'MAG254', 'MAG255', 'MAG270', 'MAG275', 'WR320'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
                     this.check_image_version();
                 }
 

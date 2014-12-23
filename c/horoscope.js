@@ -8,7 +8,7 @@
         
         this.layer_name = 'horoscope';
         
-        this.dom_obj = this.create_block('layer_bg');
+        this.dom_obj = this.create_block();
         document.body.appendChild(this.dom_obj);
         
         this.superclass = BaseLayer.prototype;
@@ -25,6 +25,8 @@
         this.info_on = false;
         
         this.init = function(){
+
+            this.superclass.init.call(this);
             
             var container = create_block_element('', this.dom_obj);
             

@@ -8,7 +8,7 @@
         
         this.layer_name = 'anecdote';
         
-        this.dom_obj = this.create_block('layer_bg');
+        this.dom_obj = this.create_block();
         document.body.appendChild(this.dom_obj);
         
         this.superclass = BaseLayer.prototype;
@@ -23,6 +23,8 @@
         this.quick_page_switch = {"on" : false, "hide_to" : 3000};
         
         this.init = function(){
+
+            this.superclass.init.call(this);
             
             var container = create_block_element('', this.dom_obj);
             

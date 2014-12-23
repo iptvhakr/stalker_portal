@@ -653,11 +653,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['allowed_stb_types']      = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD')));
+        },explode(',', Config::getSafe('allowed_stb_types', 'MAG200,MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320')));
 
         $profile['allowed_stb_types_for_local_recording'] = array_map(function($item){
             return strtolower(trim($item));
-        },explode(',', Config::getSafe('allowed_stb_types_for_local_recording', 'MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD')));
+        },explode(',', Config::getSafe('allowed_stb_types_for_local_recording', 'MAG245,MAG250,MAG254,MAG255,MAG260,MAG270,MAG275,AuraHD,WR320')));
 
         $auto_update_setting = ImageAutoUpdate::getSettingByStbType($this->params['stb_type']);
 
@@ -735,6 +735,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $profile['default_led_level'] = Config::getSafe('default_led_level', 10);
         $profile['standby_led_level'] = Config::getSafe('standby_led_level', 90);
 
+        if (Config::exist('portal_logo_url')){
+            $profile['portal_logo_url'] = Config::get('portal_logo_url');
+        }
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);
@@ -767,7 +771,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             'pri_subtitle_lang'     => $this->params['pri_subtitle_lang'],
             'sec_subtitle_lang'     => $this->params['sec_subtitle_lang'],
             'show_after_loading'    => empty($this->params['show_after_loading']) ? (Config::getSafe('display_menu_after_loading', false) ? 'main_menu' : 'last_channel') : $this->params['show_after_loading'],
-            'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok']
+            'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok'],
+            'hide_adv_mc_settings'  => Config::getSafe('hide_adv_mc_settings', false)
         );
     }
 
@@ -775,8 +780,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         if (strpos($stb_model, 'AuraHD') !== false){
             $stb_type = 'aurahd';
-        }else{
+        }elseif (strpos($stb_model, 'MAG') === 0){
             $stb_type = substr($stb_model, 3);
+        }else{
+            $stb_type = strtolower($stb_model);
         }
 
         return Config::getSafe('update_url', '') != '' ? Config::get('update_url').$stb_type.'/imageupdate' : '';
@@ -1107,7 +1114,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
                     break;
                 case 2: // Video Club
-                    
+
+                    $param = preg_replace('/\s+position:\d+/', '', $param);
+
                     if (strpos($param, '://') !== false){
 
                         $video = $this->db->from('video')->where(array('rtsp_url' => $param, 'protocol' => 'custom'))->get()->first();

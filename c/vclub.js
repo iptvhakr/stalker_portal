@@ -633,6 +633,8 @@
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
+
+            this.load_data.bind(key.REFRESH, this);
         };
 
         this.check_for_storage_selection = function(play_url){

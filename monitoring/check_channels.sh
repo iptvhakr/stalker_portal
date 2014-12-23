@@ -9,11 +9,11 @@ function get_channels {
 }
 
 function set_ok {
-    curl --request PUT $API_URL$1 --data 'status=1' >/dev/null 2>&1
+    curl --globoff --request PUT $API_URL$1 --data 'status=1' >/dev/null 2>&1
 }
 
 function set_fail {
-    curl --request PUT $API_URL$1 --data 'status=0' >/dev/null 2>&1
+    curl --globoff --request PUT $API_URL$1 --data 'status=0' >/dev/null 2>&1
 }
 
 
@@ -30,7 +30,7 @@ do
     echo "Start checking $type $url"
 
     if [ $type == "flussonic_health" ] ; then
-        result=$(curl -Is ${url} | head -n1 | grep 200 | wc -l)
+        result=$(curl --globoff -Is ${url} | head -n1 | grep 200 | wc -l)
     else
         result=$(./check_channel.sh $url $link_id)
     fi

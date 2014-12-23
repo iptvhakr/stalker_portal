@@ -218,6 +218,8 @@ HTMLElement.prototype.setClass = function(class_name){
     }catch(e){
         _debug(e);
     }
+
+    return this;
 };
 
 HTMLElement.prototype.delClass = function(){
@@ -226,6 +228,8 @@ HTMLElement.prototype.delClass = function(){
     }catch(e){
         _debug(e);
     }
+
+    return this;
 };
 
 HTMLElement.prototype.haveClass = function(class_name){
@@ -250,6 +254,8 @@ HTMLElement.prototype.addClass = function(class_name){
     }catch(e){
         _debug(e);
     }
+
+    return this;
 };
 
 HTMLElement.prototype.removeClass = function(class_name){
@@ -260,6 +266,8 @@ HTMLElement.prototype.removeClass = function(class_name){
     }catch(e){
         _debug(e);
     }
+
+    return this;
 };
 
 HTMLElement.prototype.replaceClass = function(from, to){
@@ -270,6 +278,8 @@ HTMLElement.prototype.replaceClass = function(from, to){
     }catch(e){
         _debug(e);
     }
+
+    return this;
 };
 
 String.prototype.clearnl = function(){

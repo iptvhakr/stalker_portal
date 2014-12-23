@@ -694,9 +694,9 @@
                 return;
             }
 
-            var self = this;
-
-            servers = servers.result.map(function(server){
+            servers = servers.result.filter(function(server){
+                return server;
+            }).map(function(server){
                 return {"name" : server, "dir" : 1, "dir_name" : "SMB_SERVER"/*, "_id" : self.get_id({"name" : server, "dir_name" : "SMB_SERVER"})*/}
             });
 
@@ -1774,7 +1774,7 @@
     
     /* END MEDIA BROWSER */
     
-    main_menu.add(word['mbrowser_title'], [], 'mm_ico_usb.png', function(){
+    main_menu.add(word['mbrowser_title'], [], 'mm_ico_mb.png', function(){
             main_menu.hide();
             module.media_browser.show();
     },

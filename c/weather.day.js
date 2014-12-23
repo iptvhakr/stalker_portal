@@ -9,7 +9,7 @@
 
         this.layer_name = 'weather_forecast';
 
-        this.dom_obj = this.create_block('layer_bg');
+        this.dom_obj = this.create_block();
         document.body.appendChild(this.dom_obj);
 
         this.superclass = BaseLayer.prototype;
@@ -20,6 +20,8 @@
 
         this.init = function(){
             _debug('weather_forecast.init');
+
+            this.superclass.init.call(this);
 
             var container = create_block_element('weather_forecast', this.dom_obj);
 
