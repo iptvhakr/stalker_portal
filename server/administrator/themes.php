@@ -20,12 +20,6 @@ if (!empty($_POST['template'])){
 
     Mysql::getInstance()->update('settings', array('default_template' => $_POST['template']));
 
-    if ($_POST['template'] != $default_template){
-        $event = new SysEvent();
-        $event->setUserListByMac('online');
-        $event->sendReboot();
-    }
-
     header("Location: themes.php");
     exit;
 }
