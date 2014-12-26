@@ -1966,6 +1966,10 @@ player.prototype.play = function(item){
         cmd.replace(/\s+/g, ' ');
     }
 
+    if (stb.usbdisk.storage_info.length > 0){
+        cmd = cmd.replace(/\/media\/USB-\*/, stb.usbdisk.storage_info[0]['mountPath']);
+    }
+
     _debug('cmd', cmd);
 
     this.active_time_shift = item.hasOwnProperty('live_date');
