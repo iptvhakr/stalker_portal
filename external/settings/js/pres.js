@@ -29,13 +29,26 @@ parent.nextMenu("glavnaya.html");
 
 function perehod_set(set)
 {
-iid+=set;if(iid>mid){iid=mid;}else if(iid<1){iid=1;}
-document.getElementById("i"+iid).focus();      
+    iid += set;
+    if (iid > mid) {
+        iid = mid;
+    } else if (iid < 1) {
+        iid = 1;
+    }
+
+    if (!document.getElementById("i" + iid) && iid>1 && iid<mid){
+        perehod_set(set);
+    }
+
+    document.getElementById("i" + iid).focus();
 }
 
 function init(){
  for(i=0;i<mid-2;i++)
         {
+        if (!document.getElementById("t"+(i+1))){
+            continue;
+        }
         document.getElementById("t"+(i+1)).innerHTML=menuT[i][1];
         switch(menuT[i][0])
         {   

@@ -393,10 +393,13 @@
         
         this.superclass = BaseLayer.prototype;
         
-        this.dom_obj = this.create_block('layer_bg');
+        this.dom_obj = this.create_block();
         document.body.appendChild(this.dom_obj);
         
         this.init = function(){
+
+            this.superclass.init.call(this);
+
             this.container = create_block_element('mastermind_rules_txt', this.dom_obj);
             var text = word['mastermind_rules_text'];
             text += '<br><br><table width="100%" cellpadding="3" cellspacing="3"><tr><td width="100" style="color:#ffffff;">&larr; &rarr;</td><td style="color:#3f81cc;">' + word['mastermind_move_cursor'] + '</td></tr>';

@@ -21,6 +21,14 @@
     background-image: url("i_480/bg2.png");
 }
 
+.main_logo{
+    position: absolute;
+    left: 40px;
+    top: 15px;
+    width: 150px;
+    height: 40px;
+}
+
 .hd_block{
     width: 24px;
     height: 21px;

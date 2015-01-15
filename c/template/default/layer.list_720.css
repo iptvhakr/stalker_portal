@@ -21,6 +21,14 @@
     background: url("i_720/bg2.png") no-repeat;
 }
 
+.main_logo{
+    position: absolute;
+    left: 60px;
+    top: 35px;
+    width: 150px;
+    height: 40px;
+}
+
 .hd_block{
     width: 34px;
     height: 29px;

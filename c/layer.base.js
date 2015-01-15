@@ -56,6 +56,12 @@ BaseLayer.prototype.init = function(){
     this.dom_obj.addClass(this.class_name);
     
     this.dom_obj.id = this.layer_name;
+
+    this.logo_dom_obj = create_block_element('main_logo', this.dom_obj);
+
+    if (stb.user && stb.user.portal_logo_url){
+        this.logo_dom_obj.style.background = 'url('+stb.user.portal_logo_url+') no-repeat';
+    }
 };
 
 BaseLayer.prototype.create_block = function(class_name, is_active){
@@ -241,9 +247,9 @@ BaseLayer.prototype.init_left_ear = function(txt){
     var text_element = create_block_element();
     text_element.innerHTML = txt;
     
-    this.left_ear.appendChild(left_arrow);
+    this.left_ear.appendChild(left_arrow.addClass('top_arrow'));
     this.left_ear.appendChild(text_element);
-    this.left_ear.appendChild(left_arrow.cloneNode(true));
+    this.left_ear.appendChild(left_arrow.cloneNode(true).replaceClass('top_arrow', 'bottom_arrow'));
     
     ears_left_container.appendChild(this.left_ear);
     
@@ -259,10 +265,9 @@ BaseLayer.prototype.init_right_ear = function(txt){
     var right_arrow = create_block_element('ears_arrow_right');
     var text_element = create_block_element();
     text_element.innerHTML = txt;
-    
-    this.right_ear.appendChild(right_arrow);
+    this.right_ear.appendChild(right_arrow.addClass('top_arrow'));
     this.right_ear.appendChild(text_element);
-    this.right_ear.appendChild(right_arrow.cloneNode(true));
+    this.right_ear.appendChild(right_arrow.cloneNode(true).replaceClass('top_arrow', 'bottom_arrow'));
     
     ears_right_container.appendChild(this.right_ear);
     
@@ -293,7 +298,7 @@ BaseLayer.prototype.update_header_path = function(map){
         }
         
         if (map[i].item != '*' && map[i].item != ''){
-            this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].item + ' /'});
+            this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].item + ' /', "item" : map[i].item});
         }
     }
     
