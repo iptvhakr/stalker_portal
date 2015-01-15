@@ -33,11 +33,11 @@ class UsersController extends \Controller\BaseStalkerController {
 
     // ------------------- action method ---------------------------------------
 
-    public function index(Application $app) {
+    public function index() {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
     public function users_list() {
@@ -201,7 +201,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
-            $response = $this->gererateAjaxResponse($response);
+            $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
             return $response;
@@ -235,7 +235,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['userstatus'] = (int) !$this->postData['userstatus'];
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -257,7 +257,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->db->deleteUserFavMedia($this->postData['userid']);
         $error = '';
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -277,7 +277,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $data['newpass'] = '0000';
         $this->db->updateUserById(array('parent_password' => '0000'), $this->postData['userid']);
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -294,7 +294,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'resetUserFavTv';
         $this->db->updateUserFavItv(array('fav_ch' => ''), $id = $this->postData['userid']);
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -318,7 +318,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $error = '';
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -343,7 +343,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['name'] = $this->postData['name'];
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -361,7 +361,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $data['action'] = 'removeConsoleGroup';
         $data['id'] = $this->postData['consolegroupid'];
         $this->db->deleteConsoleGroup(array('id' => $this->postData['consolegroupid']));
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -383,7 +383,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['chk_rezult'] = 'Имя свободно';
             $error = '';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -405,7 +405,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['chk_rezult'] = 'Имя свободно';
             $error = '';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -449,7 +449,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         if ($this->isAjax) {
-            $response = $this->gererateAjaxResponse($response);
+            $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
             return $response;
@@ -469,7 +469,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $data['action'] = 'removeConsoleItem';
         $data['stb_in_group_id'] = $this->postData['consoleid'];
         $this->db->deleteConsoleItem(array('id' => $this->postData['consoleid']));
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -510,7 +510,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 $error = "Пользователь с таким MAC-адресом не определен";
             }
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -539,7 +539,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['chk_rezult'] = 'Пользователя можно подключить к группе';
             $error = '';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -600,7 +600,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $error = '';
 
         if ($this->isAjax) {
-            $response = $this->gererateAjaxResponse($response);
+            $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
             return $response;
@@ -650,7 +650,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
-            $response = $this->gererateAjaxResponse($response);
+            $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
             return $response;
@@ -662,20 +662,23 @@ class UsersController extends \Controller\BaseStalkerController {
     private function getUsersFilters() {
         $return = array();
 
+        if (empty($this->data['filters'])){
+            $this->app['filters'] =  array('interval_from'=>'', 'interval_to'=>'');
+            return $return;
+        }
         $now_timestamp = time() - $this->watchdog;
         $now_time = date("Y-m-d H:i:s", $now_timestamp);
-
-        if (!empty((int) $this->data['filters']['status_id'])) {
+        if (array_key_exists('status_id', $this->data['filters']) && !empty((int) $this->data['filters']['status_id'])) {
             $return['status'] = $this->data['filters']['status_id'] - 1;
         }
-        if (!empty((int) $this->data['filters']['state_id'])) {
+        if (array_key_exists('state_id', $this->data['filters']) && !empty((int) $this->data['filters']['state_id'])) {
             $return['keep_alive' . ($this->data['filters']['state_id'] - 1 ? "<" : ">")] = "'$now_time'";
         }
-        if (!empty((int) $this->data['filters']['interval_from'])) {
+        if (array_key_exists('interval_from', $this->data['filters']) && !empty((int) $this->data['filters']['interval_from'])) {
             $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);
             $return['UNIX_TIMESTAMP(last_active)>='] = $date->getTimestamp();
         }
-        if (!empty((int) $this->data['filters']['interval_to'])) {
+        if (array_key_exists('interval_to', $this->data['filters']) && !empty((int) $this->data['filters']['interval_to'])) {
             $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_to']);
             $return['UNIX_TIMESTAMP(last_active)<='] = $date->getTimestamp();
         }

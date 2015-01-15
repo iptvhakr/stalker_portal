@@ -120,7 +120,7 @@ class RadioController extends \Controller\BaseStalkerController {
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
-            $response = $this->gererateAjaxResponse($response);
+            $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
             return $response;
@@ -147,7 +147,7 @@ class RadioController extends \Controller\BaseStalkerController {
             $data['radiostatus'] = (int) !$this->postData['radiostatus'];
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -166,7 +166,7 @@ class RadioController extends \Controller\BaseStalkerController {
         $this->db->deleteRadioById($this->postData['radioid']);
         $error = '';
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -189,7 +189,7 @@ class RadioController extends \Controller\BaseStalkerController {
             $data['chk_rezult'] = 'Имя свободно';
             $error = '';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -211,7 +211,7 @@ class RadioController extends \Controller\BaseStalkerController {
             $data['chk_rezult'] = 'Номер уникален';
             $error = '';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -281,11 +281,14 @@ class RadioController extends \Controller\BaseStalkerController {
     private function getRadioFilters() {
         $return = array();
 
-        if (!empty($this->data['filters']) && !empty((int) $this->data['filters']['status_id'])) {
-            $return['status'] = $this->data['filters']['status_id'] - 1;
+        if (!empty($this->data['filters'])){
+            if (array_key_exists('status_id', $this->data['filters']) && !empty((int) $this->data['filters']['status_id'])) {
+                $return['status'] = $this->data['filters']['status_id'] - 1;
+            }
+            $this->app['filters'] = $this->data['filters'];
+        } else {
+            $this->app['filters'] = array();
         }
-
-        $this->app['filters'] = !empty($this->data['filters']) ? $this->data['filters'] : array();
         return $return;
     }
 

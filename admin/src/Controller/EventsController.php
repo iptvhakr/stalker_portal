@@ -119,7 +119,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
-            $response = $this->gererateAjaxResponse($response);
+            $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
             return $response;
@@ -150,7 +150,7 @@ class EventsController extends \Controller\BaseStalkerController {
             $error = '';
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -184,7 +184,7 @@ class EventsController extends \Controller\BaseStalkerController {
             $error = '';
         }
         
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -203,7 +203,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $data['msg'] = 'Удалено ' . $this->db->deleteEventsByUID($this->postData['uid']) . ' событий';
         $error = '';
         
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -333,6 +333,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $event->sendCutOff();
         return TRUE;
     }
+    
     private function set_event_update_image(&$event, $user_list){
         $event->sendUpdateImage();
         return TRUE;

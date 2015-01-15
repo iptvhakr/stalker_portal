@@ -12,7 +12,7 @@ class LogoutController extends \Controller\BaseStalkerController {
         $this->app['baseHost'] = $this->baseHost;
     }
 
-    public function index(Application $app) {
+    public function index() {
         $this->app['request']->getSession()->remove('login');
         $this->app['request']->getSession()->save('pass');
         return $this->app->redirect($this->workURL);

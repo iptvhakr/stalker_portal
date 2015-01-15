@@ -15,6 +15,7 @@ class BaseStalkerController {
     protected $request;
     protected $baseDir;
     protected $baseHost;
+    protected $workHost;
     protected $workURL;
     protected $Uri;
     protected $method;
@@ -62,6 +63,8 @@ class BaseStalkerController {
         $this->app['controller_alias'] = $tmp[0];
         $this->app['action_alias'] = (count($tmp) == 2) ? $tmp[1] : '';
         $this->baseHost = $this->request->getSchemeAndHttpHost();
+        $this->workHost = $this->baseHost . \Config::getSafe('portal_url', '/stalker_portal/');
+        $this->app['workHost'] = $this->workHost;
         $this->Uri = $this->app['request']->getUri();
         $controller = (!empty($this->app['controller_alias']) ? "/" . $this->app['controller_alias'] : '');
         $action = (!empty($this->app['action_alias']) ? "/" . $this->app['action_alias'] : '');
@@ -114,7 +117,7 @@ class BaseStalkerController {
         return $return_array;
     }
 
-    public function gererateAjaxResponse($data = array(), $error = '') {
+    public function generateAjaxResponse($data = array(), $error = '') {
         $response = array();
 
         if (empty($error) && !empty($data)) {
@@ -132,7 +135,7 @@ class BaseStalkerController {
         if (empty($this->app['controller_alias']) || ($this->app['action_alias'] != 'register' && $this->app['action_alias'] != 'login')) {
             if (!$this->admin->isAuthorized()) {
                 if ($this->isAjax) {
-                    $response = $this->gererateAjaxResponse(array(), 'Need authorization');
+                    $response = $this->generateAjaxResponse(array(), 'Need authorization');
                     return new Response(json_encode($response), 401);
                 } else {
                     return $this->app->redirect($this->workURL . '/login', 302);
@@ -198,29 +201,32 @@ class BaseStalkerController {
         if (array_key_exists('start', $params)) {
             $query_param['limit']['offset'] = $params['start'];
         }
+        if (!empty($params['order'])){
+            foreach ($params['order'] as $val) {
+                $column = $params['columns'][(int) $val['column']];
 
-        foreach ($params['order'] as $val) {
-            $column = $params['columns'][(int) $val['column']];
+                $direct = $val['dir'];
+                $col_name = !empty($column['name']) ? $column['name'] : (!empty($column['data']) ? $column['data'] : FALSE);
 
-            $direct = $val['dir'];
-            $col_name = !empty($column['name']) ? $column['name'] : (!empty($column['data']) ? $column['data'] : FALSE);
-
-            if ($col_name === FALSE || in_array($col_name, $drop_columns)) {
-                continue;
-            }
-            if ($column['orderable']) {
-                $query_param['order'][$col_name] = $direct;
+                if ($col_name === FALSE || in_array($col_name, $drop_columns)) {
+                    continue;
+                }
+                if ($column['orderable']) {
+                    $query_param['order'][$col_name] = $direct;
+                }
             }
         }
 
-        foreach ($params['columns'] as $key => $column) {
-            $col_name = !empty($column['name']) ? $column['name'] : (!empty($column['data']) ? $column['data'] : FALSE);
-            if ($col_name === FALSE || in_array($col_name, $drop_columns)) {
-                continue;
-            }
-            $query_param['select'][] = $col_name;
-            if (!empty($column['searchable']) && $column['searchable'] == 'true' && !empty($params['search']['value']) && $params['search']['value'] != "false") {
-                $query_param['like'][$col_name] = "%" . $params['search']['value'] . "%";
+        if (!empty($params['columns'])) {
+            foreach ($params['columns'] as $key => $column) {
+                $col_name = !empty($column['name']) ? $column['name'] : (!empty($column['data']) ? $column['data'] : FALSE);
+                if ($col_name === FALSE || in_array($col_name, $drop_columns)) {
+                    continue;
+                }
+                $query_param['select'][] = $col_name;
+                if (!empty($column['searchable']) && $column['searchable'] == 'true' && !empty($params['search']['value']) && $params['search']['value'] != "false") {
+                    $query_param['like'][$col_name] = "%" . $params['search']['value'] . "%";
+                }
             }
         }
 
@@ -232,11 +238,12 @@ class BaseStalkerController {
         while (list($key, $block) = each($data)) {
             foreach ($filds_for_delete as $field) {
                 if (array_key_exists($field, $block)) {
-                    if (array_key_exists($field, $fields_for_replace)) {
-                        $data[$key][str_replace(" as `$field`", '', $fields_for_replace[$field])] = $data[$key][$field];
+                    $new_name = str_replace(" as `$field`", '', $fields_for_replace[$field]);
+                    if (array_key_exists($field, $fields_for_replace) && !is_numeric($new_name)) {
+                        $data[$key][$new_name] = $data[$key][$field];
                     }
                     unset($data[$key][$field]);
-                } elseif (($search = array_search($field, $block)) !== FALSE) {
+                } elseif (($search = array_search($field, $block)) !== FALSE && array_search($fields_for_replace[$field], $block) === FALSE) {
                     if (array_key_exists($field, $fields_for_replace)) {
                         $data[$key][] = $fields_for_replace[$field];
                     }

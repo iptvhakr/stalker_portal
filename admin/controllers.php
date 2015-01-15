@@ -17,7 +17,7 @@ $app->get('/{controller}', function($controller, $namespace = __NAMESPACE__) use
         $controller = new $controllerName($app);
         if ($controller instanceof $controllerName) {
             if (is_callable(array($controller, $action))) {
-                return $controller->$action($app);
+                return $controller->$action();
             }
         }
     }
@@ -31,7 +31,7 @@ $app->get('/{controller}/{action}', function($controller, $action, $namespace = 
         $controller = new $controllerName($app);
         if ($controller instanceof $controllerName) {
             if (is_callable(array($controller, $action))) {
-                return $controller->$action($app);
+                return $controller->$action();
             }
         }
     }
@@ -45,7 +45,7 @@ $app->post('/{controller}', function($controller, $namespace = __NAMESPACE__) us
         $controller = new $controllerName($app);
         if ($controller instanceof $controllerName) {
             if (is_callable(array($controller, $action))) {
-                return $controller->$action($app);
+                return $controller->$action();
             }
         }
     }
@@ -59,7 +59,7 @@ $app->post('/{controller}/{action}', function($controller, $action = '', $namesp
         $controller = new $controllerName($app);
         if ($controller instanceof $controllerName) {
             if (is_callable(array($controller, $action))) {
-                return $controller->$action($app);
+                return $controller->$action();
             }
         }
     }

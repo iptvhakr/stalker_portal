@@ -99,14 +99,52 @@
         }
     },
     "4": {
+        "name": "Аудио клуб",
+        "alias": "audio-club",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Альбомы",
+                "alias": "audio-albums",
+                "icon": ""
+            },
+            "2": {
+                "name": "Исполнители",
+                "alias": "audio-artists",
+                "icon": ""
+            },
+            "3": {
+                "name": "Жанры",
+                "alias": "audio-genres",
+                "icon": ""
+            },
+            "4": {
+                "name": "Языки",
+                "alias": "audio-languages",
+                "icon": ""
+            },
+            "5": {
+                "name": "Годы",
+                "alias": "audio-years",
+                "icon": ""
+            }
+        }
+    },
+    "5": {
         "name": "Караоке",
         "alias": "karaoke",
         "icon": "fa fa-microphone",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
+            "1": {
+                "name": "Список караоке",
+                "alias": "karaoke-list",
+                "icon": ""
+            }
         }
     },
-    "5": {
+    "6": {
         "name": "Радио",
         "alias": "radio",
         "icon": "fa fa-music",
@@ -114,15 +152,25 @@
         "action": {
         }
     },
-    "6": {
+    "7": {
         "name": "Тарифы",
         "alias": "tariffs",
         "icon": "fa fa-music",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
+            "1": {
+                "name": "Пакеты услуг",
+                "alias": "service-packages",
+                "icon": ""
+            },
+            "2": {
+                "name": "Тарифные планы",
+                "alias": "tariff-plans",
+                "icon": ""
+            }
         }
     },
-    "7": {
+    "8": {
         "name": "Пользователи",
         "alias": "users",
         "icon": "fa fa-columns",
@@ -150,7 +198,7 @@
             }
         }
     },
-    "8": {
+    "9": {
         "name": "События",
         "alias": "events",
         "icon": "fa fa-columns",
@@ -158,7 +206,7 @@
         "action": {
         }
     },
-    "9": {
+    "10": {
         "name": "Администраторы",
         "alias": "admins",
         "icon": "fa fa-users",
@@ -166,7 +214,7 @@
         "action": {
         }
     },
-    "10": {
+    "11": {
         "name": "Инфопортал",
         "alias": "infoportal",
         "icon": "fa fa-music",
@@ -174,7 +222,7 @@
         "action": {
         }
     },
-    "11": {
+    "12": {
         "name": "Статистика",
         "alias": "statistics",
         "icon": "fa fa-microphone",
@@ -182,7 +230,7 @@
         "action": {
         }
     },
-    "12": {
+    "13": {
         "name": "Настройки",
         "alias": "settings",
         "icon": "fa fa-columns",
@@ -190,7 +238,7 @@
         "action": {
         }
     },
-    "13": {
+    "14": {
         "name": "Справка",
         "alias": "information",
         "icon": "fa fa-music",

@@ -12,7 +12,7 @@ class LoginController extends \Controller\BaseStalkerController {
         $this->app['baseHost'] = $this->baseHost;
     }
 
-    public function index(Application $app) {
+    public function index() {
         if ($this->method == 'POST' && isset($this->postData['username']) && isset($this->postData['password'])) {
             if (\Admin::checkAuthorization($this->postData['username'], $this->postData['password'])){
                 return $this->app->redirect($this->workURL);
@@ -21,7 +21,7 @@ class LoginController extends \Controller\BaseStalkerController {
         $error = array('user_undefined' => 'Пользователь неопределён');
         $this->app['error_local'] = $error;
         
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
 }

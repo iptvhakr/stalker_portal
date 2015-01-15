@@ -859,7 +859,6 @@ $(document).ready(function () {
         return false;
     });
 
-
     $(document).on('click', "#add_channel #add_broadcasting_link", function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -1013,6 +1012,16 @@ $(document).ready(function () {
         }
         return false;
     });
+    
+    $(document).off('click', "a[disabled], a.disabled");
+    $(document).on('click', "a[disabled], a.disabled", function(e){
+        e.stopPropagation();
+        e.preventDefault();
+        $(this).clearQueue();
+        $(this).stop();
+        return false;
+    });
+    
     
 });
 

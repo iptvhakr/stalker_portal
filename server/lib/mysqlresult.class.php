@@ -112,4 +112,8 @@ class MysqlResult extends DatabaseResult
 
         return $this->first('count(*)');
     }
+    
+    public function total_rows() {
+        return $this->total_rows;
+    }
 }

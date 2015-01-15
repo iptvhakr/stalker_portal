@@ -42,8 +42,9 @@ class RadioModel extends \Model\BaseStalkerModel {
     }
     
     public function updateRadio($param, $id){
-        return $this->mysqlInstance->update('radio', $param, array('id'=>$id))->total_rows();
+        return $this->mysqlInstance->update('radio', $param, array('id'=>$id))->total_rows() || 1;
     }
+    
     public function insertRadio($param){
         return $this->mysqlInstance->insert('radio', $param)->insert_id();
     }

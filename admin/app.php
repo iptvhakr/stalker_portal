@@ -3,6 +3,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Neutron\Silex\Provider\ImagineServiceProvider;
 
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../server/'));
 $app = new Silex\Application();
@@ -25,6 +26,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     ),
     'twig.path' => __DIR__ . '/resources/views',
 ));
+
+$app->register(new ImagineServiceProvider());
 
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
             $translator->addLoader('yaml', new YamlFileLoader());

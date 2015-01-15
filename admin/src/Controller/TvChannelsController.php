@@ -194,7 +194,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $rows = $this->db->changeChannelStatus($this->data['id'], 0);
-        $response = $this->gererateAjaxResponse(array('rows' => $rows, 'action' => 'Включить', 'status' => 'Отключен', 'urlactfrom' => 'disable', 'urlactto' => 'enable'), ($rows) ? '' : 'Cannot find channel');
+        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => 'Включить', 'status' => 'Отключен', 'urlactfrom' => 'disable', 'urlactto' => 'enable'), ($rows) ? '' : 'Cannot find channel');
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -208,7 +208,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $rows = $this->db->changeChannelStatus($this->data['id'], 1);
-        $response = $this->gererateAjaxResponse(array('rows' => $rows, 'action' => 'Отключить', 'status' => 'Включен', 'urlactfrom' => 'enable', 'urlactto' => 'disable'), ($rows) ? '' : 'Cannot find channel');
+        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => 'Отключить', 'status' => 'Включен', 'urlactfrom' => 'enable', 'urlactto' => 'disable'), ($rows) ? '' : 'Cannot find channel');
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -228,7 +228,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->saveFiles->handleUpload($this->logoDir, $this->data['id']);
 
         $error = $this->saveFiles->getError();
-        $response = $this->gererateAjaxResponse(array('pic' => $this->logoHost . "/320/" . $this->saveFiles->getFileName()), $error);
+        $response = $this->generateAjaxResponse(array('pic' => $this->logoHost . "/320/" . $this->saveFiles->getFileName()), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -245,7 +245,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
         $error = $this->saveFiles->getError();
-        $response = $this->gererateAjaxResponse(array('data' => 0), $error);
+        $response = $this->generateAjaxResponse(array('data' => 0), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -271,7 +271,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 }
             }
         }
-        $response = $this->gererateAjaxResponse($senddata, $erorr);
+        $response = $this->generateAjaxResponse($senddata, $erorr);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 

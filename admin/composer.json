@@ -19,7 +19,9 @@
         "symfony/monolog-bridge": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
-        "swiftmailer/swiftmailer": "5.*"
+        "swiftmailer/swiftmailer": "5.*",
+        "imagine/imagine" : "*",
+        "neutron/silex-imagine-provider": "dev-master"
     },
     "autoload": {
         "psr-0": {

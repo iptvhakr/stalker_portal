@@ -1,6 +1,6 @@
 body {
   color: #525252;
-  background: #6AA6D6 /*url(../img/devoops_pattern_b10.png)*/ 0 0 repeat;
+  background: #0f3a63 /*url(../img/devoops_pattern_b10.png)*/ 0 0 repeat;
   cursor: default !important;
 }
 .body-expanded, .modal-open {
@@ -868,6 +868,14 @@ td.beauty-hover {
   border-color: rgba(0, 0, 0, 0.3);
   color: #929292;
 }
+
+a.disabled, a.disabled:focus, a.disabled:hover, a.disabled:active, a.disabled.active, a[disabled], a[disabled]:focus, a[disabled]:hover, a[disabled]:active, a[disabled].active{
+  background-color: #D8D8D8 !important;
+  border-color: rgba(0, 0, 0, 0.3) !important;
+  color: #929292 !important;
+  cursor: default;
+}
+
 .btn-primary, .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active,
 .table > thead > tr > td.primary, .table > tbody > tr > td.primary, .table > tfoot > tr > td.primary, .table > thead > tr > th.primary, .table > tbody > tr > th.primary, .table > tfoot > tr > th.primary, .table > thead > tr.primary > td, .table > tbody > tr.primary > td, .table > tfoot > tr.primary > td, .table > thead > tr.primary > th, .table > tbody > tr.primary > th, .table > tfoot > tr.primary > th {
   background-color: #6AA6D6;
@@ -2429,6 +2437,9 @@ li.dropdown, .dropdown-menu li{
 }
 
 #iptv_list .dropdown-menu, #iptv_list_move .dropdown-menu{
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
     z-index: 10000;
 }
 
@@ -2436,6 +2447,7 @@ li.dropdown, .dropdown-menu li{
 #iptv_list_move .filter > span, #iptv_list_move .filter > a {
     line-height: 24px;
     vertical-align: middle;
+    white-space: nowrap;
 }
 
 #iptv_list .filter > a > i, #iptv_list .filter > a > i,

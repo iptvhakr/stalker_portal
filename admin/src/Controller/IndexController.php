@@ -17,10 +17,10 @@ class IndexController extends \Controller\BaseStalkerController {
         $this->app['baseHost'] = $this->baseHost;
     }
 
-    public function index(Application $app) {
+    public function index() {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 }

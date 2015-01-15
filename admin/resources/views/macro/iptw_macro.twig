@@ -1,5 +1,6 @@
 {# empty Twig template #}
 {% extends 'layout.twig' %}
+{% import _self as main_macro_inside %}
 
     {% macro input_checkbox(value, name, key) %}
         {% if attribute(value, key) is defined %}
@@ -37,3 +38,83 @@
             <input type="hidden" id="form_{{ name }}_{{ key }}" name="form[{{ name }}][{{ key }}]">
         {% endif %}
     {% endmacro %}
+    
+    {% macro get_filter(name, title, id_field, title_field, list_all, block_width) %}
+        {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+        <div class="col-xs-3 col-sm-{{ block_width }} filter" data-tvfilter="{{ name }}">
+            <span class="col-xs-4 col-sm-4 no-padding">{{ title }}:</span>
+            {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined and app['filters'][name] != '0'%}
+                {% set f_name = app['filters'][name] %}
+            {% else %}
+                {% set f_name = 0 %}
+            {% endif %}
+            {% set list_f = list %}                       
+            {% for item in list_all %}
+                {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item[id_field] ~ '"><span>' ~ item[title_field] ~ '</span></a></li>') | trans %}
+                {% if not(f_name is sameas(0)) and f_name == item[id_field] %}                       
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                        <span>{{ item[title_field] }}</span>
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                {% endif %}
+            {% endfor %}
+            {% autoescape false %}
+                {% if f_name is sameas(0) %}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                        <span>Все</span>
+                        <i class="fa fa-chevron-down"></i>
+                    </a>
+                {% endif %}
+                <ul class="dropdown-menu pull-right">
+                    {{ list_f }}
+                </ul>
+            {% endautoescape %}
+        </div>
+    {% endmacro %}
+    
+    {% macro get_dropdown_attribute(dropdownAttribute) %}
+        {% import _self as main_macro_inside %}
+        <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                <span>Атрибуты</span>
+                <i class="fa fa-chevron-down"></i>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                <li>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="all"> Все
+                            <i class="fa fa-square-o"></i>
+                        </label>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                {% for item in dropdownAttribute %}
+                {{ main_macro_inside.get_dropdown_attribute_item(item) }}
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% endmacro %}
+                        
+    {% macro get_dropdown_attribute_item(item) %}
+        <li>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" value="{{ item.name }}" checked="{{ item.checked }}"> {{ item.title }}
+                    <i class="fa fa-square-o"></i>
+                </label>
+            </div>
+        </li>
+    {% endmacro %}
+    
+    {% macro get_datatable_head(dropdownAttribute) %}
+        <thead>
+            <tr>
+        {% for item in dropdownAttribute %}
+            <th data-filter="{{ item.name }}">{{ item.title }}</th>
+        {% endfor %}
+            </tr>
+        </thead>
+    {% endmacro %}
+    

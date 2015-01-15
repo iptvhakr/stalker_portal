@@ -10,34 +10,36 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 class AuthUserController extends \Controller\BaseStalkerController {
 
     public function __construct(Application $app) {
-        parent::__construct($app);
+        parent::__construct($app, __CLASS__);
     }
 
-    public function index(Application $app) {
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+    // ------------------- action method ---------------------------------------
+
+    public function index() {
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function auth_user_profile(Application $app) {
+    public function auth_user_profile() {
 
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function auth_user_messages(Application $app) {
+    public function auth_user_messages() {
 
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function auth_user_tasks(Application $app) {
+    public function auth_user_tasks() {
 
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function auth_user_settings(Application $app) {
+    public function auth_user_settings() {
 
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
-    public function auth_user_logout(Application $app) {
+    public function auth_user_logout() {
         
         $this->app['request']->getSession()->remove('login');
         $this->app['request']->getSession()->save('pass');

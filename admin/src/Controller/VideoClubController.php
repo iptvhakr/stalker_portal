@@ -25,11 +25,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
     
     // ------------------- action method ---------------------------------------
 
-    public function index(Application $app) {
+    public function index() {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        return $app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
     public function video_list() {
@@ -310,7 +310,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $error = '';
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -336,7 +336,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
         }
         
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -365,7 +365,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
         }
         
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -417,7 +417,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $data = array_merge($data_in, $data);
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -449,7 +449,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }else{
             $error = 'У Вас нет прав на это действие';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -479,7 +479,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
         }
         
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -501,7 +501,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $data['chk_rezult'] = 'Имя свободно';
             $error = '';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -523,7 +523,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $data['chk_rezult'] = 'Адрес свободен';
             $error = '';
         }
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -534,7 +534,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         
         if (empty($this->data['id']) || (!is_numeric($this->data['id']) && strpos($this->data['id'], 'new') === FALSE)) {
-            $this->app->abort(404, 'Страница найдена... Печаль...');
+            $this->app->abort(404, 'Страница не найдена... Печаль...');
         } 
         
         $data = array();
@@ -569,7 +569,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
         }
         $img_path = str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path);
-        $response = $this->gererateAjaxResponse(array('pic' => $this->baseHost . "/stalker_portal" . $img_path.'/'.$upload_id), $error);
+        $response = $this->generateAjaxResponse(array('pic' => $this->baseHost . "/stalker_portal" . $img_path.'/'.$upload_id), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -599,7 +599,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $logger->error(sprintf("[%s] - %s - \"%s\"\n", date("r"), $e->getMessage(), base64_encode($e->getResponse())));
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -626,7 +626,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $logger->error(sprintf("[%s] - %s - \"%s\"\n", date("r"), $e->getMessage(), base64_encode($e->getResponse())));
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -656,7 +656,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $logger->error(sprintf("[%s] - %s - \"%s\"\n", date("r"), $e->getMessage(), base64_encode($e->getResponse())));
         }
 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -681,7 +681,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
         }
         
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -701,7 +701,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if ($this->db->deleteVideoTask(array('id'=>$this->postData['taskid']))) {
             $error = '';
         } 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -723,7 +723,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if ($ad->delById($this->postData['adsid'])) {
             $error = '';
         } 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -748,7 +748,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $data['status'] = ($this->postData['adsstatus'] ? '<span class="txt-success">Опубликовано</span>': '<span class="txt-danger">Не опубликовано</span>');
             $data['adsstatus'] = (int)!$this->postData['adsstatus'];
         } 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -767,7 +767,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $error = '';
         $this->db->deleteModeratorsById($this->postData['modid']);
         
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -791,7 +791,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $data['status'] = ($this->postData['modstatus'] ? '<span class="txt-success">Вкл</span>': '<span class="txt-danger">Выкл</span>');
             $data['modstatus'] = (int)!$this->postData['modstatus'];
         } 
-        $response = $this->gererateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -830,7 +830,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->setLinksForVideoLog($response['data']);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw']: 1;
         if ($this->isAjax) {
-            $response = $this->gererateAjaxResponse($response);
+            $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
         } else {
             return $response;
