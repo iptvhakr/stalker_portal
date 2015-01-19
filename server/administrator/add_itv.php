@@ -185,7 +185,7 @@ if (!$error){
             'monitoring_url'    => array_key_exists($key, $_POST['monitoring_url']) ? $_POST['monitoring_url'][$key] : '',
             'use_load_balancing' => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) && !empty($_POST['use_load_balancing']) && array_key_exists($key, $_POST['use_load_balancing']) ? (int) $_POST['use_load_balancing'][$key] : 0,
             'enable_monitoring'  => !empty($_POST['enable_monitoring']) && array_key_exists($key, $_POST['enable_monitoring']) ? (int) $_POST['enable_monitoring'][$key] : 0,
-            'enable_balancer_monitoring'  => !empty($_POST['enable_balancer_monitoring']) && array_key_exists($key, $_POST['enable_balancer_monitoring']) ? (int) $_POST['enable_balancer_monitoring'][$key] : 0,
+            'enable_balancer_monitoring'  => !empty($_POST['enable_balancer_monitoring']) && array_key_exists($key, $_POST['enable_balancer_monitoring']) && !empty($_POST['use_load_balancing']) && array_key_exists($key, $_POST['use_load_balancing']) ? (int) $_POST['enable_balancer_monitoring'][$key] : 0,
             'stream_servers'    => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) ? $_POST['stream_server'][$key] : array(),
         );
     }
