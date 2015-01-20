@@ -291,7 +291,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
                 $this->response['data'][$i]['name'] = $this->response['data'][$i]['number'].'. '.$this->response['data'][$i]['name'];
             }
             $this->response['data'][$i]['performer_name'] = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['performer_name'] : '';
-            $this->response['data'][$i]['cmd']            = $this->response['data'][$i]['url'];
+            $this->response['data'][$i]['cmd']            = strpos($this->response['data'][$i]['url'], 'http://') === 0 ? str_replace(' ', '%20', $this->response['data'][$i]['url']) : $this->response['data'][$i]['url'];
             $this->response['data'][$i]['album_name']     = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['name'] : '';
             $this->response['data'][$i]['album_year']     = isset($albums_map[$item['album_id']]) ? _($albums_map[$item['album_id']]['album_year']) : '';
             $this->response['data'][$i]['album_country']  = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['album_country'] : '';
