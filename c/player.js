@@ -963,6 +963,10 @@ player.prototype.event_callback = function(event, params){
                                 cur_media_item.playlist = this.cur_media_item.playlist;
                                 _debug('cur_media_item', cur_media_item);
 
+                                if (cur_media_item.is_audio){
+                                    cur_media_item.number = null;
+                                }
+
                                 this.play(cur_media_item);
 
                                 break;
@@ -2650,7 +2654,7 @@ player.prototype.show_info = function(item, direct_call){
 
     var title = '';
 
-    if (item.hasOwnProperty('number')){
+    if (item.hasOwnProperty('number') && item.number){
         title = item.number + '. ';
     }
 
@@ -2691,6 +2695,12 @@ player.prototype.show_info = function(item, direct_call){
     this.info.title.innerHTML = title;
 
     _debug('this.is_tv', this.is_tv);
+
+    if (item.is_audio){
+        this.info.clock.style.visibility = 'hidden';
+    }else{
+        this.info.clock.style.visibility = 'visible';
+    }
 
     try{
         

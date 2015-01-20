@@ -118,6 +118,9 @@
                     if (typeof(stb.player.cur_media_item.playlist[0]) == 'object'){
                         cur_media_item = stb.player.cur_media_item.playlist[idx].clone();
                         cur_media_item.playlist = stb.player.cur_media_item.playlist;
+                        if (cur_media_item.is_audio){
+                            cur_media_item.number = null;
+                        }
                     }else{
                         var cur_media_item = stb.player.cur_media_item.clone();
 

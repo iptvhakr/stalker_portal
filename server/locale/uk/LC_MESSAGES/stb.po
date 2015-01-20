@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-12-22 10:52+0300\n"
-"PO-Revision-Date: 2014-12-22 11:13+0300\n"
+"POT-Creation-Date: 2015-01-20 10:42+0300\n"
+"PO-Revision-Date: 2015-01-20 10:43+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "Реклама в Відео клубі"
 #: ../../../administrator/add_epg.php:275
 #: ../../../administrator/audio_performer.php:154
 #: ../../../administrator/stat_video_users.php:69
-#: ../../../administrator/themes.php:139
+#: ../../../administrator/themes.php:133
 #: ../../../administrator/administrators.php:146
 #: ../../../administrator/tariffs.php:292
 #: ../../../administrator/audio_track.php:212
@@ -428,12 +428,12 @@ msgstr "Виконавці"
 
 #: ../../../administrator/audio_album.php:394
 #: ../../../administrator/audio_album.php:512
-#: ../../../lib/audioclub.class.php:15
+#: ../../../lib/audioclub.class.php:27
 msgid "Genres"
 msgstr "Жанри"
 
 #: ../../../administrator/audio_album.php:395
-#: ../../../lib/audioclub.class.php:19
+#: ../../../lib/audioclub.class.php:31
 msgid "Years"
 msgstr "Роки"
 
@@ -841,8 +841,8 @@ msgstr "Автоматичне оновлення прошивки"
 msgid "Storages"
 msgstr "Сховище інформації"
 
-#: ../../../administrator/index.php:492 ../../../administrator/themes.php:107
-#: ../../../administrator/themes.php:134
+#: ../../../administrator/index.php:492 ../../../administrator/themes.php:101
+#: ../../../administrator/themes.php:128
 msgid "Templates"
 msgstr "Зовнішній вигляд"
 
@@ -1203,19 +1203,19 @@ msgstr "пошук по mac"
 msgid "task done"
 msgstr "завдання виконано"
 
-#: ../../../administrator/themes.php:117 ../../../lang/stb.php:41
+#: ../../../administrator/themes.php:111 ../../../lang/stb.php:41
 msgid "not found"
 msgstr "не знайдено"
 
-#: ../../../administrator/themes.php:158
+#: ../../../administrator/themes.php:152
 msgid "CURRENT THEME"
 msgstr "Поточний скін"
 
-#: ../../../administrator/themes.php:160 ../../../administrator/themes.php:170
+#: ../../../administrator/themes.php:154 ../../../administrator/themes.php:164
 msgid "preview not available"
 msgstr "предпросмотр недоступний"
 
-#: ../../../administrator/themes.php:175
+#: ../../../administrator/themes.php:169
 msgid "Apply"
 msgstr "Застосувати"
 
@@ -2450,7 +2450,7 @@ msgstr "Статистика перегляду TimeShift за місяць"
 
 #: ../../../administrator/playlists.php:99
 #: ../../../administrator/playlists.php:105
-#: ../../../lib/audioclub.class.php:31
+#: ../../../lib/audioclub.class.php:23
 msgid "Playlists"
 msgstr "Плейлисты"
 
@@ -4059,6 +4059,7 @@ msgid "NTP Server"
 msgstr "NTP Сервер"
 
 #: ../../../lang/stb.php:247 ../../../lang/stb.php:294
+#: ../../../lang/stb.php:548
 msgid "DELETE"
 msgstr "ВИДАЛИТИ"
 
@@ -4805,6 +4806,10 @@ msgstr "СТВОРИТИ НОВИЙ"
 msgid "Do you really want to delete this track from playlist?"
 msgstr "Ви дійсно бажаєте видалити трек з плейліста?"
 
+#: ../../../lang/stb.php:547
+msgid "Do you really want to delete this playlist?"
+msgstr "Ви дійсно бажаєте видалити цей плейлист?"
+
 #: ../../../lib/system.class.php:74
 msgid "m"
 msgstr "х"
@@ -4849,11 +4854,11 @@ msgstr ""
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr ""
 
-#: ../../../lib/audioclub.class.php:23
+#: ../../../lib/audioclub.class.php:15
 msgid "Albums"
 msgstr "Альбоми"
 
-#: ../../../lib/audioclub.class.php:27
+#: ../../../lib/audioclub.class.php:19
 msgid "Artists"
 msgstr "Виконавці"
 

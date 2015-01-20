@@ -11,14 +11,6 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
 
         return array(
             array(
-                'alias' => 'genres',
-                'title' => _('Genres')
-            ),
-            array(
-                'alias' => 'years',
-                'title' => _('Years')
-            ),
-            array(
                 'alias' => 'albums',
                 'title' => _('Albums')
             ),
@@ -30,6 +22,14 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
                 'alias' => 'playlists',
                 'title' => _('Playlists')
             ),
+            array(
+                'alias' => 'genres',
+                'title' => _('Genres')
+            ),
+            array(
+                'alias' => 'years',
+                'title' => _('Years')
+            )
         );
 
     }
@@ -136,8 +136,11 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
         $offset = $this->page * self::max_page_items;
 
         $result = Mysql::getInstance()
+            ->select('audio_genres.*')
             ->from('audio_genres')
-            ->orderby('name')
+            ->join('audio_genre', 'audio_genres.id', 'audio_genre.genre_id', 'INNER')
+            ->orderby('audio_genres.name')
+            ->groupby('audio_genres.id')
             ->limit(self::max_page_items, $offset);
 
         $this->setResponseData($result);
@@ -160,8 +163,11 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
         $offset = $this->page * self::max_page_items;
 
         $result = Mysql::getInstance()
+            ->select('audio_years.*')
             ->from('audio_years')
-            ->orderby('name', 'DESC')
+            ->join('audio_albums', 'audio_years.id', 'audio_albums.year_id', 'INNER')
+            ->orderby('audio_years.name', 'DESC')
+            ->groupby('audio_years.id')
             ->limit(self::max_page_items, $offset);
 
         $this->setResponseData($result);
@@ -314,7 +320,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
         }, $genres);
     }
 
-    function countAlbumTracks($album_id){
+    private function countAlbumTracks($album_id){
         return Mysql::getInstance()->from('audio_compositions')
             ->where(array('album_id' => $album_id))
             ->count()
@@ -322,7 +328,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             ->counter();
     }
 
-    function getAlbumLanguages($album_id){
+    private function getAlbumLanguages($album_id){
 
         return Mysql::getInstance()
             ->select('audio_languages.name')
@@ -335,7 +341,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             ->all('name');
     }
 
-    function getUserPlaylists(){
+    public function getUserPlaylists(){
 
         $playlists = Mysql::getInstance()
             ->from('audio_playlists')
@@ -347,7 +353,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
         return $playlists;
     }
 
-    function createPlaylist(){
+    public function createPlaylist(){
 
         if (empty($_REQUEST['name'])){
             return false;
@@ -376,7 +382,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
         return $playlist_id;
     }
 
-    function addTrackToPlaylist(){
+    public function addTrackToPlaylist(){
 
         if (empty($_REQUEST['track_id']) || empty($_REQUEST['playlist_id'])){
             return false;
@@ -389,7 +395,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
         ))->insert_id();
     }
 
-    function removeFromPlaylist(){
+    public function removeFromPlaylist(){
 
         if (empty($_REQUEST['track_id']) || empty($_REQUEST['playlist_id'])){
             return false;
@@ -399,5 +405,20 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             'playlist_id' => (int) $_REQUEST['playlist_id'],
             'track_id'    => (int) $_REQUEST['track_id']
         ))->result();
+    }
+
+    public function deletePlaylist(){
+
+        if (empty($_REQUEST['playlist_id'])){
+            return false;
+        }
+
+        Mysql::getInstance()->delete('audio_playlist_tracks', array(
+            'playlist_id' => (int) $_REQUEST['playlist_id'],
+        ));
+
+        return Mysql::getInstance()->delete('audio_playlists', array(
+            'id' => (int) $_REQUEST['playlist_id']
+         ))->result();
     }
 }
