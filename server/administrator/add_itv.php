@@ -202,7 +202,7 @@ if (!$error){
 
     if (empty($mc_cmd)){
         foreach ($links  as $link){
-            if ((strpos($link['url'], 'rtp://') !== false || strpos($link['url'], 'udp://') !== false) && preg_match("/(\S+:\/\/\S+)/", $link['url'], $match)){
+            if ((strpos($link['url'], 'rtp://') !== false || strpos($link['url'], 'udp://') !== false || strpos($link['url'], 'http://') !== false) && preg_match("/(\S+:\/\/\S+)/", $link['url'], $match)){
                 $mc_cmd = $match[1];
                 break;
             }

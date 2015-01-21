@@ -14,7 +14,7 @@ class TvArchiveRecorder extends Storage
 
         $url = $task['cmd'];
 
-        if (!preg_match('/:\/\/([\d\.]+):(\d+)/', $url, $arr)){
+        if (!preg_match('/:\/\//', $url, $arr)){
             throw new Exception('URL wrong format');
         }
 
@@ -38,7 +38,22 @@ class TvArchiveRecorder extends Storage
             $path = $this->getRecordsPath($task);
 
             if ($path && is_dir($path)){
-                exec('nohup python '.PROJECT_PATH.'/dumpstream -a'.$ip.' -p'.$port.' -d'.$path.' -n'.intval($task['parts_number']).' > /dev/null 2>&1 & echo $!', $out);
+                if (defined("ASTRA_RECORDER") && ASTRA_RECORDER){
+                    exec('astra '.PROJECT_PATH.'/dumpstream.lua'
+                        .' -A '.$url
+                        .' -d '.$path
+                        .' -n '.intval($task['parts_number'])
+                        .' > /dev/null 2>&1 & echo $!'
+                        , $out);
+                }else{
+                    exec('nohup python '.PROJECT_PATH.'/dumpstream'
+                        .' -a'.$ip
+                        .' -p'.$port
+                        .' -d'.$path
+                        .' -n'.intval($task['parts_number'])
+                        .' > /dev/null 2>&1 & echo $!'
+                        , $out);
+                }
             }else{
                 throw new Exception('Wrong archive path or permission denied for new folder');
             }
