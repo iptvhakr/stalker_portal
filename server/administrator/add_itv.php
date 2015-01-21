@@ -114,6 +114,12 @@ if (!$error){
         $wowza_dvr = 0;
     }
 
+    if (@$_POST['flussonic_dvr'] == 'on'){
+        $flussonic_dvr = 1;
+    }else{
+        $flussonic_dvr = 0;
+    }
+
     if (@$_POST['enable_tv_archive'] == 'on'){
         $enable_tv_archive = 1;
     }else{
@@ -126,6 +132,7 @@ if (!$error){
 
     if (empty($storage_names)){
         $enable_tv_archive = 0;
+        $flussonic_dvr = 0;
     }
 
     $pvr_storage_names = empty($_POST['pvr_storage_names']) ? array() : $_POST['pvr_storage_names'];
@@ -185,7 +192,7 @@ if (!$error){
             'monitoring_url'    => array_key_exists($key, $_POST['monitoring_url']) ? $_POST['monitoring_url'][$key] : '',
             'use_load_balancing' => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) && !empty($_POST['use_load_balancing']) && array_key_exists($key, $_POST['use_load_balancing']) ? (int) $_POST['use_load_balancing'][$key] : 0,
             'enable_monitoring'  => !empty($_POST['enable_monitoring']) && array_key_exists($key, $_POST['enable_monitoring']) ? (int) $_POST['enable_monitoring'][$key] : 0,
-            'enable_balancer_monitoring'  => !empty($_POST['enable_balancer_monitoring']) && array_key_exists($key, $_POST['enable_balancer_monitoring']) && !empty($_POST['use_load_balancing']) && array_key_exists($key, $_POST['use_load_balancing']) ? (int) $_POST['enable_balancer_monitoring'][$key] : 0,
+            'enable_balancer_monitoring'  => !empty($_POST['enable_balancer_monitoring']) && array_key_exists($key, $_POST['enable_balancer_monitoring']) ? (int) $_POST['enable_balancer_monitoring'][$key] : 0,
             'stream_servers'    => !empty($_POST['stream_server']) && array_key_exists($key, $_POST['stream_server']) ? $_POST['stream_server'][$key] : array(),
         );
     }
@@ -212,11 +219,13 @@ if (!$error){
 
             $channel = Itv::getChannelById($ch_id);
 
-            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr){
+            if (!empty($channel) && $channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr || $channel['flussonic_dvr'] != $flussonic_dvr){
 
                 if ($channel['enable_tv_archive']){
 
-                    if ($channel['wowza_dvr']){
+                    if ($channel['flussonic_dvr']){
+                        $archive = new FlussonicTvArchive();
+                    } elseif ($channel['wowza_dvr']){
                         $archive = new WowzaTvArchive();
                     }else{
                         $archive = new TvArchive();
@@ -233,6 +242,7 @@ if (!$error){
                 'wowza_tmp_link'              => $wowza_tmp_link,
                 'nginx_secure_link'           => $nginx_secure_link,
                 'wowza_dvr'                   => $wowza_dvr,
+                'flussonic_dvr'               => $flussonic_dvr,
                 'censored'                    => $censored,
                 'base_ch'                     => $base_ch,
                 'bonus_ch'                    => $bonus_ch,
@@ -279,7 +289,13 @@ if (!$error){
 
             if ($enable_tv_archive){
 
-                $archive = new TvArchive();
+                if (!empty($_POST['flussonic_dvr'])){
+                    $archive = new FlussonicTvArchive();
+                } elseif (!empty($_POST['wowza_dvr'])){
+                    $archive = new WowzaTvArchive();
+                }else{
+                    $archive = new TvArchive();
+                }
 
                 $archive->createTasks($ch_id, $storage_names);
             }
@@ -315,11 +331,13 @@ if (!$error){
 
             $channel = Itv::getChannelById($ch_id);
 
-            if (!empty($channel) && ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr || $channel['tv_archive_duration'] != $_POST['tv_archive_duration'])){
+            if (!empty($channel) && ($channel['enable_tv_archive'] != $enable_tv_archive || $channel['wowza_dvr'] != $wowza_dvr || $channel['flussonic_dvr'] != $flussonic_dvr || $channel['tv_archive_duration'] != $_POST['tv_archive_duration'])){
 
                 if ($channel['enable_tv_archive']){
 
-                    if ($channel['wowza_dvr']){
+                    if ($channel['flussonic_dvr']){
+                        $archive = new FlussonicTvArchive();
+                    } elseif ($channel['wowza_dvr']){
                         $archive = new WowzaTvArchive();
                     }else{
                         $archive = new TvArchive();
@@ -346,6 +364,7 @@ if (!$error){
                     'wowza_tmp_link'              => $wowza_tmp_link,
                     'nginx_secure_link'           => $nginx_secure_link,
                     'wowza_dvr'                   => $wowza_dvr,
+                    'flussonic_dvr'               => $flussonic_dvr,
                     'use_http_tmp_link'           => $use_http_tmp_link,
                     'censored'                    => $censored,
                     'base_ch'                     => $base_ch,
@@ -458,7 +477,14 @@ if (!$error){
             }
 
             if ($enable_tv_archive){
-                $archive = new TvArchive();
+
+                if (!empty($_POST['flussonic_dvr'])){
+                    $archive = new FlussonicTvArchive();
+                } elseif (!empty($_POST['wowza_dvr'])){
+                    $archive = new WowzaTvArchive();
+                }else{
+                    $archive = new TvArchive();
+                }
 
                 $archive->createTasks($ch_id, $storage_names);
             }
@@ -947,24 +973,25 @@ a:hover{
             }
         });
 
-        $('#mc_cmd').on('input', null, null, function(eventObject){
-
-            if (eventObject.currentTarget.value.indexOf('rtp://') != -1 || eventObject.currentTarget.value.indexOf('udp://') != -1){
-                $('#enable_tv_archive').removeAttr('disabled');
-                $('#allow_pvr').removeAttr('disabled');
+        $('#enable_tv_archive').click(function(){
+            if ($(this).attr('checked')){
+                $(this).next().show();
+                $(this).next().next().show();
             }else{
-                $('#enable_tv_archive').attr('disabled', 'disabled');
-                $('#allow_pvr').attr('disabled', 'disabled');
+                $(this).next().hide();
+                $(this).next().next().hide();
             }
         });
 
-        if ($('#mc_cmd').val().indexOf('rtp://') != -1 || $('#mc_cmd').val().indexOf('udp://') != -1){
-            $('#enable_tv_archive').removeAttr('disabled');
-            $('#allow_pvr').removeAttr('disabled');
-        }else{
-            $('#enable_tv_archive').attr('disabled', 'disabled');
-            $('#allow_pvr').attr('disabled', 'disabled');
-        }
+        $('.flussonic_dvr').click(function(){
+            if ($(this).attr('checked')){
+                $('.flussonic_stream_server').removeAttr('disabled');
+                $('.generic_stream_server').attr('disabled', 'disabled');
+            }else{
+                $('.flussonic_stream_server').attr('disabled', 'disabled');
+                $('.generic_stream_server').removeAttr('disabled');
+            }
+        })
     });
 </script>
 </head>
@@ -1113,10 +1140,11 @@ if (@$_GET['edit']){
         $xmltv_id = $arr['xmltv_id'];
         $service_id = $arr['service_id'];
         $volume_correction = $arr['volume_correction'];
-        $correct_time    = $arr['correct_time'];
+        $correct_time = $arr['correct_time'];
         $use_http_tmp_link = $arr['use_http_tmp_link'];
-        $wowza_tmp_link    = $arr['wowza_tmp_link'];
+        $wowza_tmp_link = $arr['wowza_tmp_link'];
         $wowza_dvr = $arr['wowza_dvr'];
+        $flussonic_dvr = $arr['flussonic_dvr'];
         $enable_tv_archive = $arr['enable_tv_archive'];
         $tv_archive_duration = $arr['tv_archive_duration'];
         $allow_pvr = $arr['allow_pvr'];
@@ -1137,6 +1165,10 @@ if (@$_GET['edit']){
 
         if ($wowza_dvr){
             $checked_wowza_dvr = 'checked';
+        }
+
+        if ($flussonic_dvr){
+            $checked_flussonic_dvr = 'checked';
         }
 
         if ($enable_tv_archive){
@@ -1234,6 +1266,10 @@ if (@$_GET['edit']){
 
     if (@$_POST['wowza_dvr']){
         $checked_wowza_dvr = 'checked';
+    }
+
+    if (@$_POST['flussonic_dvr']){
+        $checked_flussonic_dvr = 'checked';
     }
 
     if (@$_POST['enable_tv_archive']){
@@ -1557,15 +1593,21 @@ function delete_logo(id){
             <?= _('Enable TV archive')?>:
            </td>
            <td>
-            <input name="enable_tv_archive" id="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> onchange="this.checked ? document.getElementById('storage_name').style.display = '' : document.getElementById('storage_name').style.display = 'none'" >
-
+            <input name="enable_tv_archive" id="enable_tv_archive" class="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> >
+            <span class="flussonic_dvr_block" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>"> <?= _('Flussonic DVR')?><input type="checkbox" class="flussonic_dvr" name="flussonic_dvr" <?= $checked_flussonic_dvr?>></span>
             <span id="storage_name" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
                 <table width="100%" style="background-color:#f8f8f8">
                     <? foreach ($storages as $storage){?>
                     <tr>
                         <td width="50%"><?= $storage['storage_name']?>:</td>
                         <td width="50%">
-                            <input type="checkbox" class="stream_server" name="storage_names[]" value="<?= $storage['storage_name']?>" <?= (in_array($storage['storage_name'], $selected_storages) ? 'checked' : '')?>/>
+                            <input type="checkbox"
+                                   class="stream_server <?= $storage['flussonic_server'] ? 'flussonic_stream_server' : 'generic_stream_server'?>"
+                                   name="storage_names[]"
+                                   value="<?= $storage['storage_name']?>"
+                                   <?= (in_array($storage['storage_name'], $selected_storages) ? 'checked' : '')?>
+                                   <?= $storage['flussonic_server'] && !isset($checked_flussonic_dvr) || !$storage['flussonic_server'] && isset($checked_flussonic_dvr) ? 'disabled' : ''?>
+                                />
                         </td>
                     </tr>
                     <?}?>
@@ -1590,7 +1632,11 @@ function delete_logo(id){
 
                 <span id="pvr_storage_name" style="display: <?echo @$checked_allow_pvr ? '' : 'none' ?>">
                 <table width="100%" style="background-color:#f8f8f8">
-                    <? foreach ($storages as $storage){?>
+                    <? foreach ($storages as $storage){
+                        if ($storage['flussonic_server']){
+                            continue;
+                        }
+                    ?>
                     <tr>
                         <td width="50%"><?= $storage['storage_name']?>:</td>
                         <td width="50%">
