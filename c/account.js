@@ -113,7 +113,12 @@
                 module.account.cur_tab = 'payment';
                 module.account.update_header_path([{"alias" : "tab", "item" : word['account_payment']}]);
                 module.account.color_buttons.get('red').enable();
-                module.account.color_buttons.get('green').disable();
+                if (stb.profile['external_payment_page_url']){
+                    module.account.color_buttons.get('green').enable();
+                    module.account.color_buttons.get('green').setText(get_word('account_pay'));
+                }else{
+                    module.account.color_buttons.get('green').disable();
+                }
                 module.account.color_buttons.get('yellow').enable();
                 module.account.color_buttons.get('blue').enable();
 
@@ -369,7 +374,9 @@
 
                 if (stbWindowMgr.openWebFace){
                     stbWindowMgr.openWebFace('/home/web/public/app/ibman/index.html?mode=2&url='+encodeURIComponent(stb.profile['external_payment_page_url']));
-                    module.internet.win_inited = true;
+                    if (module.internet){
+                        module.internet.win_inited = true;
+                    }
                 }else{
                     if (stbWindowMgr.InitWebWindow){
                         stbWindowMgr.LoadUrl(stb.profile['external_payment_page_url']);
@@ -378,7 +385,9 @@
                         stbWindowMgr.openWebWindow(stb.profile['external_payment_page_url']);
                     }
 
-                    module.internet.win_inited = true;
+                    if (module.internet){
+                        module.internet.win_inited = true;
+                    }
                 }
 
             }else{

@@ -298,7 +298,7 @@ BaseLayer.prototype.update_header_path = function(map){
         }
         
         if (map[i].item != '*' && map[i].item != ''){
-            this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].item + ' /'});
+            this.header_path_map.push({"alias" : map[i].alias, "title" : map[i].item + ' /', "item" : map[i].item});
         }
     }
     

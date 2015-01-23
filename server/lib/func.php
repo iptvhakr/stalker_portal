@@ -214,7 +214,7 @@ function get_last5min_play($in_param = ''){
                         'vclub'   => 2,
                         'karaoke' => 3,
                         'aclub'   => 4,
-                        'radio'   => 4
+                        'radio'   => 5
                     );
     
     $now_timestamp = time() - 330;

@@ -228,7 +228,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 }
             }else if ($channel['nginx_secure_link']){ // http://wiki.nginx.org/HttpSecureLinkModule
 
-                if (preg_match("/:\/\/([^\/]+)\/(\S*)/", $channel['cmd'], $match)){
+                if (preg_match("/:\/\/([^\/]+)\/?(\S*)/", $channel['cmd'], $match)){
 
                     $path   = '/'.$match[2];
                     $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
@@ -240,7 +240,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
                     $new_path = $path.(strpos($channel['cmd'], '?') ? '&' : '?').'st='.$hash.'&e='.$expire;
 
-                    $channel['cmd'] = str_replace($path, $new_path, $channel['cmd']);
+                    $channel['cmd'] = str_replace($match[1].$path, $match[1].$new_path, $channel['cmd']);
 
                 }else{
                     throw new ItvLinkException('link_fault');

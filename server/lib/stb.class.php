@@ -726,7 +726,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['enable_stream_losses_logging'] = Config::getSafe('enable_stream_losses_logging', false);
 
-        $profile['external_payment_page_url'] = sprintf(Config::getSafe('external_payment_page_url', ''), $this->getParam('ls'));
+        $profile['external_payment_page_url'] = sprintf(Config::getSafe('external_payment_page_url', ''), $this->getParam('ls'), $this->mac);
 
         $profile['max_local_recordings'] = Config::getSafe('max_local_recordings', 10);
 

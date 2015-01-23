@@ -147,19 +147,19 @@ a:hover{
   </tr>
   
   <tr>
-    <td><div align="center"><a href="add_karaoke.php"><?= _('KARAOKE')?></a></div></td>
+    <td><div align="center"><a href="audio_album.php"><?= _('AUDIO CLUB')?></a></div></td>
     <td>&nbsp;</td>
     <td align="center"><?if (Admin::isSuperUser()){?><a href="administrators.php"><?= _('Administrators')?></a><?}?></td>
   </tr>
   
   <tr>
-    <td><div align="center"><a href="add_radio.php"><?= _('RADIO')?></a></div></td>
+    <td><div align="center"><a href="add_karaoke.php"><?= _('KARAOKE')?></a></div></td>
     <td>&nbsp;</td>
     <td align="center"><a href="logout.php">[<?echo $_SESSION['login']?>] <?= _('Logout')?></a></td>
   </tr>
   
   <tr>
-    <td><!--<div align="center"><a href="ad.php">РЕКЛАМА</a></div>--></td>
+    <td><div align="center"><a href="add_radio.php"><?= _('RADIO')?></a></div></td>
     <td>&nbsp;</td>
     <td align="center"></td>
   </tr>

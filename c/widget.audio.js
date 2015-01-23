@@ -115,11 +115,19 @@
                         return;
                     }
 
-                    var cur_media_item = stb.player.cur_media_item.clone();
+                    if (typeof(stb.player.cur_media_item.playlist[0]) == 'object'){
+                        cur_media_item = stb.player.cur_media_item.playlist[idx].clone();
+                        cur_media_item.playlist = stb.player.cur_media_item.playlist;
+                        if (cur_media_item.is_audio){
+                            cur_media_item.number = null;
+                        }
+                    }else{
+                        var cur_media_item = stb.player.cur_media_item.clone();
 
-                    cur_media_item.cmd  = cur_media_item.playlist[idx];
+                        cur_media_item.cmd  = cur_media_item.playlist[idx];
 
-                    cur_media_item.name = cur_media_item.cmd.substr(stb.player.cur_media_item.cmd.lastIndexOf("/") + 1);
+                        cur_media_item.name = cur_media_item.cmd.substr(stb.player.cur_media_item.cmd.lastIndexOf("/") + 1);
+                    }
 
                     stb.player.play(cur_media_item);
                 }
@@ -151,7 +159,23 @@
         _get_current_idx : function(){
             _debug('audio_widget._get_current_idx');
 
-            return stb.player.cur_media_item.playlist.indexOf(stb.player.cur_media_item.cmd);
+            _debug('stb.player.cur_media_item', stb.player.cur_media_item)
+
+            if (typeof(stb.player.cur_media_item.playlist[0]) == 'object'){
+
+                var idx = -1;
+
+                for (var i=0; i< stb.player.cur_media_item.playlist.length; i++){
+                    if (stb.player.cur_media_item.id == stb.player.cur_media_item.playlist[i].id){
+                        idx = i;
+                        break;
+                    }
+                }
+            }else{
+               idx = stb.player.cur_media_item.playlist.indexOf(stb.player.cur_media_item.cmd);
+            }
+
+            return idx;
         },
 
         _get_total_playlist_items : function(){
