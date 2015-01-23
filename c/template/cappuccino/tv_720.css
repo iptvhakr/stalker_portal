@@ -33,7 +33,6 @@
 }
 
 #tv .name_block{
-    color: #fff;
     font-size: 26px;
     /*text-shadow: #122946 0 -1px 0;*/
     /*margin: 4px 0 0 3px;*/
@@ -89,7 +88,7 @@
     font-size: 20px;
     text-shadow: #122946 0 -1px 0;*/
     font-size: 20px;
-    color: #bbc4d2;
+    color: #968060;
     margin: 0 0 0 3px;
     padding-left: 5px;
     padding-top: 8px;
@@ -122,7 +121,7 @@
     text-shadow: #fff 0 1px 0;*/
     font-size: 20px;
     line-height: 21px;
-    color: #284b82;
+    color: #fff;
     /*margin-top: 8px;
     margin-right: 25px;*/
     white-space: pre;
@@ -140,7 +139,7 @@
     left: 615px;
     padding: 5px 0 0;
     font-size: 22px;
-    color: #99a8b5;
+    color: #FFE8C7;
     overflow: hidden;
     height: 185px;
 }
@@ -169,7 +168,7 @@
 }
 
 .tv_timetable .time{
-    color: #cfeafe;
+    color: #FFE8C7;
     font-family: "Myriad Pro Cond";
 }
 
@@ -201,7 +200,7 @@
     right: 73px;
     width: 100px;
     font-size: 24px;
-    color: #99A8B5;
+    color: #FFE8C7;
     font-family: "Myriad Pro Cond";
     text-align: right;
 }

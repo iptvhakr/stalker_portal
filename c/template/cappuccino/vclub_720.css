@@ -37,7 +37,7 @@
 }
 
 .vclub_info_box span{
-    color: #cfeafe;
+    color: #FFE8C7;
     font-size: 25px;
     font-family: "Myriad Pro Cond", serif;
 }
@@ -66,7 +66,7 @@
     background-image: url("i_720/mb_table02.png");
     background-position: 202px 0;
     padding: 2px 0 0 6px;
-    color: #fff;
+    color: #5A3807;
     font-family: "Roboto", sans-serif;
     font-size: 24px;
     overflow: hidden;
@@ -81,7 +81,7 @@
     background-image: url("i_720/mb_table03.png");
     background-position: 202px 0;
     padding: 2px 0 0 6px;
-    color: #fff;
+    color: #5A3807;
     font-family: "Roboto", sans-serif;
     font-size: 24px;
     overflow: hidden;
@@ -96,7 +96,7 @@
     background-image: url("i_720/mb_table04.png");
     background-position: 202px 0;
     padding: 2px 0 0 6px;
-    color: #fff;
+    color: #5A3807;
     font-family: "Roboto", sans-serif;
     font-size: 24px;
     overflow: hidden;
@@ -111,7 +111,7 @@
     background-image: url("i_720/mb_table_act02.png");
     background-position: 219px -4px;
     padding: 9px 0 0 8px;
-    color: #002864;
+    color: #fff;
     font-family: "Roboto", sans-serif;
     font-size: 24px;
     overflow: hidden;

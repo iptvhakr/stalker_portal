@@ -14,8 +14,7 @@
     height: 21px;
     float: left;
     margin: 4px 0 0 4px;
-    color: #002864;
-    text-shadow: #fff 0 1px 0;
+    color: #5a3807;
     font-size: 18px;
     text-align: center;
     overflow: hidden;
@@ -27,9 +26,8 @@
     white-space: pre;
     float: left;
     width: 247px;
-    color: #fff;
+    color: #5a3807;
     font-size: 18px;
-    text-shadow: #0f385a 1px 2px 0;
     margin: 1px 3px 0 2px;
     padding-left: 3px;
     overflow: hidden;
@@ -87,7 +85,6 @@
     float: left;
     font-size: 22px;
     color: #fff;
-    text-shadow: #122946 0 -1px 0;
     text-align: center;
     white-space: pre;
     overflow: hidden;
@@ -100,8 +97,7 @@
     width: 250px;
     float: left;
     font-size: 20px;
-    color: #002864;
-    text-shadow: none;
+    color: #fff;
     margin: 3px 5px 0 4px;
     white-space: pre;
     overflow: hidden;

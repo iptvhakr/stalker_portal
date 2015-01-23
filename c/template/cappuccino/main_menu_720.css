@@ -13,7 +13,6 @@
     font-weight: bold;
     font-size: 22px;
     color: #fff;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
 }
 
 .main_menu_time{
@@ -21,7 +20,6 @@
     font-size: 34px;
     color: #fff;
     margin-left: 12px;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     /*margin-right: 65px;*/
     font-family: "Roboto", sans-serif;
 }
@@ -49,7 +47,7 @@
     width: 320px;
     height: 210px;
     bottom: 74px;
-    left: -10px;
+    left: 382px;
     background: url(i_720/mm_hor_left.png);
 }
 
@@ -58,7 +56,7 @@
     width: 320px;
     height: 210px;
     bottom: 74px;
-    right: -10px;
+    right: 382px;
     background: url(i_720/mm_hor_right.png);
 }
 
@@ -70,7 +68,6 @@
     color: #fff;
     text-transform: uppercase;
     text-align: center;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
 }
 
 .menu_hor_cell span{
@@ -88,7 +85,6 @@
     font: 30px "Roboto";
     font-weight: bold;
     color: #fff;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     text-transform: uppercase;
     text-align: center;
     background: url(i_720/mm_hor_bg1.png) no-repeat;
@@ -135,7 +131,6 @@
     font: 26px "Roboto";
     color: #ffffff;
     text-transform: uppercase;
-    text-shadow:  rgba(0, 50, 80, 0.5) 1px 2px 0;
     background: url(i_720/mm_vert_cell.png) bottom left;
     /*margin-left: 14px;*/
     /*padding-left: 14px;
@@ -147,8 +142,7 @@
 }
 
 .mm_menu_vert_body .mm_vert_container .active{
-    color: #002864;
-    text-shadow: #c79b00 1px 2px 0;
+    color: #5a3807;
     background: url(i_720/mm_vert_cell.png) top left;
     background-position: 0 -2px;
     padding-top: 4px;
@@ -163,6 +157,6 @@
     right: 70px;
     bottom: 30px;
     font-size: 22px  !important;
-    color: #ccd6de  !important;
+    color: #968060  !important;
 }
 /* END MAIN MENU */

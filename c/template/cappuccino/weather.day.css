@@ -11,7 +11,7 @@
     height: 282px;
     background-image: url("i/25alfa_20.png");
     color: #fff;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
+    /*text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;*/
 }
 
 .weather_forecast .weather_col_1{

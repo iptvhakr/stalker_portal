@@ -9,7 +9,6 @@
 
 .mb_filminfo_name{
     width: 622px;
-    text-shadow: #0f385a 1px 2px 0;
     font-size: 25px;
     color: #fff;
 }
@@ -31,7 +30,7 @@
 }
 
 .mb_filminfo_fullinfo span{
-    color: #cfeafe;
+    color: #FFE8C7;
 }
 
 .hr_filminfo{

@@ -86,8 +86,8 @@
     display: block;
     height: 4px;
     width: 592px;
-    border: 1px solid #002864;
-    background-color: #0077BB;
+    border: 1px solid #fff;
+    background-color: #fff;
     -webkit-border-radius: 2px;
     float: left;
     overflow: hidden;
@@ -96,7 +96,7 @@
 #media_browser .seek_bar_inner{
     height: 4px;
     width: 0;
-    background-color: #fff;
+    background-color: #FFAE00;
 }
 
 #media_browser .mb_header_first{

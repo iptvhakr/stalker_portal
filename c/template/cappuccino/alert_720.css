@@ -23,6 +23,7 @@
 .mb_info_main{
     background: url("i_720/mb_context_bg.png") bottom;
     padding-bottom: 30px;
+    color: #fff;
 }
 
 .mb_info_lb{
@@ -115,7 +116,7 @@
     margin: 0 0 20px 40px;
     width: 94%;
     font-size: 24px;
-    color: #002864;
+    color: #fff;
 }
 
 /* END ALERT */

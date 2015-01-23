@@ -34,8 +34,7 @@
 
 #epg .blue_row_bg[active="active"] .name_block{
     font-size: 22px;
-    color: #002864;
-    text-shadow: none;
+    color: #fff;
 }
 
 #epg .epg_container_block{
@@ -57,8 +56,7 @@
     height: 27px;
     background-image: url("i/mb_icons.png");
     background-position: -92px -21px;
-    color: #fff;
-    text-shadow: #122946 0 -1px 0;
+    color: #5a3807;
     padding-top: 4px;
 }
 
@@ -71,7 +69,6 @@
 #epg .program{
     font-size: 18px;
     float: left;
-    text-shadow: #122946 0 -1px 0;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 34px;
@@ -109,12 +106,11 @@
 }
 
 #epg .blue_row_bg .program{
-    color: #bcc7d6;
-    text-shadow: #0f385a 1px 2px 0;
+    color: #968060;
 }
 
 #epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
-    color: #284b82;
+    color: #fff;
 }
 
 #epg .program_txt{
@@ -122,12 +118,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:pre;
-    text-shadow: #0f385a 1px 2px 0;
     /*font-family: "Myriad Pro Cond", sans-serif;*/
 }
 
 #epg .blue_row_bg[active="active"] .program_txt {
-    text-shadow: none;
 }
 
 #epg .program_separator{
@@ -170,7 +164,7 @@
 #epg .program[rel="active"]{
     background-image: url("i/tv_table_focus.png");
     background-position: 0 -1px;
-    color: #000;
+    color: #5A3807 !important;
 }
 
 .active_epg_container_block > .program:last-child, .epg_container_block > .program:last-child{
@@ -191,13 +185,13 @@
     font-size: 20px;
     color: #fff;
     overflow: hidden;
-    background-image: url("i/25alfa_20.png");
+    /*background-image: url("i/25alfa_20.png");*/
     border-radius: 8px;
     padding: 0 5px;
 }
 
 #epg .program_info .time{
-    color: #cfeafe;
+    color: #FFE8C7;
     font-weight: bold;
 }
 
@@ -207,7 +201,7 @@
     right: 495px;
     text-align: right;
     width: 210px;
-    color: #fff;
+    color: #FFE8C7;
 }
 
 #epg .time_mark{

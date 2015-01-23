@@ -16,7 +16,7 @@
 }*/
 
 #records .blue_row_bg.close .t_start_block{
-    color: #fff;
+    color: #5a3807;
 }
 
 /*#records .blue_row_bg[rel=""] .t_start_block{
@@ -29,7 +29,7 @@
 
 #records .active_t_start_block{
     background: url("i_480/mb_table_act.png") 118px -61px;
-    color: #000000;
+    color: #fff;
     font-family: "Myriad Pro Cond",sans-serif;
     height: 32px;
     overflow: hidden;
@@ -41,12 +41,11 @@
 }
 
 #records .ch_name_block{
-    color: #99A8B5;
+    color: #968060;
     font-size: 20px;
     margin: -1px 103px 0 3px;
     overflow: hidden;
     padding-left: 3px;
-    text-shadow: #0f385a 1px 2px 0;
     white-space: pre;
 }
 
@@ -55,7 +54,7 @@
 }*/
 
 #records .blue_row_bg.close .ch_name_block{
-    color: #FFFFFF !important;
+    color: #5a3807 !important;
 }
 
 #records .active_ch_name_block{
@@ -75,7 +74,7 @@
 }*/
 
 #records .active_row_bg.close .active_ch_name_block{
-    color: #002864 !important;
+    color: #fff !important;
 }
 
 #records .length_block{
@@ -85,7 +84,7 @@
 }
 
 #records .active_length_block{
-    color: #000;
+    color: #fff;
     font-family: "Myriad Pro Cond",sans-serif;
     height: 20px;
     overflow: hidden;

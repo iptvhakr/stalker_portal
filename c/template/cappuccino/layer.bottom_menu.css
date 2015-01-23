@@ -21,7 +21,6 @@
     text-transform: uppercase;
     font-size: 15px;
     color: #fff;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     list-style: none;
     white-space: pre;
     overflow: hidden;
@@ -36,7 +35,6 @@
 .bottom_menu_container li.bottom_menu_active_row{
     background: url("i/footer_menu_act.png");
     color: #ffca00;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
 }
 
 .bottom_menu_container li[rel="disabled"]{

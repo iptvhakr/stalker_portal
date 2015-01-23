@@ -23,6 +23,7 @@
 .mb_info_main{
     background: url("i/mb_context_bg.png") bottom;
     padding-bottom: 30px;
+    color: #fff;
 }
 
 .mb_info_lb{
@@ -113,6 +114,7 @@
     border-collapse: collapse;
     margin: 0 0 20px 20px;
     width: 94%;
+    color: #fff;
 }
 
 /* END ALERT */

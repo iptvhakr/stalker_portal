@@ -1,7 +1,6 @@
 .guess_block{
-    color: #fff;
+    color: #5a3807;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
     margin: 3px 0 0 13px;
     padding-left: 3px;
     white-space: pre;
@@ -14,7 +13,6 @@
 .active_guess_block{
     font-size: 22px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
     margin: 8px 25px 0 14px;
     white-space: pre;
     overflow: hidden;
@@ -26,7 +24,6 @@
 .score_block{
     color: #fff;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
     margin: 3px 15px 0 3px;
     padding-left: 3px;
     white-space: pre;
@@ -38,7 +35,6 @@
 .active_score_block{
     font-size: 22px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
     margin: 8px 25px 16px 4px;
     white-space: pre;
     overflow: hidden;
@@ -84,7 +80,6 @@
     float: left;
     margin: 2px 0 0 4px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
     font-size: 18px;
     text-align: center;
     white-space: pre;
@@ -100,7 +95,6 @@
     float:left;
     font-size: 22px;
     color: #fff;
-    text-shadow: #122946 0 -1px 0;
     text-align: center;
     white-space: pre;
     overflow: hidden;
@@ -110,7 +104,6 @@
 .sum_points_block{
     color: #fff;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
     margin: 3px 15px 0 3px;
     padding-left: 3px;
     white-space: pre;
@@ -122,7 +115,6 @@
 .active_sum_points_block{
     font-size: 22px;
     color: #002864;
-    text-shadow: #fff 0 1px 0;
     margin: 8px 35px 0 0;
     white-space: pre;
     overflow: hidden;

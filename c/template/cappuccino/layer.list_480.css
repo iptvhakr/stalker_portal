@@ -69,9 +69,8 @@
 }
 
 .name_block, .title_block{
-    color: #fff;
+    color: #5a3807;
     font-size: 18px;
-    text-shadow: #0f385a 1px 2px 0;
     margin: 0px 0 0 3px;
     padding-left: 5px;
     white-space: pre;
@@ -84,7 +83,7 @@
 }*/
 
 .blue_row_bg.close .name_block{
-    color: #99A8B5 !important;
+    color: #968060 !important;
 }
 
 .number_block{
@@ -94,8 +93,7 @@
     height: 21px;
     float: left;
     margin: 1px 0 0 5px;
-    color: #002864;
-    /*text-shadow: #fff 0 1px 0;*/
+    color: #fff;
     font-size: 17px;
     text-align: center;
     white-space: pre;
@@ -232,8 +230,7 @@
 .active_name_block, .active_title_block{
     font-size: 22px;
     /*font-weight: bold;*/
-    color: #002864;
-    /*text-shadow: #fff 0 1px 0;*/
+    color: #fff;
     margin-top: 3px;
     margin-right: 25px;
     white-space: pre;
@@ -246,7 +243,7 @@
 }*/
 
 .active_row_bg.close .active_name_block, .moved_active_row_bg.close .active_name_block{
-    color: #808080 !important;
+    color: #FFE8C7 !important;
 }
 
 .active_number_block{
@@ -257,8 +254,7 @@
     margin: 4px 3px 0 7px;
     float:left;
     font-size: 20px;
-    color: #fff;
-    text-shadow: #122946 0 -1px 0;
+    color: #5a3807;
     text-align: center;
     white-space: pre;
     overflow: hidden;
@@ -269,7 +265,6 @@
 .footer_text{
     font-size: 15px;
     color: #001a33;
-    text-shadow: #fff 0 1px 0;
     float: left;
     margin: 13px 0 0 8px;
     font-weight: bold;
@@ -305,8 +300,7 @@
 }
 
 .disable_color_btn_text{
-    color: #29699D !important;
-    text-shadow: none !important;
+    color: #C7AA81 !important;
 }
 
 .mb_header_first{
@@ -328,11 +322,11 @@
 }
 
 .mb_header_info {
-    color: #FFFFFF;
-    font-size: 12px;
-    left: 75px;
     position: absolute;
+    left: 75px;
     top: 410px;
+    font-size: 12px;
+    color: #fff;
 }
 
 .color_button_bar{
@@ -370,8 +364,7 @@
 
 .color_button_bar span{
     font-size: 13px;
-    color: #fff;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
+    color: #5a3807;
     float: left;
     margin: 12px 0 0 8px;
     /*font-weight: bold;*/
@@ -646,14 +639,14 @@
 
 .ears_arrow_left{
     width: 15px;
-    height: 28px;
+    height: 18px;
     background-image: url("i_480/ears_arrow_l.png");
     margin: 15px 0 0 0;
 }
 
 .ears_arrow_right{
     width: 15px;
-    height: 28px;
+    height: 18px;
     background-image: url("i_480/ears_arrow_r.png");
     margin: 15px 0 0 0;
 }

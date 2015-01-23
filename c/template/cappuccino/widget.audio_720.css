@@ -1,11 +1,10 @@
 .audio_widget_block{
     position: absolute;
-    left: 71px;
-    top : 270px;
+    left: 61px;
+    top : 359px;
     width: 293px;
     height: 82px;
     color: #fff;
-    text-shadow: #000 0 -1px 0;
     font-size: 20px;
     text-align: center;
     background-image: url("i_720/25alfa_20.png");
@@ -23,7 +22,7 @@
 
 .audio_widget_block .items{
     margin: 0 auto;
-    color: #99A8B5;
+    color: #FFE8C7;
     font-size: 16px;
 }
 
@@ -32,7 +31,7 @@
     width: 94%;
     height: 4px;
     /*border: 1px solid #002864;*/
-    background-color: #0077BB;
+    background-color: #fff;
     -webkit-border-radius: 3px;
     overflow: hidden;
 }
@@ -40,7 +39,7 @@
 .audio_widget_block .seek_bar .inner{
     height: 4px;
     width: 0;
-    background-color: #fff;
+    background-color: #ffae00;
     -webkit-border-radius: 3px;
 }
 

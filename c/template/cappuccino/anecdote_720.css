@@ -9,16 +9,11 @@
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     color: #fff;
-    text-shadow: #122946 0 -1px 0;
     font-size: 24px;
 }
 
 .anecdote_body_container .date{
-    color: #99a8b5;
-}
-
-.anecdote_body_container .date{
-    color: #99a8b5;
+    color: #FFE8C7;
 }
 
 .anecdote_body_container .rate{
@@ -37,7 +32,7 @@
     position: absolute;
     top: 310px;
     left: 20px;
-    height: 58px;
+    height: 44px;
     width: 37px;
     background-image: url("i_720/arr_left.png");
 }
@@ -46,7 +41,7 @@
     position: absolute;
     top: 310px;
     right: 20px;
-    height:58px;
+    height: 44px;
     width: 37px;
     background-image: url("i_720/arr_right.png");
 }
@@ -77,7 +72,7 @@
     left: 75px;
     font: 33px trebuchet ms, Arial, Helvetica, sans-serif;
     text-align: center;
-    color: #048;
+    color: #5a3807;
     width: 89px;
     height: 40px;
 }

@@ -12,7 +12,6 @@
     font-family: "Roboto", sans-serif;
     font-weight: bold;
     font-size: 15px;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     color: #fff;
 }
 
@@ -21,7 +20,6 @@
     font-size: 21px;
     margin-left: 8px;
     /*margin-right: 65px;*/
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     color: #fff;
 }
 
@@ -69,7 +67,6 @@
     color: #fff;
     text-transform: uppercase;
     text-align: center;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     line-height: 38px;
 }
 
@@ -79,7 +76,6 @@
     height: 138px;
     font: 20px "Roboto";
     color: #fff;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     text-transform: uppercase;
     text-align: center;
     background: url(i_480/mm_hor_bg1.png) bottom no-repeat;
@@ -125,7 +121,6 @@
     font: 18px "Roboto";
     color: #ffffff;
     text-transform: uppercase;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
     background: url(i_480/mm_vert_cell.png) bottom left;
     padding-left: 22px;
     padding-top: 1px;
@@ -135,8 +130,7 @@
 }
 
 .mm_menu_vert_body .mm_vert_container .active{
-    color: #002864;
-    text-shadow: #c79b00 1px 2px 0;
+    color: #5a3807;
     background: url(i_480/mm_vert_cell.png) top left;
     font-weight: bold;
 }
@@ -147,6 +141,6 @@
     right: 60px;
     top: 445px;
     font-size: 18px  !important;
-    color: #ccd6de  !important;
+    color: #968060  !important;
 }
 /* END MAIN MENU */

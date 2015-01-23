@@ -70,9 +70,8 @@
 }
 
 .name_block, .title_block{
-    color: #fff;
+    color: #5a3807;
     font-size: 20px;
-    text-shadow: #0f385a 1px 2px 0;
     margin: 1px 0 0 3px;
     padding-left: 3px;
     white-space: pre;
@@ -85,7 +84,7 @@
 }*/
 
 .blue_row_bg.close .name_block{
-    color: #99A8B5 !important;
+    color: #968060 !important;
 }
 
 .number_block{
@@ -94,8 +93,7 @@
     height: 21px;
     float: left;
     margin: 4px 0 0 4px;
-    color: #002864;
-    /*text-shadow: #fff 0 1px 0;*/
+    color: #fff;
     font-size: 18px;
     text-align: center;
     white-space: pre;
@@ -232,8 +230,7 @@
 .active_name_block, .active_title_block{
     font-size: 22px;
     /*font-weight: bold;*/
-    color: #002864;
-    /*text-shadow: #fff 0 1px 0;*/
+    color: #fff;
     margin: 6px 25px 0 2px;
     white-space: pre;
     overflow: hidden;
@@ -245,7 +242,7 @@
 }*/
 
 .active_row_bg.close .active_name_block, .moved_active_row_bg.close .active_name_block{
-    color: #808080 !important;
+    color: #FFE8C7 !important;
 }
 
 .active_number_block{
@@ -255,8 +252,7 @@
     margin: 6px 2px 0 0;
     float: left;
     font-size: 20px;
-    color: #fff;
-    text-shadow: #122946 0 -1px 0;
+    color: #5a3807;
     text-align: center;
     white-space: pre;
     overflow: hidden;
@@ -267,7 +263,6 @@
 .footer_text{
     font-size: 15px;
     color: #001a33;
-    text-shadow: #fff 0 1px 0;
     float: left;
     margin: 13px 0 0 8px;
     font-weight: bold;
@@ -303,8 +298,7 @@
 }
 
 .disable_color_btn_text{
-    color: #29699D !important;
-    text-shadow: none !important;
+    color: #C7AA81 !important;
 }
 
 .mb_header_first{
@@ -368,8 +362,7 @@
 
 .color_button_bar span{
     font-size: 15px;
-    color: #fff;
-    text-shadow: rgba(0, 50, 80, 0.5) 1px 2px 0;
+    color: #5a3807;
     float: left;
     margin: 13px 0 0 8px;
     /*font-weight: bold;*/
@@ -534,7 +527,7 @@
     padding: 8px 47px 0 0;
     font-size: 22px;
     text-shadow: #fff 0 1px 0;
-    color: #0064c8;
+    color: #5a3807;
 }
 
 
@@ -589,7 +582,7 @@
     left: 75px;
     font: 45px trebuchet ms, Arial, Helvetica, sans-serif;
     text-align: center;
-    color: #048;
+    color: #5a3807;
     width: 89px;
     height: 40px;
 }
@@ -665,7 +658,7 @@
 
 .aspect_block{
     font-size: 22px;
-    color: #048;
+    color: #5a3807;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i/aspect_bg.png") left;
     height: 35px;
@@ -692,7 +685,7 @@
 .playback_progress{
     height: 10px;
     width: 0;
-    background-color: #2c6eff;
+    background-color: #5a3807;
     border-radius: 2px;
     -webkit-transition: all 0.3s ease;
 }
@@ -726,7 +719,7 @@
 
 .time_shift_info_block, .ad_skip_block{
     font-size: 22px;
-    color: #048;
+    color: #5a3807;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i/aspect_bg.png") left;
     height: 31px;

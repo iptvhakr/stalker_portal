@@ -1,7 +1,6 @@
 .guess_block{
-    color: #fff;
+    color: #5a3807;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
     margin: 3px 0 0 13px;
     padding-left: 3px;
     white-space: pre;
@@ -13,8 +12,7 @@
 
 .active_guess_block{
     font-size: 22px;
-    color: #002864;
-    text-shadow: #fff 0 1px 0;
+    color: #fff;
     margin: 8px 25px 0 14px;
     white-space: pre;
     overflow: hidden;
@@ -24,9 +22,8 @@
 }
 
 .score_block{
-    color: #fff;
+    color: #5a3807;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
     margin: 3px 15px 0 3px;
     padding-left: 3px;
     white-space: pre;
@@ -37,8 +34,7 @@
 
 .active_score_block{
     font-size: 22px;
-    color: #002864;
-    text-shadow: #fff 0 1px 0;
+    color: #fff;
     margin: 8px 25px 16px 4px;
     white-space: pre;
     overflow: hidden;
@@ -58,8 +54,8 @@
     width: 60px;
     height: 82px;
     /*background-color: #245490;*/
-    background: -webkit-gradient(linear, left top, left bottom, from(#285b9b), to(#10325b));
-    background: -moz-linear-gradient(top, #285b9b, #10325b);
+    background: -webkit-gradient(linear, left top, left bottom, from(#DF8703), to(#A06100));
+    background: -moz-linear-gradient(top, #DF8703, #A06100);
     margin: 0 25px 0 0;
     text-align: center;
     font-size: 64px;
@@ -69,11 +65,11 @@
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     color: #fff;
-    border: 2px solid #4a71a1;
+    border: 2px solid #A06100;
 }
 
 .mastermind_field .active{
-    border: 2px solid #bfb770;
+    border: 2px solid #fff;
 }
 
 .place_block{
@@ -83,8 +79,7 @@
     height: 21px;
     float: left;
     margin: 4px 0 0 4px;
-    color: #002864;
-    text-shadow: #fff 0 1px 0;
+    color: #fff;
     font-size: 18px;
     text-align: center;
     white-space: pre;
@@ -99,8 +94,7 @@
     margin: 6px 2px 0 0;
     float:left;
     font-size: 22px;
-    color: #fff;
-    text-shadow: #122946 0 -1px 0;
+    color: #5A3807;
     text-align: center;
     white-space: pre;
     overflow: hidden;
@@ -108,9 +102,8 @@
 }
 
 .sum_points_block{
-    color: #fff;
+    color: #5A3807;
     font-size: 20px;
-    text-shadow: #122946 0 -1px 0;
     margin: 3px 15px 0 3px;
     padding-left: 3px;
     white-space: pre;
@@ -121,8 +114,7 @@
 
 .active_sum_points_block{
     font-size: 22px;
-    color: #002864;
-    text-shadow: #fff 0 1px 0;
+    color: #fff;
     margin: 8px 35px 0 0;
     white-space: pre;
     overflow: hidden;
