@@ -45,7 +45,7 @@
     position: absolute;
     width: 220px;
     height: 138px;
-    bottom: 49px;
+    bottom: 30px;
     left: 160px;
     background: url(i_480/mm_hor_left.png);
 }
@@ -54,7 +54,7 @@
     position: absolute;
     width: 220px;
     height: 138px;
-    bottom: 49px;
+    bottom: 30px;
     right: 158px;
     background: url(i_480/mm_hor_right.png);
 }
