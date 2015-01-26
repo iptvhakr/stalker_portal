@@ -1881,6 +1881,10 @@ function common_xpcom(){
                     cur_place_num = 5;
                 }else if(this.cur_place == 'vclub'){
                     cur_place_num = 2;
+                }else if(this.cur_place == 'karaoke'){  // Karaoke
+                    cur_place_num = 3;
+                }else if(this.cur_place == 'audioclub'){ // Audio Club
+                        cur_place_num = 4;
                 }else if (this.cur_place == 'epg_simple' || this.cur_place == 'epg'){ // TV archive
                     cur_place_num = 11;
                 }else{
@@ -1893,7 +1897,7 @@ function common_xpcom(){
                     cur_place_num = 2;
                 }else if(this.cur_place == 'karaoke'){ // Karaoke
                     cur_place_num = 3;
-                }else if(this.cur_place == 'audio_club'){ // Audio Club
+                }else if(this.cur_place == 'audioclub'){ // Audio Club
                     cur_place_num = 4;
                 }else if(this.cur_place == 'video_clips'){ // Video Clips
                     cur_place_num = 8;

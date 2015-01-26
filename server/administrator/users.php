@@ -403,6 +403,10 @@ switch (@$_GET['sort_by']){
             add_where($where, " keep_alive>'$now_time' and now_playing_type=2 order by id");
             break;
         }
+    case 'audioclub':{
+        add_where($where, " keep_alive>'$now_time' and now_playing_type=4 order by id");
+            break;
+        }
     case 'ad':{
             add_where($where, " keep_alive>'$now_time' and now_playing_type=9 order by id");
             break;
@@ -517,6 +521,7 @@ function sort_page(){
                 <option value="off" <? if (@$_GET['sort_by'] == 'off') echo 'selected' ?>>off
                 <option value="iptv" <? if (@$_GET['sort_by'] == 'iptv') echo 'selected' ?>>iptv
                 <option value="video" <? if (@$_GET['sort_by'] == 'video') echo 'selected' ?>>video
+                <option value="audioclub" <? if (@$_GET['sort_by'] == 'audioclub') echo 'selected' ?>>audioclub
                 <option value="radio" <? if (@$_GET['sort_by'] == 'radio') echo 'selected' ?>>radio
                 <option value="karaoke" <? if (@$_GET['sort_by'] == 'karaoke') echo 'selected' ?>>karaoke
                 <option value="records" <? if (@$_GET['sort_by'] == 'records') echo 'selected' ?>>records

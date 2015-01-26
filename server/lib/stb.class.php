@@ -1197,18 +1197,31 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     
                     break;
                 case 4: // Audio Club
-                    
-                    preg_match("/(\d+).mp3$/", $param, $tmp_arr);
-                    $audio_id = intval($tmp_arr[1]);
-                    
-                    $audio = $this->db->from('audio')->where(array('id' => $audio_id))->get()->first();
-                    
-                    if (!empty($audio)){
-                        $update_data['now_playing_content'] = $audio['name'];
+
+                    if (!empty($_REQUEST['content_id'])){
+                        $audio = Mysql::getInstance()
+                            ->select('audio_compositions.name as track_title, audio_albums.performer_id')
+                            ->from('audio_compositions')
+                            ->where(array('audio_compositions.id' => (int) $_REQUEST['content_id']))
+                            ->join('audio_albums', 'audio_albums.id', 'audio_compositions.album_id', 'INNER')
+                            ->get()
+                            ->first();
+
+                        if ($audio){
+                            $performer = Mysql::getInstance()
+                                ->from('audio_performers')
+                                ->where(array('id' => $audio['performer_id']))
+                                ->get()
+                                ->first();
+
+                            if ($performer){
+                                $update_data['now_playing_content'] = $performer['name'].' - '.$audio['track_title'];
+                            }
+                        }
                     }else{
                         $update_data['now_playing_content'] = $param;
                     }
-                    
+
                     break;
                 case 5: // Radio
                 
