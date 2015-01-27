@@ -101,6 +101,10 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
             $handle = gzopen($setting['uri'], 'r');
 
+            if (!$handle){
+                return _("Source")." ".$setting['uri']." "._("failed to open")."\n";
+            }
+
             $tmpfname = tempnam("/tmp", "xmltv");
             $fp = fopen($tmpfname, "w");
 
