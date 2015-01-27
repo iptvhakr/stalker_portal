@@ -18,12 +18,9 @@ class Recorder extends Storage
 
         $filename = intval($rec_id).'_'.date("YmdHis").'.mpg';
 
-        if (!preg_match('/:\/\//', $url, $arr)){
+        if (!preg_match('/:\/\//', $url)){
             throw new Exception('URL wrong format');
         }
-
-        $ip   = $arr[1];
-        $port = $arr[2];
 
         if (strpos($url, 'rtp://') !== false ||
             strpos($url, 'udp://') !== false ||
@@ -39,6 +36,14 @@ class Recorder extends Storage
                     .' > /dev/null 2>&1 & echo $!'
                     , $out);
             }else{
+
+                if (!preg_match('/:\/\/([\d\.]+):(\d+)/', $url, $arr)){
+                    throw new Exception('URL wrong format');
+                }
+
+                $ip   = $arr[1];
+                $port = $arr[2];
+
                 exec('nohup python '.PROJECT_PATH.'/dumpstream'
                     .' -a'.$ip
                     .' -p'.$port
