@@ -136,7 +136,6 @@ a {text-decoration: none;}
         /* общее */
         #loading {background-color: black; height: 100%; position: absolute; width: 100%; z-index: 3;}
         #loading span {position:absolute; color:#ccc; font-family:'Ubuntu'; font-size:54px; width:100%; text-align:center; top:50%; z-index: 4;}
-        .page#MainPage .content {/*background: url("img/1080/bg_exua.jpg") no-repeat; background-position: 100%;*/}
 			.page#MainPage .content .servText {line-height: 75px; margin-left: 15px;}
 			.page#MainPage .notActive .focused {background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(rgba(59, 59, 59, 0.5)), color-stop(0.4, rgba(24, 24, 24, 0.5)), color-stop(0.6, rgba(24, 24, 24, 0.5)), to(rgba(78, 78, 78, 0.5))) !important;}
        
@@ -213,7 +212,7 @@ a {text-decoration: none;}
 				.page#ListPage .rightContent .info .view .text { margin-left:8px; float: left; margin-top: 22px;  text-align: left; width: 580px;}
 					.page#ListPage .rightContent .info .view .text span { color:white; }
 				.page#ListPage .rightContent .info .view .preview_back {line-height: 90px;}
-					.page#ListPage .rightContent .info .view .preview_back .text { /*width: auto;*/ border-left-width: 3px; border-left-style: solid; border-left-color: #3E3E3E; margin-left: 15px; padding: 0px; padding-left: 15px; width: 420px; margin-top: 0px; line-height: 50px;}
+					.page#ListPage .rightContent .info .view .preview_back .text { border-left-width: 3px; border-left-style: solid; border-left-color: #3E3E3E; margin-left: 15px; padding: 0px; padding-left: 15px; width: 420px; margin-top: 0px; line-height: 50px;}
         /* footer */
 
         

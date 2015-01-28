@@ -97,7 +97,7 @@ a {text-decoration: none;}
 	.csimple-select-wrapper.autocomplete .csimple-select-hint { display:block; }
 
 /* component Select box style*/
-.csimple-select-wrapper.cselect-box:focus .csimple-content-wrapper { /*background:url(img/576/ico_frame_menu.png) no-repeat right;*/ background-origin:content-box; }
+.csimple-select-wrapper.cselect-box:focus .csimple-content-wrapper { background-origin:content-box; }
 .csimple-select-wrapper.cselect-box:focus .csimple-select-content { margin-right:10px; }
 .csimple-select-dropdown { position:absolute; z-index:100; border-style:solid; border-color:#0ae; border-width:1px; background:#fff; border-top:0; }
 	.csimple-select-dropdown .csimple-dropdown-main { position:relative; max-height:120px; overflow-y:auto; }
@@ -137,7 +137,7 @@ a {text-decoration: none;}
         /* общее */
         #loading {background-color: black; height: 100%; position: absolute; width: 100%; z-index: 3;}
         #loading span {position:absolute; color:#ccc; font-family:'Ubuntu'; font-size:36px; width:100%; text-align:center; top:50%; z-index: 4;}
-        .page#MainPage .content {vertical-align: top;/*background: url("img/576/bg_exua.jpg") no-repeat; background-position: 100%;*/}
+        .page#MainPage .content {vertical-align: top;}
         .page#MainPage .content .servText {line-height: 30px; margin-left: 6px;}
         .page#MainPage .notActive .focused {background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(rgba(59, 59, 59, 0.5)), color-stop(0.4, rgba(24, 24, 24, 0.5)), color-stop(0.6, rgba(24, 24, 24, 0.5)), to(rgba(78, 78, 78, 0.5))) !important;}
        
@@ -203,15 +203,15 @@ a {text-decoration: none;}
             .page#ListPage .rightContent .info .itemImg {height: 160px; max-width: 120px; }
             .page#ListPage .rightContent .info .player { height:140px; margin-bottom:2px; cursor:pointer }
             .page#ListPage .rightContent .info .player.stop { background: url("img/bg_white_30.png") center repeat, url("img/576/ico_osd_playpause.png") center no-repeat }
- /**/       .page#ListPage .rightContent .info .player.load { background: url("img/bg_white_30.png") center repeat, url("img/576/ico_osd_wait.png") center no-repeat }
- /**/       .page#ListPage .rightContent .info .player.audio { background: url("img/bg_white_30.png") center repeat, url("img/576/ico_osd_audio.png") center no-repeat }   
+ 		    .page#ListPage .rightContent .info .player.load { background: url("img/bg_white_30.png") center repeat, url("img/576/ico_osd_wait.png") center no-repeat }
+    		.page#ListPage .rightContent .info .player.audio { background: url("img/bg_white_30.png") center repeat, url("img/576/ico_osd_audio.png") center no-repeat }
             .page#ListPage .rightContent .info .player.play { background:none }
             .page#ListPage .rightContent .info .pgbar  { height:12px; background-color:#202224; }
-            .page#ListPage .rightContent .info .pgval  { height:12px; top:-12px; width:0; background-color:#ffc20e; position:relative; display:inline-block; float:left; /*display:none*/ }
+            .page#ListPage .rightContent .info .pgval  { height:12px; top:-12px; width:0; background-color:#ffc20e; position:relative; display:inline-block; float:left; }
             .page#ListPage .rightContent .view {width: 220px;}
             .page#ListPage .rightContent .info .view .text { margin-left:5px; float: left; margin-top: 5px; text-align: left; width: 205px;}
             .page#ListPage .rightContent .info .view .text span { color:white; }
-            .page#ListPage .rightContent .info .view .preview_back .text { /*width: auto;*/ padding: 0px; line-height: 20px;  padding-left: 10px; margin-left: 0px; width: 150px;}
+            .page#ListPage .rightContent .info .view .preview_back .text { padding: 0px; line-height: 20px;  padding-left: 10px; margin-left: 0px; width: 150px;}
             .page#ListPage .rightContent .info .view .preview_back img { margin-top:5px; padding-right:5px;}
 
 	        /* footer */
