@@ -30,13 +30,17 @@ class Cache
     private function __construct(){
 
         $this->backend = new Memcache;
-        
-        $status = $this->backend->connect(Config::get('memcache_host'), 11211);
 
-        //var_dump($status);
+        $hosts = Config::get('memcache_host');
 
-        if (!$status){
-            throw new Exception("Could not connect to memcached. Host: ".Config::get('memcache_host'));
+        if (!is_array($hosts)){
+            $hosts = array($hosts);
+        }
+
+        foreach ($hosts as $host){
+            if (!$this->backend->addServer($host, 11211)) {
+                error_log("Could not connect to memcached. Host: " . $host);
+            }
         }
     }
 

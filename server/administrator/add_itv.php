@@ -1594,7 +1594,7 @@ function delete_logo(id){
            </td>
            <td>
             <input name="enable_tv_archive" id="enable_tv_archive" class="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> >
-            <span class="flussonic_dvr_block" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>"> <?= _('Flussonic DVR')?><input type="checkbox" class="flussonic_dvr" name="flussonic_dvr" <?= $checked_flussonic_dvr?>></span>
+            <span class="flussonic_dvr_block" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>"> <?= _('Flussonic DVR')?><input type="checkbox" class="flussonic_dvr" name="flussonic_dvr" <?= @$checked_flussonic_dvr?>></span>
             <span id="storage_name" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
                 <table width="100%" style="background-color:#f8f8f8">
                     <? foreach ($storages as $storage){?>
