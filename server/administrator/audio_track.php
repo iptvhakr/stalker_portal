@@ -160,7 +160,7 @@ function page_bar(){
 
     for($i = 1; $i <= $total_pages; $i++){
         if(($i-1) != $page){
-            $page_bar .= ' <a href="?page='.($i-1).'&search='.@$_GET['search'].'&status='.@$_GET['status'].'">'.$i.'</a> |';
+            $page_bar .= ' <a href="?album_id='.@$_GET['album_id'].'&page='.($i-1).'&search='.@$_GET['search'].'&status='.@$_GET['status'].'">'.$i.'</a> |';
         }
         else
         {
@@ -186,6 +186,7 @@ $tracks = Mysql::getInstance()->from('audio_compositions')
     ->where(array('album_id' => (int) $_GET['album_id']))
     ->join('audio_languages', 'audio_compositions.language_id', 'audio_languages.id', 'LEFT')
     ->orderby('number')
+    ->limit($MAX_PAGE_ITEMS, $page_offset)
     ->get();
 
 if (isset($_GET['album_id'])){
