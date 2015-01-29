@@ -10,7 +10,7 @@ TIMEOUT=5
 
 #echo $TMP_FILE
 
-vlc $URL --daemon --pidfile $PID_FILE --sout '#duplicate{dst=std{access=file,mux=ts,dst=\"'$TMP_FILE'\"}}' >/dev/null 2>&1
+cvlc $URL --daemon --pidfile $PID_FILE --sout '#duplicate{dst=std{access=file,mux=ts,dst=\"'$TMP_FILE'\"}}' >/dev/null 2>&1
 #echo start counting $TIMEOUT s
 sleep $TIMEOUT
 #echo $!
