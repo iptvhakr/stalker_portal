@@ -263,6 +263,10 @@ player.prototype.init = function(){
                 if (params.hasOwnProperty("clear_dvb_channels") && module.dvb){
                     module.dvb.clear_dvb_channels();
                 }
+
+                if (params.hasOwnProperty("mc_proxy_url")){
+                    stb.player.mc_proxy_url = params.mc_proxy_url;
+                }
             }
         };
 
@@ -2267,6 +2271,14 @@ player.prototype.play_now = function(item){
             }
 
             _debug('use_proxy', use_proxy);
+
+            var match = /(rtp|udp):\/\/([^\s]+)(.*)/.exec(uri);
+
+            if (this.mc_proxy_url && match){
+                _debug('mc_proxy_url', this.mc_proxy_url);
+                uri = uri.replace(/.+:\/\/[^\/]+/, 'ffrt ' + this.mc_proxy_url + '/' + match[1] + '/' + match[2] + match[3]);
+                _debug('new uri', uri);
+            }
 
             if (use_proxy){
 

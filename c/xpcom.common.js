@@ -1159,6 +1159,13 @@ function common_xpcom(){
                         gSTB.SetLedIndicatorLevels(parseInt(this.user['default_led_level'], 10), parseInt(this.user['standby_led_level'], 10));
                     }
 
+                    var mc_proxy_enabled = stb.RDir('getenv mc_proxy_enabled');
+                    var mc_proxy_url     = stb.RDir('getenv mc_proxy_url');
+
+                    if (mc_proxy_enabled == 'true' && mc_proxy_url){
+                        this.player.mc_proxy_url = mc_proxy_url;
+                    }
+
                 }catch(e){
                     _debug(e);
                 }

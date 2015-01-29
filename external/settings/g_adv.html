@@ -103,7 +103,7 @@
                 pr = true;
             }
             if (document.getElementById("i5")){
-                t = document.getElementById("i5").checked;
+                var mc_proxy_enabled = t = document.getElementById("i5").checked;
                 if (t != (read.result.mc_proxy_enabled == "true" ? true : false)) {
                     wf = true;
                     wr += (pr ? ',' : '') + '"mc_proxy_enabled":"' + t + '"';
@@ -112,7 +112,7 @@
                 }
             }
             if (document.getElementById("i6")){
-                t = document.getElementById("i6").value;
+                var mc_proxy_url = t = document.getElementById("i6").value;
                 if (t != read.result.mc_proxy_url)if (!(url.test(t) || regURLrf.test(t) || regURL.test(t) || t == ''))erm += parent.t("No correct") + "<br />" + parent.t("Multicast proxy URL:"); else {
                     wf = true;
                     wr += (pr ? ',' : '') + '"mc_proxy_url":"' + t + '"';
@@ -146,7 +146,11 @@
                                         parent.stb.SetEnv(wr);
                                     }
                                     try {
-                                        parent.stb.SendEventToPortal('{"type":"settings","screensaver_delay":"' + t + '","plasma_saving":"'+(plasma ? 1 : 0)+'"}');
+                                        parent.stb.SendEventToPortal('{"type":"settings",'
+                                                + '"screensaver_delay":"' + t + '",'
+                                                + '"plasma_saving":"'+(plasma ? 1 : 0)+'",'
+                                                + '"mc_proxy_url":"' + (mc_proxy_enabled && mc_proxy_url ? mc_proxy_url : '') + '"}'
+                                        );
                                     } catch (e) {
                                     }
                                     back();
