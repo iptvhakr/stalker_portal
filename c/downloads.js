@@ -514,6 +514,14 @@
             this.forFill = null;
             this.forFill = [];
             for(var i=0;i<obj.length;i++) {
+
+                _debug('obj[i].progressPct', obj[i].progressPct);
+                _debug('typeof obj[i].progressPct', typeof(obj[i].progressPct));
+
+                if (typeof(obj[i].progressPct) == 'number'){
+                    obj[i].progressPct = obj[i].progressPct.toString();
+                }
+
                 this.forFill.push({
                     'number':(i+1).toString(),
                     'd_name': obj[i].filePath.split('/')[obj[i].filePath.split('/').length-1],
