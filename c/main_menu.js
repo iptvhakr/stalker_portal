@@ -62,7 +62,12 @@ var main_menu = {
         }).bind(key.CLOCK, this);
         
         this.dom_obj = create_block_element('main_menu', document.body);
-        
+        this.logo_dom_obj = create_block_element('main_menu_logo', this.dom_obj);
+
+        if (stb.user && stb.user.portal_logo_url){
+            this.logo_dom_obj.style.background = 'url('+stb.user.portal_logo_url+') no-repeat';
+        }
+
         this.main_menu_date_bar = create_block_element('main_menu_date_bar', this.dom_obj);
         
         this.date = create_inline_element('main_menu_date' ,this.main_menu_date_bar);
