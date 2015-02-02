@@ -174,8 +174,8 @@ function confb(erm,el,ef,back){
 
 function confOk(){
     eval(func);
-    if(document.getElementById('confirmb').style.display=="none")document.getElementById('confirm').style.display="none";
-    else document.getElementById('confirmb').style.display="none";
+    if(document.getElementById('confirmb').style.display=="block" || document.getElementById('confirmb').style.display=="")document.getElementById('confirmb').style.display="none";
+    if(document.getElementById('confirm').style.display=="block" || document.getElementById('confirm').style.display=="")document.getElementById('confirm').style.display="none";
 }
 
 function pressKey(e)
