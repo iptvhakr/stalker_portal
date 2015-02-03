@@ -937,17 +937,17 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $total_iptv_channels = (int) $this->response['total_items'];
 
+        if (!empty($_REQUEST['fav'])){
+            $dvb_channels = array_values(array_filter($dvb_channels, function($channel) use ($fav){
+                return in_array($channel['id'], $fav);
+            }));
+        }
+
         if (@$_REQUEST['sortby'] != 'name' && (empty($_REQUEST['genre']) || $_REQUEST['genre'] == '*' || $_REQUEST['genre'] == 'dvb')){
             $this->response['total_items'] += count($dvb_channels);
         }
 
         if (((count($this->response['data']) < self::max_page_items) && !empty($dvb_channels) || !isset($_REQUEST['p'])) && @$_REQUEST['sortby'] != 'name' && (empty($_REQUEST['genre']) || $_REQUEST['genre'] == '*' || $_REQUEST['genre'] == 'dvb')){
-
-            if (!empty($_REQUEST['fav'])){
-                $dvb_channels = array_values(array_filter($dvb_channels, function($channel) use ($fav){
-                    return in_array($channel['id'], $fav);
-                }));
-            }
 
             $total_iptv_pages = ceil($total_iptv_channels/self::max_page_items);
 
@@ -959,8 +959,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
             if (!empty($_REQUEST['genre']) && $_REQUEST['genre'] == 'dvb'){
                 $dvb_part_offset = $this->page * self::max_page_items;
-            }elseif($this->page > $total_iptv_pages-1){
-                $dvb_part_offset = ($this->page - $total_iptv_pages) * self::max_page_items + (self::max_page_items - $total_iptv_channels % self::max_page_items);
+            }elseif($this->page + 1 > $total_iptv_pages){
+                $diff_items = $total_iptv_channels % self::max_page_items;
+                $dvb_part_offset = ($this->page - $total_iptv_pages) * self::max_page_items + ($diff_items > 0 ? self::max_page_items - $diff_items : 0);
             }else{
                 $dvb_part_offset = 0;
             }
