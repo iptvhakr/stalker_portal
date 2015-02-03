@@ -99,7 +99,7 @@ function submit()
     if(crash.indexOf(parent.stbUpdate.getStatus())!=-1)
     {
         block=false;
-        parent.erMes(parent.t('Update fails!'),'i'+(iid+1));
+        parent.erMes(parent.t('Update fails!'),'i'+iid);
         return;
     }
     else {info[4].innerHTML=parent.stbUpdate.getStatusStr();

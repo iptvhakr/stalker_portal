@@ -145,11 +145,21 @@ function erMes(erm,el){
 }
 
 function erMbeck(){
-    if(close){stbWebWindow.close();}
-    else {if(spos!=0)document.getElementById('confirmb').style.display="none";
-    else document.getElementById('confirm').style.display="none";
-    if(elem!='')cont.contentWindow.document.getElementById(elem).focus();
-    else cont.focus();}
+    if (close) {
+        stbWebWindow.close();
+    }
+    else {
+        if (spos != 0){
+            document.getElementById('confirmb').style.display = "none";
+        }else{
+            document.getElementById('confirm').style.display = "none";
+        }
+        if (elem != ''){
+            cont.contentWindow.document.getElementById(elem).focus();
+        }else{
+            cont.focus();
+        }
+    }
 }
 
 function conf(erm,el,ef,back){
