@@ -389,7 +389,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                                 ->where(array('ident' => $this->stb->mac))
                                 ->get()
                                 ->first();
-        
+
         if (!empty($last_id_arr) && key_exists('last_id', $last_id_arr)){
             $this->db->update('last_id', array('last_id' => $id), array('ident' => $this->stb->mac));
         }else{
@@ -476,11 +476,20 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
     /**
      * @param bool $include_censored
+     * @param bool $include_unsubscribed
      * @return Mysql $query
      */
-    public function getChannels($include_censored = false){
+    public function getChannels($include_censored = false, $include_unsubscribed = false){
 
         $all_user_channels_ids = $this->getAllUserChannelsIds();
+
+        $user = User::getInstance(Stb::getInstance()->id);
+        $options = $user->getServicesByType('option');
+        if ($options && array_search('show_unsubscribed_tv_channels', $options) !== false){
+            $show_unsubscribed_tv_channels_option = true;
+        }else{
+            $show_unsubscribed_tv_channels_option = false;
+        }
 
         if (!$include_censored){
             $censored_origin = Mysql::getInstance()->from('itv')->where(array('censored' => 1))->get()->all('id');
@@ -503,7 +512,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $query->where(array('status' => 1));
         }
 
-        $query->in('id', $all_user_channels_ids);
+        if (!$include_unsubscribed || !$show_unsubscribed_tv_channels_option && (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array())))){
+            $query->in('id', $all_user_channels_ids);
+        }
 
         return $query;
     }
@@ -553,7 +564,6 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     }
     
     public function getAllFavChannels(){
-        
         $fav_ids = $this->getFav();
         
         $fav_str = implode(",", $fav_ids);
@@ -562,7 +572,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $fav_str = 'null';
         }
 
-        $fav_channels = $this->getChannels(true)->in('id', $fav_ids)->orderby('field(id,' . $fav_str . ')');
+        $fav_channels = $this->getChannels(true, true)->in('id', $fav_ids)->orderby('field(id,' . $fav_str . ')');
 
         $this->include_censored = false;
 
@@ -659,6 +669,14 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         }
         
         $ch_idx = 0;
+
+        $user = User::getInstance(Stb::getInstance()->id);
+        $options = $user->getServicesByType('option');
+        if ($options && array_search('show_unsubscribed_tv_channels', $options) !== false){
+            $show_unsubscribed_tv_channels_option = true;
+        }else{
+            $show_unsubscribed_tv_channels_option = false;
+        }
         
         if(@$_REQUEST['fav']){
             
@@ -676,7 +694,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                     $query->where($where_or, 'OR ');
                 }
 
-                if (Config::getSafe('enable_tariff_plans', false) && !Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){
+                if (!$show_unsubscribed_tv_channels_option && (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array())))){
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
@@ -704,7 +722,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                     $query->where($where_or, 'OR ');
                 }
 
-                if (Config::getSafe('enable_tariff_plans', false) && !Config::getSafe('enable_tv_subscription_for_tariff_plans', false)){
+                if (!$show_unsubscribed_tv_channels_option && (!Config::getSafe('show_unsubscribed_tv_channels', false) || Config::getSafe('show_unsubscribed_tv_channels', false) && in_array($this->stb->mac, Config::getSafe('hide_unsubscribed_for_macs', array())))){
                     $query->in('itv.id', $all_user_channels_ids);
                 }
 
@@ -738,14 +756,6 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 }
 
             }else{
-
-                $user = User::getInstance(Stb::getInstance()->id);
-                $options = $user->getServicesByType('option');
-                if ($options && array_search('show_unsubscribed_tv_channels', $options) !== false){
-                    $show_unsubscribed_tv_channels_option = true;
-                }else{
-                    $show_unsubscribed_tv_channels_option = false;
-                }
 
                 $query = $this->db->from('itv')->where($where)->where(array('number<=' => $tv_number));
 

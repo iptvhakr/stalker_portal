@@ -463,6 +463,9 @@
                             //stb.player.channels[idx].lock = 1;
                             stb.player.channels.splice(idx, 1);
                         }
+
+                        stb.load_channels();
+                        stb.load_fav_channels();
                     }
                 },
                 this
@@ -496,6 +499,7 @@
                         }
 
                         stb.load_channels();
+                        stb.load_fav_channels();
                     }
                 },
                 this
