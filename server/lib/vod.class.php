@@ -557,7 +557,6 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $offset = $this->page * self::max_page_items;
 
-        //$where = array('status' => 1);
         $where = array();
 
         if (@$_REQUEST['hd']) {
@@ -566,12 +565,19 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $where['hd<='] = 1;
         }
 
-        /*if (!$this->stb->hd && Config::get('vclub_mag100_filter')){
-            $where['for_sd_stb'] = 1;
-        }*/
+        if (!empty($_REQUEST['category']) && $_REQUEST['category'] == 'coming_soon'){
+            $tasks_video = Mysql::getInstance()->from('moderator_tasks')->where(array('ended' => 0, 'media_type' => 2))->get()->all('media_id');
+            $scheduled_video = Mysql::getInstance()->from('video_on_tasks')->get()->all('video_id');
+
+            $ids = array_unique(array_merge($tasks_video, $scheduled_video));
+        }elseif (@$_REQUEST['category'] && @$_REQUEST['category'] !== '*') {
+            $where['category_id'] = intval($_REQUEST['category']);
+        }
 
         if (!$this->stb->isModerator()) {
-            $where['accessed'] = 1;
+            if (!isset($ids)){
+                $where['accessed'] = 1;
+            }
 
             $where['status'] = 1;
 
@@ -584,12 +590,6 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         if (@$_REQUEST['years'] && @$_REQUEST['years'] !== '*') {
             $where['year'] = $_REQUEST['years'];
-        }
-
-        if (!empty($_REQUEST['category']) && $_REQUEST['category'] == 'coming_soon'){
-            $ids = Mysql::getInstance()->from('moderator_tasks')->where(array('ended' => 0, 'media_type' => 2))->get()->all('media_id');
-        }elseif (@$_REQUEST['category'] && @$_REQUEST['category'] !== '*') {
-            $where['category_id'] = intval($_REQUEST['category']);
         }
 
         if ((empty($_REQUEST['category']) || $_REQUEST['category'] == '*') && !Config::getSafe('show_adult_movies_in_common_list', true)){
