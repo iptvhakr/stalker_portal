@@ -1412,7 +1412,11 @@ player.prototype.event_callback = function(event, params){
             window.clearTimeout(this.hdmi_reaction_timer);
 
             if (stb.profile['hdmi_event_reaction'] == 1 && !stb.power_off){
-                keydown_observer.emulate_key(key.MENU);
+                if (self.is_tv){
+                    keydown_observer.emulate_key(key.MENU);
+                }else if (!self.pause.on){
+                    keydown_observer.emulate_key(key.PAUSE);
+                }
             }
             break;
         }
@@ -1423,7 +1427,11 @@ player.prototype.event_callback = function(event, params){
             if (stb.profile['hdmi_event_reaction']){
                 this.hdmi_reaction_timer = window.setTimeout(function(){
                     if (!stb.power_off){
-                        keydown_observer.emulate_key(key.MENU);
+                        if (self.is_tv){
+                            keydown_observer.emulate_key(key.MENU);
+                        }else if (!self.pause.on){
+                            keydown_observer.emulate_key(key.PAUSE);
+                        }
                     }
                 }, stb.profile['hdmi_event_reaction'] * 1000);
             }
