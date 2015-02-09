@@ -15,7 +15,18 @@ if (@$_GET['del']){
 
     Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
-    Mysql::getInstance()->delete('moderators', array('id' => intval(@$_GET['id'])));
+    $moderator = Mysql::getInstance()
+        ->from('moderators')
+        ->where(array('id' => intval(@$_GET['id'])))
+        ->get()
+        ->first();
+
+    if (!empty($moderator)){
+        Mysql::getInstance()
+            ->use_caching(array('moderators.mac='.$moderator['mac']))
+            ->delete('moderators', array('id' => intval(@$_GET['id'])));
+    }
+
     header("Location: add_moderator_mac.php");
     exit;
 }
@@ -24,7 +35,17 @@ if (isset($_GET['status']) && @$_GET['id']){
 
     Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
-    Mysql::getInstance()->update('moderators', array('status' => intval(@$_GET['status'])), array('id' => intval(@$_GET['id'])));
+    $moderator = Mysql::getInstance()
+        ->from('moderators')
+        ->where(array('id' => intval(@$_GET['id'])))
+        ->get()
+        ->first();
+
+    if (!empty($moderator)) {
+        Mysql::getInstance()
+            ->use_caching(array('moderators.mac='.$moderator['mac']))
+            ->update('moderators', array('status' => intval(@$_GET['status'])), array('id' => intval(@$_GET['id'])));
+    }
     header("Location: add_moderator_mac.php");
     exit;
 }
@@ -35,11 +56,13 @@ if (!$error){
     
         if(@$_POST['mac']){
 
-            Mysql::getInstance()->insert('moderators', array(
-                'name'             => @$_POST['name'],
-                'mac'              => @$_POST['mac'],
-                'disable_vclub_ad' => @$_POST['disable_vclub_ad']
-            ));
+            Mysql::getInstance()
+                ->use_caching()
+                ->insert('moderators', array(
+                    'name'             => @$_POST['name'],
+                    'mac'              => @$_POST['mac'],
+                    'disable_vclub_ad' => @$_POST['disable_vclub_ad']
+                ));
 
             header("Location: add_moderator_mac.php");
         }
@@ -52,7 +75,9 @@ if (!$error){
         
         if(@$_POST['mac']){
 
-            Mysql::getInstance()->update('moderators',
+            Mysql::getInstance()
+                ->use_caching(array('moderators.mac='.$_POST['mac']))
+                ->update('moderators',
                 array(
                     'name'             => $_POST['name'],
                     'mac'              => $_POST['mac'],

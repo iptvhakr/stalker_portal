@@ -10,8 +10,6 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 {
     private $db;
     private $cleaned_epg = array();
-    private $day_begin_datetime;
-    private $now_datetime;
     private $cur_program_id;
     private $cur_program_idx;
     private $cur_program_page;
@@ -26,9 +24,6 @@ class Epg implements \Stalker\Lib\StbApi\Epg
     public function __construct(){
         $this->db = Mysql::getInstance();
         $this->day_begin_datetime = date("Y-m-d 00:00:00");
-        $this->now_datetime = date("Y-m-d H:i:s");
-
-        $this->settings = $this->getSettings();
     }
 
     /**
@@ -38,6 +33,8 @@ class Epg implements \Stalker\Lib\StbApi\Epg
      * @return string
      */
     public function updateEpg($force = false){
+
+        $this->settings = $this->getSettings();
 
         $result = '';
 
@@ -419,9 +416,43 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         return $this->getProgramByChannelAndTime($ch_id);
     }
 
+    public function getCurProgramsMap($ch_ids, $datetime = 'NOW()'){
+
+        if ($datetime == 'NOW()'){
+            $datetime = date(Mysql::DATETIME_FORMAT);
+        }
+
+        $programs = $this->db
+            ->select('*, TIME_FORMAT(epg.time,"%H:%i") as t_time')
+            ->from('epg')
+            ->in('ch_id', $ch_ids)
+            ->where(array(
+                'time<='   => $datetime
+            ))
+            ->where(array(
+                'time_to'  => 0,
+                'time_to>' => $datetime
+            ), 'OR ')
+            ->orderby('time', 'DESC')
+            ->get()
+            ->all();
+
+        $programs_map = array();
+
+        foreach ($programs as $program){
+            $programs_map[$program['ch_id']] = $program;
+        }
+
+        return $programs_map;
+    }
+
     public function getProgramByChannelAndTime($ch_id, $datetime = 'NOW()'){
 
         $ch_id = intval($ch_id);
+
+        if ($datetime == 'NOW()'){
+            $datetime = date(Mysql::DATETIME_FORMAT);
+        }
 
         $program = $this->db
             ->select('*, TIME_FORMAT(epg.time,"%H:%i") as t_time')
@@ -902,7 +933,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                      ->where(array(
                          'epg.ch_id'     =>  $ch_id,
                          'epg.time>='    =>  $from,
-                         'epg.time<'     =>  'NOW()',
+                         'epg.time<'     =>  date(Mysql::DATETIME_FORMAT),
                      ))
                      ->get()
                      ->counter();

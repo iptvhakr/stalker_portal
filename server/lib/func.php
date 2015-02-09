@@ -182,8 +182,8 @@ function get_cur_active_playing_type($in_param = ''){
         ->from('users')
         ->count()
         ->where(array(
-            'UNIX_TIMESTAMP(keep_alive)>' => $now_timestamp,
-            'now_playing_type'            => $type
+            'now_playing_type' => $type,
+            'keep_alive>'      => date(Mysql::DATETIME_FORMAT, $now_timestamp)
         ))
         ->get()
         ->counter();
@@ -195,9 +195,9 @@ function get_cur_infoportal(){
         ->from('users')
         ->count()
         ->where(array(
-            'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
-            'now_playing_type>='          => 20,
-            'now_playing_type<='          => 29
+            'now_playing_type>=' => 20,
+            'now_playing_type<=' => 29,
+            'keep_alive>'        => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2),
         ))
         ->get()
         ->counter();

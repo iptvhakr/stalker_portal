@@ -48,19 +48,14 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             }
         }
 
-        $moderator_w_disables_ad = Mysql::getInstance()
+        $moderator = $this->db
             ->from('moderators')
-            ->where(array(
-                'status'           => 1,
-                'mac'              => Stb::getInstance()->mac,
-                'disable_vclub_ad' => 1
-            ))
+            ->where(array('mac' => Stb::getInstance()->mac))
+            ->use_caching()
             ->get()
             ->first();
 
-        if (!empty($moderator_w_disables_ad)){
-            $disable_ad = true;
-        }
+        $disable_ad = !empty($moderator) && $moderator['status'] == 1 && $moderator['disable_vclub_ad'] == 1;
 
         $vclub_ad = new VclubAdvertising();
 

@@ -18,8 +18,18 @@ if (@$_GET['del'] && !empty($_GET['id'])){
     $tv_archive = new TvArchive();
     $tv_archive->deleteTasks(intval($_GET['id']));
 
-    Mysql::getInstance()->delete('ch_links', array('ch_id' => intval($_GET['id'])));
-    Mysql::getInstance()->delete('itv', array('id' => intval($_GET['id'])));
+    $ch_links = Mysql::getInstance()->from('ch_links')->where(array('ch_id' => intval($_GET['id'])))->get()->all();
+
+    foreach ($ch_links as $ch_link){
+        Mysql::getInstance()
+             ->use_caching(array('ch_links.id='.intval($ch_link['id'])))
+             ->delete('ch_links', array('id' => intval($ch_link['id'])));
+    }
+
+    Mysql::getInstance()
+        ->use_caching(array('itv.id='.intval($_GET['id'])))
+        ->delete('itv', array('id' => intval($_GET['id'])));
+
     header("Location: add_itv.php");
     exit;
 }
@@ -28,10 +38,10 @@ if (isset($_GET['status']) && @$_GET['id']){
 
     Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
-    Mysql::getInstance()->update('itv',
-        array(
-            'status' => intval(@$_GET['status'])
-        ),
+    Mysql::getInstance()
+        ->use_caching(array('itv.id='.intval(@$_GET['id'])))
+        ->update('itv',
+        array('status' => intval(@$_GET['status'])),
         array('id' => intval(@$_GET['id']))
     );
 
@@ -424,33 +434,26 @@ if (!$error){
                     $link_id = Mysql::getInstance()
                         ->from('ch_links')
                         ->where(array(
-                        'ch_id' => (int) $_GET['id'],
-                        'url'   => $link['url']
-                    ))
+                            'ch_id' => (int) $_GET['id'],
+                            'url'   => $link['url']
+                        ))
                         ->get()
                         ->first('id');
 
-                    Mysql::getInstance()->update('ch_links',
-                        $link,
-                        array(
-                            'ch_id' => (int) $_GET['id'],
-                            'url'   => $link['url']
-                        )
-                    );
-
                     if (!$link['enable_monitoring']){
-                        Mysql::getInstance()->update('ch_links',
-                            array(
-                                'status' => 1
-                            ),
-                            array(
-                                'ch_id' => (int) $_GET['id'],
-                                'url'   => $link['url']
-                            )
-                        );
+                        $link['status'] = 1;
                     }
 
                     if ($link_id){
+
+                        Mysql::getInstance()
+                            ->use_caching(array('ch_links.id='.intval($link_id)))
+                            ->update('ch_links', $link,
+                            array(
+                                'id' => (int) $link_id
+                            )
+                        );
+
                         $on_streamers = Mysql::getInstance()->from('ch_link_on_streamer')->where(array('link_id' => $link_id))->get()->all('streamer_id');
 
                         if ($on_streamers){

@@ -15,7 +15,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public $hd  = 0;
     private $user_agent = '';
     private $access_token = null;
-    private $is_moderator = false;
+    private $is_moderator = null;
     private $params = array();
     private $db;
     public $lang;
@@ -133,15 +133,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 exit;
             }
         }
-
-        if ($this->db->from('moderators')->where(array('mac' => $this->mac, 'status' => 1))->get()->count() == 1){
-            $this->is_moderator = true;
-        }
-
-        //if ($this->is_moderator && !empty($_COOKIE['debug'])){
-        /*if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
-            Mysql::$debug = true;
-        }*/
     }
 
     private function checkDebugKey($key){
@@ -160,8 +151,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
     
     public function setId($id){
-        $this->id = $id;
-        $this->params['id'] = $id;
+        $this->id = (int) $id;
+        $this->params['id'] = (int) $id;
     }
 
     public function getTimezone(){
@@ -208,7 +199,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 ->first();
         }elseif (User::isInitialized() && User::getInstance()->getId()){
             $user = $this->db->from('users')
-                ->where(array('id' => User::getInstance()->getId()))
+                ->where(array('id' => (int) User::getInstance()->getId()))
                 ->get()
                 ->first();
         }
@@ -231,10 +222,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }else{
                 $this->openweathermap_city_id = (empty($user['openweathermap_city_id']) && Config::exist('default_openweathermap_city_id')) ? Config::get('default_openweathermap_city_id') : intval($user['openweathermap_city_id']);
             }
-
-            $this->country_id = !$this->city_id ? 0 : intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
-
-            $this->openweathermap_country_id = !$this->openweathermap_city_id ? 0 : intval(Mysql::getInstance()->from('all_cities')->where(array('id' => $this->openweathermap_city_id))->get()->first('country_id'));
 
             $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
 
@@ -633,7 +620,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['test_download_url']      = Config::getSafe('test_download_url', '');
 
-        $profile['is_moderator']           = $this->is_moderator;
+        $profile['is_moderator']           = $this->isModerator();
 
         $profile['watchdog_timeout']       = Config::getSafe('watchdog_timeout', 30000);
 
@@ -933,6 +920,19 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
     
     public function isModerator(){
+
+        if ($this->is_moderator === null){
+            $db = clone Mysql::getInstance();
+            $moderator = $db->reset()
+                ->from('moderators')
+                ->where(array('mac' => $this->mac))
+                ->use_caching()
+                ->get()
+                ->first();
+
+            $this->is_moderator = !empty($moderator) && $moderator['status'] == 1;
+        }
+
         return $this->is_moderator;
     }
     
@@ -1081,7 +1081,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 case 1: // TV
 
                     if (!empty($_REQUEST['ch_id'])){
-                        $ch_name = $this->db->from('itv')->where(array('id' => (int) $_REQUEST['ch_id']))->get()->first('name');
+                        $ch_name = Itv::getChannelNameById((int) $_REQUEST['ch_id']);
                     }else{
                         $ch_name = $this->db
                             ->from('ch_links')
@@ -1678,6 +1678,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $result = array();
 
         $countries = Mysql::getInstance()->from('countries')->orderby('name_en')->get()->all();
+
+        $this->country_id = !$this->city_id ? 0 : intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
+
+        $this->openweathermap_country_id = !$this->openweathermap_city_id ? 0 : intval(Mysql::getInstance()->from('all_cities')->where(array('id' => $this->openweathermap_city_id))->get()->first('country_id'));
 
         foreach ($countries as $country){
             if (Config::getSafe('weather_provider', 'openweathermap') == 'openweathermap'){

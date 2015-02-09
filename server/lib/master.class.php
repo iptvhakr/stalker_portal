@@ -559,9 +559,9 @@ abstract class Master
         
             $storage_cache = $this->db->from('storage_cache')
                                       ->where(array(
-                                          'cache_key'                => $key,
-                                          'status'                   => 1,
-                                          'UNIX_TIMESTAMP(changed)>' => time() - $this->cache_expire_h*3600
+                                          'cache_key' => $key,
+                                          'status'    => 1,
+                                          'changed>'  => date(Mysql::DATETIME_FORMAT, time() - $this->cache_expire_h*3600)
                                       ))
                                       ->get()
                                       ->all();
@@ -714,7 +714,7 @@ abstract class Master
                                       'now_playing_type' => 2,
                                       'hd_content'       => 0,
                                       'storage_name'     => $storage_name,
-                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+                                      'keep_alive>'      => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
                                   ))
                               ->get()
                               ->first('sd_online');
@@ -726,7 +726,7 @@ abstract class Master
                                       'now_playing_type' => 2,
                                       'hd_content'       => 1,
                                       'storage_name'     => $storage_name,
-                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+                                      'keep_alive>'      => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
                                   ))
                               ->get()
                               ->first('hd_online');
@@ -742,7 +742,7 @@ abstract class Master
                                         'now_playing_type' => 11,
                                         'hd_content'       => 0,
                                         'storage_name'     => $storage_name,
-                                        'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+                                        'keep_alive>'      => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
                                     ))
                                     ->get()
                                     ->first('archive_sessions');

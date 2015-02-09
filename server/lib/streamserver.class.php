@@ -6,7 +6,8 @@ class StreamServer
     public static function getById($id){
         return Mysql::getInstance()
             ->from('streaming_servers')
-            ->where(array('id' => $id))
+            ->where(array('id' => intval($id)))
+            ->use_caching(array('streaming_servers.id='.intval($id)))
             ->get()
             ->first();
     }
@@ -135,22 +136,19 @@ class StreamServer
             return false;
         }
 
+        $ch_link_on_streamer = Mysql::getInstance()
+            ->from('ch_link_on_streamer')
+            ->where(array('link_id' => $link_id))
+            ->get()
+            ->all('streamer_id');
+
         if ($link['enable_monitoring'] && $link['enable_balancer_monitoring']){
-            return Mysql::getInstance()
-                ->from('ch_link_on_streamer')
-                ->where(array(
-                    'link_id' => $link_id,
-                    'monitoring_status' => 1
-                ))
-                ->get()
-                ->all('streamer_id');
-        }else{
-            return Mysql::getInstance()
-                ->from('ch_link_on_streamer')
-                ->where(array('link_id' => $link_id))
-                ->get()
-                ->all('streamer_id');
+            $ch_link_on_streamer = array_values(array_filter($ch_link_on_streamer, function($link){
+                return $link['monitoring_status'] == 1;
+            }));
         }
+
+        return $ch_link_on_streamer;
     }
 
     public static function getStreamersIdMapForLink($link_id){
@@ -189,9 +187,9 @@ class StreamServer
 
         $sessions = Mysql::getInstance()->count()->from('users')
             ->where(array(
+                'now_playing_streamer_id' => $streamer_id,
                 'now_playing_type' => 1,
-                'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
-                'now_playing_streamer_id' => $streamer_id
+                'keep_alive>' => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
             ))
             ->get()
             ->counter();

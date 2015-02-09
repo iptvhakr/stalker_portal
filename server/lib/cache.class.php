@@ -11,19 +11,21 @@ class Cache
 {
     
     private $backend;
-    private $use_custom_caching = false;
+    private $use_tags = false;
     
     private static $instance = NULL;
 
     /**
      * @static
+     * @param $tags Boolean
      * @return Cache
      */
-    public static function getInstance(){
+    public static function getInstance($tags = false){
         if (self::$instance == NULL)
         {
             self::$instance = new Cache();
         }
+        self::$instance->useTags($tags);
         return self::$instance;
     }
     
@@ -44,15 +46,15 @@ class Cache
         }
     }
 
-    public function useCustomCaching($val){
-        $this->use_custom_caching = !!$val;
+    public function useTags($val){
+        $this->use_tags = $val;
     }
 
     private function customGet($key){
 
         $val = $this->backend->get($key);
-
-        var_dump('-----------------------customGet', $key);
+        if (Mysql::$debug)
+            var_dump('-----------------------customGet', $key);
 
         if (!is_array($val)){
             return $val;
@@ -79,7 +81,7 @@ class Cache
       
     public function get($key){
         
-        if ($this->use_custom_caching){
+        if ($this->use_tags){
             return $this->customGet($key);
         }else{
             return $this->realGet($key);
@@ -89,8 +91,8 @@ class Cache
     private function customSet($key, $val, $tags, $expire = 0){
 
         $tags = $this->setInvalidTags($tags);
-
-        var_dump('-----------------------customSet', $tags);
+        if (Mysql::$debug)
+            var_dump('-----------------------customSet', $tags);
 
         $prepared_val = array(
             'expire' => ($expire == 0)? 0 : $expire + time(),
@@ -107,7 +109,7 @@ class Cache
     
     public function set($key, $val, $tags = array(), $expire = 0){
         
-        if ($this->use_custom_caching){
+        if ($this->use_tags){
             return $this->customSet($key, $val, $tags, $expire);
         }else{
             return $this->realSet($key, $val, 0, $expire);
@@ -120,13 +122,13 @@ class Cache
     }
 
     public function setInvalidTags($tags){
-
-        var_dump('-----------------------setInvalidTags', $tags);
+        if (Mysql::$debug)
+            var_dump('-----------------------setInvalidTags', $tags);
 
         $new_tags = array();
         
         $tag_version = strval(microtime(true));
-        
+
         foreach ($tags as $tag){
             
             $tag_name = 'tag_'.$tag;
@@ -134,23 +136,23 @@ class Cache
             $this->backend->set($tag_name, $tag_version);
             $new_tags[$tag_name] = $tag_version;
         }
-        
-        //var_dump($new_tags);
-        
+        if (Mysql::$debug)
+            var_dump($new_tags);
+
         return $new_tags;
     }
     
     private function isInvalidTags($tags){
+        if (Mysql::$debug)
+            var_dump('-----------------------isInvalidTags?', $tags);
 
-        var_dump('-----------------------isInvalidTags', $tags);
-        
         foreach ($tags as $tag => $version){
             $cur_version = $this->backend->get($tag);
             
             if($cur_version === false){
                 $this->backend->set($tag, $version);
             }
-            
+
             if ($cur_version != $version){
                 return true;
             }
@@ -160,7 +162,8 @@ class Cache
 
     private function hit(){
 
-        var_dump('!!!!!!!!!!!!!++++++++++++HIT');
+        if (Mysql::$debug)
+            var_dump('!!!!!!!!!!!!!++++++++++++HIT');
 
         $stats = $this->backend->get('stats');
 
@@ -168,14 +171,14 @@ class Cache
             $stats = array();
         }
 
-        !key_exists('hits', $stats) ? $stats['hits'] = 0 : $stats['hits'] += 1;
+        !array_key_exists('hits', $stats) ? $stats['hits'] = 0 : $stats['hits'] += 1;
 
         $this->backend->set('stats', $stats);
     }
 
     private function miss(){
-
-        var_dump('!!!!!!!!!!!!!----------MISS');
+        if (Mysql::$debug)
+            var_dump('!!!!!!!!!!!!!----------MISS');
 
         $stats = $this->backend->get('stats');
 
@@ -183,9 +186,42 @@ class Cache
             $stats = array();
         }
 
-        !key_exists('misses', $stats) ? $stats['misses'] = 0 : $stats['misses'] += 1;
+        !array_key_exists('misses', $stats) ? $stats['misses'] = 0 : $stats['misses'] += 1;
 
         $this->backend->set('stats', $stats);
     }
+
+    public function getHits(){
+
+        $stats = $this->backend->get('stats');
+
+        if ($stats === false || empty($stats)){
+            $stats = array();
+        }
+
+        $hits = !array_key_exists('hits', $stats) ? 0 : $stats['hits'];
+
+        $stats['hits'] = 0;
+
+        $this->backend->set('stats', $stats);
+
+        return $hits;
+    }
+
+    public function getMisses(){
+
+        $stats = $this->backend->get('stats');
+
+        if ($stats === false || empty($stats)){
+            $stats = array();
+        }
+
+        $misses = !array_key_exists('misses', $stats) ? 0 : $stats['misses'];
+
+        $stats['misses'] = 0;
+
+        $this->backend->set('stats', $stats);
+
+        return $misses;
+    }
 }
-?>
