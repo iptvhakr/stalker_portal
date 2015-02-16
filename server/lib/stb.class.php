@@ -726,6 +726,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $profile['portal_logo_url'] = Config::get('portal_logo_url');
         }
 
+        $profile['show_version_in_main_menu'] = Config::getSafe('show_version_in_main_menu', true);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);

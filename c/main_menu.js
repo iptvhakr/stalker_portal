@@ -78,9 +78,13 @@ var main_menu = {
         
         var main_menu_ver = create_block_element('main_menu_ver', this.dom_obj);
         main_menu_ver.innerHTML = ver + ' (' + stb.get_image_version() + ')';
-        
+
+        if (!stb.profile['show_version_in_main_menu']){
+            main_menu_ver.hide();
+        }
+
         var mm_menu_hor = create_block_element('mm_menu_hor', this.dom_obj);
-        
+
         var cell;
         
         for (var i=0; i<=2; i++){
