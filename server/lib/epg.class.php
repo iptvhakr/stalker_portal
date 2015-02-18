@@ -698,6 +698,18 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         $all_user_ids = Itv::getInstance()->getAllUserChannelsIds();
 
         $dvb_channels = Itv::getInstance()->getDvbChannels();
+
+        if (!empty($_REQUEST['fav'])){
+            $fav = Itv::getInstance()->getFav(Stb::getInstance()->id);
+            $all_user_ids = array_intersect($all_user_ids, $fav);
+
+            $fav_assoc = array_fill_keys($fav, 1);
+
+            $dvb_channels = array_values(array_filter($dvb_channels, function($channel) use ($fav_assoc){
+                return isset($fav_assoc[$channel['id']]);
+            }));
+        }
+
         $dvb_ch_idx = null;
 
         $channel = Itv::getChannelById($ch_id);
@@ -735,7 +747,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $ch_idx = Itv::getInstance()
                                    ->getChannels()
-                                   ->orderby('number')
+                                   ->orderby(isset($fav) ? 'field(id,'.(empty($fav) ? 'null' : implode(',', $fav)).')' : 'number')
                                    ->in('id', $all_user_ids)
                                    ->where(array('number<=' => $channel['number']))
                                    ->get()
@@ -752,17 +764,13 @@ class Epg implements \Stalker\Lib\StbApi\Epg
             $default_page = true;
 
             $page = ceil($ch_idx/$page_items);
-
-            if ($page == 0){
-                $page == 1;
-            }
         }
 
         $ch_idx = $ch_idx - ($page-1)*$page_items;
 
         $user_channels = Itv::getInstance()
                                    ->getChannels()
-                                   ->orderby('number')
+                                   ->orderby(isset($fav) ? 'field(id,'.(empty($fav) ? 'null' : implode(',', $fav)).')' : 'number')
                                    ->in('id', $all_user_ids)
                                    ->limit($page_items, ($page-1)*$page_items)
                                    ->get()
@@ -804,6 +812,8 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $result = array();
 
+        $num = 1;
+
         foreach ($raw_epg as $id => $epg){
 
             $channel = $user_channels[array_search($id, $display_channels_ids)];
@@ -812,11 +822,13 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                               'ch_id'   => $id,
                               //'name'  => Itv::getChannelNameById($id),
                               'name'    => $channel['name'],
-                              'number'  => $channel['number'],
+                              'number'  => !empty($_REQUEST['fav']) ? (string) $num : $channel['number'],
                               'ch_type' => isset($channel['type']) && $channel['type'] == 'dvb' ? 'dvb' : 'iptv',
                               'dvb_id'  => isset($channel['type']) && $channel['type'] == 'dvb' ? $channel['dvb_id'] : null,
                               'epg_container' => 1,
                               'epg'     => $epg);
+
+            $num++;
         }
 
         $time_marks = array();

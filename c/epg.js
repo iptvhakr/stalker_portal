@@ -374,6 +374,8 @@
             _debug('epg.load_data');
             
             _debug('this.ch_id', this.ch_id);
+
+            this.load_params['fav'] = stb.user.fav_itv_on;
             
             this.set_passive_cell();
             this.set_passive_row();
