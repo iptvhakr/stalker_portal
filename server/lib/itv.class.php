@@ -1567,16 +1567,6 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $mac = Stb::getInstance()->mac;
 
-        $user_channel_links = array_filter($channel_links, function($link) use ($user_agent, $disable_channel_filter_for_macs, $mac){
-            return in_array($mac, $disable_channel_filter_for_macs) || $link['user_agent_filter'] != '' && preg_match("/".$link['user_agent_filter']."/", $user_agent);
-        });
-
-        if (empty($user_channel_links)){
-            $user_channel_links = array_filter($channel_links, function($link) use ($user_agent){
-                return $link['user_agent_filter'] == '';
-            });
-        }
-
         $user_channel_links = array_map(function($link){
 
             if ($link['use_http_tmp_link'] == 1 || $link['use_load_balancing'] == 1){
@@ -1593,9 +1583,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
             return $link;
 
-        }, $user_channel_links);
-
-        $user_channel_links = array_values($user_channel_links);
+        }, $channel_links);
 
         // group by channel id
         $grouped_links = array();
@@ -1606,6 +1594,21 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             }
 
             $grouped_links[$link['ch_id']][] = $link;
+        }
+
+        foreach ($grouped_links as $ch_id => $links){
+
+            $user_channel_links = array_filter($links, function($link) use ($user_agent, $disable_channel_filter_for_macs, $mac){
+                return in_array($mac, $disable_channel_filter_for_macs) || $link['user_agent_filter'] != '' && preg_match("/".$link['user_agent_filter']."/", $user_agent);
+            });
+
+            if (empty($user_channel_links)){
+                $user_channel_links = array_filter($links, function($link) use ($user_agent){
+                    return $link['user_agent_filter'] == '';
+                });
+            }
+
+            $grouped_links[$ch_id] = array_values($user_channel_links);
         }
 
         return $grouped_links;
