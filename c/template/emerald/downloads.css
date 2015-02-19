@@ -61,7 +61,7 @@
 .pb {
     float: left;
     width: 110px;
-    background: #0077BB;
+    background: #748b70;
     border-radius: 4px;
     border: 1px solid #fff;
     margin-top: 5px;
@@ -70,7 +70,7 @@
 .pb span {
     float: left;
     width: 110px;
-    background: #003366;
+    background: #0a5104;
     border-radius: 4px;
 }
 
@@ -118,6 +118,10 @@
 
 .active_row_bg .pb {
     border-color: #333;
+}
+
+.active_row_bg .pb span {
+    background: #748b70;
 }
 
 .txt {
