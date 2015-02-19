@@ -20,13 +20,13 @@
     font-family: "Roboto", serif;
     font-weight: bold;
     font-size: 22px;
-    color: #bcf092;
+    color: #ffc528;
 }
 
 .main_menu_time{
     font-weight: bold;
     font-size: 34px;
-    color: #bcf092;
+    color: #ffc528;
     margin-left: 12px;
     /*margin-right: 65px;*/
     font-family: "Roboto", sans-serif;
@@ -150,7 +150,7 @@
 }
 
 .mm_menu_vert_body .mm_vert_container .active{
-    color: #0a5104;
+    color: #202020;
     background: url(i_720/mm_vert_cell.png) top left;
     background-position: 0 -2px;
     padding-top: 4px;
@@ -165,6 +165,6 @@
     right: 70px;
     bottom: 30px;
     font-size: 22px  !important;
-    color: #bcf092  !important;
+    color: #ffc528  !important;
 }
 /* END MAIN MENU */

@@ -88,7 +88,7 @@
     font-size: 20px;
     text-shadow: #122946 0 -1px 0;*/
     font-size: 20px;
-    color: #748B70;
+    color: #919191;
     margin: 0 0 0 3px;
     padding-left: 5px;
     padding-top: 8px;
@@ -139,7 +139,7 @@
     left: 615px;
     padding: 5px 0 0;
     font-size: 22px;
-    color: #bcf092;
+    color: #ffc528;
     overflow: hidden;
     height: 185px;
 }
@@ -168,7 +168,7 @@
 }
 
 .tv_timetable .time{
-    color: #bcf092;
+    color: #ffc528;
     font-family: "Myriad Pro Cond";
 }
 
@@ -200,7 +200,7 @@
     right: 73px;
     width: 100px;
     font-size: 24px;
-    color: #bcf092;
+    color: #ffc528;
     font-family: "Myriad Pro Cond";
     text-align: right;
 }

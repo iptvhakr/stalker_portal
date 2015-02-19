@@ -7,7 +7,7 @@
     background-image: url("i_480/mb_table.png");
     background-position: 102px -50px;
     padding: 3px 0 0 6px;
-    color: #4F7249;
+    color: #202020;
     overflow: hidden;
     font-family: "Myriad Pro Cond", sans-serif;
     white-space: pre;
@@ -25,7 +25,7 @@
 #audioclub .active_genres_block{
     background-image: url("i_480/mb_table_act.png");
     background-position: 120px -58px;
-    color: #fff;
+    color: #202020;
     font-family: "Myriad Pro Cond",sans-serif;
     height: 27px;
     overflow: hidden;
@@ -50,7 +50,7 @@
 }
 
 .audioclub_info_box span{
-    color: #bcf092;
+    color: #ffc528;
     font-family: "Myriad Pro Cond", serif;
 }
 
@@ -131,5 +131,5 @@
 #audioclub .seek_bar_inner{
     height: 4px;
     width: 0;
-    background-color: #0a5104;
+    background-color: #202020;
 }

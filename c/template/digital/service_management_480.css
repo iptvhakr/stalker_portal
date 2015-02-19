@@ -16,7 +16,7 @@
 
 #service_management .subscribed_str_block{
     background: url("i_480/mb_table.png") 102px -25px;
-    color: #4f7249;
+    color: #626262;
 }
 
 #service_management .not_subscribed_str_block{
@@ -57,7 +57,7 @@
 }
 
 #package_info .label {
-    color: #bcf092;
+    color: #ffc528;
 }
 
 #package_info .info-block{

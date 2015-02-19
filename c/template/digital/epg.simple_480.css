@@ -6,20 +6,20 @@
     height: 20px;
     float: left;
     margin: 2px 0 0 4px;
-    color: #fff;
+    color: #202020;
     text-align: center;
     white-space: pre;
     overflow: hidden;
     font-size: 16px;
     font-family: "Myriad Pro Cond", serif;
-    background-color: #5A3807;
+    background-color: #FFCF1A;
     border-radius: 4px;
     padding: 0 3px 0 2px;
     line-height: 21px;
 }
 
 #epg_simple .blue_row_bg[active="active"] .t_time_block{
-    color: #5a3807;
+    color: #202020;
     margin: 1px 0 0 4px;
     background-color: #fff;
     border-radius: 4px;
@@ -27,7 +27,7 @@
 }
 
 #epg_simple .name_block{
-    color: #5A3807;
+    color: #202020;
     font-size: 17px;
     margin: 0 0 0 3px;
     padding-left: 3px;
@@ -71,12 +71,11 @@
 }
 
 #epg_simple .blue_row_bg.close[active="active"] .name_block{
-    color: #FFE8C7 !important;
+    color: #919191 !important;
 }
 
 #epg_simple .blue_row_bg[active="active"] .name_block{
-    color: #fff;
-    font-weight: bold;
+    color: #202020;
 }
 
 #epg_simple .week{
@@ -92,7 +91,7 @@
     /*margin: 0 0 1px 0;*/
     background-image: url("i_480/tv_table.png");
     background-position: 0px -25px;
-    color: #5A3807;
+    color: #202020;
     font-size: 16px;
     padding: 0 0 0 2px;
     text-align: center;
@@ -101,16 +100,15 @@
 
 #epg_simple .week li[active="active"]{
     background-position: 0 -1px;
-    color: #fff;
-    font-weight: bold;
+    color: #202020;
 }
 
 #epg_simple .week li[rel="close"]{
-    color: #968060 !important;
+    color: #919191 !important;
 }
 
 #epg_simple .week li[active="active"][rel="close"]{
-    color: #FFE8C7 !important;
+    color: #919191 !important;
 }
 
 #epg_simple .program_info, #epg_simple .full_program_info{
@@ -128,7 +126,7 @@
 }
 
 #epg_simple .program_info .time, #epg_simple .full_program_info .time{
-    color: #FFE8C7;
+    color: #ffc528;
     font-weight: bold;
 }
 

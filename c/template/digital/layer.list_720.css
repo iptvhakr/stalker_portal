@@ -69,7 +69,7 @@
 }
 
 .name_block, .title_block{
-    color: #0a5104;
+    color: #202020;
     font-size: 26px;
     margin: 0 2px 0 3px;
     padding-left: 3px;
@@ -83,7 +83,7 @@
 }*/
 
 .blue_row_bg.close .name_block{
-    color: #748b70 !important;
+    color: #919191 !important;
 }
 
 .number_block{
@@ -92,7 +92,7 @@
     height: 29px;
     float: left;
     margin: 4px 0 0 4px;
-    color: #fff;
+    color: #202020;
     font-size: 24px;
     text-align: center;
     white-space: pre;
@@ -227,7 +227,7 @@
 .active_name_block, .active_title_block{
     font-size: 28px;
     /*font-weight: bold;*/
-    color: #fff;
+    color: #202020;
     margin: 6px 25px 0 2px;
     white-space: pre;
     overflow: hidden;
@@ -239,7 +239,7 @@
 }*/
 
 .active_row_bg.close .active_name_block, .moved_active_row_bg.close .active_name_block{
-    color: #bcf092 !important;
+    color: #919191 !important;
 }
 
 .active_number_block{
@@ -249,7 +249,7 @@
     margin: 8px 2px 0 0;
     float: left;
     font-size: 24px;
-    color: #0a5104;
+    color: #202020;
     text-align: center;
     white-space: pre;
     overflow: hidden;
@@ -291,7 +291,7 @@
 }
 
 .disable_color_btn_text{
-    color: #748B70 !important;
+    color: #919191 !important;
 }
 
 .mb_header_first{
@@ -355,7 +355,7 @@
 
 .color_button_bar span{
     font-size: 22px;
-    color: #0a5104;
+    color: #202020;
     float: left;
     margin: 10px 0 0 8px;
     /*font-weight: bold;*/
@@ -516,7 +516,7 @@
     padding: 8px 47px 0 0;
     font-size: 22px;
     text-shadow: #fff 0 1px 0;
-    color: #0a5104;
+    color: #202020;
 }
 
 
@@ -571,7 +571,7 @@
     left: 75px;
     font: 45px trebuchet ms, Arial, Helvetica, sans-serif;
     text-align: center;
-    color: #0a5104;
+    color: #202020;
     width: 89px;
     height: 40px;
 }
@@ -598,7 +598,7 @@
 .ears_left div{
     margin-left: 25px;
     font: 22px Arial, Helvetica, sans-serif;
-    color: #fff;
+    color: #202020;
 }
 
 .ears_right_container{
@@ -619,7 +619,7 @@
 .ears_right div{
     margin-left: 14px;
     font: 22px Arial, Helvetica, sans-serif;
-    color: #fff;
+    color: #202020;
     text-align: center;
     width: 22px;
 }
@@ -647,7 +647,7 @@
 
 .aspect_block{
     font-size: 22px;
-    color: #0a5104;
+    color: #202020;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i_720/aspect_bg.png") left;
     height: 35px;
@@ -674,7 +674,7 @@
 .playback_progress{
     height: 10px;
     width: 0;
-    background-color: #0a5104;
+    background-color: #202020;
     border-radius: 2px;
     -webkit-transition: all 0.3s ease;
 }
@@ -708,7 +708,7 @@
 
 .time_shift_info_block, .ad_skip_block{
     font-size: 22px;
-    color: #0a5104;
+    color: #202020;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i_720/aspect_bg.png") left;
     height: 31px;

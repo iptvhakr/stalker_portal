@@ -6,20 +6,20 @@
     height: 28px;
     float: left;
     margin: 9px 0 0 4px;
-    color: #fff;
+    color: #202020;
     text-align: center;
     white-space: pre;
     overflow: hidden;
     font-size: 24px;
     font-family: "Myriad Pro Cond", serif;
-    background-color: #0a5104;
+    background-color: #FFCF1A;
     border-radius: 4px;
     padding: 1px 3px 0 2px;
 }
 
 #epg_simple .blue_row_bg[active="active"] .t_time_block{
     height: 31px;
-    color: #0a5104;
+    color: #202020;
     padding-top: 4px;
     margin: 6px 0 0 4px;
     background-color: #fff;
@@ -27,7 +27,7 @@
 }
 
 #epg_simple .name_block{
-    color: #0a5104;
+    color: #202020;
     font-size: 26px;
     margin: 5px 0 0 3px;
     padding-left: 3px;
@@ -71,12 +71,11 @@
 }
 
 #epg_simple .blue_row_bg.close[active="active"] .name_block{
-    color: #bcf092 !important;
+    color: #919191 !important;
 }
 
 #epg_simple .blue_row_bg[active="active"] .name_block{
-    color: #fff;
-    font-weight: bold;
+    color: #202020;
 }
 
 #epg_simple .week{
@@ -90,7 +89,7 @@
     width: 197px;
     height: 37px;
     background: url("i_720/tv_table.png") no-repeat 0 -44px;
-    color: #0a5104;
+    color: #202020;
     font-size: 22px;
     padding: 8px 0 0 2px;
     overflow: hidden;
@@ -100,16 +99,15 @@
 
 #epg_simple .week li[active="active"]{
     background-position: 0 1px;
-    color: #fff;
-    font-weight: bold;
+    color: #202020;
 }
 
 #epg_simple .week li[rel="close"]{
-    color: #748b70 !important;
+    color: #919191 !important;
 }
 
 #epg_simple .week li[active="active"][rel="close"]{
-    color: #bcf092 !important;
+    color: #919191 !important;
 }
 
 #epg_simple .program_info, #epg_simple .full_program_info{
@@ -127,7 +125,7 @@
 }
 
 #epg_simple .program_info .time, #epg_simple .full_program_info .time{
-    color: #bcf092;
+    color: #ffc528;
     font-weight: bold;
 }
 

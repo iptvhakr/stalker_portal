@@ -18,7 +18,7 @@
     background: url("i/input_channel.png") no-repeat;
     font: 32px "Myriad Pro Cond";
     text-align: center;
-    color: #0a5104;
+    color: #202020;
     overflow: hidden;
     white-space: pre;
     padding: 6px 0 0 0;
@@ -40,7 +40,7 @@
     top: 129px;
     width: 100%;
     font-size: 14px;
-    color: #bcf092;
+    color: #ffc528;
     font-weight: bold;
     text-align: center
 }

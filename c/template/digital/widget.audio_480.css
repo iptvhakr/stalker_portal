@@ -22,7 +22,7 @@
 
 .audio_widget_block .items{
     margin: 0 auto;
-    color: #bcf092;
+    color: #ffc528;
     font-size: 14px;
 }
 
@@ -39,7 +39,7 @@
 .audio_widget_block .seek_bar .inner{
     height: 4px;
     width: 0;
-    background-color: #0a5104;
+    background-color: #202020;
     -webkit-border-radius: 3px;
 }
 

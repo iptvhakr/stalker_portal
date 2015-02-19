@@ -17,7 +17,7 @@
 }*/
 
 #records .blue_row_bg.close .t_start_block{
-    color: #0a5104;
+    color: #202020;
 }
 
 /*#records .blue_row_bg[rel=""] .t_start_block{
@@ -30,7 +30,7 @@
 
 #records .active_t_start_block{
     background: url("i_720/mb_table_act02.png") 217px -4px;
-    color: #fff;
+    color: #202020;
     font-family: "Myriad Pro Cond",sans-serif;
     font-size: 22px;
     height: 47px;
@@ -43,7 +43,7 @@
 }
 
 #records .ch_name_block{
-    color: #748b70;
+    color: #919191;
     font-size: 26px;
     margin: 0 204px 0 3px;
     overflow: hidden;
@@ -56,7 +56,7 @@
 }*/
 
 #records .blue_row_bg.close .ch_name_block{
-    color: #0a5104 !important;
+    color: #202020 !important;
 }
 
 #records .active_ch_name_block{
@@ -74,7 +74,7 @@
 }*/
 
 #records .active_row_bg.close .active_ch_name_block{
-    color: #fff !important;
+    color: #202020 !important;
 }
 
 #records .length_block{
@@ -84,7 +84,7 @@
 }
 
 #records .active_length_block{
-    color: #fff;
+    color: #202020;
     font-family: "Myriad Pro Cond",sans-serif;
     font-size: 22px;
     height: 27px;

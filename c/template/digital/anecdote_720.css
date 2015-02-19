@@ -13,7 +13,7 @@
 }
 
 .anecdote_body_container .date{
-    color: #bcf092;
+    color: #ffc528;
 }
 
 .anecdote_body_container .rate{
@@ -72,7 +72,7 @@
     left: 75px;
     font: 33px trebuchet ms, Arial, Helvetica, sans-serif;
     text-align: center;
-    color: #0a5104;
+    color: #202020;
     width: 89px;
     height: 40px;
 }
