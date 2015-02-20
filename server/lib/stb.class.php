@@ -738,6 +738,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     public function getSettingsProfile(){
 
+        $themes = Middleware::getThemes();
+
         return array(
             "parent_password"       => $this->params['parent_password'],
             "update_url"            => self::getImageUpdateUrl($this->params['stb_type']),
@@ -761,8 +763,17 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             'sec_subtitle_lang'     => $this->params['sec_subtitle_lang'],
             'show_after_loading'    => empty($this->params['show_after_loading']) ? (Config::getSafe('display_menu_after_loading', false) ? 'main_menu' : 'last_channel') : $this->params['show_after_loading'],
             'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok'],
-            'hide_adv_mc_settings'  => Config::getSafe('hide_adv_mc_settings', false)
+            'hide_adv_mc_settings'  => Config::getSafe('hide_adv_mc_settings', false),
+            'themes'                => $themes,
+            'user_theme'            => $this->getUserPortalTheme()
         );
+    }
+
+    public function getUserPortalTheme(){
+
+        return empty($this->params['theme']) || !in_array($this->params['theme'], Middleware::getThemes())
+            ? Mysql::getInstance()->from('settings')->get()->first('default_template')
+            : $this->params['theme'];
     }
 
     private static function getImageUpdateUrl($stb_model){
@@ -944,7 +955,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $prefix = $gmode ? '_'.$gmode : '';
 
-        $template = Mysql::getInstance()->from('settings')->get()->first('default_template');
+        $template = $this->getUserPortalTheme();
         
         $dir = PROJECT_PATH.'/../c/template/'.$template.'/i'.$prefix.'/';
         $files = array();
@@ -1406,7 +1417,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     public function getModules(){
 
-        $template = Mysql::getInstance()->from('settings')->get()->first('default_template');
+        $template = $this->getUserPortalTheme();
 
         return array(
             'all_modules'        => Config::get('all_modules'),
@@ -1655,11 +1666,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $show_after_loading = $_REQUEST['show_after_loading'];
         $play_in_preview_by_ok = intval($_REQUEST['play_in_preview_by_ok']);
+        $theme = $_REQUEST['theme'];
 
         return Mysql::getInstance()->update('users',
             array(
                  'show_after_loading'    => $show_after_loading,
-                 'play_in_preview_by_ok' => $play_in_preview_by_ok
+                 'play_in_preview_by_ok' => $play_in_preview_by_ok,
+                 'theme'                 => $theme
             ),
             array('id' => $this->id));
     }
