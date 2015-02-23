@@ -267,7 +267,7 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
                 ->select('audio_albums.*,
                     audio_performers.name as performer_name,
                     audio_years.name as album_year,
-                    countries.name as album_country
+                    countries.name'.($this->stb->getStbLanguage() == 'ru' ? '' : '_en' ).' as album_country
                 ')
                 ->from('audio_albums')
                 ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
