@@ -81,7 +81,7 @@
 #audioclub .active_playing_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 3px 2px 0 2px;
     float:left;
     background-image: url("i/mb_player.png");
     background-position: 0 -21px;
@@ -99,7 +99,7 @@
 #audioclub .active_paused_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 3px 2px 0 2px;
     float: left;
     background-image: url("i/mb_player.png");
     background-position: -24px -21px;
