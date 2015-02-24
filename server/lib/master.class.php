@@ -79,7 +79,7 @@ abstract class Master
         }
 
         $default_error = 'nothing_to_play';
-        
+
         foreach ($good_storages as $name => $storage){
                 if ($storage['load'] < 1){
 
@@ -122,6 +122,8 @@ abstract class Master
                         if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
                             if (Config::exist('nfs_proxy')){
                                 $base_path = 'http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.RESTClient::$from.'/';
+                            }elseif (!empty($this->storages[$name]['wowza_server'])){
+                                $base_path = 'http://'.$this->storages[$name]['storage_ip'].':'.$this->storages[$name]['wowza_port'].'/'.$this->storages[$name]['wowza_app'].'/_definst_/mp4:'.$this->getMediaPath($file).'/';
                             }else{
                                 $base_path = 'http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.RESTClient::$from.'/';
                             }
@@ -135,7 +137,11 @@ abstract class Master
                             $res['cmd'] = 'auto ';
                         }
 
-                        $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+                        if (empty($this->storages[$name]['wowza_server'])){
+                            $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+                        }else{
+                            $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink($base_path);
+                        }
 
                         $file_info = array_filter($storage['files'], function($info) use ($file){
                             return $info['name'] == $file;
@@ -205,13 +211,13 @@ abstract class Master
         }
     }
 
-    private function createTemporaryLink($url){
+    protected function createTemporaryLink($url){
 
-        $key = md5($url.time());
+        $key = md5($url.time().uniqid());
 
         $cache = Cache::getInstance();
 
-        $result = $cache->set($key, $url, 0, 28800); // 8 hours
+        $result = $cache->set($key, $url, 0, Config::getSafe('vclub_tmp_link_ttl', 5));
 
         if ($result){
             return $key;
