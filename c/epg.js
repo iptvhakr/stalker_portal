@@ -140,6 +140,11 @@
             }
             
             this.superclass.show.call(this, false);
+
+            if (player_overlay_mode){
+                stb.set_cur_place(module.tv.layer_name);
+                stb.set_cur_layer(module.tv);
+            }
         };
         
         this.hide = function(do_not_reset){

@@ -1,6 +1,6 @@
 (function(){
 
-    if (!stb.startAplication){
+    if (!stb.startApplication){
         loader.next();
         return;
     }
@@ -37,7 +37,7 @@
 
     module[app_name.toLowerCase()] = {
         open : function(){
-            stb.startAplication(app_id);
+            stb.startApplication(app_id);
         }
     };
 
