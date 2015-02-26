@@ -263,6 +263,10 @@ player.prototype.init = function(){
                 if (params.hasOwnProperty("clear_dvb_channels") && module.dvb){
                     module.dvb.clear_dvb_channels();
                 }
+
+                if (params.hasOwnProperty("mc_proxy_url")){
+                    stb.player.mc_proxy_url = params.mc_proxy_url;
+                }
             }
         };
 
@@ -963,6 +967,10 @@ player.prototype.event_callback = function(event, params){
                                 cur_media_item.playlist = this.cur_media_item.playlist;
                                 _debug('cur_media_item', cur_media_item);
 
+                                if (cur_media_item.is_audio){
+                                    cur_media_item.number = null;
+                                }
+
                                 this.play(cur_media_item);
 
                                 break;
@@ -1404,7 +1412,11 @@ player.prototype.event_callback = function(event, params){
             window.clearTimeout(this.hdmi_reaction_timer);
 
             if (stb.profile['hdmi_event_reaction'] == 1 && !stb.power_off){
-                keydown_observer.emulate_key(key.MENU);
+                if (self.is_tv){
+                    keydown_observer.emulate_key(key.MENU);
+                }else if (!self.pause.on){
+                    keydown_observer.emulate_key(key.PAUSE);
+                }
             }
             break;
         }
@@ -1415,7 +1427,11 @@ player.prototype.event_callback = function(event, params){
             if (stb.profile['hdmi_event_reaction']){
                 this.hdmi_reaction_timer = window.setTimeout(function(){
                     if (!stb.power_off){
-                        keydown_observer.emulate_key(key.MENU);
+                        if (self.is_tv){
+                            keydown_observer.emulate_key(key.MENU);
+                        }else if (!self.pause.on){
+                            keydown_observer.emulate_key(key.PAUSE);
+                        }
                     }
                 }, stb.profile['hdmi_event_reaction'] * 1000);
             }
@@ -1966,6 +1982,10 @@ player.prototype.play = function(item){
         cmd.replace(/\s+/g, ' ');
     }
 
+    if (stb.usbdisk.storage_info.length > 0){
+        cmd = cmd.replace(/\/media\/USB-\*/, stb.usbdisk.storage_info[0]['mountPath']);
+    }
+
     _debug('cmd', cmd);
 
     this.active_time_shift = item.hasOwnProperty('live_date');
@@ -2204,14 +2224,14 @@ player.prototype.play_now = function(item){
         var uri = item.cmd;
 
         if (item.hasOwnProperty('streamer_id')){
-            _log('play', {"streamer_id" : item.streamer_id, "link_id" : (item.link_id || 0), "ch_id" : item.id});
+            _log('play', {"streamer_id" : item.streamer_id, "link_id" : (item.link_id || 0), "ch_id" : item.id}, this.cur_media_item.id);
         }else{
-            _log('play', uri);
+            _log('play', uri, this.cur_media_item.id);
         }
 
     }else{
         uri = item;
-        _log('play', uri);
+        _log('play', uri, this.cur_media_item.id);
     }
 
     this.start_time = Date.parse(new Date())/1000;
@@ -2259,6 +2279,14 @@ player.prototype.play_now = function(item){
             }
 
             _debug('use_proxy', use_proxy);
+
+            var match = /(rtp|udp):\/\/([^\s]+)(.*)/.exec(uri);
+
+            if (this.mc_proxy_url && match){
+                _debug('mc_proxy_url', this.mc_proxy_url);
+                uri = uri.replace(/.+:\/\/[^\/]+/, 'ffrt ' + this.mc_proxy_url + '/' + match[1] + '/' + match[2] + match[3]);
+                _debug('new uri', uri);
+            }
 
             if (use_proxy){
 
@@ -2646,7 +2674,7 @@ player.prototype.show_info = function(item, direct_call){
 
     var title = '';
 
-    if (item.hasOwnProperty('number')){
+    if (item.hasOwnProperty('number') && item.number){
         title = item.number + '. ';
     }
 
@@ -2687,6 +2715,12 @@ player.prototype.show_info = function(item, direct_call){
     this.info.title.innerHTML = title;
 
     _debug('this.is_tv', this.is_tv);
+
+    if (item.is_audio){
+        this.info.clock.style.visibility = 'hidden';
+    }else{
+        this.info.clock.style.visibility = 'visible';
+    }
 
     try{
         

@@ -1159,6 +1159,13 @@ function common_xpcom(){
                         gSTB.SetLedIndicatorLevels(parseInt(this.user['default_led_level'], 10), parseInt(this.user['standby_led_level'], 10));
                     }
 
+                    var mc_proxy_enabled = stb.RDir('getenv mc_proxy_enabled');
+                    var mc_proxy_url     = stb.RDir('getenv mc_proxy_url');
+
+                    if (mc_proxy_enabled == 'true' && mc_proxy_url){
+                        this.player.mc_proxy_url = mc_proxy_url;
+                    }
+
                 }catch(e){
                     _debug(e);
                 }
@@ -1881,6 +1888,10 @@ function common_xpcom(){
                     cur_place_num = 5;
                 }else if(this.cur_place == 'vclub'){
                     cur_place_num = 2;
+                }else if(this.cur_place == 'karaoke'){  // Karaoke
+                    cur_place_num = 3;
+                }else if(this.cur_place == 'audioclub'){ // Audio Club
+                        cur_place_num = 4;
                 }else if (this.cur_place == 'epg_simple' || this.cur_place == 'epg'){ // TV archive
                     cur_place_num = 11;
                 }else{
@@ -1893,7 +1904,7 @@ function common_xpcom(){
                     cur_place_num = 2;
                 }else if(this.cur_place == 'karaoke'){ // Karaoke
                     cur_place_num = 3;
-                }else if(this.cur_place == 'audio_club'){ // Audio Club
+                }else if(this.cur_place == 'audioclub'){ // Audio Club
                     cur_place_num = 4;
                 }else if(this.cur_place == 'video_clips'){ // Video Clips
                     cur_place_num = 8;

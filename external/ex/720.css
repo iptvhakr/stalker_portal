@@ -135,7 +135,6 @@ a {text-decoration: none;}
         /* общее */
         #loading {background-color: black; height: 100%; position: absolute; width: 100%; z-index: 3;}
         #loading span {position:absolute; color:#ccc; font-family:'Ubuntu'; font-size:36px; width:100%; text-align:center; top:50%; z-index: 4;}
-        .page#MainPage .content {/*background: url("img/720/bg_exua.jpg") no-repeat; background-position: 100%;*/}
         .page#MainPage .content .servText {line-height: 50px; margin-left: 10px;}
         .page#MainPage .notActive .focused {background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(rgba(59, 59, 59, 0.5)), color-stop(0.4, rgba(24, 24, 24, 0.5)), color-stop(0.6, rgba(24, 24, 24, 0.5)), to(rgba(78, 78, 78, 0.5))) !important;}
        

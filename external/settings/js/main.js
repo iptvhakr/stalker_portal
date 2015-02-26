@@ -145,11 +145,21 @@ function erMes(erm,el){
 }
 
 function erMbeck(){
-    if(close){stbWebWindow.close();}
-    else {if(spos!=0)document.getElementById('confirmb').style.display="none";
-    else document.getElementById('confirm').style.display="none";
-    if(elem!='')cont.contentWindow.document.getElementById(elem).focus();
-    else cont.focus();}
+    if (close) {
+        stbWebWindow.close();
+    }
+    else {
+        if (spos != 0){
+            document.getElementById('confirmb').style.display = "none";
+        }else{
+            document.getElementById('confirm').style.display = "none";
+        }
+        if (elem != ''){
+            cont.contentWindow.document.getElementById(elem).focus();
+        }else{
+            cont.focus();
+        }
+    }
 }
 
 function conf(erm,el,ef,back){
@@ -174,8 +184,8 @@ function confb(erm,el,ef,back){
 
 function confOk(){
     eval(func);
-    if(document.getElementById('confirmb').style.display=="none")document.getElementById('confirm').style.display="none";
-    else document.getElementById('confirmb').style.display="none";
+    if(document.getElementById('confirmb').style.display=="block" || document.getElementById('confirmb').style.display=="")document.getElementById('confirmb').style.display="none";
+    if(document.getElementById('confirm').style.display=="block" || document.getElementById('confirm').style.display=="")document.getElementById('confirm').style.display="none";
 }
 
 function pressKey(e)

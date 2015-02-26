@@ -544,3 +544,5 @@ $words['audioclub_new_playlist'] = _('New Playlist');
 $words['audioclub_saving_error'] = _('Error while saving');
 $words['audioclub_create_new'] = _('CREATE NEW');
 $words['remove_from_playlist_confirm'] = _('Do you really want to delete this track from playlist?');
+$words['delete_playlist_confirm'] = _('Do you really want to delete this playlist?');
+$words['audioclub_remove_playlist'] = _('DELETE');

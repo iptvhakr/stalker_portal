@@ -257,6 +257,7 @@
             this.remove_from_playlist_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('remove_from_playlist_confirm')});
 
             this.remove_from_playlist_confirm.enableOnExitClose();
+            this.remove_from_playlist_confirm.getTextDomObj().style.textAlign = "center";
 
             this.remove_from_playlist_confirm.addItem(new ModalFormButton(
                 {
@@ -274,10 +275,10 @@
 
                         stb.load(
                             {
-                                "type"   : "audioclub",
-                                "action" : "remove_from_playlist",
-                                "playlist_id" : this.load_params['playlist_id'],
-                                "track_id" : this.data_items[this.cur_row].id
+                                "type"        : "audioclub",
+                                "action"      : "remove_from_playlist",
+                                "playlist_id" : scope.load_params['playlist_id'],
+                                "track_id"    : scope.data_items[scope.cur_row].id
                             },
                             function(result){
                                 _debug('remove_from_playlist result');
@@ -287,6 +288,44 @@
                         );
 
                         scope.remove_from_playlist_confirm.hide();
+                    }
+                }
+            ));
+
+            /* DELETE PLAYLIST CONFIRM */
+            this.delete_playlist_confirm = new ModalForm({"title" : get_word('confirm_form_title'), "text" : get_word('delete_playlist_confirm')});
+
+            this.delete_playlist_confirm.enableOnExitClose();
+            this.delete_playlist_confirm.getTextDomObj().style.textAlign = "center";
+
+            this.delete_playlist_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.delete_playlist_confirm.hide();
+                    }
+                }
+            ));
+
+            this.delete_playlist_confirm.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        stb.load(
+                            {
+                                "type"        : "audioclub",
+                                "action"      : "delete_playlist",
+                                "playlist_id" : scope.data_items[scope.cur_row].id
+                            },
+                            function(result){
+                                _debug('delete_playlist_confirm result');
+                                this.load_data();
+                            },
+                            scope
+                        );
+
+                        scope.delete_playlist_confirm.hide();
                     }
                 }
             ));
@@ -402,6 +441,7 @@
             _debug('audioclub.play');
 
             var item = this.data_items[this.cur_row].clone();
+            item.number = null;
 
             stb.load(
                 {
@@ -452,13 +492,15 @@
                 window.clearInterval(this.seek_bar_interval);
             }
 
-            if (this.data_items[this.cur_row].is_track){
+            if (this.data_items[this.cur_row].is_track || this.data_items[this.cur_row].is_playlist){
                 this.color_buttons.get('yellow').enable();
             }else{
                 this.color_buttons.get('yellow').disable();
             }
 
-            if (this.load_params['playlist_id']){
+            if (this.data_items[this.cur_row].is_playlist){
+                this.color_buttons.get('yellow').text_obj.innerHTML = get_word('audioclub_remove_playlist');
+            }else if (this.load_params['playlist_id']){
                 this.color_buttons.get('yellow').text_obj.innerHTML = get_word('remove_from_playlist');
             }else{
                 this.color_buttons.get('yellow').text_obj.innerHTML = get_word('add_to_playlist');
@@ -622,7 +664,7 @@
 
             data = data.map(function(item){
 
-                if (stb.player.cur_media_item && stb.player.cur_media_item.is_track && item.id == stb.player.cur_media_item.id && stb.player.on){
+                if (stb.player.cur_media_item && stb.player.cur_media_item.is_track && item.id == stb.player.cur_media_item.id && stb.player.on && item.is_track){
                     if (stb.player.pause.on){
                         item.paused = 1;
                     }else{
@@ -638,8 +680,11 @@
 
         this.add_del_to_playlist = function(){
             _debug('audioclub.add_del_to_playlist');
+            if (this.data_items[this.cur_row].is_playlist){ // remove playlist confirm
 
-            if (this.load_params['playlist_id']){ // remove from playlist
+                this.delete_playlist_confirm.show();
+
+            }else if (this.load_params['playlist_id']){ // remove from playlist
 
                 this.remove_from_playlist_confirm.show();
 

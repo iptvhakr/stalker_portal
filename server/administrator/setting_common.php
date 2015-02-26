@@ -131,7 +131,7 @@ h3{
 
 <script id="update_item_tmpl" type="text/x-jquery-tmpl">
     <div class="setting-block">
-        <div class="del-block"><a href="?del=1&id=${id}" style="{{if idx==0}}display:none{{/if}}">x</a></div>
+        <div class="del-block"><a href="?del=1&id=${id}">x</a></div>
         <form method="POST">
             <input type="hidden" name="id" value="${id}">
             <h3><?= _('Firmware auto update')?> ({{if enable==="1"}}<?=_('enabled')?>{{else}}<?=_('disabled')?>{{/if}})
@@ -210,6 +210,10 @@ h3{
     $(function(){
 
         $("#update_item_tmpl").tmpl(update_settings).appendTo('.blocks-container');
+
+        if ($('.setting-block').length == 1){
+            $('.del-block a').hide();
+        }
 
         $('.add-block').live('click', function(event){
 

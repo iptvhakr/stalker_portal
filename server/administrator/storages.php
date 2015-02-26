@@ -34,11 +34,15 @@ if (@$_POST['add']){
         'user_agent_filter'     => @$_POST['user_agent_filter'],
         'for_moderator'         => @intval($_POST['for_moderator']),
         'for_records'           => @intval($_POST['for_records']),
+        'flussonic_server'      => @intval($_POST['flussonic_server']),
         'fake_tv_archive'       => @intval($_POST['fake_tv_archive']),
         'archive_stream_server' => @$_POST['archive_stream_server'],
         'external'              => @intval($_POST['external']),
         'for_simple_storage'    => @intval($_POST['for_simple_storage']),
-        'not_for_mag100'        => @intval($_POST['not_for_mag100'])
+        'not_for_mag100'        => @intval($_POST['not_for_mag100']),
+        'wowza_server'          => @intval($_POST['wowza_server']),
+        'wowza_port'            => @intval($_POST['wowza_port']),
+        'wowza_app'             => @$_POST['wowza_app']
     ));
 
     header("Location: storages.php");
@@ -63,11 +67,15 @@ if (!empty($id)){
                 'user_agent_filter'     => @$_POST['user_agent_filter'],
                 'for_moderator'         => @intval($_POST['for_moderator']),
                 'for_records'           => @intval($_POST['for_records']),
+                'flussonic_server'      => @intval($_POST['flussonic_server']),
                 'fake_tv_archive'       => @intval($_POST['fake_tv_archive']),
                 'archive_stream_server' => @$_POST['archive_stream_server'],
                 'external'              => @intval($_POST['external']),
                 'for_simple_storage'    => @intval($_POST['for_simple_storage']),
-                'not_for_mag100'        => @intval($_POST['not_for_mag100'])
+                'not_for_mag100'        => @intval($_POST['not_for_mag100']),
+                'wowza_server'          => @intval($_POST['wowza_server']),
+                'wowza_port'            => @intval($_POST['wowza_port']),
+                'wowza_app'             => @$_POST['wowza_app']
             ),
             array('id' => intval($_GET['id']))
         );
@@ -173,7 +181,31 @@ a:hover{
 }
 </style>
 <title><?= _('Storages')?></title>
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript">
+    $(function(){
 
+        $('.for_records').click(function(){
+            if ($(this).attr('checked')){
+                $('.flussonic_server').show();
+                $('.fake_tv_archive').show();
+            }else{
+                $('.flussonic_server').hide();
+                $('.fake_tv_archive').hide();
+            }
+        });
+
+        $('.wowza_server').click(function(){
+            if ($(this).attr('checked')){
+                $('.wowza_app_block').show();
+                $('.wowza_port_block').show();
+            }else{
+                $('.wowza_app_block').hide();
+                $('.wowza_port_block').hide();
+            }
+        })
+    })
+</script>
 </head>
 <body>
 <table align="center" border="0" cellpadding="0" cellspacing="0">
@@ -281,18 +313,30 @@ a:hover{
                     <td><input type="checkbox" name="not_for_mag100" value="1" <? if(@$edit_storage['not_for_mag100']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr>
-                    <td><?= _('Record TV')?></td>
+                    <td style="vertical-align: top"><?= _('Record TV')?></td>
                     <td>
-                        <input type="checkbox" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('fake_tv_archive').style.display = '' : document.getElementById('fake_tv_archive').style.display = 'none'"/>
-                        <!--<span id="wowza_server" style="margin-left: 5px; display: <?/*echo @$edit_storage['for_records'] ? '' : 'none' */?>">
-                            Wowza server
-                            <input type="checkbox" name="wowza_server" value="1" <?/* if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } */?> onchange="this.checked ? document.getElementById('archive_playback_row').style.display = '' : document.getElementById('archive_playback_row').style.display = 'none'"/>
-                        </span>-->
-                        <span id="fake_tv_archive" style="margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
+                        <input type="checkbox" class="for_records" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('fake_tv_archive').style.display = '' : document.getElementById('fake_tv_archive').style.display = 'none'"/>
+                        <div class="flussonic_server" style="text-align: right; margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
+                            Flussonic server
+                            <input type="checkbox" name="flussonic_server" value="1" <? if(@$edit_storage['flussonic_server']){ echo 'checked="checked"'; } ?> />
+                        </div>
+                        <div class="fake_tv_archive" style="text-align: right; margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
                             <?= _('Emulation')?>
                             <input type="checkbox" name="fake_tv_archive" value="1" <? if(@$edit_storage['fake_tv_archive']){ echo 'checked="checked"'; } ?> />
-                        </span>
+                        </div>
                     </td>
+                </tr>
+                <tr>
+                    <td><?= _('Wowza')?></td>
+                    <td><input type="checkbox" class="wowza_server" name="wowza_server" value="1" <? if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } ?>/></td>
+                </tr>
+                <tr class="wowza_port_block" style="display: <?= empty($edit_storage['wowza_server']) ? 'none' : ''?>">
+                    <td><?= _('Wowza port')?></td>
+                    <td><input type="text" name="wowza_port" value="<?= empty($edit_storage['wowza_port']) ? '1935' : $edit_storage['wowza_port']?>" /></td>
+                </tr>
+                <tr class="wowza_app_block" style="display: <?= empty($edit_storage['wowza_server']) ? 'none' : ''?>">
+                    <td><?= _('Wowza App')?></td>
+                    <td><input type="text" name="wowza_app" value="<?echo @$edit_storage['wowza_app']?>" /></td>
                 </tr>
                 <tr>
                     <td><?= _('External')?></td>

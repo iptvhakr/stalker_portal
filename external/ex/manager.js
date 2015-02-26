@@ -52,26 +52,26 @@ CSListManager.init = function(handleInner, parentPage){
 	 * @type {[Function]}
 	 */
 	this.action_open = {};
-	this.action_open[ROOT_VIDEO]             = this.openRoot;
-	this.action_open[ROOT_AUDIO]             = this.openRoot;
-	this.action_open[ROOT_IMAGE]             = this.openRoot;
-	this.action_open[TYPE_BACK]              = this.openBack;
-        this.action_open[ROOT_GLOBAL_SEARCH]     = this.openGSearchRoot;
-        this.action_open[LOCAL_SEARCH_ROOT]      = this.openGSearchRoot;        
-	this.action_open[TYPE_NONE]              = this.openTypeNone;
-	this.action_open[MEDIA_OBJECT]           = this.openMediaObject;
-	this.action_open[MEDIA_FOLDER]           = this.openMediaFolder;
-	this.action_open[RADIO_OBJECT]           = this.openRadioObject;
-	this.action_open[ACTORS_FOLDER]          = this.openActorsFolder;
-	this.action_open[GLOBAL_SEARCH_FOLDER]   = this.openGSearchFolder;
-        this.action_open[ORPHAN_FOLDER]          = this.openGSearchFolder;        
-	this.action_open[GLOBAL_SEARCH_REFRESH]  = this.openRefresh;
-	this.action_open[LOCAL_SEARCH_REFRESH]   = this.openRefresh;
-	this.action_open[WHAT_IS_THIS_TYPE]      = this.openUnknownType;
-        this.action_open[ROOT_NEWS]              = this.openUnknownType;
-        this.action_open[MEDIA_TYPE_VIDEO]       = this.openFile;
-        this.action_open[MEDIA_TYPE_AUDIO]       = this.openFile;
-        this.action_open[MEDIA_TYPE_IMAGE]       = this.openFile;
+	this.action_open[ROOT_VIDEO] = this.openRoot;
+	this.action_open[ROOT_AUDIO] = this.openRoot;
+	this.action_open[ROOT_IMAGE] = this.openRoot;
+	this.action_open[TYPE_BACK] = this.openBack;
+	this.action_open[ROOT_GLOBAL_SEARCH] = this.openGSearchRoot;
+	this.action_open[LOCAL_SEARCH_ROOT] = this.openGSearchRoot;
+	this.action_open[TYPE_NONE] = this.openTypeNone;
+	this.action_open[MEDIA_OBJECT] = this.openMediaObject;
+	this.action_open[MEDIA_FOLDER] = this.openMediaFolder;
+	this.action_open[RADIO_OBJECT] = this.openRadioObject;
+	this.action_open[ACTORS_FOLDER] = this.openActorsFolder;
+	this.action_open[GLOBAL_SEARCH_FOLDER] = this.openGSearchFolder;
+	this.action_open[ORPHAN_FOLDER] = this.openGSearchFolder;
+	this.action_open[GLOBAL_SEARCH_REFRESH] = this.openRefresh;
+	this.action_open[LOCAL_SEARCH_REFRESH] = this.openRefresh;
+	this.action_open[WHAT_IS_THIS_TYPE] = this.openUnknownType;
+	this.action_open[ROOT_NEWS] = this.openUnknownType;
+	this.action_open[MEDIA_TYPE_VIDEO] = this.openFile;
+	this.action_open[MEDIA_TYPE_AUDIO] = this.openFile;
+	this.action_open[MEDIA_TYPE_IMAGE] = this.openFile;
 
 };
 

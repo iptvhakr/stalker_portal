@@ -79,7 +79,7 @@ abstract class Master
         }
 
         $default_error = 'nothing_to_play';
-        
+
         foreach ($good_storages as $name => $storage){
                 if ($storage['load'] < 1){
 
@@ -122,6 +122,8 @@ abstract class Master
                         if ($this->media_protocol == 'http' || $this->media_type == 'remote_pvr'){
                             if (Config::exist('nfs_proxy')){
                                 $base_path = 'http://'.Config::get('nfs_proxy').'/media/'.$name.'/'.RESTClient::$from.'/';
+                            }elseif (!empty($this->storages[$name]['wowza_server'])){
+                                $base_path = 'http://'.$this->storages[$name]['storage_ip'].':'.$this->storages[$name]['wowza_port'].'/'.$this->storages[$name]['wowza_app'].'/_definst_/mp4:'.$this->getMediaPath($file).'/';
                             }else{
                                 $base_path = 'http://'.$this->storages[$name]['storage_ip'].'/media/'.$name.'/'.RESTClient::$from.'/';
                             }
@@ -135,7 +137,11 @@ abstract class Master
                             $res['cmd'] = 'auto ';
                         }
 
-                        $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+                        if (empty($this->storages[$name]['wowza_server'])){
+                            $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
+                        }else{
+                            $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink($base_path);
+                        }
 
                         $file_info = array_filter($storage['files'], function($info) use ($file){
                             return $info['name'] == $file;
@@ -205,13 +211,13 @@ abstract class Master
         }
     }
 
-    private function createTemporaryLink($url){
+    protected function createTemporaryLink($url){
 
-        $key = md5($url.time());
+        $key = md5($url.time().uniqid());
 
         $cache = Cache::getInstance();
 
-        $result = $cache->set($key, $url, 0, 28800); // 8 hours
+        $result = $cache->set($key, $url, 0, Config::getSafe('vclub_tmp_link_ttl', 5));
 
         if ($result){
             return $key;
@@ -559,9 +565,9 @@ abstract class Master
         
             $storage_cache = $this->db->from('storage_cache')
                                       ->where(array(
-                                          'cache_key'                => $key,
-                                          'status'                   => 1,
-                                          'UNIX_TIMESTAMP(changed)>' => time() - $this->cache_expire_h*3600
+                                          'cache_key' => $key,
+                                          'status'    => 1,
+                                          'changed>'  => date(Mysql::DATETIME_FORMAT, time() - $this->cache_expire_h*3600)
                                       ))
                                       ->get()
                                       ->all();
@@ -714,7 +720,7 @@ abstract class Master
                                       'now_playing_type' => 2,
                                       'hd_content'       => 0,
                                       'storage_name'     => $storage_name,
-                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+                                      'keep_alive>'      => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
                                   ))
                               ->get()
                               ->first('sd_online');
@@ -726,7 +732,7 @@ abstract class Master
                                       'now_playing_type' => 2,
                                       'hd_content'       => 1,
                                       'storage_name'     => $storage_name,
-                                      'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+                                      'keep_alive>'      => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
                                   ))
                               ->get()
                               ->first('hd_online');
@@ -742,7 +748,7 @@ abstract class Master
                                         'now_playing_type' => 11,
                                         'hd_content'       => 0,
                                         'storage_name'     => $storage_name,
-                                        'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2,
+                                        'keep_alive>'      => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
                                     ))
                                     ->get()
                                     ->first('archive_sessions');

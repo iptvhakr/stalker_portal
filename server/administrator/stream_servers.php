@@ -40,7 +40,9 @@ if (!empty($id)){
 
         Admin::checkAccess(AdminAccess::ACCESS_EDIT);
 
-        Mysql::getInstance()->update('streaming_servers',
+        Mysql::getInstance()
+            ->use_caching(array('streaming_servers.id='.intval($_GET['id'])))
+            ->update('streaming_servers',
             array(
                 'name'         => @$_POST['name'],
                 'address'      => @$_POST['address'],
@@ -56,7 +58,9 @@ if (!empty($id)){
 
         Admin::checkAccess(AdminAccess::ACCESS_DELETE);
 
-        Mysql::getInstance()->delete('streaming_servers', array('id' => intval($_GET['id'])));
+        Mysql::getInstance()
+            ->use_caching(array('streaming_servers.id='.intval($_GET['id'])))
+            ->delete('streaming_servers', array('id' => intval($_GET['id'])));
 
         header("Location: stream_servers.php");
         exit;
@@ -64,7 +68,9 @@ if (!empty($id)){
 
         Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
 
-        Mysql::getInstance()->update('streaming_servers',
+        Mysql::getInstance()
+            ->use_caching(array('streaming_servers.id='.intval($_GET['id'])))
+            ->update('streaming_servers',
             array(
                 'status' => $_GET['status']
             ),

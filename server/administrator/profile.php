@@ -118,7 +118,12 @@ if (@$_GET['fav_itv'] && $_GET['fav_itv'] == 'default'){
 
     $id = intval($_GET['id']);
 
-    Mysql::getInstance()->update('fav_itv', array('fav_ch' => ''), array('uid' => $id));
+    Mysql::getInstance()
+        ->use_caching(array('fav_itv.uid='.intval($id)))
+        ->update('fav_itv',
+            array('fav_ch' => ''),
+            array('uid' => $id)
+        );
 
     header("Location: profile.php?id=".$id);
     exit();

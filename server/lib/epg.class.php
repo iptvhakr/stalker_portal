@@ -10,8 +10,6 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 {
     private $db;
     private $cleaned_epg = array();
-    private $day_begin_datetime;
-    private $now_datetime;
     private $cur_program_id;
     private $cur_program_idx;
     private $cur_program_page;
@@ -26,9 +24,6 @@ class Epg implements \Stalker\Lib\StbApi\Epg
     public function __construct(){
         $this->db = Mysql::getInstance();
         $this->day_begin_datetime = date("Y-m-d 00:00:00");
-        $this->now_datetime = date("Y-m-d H:i:s");
-
-        $this->settings = $this->getSettings();
     }
 
     /**
@@ -38,6 +33,8 @@ class Epg implements \Stalker\Lib\StbApi\Epg
      * @return string
      */
     public function updateEpg($force = false){
+
+        $this->settings = $this->getSettings();
 
         $result = '';
 
@@ -100,6 +97,10 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         if (preg_match("/\.gz$/", $setting['uri'])){
 
             $handle = gzopen($setting['uri'], 'r');
+
+            if (!$handle){
+                return _("Source")." ".$setting['uri']." "._("failed to open")."\n";
+            }
 
             $tmpfname = tempnam("/tmp", "xmltv");
             $fp = fopen($tmpfname, "w");
@@ -415,9 +416,43 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         return $this->getProgramByChannelAndTime($ch_id);
     }
 
+    public function getCurProgramsMap($ch_ids, $datetime = 'NOW()'){
+
+        if ($datetime == 'NOW()'){
+            $datetime = date(Mysql::DATETIME_FORMAT);
+        }
+
+        $programs = $this->db
+            ->select('*, TIME_FORMAT(epg.time,"%H:%i") as t_time')
+            ->from('epg')
+            ->in('ch_id', $ch_ids)
+            ->where(array(
+                'time<='   => $datetime
+            ))
+            ->where(array(
+                'time_to'  => 0,
+                'time_to>' => $datetime
+            ), 'OR ')
+            ->orderby('time', 'DESC')
+            ->get()
+            ->all();
+
+        $programs_map = array();
+
+        foreach ($programs as $program){
+            $programs_map[$program['ch_id']] = $program;
+        }
+
+        return $programs_map;
+    }
+
     public function getProgramByChannelAndTime($ch_id, $datetime = 'NOW()'){
 
         $ch_id = intval($ch_id);
+
+        if ($datetime == 'NOW()'){
+            $datetime = date(Mysql::DATETIME_FORMAT);
+        }
 
         $program = $this->db
             ->select('*, TIME_FORMAT(epg.time,"%H:%i") as t_time')
@@ -663,6 +698,18 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         $all_user_ids = Itv::getInstance()->getAllUserChannelsIds();
 
         $dvb_channels = Itv::getInstance()->getDvbChannels();
+
+        if (!empty($_REQUEST['fav'])){
+            $fav = Itv::getInstance()->getFav(Stb::getInstance()->id);
+            $all_user_ids = array_intersect($all_user_ids, $fav);
+
+            $fav_assoc = array_fill_keys($fav, 1);
+
+            $dvb_channels = array_values(array_filter($dvb_channels, function($channel) use ($fav_assoc){
+                return isset($fav_assoc[$channel['id']]);
+            }));
+        }
+
         $dvb_ch_idx = null;
 
         $channel = Itv::getChannelById($ch_id);
@@ -700,7 +747,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $ch_idx = Itv::getInstance()
                                    ->getChannels()
-                                   ->orderby('number')
+                                   ->orderby(isset($fav) ? 'field(id,'.(empty($fav) ? 'null' : implode(',', $fav)).')' : 'number')
                                    ->in('id', $all_user_ids)
                                    ->where(array('number<=' => $channel['number']))
                                    ->get()
@@ -717,17 +764,13 @@ class Epg implements \Stalker\Lib\StbApi\Epg
             $default_page = true;
 
             $page = ceil($ch_idx/$page_items);
-
-            if ($page == 0){
-                $page == 1;
-            }
         }
 
         $ch_idx = $ch_idx - ($page-1)*$page_items;
 
         $user_channels = Itv::getInstance()
                                    ->getChannels()
-                                   ->orderby('number')
+                                   ->orderby(isset($fav) ? 'field(id,'.(empty($fav) ? 'null' : implode(',', $fav)).')' : 'number')
                                    ->in('id', $all_user_ids)
                                    ->limit($page_items, ($page-1)*$page_items)
                                    ->get()
@@ -769,6 +812,8 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
         $result = array();
 
+        $num = 1;
+
         foreach ($raw_epg as $id => $epg){
 
             $channel = $user_channels[array_search($id, $display_channels_ids)];
@@ -777,11 +822,13 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                               'ch_id'   => $id,
                               //'name'  => Itv::getChannelNameById($id),
                               'name'    => $channel['name'],
-                              'number'  => $channel['number'],
+                              'number'  => !empty($_REQUEST['fav']) ? (string) $num : $channel['number'],
                               'ch_type' => isset($channel['type']) && $channel['type'] == 'dvb' ? 'dvb' : 'iptv',
                               'dvb_id'  => isset($channel['type']) && $channel['type'] == 'dvb' ? $channel['dvb_id'] : null,
                               'epg_container' => 1,
                               'epg'     => $epg);
+
+            $num++;
         }
 
         $time_marks = array();
@@ -898,7 +945,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                      ->where(array(
                          'epg.ch_id'     =>  $ch_id,
                          'epg.time>='    =>  $from,
-                         'epg.time<'     =>  'NOW()',
+                         'epg.time<'     =>  date(Mysql::DATETIME_FORMAT),
                      ))
                      ->get()
                      ->counter();

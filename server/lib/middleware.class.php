@@ -29,7 +29,7 @@ class Middleware
         return Mysql::getInstance()
             ->from('users')
             ->where(array(
-                'UNIX_TIMESTAMP(keep_alive)>' => time() - Config::get('watchdog_timeout')*2
+                'keep_alive>' => date(Mysql::DATETIME_FORMAT, time() - Config::get('watchdog_timeout')*2)
             ))
             ->get()
             ->all('id');

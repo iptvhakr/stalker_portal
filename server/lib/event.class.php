@@ -111,7 +111,7 @@ class Event extends HTTPPush
             $db = Mysql::getInstance();
             //return $db->executeQuery('select * from events where uid='.$uid.' and ended=0 and eventtime>NOW() order by priority, addtime')->getAllValues();
             return $db->from('events')
-                      ->where(array('uid' => $uid, 'ended' => 0, 'eventtime>' => 'NOW()'))
+                      ->where(array('uid' => $uid, 'ended' => 0, 'eventtime>' => date(Mysql::DATETIME_FORMAT)))
                       ->orderby('priority')
                       ->orderby('addtime')
                       ->get()

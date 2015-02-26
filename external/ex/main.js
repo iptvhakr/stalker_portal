@@ -1364,7 +1364,6 @@ ListPage.actionMainMenu = function(){
     ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, false);
     ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOffINFO, true);
 	ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOKINFO, true);
-//    ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnEXIT, false);
     ListPage.Info.Show(false, false);
     // clear all children and breadcrumbs
     while (CSListManager.src.length > 0){
@@ -1539,13 +1538,13 @@ function htmlListParser(html){
 		cat = !(html[i].indexOf('Articles')<0 && html[i].indexOf('Статей')<0);
         // некорректное имя
         if(title == '&nbsp;' || title == '' || title == ' ' || title === null || title === undefined){ title = 'unnamed'; }
-        cats.push({
-            "url":'http://www.ex.ua'+url,
-            "img":img,
-            "title":unescape(title),
-            "cat":cat,
-            "add":add
-        });
+		cats.push({
+			"url"  : 'http://www.ex.ua' + url,
+			"img"  : img,
+			"title": unescape(title),
+			"cat"  : cat,
+			"add"  : add
+		});
     }
     
     ListPage.addListItems(cats);
@@ -1561,9 +1560,9 @@ function htmlSearchParser(html){
     echo('new htmlSearchParser');
     var cats = [], img, url, title, cat, add;
     try{
-        html = html.split("class=panel");
+        html = html.split('class=panel');
         html = html[1].split('</table>');
-        html = html[0].split("<td");
+        html = html[0].split('<td');
     } catch (error) {
         echo('WARNING! PARSER htmlSearchParser ERROR!');
         echo('ERROR INFO: '+error);
@@ -1598,14 +1597,14 @@ function htmlSearchParser(html){
 		cat = !(html[i].indexOf('Articles')<0 && html[i].indexOf('Статей')<0);
         // некорректное имя
         if(title == '&nbsp;' || title == '' || title == ' ' || title === null || title === undefined){ title = 'unnamed'; }
-        
-        cats.push({
-            "url":'http://www.ex.ua'+url,
-            "img":img,
-            "title":unescape(title),
-            "cat":cat,
-            "add":add
-        });
+
+		cats.push({
+			"url"  : 'http://www.ex.ua' + url,
+			"img"  : img,
+			"title": unescape(title),
+			"cat"  : cat,
+			"add"  : add
+		});
     }
     
     echo('PARSER->ANSWER LENGTH='+cats.length);
@@ -1642,9 +1641,9 @@ function htmlObjectParser(html){
     echo('htmlObjectParser new');
     var cats = [], html_td, url, name, img_big, img_prev, size_in_bytes, resolution;
     try{
-        html = html.split("class=list");
+        html = html.split('class=list');
         html = html[1].split('</table>');
-        html = html[0].split("<tr>");
+        html = html[0].split('<tr>');
     } catch (error) {
         echo('WARNING! PARSER htmlObjectParser ERROR!->50');
         echo('ERROR INFO: '+error);
@@ -2011,7 +2010,7 @@ ListPage.Preview.playPause = function () {
 			MediaPlayer.preparePlayer(list, ListPage, false, true, false);
 			echo(MediaPlayer.list, 'MediaPlayer.list 1');
 			// only images or audio
-			if ( file.data.type === MEDIA_TYPE_IMAGE ) {ListPage.Preview.player.className = 'player play'};
+			if ( file.data.type === MEDIA_TYPE_IMAGE ) {ListPage.Preview.player.className = 'player play'}
 		}
 	}
 };

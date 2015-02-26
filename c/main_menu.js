@@ -62,7 +62,12 @@ var main_menu = {
         }).bind(key.CLOCK, this);
         
         this.dom_obj = create_block_element('main_menu', document.body);
-        
+        this.logo_dom_obj = create_block_element('main_menu_logo', this.dom_obj);
+
+        if (stb.user && stb.user.portal_logo_url){
+            this.logo_dom_obj.style.background = 'url('+stb.user.portal_logo_url+') no-repeat';
+        }
+
         this.main_menu_date_bar = create_block_element('main_menu_date_bar', this.dom_obj);
         
         this.date = create_inline_element('main_menu_date' ,this.main_menu_date_bar);
@@ -73,9 +78,13 @@ var main_menu = {
         
         var main_menu_ver = create_block_element('main_menu_ver', this.dom_obj);
         main_menu_ver.innerHTML = ver + ' (' + stb.get_image_version() + ')';
-        
+
+        if (!stb.profile['show_version_in_main_menu']){
+            main_menu_ver.hide();
+        }
+
         var mm_menu_hor = create_block_element('mm_menu_hor', this.dom_obj);
-        
+
         var cell;
         
         for (var i=0; i<=2; i++){

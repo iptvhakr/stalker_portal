@@ -2,9 +2,20 @@
 
 class ItvSubscription
 {
+
+    private static $itv_subscription = false;
+
     public static function getBonusChannelsIds($uid){
-        
-        $bonus_ch = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first('bonus_ch');
+
+        if (self::$itv_subscription === false){
+            self::$itv_subscription = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first();
+        }
+
+        if (empty(self::$itv_subscription)){
+            return array();
+        }
+
+        $bonus_ch = self::$itv_subscription['bonus_ch'];
 
         if (empty($bonus_ch)){
             return array();
@@ -21,19 +32,25 @@ class ItvSubscription
 
     public static function getSubscriptionChannelsIds($uid){
 
-        $mac = Mysql::getInstance()->from('users')->where(array('id' => $uid))->get()->first('mac');
+        $mac = Mysql::getInstance()->from('users')->where(array('id' => (int) $uid))->get()->first('mac');
 
         if (empty($mac)){
             return array();
         }
 
-        $moderator = Mysql::getInstance()->from('moderators')->where(array('mac' => $mac, 'status' => 1))->get()->first();
-
-        if (!empty($moderator)){
+        if (!Stb::getInstance()->isModerator()){
             return Mysql::getInstance()->from('itv')->where(array('base_ch' => 0))->get()->all('id');
         }
 
-        $sub_ch = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first('sub_ch');
+        if (self::$itv_subscription === false){
+            self::$itv_subscription = Mysql::getInstance()->from('itv_subscription')->where(array('uid' => $uid))->get()->first();
+        }
+
+        if (empty(self::$itv_subscription)){
+            return array();
+        }
+
+        $sub_ch = self::$itv_subscription['sub_ch'];
 
         if (empty($sub_ch)){
             return array();
