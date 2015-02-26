@@ -1,0 +1,165 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+
+{% set active = 'tv-channels' %}
+{% set title = 'tv-channels' %}
+
+{% block content %}
+    {#<div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Список каналов</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('tv_genre_id', 'Жанр', 'id', 'title', app['allGenres'], 2) }}
+                {{ main_macro.get_filter('archive_id', 'Архив', 'id', 'title', app['allArchive'], 2) }}
+                {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus'], 2) }}
+                <a href="{{app.request.baseUrl}}/tv-channels/add-channel" class="btn btn-success pull-right">Добавить</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% if app['allChannels'] %}
+                    <div class="box">
+                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                        {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                        {% endif %}
+                        <div class="box-content">
+                            <div class="box-content no-padding">
+                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                    <thead>
+                                        <tr>
+                                            <th data-filter="logo">Лого</th>
+                                            <th data-filter="number">Номер</th>
+                                            <th data-filter="name">Название</th>
+                                            <th data-filter="genres_name">Жанр</th>
+                                            <th data-filter="enable_tv_archive">ТВ-архив</th>
+                                            <th data-filter="cmd">URL</th>
+                                            <th data-filter="status">Статус</th>
+                                            <th data-filter="operations">Действия</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allChannels %}
+                                            <tr>
+                                                <td><img class="img-rounded channel-logo" src="{% if item.logo %}{{item.logo}}?{{ random(100000) }}{% endif %}" alt=""></td>
+                                                <td><a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id={{item.id}}">{{item.number}}</a></td>
+                                                <td><a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id={{item.id}}">{{item.name}}</a></td>
+                                                <td>{{item.genres_name}}</td>
+                                                <td>{% if item.enable_tv_archive %}Да{% else %}Нет{% endif %}</td>
+                                                <td>{{item.cmd}}</td>
+                                                <td>{% if item.status %}Включен{% else %}Отключен{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id={{item.id}}">
+                                                                    <span>Редактировать</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{app.request.baseUrl}}/tv-channels/move-channel">
+                                                                    <span>Переместить</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{app.request.baseUrl}}/tv-channels/remove-channel?id={{item.id}}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{app.request.baseUrl}}/tv-channels/{% if item.status %}disable{% else %}enable{% endif %}-channel?id={{item.id}}">
+                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">
+                                                                    <span>Добавить EPG</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').dataTable({
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo":     true,
+                "aoColumnDefs": [ 
+                    { "targets": [ 0, -1 ], "orderable": false},
+                    { "searchable": false, "targets": [ 0, 3, 4, 5, 6, 7] },
+                    { className: "action-menu", "targets": [ -1 ] }
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+                
+                    
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'GET',
+                        success: function (data) {
+                            if (data.success) {
+                                if (data.action == 'remove') {
+                                    $('#datatable-1').DataTable()
+                                            .row( _this.closest('tr') )
+                                            .remove()
+                                            .draw();
+                                } else {
+                                    _this.closest('td').prev('td').text(data.status);
+                                    _this.text(data.action);
+                                    _this.attr('href', _this.attr('href').replace(data.urlactfrom, data.urlactto))
+                                }
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function () {
+                            alert('Some network error or access denied');
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+    </script>
+{% endblock %}

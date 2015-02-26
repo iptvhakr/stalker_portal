@@ -1,0 +1,142 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'statistics' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>Статистика видео за месяц</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ main_macro.get_filter_button_bar('stat_to', 'id', 'title', app['allVideoStat']) }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
+                                        <tbody>
+                                            {% if attribute(app, 'allStat') is defined %}
+                                                <!-- Start: list_row -->
+                                                {% for row in app.allStat %}
+                                                    <tr>
+                                                        {% for key, item in row %}     
+                                                        <td>{% if key == 'date' or key == 'last_played' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                {% endfor %}
+                                            <!-- End: list_row -->
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            var visibleCols = $('#datatable-1 tr:first-of-type th:visible');
+            {% if app['filters']['stat_to'] == 'all' %}
+                var colNum = (visibleCols.length > 3) ? 3: visibleCols.length - 1;
+            {% else %}
+                var colNum = visibleCols.length - 1;
+            {% endif %}
+            $('#datatable-1')
+            {% if app['filters']['stat_to'] != 'genre' %}
+                    .on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length > 0) {
+                    var dateKey = false, key, date;
+                    var possibleDateKeys = ['date', 'last_played'];
+                    for (var num in possibleDateKeys) {
+                        key = possibleDateKeys[num];
+                        if (typeof(json.data[0][key]) != 'undefined') {
+                            dateKey = key;
+                        }
+                    }
+                    if (dateKey) {
+                        for (var i in json.data) {
+                            date = json.data[i][dateKey];
+                            if (date > 0) {
+                                date = new Date(date * 1000);
+                                json.data[i][dateKey] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                            }
+                        }
+                    }
+                }
+            })
+            {% endif %}
+                .dataTable({
+            {% if app['filters']['stat_to'] != 'genre' %}
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-video-list-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+            {% else %}
+                "pageLength": 100,
+            {% endif %}
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}    
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "order": [[ colNum, "desc" ]],
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] }
+                    {#{"searchable": false, "targets": [-1]},
+                    {"sortable": false, "targets": [-1,]},
+                    {"width": "19%", "targets": [5] },#}
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                
+                LoadDataTablesScripts(TestTable1);
+
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+    </script>
+{% endblock %}

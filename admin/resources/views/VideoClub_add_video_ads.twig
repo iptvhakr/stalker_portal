@@ -1,0 +1,125 @@
+{% extends 'layout.twig' %}
+{% set title = 'video-club' %}
+
+{% block content %}
+
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-3">
+            <h3>{% if app['adsEdit'] %}Редактировать{% else %}Добавить{% endif %} рекламу</h3>
+        </div>
+    </div>#}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Название</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].title, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].title) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Можно использовать буквы, цифры</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Адресс</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].url, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].url) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Формат: solution+URL. Пример: ffmpeg http://example_of_link</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Вес</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].weight, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].weight) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Коэфициент частоты отображения</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Запрещено для категорий</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].denied_categories, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].denied_categories) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Указать категории для которых реклама отображаться не будет</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Необходимо посмотреть</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-2">
+                                    {{ form_widget(app['form'].must_watch, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].must_watch) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Процент от общей длительности ролика который необходимо посмотреть пользователю, для того чтобы появилась возможность пропустить рекламу.</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-4 pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-advertise" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+        function DemoSelect2() {
+            $('#form_denied_categories').select2({minimumResultsForSearch: -1});
+            $('#form_must_watch').select2({minimumResultsForSearch: -1});
+        }
+        function yelp() {
+            $(document).ready(function () {
+                LoadSelect2Script(DemoSelect2);
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+    </script>
+{% endblock %}

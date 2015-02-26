@@ -1,0 +1,230 @@
+{% extends 'layout.twig' %}
+{% set active = 'tv-channels' %}
+{% set title = 'tv-channels' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Переместить канал</h3>
+        </div>
+    </div>#}
+
+    <div id="iptv_list_move">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-8 col-sm-9 col-md-6 col-lg-4 no-padding"  id="searc_and_backlight">
+                    <div class="input-group col-xs-8 col-sm-9 pull-left">
+                        <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                        <input type="text" placeholder="Введите имя либо номер канала..." class="form-control" data-original-title="" title="">
+                    </div>
+                    <button type="button" class="btn btn-default">Поиск</button>
+                </div>
+                <button class="btn btn-success pull-right" type="button" id="iptv_list_move_send">Применить</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-12 col-sm-12 box_v2" id="channelListContainer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
+    <script type="text/javascript">
+        var channelList = [
+        {% if app['allChannels'] %}
+            {% set i_last = app['allChannels']|last %}
+            {% for item in app.allChannels %}
+                {% if loop|last %}
+            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'}
+                {% else %}
+            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'},
+                {% endif %}
+            {% endfor %}
+        {% endif%}
+        ]
+
+
+        function yelp() {
+            $(document).ready(function () {
+                if (typeof (channelListRender) == 'function') {
+                    channelListRender('#channelListContainer');
+                }
+            
+                $(document).on('click', '#iptv_list_move_send', function(e){
+                    showModalBox();
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var dataForSend = new Array();
+                
+                    $.each(channelList, function(){
+                        if (this.number != this.old_number && !this.empty) {
+                            dataForSend.push({'id': this.id, 'number': this.number, 'old_number': this.old_number});
+                        }
+                        this.old_number = this.number;
+                    })
+                
+                    $.ajax({
+                        url: '{{ app['controller_alias'] }}/move-apply',
+                        type: 'POST',
+                        dataType: "json",
+                        async: false,
+                        data: {data: dataForSend},
+                        success: function(data){
+                            if (data.success) {
+                                manageChannel();
+                            } else {
+                                errAction();
+                            }
+                        },
+                        error: function(){
+                            errAction();
+                        }
+                    });
+                    return false;
+                });
+                $(document).on('keyup', "#searc_and_backlight input[type='text']", function(e){
+                    if (typeof(e) != 'undefined' && typeof(e.type) != 'undefined' && e.type=='keyup' && e.keyCode == 13) {
+                        setBackLightFocus();
+                        return true;
+                    }
+                    $("#channelListContainer .box").removeClass('shining');
+                    var search = $(this).val();
+                    if ($.trim(search) != ''){
+                        $.each(['\\', '[',']','<','>','=','+','*','?','|','(',')','$','.','&', '{', '}'], function(i, val){
+                            search = search.replace(val, "\\" + val);
+                        });
+                        
+                        $("#channelListContainer .box").each(function(){
+                            var searchRegExp = new RegExp(search, "gi");
+                            if (searchRegExp.test($(this).find('.curr_num').text()) || searchRegExp.test($(this).find('.channel').text())) {
+                                $(this).find('.channel').addClass('backlight');
+                            } else {
+                                $(this).find('.channel').removeClass('backlight');
+                            }
+                        })
+                    } else {
+                        $("#channelListContainer .backlight").removeClass('backlight');
+                    }
+                });
+                
+                $(document).on('click', "#searc_and_backlight button", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setBackLightFocus();
+                    return false;
+                });
+                
+                function setBackLightFocus(){
+                    var first = $("#channelListContainer .box .backlight").get(0);
+                    if (!$(first).closest('.box').hasClass('shining')) {
+                        $(first).closest('.box').addClass('shining')
+                            $('#channelListContainer').scrollTo($(first).closest('.box'), 'slow');
+                        return;
+                    }
+                    $("#channelListContainer .box .backlight").each(function(index){
+                        var parent = $(this).closest('.box');                       
+                        if (index == 0 || parent.hasClass('shining')) {
+                            return true;
+                        } else if (index == $("#channelListContainer .box .backlight").length - 1){
+                            $("#channelListContainer .box").removeClass('shining');
+                            $('#channelListContainer').scrollTo(parent, 'slow');
+                            return false;
+                        }
+                        
+                        $('#channelListContainer').scrollTo(parent, 'slow');
+                        parent.addClass('shining');
+                        return false;
+                    });
+                }
+                
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for(i=0;i<3;i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+                
+                $('#channelListContainer').on('click', '.box-icons a', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var childI = $(this).children('i');
+                    var childID = parseInt($(this).closest('.box').find('span.curr_num').data('number'), 10) - 1;
+                    if (childI.hasClass('fa-lock')) {
+                        childI.removeClass('fa-lock').addClass('fa-unlock');
+                        $(this).closest("div.box").removeClass('no-drop').draggable("enable").droppable("enable");
+                        channelList[childID].locked = false;
+                    } else {
+                        childI.removeClass('fa-unlock').addClass('fa-lock');
+                        $(this).closest("div.box").addClass('no-drop').draggable("disable").droppable("disable");
+                        channelList[childID].locked = true;
+                    }
+                    ajaxPostSend('{{ app['controller_alias'] }}/toogle-lock-channel', {data:{1: {id: childI.data('id'), locked: channelList[childID].locked} } })
+                    return false;
+                });
+                
+            });
+        }
+
+        document.addEventListener( "DOMContentLoaded", yelp, false );
+
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+        
+        function showModalBox(){
+            $("#modalbox").data('complete', 0);
+            $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+            $("#modalbox").show();
+        }
+        
+        var manageChannel = function (obj) {
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+        }
+        
+        var errAction = function(){
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+            $("#modalbox").data('complete', 1);
+        }
+        
+        var checkChanges = function(){
+            var dataForSend = new Array();
+                
+            $.each(channelList, function(){
+                if (this.number != this.old_number) {
+                    dataForSend.push({'id': this.id, 'number': this.number, 'old_number': this.old_number})
+                }
+            })
+            
+            return dataForSend.length > 0;
+        };
+        
+        window.onunload = function(){
+            if (checkChanges()) {
+                return "Есть несохраненные данные. Действительно желаете уйти?";
+            }
+        }; 
+            
+        window.onbeforeunload = function(){
+            if (checkChanges()) {
+                return "Есть несохраненные данные. Действительно желаете уйти?";
+            }
+        };
+        
+    </script>
+{% endblock %}

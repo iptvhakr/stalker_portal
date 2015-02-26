@@ -1,0 +1,470 @@
+{% extends 'layout.twig' %}
+{% set title = 'users' %}
+
+{% block content %}
+
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-3">
+            <h3>{% if app['userEdit'] %}Редактировать{% else %}Добавить{% endif %} пользователя</h3>
+        </div>
+    </div>#}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-3">
+                                    <span>Профиль пользователя</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">ФИО</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].fname, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].fname) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Логин</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].login, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].login) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Пароль</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].password, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].password) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Номер телефона</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].phone, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].phone) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Номер лицевого счета</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].ls, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].ls) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if app['userEdit'] %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">Группа</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].group_id, {'attr': {'class': 'populate placeholder'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].group_id) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">MAC</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].mac, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            {% if app['tarifPlanFlag'] %}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label col-xs-offset-1">Тарифный план</label>
+                                    <div class="col-xs-10 col-sm-6">
+                                        <div class=" col-xs-10 col-sm-4">
+                                            {{ form_widget(app['form'].tariff_plan_id, {'attr': {'class': 'populate placeholder'}}) }}
+                                            <div class="bg-danger">
+                                                {{ form_errors(app['form'].tariff_plan_id) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        {% if not app['tarifPlanFlag'] %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">Дополнительные сервисы</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-4">
+                                        {{ form_widget(app['form'].additional_services_on, {'attr': {'class': 'populate placeholder'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].additional_services_on) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Учетная запись</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-4">
+                                    {{ form_widget(app['form'].status, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].status) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Состояние</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    {% if attribute(app, 'state') is defined %}
+                                        <span class="txt-success">Online</span>
+                                    {% else %}
+                                        <span class="txt-danger">Offline</span>
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Коментарии:</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].comment, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].comment) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if app.userEdit %}
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="box-name">
+                                <div class="row">
+                                    <div class="col-xs-10 col-sm-3">
+                                        <span>Информация о приставке</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-icons">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                            <div class="no-move"></div>
+                        </div>
+                        <div class="box-content">
+                            {% if app['userEdit'] %}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label col-xs-offset-1">MAC</label>
+                                    <div class="col-xs-10 col-sm-6">
+                                        <div class=" col-xs-10 col-sm-6">
+                                            {{ form_widget(app['form'].mac, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">IP</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].ip, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">Родительский контроль</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].parent_password, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/reset-users-parent-password" data-userid = "{{ app.userID }}" class="btn btn-info pull-left main_ajax">Сбросить</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">Избранное ТВ</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].fav_itv, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/reset-user-fav-tv" class="btn btn-info pull-left main_ajax" data-userid = "{{ app.userID }}">Сбросить</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">Версия</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        {{ form_widget(app['form'].version, {'attr': {'class': 'form-control', 'rows': '6'}}) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif%}
+                {% if app['userEdit'] and attribute(app['form'], 'tariff_plan_id') is defined %}
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="box-name">
+                                <div class="row">
+                                    <div class="col-xs-10 col-sm-3">
+                                        <span>Тарифный план</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-icons">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                            <div class="no-move"></div>
+                        </div>
+                        <div class="box-content">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label col-xs-offset-1">Тарифный план</label>
+                                <div class="col-xs-10 col-sm-6">
+                                    <div class=" col-xs-10 col-sm-4">
+                                        {{ form_widget(app['form']['tariff_plan_id'], {'attr': {'class': 'populate placeholder'}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form']['tariff_plan_id']) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if attribute(app, 'userTPs') is defined and app['userTPs']|length > 0 %}
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label col-xs-offset-1">Пакеты услуг</label>
+                                    <div class="col-xs-10 col-sm-6">
+                                        <div class=" col-xs-12 col-sm-12">
+                                            <table class="table table-striped table-hover" id="tariff_plan_table" data-planid="{{ app['form']['tariff_plan_id'].vars.value }}">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Название пакета</th>
+                                                        <th>Тип пакета</th>
+                                                        <th>Состояние</th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- Start: list_row -->
+                                                {% for item in app['userTPs'] %}
+                                                <tr>
+                                                    <td>
+                                                        <label><a href="{{ app.request.baseUrl }}/tariffs/edit-service-package?id={{ item.services_package_id }}" data-placement="bottom" data-toggle="tooltip" data-original-title="{{ item.description }}">{{ item.name }}</a></label>
+                                                    </td>                                                
+                                                    <td>
+                                                        <label>
+                                                            {% if item.optional == 1 %}
+                                                                <i>Опциональный</i>
+                                                            {% else %}
+                                                                Обязательный
+                                                            {% endif %}
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-sm-12">
+                                                            <div class="toggle-switch toggle-switch-{% if item.optional == 0 %}default{% else %}success{% endif %}">
+                                                                <label>
+                                                                    <input type="checkbox" {% if item.optional == 0 %}readonly="readonly" disabled="disabled"{% endif %}  {% if item.subscribed == 1 %}value="on" checked="checked"{% else %}value="off"{% endif %} name="tariff_plan_packages[{{ item.package_id }}]">
+                                                                    <div class="toggle-switch-inner"></div>
+                                                                    <div class="toggle-switch-switch">
+                                                                        <i class="fa fa-check"></i>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                <!-- End: list_row -->
+                                            </table>
+                                            <label id="tariff_plan_change" style="display: none;">Более детальная информация о подключаемых пакетах будет доступна в следующем сеансе редактирования.</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-4 pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/users-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: none;">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+        function DemoSelect2() {
+            $('#form_group_id').select2({minimumResultsForSearch: -1});
+            $('#form_tariff_plan_id').select2({minimumResultsForSearch: -1});
+            $('#form_additional_services_on').select2({minimumResultsForSearch: -1});
+            $('#form_status').select2({minimumResultsForSearch: -1});
+        }
+        function yelp() {
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                
+                LoadSelect2Script(DemoSelect2);
+
+                $(document).on('change keyup', '#form_login', function (e) {
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+
+                    $.ajax({
+                        url: 'users/check-login',
+                        type: 'POST',
+                        data: {name: _this.val()},
+                        success: function (data) {
+                            if (data.success) {
+                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                            } else if (data.error) {
+                                console.log(data.error);
+                            } else {
+                                console.log('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
+                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                            } else {
+                                console.log('Some network error or access denied');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    if (_this.attr('href').search("enable") != -1 && !_this.data('video_on_date')) {
+                        setEnableDatePicker(_this);
+                        return false;
+                    }
+
+                    if (_this.attr('href').search("create-tasks") != -1 && !_this.data('sendData')) {
+                        showTaskForm(_this);
+                        return false;
+                    }
+
+                    if (!_this.data('atcion')) {
+                        $.ajax({
+                            url: $(this).attr('href'),
+                            type: 'POST',
+                            data: $(this).data(),
+                            success: function (data) {
+                                if (data.success) {
+                                    for (var key in data) {
+                                        _this.data(key, data[key]);
+                                    }
+                                } else {
+                                    alert('Some server error');
+                                }
+                            },
+                            error: function (data) {
+                                var errAction = '';
+                                if (typeof (data.responseJSON) == 'object') {
+                                    errAction += data.responseJSON.action + 'Error';
+                                    for (var key in data.responseJSON) {
+                                        _this.data(key, data.responseJSON[key]);
+                                    }
+                                }
+                                if ($.isFunction(window[errAction])) {
+                                    window[errAction]($(_this));
+                                } else {
+                                    alert('Some network error or access denied');
+                                }
+                            },
+                            dataType: "json",
+                            async: false
+                        });
+                    }
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+                
+                $(document).on('change', '#form_tariff_plan_id', function(){
+                    if($(this).val() != $("#tariff_plan_table").data('planid')){
+                        $("#tariff_plan_table").hide();
+                        $("#tariff_plan_change").show();
+                    } else {
+                        $("#tariff_plan_table").show();
+                        $("#tariff_plan_change").hide();
+                    }
+                });
+                
+                $(document).on('click', '#form_save', function(){
+                    if (!$("#tariff_plan_table").is(':visible')) {
+                        $("#tariff_plan_table input").attr('disabled', 'disabled');
+                    }
+                })
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var resetUsersParentPassword = function (obj) {
+            $(obj).closest('.form-group').find('input').val($(obj).data('newpass'));
+        }
+
+        var resetUserFavTv = function (obj) {
+            $(obj).closest('.form-group').find('input').val(0);
+        }
+    </script>
+{% endblock %}

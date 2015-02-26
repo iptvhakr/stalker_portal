@@ -1,0 +1,246 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'admins' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>Права группы администраторов {% if attribute(app, 'adminGropName') is defined %}"{{ app['adminGropName'] }}"{% endif %}</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">       
+        <div class="row" id="adm_grp_perm">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {%if attribute(app,'permissionMap') is defined %}
+                {% set current_controller = '' %}
+                {% for row in app['permissionMap'] %}
+                    {% if not (current_controller == row.controller_name) %}
+                        {% if not (current_controller == '') %}
+                        </div>
+                    </div>
+                </div>
+                        {% endif %}
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="box">
+                        <div class="box-header" data-original-title="{{ row.description }}" data-toggle="tooltip" data-placemeent="bottom">
+                            <div class="box-name">
+                                <div class="row">
+                                    <div class="form-group col-xs-2 col-sm-2">
+                                        <span class="txt-primary">{{ row.controller_name }}</span>
+                                    </div>
+                                    <div class="form-group col-xs-9 col-sm-8" style="display: block;">
+                                        <div class="col-xs-4 col-sm-4 no-padding">
+                                            <div class="col-xs-6 col-sm-6 no-padding">
+                                                <span class="round-text">Просмотр</span>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 no-padding">
+                                                <div class="toggle-switch toggle-switch-success">
+                                                    <label>
+                                                        <input type="hidden" name="controller['{{ row.controller_name }}']['is_ajax']" value="{% if row.is_ajax == 1%}on{% else %}off{% endif %}">
+                                                        <input type="checkbox" name="controller['{{ row.controller_name }}']['view_access']" {% if row.view_access == 1%}checked="checked"{% endif %}>
+                                                        <div class="toggle-switch-inner"></div>
+                                                        <div class="toggle-switch-switch"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-4 no-padding">
+                                            <div class="col-xs-6 col-sm-6 no-padding">
+                                                <span class="round-text">Редактирование</span>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 no-padding">
+                                                <div class="toggle-switch toggle-switch-success">
+                                                    <label>
+                                                        <input type="checkbox" name="controller['{{ row.controller_name }}']['edit_access']" {% if row.edit_access == 1%}checked="checked"{% endif %}>
+                                                        <div class="toggle-switch-inner"></div>
+                                                        <div class="toggle-switch-switch"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 col-sm-4 no-padding">
+                                            <div class="col-xs-6 col-sm-6 no-padding">
+                                                <span class="round-text">Действие</span>
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 no-padding">
+                                                <div class="toggle-switch toggle-switch-success">
+                                                    <label>
+                                                        <input type="checkbox" name="controller['{{ row.controller_name }}']['action_access']" {% if row.action_access == 1%}checked="checked"{% endif %}>
+                                                        <div class="toggle-switch-inner"></div>
+                                                        <div class="toggle-switch-switch"></div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-icons">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="expand-link">
+                                    <i class="fa fa-expand"></i>
+                                </a>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                            <div class="no-move"></div>
+                        </div>
+                        <div class="box-content admin-permissions">
+                        {% set current_controller = row.controller_name %}
+                    {% endif %}
+                    {% if row.action_name != '' and row.action_name != 'index' %}
+                            <div class="row">
+                                <div class="form-group col-xs-12 col-sm-2">
+                                    <span class="txt-primary col-xs-12">{{ row.action_name }}</span>
+                                    <span class="txt col-xs-12">{{ row.description }}</span>
+                                </div>
+                                <div class="form-group col-xs-12 col-sm-8" style="display: block;">
+                                    <div class="col-sm-4 {% if row.is_ajax == 1 %}disabled_opacity{% endif %}">
+                                        <div class="col-sm-6">
+                                            <span class="round-text">Просмотр</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="toggle-switch toggle-switch-success">
+                                                <label>
+                                                    <input type="hidden" name="controller['{{ row.controller_name }}']['{{ row.action_name }}']['is_ajax']" value="{% if row.is_ajax == 1%}on{% else %}off{% endif %}">
+                                                    <input type="checkbox" {% if row.is_ajax == 1 %} value="off" disabled="disabled" {% elseif row.view_access == 1%}checked="checked"{% endif %} name="controller['{{ row.controller_name }}']['{{ row.action_name }}']['view_access']" >
+                                                    <div class="toggle-switch-inner"></div>
+                                                    <div class="toggle-switch-switch"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 {% if row.is_ajax == 1 %}disabled_opacity{% endif %}">
+                                        <div class="col-sm-6">
+                                            <span class="round-text">Редактирование</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="toggle-switch toggle-switch-success">
+                                                <label>
+                                                    <input type="checkbox" name="controller['{{ row.controller_name }}']['{{ row.action_name }}']['edit_access']" {% if row.is_ajax == 1 %} value="off" disabled="disabled" {% elseif row.edit_access == 1%}checked="checked"{% endif %}>
+                                                    <div class="toggle-switch-inner"></div>
+                                                    <div class="toggle-switch-switch"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 {% if row.is_ajax != 1 %}disabled_opacity{% endif %}">
+                                        <div class="col-sm-6">
+                                            <span class="round-text">Действие</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="toggle-switch toggle-switch-success">
+                                                <label>
+                                                    <input type="checkbox" name="controller['{{ row.controller_name }}']['{{ row.action_name }}']['action_access']" {% if row.is_ajax != 1 %} value="off" disabled="disabled" {% elseif row.action_access == 1%}checked="checked"{% endif %}>
+                                                    <div class="toggle-switch-inner"></div>
+                                                    <div class="toggle-switch-switch"></div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    {% endif %}
+                {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            <div class="col-xs-12 col-sm-12">
+                <div class="devoops-modal-bottom">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 pull-right">
+                                    <button id="save_button" type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/admins-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function yelp() {
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+                $('.collapse-link').each( function (e) {
+                    var box = $(this).closest('div.box');
+                    var button = $(this).find('i');
+                    var content = box.find('div.box-content');
+                    content.slideToggle('fast');
+                    button.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
+                    setTimeout(function () {
+                            box.resize();
+                            box.find('[id^=map-]').resize();
+                    }, 50);
+		});
+                
+                $(".box-header :checkbox").each(function(){
+                    checkBlock(this);
+                });
+                
+                $(document).on('change', '.box-header :checkbox', function(e){
+                    var permission_poin = $(this).attr('name').match(/\[([^\]]*)\]/ig)[1].replace(/[\[\]\'\"]/ig, '');
+                    $(this).closest('.box').children('.box-content').find(":checkbox[name*='" + permission_poin + "']").filter(':not(:disabled)').prop('checked', $(this).prop('checked'));
+                });
+                
+                $(document).on('change', '.box-content :checkbox', function(e){
+                    var permission_poin = $(this).attr('name').match(/\[([^\]]*)\]/ig);
+                    permission_poin = permission_poin[permission_poin.length - 1].replace(/[\[\]\'\"]/ig, '');
+                    var topChkBx = $(this).closest('.box').children('.box-header').find(":checkbox[name*='" + permission_poin + "']").get(0);
+                    checkBlock(topChkBx);
+                });
+                
+                $(document).on('click', "#save_button", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = {'adminGropID': {{ app['adminGropID'] }}};
+                    $("#adm_grp_perm > div").each(function(){
+                        $(this).find("input").each(function(){
+                            var name = $(this).attr('name').replace('controller', '').match(/[\w,-]+/ig);
+                            var controller = name[0];
+                            var action = (name.length < 3)? 'index': name[1];
+                            var permission_poin = name[name.length - 1];
+{#                            var val = $(this).val();#}
+                            
+                            if (typeof(sendData[controller]) == 'undefined' ) {
+                               sendData[controller] = {}; 
+                            }
+                            
+                            if (typeof(sendData[controller][action]) == 'undefined') {
+                                sendData[controller][action] = {};
+                            }
+                            
+                            sendData[controller][action][permission_poin] = ($(this).prop('checked') ? 1: 0);
+                        });
+                    });
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/save-admins-group-permissions', sendData, false, true);
+                })
+            });
+        }
+        
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+        function checkBlock(obj){
+            var permission_poin = $(obj).attr('name').match(/\[([^\]]*)\]/ig)[1].replace(/[\[\]\'\"]/ig, '');
+            var checkVal = 0;
+            $(obj).closest('.box').children('.box-content').find(":checkbox[name*='" + permission_poin + "']").each(function(){
+                checkVal += $(this).prop('checked') ? 1: 0;
+            });
+            $(obj).prop('checked', checkVal != 0);
+        }
+        
+        var managePermissions = function(data){
+            alert(data.msg);
+        }
+    </script>
+    {% endblock %}
+    
+    
+    

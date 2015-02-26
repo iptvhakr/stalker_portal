@@ -1,0 +1,737 @@
+{% extends 'layout.twig' %}
+{% set title = 'video-club' %}
+
+{% block content %}
+
+    
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-3">
+            <h3>{% if app['videoEdit'] %}Редактировать{% else %}Добавить{% endif %} видео</h3>
+        </div>
+    </div>#}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-3">
+                                    <span>Базовое</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Название</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id) }}
+                                    {{ form_widget(app['form'].rating_count_kinopoisk) }}
+                                    {{ form_widget(app['form'].rating_imdb) }}
+                                    {{ form_widget(app['form'].rating_count_imdb) }}
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                        {% if app['error_local'] and attribute(app['error_local'], 'name') is defined %}<span> {{ app['error_local']['name'] }}</span> {% endif %}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Категория</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].category_id, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].category_id) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Жанр</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].cat_genre_id, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].cat_genre_id) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Можно выбрать до 4-х жанров</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Старый жанр</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].genres) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Используется только для совметсимости модели MAG100 с порталом. Можно выбрать до 4-х жанров</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Обложка</label>
+                            <div class="col-xs-10 col-sm-8">
+                                <div class=" col-xs-10 col-sm-5">
+                                    {{form_widget(app['form'].cover_big) }}
+                                    {{form_widget(app['form'].cover_id) }}
+                                    <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value%}{{app['curr_cover_dir']}}/{{app['form'].cover_id.vars.value}}.jpg{% endif %}" alt="" style="max-width: 100%;">
+                                </div>
+                                <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader">
+                                    {#<a class="btn btn-success file-btn"><span>Добавить картинку</span><input type="file" name="channel_logo" ></a>#}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">HD</label>
+                            <div class="col-xs-10 col-sm-9">
+                                <div class=" col-xs-10 col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].hd) }}      
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].hd) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Добавляет надпись "HD" перед фильмом в списке пользователя</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Ограничение по возрасту</label>
+                            <div class="col-xs-10 col-sm-9">
+                                <div class=" col-xs-10 col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].censored) }}      
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].censored) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Добавляет огранисение для доступа к видео (пароль установленный в пункте "Родительский контроль"). Пароль по умолчанию 0000</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Протокол</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].protocol, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].protocol) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Выбор способа для доставки контента пользователю (http,custom url, nfs). При использовании вариантов HTTP и NFS не используется ссылка на контент, в этом случае контент хранится на сервере.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">URL</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].rtsp_url, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].rtsp_url) }}
+                                        {% if app['error_local'] and attribute(app['error_local'], 'rtsp_url') is defined %}<span> {{ app['error_local']['rtsp_url'] }}</span> {% endif %}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Пример: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Громкость</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-2">
+                                    {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].volume_correction) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Корректировка громкости видео.</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-3">
+                                    <span>Информация о фильме</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+
+                    <div class="box-content" >
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Оригинальное название</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].o_name, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].o_name) }}
+                                        {% if app['error_local'] and attribute(app['error_local'], 'o_name') is defined %}<span> {{ app['error_local']['o_name'] }}</span> {% endif %}
+                                    </div>
+                                    <div>
+                                        <a href="" id="kinopoisk_url"></a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-10 col-sm-6">
+                                    <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
+                                    <button class="btn btn-success col-sm-5" id="autocomplete_name" type="button">Автозаполнение</button>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Название на языке оригинала. Есть возможность автозаполнения</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Кинопоиск ID</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].kinopoisk_id, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].kinopoisk_id) }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-10 col-sm-6">
+                                    <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
+                                    <button class="btn btn-success col-sm-5" id="autocomplete_id" type="button">Автозаполнение</button>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Номер фильма по которому он может быть найден на кинопоиск.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Рейтинг кинопоиска</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].rating_kinopoisk, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].rating_kinopoisk) }}
+                                    </div>
+                                </div>
+                                    <div class="col-xs-10 col-sm-6">
+                                        <button class="btn btn-default btn-app-mini btn-circle" type="button" id="update_rating_kinopoisk"><i class="fa fa-refresh"></i></button>
+                                    </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Рейтинг фильма на портале Кинопоиск. Только автозаполнение</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Год</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].year, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].year) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Год создания фильма. Пример 2014</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Длительность</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].duration) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Длительность фильма в минутах. Пример: 102</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Страна</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].country, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].country) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Режисер</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].director, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].director) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Актеры</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'placeholder': 'Актеры приявшие участи в данном фильме...'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].actors) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Описание картины:</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'placeholder': 'Краткое и содержательное описние картины...'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].description) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Коментарии:</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].comments, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].comments) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Рейтинг MPAA</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-2">
+                                    {{ form_widget(app['form'].rating_mpaa, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].rating_mpaa) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Возрастное ограничение по системе MPAA</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Возростной рейтинг</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-2">
+                                    {{ form_widget(app['form'].age, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].age) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">Рекомендуемый возраст зрителя.</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-4 pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+
+    <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
+    <script type="text/javascript">
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
+                checkCatGenreList('#form_category_id', '#form_cat_genre_id');
+                $('#form_category_id').select2({minimumResultsForSearch: -1});
+                $('#form_cat_genre_id').select2({minimumResultsForSearch: -1, maximumSelectionSize: 4});
+                $('#form_genres').select2({minimumResultsForSearch: -1, maximumSelectionSize: 4});
+                $('#form_protocol').select2({minimumResultsForSearch: -1});
+                $('#form_volume_correction').select2({minimumResultsForSearch: -1});
+                $('#form_rating_mpaa').select2({minimumResultsForSearch: -1});
+                $('#form_age').select2({minimumResultsForSearch: -1});
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                if (typeof (channelListRender) == 'function') {
+                    LoadSelect2Script(DemoSelect2);
+                }
+
+                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
+                    element: $('#bootstrapped-fine-uploader'),
+                    autoUpload: true,
+                    debug: true,
+                    multiple: false,
+                    text: {
+                        formatProgress: "{percent}% из {total_size}",
+                        failUpload: "Сбой при загрузке",
+                        waitingForResponse: "Обработка...",
+                        paused: "Пауза"
+                    },
+                    request: {
+                        endpoint: 'video-club/edit-cover?id=' + ($('#form_cover_id').val() ? $('#form_cover_id').val() : 'new')
+                    },
+                    validation: {
+                        allowedExtensions: ['jpeg', 'jpg']
+                        //sizeLimit: 1048576 // 1Mb
+                    },
+                    template: 'qq-template-bootstrap',
+                    classes: {
+                        success: 'alert alert-success',
+                        fail: 'alert alert-error'
+                    }
+
+                }).on('complete', function (event, id, name, response) {
+                    $(this).prev('div').children('img').attr('src', response.pic + '.jpg?' + $.random(100000)).css('max-width', '100%');
+                    var val = response.pic.split('/');
+                    val = val[val.length - 1];
+                    $('#form_cover_id').val(val);
+                    $('#form_cover_big').val('');
+                    var imageName = val.split('.');
+                    if (imageName.length > 1) {
+                        imageName.length -= 1;
+                    }
+                    var postUrl = 'video-club/edit-cover?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
+        {#                    uploader.fineUploader('setEndpoint', postUrl);#}
+                        $(this).fineUploader('setEndpoint', postUrl);
+                        return false;
+                    });
+                $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+        {#$.ajax({
+            url: 'tv-channels/delete-logo',
+            data: {id: '{{ app.oneChannel.id }}'},
+            success: function(data){
+                if (data.success) {
+                    $(this).prev('div').children('img').attr('src', '');
+                    $(this).prev('div').children('input').val('');
+                } else {
+                    console.log(data.error);
+                }
+            },
+            error: function(){
+                alert('Ошибка');
+            }
+        });#}
+                    return false;
+                });
+                
+                $("#form_save").on('click', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if($('#form_protocol').val() == 'custom' && $.trim($('#form_rtsp_url').val()) == '') {
+                       $(document).scrollTo('#form_protocol', 'slow');
+                       $('#form_rtsp_url').focus();
+                       $('#form_rtsp_url').attr('required', 'required');
+                       return false;
+                   }
+                    $(this).closest('form').get(0).submit();
+                    return false;
+                });
+                $("#form_reset").on('click', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest('form').get(0).reset();
+{#                    $("#cmd_data").find("tr:visible").remove();#}
+                    return false;
+                });
+                
+                $(document).on('change', '#form_category_id', function(){
+                   checkCatGenreList('#form_category_id', '#form_cat_genre_id');
+                });
+                
+                $(document).on('change', '#form_protocol', function(e){
+                   checkProtocol();
+                });                
+                
+                $(document).on('change keyup', '#form_name', function(e){
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    
+                    if ($.trim(_this.val()) == '' && $.trim($('#form_o_name').val()) == '') {
+                        $('#form_kinopoisk_id').removeAttr('readonly');
+                    } else {
+                        $('#form_kinopoisk_id').attr('readonly', 'readonly');
+                    }
+                    if ($.trim(_this.val()) == '' ) {
+                        return;
+                    }
+                    
+                   $.ajax({
+                        url: 'video-club/check-name',
+                        type: 'POST',
+                        data: {name: _this.val()},
+                        success: function (data) {
+                            if (data.success) {
+                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                            } else if (data.error){
+                                alert(data.error);
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                            } else {
+                                alert('Some network error or access denied');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+                
+                $(document).on('change keyup', '#form_o_name', function(e){
+                    if ($.trim($(this).val()) == '' && $.trim($('#form_name').val()) == '') {
+                        $('#form_kinopoisk_id').removeAttr('readonly');
+                    } else {
+                        $('#form_kinopoisk_id').attr('readonly', 'readonly');
+                    }
+                    checkAutocompliteButton('#form_o_name', '#form_kinopoisk_id');
+                });
+                
+                $(document).on('change keyup', '#form_kinopoisk_id', function(e){
+                    checkAutocompliteButton('#form_kinopoisk_id', '#form_o_name');
+                });
+                
+                checkProtocol();
+                
+                $(document).on('click', '#update_rating_kinopoisk', function(){
+                    $.ajax({
+                        url: 'video-club/update-rating-kinopoisk',
+                        type: 'POST',
+                        data: {data: $("#form_o_name").val() || $("#form_name").val()},
+                        success: function (data) {
+                            if (data.success) {
+                                $('#kinopoisk_url').attr('href', '');
+                                $('#kinopoisk_url').html('');
+                                for (var id in data.result){
+                                    if (data.result.hasOwnProperty(id)){
+                                        $("#form_"+id).val(data.result[id]);
+
+                                        if (id == 'kinopoisk_url'){
+                                            $('#kinopoisk_url').attr('href', data.result[id]);
+                                            $('#kinopoisk_url').html(data.result[id]);
+                                        }
+                                    }
+                                }
+                            } else if (data.error){
+                                alert(data.error);
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                alert(data.responseJSON.error);
+                            } else {
+                                alert('Some network error or access denied');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                    
+                });
+                
+                $(document).on('click', '#autocomplete_name, #autocomplete_id', function(){
+                    $("#modalbox").show().children().hide();
+                    $.ajax({
+                        url: 'video-club/get-kinopoisk-info-by-'+ $(this).attr('id').replace('autocomplete_', ''),
+                        type: 'POST',
+                        data: {data: $(this).closest('div').prev('div').find('input').val()},
+                        success: function (data) {
+                            $("#modalbox").hide().children().show();
+                            if (data.success) {
+                                if (data.result.hasOwnProperty('cover_big')){
+                                    $('#form_cover_id').next('img').attr('src', "video-club/get-image?url="+data.result['cover_big']);
+{#                                    $('#form_cover_id').val('');#}
+                                }
+
+                                if (data.result.hasOwnProperty('age')){
+                                    $('#form_age').select2("destroy");
+                                    $('#form_age option[value="'+data.result.age+'"]').attr('selected', 'selected');
+                                    $('#form_age').select2({minimumResultsForSearch: -1});
+                                }
+
+                                if (data.result.hasOwnProperty('rating_mpaa')){
+                                    $('#form_rating_mpaa').select2("destroy");
+                                    $('#form_rating_mpaa option[value="'+data.result.rating_mpaa+'"]').attr('selected', 'selected');
+                                    $('#form_rating_mpaa').select2({minimumResultsForSearch: -1});
+                                }
+
+                                for (var id in data.result){
+                                    if (data.result.hasOwnProperty(id)){
+
+                                        $("#form_"+id).val(data.result[id]);
+
+                                        if (id == 'kinopoisk_url'){
+                                            $('#kinopoisk_url').attr('href', data.result[id]);
+                                            $('#kinopoisk_url').html(data.result[id]);
+                                        }
+                                    }
+                                }
+                            } else if (data.error){
+                                alert(data.error);
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            $("#modalbox").hide().children().show();
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                alert(data.responseJSON.error);
+                            } else {
+                                alert('Some network error or access denied');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                    
+                });
+            });
+
+        }
+
+            document.addEventListener("DOMContentLoaded", yelp, false);
+            var cat_genre_list = {
+            {% for key, g_item in app['preparedCatGenre'] %}
+                '{{ key }}' : [{% for g_in_item in g_item %}{'id': '{{ g_in_item['id'] }}', 'title':'{{ g_in_item['title'] }}'}{% if not loop.last %},{% endif %}{% endfor %}]{% if not loop.last %},{% endif %}
+            {% endfor %}
+            }
+            
+            var category_list = {
+            {% for g_item in app['catGenres'] %}
+                '{{ g_item['id'] }}' : '{{ g_item['category_alias'] }}'{% if not loop.last %},{% endif %}
+            {% endfor %}
+            }
+            
+            function checkCatGenreList(parent, child){
+                var selAlias = category_list[$(parent).val()];
+                var selChildData = $(child).val();
+                $(child).empty();
+                $(child).select2("destroy");
+                if (typeof(cat_genre_list[selAlias]) != 'undefined') {
+                    $.each(cat_genre_list[selAlias], function(index, value){
+                        $(child).append('<option value="'+value.id+'" '+($.inArray(value.id, selChildData) != -1? 'selected="selected"': '')+'>'+value.title+'</option>');    
+                    });
+                }
+                $(child).select2({minimumResultsForSearch: -1, maximumSelectionSize: 4});
+                return;
+            }
+            
+            function checkProtocol(){
+                var protocol = $("#form_protocol");
+                if (protocol.val() != 'custom') {
+                    protocol.closest('.form-group').next('div.form-group').hide();
+                    $('form_rtsp_url').removeAttr('required');
+                } else {
+                    protocol.closest('.form-group').next('div.form-group').show();
+                    $('form_rtsp_url').attr('required', 'required');
+                }
+            }
+            
+            function checkAutocompliteButton(master, slave){
+                var buttonContainer = $(slave).parent('div').next();
+                if ($.trim($(master).val()) != '') {
+{#                    $(slave).attr('readonly', 'readonly');#}
+                    buttonContainer.find('button').attr('disabled', 'disabled').removeClass('btn-success');
+                    buttonContainer.find('i').removeClass('txt-success').removeClass('fa-check').addClass('txt-danger').addClass('fa-ban');
+                } else {
+{#                    $(slave).removeAttr('readonly');#}
+                    buttonContainer.find('button').removeAttr('disabled').addClass('btn-success');
+                    buttonContainer.find('i').removeClass('txt-danger').removeClass('fa-ban').addClass('txt-success').addClass('fa-check');
+                }
+            }
+    </script>
+
+    <script type="text/template" id="qq-template-bootstrap">
+        <div class="qq-uploader-selector qq-uploader span12">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
+        <!--<span>Drop files here to upload</span>-->
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
+        <div><i class="icon-upload icon-white"></i>Добавить картинку</div>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+        <!--<span>Processing dropped files...</span>-->
+        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
+        <li>
+        <div class="qq-progress-bar-container-selector">
+        <div class="qq-progress-bar-selector qq-progress-bar"></div>
+        </div>
+        <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+        <span class="qq-upload-file-selector qq-upload-file"></span>
+        <span class="qq-upload-size-selector qq-upload-size"></span>
+        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Удалить</a>-->
+        <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+        </li>
+        </ul>
+        </div>
+    </script>
+{% endblock %}

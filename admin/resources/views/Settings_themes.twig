@@ -1,0 +1,172 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set active = 'settings' %}
+{% set title = 'settings' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>EPG</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">       
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-4 simple_gallery">
+                                    <a id="current_theme_link" data-themename="{{ app['current_theme']['preview'] }}" class="fancybox" rel="currenttheme" href="{{ app['current_theme']['preview'] }}" title="{{ app['current_theme']['title'] }}">
+					<img src="{{ app['current_theme']['preview'] }}" alt="" />
+                                    </a>
+                                </div>
+                                <div class="col-xs-6 col-sm-8">
+                                    <div class="row">
+                                        <span class="col-xs-6 col-sm-3"><h3>Текущий скин</h3></span>
+                                        <span class="col-xs-6 col-sm-6" id="current_theme_title"><h3>{{ app['current_theme']['title'] }}</h3></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if attribute(app, 'allData') is defined %}
+                    {% for row in app['allData'] %}
+                        <div class="box">
+                            <div class="box-content">
+                                <div class="box-content no-padding">
+                                    <div class="col-xs-9 col-sm-9 center"><h3>{{ row['title'] }}</h3></div>
+                                    <div class="row">
+                                        <div class="col-xs-9 col-sm-9 simple_gallery no-padding">
+                                            {% if attribute(row, 'previews') is defined %}
+                                                {% for key, preview in row['previews'] %}                            
+                                                <div class="col-xs-4 col-sm-4">
+                                                    <a class="fancybox" rel="theme_{{ row['name'] }}" href="{{ preview }}" title="{{ row['title'] }} {{ key + 1 }}">
+                                                        <img src="{{ preview }}" alt="" />
+                                                    </a>
+                                                </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-xs-3 col-sm-3 no-padding">
+                                            <div class="row-fluid">
+                                                <div class="col-xs-12 col-sm-12 center no-padding theme-button">
+                                                    <button data-href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-current-theme" data-themename="{{ row['name'] }}" class="main_ajax btn btn-{% if row['name'] == app['current_theme']['name'] %}default" disabled="disabled"> Текущий{% else  %}primary"> Применить{% endif %}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+                                   
+    <script type="text/javascript" defer>
+        function DemoGallery(){
+            $('.fancybox').fancybox({
+                openEffect	: 'none',
+                closeEffect	: 'none'
+            });
+        }
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', ".main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var objHref = ($(this).attr('href'))? $(this).attr('href'): $(this).data('href');
+                    $("#modalbox").data('complete', 0);
+                    showModalBox();
+                    var sendData = $(this).data();
+                    ajaxPostSend(objHref, sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+                
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for(i=0;i<3;i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+                
+                // Load Fancybox2 and make gallery in callback
+                LoadFancyboxScript(DemoGallery);
+
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+        
+        var manageTheme = function (obj) {
+            changeTheme(obj);
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+            var msg_type = typeof(obj.msg);
+            msg_type = msg_type.toLowerCase();
+            if (msg_type != 'undefined'){
+                if (msg_type == 'string') {
+                    $('#modalbox').find('.devoops-modal-inner').append('<span>' + obj.msg + '</span>');
+                } else if (msg_type == 'array' || msg_type == 'object') {
+                    for (var i in obj.msg){
+                        $('#modalbox').find('.devoops-modal-inner').append('<br><span>' + obj.msg[i] + '</span>');
+                    }
+                }
+            }
+        }
+        
+        var changeTheme = function(obj){
+            $("#current_theme_title h3").text(obj.title);
+            $("#current_theme_link").attr('href', obj.preview);
+            $("#current_theme_link").attr('title', obj.title);
+            $("#current_theme_link").data('themename', obj.name);
+            $("#current_theme_link img").attr('src', obj.preview);
+            $("button[data-themename]").each(function(){
+                if ($(this).data('themename') == $("#current_theme_link").data('themename')) {
+                    $(this).prop('disabled', 'disabled').attr('disabled', 'disabled');
+                    if(!$(this).hasClass('btn-default')) {
+                        $(this).removeClass('btn-primary').addClass('btn-default');
+                    }
+                } else {
+                    $(this).prop('disabled', false).removeAttr('disabled');
+                    if(!$(this).hasClass('btn-primary')) {
+                        $(this).removeClass('btn-default').addClass('btn-primary');
+                    }
+                }
+            });
+        }
+        
+        var errAction = function(){
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+            $("#modalbox").data('complete', 1);
+        }
+        
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+        
+        function showModalBox(){
+            $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+            $("#modalbox").show();
+        }
+        
+    </script>
+{% endblock %}

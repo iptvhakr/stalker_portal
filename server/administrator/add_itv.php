@@ -667,9 +667,9 @@ a:hover{
 <?= _('IPTV channels')?>
 </title>
 <script type="text/javascript" src="js.js"></script>
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
-<script type="text/javascript" src="js/jquery.cookies.2.2.0.js"></script>
+<script type="text/javascript" src="../adm/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../adm/js/jquery.tmpl.min.js"></script>
+<script type="text/javascript" src="../adm/js/jquery.cookies.2.2.0.js"></script>
 
 <script id="link_item_tmpl" type="text/x-jquery-tmpl">
     <div id="link_${idx}" class="link" link-id="${idx}">

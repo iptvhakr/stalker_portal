@@ -1,0 +1,115 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'statistics' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>Статистика TimeShift за месяц</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
+                                        <tbody>
+                                            {% autoescape false %}
+                                            {% if attribute(app, 'allStat') is defined %}
+                                                    <!-- Start: list_row -->
+                                                {% for row in app.allStat %}
+                                                    <tr>
+                                                        {% for key, item in row %}  
+                                                            {% if key == 'name' %}
+                                                                <td><a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id={{ row.ch_id }}">{{ item }}</a></td>
+                                                            {% else %}
+                                                            <td>{{ item }}</td>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                            {% endautoescape %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var row = json.data[i];
+                        for (var key in row) {
+                            if (key == 'name') {
+                                var val = row[key];
+                                json.data[i][key] = '<a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id=' + row.ch_id + '">'+ val +'</a>';
+                            }
+                        }    
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-timeshift-list-json"
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}    
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] }
+                    {#{"searchable": false, "targets": [-1]},
+                    {"sortable": false, "targets": [-1,]},
+                    {"width": "19%", "targets": [5] },#}
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+    </script>
+{% endblock %}

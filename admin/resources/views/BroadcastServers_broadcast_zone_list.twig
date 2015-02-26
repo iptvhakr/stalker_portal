@@ -1,0 +1,174 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'streams' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>Зоны вещания</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-zone" class="btn btn-success pull-right" id="add_admin">Добавить</a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="col-xs-8 col-sm-8 col-sm-offset-2">
+                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
+                                        <tbody>
+                                            {% if attribute(app, 'allData') is defined %}
+                                                <!-- Start: list_row -->
+                                                {% for item in app.allData %}
+                                                    <tr data-adminid="{{ item.id }}">
+                                                        <td>{{ item.id }}</td>
+                                                        <td>{{ item.name }}</td>
+                                                        <td>{{ item.country_count }}</td>
+                                                        <td>{% if item.default_flag == 1 %}<i class="fa fa-check"></i>{% endif %}</td>
+                                                        <td>
+                                                            <div class="col-xs-3 col-sm-8">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                                    <i class="pull-right fa fa-cog"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li>
+                                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-zone?id={{ item.id }}">
+                                                                            <span>Редактировать</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-zone" data-id="{{ item.id }}">
+                                                                            <span>Удалить</span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            <!-- End: list_row -->
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                    
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-zone?id=" + id + "'>\n\
+                                                                    <span>Редактировать</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-zone' data-id='" + id + "'>\n\
+                                                                    <span>Удалить</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                        if (json.data[i].default_flag == 1) {
+                            json.data[i].default_flag = '<i class="fa fa-check"></i>';
+                        } else {
+                            json.data[i].default_flag = "&nbsp;"
+                        }
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/broadcast-zone-list-json",
+                    "data": function (d) {
+{#                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }#}
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}    
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1]},
+                    {"sortable": false, "targets": [-1,]}{#,
+                    {"width": "19%", "targets": [5] },#}
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+                                
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+              
+        var manageZoneList = function (obj) {
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+        
+        var zoneListMsg = function(data){
+            if (typeof(data.msg) != 'undefined' && data.msg) {
+                alert("Удалено " + data.msg.Zone + " зона для " + data.msg.Countries + " стран");
+            }
+            manageZoneList(data);
+        }
+        
+    </script>
+{% endblock %}

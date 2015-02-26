@@ -1,0 +1,184 @@
+{% extends 'layout.twig' %}
+{% set title = 'users' %}
+
+{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+
+{% block content %}
+    <style type="text/css">
+        @media print{
+            #datatable-1{
+                max-width: 180mm;
+            }
+            #datatable-1 th, #datatable-1 td{
+                max-width: 60mm;
+            }
+        }
+    </style>
+{#    <div class="row header_title">
+        <div class="col-xs-12 col-sm-12">
+            <h3>Отчет по измененным статусам приставок за {{ "now"|date("d.m.Y") }} на {{ "now"|date("H:i:s") }}</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-8 col-sm-offset-2" id="table_container">
+                            <table class="table table-striped table-bordered table-hover table-datatable compact" id="datatable-1">
+                                <thead>
+                                    <tr>
+                                        <th data-filter="rank">#</th>
+                                        <th data-filter="mac">MAC</th>
+                                        <th data-filter="status">Статус</th>
+                                        <th data-filter="last_change_status">Время изменения</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if attribute(app, 'consoleReport') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.consoleReport %}
+                                            <tr data-userid="{{ item.id }}">
+                                                <td>{{ item.rank }}</td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}" >{{ item.mac }}</a></td>
+                                                <td data-filter="status">{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
+                                                <td>{{ item.last_change_status|date('M d, Y H:i') }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- End: list_row -->
+                                </tbody>
+                            </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        var status = json.data[i].status;
+                        var mac = json.data[i].mac;
+                        var id = json.data[i].id;
+                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
+                        json.data[i].status = (status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>");
+                        date = json.data[i]['last_change_status'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['last_change_status'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "dom": 'T<"clear">lfrtip',
+                "oTableTools": {
+                    "sSwfPath":        "plugins/datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+                    "aButtons": [
+                        {
+                        "sExtends": "print",
+                        "bShowAll": true,
+                        "sMessage": "<h3>Отчет по измененным статусам приставок за {{ "now"|date("d.m.Y") }} на {{ "now"|date("H:i:s") }}</h3>",
+                        "sButtonText": "Печать"
+                        }]
+                },
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-report-json",
+                    "data": function (d) {
+                        d.print = false;
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                    {"data": "rank"},
+                    {"data": "mac"},
+                    {"data": "status"},
+                    {"data": "last_change_status"}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [0]},
+                    {"sortable": false, "targets": [0]},
+                    { "width": "10mm", "targets": 0 },
+                    { "width": "60mm", "targets": 0 },
+                    { "width": "30mm", "targets": 0 },
+                    { "width": "60mm", "targets": 0 }
+                ]
+            });
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                
+                $('head').append('<link href="{{ app.request.baseUrl }}/css/dataTables.tableTools.css" type="text/css" rel="stylesheet" />');
+                $(document).on('click', '.btn.DTTT_button_print', function(){
+                    $("#table_container").removeClass('col-sm-offset-2');{#.parents().map(function(){$(this).css('padding-left', 0);});#}
+                })
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'POST',
+                        data: $(this).data(),
+                        success: function (data) {
+                            if (data.success) {
+                                for (var key in data) {
+                                    _this.data(key, data[key]);
+                                }
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof (data.responseJSON) == 'object') {
+                                errAction += data.responseJSON.action + 'Error';
+                                for (var key in data.responseJSON) {
+                                    _this.data(key, data.responseJSON[key]);
+                                }
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction]($(_this));
+                            } else {
+                                alert('Some network error or access denied');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

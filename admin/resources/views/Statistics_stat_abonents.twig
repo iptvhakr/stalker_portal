@@ -1,0 +1,145 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'statistics' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>Абонентская статистика за месяц</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ main_macro.get_filter_button_bar('abon_to', 'id', 'title', app['allAbonentStat']) }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {% if attribute(app, 'filters') is defined  and attribute(app['filters'], 'abon_to') is defined %}
+                <div class="box-header">
+                    <div class="box-name">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                                <span class="text_black">
+                                    {% if app['filters']['abon_to'] == 'anec' %}
+                                    Просмотром считается просмотр минимум 1-го анекдота    
+                                    {% elseif app['filters']['abon_to'] == 'video' %}
+                                    Просмотром считается проигрывание фильма больше чем 70% от общей длительности
+                                    {% else %}
+                                    Просмотром считается непрерыйвное проигрывание канала более чем 30 минут
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                {% endif %}
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
+                                        <tbody>
+                                            {% if attribute(app, 'allStat') is defined %}
+                                                <!-- Start: list_row -->
+                                                {% for row in app.allStat %}
+                                                    <tr>
+                                                        {% for item in row %}        
+                                                        <td>{% if key == 'readed' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                {% endfor %}
+                                            <!-- End: list_row -->
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var dateKey = false, key, date;
+                    var possibleDateKeys = ['readed'];
+                    for (var num in possibleDateKeys) {
+                        key = possibleDateKeys[num];
+                        if (typeof(json.data[0][key]) != 'undefined') {
+                            dateKey = key;
+                        }
+                    }
+                    if (dateKey) {
+                        for (var i in json.data) {
+                            date = json.data[i][dateKey];
+                            if (date > 0) {
+                                date = new Date(date * 1000);
+                                json.data[i][dateKey] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                            }
+                        }
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-abonents-list-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}    
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {#{"searchable": false, "targets": [-1]},
+                    {"sortable": false, "targets": [-1,]},
+                    {"width": "19%", "targets": [5] },#}
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+    </script>
+{% endblock %}

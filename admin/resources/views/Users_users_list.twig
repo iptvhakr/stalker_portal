@@ -1,0 +1,561 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'users' %}
+
+{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Пользователи</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus'], 6, 8) }}
+                {{ main_macro.get_filter('state_id', 'Состояние', 'id', 'title', app['allState'], 6, 8) }}
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 no-padding">
+                    <div class="col-xs-12 col-sm-6 filter no-padding" data-tvfilter="time_period">
+                        <div class="col-xs-3 col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
+                            <input class="col-xs-12 col-sm-12 filter" placeholder="С" type="text" id="datepicker_from" name="interval_from" value="{{ app['filters']['interval_from'] }}">
+                        </div>
+                        <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="time_period">
+                            <input class="col-xs-12 col-sm-12 filter" placeholder="По" type="text" id="datepicker_to" name="interval_to" value="{{ app['filters']['interval_to'] }}">
+                        </div>
+                        <span class="col-xs-6 col-sm-6 filter">
+                            поиск неактивных
+                        </span>
+                        <br><br><br>
+                    </div>
+                </div>
+
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-users" class="btn btn-success pull-right">Добавить</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <thead>
+                                    <tr>
+                                        <th data-filter="mac">MAC</th>
+                                        <th data-filter="ip">IP</th>
+                                        <th data-filter="login">Логин</th>
+                                        <th data-filter="ls">Лицевой счет</th>
+                                        <th data-filter="fname">ФИО</th>
+                                        <th data-filter="last_change_status">Последнее изменение</th>
+                                        <th data-filter="state">Состояние</th>
+                                        <th data-filter="status">Статус</th>
+                                        <th data-filter="operations">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if attribute(app, 'allUsers') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allUsers %}
+                                            <tr data-userid="{{ item.id }}">
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}" >{{ item.mac }}</a></td>
+                                                <td>{{ item.ip }}</td>
+                                                <td>{{ item.login }}</td>
+                                                <td>{{ item.ls }}</td>
+                                                <td>{{ item.fname }}</td>
+                                                <td>{{ item.last_change_status|date('M d, Y H:i') }}</td>
+                                                <td>{% if item.state %}
+                                                    <span class="txt-success">Online</span>
+                                                    {% else %}
+                                                    <span class="txt-danger">Offline</span>
+                                                    <br><span>Последняя активность: {% if item.last_active == 0 %}{{ item.last_active|date('M d, Y H:i') }}{% else %} - {% endif %}</span>
+                                                    {% endif %}</td>
+                                                <td class="data-filter-status">{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}">
+                                                                    <span>Редактировать</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs?id={{ item.id }}">
+                                                                    <span>Логи пользователя</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-message" data-userid="{{ item.id }}">
+                                                                    <span>Отправить сообщение</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user" data-userid="{{ item.id }}" data-userstatus="{{ item.status }}">
+                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user" data-userid="{{ item.id }}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- End: list_row -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalbox_ad">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span>Новое событие</span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box">
+                    <div class="box-content">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group" style="display: none;">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Адресат</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="user_list_type" id="s2_user_list_type">
+                                            {#<option value="to_all">Все</option>
+                                            <option value="by_user_list">Список</option>
+                                            <option value="by_group">Группа</option>
+                                            <option value="by_pattern">По шаблону</option>#}
+                                            <option value="to_single" selected="selected">Один</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выбор адресата. Пример: одному, всем, по списку, по шаблону, группе</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_user_list">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Список MAC-адресов</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <input type="hidden" name="file_name" id="file_name">
+                                    <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader"></div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Файл должен содержать составленный заранее список MAC-адресов, в тасширении txt или другом текстовом формате</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Группа</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="group_id" id="s2_group_id">
+                                            {% for item in app.consoleGroup %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите группу пользователей которым будет отправлено сообщение</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_pattern">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Шаблон</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="pattern" id="s2_pattern">
+                                            <option value="MAG100">MAG100</option>
+                                            <option value="MAG200">MAG200</option>
+                                            <option value="MAG250">MAG250</option>
+                                            <option value="MAG255">MAG255</option>
+                                            <option value="MAG270">MAG270</option>
+                                            <option value="MAG275">MAG275</option>
+                                            <option value="AuraHD0">AuraHD0</option>
+                                            <option value="AuraHD1">AuraHD1</option>
+                                            <option value="AuraHD9">AuraHD9</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите шаблон для типа приставки</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="to_single">
+                                <label class="col-sm-3 control-label col-sm-offset-1">MAC-адрес</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="{% if attribute(app, 'currentUser') is defined %}{{ app.currentUser.mac }}{% endif %}" name="mac">
+                                        <div>&nbsp;</div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Введите MAC-адрес пользователя</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Действия</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="event" id="s2_event">
+                                            <option value=""></option>
+                                            <option value="send_msg">send_msg</option>
+                                            <option value="reboot">reboot</option>
+                                            <option value="reload_portal">reload_portal</option>
+                                            <option value="update_channels">update_channels</option>
+                                            <option value="play_channel">play_channel</option>
+                                            <option value="mount_all_storages">mount_all_storages</option>
+                                            <option value="cut_off">switch_off</option>
+                                            <option value="update_image">update_image</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите одно из предложеных действий</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="play_channel">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Канал</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="" name="channel">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Перезапуск</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="1" name="need_reboot">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выполнить перезапуск приставки по нажатию кнопки "ОК"</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">TTL</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="" name="ttl">
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Срок актуальности действия, измеряется в секундах</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group"  data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">MSG</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-group"  data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Шаблоны сообщения</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <a href="#" id="msg_pattern">Истек срок тестирования</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                    
+    <script type="text/javascript" defer>
+
+        function DemoSelect2() {
+            $("[id^='s2_']").select2({minimumResultsForSearch: -1});
+        }
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var status = json.data[i].status;
+                        var state = json.data[i].state;
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id=" + id + "'>\n\
+                                                                    <span>Редактировать</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-consoles-logs?id=" + id + "'>\n\
+                                                                    <span>Подробнее</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-message' data-userid='" + id + "'>\n\
+                                                                    <span>Отправить сообщение</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user' data-userid='" + id + "' data-userstatus='" + status + "'>\n\
+                                                                    <span>" + (status != 0 ? "Отключить" : "Включить") + "</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user' data-userid='" + id + "'>\n\
+                                                                    <span>Удалить</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                        var last_active = new Date(json.data[i].last_active * 1000);
+                        json.data[i].state = state != 0 ? "<span class='txt-success'>Online</span>" : "<span class='txt-danger'>Offline</span><br><span>Последняя активность: " + (json.data[i].last_active != 0? last_active.toLocaleFormat("%b %d, %Y %H:%M"): "-") + "</span>";
+                        json.data[i].status = status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>";
+                        date = json.data[i]['last_change_status'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['last_change_status'] = date.toLocaleFormat("%b %d, %Y");
+                        }
+                        var mac = json.data[i].mac;
+                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-list-json",
+                    "data": function (d) {
+                        var RegExp = /video_id=(\d+)/;
+                        if (video_id = RegExp.exec(window.location.href)) {
+                            d.video_id = video_id[1];
+                        }
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+
+                        $('input[id^="datepicker_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
+                        });
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                        "language": {
+                            "url": "./plugins/datatables/lang/ru_RU.json"
+                        },
+                "columns": [
+                    {"data": "mac"},
+                    {"data": "ip"},
+                    {"data": "login"},
+                    {"data": "ls"},
+                    {"data": "fname"},
+                    {"data": "last_change_status"},
+                    {"data": "state"},
+                    {"data": "status"},
+                    {"data": "operations"}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [3, 4, 5, 6, 7, 8]},
+                    {"sortable": false, "targets": [-1]},
+                    {className: "data-filter-status", "targets": [-2 ]}
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $("#datepicker_from").datepicker({
+                    numberOfMonths: 1,
+                    language: 'ru',
+                    dateFormat: 'dd/mm/yy',
+                    onClose: function (selectedDate) {
+                        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
+                        $('#datatable-1').DataTable().ajax.reload();
+                    }
+                });
+                $("#datepicker_to").datepicker({
+                    numberOfMonths: 1,
+                    language: 'ru',
+                    dateFormat: 'dd/mm/yy',
+                    onClose: function (selectedDate) {
+                        $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
+                        $('#datatable-1').DataTable().ajax.reload();
+                    }
+                });
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    if (_this.attr('href').search("send-message") != -1) {
+                        return false;
+                    }
+
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'POST',
+                        data: $(this).data(),
+                        success: function (data) {
+                            if (data.success) {
+                                for (var key in data) {
+                                    _this.data(key, data[key]);
+                                }
+                            } else {
+                                alert('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof (data.responseJSON) == 'object') {
+                                errAction += data.responseJSON.action + 'Error';
+                                for (var key in data.responseJSON) {
+                                    _this.data(key, data.responseJSON[key]);
+                                }
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction]($(_this));
+                            } else {
+                                alert('Some network error or access denied');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+                
+                $("[data-list-type], [data-event-type]").hide().find('input, select, textarea').attr('disabled', 'disabled');
+                $(document).on('change', "#s2_user_list_type, #s2_event", function (e) {
+                    checkFields($(this), e);
+                });
+
+                $(document).on('click', "#msg_pattern", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $('#msg_textarea').text($.trim($('#msg_textarea_pattern').text()));
+                    return false;
+                });
+
+                $(document).on('click', 'a[href*="send-message"]', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var mac = $($(this).closest('tr').children('td').get(0)).text();
+                    var macField = $("input[name='mac']");
+                    macField.val('').next('div').removeAttr('class').text('');
+                    var regExp = /([0-9a-fA-F]{2}([:]|$)){6}$/ig;
+                    if ($.trim(mac) != '' && regExp.test(mac)) {
+                        macField.val(mac).attr('readonly', 'readonly');
+{#                        macField.closest('.form-group').hide();#}
+                    } else {
+                        macField.removeAttr('readonly').next('div').append('<i class="txt-danger fa fa-ban"></i> Ведите MAC-адресс согласно формату').css('visibility', 'visible');
+                    }
+                    $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
+                    checkFields('#s2_user_list_type', e);
+                    checkFields('#s2_event', e);
+                    $(this).closest("div.open").removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var formData = $("#modalbox_ad form").serialize();
+                    ajaxPostSend("{{app.request.baseUrl}}/events/add-event", formData);
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var toggleUserStatus = function (obj) {
+            var a_obj = $(obj);
+            a_obj.text(a_obj.data('title'));
+            a_obj.closest('tr').find('td.data-filter-status').html(a_obj.data('status'));
+            a_obj.closest('div.open').removeClass('open');
+        }
+
+        var removeUser = function (obj) {
+            var cRow = $(obj).closest('tr');
+            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
+        }
+        
+        function checkFields(obj, e) {
+            var dataName = $(obj).attr('id') == 's2_user_list_type' ? 'data-list-type' : 'data-event-type';
+            $("[" + dataName + "]").hide().find('input, select, textarea').attr('disabled', 'disabled');
+            $(obj).find('option').each(function () {
+                if (this.selected) {
+                    $('[' + dataName + '="' + $(this).val() + '"]').show().find('input, select, textarea').removeAttr('disabled');
+                }
+            });
+            return false;
+        }
+        
+        var addEvent = function(data){
+            alert(data.msg);
+            $('#modalbox_ad').click();
+        }
+        
+    </script>
+    <script type="text/template" id="msg_textarea_pattern">
+        Уважаемый абонент! Срок бесплатного тестирования наших услуг закончился. Просим Вас подойти в абонентский отдел (пр-т Ак. Глушко, 11-И, каб.8) для перезаключения договора либо возврата оборудования.
+    </script>
+{% endblock %}

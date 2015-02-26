@@ -3,3 +3,5 @@
 /admin/vendor
 /admin/composer.lock
 /admin/composer.phar
+/screenshots
+/misc/logos

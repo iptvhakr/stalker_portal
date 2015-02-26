@@ -1,0 +1,490 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'events' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-12">
+            <h3>События{% if attribute(app, 'currentUser') is defined %} пользователя "{{ app.currentUser.name }}"({{ app.currentUser.mac }}) {% endif %}</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('event', 'Событие', 'id', 'title', app['allEvent']) }}
+                {{ main_macro.get_filter('sended', 'Состояние отправки', 'id', 'title', app['sendedStatus'], 5, 9) }}
+                {{ main_macro.get_filter('ended', 'Состояние получения', 'id', 'title', app['receivingStatus'], 5, 9) }}
+                <div class="col-xs-3 col-sm-1 filter no-padding pull-right">
+                    <a id="add_events" href="#" class="btn btn-success pull-right">Добавить</a>
+                </div>
+                {% if attribute(app, 'currentUser') is defined %}
+                <div class="col-xs-3 col-sm-1 filter no-padding pull-right">
+                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="{{ app.currentUser.uid }}">Очистить</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <thead>
+                                    <tr>
+                                        <th data-filter="events_id">#</th>
+                                        <th data-filter="addtime">Добавлено</th>
+                                        <th data-filter="eventtime">Действительно до</th>
+                                        <th data-filter="mac">MAC</th>
+                                        <th data-filter="event">Событие</th>
+                                        <th data-filter="msg">Сообщение</th>
+                                        <th data-filter="sended">Статус отправки</th>
+                                        <th data-filter="ended">Статус получения</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if attribute(app, 'eventList') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.eventList %}
+                                            <tr>
+                                                <td>{{ item.events_id }}</td>
+                                                <td>{{ item.addtime|date('M d, Y H:i') }}</td>
+                                                <td>{{ item.eventtime|date('M d, Y H:i') }}</td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid={{ item.uid }}" >{{ item.mac }}</a></td>
+                                                <td>{{ item.event }}</td>
+                                                <td><div class="event_message">{{ item.msg }}</div></td>
+                                                <td>{% if item.sended != '0' %}<span class="txt-success">Отправлено</span>{% else %}<span class="txt-primary">Не отправлено</span>{% endif %}</td>
+                                                <td>{% if item.ended != '0' %}<span class="txt-success">Получено</span>{% else %}<span class="txt-primary">Не получено</span>{% endif %}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalbox_ad">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span>Новое событие</span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box">
+                    <div class="box-content">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Адресат</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="user_list_type" id="s2_user_list_type">
+                                            <option value="to_all">Все</option>
+                                            <option value="by_user_list">Список</option>
+                                            <option value="by_group">Группа</option>
+                                            <option value="by_pattern">По шаблону</option>
+                                            <option value="to_single">Один</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выбор адресата. Пример: одному, всем, по списку, по шаблону, группе</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_user_list">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Список MAC-адресов</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <input type="hidden" name="file_name" id="file_name">
+                                    <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader"></div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Файл должен содержать составленный заранее список MAC-адресов, в тасширении txt или другом текстовом формате</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Группа</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="group_id" id="s2_group_id">
+                                            {% for item in app.consoleGroup %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите группу пользователей которым будет отправлено сообщение</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_pattern">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Шаблон</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="pattern" id="s2_pattern">
+                                            <option value="MAG100">MAG100</option>
+                                            <option value="MAG200">MAG200</option>
+                                            <option value="MAG250">MAG250</option>
+                                            <option value="MAG255">MAG255</option>
+                                            <option value="MAG270">MAG270</option>
+                                            <option value="MAG275">MAG275</option>
+                                            <option value="AuraHD0">AuraHD0</option>
+                                            <option value="AuraHD1">AuraHD1</option>
+                                            <option value="AuraHD9">AuraHD9</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите шаблон для типа приставки</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="to_single">
+                                <label class="col-sm-3 control-label col-sm-offset-1">MAC-адрес</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="{% if attribute(app, 'currentUser') is defined %}{{ app.currentUser.mac }}{% endif %}" name="mac">
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Введите MAC-адрес пользователя</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Действия</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="event" id="s2_event">
+                                            {% for type in app['formEvent'] %}
+                                            <option value="{{ type['id'] }}">{{ type['title'] }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите одно из предложеных действий</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="play_channel">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Канал</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="" name="channel">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Перезапуск</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="1" name="need_reboot">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выполнить перезапуск приставки по нажатию кнопки "ОК"</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">TTL</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="" name="ttl">
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Срок актуальности действия, измеряется в секундах</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group"  data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">MSG</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-group"  data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Шаблоны сообщения</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <a href="#" id="msg_pattern">Истек срок тестирования</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function DemoSelect2() {
+            $("[id^='s2_']").select2({minimumResultsForSearch: -1});
+        }
+
+        function TestTable1() {
+            $.getScript('plugins/datatables/fnReloadAjax.js');            
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        var uid = json.data[i].uid;
+                        var mac = json.data[i].mac;
+                        json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid=' + uid + '" >' + mac + '</a>';
+                        json.data[i].msg = '<div class="event_message">' + json.data[i].msg + '</div>';
+                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="txt-success">Отправлено</span>' : '<span class="txt-primary">Не отправлено</span>';
+                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="txt-success">Получено</span>' : '<span class="txt-primary">Не получено</span>';
+                        date = json.data[i]['addtime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['addtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                        date = json.data[i]['eventtime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['eventtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/events-list-json",
+                    "data": function (d) {
+                        var RegExp = /video_id=(\d+)/;
+                        if (video_id = RegExp.exec(window.location.href)) {
+                            d.video_id = video_id[1];
+                        }
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+
+                        $('input[id^="filter_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("filter_", "") + ']'] = $(this).val();
+                        });
+                    }
+                },
+                "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                    {"data": "events_id"},
+                    {"data": "addtime"},
+                    {"data": "eventtime"},
+                    {"data": "mac"},
+                    {"data": "event"},
+                    {"data": "msg"},
+                    {"data": "sended"},
+                    {"data": "ended"}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [0, -1]},
+                    {"width": '20%', "targets": [-3]}
+                ]
+            });
+            $('#datatable-1').DataTable().order( [ 0, 'desc' ] ).draw();
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
+
+                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
+                    element: $('#bootstrapped-fine-uploader'),
+                    autoUpload: true,
+                    debug: true,
+                    multiple: false,
+                    text: {
+                        formatProgress: "{percent}% из {total_size}",
+                        failUpload: "Сбой при загрузке",
+                        waitingForResponse: "Обработка...",
+                        paused: "Пауза"
+                    },
+                    request: {
+                        endpoint: '{{ app.request.baseUrl }}/{{ app.controller_alias }}/upload-list-addresses'
+                    },
+                    {#validation: {
+                        allowedExtensions: ['jpeg', 'jpg', 'gif', 'png'],
+                        sizeLimit: 1048576 // 1Mb
+                    },#}
+                    template: 'qq-template-bootstrap',
+                    classes: {
+                        success: 'alert alert-success',
+                        fail: 'alert alert-error'
+                    }
+
+                }).on('complete', function (event, id, name, response) {
+                    if (response.success) {
+                        $('#file_name').val(response.fname);
+                        if ($.isFunction(window[response.action]) && !response.error) {
+                            window[response.action](response);
+                        }
+                    } else if (response.error) {
+                        alert(response.error);
+                    } else {
+                        alert('Some server error');
+                    }
+                        return false;
+                    });
+                    $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+        {#$.ajax({
+            url: 'tv-channels/delete-logo',
+            data: {id: '{{ app.oneChannel.id }}'},
+            success: function(data){
+                if (data.success) {
+                    $(this).prev('div').children('img').attr('src', '');
+                    $(this).prev('div').children('input').val('');
+                } else {
+                    console.log(data.error);
+                }
+            },
+            error: function(){
+                alert('Ошибка');
+            }
+        });#}
+                        return false;
+                    });
+
+                    $("[data-list-type], [data-event-type]").hide().find('input, select, textarea').attr('disabled', 'disabled');
+                    $(document).on('change', "#s2_user_list_type, #s2_event", function (e) {
+                        checkFields($(this), e);
+                    });
+
+                    $(document).on('click', "#msg_pattern", function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        $('#msg_textarea').text($.trim($('#msg_textarea_pattern').text()));
+                        return false;
+                    });
+
+                    $(document).on('click', '#add_events', function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
+                        checkFields('#s2_user_list_type', e);
+                        checkFields('#s2_event', e);
+                        return false;
+                    });
+
+                    $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        var formData = $("#modalbox_ad form").serialize();
+                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/add-event", formData);
+                        return false;
+                    });
+                    $(document).on('click', "#clean_events", function (e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean_events", {uid: $(this).data('uid')});
+                        return false;
+                    });
+                    
+                });
+            }
+            document.addEventListener("DOMContentLoaded", yelp, false);
+
+            function checkFields(obj, e) {
+                var dataName = $(obj).attr('id') == 's2_user_list_type' ? 'data-list-type' : 'data-event-type';
+                $("[" + dataName + "]").hide().find('input, select, textarea').attr('disabled', 'disabled');
+                $(obj).find('option').each(function () {
+                    if (this.selected) {
+                        $('[' + dataName + '="' + $(this).val() + '"]').show().find('input, select, textarea').removeAttr('disabled');
+                    }
+                });
+                return false;
+            }
+            
+            var addEvent = function(data){
+                alert(data.msg);
+                $('#datatable-1').dataTable().fnReloadAjax();
+                $('#modalbox_ad').click();
+            }
+            var addEventError = function(data){
+                alert(data.msg);
+                $('#datatable-1').dataTable().fnReloadAjax();
+                $('#modalbox_ad').click();
+            }
+            var addAddressList = function(data){
+                alert(data.msg);
+            }
+            var addAddressListError = function(data){
+                alert(data.error);
+            }
+            var cleanEvents = function(data){
+                alert(data.msg);
+                $('#datatable-1').dataTable().fnReloadAjax();
+            }
+            var cleanEventsError = function(data){
+                alert(data.error);
+                $('#datatable-1').dataTable().fnReloadAjax();
+            }
+    </script>
+
+    <script type="text/template" id="qq-template-bootstrap">
+        <div class="qq-uploader-selector qq-uploader span12">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
+        <!--<span>Drop files here to upload</span>-->
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
+        <div><i class="icon-upload icon-white"></i>Файл</div>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+        <!--<span>Processing dropped files...</span>-->
+        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
+        <li>
+        <div class="qq-progress-bar-container-selector">
+        <div class="qq-progress-bar-selector qq-progress-bar"></div>
+        </div>
+        <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+        <span class="qq-upload-file-selector qq-upload-file"></span>
+        <span class="qq-upload-size-selector qq-upload-size"></span>
+        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Удалить</a>-->
+        <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+        </li>
+        </ul>
+        </div>
+    </script>
+    <script type="text/template" id="msg_textarea_pattern">
+        Уважаемый абонент! Срок бесплатного тестирования наших услуг закончился.
+    </script>
+{% endblock %}

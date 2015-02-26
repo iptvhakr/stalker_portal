@@ -19,13 +19,20 @@
         "symfony/monolog-bridge": "~2.3",
         "symfony/twig-bridge": "~2.3",
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
-        "swiftmailer/swiftmailer": "5.*"
+        "swiftmailer/swiftmailer": "5.*",
+        "imagine/imagine" : "*",
+        "neutron/silex-imagine-provider": "dev-master",
+        "nymo/silex-twig-breadcrumb-extension":"~1.1"
     },
     "autoload": {
         "psr-0": {
-            "": "./src"
+            "": "./src",
+            "Controller": "./src/Controller",
+            "Model": "./src/Model",
+            "Lib": "./src/Lib"
         },
         "classmap": [
+            "../server/lib/",
             "../server/lib/mysql.class.php",
             "../server/lib/mysqlresult.class.php",
             "../server/lib/config.class.php",
