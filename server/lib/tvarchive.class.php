@@ -75,27 +75,33 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $position = date("i", $start_timestamp) * 60;
 
-        $res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
-                    . '/archive/'
-                    . $program['ch_id']
-                    . '/'
-                    . $filename
-                    . ' position:' . $position;
-        /*}*/
+        if ($channel['flussonic_dvr']){
 
-        $res['cmd'] .= ' media_len:' . ($stop_timestamp - $start_timestamp);
+            if (preg_match("/:\/\/([^\/]*)\/([^\/]*).*(mpegts|m3u8)$/", $channel['mc_cmd'], $match)){
 
-        $res['download_cmd'] = Config::getSafe('tv_archive_player_solution', 'ffmpeg').' http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
-            . '/stalker_portal/storage/get.php?filename=' . $filename
-            . '&ch_id=' . $program['ch_id']
-            . '&token='.$this->createTemporaryToken()
-            . '&start=' . $position
-            . '&duration=' . ($stop_timestamp - $start_timestamp)
-            . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
-            . '&real_id=' . $program['real_id'];
+                if ($match[3] == 'mpegts'){
+                    $res['cmd'] = 'http://'.$storage['storage_ip'].'/'.$match[2].'/archive/'.$start_timestamp.'/'.($stop_timestamp - $start_timestamp).'/mpegts';
+                }else{
+                    $res['cmd'] = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
+                    $res['cmd'] = preg_replace('/\.m3u8/', '-' . $start_timestamp
+                        . '-' . ($stop_timestamp - $start_timestamp) . '.m3u8' ,$res['cmd']);
+                }
 
-        if (!$channel['wowza_dvr']){
-            $res['cmd'] = $res['download_cmd'];
+                $res['download_cmd'] = 'http://'.$storage['storage_ip'].'/'.$match[2].'/archive-'.$start_timestamp.'-'.($stop_timestamp - $start_timestamp).'.ts';
+
+            }else{
+                $res['error'] = 'link_fault';
+            }
+
+        }else{
+            $res['cmd'] = $res['download_cmd'] = Config::getSafe('tv_archive_player_solution', 'ffmpeg').' http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
+                . '/stalker_portal/storage/get.php?filename=' . $filename
+                . '&ch_id=' . $program['ch_id']
+                . '&token='.$this->createTemporaryToken()
+                . '&start=' . $position
+                . '&duration=' . ($stop_timestamp - $start_timestamp)
+                . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+                . '&real_id=' . $program['real_id'];
         }
 
         $res['to_file'] = date("Ymd-H", $start_timestamp).'_'.System::transliterate($channel['name'].'_'.$program['name']).'.mpg';
@@ -524,6 +530,10 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $channel = Itv::getChannelById($ch_id);
 
+        if ($channel['flussonic_dvr']){
+            return true;
+        }
+
         if (preg_match("/(\S+:\/\/\S+)/", $channel['mc_cmd'], $match)){
             $cmd = $match[1];
         }else{
@@ -557,7 +567,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         return $result;
     }
 
-    private function deleteTaskById($task_id){
+    protected function deleteTaskById($task_id){
 
         $task = Mysql::getInstance()->from('tv_archive')->where(array('id' => $task_id))->get()->first();
 
@@ -565,7 +575,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             return true;
         }
 
-        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 0){
+        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 0 && $this->storages[$task['storage_name']]['flussonic_server'] == 0){
             $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($task['ch_id'])->delete();
         }
 
@@ -587,7 +597,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         Mysql::getInstance()->delete('tv_archive', array('ch_id' => $ch_id));
 
-        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 1){
+        if (array_key_exists($task['storage_name'], $this->storages) && ($this->storages[$task['storage_name']]['fake_tv_archive'] == 1 || $this->storages[$task['storage_name']]['flussonic_server'] == 1)){
             return true;
         }
 

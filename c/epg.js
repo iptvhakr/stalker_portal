@@ -140,6 +140,11 @@
             }
             
             this.superclass.show.call(this, false);
+
+            if (player_overlay_mode){
+                stb.set_cur_place(module.tv.layer_name);
+                stb.set_cur_layer(module.tv);
+            }
         };
         
         this.hide = function(do_not_reset){
@@ -374,6 +379,8 @@
             _debug('epg.load_data');
             
             _debug('this.ch_id', this.ch_id);
+
+            this.load_params['fav'] = stb.user.fav_itv_on;
             
             this.set_passive_cell();
             this.set_passive_row();

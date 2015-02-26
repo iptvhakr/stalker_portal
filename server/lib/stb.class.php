@@ -15,7 +15,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public $hd  = 0;
     private $user_agent = '';
     private $access_token = null;
-    private $is_moderator = false;
+    private $is_moderator = null;
     private $params = array();
     private $db;
     public $lang;
@@ -133,15 +133,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 exit;
             }
         }
-
-        if ($this->db->from('moderators')->where(array('mac' => $this->mac, 'status' => 1))->get()->count() == 1){
-            $this->is_moderator = true;
-        }
-
-        //if ($this->is_moderator && !empty($_COOKIE['debug'])){
-        /*if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
-            Mysql::$debug = true;
-        }*/
     }
 
     private function checkDebugKey($key){
@@ -160,8 +151,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
     
     public function setId($id){
-        $this->id = $id;
-        $this->params['id'] = $id;
+        $this->id = (int) $id;
+        $this->params['id'] = (int) $id;
     }
 
     public function getTimezone(){
@@ -208,7 +199,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 ->first();
         }elseif (User::isInitialized() && User::getInstance()->getId()){
             $user = $this->db->from('users')
-                ->where(array('id' => User::getInstance()->getId()))
+                ->where(array('id' => (int) User::getInstance()->getId()))
                 ->get()
                 ->first();
         }
@@ -231,10 +222,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }else{
                 $this->openweathermap_city_id = (empty($user['openweathermap_city_id']) && Config::exist('default_openweathermap_city_id')) ? Config::get('default_openweathermap_city_id') : intval($user['openweathermap_city_id']);
             }
-
-            $this->country_id = !$this->city_id ? 0 : intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
-
-            $this->openweathermap_country_id = !$this->openweathermap_city_id ? 0 : intval(Mysql::getInstance()->from('all_cities')->where(array('id' => $this->openweathermap_city_id))->get()->first('country_id'));
 
             $this->timezone   = (empty($this->timezone) && Config::exist('default_timezone')) ? Config::get('default_timezone') : $this->timezone;
 
@@ -633,7 +620,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['test_download_url']      = Config::getSafe('test_download_url', '');
 
-        $profile['is_moderator']           = $this->is_moderator;
+        $profile['is_moderator']           = $this->isModerator();
 
         $profile['watchdog_timeout']       = Config::getSafe('watchdog_timeout', 30000);
 
@@ -726,7 +713,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['enable_stream_losses_logging'] = Config::getSafe('enable_stream_losses_logging', false);
 
-        $profile['external_payment_page_url'] = sprintf(Config::getSafe('external_payment_page_url', ''), $this->getParam('ls'));
+        $profile['external_payment_page_url'] = sprintf(Config::getSafe('external_payment_page_url', ''), $this->getParam('ls'), $this->mac);
 
         $profile['max_local_recordings'] = Config::getSafe('max_local_recordings', 10);
 
@@ -739,6 +726,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $profile['portal_logo_url'] = Config::get('portal_logo_url');
         }
 
+        $profile['show_version_in_main_menu'] = Config::getSafe('show_version_in_main_menu', true);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);
@@ -748,6 +737,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
 
     public function getSettingsProfile(){
+
+        $themes = Middleware::getThemes();
 
         return array(
             "parent_password"       => $this->params['parent_password'],
@@ -772,8 +763,17 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             'sec_subtitle_lang'     => $this->params['sec_subtitle_lang'],
             'show_after_loading'    => empty($this->params['show_after_loading']) ? (Config::getSafe('display_menu_after_loading', false) ? 'main_menu' : 'last_channel') : $this->params['show_after_loading'],
             'play_in_preview_by_ok' => $this->params['play_in_preview_by_ok'] === null ? (bool) Config::getSafe('play_in_preview_only_by_ok', false) : (bool) $this->params['play_in_preview_by_ok'],
-            'hide_adv_mc_settings'  => Config::getSafe('hide_adv_mc_settings', false)
+            'hide_adv_mc_settings'  => Config::getSafe('hide_adv_mc_settings', false),
+            'themes'                => $themes,
+            'user_theme'            => $this->getUserPortalTheme()
         );
+    }
+
+    public function getUserPortalTheme(){
+
+        return empty($this->params['theme']) || !in_array($this->params['theme'], Middleware::getThemes())
+            ? Mysql::getInstance()->from('settings')->get()->first('default_template')
+            : $this->params['theme'];
     }
 
     private static function getImageUpdateUrl($stb_model){
@@ -933,6 +933,19 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
     
     public function isModerator(){
+
+        if ($this->is_moderator === null){
+            $db = clone Mysql::getInstance();
+            $moderator = $db->reset()
+                ->from('moderators')
+                ->where(array('mac' => $this->mac))
+                ->use_caching()
+                ->get()
+                ->first();
+
+            $this->is_moderator = !empty($moderator) && $moderator['status'] == 1;
+        }
+
         return $this->is_moderator;
     }
     
@@ -942,7 +955,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $prefix = $gmode ? '_'.$gmode : '';
 
-        $template = Mysql::getInstance()->from('settings')->get()->first('default_template');
+        $template = $this->getUserPortalTheme();
         
         $dir = PROJECT_PATH.'/../c/template/'.$template.'/i'.$prefix.'/';
         $files = array();
@@ -1081,7 +1094,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 case 1: // TV
 
                     if (!empty($_REQUEST['ch_id'])){
-                        $ch_name = $this->db->from('itv')->where(array('id' => (int) $_REQUEST['ch_id']))->get()->first('name');
+                        $ch_name = Itv::getChannelNameById((int) $_REQUEST['ch_id']);
                     }else{
                         $ch_name = $this->db
                             ->from('ch_links')
@@ -1197,18 +1210,31 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     
                     break;
                 case 4: // Audio Club
-                    
-                    preg_match("/(\d+).mp3$/", $param, $tmp_arr);
-                    $audio_id = intval($tmp_arr[1]);
-                    
-                    $audio = $this->db->from('audio')->where(array('id' => $audio_id))->get()->first();
-                    
-                    if (!empty($audio)){
-                        $update_data['now_playing_content'] = $audio['name'];
+
+                    if (!empty($_REQUEST['content_id'])){
+                        $audio = Mysql::getInstance()
+                            ->select('audio_compositions.name as track_title, audio_albums.performer_id')
+                            ->from('audio_compositions')
+                            ->where(array('audio_compositions.id' => (int) $_REQUEST['content_id']))
+                            ->join('audio_albums', 'audio_albums.id', 'audio_compositions.album_id', 'INNER')
+                            ->get()
+                            ->first();
+
+                        if ($audio){
+                            $performer = Mysql::getInstance()
+                                ->from('audio_performers')
+                                ->where(array('id' => $audio['performer_id']))
+                                ->get()
+                                ->first();
+
+                            if ($performer){
+                                $update_data['now_playing_content'] = $performer['name'].' - '.$audio['track_title'];
+                            }
+                        }
                     }else{
                         $update_data['now_playing_content'] = $param;
                     }
-                    
+
                     break;
                 case 5: // Radio
                 
@@ -1391,7 +1417,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
     public function getModules(){
 
-        $template = Mysql::getInstance()->from('settings')->get()->first('default_template');
+        $template = $this->getUserPortalTheme();
 
         return array(
             'all_modules'        => Config::get('all_modules'),
@@ -1640,11 +1666,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $show_after_loading = $_REQUEST['show_after_loading'];
         $play_in_preview_by_ok = intval($_REQUEST['play_in_preview_by_ok']);
+        $theme = $_REQUEST['theme'];
 
         return Mysql::getInstance()->update('users',
             array(
                  'show_after_loading'    => $show_after_loading,
-                 'play_in_preview_by_ok' => $play_in_preview_by_ok
+                 'play_in_preview_by_ok' => $play_in_preview_by_ok,
+                 'theme'                 => $theme
             ),
             array('id' => $this->id));
     }
@@ -1665,6 +1693,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         $result = array();
 
         $countries = Mysql::getInstance()->from('countries')->orderby('name_en')->get()->all();
+
+        $this->country_id = !$this->city_id ? 0 : intval(Mysql::getInstance()->from('cities')->where(array('id' => $this->city_id))->get()->first('country_id'));
+
+        $this->openweathermap_country_id = !$this->openweathermap_city_id ? 0 : intval(Mysql::getInstance()->from('all_cities')->where(array('id' => $this->openweathermap_city_id))->get()->first('country_id'));
 
         foreach ($countries as $country){
             if (Config::getSafe('weather_provider', 'openweathermap') == 'openweathermap'){

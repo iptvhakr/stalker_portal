@@ -69,12 +69,6 @@ class Watchdog extends AjaxResponse implements \Stalker\Lib\StbApi\Watchdog
         }
         
         $res['data']['additional_services_on'] = Config::getSafe('enable_tariff_plans', false) ? '1' : $this->stb->additional_services_on;
-        
-        $updated_places = $this->db->from('updated_places')->where(array('uid' => $this->stb->id))->get()->first();
-        
-        $res['data']['updated'] = array();
-        $res['data']['updated']['anec'] = intval($updated_places['anec']);
-        $res['data']['updated']['vclub'] = intval($updated_places['vclub']);
 
         return $res;
     }

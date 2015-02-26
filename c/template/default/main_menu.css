@@ -8,8 +8,17 @@
     background-image: url("i/bg.png");
 }
 
+.main_menu_logo{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 100px;
+}
+
 .main_menu_date{
-    font-family: "Trebuchet ms" bold;
+    font-family: "Trebuchet ms", serif;
+    font-weight: bold;
     font-size: 15px;
     color: #99a8b5;
 }

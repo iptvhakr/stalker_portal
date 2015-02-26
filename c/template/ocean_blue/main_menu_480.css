@@ -8,6 +8,14 @@
     background-image: url("i_480/bg.png");
 }
 
+.main_menu_logo{
+    position: absolute;
+    left: 0;
+    top: -10px;
+    width: 200px;
+    height: 100px;
+}
+
 .main_menu_date{
     font-family: "Roboto", sans-serif;
     font-weight: bold;

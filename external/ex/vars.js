@@ -1,4 +1,4 @@
-var version = '2.01.05';
+var version = '2.01.08';
 
 // Типы узлов
 var TYPE_NONE              = 0,

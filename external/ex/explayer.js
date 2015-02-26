@@ -47,7 +47,7 @@ MediaPlayer.EVENT_OK       = 6;
 MediaPlayer.EVENT_EXIT     = 7;
 
 MediaPlayer.onInit = function () {
-	var self = this, defLang = "";
+	var self = this, defLang = '';
 
 	for ( var i = 0; i < iso639.length; i++ ) {
 		for ( var j = 0; j < iso639[i].code.length; j++ ) {
@@ -56,7 +56,7 @@ MediaPlayer.onInit = function () {
 				break;
 			}
 		}
-		if ( defLang !== "" ) { break; }
+		if ( defLang !== '' ) { break; }
 	}
 
     gSTB.InitPlayer();
@@ -565,7 +565,6 @@ MediaPlayer.prepare = function ( obj, play, slideShow ) {
 MediaPlayer.play = function () {
 	var param = '';
 	if ( !this.obj ) { return false; }
-	gSTB.SetMode(1);
 	clearTimeout(this.timer.slideShow);
 	if ( this.type === MEDIA_TYPE_IMAGE ) {
 		this.obj.sol = "jpeg";
@@ -828,7 +827,6 @@ MediaPlayer.end = function () {
 		if ( this.timer.hasOwnProperty(i) ) {clearTimeout(this.timer[i]);}
 	}
 	gSTB.Stop();
-	gSTB.SetMode(0);
 	this.playNow = false;
 	return true;
 };

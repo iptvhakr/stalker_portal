@@ -37,9 +37,10 @@ function _debug(){
     }
 }
 
-function _log(action, param){
+function _log(action, param, content_id){
 
     param = param || '';
+    content_id = content_id || 0;
 
     if (typeof(param) == 'object'){
         var add_data = param;
@@ -53,6 +54,7 @@ function _log(action, param){
         "action" : "log",
         "real_action" : action,
         "param"  : param,
+        "content_id" : content_id,
         "tmp_type" : stb.get_current_place()
     };
 

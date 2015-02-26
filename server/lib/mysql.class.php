@@ -16,9 +16,8 @@ class Mysql
     private static $cache_hits = 0;
     private static $cache_misses = 0;
 
-    private $cache;
-
-    private $allow_caching = true;
+    private $allow_caching = false;
+    private $allow_empty_cache_result = true;
 
     private $select = array();
     private $from = array();
@@ -29,10 +28,12 @@ class Mysql
     private $having = array();
     private $limit = false;
     private $offset = false;
+    private $cache_tags = array();
     private $timezone;
     public static $debug = false;
 
     private static $instance = null;
+    const DATETIME_FORMAT = "Y-m-d H:i:s";
 
     /**
      * @static
@@ -112,10 +113,12 @@ class Mysql
             return;
         }
 
-        $this->timezone = $timezone;
+        if (empty($this->timezone)){
+            $this->timezone = $timezone;
 
-        foreach ($this->links as $link) {
-            $this->query('SET time_zone="' . $timezone . '"', $link);
+            foreach ($this->links as $link) {
+                $this->query('SET time_zone="' . $timezone . '"', $link);
+            }
         }
     }
 
@@ -718,46 +721,63 @@ class Mysql
             }
         }
 
+        if (Mysql::$debug)
+            //var_dump($this->get_tags(get_object_vars($this)));
+
         if (Config::getSafe('query_cache', false) && $this->allow_caching) {
 
-            $tags = $this->get_tags(get_object_vars($this));
+            if (!empty($this->cache_tags)){
+                $tags = $this->cache_tags;
+                if (Mysql::$debug)
+                    var_dump('new_tags', $tags);
+            }else{
+                $tags = $this->get_tags(get_object_vars($this));
+            }
 
             if (!preg_match('/^INSERT|^UPDATE|^REPLACE|^SET|^DELETE|^TRUNCATE/i', $sql)) {
 
                 $key = $this->get_cache_key($sql);
 
-                if (($result = $this->cache->get($key)) === false) {
-                    self::$num_queries++;
+                if (($result = Cache::getInstance(true)->get($key)) === false) {
+
+                    if (substr($sql, 0, 4) != 'SET '){
+                        self::$num_queries++;
+                    }
 
                     $result = new MysqlResult(mysqli_query($link, $sql), $sql, $link);
 
-                    $this->cache->set($key, $result->as_array(true), $tags);
+                    $cache_data = $result->as_array(true);
 
                     self::$cache_misses++;
 
-                    return $result;
+                    if ($this->allow_empty_cache_result && empty($cache_data) || !empty($cache_data)){
+                        Cache::getInstance(true)->set($key, $cache_data, $tags);
+                        return $result;
+                    }
                 } else {
-                    self::$cache_hits++;
 
-                    $result = new CacheResult($result, $sql);
-
-                    return $result;
+                    if ($this->allow_empty_cache_result && empty($result) || !empty($result)){
+                        self::$cache_hits++;
+                        $result = new CacheResult($result, $sql);
+                        return $result;
+                    }
                 }
 
             } else {
 
-                $this->cache->setInvalidTags($tags);
+                Cache::getInstance(true)->setInvalidTags($tags);
 
             }
         }
 
-        $this->enable_caching();
-
-        self::$num_queries++;
+        if (substr($sql, 0, 4) != 'SET '){
+            self::$num_queries++;
+        }
 
         $result = mysqli_query($link, $sql);
 
         if ($result === false){
+            error_log('Query failed by reason : '.mysqli_error($link).' ('.$sql.')');
             throw new MysqlException('Query failed by reason : '.mysqli_error($link).' ('.$sql.')');
         }
 
@@ -775,6 +795,27 @@ class Mysql
         $this->having  = array();
         $this->limit   = false;
         $this->offset  = false;
+        $this->allow_caching = false;
+        $this->allow_empty_cache_result = true;
+        $this->cache_tags = array();
+    }
+
+    public function reset(){
+        $this->reset_select();
+        $this->reset_write();
+        return $this;
+    }
+
+    public function use_caching($tags = array(), $allow_empty_cache_result = true){
+
+        $this->allow_caching = true;
+        $this->allow_empty_cache_result = $allow_empty_cache_result;
+
+        if (!empty($tags)){
+            $this->cache_tags = $tags;
+        }
+
+        return $this;
     }
 
     private function reset_write() {
@@ -782,6 +823,9 @@ class Mysql
         $this->set   = array();
         $this->from  = array();
         $this->where = array();
+        $this->allow_caching = false;
+        $this->allow_empty_cache_result = true;
+        $this->cache_tags = array();
     }
 
     private function escape_str($str) {
@@ -861,7 +905,7 @@ class Mysql
     }
 
     private function disable_caching() {
-        $this->allow_caching = false;
+        //$this->allow_caching = false;
     }
 
     private function get_max_allowed_packet() {

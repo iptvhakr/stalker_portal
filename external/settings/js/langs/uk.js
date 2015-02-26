@@ -215,6 +215,7 @@ var lang = {
     "Portal": "Портал",
     "Open after loading:": "Відобразити після завантаження:",
     "Play in preview only by OK:": "Програвати канали тільки по OK:",
+    "Theme:" : "Тема:",
     "Main menu": "Головне меню",
     "Last TV channel": "Останній ТВ канал",
 

@@ -343,7 +343,7 @@ function parseYoutubePage(html, playNow) {
 }
 
 function parseYoutubePage_new(html, playNow) {
-    var s = /"url_encoded_fmt_stream_map": "(.*?)"/.exec(html);
+    var s = /"url_encoded_fmt_stream_map":"(.*?)"/.exec(html);
 
     if (!s || Array.isArray(s) && !s[1]){
         log('\n\ns is null\n\n');

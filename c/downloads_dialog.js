@@ -124,7 +124,7 @@ downloads_dialog_constructor.prototype.show=function(options){
     }else{
         if(this.url && this.url.length>0){
             var splited=this.url.split('/');
-            $('d_d_fn').value=splited[splited.length-1];
+            $('d_d_fn').value=decodeURIComponent(splited[splited.length-1]);
        } else {
             $('d_d_fn').value='';
        }

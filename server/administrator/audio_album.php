@@ -359,7 +359,7 @@ $albums = Mysql::getInstance()
     ->select('audio_albums.*,
         audio_performers.name as performer_name,
         audio_years.name as album_year,
-        countries.name as album_country
+        countries.name'.(isset($_COOKIE['language']) && $_COOKIE['language'] == 'ru' ? '' : '_en').' as album_country
     ')
     ->from('audio_albums')
     ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
@@ -375,8 +375,7 @@ if (isset($_GET['id'])){
 $all_performers = Mysql::getInstance()->from('audio_performers')->orderby('name')->get()->all();
 $all_genres = Mysql::getInstance()->from('audio_genres')->orderby('name')->get()->all();
 $all_years = Mysql::getInstance()->from('audio_years')->orderby('name')->get()->all();
-$all_countries = Mysql::getInstance()->from('countries')->orderby('name')->get()->all();
-
+$all_countries = Mysql::getInstance()->from('countries')->orderby('name'.(isset($_COOKIE['language']) && $_COOKIE['language'] == 'ru' ? '' : '_en'))->get()->all();
 ?>
 <body>
 
@@ -573,7 +572,7 @@ $all_countries = Mysql::getInstance()->from('countries')->orderby('name')->get()
                                 }else{
                                     $selected = '';
                                 }
-                                echo '<option value="'.$country['id'].'" '.$selected.'>'.$country['name'].'</option>';
+                                echo '<option value="'.$country['id'].'" '.$selected.'>'.$country['name'.($_COOKIE['language'] == 'ru' ? '' : '_en')].'</option>';
                             }
                             ?>
                         </select>

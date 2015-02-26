@@ -267,10 +267,10 @@ $cur_infoportal = get_cur_infoportal();
         </table>
         </td>
     </tr>
-    <!--<tr>
-        <td class="td_stat"><?/*= _('audioclub')*/?>:</td>
-        <td class="td_stat"><?/* echo $cur_aclub */?></td>
-    </tr>-->
+    <tr>
+        <td class="td_stat"><?= _('audioclub')?>:</td>
+        <td class="td_stat"><? echo $cur_aclub?></td>
+    </tr>
     <tr>
         <td class="td_stat"><?= _('karaoke')?>:</td>
         <td class="td_stat"><? echo $cur_karaoke ?></td>
