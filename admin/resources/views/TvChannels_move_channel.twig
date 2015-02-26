@@ -3,112 +3,17 @@
 {% set title = 'tv-channels' %}
 
 {% block content %}
-    <div class="row header_title">
+{#    <div class="row header_title">
         <div class="col-xs-10 col-sm-2">
-            <h3>Список каналов</h3>
+            <h3>Переместить канал</h3>
         </div>
-    </div>
+    </div>#}
 
     <div id="iptv_list_move">
         <div class="row">
-            <div class="col-xs-8 col-sm-12">
-                {# {% if app['allGenres'] %}
-                    <div class="col-xs-3 col-sm-2 filter" data-tvfilter="tv_genre_id">
-                        <span class="col-xs-4 col-sm-4">Жанр:</span>
-                        {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
-
-                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'tv_genre_id') is defined %}
-                            {% set f_tv_genre_id = app['filters']['tv_genre_id'] %}
-                        {% else %}
-                            {% set f_tv_genre_id = 0 %}
-                        {% endif %}
-
-                        {% set list_f = list %}
-                        {% for item in app.allGenres %}
-                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item.id ~ '"><span>' ~ item.title ~ '</span></a></li>') | trans %}
-                            {% if f_tv_genre_id == item.id %}                       
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>{{item.title}}</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                        {% autoescape false %}
-                            {% if f_tv_genre_id == 0%}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Все</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu pull-right">
-                                {{list_f}}
-                            </ul>
-                        {% endautoescape %}
-                    </div>
-                {% endif %}
-                <div class="col-xs-3 col-sm-2 no-padding">
-                    <div class="col-xs-3 col-sm-5 filter no-padding" data-tvfilter="archive_id">
-                        <span class="col-xs-4 col-sm-5 no-padding">Архив:</span>
-                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'archive_id') is defined %}
-                            {% set f_archive_id = app['filters']['archive_id'] %}
-                        {% else %}
-                            {% set f_archive_id = 0 %}
-                        {% endif %}
-
-                        {% set list_f = list %}
-                        {% for item in app.allArchive %}
-                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
-                            {% if f_archive_id == item['id'] %}                       
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>{{item['title']}}</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                        {% autoescape false %}
-                            {% if f_archive_id == 0%}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Все</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu pull-right">
-                                {{list_f}}
-                            </ul>
-                        {% endautoescape %}
-                    </div>
-                    <div class="col-xs-3 col-sm-7 filter no-padding" data-tvfilter="status_id">
-                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
-                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'status_id') is defined %}
-                            {% set f_status_id = app['filters']['status_id'] %}
-                        {% else %}
-                            {% set f_status_id = 0 %}
-                        {% endif %}
-                        {% set list_f = list %}                       
-                        {% for item in app.allStatus %}
-                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
-                            {% if f_status_id == item['id'] %}                       
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>{{item['title']}}</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                        {% autoescape false %}
-                            {% if f_status_id == 0%}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Все</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu pull-right">
-                                {{list_f}}
-                            </ul>
-                        {% endautoescape %}
-                    </div>
-                </div> #}
-                <div class="col-sm-3 no-padding"  id="searc_and_backlight">
-                    <div class="input-group col-sm-9 pull-left">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-8 col-sm-9 col-md-6 col-lg-4 no-padding"  id="searc_and_backlight">
+                    <div class="input-group col-xs-8 col-sm-9 pull-left">
                         <span class="input-group-addon"><i class="fa fa-search"></i></span>
                         <input type="text" placeholder="Введите имя либо номер канала..." class="form-control" data-original-title="" title="">
                     </div>
@@ -118,7 +23,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 ">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="col-xs-12 col-sm-12 box_v2" id="channelListContainer">
 
                 </div>
@@ -129,11 +34,12 @@
     <script type="text/javascript">
         var channelList = [
         {% if app['allChannels'] %}
+            {% set i_last = app['allChannels']|last %}
             {% for item in app.allChannels %}
-                {% if item == item|last %}
-            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': false, 'old_number': '{{item.number}}'}
+                {% if loop|last %}
+            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'}
                 {% else %}
-            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': false, 'old_number': '{{item.number}}'},
+            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'},
                 {% endif %}
             {% endfor %}
         {% endif%}
@@ -147,31 +53,33 @@
                 }
             
                 $(document).on('click', '#iptv_list_move_send', function(e){
+                    showModalBox();
                     e.stopPropagation();
                     e.preventDefault();
                     var dataForSend = new Array();
                 
                     $.each(channelList, function(){
-                        if (this.number != this.old_number) {
-                            dataForSend.push({'id': this.id, 'number': this.number, 'old_number': this.old_number})
+                        if (this.number != this.old_number && !this.empty) {
+                            dataForSend.push({'id': this.id, 'number': this.number, 'old_number': this.old_number});
                         }
+                        this.old_number = this.number;
                     })
                 
                     $.ajax({
-                        url: 'tv-channels/move-apply',
+                        url: '{{ app['controller_alias'] }}/move-apply',
                         type: 'POST',
                         dataType: "json",
                         async: false,
                         data: {data: dataForSend},
                         success: function(data){
                             if (data.success) {
-                                alert('Сохранено');    
+                                manageChannel();
                             } else {
-                                alert(data.error);
+                                errAction();
                             }
                         },
                         error: function(){
-                            alert('Ошибка');
+                            errAction();
                         }
                     });
                     return false;
@@ -230,9 +138,93 @@
                         return false;
                     });
                 }
+                
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for(i=0;i<3;i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+                
+                $('#channelListContainer').on('click', '.box-icons a', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var childI = $(this).children('i');
+                    var childID = parseInt($(this).closest('.box').find('span.curr_num').data('number'), 10) - 1;
+                    if (childI.hasClass('fa-lock')) {
+                        childI.removeClass('fa-lock').addClass('fa-unlock');
+                        $(this).closest("div.box").removeClass('no-drop').draggable("enable").droppable("enable");
+                        channelList[childID].locked = false;
+                    } else {
+                        childI.removeClass('fa-unlock').addClass('fa-lock');
+                        $(this).closest("div.box").addClass('no-drop').draggable("disable").droppable("disable");
+                        channelList[childID].locked = true;
+                    }
+                    ajaxPostSend('{{ app['controller_alias'] }}/toogle-lock-channel', {data:{1: {id: childI.data('id'), locked: channelList[childID].locked} } })
+                    return false;
+                });
+                
             });
         }
 
         document.addEventListener( "DOMContentLoaded", yelp, false );
+
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+        
+        function showModalBox(){
+            $("#modalbox").data('complete', 0);
+            $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+            $("#modalbox").show();
+        }
+        
+        var manageChannel = function (obj) {
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+        }
+        
+        var errAction = function(){
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+            $("#modalbox").data('complete', 1);
+        }
+        
+        var checkChanges = function(){
+            var dataForSend = new Array();
+                
+            $.each(channelList, function(){
+                if (this.number != this.old_number) {
+                    dataForSend.push({'id': this.id, 'number': this.number, 'old_number': this.old_number})
+                }
+            })
+            
+            return dataForSend.length > 0;
+        };
+        
+        window.onunload = function(){
+            if (checkChanges()) {
+                return "Есть несохраненные данные. Действительно желаете уйти?";
+            }
+        }; 
+            
+        window.onbeforeunload = function(){
+            if (checkChanges()) {
+                return "Есть несохраненные данные. Действительно желаете уйти?";
+            }
+        };
+        
     </script>
 {% endblock %}

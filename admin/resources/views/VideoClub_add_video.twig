@@ -4,11 +4,11 @@
 {% block content %}
 
     
-    <div class="row header_title">
+{#    <div class="row header_title">
         <div class="col-xs-10 col-sm-3">
             <h3>{% if app['videoEdit'] %}Редактировать{% else %}Добавить{% endif %} видео</h3>
         </div>
-    </div>
+    </div>#}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
         <div class="bg-danger">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-header">
                         <div class="box-name">
@@ -382,7 +382,8 @@
                         <div class="row">
                             <div class="col-xs-10 col-sm-4 pull-right">
                                 {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
                             </div>
                         </div>
                     </div>
@@ -534,7 +535,7 @@
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
                                 _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                             } else {
-                                alert('Some network error');
+                                alert('Some network error or access denied');
                             }
                         },
                         dataType: "json",
@@ -586,7 +587,7 @@
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
                                 alert(data.responseJSON.error);
                             } else {
-                                alert('Some network error');
+                                alert('Some network error or access denied');
                             }
                         },
                         dataType: "json",
@@ -643,7 +644,7 @@
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
                                 alert(data.responseJSON.error);
                             } else {
-                                alert('Some network error');
+                                alert('Some network error or access denied');
                             }
                         },
                         dataType: "json",

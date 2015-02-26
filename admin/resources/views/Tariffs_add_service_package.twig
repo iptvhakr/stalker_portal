@@ -1,0 +1,331 @@
+{% extends 'layout.twig' %}
+{% set title = 'tariffs' %}
+
+{% block content %}
+
+    
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-3">
+            <h3>{% if app['servicePackageEdit'] %}Редактировать{% else %}Добавить{% endif %} пакет</h3>
+        </div>
+    </div>#}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Внешний ID</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].external_id, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].external_id) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Должен быть уникальным</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Пакет</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Описание</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].description, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].description) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Услуга</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {% if attribute(app['form'].type, 'vars') is defined %}
+                                        {% set type_val = app['form'].type.vars.value %}
+                                    {% else %}
+                                        {% set type_val = '' %}
+                                    {% endif %}
+                                    {{ form_widget(app['form'].type, {'attr': {'class': 'populate placeholder', 'data-currtype': type_val }}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].type) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Категория контента к которой относится создаваемый пакет</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Доступ</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].service_type, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].service_type) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Тип доступа к услуге: постоянный или разовый - с указанным сроком и ценой аренды</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Длительнгость аренды</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].rent_duration, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].rent_duration) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Длительность действия указанной услуги в часах</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Цена</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].price, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].price) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Цена за аренду услуги</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">Полный пакет</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].all_services) }}      
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].all_services) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Предоставляет полный доступ ко всему контенту выбранной услуги</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">&nbsp;</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <fieldset id="letters" class=" col-xs-10 col-sm-12">
+                                    <div class=" col-xs-10 col-sm-5">
+                                        <label class="col-sm-12 control-label">Доступно</label>
+                                        {{ form_widget(app['form'].disabled_services, {'attr': {'class': 'left populate placeholder col-sm-12', "multiple": "multiple"}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].disabled_services) }}
+                                        </div>
+                                    </div>
+                                    <div class=" col-xs-10 col-sm-2">
+                                        <br><br><br><br><br>
+                                        <button type="button" class="add all btn btn-block btn-default"> все &gt;&gt; </button>
+                                        <button type="button" class="add btn btn-block btn-default"> &gt; </button>
+                                        <button type="button" class="remove btn btn-block btn-default"> &lt; </button>
+                                        <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; все</button>
+                                    </div>
+                                    <div class=" col-xs-10 col-sm-5">
+                                        <label class="col-sm-12 control-label">Выбрано</label>
+                                        {{ form_widget(app['form'].services, {'attr': {'class': 'right populate placeholder col-sm-12', "multiple": "multiple"}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].services) }}
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-4 pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/service-packages" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {#{{ form_widget(app.form._token) }}#}
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+        
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
+                $('#form_service_type, #form_type').select2({minimumResultsForSearch: -1});
+            });
+        }
+        
+        function yelp() {
+            $(document).ready(function () {
+                $( "#form_price" ).spinner({step: 0.01, numberFormat: "C", min: 0, value: $( "#form_price" ).val()});
+                LoadSelect2Script(DemoSelect2);
+                $('head').append('<link href="{{ app.request.baseUrl }}/plugins/multiselect_transfer/style.css" type="text/css" rel="stylesheet" />');
+
+                $(document).on('change keyup', '#form_external_id', function (e) {
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-external-id', {externalid: _this.val(), selfid: $('#form_id').val()}, false);
+                });
+
+                $('#form_all_services').change(function(e){
+                    if (typeof(this.checked) && this.checked){
+                        $('#form_disabled_services').attr('disabled', 'disabled');
+                        $('#form_services').attr('disabled', 'disabled');
+                        $('#form_services').closest('fieldset').find('button').attr('disabled', 'disabled').closest('.form-group').hide();
+                    } else{
+                        $('#form_disabled_services').removeAttr('disabled');
+                        $('#form_services').removeAttr('disabled');
+                        $('#form_services').closest('fieldset').find('button').removeAttr('disabled').closest('.form-group').show();
+                    }
+                });
+
+                if ($('#form_all_services').val() == 1){
+                    $('#form_all_services').attr('checked', 'checked');
+                    $('#form_all_services').change();
+                } 
+                
+                $('#form_service_type').change(function(eventObj){
+                    var type = $(this).val();
+
+                    if (type == 'single'){
+                        $('#form_rent_duration').closest('.form-group').show();
+                        $('#form_price').closest('.form-group').show();
+                    }else{
+                        $('#form_rent_duration').closest('.form-group').hide();
+                        $('#form_price').closest('.form-group').hide();
+                    }
+                });
+                
+                if ($('#form_service_type option:selected').length == 0){
+                    $('#form_service_type option[value="periodic"]').attr('selected', 'selected');
+                }
+                $('#form_service_type').change();
+                
+                
+                $('#form_type').change(function(eventObj){
+                    
+                    var type = $(this).val();
+
+                    if (type == 'module' || type == ''){
+                        $('#form_all_services').attr('disabled', 'disbled').closest('.form-group').hide();
+                    }else{
+                        $('#form_all_services').removeAttr('disabled').closest('.form-group').show();
+                    }
+
+                    $('#form_service_type').attr('disabled', 'disbled').closest('.form-group').hide();
+                    
+                    if (type == 'video'){
+                        $('#form_service_type').removeAttr('disabled').closest('.form-group').show();
+                    }
+                    
+                    if ($(this).data('currtype') == type) {
+                        return;
+                    }
+                    
+                    $(this).data('currtype', type);
+                    
+                    $('#form_services').empty();
+
+                    if (type != 0){
+                        ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/get-services', {type: type}, false);
+                    }
+                });
+                
+                if ($('#form_type option:selected').length == 0){
+                    $('#form_type option[value="tv"]').attr('selected', 'selected');
+                }
+                $('#form_type').change();
+                
+                
+                $(document).on('click', '#form_save', function(){
+                var sendData =[];
+                    $('#form_disabled_services').find('option').each(function(index, val){
+                        var _val = $(this);
+                        if (_val.val()) {
+                            sendData.push(_val.val());
+                        }
+                    });
+                    $('#form_disabled_services_json').val(JSON.stringify(sendData));
+                var sendData =[];    
+                    $('#form_services').find('option').each(function(index, val){
+                        var _val = $(this);
+                        if (_val.val()) {
+                            sendData.push(_val.val());
+                        }
+                    });
+                    $('#form_services_json').val(JSON.stringify(sendData));
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var updateService = function (data){
+            if (typeof (data.services) !== 'undefined') {
+                $('#form_disabled_services').empty();
+                $.each(data.services, function(index, item){
+                    $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name +'</option>');
+                })
+            }
+
+            if ($('#form_all_services:checked').length){
+                $('#form_disabled_services').attr('disabled', 'disabled');
+                $('#form_services').attr('disabled', 'disabled');
+            }
+        }
+        
+        var checkExternalId = function(data){
+            $('#form_external_id').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+        }
+        
+        var checkExternalIdError = function(data){
+            var msg = '';
+            msg = (typeof(data.responseJSON) != 'undefined') ? data.responseJSON.error: data.chk_rezult;
+            $('#form_external_id').next('div').append('<i class="txt-danger fa fa-ban"></i> ' + msg).css('visibility', 'visible');
+        }
+    </script>
+{% endblock %}

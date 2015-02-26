@@ -1,0 +1,506 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set active = 'settings' %}
+{% set title = 'settings' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>Обновление прошивки</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="col-xs-4 col-sm-2 pull-right">
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-common-item" class="btn btn-success col-xs-12 col-sm-12 pull-right" id="add_common_item">Добавить</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
+                                        <tbody>
+                                            {% if attribute(app, 'allData') is defined %}
+                                                <!-- Start: list_row -->
+                                                {% for item in app.allData %}
+                                                    <tr>
+                                                        <td>{{ item.id }}</td>
+                                                        <td>{{ item.stb_type }}</td>
+                                                        <td>{{ item.image_version_contains }}</td>
+                                                        <td>{% if item.require_image_date %}{{ item.require_image_date|date('M d, Y H:i') }}{% endif %}</td>
+                                                        <td>{{ item.update_type }}</td>
+                                                        <td>{{ item.prefix }}</td>
+                                                        <td>{{ item.image_description_contains }}</td>
+                                                        <td>{{ item.require_image_version }}</td>
+                                                        <td>{{ item.hardware_version_contains }}</td>
+                                                        <td>{% if item.enable == 1 %}<span class="txt-success">Включено</span>{% else %}<span>Отключено</span>{% endif %}</td>
+                                                        <td>
+                                                            <div class="col-xs-3 col-sm-8">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                                    <i class="pull-right fa fa-cog"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/common-list-json" data-id="{{ item.id }}">
+                                                                            <span>Редактировать</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-common-item-status" data-id="{{ item.id }}" data-enable="{{ item.enable }}">
+                                                                            <span>{% if item.enable != 1 %}<span>Включить</span>{% else %}<span>Отключить</span>{% endif %}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-common-item" data-id="{{ item.id }}">
+                                                                            <span>Удалить</span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            <!-- End: list_row -->
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalbox_ad">
+        <div class="devoops-modal save_storage">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span></span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-common-item">
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="box-name">
+                                <div class="row">
+                                    <div class="col-xs-10 col-sm-4">
+                                        <span>Основное</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-icons">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                            <div class="no-move"></div>
+                        </div>
+                        <div class="box-content">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">*Модель приставки</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control own_fields" type="hidden" title="" value="" name="id">
+                                        <select name="stb_type" class="populate placeholder own_fields" id="s2_stb_type" required="required">
+                                            <option value="MAG200">MAG200</option>
+                                            <option value="MAG245">MAG245</option>
+                                            <option value="MAG250">MAG250</option>
+                                            <option value="MAG254">MAG254</option>
+                                            <option value="MAG255">MAG255</option>
+                                            <option value="MAG270">MAG270</option>
+                                            <option value="MAG275">MAG275</option>
+                                            <option value="WR320">WR320</option>
+                                            <option value="AuraHD0">AuraHD0</option>
+                                            <option value="AuraHD1">AuraHD1</option>
+                                            <option value="AuraHD9">AuraHD9</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-11 col-sm-11 col-xs-offset-1 col-sm-offset-1">
+                                    <p class="bg-warning txt-default">
+                                        Номер и дата сборки образа, на который будет произведено обновление. Берутся из образа.
+                                        Для того чтобы система нашла нужную прошивку достаточно заполнить версию или дату образа (одно из полей).
+                                        Номер образа должен быть числом.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">*Версия образа</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="require_image_version" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">*Дата образа</label>
+                                <div class="col-xs-10 col-sm-7">
+                                    <div class=" col-xs-12 col-sm-7">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="require_image_date" id="require_image_date" required="required">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">*Вариант обновления</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <select name="update_type" id="s2_update_type" class="populate placeholder own_fields" required="required">
+                                            <option value="http_update">http update</option>
+                                            <option value="reboot_dhcp">reboot dhcp</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Вариант обновления: http update (загрузка образа по HTTP) или reboot dhcp (перезагруpка приставки в режим загрузки по DHCP "boot mode - DHCP")</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Автоматическое обновление</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="enable" value="1" class="own_fields">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Автоматически обновляет прошивку, если версия не сообтветствует текущей</span>
+                                    </span>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="box-name">
+                                <div class="row">
+                                    <div class="col-xs-10 col-sm-4">
+                                        <span>Дополнительное</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-icons">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                            <div class="no-move"></div>
+                        </div>
+                        <div class="box-content">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Префикс</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control own_fields" type="text" title="" value="" name="prefix">
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Если у вас несколько файлов прошивок в одном каталоге, то укажите префикс файла. Например: если ввести префикс tr_, то будет загружен файл tr_imageupdate</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-11 col-sm-11 col-xs-offset-1 col-sm-offset-1">
+                                    <p class="bg-warning txt-default">
+                                        Отфильтровать приставки по заданным параметрам. Обновление будет установлено только для тех приставок, 
+                                        которые соответствуют указанным параметрам. В поле "Дескриптор образа" достаточно указать часть описания
+                                        или ключевое слово. Данные для заполнения можно найти в интерфейсе профиля пользователя в соответствующих полях.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Дескриптор образа</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class="col-xs-10 col-sm-8">
+                                        <div class=" col-xs-10 col-sm-12">
+                                            <input class="form-control own_fields" type="text" title="" value="" name="image_description_contains">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Требуемая версия STB API</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class="col-xs-10 col-sm-8">
+                                        <div class=" col-xs-10 col-sm-12">
+                                            <input class="form-control own_fields" type="text" title="" value="" name="image_version_contains">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Версия hardware</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class="col-xs-10 col-sm-8">
+                                        <div class=" col-xs-10 col-sm-12">
+                                            <input class="form-control own_fields" type="text" title="" value="" name="hardware_version_contains">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right" id="save_button">Сохранить</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                                                           
+    <script type="text/javascript" defer>
+        
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
+                $('select[id^="s2_"]').select2({minimumResultsForSearch: -1});
+
+            });
+        }
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var enable = json.data[i].enable;
+                        json.data[i].enable = (enable == 1 ?"<span class='txt-success'>Включено</span>":"<span>Отключено</span>");
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/common-list-json' data-id='" + id + "'>\n\
+                                                                    <span>Редактировать</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-common-item-status' data-id='" + id + "' data-enable='" + enable + "'>\n\
+                                                                    <span>"+ (enable == 1? '<span>Отключить</span>':'<span>Включить</span>') + "</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-common-item' data-id='" + id + "'>\n\
+                                                                    <span>Удалить</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/common-list-json",
+                    "data": function (d) {
+{#                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }#}
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}    
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1]},
+                    {"sortable": false, "targets": [-1,]}{#,
+                    {"width": "19%", "targets": [5] },#}
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox").data('complete', 0);
+                    showModalBox();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $("#form_reset").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest('form').get(0).reset();
+    {#                    $("#cmd_data").find("tr:visible").remove();#}
+                    return false;
+                });
+                
+                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var lengthObj = 0;
+                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
+                        form_fields.each(function () {
+                        sendData[this.name] = $(this).val();
+                        if ($(this).val() || !$(this).is("[required]")) {
+                            lengthObj++;
+                        }
+                    });
+                    if (lengthObj < form_fields.length) {
+                        alert('Не все обязательные поля заполнены');
+                        return false;
+                    }
+                    showModalBox();
+                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                    return false;
+                });
+                
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for(i=0;i<3;i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+                
+                $("#add_common_item").on("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    closeModalBox();
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить EPG');
+                    $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
+                    $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
+                    $("select[id^='s2_']").select2("destroy").select2({minimumResultsForSearch: -1});
+                    $("#modalbox_ad").show();
+                    //        $(this).closest('.form-group').find('tbody tr:hidden').show();
+                    return false;
+                });
+                               
+                LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
+                
+                $("#require_image_date").datepicker({
+                    numberOfMonths: 1,
+                    language: 'ru',
+                    dateFormat: 'dd/mm/yy'{#,
+                    onClose: function (selectedDate) {
+                        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
+                        $('#datatable-1').DataTable().ajax.reload();
+                    }#}
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+        var setCommonModal = function (data) {
+            closeModalBox();
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать EPG');
+            if (data.data.length == 1) {
+                var row = data.data[0];
+                for (var field_name in row) {
+                    if ($("#modalbox_ad .own_fields[name='" + field_name + "']").attr('type') != 'checkbox') {
+                        $("#modalbox_ad .own_fields[name='" + field_name + "']").val(row[field_name]);
+                    } else {
+                        $("#modalbox_ad .own_fields[name='" + field_name + "']").prop('checked', row[field_name] == 1).attr('checked', row[field_name] == 1);
+                    }
+                }
+            }
+            $("#modalbox_ad input").removeAttr('disabled');
+            $("select[id^='s2_']").select2("destroy").select2({minimumResultsForSearch: -1});
+            $("#modalbox_ad").show();
+        }
+        
+        var manageCommon = function (obj) {
+            $("#modalbox_ad").click();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+            var msg_type = typeof(obj.msg);
+            msg_type = msg_type.toLowerCase();
+            if (msg_type != 'undefined'){
+                if (msg_type == 'string') {
+                    $('#modalbox').find('.devoops-modal-inner').append('<span>' + obj.msg + '</span>');
+                } else if (msg_type == 'array' || msg_type == 'object') {
+                    for (var i in obj.msg){
+                        $('#modalbox').find('.devoops-modal-inner').append('<br><span>' + obj.msg[i] + '</span>');
+                    }
+                }
+            }
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+        
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+        
+        function showModalBox(){
+            $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+            $("#modalbox").show();
+        }
+        
+        var errAction = function(){
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+            $("#modalbox").data('complete', 1);
+        }
+        
+    </script>
+{% endblock %}

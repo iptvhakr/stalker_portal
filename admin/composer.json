@@ -21,13 +21,15 @@
         "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
         "swiftmailer/swiftmailer": "5.*",
         "imagine/imagine" : "*",
-        "neutron/silex-imagine-provider": "dev-master"
+        "neutron/silex-imagine-provider": "dev-master",
+        "nymo/silex-twig-breadcrumb-extension":"~1.1"
     },
     "autoload": {
         "psr-0": {
             "": "./src",
             "Controller": "./src/Controller",
-            "Model": "./src/Model"
+            "Model": "./src/Model",
+            "Lib": "./src/Lib"
         },
         "classmap": [
             "../server/lib/",

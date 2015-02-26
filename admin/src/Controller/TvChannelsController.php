@@ -45,13 +45,18 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         );
     }
 
+    // ------------------- action method ---------------------------------------
+    
     public function index() {
+        
+        if (empty($this->app['action_alias'])) {
+            return $this->app->redirect($this->app['controller_alias'] . '/iptv-list');
+        }
         
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         } 
-        return $this->app->redirect('tv-channels/iptv-list');
-//        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
     public function iptv_list() {
@@ -67,17 +72,21 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $allChannels = $this->db->getAllChannels($filter);
-
+        $allChannels = $this->setLocalization($allChannels, 'genres_name');
         if (is_array($allChannels)) {
-
             while (list($num, $row) = each($allChannels)) {
                 $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row);
             }
         }
 
         $this->app['allChannels'] = $allChannels;
-        $this->app['allGenres'] = $this->db->getAllGenres();
-
+        $getAllGenres = $this->db->getAllGenres();
+        $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
+        
+        $attribute = $this->getIptvListDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+        
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -96,14 +105,17 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $allChannels = $this->db->getAllChannels($filter);
 
         if (is_array($allChannels)) {
-
             while (list($num, $row) = each($allChannels)) {
                 $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row, 120);
+                $allChannels[$num]['locked'] = (bool)$allChannels[$num]['locked'];
+            }
+            if (((int)$allChannels[0]['number']) == 0) {
+                array_push($allChannels, $allChannels[0]);
+                unset($allChannels[0]);
             }
         }
 
-        $this->app['allChannels'] = $allChannels;
-        $this->app['allGenres'] = $this->db->getAllGenres();
+        $this->app['allChannels'] = $this->fillEmptyRows($allChannels);
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -112,15 +124,16 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $this->app['allGenres'] = $this->db->getAllGenres();
+        $getAllGenres = $this->db->getAllGenres();
+        $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
         $this->app['streamServers'] = $this->db->getAllStreamServer();
-        $this->app['channelEdit'] = TRUE;
+        $this->app['channelEdit'] = FALSE;
         $form = $this->buildForm();
 
         if ($this->saveChannelData($form)) {
             return $this->app->redirect('iptv-list');
         }
-
+                
         $this->app['form'] = $form->createView();
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -135,7 +148,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $id = ($this->method == 'POST' && !empty($this->postData['form']['id'])) ? $this->postData['form']['id'] : $this->data['id'];
 
-        $this->app['allGenres'] = $this->db->getAllGenres();
+        $getAllGenres = $this->db->getAllGenres();
+        $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
         $this->app['channelEdit'] = TRUE;
         $this->oneChannel = $this->db->getChannelById($id);
         settype($this->oneChannel['enable_tv_archive'], 'boolean');
@@ -157,9 +171,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $this->app['form'] = $form->createView();
+        
+        $this->app['breadcrumbs']->addItem("Редактирование канала '{$this->oneChannel['name']}'");
 
         return $this->app['twig']->render('TvChannels_add_channel.twig');
     }
+    
+    //----------------------- ajax method --------------------------------------
 
     public function remove_channel() {
         if ($no_auth = $this->checkAuth()) {
@@ -172,6 +190,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $channel = $this->db->getChannelById($this->data['id']);
         $response = array();
         $response['rows'] = $this->db->removeChannel($this->data['id']);
+        $response['action'] = 'remove';
 
         if (!empty($response['rows'])) {
             $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
@@ -265,6 +284,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $erorr = '';
             $senddata = array('action' => 'applied');
             foreach ($this->postData['data'] as $row) {
+                if (empty($row['id'])) {
+                    continue;
+                }
                 if (!$this->db->updateChannelNum($row)) {
                     $erorr = 'Failed to save, update the channel list';
                     $senddata = array('action' => 'canceled');
@@ -275,14 +297,36 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    public function epg() {
+    public function toogle_lock_channel(){
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+        
+        if (!$this->isAjax) {
+            $this->app->abort(404, 'The unexpected request');
+        }
+        if (empty($this->postData['data'])) {
+            $erorr = 'nothing to do';
+            $senddata = array('action' => 'canceled');
+        } else {
+            $erorr = '';
+            $senddata = array('action' => 'applied');
+            foreach ($this->postData['data'] as $row) {
+                if (empty($row['id'])) {
+                    continue;
+                }
+                $row['locked'] = (!empty($row['locked']) || $row['locked'] == "true") ? 1: 0;
+                if (!$this->db->updateChannelLockedStatus($row)) {
+                    $erorr = 'Failed to save, update the channel list';
+                    $senddata = array('action' => 'canceled');
+                }
+            }
+        }
+        $response = $this->generateAjaxResponse($senddata, $erorr);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-    //--------------------------------------------------------------------------
+        //------------------------ service method ----------------------------------
 
     private function getLogoUriById($id = FALSE, $row = FALSE, $resolution = 320) {
 
@@ -351,18 +395,36 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         foreach ($this->db->getStorages() as $key => $value) {
             $storages[$value['storage_name']] = $value['storage_name'];
         }
-
+        $def_number = 0;
+        $def_name = 'Channel';
+        if (!empty($data['number'])){
+            $def_number = $data['number'];
+        } else {
+            $def_number = $this->getFirstFreeChannelNumber();
+        }
+        
+        if (!empty($data['name'])){
+            $def_name = $data['name'];
+        } else {
+           $def_name = "$def_name $def_number";
+        }
+        
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
-                ->add('number', 'text', array('constraints' => new Assert\Range(array('min' => 0, 'max' => 999))))
-                ->add('name', 'text', array('constraints' => array(
-                        new Assert\Regex(array(
-                            'pattern' => '/[^\w,\!,\@,\#,\$,\%,\^,\&,\*,\(,\),\_,\-,\+,\:,\;,\,,\.,\s]/',
-                            'match' => false
-                                )
-                        ),
-                        new Assert\NotBlank()
-                    )
+                ->add('number', 'text', array(
+                    'constraints' => new Assert\Range(array('min' => 0, 'max' => 999)),
+                    'data' => $def_number
+                    ))
+                ->add('name', 'text', array(
+                        'constraints' => array(
+//                                    new Assert\Regex(array(
+//                                        'pattern' => '/[^\w,\!,\@,\#,\$,\%,\^,\&,\*,\(,\),\_,\-,\+,\:,\;,\,,\.,\s]/',
+//                                        'match' => false
+//                                        )
+//                                    ),
+                                new Assert\NotBlank()
+                            ),
+                        'data' => $def_name
                         )
                 )
                 ->add('tv_genre_id', 'choice', array(
@@ -383,11 +445,14 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                         )
                 )
                 ->add('volume_correction', 'choice', array(
-                    'choices' => range(-20, 20),
-                    'constraints' => new Assert\Range(array('min' => -20, 'max' => 20)),
-                    'required' => false
+                            'choices' => array_combine(range(-20, 20, 1), range(-100, 100, 5)),
+                            'constraints' => array(
+                                new Assert\Range(array('min' => -20, 'max' => 20)), 
+                                new Assert\NotBlank()),
+                            'required' => TRUE,
+                            'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
                         )
-                )
+                    )
                 ->add('logo', 'hidden')
                 ->add('cmd', 'collection', $this->getDefaultOptions())
                 ->add('user_agent_filter', 'collection', $this->getDefaultOptions())
@@ -403,26 +468,20 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('stream_server', 'collection', $this->getDefaultOptions())
                 ->add('enable_tv_archive', 'checkbox', array('required' => false))
                 ->add('mc_cmd', 'text', array('required' => false))
-                ->add('tv_archive_duration', 'choice', array(
-                    'choices' => range(0, 100),
-                    'constraints' => new Assert\Range(array('min' => 0, 'max' => 100)),
-                    'required' => false
-                        )
-                )
+                ->add('tv_archive_duration', 'text', array(
+                    'constraints' => new Assert\Range(array('min' => 0, 'max' => 999))
+                    ))
                 ->add('allow_pvr', 'checkbox', array('required' => false))
                 ->add('xmltv_id', 'text', array('required' => false))
-                ->add('correct_time', 'choice', array(
-                    'choices' => range(0, 60),
-                    'constraints' => new Assert\Range(array('min' => 0, 'max' => 60)),
-                    'required' => false
-                        )
-                )
+                ->add('correct_time', 'text', array(
+                    'constraints' => new Assert\Range(array('min' => 0, 'max' => 999))
+                    ))
                 ->add('censored', 'checkbox', array('required' => false))
                 ->add('base_ch', 'checkbox', array('required' => false))
                 ->add('allow_local_timeshift', 'checkbox', array('required' => false))
                 ->add('allow_local_pvr', 'checkbox', array('required' => false))
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
 
         return $form->getForm();
     }
@@ -654,5 +713,50 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['filters'] = $this->data['filters'];
         return $filters;
     }
-
+    
+    private function getFirstFreeChannelNumber(){
+        $channels = $this->db->getAllChannels();
+        while(list($key, $row) = each($channels)) {
+            $next_key = $key+1;
+            if (array_key_exists($next_key, $channels)) {
+                if (($channels[$next_key]['number'] - $row['number']) >=2 ) {
+                    return ++$row['number'];
+                }
+            } 
+        }
+        return ++$row['number'];
+    }
+    
+    private function fillEmptyRows($input_array = array()){
+        $result = array();
+        $empty_row = array('logo'=>'', 'name' =>'', 'id'=>'', 'number'=>0, 'empty'=>TRUE, 'locked'=>FALSE);
+        reset($input_array);
+        $begin_val = 1;
+        while(list($key, $row) = each($input_array)){
+            while ($begin_val < $row['number']) {
+                $empty_row['number'] = $begin_val;
+                $result[] = $empty_row;
+                $begin_val++;
+            }
+            $row['empty'] = FALSE;
+            $result[] = $row;
+            $begin_val++;
+        }
+        reset($result);
+        return $result;
+    }
+    
+    private function getIptvListDropdownAttribute(){
+        return array(
+            array('name' => 'logo',             'title' => 'Лого',      'checked' => TRUE),
+            array('name' => 'number',           'title' => 'Номер',     'checked' => TRUE),
+            array('name' => 'name',             'title' => 'Название',  'checked' => TRUE),
+            array('name' => 'genres_name',      'title' => 'Жанр',      'checked' => TRUE),
+            array('name' => 'enable_tv_archive','title' => 'ТВ-архив',  'checked' => TRUE),
+            array('name' => 'cmd',              'title' => 'URL',       'checked' => TRUE),
+            array('name' => 'status',           'title' => 'Статус',    'checked' => TRUE),
+            array('name' => 'operations',       'title' => 'Действия',  'checked' => TRUE)
+        );
+        
+    }
 }

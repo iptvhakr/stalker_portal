@@ -1,0 +1,379 @@
+{
+    "1": {
+        "name": "Администратор",
+        "alias": "auth-user",
+        "icon": "",
+        "icon2": "fa fa-cog pull-right",
+        "action": {
+            "1": {
+                "name": "Профиль",
+                "alias": "auth-user-profile",
+                "icon": "fa fa-user"
+            },
+            "2": {
+                "name": "Сообщения",
+                "alias": "auth-user-messages",
+                "icon": "fa fa-envelope"
+            },
+            "3": {
+                "name": "Задания",
+                "self_parent_alias": "tasks",
+                "alias": "tasks-list",
+                "icon": "fa fa-tasks"
+            },
+            "4": {
+                "name": "Настройки",
+                "alias": "auth-user-settings",
+                "icon": "fa fa-cog"
+            },
+            "5": {
+                "name": "Выход",
+                "alias": "auth-user-logout",
+                "icon": "fa fa-power-off"
+            }
+        }
+    },
+    "2": {
+        "name": "IPTV каналы",
+        "alias": "tv-channels",
+        "icon": "fa fa-desktop",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список каналов",
+                "alias": "iptv-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Добавить канал",
+                "alias": "add-channel",
+                "icon": ""
+            },
+            "3": {
+                "name": "Переместить канал",
+                "alias": "move-channel",
+                "icon": ""
+            }
+        }
+    },
+    "3": {
+        "name": "Видео клуб",
+        "alias": "video-club",
+        "icon": "fa fa-video-camera",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список фильмов",
+                "alias": "video-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Добавить фильм",
+                "alias": "add-video",
+                "icon": ""
+            },
+            "3": {
+                "name": "Расписание публикаций",
+                "alias": "video-schedule",
+                "icon": ""
+            },
+            "4": {
+                "name": "Реклама",
+                "alias": "video-advertise",
+                "icon": ""
+            },
+            "5": {
+                "name": "Адреса модераторов",
+                "alias": "video-moderators-addresses",
+                "icon": ""
+            },
+            "6": {
+                "name": "Логи видео",
+                "alias": "video-logs",
+                "icon": ""
+            }
+        }
+    },
+    "4": {
+        "name": "Аудио клуб",
+        "alias": "audio-club",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Альбомы",
+                "alias": "audio-albums",
+                "icon": ""
+            },
+            "2": {
+                "name": "Исполнители",
+                "alias": "audio-artists",
+                "icon": ""
+            },
+            "3": {
+                "name": "Жанры",
+                "alias": "audio-genres",
+                "icon": ""
+            },
+            "4": {
+                "name": "Языки",
+                "alias": "audio-languages",
+                "icon": ""
+            },
+            "5": {
+                "name": "Годы",
+                "alias": "audio-years",
+                "icon": ""
+            }
+        }
+    },
+    "5": {
+        "name": "Караоке",
+        "alias": "karaoke",
+        "icon": "fa fa-microphone",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список караоке",
+                "alias": "karaoke-list",
+                "icon": ""
+            }
+        }
+    },
+    "6": {
+        "name": "Радио",
+        "alias": "radio",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "7": {
+        "name": "Тарифы",
+        "alias": "tariffs",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Пакеты услуг",
+                "alias": "service-packages",
+                "icon": ""
+            },
+            "2": {
+                "name": "Тарифные планы",
+                "alias": "tariff-plans",
+                "icon": ""
+            }
+        }
+    },
+    "8": {
+        "name": "Пользователи",
+        "alias": "users",
+        "icon": "fa fa-columns",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список пользователей",
+                "alias": "users-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Группы приставок",
+                "alias": "users-consoles-groups",
+                "icon": ""
+            },
+            "3": {
+                "name": "Логи",
+                "alias": "users-consoles-logs",
+                "icon": ""
+            },
+            "4": {
+                "name": "Отчет",
+                "alias": "users-consoles-report",
+                "icon": ""
+            }
+        }
+    },
+    "9": {
+        "name": "События",
+        "alias": "events",
+        "icon": "fa fa-columns",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    },
+    "10": {
+        "name": "Администраторы",
+        "alias": "admins",
+        "icon": "fa fa-users",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список администраторов",
+                "alias": "admins-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Группы администраторов",
+                "alias": "admins-groups",
+                "icon": ""
+            }
+        }
+    },
+    "11": {
+        "name": "Задания",
+        "alias": "tasks",
+        "icon": "fa fa-check",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список заданий",
+                "alias": "tasks-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Отчет",
+                "alias": "tasks-report",
+                "icon": ""
+            }
+        }
+    },
+    "12": {
+        "name": "Инфопортал",
+        "alias": "infoportal",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Телефонный справочник",
+                "alias": "phone-book",
+                "icon": ""
+            },
+            "2": {
+                "name": "Юмор",
+                "alias": "humor",
+                "icon": ""
+            }
+        }
+    },
+    "13": {
+        "name": "Статистика",
+        "alias": "statistics",
+        "icon": "fa fa-microphone",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Статистика видео",
+                "alias": "stat-video",
+                "icon": ""
+            },
+            "2": {
+                "name": "Статистика ТВ",
+                "alias": "stat-tv",
+                "icon": ""
+            },
+            "3": {
+                "name": "Статистика ТВ архива",
+                "alias": "stat-tv-archive",
+                "icon": ""
+            },
+            "4": {
+                "name": "Статистика TimeShift",
+                "alias": "stat-timeshift",
+                "icon": ""
+            },
+            "5": {
+                "name": "Статистика модераторов",
+                "alias": "stat-moderators",
+                "icon": ""
+            },
+            "6": {
+                "name": "Абонентская статистика",
+                "alias": "stat-abonents",
+                "icon": ""
+            },
+            "7": {
+                "name": "Неактивные абоненты",
+                "alias": "stat-abonents-unactive",
+                "icon": ""
+            },
+            "8": {
+                "name": "Статистика жалоб",
+                "alias": "stat-claims",
+                "icon": ""
+            }
+        }
+    },
+    "14": {
+        "name": "Хранилища",
+        "alias": "storages",
+        "icon": "fa fa-hdd-o",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список хранилищ",
+                "alias": "storages-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Поиск видео",
+                "alias": "storages-video-search",
+                "icon": ""
+            },
+            "3": {
+                "name": "Логи",
+                "alias": "storages-logs",
+                "icon": ""
+            }
+        }
+    },
+    "15": {
+        "name": "Сервера вещания",
+        "alias": "broadcast-servers",
+        "icon": "fa fa-globe",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список серверов",
+                "alias": "broadcast-servers-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Зоны вещания",
+                "alias": "broadcast-zone-list",
+                "icon": ""
+            }
+        }
+    },
+    "16": {
+        "name": "Настройки",
+        "alias": "settings",
+        "icon": "fa fa-columns",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "EPG",
+                "alias": "epg",
+                "icon": ""
+            },
+            "2": {
+                "name": "Внешний вид",
+                "alias": "themes",
+                "icon": ""
+            },
+            "3": {
+                "name": "Обновление прошивки",
+                "alias": "common",
+                "icon": ""
+            }
+        }
+    },
+    "17": {
+        "name": "Справка",
+        "alias": "information",
+        "icon": "fa fa-music",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+        }
+    }
+}

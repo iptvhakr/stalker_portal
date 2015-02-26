@@ -1,59 +1,19 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = 'events' %}
 
-{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
-
 {% block content %}
-    <div class="row header_title">
+{#    <div class="row header_title">
         <div class="col-xs-10 col-sm-12">
             <h3>События{% if attribute(app, 'currentUser') is defined %} пользователя "{{ app.currentUser.name }}"({{ app.currentUser.mac }}) {% endif %}</h3>
         </div>
-    </div>
+    </div>#}
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-8 col-sm-12">
-                <div class="col-xs-3 col-sm-7 no-padding">
-                    <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="event">
-                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
-                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'event') is defined %}
-                            {% set f_event = app['filters']['event'] %}
-                        {% else %}
-                            {% set f_event = '0' %}
-                        {% endif %}
-                        {% set list_f = list %}    
-                        {% for key, item in app.allEvent %}
-                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ key ~ '"><span>' ~ item ~ '</span></a></li>') | trans %}
-                            {% if f_event == key %}                       
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>{{ item }}</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                        {% autoescape false %}
-                            {% if f_event == '0' %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Все</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu pull-right">
-                                {{ list_f }}
-                            </ul>
-                        {% endautoescape %}
-                    </div>
-                    {#<div class="col-xs-3 col-sm-6 filter no-padding" data-tvfilter="time_period">
-                        <div class="col-xs-3 col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
-                            <input class="col-xs-3 col-sm-12 filter" placeholder="С" type="text" id="datepicker_from" name="interval_from" value="{{ app['filters']['interval_from'] }}">
-                        </div>
-                        <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="time_period">
-                            <input class="col-xs-3 col-sm-12 filter" placeholder="По" type="text" id="datepicker_to" name="interval_to" value="{{ app['filters']['interval_to'] }}">
-                        </div>
-                        <span class="col-xs-3 col-sm-6 filter">
-                            поиск неактивных
-                        </span>
-                    </div>#}
-                </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('event', 'Событие', 'id', 'title', app['allEvent']) }}
+                {{ main_macro.get_filter('sended', 'Состояние отправки', 'id', 'title', app['sendedStatus'], 5, 9) }}
+                {{ main_macro.get_filter('ended', 'Состояние получения', 'id', 'title', app['receivingStatus'], 5, 9) }}
                 <div class="col-xs-3 col-sm-1 filter no-padding pull-right">
                     <a id="add_events" href="#" class="btn btn-success pull-right">Добавить</a>
                 </div>
@@ -65,7 +25,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="box-content no-padding">
@@ -78,7 +38,8 @@
                                         <th data-filter="mac">MAC</th>
                                         <th data-filter="event">Событие</th>
                                         <th data-filter="msg">Сообщение</th>
-                                        <th data-filter="sended">Статус</th>
+                                        <th data-filter="sended">Статус отправки</th>
+                                        <th data-filter="ended">Статус получения</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -87,12 +48,13 @@
                                         {% for item in app.eventList %}
                                             <tr>
                                                 <td>{{ item.events_id }}</td>
-                                                <td>{{ item.addtime }}</td>
-                                                <td>{{ item.eventtime }}</td>
+                                                <td>{{ item.addtime|date('M d, Y H:i') }}</td>
+                                                <td>{{ item.eventtime|date('M d, Y H:i') }}</td>
                                                 <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid={{ item.uid }}" >{{ item.mac }}</a></td>
                                                 <td>{{ item.event }}</td>
                                                 <td><div class="event_message">{{ item.msg }}</div></td>
-                                                <td>{% if item.sended != '0' %}<span class="txt-success">Отправлено</span>{% else %}<span class="txt-warning">Не отправлено</span>{% endif %}</td>
+                                                <td>{% if item.sended != '0' %}<span class="txt-success">Отправлено</span>{% else %}<span class="txt-primary">Не отправлено</span>{% endif %}</td>
+                                                <td>{% if item.ended != '0' %}<span class="txt-success">Получено</span>{% else %}<span class="txt-primary">Не получено</span>{% endif %}</td>
                                             </tr>
                                         {% endfor %}
                                         <!-- End: list_row -->
@@ -201,15 +163,9 @@
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-6">
                                         <select class="populate placeholder" name="event" id="s2_event">
-                                            <option value=""></option>
-                                            <option value="send_msg">send_msg</option>
-                                            <option value="reboot">reboot</option>
-                                            <option value="reload_portal">reload_portal</option>
-                                            <option value="update_channels">update_channels</option>
-                                            <option value="play_channel">play_channel</option>
-                                            <option value="mount_all_storages">mount_all_storages</option>
-                                            <option value="cut_off">switch_off</option>
-                                            <option value="update_image">update_image</option>
+                                            {% for type in app['formEvent'] %}
+                                            <option value="{{ type['id'] }}">{{ type['title'] }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -296,13 +252,25 @@
         function TestTable1() {
             $.getScript('plugins/datatables/fnReloadAjax.js');            
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
-                if (typeof (json.data) == 'object') {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
                     for (var i in json.data) {
                         var uid = json.data[i].uid;
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid=' + uid + '" >' + mac + '</a>';
                         json.data[i].msg = '<div class="event_message">' + json.data[i].msg + '</div>';
-                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="txt-success">Отправлено</span>' : '<span class="txt-warning">Не отправлено</span>';
+                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="txt-success">Отправлено</span>' : '<span class="txt-primary">Не отправлено</span>';
+                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="txt-success">Получено</span>' : '<span class="txt-primary">Не получено</span>';
+                        date = json.data[i]['addtime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['addtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                        date = json.data[i]['eventtime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['eventtime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
                     }
                 }
             }).dataTable({
@@ -336,14 +304,16 @@
                     {"data": "mac"},
                     {"data": "event"},
                     {"data": "msg"},
-                    {"data": "sended"}
+                    {"data": "sended"},
+                    {"data": "ended"}
                 ],
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [0, -1]},
-                    {"width": '20%', "targets": [-2]}
+                    {"width": '20%', "targets": [-3]}
                 ]
             });
             $('#datatable-1').DataTable().order( [ 0, 'desc' ] ).draw();
@@ -515,6 +485,6 @@
         </div>
     </script>
     <script type="text/template" id="msg_textarea_pattern">
-        Уважаемый абонент! Срок бесплатного тестирования наших услуг закончился. Просим Вас подойти в абонентский отдел (пр-т Ак. Глушко, 11-И, каб.8) для перезаключения договора либо возврата оборудования.
+        Уважаемый абонент! Срок бесплатного тестирования наших услуг закончился.
     </script>
 {% endblock %}

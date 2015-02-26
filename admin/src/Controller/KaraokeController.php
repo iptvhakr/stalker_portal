@@ -20,6 +20,11 @@ class KaraokeController extends \Controller\BaseStalkerController {
     // ------------------- action method ---------------------------------------
     
     public function index() {
+        
+        if (empty($this->app['action_alias'])) {
+            return $this->app->redirect($this->app['controller_alias'] . '/karaoke-list');
+        }
+        
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -33,7 +38,10 @@ class KaraokeController extends \Controller\BaseStalkerController {
         
         $this->app['allProtocols'] = $this->allProtocols;
         $this->app['allStatus'] = $this->allStatus;
-        $this->app['dropdownAttribute'] = $this->getDropdownAttribute();
+        
+        $attribute = $this->getDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
         
         $list = $this->karaoke_list_json();
         
@@ -43,15 +51,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
-    
-    public function action_metod_template(){
-        if ($no_auth = $this->checkAuth()) {
-            return $no_auth;
-        }
-        
-        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
-    }
-    
+       
     //----------------------- ajax method --------------------------------------
 
     public function karaoke_list_json($param = array()) {
@@ -122,6 +122,10 @@ class KaraokeController extends \Controller\BaseStalkerController {
             $query_param['where']['karaoke.id'] = $param['karaokeid'];
         }
         
+        if (empty($query_param['order'])) {
+            $query_param['order']['added'] = 'DESC';
+        }
+        
         
         $response['recordsTotal'] = $this->db->getTotalRowsKaraokeList();
         $response["recordsFiltered"] = $this->db->getTotalRowsKaraokeList($query_param['where'], $query_param['like']);
@@ -133,6 +137,12 @@ class KaraokeController extends \Controller\BaseStalkerController {
         }
         
         $response['data'] = $this->db->getKaraokeList($query_param);
+        
+        $response['data'] = array_map(function($row){
+            $row['added'] = (int) strtotime($row['added']);
+            return $row;
+        }, $response['data']);
+        
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         
         $error = "";
@@ -197,8 +207,6 @@ class KaraokeController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
     
-    
-    
     public function toggle_karaoke_done() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['karaokeid']) || !array_key_exists('done', $this->postData)) {
@@ -232,14 +240,21 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageKaraoke';
         $data['id'] = $this->postData['karaokeid'];
-        $this->db->updateKaraoke(array('accessed' => (int)(!((bool) $this->postData['accessed'])), 'added' => 'NOW()'), $this->postData['karaokeid']);
-        if ((int)(!((bool) $this->postData['accessed'])) == 1){
-            chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0444);
-        }else{
-            chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0666);
+        $error = 'Не выполнено';    
+        $where = array('karaoke.id'=>$this->postData['karaokeid']);
+        $item = $this->db->getKaraokeList(array('select'=> array("*", "karaoke.id as id"), "where" => $where));
+        if ($item[0]['protocol'] != 'custom' || !empty($item[0]['rtsp_url'])) {
+            $this->db->updateKaraoke(array('accessed' => (int)(!((bool) $this->postData['accessed'])), 'added' => 'NOW()'), $this->postData['karaokeid']);
+            if ((int)(!((bool) $this->postData['accessed'])) == 1){
+                chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0444);
+            }else{
+                chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0666);
+            }
+            $error = '';    
+        } else {
+            $error = 'Нельзя опубликовать запись с протоколом - custom, и пустым полем - URL';   
         }
         
-        $error = '';    
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -305,7 +320,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $return = array();
 
         if (!empty($this->data['filters'])){
-            if (array_key_exists('status', $this->data['filters']) && !empty((int) $this->data['filters']['status'])) {
+            if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status']!= 0) {
                 $return['`karaoke`.`status`'] = $this->data['filters']['status'] - 1;
             }
                        

@@ -22,6 +22,10 @@ class RadioController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
+        
+        $attribute = $this->getDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         $list = $this->radio_list_json();
 
@@ -45,7 +49,7 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['radioEdit'] = FALSE;
-
+        $this->app['breadcrumbs']->addItem("Добавить радио");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -81,7 +85,7 @@ class RadioController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['radioEdit'] = TRUE;
         $this->app['radioID'] = $id;
-        
+        $this->app['breadcrumbs']->addItem("Редактировать радио '{$this->radio['name']}'");
         return $this->app['twig']->render("Radio_add_radio.twig");
     }
 
@@ -116,6 +120,10 @@ class RadioController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
 
+        if (empty($query_param['order'])) {
+            
+        }
+        
         $response['data'] = $this->db->getRadioList($query_param);
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
@@ -235,13 +243,17 @@ class RadioController extends \Controller\BaseStalkerController {
                         new Assert\NotBlank(),
                         'required' => TRUE
                     ), 'required' => TRUE))
-                ->add('volume_correction', 'text', array(
-                        'constraints' => array('required' => FALSE),
-                        'required' => FALSE
+                ->add('volume_correction', 'choice', array(
+                            'choices' => array_combine(range(-20, 20, 1), range(-100, 100, 5)),
+                            'constraints' => array(
+                                new Assert\Range(array('min' => -20, 'max' => 20)), 
+                                new Assert\NotBlank()),
+                            'required' => TRUE,
+                            'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
                         )
-                )
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                    )
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
         return $form->getForm();
     }
 
@@ -282,7 +294,7 @@ class RadioController extends \Controller\BaseStalkerController {
         $return = array();
 
         if (!empty($this->data['filters'])){
-            if (array_key_exists('status_id', $this->data['filters']) && !empty((int) $this->data['filters']['status_id'])) {
+            if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id']!= 0) {
                 $return['status'] = $this->data['filters']['status_id'] - 1;
             }
             $this->app['filters'] = $this->data['filters'];
@@ -291,5 +303,18 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         return $return;
     }
+    
+    private function getDropdownAttribute() {
+        return array(
+            array('name'=>'id',                 'title'=>'ID',      'checked' => TRUE),
+            array('name'=>'number',             'title'=>'Номер',   'checked' => TRUE),
+            array('name'=>'name',               'title'=>'Имя',     'checked' => TRUE),
+            array('name'=>'cmd',                'title'=>'URL',     'checked' => TRUE),
+            array('name'=>'volume_correction',  'title'=>'Звук',    'checked' => TRUE),
+            array('name'=>'status',             'title'=>'Состояние','checked' => TRUE),
+            array('name'=>'operations',         'title'=>'Действия','checked' => TRUE),
+        );
+    }
+    
 
 }

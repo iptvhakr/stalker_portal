@@ -1,134 +1,29 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = 'radio' %}
 
 {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
 
 {% block content %}
-    <div class="row header_title">
+{#    <div class="row header_title">
         <div class="col-xs-10 col-sm-2">
             <h3>Радио</h3>
         </div>
-    </div>
+    </div>#}
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-8 col-sm-12">
-
-                <div class="col-xs-3 col-sm-7 no-padding">
-                    <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="status_id">
-                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
-                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'status_id') is defined %}
-                            {% set f_status_id = app['filters']['status_id'] %}
-                        {% else %}
-                            {% set f_status_id = 0 %}
-                        {% endif %}
-                        {% set list_f = list %}                       
-                        {% for item in app.allStatus %}
-                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
-                            {% if f_status_id == item['id'] %}                       
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>{{ item['title'] }}</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                        {% autoescape false %}
-                            {% if f_status_id == 0 %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Все</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu pull-right">
-                                {{ list_f }}
-                            </ul>
-                        {% endautoescape %}
-                    </div>
-                </div>
-
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus']) }}
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-radio" class="btn btn-success pull-right">Добавить</a>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
-                    <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                            <span>Атрибуты</span>
-                            <i class="fa fa-chevron-down"></i>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="all"> Все
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="id" checked="checked"> ID
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="number" checked="checked"> Номер
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="name" checked="checked"> Имя
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="cmd" checked="checked"> URL
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="volume_correction" checked="checked"> Звук
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="status" checked="checked"> Состояние
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="operations" checked="checked"> Действия
-                                        <i class="fa fa-square-o"></i>
-                                    </label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
                             <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
@@ -138,7 +33,7 @@
                                         <th data-filter="number">Номер</th>
                                         <th data-filter="name">Имя</th>
                                         <th data-filter="cmd">URL</th>
-                                        <th data-filter="volume_correction">Звук</th>
+                                        <th data-filter="volume_correction">Звук (%)</th>
                                         <th data-filter="status">Состояние</th>
                                         <th data-filter="operations">Действия</th>
                                     </tr>
@@ -152,7 +47,7 @@
                                                 <td>{{ item.number }}</td>
                                                 <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id={{ item.id }}" >{{ item.name }}</a></td>
                                                 <td>{{ item.cmd }}</td>
-                                                <td>{{ item.volume_correction }}</td>
+                                                <td>{{ item.volume_correction * 5}}</td>
                                                 <td class="data-filter-status">{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
@@ -162,7 +57,7 @@
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
                                                                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id={{ item.id }}">
-                                                                    <span>Подробнее</span>
+                                                                    <span>Редактировать</span>
                                                                 </a>
                                                             </li>
                                                             <li>
@@ -206,7 +101,7 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id=" + id + "'>\n\
-                                                                    <span>Подробнее</span>\n\
+                                                                    <span>Редактировать</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
@@ -222,7 +117,7 @@
                                                         </ul>\n\
                                                     </div>";
                         json.data[i].status = status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>";
-
+                        json.data[i].volume_correction *= 5;
                         var name = json.data[i].name;
 
                         json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-radio?id=' + id + '" >' + name + '</a>';
@@ -257,10 +152,14 @@
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1, -2]},
                     {"sortable": false, "targets": [-1]},
                     {className: "data-filter-status", "targets": [-2]}
                 ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
             });
         }
 
@@ -295,7 +194,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error');
+                                alert('Some network error or access denied');
                             }
                         },
                         dataType: "json",

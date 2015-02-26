@@ -4,14 +4,14 @@
 {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
 
 {% block content %}
-    <div class="row header_title">
-        <div class="col-xs-10 col-sm-2">
-            <h3>Логи</h3>
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-10">
+            <h3>Логи {% if attribute(app, 'user') is defined %} пользователя {{ app['user'][0]['name'] }} {{ app['user'][0]['fname'] }} ({{ app['user'][0]['mac'] }}) {% endif %}</h3>
         </div>
-    </div>
+    </div>#}
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="box-content no-padding">
@@ -31,7 +31,7 @@
                                         <!-- Start: list_row -->
                                         {% for item in app.logList %}
                                             <tr>
-                                                <td>{{ item.time }}</td>
+                                                <td>{{ item.time|date('M d, Y H:i') }}</td>
                                                 <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.uid }}" >{{ item.mac }}</a></td>
                                                 <td>{{ item.action }}</td>
                                                 <td>{{ item.object }}</td>
@@ -54,20 +54,32 @@
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
-                if (typeof (json.data) == 'object') {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
                     for (var i in json.data) {
                         var uid = json.data[i].uid;
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+uid+'" >'+mac+'</a>';
+                        date = json.data[i]['time'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['time'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
                     }
                 }
             }).dataTable({
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs-json"
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
                 },
-                "deferLoading":{{ app.totalRecords }},
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
                     "url": "./plugins/datatables/lang/ru_RU.json"
                 },
@@ -81,11 +93,13 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
-                "bInfo": true{#,
+                "bInfo": true,
                 "aoColumnDefs": [
-                    {"searchable": false, "targets": [1]}
-                ]#}
+                    { className: "action-menu", "targets": [ -1 ] }
+                    {#{"searchable": false, "targets": [1]}#}
+                ]
             });
+            $('#datatable-1').DataTable().ajax.reload();
         }
 
         function yelp() {

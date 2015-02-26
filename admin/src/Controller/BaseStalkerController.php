@@ -17,6 +17,7 @@ class BaseStalkerController {
     protected $baseHost;
     protected $workHost;
     protected $workURL;
+    protected $refferer;
     protected $Uri;
     protected $method;
     protected $isAjax;
@@ -25,33 +26,63 @@ class BaseStalkerController {
     protected $db;
     protected $admin;
     protected $session;
+    protected $access_level = 0;
+    protected $access_levels = array(
+        0 => 'denied',
+        1 => 'view',
+        2 => 'edit',
+        3 => 'edit',
+        4 => 'action',
+        5 => 'all',
+        6 => 'all',
+        7 => 'all',
+        8 => 'all',
+    );
 
     public function __construct(Application $app, $modelName = '') {
         $this->app = $app;
         $this->request = $app['request'];
+        
         if (session_id()) {
             session_write_close();
             $this->app['request']->getSession()->save();
         }
         $this->app['request']->getSession()->start();
         $this->admin = \Admin::getInstance();
+        
+        $this->app['userlogin'] = $this->admin->getLogin();
+                
         $this->baseDir = rtrim(str_replace(array("src", "Controller"), '', __DIR__), '//');
         $this->getPathInfo();
         $this->setRequestMethod();
         $this->setAjaxFlag();
         $this->getData();
-
+        
         $modelName = "Model\\" . (empty($modelName) ? 'BaseStalker' : str_replace(array("\\", "Controller"), '', $modelName)) . 'Model';
         $this->db = FALSE;
+        $modelName = (class_exists($modelName)? $modelName: 'Model\BaseStalkerModel');
         if (class_exists($modelName)) {
             $this->db = new $modelName;
             if (!($this->db instanceof $modelName)) {
                 $this->db = FALSE;
             }
         }
+        $uid = $this->admin->getId(); 
+        if ($this->db !== FALSE && !empty($uid)) {
+            $this->app['userTaskMsgs'] = $this->db->getCountUnreadedMsgsByUid($uid);
+        }
 
         $this->saveFiles = $app['saveFiles'];
         $this->setSideBarMenu();
+        if($this->app['userlogin'] == 'admin'){
+            $this->access_level = 8;
+        } else {
+            $this->setAccessLevel();
+        }
+        if (isset($this->data['set-dropdown-attribute'])) {            
+            $this->set_dropdown_attribute();
+            exit;
+        }
     }
 
     protected function getTemplateName($metod_name) {
@@ -70,10 +101,22 @@ class BaseStalkerController {
         $action = (!empty($this->app['action_alias']) ? "/" . $this->app['action_alias'] : '');
         $workUrl = explode("?", str_replace(array($action, $controller), '', $this->Uri));
         $this->workURL = $workUrl[0];
+        $this->app['breadcrumbs']->addItem('Stalker', $this->workURL);
+        $this->refferer = $this->request->server->get('HTTP_REFERER');
     }
 
     private function setSideBarMenu() {
-        $this->app['side_bar'] = json_decode(file_get_contents($this->baseDir . '/menu.json'), TRUE);
+        $side_bar  = json_decode(file_get_contents($this->baseDir . '/menu.json'), TRUE);
+        if (!empty($this->app['userlogin'])) {
+            $side_bar[1]['add_params'] = '<span class="hidden-xs">"'. $this->app['userlogin'] .'"</span>';
+            if (!empty($this->app['userTaskMsgs'])) {
+                $side_bar[1]['action'][3]['add_params'] = '<span class="hidden-xs badge">'. $this->app['userTaskMsgs'] .'</span>';
+            }
+        }
+        
+        $this->setControllerAccessMap();
+        $this->cleanSideBar($side_bar);
+        $this->app['side_bar'] = $side_bar;       
     }
 
     private function setRequestMethod() {
@@ -92,13 +135,12 @@ class BaseStalkerController {
     protected function setLocalization($source = array(), $fieldname = '') {
         if (!empty($source)) {
             if (!is_array($source)) {
-                return _($source);
+                return $this->app['translator']->trans($source, array(), 'stb', $this->app['language']);        
+            } elseif (array_key_exists($fieldname, $source) && is_string($source[$fieldname])) {
+                $source[$fieldname] = $this->app['translator']->trans($source[$fieldname], array(), 'stb', $this->app['language']);        
             } else {
-                $fieldname = (empty($fieldname)) ? array_keys($source[0]) : array($fieldname);
                 while (list($key, $row) = each($source)) {
-                    foreach ($fieldname as $f_name) {
-                        $source[$key][$f_name] = _($source[$key][$f_name]);
-                    }
+                    $source[$key] = $this->setLocalization($row, $fieldname); 
                 }
             }
             return $source;
@@ -140,7 +182,15 @@ class BaseStalkerController {
                 } else {
                     return $this->app->redirect($this->workURL . '/login', 302);
                 }
-            }
+            } 
+            if($this->access_level == 0 || ($this->isAjax && $this->access_level < 4) || (!empty($this->postData) && $this->access_level < 2)) {
+                if ($this->isAjax) {
+                    $response = $this->generateAjaxResponse(array(), 'Access denied');
+                    return new Response(json_encode($response), 403);
+                } else {
+                    return $this->app['twig']->render("AccessDenied.twig");
+                }
+            } 
         }
     }
 
@@ -278,4 +328,110 @@ class BaseStalkerController {
         return $return;
     }
 
+    private function setAccessLevel() {
+        $this->setControllerAccessMap();
+        if (array_key_exists($this->app['controller_alias'], $this->app['controllerAccessMap']) && $this->app['controllerAccessMap'][$this->app['controller_alias']]['access']) {
+            if (array_key_exists($this->app['action_alias'], $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'])) {
+                $this->access_level = $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'][$this->app['action_alias']]['access'];
+                return;
+            }
+        }
+        $this->access_level = 0;
+    }
+    
+    private function setControllerAccessMap(){
+        if (empty($this->app['controllerAccessMap'])) {
+            $is_admin = (!empty($this->app['userlogin']) && $this->app['userlogin'] == 'admin');
+            $gid = ($is_admin)?'':$this->admin->getGID(); 
+            $map = array();
+            $tmp_map = $this->db->getControllerAccess($gid);
+            foreach ($tmp_map as $row) {
+                if(!array_key_exists($row['controller_name'], $map)) {
+                    $map[$row['controller_name']]['access'] = (!$is_admin) ? $this->getDecFromBin($row): '8';
+                    if ($map[$row['controller_name']]['access'] == 0) {
+                        continue;
+                    }
+                    $map[$row['controller_name']]['action'] = array();
+                }
+                if (!empty($row['action_name']) && $row['action_name'] != 'index') {
+                    $map[$row['controller_name']]['action'][$row['action_name']]['access'] = (!$is_admin) ? $this->getDecFromBin($row): '8';
+                }
+            }
+            $this->app['controllerAccessMap'] = $map;
+        }
+    }
+    
+    private function getDecFromBin($row){
+        $key = $row['action_access'].$row['edit_access'].$row['view_access'];
+        return bindec($row['action_access'].$row['edit_access'].$row['view_access']);
+    }
+    
+    private function cleanSideBar(&$side_bar) {
+        if (empty($this->app['controllerAccessMap'])) {
+            $this->setControllerAccessMap();
+        }
+        $dont_remove = (!empty($this->app['userlogin']) && $this->app['userlogin'] == 'admin');
+        while(list($key, $row) = each($side_bar)){
+            $controller = str_replace('_', '-', $row['alias']);
+            if ($this->app['controller_alias'] == $controller) {
+                    $this->app['breadcrumbs']->addItem($row['name'], $this->workURL . "/$controller");
+                }
+            if (!$dont_remove && !array_key_exists($controller, $this->app['controllerAccessMap']) || $this->app['controllerAccessMap'][$controller]['access'] == 0) {
+                unset($side_bar[$key]);
+                continue;
+            }
+            while(list($key_a, $row_a) = each($row['action'])){
+                $action = str_replace('_', '-', $row_a['alias']);
+                if ($this->app['controller_alias'] == $controller && $this->app['action_alias'] == $action) {
+                    $this->app['breadcrumbs']->addItem($row_a['name'], $this->workURL . "/$controller/$action");
+                }
+                if (!$dont_remove && !array_key_exists($action, $this->app['controllerAccessMap'][$controller]['action'])
+                    || $this->app['controllerAccessMap'][$controller]['action'][$action]['access'] == 0) {
+                    unset($side_bar[$key]['action'][$key_a]);
+                }
+            }
+        }
+    }
+    
+    protected function infliction_array($dest = array(), $source = array()) {
+        if (is_array($dest)) {
+            while(list($d_key, $d_row) = each($dest)){
+                if (is_array($source)) {
+                    if (array_key_exists($d_key, $source)) {
+                        $dest[$d_key] = $this->infliction_array($d_row, $source[$d_key]);
+                    } else {
+                        continue;
+                    }
+                } else{
+                    return $dest; 
+                }
+            }
+        } elseif (!is_array($source)) {
+            return $source;
+        }
+        return $dest;
+    }
+    
+    protected function checkDropdownAttribute(&$attribute, $filters = ''){
+        
+        $param = array();
+        $param['controller_name'] = $this->app['controller_alias'];
+        $param['action_name'] = (empty($this->app['action_alias']) ? 'index': $this->app['action_alias']).$filters;
+        $param['admin_id'] = $this->admin->getId();
+        
+        $base_attribute = $this->db->getDropdownAttribute($param);
+        if (empty($base_attribute)) {
+            return $attribute;
+        }
+        $dropdown_attributes = unserialize($base_attribute['dropdown_attributes']);
+        foreach ($dropdown_attributes as $key => $value) {
+            reset($attribute);
+            while (list($num, $row) = each($attribute)){
+                if ($row['name'] == $key) {
+                    $attribute[$num]['checked'] = ($value == 'true');
+                    break;
+                }
+            }
+        }
+    }
 }

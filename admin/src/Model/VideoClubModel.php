@@ -8,22 +8,36 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         parent::__construct();
     }
 
-    public function getAllVideo($filter = '') {
-//        $filter = ' path like "%00%" ';
-        $where = '';
-        if (!empty($filter)) {
-            $where = "where " . (is_string($filter) ? $filter : (is_array($filter) ? implode(' and ', $filter) : ''));
+    public function getTotalRowsVideoList($where = array(), $like = array()) {
+        $params = array(
+            'select' => array("*"),
+            'where' => $where,
+            'like' => array(),
+            'order' => array()
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
         }
-        return $this->mysqlInstance->query("select video.*, media_claims.media_type, media_claims.media_id, media_claims.sound_counter,"
-                                            . " media_claims.video_counter, video_on_tasks.id as task_id, video_on_tasks.video_id as task_video_id,  "
-                                            . " video_on_tasks.date_on as task_date_on, video_on_tasks.added as task_added "
-                                        . "from video "
-                                            . "left join media_claims on video.id=media_claims.media_id and media_claims.media_type='vclub' "
-                                            . "left join video_on_tasks on video.id=video_on_tasks.video_id "
-                                        . " $where "
-                                        . " group by video.id limit 0, 100")->all(); //order by video.id desc
+        return $this->getVideoList($params, TRUE);
     }
-
+   
+    public function getVideoList($param, $counter = FALSE) {
+        $obj = $this->mysqlInstance->select($param['select']);
+        $obj = $obj->from('video')
+                    ->join('media_claims', 'video.id', 'media_claims.media_id and media_claims.media_type = "vclub"', 'LEFT')
+                    ->join('video_on_tasks', 'video.id', 'video_on_tasks.video_id', 'LEFT')
+                    ->where($param['where'])->like($param['like'], 'OR');
+        if (!empty($param['order'])) {
+            $obj = $obj->orderby($param['order']);
+        }
+        
+        if (!empty($param['limit']['limit'])) {
+            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+//        if (!$counter) {print_r($obj->get()); exit;}
+        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+    }
+    
     public function getVideoById($id) {
         return $this->mysqlInstance->from('video')->where(array('id' => $id))->get()->first();
     }
@@ -44,7 +58,9 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     }
 
     public function getTotalRowsVideoLog($where = array(), $like = array()){
-        $obj = $this->mysqlInstance->count()->from('video_log')->where($where);
+        $obj = $this->mysqlInstance->count()->from('video_log')
+                ->join('administrators', 'video_log.moderator_id', 'administrators.id', 'LEFT')
+                ->where($where);
         if (!empty($like)) {
             $obj = $obj->like($like, 'OR');
         }
@@ -58,6 +74,10 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
         }
+        
+//        print_r($obj->get());
+//        exit;
+        
         return $obj->get()->all();
     }
 
@@ -158,11 +178,12 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     
     public function getAllModeratorTasks($moderator_id = FALSE) {
         $add_where = ($moderator_id !== FALSE ? " and moderator_tasks.to_usr = $moderator_id": '');
-        return $this->mysqlInstance->query("select moderator_tasks.*
+        return $this->mysqlInstance->query("select moderator_tasks.*, unix_timestamp(end_time) as `end_time`
                                             from moderator_tasks
-                                            where moderator_tasks.ended = 0 $add_where
                                             order by id")->all();
+                                            /*where moderator_tasks.ended = 0 $add_where*/
     }
+    
     public function getAllVideoTasks($params = FALSE) {
         $query_obj =  $this->mysqlInstance->select('video_on_tasks.*, video_on_tasks.id as task_id, video_on_tasks.added as task_added, video.*')
                                     ->from('video_on_tasks')
@@ -182,7 +203,7 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getVideoCategories() {
-        return $this->mysqlInstance->from('cat_genre')->orderby('category_alias, id')->get()->all();
+        return$this->mysqlInstance->from('cat_genre')->orderby('category_alias, id')->get()->all();
     }
     
     public function checkName($name) {
@@ -192,6 +213,7 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     public function saveScreenshotData($data) {
         return $this->mysqlInstance->insert('screenshots', array('name' => $data['name'],'size' => $data['size'],'type' => $data['type']))->insert_id();
     }
+    
     public function removeScreenshotData($id) {
         return $this->mysqlInstance->delete('screenshots', array('id' => $id))->total_rows();
     }
@@ -211,9 +233,11 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     public function insertVideo($data) {
         return $this->mysqlInstance->insert('video', $data)->insert_id();
     }
+    
     public function updateVideo($data, $id) {
         return $this->mysqlInstance->update('video', $data , array('id' => $id))->total_rows();
     }
+    
     public function getVideoByParam($param) {
         return $this->mysqlInstance->from('video')->where($param)->get()->first();
     }

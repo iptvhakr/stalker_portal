@@ -6,71 +6,6 @@
  Dynamically load plugin scripts
  ---------------------------------------------*/
 //
-// Dynamically load Fullcalendar Plugin Script
-// homepage: http://arshaw.com/fullcalendar
-// require moment.js
-//
-function LoadCalendarScript(callback) {
-    function LoadFullCalendarScript() {
-        if (!$.fn.fullCalendar) {
-            $.getScript('plugins/fullcalendar/fullcalendar.js', callback);
-        }
-        else {
-            if (callback && typeof (callback) === "function") {
-                callback();
-            }
-        }
-    }
-    if (!$.fn.moment) {
-        $.getScript('plugins/moment/moment.min.js', LoadFullCalendarScript);
-    }
-    else {
-        LoadFullCalendarScript();
-    }
-}
-//
-// Dynamically load  OpenStreetMap Plugin
-// homepage: http://openlayers.org
-//
-function LoadOpenLayersScript(callback) {
-    if (!$.fn.OpenLayers) {
-        $.getScript('http://www.openlayers.org/api/OpenLayers.js', callback);
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
-//  Dynamically load  jQuery Timepicker plugin
-//  homepage: http://trentrichardson.com/examples/timepicker/
-//
-function LoadTimePickerScript(callback) {
-    if (!$.fn.timepicker) {
-        $.getScript('plugins/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', callback);
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
-//  Dynamically load Bootstrap Validator Plugin
-//  homepage: https://github.com/nghuuphuoc/bootstrapvalidator
-//
-function LoadBootstrapValidatorScript(callback) {
-    if (!$.fn.bootstrapValidator) {
-        $.getScript('plugins/bootstrapvalidator/bootstrapValidator.min.js', callback);
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
 //  Dynamically load jQuery Select2 plugin
 //  homepage: https://github.com/ivaynberg/select2  v3.4.5  license - GPL2
 //
@@ -116,126 +51,12 @@ function LoadDataTablesScripts(callback) {
     }
 }
 //
-//  Dynamically load Widen FineUploader
-//  homepage: https://github.com/Widen/fine-uploader  v5.0.1 license - GPL3
-//
-function LoadFineUploader(callback) {
-    if (!$.fn.fineuploader) {
-        $.getScript('plugins/fineuploader/jquery.fineuploader-5.0.1.min.js', callback);
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
-//  Dynamically load xCharts plugin
-//  homepage: http://tenxer.github.io/xcharts/ v0.3.0 license - MIT
-//  Required D3 plugin http://d3js.org/ v3.4.1 license - MIT
-//
-function LoadXChartScript(callback) {
-    function LoadXChart() {
-        $.getScript('plugins/xcharts/xcharts.min.js', callback);
-    }
-    function LoadD3Script() {
-        if (!$.fn.d3) {
-            $.getScript('plugins/d3/d3.v3.min.js', LoadXChart)
-        }
-        else {
-            LoadXChart();
-        }
-    }
-    if (!$.fn.xcharts) {
-        LoadD3Script();
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
-//  Dynamically load Flot plugin
-//  homepage: http://www.flotcharts.org  v0.8.2 license- MIT
-//
-function LoadFlotScripts(callback) {
-    function LoadFlotScript() {
-        $.getScript('plugins/flot/jquery.flot.js', LoadFlotResizeScript);
-    }
-    function LoadFlotResizeScript() {
-        $.getScript('plugins/flot/jquery.flot.resize.js', LoadFlotTimeScript);
-    }
-    function LoadFlotTimeScript() {
-        $.getScript('plugins/flot/jquery.flot.time.js', callback);
-    }
-    if (!$.fn.flot) {
-        LoadFlotScript();
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
-//  Dynamically load Morris Charts plugin
-//  homepage: http://www.oesmith.co.uk/morris.js/ v0.4.3 License - MIT
-//  require Raphael http://raphael.js
-//
-function LoadMorrisScripts(callback) {
-    function LoadMorrisScript() {
-        if (!$.fn.Morris) {
-            $.getScript('plugins/morris/morris.min.js', callback);
-        }
-        else {
-            if (callback && typeof (callback) === "function") {
-                callback();
-            }
-        }
-    }
-    if (!$.fn.raphael) {
-        $.getScript('plugins/raphael/raphael-min.js', LoadMorrisScript);
-    }
-    else {
-        LoadMorrisScript();
-    }
-}
-//
 //  Dynamically load Fancybox 2 plugin
 //  homepage: http://fancyapps.com/fancybox/ v2.1.5 License - MIT
 //
 function LoadFancyboxScript(callback) {
     if (!$.fn.fancybox) {
         $.getScript('plugins/fancybox/jquery.fancybox.js', callback);
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
-//  Dynamically load jQuery-Knob plugin
-//  homepage: http://anthonyterrien.com/knob/  v1.2.5 License- MIT or GPL
-//
-function LoadKnobScripts(callback) {
-    if (!$.fn.knob) {
-        $.getScript('plugins/jQuery-Knob/jquery.knob.js', callback);
-    }
-    else {
-        if (callback && typeof (callback) === "function") {
-            callback();
-        }
-    }
-}
-//
-//  Dynamically load Sparkline plugin
-//  homepage: http://omnipotent.net/jquery.sparkline v2.1.2  License - BSD
-//
-function LoadSparkLineScript(callback) {
-    if (!$.fn.sparkline) {
-        $.getScript('plugins/sparkline/jquery.sparkline.min.js', callback);
     }
     else {
         if (callback && typeof (callback) === "function") {
@@ -285,6 +106,8 @@ function WinMove() {
             })
             .droppable({
                 tolerance: 'pointer',
+//                activeClass: "ui-state-hover",
+                hoverClass: "highlight",//"ui-state-active",
                 drop: function (event, ui) {
                     var draggable = ui.draggable;
                     var droppable = $(this);
@@ -307,6 +130,9 @@ function WinMove() {
                         draggable.find('[id^=map-]').resize();
                         droppable.find('[id^=map-]').resize();
                     }, 250);
+                    setTimeout(function () {
+                        channelListRender('#channelListContainer');
+                    }, 300);
                 }
             });
     $('div.box.no-drop').draggable( "disable" ).droppable( "disable" );
@@ -319,19 +145,29 @@ jQuery.fn.swap = function (b, parentArray) {
     var a = this[0];
     var a_num = $(a).find('span.curr_num').data('number');
     var b_num = $(b).find('span.curr_num').data('number');
-    
-    var t = a.parentNode.insertBefore(document.createTextNode(''), a);
+    var remove = $(b).children('div').hasClass('empty');
+//    var t = a.parentNode.insertBefore(document.createTextNode(''), a);
     b.parentNode.insertBefore(a, b);
-    t.parentNode.insertBefore(b, t);
-    t.parentNode.removeChild(t);
-    
+//    t.parentNode.insertBefore(b, t);
+//    t.parentNode.removeChild(t);
+//    if (remove) {
+//        setTimeout(function () {
+//            $(b).remove();
+//        }, 300);
+//    }
     if (typeof(parentArray) == 'object' && parentArray.length !=0) {
         a_num = parseInt(a_num, 10) - 1;
         b_num = parseInt(b_num, 10) - 1;
+        
         var direction = a_num < b_num ? 1: -1;
         var next_num = a_num + direction;
+        
+//        if (remove) {
+//            parentArray.splice(b_num, 1);
+//            b_num += direction;
+//        }
         while( Math.abs(b_num - next_num + direction) > 0) {
-            if ( !parentArray[next_num].locked) {
+            if ( typeof(parentArray[next_num]) != 'undefined' && typeof(parentArray[next_num].locked) != 'undefined' &&  !parentArray[next_num].locked) {
                 var temp_a_number = parentArray[a_num].number;
                 var temp_next_number = parentArray[next_num].number;
                 
@@ -346,18 +182,15 @@ jQuery.fn.swap = function (b, parentArray) {
             }
             next_num += direction;
         }
-        channelListRender('#channelListContainer');
     }
     return this;
 };
-
 //
 //  Function set min-height of window (required for this theme)
 //
 function SetMinBlockHeight(elem) {
     elem.css('min-height', window.innerHeight - 49)
 }
-
 //
 //  Beauty tables plugin (navigation in tables with inputs in cell)
 //  Created by DevOOPS.
@@ -470,117 +303,14 @@ function SetMinBlockHeight(elem) {
 //
 // Example form validator function
 //
-function DemoFormValidator() {
-    $('#defaultForm').bootstrapValidator({
-        message: 'This value is not valid',
-        fields: {
-            username: {
-                message: 'The username is not valid',
-                validators: {
-                    notEmpty: {
-                        message: 'The username is required and can\'t be empty'
-                    },
-                    stringLength: {
-                        min: 6,
-                        max: 30,
-                        message: 'The username must be more than 6 and less than 30 characters long'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_\.]+$/,
-                        message: 'The username can only consist of alphabetical, number, dot and underscore'
-                    }
-                }
-            },
-            country: {
-                validators: {
-                    notEmpty: {
-                        message: 'The country is required and can\'t be empty'
-                    }
-                }
-            },
-            acceptTerms: {
-                validators: {
-                    notEmpty: {
-                        message: 'You have to accept the terms and policies'
-                    }
-                }
-            },
-            email: {
-                validators: {
-                    notEmpty: {
-                        message: 'The email address is required and can\'t be empty'
-                    },
-                    emailAddress: {
-                        message: 'The input is not a valid email address'
-                    }
-                }
-            },
-            website: {
-                validators: {
-                    uri: {
-                        message: 'The input is not a valid URL'
-                    }
-                }
-            },
-            phoneNumber: {
-                validators: {
-                    digits: {
-                        message: 'The value can contain only digits'
-                    }
-                }
-            },
-            color: {
-                validators: {
-                    hexColor: {
-                        message: 'The input is not a valid hex color'
-                    }
-                }
-            },
-            zipCode: {
-                validators: {
-                    usZipCode: {
-                        message: 'The input is not a valid US zip code'
-                    }
-                }
-            },
-            password: {
-                validators: {
-                    notEmpty: {
-                        message: 'The password is required and can\'t be empty'
-                    },
-                    identical: {
-                        field: 'confirmPassword',
-                        message: 'The password and its confirm are not the same'
-                    }
-                }
-            },
-            confirmPassword: {
-                validators: {
-                    notEmpty: {
-                        message: 'The confirm password is required and can\'t be empty'
-                    },
-                    identical: {
-                        field: 'password',
-                        message: 'The password and its confirm are not the same'
-                    }
-                }
-            },
-            ages: {
-                validators: {
-                    lessThan: {
-                        value: 100,
-                        inclusive: true,
-                        message: 'The ages has to be less than 100'
-                    },
-                    greaterThan: {
-                        value: 10,
-                        inclusive: false,
-                        message: 'The ages has to be greater than or equals to 10'
-                    }
-                }
-            }
-        }
-    });
+//
+//  Helper for correct size of Messages page
+//
+function MessagesMenuWidth(){
+	var W = window.innerWidth;
+	var W_menu = $('#sidebar-left').outerWidth();
+	var w_messages = (W-W_menu)*16.666666666666664/100;
+	$('#messages-menu').width(w_messages);
 }
 
 //////////////////////////////////////////////////////
@@ -753,6 +483,7 @@ $(document).ready(function () {
         var button = $('<div class="text-center"><a href="index.html" class="btn btn-primary">Unlock</a></div>');
         OpenModalBox(header, form, button);
     });
+    
     $(document).on("click mousedown mouseup", "#attribute_set .checkbox", function (e) {
         e.stopPropagation();
     });
@@ -761,9 +492,12 @@ $(document).ready(function () {
         var _input = $(this).find("input[type='checkbox']");
         _input.prop('checked', !_input.is(":checked"));
         $("#attribute_set li:not(first-of-type) input[type='checkbox']").prop('checked', _input.is(":checked"));
+        var sendData = {};
         $("#attribute_set input[type='checkbox']").each(function(index){
             $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            sendData[$(this).val()] = $(this).prop('checked');
         });
+        setDropdownAttribute(sendData);
         e.stopPropagation();
         return false;
     });
@@ -775,9 +509,45 @@ $(document).ready(function () {
         var allChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']").length;
         var chkChbLen = $("#attribute_set li:not(:first-child) input[type='checkbox']:checked").length;
         $("#attribute_set li:first-child input[type='checkbox']").prop('checked', allChbLen == chkChbLen);
+        var sendData = {};
+        $("#attribute_set input[type='checkbox']").each(function(){
+            sendData[$(this).val()] = $(this).prop('checked');
+        });
+        setDropdownAttribute(sendData);
+    });
+    
+    
+    $(document).on("click mousedown mouseup", "div.attribute_set[id!='attribute_set']  .checkbox", function (e) {
+        e.stopPropagation();
     });
 
-    $(document).on('change', "#add_channel input[type='checkbox']", function(e){
+    $(document).on('click', "div.attribute_set[id!='attribute_set'] li:first-of-type label", function (e) {
+        var _input = $(this).find("input[type='checkbox']");
+        _input.prop('checked', !_input.is(":checked"));
+        var parentSetName = "#" + $(this).closest('div.attribute_set').attr('id');
+        if($(this).closest('div.attribute_set').find('.divider').length != 0){
+            $(parentSetName + " li:not(first-of-type) input[type='checkbox']").prop('checked', _input.is(":checked"));
+        } else if(_input.is(":checked")){
+            $(parentSetName + " input[type='checkbox']").prop('checked', false).removeAttr('checked');
+            _input.prop('checked', true);
+        }
+        e.stopPropagation();
+        return false;
+    });
+
+    $(document).on('change', "div.attribute_set[id!='attribute_set'] li:not(:first-child) input[type='checkbox']", function (e) {
+        var parentSetName = "#" + $(this).closest('div.attribute_set').attr('id');
+        if($(this).closest('div.attribute_set').find('.divider').length != 0){
+            var allChbLen = $(parentSetName + " li:not(:first-child) input[type='checkbox']").length;
+            var chkChbLen = $(parentSetName + " li:not(:first-child) input[type='checkbox']:checked").length;
+            $(parentSetName + " li:first-child input[type='checkbox']").prop('checked', allChbLen == chkChbLen);
+        } else if($(this).is(":checked")){
+            $(parentSetName + " input[type='checkbox']").prop('checked', false).removeAttr('checked');
+            $(this).prop('checked', true);
+        }
+    });
+
+    $(document).on('change', "#add_channel input[type='checkbox'], #adm_grp_perm :checkbox", function(e){
         if ($(this).is(':checked')) {
             $(this).val('on');
         } else {
@@ -1003,7 +773,7 @@ $(document).ready(function () {
         if (window.location.search == '') {
             window.location.href = hrefM + '?' + filter_str;
         } else {
-            var filterRegExp = new RegExp('filters\\[' + filterName + '\\]=[^&|^$]*', 'ig');
+            var filterRegExp = new RegExp('filters.+?' + filterName + '[^=]*=[^&|^$]*', 'ig');
             if (filterRegExp.test(hrefM)) {
                 window.location.href = hrefM.replace(filterRegExp, filter_str);
             } else {
@@ -1022,6 +792,23 @@ $(document).ready(function () {
         return false;
     });
     
+    $("#breadcrumb ul").addClass("breadcrumb");
+    
+    $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+        if (e.currentTarget != e.target) {
+            return;
+        }
+        e.stopPropagation();
+        e.preventDefault();
+        if (typeof($("#modalbox").data('complete')) == 'undefined' || $("#modalbox").data('complete') == 1) {
+            closeModalBox();
+        } else {
+            for(var i=0;i<3;i++) {
+                $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+            }
+        }
+        return false;
+    });
     
 });
 
@@ -1072,6 +859,12 @@ function channelUrlDataUpdate(container, data){
 }
 
 function channelListRender(container){
+    JSshowModalBox();
+    setTimeout(function(){
+       if ($("#modalbox").data('complete') != 1) {
+            JSErrorModalBox();
+       } 
+    }, 10000);
     var _container = $(container);
     _container.empty();
     var maxBlockHeight = $(window).height()- _container.offset().top - 50;
@@ -1086,6 +879,9 @@ function channelListRender(container){
         var currentBlock = $("<div/>", {'class': 'col-xs-3 col-sm-2 no-padding'}).appendTo(_container);
         var currentItemsBlock = $("<div/>", {'class': 'col-xs-12 col-sm-12 no-padding'}).appendTo(currentBlock)
         for ( var j = currentCount; j < (currentCount + maxItemOnBlock) && j < channelList.length; j++) {
+            if (typeof(channelList[j]) == 'undefined') {
+                continue;
+            }
             currentItemsBlock.append(getChannelListItem(j+1, channelList[j]));
             i++;
         }
@@ -1093,48 +889,42 @@ function channelListRender(container){
         currentCount = j;
         currentBlock.css('top', 0);
         currentBlock.css('left', (Math.ceil(currentCount/maxItemOnBlock) - 1)*250);
+        if (j >= channelList.length) {
+            break;
+        }
     }
     
-    $('#channelListContainer .box-icons a').on('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var childI = $(this).children('i');
-        var childID = parseInt($(this).closest('.box').find('span.curr_num').data('number'), 10) - 1;
-        if (childI.hasClass('fa-lock')) {
-            childI.removeClass('fa-lock').addClass('fa-unlock');
-            $(this).closest("div.box").removeClass('no-drop').draggable("enable").droppable("enable");
-            channelList[childID].locked = false;
-        } else {
-            childI.removeClass('fa-unlock').addClass('fa-lock');
-            $(this).closest("div.box").addClass('no-drop').draggable("disable").droppable("disable");
-            channelList[childID].locked = true;
-        }
-        return false;
-    });
+
     
      WinMove();
+     
+     JSSuccessModalBox();
+     JScloseModalBox();
 }
 
 function getChannelListItem(num, item){
-    return '<div class="box '+(item.locked? 'no-drop': '')+'">\n\
-                <div class="box-header">\n\
+    var return_val = '<div class="box '+(item.locked? 'no-drop': '')+'">\n\
+                <div class="box-header '+ (item.empty == '1'? 'empty': '') + '">\n\
                     <div class="box-name col-sm-11">\n\
-                        <span class="curr_num col-sm-2 no-padding" data-number="'+num+'">'+item.number+'</span>\n\
-                        <div class="channel col-sm-10 no-padding">\n\
-                            <span class=" col-sm-2 no-padding">\n\
+                        <span class="curr_num col-xs-2 col-sm-2 no-padding" data-number="'+num+'">'+item.number+'</span>\n\
+                        <div class="channel col-xs-10 col-sm-10 no-padding">\n\
+                            <span class="col-xs-2 col-sm-2 no-padding">\n\
                                 <img class="img-rounded" src="'+item.logo+'" alt="">\n\
                             </span>\n\
-                            <a href="'+item.link+'" class="col-sm-10 no-padding">'+item.name+'</a>\n\
+                            <a href="'+item.link+'" class="col-xs-10 col-sm-10 no-padding">'+item.name+'</a>\n\
                         </div>\n\
-                    </div>\n\
-                    <div class="box-icons col-sm-1 no-padding">\n\
-                        <a class="lock-link">\n\
-                            <i class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\
-                        </a>\n\
-                    </div>\n\
-                    <div class="no-move"></div>\n\
+                    </div>';
+    if (item.empty != '1') {
+        return_val +='<div class="box-icons col-sm-1 no-padding">\n\
+                    <a class="lock-link">\n\
+                        <i data-id="' + item.id + '" class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\
+                    </a>\n\
+                </div>';
+    }
+    return_val +='  <div class="no-move"></div>\n\
                 </div>\n\
             </div>';
+    return return_val;
 }
 
 function ajaxSuccess(data, alertMsg, consoleMsg){
@@ -1177,12 +967,16 @@ function ajaxError(data, alertMsg, consoleMsg){
         if (consoleMsg) {
             console.log('Some server error');
         }
+        if ($.isFunction(window['errAction'])) {
+            window['errAction']();
+        }
     }
 }
 
-function ajaxPostSend(url, sendData, alertMsg, consoleMsg){
+function ajaxPostSend(url, sendData, alertMsg, consoleMsg, async){
     var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: true;
     var consoleMsg = typeof(consoleMsg) != 'undefined'? consoleMsg: true;
+    var async = typeof(async) != 'undefined' ? async: false;
     $.ajax({
         url: url,
         type: 'POST',
@@ -1194,7 +988,7 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg){
             ajaxError(data, alertMsg, consoleMsg);
         },
         dataType: "json",
-        async: false
+        async: async
     });
 }
 
@@ -1207,6 +1001,15 @@ function ajaxPostSend(url, sendData, alertMsg, consoleMsg){
         };
     });
 })(jQuery);
+
+function setDropdownAttribute(sendData){
+    var param = '';
+    var filterLink = $("a.btn-primary.active[href*='filters']");
+    if (filterLink.length > 0) {
+        param = 'with-button-filters';
+    }
+    ajaxPostSend('./?set-dropdown-attribute' + (param != '' ? "=" + param : ''), sendData);
+}
 
 jQuery.extend({
     random: function (X) {
@@ -1230,104 +1033,6 @@ jQuery.extend({
         return text;
     }
 });
-
-//// Add an URL parser to JQuery that returns an object
-//// This function is meant to be used with an URL like the window.location
-//// Use: $.parseParams('http://mysite.com/?var=string') or $.parseParams() to parse the window.location
-//// Simple variable:  ?var=abc                        returns {var: "abc"}
-//// Simple object:    ?var.length=2&var.scope=123     returns {var: {length: "2", scope: "123"}}
-//// Simple array:     ?var[]=0&var[]=9                returns {var: ["0", "9"]}
-//// Array with index: ?var[0]=0&var[1]=9              returns {var: ["0", "9"]}
-//// Nested objects:   ?my.var.is.here=5               returns {my: {var: {is: {here: "5"}}}}
-//// All together:     ?var=a&my.var[]=b&my.cookie=no  returns {var: "a", my: {var: ["b"], cookie: "no"}}
-//// You just cant have an object in an array, ?var[1].test=abc DOES NOT WORK
-//(function ($) {
-//    var re = /([^&=]+)=?([^&]*)/g;
-//    var decode = function (str) {
-//        return decodeURIComponent(str.replace(/\+/g, ' '));
-//    };
-//    $.parseParams = function (query) {
-//        // recursive function to construct the result object
-//        function createElement(params, key, value) {
-//            key = key + '';
-//            if (key.indexOf('.') !== -1) {// if the key is a property
-//                // extract the first part with the name of the object
-//                var list = key.split('.');
-//                // the rest of the key
-//                var new_key = key.split(/\.(.+)?/)[1];
-//                if (!params[list[0]]) { // create the object if it doesnt exist
-//                    params[list[0]] = {};
-//                }
-//                if (new_key !== '') { // if the key is not empty, create it in the object
-//                    createElement(params[list[0]], new_key, value);
-//                } else {
-//                    console.warn('parseParams :: empty property in key "' + key + '"');
-//                }
-//            } else if (key.indexOf('[') !== -1) { // if the key is an array    
-//                // extract the array name
-//                var list = key.split('[');
-//                key = list[0];
-//                // extract the index of the array
-//                var list = list[1].split(']');
-//                var index = list[0]
-//                // if index is empty, just push the value at the end of the array
-//                if (index == '') {
-//                    if (!params) {
-//                        params = {};
-//                    }
-//                    if (!params[key] || !$.isArray(params[key])) {
-//                        params[key] = [];
-//                    }
-//                    params[key].push(value);
-//                } else { // add the value at the index (must be an integer)
-//                    if (!params) {
-//                        params = {};
-//                    }
-//                    if (!params[key] || !$.isArray(params[key])) {
-//                        params[key] = [];
-//                    }
-//                    if (!isNaN(parseInt(index))) {
-//                        params[key][parseInt(index)] = value;
-//                    } else {
-//                        params[key][index] = value;
-//                    }
-//                }
-//            } else { // just normal key
-//                if (!params) {
-//                    params = {};
-//                }
-//                params[key] = value;
-//            }
-//        }
-//        // be sure the query is a string
-//        query = query + '';
-//        if (query === '')
-//            query = window.location + '';
-//        var params = {}, e;
-//        if (query) {
-//            // remove # from end of query
-//            if (query.indexOf('#') !== -1) {
-//                query = query.substr(0, query.indexOf('#'));
-//            }
-//
-//            // remove ? at the begining of the query
-//            if (query.indexOf('?') !== -1) {
-//                query = query.substr(query.indexOf('?') + 1, query.length);
-//            } else
-//                return {};
-//            // empty parameters
-//            if (query == '')
-//                return {};
-//            // execute a createElement on every key and value
-//            while (e = re.exec(query)) {
-//                var key = decode(e[1]);
-//                var value = decode(e[2]);
-//                createElement(params, key, value);
-//            }
-//        }
-//        return params;
-//    };
-//})(jQuery);
 
 (function($) {
     var re = /([^&=]+)=?([^&]*)/g;
@@ -1357,3 +1062,48 @@ jQuery.extend({
         return params;
     };
 })(jQuery);
+
+var d = new Date();
+if (!$.isFunction(d['toLocaleFormat'])) {
+    Date.prototype.toLocaleFormat = function (format) {
+        var year = this.getFullYear();
+        var month = this.getMonth() + 1;
+            month = (month.toString().length == 1) ? '0' + month: month;
+        var monthNum = this.getMonth();
+        var monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var day = this.getDate();
+            day = (day.toString().length == 1) ? '0' + day: day;
+        var hour = this.getHours();
+            hour = (hour.toString().length == 1) ? '0' + hour: hour;
+        var min = this.getMinutes();
+            min = (min.toString().length == 1) ? '0' + min: min;
+        var sec = this.getSeconds();
+            sec = (sec.toString().length == 1) ? '0' + sec: sec;
+        return format.replace("%Y", year).replace("%m", month).replace("%d", day).replace("%H", hour).replace("%M", min).replace("%s", sec).replace("%b", monthName[monthNum]) ;
+    };    
+}
+
+function JScloseModalBox(){
+    $("#modalbox").data('complete', 1);
+    $("#modalbox").hide();
+    $('#modalbox').find('.modal-header-name span').empty();
+    $('#modalbox').find('.devoops-modal-inner').empty();
+    $('#modalbox').find('.devoops-modal-bottom').empty();
+}
+        
+function JSshowModalBox(){
+    $("#modalbox").data('complete', 0);
+    $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
+    $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+    $("#modalbox").show();
+}
+
+function JSSuccessModalBox() {
+    $("#modalbox").data('complete', 1);
+    $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+}
+
+function JSErrorModalBox(){
+    $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+    $("#modalbox").data('complete', 1);
+}

@@ -10,9 +10,21 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class TariffsController extends \Controller\BaseStalkerController {
 
-    private $allPackageTypes = array("tv" => "tv", "video" => "video", "radio" => "radio", "module" => "module", "option" => "option");
-    private $allServices = array('1' => "Выборочный", '2' => "Полный");
-    private $allServiceTypes = array('periodic' => "периодическая", 'single' => "разовая");
+    private $allPackageTypes = array(
+            array("id" => "tv", "title" => "tv"), 
+            array("id" => "video", "title" => "video"), 
+            array("id" => "radio", "title" => "radio"), 
+            array("id" => "module", "title" => "module"), 
+            array("id" => "option", "title" => "option")
+        );
+    private $allServices = array(
+            array("id" => '1', "title" => "Выборочный"),
+            array("id" =>  '2', "title" => "Полный")
+        );
+    private $allServiceTypes = array(
+        array("id" => 'periodic', "title" => "постоянный"), 
+        array("id" => 'single', "title" => "разовый")
+        );
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
@@ -21,11 +33,15 @@ class TariffsController extends \Controller\BaseStalkerController {
     // ------------------- action method ---------------------------------------
 
     public function index() {
+        
+        if (empty($this->app['action_alias'])) {
+            return $this->app->redirect($this->app['controller_alias'] . '/tariff-plans');
+        }
+        
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        return $this->app->redirect('tariffs/tariff_plans');
-//        return $this->app->render($this->getTemplateName(__METHOD__));
+        return $this->app->render($this->getTemplateName(__METHOD__));
     }
 
     public function service_packages() {
@@ -33,9 +49,13 @@ class TariffsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
+        $attribute = $this->getServicePackagesDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+        
         $list = $this->service_packages_list_json();
 
-        $this->app['allPackageTypes'] = $this->allPackageTypes;
+        $this->app['allPackageTypes'] = $this->setLocalization($this->allPackageTypes, 'title');
         $this->app['allServices'] = $this->allServices;
 
         $this->app['allTariffsPackages'] = $list['data'];
@@ -57,7 +77,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['servicePackageEdit'] = FALSE;
-
+        $this->app['breadcrumbs']->addItem("Добавить пакет");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -105,6 +125,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['servicePackageEdit'] = TRUE;
         ob_end_clean();
+        $this->app['breadcrumbs']->addItem("Редактировать пакет '{$this->package['name']}'");
         return $this->app['twig']->render('Tariffs_add_service_package.twig');
     }
 
@@ -118,6 +139,10 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['allTariffsPlans'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        
+        $attribute = $this->getTariffPlansDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -135,7 +160,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['userDefault'] = $this->getDefaultPlan($this->plan['id']);
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = FALSE;
-
+        $this->app['breadcrumbs']->addItem("Добавить тарифный план");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -175,7 +200,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['userDefault'] = $this->getDefaultPlan($this->plan['id']);
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = TRUE;
-
+        $this->app['breadcrumbs']->addItem("Редактировать тарифный план '{$this->plan['name']}'");
         return $this->app['twig']->render('Tariffs_add_tariff_plans.twig');
     }
     
@@ -449,6 +474,9 @@ class TariffsController extends \Controller\BaseStalkerController {
             $disabled_services[] = '';
         }
 
+        $allPackageTypes = array_combine($this->getFieldFromArray($this->allPackageTypes, 'id'), $this->getFieldFromArray($this->allPackageTypes, 'title'));
+        $allServiceTypes = array_combine($this->getFieldFromArray($this->allServiceTypes, 'id'), $this->getFieldFromArray($this->allServiceTypes, 'title'));
+        
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))
                 ->add('id', 'hidden')
                 ->add('external_id', 'text', array('constraints' => array(
@@ -461,16 +489,16 @@ class TariffsController extends \Controller\BaseStalkerController {
                     ), 'required' => TRUE))
                 ->add('description', 'textarea', array('required' => false))
                 ->add('type', 'choice', array(
-                    'choices' => $this->allPackageTypes,
+                    'choices' => $allPackageTypes,
                     'constraints' => array(
-                        new Assert\Choice(array('choices' => array_keys($this->allPackageTypes))), new Assert\NotBlank()
+                        new Assert\Choice(array('choices' => array_keys($allPackageTypes))), new Assert\NotBlank()
                     ),
                     'required' => TRUE
                 ))
                 ->add('service_type', 'choice', array(
-                    'choices' => $this->allServiceTypes,
+                    'choices' => $allServiceTypes,
                     'constraints' => array(
-                        new Assert\Choice(array('choices' => array_keys($this->allServiceTypes)))//, new Assert\NotBlank()
+                        new Assert\Choice(array('choices' => array_keys($allServiceTypes)))//, new Assert\NotBlank()
                     ),
                     'required' => TRUE
                 ))
@@ -489,8 +517,8 @@ class TariffsController extends \Controller\BaseStalkerController {
 //                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($services)))),
                     'required' => FALSE
                 ))
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
         return $form->getForm();
     }
 
@@ -596,8 +624,8 @@ class TariffsController extends \Controller\BaseStalkerController {
 //                    'constraints' => array( new Assert\Choice(array('choices' => array_keys($all_packeges)))),
                     'required' => FALSE))
                 ->add('packages_optional', 'hidden', array('required' => FALSE))
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
         return $form->getForm();
     }
     
@@ -659,5 +687,25 @@ class TariffsController extends \Controller\BaseStalkerController {
             }
         } 
         return TRUE;
+    }
+    
+    private function getServicePackagesDropdownAttribute() {
+        return array(
+            array('name'=>'external_id',    'title'=>'Внешний ID',  'checked' => TRUE),
+            array('name'=>'name',           'title'=>' Пакет',      'checked' => TRUE),
+            array('name'=>'users_count',    'title'=>' Пользователи','checked' => TRUE),
+            array('name'=>'type',           'title'=>'Услуга',      'checked' => TRUE),
+            array('name'=>'all_services',   'title'=>'Доступ',      'checked' => TRUE),
+            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+        );
+    }
+    
+    private function getTariffPlansDropdownAttribute() {
+        return array(
+            array('name'=>'external_id',    'title'=>'Внешний ID',  'checked' => TRUE),
+            array('name'=>'name',           'title'=>' Пакет',      'checked' => TRUE),
+            array('name'=>'users_count',    'title'=>' Пользователи','checked' => TRUE),
+            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+        );
     }
 }

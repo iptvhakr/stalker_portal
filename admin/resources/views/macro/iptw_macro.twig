@@ -39,10 +39,26 @@
         {% endif %}
     {% endmacro %}
     
-    {% macro get_filter(name, title, id_field, title_field, list_all, block_width) %}
-        {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
-        <div class="col-xs-3 col-sm-{{ block_width }} filter" data-tvfilter="{{ name }}">
-            <span class="col-xs-4 col-sm-4 no-padding">{{ title }}:</span>
+    {% macro get_filter(name, title, id_field, title_field, list_all, block_width, label_width, without_all) %}
+        {% if without_all %}
+            {% set list = '' %}
+        {% else %}
+            {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+        {% endif %}
+        {% if not (block_width) %}
+            {% set block_width = 3 %}
+        {% else  %}
+            {% set block_width = block_width + 3 %}
+        {% endif %}
+        {% if not (label_width) %}
+            {% set label_width = 4 %}
+        {% else  %}
+            {% set label_width = label_width %}
+        {% endif %}
+        {#<div class="col-xs-3 col-sm-{{ block_width }} filter" data-tvfilter="{{ name }}">
+            <span class="col-xs-12 col-sm-{{ label_width }} no-padding">{{ title }}:</span>#}
+        <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 filter" data-tvfilter="{{ name }}">
+            <span class="col-xs-12 col-sm-6 col-md-{{ label_width }} col-lg-{{ label_width }} no-padding">{{ title }}:</span>
             {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined and app['filters'][name] != '0'%}
                 {% set f_name = app['filters'][name] %}
             {% else %}
@@ -61,7 +77,7 @@
             {% autoescape false %}
                 {% if f_name is sameas(0) %}
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                        <span>Все</span>
+                        <span>{% if without_all %}{% else %}Все{% endif %}</span>
                         <i class="fa fa-chevron-down"></i>
                     </a>
                 {% endif %}
@@ -72,36 +88,55 @@
         </div>
     {% endmacro %}
     
-    {% macro get_dropdown_attribute(dropdownAttribute) %}
+    {% macro get_dropdown_attribute(dropdownAttribute, list_id, list_title, list_width, with_all, no_padding) %}
         {% import _self as main_macro_inside %}
-        <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
+        {% set set_id='attribute_set' %}
+        {% set set_title='Атрибуты' %}
+        {% set set_width=1 %}
+        {% if list_id is defined and list_id %}
+            {% set set_id=list_id %}
+        {% endif %}
+        {% if list_title is defined and list_title %}
+            {% set set_title=list_title %}
+        {% endif %}
+        {% if list_width is defined and list_width %}
+            {% set set_width=list_width %}
+        {% endif %}
+        {% if with_all %}
+            {% set with_all=with_all %}
+        {% else %}
+            {% set with_all=1 %}
+        {% endif %}
+        <div class="col-xs-{{ set_width }} col-sm-{{ set_width }} col-md-{{ set_width }} col-lg-{{ set_width }} {% if list_title is defined and list_title %}no-padding{% endif %} attribute_set" id="{{ set_id }}" style="">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                <span>Атрибуты</span>
+                <span>{{ set_title }}</span>
                 <i class="fa fa-chevron-down"></i>
             </a>
             <ul class="dropdown-menu pull-right">
+                {% if with_all == 1 %}
                 <li>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" value="all"> Все
+                            <input type="checkbox" value="all" name="{{ set_id }}[]"> Все
                             <i class="fa fa-square-o"></i>
                         </label>
                     </div>
                 </li>
                 <li class="divider"></li>
+                {% endif %}
                 {% for item in dropdownAttribute %}
-                {{ main_macro_inside.get_dropdown_attribute_item(item) }}
+                {{ main_macro_inside.get_dropdown_attribute_item(item, set_id) }}
                 {% endfor %}
             </ul>
         </div>
 
     {% endmacro %}
                         
-    {% macro get_dropdown_attribute_item(item) %}
+    {% macro get_dropdown_attribute_item(item, set_id) %}
         <li>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" value="{{ item.name }}" checked="{{ item.checked }}"> {{ item.title }}
+                    <input type="checkbox" name="{{ set_id }}[]" {% if item.name == 'operations'%}readonly="readonly" disabled="disabled"{% endif %} value="{{ item.name }}" {% if item.checked %}checked="{{ item.checked }}"{% endif %}> {{ item.title }}
                     <i class="fa fa-square-o"></i>
                 </label>
             </div>
@@ -118,3 +153,15 @@
         </thead>
     {% endmacro %}
     
+    {% macro get_filter_button_bar(name, id_field, title_field, list_all) %}           
+            {% autoescape false %}
+            <div class="btn-group">
+                {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined%}
+                    {% set f_name = app['filters'][name] %}
+                    {% for item in list_all %}
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/{{app.action_alias}}?filters[{{ name }}]={{ item[id_field] }}" class="btn btn-primary {% if f_name == item[id_field] %}active{% endif %}">{{ item[title_field] }}</a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endautoescape %}
+    {% endmacro %}

@@ -17,7 +17,8 @@ class UsersController extends \Controller\BaseStalkerController {
         'users.id as id', "mac", "ip", "login", "ls", "fname",
         "status", 'tariff_plan.name as tariff_plan_name',
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
-        "concat (users.fname) as fname"
+        "concat (users.fname) as fname",
+        "UNIX_TIMESTAMP(`keep_alive`) as last_active"
     );
     private $logObjectsTypes = array(
         'itv' => 'IPTV каналы',
@@ -34,6 +35,11 @@ class UsersController extends \Controller\BaseStalkerController {
     // ------------------- action method ---------------------------------------
 
     public function index() {
+        
+        if (empty($this->app['action_alias'])) {
+            return $this->app->redirect($this->app['controller_alias'] . '/users-list');
+        }
+        
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -51,6 +57,13 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['allStatus'] = $this->allStatus;
         $this->app['allState'] = $this->allState;
         $this->app['totalRecords'] = $users['recordsTotal'];
+        $this->app['recordsFiltered'] = $users['recordsFiltered'];
+        $this->app['consoleGroup'] = $this->db->getConsoleGroup();
+        
+        $attribute = $this->getUsersListDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+        
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -70,9 +83,18 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $list = $this->users_consoles_logs_json();
+        
+        if (!empty($this->data['id'])) {
+            $this->app['user'] = $this->db->getUsersList(array('select'=>array('`users`.`name`', '`users`.`fname`', '`users`.`mac`'), array('where' => array('`users`.id' => $this->data['id']))));
+        }
+        
         $this->app['logList'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
-
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        
+        if (!empty($this->app['user'])) {
+            $this->app['breadcrumbs']->addItem("Логи пользователя {$this->app['user'][0]['name']} {$this->app['user'][0]['fname']} ({$this->app['user'][0]['mac']})");
+        }
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -84,7 +106,9 @@ class UsersController extends \Controller\BaseStalkerController {
         $list = $this->users_consoles_report_json();
         $this->app['consoleReport'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
-
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        $this->app['breadcrumbs']->addItem("Отчет по измененным статусам приставок за " . strftime('%d.%m.%Y')  . " на " . strftime('%T'));
+    
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -92,7 +116,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-
+        $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
         $form = $this->buildUserForm();
 
         if ($this->saveUsersData($form)) {
@@ -104,7 +128,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
         }
-
+        $this->app['breadcrumbs']->addItem("Добавить пользователя");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -131,20 +155,28 @@ class UsersController extends \Controller\BaseStalkerController {
         $query_param['order'] = 'users.id';
         $user = $this->db->getUsersList($query_param);
         $this->user = (is_array($user) && count($user) > 0) ? $user[0] : array();
-
-        $form = $this->buildUserForm($this->user);
+        $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
+        $form = $this->buildUserForm($this->user, TRUE);
 
         if ($this->saveUsersData($form)) {
-            return $this->app->redirect('users-list');
+            return $this->app->redirect('edit-users?id='.$id);
         }
         $this->app['form'] = $form->createView();
         $this->app['userEdit'] = TRUE;
         $this->app['userID'] = $id;
+        
+        $users_tarif_plans = array_map(function($val){
+            $val['optional'] = (int)$val['optional'];
+            $val['subscribed'] = (int)$val['subscribed'];
+            return $val;
+        }, $this->db->getTarifPlanByUserID($id));
+        
+        $this->app['userTPs'] = $users_tarif_plans;
 
         if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
         }
-
+        $this->app['breadcrumbs']->addItem("Редактировать пользователя приcтавки '{$this->user['mac']}'");
         return $this->app['twig']->render("Users_add_users.twig");
     }
 
@@ -164,7 +196,8 @@ class UsersController extends \Controller\BaseStalkerController {
         $list = $this->users_groups_consoles_list_json();
         $this->app['consoleGroupList'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
-
+        
+        $this->app['breadcrumbs']->addItem("Приставки группы '{$this->app['consoleGroup']['name']}'");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -180,7 +213,12 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $param = (!empty($this->data) ? $this->data : array());
 
-        $query_param = $this->prepareDataTableParams($param, array('operations', 'state', '_'));
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
+        if (($search = array_search('state', $query_param['select'])) != FALSE) {
+            unset($query_param['select'][$search]);
+            unset($query_param['where']['state']);
+            unset($query_param['like']['state']);
+        }
 
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
@@ -197,7 +235,18 @@ class UsersController extends \Controller\BaseStalkerController {
         if (empty($query_param['limit']['limit'])) {
             $query_param['limit']['limit'] = 10;
         }
-        $response['data'] = $this->db->getUsersList($query_param);
+        
+        if (!empty($query_param['order']) && !empty($query_param['order']['state'])) {
+            $query_param['order']['`keep_alive`'] = $query_param['order']['state'];
+            unset($query_param['order']['state']);
+        }
+        
+        
+        $response['data'] = array_map(function($val){
+            $val['last_active'] = (int)$val['last_active']; 
+            $val['last_change_status'] = (int) strtotime($val['last_change_status']); 
+            return $val;
+        }, $this->db->getUsersList($query_param));
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
@@ -488,9 +537,10 @@ class UsersController extends \Controller\BaseStalkerController {
         $error = 'Не удалось';
         $mac = \Middleware::normalizeMac($this->postData['name']);
         if (!empty($mac)) {
-            $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac'));
+            $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
+
             $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
-            if (empty($check_in_group) && !empty($check_in_users)) {
+            if ((count($check_in_group) == 0 || (int)$check_in_group[0]['stb_group_id'] == 0) && !empty($check_in_users)) {
                 $param = array(
                     'mac' => $mac,
                     'uid' => $check_in_users[0]['uid'],
@@ -527,9 +577,10 @@ class UsersController extends \Controller\BaseStalkerController {
         $data['action'] = 'checkConsoleItem';
         $error = 'Имя занято';
         $mac = \Middleware::normalizeMac($this->postData['mac']);
-        $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac'));
+        $data['jjj'] = $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
         $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
-        if (!empty($check_in_group)) {
+
+        if (count($check_in_group) != 0 && (int)$check_in_group[0]['stb_group_id'] != 0) {
             $group_name = $check_in_group[0]['name'];
             $data['chk_rezult'] = "Пользователь уже подключен к группе '$group_name'";
             $error = "Пользователь уже подключен к группе '$group_name'";
@@ -572,6 +623,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
         }
+        
 
         $deleted_params = $this->checkDisallowFields($query_param, array('object', 'type'));
 
@@ -580,9 +632,13 @@ class UsersController extends \Controller\BaseStalkerController {
         } else {
             $query_param['select'][] = 'uid';
         }
-        $this->cleanQueryParams($query_param, array('time', 'mac', 'action', 'param', 'uid'), $filds_for_select);
-
-        $response['recordsTotal'] = $this->db->getTotalRowsLogList();
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+        
+        if (!empty($this->data['id'])) {
+            $query_param['where']['users.`id`'] = $this->data['id'];
+        }
+        
+        $response['recordsTotal'] = $this->db->getTotalRowsLogList($query_param['where']);
         $response["recordsFiltered"] = $this->db->getTotalRowsLogList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
@@ -596,6 +652,11 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->orderByDeletedParams($response['data'], $deleted_params['order']);
         }
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        
+        $response['data'] = array_map(function($row){
+            $row['time'] = (int) strtotime($row['time']); 
+            return $row;
+        }, $response['data']);
 
         $error = '';
 
@@ -647,7 +708,12 @@ class UsersController extends \Controller\BaseStalkerController {
             $query_param['limit']['limit'] = FALSE;
         }
         $response['data'] = $this->db->getUsersList($query_param, TRUE);
-
+        
+        $response['data'] = array_map(function($row){
+            $row['last_change_status'] = (int) strtotime($row['last_change_status']); 
+            return $row;
+        }, $response['data']);
+        
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
             $response = $this->generateAjaxResponse($response);
@@ -656,7 +722,7 @@ class UsersController extends \Controller\BaseStalkerController {
             return $response;
         }
     }
-
+    
     //------------------------ service method ----------------------------------
 
     private function getUsersFilters() {
@@ -668,17 +734,17 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $now_timestamp = time() - $this->watchdog;
         $now_time = date("Y-m-d H:i:s", $now_timestamp);
-        if (array_key_exists('status_id', $this->data['filters']) && !empty((int) $this->data['filters']['status_id'])) {
+        if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id'] != 0) {
             $return['status'] = $this->data['filters']['status_id'] - 1;
         }
-        if (array_key_exists('state_id', $this->data['filters']) && !empty((int) $this->data['filters']['state_id'])) {
+        if (array_key_exists('state_id', $this->data['filters']) && $this->data['filters']['state_id'] != 0) {
             $return['keep_alive' . ($this->data['filters']['state_id'] - 1 ? "<" : ">")] = "'$now_time'";
         }
-        if (array_key_exists('interval_from', $this->data['filters']) && !empty((int) $this->data['filters']['interval_from'])) {
+        if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0) {
             $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);
             $return['UNIX_TIMESTAMP(last_active)>='] = $date->getTimestamp();
         }
-        if (array_key_exists('interval_to', $this->data['filters']) && !empty((int) $this->data['filters']['interval_to'])) {
+        if (array_key_exists('interval_to', $this->data['filters']) && $this->data['filters']['interval_to']!= 0) {
             $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_to']);
             $return['UNIX_TIMESTAMP(last_active)<='] = $date->getTimestamp();
         }
@@ -747,18 +813,7 @@ class UsersController extends \Controller\BaseStalkerController {
                     'required' => FALSE
                         )
                 )
-                ->add('tariff_plan_id', 'choice', array(
-                    'choices' => $tariff_plans,
-                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($tariff_plans)))),
-                    'required' => FALSE
-                        )
-                )
-                ->add('additional_services_on', 'choice', array(
-                    'choices' => $additional_services,
-                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($additional_services)))),
-                    'required' => FALSE
-                        )
-                )
+                ->add('mac', 'text', ($edit?array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE):array('required' => FALSE)))
                 ->add('status', 'choice', array(
                     'choices' => $status,
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($status)))),
@@ -766,14 +821,28 @@ class UsersController extends \Controller\BaseStalkerController {
                         )
                 )
                 ->add('comment', 'textarea', array('required' => FALSE))
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
         if (!empty($data['id'])) {
-            $form->add('mac', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
-                    ->add('ip', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
+            $form->add('ip', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('parent_password', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('fav_itv', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('version', 'textarea', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE));
+        }
+        if ($this->app['tarifPlanFlag']){
+            $form->add('tariff_plan_id', 'choice', array(
+                    'choices' => $tariff_plans,
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($tariff_plans)))),
+                    'required' => FALSE
+                        )
+                );
+        } else {
+            $form->add('additional_services_on', 'choice', array(
+                    'choices' => $additional_services,
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($additional_services)))),
+                    'required' => FALSE
+                        )
+                );
         }
         return $form->getForm();
     }
@@ -800,10 +869,11 @@ class UsersController extends \Controller\BaseStalkerController {
                 unset($data['password']);
             }
             if ($form->isValid()) {
-
+                
                 $stb_groups = new \StbGroup();
                 $member = $stb_groups->getMemberByUid(intval($data['id']));
-
+                $id = $data['id'];
+                
                 if (empty($member)) {
                     $stb_groups->addMember(array('mac' => \Middleware::normalizeMac($data['mac']), 'uid' => \Middleware::getUidByMac($data['mac']), 'stb_group_id' => $data['group_id']));
                 } else {
@@ -816,14 +886,11 @@ class UsersController extends \Controller\BaseStalkerController {
 
                 $data = array_intersect_key($data, $curr_fields);
 
-                if ($action == 'insertUsers') {
-                    if ($this->db->$action($data)) {
-                        return TRUE;
+                if ($result = call_user_func_array(array($this->db, $action), array($data, $data['id']))) {
+                    if (!empty($this->postData['tariff_plan_packages'])) {
+                        $this->changeUserPlanPackages($id, $this->postData['tariff_plan_packages']);
                     }
-                } else {
-                    if ($this->db->$action($data, $data['id'])) {
-                        return TRUE;
-                    }
+                    return TRUE;
                 }
             }
         }
@@ -879,4 +946,35 @@ class UsersController extends \Controller\BaseStalkerController {
         }
     }
 
+    private function changeUserPlanPackages($user_id, $tariff_plan_packages){
+        $users_tarif_plans = array_map(function($val) {
+            $val['optional'] = (int) $val['optional'];
+            $val['subscribed'] = (int) $val['subscribed'];
+            return $val;
+        }, $this->db->getTarifPlanByUserID($user_id));
+        
+        $user = \User::getInstance($user_id);
+        foreach ($users_tarif_plans as $row) {
+            if (array_key_exists($row['package_id'], $tariff_plan_packages) && $tariff_plan_packages[$row['package_id']] == 'on') {
+                $user->subscribeToPackage($row['package_id'], null, true);
+            } else {
+                $user->unsubscribeFromPackage($row['package_id'], null, true);
+            }
+        }
+    }
+    
+    private function getUsersListDropdownAttribute() {
+        return array(
+            array('name'=>'mac',                'title'=>'MAC',                 'checked' => TRUE),
+            array('name'=>'ip',                 'title'=>'IP',                  'checked' => TRUE),
+            array('name'=>'login',              'title'=>'Логин',               'checked' => TRUE),
+            array('name'=>'ls',                 'title'=>'Лицевой счет',        'checked' => TRUE),
+            array('name'=>'fname',              'title'=>'ФИО',                 'checked' => TRUE),
+            array('name'=>'last_change_status', 'title'=>'Последнее изменение', 'checked' => TRUE),
+            array('name'=>'state',              'title'=>'Состояние',           'checked' => TRUE),
+            array('name'=>'status',             'title'=>'Статус',              'checked' => TRUE),
+            array('name'=>'operations',         'title'=>'Действия',            'checked' => TRUE)
+        );
+    }
+    
 }

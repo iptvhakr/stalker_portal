@@ -18,14 +18,19 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['baseHost'] = $this->baseHost;
         
         $this->app['allStatus'] = array(
-            array('id' => 1, 'title' => 'Включен'),
-            array('id' => 2, 'title' => 'Отключен')
+            array('id' => 1, 'title' => 'Отключен'),
+            array('id' => 2, 'title' => 'Включен')
         );
     }
     
     // ------------------- action method ---------------------------------------
 
     public function index() {
+        
+        if (empty($this->app['action_alias'])) {
+            return $this->app->redirect($this->app['controller_alias'] . '/video-list');
+        }
+        
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -36,38 +41,31 @@ class VideoClubController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $filter = array();
-
-        if ($this->method == 'GET' && !empty($this->data['filters'])) {
-            $filter = $this->getVideoListFilters();
-        }
-
-        $allVideo = $this->db->getAllVideo($filter);
-        $tmp_allTasks = $this->db->getAllModeratorTasks();
-        $allTasks = array();
-        if (is_array($tmp_allTasks)) {
-            while (list($num, $row) = each($tmp_allTasks)) {
-                $allTasks[$row['media_id']] = $row;
-            }
-        }
         
-        if (is_array($allVideo)) {
-
-            while (list($num, $row) = each($allVideo)) {
-                $allVideo[$num]['series'] = count(unserialize($row['series']));
-                if (!array_key_exists('task', $allVideo[$num])) {
-                    $allVideo[$num]['task'] = array();
-                }
-                if (array_key_exists($row['id'], $allTasks)) {
-                    
-                    $allVideo[$num]['task'][] = $allTasks[$row['id']];
-                }
-            }
-        }
+        $allGenre = $this->db->getVideoGenres();
         
-        $allModerators = $this->db->getAllAdmins();
-        $this->app['allVideo'] = $allVideo;
-        $this->app['allModerators'] = $allModerators;
+        $allYears = $this->db->getAllFromTable('video', 'year', 'year');
+        
+        $list = $this->video_list_json();
+        
+        $this->app['allYears'] = array_filter(array_map(function($val){
+            if ((int)$val['year'] >= 1895) {
+                return array('id'=>$val['year'], 'title'=>$val['year']);
+            }
+            return FALSE;
+        }, $allYears));
+        
+        $this->app['allGenre'] =  $this->setLocalization($allGenre, 'title');
+        $this->app['allVideo'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+        
+        $this->app['allModerators'] = $this->db->getAllAdmins();
+        
+        $attribute = $this->getVideoListDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+        
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -128,6 +126,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $this->app['form'] = $form->createView();
         $this->app['videoEdit'] = TRUE;
+        
+        $this->app['breadcrumbs']->addItem("Редактировать видео '{$this->oneVideo['name']}'");
+        
         return $this->app['twig']->render('VideoClub_add_video.twig');
     }
     
@@ -169,6 +170,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $this->app['form'] = $form->createView();
         $this->app['adsEdit'] = FALSE;
+        $this->app['breadcrumbs']->addItem("Добавить рекламу");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -201,6 +203,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $this->app['form'] = $form->createView();
         $this->app['adsEdit'] = TRUE;
+        $this->app['breadcrumbs']->addItem("Редактировать рекламу '{$this->ad['title']}'");
         return $this->app['twig']->render('VideoClub_add_video_ads.twig');
     }
     
@@ -227,6 +230,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $this->app['form'] = $form->createView();
         $this->app['modEdit'] = FALSE;
+        $this->app['breadcrumbs']->addItem("Добавить модератора");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -252,6 +256,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $this->app['form'] = $form->createView();
         $this->app['modEdit'] = TRUE;
+        $this->app['breadcrumbs']->addItem("Редактировать модератора '{$this->mod['name']}'");
         return $this->app['twig']->render('VideoClub_add_video_moderators.twig');
     }
 
@@ -261,13 +266,147 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
 
         $logs = $this->video_logs_json();
-        $this->app['totalRecords'] = $logs['recordsTotal'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $this->app['allVideoLogs'] = $logs['data'];
         
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
+    
     //----------------------- ajax method --------------------------------------
+    
+    public function video_list_json() {
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+        
+        $filds_for_select = array(
+            "id" => "`video`.`id` as `id`",
+            "path" => "`video`.`path` as `path`",
+            "name" => "`video`.`name` as `name` ",
+            "o_name" => "`video`.`o_name` as `o_name`",
+            "time" => "`video`.`time` as `time`",
+            "cat_genre" => "'' as `cat_genre`",
+            "series" => "`video`.`series` as `series`",
+            "tasks" => "(select count(*) from moderator_tasks where media_id = video.id) as `tasks`", //moderator_tasks.ended = 0 and 
+            "task_id" => "`video_on_tasks`.`id` as `task_id`",
+            "year" => "`video`.`year` as `year`",
+            "added" => "CAST(`video`.`added` as CHAR) as `added`",
+            "complaints" => "media_claims.sound_counter + media_claims.video_counter as `complaints`",
+            "accessed" => "`video`.`accessed` as `accessed`"
+        );
+        $error = "Error";
+        $param = (!empty($this->data) ? $this->data : array());
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+        $filter = $this->getVideoListFilters();
+
+        $query_param['where'] = array_merge($query_param['where'], $filter);
+
+        if (empty($query_param['select'])) {
+            $query_param['select'] = array_values($filds_for_select);
+        } else {
+            $query_param['select'][] = 'video.id as id';
+        }
+        
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+        $query_param['select'][]= "media_claims.sound_counter as `sound_counter`";
+        $query_param['select'][]= "media_claims.video_counter as `video_counter`";
+        $query_param['select'][]= "`video_on_tasks`.`id` as `task_id`";
+        $query_param['select'][]= "UNIX_TIMESTAMP(`video_on_tasks`.`date_on`) as `task_date_on`";
+        $query_param['select'][]= "cat_genre_id_1";
+        $query_param['select'][]= "cat_genre_id_2";
+        $query_param['select'][]= "cat_genre_id_3";
+        $query_param['select'][]= "cat_genre_id_4";
+        if (empty($query_param['order'])) {
+            $query_param['order']['added'] = 'DESC';
+        }
+        
+        $response['recordsTotal'] = $this->db->getTotalRowsVideoList();
+        $response["recordsFiltered"] = $this->db->getTotalRowsVideoList($query_param['where'], $query_param['like']);
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 10;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        $response['data'] = $this->db->getVideoList($query_param);
+        if (!empty($response['data'])) {
+            $cat_genres = $this->db->getVideoCategories();
+            $cat_genres = $this->setLocalization($cat_genres, 'title'); 
+            $cat_genres = array_combine($this->getFieldFromArray($cat_genres, 'id'), $this->getFieldFromArray($cat_genres, 'title'));
+            while (list($key, $row) = each($response['data'])){
+                $response['data'][$key]['RowOrder'] = "dTRow_" . $row['id'];
+                $response['data'][$key]['cat_genre'] = array();
+                if (!empty($row['cat_genre_id_1'])) {
+                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_1']];
+                }
+                if (!empty($row['cat_genre_id_2'])) {
+                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_2']];
+                }
+                if (!empty($row['cat_genre_id_3'])) {
+                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_3']];
+                }
+                if (!empty($row['cat_genre_id_4'])) {
+                    $response['data'][$key]['cat_genre'][] = $cat_genres[$row['cat_genre_id_4']];
+                }
+                $response['data'][$key]['cat_genre'] = implode(', ', $response['data'][$key]['cat_genre']);
+                $response['data'][$key]['task_date_on'] = (int) strtotime($response['data'][$key]['task_date_on']);
+                $response['data'][$key]['added'] = (int) strtotime($response['data'][$key]['added']);
+            }
+        }
+              
+        $tmp_allTasks = $this->db->getAllModeratorTasks();
+        $allTasks = array();
+        if (is_array($tmp_allTasks)) {
+            while (list($num, $row) = each($tmp_allTasks)) {
+                $row['end_time'] = (int)$row['end_time'] * ($this->isAjax? 1000 : 1);
+                $row['ended'] = (int)$row['ended'];
+                $row['rejected'] = (int)$row['rejected'];
+                $row['expired'] = (time() - strtotime($row['start_time'])) > 864000;
+                $allTasks[$row['media_id']][] = $row;
+            }
+        }
+
+        if (is_array($response['data'])) {
+            reset($response['data']);
+            while (list($num, $row) = each($response['data'])) {
+                $response['data'][$num]['task_date_on'] = (int)$response['data'][$num]['task_date_on'] * ($this->isAjax? 1000 : 1);
+                $response['data'][$num]['accessed'] = (int)$response['data'][$num]['accessed'];
+                $response['data'][$num]['series'] = count(unserialize($row['series']));
+                if (!array_key_exists('tasks', $response['data'][$num])) {
+                    $response['data'][$num]['tasks'] = array();
+                }
+                if (array_key_exists($row['id'], $allTasks)) {
+                    if (!is_array($response['data'][$num]['tasks'])) {
+                        $response['data'][$num]['tasks'] = array();    
+                    }
+                    $response['data'][$num]['tasks'] = $allTasks[$row['id']];
+                }
+            }
+        }
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        
+        $error = "";
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
     
     public function video_info() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['videoid']) || (!is_numeric($this->postData['videoid']))) {
@@ -281,10 +420,11 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'videoinfo';
         $data['title'] = 'Иформация о видео-источнике';
-        $data['base_info'] = array();
+        $data['base_info'] = 'Информация отсутствует';
         $data['add_info'] = array();
+        $error = '';
         
-        $error = 'Информация отсутствует';
+//        $error = 'Информация отсутствует';
         
         if (empty($video['rtsp_url'])){
             $path = $video['path'];
@@ -294,7 +434,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
             $master = new \VideoMaster();
             $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
-
+            if (!empty($good_storages)) {
+                $data['base_info'] = array();
+            }
             foreach ($good_storages as $name => $data_s){
                 $data['base_info'][] = array(
                     'storage_name' => $name,
@@ -304,10 +446,6 @@ class VideoClubController extends \Controller\BaseStalkerController {
                     'for_moderator' => $data_s['for_moderator'],
                 );
             }
-            if (empty($data['base_info'])) {
-                $data['base_info'] = 'Информация отсутствует';
-            }
-            $error = '';
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -798,7 +936,14 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
     public function video_logs_json($param = array()) {
         $response = array();
-        $fields = array('video_log.id as id', 'video_log.video_id as video_id','administrators.login as login', 'actiontime', 'video_name', 'action');
+        $fields = array(
+            'id'=>'`video_log`.`id` as `id`', 
+            'video_id'=>'`video_log`.`video_id` as `video_id`',
+            'login'=>'`administrators`.`login` as `login`', 
+            'actiontime'=>'`actiontime`', 
+            'video_name'=>'`video_name`', 
+            'action'=>'`action`'
+        );
         
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
@@ -819,6 +964,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         
         $query_param['select'] = array_merge($query_param['select'], array_diff($fields, $query_param['select']));
+        
+        if (empty($query_param['order'])) {
+            $query_param['order']['actiontime'] = 'desc';
+        }
+        
+        $this->cleanQueryParams($query_param, array_keys($fields), $fields);
+        
         $response['recordsTotal'] = $this->db->getTotalRowsVideoLog($query_param['where']);
         $response["recordsFiltered"] = $this->db->getTotalRowsVideoLog($query_param['where'], $query_param['like']);
         
@@ -827,8 +979,15 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         $response['data'] = $this->db->getVideoLog($query_param);
         
+        $response['data'] = array_map(function($row){
+            $row['actiontime'] = (int)  strtotime($row['actiontime']);
+            return $row;
+        }, $response['data']);
+        
         $this->setLinksForVideoLog($response['data']);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw']: 1;
+        
+        
         if ($this->isAjax) {
             $response = $this->generateAjaxResponse($response);
             return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -842,8 +1001,19 @@ class VideoClubController extends \Controller\BaseStalkerController {
     private function getVideoListFilters() {
         $filters = array();
         if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id'] != 0) {
-            $filters[] = "accessed='" . (int) ($this->data['filters']['status_id'] == 1) . "'";
+            $filters['`accessed`'] = $this->data['filters']['status_id'] - 1;
         }
+        
+        if (array_key_exists('year', $this->data['filters']) && $this->data['filters']['year'] != 0) {
+            $filters["`year`"] = $this->data['filters']['year'];
+        }
+        
+        if (array_key_exists('genre_id', $this->data['filters']) && $this->data['filters']['genre_id'] != 0) {
+            $genre_id = $this->data['filters']['genre_id'];
+            $filters["(`genre_id_1`= '$genre_id' OR `genre_id_2` = '$genre_id' OR `genre_id_3` = '$genre_id' OR `genre_id_4` = '$genre_id') AND "] = "1=1";
+        }
+        
+        
         $this->app['filters'] = $this->data['filters'];
         return $filters;
     }
@@ -886,10 +1056,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 /*+*/->add('rating_imdb', 'hidden')
                 /*+*/->add('rating_count_imdb', 'hidden')
                 /*ориг название*/
-                /*+*/->add('o_name', 'text', array('constraints' => array(new Assert\NotBlank()), 'required' => TRUE))
+                /*+*/->add('o_name', 'text', array('constraints' => array('required' => FALSE), 'required' => FALSE))
                 /*кинопосик ИД*/
-                /*+*/->add('kinopoisk_id', 'text', array('constraints' => array(new Assert\NotBlank(),new Assert\Type(array('type' => 'numeric'))), 'required' => TRUE))
-                /*+*/->add('rating_kinopoisk', 'text', array('constraints' => array(new Assert\NotBlank(),new Assert\Type(array('type' => 'numeric'))), 'required' => TRUE))
+                /*+*/->add('kinopoisk_id', 'text', array('constraints' => array(new Assert\Type(array('type' => 'numeric')), 'required' => FALSE), 'required' => FALSE))
+                /*+*/->add('rating_kinopoisk', 'text', array('constraints' => array(new Assert\Type(array('type' => 'numeric')), 'required' => FALSE), 'required' => FALSE))
                 /*возраст рейтинг*/
                 /*+*/->add('age', 'choice', array(
                             'choices' => $ages,
@@ -982,19 +1152,20 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 /*+*/->add('description', 'textarea', array('required' => TRUE, 'constraints' => array(new Assert\NotBlank())))
                 /*громкость*/
                 /*+*/->add('volume_correction', 'choice', array(
-                            'choices' => range(-20, 20),
+                            'choices' => array_combine(range(-20, 20, 1), range(-100, 100, 5)),
                             'constraints' => array(
                                 new Assert\Range(array('min' => -20, 'max' => 20)), 
                                 new Assert\NotBlank()),
-                            'required' => TRUE
+                            'required' => TRUE,
+                            'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
                         )
                     )
                 ->add('comments', 'textarea')
                 /*обложка*/                
                 ->add('cover_id', 'hidden')
                 ->add('cover_big', 'hidden')
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
         return $form->getForm();
     }
     
@@ -1053,8 +1224,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
                             'required' => TRUE
                         )
                     )
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
 
         return $form->getForm();
     }
@@ -1076,8 +1247,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
                         )
                     )
                 ->add('disable_vclub_ad', 'checkbox', array('required' => FALSE))
-                ->add('save', 'submit')
-                ->add('reset', 'reset');
+                ->add('save', 'submit');
+//                ->add('reset', 'reset');
 
         return $form->getForm();
     }
@@ -1182,9 +1353,15 @@ class VideoClubController extends \Controller\BaseStalkerController {
     }
 
     private function prepareFormVideoCategories(){
-        $this->app['videoGenres'] = $this->db->getVideoGenres();
-        $this->app['catGenres'] = $this->db->getCategoriesGenres();
-        $this->app['videoCategories'] = $this->db->getVideoCategories();
+        $videoGenres = $this->db->getVideoGenres();
+        $this->app['videoGenres'] = $this->setLocalization($videoGenres, 'title');
+        
+        $catGenres = $this->db->getCategoriesGenres();
+        $this->app['catGenres'] = $this->setLocalization($catGenres, 'category_name');
+        
+        $videoCategories = $this->db->getVideoCategories();
+        $this->app['videoCategories'] = $this->setLocalization($videoCategories, 'title'); 
+        
         $this->app['videoEdit'] = FALSE;
         
         $prepared_cat_genre = array();
@@ -1350,8 +1527,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
     
     private function setLinksForVideoLog(&$data){
         
-        $action_link_template = "<a href='?task_id={action[task]}'>{action[event]}</a>";
-        $video_name_link_template = "<a href='?task_id={match[0]}'>{match[1]}</a>";
+        $action_link_template = "<a href='$this->workURL/tasks/task-detail-video?id={action[task]}'>{action[event]}</a>";
+        $video_name_link_template = "<a href='$this->workURL/tasks/task-detail-video?id={match[0]}'>{match[1]}</a>";
         while(list($key, $row) = each($data)){
             $data[$key]['video_name'] = "<a href='$this->workURL/" . $this->app['controller_alias'] . "/edit-video?id=$row[video_id]'>$row[video_name]</a>";
             if ($action = unserialize($row['action'])) {
@@ -1364,5 +1541,24 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 } 
             }
         }
+    }
+    
+    private function getVideoListDropdownAttribute(){
+        return array(
+            array('name' => 'id',           'title' => 'ID',                    'checked' => TRUE),
+            array('name' => 'path',         'title' => 'Каталог',               'checked' => TRUE),
+            array('name' => 'name',         'title' => 'Название',              'checked' => TRUE),
+            array('name' => 'o_name',       'title' => 'Оригинальное название', 'checked' => FALSE),
+            array('name' => 'time',         'title' => 'Длительность',          'checked' => TRUE),
+            array('name' => 'series',       'title' => 'Серии',                 'checked' => TRUE),
+            array('name' => 'cat_genre',    'title' => 'Жанр',                  'checked' => TRUE),
+            array('name' => 'tasks',        'title' => 'Задания',               'checked' => TRUE),
+            array('name' => 'year',         'title' => 'Год',                   'checked' => TRUE),
+            array('name' => 'added',        'title' => 'Дата запуска',          'checked' => TRUE),
+            array('name' => 'complaints',   'title' => 'Жалобы',                'checked' => TRUE),
+            array('name' => 'status',       'title' => 'Статус',                'checked' => TRUE),
+            array('name' => 'operations',   'title' => 'Действия',              'checked' => TRUE)
+        );
+        
     }
 }

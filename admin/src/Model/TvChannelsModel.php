@@ -230,4 +230,8 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     public function updateChannelNum($row) {
         return $this->mysqlInstance->update('itv', array('number' => $row['number']), array('id' => $row['id']))->total_rows();
     }
+    
+    public function updateChannelLockedStatus($row) {
+        return $this->mysqlInstance->update('itv', array('locked' => $row['locked']), array('id' => $row['id']))->total_rows();
+    }
 }

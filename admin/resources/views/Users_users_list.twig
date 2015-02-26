@@ -1,87 +1,32 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = 'users' %}
 
 {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
 
 {% block content %}
-    <div class="row header_title">
+{#    <div class="row header_title">
         <div class="col-xs-10 col-sm-2">
             <h3>Пользователи</h3>
         </div>
-    </div>
+    </div>#}
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-8 col-sm-12">
-
-                <div class="col-xs-3 col-sm-7 no-padding">
-                    <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="status_id">
-                        <span class="col-xs-4 col-sm-4 no-padding">Статус:</span>
-                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'status_id') is defined %}
-                            {% set f_status_id = app['filters']['status_id'] %}
-                        {% else %}
-                            {% set f_status_id = 0 %}
-                        {% endif %}
-                        {% set list_f = list %}                       
-                        {% for item in app.allStatus %}
-                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
-                            {% if f_status_id == item['id'] %}                       
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>{{ item['title'] }}</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                        {% autoescape false %}
-                            {% if f_status_id == 0 %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Все</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu pull-right">
-                                {{ list_f }}
-                            </ul>
-                        {% endautoescape %}
-                    </div>
-                    <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="state_id">
-                        <span class="col-xs-4 col-sm-4 no-padding">Состояние:</span>
-                        {% if attribute(app, 'filters') is defined and attribute(app['filters'], 'state_id') is defined %}
-                            {% set f_state_id = app['filters']['state_id'] %}
-                        {% else %}
-                            {% set f_state_id = 0 %}
-                        {% endif %}
-                        {% set list_f = list %}                       
-                        {% for item in app.allState %}
-                            {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item['id'] ~ '"><span>' ~ item['title'] ~ '</span></a></li>') | trans %}
-                            {% if f_state_id == item['id'] %}                       
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>{{ item['title'] }}</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                        {% endfor %}
-                        {% autoescape false %}
-                            {% if f_state_id == 0 %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Все</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu pull-right">
-                                {{ list_f }}
-                            </ul>
-                        {% endautoescape %}
-                    </div>
-                    <div class="col-xs-3 col-sm-6 filter no-padding" data-tvfilter="time_period">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus'], 6, 8) }}
+                {{ main_macro.get_filter('state_id', 'Состояние', 'id', 'title', app['allState'], 6, 8) }}
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 no-padding">
+                    <div class="col-xs-12 col-sm-6 filter no-padding" data-tvfilter="time_period">
                         <div class="col-xs-3 col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
-                            <input class="col-xs-3 col-sm-12 filter" placeholder="С" type="text" id="datepicker_from" name="interval_from" value="{{ app['filters']['interval_from'] }}">
+                            <input class="col-xs-12 col-sm-12 filter" placeholder="С" type="text" id="datepicker_from" name="interval_from" value="{{ app['filters']['interval_from'] }}">
                         </div>
                         <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="time_period">
-                            <input class="col-xs-3 col-sm-12 filter" placeholder="По" type="text" id="datepicker_to" name="interval_to" value="{{ app['filters']['interval_to'] }}">
+                            <input class="col-xs-12 col-sm-12 filter" placeholder="По" type="text" id="datepicker_to" name="interval_to" value="{{ app['filters']['interval_to'] }}">
                         </div>
-                        <span class="col-xs-3 col-sm-6 filter">
+                        <span class="col-xs-6 col-sm-6 filter">
                             поиск неактивных
                         </span>
+                        <br><br><br>
                     </div>
                 </div>
 
@@ -92,102 +37,9 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
-                    <div class="col-xs-3 col-sm-1 pull-right" id="attribute_set" style="">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                    <span>Атрибуты</span>
-                                    <i class="fa fa-chevron-down"></i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="all"> Все
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="mac" checked="checked"> MAC
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="ip" checked="checked"> IP
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="login" checked="checked"> Логин
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="ls" checked="checked"> Лицевой счет
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="fname" checked="checked"> ФИО
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="last_change_status" checked="checked"> Последнее изменение
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-                                    
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="state" checked="checked"> Состояние
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="status" checked="checked"> Статус
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" value="operations" checked="checked"> Действия
-                                                <i class="fa fa-square-o"></i>
-                                            </label>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
                             <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
@@ -214,8 +66,13 @@
                                                 <td>{{ item.login }}</td>
                                                 <td>{{ item.ls }}</td>
                                                 <td>{{ item.fname }}</td>
-                                                <td>{{ item.last_change_status }}</td>
-                                                <td>{% if item.state %}<span class="txt-success">Online</span>{% else %}<span class="txt-danger">Offline</span>{% endif %}</td>
+                                                <td>{{ item.last_change_status|date('M d, Y H:i') }}</td>
+                                                <td>{% if item.state %}
+                                                    <span class="txt-success">Online</span>
+                                                    {% else %}
+                                                    <span class="txt-danger">Offline</span>
+                                                    <br><span>Последняя активность: {% if item.last_active == 0 %}{{ item.last_active|date('M d, Y H:i') }}{% else %} - {% endif %}</span>
+                                                    {% endif %}</td>
                                                 <td class="data-filter-status">{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
@@ -225,11 +82,16 @@
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
                                                                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.id }}">
-                                                                    <span>Подробнее</span>
+                                                                    <span>Редактировать</span>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-messge" data-userid="{{ item.id }}">
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-consoles-logs?id={{ item.id }}">
+                                                                    <span>Логи пользователя</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-message" data-userid="{{ item.id }}">
                                                                     <span>Отправить сообщение</span>
                                                                 </a>
                                                             </li>
@@ -259,11 +121,198 @@
         </div>
     </div>
 
+    <div id="modalbox_ad">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span>Новое событие</span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box">
+                    <div class="box-content">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group" style="display: none;">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Адресат</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="user_list_type" id="s2_user_list_type">
+                                            {#<option value="to_all">Все</option>
+                                            <option value="by_user_list">Список</option>
+                                            <option value="by_group">Группа</option>
+                                            <option value="by_pattern">По шаблону</option>#}
+                                            <option value="to_single" selected="selected">Один</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выбор адресата. Пример: одному, всем, по списку, по шаблону, группе</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_user_list">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Список MAC-адресов</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <input type="hidden" name="file_name" id="file_name">
+                                    <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader"></div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Файл должен содержать составленный заранее список MAC-адресов, в тасширении txt или другом текстовом формате</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Группа</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="group_id" id="s2_group_id">
+                                            {% for item in app.consoleGroup %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите группу пользователей которым будет отправлено сообщение</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="by_pattern">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Шаблон</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="pattern" id="s2_pattern">
+                                            <option value="MAG100">MAG100</option>
+                                            <option value="MAG200">MAG200</option>
+                                            <option value="MAG250">MAG250</option>
+                                            <option value="MAG255">MAG255</option>
+                                            <option value="MAG270">MAG270</option>
+                                            <option value="MAG275">MAG275</option>
+                                            <option value="AuraHD0">AuraHD0</option>
+                                            <option value="AuraHD1">AuraHD1</option>
+                                            <option value="AuraHD9">AuraHD9</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите шаблон для типа приставки</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-list-type="to_single">
+                                <label class="col-sm-3 control-label col-sm-offset-1">MAC-адрес</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="{% if attribute(app, 'currentUser') is defined %}{{ app.currentUser.mac }}{% endif %}" name="mac">
+                                        <div>&nbsp;</div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Введите MAC-адрес пользователя</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Действия</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" name="event" id="s2_event">
+                                            <option value=""></option>
+                                            <option value="send_msg">send_msg</option>
+                                            <option value="reboot">reboot</option>
+                                            <option value="reload_portal">reload_portal</option>
+                                            <option value="update_channels">update_channels</option>
+                                            <option value="play_channel">play_channel</option>
+                                            <option value="mount_all_storages">mount_all_storages</option>
+                                            <option value="cut_off">switch_off</option>
+                                            <option value="update_image">update_image</option>
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выберите одно из предложеных действий</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="play_channel">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Канал</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="" name="channel">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Перезапуск</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="1" name="need_reboot">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Выполнить перезапуск приставки по нажатию кнопки "ОК"</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">TTL</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <input class="form-control" type="text" title="" value="" name="ttl">
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Срок актуальности действия, измеряется в секундах</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group"  data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">MSG</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea"></textarea>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="form-group"  data-event-type="send_msg">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Шаблоны сообщения</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-8">
+                                        <a href="#" id="msg_pattern">Истек срок тестирования</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                    
     <script type="text/javascript" defer>
+
+        function DemoSelect2() {
+            $("[id^='s2_']").select2({minimumResultsForSearch: -1});
+        }
 
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
-                if (typeof (json.data) == 'object') {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var status = json.data[i].status;
@@ -275,11 +324,16 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id=" + id + "'>\n\
+                                                                    <span>Редактировать</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-consoles-logs?id=" + id + "'>\n\
                                                                     <span>Подробнее</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-messge' data-userid='" + id + "'>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-message' data-userid='" + id + "'>\n\
                                                                     <span>Отправить сообщение</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -295,11 +349,15 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].state = state != 0 ? "<span class='txt-success'>Online</span>" : "<span class='txt-danger'>Offline</span>";
+                        var last_active = new Date(json.data[i].last_active * 1000);
+                        json.data[i].state = state != 0 ? "<span class='txt-success'>Online</span>" : "<span class='txt-danger'>Offline</span><br><span>Последняя активность: " + (json.data[i].last_active != 0? last_active.toLocaleFormat("%b %d, %Y %H:%M"): "-") + "</span>";
                         json.data[i].status = status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>";
-                        
+                        date = json.data[i]['last_change_status'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['last_change_status'] = date.toLocaleFormat("%b %d, %Y");
+                        }
                         var mac = json.data[i].mac;
-                        
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
                     }
                 }
@@ -323,7 +381,7 @@
                         });
                     }
                 },
-                "deferLoading":{{ app.totalRecords }},
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                         "language": {
                             "url": "./plugins/datatables/lang/ru_RU.json"
                         },
@@ -342,10 +400,14 @@
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [3, 4, 5, 6, 7, 8]},
                     {"sortable": false, "targets": [-1]},
                     {className: "data-filter-status", "targets": [-2 ]}
                 ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
             });
         }
 
@@ -375,13 +437,7 @@
                     e.preventDefault();
                     var _this = $(this);
 
-                    if (_this.attr('href').search("enable") != -1 && !_this.data('video_on_date')) {
-                        setEnableDatePicker(_this);
-                        return false;
-                    }
-
-                    if (_this.attr('href').search("create-tasks") != -1 && !_this.data('sendData')) {
-                        showTaskForm(_this);
+                    if (_this.attr('href').search("send-message") != -1) {
                         return false;
                     }
 
@@ -409,7 +465,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error');
+                                alert('Some network error or access denied');
                             }
                         },
                         dataType: "json",
@@ -422,8 +478,49 @@
                     _this.closest('div.open').removeClass('open');
                     return false;
                 });
+                
+                $("[data-list-type], [data-event-type]").hide().find('input, select, textarea').attr('disabled', 'disabled');
+                $(document).on('change', "#s2_user_list_type, #s2_event", function (e) {
+                    checkFields($(this), e);
+                });
+
+                $(document).on('click', "#msg_pattern", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $('#msg_textarea').text($.trim($('#msg_textarea_pattern').text()));
+                    return false;
+                });
+
+                $(document).on('click', 'a[href*="send-message"]', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var mac = $($(this).closest('tr').children('td').get(0)).text();
+                    var macField = $("input[name='mac']");
+                    macField.val('').next('div').removeAttr('class').text('');
+                    var regExp = /([0-9a-fA-F]{2}([:]|$)){6}$/ig;
+                    if ($.trim(mac) != '' && regExp.test(mac)) {
+                        macField.val(mac).attr('readonly', 'readonly');
+{#                        macField.closest('.form-group').hide();#}
+                    } else {
+                        macField.removeAttr('readonly').next('div').append('<i class="txt-danger fa fa-ban"></i> Ведите MAC-адресс согласно формату').css('visibility', 'visible');
+                    }
+                    $("#modalbox_ad").show().find('input, select, textarea').removeAttr('disabled');
+                    checkFields('#s2_user_list_type', e);
+                    checkFields('#s2_event', e);
+                    $(this).closest("div.open").removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var formData = $("#modalbox_ad form").serialize();
+                    ajaxPostSend("{{app.request.baseUrl}}/events/add-event", formData);
+                    return false;
+                });
 
                 LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
             });
         }
 
@@ -440,5 +537,25 @@
             var cRow = $(obj).closest('tr');
             $('#datatable-1').DataTable().row(cRow).remove().draw(false);
         }
+        
+        function checkFields(obj, e) {
+            var dataName = $(obj).attr('id') == 's2_user_list_type' ? 'data-list-type' : 'data-event-type';
+            $("[" + dataName + "]").hide().find('input, select, textarea').attr('disabled', 'disabled');
+            $(obj).find('option').each(function () {
+                if (this.selected) {
+                    $('[' + dataName + '="' + $(this).val() + '"]').show().find('input, select, textarea').removeAttr('disabled');
+                }
+            });
+            return false;
+        }
+        
+        var addEvent = function(data){
+            alert(data.msg);
+            $('#modalbox_ad').click();
+        }
+        
+    </script>
+    <script type="text/template" id="msg_textarea_pattern">
+        Уважаемый абонент! Срок бесплатного тестирования наших услуг закончился. Просим Вас подойти в абонентский отдел (пр-т Ак. Глушко, 11-И, каб.8) для перезаключения договора либо возврата оборудования.
     </script>
 {% endblock %}

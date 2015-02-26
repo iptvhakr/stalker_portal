@@ -1,0 +1,446 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = 'karaoke' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-2">
+            <h3>Список караоке</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ main_macro.get_filter('protocol', 'Протокол', 'id', 'title', app['allProtocols'], 3) }}
+                    {{ main_macro.get_filter('status', 'Состояние', 'id', 'title', app['allStatus'], 3) }}
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-karaoke" class="btn btn-success pull-right" id="add_karaoke">Добавить</a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                                    {% if attribute(app, 'allKaraoke') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allKaraoke %}
+                                            <tr data-karaokeid="{{ item.id }}">
+                                                <td>{{ item.id }}</td>
+                                                <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="{{ item.id }}">{{ item.name }}</a></td>
+                                                <td>{{ item.singer }}</td>
+                                                <td>{{ item.added|date('M d, Y H:i') }}</td>
+                                                <td>{{ item.protocol }}</td>
+                                                <td>{% if item.rtsp_url|length > 0 %}{{ item.rtsp_url }}{% elseif not(item.protocol == 'custom') %}<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='{{ item.id }}'>в хранилище</a>{% endif %}</td>
+                                                <td>{{ item.media_claims }}</td>
+                                                <td>{% if item.done %}<span class="txt-success">Выполнено</span>{% else %}<span class="txt-danger">Невыполнено</span>{% endif %}</td>
+                                                <td>
+                                                    {% if item.accessed %}<span class="txt-success">Опубликованно</span>{% else %}<span>Не опубликованно</span>{% endif %}
+                                                    {% if not item.status %}<br><span class="txt-danger">Ошибка</span>{% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="{{ item.id }}">
+                                                                    <span>Редактировать</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a {% if not item.status %}disabled="disabled"{% endif %} class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed" data-karaokeid="{{ item.id }}" data-accessed="{{ item.accessed }}">
+                                                                    <span>{% if not item.accessed %}Опубликовать{% else %}Приостановить{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source" data-karaokeid="{{ item.id }}">
+                                                                    <span>Проверить файл</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-done" data-karaokeid="{{ item.id }}" data-done="{{ item.done }}">
+                                                                    <span>{% if item.done %}Отменить выполнение задания{% else %}Выполнить задание{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-karaoke" data-karaokeid="{{ item.id }}">
+                                                                    <span>Удалить</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- End: list_row -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalbox_ad">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span></span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box">
+                    <div class="box-content">
+                        <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-karaoke">
+                            <!-- track name -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">Название</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10 ">
+                                        <input type="hidden" name="id" class="own_fields">
+                                        <input type="text" name="name" class='own_fields form-control'>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- singer -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">Исполнитель</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input type="text" name="singer" class='form-control own_fields'>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- protocol -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">Протокол</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-6 ">
+                                        <select class="populate placeholder own_fields" name="protocol" id="s2_protocol">
+                                            {% if attribute(app, 'allProtocols') is defined %}
+                                                {% for s_item in app['allProtocols'] %}
+                                                    <option value="{{s_item.id}}">{{s_item.title}}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Протокол для доставки контента пользователю (http, nfs, custom url). Выбор протоколов http и nfs означает, файл будет храниться на сервере. Будет сгенерировано уникальное название, которым нужно переименовать добавленный файл. Протокол custom url означает, что файл загружается из сети. В таком случае требуется записать путь к этому файлу в формате solution + url.</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- URL -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">RTSP/HTTP URL</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input type="text" name="rtsp_url" class='form-control own_fields'>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Формат solution + URL. Пример fmpeg http://anon.nasa.net/download_135_720p.wmv</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                    
+    <script type="text/javascript" defer>
+
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
+                $('#s2_protocol').select2({minimumResultsForSearch: -1});
+
+            });
+        }
+        
+        function checkModalProtocol(){
+            var value = $("#s2_protocol").val();
+            var urlGroup = $("#s2_protocol").closest('div.form-group').next('div.form-group');
+            if (value == 'custom') {
+                urlGroup.stop(true, true).clearQueue().show().find('input').removeAttr('disabled');
+            } else {
+                urlGroup.stop(true, true).clearQueue().hide().find('input').attr('disabled', 'disabled');
+            }
+        }
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var status = json.data[i].status;
+                        var accessed = json.data[i].accessed;
+                        var done  = json.data[i].done;
+                        var name = json.data[i].name;
+                        json.data[i].rtsp_url = json.data[i].rtsp_url.length > 0?json.data[i].rtsp_url: (json.data[i].protocol != 'custom'? "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>в хранилище</a>": '');
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json' data-karaokeid='" + id + "'>\n\
+                                                                    <span>Редактировать</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a " + ( status == 0 ?"disabled='disabled'":"") + " class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed' data-karaokeid='" + id + "' data-accessed='" + accessed + "'>\n\
+                                                                    <span>" + ( accessed == 0 ?"Опубликовать":"Приостановить") + "</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/check-karaoke-source' data-karaokeid='" + id + "'>\n\
+                                                                    <span>Проверить файл</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-done' data-karaokeid='" + id + "' data-done='" + done + "'>\n\
+                                                                    <span>" + ( done != 0 ? "Отменить выполнение задания" : "Выполнить задание") + "</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-karaoke' data-karaokeid='" + id + "'>\n\
+                                                                    <span>Удалить</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                        json.data[i].accessed = accessed != 0 ? "<span class='txt-success'>Опубликованно</span>" : "<span>Не опубликованно</span>";
+                        if (parseInt(status, 10) == 0) {
+                            json.data[i].accessed += "<br><span class='txt-danger'>Ошибка</span>"
+                        }
+                        json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="' + id + '">' + name + '</a>';
+                        json.data[i].done = done != 0 ? '<span class="txt-success">Выполнено</span>' : '<span class="txt-danger">Невыполнено</span>';
+                        
+                        date = json.data[i]['added'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['added'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                        
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                    {"data": "id"},
+                    {"data": "name"},
+                    {"data": "singer"},
+                    {"data": "added"},
+                    {"data": "protocol"},
+                    {"data": "rtsp_url"},
+                    {"data": "media_claims"},
+                    {"data": "done"},
+                    {"data": "accessed"},
+                    {"data": "operations"}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "order": [[ 3, "desc" ]],
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1, -2]},
+                    {"sortable": false, "targets": [-1,]},
+                    {"width": "19%", "targets": [5] },
+                    {"width": "5%", "targets": [0, 4, 6,  7, -1] },
+                    {"width": "14%", "targets": [1, 2, 3, 8] }
+                ]
+            });
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $("#form_reset").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest('form').get(0).reset();
+    {#                    $("#cmd_data").find("tr:visible").remove();#}
+                    return false;
+                });
+                
+                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var lengthObj = 0;
+                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
+                        form_fields.each(function () {
+                        if ($(this).val()) {
+                            sendData[this.name] = $(this).val();
+                            lengthObj++;
+                        }
+                    });
+                    if (lengthObj < form_fields.length) {
+                        alert('Необходимо заполнить все поля');
+                        return false;
+                    }
+                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                    return false;
+                });
+                
+                $('#s2_protocol').on('change', function(){checkModalProtocol()});
+                
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    closeModalBox();
+                    return false;
+                });
+                
+                $("#add_karaoke").on("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var tmp_id = $('#datatable-1 tr:last').attr('id');
+                    if (!tmp_id) {
+                        tmp_id = "tr_" + $.randString();
+                        $('#datatable-1 tr:last').attr('id', tmp_id);
+                    }
+                    $("#modalbox_ad").data('tr_id', tmp_id);
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить');
+                    $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
+                    $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
+                    $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
+                    $('#s2_protokol').select2("destroy").select2({minimumResultsForSearch: -1});
+                    checkModalProtocol();
+                    $("#modalbox_ad").show();
+                    //        $(this).closest('.form-group').find('tbody tr:hidden').show();
+                    return false;
+                });
+                
+                LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+        var setKaraokeModal = function (data) {
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать');
+            if (data.data.length == 1) {
+                var row = data.data[0];
+                for (var field_name in row) {
+                    $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
+                }
+                $("#modalbox_ad select[name='protocol'] option").each(function () {
+                    $(this).attr('selected', $(this).val().toString() == data.data[0]['protocol'].toString());
+                })
+            }
+            $("#modalbox_ad input").removeAttr('disabled');
+            $('#s2_protocol').select2("destroy").select2({minimumResultsForSearch: -1});
+            checkModalProtocol();
+            $("#modalbox_ad").show();
+        }
+
+        var removeKaraoke = function (obj) {
+            var cRow = $(obj).closest('tr');
+            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
+        }
+        
+        var manageKaraoke = function (obj) {
+            $("#modalbox_ad").click();
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+        
+        var manageKaraokeError = function(obj){
+            if (typeof(obj.error) != 'undefined' && obj.error.length > 0) {
+                alert(obj.error);
+            }
+        }
+        
+        {#var checkSourceKaraoke = function(obj){
+            manageKaraoke(obj);
+        }#}
+        
+        var checkSourceKaraoke = function (obj){
+            $('#modalbox').show();
+            $('#modalbox').find('.modal-header-name span').text("Информация о медиа-источнике");
+            var baseInfo = obj.base_info;
+            if (typeof(baseInfo) == 'string') {
+                $('#modalbox').find('.devoops-modal-inner').append('<span>' + baseInfo + '</span>');
+            } else if (typeof(baseInfo) == 'object') {
+                var table = $('<table class="video_info"></table>').appendTo($('#modalbox').find('.devoops-modal-inner'));
+                table.append('<tr><td>Хранилище</td><td>Файл</td></tr>');
+                $.each(baseInfo, function(index, value){
+                    var trStr = '<tr><td>'+ value.storage_name +'</td><td>'+ value.file +'</td></tr>';
+                    table.append(trStr);
+                });
+            };
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+    </script>
+{% endblock %}

@@ -3,11 +3,11 @@
 
 {% block content %}
 
-    <div class="row header_title">
+{#    <div class="row header_title">
         <div class="col-xs-10 col-sm-3">
             <h3>{% if app['radioEdit'] %}Редактировать{% else %}Добавить{% endif %} радио</h3>
         </div>
-    </div>
+    </div>#}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
         <div class="bg-danger">
@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="form-group">
@@ -66,12 +66,7 @@
                             <label class="col-sm-2 control-label col-xs-offset-1">Звук</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    <p>
-                                    {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'slider-range-min-amount'}}) }}
-                                    </p>
-                                    <div class="progress progress-ui">
-                                        <div class="progress-bar progress-bar-info slider-range-min mainslider" style="width: 100%;"></div>
-                                    </div>
+                                    {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].volume_correction) }}
                                     </div>
@@ -88,7 +83,8 @@
                         <div class="row">
                             <div class="col-xs-10 col-sm-4 pull-right">
                                 {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'} }) }}#}
                             </div>
                         </div>
                     </div>
@@ -101,22 +97,16 @@
         {{ form_end(app['form']) }}  
     </div>
     <script type="text/javascript" defer>
+        
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
+                $('#form_volume_correction').select2({minimumResultsForSearch: -1});
+
+            });
+        }
+        
         function yelp() {
             $(document).ready(function () {
-                $(".slider-default").slider();
-                var slider_range_min_amount = $(".slider-range-min-amount");
-                var slider_range_min = $(".slider-range-min");
-                slider_range_min.slider({
-                        range: "min",
-                        step: 5,
-                        value: slider_range_min_amount.val() || '0',
-                        min: 0,
-                        max: 100,
-                        slide: function( event, ui ) {
-                                slider_range_min_amount.val( ui.value  + "%");
-                        }
-                });
-                slider_range_min_amount.val(slider_range_min.slider( "value" ) + "%");
                 
                 $(document).on('change keyup', '#form_number, #form_name', function(e){
                     var _this = $(this);
@@ -139,7 +129,7 @@
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
                                 _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                             } else {
-                                console.log('Some network error');
+                                console.log('Some network error or access denied');
                             }
                         },
                         dataType: "json",
@@ -147,7 +137,7 @@
                     });
                 });
                 
-                
+                LoadSelect2Script(DemoSelect2);
             });
         }
         document.addEventListener("DOMContentLoaded", yelp, false);

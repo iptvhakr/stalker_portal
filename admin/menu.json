@@ -6,26 +6,12 @@
         "icon2": "fa fa-cog pull-right",
         "action": {
             "1": {
-                "name": "Профиль",
-                "alias": "auth-user-profile",
-                "icon": "fa fa-user"
-            },
-            "2": {
-                "name": "Сообщения",
-                "alias": "auth-user-messages",
-                "icon": "fa fa-envelope"
-            },
-            "3": {
                 "name": "Задания",
-                "alias": "auth-user-tasks",
+                "self_parent_alias": "tasks",
+                "alias": "tasks-list",
                 "icon": "fa fa-tasks"
             },
-            "4": {
-                "name": "Настройки",
-                "alias": "auth-user-settings",
-                "icon": "fa fa-cog"
-            },
-            "5": {
+            "2": {
                 "name": "Выход",
                 "alias": "auth-user-logout",
                 "icon": "fa fa-power-off"
@@ -52,11 +38,6 @@
                 "name": "Переместить канал",
                 "alias": "move-channel",
                 "icon": ""
-            },
-            "4": {
-                "name": "EPG",
-                "alias": "epg",
-                "icon": ""
             }
         }
     },
@@ -77,7 +58,7 @@
                 "icon": ""
             },
             "3": {
-                "name": "Расписание",
+                "name": "Расписание публикаций",
                 "alias": "video-schedule",
                 "icon": ""
             },
@@ -212,38 +193,164 @@
         "icon": "fa fa-users",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
+            "1": {
+                "name": "Список администраторов",
+                "alias": "admins-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Группы администраторов",
+                "alias": "admins-groups",
+                "icon": ""
+            }
         }
     },
     "11": {
+        "name": "Задания",
+        "alias": "tasks",
+        "icon": "fa fa-check",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список заданий",
+                "alias": "tasks-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Отчет",
+                "alias": "tasks-report",
+                "icon": ""
+            }
+        }
+    },
+    "12": {
         "name": "Инфопортал",
         "alias": "infoportal",
         "icon": "fa fa-music",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
+            "1": {
+                "name": "Телефонный справочник",
+                "alias": "phone-book",
+                "icon": ""
+            },
+            "2": {
+                "name": "Юмор",
+                "alias": "humor",
+                "icon": ""
+            }
         }
     },
-    "12": {
+    "13": {
         "name": "Статистика",
         "alias": "statistics",
         "icon": "fa fa-microphone",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
+            "1": {
+                "name": "Статистика видео",
+                "alias": "stat-video",
+                "icon": ""
+            },
+            "2": {
+                "name": "Статистика ТВ",
+                "alias": "stat-tv",
+                "icon": ""
+            },
+            "3": {
+                "name": "Статистика ТВ архива",
+                "alias": "stat-tv-archive",
+                "icon": ""
+            },
+            "4": {
+                "name": "Статистика TimeShift",
+                "alias": "stat-timeshift",
+                "icon": ""
+            },
+            "5": {
+                "name": "Статистика модераторов",
+                "alias": "stat-moderators",
+                "icon": ""
+            },
+            "6": {
+                "name": "Абонентская статистика",
+                "alias": "stat-abonents",
+                "icon": ""
+            },
+            "7": {
+                "name": "Неактивные абоненты",
+                "alias": "stat-abonents-unactive",
+                "icon": ""
+            },
+            "8": {
+                "name": "Статистика жалоб",
+                "alias": "stat-claims",
+                "icon": ""
+            }
         }
     },
-    "13": {
+    "14": {
+        "name": "Хранилища",
+        "alias": "storages",
+        "icon": "fa fa-hdd-o",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список хранилищ",
+                "alias": "storages-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Поиск видео",
+                "alias": "storages-video-search",
+                "icon": ""
+            },
+            "3": {
+                "name": "Логи",
+                "alias": "storages-logs",
+                "icon": ""
+            }
+        }
+    },
+    "15": {
+        "name": "Сервера вещания",
+        "alias": "broadcast-servers",
+        "icon": "fa fa-globe",
+        "icon2": "pull-right fa fa-chevron-left",
+        "action": {
+            "1": {
+                "name": "Список серверов",
+                "alias": "broadcast-servers-list",
+                "icon": ""
+            },
+            "2": {
+                "name": "Зоны вещания",
+                "alias": "broadcast-zone-list",
+                "icon": ""
+            }
+        }
+    },
+    "16": {
         "name": "Настройки",
         "alias": "settings",
         "icon": "fa fa-columns",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
-        }
-    },
-    "14": {
-        "name": "Справка",
-        "alias": "information",
-        "icon": "fa fa-music",
-        "icon2": "pull-right fa fa-chevron-left",
-        "action": {
+            "1": {
+                "name": "EPG",
+                "alias": "epg",
+                "icon": ""
+            },
+            "2": {
+                "name": "Внешний вид",
+                "alias": "themes",
+                "icon": ""
+            },
+            "3": {
+                "name": "Обновление прошивки",
+                "alias": "common",
+                "icon": ""
+            }
         }
     }
 }

@@ -10,16 +10,35 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class EventsController extends \Controller\BaseStalkerController {
     
-    private $allEvent = array(
-            "send_msg" => "send_msg",
-            "reboot" => "reboot",
-            "reload_portal" => "reload_portal",
-            "update_channels" => "update_channels",
-            "play_channel" => "play_channel",
-            "mount_all_storages" => "mount_all_storages",
-            "cut_off" => "cut_off",
-            "update_image" => "update_image"
+    private $formEvent = array(
+            array("id" => "send_msg",           "title" => "Отправка сообщения"),
+            array("id" => "reboot",             "title" => "Перезагрузка"),
+            array("id" => "reload_portal",      "title" => "Перезагрузка портала"),
+            array("id" => "update_channels",    "title" => "Обновление каналов"),
+            array("id" => "play_channel",       "title" => "Воспроизводение канала"),
+            array("id" => "mount_all_storages", "title" => "Монтирование всех хранилищь"),
+            array("id" => "cut_off",            "title" => "Выключение"),
+            array("id" => "update_image",       "title" => "Обновление образа")
         );
+    private $hiddenEvent = array(
+            array("id" => "update_epg",                 "title" => "Обновление EPG"),
+            array("id" => "update_subscription",        "title" => "Обновление подписки"),
+            array("id" => "update_modules",             "title" => "Обновление модулей"),
+            array("id" => "cut_on",                     "title" => "Включение"),
+            array("id" => "show_menu",                  "title" => "Показ меню"),
+            array("id" => "additional_services_status", "title" => "Статус доп. услуги")
+        );
+
+    private $sendedStatus = array(
+            array("id" => 1 , "title" => "Не отправлено"),
+            array("id" => 2 , "title" => "Отправлено")
+    );
+    
+    private $receivingStatus = array(
+            array("id" => 1 , "title" => "Не получено"),
+            array("id" => 2 , "title" => "Получено")
+    );
+
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
@@ -38,24 +57,29 @@ class EventsController extends \Controller\BaseStalkerController {
             $param = array();
             if (!empty($this->data['uid'])) {
                 $param['id'] = $this->data['uid'];
-            }
-            
-            if (!empty($this->data['filters']['mac'])) {
+            } elseif (!empty($this->data['filters']['mac'])) {
                 $param['mac'] = $this->data['filters']['mac'];
             }
-            
+
             $currentUser = $this->db->getUser($param);
             $this->app['currentUser'] = array(
                 'name' => $currentUser['fname'],
-                'mac' => $currentUser['mac'],
-                'uid' => $currentUser['id']
+                'mac' => (!empty($this->data['filters']['mac'])? $this->data['filters']['mac']: $currentUser['mac']),
+                'uid' => (!empty($this->data['uid'])? $this->data['uid']: $currentUser['id'])
             );
         }
         $this->app['eventList'] = $list['data'];
-        $this->app['allEvent'] = $this->allEvent;
+        $this->app['formEvent'] = $this->formEvent;
+        $this->app['allEvent'] = array_merge($this->formEvent, $this->hiddenEvent);
+        $this->app['sendedStatus'] = $this->sendedStatus;
+        $this->app['receivingStatus'] = $this->receivingStatus;
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
+        
+        if (!empty($this->app['currentUser'])) {
+            $this->app['breadcrumbs']->addItem("События пользователя {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
+        }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -81,6 +105,7 @@ class EventsController extends \Controller\BaseStalkerController {
             'event' => "events.`event` as `event`",
             'msg' => "events.`msg` as `msg`",
             'sended' => "events.`sended` as `sended`",
+            'ended' => "events.`ended` as `ended`",
             'uid' => "events.`uid` as `uid`",
             'name' => "users.`fname` as `name`"
         );
@@ -116,6 +141,21 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         $response['data'] = $this->db->getEventsList($query_param);
+        $allevents = $this->formEvent;
+        $allevents = array_combine($this->getFieldFromArray($allevents, 'id'), $this->getFieldFromArray($allevents, 'title'));
+        
+        $hiddenevents = $this->hiddenEvent;
+        $hiddenevents = array_combine($this->getFieldFromArray($hiddenevents, 'id'), $this->getFieldFromArray($hiddenevents, 'title'));
+        
+        $events = array_merge($allevents, $hiddenevents);
+
+        $response['data'] = array_map(function($row) use ($events){
+            $row['event'] = $events[$row['event']];
+            $row['mac'] = (!empty($row['mac']) ? $row['mac']: 'no_mac_address');
+            $row['addtime'] = (int)  strtotime($row['addtime']);
+            $row['eventtime'] = (int)  strtotime($row['eventtime']);
+            return $row;
+        }, $response['data']);
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
@@ -140,11 +180,13 @@ class EventsController extends \Controller\BaseStalkerController {
         $data['msg'] = 'Добавлено ';
         $error = 'Ошибка. Событие не добавлено.';
         
+        $_SERVER['TARGET'] = 'ADM';
         $event = new \SysEvent();
         $event->setTtl($this->postData['ttl']);
         $get_list_func_name = 'get_userlist_' . str_replace('to_', '', $this->postData['user_list_type']);
         $set_event_func_name = 'set_event_' . str_replace('to_', '', $this->postData['event']);
         $user_list = $this->$get_list_func_name($event);
+//        $event->setUserListById($user_list);
         if ($this->$set_event_func_name($event, $user_list)){
             $data['msg'] .= count($user_list) . ' пользователям';
             $error = '';
@@ -217,10 +259,18 @@ class EventsController extends \Controller\BaseStalkerController {
             $return['event'] = $this->data['filters']['event'];
         }
 
+        if (!empty($this->data['filters']) && !empty($this->data['filters']['sended'])) {
+            $return['sended'] = (int)$this->data['filters']['sended'] - 1;
+        }
+        
+        if (!empty($this->data['filters']) && !empty($this->data['filters']['ended'])) {
+            $return['ended'] = (int)$this->data['filters']['ended'] - 1;
+        }
+        
         if (!empty($this->data['uid'])) {
             $return['uid'] = $this->data['uid'];
         }
-        
+                
         $this->app['filters'] = !empty($this->data['filters']) ? $this->data['filters'] : array();
         return $return;
     }
@@ -229,10 +279,10 @@ class EventsController extends \Controller\BaseStalkerController {
         $user_list = array();
         if ($this->postData['event'] == 'send_msg'){
             $event->setUserListByMac('all');
-            $user_list = \Middleware::getOnlineUsersId();
+            $user_list = \Middleware::getAllUsersId();
         }else{
             $event->setUserListByMac('online');
-            $user_list = \Middleware::getAllUsersId();
+            $user_list = \Middleware::getOnlineUsersId();
         }
         return $user_list;
     }
@@ -320,7 +370,6 @@ class EventsController extends \Controller\BaseStalkerController {
     }
     
     private function set_event_mount_all_storages(&$event, $user_list){
-        $_SERVER['TARGET'] = 'ADM';
         $event->sendMountAllStorages();
         return TRUE;
     }

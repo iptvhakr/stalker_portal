@@ -2,14 +2,14 @@
 {% set title = 'video-club' %}
 
 {% block content %}
-    <div class="row header_title">
-        <div class="col-xs-10 col-sm-2">
-            <h3>Рассписание</h3>
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>Рассписание публикаций</h3>
         </div>
-    </div>
+    </div>#}
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="box-content no-padding">
@@ -35,10 +35,10 @@
                                                 <td data-filter="o_name">{{ item.o_name }}</td>
                                                 <td data-filter="time">{{ item.time }}</td>
                                                 <td data-filter="tasks">
-                                                    <a href="?task={{ item['id'] }}">№{{ item['id'] }} (запланированно на {{ item['date_on']|date('d-m-Y') }})</a>                                                        
+                                                    <a href="#{#?task={{ item['id'] }}#}">№{{ item['id'] }} (запланированно на {{ item['date_on']|date('d-m-Y') }})</a>                                                        
                                                 </td>
                                                 <td data-filter="year">{{ item.year }}</td>
-                                                <td data-filter="operations">
+                                                <td data-filter="operations" class="action-menu">
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
                                                             <i class="pull-right fa fa-cog"></i>
@@ -68,7 +68,7 @@
                                     </tbody>
                                 </table>
                             {% else %}
-                                <h3>Ничего не запланированно</h3>
+                                <h3>Нет запланированных публикаций</h3>
                             {% endif %}
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                 if ($.isFunction(window[errAction])) {
                                     window[errAction]($(_this));
                                 } else {
-                                    alert('Some network error');
+                                    alert('Some network error or access denied');
                                 }
                             },
                             dataType: "json",

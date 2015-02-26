@@ -27,6 +27,14 @@
                                 <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader"/>
                             </div>
                             <div id="ajax-content">
+                                <div class="row">
+                                    <div class="box-content">
+                                        <div id="breadcrumb">
+                                            {{ renderBreadCrumbs() }}
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 {% block content %}
                                 {% endblock content %}
                             </div>

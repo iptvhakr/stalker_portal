@@ -1,0 +1,33 @@
+#letters fieldset {
+	border: 0;
+}
+
+#letters select {
+	height: 300px !important;
+}
+
+#letters fieldset {
+	width: 5%;
+	height: 100px;
+	padding: 10px;
+	padding-top: 25px;
+}
+
+#letters option {
+	width: 100% !important;
+	border: 0;
+	border-bottom: 1px dotted #959DB7;
+}
+
+#letters select.left option.old{
+    background-color: rgba(241, 166, 166, 0.8);
+}
+
+#letters select.right option.new{
+    background-color: rgba(166, 241, 166, 0.8);
+}
+
+#letters label{
+    text-align: center;
+    padding-bottom: 10px;
+}

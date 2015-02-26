@@ -2,25 +2,25 @@
 {% set title = 'users' %}
 
 {% block content %}
-    <div class="row header_title">
+{#    <div class="row header_title">
         <div class="col-xs-10 col-sm-6">
             <h3>Приставки группы "{{ app['consoleGroup']['name'] }}"</h3>
         </div>
-    </div>
+    </div>#}
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-8 col-sm-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-console-item" class="btn btn-success pull-right" id="add_console_item">Добавить</a>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="box-content no-padding">
                             <div class="row">
-                                <div class="col-xs-8 col-sm-6 col-sm-offset-3">
+                                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                                     <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
                                         <thead>
                                             <tr>
@@ -101,6 +101,7 @@
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
                     {"sortable": false, "targets": [-1]}
                 ]
@@ -140,7 +141,7 @@
                                     _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                                 } else {
                                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                    console.log('Some network error');
+                                    console.log('Some network error or access denied');
                                 }
                             },
                             dataType: "json",
@@ -177,7 +178,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error');
+                                alert('Some network error or access denied');
                             }
                         },
                         dataType: "json",
@@ -241,7 +242,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction](data.responseJSON);
                             } else {
-                                alert('Some network error');
+                                alert('Some network error or access denied');
                             }
                         },
                         dataType: "json",
@@ -286,7 +287,7 @@
                 <div class="box-content">\n\
                     <form class="form-horizontal" role="form">\n\
                         <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">Имя</label>\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">MAC</label>\n\
                             <div class="col-xs-10 col-sm-8">\n\
                                 <span class="col-xs-12 col-sm-12">\n\
                                     <input type="hidden" name="groupid">\n\

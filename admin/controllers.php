@@ -3,7 +3,7 @@
 namespace Controller;
 
 $app['saveFiles'] = function() use ($app) {
-    return new \Silex\Application\Save($app);
+    return new \Lib\Save($app);
 };
 
 //$app->get('/', function() use ($app) {
