@@ -67,15 +67,11 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $storage = Master::getStorageByName($task['storage_name']);
 
-        if ($storage['wowza_server']){
-            $storage['storage_ip'] = empty($storage['archive_stream_server']) ? $storage['storage_ip'] : $storage['archive_stream_server'];
-        }
-
         $res['storage_id'] = $storage['id'];
 
         $position = date("i", $start_timestamp) * 60;
 
-        if ($channel['flussonic_dvr']){
+        if ($storage['flussonic_dvr']){
 
             if (preg_match("/:\/\/([^\/]*)\/([^\/]*).*(mpegts|m3u8)$/", $channel['mc_cmd'], $match)){
 
@@ -84,10 +80,39 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 }else{
                     $res['cmd'] = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
                     $res['cmd'] = preg_replace('/\.m3u8/', '-' . $start_timestamp
-                        . '-' . ($stop_timestamp - $start_timestamp) . '.m3u8' ,$res['cmd']);
+                        . '-' . ($stop_timestamp - $start_timestamp) . '.m3u8', $res['cmd']);
                 }
 
+                $res['cmd'] .= '?ch_id=' . $program['ch_id']
+                    . '&token='.$this->createTemporaryToken()
+                    . '&start=' . $position
+                    . '&duration=' . ($stop_timestamp - $start_timestamp)
+                    . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+                    . '&real_id=' . $program['real_id'];
+
                 $res['download_cmd'] = 'http://'.$storage['storage_ip'].'/'.$match[2].'/archive-'.$start_timestamp.'-'.($stop_timestamp - $start_timestamp).'.ts';
+
+            }else{
+                $res['error'] = 'link_fault';
+            }
+
+        }elseif ($storage['wowza_dvr']){
+
+            if (preg_match("/:\/\/([^\/]*)\/.*\.m3u8/", $channel['mc_cmd'], $match)){
+
+                $res['cmd'] = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
+                $res['cmd'] = preg_replace('/\.m3u8.*/',
+                    '.m3u8?DVR&wowzadvrplayliststart=' . gmdate("YmdHis", $start_timestamp)
+                    . '&wowzadvrplaylistduration=' . ($stop_timestamp - $start_timestamp)*1000,
+                    $res['cmd'])
+                    . '&ch_id=' . $program['ch_id']
+                    . '&token='.$this->createTemporaryToken()
+                    . '&start=' . $position
+                    . '&duration=' . ($stop_timestamp - $start_timestamp)
+                    . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+                    . '&real_id=' . $program['real_id'];
+
+                $res['download_cmd'] = false;
 
             }else{
                 $res['error'] = 'link_fault';
@@ -188,14 +213,61 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $channel = Itv::getChannelById($program['ch_id']);
 
-        return 'http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
-            . '/stalker_portal/storage/get.php?filename=' . $filename
-            . '&ch_id=' . $program['ch_id']
-            . '&token='.$this->createTemporaryToken()
-            . '&start=' . $position
-            . '&duration=' . ($stop_timestamp - $start_timestamp)
-            . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
-            . '&real_id=' . $program['real_id'];
+        if ($storage['flussonic_dvr']){
+
+            if (preg_match("/:\/\/([^\/]*)\/([^\/]*).*(mpegts|m3u8)$/", $channel['mc_cmd'], $match)){
+
+                if ($match[3] == 'mpegts'){
+                    $url = 'http://'.$storage['storage_ip'].'/'.$match[2].'/archive/'.$start_timestamp.'/'.($stop_timestamp - $start_timestamp).'/mpegts';
+                }else{
+                    $url = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
+                    $url = preg_replace('/\.m3u8/', '-' . $start_timestamp
+                        . '-' . ($stop_timestamp - $start_timestamp) . '.m3u8', $url);
+                }
+
+                $url .= '?ch_id=' . $program['ch_id']
+                    . '&token='.$this->createTemporaryToken()
+                    . '&start=' . $position
+                    . '&duration=' . ($stop_timestamp - $start_timestamp)
+                    . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+                    . '&real_id=' . $program['real_id'];
+
+            }else{
+                $url = false;
+            }
+
+        }elseif ($storage['wowza_dvr']){
+
+            if (preg_match("/:\/\/([^\/]*)\/.*\.m3u8/", $channel['mc_cmd'], $match)){
+
+                $url = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
+                $url = preg_replace('/\.m3u8.*/',
+                    '.m3u8?DVR&wowzadvrplayliststart=' . gmdate("YmdHis", $start_timestamp)
+                    . '&wowzadvrplaylistduration=' . ($stop_timestamp - $start_timestamp)*1000,
+                    $url)
+                    . '&ch_id=' . $program['ch_id']
+                    . '&token='.$this->createTemporaryToken()
+                    . '&start=' . $position
+                    . '&duration=' . ($stop_timestamp - $start_timestamp)
+                    . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+                    . '&real_id=' . $program['real_id'];
+
+            }else{
+                $url = false;
+            }
+
+        }else{
+            $url = Config::getSafe('tv_archive_player_solution', 'ffmpeg').' http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
+                . '/stalker_portal/storage/get.php?filename=' . $filename
+                . '&ch_id=' . $program['ch_id']
+                . '&token='.$this->createTemporaryToken()
+                . '&start=' . $position
+                . '&duration=' . ($stop_timestamp - $start_timestamp)
+                . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
+                . '&real_id=' . $program['real_id'];
+        }
+
+        return $url;
     }
 
     public function getNextPartUrl(){
@@ -524,13 +596,13 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             return false;
         }
 
-        if (!empty($force_storage) && array_key_exists($force_storage, $this->storages) && $this->storages[$force_storage]['fake_tv_archive'] == 1){
+        if (!empty($force_storage) && array_key_exists($force_storage, $this->storages) && ($this->storages[$force_storage]['fake_tv_archive'] == 1 || $this->storages[$force_storage]['flussonic_dvr'] == 1 || $this->storages[$force_storage]['wowza_dvr'] == 1)){
             return true;
         }
 
         $channel = Itv::getChannelById($ch_id);
 
-        if ($channel['flussonic_dvr']){
+        if ($channel['flussonic_dvr'] || $channel['wowza_dvr']){
             return true;
         }
 
@@ -575,7 +647,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             return true;
         }
 
-        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 0 && $this->storages[$task['storage_name']]['flussonic_server'] == 0){
+        if (array_key_exists($task['storage_name'], $this->storages) && $this->storages[$task['storage_name']]['fake_tv_archive'] == 0 && $this->storages[$task['storage_name']]['flussonic_dvr'] == 0 && $this->storages[$task['storage_name']]['wowza_dvr'] == 0){
             $this->clients[$task['storage_name']]->resource('tv_archive_recorder')->ids($task['ch_id'])->delete();
         }
 
@@ -597,7 +669,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         Mysql::getInstance()->delete('tv_archive', array('ch_id' => $ch_id));
 
-        if (array_key_exists($task['storage_name'], $this->storages) && ($this->storages[$task['storage_name']]['fake_tv_archive'] == 1 || $this->storages[$task['storage_name']]['flussonic_server'] == 1)){
+        if (array_key_exists($task['storage_name'], $this->storages) && ($this->storages[$task['storage_name']]['fake_tv_archive'] == 1 || $this->storages[$task['storage_name']]['flussonic_dvr'] == 1 || $this->storages[$task['storage_name']]['wowza_dvr'] == 1)){
             return true;
         }
 

@@ -130,6 +130,12 @@ if (!$error){
         $flussonic_dvr = 0;
     }
 
+    if (@$_POST['wowza_dvr'] == 'on'){
+        $wowza_dvr = 1;
+    }else{
+        $wowza_dvr = 0;
+    }
+
     if (@$_POST['enable_tv_archive'] == 'on'){
         $enable_tv_archive = 1;
     }else{
@@ -143,6 +149,7 @@ if (!$error){
     if (empty($storage_names)){
         $enable_tv_archive = 0;
         $flussonic_dvr = 0;
+        $wowza_dvr = 0;
     }
 
     $pvr_storage_names = empty($_POST['pvr_storage_names']) ? array() : $_POST['pvr_storage_names'];
@@ -980,9 +987,11 @@ a:hover{
             if ($(this).attr('checked')){
                 $(this).next().show();
                 $(this).next().next().show();
+                $(this).next().next().next().show();
             }else{
                 $(this).next().hide();
                 $(this).next().next().hide();
+                $(this).next().next().next().hide();
             }
         });
 
@@ -990,9 +999,25 @@ a:hover{
             if ($(this).attr('checked')){
                 $('.flussonic_stream_server').removeAttr('disabled');
                 $('.generic_stream_server').attr('disabled', 'disabled');
+                $('.wowza_stream_server').attr('disabled', 'disabled');
+                $('.wowza_dvr').attr('disabled', 'disabled');
             }else{
                 $('.flussonic_stream_server').attr('disabled', 'disabled');
                 $('.generic_stream_server').removeAttr('disabled');
+                $('.wowza_dvr').removeAttr('disabled');
+            }
+        });
+
+        $('.wowza_dvr').click(function(){
+            if ($(this).attr('checked')){
+                $('.wowza_stream_server').removeAttr('disabled');
+                $('.generic_stream_server').attr('disabled', 'disabled');
+                $('.flussonic_stream_server').attr('disabled', 'disabled');
+                $('.flussonic_dvr').attr('disabled', 'disabled');
+            }else{
+                $('.wowza_stream_server').attr('disabled', 'disabled');
+                $('.generic_stream_server').removeAttr('disabled');
+                $('.flussonic_dvr').removeAttr('disabled');
             }
         })
     });
@@ -1598,6 +1623,7 @@ function delete_logo(id){
            <td>
             <input name="enable_tv_archive" id="enable_tv_archive" class="enable_tv_archive" type="checkbox" <? echo @$checked_enable_tv_archive ?> >
             <span class="flussonic_dvr_block" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>"> <?= _('Flussonic DVR')?><input type="checkbox" class="flussonic_dvr" name="flussonic_dvr" <?= @$checked_flussonic_dvr?>></span>
+            <span class="wowza_dvr_block" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>"> <?= _('Wowza DVR')?><input type="checkbox" class="wowza_dvr" name="wowza_dvr" <?= @$checked_wowza_dvr?>></span>
             <span id="storage_name" style="display: <?echo @$checked_enable_tv_archive ? '' : 'none' ?>">
                 <table width="100%" style="background-color:#f8f8f8">
                     <? foreach ($storages as $storage){?>
@@ -1605,11 +1631,19 @@ function delete_logo(id){
                         <td width="50%"><?= $storage['storage_name']?>:</td>
                         <td width="50%">
                             <input type="checkbox"
-                                   class="stream_server <?= $storage['flussonic_server'] ? 'flussonic_stream_server' : 'generic_stream_server'?>"
+                                   class="stream_server <?
+                                    if ($storage['flussonic_dvr']){
+                                        echo "flussonic_stream_server";
+                                    }elseif ($storage['wowza_dvr']){
+                                        echo "wowza_stream_server";
+                                    }else{
+                                        echo "generic_stream_server";
+                                    }
+                                   ?>"
                                    name="storage_names[]"
                                    value="<?= $storage['storage_name']?>"
                                    <?= (in_array($storage['storage_name'], $selected_storages) ? 'checked' : '')?>
-                                   <?= $storage['flussonic_server'] && !isset($checked_flussonic_dvr) || !$storage['flussonic_server'] && isset($checked_flussonic_dvr) ? 'disabled' : ''?>
+                                   <?= $storage['flussonic_dvr'] && !isset($checked_flussonic_dvr) || $storage['wowza_dvr'] && !isset($checked_wowza_dvr) || !$storage['flussonic_dvr'] && !$storage['wowza_dvr'] && isset($checked_flussonic_dvr) ? 'disabled' : ''?>
                                 />
                         </td>
                     </tr>
@@ -1636,7 +1670,7 @@ function delete_logo(id){
                 <span id="pvr_storage_name" style="display: <?echo @$checked_allow_pvr ? '' : 'none' ?>">
                 <table width="100%" style="background-color:#f8f8f8">
                     <? foreach ($storages as $storage){
-                        if ($storage['flussonic_server']){
+                        if ($storage['flussonic_dvr'] || $storage['wowza_dvr']){
                             continue;
                         }
                     ?>

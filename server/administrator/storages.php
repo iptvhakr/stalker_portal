@@ -34,7 +34,8 @@ if (@$_POST['add']){
         'user_agent_filter'     => @$_POST['user_agent_filter'],
         'for_moderator'         => @intval($_POST['for_moderator']),
         'for_records'           => @intval($_POST['for_records']),
-        'flussonic_server'      => @intval($_POST['flussonic_server']),
+        'flussonic_dvr'      => @intval($_POST['flussonic_dvr']),
+        'wowza_dvr'             => @intval($_POST['wowza_dvr']),
         'fake_tv_archive'       => @intval($_POST['fake_tv_archive']),
         'archive_stream_server' => @$_POST['archive_stream_server'],
         'external'              => @intval($_POST['external']),
@@ -67,7 +68,8 @@ if (!empty($id)){
                 'user_agent_filter'     => @$_POST['user_agent_filter'],
                 'for_moderator'         => @intval($_POST['for_moderator']),
                 'for_records'           => @intval($_POST['for_records']),
-                'flussonic_server'      => @intval($_POST['flussonic_server']),
+                'flussonic_dvr'      => @intval($_POST['flussonic_dvr']),
+                'wowza_dvr'             => @intval($_POST['wowza_dvr']),
                 'fake_tv_archive'       => @intval($_POST['fake_tv_archive']),
                 'archive_stream_server' => @$_POST['archive_stream_server'],
                 'external'              => @intval($_POST['external']),
@@ -187,10 +189,12 @@ a:hover{
 
         $('.for_records').click(function(){
             if ($(this).attr('checked')){
-                $('.flussonic_server').show();
+                $('.flussonic_dvr').show();
+                $('.wowza_dvr').show();
                 $('.fake_tv_archive').show();
             }else{
-                $('.flussonic_server').hide();
+                $('.flussonic_dvr').hide();
+                $('.wowza_dvr').hide();
                 $('.fake_tv_archive').hide();
             }
         });
@@ -316,9 +320,13 @@ a:hover{
                     <td style="vertical-align: top"><?= _('Record TV')?></td>
                     <td>
                         <input type="checkbox" class="for_records" name="for_records" value="1" <? if(@$edit_storage['for_records']){ echo 'checked="checked"'; } ?> onchange="this.checked ? document.getElementById('fake_tv_archive').style.display = '' : document.getElementById('fake_tv_archive').style.display = 'none'"/>
-                        <div class="flussonic_server" style="text-align: right; margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
-                            Flussonic server
-                            <input type="checkbox" name="flussonic_server" value="1" <? if(@$edit_storage['flussonic_server']){ echo 'checked="checked"'; } ?> />
+                        <div class="flussonic_dvr" style="text-align: right; margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
+                            Flussonic DVR
+                            <input type="checkbox" name="flussonic_dvr" value="1" <? if(@$edit_storage['flussonic_dvr']){ echo 'checked="checked"'; } ?> />
+                        </div>
+                        <div class="wowza_dvr" style="text-align: right; margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
+                            Wowza DVR
+                            <input type="checkbox" name="wowza_dvr" value="1" <? if(@$edit_storage['wowza_dvr']){ echo 'checked="checked"'; } ?> />
                         </div>
                         <div class="fake_tv_archive" style="text-align: right; margin-left: 5px; display: <?echo @$edit_storage['for_records'] ? '' : 'none' ?>">
                             <?= _('Emulation')?>
@@ -327,7 +335,7 @@ a:hover{
                     </td>
                 </tr>
                 <tr>
-                    <td><?= _('Wowza')?></td>
+                    <td><?= _('Wowza VOD')?></td>
                     <td><input type="checkbox" class="wowza_server" name="wowza_server" value="1" <? if(@$edit_storage['wowza_server']){ echo 'checked="checked"'; } ?>/></td>
                 </tr>
                 <tr class="wowza_port_block" style="display: <?= empty($edit_storage['wowza_server']) ? 'none' : ''?>">
