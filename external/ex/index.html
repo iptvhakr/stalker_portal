@@ -46,7 +46,7 @@
 		.page#pageMediaPlayer #slideContainer .fix { width:0; height:100%; overflow:hidden; display:inline-block; vertical-align:middle; text-align:left; }
 		.page#pageMediaPlayer .animationContainer {	margin:0 auto; width:500px; height:162px; display:inline-block; vertical-align:middle; overflow:hidden; text-align:left; }
 		.page#pageMediaPlayer .slide { position:absolute; -webkit-animation-name:play; -webkit-animation-iteration-count:infinite; -webkit-animation-duration:0.8s; opacity:0; }
-		@-webkit-keyframes play { 0% { opasiti:0 } 10% { opasity:1; } 40% { opacity:1; } 100% { opasiti:0 }	}
+		@-webkit-keyframes play { 0% { opacity:0 } 10% { opacity:1; } 40% { opacity:1; } 100% { opacity:0 }	}
 
 		.page#pageMediaPlayer .animationPlay4 { -webkit-animation-delay:0s; }
 		.page#pageMediaPlayer .animationPlay3 { -webkit-animation-delay:0.2s; }
@@ -63,8 +63,9 @@
 		</script>
 	</head>
 	<body onkeydown="mainEventListener(event);" id="body">
-		<div id="loading"  >
-			<span>Loading ...</span>
+		<div id="loading">
+			<span>Loading...</span>
+			<div id="loadingVersion"></div>
 		</div>
 
 
