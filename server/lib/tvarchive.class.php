@@ -138,7 +138,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
     private function createTemporaryToken(){
 
-        $key = md5(mktime(1).uniqid());
+        $key = md5(microtime(1).uniqid());
 
         $cache = Cache::getInstance();
 
