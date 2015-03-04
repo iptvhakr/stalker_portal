@@ -30,8 +30,9 @@
 
         params += 'referrer='+encodeURIComponent(window.location);
 
-        _debug('url', '/' + stb.portal_path + '/external/megogo/index.html'+params);
-        window.location = '/' + stb.portal_path + '/external/megogo/index.html'+params;
+        var url = 'http://aura-app.megogo.net/'+params;
+        _debug('url', url);
+        window.location = url;
     }, {layer_name : "megogo"});
 
     loader.next();
