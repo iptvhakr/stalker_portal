@@ -38,7 +38,7 @@ class ItvSubscription
             return array();
         }
 
-        if (!Stb::getInstance()->isModerator()){
+        if (Stb::getInstance()->isModerator()){
             return Mysql::getInstance()->from('itv')->where(array('base_ch' => 0))->get()->all('id');
         }
 

@@ -543,7 +543,7 @@ function CModalFileSelect ( parent, options ) {
 
 	this.bpanelBottom = new CButtonPanel();
 	this.bpanelBottom.Init(CMODAL_IMG_PATH);
-	this.bpanelBottom.Add(KEYS.EXIT, 'ico_exit.png', LANG_MEDIA_DEFAULT_ABORT, function(){
+	this.bpanelBottom.Add(KEYS.EXIT, 'ico_exit.png', lang.cancel, function(){
 		// hide and destroy
 		self.Show(false);
 	});
@@ -619,7 +619,7 @@ function CModalCreateGroup( parent, label, text, data,toDelete) {
 
 	this.bpanel = new CButtonPanel();
 	this.bpanel.Init(CMODAL_IMG_PATH);
-	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', LANG_MEDIA_DEFAULT_ABORT, function(){
+	this.bpanel.Add(KEYS.EXIT, 'ico_exit.png', lang.cancel, function(){
 		// hide and destroy
 		self.Show(false);
 	});

@@ -359,7 +359,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return array('token' => $this->getParam('access_token'));
         }
 
-        $token = strtoupper(md5(mktime(1).uniqid()));
+        $token = strtoupper(md5(microtime(1).uniqid()));
 
         $response = array('token' => $token);
 

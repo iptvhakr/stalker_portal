@@ -171,7 +171,7 @@ class AuthAccessHandler extends AccessHandler
         return Mysql::getInstance()
             ->update('access_tokens',
                 array(
-                    'token'         => 'invalid_'.md5(mktime(1).uniqid()),
+                    'token'         => 'invalid_'.md5(microtime(1).uniqid()),
                     'refresh_token' => 'invalid'
                 ),
                 array('uid' => $uid))

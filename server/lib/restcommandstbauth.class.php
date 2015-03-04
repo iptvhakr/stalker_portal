@@ -12,7 +12,7 @@ class RESTCommandStbAuth extends RESTCommand
 
         foreach ($stb_list as $uid){
             Mysql::getInstance()->update('users',
-                array('access_token' => strtoupper(md5(mktime(1).uniqid()))),
+                array('access_token' => strtoupper(md5(microtime(1).uniqid()))),
                 array('id' => $uid)
             );
         }
