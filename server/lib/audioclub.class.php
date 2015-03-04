@@ -421,4 +421,119 @@ class Audioclub extends AjaxResponse implements \Stalker\Lib\StbApi\Audioclub
             'id' => (int) $_REQUEST['playlist_id']
          ))->result();
     }
+
+    public function trackSearch(){
+
+        $search_str = empty($_REQUEST['search_str']) ? '' : (string) $_REQUEST['search_str'];
+        if (strlen($search_str) < 1) {
+            $search_str = '';
+        }
+        $offset = $this->page * self::max_page_items;
+
+        $result = Mysql::getInstance()->from('audio_compositions')
+            ->select('audio_compositions.*, audio_languages.name as language')
+            ->where(array('audio_compositions.status' => 1))
+            ->join('audio_languages', 'audio_compositions.language_id', 'audio_languages.id', 'LEFT')
+            ->like(array('audio_compositions.name' => "%$search_str%"))
+            ->limit(self::max_page_items, $offset);
+
+        $this->setResponseData($result);
+
+        $album_ids = array();
+        for ($i = 0; $i < count($this->response['data']); $i++) {
+            $album_ids[] = $this->response['data'][$i]['album_id'];
+        }
+
+        $album_ids = array_unique($album_ids);
+
+        $albums_map = array();
+
+        if (!empty($album_ids)){
+            $albums = Mysql::getInstance()
+                ->select('audio_albums.*,
+                    audio_performers.name as performer_name,
+                    audio_years.name as album_year,
+                    countries.name'.($this->stb->getStbLanguage() == 'ru' ? '' : '_en' ).' as album_country
+                ')
+                ->from('audio_albums')
+                ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
+                ->join('audio_years', 'audio_albums.year_id', 'audio_years.id', 'LEFT')
+                ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT')
+                ->in('audio_albums.id', $album_ids)
+                ->get()->all();
+
+            foreach ($albums as $album){
+                $albums_map[$album['id']] = $album;
+            }
+        }
+
+        for ($i = 0; $i < count($this->response['data']); $i++) {
+
+            $item = $this->response['data'][$i];
+            $this->response['data'][$i]['name'] = (isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['performer_name'].' - ' : '').$this->response['data'][$i]['name'];
+            $this->response['data'][$i]['performer_name'] = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['performer_name'] : '';
+            $this->response['data'][$i]['cmd']            = strpos($this->response['data'][$i]['url'], 'http://') === 0 ? str_replace(' ', '%20', $this->response['data'][$i]['url']) : $this->response['data'][$i]['url'];
+            $this->response['data'][$i]['album_name']     = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['name'] : '';
+            $this->response['data'][$i]['album_year']     = isset($albums_map[$item['album_id']]) ? _($albums_map[$item['album_id']]['album_year']) : '';
+            $this->response['data'][$i]['album_country']  = isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['album_country'] : '';
+            $this->response['data'][$i]['cover_uri']      = Config::get('portal_url').'misc/audio_covers/'
+                .ceil($item['album_id']/100)
+                .'/'.(isset($albums_map[$item['album_id']]) ? $albums_map[$item['album_id']]['cover'] : '0.jpg');
+            $this->response['data'][$i]['is_track']       = true;
+            $this->response['data'][$i]['is_audio']       = true;
+        }
+
+        return $this->response;
+    }
+    
+    public function albumSearch(){
+
+        $search_str = empty($_REQUEST['search_str']) ? '' : (string) $_REQUEST['search_str'];
+        if (empty($search_str) || strlen($search_str) < 1) {
+            $search_str = '';
+        }
+        $offset = $this->page * self::max_page_items;
+
+        $result = Mysql::getInstance()
+            ->select('audio_albums.*,
+                audio_performers.name as performer_name,
+                audio_years.name as album_year,
+                countries.name'.($this->stb->getStbLanguage() == 'ru' ? '' : '_en' ).' as album_country
+            ')
+            ->from('audio_albums')
+            ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
+            ->join('audio_years', 'audio_albums.year_id', 'audio_years.id', 'LEFT')
+            ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT')
+            ->where(array('audio_albums.status' => 1))
+            ->like(array('audio_albums.name'=>"%$search_str%"))
+            ->orderby('added', 'DESC')
+            ->limit(self::max_page_items, $offset);
+
+
+        $this->setResponseData($result);
+
+        for ($i = 0; $i < count($this->response['data']); $i++) {
+
+            $this->response['data'][$i]['name'] = $this->response['data'][$i]['performer_name'].' - '.$this->response['data'][$i]['name'];
+
+            $this->response['data'][$i]['genres'] = implode(', ', $this->getAlbumGenres($this->response['data'][$i]['id']));
+            $this->response['data'][$i]['tracks'] = $this->countAlbumTracks($this->response['data'][$i]['id']);
+            $this->response['data'][$i]['languages']  = implode(', ', $this->getAlbumLanguages($this->response['data'][$i]['id']));
+            $this->response['data'][$i]['album_year'] = _($this->response['data'][$i]['album_year']);
+
+            $this->response['data'][$i]['cover_uri'] = Config::get('portal_url').'misc/audio_covers/'
+                .ceil($this->response['data'][$i]['id']/100)
+                .'/'.$this->response['data'][$i]['cover'];
+
+            $this->response['data'][$i]['is_album'] = true;
+            $this->response['data'][$i]['is_search_result'] = true;
+        }
+
+        if (!empty($_REQUEST['row'])){
+            $this->response['selected_item'] = $_REQUEST['row']+1;
+            $this->response['cur_page']      = $this->cur_page == 0 ? 1 : $this->cur_page;
+        }
+
+        return $this->response;
+    }
 }
