@@ -50,6 +50,11 @@
 
             parent.rebut = document.getElementById("i3").value != parent.prof.user_theme;
 
+            parent.prof.show_after_loading = save_data.show_after_loading;
+            parent.prof.play_in_preview_by_ok = save_data.play_in_preview_by_ok;
+
+            parent.prof.user_theme = save_data.theme;
+
             save_data.type = "stb";
             save_data.action = "set_portal_prefs";
 
