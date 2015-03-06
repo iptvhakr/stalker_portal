@@ -103,7 +103,7 @@
 
             _debug('stb.player.cur_media_item.cmd', stb.player.cur_media_item.cmd);
 
-            if (/([^\/]*)\.mp[g,4]/.exec(stb.player.cur_media_item.cmd)){
+            if (/([^\/]*)\.mp[g,4]/.exec(stb.player.cur_media_item.cmd) || this.cur_media_item['wowza_dvr'] == 1){
 
                 _debug('stb.player.play_initiated', stb.player.play_initiated);
 
@@ -149,7 +149,11 @@
 
             _debug('current_pos_time', current_pos_time);
 
-            var cur_file_date = this._get_file_date_by_url(this.cur_media_item.cmd);
+            if (this.cur_media_item['wowza_dvr'] == 1){
+                var cur_file_date = this._get_wowza_playlist_start_date_by_url(this.cur_media_item.cmd);
+            }else{
+                cur_file_date = this._get_file_date_by_url(this.cur_media_item.cmd);
+            }
 
             _debug('cur_file_date', cur_file_date);
 
@@ -158,6 +162,29 @@
             _debug('pos_time', pos_time);
 
             return pos_time;
+        },
+
+        _get_wowza_playlist_start_date_by_url : function(url){
+            _debug('time_shift._get_wowza_playlist_start_date_by_url', url);
+
+            var date_part = /wowzadvrplayliststart=(\d+)/.exec(url);
+
+            _debug('date_part', date_part);
+
+            if (!date_part){
+                return new Date();
+            }
+
+            var file_date_str = date_part[1];
+            var true_file_date = file_date_str.replace(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/, '$2/$3/$1 $4:00:00 GMT');
+
+            if (!true_file_date){
+                return false;
+            }
+
+            _debug('true_file_date', true_file_date);
+
+            return new Date(true_file_date);
         },
 
         _get_file_date_by_url : function(url){
@@ -313,15 +340,25 @@
 
             //var new_file_date = new Date(cur_file_date.getTime());
 
-            var new_file_name = this.get_filename_by_date(cur_file_date);
-
-            _debug('new_file_name', new_file_name);
-
             var position = pos - cur_file_date.getHours() * 3600;
 
             _debug('position', position);
 
-            var url = this.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, new_file_name).trim();
+            if (stb.player.cur_tv_item['wowza_dvr'] == 1){
+
+                var new_playlist_start = this.get_wowza_playlist_start(cur_file_date);
+
+                _debug('new_playlist_start', new_playlist_start);
+
+                var url = this.cur_media_item.cmd.replace(/wowzadvrplayliststart=(\d+)/, 'wowzadvrplayliststart='+new_playlist_start).trim();
+
+            }else{
+                var new_file_name = this.get_filename_by_date(cur_file_date);
+
+                _debug('new_file_name', new_file_name);
+
+                url = this.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, new_file_name).trim();
+            }
 
             _debug('url 1', url);
 
@@ -335,6 +372,22 @@
             _debug('url 2', url);
 
             return url;
+        },
+
+        get_wowza_playlist_start : function(date){
+            _debug('time_shift.get_wowza_playlist_start', date);
+
+            _debug('date 1', date);
+
+            /*date = new Date(date.getTime());
+
+            _debug('date 2', date);*/
+
+            return date.getUTCFullYear()
+                + this.format_date(date.getUTCMonth() + 1)
+                + this.format_date(date.getUTCDate())
+                + this.format_date(date.getUTCHours())
+                + '0000';
         },
 
         get_filename_by_date : function(date){
@@ -352,7 +405,7 @@
                     + this.format_date(date.getMonth() + 1) + ''
                     + this.format_date(date.getDate()) + '-'
                     + this.format_date(date.getHours())
-                    + (parseInt(stb.player.cur_tv_item['wowza_dvr'], 10) ? '.mp4' : '.mpg');
+                    + '.mpg';
         },
 
         format_date : function(param){
@@ -379,18 +432,32 @@
         get_next_part : function(){
             _debug('time_shift.get_next_part');
 
-            var cur_file_date = this._get_file_date_by_url(stb.player.cur_media_item.cmd);
+            if (stb.player.cur_tv_item['wowza_dvr'] == 1){
+                var cur_file_date = this._get_wowza_playlist_start_date_by_url(stb.player.cur_media_item.cmd);
+            }else{
+                cur_file_date = this._get_file_date_by_url(stb.player.cur_media_item.cmd);
+            }
             var cur_file_date_ts = cur_file_date.getTime();
 
             _debug('cur_file_date_ts', cur_file_date_ts);
 
             var next_file_date = new Date(cur_file_date_ts + 60 * 60 * 1000);
 
-            var next_file_name = this.get_filename_by_date(next_file_date);
+            if (stb.player.cur_tv_item['wowza_dvr'] == 1){
 
-            _debug('next_file_name', next_file_name);
+                var new_playlist_start = this.get_wowza_playlist_start(next_file_date);
 
-            var url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, next_file_name).replace(/position:(\d*)/, '').trim();
+                _debug('new_playlist_start', new_playlist_start);
+
+                var url = this.cur_media_item.cmd.replace(/wowzadvrplayliststart=(\d+)/, 'wowzadvrplayliststart='+new_playlist_start).replace(/position:(\d*)/, '').trim();
+
+            }else{
+                var next_file_name = this.get_filename_by_date(next_file_date);
+
+                _debug('next_file_name', next_file_name);
+
+                url = stb.player.cur_media_item.cmd.replace(/([^\/]*)\.mp[g,4]/, next_file_name).replace(/position:(\d*)/, '').trim();
+            }
 
             this.cur_media_item.live_date = new Date();
 
