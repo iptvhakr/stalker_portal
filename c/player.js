@@ -2465,7 +2465,7 @@ player.prototype.tick_s = function(record){
 player.prototype.pause_switch = function(){
     _debug('player.pause_switch');
     
-    if (this.is_tv && (this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
+    if (this.is_tv && this.prev_layer.on){
         return;
     }
 
@@ -4242,7 +4242,7 @@ player.prototype.move_pos = function(dir){
         return;
     }*/
 
-    if (this.is_tv && (this.prev_layer.on || parseInt(this.cur_media_item.wowza_dvr, 10))){
+    if (this.is_tv && this.prev_layer.on){
         return;
     }
 
