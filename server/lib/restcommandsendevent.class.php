@@ -31,6 +31,10 @@ class RESTCommandSendEvent extends RESTCommand
                 }else{
                     $event->sendMsg($request->getData('msg'));
                 }
+
+                if ($request->getData('auto_hide_timeout')){
+                    $event->setAutoHideTimeout($request->getData('auto_hide_timeout'));
+                }
                 break;
             case 'reboot':
                 $event->sendReboot();

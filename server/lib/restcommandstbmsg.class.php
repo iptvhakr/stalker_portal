@@ -24,6 +24,11 @@ class RESTCommandStbMsg extends RESTCommand
             $event->setTtl($ttl);
         }
 
+        $auto_hide_timeout = (int) $request->getData('auto_hide_timeout');
+        if ($auto_hide_timeout){
+            $event->setAutoHideTimeout($auto_hide_timeout);
+        }
+
         $event->setUserListById($stb_list);
 
         $event->sendMsg($msg);
