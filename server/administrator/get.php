@@ -12,17 +12,17 @@ if ($_GET['get'] == 'kinopoisk_info' || $_GET['get'] == 'kinopoisk_rating' || $_
 
     try{
         if ($_GET['get'] == 'kinopoisk_info'){
-            $response['result'] = Kinopoisk::getInfoByName($_GET['oname']);
+            $response['result'] = vclubinfo::getInfoByName($_GET['oname']);
         }else if ($_GET['get'] == 'kinopoisk_rating'){
-            $response['result'] = Kinopoisk::getRatingByName($_GET['oname']);
+            $response['result'] = vclubinfo::getRatingByName($_GET['oname']);
         }else if ($_GET['get'] == 'kinopoisk_info_by_id'){
-            $response['result'] = Kinopoisk::getInfoById($_GET['kinopoisk_id']);
+            $response['result'] = vclubinfo::getInfoById($_GET['kinopoisk_id']);
         }
     }catch (KinopoiskException $e){
         echo $e->getMessage();
 
         $logger = new Logger();
-        $logger->setPrefix("kinopoisk_");
+        $logger->setPrefix("vclubinfo_");
 
         // format: [date] - error_message - [base64 encoded response];
         $logger->error(sprintf("[%s] - %s - \"%s\"\n",
