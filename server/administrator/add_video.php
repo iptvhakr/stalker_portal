@@ -1744,7 +1744,7 @@ $(function(){
     });
 
     if ($('.kinopoisk_id').val()){
-        var kinopoisk_url = ('<?=Config::getSafe('vclub_info_site_url', 'http://www.kinopoisk.ru/level/1/film/:::video_id:::/')?>').replace(':::video_id:::', $('.kinopoisk_id').val());
+        var kinopoisk_url = ('<?= Config::getSafe('vclub_info_provider', 'kinopoisk') == 'kinopoisk' ? 'http://www.kinopoisk.ru/level/1/film/:::video_id:::/' : 'https://www.themoviedb.org/movie/:::video_id:::'; ?>').replace(':::video_id:::', $('.kinopoisk_id').val());
 
         $('.kinopoisk_url').attr('href', kinopoisk_url);
         $('.kinopoisk_url').html(kinopoisk_url);
