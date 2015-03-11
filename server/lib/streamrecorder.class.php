@@ -367,34 +367,47 @@ class StreamRecorder extends Master
         $user_record = Mysql::getInstance()->from('users_rec')->where(array('id' => $user_rec_id))->get()->first();
         $file_record = Mysql::getInstance()->from('rec_files')->where(array('id' => $user_record['file_id']))->get()->first();
 
-        Mysql::getInstance()->update('users_rec',
-                                 array(
-                                     't_stop'  => 'NOW()',
-                                     'ended'   => 1,
-                                     'length'  => time() - strtotime($user_record['t_start'])
-                                 ),
-                                 array(
-                                     'id' => $user_rec_id,
-                                 ));
+        if (strtotime($user_record['t_start']) > time()){ // cancel scheduled recording
 
-        if ($user_record['started']){
+            Mysql::getInstance()->delete('rec_files', array('id' => $file_record['id']));
+            Mysql::getInstance()->delete('users_rec', array('id' => $user_record['id']));
 
-            Mysql::getInstance()->update('rec_files',
-                                         array(
-                                             't_stop' => 'NOW()',
-                                             'ended'  => 1,
-                                             'length' => time() - strtotime($file_record['t_start'])
-                                         ),
-                                         array(
-                                             'id' => $file_record['id'],
-                                         ));
-
-            if ($send_to_storage){
-                try{
+            if ($send_to_storage) {
+                try {
                     return $this->clients[$file_record['storage_name']]->resource('recorder')->ids($file_record['id'])->update();
-                }catch(Exception $exception){
+                } catch (Exception $exception) {
                     $this->parseException($exception);
                     return false;
+                }
+            }
+
+        }else {
+
+            Mysql::getInstance()->update('users_rec', array(
+                    't_stop' => 'NOW()',
+                    'ended'  => 1,
+                    'length' => time() - strtotime($user_record['t_start'])
+                ), array(
+                    'id' => $user_rec_id,
+                ));
+
+            if ($user_record['started']) {
+
+                Mysql::getInstance()->update('rec_files', array(
+                        't_stop' => 'NOW()',
+                        'ended'  => 1,
+                        'length' => time() - strtotime($file_record['t_start'])
+                    ), array(
+                        'id' => $file_record['id'],
+                    ));
+
+                if ($send_to_storage) {
+                    try {
+                        return $this->clients[$file_record['storage_name']]->resource('recorder')->ids($file_record['id'])->update();
+                    } catch (Exception $exception) {
+                        $this->parseException($exception);
+                        return false;
+                    }
                 }
             }
         }
@@ -407,29 +420,44 @@ class StreamRecorder extends Master
         $user_record = Mysql::getInstance()->select('*, UNIX_TIMESTAMP(t_start) as start_ts')->from('users_rec')->where(array('id' => $user_rec_id))->get()->first();
         $file_record = Mysql::getInstance()->from('rec_files')->where(array('id' => $user_record['file_id']))->get()->first();
 
-        $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
+        if (!empty($duration_minutes) && $duration_minutes > 0){
 
-        $rest_length += $user_record['length'];
+            $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
 
-        if ($rest_length/60 - $duration_minutes <= 0){
-            $duration_minutes = $rest_length/60;
+            $rest_length += $user_record['length'];
+
+            if ($rest_length/60 - $duration_minutes <= 0){
+                $duration_minutes = $rest_length/60;
+            }
+
+            $stop_time = intval($user_record['start_ts'] + $duration_minutes*60);
+
+            try{
+                // update stop time via SIGNAL to dumpstream process on storage
+                $this->clients[$file_record['storage_name']]
+                    ->resource('recorder')
+                    ->ids($file_record['id'])
+                    ->update(array("stop_time" => $stop_time));
+            }catch(Exception $exception){
+                $this->parseException($exception);
+            }
+
+            Mysql::getInstance()->update('users_rec', array('t_stop' => date("Y-m-d H:i:s", $stop_time), 'length' => $duration_minutes*60), array('id' => $user_rec_id));
+
+            return $stop_time;
+        }else{
+            try{
+                // cancel recording
+                $this->clients[$file_record['storage_name']]
+                    ->resource('recorder')
+                    ->ids($file_record['id'])
+                    ->update();
+            }catch(Exception $exception){
+                $this->parseException($exception);
+            }
+
+            return true;
         }
-
-        $stop_time = intval($user_record['start_ts'] + $duration_minutes*60);
-
-        try{
-            // update stop time via SIGNAL to dumpstream process on storage
-            $this->clients[$file_record['storage_name']]
-                ->resource('recorder')
-                ->ids($file_record['id'])
-                ->update(array("stop_time" => $stop_time));
-        }catch(Exception $exception){
-            $this->parseException($exception);
-        }
-
-        Mysql::getInstance()->update('users_rec', array('t_stop' => date("Y-m-d H:i:s", $stop_time), 'length' => $duration_minutes*60), array('id' => $user_rec_id));
-
-        return $stop_time;
     }
 
     /**

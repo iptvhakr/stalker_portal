@@ -83,14 +83,16 @@
             _debug('idx', idx);
 
             if (idx === null){
-                this.del_remote();
+                module.remote_pvr.stop_rec(rec_id);
+                this.hide_mark(this.get_item().id);
                 return;
             }
 
             if (stb.recordings[idx].local == 1){
                 this.del_local(stb.recordings[idx]);
             }else{
-                this.del_remote();
+                module.remote_pvr.stop_rec(rec_id);
+                this.hide_mark(this.get_item().id);
             }
         },
 
