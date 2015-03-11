@@ -683,6 +683,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['enable_service_button'] = Config::getSafe('enable_service_button', false);
 
+        $profile['enable_setting_access_by_pass'] = Config::getSafe('enable_setting_access_by_pass', false);
+
         $profile['show_tv_channel_logo'] = Config::getSafe('show_tv_channel_logo', true);
 
         $profile['tv_archive_continued'] = Config::getSafe('tv_archive_continued', false);
@@ -981,6 +983,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $this->params['parent_password'] = $_REQUEST['pass'];
         }
         
+        return true;
+    }
+
+    public function setSettingsPassword(){
+
+        if (isset($_REQUEST['pass'])){
+            $this->db->update('users', array('settings_password' => $_REQUEST['pass']), array('mac' => $this->mac));
+            $this->params['settings_password'] = $_REQUEST['pass'];
+        }
+
         return true;
     }
     

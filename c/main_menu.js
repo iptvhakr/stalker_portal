@@ -142,6 +142,48 @@ var main_menu = {
                 }
             }
         ));
+
+        this.settings_password_promt = new ModalForm({"title" : get_word('settings_password_title'), "parent" : main_menu});
+        this.settings_password_promt.enableOnExitClose();
+
+        this.settings_password_promt.addItem(new ModalFormInput({
+            "label" : get_word('password_label'),
+            "name" : "settings_password",
+            "type" : "password",
+            "onchange" : function(){_debug('change'); scope.settings_password_promt.resetStatus()}
+        }));
+
+        this.settings_password_promt.addItem(new ModalFormButton(
+            {
+                "value" : get_word("ok_btn"),
+                "onclick" : function(){
+                    _debug('settings_password check pass');
+
+
+                    var settings_password = scope.settings_password_promt.getItemByName('settings_password').getValue();
+
+                    var profile_settings_password = (function(){ return stb.user.settings_password; })();
+
+                    _debug('settings_password profile', stb.profile.settings_password);
+
+                    if (settings_password == profile_settings_password){
+                        scope.settings_password_promt.hide();
+                        scope.settings_password_promt.callback && scope.settings_password_promt.callback();
+                    }else{
+                        scope.settings_password_promt.setStatus(get_word('parent_password_error'));
+                    }
+                }
+            }
+        ));
+
+        this.settings_password_promt.addItem(new ModalFormButton(
+            {
+                "value" : get_word("cancel_btn"),
+                "onclick" : function(){
+                    scope.settings_password_promt.hide();
+                }
+            }
+        ));
     },
     
     build : function(){
@@ -315,7 +357,6 @@ var main_menu = {
         _debug('main_menu.action');
         
         _debug('this.active_sub', this.active_sub);
-        
         if (stb.is_restricted_module(this.map[1].module)){
             stb.notice.show(get_word('msg_service_off'));
             return;
@@ -358,9 +399,7 @@ var main_menu = {
     },
     
     add : function(title, sub, img, cmd, module){
-        
         cmd = cmd || '';
-        
         sub = sub || [];
         
         img = img || '';
@@ -370,7 +409,7 @@ var main_menu = {
                 sub.unshift(sub.pop());
             }
         }
-        
+
         this.map.push(
             {
                 "title"    : title,

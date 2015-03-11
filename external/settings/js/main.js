@@ -43,7 +43,8 @@ function init_m()
 {
     if(load_fl){
     var punktiT={
-        "lock":[t('Parental control'),"ico_lock","ico_lock_act","ico_l_lang","g_pass.html"],
+        "lock":[t('Parental control'),"ico_lock","ico_lock_act","ico_l_lock","g_pass.html"],
+        "settings_lock":[t('Settings access'),"ico_lock","ico_lock_act","ico_l_lock","g_settings_access.html"],
         "lang":[t('Localization'),"ico_lang","ico_lang_act","ico_l_lang","g_local.html"],
         "update":[t('Software update'),"ico_reload","ico_reload_act","ico_l_reload","g_update.html"],
         "net_info":[t('Network info'),"ico_netinfo","ico_netinfo_act","ico_l_netinfo","g_netw.html"],
@@ -62,6 +63,7 @@ function init_m()
         "reboot":[t('Reboot device'),"ico_reboot","ico_reboot_act","ico_l_reboot",3]
     };
 
+
     if (!_GET['dvb_supported_scan_types']){
         delete punktiT.dvb;
     }
@@ -70,6 +72,10 @@ function init_m()
     var cache=[];
     for(var i=0;i<prof.modules.length;i++){
         if (!_GET['dvb_supported_scan_types'] && prof.modules[i].name == 'dvb'){
+            continue;
+        }
+
+        if (!_GET['enable_setting_access_by_pass'] && prof.modules[i].name == 'settings_lock'){
             continue;
         }
 

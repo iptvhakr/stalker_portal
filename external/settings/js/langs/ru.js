@@ -156,6 +156,7 @@ var lang = {
 	"Static DHCP":"Статический DHCP",
 	"New and confirm passwords must be same":"Новый пароль и подтверждение пароля должны совпадать",
 	'Parental control':'Родительские',
+    'Settings access':'Доступ к настройкам',
 	'New password:':'Новый пароль:',
 	'Confirm password:':'Подтверждение пароля:',
 	'Error filling in forms':'Ошибка заполнения формы',
