@@ -62,6 +62,8 @@ interface Stb
 
     public function setParentPassword();
 
+    public function setSettingsPassword();
+
     public function setPlaybackSettings();
 
     public function setStreamError();

@@ -112,6 +112,18 @@ if (@$_GET['parent_password'] && $_GET['parent_password'] == 'default'){
     exit();
 }
 
+if (@$_GET['settings_password'] && $_GET['settings_password'] == 'default'){
+
+    Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
+
+    $id = intval($_GET['id']);
+
+    Mysql::getInstance()->update('users', array('settings_password' => '0000'), array('id' => $id));
+
+    header("Location: profile.php?id=".$id);
+    exit();
+}
+
 if (@$_GET['fav_itv'] && $_GET['fav_itv'] == 'default'){
 
     Admin::checkAccess(AdminAccess::ACCESS_CONTEXT_ACTION);
@@ -273,6 +285,7 @@ if (!empty($arr)){
     $ip  = $arr['ip'];
     $video_out  = $arr['video_out'];
     $parent_password  = $arr['parent_password'];
+    $settings_password  = $arr['settings_password'];
     $tariff_plan_id  = User::getInstance((int) $arr['id'])->getProfileParam('tariff_plan_id');
 }
 
@@ -349,6 +362,10 @@ if (empty($packages)){
             <tr>
                 <td>pass:</td>
                 <td>[<?echo $parent_password?>] <a href="#" onclick="if(confirm('<?= htmlspecialchars(_('Reset to default password?'), ENT_QUOTES)?>')){document.location='profile.php?parent_password=default&id=<?echo $id?>'}"><?= htmlspecialchars(_('Reset'), ENT_QUOTES)?></a></td>
+            </tr>
+            <tr>
+                <td><?echo _('Access control')?>:</td>
+                <td>[<?echo $settings_password?>] <a href="#" onclick="if(confirm('<?= htmlspecialchars(_('Reset to default password?'), ENT_QUOTES)?>')){document.location='profile.php?settings_password=default&id=<?echo $id?>'}"><?= htmlspecialchars(_('Reset'), ENT_QUOTES)?></a></td>
             </tr>
             <tr>
                 <td><?= _('favorite tv')?>:</td>

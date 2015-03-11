@@ -159,7 +159,10 @@ player.prototype.init = function(){
                 
                 if (params.hasOwnProperty("parent_password")){
                     stb.user.parent_password = params.parent_password;
-                    module.parent_settings.triggerCustomEventListener("onpasswordchange", stb.user.parent_password);
+                }
+
+                if (params.hasOwnProperty("settings_password")) {
+                    stb.user.settings_password = params.settings_password;
                 }
 
                 if (params.hasOwnProperty("screensaver_delay")){

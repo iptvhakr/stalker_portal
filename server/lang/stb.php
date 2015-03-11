@@ -479,6 +479,7 @@ $words['local_pvr_interrupted'] = _('Recording on USB device interrupted');
 
 $words['parent_password_error'] = _('Wrong');
 $words['parent_password_title'] = _('Parent control');
+$words['settings_password_title'] = _('Access control');
 $words['password_label'] = _('Password');
 
 $words['encoding_label'] = _('Encoding');
