@@ -1315,7 +1315,6 @@ player.prototype.event_callback = function(event, params){
 
             stb.key_lock = false;
             this.event5_counter++;
-            
             if (this.media_type == 'stream'){
 
                 if (this.is_tv && stb.profile['enable_stream_error_logging']){
@@ -1368,6 +1367,113 @@ player.prototype.event_callback = function(event, params){
                 
             }else{
 
+                if (this.cur_media_item.media_type != 'vclub_ad' && this.play_continuously && this.cur_media_item.hasOwnProperty('series') && this.cur_media_item.series && this.cur_media_item.series.length > 0){
+
+                    var series_idx = this.cur_media_item.series.indexOf(this.cur_media_item.cur_series);
+
+                    _debug('series_idx before', series_idx);
+
+                    var old_series_idx = series_idx;
+
+                    if (series_idx < this.cur_media_item.series.length-1){
+                        series_idx++;
+                    }
+
+                    _debug('series_idx after', series_idx);
+
+                    if (old_series_idx != series_idx){
+
+                        this.cur_media_item.cur_series = this.cur_media_item.series[series_idx];
+                        this.cur_media_item.disable_ad = true;
+
+                        if (this.cur_media_item.cmd.indexOf('://')){
+                            this.cur_media_item.cmd = '/media/'+this.cur_media_item.id+'.mpg';
+                        }
+
+                        this.play(this.cur_media_item);
+                        break;
+                    }
+
+                }else if (this.cur_media_item.playlist && this.cur_media_item.playlist.length > 0){
+
+                    stb.key_lock = false;
+
+                    if (typeof(this.cur_media_item.playlist[0]) == 'object'){
+
+                        idx = -1;
+
+                        for (var i=0; i< this.cur_media_item.playlist.length; i++){
+                            if (this.cur_media_item.id == this.cur_media_item.playlist[i].id){
+                                idx = i;
+                                break;
+                            }
+                        }
+
+                        _debug('playlist idx', idx);
+
+                        if (idx >= 0 && idx < this.cur_media_item.playlist.length - 1){
+                            idx++;
+
+                            cur_media_item = this.cur_media_item.playlist[idx].clone();
+                            cur_media_item.playlist = this.cur_media_item.playlist;
+                            _debug('cur_media_item', cur_media_item);
+
+                            if (cur_media_item.is_audio){
+                                cur_media_item.number = null;
+                            }
+
+                            this.play(cur_media_item);
+
+                            break;
+                        }
+
+                    }else{
+                        var idx = this.cur_media_item.playlist.indexOf(this.cur_media_item.cmd);
+
+                        _debug('playlist idx', idx);
+
+
+                        if (idx >= 0 && idx < this.cur_media_item.playlist.length - 1){
+
+                            idx++;
+
+                            var cur_media_item = this.cur_media_item.clone();
+
+                            cur_media_item.cmd  = cur_media_item.playlist[idx];
+
+                            var real_id_match = /real_id=([^&]*)/.exec(cur_media_item.cmd);
+
+                            if (real_id_match){
+                                cur_media_item.real_id = real_id_match[1];
+                            }
+
+                            var osd_title_match = /osd_title=([^&]*)/.exec(cur_media_item.cmd);
+
+                            if (osd_title_match){
+                                cur_media_item.name = decodeURIComponent(osd_title_match[1].replace(/\+/g, '%20'));
+                            }else if (!cur_media_item.hasOwnProperty('keep_original_name') || !cur_media_item.keep_original_name){
+                                cur_media_item.name = cur_media_item.cmd.substr(this.cur_media_item.cmd.lastIndexOf("/") + 1);
+                            }
+
+                            if (cur_media_item.show_osd){
+                                this.need_show_info = 1;
+                            }
+
+                            if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
+                                delete cur_media_item.media_type;
+                                module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
+                            }
+
+                            if (cur_media_item.hasOwnProperty('ad_must_watch')){
+                                delete cur_media_item.ad_must_watch;
+                            }
+
+                            this.play(cur_media_item);
+
+                            break;
+                        }
+                    }
+                }
                 stb.remount_storages(
                 
                     function(){

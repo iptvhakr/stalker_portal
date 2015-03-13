@@ -55,7 +55,9 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             ->get()
             ->first();
 
-        $disable_ad = !empty($moderator) && $moderator['status'] == 1 && $moderator['disable_vclub_ad'] == 1;
+        if (!$disable_ad) {
+            $disable_ad = !empty($moderator) && $moderator['status'] == 1 && $moderator['disable_vclub_ad'] == 1;
+        }
 
         $vclub_ad = new VclubAdvertising();
 
