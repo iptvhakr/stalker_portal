@@ -23,9 +23,7 @@
             params += '&';
         }
 
-        params += 'referrer='+encodeURIComponent(window.location);
-
-        var url = 'http://www.zoomby.ru/ce/mag/mag.html' + params;
+        var url = 'http://www.zoomby.ru/ce/mag/mag.html' + stb.getRefferer(params, this.module.layer_name);
 
         _debug('url', url);
         window.location = url;

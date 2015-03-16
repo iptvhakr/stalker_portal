@@ -61,7 +61,12 @@
             }
 
             stb.setFrontPanel('.');
-            window.location = '/' + stb.portal_path + '/external/youtube/index.html'+params;
+            params = stb.getRefferer(params, this.module.layer_name);
+
+            var url = '/' + stb.portal_path + '/external/youtube/index.html'+ params;
+            focus_module = 'youtube';
+            _debug('url - ', url);
+            window.location = url;
         }
 
     }, {layer_name : "youtube"});

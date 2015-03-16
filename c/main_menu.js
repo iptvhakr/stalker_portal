@@ -10,6 +10,19 @@ var main_menu = {
     show : function(){
         _debug('main_menu.show');
         this.dom_obj.show();
+        _debug('focus_module - ', focus_module);
+        if (focus_module) {
+            this.sub_menu_hide();
+            var mapLength = this.map.length;
+            stb.player.stop();
+            while(this.map[1].module.layer_name != focus_module && mapLength != 0) {
+                this.map.push(this.map.shift());
+                if (mapLength) {
+                    mapLength--;
+                }
+            }
+            focus_module = '';
+        }
         this.on = true;
         this.render();
         stb.set_cur_place('main_menu');

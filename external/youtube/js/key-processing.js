@@ -30,11 +30,9 @@ function keyProcessing(e) {
                         player.stop();
                         loading.hide();
                     }
-                    if(document.referrer.length > 4) {
-                        window.location = document.referrer;
-                    } else {
-                        window.location = pages.back;
-                    }
+                    var reffererStr = (document.referrer.length > 4) ? document.referrer.toString(): pages.back.toString();
+                        reffererStr += ((reffererStr.indexOf('?') != -1 ? '&' : '?') + 'focus_module=youtube');
+                    window.location = reffererStr;
                     return;
                 break;
                 case keys.LEFT:
