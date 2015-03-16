@@ -57,10 +57,6 @@ class SimpleOssWrapper implements OssWrapperInterface
             return $strict_check ? array('status' => 0) : false;
         }
 
-        if ($data['status'] != 'OK' && !empty($data['error'])){
-            throw new OssDeny($data['error']);
-        }
-
         if (Mysql::$debug){
             var_dump($data);
         }
@@ -132,6 +128,10 @@ class SimpleOssWrapper implements OssWrapperInterface
         }
 
         var_dump($data);
+
+        if ($data['status'] != 'OK' && !empty($data['error'])){
+            throw new OssDeny($data['error']);
+        }
 
         if ($data['status'] != 'OK' || empty($data['results'])){
             throw new OssError('Server error or empty results');
