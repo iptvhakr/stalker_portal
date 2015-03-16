@@ -30,9 +30,7 @@ function keyProcessing(e) {
                         player.stop();
                         loading.hide();
                     }
-                    var reffererStr = (document.referrer.length > 4) ? document.referrer.toString(): pages.back.toString();
-                        reffererStr += ((reffererStr.indexOf('?') != -1 ? '&' : '?') + 'focus_module=youtube');
-                    window.location = reffererStr;
+                    window.location = pages.back;
                     return;
                 break;
                 case keys.LEFT:

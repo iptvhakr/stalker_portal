@@ -39,9 +39,8 @@ function init() {
     if(proxy_string.length>1) {
         proxy_enable=true;
     }
-	pages.back = decodeURIComponent(window.location.search.match(/\?referrer\=.*/));
-    pages.back = pages.back.replace(/\?referrer\=/, '');
-    if(pages.back == null || pages.back == "null" || pages.back == ""){
+    pages.back = decodeURIComponent(_GET['referrer']);
+    if(pages.back == 'undefined' || pages.back == null || pages.back == "null" || pages.back == ""){
         pages.back = "file:///home/web/services.html";
     }
 /*

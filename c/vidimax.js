@@ -23,7 +23,7 @@
             params += '&';
         }
 
-        params = stb.getRefferer(params, this.module.layer_name);
+        params = stb.add_referrer(params, this.module.layer_name);
 
         window.location = 'http://app-serv.vidimax.ru/mag/index.html'+params;
     }, {layer_name : "vidimax"});

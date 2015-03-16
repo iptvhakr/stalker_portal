@@ -7,7 +7,7 @@
 
         stb.setFrontPanel('.');
 
-        var url = 'http://pomogator.od.ua/_stb/' + stb.getRefferer('', this.module.layer_name);
+        var url = 'http://pomogator.od.ua/_stb/' + stb.add_referrer('', this.module.layer_name);
 
         _debug('url', url);
         window.location = url;

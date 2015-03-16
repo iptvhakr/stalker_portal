@@ -23,7 +23,7 @@
             params += '&';
         }
 
-        params = stb.getRefferer(params, this.module.layer_name);
+        params = stb.add_referrer(params, this.module.layer_name);
 
         _debug('url', '/' + stb.portal_path + '/external/ex/index.html'+params);
 

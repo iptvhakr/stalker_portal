@@ -2122,7 +2122,7 @@ function common_xpcom(){
         }
     }
 
-    this.getRefferer = function(paramStr, layer_name){
+    this.add_referrer = function(paramStr, layer_name){
         var returnParams = paramStr || '';
         returnParams += (returnParams.length == 0? '?': '&');
         var tmpLocation = window.location.toString();

@@ -23,7 +23,7 @@
             params += '&';
         }
 
-        params = stb.getRefferer(params, this.module.layer_name);
+        params = stb.add_referrer(params, this.module.layer_name);
 
         _debug('url', '/' + stb.portal_path + '/external/ivi/index.html'+params);
         window.location = '/' + stb.portal_path + '/external/ivi/index.html'+params;
