@@ -46,11 +46,32 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $tz = new DateTimeZone(Stb::$server_timezone);
 
-        $date = new DateTime(date('r', strtotime($program['time']) - $overlap_start));
+        $date = new DateTime(date('r', strtotime($program['time'])));
         $date->setTimeZone($tz);
+
+        if ($overlap_start){
+            $date->sub(new DateInterval('PT'.$overlap_start.'S'));
+        }
+
+        $date_now = new DateTime('now', new DateTimeZone(Stb::$server_timezone));
 
         $date_to = new DateTime(date('r', strtotime($program['time_to'])));
         $date_to->setTimeZone($tz);
+
+        $dst_diff = $date->format('Z') - $date_now->format('Z');
+
+        $storage = Master::getStorageByName($task['storage_name']);
+
+        if (!$storage['flussonic_dvr'] && !$storage['wowza_dvr']){
+            if ($dst_diff > 0){
+                $date->add(new DateInterval('PT'.$dst_diff.'S'));
+                $date_to->add(new DateInterval('PT'.$dst_diff.'S'));
+            }elseif($dst_diff < 0){
+                $dst_diff *= -1;
+                $date->sub(new DateInterval('PT'.$dst_diff.'S'));
+                $date_to->sub(new DateInterval('PT'.$dst_diff.'S'));
+            }
+        }
 
         $start_timestamp = $date->getTimestamp();
         $stop_timestamp  = $date_to->getTimestamp() + $overlap;
@@ -65,11 +86,9 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             $filename .= '.mpg';
         }
 
-        $storage = Master::getStorageByName($task['storage_name']);
-
         $res['storage_id'] = $storage['id'];
 
-        $position = date("i", $start_timestamp) * 60;
+        $position = date("i", $start_timestamp) * 60 + date("s", $start_timestamp);
 
         if ($storage['flussonic_dvr']){
 
@@ -188,11 +207,40 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $tz = new DateTimeZone(Stb::$server_timezone);
 
-        $date = new DateTime(date('r', strtotime($program['time']) - ($disable_overlap ? -$overlap : $overlap_start))); // previous part overlap compensation
+        $date = new DateTime(date('r', strtotime($program['time'])));
         $date->setTimeZone($tz);
+
+        // previous part overlap compensation
+
+        if ($disable_overlap){
+            if ($overlap){
+                $date->add(new DateInterval('PT'.$overlap.'S'));
+            }
+        }else{
+            if ($overlap_start){
+                $date->sub(new DateInterval('PT'.$overlap_start.'S'));
+            }
+        }
+
+        $date_now = new DateTime('now', new DateTimeZone(Stb::$server_timezone));
 
         $date_to = new DateTime(date('r', strtotime($program['time_to'])));
         $date_to->setTimeZone($tz);
+
+        $dst_diff = $date->format('Z') - $date_now->format('Z');
+
+        $storage = Master::getStorageByName($task['storage_name']);
+
+        if (!$storage['flussonic_dvr'] && !$storage['wowza_dvr']){
+            if ($dst_diff > 0){
+                $date->add(new DateInterval('PT'.$dst_diff.'S'));
+                $date_to->add(new DateInterval('PT'.$dst_diff.'S'));
+            }elseif($dst_diff < 0){
+                $dst_diff *= -1;
+                $date->sub(new DateInterval('PT'.$dst_diff.'S'));
+                $date_to->sub(new DateInterval('PT'.$dst_diff.'S'));
+            }
+        }
 
         $start_timestamp = $date->getTimestamp();
         $stop_timestamp  = $date_to->getTimestamp() + $overlap;
@@ -207,9 +255,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             $filename .= '.mpg';
         }
 
-        $storage = Master::getStorageByName($task['storage_name']);
-
-        $position = date("i", $start_timestamp) * 60;
+        $position = date("i", $start_timestamp) * 60 + date("s", $start_timestamp);
 
         $channel = Itv::getChannelById($program['ch_id']);
 
@@ -366,6 +412,19 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $date = new DateTime(date('r'));
         $date->setTimeZone($tz);
+
+        $date_now = new DateTime('now', new DateTimeZone(Stb::$server_timezone));
+
+        $dst_diff = $date->format('Z') - $date_now->format('Z');
+
+        if (!$storage['flussonic_dvr'] && !$storage['wowza_dvr']){
+            if ($dst_diff > 0){
+                $date->add(new DateInterval('PT'.$dst_diff.'S'));
+            }elseif($dst_diff < 0){
+                $dst_diff *= -1;
+                $date->sub(new DateInterval('PT'.$dst_diff.'S'));
+            }
+        }
 
         $position = intval($date->format("i")) * 60 + intval($date->format("s"));
 
