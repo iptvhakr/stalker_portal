@@ -2121,6 +2121,27 @@ function common_xpcom(){
             return value;
         }
     }
+
+    this.add_referrer = function(paramStr, layer_name){
+        var returnParams = paramStr || '';
+        returnParams += (returnParams.length == 0? '?': '&');
+        var tmpLocation = window.location.toString();
+        returnParams += 'referrer='+encodeURIComponent(tmpLocation);
+        if (tmpLocation.indexOf('?') == -1) {
+            returnParams += encodeURIComponent('?');
+        }
+        var amp = '(\\' + encodeURIComponent('&') + ')';
+        var regStr = new RegExp(amp + 'focus_module[^\\1,\\&,$]*?(\\1|\\&|$)','ig');
+        if (regStr.test(returnParams)) {
+            returnParams = returnParams.replace(regStr, '$2');
+            if (regStr.test(returnParams)) {
+                returnParams = returnParams.replace(regStr, '');
+            }
+        }
+        focus_module = layer_name;
+        returnParams += encodeURIComponent('&focus_module='+layer_name);
+        return returnParams;
+    }
 };
 
 var screensaver = {

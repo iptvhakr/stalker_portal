@@ -30,11 +30,7 @@ function keyProcessing(e) {
                         player.stop();
                         loading.hide();
                     }
-                    if(document.referrer.length > 4) {
-                        window.location = document.referrer;
-                    } else {
-                        window.location = pages.back;
-                    }
+                    window.location = pages.back;
                     return;
                 break;
                 case keys.LEFT:

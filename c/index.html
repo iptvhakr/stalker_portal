@@ -61,6 +61,11 @@ if (_GET.hasOwnProperty('single_module')){
     single_module = '';
 }
 
+var focus_module;
+if (_GET && _GET.hasOwnProperty('focus_module')){
+    focus_module = _GET['focus_module'];
+}
+
 window.onload = init;
 
 var loader = {
