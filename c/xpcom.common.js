@@ -261,6 +261,7 @@ function common_xpcom(){
         this.player.bind();
         this.get_server_params();
         this.get_stb_params();
+        this.init_rc();
         this.handshake();
 
         this.watchdog = new watchdog();
@@ -2141,6 +2142,33 @@ function common_xpcom(){
         focus_module = layer_name;
         returnParams += encodeURIComponent('&focus_module='+layer_name);
         return returnParams;
+    }
+
+    this.get_rc_data = function () {
+        _debug("this.get_rc_data");
+        var remoteControlFileData = gSTB.LoadUserData('remoteControl.json');
+        try {
+            remoteControlFileData = JSON.parse(remoteControlFileData);
+        } catch (error) {
+            remoteControlFileData = {enable: false, deviceName: '', password: ''};
+            gSTB.SaveUserData('remoteControl.json', JSON.stringify(remoteControlFileData));
+        }
+
+        return remoteControlFileData;
+    };
+
+    this.init_rc = function(){
+        _debug("this.init_rc");
+        if (typeof (gSTB) == 'undefined' || !gSTB.ConfigNetRc || !gSTB.SetNetRcStatus) {
+            _debug("remote control not init");
+            return;
+        }
+        var remoteControlFileData = this.get_rc_data();
+        if (remoteControlFileData.enable) {
+            gSTB.ConfigNetRc(remoteControlFileData.deviceName, remoteControlFileData.password);
+        }
+        gSTB.SetNetRcStatus(remoteControlFileData.enable);
+        _debug("remote control enabled - ", remoteControlFileData.enable);
     }
 };
 
