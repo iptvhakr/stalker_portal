@@ -230,5 +230,11 @@ var lang = {
     "Signal type:" : "Тип сигнала:",
     "Antenna power supply:" : "Включить питание антенны:",
     "Manual scan" : "Ручное сканирование",
-    "List is cleared" : "Список очищен"
+    "List is cleared" : "Список очищен",
+
+    "Remote control": "Дистанционное управление",
+    "Enable remote control:": "Разрешить удаленное управление",
+    "Device name:": "Имя устройства",
+    "Password (only digits):": "Пароль (только цифры)",
+    "Password must contain only digits": "Пароль должен содержать только цифры"
 };
