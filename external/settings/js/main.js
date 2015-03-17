@@ -53,6 +53,7 @@ function init_m()
         "playback":[t('Playback'),"ico_video","ico_video_act","ico_l_video","g_play.html"],
         "portal":[t('Portal'),"ico_lang","ico_lang_act","ico_l_lang","g_portal.html"],
         "net":[t('Network'),"ico_net","ico_net_act","ico_l_net","g_nets.html"],
+        "remote_control":[t('Remote control'),"ico_remote","ico_remote_act","ico_l_remote","g_remote_control.html"],
         "advanced":[t('Advanced settings'),"ico_advset","ico_advset_act","ico_l_advset","g_adv.html"],
         "time_shift":[t('Local TimeShift'),"ico_reload","ico_reload_act","ico_l_reload","g_ts.html"],
         "dvb":[t('DVB'),"ico_reboot","ico_reboot_act","ico_l_reboot","g_dvb.html"],
@@ -80,6 +81,10 @@ function init_m()
         }
 
         if (gSTB.IsEmulator && ['lock', 'lang', 'playback', 'portal', 'dev_info', 'reload', 'reboot'].indexOf(prof.modules[i].name) == -1){
+            continue;
+        }
+
+        if ((!gSTB.ConfigNetRc || !gSTB.SetNetRcStatus) && prof.modules[i].name == 'remote_control') {
             continue;
         }
 
