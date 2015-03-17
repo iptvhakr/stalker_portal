@@ -647,7 +647,7 @@
 
 .aspect_block{
     font-size: 22px;
-    color: #202020;
+    color: #fff;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i_720/aspect_bg.png") left;
     height: 35px;
@@ -708,11 +708,11 @@
 
 .time_shift_info_block, .ad_skip_block{
     font-size: 22px;
-    color: #202020;
+    color: #fff;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i_720/aspect_bg.png") left;
-    height: 31px;
-    padding: 10px 0 0 25px;
+    height: 36px;
+    padding: 5px 0 0 25px;
     font-weight: bold;
     float: left;
 }
