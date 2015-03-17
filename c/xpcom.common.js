@@ -261,9 +261,7 @@ function common_xpcom(){
         this.player.bind();
         this.get_server_params();
         this.get_stb_params();
-        if (typeof (gSTB) != 'undefined') {
-            this.init_rc();
-        }
+        this.init_rc();
         this.handshake();
 
         this.watchdog = new watchdog();
@@ -2161,7 +2159,7 @@ function common_xpcom(){
 
     this.init_rc = function(){
         _debug("this.init_rc");
-        if (!gSTB.ConfigNetRc || !gSTB.SetNetRcStatus) {
+        if (typeof (gSTB) == 'undefined' || !gSTB.ConfigNetRc || !gSTB.SetNetRcStatus) {
             _debug("remote control not init");
             return;
         }
