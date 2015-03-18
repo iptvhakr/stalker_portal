@@ -139,7 +139,16 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
     }
 
     public function startRecDeferred(){
-        return $this->startRecDeferredById($_REQUEST['program_id']);
+
+        $response = array();
+
+        try{
+            $response['data'] = $this->startRecDeferredById($_REQUEST['program_id']);
+        }catch (nPVRException $e){
+            $response['error'] = _($e->getMessage());
+        }
+
+        return $response;
     }
 
     public function startRecDeferredById($program_id){
@@ -151,7 +160,7 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 
     public function stopRecDeferred(){
 
-        $rec_id   = intval($_REQUEST['rec_id']);
+        $rec_id   = intval($_REQUEST['data']);
         $duration = intval($_REQUEST['duration']);
 
         $recorder = new StreamRecorder();
@@ -161,18 +170,26 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
 
     public function startRecNow(){
 
-        $user_rec_id = $this->startRecNowByChannelId(intval($_REQUEST['ch_id']));
+        $response = array();
 
-        if ($user_rec_id){
-            return $this->getRecordingChIds(true);
+        try{
+            $user_rec_id = $this->startRecNowByChannelId(intval($_REQUEST['ch_id']));
+            if ($user_rec_id){
+                $response['data'] = $this->getRecordingChIds(true);
+            }
+        }catch (nPVRException $e){
+            $response['error'] = _($e->getMessage());
         }
+
+
+        return $response;
     }
 
     public function startRecNowByChannelId($ch_id){
         $channel = Mysql::getInstance()->from('itv')->where(array('id' => $ch_id))->get()->first();
 
         if (empty($channel)){
-            return false;
+            throw new nPVRChannelNotFoundError();
         }
 
         $recorder = new StreamRecorder();
@@ -438,5 +455,30 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
         }
 
         return $allowed_storages;
+    }
+}
+
+abstract class nPVRException extends Exception{}
+abstract class nPVRUserException extends nPVRException{}
+abstract class nPVRServerException extends nPVRException{}
+
+class nPVRChannelNotFoundError extends nPVRServerException{
+    public function __construct(){
+        $this->message = _('Channel not found');
+    }
+}
+class nPVRRecordingAlreadyExistError extends nPVRUserException{
+    public function __construct(){
+        $this->message = _('Recording for this channel already exist');
+    }
+}
+class nPVRTotalLengthLimitError extends nPVRUserException{
+    public function __construct(){
+        $this->message = _('Recording duration limit is reached');
+    }
+}
+class nPVRServerError extends nPVRServerException{
+    public function __construct(){
+        $this->message = _('Server error');
     }
 }

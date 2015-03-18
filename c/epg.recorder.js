@@ -146,6 +146,13 @@
                 function(result){
                     _debug('result', result);
 
+                    result = result || {};
+
+                    if (result.error){
+                        stb.notice.show(result.error);
+                        return;
+                    }
+
                     if (result){
                         this.show_mark(program_id);
                         epg_item.rec_id = result;

@@ -158,7 +158,7 @@ class StreamRecorder extends Master
             $is_recording = Mysql::getInstance()->from('users_rec')->where(array('ch_id' => $channel['id'], 'uid' => $this->stb->id, 'ended' => 0, 'started' => 1))->get()->first();
 
             if (!empty($is_recording)){
-                return false;
+                throw new nPVRRecordingAlreadyExistError();
             }
         }
 
@@ -171,7 +171,7 @@ class StreamRecorder extends Master
             $rest_length = $this->checkTotalUserRecordsLength($this->stb->id);
 
             if ($rest_length <= 0){
-                return false;
+                throw new nPVRTotalLengthLimitError();
             }
         }else{
             $rest_length = 0;
@@ -209,7 +209,7 @@ class StreamRecorder extends Master
             }
 
             if ($length < 0){
-                return false;
+                throw new nPVRTotalLengthLimitError();
             }
 
             $program = $epg->getCurProgram($channel['id']);
@@ -235,11 +235,11 @@ class StreamRecorder extends Master
             $length = strtotime($program['time_to']) - strtotime($program['time']);
 
             if ($length < 0){
-                return false;
+                throw new nPVRServerError();
             }
 
             if (!$on_stb && ($rest_length - $length <= 0) ){
-                return false;
+                throw new nPVRTotalLengthLimitError();
             }
 
             $data['program']    = $program['name'];
@@ -282,13 +282,13 @@ class StreamRecorder extends Master
         $user_rec = Mysql::getInstance()->from('users_rec')->where(array('id' => $user_rec_id))->get()->first();
 
         if (empty($user_rec)){
-            return false;
+            throw new nPVRServerError();
         }
 
         $channel  = Mysql::getInstance()->from('itv')->where(array('id' => $user_rec['ch_id']))->get()->first();
 
         if (empty($channel)){
-            return false;
+            throw new nPVRChannelNotFoundError();
         }
 
         $rec_file_id = Mysql::getInstance()->insert('rec_files',
@@ -342,7 +342,7 @@ class StreamRecorder extends Master
         if (empty($file_name)){
             Mysql::getInstance()->update('users_rec', array('ended' => 1), array('id' => $user_rec_id));
             Mysql::getInstance()->update('rec_files', array('ended' => 1), array('id' => $rec_file_id));
-            return false;
+            throw new nPVRServerError();
         }
 
         Mysql::getInstance()->update('rec_files',
