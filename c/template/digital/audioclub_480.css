@@ -81,7 +81,7 @@
 #audioclub .active_playing_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 3px 2px 0 0;
     float:left;
     background-image: url("i/mb_player.png");
     background-position: 0 -21px;
@@ -99,7 +99,7 @@
 #audioclub .active_paused_block{
     width: 24px;
     height: 31px;
-    margin: 4px 2px 0 0;
+    margin: 3px 2px 0 0;
     float: left;
     background-image: url("i/mb_player.png");
     background-position: -24px -21px;
@@ -110,7 +110,7 @@
 }
 
 #audioclub .active_row_bg[status="playing"] .active_name_block, #audioclub .playing .active_name_block{
-    margin-top: 3px;
+    margin-top: 0;
 }
 
 #audioclub .active_row_bg .active_seek_bar_block{

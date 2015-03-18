@@ -35,7 +35,7 @@
     background-image: url("i_480/mb_icons.png");
     background-position: 0px 0px;
     float: left;
-    margin: 1px 0 0 4px;
+    margin: 1px 0 0 3px;
 }
 
 .sd_block{
@@ -44,7 +44,7 @@
     background-image: url("i_480/mb_icons.png");
     background-position: -24px 0px;
     float: left;
-    margin: 1px 0 0 4px;
+    margin: 1px 0 0 3px;
 }
 
 .fav_block{
@@ -92,7 +92,7 @@
     width: 34px;
     height: 21px;
     float: left;
-    margin: 1px 0 0 5px;
+    margin: 1px 0 0 3px;
     color: #202020;
     font-size: 17px;
     text-align: center;
@@ -251,7 +251,7 @@
     height: 29px;
     background-image: url("i_480/mb_icons.png");
     background-position: -92px -21px;
-    margin: 4px 3px 0 7px;
+    margin: 3px 3px 0 7px;
     float:left;
     font-size: 20px;
     color: #202020;
@@ -664,7 +664,7 @@
 
 .aspect_block{
     font-size: 22px;
-    color: #202020;
+    color: #fff;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i_480/aspect_bg.png") left;
     height: 35px;
@@ -725,11 +725,11 @@
 
 .time_shift_info_block, .ad_skip_block{
     font-size: 22px;
-    color: #202020;
+    color: #fff;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i_480/aspect_bg.png") left;
-    height: 31px;
-    padding: 10px 0 0 25px;
+    height: 35px;
+    padding: 6px 0 0 25px;
     font-weight: bold;
     float: left;
 }
