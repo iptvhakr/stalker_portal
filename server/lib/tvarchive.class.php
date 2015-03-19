@@ -402,7 +402,26 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $ch_id = intval($_REQUEST['ch_id']);
 
-        $task = $this->getLessLoadedTaskByChId($ch_id, true);
+        $res = array(
+            'id'         => 0,
+            'cmd'        => '',
+            'storage_id' => '',
+            'load'       => '0',
+            'error'      => ''
+        );
+
+        try{
+            $task = $this->getLessLoadedTaskByChId($ch_id);
+        }catch (StorageSessionLimitException $e){
+            $res['error']        = 'limit';
+            $res['storage_name'] = $e->getStorageName();
+            return $res;
+        }
+
+        if (empty($task)){
+            $res['error'] = 'server_error';
+            return $res;
+        }
 
         $storage = Master::getStorageByName($task['storage_name']);
 
@@ -438,7 +457,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             if (preg_match("/:\/\/([^\/]*)\/.*\.m3u8/", $channel['mc_cmd'], $match)){
 
                 $url = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
-                $url = preg_replace('/\.m3u8.*/',
+                $res['cmd'] = preg_replace('/\.m3u8.*/',
                         '.m3u8?DVR&wowzadvrplayliststart=' . gmdate("YmdH0000")
                         . '&wowzadvrplaylistduration=3600000', // todo: in current hour without duration?
                         $url)
@@ -447,10 +466,10 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                     . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
 
             }else{
-                $url = false;
+                $res['error'] = 'server_error';
             }
 
-            return $url;
+            return $res;
 
         }else{
 
@@ -460,7 +479,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
                 $link_result = $this->createTemporaryTimeShiftToken($redirect_url);
 
-                return 'ffmpeg http://' . $storage['storage_ip']
+                $res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
                 . '/tslink/'.$link_result
                 . '/archive/'
                 . $ch_id
@@ -470,7 +489,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
             }else{
 
-                return 'ffmpeg http://' . $storage['storage_ip']
+                $res['cmd'] = 'ffmpeg http://' . $storage['storage_ip']
                 . '/archive/'
                 . $ch_id
                 . '/'
@@ -479,6 +498,8 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
             }
         }
+
+        return $res;
 
     }
 
