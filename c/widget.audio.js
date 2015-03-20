@@ -55,7 +55,7 @@
             });
 
             main_menu.addCustomEventListener("mainmenushow", function(layer_name){
-                if (layer_name != 'audioclub') {
+                if (layer_name != 'audioclub' && layer_name != 'media_browser') {
                     return;
                 }
                 _debug('audio_widget.mainmenushow');
