@@ -37,7 +37,7 @@
     position: absolute;
     top: 310px;
     left: 20px;
-    height: 58px;
+    height: 44px;
     width: 37px;
     background-image: url("i_720/arr_left.png");
 }
@@ -46,7 +46,7 @@
     position: absolute;
     top: 310px;
     right: 20px;
-    height:58px;
+    height: 44px;
     width: 37px;
     background-image: url("i_720/arr_right.png");
 }
