@@ -67,8 +67,8 @@ class Vclub extends Storage
                         'status' => $status
                     );
 
-                    if (preg_match("/^([\d]+)\.(".$this->media_ext_str.")$/i", $file, $tmp_arr)){
-                        $result['series'][] = $tmp_arr[1];
+                    if (preg_match("/s?[\d]+e?(\d*)?.*(".$this->media_ext_str.")$/i", $file, $tmp_arr)){
+                        $result['series'][] = (int)$tmp_arr[1];
                         $result['series_file'][] = $file;
                     }
 
