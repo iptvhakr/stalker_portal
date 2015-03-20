@@ -31,7 +31,8 @@ var main_menu = {
         
         module.curweather && module.curweather.current && module.curweather.render();
 
-        this.triggerCustomEventListener('mainmenushow');
+        var layer_name = (this.map.length >=1 && this.map[1].module && this.map[1].module.layer_name) ? this.map[1].module.layer_name: null;
+        this.triggerCustomEventListener('mainmenushow', layer_name);
     },
     
     hide : function(){

@@ -560,6 +560,7 @@
                 function(result){
                     _debug('playlist', result);
                     item.playlist = result.data;
+                    stb.player.stop();
                     stb.player.need_show_info = 0;
                     stb.player.play(item);
                 }

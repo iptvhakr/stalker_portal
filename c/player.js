@@ -2170,6 +2170,8 @@ player.prototype.play = function(item){
 
     if (this.file_type == 'audio' || this.cur_media_item.is_audio){
         this.triggerCustomEventListener('audiostart', this.cur_media_item);
+    } else if (this.media_type == 'stream' || stb.player.cur_media_item.radio == true || typeof (stb.player.radio_idx) != 'undefined'){
+        this.triggerCustomEventListener('radiostart', this.cur_media_item);
     }
 
     _debug('stb.profile[plasma_saving]', stb.profile['plasma_saving']);
@@ -2471,6 +2473,8 @@ player.prototype.stop = function(){
 
     if (this.file_type == 'audio' || this.cur_media_item.is_audio){
         this.triggerCustomEventListener('audiostop', this.cur_media_item);
+    } else if (this.media_type == 'stream' || stb.player.cur_media_item.radio == true || typeof (stb.player.radio_idx) != 'undefined'){
+        this.triggerCustomEventListener('radiostop', this.cur_media_item);
     }
     
     if(this.pause.on){
@@ -2584,10 +2588,12 @@ player.prototype.pause_switch = function(){
     _debug('this.cur_media_item.allow_local_timeshift', this.cur_media_item.allow_local_timeshift);
 
     if (this.is_tv && (!module.time_shift || !parseInt(this.cur_media_item.enable_tv_archive, 10)) && (!module.time_shift_local || !module.time_shift_local.enabled || !parseInt(this.cur_media_item.allow_local_timeshift, 10) || (this.cur_media_item.cmd.indexOf('rtp ') == -1 && this.cur_media_item.cmd.indexOf('ffrt ') == -1))
-        ){
+        && !module.radio_widget.widget_on){
         return;
     }
-    
+
+    _debug('this.pause.on - ', this.pause.on);
+
     if (this.pause.on){
         this.disable_pause();
     }else{
@@ -2613,6 +2619,8 @@ player.prototype.pause_switch = function(){
 
         if ((this.file_type == 'audio' || this.cur_media_item.is_audio) && this.cur_media_item.playlist){
             this.triggerCustomEventListener('audiopause', this.cur_media_item);
+        } else if (this.media_type == 'stream' || stb.player.cur_media_item.radio == true || typeof (stb.player.radio_idx) != 'undefined'){
+            this.triggerCustomEventListener('radiopause', this.cur_media_item);
         }
 
         if (module.tv_archive && this.cur_media_item.mark_archive){
@@ -2669,6 +2677,8 @@ player.prototype.disable_pause = function(){
 
         if ((this.file_type == 'audio' || this.cur_media_item.is_audio) && this.cur_media_item.playlist){
             this.triggerCustomEventListener('audiocontinue', this.cur_media_item);
+        } else if (this.media_type == 'stream' || stb.player.cur_media_item.radio == true || typeof (stb.player.radio_idx) != 'undefined'){
+            this.triggerCustomEventListener('radiocontinue', this.cur_media_item);
         }
 
         try{
