@@ -648,7 +648,6 @@
 .aspect_block{
     font-size: 22px;
     color: #fff;
-    text-shadow: #555 -1px -1px 2px !important;
     background: url("i_720/aspect_bg.png") left;
     height: 35px;
     padding: 6px 0 0 25px;
@@ -709,7 +708,6 @@
 .time_shift_info_block, .ad_skip_block{
     font-size: 22px;
     color: #fff;
-    text-shadow: #555 -1px -1px 2px !important;
     background: url("i_720/aspect_bg.png") left;
     height: 36px;
     padding: 5px 0 0 25px;
@@ -719,7 +717,7 @@
 
 .ad_skip_txt{
     padding-right: 30px;
-    background: url("i_720/skip.png") right top no-repeat;
+    background: url("i_720/skip.png") right 5px no-repeat;
 }
 
 .time_shift_info_block_right{
