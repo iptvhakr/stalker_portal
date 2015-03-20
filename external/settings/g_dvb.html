@@ -90,7 +90,7 @@
 
         function clear_channel_list(){
             parent.stb.SendEventToPortal(JSON.stringify({"type":"settings", "clear_dvb_channels":true}));
-            document.getElementById("i5").value = parent.t('list is cleared');
+            document.getElementById("i5").value = parent.t('List is cleared');
         }
 
         function auto_scan(){
@@ -149,7 +149,7 @@
             </tr>\
             <tr id="scan_block" style="visibility: hidden">\
                     <td colspan="2">\
-                        <div id="progress_wrap" style="position:relative; height: 20px; border: 1px solid #152b4f; border-radius: 3px; margin: 0 auto">\
+                        <div id="progress_wrap" style="position:relative; height: 20px; border: 1px solid #fff; border-radius: 3px; margin: 0 auto">\
                         <div id="progress" style="position:absolute;width: 50%;height: 20px; border-radius: 3px; background-color: #fff"></div>\
                         </div>\
                     </td>\
@@ -338,7 +338,7 @@
         </tr>
         <tr id="scan_block" style="visibility: hidden">
             <td colspan="2">
-                <div id="progress_wrap" style="position:relative; height: 20px; border: 1px solid #152b4f; border-radius: 3px; margin: 0 auto">
+                <div id="progress_wrap" style="position:relative; height: 20px; border: 1px solid #fff; border-radius: 3px; margin: 0 auto">
                     <div id="progress" style="position:absolute;width: 50%;height: 20px; border-radius: 3px; background-color: #fff"></div>
                 </div>
             </td>
