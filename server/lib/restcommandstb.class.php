@@ -37,6 +37,10 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('Update data is empty');
         }
 
+        if (count($request->getIdentifiers()) == 0){
+            throw new RESTCommandException('Identifier required');
+        }
+
         $stb_list = $this->manager->updateByUids($request->getConvertedIdentifiers(), $data);
 
         if (empty($stb_list)){

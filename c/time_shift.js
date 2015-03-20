@@ -27,10 +27,28 @@
                 function(result){
                     _debug('get_link_for_channel result', result);
 
+                    result = result || {};
+
+                    if (result.error){
+
+                        if (result.error == 'limit'){
+                            stb.notice.show(word['player_limit_notice']);
+                        }else if(result.error == 'server_error'){
+                            stb.notice.show(word['player_server_error']);
+                        }
+
+                        stb.player.cur_media_item = module.time_shift.stored_media_item;
+                        stb.player.cur_tv_item    = this.cur_media_item;
+                        stb.player.active_time_shift = false;
+                        stb.player.play_last();
+                        stb.player.diff_pos = 0;
+                        return;
+                    }
+
                     this.in_process = false;
 
-                    this.plt_link = result;
-                    this.cur_media_item.cmd = result;
+                    this.plt_link = result.cmd;
+                    this.cur_media_item.cmd = result.cmd;
 
                     if (this.program instanceof Array && this.program.length > 0){
                         this.on_epg_and_link_available && this.on_epg_and_link_available();

@@ -60,7 +60,11 @@ class RESTApiTvChannelRecord extends RESTApiController
 
         $pvr = new \RemotePvr();
 
-        $rec_id = $pvr->startRecNowByChannelId($channel['id']);
+        try{
+            $rec_id = $pvr->startRecNowByChannelId($channel['id']);
+        }catch (\nPVRException $e){
+            throw new RESTServerError($e->getMessage());
+        }
 
         if (!$rec_id){
             return false;

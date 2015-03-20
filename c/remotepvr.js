@@ -146,14 +146,20 @@
 
                     if (result){
 
-                        //stb.recordings = result;
-                        result = result || [];
+                        result = result || {};
+
+                        if (result.error){
+                            stb.notice.show(result.error);
+                            return;
+                        }
+
+                        var rec_ids = result.data || [];
 
                         var local_recordings = stb.recordings.filter(function(record){
                             return record.local == 1;
                         });
 
-                        stb.recordings = local_recordings.concat(result);
+                        stb.recordings = local_recordings.concat(rec_ids);
                         _debug('stb.recordings', stb.recordings);
 
                         var rec_idx = stb.recordings.getIdxByVal('ch_id', ch_id);
@@ -202,6 +208,12 @@
 
                 function(result){
                     _debug('result', result);
+
+                    result = result || {};
+
+                    if (result.error){
+                        stb.notice.show(result.error);
+                    }
                 },
                 this
             )

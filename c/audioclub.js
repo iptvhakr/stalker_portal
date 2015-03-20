@@ -188,9 +188,7 @@
                                     if (result){
                                         scope.new_playlist_dialog.hide();
                                     }else{
-                                        stb.msg.push({
-                                            msg : get_word('audioclub_saving_error')
-                                        })
+                                        stb.notice.push(get_word('audioclub_saving_error'));
                                     }
                                 },
                                 this
@@ -242,9 +240,7 @@
                                 if (result){
                                     scope.select_playlist_dialog.hide();
                                 }else{
-                                    stb.msg.push({
-                                        msg : get_word('audioclub_saving_error')
-                                    })
+                                    stb.notice.push(get_word('audioclub_saving_error'));
                                 }
                             },
                             this
