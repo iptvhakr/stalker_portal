@@ -33,14 +33,6 @@
             dvb_current_scan_types = [];
         }
 
-        dvb_supported_scan_types = dvb_supported_scan_types.map(function(scan_type){
-            return scan_type.name;
-        });
-
-        dvb_current_scan_types = dvb_current_scan_types.map(function(scan_type){
-            return scan_type.name;
-        });
-
         main_menu.add(word['settings_title'], [], 'mm_ico_setting.png', function(){
             if (connection_problem && connection_problem.on){
                 stb.notice.show(get_word('settings_unavailable'));
@@ -53,8 +45,8 @@
                 url += '&sec_audio_lang=' + stb.user['sec_audio_lang'];
                 url += '&pri_subtitle_lang=' + stb.user['pri_subtitle_lang'];
                 url += '&sec_subtitle_lang=' + stb.user['sec_subtitle_lang'];
-                url += '&dvb_supported_scan_types=' + dvb_supported_scan_types.join('|');
-                url += '&dvb_current_scan_types=' + dvb_current_scan_types.join('|');
+                url += '&dvb_supported_scan_types=' + JSON.stringify(dvb_supported_scan_types);
+                url += '&dvb_current_scan_types=' + JSON.stringify(dvb_current_scan_types);
                 url += '&enable_setting_access_by_pass=' + stb.profile.enable_setting_access_by_pass;
 
                 _debug(url);

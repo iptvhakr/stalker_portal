@@ -248,11 +248,11 @@ player.prototype.init = function(){
                 }
 
                 if (params.hasOwnProperty("start_dvb_scan") && module.dvb){
-                    module.dvb.scan(params.dvb_type);
+                    module.dvb.scan(params.data);
                 }
 
                 if (params.hasOwnProperty("start_manual_dvb_scan") && module.dvb){
-                    module.dvb.manual_scan(params.dvb_type, params.freq, params.band);
+                    module.dvb.manual_scan(params.data);
                 }
 
                 if (params.hasOwnProperty("stop_dvb_scan") && module.dvb){
