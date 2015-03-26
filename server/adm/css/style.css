@@ -2945,7 +2945,7 @@ min-width:180px;
     min-height: 10px;
 
 }
-#datatable-1 {	margin-bottom:-10px;margin-top:10px;}
+#datatable-1 {	margin-bottom:50px;margin-top:10px;}
 #datatable-1_wrapper > .row-fluid > .span6{
 /*    display: none;*/
     float: left;
