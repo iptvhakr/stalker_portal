@@ -3,33 +3,54 @@
 {% set title = 'login' %}
 
 {% block container %}
-    <div class="container-fluid">
-        <div id="page-login" class="row">
-            <div class="col-xs-12 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
-                <form action="./login" method="POST" role="form">
-                    <div class="box">
-                        <div class="box-content">
-                            <div class="text-center">
-                                <h3 class="page-header">Stalker Portal Login Page</h3>
-                            </div>
-                            {% if app['error_local'] and attribute(app['error_local'], 'user_undefined') %}
+<style>
+body {background-color: #fff;}
+</style>
+    <div class="container">    
+        <div id="" style="margin-top:210px;" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">                    
+            <div class=" panel-info " >
+                       
+
+                    <div style="padding-top:30px" class="panel-body" >
+						<center><img src="img/llogo.png"></center>
+                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                            
+                       <form action="./login" method="POST" class="form-signin" role="form">
+                                <!---     {% if app['error_local'] and attribute(app['error_local'], 'user_undefined') %}
                                 <span class="txt-danger">{{ app.error_local.user_undefined }}</span>
-                            {% endif %}
-                            <div class="form-group">
-                                <label class="control-label">Username</label>
-                                <input type="text" class="form-control" name="username" />
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label">Password</label>
-                                <input type="password" class="form-control" name="password" />
-                            </div>
-                            <div class="text-center">
-                                <input type="submit" class="btn btn-primary" value="Sign in">
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                            {% endif %}--->
+                            <div  class="input-group">
+                                        
+                                       <input type="text" class="form-control" placeholder="Username" name="username" /> 
+										<input type="password" class="form-control " placeholder="Password"  name="password" />	
+<input type="submit" class="btn lobtn btn-lg btn-block" value="Sign in">										
+                                    </div>
+                         
+                                    
+
+                                
+                          
+
+
+                                <div style="margin-top:10px" class="form-group">
+                                    <!-- Button -->
+
+                                    <div class="col-sm-12 controls">
+                                     
+                                   
+
+                                    </div>
+                                </div>
+
+  
+                            </form>     
+
+
+
+                        </div>                     
+                    </div>  
         </div>
+       
     </div>
+ 
 {% endblock container %}

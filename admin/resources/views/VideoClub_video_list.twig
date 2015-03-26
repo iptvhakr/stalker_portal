@@ -15,13 +15,12 @@
                 {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus'], 2) }}
                 {{ main_macro.get_filter('genre_id', 'Жанр', 'id', 'title', app['allGenre'], 2) }}
                 {{ main_macro.get_filter('year', 'Год', 'id', 'title', app['allYears'], 2) }}
-
                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video" class="btn btn-success pull-right">Добавить</a>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row2">
+            <div class="">
                 {% if app['allVideo'] %}
                     <div class="box">
                         {% if attribute(app, 'dropdownAttribute') is defined %}
@@ -30,22 +29,22 @@
                             
                         <div class="box-content">
                             <div class="box-content no-padding">
-                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                 <table class="table dataTable table-hover table-datatable"  id="datatable-1">
                                     <thead>
                                         <tr>
                                             <th data-filter="id">ID</th>
                                             <th data-filter="path">Каталог</th>
                                             <th data-filter="name">Название</th>
-                                            <th data-filter="o_name">Оригинальное название</th>
-                                            <th data-filter="time">Длительность, мин</th>
+                                            <th data-filter="o_name">Оригинальное <br> название</th>
+                                            <th data-filter="time">Длительность,<br> мин</th>
                                             <th data-filter="series">Серии</th>
                                             <th data-filter="cat_genre">Жанр</th>
                                             <th data-filter="tasks">Задания</th>
                                             <th data-filter="year">Год</th>
-                                            <th data-filter="added">Дата запуска</th>
+                                            <th data-filter="added">Добавлен</th>
                                             <th data-filter="complaints">Жалобы</th>
                                             <th data-filter="status">Статус</th>
-                                            <th data-filter="operations">Действия</th>
+                                            <th data-filter="operations"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,7 +68,7 @@
                                                     {% endif%}
                                                 </td>
                                                 <td data-filter="year">{{ item.year }}</td>
-                                                <td data-filter="added">{{ item.added|date('M d, Y H:i') }}</td>
+                                                <td data-filter="added">{{ item.added|date('M d, Y') }}</td>
                                                 <td data-filter="complaints">
                                                     {% if item.video_counter or item.sound_counter%}
                                                         {% if item.video_counter %}видео - {{ item.video_counter }} {% endif %}
@@ -118,10 +117,12 @@
                                         <!-- End: list_row -->
                                     </tbody>
                                 </table>
+								
                             </div>
                         </div>
                     </div>
                 {% endif %}
+				
             </div>
         </div>
     </div>
@@ -237,7 +238,7 @@
 
                         if (json.data[i]['added'] != 0) {
                             var dateOn = new Date(json.data[i]['added'] * 1000);
-                            json.data[i]['added'] = dateOn.toLocaleFormat("%b %d, %Y %H:%M");
+                            json.data[i]['added'] = dateOn.toLocaleFormat("%b %d, %Y");
                         }
 
                         json.data[i].name = ("<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id=" + id + "' data-fieldname='name'>" + json.data[i].name + "</a>");
@@ -300,6 +301,7 @@
             "language": {
                 "url": "./plugins/datatables/lang/ru_RU.json"
             },
+			"order": [[ 1, "asc" ]],
             "columns": [     
                 {"data": "id"},
                 {"data": "path"},
@@ -315,21 +317,32 @@
                 {"data": "accessed"},
                 {"data": "operations"}
             ],
+			"scrollCollapse": true,
+			
             "bFilter": true,
             "bPaginate": true,
+			"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
             "bInfo":     true,
+			"order": [[ 0, "desc" ]],
             "aoColumnDefs": [ 
                 { className: "action-menu", "targets": [ -1 ] },
                 { "targets": [ 3 ], "visible": false},
                 { "targets": [ -1 , 6], "orderable": false},
                 { "searchable": false, "targets": [ 4, 5, 6, 7, 8, 9, 10, 11 ] },
-                { "width": "12%", "targets": [ 1, 2, 3, 4, 6 ] },
+                { "width": "10%", "targets": [ 1, 2, 3, 4, 6 ] },
 {#                { "width": "12%", "targets": [ 4 ] },#}
-                { "width": "10%", "targets": [ 8 ] },
-                { "width": "5%", "targets": [ -1, 0 ] }
-            ],
-            "order": ($("#datatable-1 th[data-filter='added']").is('visible') ? [[ 8, "desc" ]]: [])
+                { "width": "10%", "targets": [ 8, 9 ] },
+				{ "width": "40px", "targets": [ -1] },
+                { "width": "16px", "targets": [ -1] }
+            ]
+            
         });
+		  $("#datatable-1").DataTable().ajax.reload();
+		
         $("#attribute_set input[type='checkbox']").each(function(index){
             $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
         });

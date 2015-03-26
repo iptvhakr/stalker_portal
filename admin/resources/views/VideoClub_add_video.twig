@@ -5,7 +5,7 @@
 
     
 {#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-3">
+        <div class="col-xs-10 col-sm-2">
             <h3>{% if app['videoEdit'] %}Редактировать{% else %}Добавить{% endif %} видео</h3>
         </div>
     </div>#}
@@ -17,26 +17,26 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
+            <div class="">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
+                                <div class="col-xs-10 col-sm-2">
                                     <span>Базовое</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
+                           
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
+                           
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Название</label>
+                            <label class="col-sm-2 control-label ">Название</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id) }}
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Категория</label>
+                            <label class="col-sm-2 control-label ">Категория</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].category_id, {'attr': {'class': 'populate placeholder'} }) }}
@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Жанр</label>
+                            <label class="col-sm-2 control-label ">Жанр</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].cat_genre_id, {'attr': {'class': 'populate placeholder'} }) }}
@@ -80,7 +80,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Старый жанр</label>
+                            <label class="col-sm-2 control-label ">Старый жанр</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder'} }) }}
@@ -94,20 +94,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Обложка</label>
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-5">
+                            <label class="col-sm-2 control-label ">Обложка</label>
+                            <div class="col-xs-10 col-sm-6">
+                              <div class=" col-xs-10 col-sm-4 pull-right">
                                     {{form_widget(app['form'].cover_big) }}
                                     {{form_widget(app['form'].cover_id) }}
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value%}{{app['curr_cover_dir']}}/{{app['form'].cover_id.vars.value}}.jpg{% endif %}" alt="" style="max-width: 100%;">
                                 </div>
-                                <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader">
+                                <div class="pull-left" id="bootstrapped-fine-uploader">
                                     {#<a class="btn btn-success file-btn"><span>Добавить картинку</span><input type="file" name="channel_logo" ></a>#}
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">HD</label>
+                            <label class="col-sm-2 control-label ">HD</label>
                             <div class="col-xs-10 col-sm-9">
                                 <div class=" col-xs-10 col-sm-9">
                                     <div class="checkbox">
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Ограничение по возрасту</label>
+                            <label class="col-sm-2 control-label ">Ограничение по возрасту</label>
                             <div class="col-xs-10 col-sm-9">
                                 <div class=" col-xs-10 col-sm-9">
                                     <div class="checkbox">
@@ -145,9 +145,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Протокол</label>
+                            <label class="col-sm-2 control-label ">Протокол</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].protocol, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].protocol) }}
@@ -159,7 +159,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">URL</label>
+                            <label class="col-sm-2 control-label ">URL</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].rtsp_url, {'attr': {'class': 'form-control'}}) }}
@@ -174,9 +174,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Громкость</label>
+                            <label class="col-sm-2 control-label ">Громкость</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].volume_correction) }}
@@ -189,26 +189,26 @@
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"><a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
+                                <div class="col-xs-10 col-sm-2">
                                     <span>Информация о фильме</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
+                            
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
+                            
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div></a>
 
                     <div class="box-content" >
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Оригинальное название</label>
+                            <label class="col-sm-2 control-label ">Оригинальное название</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].o_name, {'attr': {'class': 'form-control'}}) }}
@@ -222,7 +222,7 @@
                                 </div>
                                 <div class="col-xs-10 col-sm-6">
                                     <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
-                                    <button class="btn btn-success col-sm-5" id="autocomplete_name" type="button">Автозаполнение</button>
+                                    <button class="btn btn-success" id="autocomplete_name" type="button">Автозаполнение</button>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
                                     <span class="small txt-default">Название на языке оригинала. Есть возможность автозаполнения</span>
@@ -230,7 +230,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Кинопоиск ID</label>
+                            <label class="col-sm-2 control-label ">Кинопоиск ID</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].kinopoisk_id, {'attr': {'class': 'form-control'}}) }}
@@ -240,7 +240,7 @@
                                 </div>
                                 <div class="col-xs-10 col-sm-6">
                                     <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
-                                    <button class="btn btn-success col-sm-5" id="autocomplete_id" type="button">Автозаполнение</button>
+                                    <button class="btn btn-success" id="autocomplete_id" type="button">Автозаполнение</button>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
                                     <span class="small txt-default">Номер фильма по которому он может быть найден на кинопоиск.</span>
@@ -248,7 +248,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Рейтинг кинопоиска</label>
+                            <label class="col-sm-2 control-label ">Рейтинг кинопоиска</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].rating_kinopoisk, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
@@ -265,7 +265,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Год</label>
+                            <label class="col-sm-2 control-label ">Год</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].year, {'attr': {'class': 'form-control'}}) }}
@@ -279,7 +279,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Длительность</label>
+                            <label class="col-sm-2 control-label ">Длительность</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control'}}) }}
@@ -293,7 +293,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Страна</label>
+                            <label class="col-sm-2 control-label ">Страна</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].country, {'attr': {'class': 'form-control'}}) }}
@@ -304,7 +304,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Режисер</label>
+                            <label class="col-sm-2 control-label ">Режисер</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].director, {'attr': {'class': 'form-control'}}) }}
@@ -315,7 +315,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Актеры</label>
+                            <label class="col-sm-2 control-label ">Актеры</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'placeholder': 'Актеры приявшие участи в данном фильме...'}}) }}
@@ -326,7 +326,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Описание картины:</label>
+                            <label class="col-sm-2 control-label ">Описание картины:</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'placeholder': 'Краткое и содержательное описние картины...'}}) }}
@@ -337,7 +337,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Коментарии:</label>
+                            <label class="col-sm-2 control-label ">Коментарии:</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].comments, {'attr': {'class': 'form-control'}}) }}
@@ -348,9 +348,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Рейтинг MPAA</label>
+                            <label class="col-sm-2 control-label ">Рейтинг MPAA</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].rating_mpaa, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].rating_mpaa) }}
@@ -362,9 +362,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Возростной рейтинг</label>
+                            <label class="col-sm-2 control-label ">Возростной рейтинг</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].age, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].age) }}
@@ -377,15 +377,16 @@
                         </div>
                     </div>
                 </div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-4 pull-right">
-                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
-{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                            <div class=" pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success   pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-list" class="btn btn-default  pull-right">Отмена</a>
+{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default  pull-right'}}) }}#}
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
             </div>

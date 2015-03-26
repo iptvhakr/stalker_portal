@@ -102,6 +102,7 @@ function WinMove() {
                 zIndex: 2000,
                 cursor: "crosshair",
                 handle: '.box-name',
+				class: 'highlight',
                 opacity: 0.8
             })
             .droppable({
@@ -125,8 +126,10 @@ function WinMove() {
                             draggable.resize();
                             droppable.resize();
                         }
+						
                     }, 50);
                     setTimeout(function () {
+					
                         draggable.find('[id^=map-]').resize();
                         droppable.find('[id^=map-]').resize();
                     }, 250);
@@ -873,11 +876,11 @@ function channelListRender(container){
     _container.height(maxBlockHeight +10);
     var maxBlockWidth = $(window).width()- _container.offset().left - 50;
     _container.width(maxBlockWidth+10);
-    var maxItemOnBlock = Math.floor(maxBlockHeight/40);
+    var maxItemOnBlock = Math.floor(maxBlockHeight/50);
     var currentCount = 0;
     for (var i= 0; i< channelList.length; ) {
-        var currentBlock = $("<div/>", {'class': 'col-xs-3 col-sm-2 no-padding'}).appendTo(_container);
-        var currentItemsBlock = $("<div/>", {'class': 'col-xs-12 col-sm-12 no-padding'}).appendTo(currentBlock)
+        var currentBlock = $("<div/>", {'class': 'no-padding'}).appendTo(_container);
+        var currentItemsBlock = $("<div/>", {'class': 'no-padding'}).appendTo(currentBlock)
         for ( var j = currentCount; j < (currentCount + maxItemOnBlock) && j < channelList.length; j++) {
             if (typeof(channelList[j]) == 'undefined') {
                 continue;
@@ -885,7 +888,7 @@ function channelListRender(container){
             currentItemsBlock.append(getChannelListItem(j+1, channelList[j]));
             i++;
         }
-        currentBlock.prepend('<div class="col-xs-12 col-sm-12 counter"><span>' + (currentCount + 1) + '-'+ (j) + '</span></div>');
+        currentBlock.prepend('<div class=" counter"><span>' + (currentCount + 1) + '-'+ (j) + '</span></div>');
         currentCount = j;
         currentBlock.css('top', 0);
         currentBlock.css('left', (Math.ceil(currentCount/maxItemOnBlock) - 1)*250);
@@ -903,24 +906,22 @@ function channelListRender(container){
 }
 
 function getChannelListItem(num, item){
-    var return_val = '<div class="box '+(item.locked? 'no-drop': '')+'">\n\
-                <div class="box-header '+ (item.empty == '1'? 'empty': '') + '">\n\
-                    <div class="box-name col-sm-11">\n\
-                        <span class="curr_num col-xs-2 col-sm-2 no-padding" data-number="'+num+'">'+item.number+'</span>\n\
+    var return_val = '<div class="box '+(item.locked? 'no-drop': '')+'"  style="position:relative; z-index:30;">\n\
+                <div class="box-header '+ (item.empty == '1'? 'empty': '') + '"  style="position:relative; z-index:30;">\n\
+                    <div class="box-name col-sm-11"  style="position:relative; z-index:30;">\n\
+                        <span class="curr_num col-xs-1 col-sm-1 no-padding" data-number="'+num+'">'+item.number+'</span>\n\
                         <div class="channel col-xs-10 col-sm-10 no-padding">\n\
-                            <span class="col-xs-2 col-sm-2 no-padding">\n\
-                                <img class="img-rounded" src="'+item.logo+'" alt="">\n\
+                            <span class="no-padding">\n\
+                              <!----  <img class="img-rounded" src="'+item.logo+'" alt="">\n\--->\
                             </span>\n\
-                            <a href="'+item.link+'" class="col-xs-10 col-sm-10 no-padding">'+item.name+'</a>\n\
-                        </div>\n\
+                            <a style="position:relative; z-index:300;" href="'+item.link+'" class="no-padding">'+item.name+'</a>';
+	    if (item.empty != '1') {
+        return_val +='<div class="box-icons col-sm-1 no-padding"><a style="position:relative; z-index:300;" class="lock-link">\n\        <i data-id="' + item.id + '" class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\    </a></div>';
+	}						
+                 return_val +='    </div>\n\
                     </div>';
-    if (item.empty != '1') {
-        return_val +='<div class="box-icons col-sm-1 no-padding">\n\
-                    <a class="lock-link">\n\
-                        <i data-id="' + item.id + '" class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\
-                    </a>\n\
-                </div>';
-    }
+
+    
     return_val +='  <div class="no-move"></div>\n\
                 </div>\n\
             </div>';

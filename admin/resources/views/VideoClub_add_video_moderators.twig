@@ -4,7 +4,7 @@
 {% block content %}
 
 {#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-3">
+        <div class="col-xs-10 col-sm-2">
             <h3>{% if app['modEdit'] %}Редактировать{% else %}Добавить{% endif %} модератора</h3>
         </div>
     </div>#}
@@ -20,7 +20,7 @@
                 <div class="box">
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Имя</label>
+                            <label class="col-sm-2 control-label ">Имя</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">MAC Адресс</label>
+                            <label class="col-sm-2 control-label ">MAC Адресс</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].mac, {'attr': {'class': 'form-control'}}) }}
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Отключить рекламу</label>
+                            <label class="col-sm-2 control-label ">Отключить рекламу</label>
                             <div class=" col-xs-10 col-sm-7">
                                 <div class="checkbox">
                                     <label>

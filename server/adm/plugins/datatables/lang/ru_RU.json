@@ -2,16 +2,16 @@
     "sProcessing": "Подождите...",
     "sLengthMenu": "Показать _MENU_ записей",
     "sZeroRecords": "Записи отсутствуют.",
-    "sInfo": "Записи с _START_ до _END_ из _TOTAL_ записей",
-    "sInfoEmpty": "Записи с 0 до 0 из 0 записей",
+    "sInfo": "<b>_START_-_END_</b> из <b>_TOTAL_</b>",
+    "sInfoEmpty": "<b>0-0</b> из <b>0</b>",
     "sInfoFiltered": "(отфильтровано из _MAX_ записей)",
     "sInfoPostFix": "",
     "sSearch": "Поиск:",
     "sUrl": "",
     "oPaginate": {
         "sFirst": "Первая",
-        "sPrevious": "Предыдущая",
-        "sNext": "Следующая",
+        "sPrevious": "",
+        "sNext": "",
         "sLast": "Последняя"
     },
     "oAria": {

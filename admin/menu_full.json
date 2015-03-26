@@ -2,8 +2,8 @@
     "1": {
         "name": "Администратор",
         "alias": "auth-user",
-        "icon": "",
-        "icon2": "fa fa-cog pull-right",
+		"icon": "fa fa-user",
+        "icon2": "",
         "action": {
             "1": {
                 "name": "Профиль",

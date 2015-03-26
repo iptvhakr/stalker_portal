@@ -126,7 +126,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         
         $this->app['dropdownAttribute'] = array(
             array('name'=>'name',           'title'=>'Название',    'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'operations',     'title'=>' ',    'checked' => TRUE)
         );
         $list = $this->audio_artists_list_json();
         
@@ -144,7 +144,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         
         $this->app['dropdownAttribute'] = array(
             array('name'=>'name',           'title'=>'Название',    'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'operations',     'title'=>' ',    'checked' => TRUE)
         );
         $list = $this->audio_genres_list_json();
         
@@ -162,7 +162,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         
         $this->app['dropdownAttribute'] = array(
             array('name'=>'name',           'title'=>'Название',    'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'operations',     'title'=>' ',    'checked' => TRUE)
         );
         $list = $this->audio_languages_list_json();
         
@@ -180,7 +180,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         
         $this->app['dropdownAttribute'] = array(
             array('name'=>'name',           'title'=>'Название',    'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'operations',     'title'=>' ',    'checked' => TRUE)
         );
         $list = $this->audio_years_list_json();
         
@@ -1152,7 +1152,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             array('name'=>'country',        'title'=>'Страна',      'checked' => TRUE),
             array('name'=>'language',       'title'=>'Язык',        'checked' => TRUE),
             array('name'=>'status',         'title'=>'Статус',      'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'operations',     'title'=>' ',    'checked' => TRUE)
         );
     }
     
@@ -1305,7 +1305,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             array('name'=>'url',            'title'=>'URL',                 'checked' => TRUE),
             array('name'=>'language',       'title'=>'Язык',                'checked' => TRUE),
             array('name'=>'status',         'title'=>'Статус',              'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',            'checked' => TRUE)
+            array('name'=>'operations',     'title'=>' ',            'checked' => TRUE)
         );
     }
 }

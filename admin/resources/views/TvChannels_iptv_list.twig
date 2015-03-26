@@ -6,7 +6,7 @@
 
 {% block content %}
     {#<div class="row header_title">
-        <div class="col-xs-10 col-sm-2">
+        <div class="col-xs-10 col-sm-4">
             <h3>Список каналов</h3>
         </div>
     </div>#}
@@ -14,14 +14,14 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('tv_genre_id', 'Жанр', 'id', 'title', app['allGenres'], 2) }}
-                {{ main_macro.get_filter('archive_id', 'Архив', 'id', 'title', app['allArchive'], 2) }}
+                {{ main_macro.get_filter('archive_id', 'ТВ-архив', 'id', 'title', app['allArchive'], 2) }}
                 {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus'], 2) }}
-                <a href="{{app.request.baseUrl}}/tv-channels/add-channel" class="btn btn-success pull-right">Добавить</a>
+                <a href="{{app.request.baseUrl}}/tv-channels/add-channel" class="btn btn-success pull-right">Добавить канал</a>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="">
                 {% if app['allChannels'] %}
                     <div class="box">
                         {% if attribute(app, 'dropdownAttribute') is defined %}
@@ -29,25 +29,27 @@
                         {% endif %}
                         <div class="box-content">
                             <div class="box-content no-padding">
-                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <table class="table table-hover table-datatable" id="datatable-1">
                                     <thead>
                                         <tr>
-                                            <th data-filter="logo">Лого</th>
+                                            <th data-filter="id">ID</th>
                                             <th data-filter="number">Номер</th>
-                                            <th data-filter="name">Название</th>
+											<th data-filter="logo">Лого</th>
+                                            <th data-filter="name"><span>Название</span></th>
                                             <th data-filter="genres_name">Жанр</th>
                                             <th data-filter="enable_tv_archive">ТВ-архив</th>
                                             <th data-filter="cmd">URL</th>
                                             <th data-filter="status">Статус</th>
-                                            <th data-filter="operations">Действия</th>
+                                            <th data-filter="operations"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- Start: list_row -->
                                         {% for item in app.allChannels %}
                                             <tr>
-                                                <td><img class="img-rounded channel-logo" src="{% if item.logo %}{{item.logo}}?{{ random(100000) }}{% endif %}" alt=""></td>
-                                                <td><a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id={{item.id}}">{{item.number}}</a></td>
+                                                <td>{{item.id}}</td>
+                                                <td>{{item.number}}</td>
+												<td><img class="img-rounded channel-logo" src="{% if item.logo %}{{item.logo}}?{{ random(100000) }}{% endif %}" alt=""></td>
                                                 <td><a href="{{app.request.baseUrl}}/tv-channels/edit-channel?id={{item.id}}">{{item.name}}</a></td>
                                                 <td>{{item.genres_name}}</td>
                                                 <td>{% if item.enable_tv_archive %}Да{% else %}Нет{% endif %}</td>
@@ -109,10 +111,19 @@
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo":     true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
+				"order": [[ 1, "asc" ]],
                 "aoColumnDefs": [ 
                     { "targets": [ 0, -1 ], "orderable": false},
-                    { "searchable": false, "targets": [ 0, 3, 4, 5, 6, 7] },
-                    { className: "action-menu", "targets": [ -1 ] }
+                    { "searchable": false, "targets": [  3, 4, 5, 6, 7] },
+                    { className: "action-menu", "targets": [ -1 ] },
+					 { "width": "3%", "targets": [ 0 ] },
+					  { "width": "6%", "targets": [ 1 ] },
+					  { "width": "15px", "targets": [ -1] }
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){

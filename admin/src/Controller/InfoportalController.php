@@ -351,7 +351,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
             array('name'=>'num',        'title'=>'Номер',       'checked' => TRUE),
             array('name'=>'title',      'title'=>'Название',    'checked' => TRUE),
             array('name'=>'number',     'title'=>'Телефон',     'checked' => TRUE),
-            array('name'=>'operations', 'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'operations', 'title'=>'',    'checked' => TRUE)
         );
     }
     
@@ -360,7 +360,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
             array('name'=>'id',         'title'=>'Номер',   'checked' => TRUE),
             array('name'=>'added',      'title'=>'Дата',    'checked' => TRUE),
             array('name'=>'anec_body',  'title'=>'Название','checked' => TRUE),
-            array('name'=>'operations', 'title'=>'Действия','checked' => TRUE)
+            array('name'=>'operations', 'title'=>'','checked' => TRUE)
         );
     }
     

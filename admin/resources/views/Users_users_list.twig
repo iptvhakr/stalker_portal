@@ -35,14 +35,14 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12">
+          
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
                     {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                            <table class="table  table-hover table-datatable" id="datatable-1">
                                 <thead>
                                     <tr>
                                         <th data-filter="mac">MAC</th>
@@ -53,7 +53,7 @@
                                         <th data-filter="last_change_status">Последнее изменение</th>
                                         <th data-filter="state">Состояние</th>
                                         <th data-filter="status">Статус</th>
-                                        <th data-filter="operations">Действия</th>
+                                        <th data-filter="operations"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -403,7 +403,8 @@
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [3, 4, 5, 6, 7, 8]},
                     {"sortable": false, "targets": [-1]},
-                    {className: "data-filter-status", "targets": [-2 ]}
+                    {className: "data-filter-status", "targets": [-2 ]},
+					  { "width": "16px", "targets": [ -1 ] }	
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){

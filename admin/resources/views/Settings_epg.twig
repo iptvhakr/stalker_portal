@@ -11,30 +11,30 @@
     </div>#}
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="col-xs-4 col-sm-2 pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-epg-item" class="btn btn-success col-xs-12 col-sm-12 pull-right" id="add_epg_item">Добавить</a>
+           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="pull-right">
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-epg-item" class="btn btn-success  pull-right" id="add_epg_item">Добавить</a>
                 </div>
-                <div class="col-xs-4 col-sm-2 pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default col-xs-12 col-sm-12 pull-right main_ajax" data-id="all">Обновить EPG</a>
+                <div class="pull-right">
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax" data-id="all">Обновить EPG</a>
                 </div>
-                <div class="col-xs-4 col-sm-2 pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default col-xs-12 col-sm-12 pull-right main_ajax" data-id="all" data-force="1">Принудительно обновить EPG</a>
+                <div class="pull-right">
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax" data-id="all" data-force="1">Принудительно обновить EPG</a>
                 </div>
             </div>
         </div>
         
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box-header auto-height">
+                <div class=" auto-height">
                     <div class="box-name">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-6 col-sm-offset-3 text-center bg-warning">
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
                                 <span class="text_black">Принудительно обновить EPG - полностью обновляет EPG для всех каналов.</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-10 col-sm-6 col-sm-offset-3 text-center bg-warning">
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
                                 <span class="text_black">Обновить EPG - учитывает только новые/последние изменения.</span>
                             </div>
                         </div>
@@ -48,8 +48,8 @@
                     <div class="box-content">
                         <div class="box-content no-padding">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <div class="">
+                                    <table class="table  table-hover table-datatable" id="datatable-1">
                                         {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
@@ -247,6 +247,11 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },

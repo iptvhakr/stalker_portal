@@ -2119,7 +2119,7 @@
 		// All DataTables are wrapped in a div
 		var insert = $('<div/>', {
 			id:      oSettings.sTableId+'_wrapper',
-			'class': classes.sWrapper + (oSettings.nTFoot ? '' : ' '+classes.sNoFooter)
+			'class': classes.sWrapper + (oSettings.nTFoot ? '' : ' ')
 		} );
 	
 		oSettings.nHolding = holding[0];
@@ -3371,9 +3371,7 @@
 			div[0].id = tableId+'_length';
 		}
 	
-		div.children().append(
-			settings.oLanguage.sLengthMenu.replace( '_MENU_', select[0].outerHTML )
-		);
+		
 	
 		// Can't use `select` variable as user might provide their own and the
 		// reference is broken by the use of outerHTML

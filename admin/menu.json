@@ -2,8 +2,8 @@
     "1": {
         "name": "Администратор",
         "alias": "auth-user",
-        "icon": "",
-        "icon2": "fa fa-cog pull-right",
+        "icon": "fa fa-user",
+        "icon2": "",
         "action": {
             "1": {
                 "name": "Задания",
@@ -29,11 +29,7 @@
                 "alias": "iptv-list",
                 "icon": ""
             },
-            "2": {
-                "name": "Добавить канал",
-                "alias": "add-channel",
-                "icon": ""
-            },
+           
             "3": {
                 "name": "Переместить канал",
                 "alias": "move-channel",
@@ -50,11 +46,6 @@
             "1": {
                 "name": "Список фильмов",
                 "alias": "video-list",
-                "icon": ""
-            },
-            "2": {
-                "name": "Добавить фильм",
-                "alias": "add-video",
                 "icon": ""
             },
             "3": {
@@ -128,15 +119,15 @@
     "6": {
         "name": "Радио",
         "alias": "radio",
-        "icon": "fa fa-music",
-        "icon2": "pull-right fa fa-chevron-left",
+        "icon": "fa fa-bullhorn",
+        "icon2": "pull-right ",
         "action": {
         }
     },
     "7": {
         "name": "Тарифы",
         "alias": "tariffs",
-        "icon": "fa fa-music",
+        "icon": "fa fa-calculator",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
@@ -154,7 +145,7 @@
     "8": {
         "name": "Пользователи",
         "alias": "users",
-        "icon": "fa fa-columns",
+        "icon": "fa  fa-users",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
@@ -182,15 +173,15 @@
     "9": {
         "name": "События",
         "alias": "events",
-        "icon": "fa fa-columns",
-        "icon2": "pull-right fa fa-chevron-left",
+        "icon": "fa fa-calendar",
+        "icon2": "pull-right",
         "action": {
         }
     },
     "10": {
         "name": "Администраторы",
         "alias": "admins",
-        "icon": "fa fa-users",
+        "icon": "fa fa-user-secret",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
@@ -226,7 +217,7 @@
     "12": {
         "name": "Инфопортал",
         "alias": "infoportal",
-        "icon": "fa fa-music",
+        "icon": "fa fa-info",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
@@ -244,7 +235,7 @@
     "13": {
         "name": "Статистика",
         "alias": "statistics",
-        "icon": "fa fa-microphone",
+        "icon": "fa fa-pie-chart",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
@@ -292,7 +283,7 @@
     "14": {
         "name": "Хранилища",
         "alias": "storages",
-        "icon": "fa fa-hdd-o",
+        "icon": "fa fa-archive",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
@@ -315,7 +306,7 @@
     "15": {
         "name": "Сервера вещания",
         "alias": "broadcast-servers",
-        "icon": "fa fa-globe",
+        "icon": "fa fa-server",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
@@ -333,7 +324,7 @@
     "16": {
         "name": "Настройки",
         "alias": "settings",
-        "icon": "fa fa-columns",
+        "icon": "fa fa-cogs",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {

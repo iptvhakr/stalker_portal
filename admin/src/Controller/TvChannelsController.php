@@ -172,7 +172,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $this->app['form'] = $form->createView();
         
-        $this->app['breadcrumbs']->addItem("Редактирование канала '{$this->oneChannel['name']}'");
+        $this->app['breadcrumbs']->addItem("'{$this->oneChannel['name']}'");
 
         return $this->app['twig']->render('TvChannels_add_channel.twig');
     }
@@ -748,8 +748,9 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     
     private function getIptvListDropdownAttribute(){
         return array(
-            array('name' => 'logo',             'title' => 'Лого',      'checked' => TRUE),
-            array('name' => 'number',           'title' => 'Номер',     'checked' => TRUE),
+			array('name' => 'id',             'title' => 'ID',      'checked' => false),
+			array('name' => 'number',           'title' => 'Номер',     'checked' => TRUE),
+			array('name' => 'logo',             'title' => 'Лого',      'checked' => TRUE),
             array('name' => 'name',             'title' => 'Название',  'checked' => TRUE),
             array('name' => 'genres_name',      'title' => 'Жанр',      'checked' => TRUE),
             array('name' => 'enable_tv_archive','title' => 'ТВ-архив',  'checked' => TRUE),

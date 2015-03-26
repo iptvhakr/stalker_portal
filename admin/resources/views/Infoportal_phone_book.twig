@@ -12,25 +12,25 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                <div class="col-xs-3 col-sm-9 no-padding">
+              
                     {{ main_macro.get_filter_button_bar('service', 'id', 'title', app['allServices']) }}
-                </div>
+               
 
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-phone-book-item" class="btn btn-success pull-right" id="add_phone_book_item">Добавить</a>
             </div>
         </div>
         
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="">
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
                     {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                            <div class="">
+                                <div class="">
+                                    <table class="table  table-hover table-datatable" id="datatable-1">
                                         {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
@@ -203,10 +203,16 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
+					  { "width": "15px", "targets": [ -1] },
                     {"sortable": false, "targets": [-1,]}{#,
                     {"width": "19%", "targets": [5] },#}
                 ]

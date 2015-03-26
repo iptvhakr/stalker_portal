@@ -312,7 +312,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
             array('name'=>'media_claims',   'title'=>'Жалобы',      'checked' => TRUE),
             array('name'=>'done',           'title'=>'Задание',     'checked' => TRUE),
             array('name'=>'accessed',       'title'=>'Состояние',   'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'operations',     'title'=>'',    'checked' => TRUE)
         );
     }
     

@@ -3,14 +3,14 @@
 {% set title = 'admins' %}
 
 {% block content %}
-{#    <div class="row header_title">
+{#    <div class="row2 header_title">
         <div class="col-xs-10 col-sm-6">
             <h3>Права группы администраторов {% if attribute(app, 'adminGropName') is defined %}"{{ app['adminGropName'] }}"{% endif %}</h3>
         </div>
     </div>#}
     <div id="iptv_list">       
-        <div class="row" id="adm_grp_perm">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row2" id="adm_grp_perm">
+            <div class="">
                 {%if attribute(app,'permissionMap') is defined %}
                 {% set current_controller = '' %}
                 {% for row in app['permissionMap'] %}
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                         {% endif %}
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="">
                     <div class="box">
                         <div class="box-header" data-original-title="{{ row.description }}" data-toggle="tooltip" data-placemeent="bottom">
                             <div class="box-name">
@@ -154,9 +154,9 @@
                     <div class="box">
                         <div class="box-content">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-6 pull-right">
-                                    <button id="save_button" type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/admins-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
+                                <div class=" pull-right">
+                                    <button id="save_button" type="submit" class="btn btn-success pull-right">Сохранить</button>
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/admins-list" class="btn btn-default pull-right">Отмена</a>
                                 </div>
                             </div>
                         </div>

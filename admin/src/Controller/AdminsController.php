@@ -441,7 +441,7 @@ class AdminsController extends \Controller\BaseStalkerController {
             array('name' => 'id',           'title' => 'ID',        'checked' => TRUE),
             array('name' => 'login',        'title' => 'Логин',     'checked' => TRUE),
             array('name' => 'group_name',   'title' => 'Группа',    'checked' => TRUE),
-            array('name' => 'operations',   'title' => 'Действия',  'checked' => TRUE)
+            array('name' => 'operations',   'title' => ' ',  'checked' => TRUE)
         );
     }
     
@@ -449,7 +449,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         return array(
             array('name' => 'id',           'title' => 'ID',        'checked' => TRUE),
             array('name' => 'name',         'title' => 'Название',  'checked' => TRUE),
-            array('name' => 'operations',   'title' => 'Действия',  'checked' => TRUE)
+            array('name' => 'operations',   'title' => ' ',  'checked' => TRUE)
         );
     }
     

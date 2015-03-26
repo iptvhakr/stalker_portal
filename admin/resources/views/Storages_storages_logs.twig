@@ -9,8 +9,8 @@
         </div>
     </div>#}
     <div id="iptv_list">       
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row2">
+            <div class="">
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
@@ -18,8 +18,8 @@
                     <div class="box-content">
                         <div class="box-content no-padding">
                             <div class="row">
-                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <div class="col-xs-12 col-sm-12">
+                                    <table class="table  table-hover table-datatable" id="datatable-1">
                                         {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
@@ -85,6 +85,11 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "order": [[ 0, "desc" ]],
                 "columnDefs": [

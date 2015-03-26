@@ -1557,7 +1557,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'added',        'title' => 'Дата запуска',          'checked' => TRUE),
             array('name' => 'complaints',   'title' => 'Жалобы',                'checked' => TRUE),
             array('name' => 'status',       'title' => 'Статус',                'checked' => TRUE),
-            array('name' => 'operations',   'title' => 'Действия',              'checked' => TRUE)
+            array('name' => 'operations',   'title' => '',              'checked' => TRUE)
         );
         
     }

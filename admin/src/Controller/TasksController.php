@@ -544,7 +544,7 @@ class TasksController extends \Controller\BaseStalkerController {
             array('name'=>'start_time',     'title'=>'Дата открытия',   'checked' => TRUE),
             array('name'=>'messages',       'title'=>'Обновления',      'checked' => TRUE),
             array('name'=>'state',          'title'=>'Состояние',       'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',        'checked' => TRUE)
+            array('name'=>'operations',     'title'=>'',        'checked' => TRUE)
         );
     }
     

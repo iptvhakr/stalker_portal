@@ -10,12 +10,13 @@
         </div>
     </div>#}
     <div id="iptv_list">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <div class="row2">
+        
                 <div class="box">
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                            <table class="table  table-hover table-datatable" id="datatable-1">
                                 <thead>
                                     <tr>
                                         <th data-filter="time">Время</th>
@@ -93,6 +94,11 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] }
