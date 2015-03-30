@@ -1,5 +1,5 @@
 .singer_block{
-    color: #202020;
+    color: #fff;
     font-size: 26px;
     margin: 0 0 0 3px;
     padding-left: 3px;
@@ -12,7 +12,7 @@
 
 .active_singer_block{
     font-size: 26px;
-    color: #fff;
+    color: #202020;
     margin-top: 6px;
     margin-right: 25px;
     white-space: pre;

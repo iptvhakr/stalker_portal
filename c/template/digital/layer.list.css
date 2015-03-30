@@ -70,7 +70,7 @@
 }
 
 .name_block, .title_block{
-    color: #202020;
+    color: #fff;
     font-size: 20px;
     margin: 1px 0 0 3px;
     padding-left: 3px;
@@ -362,7 +362,7 @@
 
 .color_button_bar span{
     font-size: 15px;
-    color: #202020;
+    color: #fff;
     float: left;
     margin: 13px 0 0 8px;
     /*font-weight: bold;*/
@@ -609,7 +609,7 @@
 .ears_left div{
     margin-left: 13px;
     font: 18px Arial, Helvetica, sans-serif;
-    color: #202020;
+    color: #fff;
 }
 
 .ears_right_container{
@@ -630,7 +630,7 @@
 .ears_right div{
     margin-left: 14px;
     font: 18px Arial, Helvetica, sans-serif;
-    color: #202020;
+    color: #fff;
     text-align: center;
     width: 14px;
 }

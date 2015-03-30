@@ -106,11 +106,11 @@
 }
 
 #epg .blue_row_bg .program{
-    color: #919191;
+    color: #fff;
 }
 
 #epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
-    color: #919191;
+    color: #000;
 }
 
 #epg .program_txt{
