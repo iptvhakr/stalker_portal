@@ -24,19 +24,26 @@
             ));
         },
 
-        scan : function(dvb_type){
-            _debug('dvb.scan', dvb_type);
+        scan: function (dvb_params) {
+            _debug('dvb.scan', dvb_params);
 
-            dvbManager.StartChannelScan(dvb_type);
+            dvbManager.StopChannelScan();
+
+            if (typeof(dvb_params) == 'object') {
+                dvbManager.SetScanParams(JSON.stringify(dvb_params));
+                dvbManager.StartChannelScan(dvb_params.type);
+            }
         },
 
-        manual_scan : function(dvb_type, frequency, bandwidth){
-            _debug('dvb.scan', dvb_type, frequency, bandwidth);
+        manual_scan : function(dvb_params){
+            _debug('dvb.scan', dvb_params);
 
-            frequency = parseInt(frequency, 10);
-            bandwidth = parseInt(bandwidth, 10);
+            dvbManager.StopChannelScan();
 
-            dvbManager.StartChannelScanManual(frequency, frequency, dvb_type, bandwidth, 1000);
+            if (typeof(dvb_params) == 'object') {
+                dvbManager.SetScanParams(JSON.stringify(dvb_params));
+                dvbManager.StartChannelScanManual(dvb_params.frequency, dvb_params.frequency, dvb_params.type, dvb_params.bandwidth, 1000);
+            }
         },
 
         on_scan_result : function(state, e){
