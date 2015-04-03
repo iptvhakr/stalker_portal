@@ -37,7 +37,7 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('Update data is empty');
         }
 
-        if (count($request->getIdentifiers()) == 0){
+        if (count($request->getIdentifiers()) == 0 && !Config::getSafe('allow_multiple_stb_update', false)){
             throw new RESTCommandException('Identifier required');
         }
 
