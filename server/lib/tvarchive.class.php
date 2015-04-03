@@ -303,7 +303,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             }
 
         }else{
-            $url = Config::getSafe('tv_archive_player_solution', 'ffmpeg').' http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
+            $url = 'http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
                 . '/stalker_portal/storage/get.php?filename=' . $filename
                 . '&ch_id=' . $program['ch_id']
                 . '&token='.$this->createTemporaryToken(true)
@@ -366,10 +366,10 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                     'real_id' => $next['ch_id'].'_'.strtotime($program['time_to'])
                 );
 
-                return $this->getUrlByProgramId(0, true, $program);
+                return Config::getSafe('tv_archive_player_solution', 'ffmpeg').' '.$this->getUrlByProgramId(0, true, $program);
 
             }else{
-                return $this->getUrlByProgramId($next['id'], true);
+                return Config::getSafe('tv_archive_player_solution', 'ffmpeg').' '.$this->getUrlByProgramId($next['id'], true);
             }
 
         }catch (StorageSessionLimitException $e){
