@@ -52,7 +52,7 @@ class Mysql
     private function getConnectionForWrite() {
 
         if (!isset($this->links['write'])) {
-            $this->links['write'] = $this->getConnection(Config::get('mysql_host'), Config::get('mysql_port'), Config::get('mysql_user'),
+            $this->links['write'] = $this->getConnection(Config::get('mysql_host'), Config::getSafe('mysql_port', 3306), Config::get('mysql_user'),
                 Config::get('mysql_pass'), Config::get('db_name'));
         }
 
@@ -64,7 +64,7 @@ class Mysql
         if (!Config::exist('read_mysql_host')) {
             $this->links['read'] = $this->getConnectionForWrite();
         } elseif (!isset($this->links['read'])) {
-            $this->links['read'] = $this->getConnection(Config::get('read_mysql_host'), Config::get('read_mysql_port'), Config::get('read_mysql_user'),
+            $this->links['read'] = $this->getConnection(Config::get('read_mysql_host'), Config::getSafe('read_mysql_port', 3306), Config::get('read_mysql_user'),
                 Config::get('read_mysql_pass'), Config::get('read_db_name'));
         }
 
