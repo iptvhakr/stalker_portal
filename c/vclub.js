@@ -818,17 +818,33 @@
 
         this.get_link = function(video_cmd, episode, callback){
 
+            var match, link;
+
             if (video_cmd.indexOf('://') < 0){
 
                 stb.player.on_create_link = function(result){
                     _debug('vclub.on_create_link', result);
 
-                    if (result.cmd){
-                        if (match = /[\s]([^\s]*)$/.exec(result.cmd)){
-                            result.cmd = match[1];
+                    if (Array.isArray(result)){
+                        for (var i = 0; i < result.length; i++){
+                            _debug('link', link);
+                            if (result[i].type == 'ad'){
+                                continue;
+                            }
+
+                            if (result[i].cmd){
+                                if (match = /[\s]([^\s]*)$/.exec(result[i].cmd)){
+                                    result[i].cmd = match[1];
+                                    link = result[i];
+                                    break;
+                                }
+                            }
                         }
+                    }else{
+                        link = result;
                     }
-                    callback && callback(result.cmd);
+
+                    callback && callback(link.cmd);
                 }
 
             }else{
