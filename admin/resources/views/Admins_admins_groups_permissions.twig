@@ -1,14 +1,9 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'admins' %}
+{% set title = ('Administrators'|trans ~ ': ' ~ 'permissions for group administrators '|trans ~ '"' ~ app.adminGropName ~ '"') | trans %}
 
 {% block content %}
-{#    <div class="row2 header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Права группы администраторов {% if attribute(app, 'adminGropName') is defined %}"{{ app['adminGropName'] }}"{% endif %}</h3>
-        </div>
-    </div>#}
-    <div id="iptv_list">       
+    <div id="iptv_list">
         <div class="row2" id="adm_grp_perm">
             <div class="">
                 {%if attribute(app,'permissionMap') is defined %}
@@ -31,7 +26,7 @@
                                     <div class="form-group col-xs-9 col-sm-8" style="display: block;">
                                         <div class="col-xs-4 col-sm-4 no-padding">
                                             <div class="col-xs-6 col-sm-6 no-padding">
-                                                <span class="round-text">Просмотр</span>
+                                                <span class="round-text">{{ 'Viewing'|trans }}</span>
                                             </div>
                                             <div class="col-xs-6 col-sm-6 no-padding">
                                                 <div class="toggle-switch toggle-switch-success">
@@ -46,7 +41,7 @@
                                         </div>
                                         <div class="col-xs-4 col-sm-4 no-padding">
                                             <div class="col-xs-6 col-sm-6 no-padding">
-                                                <span class="round-text">Редактирование</span>
+                                                <span class="round-text">{{ 'Editing'|trans }}</span>
                                             </div>
                                             <div class="col-xs-6 col-sm-6 no-padding">
                                                 <div class="toggle-switch toggle-switch-success">
@@ -60,7 +55,7 @@
                                         </div>
                                         <div class="col-xs-4 col-sm-4 no-padding">
                                             <div class="col-xs-6 col-sm-6 no-padding">
-                                                <span class="round-text">Действие</span>
+                                                <span class="round-text">{{ 'Actions'|trans }}</span>
                                             </div>
                                             <div class="col-xs-6 col-sm-6 no-padding">
                                                 <div class="toggle-switch toggle-switch-success">
@@ -100,7 +95,7 @@
                                 <div class="form-group col-xs-12 col-sm-8" style="display: block;">
                                     <div class="col-sm-4 {% if row.is_ajax == 1 %}disabled_opacity{% endif %}">
                                         <div class="col-sm-6">
-                                            <span class="round-text">Просмотр</span>
+                                            <span class="round-text">{{ 'Viewing'|trans }}</span>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="toggle-switch toggle-switch-success">
@@ -115,7 +110,7 @@
                                     </div>
                                     <div class="col-sm-4 {% if row.is_ajax == 1 %}disabled_opacity{% endif %}">
                                         <div class="col-sm-6">
-                                            <span class="round-text">Редактирование</span>
+                                            <span class="round-text">{{ 'Editing'|trans }}</span>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="toggle-switch toggle-switch-success">
@@ -129,7 +124,7 @@
                                     </div>
                                     <div class="col-sm-4 {% if row.is_ajax != 1 %}disabled_opacity{% endif %}">
                                         <div class="col-sm-6">
-                                            <span class="round-text">Действие</span>
+                                            <span class="round-text">{{ 'Actions'|trans }}</span>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="toggle-switch toggle-switch-success">
@@ -155,8 +150,8 @@
                         <div class="box-content">
                             <div class="row">
                                 <div class=" pull-right">
-                                    <button id="save_button" type="submit" class="btn btn-success pull-right">Сохранить</button>
-                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/admins-list" class="btn btn-default pull-right">Отмена</a>
+                                    <button id="save_button" type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/admins-list" class="btn btn-default pull-right"> {{ 'Cancel'|trans }} </a>
                                 </div>
                             </div>
                         </div>

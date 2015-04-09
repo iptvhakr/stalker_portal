@@ -17,17 +17,19 @@ class TariffsController extends \Controller\BaseStalkerController {
             array("id" => "module", "title" => "module"), 
             array("id" => "option", "title" => "option")
         );
-    private $allServices = array(
-            array("id" => '1', "title" => "Выборочный"),
-            array("id" =>  '2', "title" => "Полный")
-        );
-    private $allServiceTypes = array(
-        array("id" => 'periodic', "title" => "постоянный"), 
-        array("id" => 'single', "title" => "разовый")
-        );
+    protected $allServices = array();
+    protected $allServiceTypes = array();
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+        $this->allServiceTypes = array(
+            array("id" => 'periodic', "title" => $this->setlocalization('permanent')),
+            array("id" => 'single', "title" => $this->setlocalization('once-only'))
+        );
+        $this->allServices = array(
+            array("id" => '1', "title" => "Complete"),
+            array("id" =>  '2', "title" => "Optional")
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -77,7 +79,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['servicePackageEdit'] = FALSE;
-        $this->app['breadcrumbs']->addItem("Добавить пакет");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Add package'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -124,8 +126,9 @@ class TariffsController extends \Controller\BaseStalkerController {
 
         $this->app['form'] = $form->createView();
         $this->app['servicePackageEdit'] = TRUE;
+        $this->app['packageName'] = $this->package['name'];
         ob_end_clean();
-        $this->app['breadcrumbs']->addItem("Редактировать пакет '{$this->package['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit package') . " '{$this->package['name']}'");
         return $this->app['twig']->render('Tariffs_add_service_package.twig');
     }
 
@@ -160,7 +163,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['userDefault'] = $this->getDefaultPlan($this->plan['id']);
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = FALSE;
-        $this->app['breadcrumbs']->addItem("Добавить тарифный план");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Add tariff plan'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -200,7 +203,8 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['userDefault'] = $this->getDefaultPlan($this->plan['id']);
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = TRUE;
-        $this->app['breadcrumbs']->addItem("Редактировать тарифный план '{$this->plan['name']}'");
+        $this->app['planName'] = $this->plan['name'];
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit tariff plan') . " '{$this->plan['name']}'");
         return $this->app['twig']->render('Tariffs_add_tariff_plans.twig');
     }
     
@@ -269,7 +273,7 @@ class TariffsController extends \Controller\BaseStalkerController {
 
     public function remove_service_package() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['packageid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -289,7 +293,7 @@ class TariffsController extends \Controller\BaseStalkerController {
 
     public function get_services() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['type'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -312,7 +316,7 @@ class TariffsController extends \Controller\BaseStalkerController {
 
     public function check_external_id() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['externalid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -320,7 +324,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkExternalId';
-        $error = 'ID занят';
+        $error = $this->setlocalization('ID already used');
         $param = array(
             'where' => array(
                 'external_id' => trim($this->postData['externalid']),
@@ -329,9 +333,9 @@ class TariffsController extends \Controller\BaseStalkerController {
             'order' => array('id' => '')
         );
         if ($this->db->getTariffsList($param)) {
-            $data['chk_rezult'] = 'ID занят';
+            $data['chk_rezult'] = $this->setlocalization('ID already used');
         } else {
-            $data['chk_rezult'] = 'ID свободен';
+            $data['chk_rezult'] = $this->setlocalization('ID is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -372,6 +376,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             $query_param['select'] = array_values($filds_for_select);
         } else {
             $query_param['select'][] = 'id';
+            $query_param['select'][] = 'tariff_plan.`user_default` as `user_default`';
         }
         $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
 
@@ -401,7 +406,7 @@ class TariffsController extends \Controller\BaseStalkerController {
 
     public function remove_tariff_plan() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['planid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -621,11 +626,9 @@ class TariffsController extends \Controller\BaseStalkerController {
                 ->add('packages', 'choice', array(
                     'choices' => $all_packeges,
                     'multiple' => TRUE,
-//                    'constraints' => array( new Assert\Choice(array('choices' => array_keys($all_packeges)))),
                     'required' => FALSE))
                 ->add('packages_optional', 'hidden', array('required' => FALSE))
                 ->add('save', 'submit');
-//                ->add('reset', 'reset');
         return $form->getForm();
     }
     
@@ -691,21 +694,21 @@ class TariffsController extends \Controller\BaseStalkerController {
     
     private function getServicePackagesDropdownAttribute() {
         return array(
-            array('name'=>'external_id',    'title'=>'Внешний ID',  'checked' => TRUE),
-            array('name'=>'name',           'title'=>' Пакет',      'checked' => TRUE),
-            array('name'=>'users_count',    'title'=>' Пользователи','checked' => TRUE),
-            array('name'=>'type',           'title'=>'Услуга',      'checked' => TRUE),
-            array('name'=>'all_services',   'title'=>'Доступ',      'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'external_id',    'title'=>$this->setlocalization('External ID'), 'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setlocalization('Package'),     'checked' => TRUE),
+            array('name'=>'users_count',    'title'=>$this->setlocalization('Users'),       'checked' => TRUE),
+            array('name'=>'type',           'title'=>$this->setlocalization('Service'),     'checked' => TRUE),
+            array('name'=>'all_services',   'title'=>$this->setlocalization('Access'),      'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
         );
     }
     
     private function getTariffPlansDropdownAttribute() {
         return array(
-            array('name'=>'external_id',    'title'=>'Внешний ID',  'checked' => TRUE),
-            array('name'=>'name',           'title'=>' Пакет',      'checked' => TRUE),
-            array('name'=>'users_count',    'title'=>' Пользователи','checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'external_id',    'title'=>$this->setlocalization('External ID'), 'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setlocalization('Package'),     'checked' => TRUE),
+            array('name'=>'users_count',    'title'=>$this->setlocalization('Users'),       'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
         );
     }
 }

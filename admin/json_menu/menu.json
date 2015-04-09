@@ -1,123 +1,123 @@
 {
     "1": {
-        "name": "Администратор",
+        "name": _("Administrator"),
         "alias": "auth-user",
         "icon": "fa fa-user",
         "icon2": "",
         "action": {
             "1": {
-                "name": "Задания",
+                "name": _("Tasks"),
                 "self_parent_alias": "tasks",
                 "alias": "tasks-list",
                 "icon": "fa fa-tasks"
             },
             "2": {
-                "name": "Выход",
+                "name": _("Logout"),
                 "alias": "auth-user-logout",
                 "icon": "fa fa-power-off"
             }
         }
     },
     "2": {
-        "name": "IPTV каналы",
+        "name": _("IPTV channels"),
         "alias": "tv-channels",
         "icon": "fa fa-desktop",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Список каналов",
+                "name": _("Channels"),
                 "alias": "iptv-list",
                 "icon": ""
             },
-           
-            "3": {
-                "name": "Переместить канал",
+
+            "2": {
+                "name": _("Organize channels"),
                 "alias": "move-channel",
+                "icon": ""
+            },
+            "3": {
+                "name": _("EPG"),
+                "alias": "epg",
                 "icon": ""
             }
         }
     },
     "3": {
-        "name": "Видео клуб",
+        "name": _("Video club"),
         "alias": "video-club",
         "icon": "fa fa-video-camera",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Список фильмов",
+                "name": _("Movie list"),
                 "alias": "video-list",
                 "icon": ""
             },
             "3": {
-                "name": "Расписание публикаций",
+                "name": _("Schedule"),
                 "alias": "video-schedule",
                 "icon": ""
             },
             "4": {
-                "name": "Реклама",
+                "name": _("Advertising"),
                 "alias": "video-advertise",
                 "icon": ""
             },
             "5": {
-                "name": "Адреса модераторов",
+                "name": _("Moderators"),
                 "alias": "video-moderators-addresses",
                 "icon": ""
             },
             "6": {
-                "name": "Логи видео",
+                "name": _("Activity log"),
                 "alias": "video-logs",
                 "icon": ""
             }
         }
     },
     "4": {
-        "name": "Аудио клуб",
+        "name": _("Audio club"),
         "alias": "audio-club",
         "icon": "fa fa-music",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Альбомы",
+                "name": _("Albums"),
                 "alias": "audio-albums",
                 "icon": ""
             },
             "2": {
-                "name": "Исполнители",
+                "name": _("Artists"),
                 "alias": "audio-artists",
                 "icon": ""
             },
             "3": {
-                "name": "Жанры",
+                "name": _("Genres"),
                 "alias": "audio-genres",
                 "icon": ""
             },
             "4": {
-                "name": "Языки",
+                "name": _("Languages"),
                 "alias": "audio-languages",
                 "icon": ""
             },
             "5": {
-                "name": "Годы",
+                "name": _("Years"),
                 "alias": "audio-years",
                 "icon": ""
             }
         }
     },
     "5": {
-        "name": "Караоке",
+        "name": _("Karaoke"),
         "alias": "karaoke",
         "icon": "fa fa-microphone",
-        "icon2": "pull-right fa fa-chevron-left",
+        "icon2": "",
         "action": {
-            "1": {
-                "name": "Список караоке",
-                "alias": "karaoke-list",
-                "icon": ""
-            }
         }
     },
     "6": {
-        "name": "Радио",
+        "name": _("Radio"),
         "alias": "radio",
         "icon": "fa fa-bullhorn",
         "icon2": "pull-right ",
@@ -125,53 +125,53 @@
         }
     },
     "7": {
-        "name": "Тарифы",
+        "name": _("Tariffs"),
         "alias": "tariffs",
         "icon": "fa fa-calculator",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Пакеты услуг",
+                "name": _("Service packages"),
                 "alias": "service-packages",
                 "icon": ""
             },
             "2": {
-                "name": "Тарифные планы",
+                "name": _("Tariff plans"),
                 "alias": "tariff-plans",
                 "icon": ""
             }
         }
     },
     "8": {
-        "name": "Пользователи",
+        "name": _("Users"),
         "alias": "users",
         "icon": "fa  fa-users",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Список пользователей",
+                "name": _("Users list"),
                 "alias": "users-list",
                 "icon": ""
             },
             "2": {
-                "name": "Группы приставок",
+                "name": _("User groups"),
                 "alias": "users-consoles-groups",
                 "icon": ""
             },
             "3": {
-                "name": "Логи",
+                "name": _("Logs"),
                 "alias": "users-consoles-logs",
                 "icon": ""
             },
             "4": {
-                "name": "Отчет",
+                "name": _("Report"),
                 "alias": "users-consoles-report",
                 "icon": ""
             }
         }
     },
     "9": {
-        "name": "События",
+        "name": _("Events"),
         "alias": "events",
         "icon": "fa fa-calendar",
         "icon2": "pull-right",
@@ -179,166 +179,161 @@
         }
     },
     "10": {
-        "name": "Администраторы",
+        "name": _("Administrators"),
         "alias": "admins",
         "icon": "fa fa-user-secret",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Список администраторов",
+                "name": _("Administrators list"),
                 "alias": "admins-list",
                 "icon": ""
             },
             "2": {
-                "name": "Группы администраторов",
+                "name": _("Groups"),
                 "alias": "admins-groups",
                 "icon": ""
             }
         }
     },
     "11": {
-        "name": "Задания",
+        "name": _("Tasks"),
         "alias": "tasks",
         "icon": "fa fa-check",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Список заданий",
+                "name": _("Tasks list"),
                 "alias": "tasks-list",
                 "icon": ""
             },
             "2": {
-                "name": "Отчет",
+                "name": _("Report"),
                 "alias": "tasks-report",
                 "icon": ""
             }
         }
     },
     "12": {
-        "name": "Инфопортал",
+        "name": _("Information portal"),
         "alias": "infoportal",
         "icon": "fa fa-info",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Телефонный справочник",
+                "name": _("Phone book"),
                 "alias": "phone-book",
                 "icon": ""
             },
             "2": {
-                "name": "Юмор",
+                "name": _("Humor"),
                 "alias": "humor",
                 "icon": ""
             }
         }
     },
     "13": {
-        "name": "Статистика",
+        "name": _("Statistics"),
         "alias": "statistics",
         "icon": "fa fa-pie-chart",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Статистика видео",
+                "name": _("Movie statistics"),
                 "alias": "stat-video",
                 "icon": ""
             },
             "2": {
-                "name": "Статистика ТВ",
+                "name": _("TV statistics"),
                 "alias": "stat-tv",
                 "icon": ""
             },
             "3": {
-                "name": "Статистика ТВ архива",
+                "name": _("TV archive statistics"),
                 "alias": "stat-tv-archive",
                 "icon": ""
             },
             "4": {
-                "name": "Статистика TimeShift",
+                "name": _("TimeShift statistics"),
                 "alias": "stat-timeshift",
                 "icon": ""
             },
             "5": {
-                "name": "Статистика модераторов",
+                "name": _("Moderators statistics"),
                 "alias": "stat-moderators",
                 "icon": ""
             },
             "6": {
-                "name": "Абонентская статистика",
+                "name": _("Subscribers statistic"),
                 "alias": "stat-abonents",
                 "icon": ""
             },
             "7": {
-                "name": "Неактивные абоненты",
+                "name": _("Inactive subscribers"),
                 "alias": "stat-abonents-unactive",
                 "icon": ""
             },
             "8": {
-                "name": "Статистика жалоб",
+                "name": _("Complaints statistics"),
                 "alias": "stat-claims",
                 "icon": ""
             }
         }
     },
     "14": {
-        "name": "Хранилища",
+        "name": _("Storage"),
         "alias": "storages",
         "icon": "fa fa-archive",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Список хранилищ",
+                "name": _("Storage list"),
                 "alias": "storages-list",
                 "icon": ""
             },
             "2": {
-                "name": "Поиск видео",
+                "name": _("Video search"),
                 "alias": "storages-video-search",
                 "icon": ""
             },
             "3": {
-                "name": "Логи",
+                "name": _("Logs"),
                 "alias": "storages-logs",
                 "icon": ""
             }
         }
     },
     "15": {
-        "name": "Сервера вещания",
+        "name": _("Broadcast servers"),
         "alias": "broadcast-servers",
         "icon": "fa fa-server",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "Список серверов",
+                "name": _("Servers list"),
                 "alias": "broadcast-servers-list",
                 "icon": ""
             },
             "2": {
-                "name": "Зоны вещания",
+                "name": _("Broadcast areas"),
                 "alias": "broadcast-zone-list",
                 "icon": ""
             }
         }
     },
     "16": {
-        "name": "Настройки",
+        "name": _("Settings"),
         "alias": "settings",
         "icon": "fa fa-cogs",
         "icon2": "pull-right fa fa-chevron-left",
         "action": {
             "1": {
-                "name": "EPG",
-                "alias": "epg",
-                "icon": ""
-            },
-            "2": {
-                "name": "Внешний вид",
+                "name": _("Appearance"),
                 "alias": "themes",
                 "icon": ""
             },
-            "3": {
-                "name": "Обновление прошивки",
+            "2": {
+                "name": _("Firmware update"),
                 "alias": "common",
                 "icon": ""
             }

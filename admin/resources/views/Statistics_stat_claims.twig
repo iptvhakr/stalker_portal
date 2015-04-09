@@ -1,17 +1,12 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'statistics' %}
+{% set title = ('Statistics'|trans ~ ': ' ~ 'Complaints statistics'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Статистика жалоб за месяц</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs" class="btn btn-default pull-right" id="add_audio_years">Логи жалоб</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs" class="btn btn-default pull-right" id="add_audio_years">{{ 'Complaints log'|trans }}</a>
             </div>
         </div>
         
@@ -23,33 +18,29 @@
                     {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <div class=" ">
-                                <div class=" ">
-                                    <table class="table  table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% autoescape false %}
-                                            {% if attribute(app, 'allStat') is defined %}
-                                                    <!-- Start: list_row -->
-                                                {% for row in app.allStat %}
-                                                    <tr>
-                                                        {% for key, item in row %}  
-                                                            {% if key == 'date' %}
-                                                            <td>{{ item }}</td>
-                                                            {% else  %}
-                                                            <td><a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs?date={{ row.date }}&type={{ key }}">{{ item }}</a></td>
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    </tr>
-                                                {% endfor %}
-                                            {% endif %}
-                                            {% endautoescape %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <table class="table  table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                    {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                                {% autoescape false %}
+                                {% if attribute(app, 'allStat') is defined %}
+                                    <!-- Start: list_row -->
+                                    {% for row in app.allStat %}
+                                        <tr>
+                                            {% for key, item in row %}
+                                                {% if key == 'date' %}
+                                                    <td>{{ item }}</td>
+                                                {% else %}
+                                                    <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-claims-logs?date={{ row.date }}&type={{ key }}">{{ item }}</a></td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                {% endautoescape %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -80,7 +71,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                 {% if attribute(app, 'dropdownAttribute') is defined%}
@@ -99,9 +90,6 @@
 				},
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] }
-                    {#{"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1,]},
-                    {"width": "19%", "targets": [5] },#}
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){

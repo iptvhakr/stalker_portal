@@ -10,38 +10,42 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class EventsController extends \Controller\BaseStalkerController {
     
-    private $formEvent = array(
-            array("id" => "send_msg",           "title" => "Отправка сообщения"),
-            array("id" => "reboot",             "title" => "Перезагрузка"),
-            array("id" => "reload_portal",      "title" => "Перезагрузка портала"),
-            array("id" => "update_channels",    "title" => "Обновление каналов"),
-            array("id" => "play_channel",       "title" => "Воспроизводение канала"),
-            array("id" => "mount_all_storages", "title" => "Монтирование всех хранилищь"),
-            array("id" => "cut_off",            "title" => "Выключение"),
-            array("id" => "update_image",       "title" => "Обновление образа")
-        );
-    private $hiddenEvent = array(
-            array("id" => "update_epg",                 "title" => "Обновление EPG"),
-            array("id" => "update_subscription",        "title" => "Обновление подписки"),
-            array("id" => "update_modules",             "title" => "Обновление модулей"),
-            array("id" => "cut_on",                     "title" => "Включение"),
-            array("id" => "show_menu",                  "title" => "Показ меню"),
-            array("id" => "additional_services_status", "title" => "Статус доп. услуги")
-        );
-
-    private $sendedStatus = array(
-            array("id" => 1 , "title" => "Не отправлено"),
-            array("id" => 2 , "title" => "Отправлено")
-    );
-    
-    private $receivingStatus = array(
-            array("id" => 1 , "title" => "Не получено"),
-            array("id" => 2 , "title" => "Получено")
-    );
+    protected $formEvent = array();
+    protected $hiddenEvent = array();
+    protected $sendedStatus = array();
+    protected $receivingStatus = array();
 
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+        $this->formEvent = array(
+            array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message')),
+            array("id" => "reboot",             "title" => $this->setlocalization('Reboot')),
+            array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal')),
+            array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list')),
+            array("id" => "play_channel",       "title" => $this->setlocalization('Playback channel')),
+            array("id" => "mount_all_storages", "title" => $this->setlocalization('Mount all storages')),
+            array("id" => "cut_off",            "title" => $this->setlocalization('Turn off')),
+            array("id" => "update_image",       "title" => $this->setlocalization('Image update'))
+        );
+        $this->hiddenEvent = array(
+            array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update')),
+            array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update')),
+            array("id" => "update_modules",             "title" => $this->setlocalization('Modules update')),
+            array("id" => "cut_on",                     "title" => $this->setlocalization('Turn on')),
+            array("id" => "show_menu",                  "title" => $this->setlocalization('Show menu')),
+            array("id" => "additional_services_status", "title" => $this->setlocalization('Status additional service'))
+        );
+
+        $this->sendedStatus = array(
+            array("id" => 1 , "title" => $this->setlocalization('Not delivered')),
+            array("id" => 2 , "title" => $this->setlocalization('Delivered'))
+        );
+
+        $this->receivingStatus = array(
+            array("id" => 1 , "title" => $this->setlocalization('Not received')),
+            array("id" => 2 , "title" => $this->setlocalization('Received'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -78,7 +82,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
         
         if (!empty($this->app['currentUser'])) {
-            $this->app['breadcrumbs']->addItem("События пользователя {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
+            $this->app['breadcrumbs']->addItem($this->setlocalization('Users events') . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
         }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -168,7 +172,7 @@ class EventsController extends \Controller\BaseStalkerController {
     
     public function add_event(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['user_list_type']) || empty($this->postData['event'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -177,8 +181,8 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addEvent';
-        $data['msg'] = 'Добавлено ';
-        $error = 'Ошибка. Событие не добавлено.';
+        $data['msg'] = $this->setlocalization('Added') . ' ' . $this->setlocalization('for'). ' ';
+        $error = $this->setlocalization('Error. Event has not been added.');
         
         $_SERVER['TARGET'] = 'ADM';
         $event = new \SysEvent();
@@ -188,7 +192,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $user_list = $this->$get_list_func_name($event);
 //        $event->setUserListById($user_list);
         if ($this->$set_event_func_name($event, $user_list)){
-            $data['msg'] .= count($user_list) . ' пользователям';
+            $data['msg'] .= count($user_list). ' ' . $this->setlocalization('users');
             $error = '';
         }
 
@@ -199,7 +203,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
     public function upload_list_addresses() {
         if (!$this->isAjax || $this->method != 'POST' || empty($_FILES)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -208,9 +212,9 @@ class EventsController extends \Controller\BaseStalkerController {
         
         $data = array();
         $data['action'] = 'addAddressList';
-        $data['msg'] = 'Добавлено ';
+        $data['msg'] = $this->setlocalization('Added');
         $data['fname'] = '';
-        $error = 'Ошибка. Файл не содержит действительных MAC-адресов.';
+        $error = $this->setlocalization('Error. The file does not contain valid MAC-addresses.');
         
         list($key, $tmp) = each($_FILES);
         $file_data = file_get_contents($tmp['tmp_name']);
@@ -222,7 +226,7 @@ class EventsController extends \Controller\BaseStalkerController {
             $data['fname'] = basename($file_name);
             $file_data = implode(';', $list[0]);
             file_put_contents($file_name, $file_data);
-            $data['msg'] .= count($list[0]) . ' адресов';
+            $data['msg'] .= count($list[0]) . ' ' . $this->setlocalization('addresses');
             $error = '';
         }
         
@@ -233,7 +237,7 @@ class EventsController extends \Controller\BaseStalkerController {
     
     public function clean_events() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['uid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -242,7 +246,7 @@ class EventsController extends \Controller\BaseStalkerController {
         
         $data = array();
         $data['action'] = 'cleanEvents';
-        $data['msg'] = 'Удалено ' . $this->db->deleteEventsByUID($this->postData['uid']) . ' событий';
+        $data['msg'] = $this->setlocalization('Deleted') . ' ' . $this->db->deleteEventsByUID($this->postData['uid']) . ' ' . $this->setlocalization('events');
         $error = '';
         
         $response = $this->generateAjaxResponse($data, $error);

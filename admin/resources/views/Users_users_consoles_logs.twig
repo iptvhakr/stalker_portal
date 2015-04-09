@@ -1,50 +1,42 @@
 {% extends 'layout.twig' %}
-{% set title = 'users' %}
-
-{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+{% set title = ('Users'|trans ~ ': ' ~ 'users log'|trans ~ (app.currentUser != '' ? ": " ~ "user"|trans ~ " - " ~ app.currentUser: '')) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-10">
-            <h3>Логи {% if attribute(app, 'user') is defined %} пользователя {{ app['user'][0]['name'] }} {{ app['user'][0]['fname'] }} ({{ app['user'][0]['mac'] }}) {% endif %}</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
-
         <div class="row2">
-        
-                <div class="box">
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <table class="table  table-hover table-datatable" id="datatable-1">
-                                <thead>
+            <div class="box">
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            <thead>
+                            <tr>
+                                <th data-filter="time">{{ 'Time'|trans }}</th>
+                                <th data-filter="mac">MAC</th>
+                                <th data-filter="action">{{ 'Actions'|trans }}</th>
+                                <th data-filter="object">{{ 'Object'|trans }}</th>
+                                <th data-filter="type">{{ 'Type'|trans }}</th>
+                                <th data-filter="param">{{ 'Parameter'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if attribute(app, 'logList') is defined %}
+                                <!-- Start: list_row -->
+                                {% for item in app.logList %}
                                     <tr>
-                                        <th data-filter="time">Время</th>
-                                        <th data-filter="mac">MAC</th>
-                                        <th data-filter="action">Действие</th>
-                                        <th data-filter="object">Объект</th>
-                                        <th data-filter="type">Тип</th>
-                                        <th data-filter="param">Параметр</th>
+                                        <td>{{ item.time|date('M d, Y H:i') }}</td>
+                                        <td>
+                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.uid }}">{{ item.mac }}</a>
+                                        </td>
+                                        <td>{{ item.action }}</td>
+                                        <td>{{ item.object }}</td>
+                                        <td>{{ item.type }}</td>
+                                        <td>{{ item.param }}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {% if attribute(app, 'logList') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.logList %}
-                                            <tr>
-                                                <td>{{ item.time|date('M d, Y H:i') }}</td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id={{ item.uid }}" >{{ item.mac }}</a></td>
-                                                <td>{{ item.action }}</td>
-                                                <td>{{ item.object }}</td>
-                                                <td>{{ item.type }}</td>
-                                                <td>{{ item.param }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                        <!-- End: list_row -->
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
+                                {% endfor %}
+                                <!-- End: list_row -->
+                            {% endif %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -82,7 +74,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                     {"data": "time"},

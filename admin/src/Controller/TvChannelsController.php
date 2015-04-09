@@ -36,12 +36,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['error_local'] = array();
         $this->app['baseHost'] = $this->baseHost;
         $this->app['allArchive'] = array(
-            array('id' => 1, 'title' => 'Да'),
-            array('id' => 2, 'title' => 'Нет')
+            array('id' => 1, 'title' => $this->setLocalization('Yes')),
+            array('id' => 2, 'title' => $this->setLocalization('No'))
         );
         $this->app['allStatus'] = array(
-            array('id' => 1, 'title' => 'Включен'),
-            array('id' => 2, 'title' => 'Отключен')
+            array('id' => 1, 'title' => $this->setLocalization('Published')),
+            array('id' => 2, 'title' => $this->setLocalization('Unpublished'))
         );
     }
 
@@ -174,7 +174,27 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         
         $this->app['breadcrumbs']->addItem("'{$this->oneChannel['name']}'");
 
+        $this->app['editChannelName'] = $this->oneChannel['name'];
+
         return $this->app['twig']->render('TvChannels_add_channel.twig');
+    }
+
+    public function epg() {
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $attribute = $this->getEpgDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
+        $list = $this->epg_list_json();
+
+        $this->app['allData'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
     //----------------------- ajax method --------------------------------------
@@ -184,7 +204,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
-            $this->app->abort(404, 'Канал с не найден');
+            $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
         $channel = $this->db->getChannelById($this->data['id']);
@@ -209,11 +229,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
-            $this->app->abort(404, 'Канал с не найден');
+            $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
         $rows = $this->db->changeChannelStatus($this->data['id'], 0);
-        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => 'Включить', 'status' => 'Отключен', 'urlactfrom' => 'disable', 'urlactto' => 'enable'), ($rows) ? '' : 'Cannot find channel');
+        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => $this->setLocalization('Publish'), 'status' => $this->setLocalization('Unpublished'), 'urlactfrom' => 'disable', 'urlactto' => 'enable'), ($rows) ? '' : $this->setLocalization('Cannot find channel'));
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -223,11 +243,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         if (empty($this->data['id']) || (!is_numeric($this->data['id']))) {
-            $this->app->abort(404, 'Канал с не найден');
+            $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
         $rows = $this->db->changeChannelStatus($this->data['id'], 1);
-        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => 'Отключить', 'status' => 'Включен', 'urlactfrom' => 'enable', 'urlactto' => 'disable'), ($rows) ? '' : 'Cannot find channel');
+        $response = $this->generateAjaxResponse(array('rows' => $rows, 'action' => $this->setLocalization('Unpublish'), 'status' => $this->setLocalization('Published'), 'urlactfrom' => 'enable', 'urlactto' => 'disable'), ($rows) ? '' : $this->setLocalization('Cannot find channel'));
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -239,7 +259,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
         
         if (empty($this->data['id']) || (!is_numeric($this->data['id']) && strpos($this->data['id'], 'new') === FALSE)) {
-            $this->app->abort(404, 'Канал с не найден');
+            $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         } elseif ($this->data['id'] == 'new') {
             $this->data['id'] .= rand(0, 100000);
         }
@@ -257,10 +277,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         if (!$this->isAjax || empty($this->data['id']) || (!is_numeric($this->data['id']) && strpos($this->data['id'], 'new') == FALSE)) {
-            $this->app->abort(404, 'Канал с не найден');
+            $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $channel = $this->db->getChannelById($id);
+        $channel = $this->db->getChannelById($this->data['id']);
 
         $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
         $error = $this->saveFiles->getError();
@@ -275,7 +295,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
         
         if (!$this->isAjax) {
-            $this->app->abort(404, 'The unexpected request');
+            $this->app->abort(404, $this->setLocalization('The unexpected request'));
         }
         if (empty($this->postData['data'])) {
             $erorr = 'nothing to do';
@@ -288,7 +308,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                     continue;
                 }
                 if (!$this->db->updateChannelNum($row)) {
-                    $erorr = 'Failed to save, update the channel list';
+                    $erorr = $this->setLocalization('Failed to save, update the channel list');
                     $senddata = array('action' => 'canceled');
                 }
             }
@@ -303,7 +323,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
         
         if (!$this->isAjax) {
-            $this->app->abort(404, 'The unexpected request');
+            $this->app->abort(404, $this->setLocalization('The unexpected request'));
         }
         if (empty($this->postData['data'])) {
             $erorr = 'nothing to do';
@@ -317,7 +337,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 }
                 $row['locked'] = (!empty($row['locked']) || $row['locked'] == "true") ? 1: 0;
                 if (!$this->db->updateChannelLockedStatus($row)) {
-                    $erorr = 'Failed to save, update the channel list';
+                    $erorr = $this->setLocalization('Failed to save, update the channel list');
                     $senddata = array('action' => 'canceled');
                 }
             }
@@ -326,7 +346,257 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
-        //------------------------ service method ----------------------------------
+    public function save_channel_epg_item(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        if (!$this->isAjax || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('The unexpected request'));
+        }
+
+        $ch_id = (!empty($this->data['id']) ? $this->data['id']: $this->postData['id']);
+        $date = (!empty($this->postData['epg_date']) ? $this->postData['epg_date']: strftime('%d-%m-%Y'));
+
+        $senddata = array(
+            'action' => 'saveEPGSuccess',
+            'deleted' => 0,
+            'inserted' => 0
+        );
+
+        $erorr = '';
+
+        $date = implode('-', array_reverse(explode('-', $date)));
+        $senddata['deleted'] = $this->db->deleteEPGForChannel($ch_id, $date.' 00:00:00', $date.' 23:59:59');
+
+        $epg = (!empty($this->postData['epg_body'])? $this->postData['epg_body']: '');
+        $epg = preg_split("/\n/", stripslashes(trim($epg)));
+
+        for ($i=0; $i<count($epg); $i++){
+            $curr_row = $this->get_epg_row($date, $epg, $i);
+            $curr_row['ch_id'] = $ch_id;
+            $curr_row['real_id'] = $ch_id . '_' . strtotime($curr_row['time']);
+            $senddata['inserted'] += $this->db->insertEPGForChannel($curr_row);
+        }
+
+        $response = $this->generateAjaxResponse($senddata, $erorr);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function get_channel_epg_item(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        if (!$this->isAjax || (empty($this->data['id']) && empty($this->postData['id']))) {
+            $this->app->abort(404, $this->setLocalization('The unexpected request'));
+        }
+
+        $ch_id = (!empty($this->data['id']) ? $this->data['id']: $this->postData['id']);
+        $date = (!empty($this->postData['epg_date']) ? $this->postData['epg_date']: strftime('%d-%m-%Y'));
+
+        $senddata = array(
+            'action' => 'showModalBox',
+            'ch_id' => $ch_id,
+            'epg_date' => $date,
+            'epg_body' => ''
+        );
+        $erorr = '';
+
+        $date = implode('-', array_reverse(explode('-', $date)));
+        $epg_data = $this->db->getEPGForChannel($ch_id, $date.' 00:00:00', $date.' 23:59:59');
+
+        if (!empty($epg_data)) {
+            $tmp = array('');
+            reset($epg_data);
+            while(list($key, $row) = each($epg_data)){
+                preg_match("/(\d+):(\d+)/", $row['time'], $tmp);
+                $senddata['epg_body'] .= $tmp[0]." ".$row['name']."\n";
+            }
+        }
+
+        $response = $this->generateAjaxResponse($senddata, $erorr);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function epg_list_json(){
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0,
+            'action' => 'setEPGModal'
+        );
+
+        $error = "Error";
+        $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        if (empty($query_param['select'])) {
+            $query_param['select'] = "*";
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsEPGList();
+        $response["recordsFiltered"] = $this->db->getTotalRowsEPGList($query_param['where'], $query_param['like']);
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 10;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+        if (array_key_exists('id', $param)) {
+            $query_param['where']['id'] = $param['id'];
+        }
+        $EPGList = $this->db->getEPGList($query_param);
+        $response['data'] = array_map(function($val){
+            $val['status'] = (int)$val['status'];
+            $val['updated'] = (int) strtotime($val['updated']);
+            return $val;
+        }, $EPGList);
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+
+        $error = "";
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function save_epg_item() {
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageEPG';
+        $item = array($this->postData);
+        $check = array();
+        if (empty($this->postData['id'])) {
+            $operation = 'insertEPG';
+            $check = $this->db->searchOneEPGParam(array('uri' => trim($this->postData['uri']), 'id<>' => trim($this->postData['id'])));
+        } else {
+            $operation = 'updateEPG';
+            $item['id'] = $this->postData['id'];
+        }
+        unset($item[0]['id']);
+        $error = 'Не удалось. ';
+
+        if (empty($check)) {
+            if ($result = call_user_func_array(array($this->db, $operation), $item)) {
+                $error = '';
+            }
+        } else {
+            $error .= 'URL занят';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function remove_epg_item() {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageEPG';
+        $data['id'] = $this->postData['id'];
+        $error = '';
+        $this->db->deleteEPG(array('id' => $this->postData['id']));
+
+        $response = $this->generateAjaxResponse($data);
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function toggle_epg_item_status() {
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id']) || !array_key_exists('status', $this->postData)) {
+            $this->app->abort(404, 'Page not found...');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageEPG';
+        $data['id'] = $this->postData['id'];
+        $this->db->updateEPG(array('status' => (int)(!((bool) $this->postData['status']))), $this->postData['id']);
+        $error = '';
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function epg_check_uri(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['param'])) {
+            $this->app->abort(404, 'Page not found');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'checkRadioName';
+        $error = 'URL занят';
+
+        if ($this->db->searchOneEPGParam(array('uri' => trim($this->postData['param']), 'id<>' => trim($this->postData['epgid'])))) {
+            $data['chk_rezult'] = 'URL занят';
+        } else {
+            $data['chk_rezult'] = 'URL свободен';
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function update_epg(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, 'Page not found...');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageEPG';
+        $data['id'] = $this->postData['id'];
+        $error = '';
+
+        $epg = new \Epg();
+
+        $data['msg'] = nl2br($epg->updateEpg(!empty($this->postData['force'])));
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    //------------------------ service method ----------------------------------
 
     private function getLogoUriById($id = FALSE, $row = FALSE, $resolution = 320) {
 
@@ -416,14 +686,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                     'data' => $def_number
                     ))
                 ->add('name', 'text', array(
-                        'constraints' => array(
-//                                    new Assert\Regex(array(
-//                                        'pattern' => '/[^\w,\!,\@,\#,\$,\%,\^,\&,\*,\(,\),\_,\-,\+,\:,\;,\,,\.,\s]/',
-//                                        'match' => false
-//                                        )
-//                                    ),
-                                new Assert\NotBlank()
-                            ),
+                        'constraints' => array(new Assert\NotBlank()),
                         'data' => $def_name
                         )
                 )
@@ -435,13 +698,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('pvr_storage_names', 'choice', array(
                     'choices' => $storages,
                     'multiple' => TRUE,
-//                    'constraints' => array(new Assert\Choice(array('choices' => $storages)))
                         )
                 )
                 ->add('storage_names', 'choice', array(
                     'choices' => $storages,
                     'multiple' => TRUE,
-//                    'constraints' => array(new Assert\Choice(array('choices' => $storages)))
                         )
                 )
                 ->add('volume_correction', 'choice', array(
@@ -574,8 +835,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                     $ch_id = $this->db->$operation($data);
                 } else {
                     $error_local = array();
-                    $error_local['name'] = ($is_repeating_name ? 'Такое имя уже есть' : '');
-                    $error_local['number'] = ($is_repeating_number ? 'Такое номер уже есть' : '');
+                    $error_local['name'] = ($is_repeating_name ? $this->setlocalization('This name already exists') : '');
+                    $error_local['number'] = ($is_repeating_number ? $this->setlocalization('This number is already in use') : '');
                     $this->app['error_local'] = $error_local;
                     return FALSE;
                 }
@@ -748,16 +1009,64 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     
     private function getIptvListDropdownAttribute(){
         return array(
-			array('name' => 'id',             'title' => 'ID',      'checked' => false),
-			array('name' => 'number',           'title' => 'Номер',     'checked' => TRUE),
-			array('name' => 'logo',             'title' => 'Лого',      'checked' => TRUE),
-            array('name' => 'name',             'title' => 'Название',  'checked' => TRUE),
-            array('name' => 'genres_name',      'title' => 'Жанр',      'checked' => TRUE),
-            array('name' => 'enable_tv_archive','title' => 'ТВ-архив',  'checked' => TRUE),
-            array('name' => 'cmd',              'title' => 'URL',       'checked' => TRUE),
-            array('name' => 'status',           'title' => 'Статус',    'checked' => TRUE),
-            array('name' => 'operations',       'title' => 'Действия',  'checked' => TRUE)
+			array('name' => 'id',               'title' => $this->setLocalization('ID'),      'checked' => false),
+			array('name' => 'number',           'title' => $this->setLocalization('Number'),     'checked' => TRUE),
+			array('name' => 'logo',             'title' => $this->setLocalization('Logo'),      'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setLocalization('Title'),  'checked' => TRUE),
+            array('name' => 'genres_name',      'title' => $this->setLocalization('Genre'),      'checked' => TRUE),
+            array('name' => 'enable_tv_archive','title' => $this->setLocalization('Archive'),  'checked' => TRUE),
+            array('name' => 'cmd',              'title' => $this->setLocalization('URL'),       'checked' => TRUE),
+            array('name' => 'status',           'title' => $this->setLocalization('Status'),    'checked' => TRUE),
+            array('name' => 'operations',       'title' => $this->setLocalization('Operations'),  'checked' => TRUE)
         );
         
+    }
+
+    private function get_epg_row($date, $epg_lines, $line_num = 0){
+
+        $epg_line = @trim($epg_lines[$line_num]);
+
+        preg_match("/(\d+):(\d+)[\s\t]*([\S\s]+)/", $epg_line, $tmp_line);
+
+        if (@$tmp_line[1] && $tmp_line[2] && $tmp_line[3]){
+
+            $result = array();
+
+            $time = $date.' '.$tmp_line[1].':'.$tmp_line[2].':00';
+
+            $result['time'] = $time;
+
+            $result['name'] = $tmp_line[3];
+
+            $next_line = $this->get_epg_row($date, $epg_lines, $line_num+1);
+
+            if (!empty($next_line)){
+
+                $time_to = $next_line['time'];
+
+                $result['time_to'] = $time_to;
+
+                $result['duration'] = strtotime($time_to) - strtotime($time);
+            }else{
+                $result['time_to'] = 0;
+                $result['duration'] = 0;
+            }
+
+            return $result;
+        }
+
+        return false;
+    }
+
+    private function getEpgDropdownAttribute(){
+        return array(
+            array('name'=>'id',         'title'=>$this->setlocalization('ID'),              'checked' => TRUE),
+            array('name'=>'id_prefix',  'title'=>$this->setlocalization('Prefix'),          'checked' => TRUE),
+            array('name'=>'uri',        'title'=>$this->setlocalization('URL'),             'checked' => TRUE),
+            array('name'=>'etag',       'title'=>$this->setlocalization('XMLTV file hash'), 'checked' => TRUE),
+            array('name'=>'updated',    'title'=>$this->setlocalization('Update date'),     'checked' => TRUE),
+            array('name'=>'status',     'title'=>$this->setlocalization('State'),           'checked' => TRUE),
+            array('name'=>'operations', 'title'=>$this->setlocalization('Operations'),      'checked' => TRUE)
+        );
     }
 }

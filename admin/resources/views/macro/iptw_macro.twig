@@ -43,7 +43,7 @@
         {% if without_all %}
             {% set list = '' %}
         {% else %}
-            {% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+            {% set list = ('<li><a href="#" data-filter="0"><span>' ~ 'All'|trans ~ '</span></a></li>') | trans %}
         {% endif %}
         {% if not (block_width) %}
             {% set block_width = 3 %}
@@ -76,8 +76,7 @@
             {% endfor %}
             {% autoescape false %}
                 {% if f_name is sameas(0) %}
-                                  
-                        <span>{% if without_all %}{% else %}Все{% endif %}</span>
+                        <span>{% if without_all %}{% else %}{{ 'All'|trans }}{% endif %}</span>
                         <i class="fa fa-caret-down"></i>
                     </a>
                 {% endif %}
@@ -117,7 +116,7 @@
                 <li>
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" value="all" name="{{ set_id }}[]"> Все
+                            <input type="checkbox" value="all" name="{{ set_id }}[]"> {{ 'All'|trans }}
                             <i class="fa fa-square-o"></i>
                         </label>
                     </div>
@@ -133,7 +132,7 @@
     {% endmacro %}
                         
     {% macro get_dropdown_attribute_item(item, set_id) %}
-        <li>
+        <li data-filter='{{ item.name }}'>
             <div class="checkbox">
                 <label>
                     <input type="checkbox" name="{{ set_id }}[]" {% if item.name == 'operations'%}readonly="readonly" disabled="disabled"{% endif %} value="{{ item.name }}" {% if item.checked %}checked="{{ item.checked }}"{% endif %}> {{ item.title }}

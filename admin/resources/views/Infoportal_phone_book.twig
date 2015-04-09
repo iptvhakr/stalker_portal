@@ -1,74 +1,63 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'infoportal' %}
+{% set title = ('Information portal'|trans ~ ': ' ~ 'Phone book'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Телефонный справочник</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-              
-                    {{ main_macro.get_filter_button_bar('service', 'id', 'title', app['allServices']) }}
-               
-
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-phone-book-item" class="btn btn-success pull-right" id="add_phone_book_item">Добавить</a>
+                {{ main_macro.get_filter_button_bar('service', 'id', 'title', app['allServices']) }}
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-phone-book-item" class="btn btn-success pull-right" id="add_phone_book_item">{{ 'Add'|trans }}</a>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="">
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
-                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                        {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
                     {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <div class="">
-                                <div class="">
-                                    <table class="table  table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% if attribute(app, 'allPhone') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.allPhone %}
-                                                    <tr data-phonebookeid="{{ item.id }}">
-                                                        <td>{{ item.num }}</td>
-                                                        <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json" data-id="{{ item.id }}" data-phoneboocksource="{{ app['filters']['service'] }}">{{ item.title }}</a></td>
-                                                        <td>{{ item.number }}</td>
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
-                                                                </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json" data-id="{{ item.id }}" data-phoneboocksource="{{ app['filters']['service'] }}">
-                                                                            <span>Редактировать</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-phone-book-item" data-id="{{ item.id }}" data-phoneboocksource="{{ app['filters']['service'] }}">
-                                                                            <span>Удалить</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            <table class="table  table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                    {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                                {% if attribute(app, 'allPhone') is defined %}
+                                    <!-- Start: list_row -->
+                                    {% for item in app.allPhone %}
+                                        <tr data-phonebookeid="{{ item.id }}">
+                                            <td>{{ item.num }}</td>
+                                            <td>
+                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json" data-id="{{ item.id }}" data-phoneboocksource="{{ app['filters']['service'] }}">{{ item.title }}</a>
+                                            </td>
+                                            <td>{{ item.number }}</td>
+                                            <td>
+                                                <div class="col-xs-3 col-sm-8">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="pull-right fa fa-cog"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json" data-id="{{ item.id }}" data-phoneboocksource="{{ app['filters']['service'] }}">
+                                                                <span>{{ 'Edit'|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-phone-book-item" data-id="{{ item.id }}" data-phoneboocksource="{{ app['filters']['service'] }}">
+                                                                <span> {{ 'Delete'|trans }} </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    <!-- End: list_row -->
+                                {% endif %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -94,19 +83,19 @@
                         <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-phone-book-item">
                             <!-- singer -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Номер</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Order'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="number" required="required" name="num" class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Номер службы в справочнике. Должны содержаться только цифры</span>
+                                        <span class="small txt-default">{{ 'Order of service in the directory. Must contain digits only'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <!-- name -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Название</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Title'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id" class="own_fields">
@@ -116,7 +105,7 @@
                             </div>
                             <!-- URL -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Телефон</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Phone number'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="text" name="number" required="required" class='form-control own_fields'>
@@ -126,15 +115,14 @@
                         </form>
                     </div>
                 </div>
-
             </div>
             <div class="devoops-modal-bottom">
                 <div class="box">
                     <div class="box-content">
                         <div class="row">
                             <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
                             </div>
                         </div>
                     </div>
@@ -165,12 +153,12 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/phone-book-list-json' data-id='" + id + "' data-phoneboocksource='{{ app['filters']['service'] }}'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-phone-book-item' data-id='" + id + "' data-phoneboocksource='{{ app['filters']['service'] }}'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
@@ -193,7 +181,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                     {"data": "num"},
@@ -212,9 +200,8 @@
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
-					  { "width": "15px", "targets": [ -1] },
-                    {"sortable": false, "targets": [-1,]}{#,
-                    {"width": "19%", "targets": [5] },#}
+					{ "width": "15px", "targets": [ -1] },
+                    {"sortable": false, "targets": [-1]}
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){
@@ -254,7 +241,7 @@
                         }
                     });
                     if (lengthObj < form_fields.length) {
-                        alert('Необходимо заполнить все поля');
+                        alert('{{ 'All fields is required'|trans }}');
                         return false;
                     }
                     sendData["phoneboocksource"] = "{{ app['filters']['service'] }}";
@@ -291,7 +278,7 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
         
         var setPhoneBookModal = function (data) {
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать');
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];
                 for (var field_name in row) {
@@ -300,12 +287,12 @@
             }
             $("#modalbox_ad input").removeAttr('disabled');
             $("#modalbox_ad").show();
-        }
+        };
 
         var removePhoneBook = function (obj) {
             var cRow = $(obj).closest('tr');
             $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        }
+        };
         
         var managePhoneBook = function (obj) {
             $("#modalbox_ad").click();

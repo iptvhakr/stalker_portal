@@ -1,44 +1,36 @@
 {% extends 'layout.twig' %}
-
-{% set title = 'video-club' %}
-{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'moderators list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-2">
-            <h3>Модераторы</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-moderators" class="btn btn-success pull-right">Добавить модератора  </a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-moderators" class="btn btn-success pull-right">{{ 'Add moderator'|trans }}</a>
             </div>
         </div>
         <div class="row">
-        
-                    <div class="box">
-                        <div class="auto-height">
-                            <div class="box-name">
-                                <div class="row">
-                                    <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
-                                        <span class="text_black">Приставки модераторов позволяют показывать неопубликованное видео и опционально пропускают рекламу</span>
-                                    </div>
-                                </div>
+            <div class="box">
+                <div class="auto-height">
+                    <div class="box-name">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                                <span class="text_black">{{ 'STB of moderators  allow to show unpublished video and optionally skipping advertising'|trans }}{#Приставки модераторов позволяют показывать неопубликованное видео и опционально пропускают рекламу#}</span>
                             </div>
-                            <div class="no-move"></div>
                         </div>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
                 {% if app['Moderators'] %}
                         <div class="box-content">
                             <div class="box-content no-padding">
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     <thead>
                                         <tr>
-                                            <th data-filter="name">Имя</th>
-                                            <th data-filter="mac">MAC адрес</th>
-                                            <th data-filter="disable_vclub_ad">Реклама</th>
-                                            <th data-filter="status">Статус</th>
-                                            <th width="16px" data-filter="operations"></th>
+                                            <th data-filter="name">{{ 'Name'|trans }}</th>
+                                            <th data-filter="mac">{{ 'MAC address'|trans }}</th>
+                                            <th data-filter="disable_vclub_ad">{{ 'Advertising'|trans }}</th>
+                                            <th data-filter="status">{{ 'Status'|trans }}</th>
+                                            <th width="16px" data-filter="operations">{{ 'Operations'|trans }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,8 +39,8 @@
                                             <tr data-modid="{{ item.id }}">
                                                 <td ><a href="#">{{ item.name }}</a></td>
                                                 <td data-filter="mac">{{ item.mac }}</td>
-                                                <td data-filter="disable_vclub_ad">{% if item.disable_vclub_ad %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
-                                                <td data-filter="status">{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
+                                                <td data-filter="disable_vclub_ad">{% if item.disable_vclub_ad %}<span class="txt-success">{{ 'On'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Off'|trans }}</span>{% endif %}</td>
+                                                <td data-filter="status">{% if item.status %}<span class="txt-success">{{ 'On'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Off'|trans }}</span>{% endif %}</td>
                                                 <td data-filter="operations">
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
@@ -57,17 +49,17 @@
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
                                                                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-moderators?id={{ item.id }}">
-                                                                    <span>Редактировать</span>
+                                                                    <span>{{ 'Edit'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-moderators-status" data-modstatus="{% if item.status %}0{% else %}1{% endif %}" data-modid="{{ item.id }}">
-                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                    <span>{% if item.status %}{{ 'Switch off'|trans }}{% else %}{{ 'Switch on'|trans }}{% endif %}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-moderators" data-modid="{{ item.id }}">
-                                                                    <span>Удалить</span>
+                                                                    <span>{{ 'Delete'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -81,7 +73,6 @@
                             </div>
                         </div>
                 {% endif %}
-                    </div>
             </div>
         </div>
     </div>
@@ -90,7 +81,7 @@
     function TestTable1() {
         $('#datatable-1').dataTable({
             "language": {
-                "url": "./plugins/datatables/lang/ru_RU.json"
+                "url": "{{ app.datatable_lang_file }}"
             },
             "bFilter": true,
             "bPaginate": true,
@@ -122,7 +113,7 @@
                                     _this.data(key, data[key]);
                                 }
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
@@ -136,7 +127,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -158,11 +149,11 @@
     var removeMod = function(obj){
         var cRow = $(obj).closest('tr');
         $('#datatable-1').DataTable().row(cRow).remove().draw( false );
-    }
+    };
     
     var toggleVideoModStatus = function(obj){
         $(obj).text($(obj).data('title'));
         $(obj).closest('tr').find('td[data-filter="status"]').html($(obj).data('status'));
-    }
+    };
 </script>
 {% endblock %}

@@ -1,16 +1,11 @@
 {% extends 'layout.twig' %}
-{% set title = 'users' %}
+{% set title = ('Users'|trans ~ ': ' ~ 'list of STB in group '|trans ~ '"' ~ app.consoleGroup.name ~ '"') | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Приставки группы "{{ app['consoleGroup']['name'] }}"</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-console-item" class="btn btn-success pull-right" id="add_console_item">Добавить</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-console-item" class="btn btn-success pull-right" id="add_console_item">{{ 'Add STB'|trans }}</a>
             </div>
         </div>
 
@@ -26,7 +21,7 @@
                                             <tr>
                                                 <th data-filter="mac">MAC</th>
                                                 <th data-filter="uid">UID</th>
-                                                <th data-filter="operations">Действия</th>
+                                                <th data-filter="operations">{{ 'Operations'|trans }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -44,7 +39,7 @@
                                                                 <ul class="dropdown-menu pull-right">
                                                                     <li>
                                                                         <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-item" data-consoleid="{{ item.stb_in_group_id }}">
-                                                                            <span>Удалить</span>
+                                                                            <span>{{ 'Delete'|trans }}</span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -90,7 +85,7 @@
                 },
                 "deferLoading":{{ app.totalRecords }},
                         "language": {
-                            "url": "./plugins/datatables/lang/ru_RU.json"
+                            "url": "{{ app.datatable_lang_file }}"
                         },
                 "columns": [
                     {"data": "mac"},
@@ -132,7 +127,7 @@
                                     console.log(data.error);
                                 } else {
                                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                    console.log('Some server error');
+                                    console.log("{{ 'Some server error'|trans }}");
                                 }
                             },
                             error: function (data) {
@@ -141,14 +136,14 @@
                                     _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                                 } else {
                                     $('#modalbox button[type="submit"]').removeAttr("disabled");
-                                    console.log('Some network error or access denied');
+                                    console.log("{{ 'Some network error or access denied'|trans }}");
                                 }
                             },
                             dataType: "json",
                             async: false
                         });
                     } else {
-                        _this.next('div').append('<i class="txt-danger fa fa-ban"></i> Ведите MAC-адресс согласно формату').css('visibility', 'visible');
+                        _this.next('div').append('<i class="txt-danger fa fa-ban"></i> {{ 'Enter the MAC-address according to the format'|trans }}').css('visibility', 'visible');
                     }
                 });
 
@@ -167,7 +162,7 @@
                                     window[data.action](data);
                                 }
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
@@ -178,7 +173,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -214,7 +209,7 @@
                     var sendData = {
                         id: $("#modalbox input[name='id']").val(),
                         groupid: $("#modalbox input[name='groupid']").val(),
-                        name: $("#modalbox input[type='text']").val(),
+                        name: $("#modalbox input[type='text']").val()
                     };
 
                     e.stopPropagation();
@@ -231,7 +226,7 @@
                             } else if (data.error) {
                                 alert(data.error);
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
@@ -242,7 +237,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction](data.responseJSON);
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -262,16 +257,16 @@
         var addConsoleItem = function (data) {
             var cRow = $("#datatable-1 tr:last");
             $('#datatable-1').DataTable().row.add(getCeils(data)).draw();
-        }
+        };
 
         var addConsoleItemError = function (data) {
             alert(data.error);
-        }
+        };
 
         var removeConsoleItem = function (data) {
             var cRow = $('a[data-consoleid="' + data.stb_in_group_id + '"]').closest('tr');
             $('#datatable-1').DataTable().row(cRow).remove().draw();
-        }
+        };
 
         function closeModalBox() {
             $("#modalbox").hide();
@@ -281,7 +276,7 @@
         }
 
         function openModalBox(obj) {
-            $('#modalbox').find('.modal-header-name span').text((obj.data('consolegroupid') ? 'Редактировать' : 'Добавить') + ' приставку');
+            $('#modalbox').find('.modal-header-name span').text((obj.data('consolegroupid') ? '{{ 'Edit'|trans }}' : 'Добавить') + ' приставку');
             if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
                 $('#modalbox').find('.devoops-modal-inner').html('\n\
                 <div class="box-content">\n\
@@ -301,8 +296,8 @@
                 </div>');
                 $('#modalbox').find('.devoops-modal-bottom').html('<div class="col-xs-10 col-sm-2 pull-right no-padding">&nbsp;</div>\n\
                         <div class="col-xs-10 col-sm-5 pull-right no-padding">\n\
-                            <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>\n\
-                            <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>\n\
+                            <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>\n\
+                            <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>\n\
                         </div>');
             }
 
@@ -325,7 +320,7 @@
                                 <ul class='dropdown-menu pull-right'>\n\
                                     <li>\n\
                                         <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-item' data-consoleid='" + data.stb_in_group_id + "'>\n\
-                                            <span>Удалить</span>\n\
+                                            <span> {{ 'Delete'|trans }} </span>\n\
                                         </a>\n\
                                     </li>\n\
                                 </ul>\n\

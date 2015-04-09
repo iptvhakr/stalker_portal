@@ -1,49 +1,42 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'statistics' %}
+{% set title = ('Statistics'|trans ~ ': ' ~ 'movie statistics'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Статистика видео за месяц</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    {{ main_macro.get_filter_button_bar('stat_to', 'id', 'title', app['allVideoStat']) }}
+                {{ main_macro.get_filter_button_bar('stat_to', 'id', 'title', app['allVideoStat']) }}
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="">
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="">
                             <div class="">
-                                <div class="">
-                                    <table class="table  table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% if attribute(app, 'allStat') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for row in app.allStat %}
-                                                    <tr>
-                                                        {% for key, item in row %}     
-                                                        <td>{% if key == 'date' or key == 'last_played' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
-                                                        {% endfor %}
-                                                    </tr>
+                                    {% endif %}
+                                    <tbody>
+                                    {% if attribute(app, 'allStat') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for row in app.allStat %}
+                                            <tr>
+                                                {% for key, item in row %}
+                                                    <td>{% if key == 'date' or key == 'last_played' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
                                                 {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -103,7 +96,7 @@
                 "pageLength": 100,
             {% endif %}
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                 {% if attribute(app, 'dropdownAttribute') is defined%}

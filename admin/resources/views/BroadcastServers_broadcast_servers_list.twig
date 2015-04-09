@@ -1,77 +1,70 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'streams' %}
+{% set title = ('Broadcast servers'|trans ~ ': ' ~ 'servers list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Список серверов</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{ main_macro.get_filter('status', 'Статус', 'id', 'title', app['allServerStatus'], 2) }}
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/broadcast-servers-list-json" class="main_ajax btn btn-success pull-right" id="add_server">Добавить</a>
+                {{ main_macro.get_filter('status', 'Status'|trans, 'id', 'title', app['allServerStatus'], 2) }}
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/broadcast-servers-list-json" class="main_ajax btn btn-success pull-right" id="add_server">{{ 'Add server'|trans }}</a>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="">
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <table class="table  table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% if attribute(app, 'allData') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.allData %}
-                                                    <tr data-adminid="{{ item.id }}">
-                                                        <td>{{ item.id }}</td>
-                                                        <td>{{ item.name }}</td>
-                                                        <td>{{ item.address }}</td>
-                                                        <td>{{ item.max_sessions }}</td>
-                                                        <td>{{ item.stream_zone_name }}</td>
-                                                        <td><span {% if item.status == 1 %}class="txt-success"{% endif %}>{{ app['allServerStatus'][item.status].title }}</span></td>
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
+                                    {% endif %}
+                                    <tbody>
+                                    {% if attribute(app, 'allData') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allData %}
+                                            <tr data-adminid="{{ item.id }}">
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.name }}</td>
+                                                <td>{{ item.address }}</td>
+                                                <td>{{ item.max_sessions }}</td>
+                                                <td>{{ item.stream_zone_name }}</td>
+                                                <td><span {% if item.status == 1 %}class="txt-success"{% endif %}>{{ app['allServerStatus'][item.status].title }}</span></td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a class='main_ajax' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-server-status" data-id="{{ item.id }}" data-status="{{ item.status }}">
+                                                                    <span>{% if item.status == 1 %}{{ 'Switch off'|trans }}{% else %}{{ 'Switch on'|trans }}{% endif %}</span>
                                                                 </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a class='main_ajax' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-server-status" data-id="{{ item.id }}" data-status="{{ item.status }}">
-                                                                            <span>{% if item.status == 1 %}Отключить{% else %}Включить{% endif %}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class='main_ajax' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/broadcast-servers-list-json" data-id="{{ item.id }}">
-                                                                            <span>Редактировать</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-server" data-id="{{ item.id }}">
-                                                                            <span>Удалить</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <a class='main_ajax' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/broadcast-servers-list-json" data-id="{{ item.id }}">
+                                                                    <span>{{ 'Edit'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-server" data-id="{{ item.id }}">
+                                                                    <span> {{ 'Delete'|trans }} </span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -98,47 +91,47 @@
                         <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-server">
                             <!-- track name -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Название</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Title'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id" class="own_fields">
                                         <input type="text" name="name" class='own_fields form-control'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , . Будет отображаться в балансировщике нагрузки.</span>
+                                        <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , . It will be shown in the load balancer.'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
 
                             <!-- address -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">URL</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'URL'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="text" name="address" class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Пример: http://server.example:8080</span>
+                                        <span class="small txt-default">{{ 'Example: http://server.example:8080'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             
                             <!-- max_sessions -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Максимум пользователей</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Maximum users'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="text" name="max_sessions" class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Максимальное количество пользователей (нагрузка), числовое значение</span>
+                                        <span class="small txt-default">{{ 'Maximum quantity of users(load) numeric value'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             
                             <!-- zone -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Зона вещания</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Broadcast area'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-6 ">
                                         <select class="populate placeholder own_fields" name="stream_zone" id="s2_zone">
@@ -151,7 +144,7 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Выбор зоны вещания, если оставить поле пустым будет назначена зона по умолчанию</span>
+                                        <span class="small txt-default">{{ 'Choose the broadcast area, if the field is clean, there will be set a default broadcast area'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -165,8 +158,8 @@
                     <div class="box-content">
                         <div class="row">
                             <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
                             </div>
                         </div>
                     </div>
@@ -180,7 +173,6 @@
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
                 $('#s2_zone').select2({minimumResultsForSearch: -1});
-
             });
         }
 
@@ -199,17 +191,17 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-server-status' data-id='" + id + "' data-status='" + status + "'>\n\
-                                                                    <span>" + (status == 1 ? "Отключить" : "Включить") +"</span>\n\
+                                                                    <span>" + (status == 1 ? "{{ 'Switch off'|trans }}" : "{{ 'Switch on'|trans }}") +"</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/broadcast-servers-list-json' data-id='" + id + "'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-server' data-id='" + id + "'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
@@ -231,7 +223,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                 {% if attribute(app, 'dropdownAttribute') is defined%}
@@ -251,8 +243,7 @@
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1,]}{#,
-                    {"width": "19%", "targets": [5] },#}
+                    {"sortable": false, "targets": [-1]}
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){
@@ -293,7 +284,7 @@
                         }
                     });
                     if (lengthObj < form_fields.length) {
-                        alert('Необходимо заполнить все поля');
+                        alert('{{ 'Fill in the required fields'|trans }}');
                         return false;
                     }
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
@@ -319,7 +310,7 @@
                         $('#datatable-1 tr:last').attr('id', tmp_id);
                     }
                     $("#modalbox_ad").data('tr_id', tmp_id);
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить');
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add server'|trans }}');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
                     $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
@@ -338,17 +329,17 @@
         var manageServerList = function (obj) {
             $("#modalbox_ad").click();
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
         
         var serverListMsg = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
-                alert("Удалено " + data.msg.Zone + " серверов ");
+                alert("{{ 'Deleted'|trans }} " + data.msg.Zone + " {{ 'servers'|trans }} ");
             }
             manageServerList(data);
-        }
+        };
         
         var setServerModal = function (data) {
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать');
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];
                 for (var field_name in row) {
@@ -361,7 +352,7 @@
             $("#modalbox_ad input").removeAttr('disabled');
             $('#s2_zone').select2("destroy").select2({minimumResultsForSearch: -1});
             $("#modalbox_ad").show();
-        }
+        };
         
     </script>
 {% endblock %}

@@ -29,6 +29,10 @@ class TasksModel extends \Model\BaseStalkerModel {
             $obj = $obj->groupby($param['groupby']);
         }
 
+        if (!empty($param['order'])) {
+            $obj = $obj->orderby($param['order']);
+        }
+
         if (!empty($param['limit']['limit']) && !$counter) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
         }
@@ -120,7 +124,7 @@ class TasksModel extends \Model\BaseStalkerModel {
             ->join("`administrators`  as A", "M_H.from_usr", "A.id", "LEFT")
             ->join("`moderator_tasks`  as M_T", "M_H.task_id", "M_T.id", "LEFT")
             ->where(array('M_H.task_id' => $task_id, 'M_H.id >= ' => $after_id))
-            ->orderby("reply_to");        
+            ->orderby("M_H.id");
         return $odj->get()->all();
     }
     

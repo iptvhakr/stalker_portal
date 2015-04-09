@@ -1,17 +1,12 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'admins' %}
+{% set title = ('Administrators'|trans ~ ': ' ~ 'administrators list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Администраторы</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-admin" class="btn btn-success pull-right" id="add_admin">Добавить</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-admin" class="btn btn-success pull-right" id="add_admin">{{ 'Add administrator'|trans }}</a>
             </div>
         </div>
         
@@ -45,12 +40,12 @@
                                                                 <ul class="dropdown-menu pull-right">
                                                                     <li>
                                                                         <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-list-json" data-id="{{ item.id }}">
-                                                                            <span>Редактировать</span>
+                                                                            <span>{{ 'Edit'|trans }}</span>
                                                                         </a>
                                                                     </li>
                                                                     <li>
                                                                         <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admin" data-id="{{ item.id }}">
-                                                                            <span>Удалить</span>
+                                                                            <span> {{ 'Delete'|trans }} </span>
                                                                         </a>
                                                                     </li>
                                                                 </ul>
@@ -89,21 +84,18 @@
                         <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-admin">
                             <!-- singer -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Логин</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Login'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="hidden" name="id" id="adm_id" class="own_fields">
                                         <input type="text" required="required" name="login" id="adm_login" class='form-control own_fields'>
                                         <div class="bg-danger"></div>
                                     </div>
-                                    {#<span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Номер службы в справочнике. Должны содержаться только цифры</span>
-                                    </span>#}
                                 </div>
                             </div>
                             <!-- name -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Группа</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Group'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <select class="populate placeholder own_fields" name="gid" id="gid" required="required">
@@ -118,7 +110,7 @@
                             </div>
                             <!-- URL -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Пароль</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Password'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="password" name="pass" id="adm_pass" class='form-control own_fields'>
@@ -126,7 +118,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Повтор пароля</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Repeat the password'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="password" name="re_pass" id="adm_re_pass" class='form-control own_fields'>
@@ -143,8 +135,8 @@
                     <div class="box-content">
                         <div class="row">
                             <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
                             </div>
                         </div>
                     </div>
@@ -181,12 +173,12 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-list-json' data-id='" + id + "'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admin' data-id='" + id + "'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
@@ -209,7 +201,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                 {% if attribute(app, 'dropdownAttribute') is defined%}
@@ -263,18 +255,14 @@
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
-                    var lengthObj = 0;
                     var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #gid:not(:disabled)");
                         form_fields.each(function () {
                         if ($(this).val()) {
                             sendData[this.name] = $(this).val();
-                            lengthObj++;
                         }
                     });
-                    if ($('#adm_id').val() && (lengthObj < form_fields.length)) {
-                        alert('Все поля обязательные');
-                        return false;
-                    } else if (!$('#adm_login').val() && !$('#gid').val()){
+
+                    if (!$('#adm_login').val() && !$('#gid').val()){
                         alert('Поля "Логин" и "Группа" обязательные');
                         return false;
                     }
@@ -299,7 +287,7 @@
                 $("#add_admin").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить');
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Adding administrator'|trans }}');
                     $("#adm_login").next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
@@ -330,7 +318,7 @@
                                     console.log(data.error);
                                 } else {
                                     $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
-                                    console.log('Some server error');
+                                    console.log("{{ 'Some server error'|trans }}");
                                 }
                             },
                             error: function (data) {
@@ -339,7 +327,7 @@
                                     _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                                 } else {
                                     $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
-                                    console.log('Some network error or access denied');
+                                    console.log("{{ 'Some network error or access denied'|trans }}");
                                 }
                             },
                             dataType: "json",
@@ -357,7 +345,7 @@
         document.addEventListener("DOMContentLoaded", yelp, false);
         
         var setAdminsModal = function (data) {
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать');
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Editing administrator'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];
                 for (var field_name in row) {
@@ -373,13 +361,13 @@
             $('#gid').select2("destroy").select2({minimumResultsForSearch: -1});
             $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
             $("#modalbox_ad").show();
-        }
+        };
 
        
         var manageAdminsList = function (obj) {
             $("#modalbox_ad").click();
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
         
     </script>
 {% endblock %}

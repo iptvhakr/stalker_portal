@@ -10,12 +10,6 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class AdminsController extends \Controller\BaseStalkerController {
 
-    private $allVideoStat = array(
-        array('id' => 'all', 'title' => 'Общая'),
-        array('id' => 'daily', 'title' => 'По дням'),
-        array('id' => 'genre', 'title' => 'По жанрам')
-    );
-
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
     }
@@ -95,13 +89,14 @@ class AdminsController extends \Controller\BaseStalkerController {
             return $val;
         },$this->infliction_array($baseMap, $permissionMap));
         
-        $group_name = $this->db->getAdminGropsList(array('where' => array('id' => $gid), 'order' => array('name' => 'ASC'), 'limit' => array('limit' => 1)));
+        $group_name = $this->db->getAdminGropsList(array('select'=>'*','where' => array('id' => $gid), 'like'=>'','order' => array('name' => 'ASC'), 'limit' => array('limit' => 1, 'offset'=>'')));
         
         $this->app['adminGropName'] = $group_name[0]['name'];
         $this->app['adminGropID'] = $this->data['id'];
+        $permissionMap = $this->setlocalization($permissionMap, 'description');
         $this->app['permissionMap'] = $permissionMap;
         
-        $this->app['breadcrumbs']->addItem("Права группы администраторов '{$group_name[0]['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Permissions for group administrators') . ": '{$group_name[0]['name']}'");
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -168,7 +163,7 @@ class AdminsController extends \Controller\BaseStalkerController {
     
     public function check_admins_login() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['login'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -176,11 +171,11 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkAdminsLogin';
-        $error = 'Логин занят';
+        $error = $this->setLocalization('Login is already used');
         if ($this->db->getAdminsList(array('where' => array('login' => $this->postData['login']), 'order' => array('login' => 'ASC')))) {
-            $data['chk_rezult'] = 'Логин занят';
+            $data['chk_rezult'] = $this->setLocalization('Login is already used');
         } else {
-            $data['chk_rezult'] = 'Логин свободен';
+            $data['chk_rezult'] = $this->setLocalization('Login is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -191,7 +186,7 @@ class AdminsController extends \Controller\BaseStalkerController {
     public function save_admin() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -229,7 +224,7 @@ class AdminsController extends \Controller\BaseStalkerController {
     
     public function remove_admin() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -305,7 +300,7 @@ class AdminsController extends \Controller\BaseStalkerController {
 
     public function check_admins_group_name() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -313,11 +308,11 @@ class AdminsController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkAdminGroupsName';
-        $error = 'Название занято';
+        $error = $this->setLocalization('Group name is already used');
         if ($this->db->getAdminGropsList(array('where' => array('name' => $this->postData['name']), 'order' => array('name' => 'ASC')))) {
-            $data['chk_rezult'] = 'Название занято';
+            $data['chk_rezult'] = $this->setLocalization('Group name is already used');
         } else {
-            $data['chk_rezult'] = 'Название свободно';
+            $data['chk_rezult'] = $this->setLocalization('Group name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -328,7 +323,7 @@ class AdminsController extends \Controller\BaseStalkerController {
     public function save_admins_group() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -361,7 +356,7 @@ class AdminsController extends \Controller\BaseStalkerController {
     
     public function remove_admins_group() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -382,7 +377,7 @@ class AdminsController extends \Controller\BaseStalkerController {
     
     public function save_admins_group_permissions(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -391,7 +386,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         
         $data = array();
         $data['action'] = 'managePermissions';
-        $data['msg'] = 'Сохранение не удалось';
+        $data['msg'] = $this->setlocalization('Failed');
         $error = 'Ошибка';
         
         $write_data = array();
@@ -426,7 +421,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         $this->db->deleteAdminGroupPermissions($adminGropID);
         if ($this->db->setAdminGroupPermissions($write_data)){
             $error = ''; 
-            $data['msg'] = 'Сохранено';
+            $data['msg'] = $error = $this->setlocalization('Saved');
         }
         
         $response = $this->generateAjaxResponse($data);
@@ -438,18 +433,18 @@ class AdminsController extends \Controller\BaseStalkerController {
     
     private function getAdminsDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => 'ID',        'checked' => TRUE),
-            array('name' => 'login',        'title' => 'Логин',     'checked' => TRUE),
-            array('name' => 'group_name',   'title' => 'Группа',    'checked' => TRUE),
-            array('name' => 'operations',   'title' => ' ',  'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),        'checked' => TRUE),
+            array('name' => 'login',        'title' => $this->setlocalization('Login'),     'checked' => TRUE),
+            array('name' => 'group_name',   'title' => $this->setlocalization('Group'),    'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setlocalization('Operations'),  'checked' => TRUE)
         );
     }
     
     private function getAdminGroupsDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => 'ID',        'checked' => TRUE),
-            array('name' => 'name',         'title' => 'Название',  'checked' => TRUE),
-            array('name' => 'operations',   'title' => ' ',  'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),       'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setlocalization('Title'),    'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setlocalization('Operations'),'checked' => TRUE)
         );
     }
     

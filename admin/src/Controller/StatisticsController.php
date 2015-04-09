@@ -10,35 +10,15 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class StatisticsController extends \Controller\BaseStalkerController {
 
-    private $allVideoStat = array(
-        array('id' => 'all',    'title' => 'Общая'),
-        array('id' => 'daily',  'title' => 'По дням'),
-        array('id' => 'genre',  'title' => 'По жанрам')
-    );
-    
-    private $allAbonentStat = array(
-        array('id' => 'tv',     'title' => 'ТВ'),
-        array('id' => 'video',  'title' => 'Видео'),
-        array('id' => 'anec',   'title' => 'Анекдоты')
-    );
+    protected $allVideoStat = array();
 
-    private $allNoActiveAbonentStat = array(
-        array('id' => 'tv',     'title' => 'ТВ'),
-        array('id' => 'video',  'title' => 'Видео')
-    );
-    
-    private $taskAllState = array(
-        0=>array('id' => '1', 'title' => 'Открыто'), 
-        1=>array('id' => '2', 'title' => 'Готово'), 
-        2=>array('id' => '3', 'title' => 'Отклонено'), 
-        3=>array('id' => '4', 'title' => 'Просрочено'),
-        4=>array('id' => '5', 'title' => 'Архивное')
-    );
-    
-    private $taskType = array(
-        array('id' => 'moderator_tasks',    'title' => 'Видео'), 
-        array('id' => 'karaoke',            'title' => 'Караоке')
-    );
+    protected $allAbonentStat = array();
+
+    protected $allNoActiveAbonentStat = array();
+
+    protected $taskAllState = array();
+
+    protected $taskType = array();
     
     private $videoQuality = array(
         0=>array('id' => '1', 'title' => 'SD'), 
@@ -49,6 +29,36 @@ class StatisticsController extends \Controller\BaseStalkerController {
     
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+
+        $this->allVideoStat = array(
+            array('id' => 'all',    'title' => $this->setlocalization('General')),
+            array('id' => 'daily',  'title' => $this->setlocalization('By days')),
+            array('id' => 'genre',  'title' => $this->setlocalization('By genres'))
+        );
+
+        $this->allAbonentStat = array(
+            array('id' => 'tv',     'title' => $this->setlocalization('TV')),
+            array('id' => 'video',  'title' => $this->setlocalization('Movies')),
+            array('id' => 'anec',   'title' => $this->setlocalization('Humor'))
+        );
+
+        $this->allNoActiveAbonentStat = array(
+            array('id' => 'tv',     'title' => $this->setlocalization('TV')),
+            array('id' => 'video',  'title' => $this->setlocalization('Movies'))
+        );
+
+        $this->taskAllState = array(
+            0=>array('id' => '1', 'title' => $this->setlocalization('Open')),
+            1=>array('id' => '2', 'title' => $this->setlocalization('Done')),
+            2=>array('id' => '3', 'title' => $this->setlocalization('Rejected')),
+            3=>array('id' => '4', 'title' => $this->setlocalization('Expired')),
+            4=>array('id' => '5', 'title' => $this->setlocalization('Archive'))
+        );
+
+        $this->taskType = array(
+            array('id' => 'moderator_tasks',    'title' => $this->setlocalization('Movies')),
+            array('id' => 'karaoke',            'title' => $this->setlocalization('Karaoke'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -302,7 +312,6 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
-
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -321,8 +330,8 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
-        $this->app['breadcrumbs']->addItem("Статистика жалоб", $this->workURL . "/" . $this->app['controller_alias'] ."/stat-claims");
-        $this->app['breadcrumbs']->addItem("Логи жалоб");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Statistics on complaints'), $this->workURL . "/" . $this->app['controller_alias'] ."/stat-claims");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Log of complaints'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -553,7 +562,20 @@ class StatisticsController extends \Controller\BaseStalkerController {
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
         }
-        
+        if (!empty($param['type'])) {
+            $query_param['where']['`type`'] = $param['type'];
+        }
+        if (!empty($param['media_type'])) {
+            $query_param['where']['`media_type`'] = $param['media_type'];
+        }
+
+        if (!isset($query_param['like'])) {
+            $query_param['like'] = array();
+        }
+        if (!empty($param['date'])) {
+            $query_param['like']['M_C_L.`added`'] = $param['date']."%";
+        }
+
         if (empty($query_param['select'])) {
             $query_param['select'] = array_values($filds_for_select);
         } 
@@ -594,7 +616,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
     }
     
     public function stat_tv_archive_list_json() {
-                if ($this->isAjax) {
+        if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
@@ -653,7 +675,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
     }
     
     public function stat_timeshift_list_json() {
-                if ($this->isAjax) {
+        if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
             }
@@ -1015,29 +1037,29 @@ class StatisticsController extends \Controller\BaseStalkerController {
     
     private function getVideoAllDropdownAttribute() {
         return array(
-            array('name' => 'id',               'title' => 'ID',                        'checked' => TRUE),
-            array('name' => 'name',             'title' => 'Название',                  'checked' => TRUE),
-            array('name' => 'count',            'title' => 'Просмотров за все время',   'checked' => TRUE),
-            array('name' => 'counter',          'title' => 'Просмотров за месяц',       'checked' => TRUE),
-            array('name' => 'last_played',      'title' => 'Последний просмотр',        'checked' => TRUE),
-            array('name' => 'count_storages',   'title' => 'Количество копий',          'checked' => TRUE)
+            array('name' => 'id',               'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setlocalization('Title'),         'checked' => TRUE),
+            array('name' => 'count',            'title' => $this->setlocalization('Views lifetime'),'checked' => TRUE),
+            array('name' => 'counter',          'title' => $this->setlocalization('Views last month'),'checked' => TRUE),
+            array('name' => 'last_played',      'title' => $this->setlocalization('Last viewed date'),'checked' => TRUE),
+            array('name' => 'count_storages',   'title' => $this->setlocalization('Number of copies'),'checked' => TRUE)
         );
     }
     
     private function getVideoDailyDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => 'ID',                    'checked' => TRUE),
-            array('name' => 'date',         'title' => 'День',                  'checked' => TRUE),
-            array('name' => 'count',        'title' => 'Просмотров за день',    'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),    'checked' => TRUE),
+            array('name' => 'date',         'title' => $this->setlocalization('Day'),   'checked' => TRUE),
+            array('name' => 'count',        'title' => $this->setlocalization('By day'),'checked' => TRUE)
         );
     }
     
     private function getVideoGenreDropdownAttribute() {
         return array(
-            array('name' => 'title',        'title' => 'Жанр',                      'checked' => TRUE),
-            array('name' => 'played_movies','title' => 'Всего фильмов',             'checked' => TRUE),
-            array('name' => 'total_movies', 'title' => 'Количество просмотров',     'checked' => TRUE),
-            array('name' => 'ratio',        'title' => 'Популярность жанров, %',    'checked' => TRUE)
+            array('name' => 'title',        'title' => $this->setlocalization('Genre'),                 'checked' => TRUE),
+            array('name' => 'played_movies','title' => $this->setlocalization('Overall movies'),        'checked' => TRUE),
+            array('name' => 'total_movies', 'title' => $this->setlocalization('Views quantity'),        'checked' => TRUE),
+            array('name' => 'ratio',        'title' => $this->setlocalization('Genre popularity') .', %','checked' => TRUE)
         );
     }
     
@@ -1072,17 +1094,17 @@ class StatisticsController extends \Controller\BaseStalkerController {
     
     private function getNoActiveAbonentTvDropdownAttribute() {
         return array(
-            array('name' => 'id',               'title' => 'ID',                    'checked' => TRUE),
-            array('name' => 'mac',              'title' => 'MAC',                   'checked' => TRUE),
-            array('name' => 'time_last_play',   'title' => 'Последний просмотр ТВ', 'checked' => TRUE)
+            array('name' => 'id',               'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'mac',              'title' => $this->setlocalization('MAC'),           'checked' => TRUE),
+            array('name' => 'time_last_play',   'title' => $this->setlocalization('Last view TV'),  'checked' => TRUE)
         );
     }
     
     private function getNoActiveAbonentVideoDropdownAttribute() {
         return array(
-            array('name' => 'id',               'title' => 'ID',                        'checked' => TRUE),
-            array('name' => 'mac',              'title' => 'MAC',                       'checked' => TRUE),
-            array('name' => 'time_last_play',   'title' => 'Последний просмотр видео',  'checked' => TRUE)
+            array('name' => 'id',               'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'mac',              'title' => $this->setlocalization('MAC'),           'checked' => TRUE),
+            array('name' => 'time_last_play',   'title' => $this->setlocalization('Last view movie'),'checked' => TRUE)
         );
     }
     
@@ -1104,68 +1126,68 @@ class StatisticsController extends \Controller\BaseStalkerController {
     
     private function getClaimsDropdownAttribute() {
         return array(
-            array('name' => 'date',             'title' => 'Дата',                  'checked' => TRUE),
-            array('name' => 'vclub_sound',      'title' => 'Видео-клуб звук',       'checked' => TRUE),
-            array('name' => 'vclub_video',      'title' => 'Видео-клуб видео',      'checked' => TRUE),
-            array('name' => 'itv_sound',        'title' => 'ТВ звук',               'checked' => TRUE),
-            array('name' => 'itv_video',        'title' => 'ТВ видео',              'checked' => TRUE),
-            array('name' => 'karaoke_sound',    'title' => 'Караоке звук',          'checked' => TRUE),
-            array('name' => 'karaoke_video',    'title' => 'Караоке видео',         'checked' => TRUE),
-            array('name' => 'no_epg',           'title' => 'EPG отсутствует',       'checked' => TRUE),
-            array('name' => 'wrong_epg',        'title' => 'EPG не соответствует',  'checked' => TRUE)
+            array('name' => 'date',             'title' => $this->setlocalization('Date'),              'checked' => TRUE),
+            array('name' => 'vclub_sound',      'title' => $this->setlocalization('Video-club sound'),  'checked' => TRUE),
+            array('name' => 'vclub_video',      'title' => $this->setlocalization('Video-club video'),  'checked' => TRUE),
+            array('name' => 'itv_sound',        'title' => $this->setlocalization('TV sound'),          'checked' => TRUE),
+            array('name' => 'itv_video',        'title' => $this->setlocalization('TV video'),          'checked' => TRUE),
+            array('name' => 'karaoke_sound',    'title' => $this->setlocalization('Karaoke sound'),     'checked' => TRUE),
+            array('name' => 'karaoke_video',    'title' => $this->setlocalization('Karaoke video'),     'checked' => TRUE),
+            array('name' => 'no_epg',           'title' => $this->setlocalization('No EPG'),            'checked' => TRUE),
+            array('name' => 'wrong_epg',        'title' => $this->setlocalization('EPG does not match'),'checked' => TRUE)
         );
     }
     
     private function getClaimsLogsDropdownAttribute() {
         return array(
-            array('name' => 'media_type',   'title' => 'Категрия',          'checked' => TRUE),
-            array('name' => 'name',         'title' => 'Объект жалобы',     'checked' => TRUE),
-            array('name' => 'type',         'title' => 'Тип',               'checked' => TRUE),
-            array('name' => 'mac',          'title' => 'Автор',             'checked' => TRUE),
-            array('name' => 'added',        'title' => 'Дата',              'checked' => TRUE)
+            array('name' => 'media_type',   'title' => $this->setlocalization('Category'),          'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setlocalization('object of complaint'),'checked' => TRUE),
+            array('name' => 'type',         'title' => $this->setlocalization('Type'),              'checked' => TRUE),
+            array('name' => 'mac',          'title' => $this->setlocalization('Author'),            'checked' => TRUE),
+            array('name' => 'added',        'title' => $this->setlocalization('Date'),              'checked' => TRUE)
         );
     }
     
     private function getTvArchiveDropdownAttribute() {
         return array(
-            array('name' => 'ch_id',            'title' => 'ID',                        'checked' => TRUE),
-            array('name' => 'name',             'title' => 'Название',                  'checked' => TRUE),
-            array('name' => 'counter',          'title' => 'Количество просмотров',     'checked' => TRUE),
-            array('name' => 'total_duration',   'title' => 'Общее время просмотров, с','checked' => TRUE)
+            array('name' => 'ch_id',            'title' => $this->setlocalization('ID'),                        'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setlocalization('Title'),                     'checked' => TRUE),
+            array('name' => 'counter',          'title' => $this->setlocalization('Views quantity'),            'checked' => TRUE),
+            array('name' => 'total_duration',   'title' => $this->setlocalization('Entire time of views, sec'), 'checked' => TRUE)
         );
     }
     
     private function getTimeShiftDropdownAttribute() {
         return array(
-            array('name' => 'ch_id',            'title' => 'ID',                        'checked' => TRUE),
-            array('name' => 'name',             'title' => 'Название',                  'checked' => TRUE),
-            array('name' => 'counter',          'title' => 'Количество просмотров',     'checked' => TRUE),
-            array('name' => 'total_duration',   'title' => 'Общее время просмотров, с','checked' => TRUE)
+            array('name' => 'ch_id',            'title' => $this->setlocalization('ID'),                        'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setlocalization('Title'),                     'checked' => TRUE),
+            array('name' => 'counter',          'title' => $this->setlocalization('Views quantity'),            'checked' => TRUE),
+            array('name' => 'total_duration',   'title' => $this->setlocalization('Entire time of views, sec'), 'checked' => TRUE)
         );
     }
     
     private function getAbonentTvDropdownAttribute() {
         return array(
-            array('name' => 'id',       'title' => 'ID',        'checked' => TRUE),
-            array('name' => 'mac',      'title' => 'MAC',       'checked' => TRUE),
-            array('name' => 'counter',  'title' => 'Просмотров','checked' => TRUE)
+            array('name' => 'id',       'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'mac',      'title' => $this->setlocalization('MAC'),           'checked' => TRUE),
+            array('name' => 'counter',  'title' => $this->setlocalization('Views quantity'),'checked' => TRUE)
         );
     }
     
     private function getAbonentVideoDropdownAttribute() {
         return array(
-            array('name' => 'id',       'title' => 'ID',        'checked' => TRUE),
-            array('name' => 'mac',      'title' => 'MAC',       'checked' => TRUE),
-            array('name' => 'counter',  'title' => 'Просмотров','checked' => TRUE)
+            array('name' => 'id',       'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'mac',      'title' => $this->setlocalization('MAC'),           'checked' => TRUE),
+            array('name' => 'counter',  'title' => $this->setlocalization('Views quantity'),'checked' => TRUE)
         );
     }
     
     private function getAbonentAnecDropdownAttribute() {
         return array(
-            array('name' => 'id',       'title' => 'ID',                'checked' => TRUE),
-            array('name' => 'mac',      'title' => 'MAC',               'checked' => TRUE),
-            array('name' => 'counter',  'title' => 'Просмотров',        'checked' => TRUE),
-            array('name' => 'readed',   'title' => 'Последний просмотр','checked' => TRUE)
+            array('name' => 'id',       'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'mac',      'title' => $this->setlocalization('MAC'),           'checked' => TRUE),
+            array('name' => 'counter',  'title' => $this->setlocalization('Views quantity'),'checked' => TRUE),
+            array('name' => 'readed',   'title' => $this->setlocalization('Last view'),     'checked' => TRUE)
         );
     }
     
@@ -1196,24 +1218,23 @@ class StatisticsController extends \Controller\BaseStalkerController {
     
     private function getTvDropdownAttribute() {
         return array(
-            array('name' => 'itv_id',   'title' => 'ID',                    'checked' => TRUE),
-            array('name' => 'name',     'title' => 'Название',              'checked' => TRUE),
-            array('name' => 'counter',  'title' => 'Количество просмотров', 'checked' => TRUE)
+            array('name' => 'itv_id',   'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'name',     'title' => $this->setlocalization('Title'),         'checked' => TRUE),
+            array('name' => 'counter',  'title' => $this->setlocalization('Views quantity'),'checked' => TRUE)
         );
     }
     
     private function getModeratorsDropdownAttribute() {
         return array(
-            array('name'=>'id',             'title'=>'Номер',               'checked' => TRUE),
-            array('name'=>'type',           'title'=>'Тип',                 'checked' => FALSE),
-            array('name'=>'start_time',     'title'=>'Открыто',             'checked' => TRUE),
-            array('name'=>'end_time',       'title'=>'Выполнено',           'checked' => TRUE),
-            array('name'=>'name',           'title'=>'Название',            'checked' => TRUE),
-            array('name'=>'video_quality',  'title'=>'Качество видео',      'checked' => TRUE),
-            array('name'=>'duration',       'title'=>'Длительность (мин)',  'checked' => TRUE),
-            array('name'=>'to_user_name',   'title'=>'Модератор',           'checked' => TRUE),
-            array('name'=>'state',          'title'=>'Состояние',           'checked' => TRUE),
-//            array('name'=>'operations',     'title'=>'Действия',            'checked' => TRUE)
+            array('name'=>'id',             'title'=>$this->setlocalization('Order'),       'checked' => TRUE),
+            array('name'=>'type',           'title'=>$this->setlocalization('Type'),        'checked' => FALSE),
+            array('name'=>'start_time',     'title'=>$this->setlocalization('Created'),     'checked' => TRUE),
+            array('name'=>'end_time',       'title'=>$this->setlocalization('Completed'),   'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setlocalization('Title'),       'checked' => TRUE),
+            array('name'=>'video_quality',  'title'=>$this->setlocalization('Quality'),     'checked' => TRUE),
+            array('name'=>'duration',       'title'=>$this->setlocalization('Length, min'), 'checked' => TRUE),
+            array('name'=>'to_user_name',   'title'=>$this->setlocalization('Moderator'),   'checked' => TRUE),
+            array('name'=>'state',          'title'=>$this->setlocalization('State'),       'checked' => TRUE)
         );
     }
     

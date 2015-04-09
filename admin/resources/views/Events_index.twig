@@ -1,67 +1,65 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = 'events' %}
+{% set title = ('Events'|trans ~ ': ' ~ 'list of events '|trans ~ (attribute(app, 'currentUser') is defined ? "user"|trans ~ " - " ~ app.currentUser.name ~ "(" ~ app.currentUser.mac ~ ")": '')) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-12">
-            <h3>События{% if attribute(app, 'currentUser') is defined %} пользователя "{{ app.currentUser.name }}"({{ app.currentUser.mac }}) {% endif %}</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{ main_macro.get_filter('event', 'Событие', 'id', 'title', app['allEvent']) }}
-                {{ main_macro.get_filter('sended', 'Состояние отправки', 'id', 'title', app['sendedStatus'], 5, 9) }}
-                {{ main_macro.get_filter('ended', 'Состояние получения', 'id', 'title', app['receivingStatus'], 5, 9) }}
-               
-                    <a id="add_events" href="#" class="btn btn-success pull-right">Добавить</a>
-               
+                {{ main_macro.get_filter('event', 'Event'|trans, 'id', 'title', app['allEvent']) }}
+                {{ main_macro.get_filter('sended', 'Delivery status', 'id', 'title', app['sendedStatus'], 5, 9) }}
+                {{ main_macro.get_filter('ended', 'Receipt status', 'id', 'title', app['receivingStatus'], 5, 9) }}
+
+                <a id="add_events" href="#" class="btn btn-success pull-right">{{ 'Create new event'|trans }}</a>
+
                 {% if attribute(app, 'currentUser') is defined %}
-                <div class="col-xs-3 col-sm-1 filter no-padding pull-right">
-                    <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="{{ app.currentUser.uid }}">Очистить</a>
-                </div>
+                    <div class="col-xs-3 col-sm-1 filter no-padding pull-right">
+                        <a id="clean_events" href="#" class="btn btn-danger pull-right" data-uid="{{ app.currentUser.uid }}">{{ 'Clean'|trans }}</a>
+                    </div>
                 {% endif %}
             </div>
         </div>
         <div class="row">
-            <div class="">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <table class="table  table-hover table-datatable" id="datatable-1">
-                                <thead>
+            <div class="box">
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            <thead>
+                            <tr>
+                                <th data-filter="events_id">#</th>
+                                <th data-filter="addtime">{{ 'Added'|trans }}</th>
+                                <th data-filter="eventtime">{{ 'Expiration date'|trans }}</th>
+                                <th data-filter="mac">MAC</th>
+                                <th data-filter="event">{{ 'Event'|trans }}</th>
+                                <th data-filter="msg">{{ 'Message'|trans }}</th>
+                                <th data-filter="sended">{{ 'Delivery status'|trans }}</th>
+                                <th data-filter="ended">{{ 'Receipt status'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if attribute(app, 'eventList') is defined %}
+                                <!-- Start: list_row -->
+                                {% for item in app.eventList %}
                                     <tr>
-                                        <th data-filter="events_id">#</th>
-                                        <th data-filter="addtime">Добавлено</th>
-                                        <th data-filter="eventtime">Действительно до</th>
-                                        <th data-filter="mac">MAC</th>
-                                        <th data-filter="event">Событие</th>
-                                        <th data-filter="msg">Сообщение</th>
-                                        <th data-filter="sended">Статус отправки</th>
-                                        <th data-filter="ended">Статус получения</th>
+                                        <td>{{ item.events_id }}</td>
+                                        <td>{{ item.addtime|date('M d, Y H:i') }}</td>
+                                        <td>{{ item.eventtime|date('M d, Y H:i') }}</td>
+                                        <td>
+                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid={{ item.uid }}">{{ item.mac }}</a>
+                                        </td>
+                                        <td>{{ item.event }}</td>
+                                        <td>
+                                            <div class="event_message">{{ item.msg }}</div>
+                                        </td>
+                                        <td>{% if item.sended != '0' %}<span class="txt-success">{{ 'Delivered'|trans }}</span>{% else %}<span class="txt-primary">{{ 'Not delivered'|trans }}</span>{% endif %}</td>
+                                        <td>{% if item.ended != '0' %}<span class="txt-success">{{ 'Received'|trans }}</span>{% else %}<span class="txt-primary">{{ 'Not received'|trans }}</span>{% endif %}</td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {% if attribute(app, 'eventList') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.eventList %}
-                                            <tr>
-                                                <td>{{ item.events_id }}</td>
-                                                <td>{{ item.addtime|date('M d, Y H:i') }}</td>
-                                                <td>{{ item.eventtime|date('M d, Y H:i') }}</td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid={{ item.uid }}" >{{ item.mac }}</a></td>
-                                                <td>{{ item.event }}</td>
-                                                <td><div class="event_message">{{ item.msg }}</div></td>
-                                                <td>{% if item.sended != '0' %}<span class="txt-success">Отправлено</span>{% else %}<span class="txt-primary">Не отправлено</span>{% endif %}</td>
-                                                <td>{% if item.ended != '0' %}<span class="txt-success">Получено</span>{% else %}<span class="txt-primary">Не получено</span>{% endif %}</td>
-                                            </tr>
-                                        {% endfor %}
-                                        <!-- End: list_row -->
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
+                                {% endfor %}
+                                <!-- End: list_row -->
+                            {% endif %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -72,7 +70,7 @@
         <div class="devoops-modal">
             <div class="devoops-modal-header">
                 <div class="modal-header-name">
-                    <span>Новое событие</span>
+                    <span>{{ 'New event'|trans }}</span>
                 </div>
                 <div class="box-icons">
                     <a class="close-link">
@@ -85,34 +83,34 @@
                     <div class="box-content">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Адресат</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Recipient'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-6">
                                         <select class="populate placeholder" name="user_list_type" id="s2_user_list_type">
-                                            <option value="to_all">Все</option>
-                                            <option value="by_user_list">Список</option>
-                                            <option value="by_group">Группа</option>
-                                            <option value="by_pattern">По шаблону</option>
-                                            <option value="to_single">Один</option>
+                                            <option value="to_all">{{ 'All'|trans }}</option>
+                                            <option value="by_user_list">{{ 'List'|trans }}</option>
+                                            <option value="by_group">{{ 'Group'|trans }}</option>
+                                            <option value="by_pattern">{{ 'Preset'|trans }}</option>
+                                            <option value="to_single">{{ 'One'|trans }}</option>
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Выбор адресата. Пример: одному, всем, по списку, по шаблону, группе</span>
+                                        <span class="small txt-default">{{ 'Choose recipient. Example: to one, to all, on the list, on the preset, to the group'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group" data-list-type="by_user_list">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Список MAC-адресов</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'List of MAC-addresses'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <input type="hidden" name="file_name" id="file_name">
                                     <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader"></div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Файл должен содержать составленный заранее список MAC-адресов, в тасширении txt или другом текстовом формате</span>
+                                        <span class="small txt-default">{{ 'The file must contain pre-compiled list of MAC-addresses in the txt extension or another text format'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group" data-list-type="by_group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Группа</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Group'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-6">
                                         <select class="populate placeholder" name="group_id" id="s2_group_id">
@@ -122,7 +120,7 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Выберите группу пользователей которым будет отправлено сообщение</span>
+                                        <span class="small txt-default">{{ 'Select a group of users that will be delivered message'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -143,23 +141,23 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Выберите шаблон для типа приставки</span>
+                                        <span class="small txt-default">{{ 'Select preset for STB type'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group" data-list-type="to_single">
-                                <label class="col-sm-3 control-label col-sm-offset-1">MAC-адрес</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'MAC-address'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-8">
                                         <input class="form-control" type="text" title="" value="{% if attribute(app, 'currentUser') is defined %}{{ app.currentUser.mac }}{% endif %}" name="mac">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Введите MAC-адрес пользователя</span>
+                                        <span class="small txt-default">{{ 'Input user MAC-address'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Действия</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Actions'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-6">
                                         <select class="populate placeholder" name="event" id="s2_event">
@@ -169,12 +167,12 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Выберите одно из предложеных действий</span>
+                                        <span class="small txt-default">{{ 'Select one of the actions'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group" data-event-type="play_channel">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Канал</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Channel'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-8">
                                         <input class="form-control" type="text" title="" value="" name="channel">
@@ -182,7 +180,7 @@
                                 </div>
                             </div>
                             <div class="form-group" data-event-type="send_msg">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Перезапуск</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reboot'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-8">
                                         <div class="checkbox">
@@ -193,7 +191,7 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Выполнить перезапуск приставки по нажатию кнопки "ОК"</span>
+                                        <span class="small txt-default">{{ 'Reboot the STB after OK button is pressed'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -204,7 +202,7 @@
                                         <input class="form-control" type="text" title="" value="" name="ttl">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Срок актуальности действия, измеряется в секундах</span>
+                                        <span class="small txt-default">{{ 'Time to live, measured in seconds'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -217,10 +215,10 @@
                                 </div>
                             </div> 
                             <div class="form-group"  data-event-type="send_msg">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Шаблоны сообщения</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message templates'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-8">
-                                        <a href="#" id="msg_pattern">Истек срок тестирования</a>
+                                        <a href="#" id="msg_pattern">{{ 'Testing time has been expired'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -233,8 +231,8 @@
                     <div class="box-content">
                         <div class="row">
                             <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
                             </div>
                         </div>
                     </div>
@@ -259,8 +257,8 @@
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid=' + uid + '" >' + mac + '</a>';
                         json.data[i].msg = '<div class="event_message">' + json.data[i].msg + '</div>';
-                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="txt-success">Отправлено</span>' : '<span class="txt-primary">Не отправлено</span>';
-                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="txt-success">Получено</span>' : '<span class="txt-primary">Не получено</span>';
+                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="txt-success">{{ 'Delivered'|trans }}</span>' : '<span class="txt-primary">{{ 'Not delivered'|trans }}</span>';
+                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="txt-success">{{ 'Received'|trans }}</span>' : '<span class="txt-primary">{{ 'Not received'|trans }}</span>';
                         date = json.data[i]['addtime'];
                         if (date > 0) {
                             date = new Date(date * 1000);
@@ -295,7 +293,7 @@
                 },
                 "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }}],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                     {"data": "events_id"},
@@ -357,28 +355,13 @@
                     } else if (response.error) {
                         alert(response.error);
                     } else {
-                        alert('Some server error');
+                        alert("{{ 'Some server error'|trans }}");
                     }
                         return false;
                     });
                     $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
                         e.stopPropagation();
                         e.preventDefault();
-        {#$.ajax({
-            url: 'tv-channels/delete-logo',
-            data: {id: '{{ app.oneChannel.id }}'},
-            success: function(data){
-                if (data.success) {
-                    $(this).prev('div').children('img').attr('src', '');
-                    $(this).prev('div').children('input').val('');
-                } else {
-                    console.log(data.error);
-                }
-            },
-            error: function(){
-                alert('Ошибка');
-            }
-        });#}
                         return false;
                     });
 
@@ -436,26 +419,26 @@
                 alert(data.msg);
                 $('#datatable-1').dataTable().fnReloadAjax();
                 $('#modalbox_ad').click();
-            }
+            };
             var addEventError = function(data){
                 alert(data.msg);
                 $('#datatable-1').dataTable().fnReloadAjax();
                 $('#modalbox_ad').click();
-            }
+            };
             var addAddressList = function(data){
                 alert(data.msg);
-            }
+            };
             var addAddressListError = function(data){
                 alert(data.error);
-            }
+            };
             var cleanEvents = function(data){
                 alert(data.msg);
                 $('#datatable-1').dataTable().fnReloadAjax();
-            }
+            };
             var cleanEventsError = function(data){
                 alert(data.error);
                 $('#datatable-1').dataTable().fnReloadAjax();
-            }
+            };
     </script>
 
     <script type="text/template" id="qq-template-bootstrap">
@@ -464,7 +447,7 @@
         <!--<span>Drop files here to upload</span>-->
         </div>
         <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
-        <div><i class="icon-upload icon-white"></i>Файл</div>
+        <div><i class="icon-upload icon-white"></i>{{ 'File'|trans }}</div>
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
         <!--<span>Processing dropped files...</span>-->
@@ -478,13 +461,13 @@
         <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
         <span class="qq-upload-file-selector qq-upload-file"></span>
         <span class="qq-upload-size-selector qq-upload-size"></span>
-        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Удалить</a>-->
+        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
         <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
         </li>
         </ul>
         </div>
     </script>
     <script type="text/template" id="msg_textarea_pattern">
-        Уважаемый абонент! Срок бесплатного тестирования наших услуг закончился.
+        {{ 'Dear Subscriber! Term of free testing of our service is ended.'|trans }}
     </script>
 {% endblock %}
