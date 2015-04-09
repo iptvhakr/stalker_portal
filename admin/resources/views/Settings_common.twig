@@ -1,83 +1,74 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
 {% set active = 'settings' %}
-{% set title = 'settings' %}
+{% set title = ('Settings'|trans ~ ': ' ~ 'firmware update'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Обновление прошивки</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="col-xs-4 col-sm-2 pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-common-item" class="btn btn-success col-xs-12 col-sm-12 pull-right" id="add_common_item">Добавить</a>
-                </div>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-common-item" class="btn btn-success pull-right" id="add_common_item">{{ 'Add update'|trans }}</a>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12">
-                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% if attribute(app, 'allData') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.allData %}
-                                                    <tr>
-                                                        <td>{{ item.id }}</td>
-                                                        <td>{{ item.stb_type }}</td>
-                                                        <td>{{ item.image_version_contains }}</td>
-                                                        <td>{% if item.require_image_date %}{{ item.require_image_date|date('M d, Y H:i') }}{% endif %}</td>
-                                                        <td>{{ item.update_type }}</td>
-                                                        <td>{{ item.prefix }}</td>
-                                                        <td>{{ item.image_description_contains }}</td>
-                                                        <td>{{ item.require_image_version }}</td>
-                                                        <td>{{ item.hardware_version_contains }}</td>
-                                                        <td>{% if item.enable == 1 %}<span class="txt-success">Включено</span>{% else %}<span>Отключено</span>{% endif %}</td>
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
+                                    {% endif %}
+                                    <tbody>
+                                    {% if attribute(app, 'allData') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allData %}
+                                            <tr>
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.stb_type }}</td>
+                                                <td>{{ item.image_version_contains }}</td>
+                                                <td>{% if item.require_image_date %}{{ item.require_image_date|date('M d, Y H:i') }}{% endif %}</td>
+                                                <td>{{ item.update_type }}</td>
+                                                <td>{{ item.prefix }}</td>
+                                                <td>{{ item.image_description_contains }}</td>
+                                                <td>{{ item.require_image_version }}</td>
+                                                <td>{{ item.hardware_version_contains }}</td>
+                                                <td>{% if item.enable == 1 %}<span class="txt-success">{{ 'on'|trans }}</span>{% else %} <span>{{ 'off'|trans }}</span>{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/common-list-json" data-id="{{ item.id }}">
+                                                                    <span>{{ 'Edit'|trans }}</span>
                                                                 </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/common-list-json" data-id="{{ item.id }}">
-                                                                            <span>Редактировать</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-common-item-status" data-id="{{ item.id }}" data-enable="{{ item.enable }}">
-                                                                            <span>{% if item.enable != 1 %}<span>Включить</span>{% else %}<span>Отключить</span>{% endif %}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-common-item" data-id="{{ item.id }}">
-                                                                            <span>Удалить</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-common-item-status" data-id="{{ item.id }}" data-enable="{{ item.enable }}">
+                                                                    <span>{% if item.enable != 1 %} <span>{{ 'Switch on'|trans }}</span>{% else %}<span>{{ 'Switch off'|trans }}</span>{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-common-item" data-id="{{ item.id }}">
+                                                                    <span> {{ 'Delete'|trans }} </span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -101,24 +92,24 @@
             <div class="devoops-modal-inner">
                 <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-common-item">
                     <div class="box">
-                        <div class="box-header">
-                            <div class="box-name">
-                                <div class="row">
-                                    <div class="col-xs-10 col-sm-4">
-                                        <span>Основное</span>
+                        <a class="collapse-link">
+                            <div class="box-header">
+                                <div class="box-name">
+                                    <div class="row">
+                                        <div class="col-xs-10 col-sm-4">
+                                            <span>{{ 'General information'|trans }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="box-icons">
-                                <a class="collapse-link">
+                                <div class="box-icons">
                                     <i class="fa fa-chevron-up"></i>
-                                </a>
+                                </div>
+                                <div class="no-move"></div>
                             </div>
-                            <div class="no-move"></div>
-                        </div>
+                        </a>
                         <div class="box-content">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">*Модель приставки</label>
+                                <label class="col-sm-3 control-label">*{{ 'STB model'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control own_fields" type="hidden" title="" value="" name="id">
@@ -139,16 +130,14 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-11 col-sm-11 col-xs-offset-1 col-sm-offset-1">
+                                <div class="col-xs-11 col-sm-11 col-xs-offset-1">
                                     <p class="bg-warning txt-default">
-                                        Номер и дата сборки образа, на который будет произведено обновление. Берутся из образа.
-                                        Для того чтобы система нашла нужную прошивку достаточно заполнить версию или дату образа (одно из полей).
-                                        Номер образа должен быть числом.
+                                        {{ 'Number and date of image due to be updated. Taken from the image. For automatic search of firmware it is enough to fill in version or date of image (one of fields).Number must be numeric.'|trans }}
                                     </p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">*Версия образа</label>
+                                <label class="col-sm-3 control-label">*{{ 'Image version'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control own_fields" type="text" title="" value="" name="require_image_version" required="required">
@@ -156,7 +145,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">*Дата образа</label>
+                                <label class="col-sm-3 control-label">*{{ 'Image date'|trans }}</label>
                                 <div class="col-xs-10 col-sm-7">
                                     <div class=" col-xs-12 col-sm-7">
                                         <input class="form-control own_fields" type="text" title="" value="" name="require_image_date" id="require_image_date" required="required">
@@ -165,7 +154,7 @@
                             </div>
                             <hr />
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">*Вариант обновления</label>
+                                <label class="col-sm-3 control-label">*{{ 'Update type'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <select name="update_type" id="s2_update_type" class="populate placeholder own_fields" required="required">
@@ -174,12 +163,12 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Вариант обновления: http update (загрузка образа по HTTP) или reboot dhcp (перезагруpка приставки в режим загрузки по DHCP "boot mode - DHCP")</span>
+                                        <span class="small txt-default">{{ 'Update type: http update (load the image from HTTP) or reboot DHCP (reboot the STB to the DHCP boot mode)'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Автоматическое обновление</label>
+                                <label class="col-sm-3 control-label">{{ 'Automatic update'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <div class="checkbox">
@@ -190,51 +179,49 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Автоматически обновляет прошивку, если версия не сообтветствует текущей</span>
+                                        <span class="small txt-default">{{ 'Firmware is automatically updated is the version does not match to the current one.'|trans }}</span>
                                     </span>
                                 </div>
                             </div> 
                         </div>
                     </div>
                     <div class="box">
-                        <div class="box-header">
-                            <div class="box-name">
-                                <div class="row">
-                                    <div class="col-xs-10 col-sm-4">
-                                        <span>Дополнительное</span>
+                        <a class="collapse-link">
+                            <div class="box-header">
+                                <div class="box-name">
+                                    <div class="row">
+                                        <div class="col-xs-10 col-sm-4">
+                                            <span>{{ 'Additional'|trans }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="box-icons">
-                                <a class="collapse-link">
+                                <div class="box-icons">
                                     <i class="fa fa-chevron-up"></i>
-                                </a>
+                                </div>
+                                <div class="no-move"></div>
                             </div>
-                            <div class="no-move"></div>
-                        </div>
+                        </a>
                         <div class="box-content">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Префикс</label>
+                                <label class="col-sm-3 control-label">{{ 'Prefix'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control own_fields" type="text" title="" value="" name="prefix">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Если у вас несколько файлов прошивок в одном каталоге, то укажите префикс файла. Например: если ввести префикс tr_, то будет загружен файл tr_imageupdate</span>
+                                        <span class="small txt-default">{{ 'If you have several firmware files in one catalogue, please specify the file prefix. For example: if you input tr_ prefix, file tr_imageupdate will be loaded'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-11 col-sm-11 col-xs-offset-1 col-sm-offset-1">
+                                <div class="col-xs-11 col-sm-11 col-xs-offset-1">
                                     <p class="bg-warning txt-default">
-                                        Отфильтровать приставки по заданным параметрам. Обновление будет установлено только для тех приставок, 
-                                        которые соответствуют указанным параметрам. В поле "Дескриптор образа" достаточно указать часть описания
-                                        или ключевое слово. Данные для заполнения можно найти в интерфейсе профиля пользователя в соответствующих полях.
+                                        {{ "Filter the STB by set parameters. Update will be installed on STB matching the following parameters only. In 'Image descriptor, it is enough to specify the part of description or key word. Fill-in data can be found in the interface of user profile in the corresponding fields."|trans }}
                                     </p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Дескриптор образа</label>
+                                <label class="col-sm-3 control-label">{{ 'Image descriptor'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
@@ -244,7 +231,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Требуемая версия STB API</label>
+                                <label class="col-sm-3 control-label">{{ 'Required version of STB API'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
@@ -254,7 +241,7 @@
                                 </div>
                             </div> 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Версия hardware</label>
+                                <label class="col-sm-3 control-label">{{ 'Hardware version'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class="col-xs-10 col-sm-8">
                                         <div class=" col-xs-10 col-sm-12">
@@ -271,9 +258,9 @@
                 <div class="box">
                     <div class="box-content">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right" id="save_button">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            <div class=" pull-right">
+                                <button type="submit" class="btn btn-success  pull-right" id="save_button">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default pull-right" > {{ 'Cancel'|trans }} </button>
                             </div>
                         </div>
                     </div>
@@ -297,7 +284,7 @@
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var enable = json.data[i].enable;
-                        json.data[i].enable = (enable == 1 ?"<span class='txt-success'>Включено</span>":"<span>Отключено</span>");
+                        json.data[i].enable = (enable == 1 ?"<span class='txt-success'>{{ 'on'|trans }}</span>":"<span>{{ 'off'|trans }}</span>");
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
@@ -305,17 +292,17 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/common-list-json' data-id='" + id + "'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-common-item-status' data-id='" + id + "' data-enable='" + enable + "'>\n\
-                                                                    <span>"+ (enable == 1? '<span>Отключить</span>':'<span>Включить</span>') + "</span>\n\
+                                                                    <span>"+ (enable == 1? '<span>{{ 'Switch off'|trans }}</span>':'<span>{{ 'Switch on'|trans }}</span>') + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-common-item' data-id='" + id + "'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
@@ -336,7 +323,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                     {% if attribute(app, 'dropdownAttribute') is defined%}
@@ -347,12 +334,16 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1,]}{#,
-                    {"width": "19%", "targets": [5] },#}
+                    {"sortable": false, "targets": [-1]}
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){
@@ -422,7 +413,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     closeModalBox();
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить EPG');
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add EPG'|trans }}');
                     $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
                     $("select[id^='s2_']").select2("destroy").select2({minimumResultsForSearch: -1});
@@ -437,11 +428,30 @@
                 $("#require_image_date").datepicker({
                     numberOfMonths: 1,
                     language: 'ru',
-                    dateFormat: 'dd/mm/yy'{#,
-                    onClose: function (selectedDate) {
-                        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
-                        $('#datatable-1').DataTable().ajax.reload();
-                    }#}
+                    dateFormat: 'dd/mm/yy',
+                    dayNamesMin : [
+                        '{{ 'Sun'|trans }}',
+                        '{{ 'Mon'|trans }}',
+                        '{{ 'Tue'|trans }}',
+                        '{{ 'Wed'|trans }}',
+                        '{{ 'Thu'|trans }}',
+                        '{{ 'Fri'|trans }}',
+                        '{{ 'Sat'|trans }}'
+                    ],
+                    monthNames  : [
+                        '{{ 'January'|trans }}',
+                        '{{ 'February'|trans }}',
+                        '{{ 'March'|trans }}',
+                        '{{ 'April'|trans }}',
+                        '{{ 'May'|trans }}',
+                        '{{ 'June'|trans }}',
+                        '{{ 'July'|trans }}',
+                        '{{ 'August'|trans }}',
+                        '{{ 'September'|trans }}',
+                        '{{ 'October'|trans }}',
+                        '{{ 'November'|trans }}',
+                        '{{ 'December'|trans }}'
+                    ]
                 });
             });
         }
@@ -450,7 +460,7 @@
         
         var setCommonModal = function (data) {
             closeModalBox();
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать EPG');
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit EPG'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];
                 for (var field_name in row) {
@@ -469,7 +479,7 @@
         var manageCommon = function (obj) {
             $("#modalbox_ad").click();
             $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
             var msg_type = typeof(obj.msg);
             msg_type = msg_type.toLowerCase();
             if (msg_type != 'undefined'){
@@ -482,7 +492,7 @@
                 }
             }
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
         
         function closeModalBox(){
             $("#modalbox").hide();
@@ -492,15 +502,15 @@
         }
         
         function showModalBox(){
-            $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
             $("#modalbox").show();
         }
         
         var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
             $("#modalbox").data('complete', 1);
-        }
+        };
         
     </script>
 {% endblock %}

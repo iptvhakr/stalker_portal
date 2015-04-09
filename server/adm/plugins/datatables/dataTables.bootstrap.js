@@ -2,6 +2,12 @@
 $.extend( true, $.fn.dataTable.defaults, {
 	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 	"sPaginationType": "bootstrap",
+		"iDisplayLength": 50,
+	"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
 	"oLanguage": {
 		"sLengthMenu": "_MENU_ records per page"
 	}
@@ -45,8 +51,8 @@ $.extend( $.fn.dataTableExt.oPagination, {
 
 			$(nPaging).append(
 				'<ul class="pagination">'+
-					'<li class="prev disabled"><a href="#">&larr; '+oLang.sPrevious+'</a></li>'+
-					'<li class="next disabled"><a href="#">'+oLang.sNext+' &rarr; </a></li>'+
+					'<li class="prev disabled"><a href="#"><i class="fa fa-arrow-left"></i>'+oLang.sPrevious+'</a></li>'+
+					'<li class="next disabled"><a href="#">'+oLang.sNext+'<i class="fa fa-arrow-right"></i></a></li>'+
 				'</ul>'
 			);
 			var els = $('a', nPaging);

@@ -22,7 +22,8 @@
         "swiftmailer/swiftmailer": "5.*",
         "imagine/imagine" : "*",
         "neutron/silex-imagine-provider": "dev-master",
-        "nymo/silex-twig-breadcrumb-extension":"~1.1"
+        "nymo/silex-twig-breadcrumb-extension":"~1.1",
+        "umpirsky/twig-gettext-extractor": "1.1.*"
     },
     "autoload": {
         "psr-0": {

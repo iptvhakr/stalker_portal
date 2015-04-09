@@ -1,14 +1,7 @@
 {% extends 'layout.twig' %}
-{% set title = 'video-club' %}
+{% set title = ('Video club'|trans ~ ': ' ~ (app.videoEdit ? ('Edit movie'|trans ~ " '"~ app.videoName ~ "'"): 'Add movie'|trans)) | trans %}
 
 {% block content %}
-
-    
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-3">
-            <h3>{% if app['videoEdit'] %}Редактировать{% else %}Добавить{% endif %} видео</h3>
-        </div>
-    </div>#}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
         <div class="bg-danger">
@@ -17,26 +10,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
+            <div class="">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>Базовое</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Basic'|trans }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Название</label>
+                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id) }}
@@ -50,12 +41,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                    <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Категория</label>
+                            <label class="col-sm-2 control-label ">{{ 'Category'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].category_id, {'attr': {'class': 'populate placeholder'} }) }}
@@ -66,7 +57,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Жанр</label>
+                            <label class="col-sm-2 control-label ">{{ 'Genre'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].cat_genre_id, {'attr': {'class': 'populate placeholder'} }) }}
@@ -75,12 +66,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Можно выбрать до 4-х жанров</span>
+                                    <span class="small txt-default">{{ 'You can choose up to 4 genres'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Старый жанр</label>
+                            <label class="col-sm-2 control-label ">{{ 'Old genre'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder'} }) }}
@@ -89,25 +80,23 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Используется только для совметсимости модели MAG100 с порталом. Можно выбрать до 4-х жанров</span>
+                                    <span class="small txt-default">{{ 'Used only for MAG100 compatibility with the portal. You may choose up to 4 genres.'|trans }}в</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Обложка</label>
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-5">
+                            <label class="col-sm-2 control-label ">{{ 'Cover'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                              <div class=" col-xs-10 col-sm-4 pull-right">
                                     {{form_widget(app['form'].cover_big) }}
                                     {{form_widget(app['form'].cover_id) }}
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value%}{{app['curr_cover_dir']}}/{{app['form'].cover_id.vars.value}}.jpg{% endif %}" alt="" style="max-width: 100%;">
                                 </div>
-                                <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader">
-                                    {#<a class="btn btn-success file-btn"><span>Добавить картинку</span><input type="file" name="channel_logo" ></a>#}
-                                </div>
+                                <div class="pull-left" id="bootstrapped-fine-uploader"></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">HD</label>
+                            <label class="col-sm-2 control-label ">HD</label>
                             <div class="col-xs-10 col-sm-9">
                                 <div class=" col-xs-10 col-sm-9">
                                     <div class="checkbox">
@@ -121,12 +110,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Добавляет надпись "HD" перед фильмом в списке пользователя</span>
+                                    <span class="small txt-default">{{ 'Adds "HD" sign in catalogue'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Ограничение по возрасту</label>
+                            <label class="col-sm-2 control-label ">{{ 'Age restriction'|trans }}</label>
                             <div class="col-xs-10 col-sm-9">
                                 <div class=" col-xs-10 col-sm-9">
                                     <div class="checkbox">
@@ -140,26 +129,26 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Добавляет огранисение для доступа к видео (пароль установленный в пункте "Родительский контроль"). Пароль по умолчанию 0000</span>
+                                    <span class="small txt-default">{{ 'Adds the restriction for movie access (password set in the "Parental advisory"). Default password 0000'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Протокол</label>
+                            <label class="col-sm-2 control-label ">{{ 'Protocol'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].protocol, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].protocol) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Выбор способа для доставки контента пользователю (http,custom url, nfs). При использовании вариантов HTTP и NFS не используется ссылка на контент, в этом случае контент хранится на сервере.</span>
+                                    <span class="small txt-default">{{ 'Select the content delivery type (http,custom url, nfs). When using HTTP NFS the link to the content is not used, but the content is stored on the server.'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">URL</label>
+                            <label class="col-sm-2 control-label ">URL</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].rtsp_url, {'attr': {'class': 'form-control'}}) }}
@@ -169,46 +158,43 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Пример: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv</span>
+                                    <span class="small txt-default">{{ 'Example: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Громкость</label>
+                            <label class="col-sm-2 control-label ">{{ 'Volume'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].volume_correction) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Корректировка громкости видео.</span>
+                                    <span class="small txt-default">{{ 'Video volume adjustment'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"><a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>Информация о фильме</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Movie information'|trans }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
-
+                    </div></a>
                     <div class="box-content" >
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Оригинальное название</label>
+                            <label class="col-sm-2 control-label ">{{ 'Original title'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].o_name, {'attr': {'class': 'form-control'}}) }}
@@ -222,15 +208,15 @@
                                 </div>
                                 <div class="col-xs-10 col-sm-6">
                                     <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
-                                    <button class="btn btn-success col-sm-5" id="autocomplete_name" type="button">Автозаполнение</button>
+                                    <button class="btn btn-success" id="autocomplete_name" type="button">{{ 'Autocomplete'|trans }}</button>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Название на языке оригинала. Есть возможность автозаполнения</span>
+                                    <span class="small txt-default">{{ 'Title on the native language. Autocomplete is available'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Кинопоиск ID</label>
+                            <label class="col-sm-2 control-label ">{{ 'Kinopoisk ID'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].kinopoisk_id, {'attr': {'class': 'form-control'}}) }}
@@ -240,15 +226,15 @@
                                 </div>
                                 <div class="col-xs-10 col-sm-6">
                                     <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
-                                    <button class="btn btn-success col-sm-5" id="autocomplete_id" type="button">Автозаполнение</button>
+                                    <button class="btn btn-success" id="autocomplete_id" type="button">{{ 'Autocomplete'|trans }}</button>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Номер фильма по которому он может быть найден на кинопоиск.</span>
+                                    <span class="small txt-default">{{ 'ID of movie on the Kinopoisk'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Рейтинг кинопоиска</label>
+                            <label class="col-sm-2 control-label ">{{ 'Kinopoisk rating'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].rating_kinopoisk, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
@@ -260,12 +246,12 @@
                                         <button class="btn btn-default btn-app-mini btn-circle" type="button" id="update_rating_kinopoisk"><i class="fa fa-refresh"></i></button>
                                     </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Рейтинг фильма на портале Кинопоиск. Только автозаполнение</span>
+                                    <span class="small txt-default">{{ 'Film rating on the Kinopoisk. Autocomplete only'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Год</label>
+                            <label class="col-sm-2 control-label ">{{ 'Year'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].year, {'attr': {'class': 'form-control'}}) }}
@@ -274,12 +260,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Год создания фильма. Пример 2014</span>
+                                    <span class="small txt-default">{{ 'Year of the film creation Example: 2014'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Длительность</label>
+                            <label class="col-sm-2 control-label ">{{ 'Length'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control'}}) }}
@@ -288,12 +274,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Длительность фильма в минутах. Пример: 102</span>
+                                    <span class="small txt-default">{{ 'Film length in minutes Example: 102'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Страна</label>
+                            <label class="col-sm-2 control-label ">{{ 'Country'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].country, {'attr': {'class': 'form-control'}}) }}
@@ -304,7 +290,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Режисер</label>
+                            <label class="col-sm-2 control-label ">{{ 'Director'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].director, {'attr': {'class': 'form-control'}}) }}
@@ -315,10 +301,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Актеры</label>
+                            <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'placeholder': 'Актеры приявшие участи в данном фильме...'}}) }}
+                                    {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control' }} ) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].actors) }}
                                     </div>
@@ -326,10 +312,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Описание картины:</label>
+                            <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}:</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'placeholder': 'Краткое и содержательное описние картины...'}}) }}
+                                    {{ form_widget(app['form'].description, {'attr': {'class': 'form-control' }} ) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].description) }}
                                     </div>
@@ -337,7 +323,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Коментарии:</label>
+                            <label class="col-sm-2 control-label ">{{ 'Comments'|trans }}:</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].comments, {'attr': {'class': 'form-control'}}) }}
@@ -348,44 +334,44 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Рейтинг MPAA</label>
+                            <label class="col-sm-2 control-label ">{{ 'MPAA rating'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].rating_mpaa, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].rating_mpaa) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Возрастное ограничение по системе MPAA</span>
+                                    <span class="small txt-default">{{ 'MPAA age restriction'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Возростной рейтинг</label>
+                            <label class="col-sm-2 control-label ">{{ 'Age restriction'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].age, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].age) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Рекомендуемый возраст зрителя.</span>
+                                    <span class="small txt-default">{{ 'Recommended viewer age'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-4 pull-right">
-                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
-{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                            <div class=" pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans, attr: {'class': 'btn btn-success   pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-list" class="btn btn-default  pull-right"> {{ 'Cancel'|trans }} </a>
                             </div>
-                        </div>
+                        </div></div>
                     </div>
                 </div>
             </div>
@@ -452,28 +438,12 @@
                         imageName.length -= 1;
                     }
                     var postUrl = 'video-club/edit-cover?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
-        {#                    uploader.fineUploader('setEndpoint', postUrl);#}
                         $(this).fineUploader('setEndpoint', postUrl);
                         return false;
                     });
                 $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-        {#$.ajax({
-            url: 'tv-channels/delete-logo',
-            data: {id: '{{ app.oneChannel.id }}'},
-            success: function(data){
-                if (data.success) {
-                    $(this).prev('div').children('img').attr('src', '');
-                    $(this).prev('div').children('input').val('');
-                } else {
-                    console.log(data.error);
-                }
-            },
-            error: function(){
-                alert('Ошибка');
-            }
-        });#}
                     return false;
                 });
                 
@@ -493,7 +463,6 @@
                     e.stopPropagation();
                     e.preventDefault();
                     $(this).closest('form').get(0).reset();
-{#                    $("#cmd_data").find("tr:visible").remove();#}
                     return false;
                 });
                 
@@ -528,14 +497,14 @@
                             } else if (data.error){
                                 alert(data.error);
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
                                 _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -580,14 +549,14 @@
                             } else if (data.error){
                                 alert(data.error);
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
                                 alert(data.responseJSON.error);
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -636,7 +605,7 @@
                             } else if (data.error){
                                 alert(data.error);
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
@@ -644,7 +613,7 @@
                             if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
                                 alert(data.responseJSON.error);
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -697,11 +666,9 @@
             function checkAutocompliteButton(master, slave){
                 var buttonContainer = $(slave).parent('div').next();
                 if ($.trim($(master).val()) != '') {
-{#                    $(slave).attr('readonly', 'readonly');#}
                     buttonContainer.find('button').attr('disabled', 'disabled').removeClass('btn-success');
                     buttonContainer.find('i').removeClass('txt-success').removeClass('fa-check').addClass('txt-danger').addClass('fa-ban');
                 } else {
-{#                    $(slave).removeAttr('readonly');#}
                     buttonContainer.find('button').removeAttr('disabled').addClass('btn-success');
                     buttonContainer.find('i').removeClass('txt-danger').removeClass('fa-ban').addClass('txt-success').addClass('fa-check');
                 }
@@ -714,7 +681,7 @@
         <!--<span>Drop files here to upload</span>-->
         </div>
         <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
-        <div><i class="icon-upload icon-white"></i>Добавить картинку</div>
+        <div><i class="icon-upload icon-white"></i>{{ 'Add cover'|trans }}</div>
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
         <!--<span>Processing dropped files...</span>-->
@@ -728,7 +695,7 @@
         <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
         <span class="qq-upload-file-selector qq-upload-file"></span>
         <span class="qq-upload-size-selector qq-upload-size"></span>
-        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Удалить</a>-->
+        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
         <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
         </li>
         </ul>

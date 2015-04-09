@@ -10,14 +10,15 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class InfoportalController extends \Controller\BaseStalkerController {
 
-    private $allServices = array(
-        array('id' => 'main', 'title' => 'Экстренные службы'), 
-        array('id' => 'help', 'title' => 'Справочные службы'), 
-        array('id' => 'other', 'title' => 'Другие службы')
-        );
+    protected $allServices = array();
     
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+        $this->allServices = array(
+            array('id' => 'main', 'title' => $this->setlocalization('Emergency services')),
+            array('id' => 'help', 'title' => $this->setlocalization('Reference services')),
+            array('id' => 'other', 'title' => $this->setlocalization('Other services'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -64,13 +65,6 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $this->app['filters'] = $this->data['filters'];
         
         $this->app['dropdownAttribute'] = $attribute;
-        
-//        foreach ($this->allServices as $row) {
-//            if ($row['id']) {
-//                $this->app['breadcrumbs']->addItem($row['title']);
-//                break;
-//            }
-//        }
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -225,7 +219,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
     public function save_phone_book_item() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -258,7 +252,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
     
     public function remove_phone_book_item() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -278,7 +272,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
     public function save_humor_item() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -310,7 +304,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
     
     public function remove_humor_item() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -348,19 +342,19 @@ class InfoportalController extends \Controller\BaseStalkerController {
 
     private function getPhoneBoockDropdownAttribute() {
         return array(
-            array('name'=>'num',        'title'=>'Номер',       'checked' => TRUE),
-            array('name'=>'title',      'title'=>'Название',    'checked' => TRUE),
-            array('name'=>'number',     'title'=>'Телефон',     'checked' => TRUE),
-            array('name'=>'operations', 'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'num',        'title'=>$this->setlocalization('Order'),       'checked' => TRUE),
+            array('name'=>'title',      'title'=>$this->setlocalization('Title'),       'checked' => TRUE),
+            array('name'=>'number',     'title'=>$this->setlocalization('Phone number'),'checked' => TRUE),
+            array('name'=>'operations', 'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
         );
     }
     
     private function getHumorDropdownAttribute() {
         return array(
-            array('name'=>'id',         'title'=>'Номер',   'checked' => TRUE),
-            array('name'=>'added',      'title'=>'Дата',    'checked' => TRUE),
-            array('name'=>'anec_body',  'title'=>'Название','checked' => TRUE),
-            array('name'=>'operations', 'title'=>'Действия','checked' => TRUE)
+            array('name'=>'id',         'title'=>$this->setlocalization('Order'),       'checked' => TRUE),
+            array('name'=>'added',      'title'=>$this->setlocalization('Date'),        'checked' => TRUE),
+            array('name'=>'anec_body',  'title'=>$this->setlocalization('Text'),        'checked' => TRUE),
+            array('name'=>'operations', 'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
         );
     }
     

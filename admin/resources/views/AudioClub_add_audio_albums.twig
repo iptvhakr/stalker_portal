@@ -1,14 +1,9 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
 
-{% set title = 'audio-club' %}
+{% set title = ('Audio club'|trans ~ ': ' ~ (app.audioAlbumEdit ? ('Edit album'|trans ~ " '"~ app.albumName ~ "'"): 'Add album'|trans)) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-3">
-            <h3>{% if app['audioAlbumEdit'] %}Редактировать{% else %}Добавить{% endif %} аудио альбом</h3>
-        </div>
-    </div>#}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
         <div class="bg-danger">
@@ -17,26 +12,24 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
+            <div class="">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-3">
-                                    <span>Базовое</span>
+                                    <span>{{ 'Basic'|trans }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div>  </a>
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Испольнитель</label>
+                            <label class="col-sm-2 control-label">{{ 'Artist'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id) }}
@@ -45,11 +38,11 @@
                                         {{ form_errors(app['form'].performer_id) }}
                                     </div>
                                 </div>
-                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-artists">Добавить исполнителя</a>
+                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-artists">{{ 'Add artist'|trans }}</a>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Альбом</label>
+                            <label class="col-sm-2 control-label">{{ 'Album'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}
@@ -58,12 +51,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                    <span class="small txt-default">{{ 'You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Жанр</label>
+                            <label class="col-sm-2 control-label">{{ 'Genre'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].genre_ids, {'attr': {'class': 'populate placeholder'} }) }}
@@ -71,14 +64,14 @@
                                         {{ form_errors(app['form'].genre_ids) }}
                                     </div>
                                 </div>
-                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-genres">Добавить жанр</a>
+                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-genres">{{ 'Add genre'|trans }}</a>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Можно выбрать до 4-х жанров</span>
+                                    <span class="small txt-default">{{ 'You can choose up to 4 genres'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Год выпуска</label>
+                            <label class="col-sm-2 control-label">{{ 'Year'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].year_id, {'attr': {'class': 'populate placeholder'} }) }}
@@ -86,23 +79,22 @@
                                         {{ form_errors(app['form'].year_id) }}
                                     </div>
                                 </div>
-                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-years">Добавить год</a>
+                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-years">{{ 'Add year'|trans }}</a>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Обложка</label>
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-5">
+                            <label class="col-sm-2 control-label">{{ 'Cover'|trans }}</label>
+                           <div class="col-xs-10 col-sm-6">
+                               
+                                <div class="pull-left" id="bootstrapped-fine-uploader"></div>
+								<div class=" col-xs-10 col-sm-4 pull-right">
                                     {{form_widget(app['form'].cover) }}
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover.vars.value%}{{app.workHost}}{{app['curr_cover_dir']}}{{app['form'].cover.vars.value}}{% endif %}" alt="" style="max-width: 100%;">
                                 </div>
-                                <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader">
-                                    {#<a class="btn btn-success file-btn"><span>Добавить картинку</span><input type="file" name="channel_logo" ></a>#}
-                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Страна исполнителя</label>
+                            <label class="col-sm-2 control-label">{{ 'Country'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].country_id, {'attr': {'class': 'populate placeholder'} }) }}
@@ -114,27 +106,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box">  <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-3">
-                                    <span>Композиции</span>
+                                    <span>{{ 'Tracks'|trans }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
-
+                    </div></a>
                     <div class="box-content" id="iptv_list">
                         <div class="row">
                             <div class="col-xs-8 col-sm-12">
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-track" id="add_track" class="btn btn-success pull-right">Добавить</a>
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-track" id="add_track" class="btn btn-success pull-right">{{ 'Add track'|trans }}</a>
                             </div>
                         </div>
                         <div class="row">
@@ -145,7 +134,7 @@
                                     {% endif %}
                                     <div class="box-content">
                                         <div class="box-content no-padding">
-                                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1" data-album_id="{{ app['audioAlbumID'] }}">
+                                            <table class="table  table-hover table-datatable" id="datatable-1" data-album_id="{{ app['audioAlbumID'] }}">
                                                 {% if attribute(app, 'dropdownAttribute') is defined %}
                                                     {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                                 {% endif %}
@@ -158,7 +147,7 @@
                                                                 <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json" data-trackid="{{ item.id }}" >{{ item.name }}</a></td>
                                                                 <td>{{ item.url }}</td>
                                                                 <td>{{ item.language }}</td>
-                                                                <td>{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
+                                                                <td>{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Unpublished'|trans }}</span>{% endif %}</td>
                                                                 <td>
                                                                     <div class="col-xs-3 col-sm-8">
                                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
@@ -167,17 +156,17 @@
                                                                         <ul class="dropdown-menu pull-right">
                                                                             <li>
                                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json" data-trackid="{{ item.id }}">
-                                                                                    <span>Изменить</span>
+                                                                                    <span>{{ 'Edit'|trans }}</span>
                                                                                 </a>
                                                                             </li>
                                                                             <li>
                                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-album-track" data-trackid="{{ item.id }}" data-trackstatus="{{ item.status }}">
-                                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                                    <span>{% if item.status %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
                                                                                 </a>
                                                                             </li>
                                                                             <li>
                                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-album-track" data-trackid="{{ item.id }}">
-                                                                                    <span>Удалить</span>
+                                                                                    <span>{{ 'Delete'|trans }}</span>
                                                                                 </a>
                                                                             </li>
                                                                         </ul>
@@ -200,11 +189,10 @@
                 <div class="box">
                     <div class="box-content">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-4 pull-right">
-                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/audio-albums" class="btn btn-default col-sm-5 pull-left">Отмена</a>
-{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
-                            </div>
+                            <div class="col-xs-10 col-sm-8 pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/audio-albums" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</a>
+                           </div>
                         </div>
                     </div>
                 </div>
@@ -234,21 +222,21 @@
                         <form class="form-horizontal" role="form" id="track_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-tracks-manage">
                             <!-- track name -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">Название</label>
+                                <label class="col-sm-2 control-label">{{ 'Title'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id">
                                         <input type="text" name="name" class='form-control'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                        <span class="small txt-default">{{ 'You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
 
                             <!-- language -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Язык исполнения</label>
+                                <label class="col-sm-2 control-label">{{ 'Language'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-6 ">
                                         <select class="populate placeholder" name="language_id" id="s2_track_lang">
@@ -264,7 +252,7 @@
 
                             <!-- URL -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">URL</label>
+                                <label class="col-sm-2 control-label">{{ 'URL'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="text" name="url" class='form-control'>
@@ -274,15 +262,14 @@
                         </form>
                     </div>
                 </div>
-
             </div>
             <div class="devoops-modal-bottom">
-                <div class="box">
+                <div class="box ">
                     <div class="box-content">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            <div class="col-xs-10 col-sm-8 pull-right">
+                                <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>
                             </div>
                         </div>
                     </div>
@@ -317,22 +304,22 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-albums-composition-list-json' data-trackid='" + id + "'>\n\
-                                                                    <span>Изменить</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-album-track' data-trackid='" + id + "' data-trackstatus='" + status + "'>\n\
-                                                                    <span>" + (status != 0 ? "Отключить" : "Включить") + "</span>\n\
+                                                                    <span>" + (status != 0 ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-album-track' data-trackid='" + id + "'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].status = status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>";
+                        json.data[i].status = status != 0 ? "<span class='txt-success'>{{ 'Published'|trans }}</span>" : "<span class='txt-danger'>{{ 'Unpublished'|trans }}</span>";
 
                         var name = json.data[i].name;
 
@@ -350,7 +337,7 @@
                 },
                 "deferLoading": [{{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "fnRowCallback": function (nRow, aData, iDisplayIndex) {
                     nRow.setAttribute('id', aData.RowOrder);  //Initialize row id for every row
@@ -363,6 +350,7 @@
                     {"data": "status"},
                     {"data": "operations"}
                 ],
+				
                 "lengthMenu": [-1],
                 "bFilter": true,
                 "bPaginate": false,
@@ -420,21 +408,6 @@
                 $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-        {#$.ajax({
-            url: 'tv-channels/delete-logo',
-            data: {id: '{{ app.oneChannel.id }}'},
-            success: function(data){
-                if (data.success) {
-                    $(this).prev('div').children('img').attr('src', '');
-                    $(this).prev('div').children('input').val('');
-                } else {
-                    console.log(data.error);
-                }
-            },
-            error: function(){
-                alert('Ошибка');
-            }
-        });#}
                         return false;
                     });
 
@@ -442,7 +415,6 @@
                         e.stopPropagation();
                         e.preventDefault();
                         $(this).closest('form').get(0).reset();
-        {#                    $("#cmd_data").find("tr:visible").remove();#}
                         return false;
                     });
 
@@ -456,12 +428,12 @@
                         }
                         $("#modalbox_ad").data('tr_id', tmp_id);
 
-                        $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить трек');
+                        $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add track'|trans }}');
                         $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                         $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
                         $('#s2_track_lang').select2("destroy").select2({minimumResultsForSearch: -1});
                         $("#modalbox_ad").show();
-                        //        $(this).closest('.form-group').find('tbody tr:hidden').show();
+
                         return false;
                     });
 
@@ -506,7 +478,7 @@
             document.addEventListener("DOMContentLoaded", yelp, false);
 
             var setCompositionModal = function (data) {
-                $("#modalbox_ad").find(".modal-header-name").children('span').text('Изменить трек');
+                $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit track'|trans }}');
                 if (data.data.length == 1) {
                     var row = data.data[0];
                     for (var field_name in row) {
@@ -523,7 +495,7 @@
 
             var setCompositionModalError = function (data) {
                 alert('Error no data');
-            }
+            };
 
             var audioTracksManage = function () {
                 $("#modalbox_ad").click();
@@ -537,7 +509,7 @@
         <!--<span>Drop files here to upload</span>-->
         </div>
         <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
-        <div><i class="icon-upload icon-white"></i>Добавить картинку</div>
+        <div><i class="icon-upload icon-white"></i>{{ 'Add cover'|trans }}</div>
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
         <!--<span>Processing dropped files...</span>-->
@@ -551,7 +523,7 @@
         <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
         <span class="qq-upload-file-selector qq-upload-file"></span>
         <span class="qq-upload-size-selector qq-upload-size"></span>
-        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Удалить</a>-->
+        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
         <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
         </li>
         </ul>

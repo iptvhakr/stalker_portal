@@ -7,6 +7,7 @@
             {% include "basic_templates/meta.twig" %}
             {% include "basic_templates/css.twig" %}
         {% endblock head %}
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
     </head>
     <body>
         {% block container %}
@@ -16,13 +17,15 @@
 
             {% block maincontainer %}
                 <!--Start Container-->
+				<div id="wrapper">
                 <div id="main" class="container-fluid">
                     <div class="row">
                         {% block sidebar %}
                             {% include "basic_templates/sidebar.twig" %}
                         {% endblock sidebar %}
                         <!--Start Content-->
-                        <div id="content" class="col-xs-12 col-sm-10">
+						<div id="main-wrapper" >
+                        <div id="content" >
                             <div class="preloader">
                                 <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader"/>
                             </div>
@@ -30,7 +33,7 @@
                                 <div class="row">
                                     <div class="box-content">
                                         <div id="breadcrumb">
-                                            {{ renderBreadCrumbs() }}
+                                             {{ renderBreadCrumbs() }}
                                         </div>
                                     </div>
                                 </div>
@@ -39,10 +42,11 @@
                                 {% endblock content %}
                             </div>
                         </div>
+                        </div>
                         <!--End Content-->
-                    </div>
-                </div>
-                <!--End Container-->
+                 
+                </div></div>
+                <!--End Container--></div>
             {% endblock maincontainer %}
 
             {% block footer %}

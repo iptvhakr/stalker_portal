@@ -69,14 +69,16 @@ class VideoClubModel extends \Model\BaseStalkerModel {
 
     public function getVideoLog($param){
         $obj = $this->mysqlInstance->select($param['select'])
-                ->from('video_log')->join('administrators', 'video_log.moderator_id', 'administrators.id', 'LEFT')
+                ->from('video_log')
+                ->join('administrators', 'video_log.moderator_id', 'administrators.id', 'LEFT')
+                ->join('video', 'video_log.video_id', 'video.id', 'LEFT')
                 ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-//        print_r($obj->get());
-//        exit;
+/*        print_r($obj->get());
+        exit;*/
         
         return $obj->get()->all();
     }

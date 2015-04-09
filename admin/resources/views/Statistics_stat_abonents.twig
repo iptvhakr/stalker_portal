@@ -1,17 +1,12 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'statistics' %}
+{% set title = ('Statistics'|trans ~ ': ' ~ 'Subscribers statistic'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Абонентская статистика за месяц</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    {{ main_macro.get_filter_button_bar('abon_to', 'id', 'title', app['allAbonentStat']) }}
+                {{ main_macro.get_filter_button_bar('abon_to', 'id', 'title', app['allAbonentStat']) }}
             </div>
         </div>
         
@@ -24,11 +19,11 @@
                             <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
                                 <span class="text_black">
                                     {% if app['filters']['abon_to'] == 'anec' %}
-                                    Просмотром считается просмотр минимум 1-го анекдота    
+                                    {{ 'View is a review of at least one joke'|trans }}
                                     {% elseif app['filters']['abon_to'] == 'video' %}
-                                    Просмотром считается проигрывание фильма больше чем 70% от общей длительности
+                                    {{ 'View is a playback of more than 70%% of movie length'|trans }}
                                     {% else %}
-                                    Просмотром считается непрерыйвное проигрывание канала более чем 30 минут
+                                    {{ 'View is an uninterrupted playback of channel for more than 30 minutes'|trans }}
                                     {% endif %}
                                 </span>
                             </div>
@@ -43,9 +38,7 @@
                     {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                    <table class="table  table-hover table-datatable" id="datatable-1">
                                         {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                         {% endif %}
@@ -54,8 +47,8 @@
                                                 <!-- Start: list_row -->
                                                 {% for row in app.allStat %}
                                                     <tr>
-                                                        {% for item in row %}        
-                                                        <td>{% if key == 'readed' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
+                                                        {% for key, item in row %}
+                                                        <td>"{% if key == 'readed' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
                                                         {% endfor %}
                                                     </tr>
                                                 {% endfor %}
@@ -63,8 +56,6 @@
                                             {% endif %}
                                         </tbody>
                                     </table>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -109,7 +100,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                 {% if attribute(app, 'dropdownAttribute') is defined%}
@@ -122,10 +113,7 @@
                 "bPaginate": true,
                 "bInfo": true,
                 "columnDefs": [
-                    { className: "action-menu", "targets": [ -1 ] },
-                    {#{"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1,]},
-                    {"width": "19%", "targets": [5] },#}
+                    { className: "action-menu", "targets": [ -1 ] }
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){

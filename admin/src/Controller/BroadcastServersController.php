@@ -10,14 +10,14 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class BroadcastServersController extends \Controller\BaseStalkerController {
 
-    private $allServerStatus = array(
-        array('id' => 1, 'title' => 'Отключен'),
-        array('id' => 2, 'title' => 'Включен')
-    );
-
+    protected $allServerStatus = array();
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+        $this->allServerStatus = array(
+            array('id' => 1, 'title' => $this->setlocalization('off')),
+            array('id' => 2, 'title' => $this->setLocalization('on'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -90,8 +90,8 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['zoneEdit'] = FALSE;
-        $this->app['breadcrumbs']->addItem("Зоны вещания", "{$this->workURL}/{$this->app[controller_alias]}/broadcast-zone-list");
-        $this->app['breadcrumbs']->addItem("Добавить зону");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Broadcast area'), "{$this->workURL}/{$this->app['controller_alias']}/broadcast-zone-list");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Add area'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
     
@@ -110,7 +110,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
         $zone = $this->db->getZoneList(array('select'=>array('S_Z.*'), 'where'=>array('S_Z.id' => $id)));
         $this->zone = (is_array($zone) && count($zone) > 0) ? $zone[0] : array();
-        $countries = array_flip($this->db->getContryByZoneId($data["id"]));
+        $countries = array_flip($this->db->getContryByZoneId($id));
         $all_countries = $this->db->getAllFromTable('countries');
         $all_countries = array_combine($this->getFieldFromArray($all_countries, 'id'), $this->getFieldFromArray($all_countries, 'name'));
         $this->zone['countries'] = array_intersect_key($all_countries, $countries);
@@ -119,7 +119,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $this->zone['disabled_countries'] = array_diff_key($all_countries, $countries);
 //        $this->zone['disabled_countries_json'] = json_encode($this->zone['disabled_countries']);
         $this->zone['disabled_countries_json'] = '';
-        $form = $this->buildZoneForm($this->zone);
+        $form = $this->buildZoneForm($this->zone, TRUE);
 
         if ($this->saveZoneData($form, TRUE)) {
             return $this->app->redirect($this->workURL . '/' . $this->app['controller_alias'] . '/broadcast-zone-list');
@@ -127,10 +127,11 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
 
         $this->app['form'] = $form->createView();
         $this->app['zoneEdit'] = TRUE;
+        $this->app['zoneName'] = $this->zone['name'];
         ob_end_clean();
         
-        $this->app['breadcrumbs']->addItem("Зоны вещания", "{$this->workURL}/{$this->app[controller_alias]}/broadcast-zone-list");
-        $this->app['breadcrumbs']->addItem("Редактировать зону '{$this->zone[name]}'");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Broadcast area'), "{$this->workURL}/{$this->app[controller_alias]}/broadcast-zone-list");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit area') . " '{$this->zone[name]}'");
         
         return $this->app['twig']->render('BroadcastServers_add_zone.twig');
     }
@@ -260,7 +261,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     
     public function remove_zone() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -280,7 +281,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     
     public function remove_server() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -321,7 +322,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     public function save_server() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -370,11 +371,11 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     
     private function getZoneDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => 'ID',                'checked' => TRUE),
-            array('name' => 'name',         'title' => 'Название',             'checked' => TRUE),
-            array('name' => 'country_count','title' => 'Количество стран',  'checked' => TRUE),
-            array('name' => 'default_flag', 'title' => 'По умолчанию',      'checked' => TRUE),
-            array('name' => 'operations',   'title' => 'Действия',          'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),                    'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setlocalization('Title'),                 'checked' => TRUE),
+            array('name' => 'country_count','title' => $this->setlocalization('Quantity of countries'), 'checked' => TRUE),
+            array('name' => 'default_flag', 'title' => $this->setlocalization('Default'),               'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setlocalization('Operation'),             'checked' => TRUE)
         );
     }
     
@@ -389,13 +390,13 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     
     private function getServersDropdownAttribute() {
         return array(
-            array('name' => 'id',               'title' => 'ID',                    'checked' => TRUE),
-            array('name' => 'name',             'title' => 'Навзвание',             'checked' => TRUE),
-            array('name' => 'address',          'title' => 'URL',                   'checked' => TRUE),
-            array('name' => 'max_sessions',     'title' => 'Максимум пользователей','checked' => TRUE),
-            array('name' => 'stream_zone_name', 'title' => 'Зона вещания',          'checked' => TRUE),
-            array('name' => 'status',           'title' => 'Состояние',             'checked' => TRUE),
-            array('name' => 'operations',       'title' => 'Действия',              'checked' => TRUE)
+            array('name' => 'id',               'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'name',             'title' => $this->setlocalization('Title'),         'checked' => TRUE),
+            array('name' => 'address',          'title' => $this->setlocalization('URL'),           'checked' => TRUE),
+            array('name' => 'max_sessions',     'title' => $this->setlocalization('Maximum users'), 'checked' => TRUE),
+            array('name' => 'stream_zone_name', 'title' => $this->setlocalization('Broadcast area'),'checked' => TRUE),
+            array('name' => 'status',           'title' => $this->setlocalization('Status'),        'checked' => TRUE),
+            array('name' => 'operations',       'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
         );
     }
     
@@ -411,12 +412,14 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
     }
     
     private function buildZoneForm(&$data = array(), $edit = FALSE) {
-        
+
         $builder = $this->app['form.factory'];
         
         if (array_key_exists('default_zone', $data)) {
             $val = $data['default_zone'];
             settype($data['default_zone'], 'bool');
+        } else {
+            $val = (int)( !array_sum($this->getFieldFromArray($this->db->getAllFromTable('stream_zones'), 'default_zone')));
         }
         
         $default_array = array(
@@ -439,10 +442,6 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
 
         if (empty($countries)) {
             $countries[] = '';
-        }
-
-        if (empty($disabled_countries)) {
-            $disabled_countries[] = '';
         }
 
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))

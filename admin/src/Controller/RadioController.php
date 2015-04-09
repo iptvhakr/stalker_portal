@@ -10,10 +10,14 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class RadioController extends \Controller\BaseStalkerController {
 
-    private $allStatus = array(array('id' => 1, 'title' => 'Выключено'), array('id' => 2, 'title' => 'Включено'));
+    protected $allStatus = array();
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+        $this->allStatus = array(
+            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
+            array('id' => 2, 'title' => $this->setlocalization('Published'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -49,7 +53,7 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['radioEdit'] = FALSE;
-        $this->app['breadcrumbs']->addItem("Добавить радио");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Add radio'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -85,7 +89,8 @@ class RadioController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['radioEdit'] = TRUE;
         $this->app['radioID'] = $id;
-        $this->app['breadcrumbs']->addItem("Редактировать радио '{$this->radio['name']}'");
+        $this->app['radioName'] = $this->radio['name'];
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit radio') . " '{$this->radio['name']}'");
         return $this->app['twig']->render("Radio_add_radio.twig");
     }
 
@@ -137,7 +142,7 @@ class RadioController extends \Controller\BaseStalkerController {
 
     public function toggle_radio() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['radioid']) || !isset($this->postData['radiostatus'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -146,12 +151,12 @@ class RadioController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'toggleRadioStatus';
-        $error = 'Не удалось';
+        $error = $this->setlocalization('Failed');
 
         if ($this->db->toggleRadioStatus($this->postData['radioid'], (int) (!$this->postData['radiostatus']))) {
             $error = '';
-            $data['title'] = (!$this->postData['radiostatus'] ? 'Отключить' : 'Включить');
-            $data['status'] = (!$this->postData['radiostatus'] ? '<span class="txt-success">Вкл.</span>' : '<span class="txt-danger">Выкл</span>');
+            $data['title'] = (!$this->postData['radiostatus'] ? $this->setlocalization('Unpublish') : $this->setlocalization('Publish'));
+            $data['status'] = (!$this->postData['radiostatus'] ? '<span class="txt-success">' . $this->setlocalization('Published') . '</span>' : '<span class="txt-danger">' . $this->setlocalization('Unpublished') . '</span>');
             $data['radiostatus'] = (int) !$this->postData['radiostatus'];
         }
 
@@ -162,7 +167,7 @@ class RadioController extends \Controller\BaseStalkerController {
 
     public function remove_radio() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['radioid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -181,7 +186,7 @@ class RadioController extends \Controller\BaseStalkerController {
     
     public function radio_check_name() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['param'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -189,12 +194,12 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkRadioName';
-        $error = 'Имя занято';
+        $error = $this->setlocalization('Name already used');
         
         if ($this->db->searchOneRadioParam(array('name' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {
-            $data['chk_rezult'] = 'Имя занято';
+            $data['chk_rezult'] = $this->setlocalization('Name already used');
         } else {
-            $data['chk_rezult'] = 'Имя свободно';
+            $data['chk_rezult'] = $this->setlocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -204,7 +209,7 @@ class RadioController extends \Controller\BaseStalkerController {
 
     public function radio_check_number() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['param'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -212,11 +217,11 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkRadioNumber';
-        $error = 'Номер не уникален';
+        $error = $this->setlocalization('Number is not unique');
         if ($this->db->searchOneRadioParam(array('number' => trim($this->postData['param']), 'id<>' => trim($this->postData['radioid'])))) {
-            $data['chk_rezult'] = 'Номер не уникален';
+            $data['chk_rezult'] = $this->setlocalization('Number is not unique');
         } else {
-            $data['chk_rezult'] = 'Номер уникален';
+            $data['chk_rezult'] = $this->setlocalization('Number is unique');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -306,13 +311,13 @@ class RadioController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',                 'title'=>'ID',      'checked' => TRUE),
-            array('name'=>'number',             'title'=>'Номер',   'checked' => TRUE),
-            array('name'=>'name',               'title'=>'Имя',     'checked' => TRUE),
-            array('name'=>'cmd',                'title'=>'URL',     'checked' => TRUE),
-            array('name'=>'volume_correction',  'title'=>'Звук',    'checked' => TRUE),
-            array('name'=>'status',             'title'=>'Состояние','checked' => TRUE),
-            array('name'=>'operations',         'title'=>'Действия','checked' => TRUE),
+            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),          'checked' => TRUE),
+            array('name'=>'number',             'title'=>$this->setlocalization('Order'),      'checked' => TRUE),
+            array('name'=>'name',               'title'=>$this->setlocalization('Title'),       'checked' => TRUE),
+            array('name'=>'cmd',                'title'=>$this->setlocalization('URL'),         'checked' => TRUE),
+            array('name'=>'volume_correction',  'title'=>$this->setlocalization('Volume'),      'checked' => TRUE),
+            array('name'=>'status',             'title'=>$this->setlocalization('Status'),      'checked' => TRUE),
+            array('name'=>'operations',         'title'=>$this->setlocalization('Operations'),  'checked' => TRUE),
         );
     }
     

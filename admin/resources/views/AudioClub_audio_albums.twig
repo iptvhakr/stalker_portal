@@ -1,81 +1,73 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
 
-{% set title = 'audio' %}
+{% set title = ('Audio club'|trans ~ ': ' ~ 'albums list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-2">
-            <h3>Список альбомов</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus'], 2) }}
-                    {#{{ main_macro.get_filter('ganre_name', 'Жанр', 'name', 'name', app['allAudioGenres'], 2) }}#}
-                    {{ main_macro.get_filter('year', 'Год', 'name', 'name', app['allAudioYears'], 2) }}
-                    {{ main_macro.get_filter('country', 'Страна', 'name', 'name', app['allCountries'], 3) }}
+                    {{ main_macro.get_filter('status_id',  'Status'|trans, 'id', 'title', app['allStatus'], 2) }}
+                    {#{{ main_macro.get_filter('ganre_name', 'Genre'|trans, 'name', 'name', app['allAudioGenres'], 2) }}#}
+                    {{ main_macro.get_filter('year', 'Year'|trans, 'name', 'name', app['allAudioYears'], 2) }}
+                    {{ main_macro.get_filter('country', 'Country'|trans, 'name', 'name', app['allCountries'], 3) }}
                     {#{{ main_macro.get_filter('language', 'Язык', 'name', 'name', app['allLanguages'], 3) }}#}
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-albums" class="btn btn-success pull-right">Добавить</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-audio-albums" class="btn btn-success pull-right">{{ 'Add album'|trans }}</a>
             </div>
         </div>
-
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
-                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                                {% if attribute(app, 'allAudioAlbums') is defined %}
+                                <!-- Start: list_row -->
+                                    {% for item in app.allAudioAlbums %}
+                                        <tr data-radioid="{{ item.id }}">
+                                            <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-albums?id={{ item.id }}" >{{ item.name }}</a></td>
+                                            <td>{{ item.tracks_count }}</td>
+                                            <td>{{ item.ganre_name }}</td>
+                                            <td>{{ item.year }}</td>
+                                            <td>{{ item.country }}</td>
+                                            <td>{{ item.language }}</td>
+                                            <td>{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Unpublished'|trans }}</span>{% endif %}</td>
+                                            <td>
+                                                <div class="col-xs-3 col-sm-8">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                        <i class="pull-right fa fa-cog"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu pull-right">
+                                                        <li>
+                                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-albums?id={{ item.id }}">
+                                                                <span>{{ 'Edit'|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-albums" data-albumsid="{{ item.id }}" data-albumsstatus="{{ item.status }}">
+                                                                <span>{% if item.status %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-albums" data-albumsid="{{ item.id }}">
+                                                                <span>{{ 'Delete'|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 {% endif %}
-                                <tbody>
-                                    {% if attribute(app, 'allAudioAlbums') is defined %}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allAudioAlbums %}
-                                            <tr data-radioid="{{ item.id }}">
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-albums?id={{ item.id }}" >{{ item.name }}</a></td>
-                                                <td>{{ item.tracks_count }}</td>
-                                                <td>{{ item.ganre_name }}</td>
-                                                <td>{{ item.year }}</td>
-                                                <td>{{ item.country }}</td>
-                                                <td>{{ item.language }}</td>
-                                                <td>{% if item.status %}<span class="txt-success">Вкл</span>{% else %}<span class="txt-danger">Выкл</span>{% endif %}</td>
-                                                <td>
-                                                    <div class="col-xs-3 col-sm-8">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                            <i class="pull-right fa fa-cog"></i>
-                                                        </a>
-                                                        <ul class="dropdown-menu pull-right">
-                                                            <li>
-                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-albums?id={{ item.id }}">
-                                                                    <span>Редактировать</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-albums" data-albumsid="{{ item.id }}" data-albumsstatus="{{ item.status }}">
-                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-albums" data-albumsid="{{ item.id }}">
-                                                                    <span>Удалить</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <!-- End: list_row -->
-                                </tbody>
-                            </table>
-                        </div>
+                                <!-- End: list_row -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -97,22 +89,22 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-albums?id=" + id + "'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-audio-albums' data-albumsid='" + id + "' data-albumsstatus='" + status + "'>\n\
-                                                                    <span>" + (status != 0 ? "Отключить" : "Включить") + "</span>\n\
+                                                                    <span>" + (status != 0 ? "{{ 'Unpublish'|trans }}" : "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-audio-albums' data-albumsid='" + id + "'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].status = status != 0 ? "<span class='txt-success'>Вкл</span>" : "<span class='txt-danger'>Выкл</span>";
+                        json.data[i].status = status != 0 ? "<span class='txt-success'>{{ 'Published'|trans }}</span>" : "<span class='txt-danger'>{{ 'Unpublished'|trans }}</span>";
 
                         var name = json.data[i].name;
 
@@ -133,7 +125,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                     {"data": "name"},
@@ -147,6 +139,11 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
@@ -155,7 +152,7 @@
                     {"className": "data-filter-status", "targets": [-2]},
                     {"width": "18%", "targets": [0, 2, -3 ] },
                     {"width": "10%", "targets": [1, 3 ] },
-                    {"width": "7%", "targets": [-1, -2 ] }
+                    {"width": "14px", "targets": [-1, -2 ] }
                 ]
             });
             
@@ -181,7 +178,7 @@
                                     _this.data(key, data[key]);
                                 }
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
@@ -195,7 +192,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -217,7 +214,7 @@
 
         var manageAudioAlbum = function (obj) {
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
 
         var removeAudioAlbum = function (obj) {
             var cRow = $(obj).closest('tr');

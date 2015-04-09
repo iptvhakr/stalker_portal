@@ -138,7 +138,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($like)) {
             $params['like'] = $like;
         }
-        return $this->getDailyClaimsList($params, TRUE);
+        return $this->getClaimsLogsList($params, TRUE);
     }
     
     public function getClaimsLogsList($param, $counter = FALSE) {
@@ -155,7 +155,6 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-        
         return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
     }
     

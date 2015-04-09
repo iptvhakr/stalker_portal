@@ -1,51 +1,42 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'video-club' %}
-{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'movie list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-2">
-            <h3>Список видео</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{ main_macro.get_filter('status_id', 'Статус', 'id', 'title', app['allStatus'], 2) }}
-                {{ main_macro.get_filter('genre_id', 'Жанр', 'id', 'title', app['allGenre'], 2) }}
-                {{ main_macro.get_filter('year', 'Год', 'id', 'title', app['allYears'], 2) }}
-
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video" class="btn btn-success pull-right">Добавить</a>
+                {{ main_macro.get_filter('status_id', 'Status'|trans, 'id', 'title', app['allStatus'], 2) }}
+                {{ main_macro.get_filter('genre_id', 'Genre'|trans, 'id', 'title', app['allGenre'], 2) }}
+                {{ main_macro.get_filter('year', 'Year'|trans, 'id', 'title', app['allYears'], 2) }}
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video" class="btn btn-success pull-right">{{ 'Add movie'|trans }}</a>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row2">
+            <div class="">
                 {% if app['allVideo'] %}
                     <div class="box">
                         {% if attribute(app, 'dropdownAttribute') is defined %}
                         {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
                         {% endif %}
-                            
                         <div class="box-content">
                             <div class="box-content no-padding">
-                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                 <table class="table dataTable table-hover table-datatable"  id="datatable-1">
                                     <thead>
                                         <tr>
-                                            <th data-filter="id">ID</th>
-                                            <th data-filter="path">Каталог</th>
-                                            <th data-filter="name">Название</th>
-                                            <th data-filter="o_name">Оригинальное название</th>
-                                            <th data-filter="time">Длительность, мин</th>
-                                            <th data-filter="series">Серии</th>
-                                            <th data-filter="cat_genre">Жанр</th>
-                                            <th data-filter="tasks">Задания</th>
-                                            <th data-filter="year">Год</th>
-                                            <th data-filter="added">Дата запуска</th>
-                                            <th data-filter="complaints">Жалобы</th>
-                                            <th data-filter="status">Статус</th>
-                                            <th data-filter="operations">Действия</th>
+                                            <th data-filter="id">{{ 'ID'|trans }}</th>
+                                            <th data-filter="path">{{ 'Catalogue'|trans }}</th>
+                                            <th data-filter="name">{{ 'Title'|trans }}</th>
+                                            <th data-filter="o_name">{{ 'Original'|trans }}<br>{{ 'title'|trans }}</th>
+                                            <th data-filter="time">{{ 'Length'|trans }},<br>{{ 'min'|trans }}</th>
+                                            <th data-filter="series">{{ 'Episodes'|trans }}</th>
+                                            <th data-filter="cat_genre">{{ 'Genre'|trans }}</th>
+                                            <th data-filter="year">{{ 'Year'|trans }}</th>
+                                            <th data-filter="added">{{ 'Date'|trans }}</th>
+                                            <th data-filter="tasks">{{ 'Tasks'|trans }}</th>
+                                            <th data-filter="complaints">{{ 'Complaints'|trans }}</th>
+                                            <th data-filter="status">{{ 'Status'|trans }}</th>
+                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -59,26 +50,26 @@
                                                 <td data-filter="time">{{ item.time }}</td>
                                                 <td data-filter="time">{{ item.cat_genre }}</td>
                                                 <td data-filter="series">{{ item.series }}</td>
-                                                <td data-filter="tasks">     
+                                                <td data-filter="year">{{ item.year }}</td>
+                                                <td data-filter="added">{{ item.added|date('M d, Y') }}</td>
+                                                <td data-filter="tasks">
                                                     {% if item['tasks']|length > 0 and item['tasks'] != '0' %}
                                                         {% for task_item in item['tasks'] %}
-                                                            <a class="{% if task_item.ended or task_item.rejected %} line-through {% if task_item.rejected%} txt-warning {% elseif task_item.ended%} txt-success {% endif %}{% elseif task_item.expired%}txt-danger{% endif %}" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id={{ task_item['id'] }}">№{{ task_item['id'] }} {% if not(task_item.ended or task_item.rejected) and task_item['end_time'] %}(окончание {{ task_item['end_time']|date('d-m-Y') }}){% endif %}</a>{% if not(loop|last) %}, {% endif %}
+                                                            <a class="{% if task_item.ended or task_item.rejected %} line-through {% if task_item.rejected%} txt-warning {% elseif task_item.ended%} txt-success {% endif %}{% elseif task_item.expired%}txt-danger{% endif %}" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id={{ task_item['id'] }}">№{{ task_item['id'] }} {% if not(task_item.ended or task_item.rejected) and task_item['end_time'] %}({{ 'ending'|trans }} {{ task_item['end_time']|date('d-m-Y') }}){% endif %}</a>{% if not(loop|last) %}, {% endif %}
                                                         {% endfor %}
                                                     {% else %}
-                                                        Нет заданий
+                                                        {{ 'No tasks'|trans }}
                                                     {% endif%}
                                                 </td>
-                                                <td data-filter="year">{{ item.year }}</td>
-                                                <td data-filter="added">{{ item.added|date('M d, Y H:i') }}</td>
                                                 <td data-filter="complaints">
                                                     {% if item.video_counter or item.sound_counter%}
-                                                        {% if item.video_counter %}видео - {{ item.video_counter }} {% endif %}
-                                                        {% if item.sound_counter%}звук - {{ item.sound_counter }}{% endif %}
+                                                        {% if item.video_counter %}{{ 'video'|trans }} - {{ item.video_counter }} {% endif %}
+                                                        {% if item.sound_counter%}{{ 'sound'|trans }} - {{ item.sound_counter }}{% endif %}
                                                     {% else %}
                                                         0
                                                     {% endif %}
                                                 </td>
-                                                <td data-filter="status">{% if item.accessed %}<span class="txt-success">Опубликовано</span>{% elseif attribute(item, 'task_id') is defined and item.task_id %}<span class="txt-info">Запланированно {% if not(item.task_date_on == 0) %}(на {{ item.task_date_on|date("d-m-Y") }}){% endif %}</span>{% else %}Не опубликовано{% endif %}</td>
+                                                <td data-filter="status">{% if item.accessed %}<span class="txt-success">{{ 'Published'|trans }}</span>{% elseif attribute(item, 'task_id') is defined and item.task_id %}<span class="txt-info">{{ 'Scheduled'|trans }} {% if not(item.task_date_on == 0) %}({{ 'on'|trans }} {{ item.task_date_on|date("d-m-Y") }}){% endif %}</span>{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
                                                 <td data-filter="operations" class="action-menu">
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
@@ -87,27 +78,27 @@
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
                                                                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id={{ item.id }}">
-                                                                    <span>Редактировать</span>
+                                                                    <span>{{ 'Edit'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.accessed %}disable{% else %}enable{% endif %}-video" data-videoid="{{ item.id }}">
-                                                                    <span>{% if item.accessed %}Отключить{% else %}Включить{% endif %}</span>
+                                                                    <span>{% if item.accessed %}{{ 'Switch off'|trans }}{% else %}{{ 'Switch on'|trans }}{% endif %}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks" data-videoid="{{ item.id }}">
-                                                                    <span>Отправить задание</span>
+                                                                    <span>{{ 'Create task'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-logs?video_id={{ item.id }}">
-                                                                    <span>История</span>
+                                                                    <span>{{ 'Activity log'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video" data-videoid="{{ item.id }}">
-                                                                    <span>Удалить</span>
+                                                                    <span>{{ 'Remove'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -130,7 +121,7 @@
         <div class="devoops-modal add-tasks">
             <div class="devoops-modal-header">
                 <div class="modal-header-name">
-                    <span>Создать задачу</span>
+                    <span>{{ 'Create task'|trans }}</span>
                 </div>
                 <div class="box-icons">
                     <a class="close-link">
@@ -142,16 +133,16 @@
                 <div class="box-content">
                     <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks" method="POST">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label col-sm-offset-1">Название видео</label>
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Video title'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <span class="col-xs-12 col-sm-12">
                                     <input type="hidden" name="id">
-                                    <span class="txt-default">Название видео</span>
+                                    <span class="txt-default">{{ 'Video title'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label col-sm-offset-1">Кому</label>
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'To'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-10">
                                     <select class="populate placeholder" name="to_usr" id="s2_video_moderators" required="">
@@ -165,7 +156,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label col-sm-offset-1">Описание задания</label>
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Task description'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class="col-xs-10 col-sm-10">
                                     <textarea class="col-xs-12 col-sm-12" name="comment" rows="6" required=""></textarea>
@@ -178,8 +169,8 @@
                     <div class="row">
                         <div class="col-xs-10 col-sm-2 pull-right no-padding">&nbsp;</div>
                         <div class="col-xs-10 col-sm-5 pull-right no-padding">
-                            <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                            <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                            <button type="reset" class="btn btn-default col-sm-5 pull-left" >{{ 'Cancel'|trans }}</button>
                         </div>
                     </div>
                 </div>
@@ -205,43 +196,42 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id="+id+"'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/" + (accessed!=0 ?"disable":"enable")+"-video' data-videoid='"+id+"'>\n\
-                                                                    <span>" + ( accessed ? "Отключить": "Включить") + "</span>\n\
+                                                                    <span>" + ( accessed ? "{{ 'Switch off'|trans }}": "{{ 'Switch on'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/create-tasks' data-videoid='"+id+"'>\n\
-                                                                    <span>Отправить задание</span>\n\
+                                                                    <span>{{ 'Create task'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-logs?video_id="+id+"'>\n\
-                                                                    <span>История</span>\n\
+                                                                    <span>{{ 'Activity log'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video' data-videoid='"+id+"'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span>{{ 'Remove'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
                         if (json.data[i]['task_date_on'] != 0) {
-                            var dateOn = new Date(json.data[i]['task_date_on'] * 1000);
+                            var dateOn = new Date(json.data[i]['task_date_on']);
                         }
-                        json.data[i].accessed = (accessed != 0 ? "<span class='txt-success'>Опубликовано</span>" : ((typeof(json.data[i].task_id) != 'undefined' && json.data[i].task_id)?"<span class='txt-info'>Запланированно "+ (json.data[i]['task_date_on'] != 0 ? "(на " + dateOn.toLocaleFormat("%b %d, %Y %H:%M")+ ")": "") +"</span>": "Не опубликовано"));
+                        json.data[i].accessed = (accessed != 0 ? "<span class='txt-success'>{{ 'Published'|trans }}</span>" : ((typeof(json.data[i].task_id) != 'undefined' && json.data[i].task_id)?"<span class='txt-info'>{{ 'Scheduled'|trans }} "+ (json.data[i]['task_date_on'] != 0 ? "({{ 'on'|trans }} " + dateOn.toLocaleFormat("%b %d, %Y")+ ")": "") +"</span>": "{{ 'Unpublished'|trans }}"));
 
                         if (json.data[i]['added'] != 0) {
-                            var dateOn = new Date(json.data[i]['added'] * 1000);
-                            json.data[i]['added'] = dateOn.toLocaleFormat("%b %d, %Y %H:%M");
+                            var dateOn = new Date(json.data[i]['added']);
+                            json.data[i]['added'] = dateOn.toLocaleFormat("%b %d, %Y");
                         }
 
                         json.data[i].name = ("<a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video?id=" + id + "' data-fieldname='name'>" + json.data[i].name + "</a>");
-                        json.data[i].o_name = json.data[i].o_name;
 
                         json.data[i].path = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-info" class="main_ajax" data-videoid="'+id+'">' + path + '</a>';
                         
@@ -263,21 +253,21 @@
                                     msgClass += " txt-danger ";
                                 }
                                 
-                                taskStr += '<a class="' + msgClass + '" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id=' + tasks[num]['id']+ '">№' + tasks[num]['id'] + (!(tasks[num]['ended'] || tasks[num]['rejected']) && tasks[num]['end_time'] ? ' (окончание ' + endDate.toLocaleFormat("%d-%m-%Y") + ')': '') + '</a>' + (num != itemCounter?', ': '');
+                                taskStr += '<a class="' + msgClass + '" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id=' + tasks[num]['id']+ '">№' + tasks[num]['id'] + (!(tasks[num]['ended'] || tasks[num]['rejected']) && tasks[num]['end_time'] ? ' ({{ 'ending'|trans }} ' + endDate.toLocaleFormat("%d-%m-%Y") + ')': '') + '</a>' + (num != itemCounter?', ': '');
                                 msgClass = '';
                             }
                         } else {
-                            taskStr = "Нет заданий";
+                            taskStr = "{{ 'No tasks'|trans }}";
                         }
                         json.data[i].tasks = taskStr;
                         
                         json.data[i].complaints = '';
                         if (json.data[i].video_counter) {
-                            json.data[i].complaints += (" видео - " + json.data[i].video_counter);
+                            json.data[i].complaints += (" {{ 'video'|trans }} - " + json.data[i].video_counter);
                         }
                         
                         if (json.data[i].sound_counter) {
-                            json.data[i].complaints += (" звук - " + json.data[i].sound_counter);
+                            json.data[i].complaints += (" {{ 'sound'|trans }} - " + json.data[i].sound_counter);
                         }
                         if (!json.data[i].complaints) {
                             json.data[i].complaints = "0"
@@ -298,8 +288,9 @@
             },
             "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
             "language": {
-                "url": "./plugins/datatables/lang/ru_RU.json"
+                "url": "{{ app.datatable_lang_file }}"
             },
+			"order": [[ 1, "asc" ]],
             "columns": [     
                 {"data": "id"},
                 {"data": "path"},
@@ -308,28 +299,35 @@
                 {"data": "time"},
                 {"data": "series"},
                 {"data": "cat_genre"},
-                {"data": "tasks"},
                 {"data": "year"},
                 {"data": "added"},
+                {"data": "tasks"},
                 {"data": "complaints"},
                 {"data": "accessed"},
                 {"data": "operations"}
             ],
+			"scrollCollapse": true,
+			
             "bFilter": true,
             "bPaginate": true,
+			"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
             "bInfo":     true,
+			"order": [[ 0, "desc" ]],
             "aoColumnDefs": [ 
                 { className: "action-menu", "targets": [ -1 ] },
                 { "targets": [ 3 ], "visible": false},
                 { "targets": [ -1 , 6], "orderable": false},
                 { "searchable": false, "targets": [ 4, 5, 6, 7, 8, 9, 10, 11 ] },
-                { "width": "12%", "targets": [ 1, 2, 3, 4, 6 ] },
-{#                { "width": "12%", "targets": [ 4 ] },#}
-                { "width": "10%", "targets": [ 8 ] },
-                { "width": "5%", "targets": [ -1, 0 ] }
-            ],
-            "order": ($("#datatable-1 th[data-filter='added']").is('visible') ? [[ 8, "desc" ]]: [])
+                { "width": "10%", "targets": [ 1, 2, 3, 6, 8, -2] }
+            ]
+            
         });
+		  $("#datatable-1").DataTable().ajax.reload();
+		
         $("#attribute_set input[type='checkbox']").each(function(index){
             $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
         });
@@ -369,7 +367,7 @@
                                     _this.data(key, data[key]);
                                 }
                             } else {
-                                alert('Some server error');
+                                alert('{{ 'Some server error'|trans }}');
                             }
                         },
                         error: function (data) {
@@ -383,7 +381,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error or access denied');
+                                alert('{{ 'Some network error or access denied'|trans }}');
                             }
                         },
                         dataType: "json",
@@ -425,7 +423,7 @@
                 var sendData = {
                     id: $("#modalbox_ad input[type='hidden']").val(),
                     to_usr: $("#modalbox_ad select").val(),
-                    comment: $("#modalbox_ad textarea").val(),
+                    comment: $("#modalbox_ad textarea").val()
                 };
                 
                 e.stopPropagation();
@@ -445,7 +443,7 @@
             $(obj).replaceWith('<span class="txt-danger"> &nbsp;' + $(obj).data("error") + '&nbsp; </span>');
         }
 
-    }
+    };
 
     var videoinfo = function (obj){
         $('#modalbox').show();
@@ -455,10 +453,10 @@
             $('#modalbox').find('.devoops-modal-inner').append('<span>' + baseInfo + '</span>');
         } else if (typeof(baseInfo) == 'object') {
             var table = $('<table class="video_info"></table>').appendTo($('#modalbox').find('.devoops-modal-inner'));
-            table.append('<tr><td>Сервер</td><td>Каталог</td><td>Серии</td><td>&nbsp;</td></tr>');
+            table.append('<tr><td>{{ 'Server'|trans }}</td><td>{{ 'Catalogue'|trans }}</td><td>{{ 'Episodes'|trans }}</td><td>&nbsp;</td></tr>');
             $.each(baseInfo, function(index, value){
                 var trStr = '<tr><td>'+ value.storage_name +'</td><td>'+ value.path +'</td><td>'+ value.series +'</td>';
-                    trStr += '<td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-md5">посчитать MD5 сумму</a></td></tr>';
+                    trStr += '<td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-md5">{{ 'Calculate MD5 checksum'|trans }}</a></td></tr>';
                 table.append(trStr);
                 table.find('a').data('storage_name', value.storage_name);
                 table.find('a').data('media_name', value.path);
@@ -470,14 +468,14 @@
                     table.append('<tr><td colspan="4">' + filesStr + '</td></tr>');
                 }
             });
-        };
-    }
+        }
+    };
        
     var videoremove = function (obj){
         var cRow = $(obj).closest('tr');
         $('#datatable-1').DataTable().row(cRow).remove().draw( false );
 
-    }
+    };
     var videoenable = function (obj){
         $(obj).removeData('video_on_date');
         var cCeill = $(obj).closest('tr').find('td[data-filter="status"]');
@@ -488,17 +486,17 @@
         }
         $(obj).attr('href', $(obj).attr('href').replace('enable-video', 'disable-video'));
         $(obj).text($(obj).data('title'));
-    }
+    };
     var videodisable = function (obj){
         var cCeill = $(obj).closest('tr').find('td[data-filter="status"]');
         if (cCeill.length > 0) {
-            $('#datatable-1').DataTable().cell( cCeill ).data('Не опубликовано').draw();
+            $('#datatable-1').DataTable().cell( cCeill ).data('{{ 'Unpublished'|trans }}').draw();
         } else {
-            dataTableSetData($(obj).data('videoid'), "tasks", 'Не опубликовано');
+            dataTableSetData($(obj).data('videoid'), "tasks", '{{ 'Unpublished'|trans }}');
         }
         $(obj).attr('href', $(obj).attr('href').replace('disable-video', 'enable-video'));
         $(obj).text($(obj).data('title'));
-    }
+    };
     
     var createtasks = function (obj){
         $(obj).removeData('sendData');
@@ -509,7 +507,7 @@
         } else {
             dataTableSetData($(obj).data('videoid'), "tasks", newTitle);
         }
-    }
+    };
 
     function closeModalBox(){
         $("#modalbox").hide();
@@ -519,45 +517,43 @@
     }
 
     function setEnableDatePicker(obj){
-        $('#modalbox').find('.modal-header-name span').text('Расписание включения');
+        $('#modalbox').find('.modal-header-name span').text('{{ 'Schedule switching on'|trans }}');
         $('#modalbox').find('.devoops-modal-inner')
                 .append("<input type='hidden' name='link_id' value='" + obj.data('videoid') + "'>")
                 .append("<input type='text' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='video_on_date'>");
         $('#modalbox').find('.devoops-modal-bottom')
-                .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">Отмена</button>')
-                .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">Включить</button>');
+                .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
+                .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Switch on'|trans }}</button>');
         $('#modalbox').find('.devoops-modal').width(350);
         $(".datepicker").datepicker({
                 language    : 'ru',
                 dateFormat  : 'dd-mm-yy',
                 firstDay    : 1,
-                minDate     : new Date()
-            }
-    {#                    {
+                minDate     : new Date(),
                 dayNamesMin : [
-                    '<?= htmlspecialchars(_('Sun'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('Mon'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('Tue'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('Wed'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('Thu'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('Fri'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('Sat'), ENT_QUOTES)?>'
+                    '{{ 'Sun'|trans }}',
+                    '{{ 'Mon'|trans }}',
+                    '{{ 'Tue'|trans }}',
+                    '{{ 'Wed'|trans }}',
+                    '{{ 'Thu'|trans }}',
+                    '{{ 'Fri'|trans }}',
+                    '{{ 'Sat'|trans }}'
                 ],
                 monthNames  : [
-                    '<?= htmlspecialchars(_('January'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('February'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('March'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('April'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('May'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('June'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('July'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('August'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('September'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('October'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('November'), ENT_QUOTES)?>',
-                    '<?= htmlspecialchars(_('December'), ENT_QUOTES)?>'
+                    '{{ 'January'|trans }}',
+                    '{{ 'February'|trans }}',
+                    '{{ 'March'|trans }}',
+                    '{{ 'April'|trans }}',
+                    '{{ 'May'|trans }}',
+                    '{{ 'June'|trans }}',
+                    '{{ 'July'|trans }}',
+                    '{{ 'August'|trans }}',
+                    '{{ 'September'|trans }}',
+                    '{{ 'October'|trans }}',
+                    '{{ 'November'|trans }}',
+                    '{{ 'December'|trans }}'
                 ]
-            }#}
+            }
             );
         $("div[id*='datepicker']").addClass('dp_white');
         $(obj).closest('div.open').removeClass('open');
@@ -595,7 +591,6 @@
                 return false;
             }
         });
-{#        var dtTable = $('#datatable-1').DataTable().fnDataUpdate(new_data, rowNum, cellNum );#}
     }
 </script>
 {% endblock %}

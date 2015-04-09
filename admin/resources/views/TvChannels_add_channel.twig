@@ -3,15 +3,10 @@
 {% import '/macro/iptw_macro.twig' as main_macro %}
 
 {% set active = 'tv-channels' %}
-{% set title = 'tv-channels' %}
+{% set title = ('IPTV channels'|trans ~ ': ' ~ (app.channelEdit ? ('edit channel "'|trans ~ app.editChannelName ~ '"') | trans : 'add'|trans)) | trans %}
 
 {% block content %}
     
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-3">
-            <h3>{% if app['channelEdit'] %}Редактирование канала{% else %}Добавить канал{% endif %}</h3>
-        </div>
-    </div>#}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form'}}) }}
         <div class="bg-danger">
@@ -20,26 +15,22 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>Основное</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Basic'|trans }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-down"></i>
                         </div>
-                        <div class="no-move"></div>
-                    </div>
+                    </div></a>
                     <div class="box-content" id="add_channel_base">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">*Номер канала</label>
+                            <label class="col-sm-2 control-label">*{{ 'Channel number'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id) }}
@@ -50,12 +41,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Номер в списке каналов. Должен Содержать только цифры: 0-999 </span>
+                                    <span class="small txt-default">{{ 'Number in channel list must contain only numbers from 0 to 999'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">*Имя канала</label>
+                            <label class="col-sm-2 control-label">*{{ 'Channel name'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}        
@@ -65,12 +56,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Можно использовать латинские буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                    <span class="small txt-default">{{ 'You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">*Жанр</label>
+                            <label class="col-sm-2 control-label">*{{ 'Genre'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].tv_genre_id, {'attr': {'class': 'populate placeholder'} }) }}
@@ -81,47 +72,44 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Громкость</label>
+                            <label class="col-sm-2 control-label">{{ 'Volume'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-3">
                                     {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].volume_correction) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Принудительно выставляет значение громкости для данного канала.</span>
+                                    <span class="small txt-default">{{ 'Sets compulsory volume level for this channel'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Логотип канала:</label>
+                            <label class="col-sm-2 control-label">{{ 'Channel logo'|trans }}:</label>
                             <div class="col-xs-10 col-sm-8">
-
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-12 col-sm-8 pull-right">
                                     {{form_widget(app['form'].logo) }}
-                                    <img class="img-rounded channel-logo" src="{% if app['form'].logo.vars.value%}{{app.baseHost}}{{app['form'].logo.vars.value}}{% endif %}" alt="" style="max-width: 100%;">
+                                    <img class="channel-logo" src="{% if app['form'].logo.vars.value%}{{app.baseHost}}{{app['form'].logo.vars.value}}{% endif %}" alt="" style="max-width: 100%;">
                                 </div>
-                                <div class=" col-xs-10 col-sm-3" id="bootstrapped-fine-uploader">
-                                    {#<a class="btn btn-success file-btn"><span>Добавить картинку</span><input type="file" name="channel_logo" ></a>#}
-                                </div>
+                               <div class="pull-left" id="bootstrapped-fine-uploader"></div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Логотип канала для отображения в списке IPTV-каналов. Рекомендуемый формат - png, не менее 96*96 pixels, максимальный размер файла - 1Мбайт.</span>
+                                    <span class="small txt-default">{{ 'Recommended format – png, no smaller than 96*96 pixels, maximum size of the file – 1 MB.'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Ссылки для вещания:</label>
-                            <div class="col-xs-10 col-sm-9">
+                            <label class="col-sm-2 control-label">{{ 'Broadcasting links'|trans }}:</label>
+                            <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-12">
-                                    <table class="table table-striped table-hover" id="cmd_data">
+                                    <table class="table  table-hover" id="cmd_data">
                                         <thead>
                                             <tr>
-                                                <th>Адрес</th>
-                                                <th>Приоритет</th>
-                                                <th>Временная HTTP-ссылка</th>
-                                                <th>Вести мониторинг</th>
-                                                <th>Балансировка загрузки</th>
+                                                <th>{{ 'Adress'|trans }}</th>
+                                                <th>{{ 'Priority'|trans }}</th>
+                                                <th>{{ 'Temporary HTTP–link'|trans }}</th>
+                                                <th>{{ 'Monitoring'|trans }}</th>
+                                                <th>{{ 'Loading balance'|trans }}</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -167,12 +155,12 @@
                                                             <ul class="dropdown-menu pull-right">
                                                                 <li>
                                                                     <a href="#" class="channel_url_change_data">
-                                                                        <span>Изменить</span>
+                                                                        <span>{{ 'Edit'|trans }}</span>
                                                                     </a>
                                                                 </li>
                                                                 <li>
                                                                     <a href="#" class="channel_url_remove_data">
-                                                                        <span>Удалить</span>
+                                                                        <span>{{ 'Delete'|trans }}</span>
                                                                     </a>
                                                                 </li>
                                                             </ul>
@@ -182,38 +170,28 @@
                                                 {% endif %}
                                             {% endfor %}
                                             {% endif %}
-                                            {#{% if app['form']['cmd']|length == 0 or (app['form']['cmd']|length == 1 and not(app['form']['cmd'][1] or app['form']['cmd'][1].vars.value))%}#}
-                                            {#{% endif %}
-                                            {% if app['form']['cmd'] and app['form']['cmd']|first.vars.value %}#}
                                                 <tr>
                                                     <td>
                                                         <label data-field="form[cmd]"></label>
                                                         <input type="hidden" disabled="disabled" name="form[cmd][0]" id="form_cmd_0">
-
                                                         <input type="hidden" disabled="disabled" name="form[user_agent_filter][0]" id="form_user_agent_filter_0">
-
-                                                    </td>                                                
+                                                    </td>
                                                     <td>
                                                         <label data-field="form[priority]"></label>
                                                         <input type="hidden" disabled="disabled" name="form[priority][0]" id="form_priority_0">
-
                                                     </td>
                                                     <td>
                                                         <div class="col-sm-12">
                                                             <div class="toggle-switch toggle-switch-success">
                                                                 <label>
                                                                     <input type="checkbox" value="1" disabled="disabled" name="form[use_http_tmp_link][0]" id="form_use_http_tmp_link_0">
-
                                                                     <div class="toggle-switch-inner"></div>
                                                                     <div class="toggle-switch-switch"></div>
                                                                 </label>
                                                             </div>
                                                             <input type="hidden" disabled="disabled" name="form[wowza_tmp_link][0]" id="form_wowza_tmp_link_0">
-
                                                             <input type="hidden" disabled="disabled" name="form[nginx_secure_link][0]" id="form_nginx_secure_link_0">
-
                                                             <input type="hidden" disabled="disabled" name="form[flussonic_tmp_link][0]" id="form_flussonic_tmp_link_0">
-
                                                         </div>
                                                     </td>
                                                     <td>
@@ -221,14 +199,11 @@
                                                             <div class="toggle-switch toggle-switch-success">
                                                                 <label>
                                                                     <input type="checkbox" value="1" disabled="disabled" name="form[enable_monitoring][0]" id="form_enable_monitoring_0">
-
                                                                     <div class="toggle-switch-inner"></div>
                                                                     <div class="toggle-switch-switch"></div>
                                                                 </label>
                                                                 <input type="hidden" disabled="disabled" name="form[enable_balancer_monitoring][0]" id="form_enable_balancer_monitoring_0">
-
                                                                 <input type="hidden" disabled="disabled" name="form[monitoring_url][0]" id="form_monitoring_url_0">
-
                                                             </div>
                                                         </div>
                                                     </td>
@@ -237,12 +212,10 @@
                                                             <div class="toggle-switch toggle-switch-success">
                                                                 <label>
                                                                     <input type="checkbox" value="1" disabled="disabled" name="form[use_load_balancing][0]" id="form_use_load_balancing_0">
-
                                                                     <div class="toggle-switch-inner"></div>
                                                                     <div class="toggle-switch-switch"></div>
                                                                 </label>
                                                                 <input type="hidden" disabled="disabled" name="form[stream_server][0]" id="form_stream_server_0">
-
                                                             </div>
                                                         </div>
                                                     </td>
@@ -254,12 +227,12 @@
                                                             <ul class="dropdown-menu pull-right">
                                                                 <li>
                                                                     <a class="channel_url_change_data" href="#">
-                                                                        <span>Изменить</span>
+                                                                        <span>{{ 'Edit'|trans }}</span>
                                                                     </a>
                                                                 </li>
                                                                 <li>
                                                                     <a class="channel_url_remove_data" href="#">
-                                                                        <span>Удалить</span>
+                                                                        <span>{{ 'Delete'|trans }}</span>
                                                                     </a>
                                                                 </li>
                                                             </ul>
@@ -270,19 +243,19 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class=" col-xs-10 col-sm-3">
-                                    <a class="btn btn-success" id="add_broadcasting_link"><span>Добавить ссылку</span></a>
+                                <div class="pull-left">
+                                    <a class="btn btn-success btn-block" id="add_broadcasting_link"><span>{{ 'Add link'|trans }}</span></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>Запись на сервер хранилище</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'TV archive'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -296,16 +269,13 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
-
+                    </div> </a>
                     <div class="box-content" id="add_channel_storage_save">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Вести ТВ архив</label>
+                            <label class="col-sm-2 control-label">{{ 'Enable TV archive'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-7">
                                     <div class="checkbox">
@@ -318,18 +288,24 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class=" col-xs-10 col-sm-6">
-                                    <br>
-                                    {{ form_widget(app['form'].storage_names, {'attr': {'class': 'populate placeholder'}}) }}      
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].storage_names) }}
-                                    </div>
-                                    <span class="small txt-default">Сервера хранилища</span>
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Адрес для записи ТВ архива</label>
+                            <label class="col-sm-2 control-label">{{ 'Storage server'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].storage_names, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].storage_names) }}
+                                    </div>
+                                    <span class="small txt-default"></span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ 'TV archive address'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].mc_cmd, {'attr': {'class': 'form-control'}}) }}      
@@ -338,60 +314,65 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Возможна запись только мультикаст протоколов. Формат rtp://239.1.1.1:1234 либо udp://239.1.1.1:1234</span>
+                                    <span class="small txt-default">{{ 'Multicast protocols recording only. Format rtp://239.1.1.1:1234  or udp://239.1.1.1:1234'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Длительность ТВ архива</label>
-                            <div class="col-xs-10 col-sm-5">
-                                <div class=" col-xs-10 col-sm-2">
-                                    {{ form_widget(app['form'].tv_archive_duration, {'attr': {'class': 'populate placeholder'}}) }}
+                            <label class="col-sm-2 control-label">{{ 'TV archive length'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].tv_archive_duration, {'attr': {'class': 'form-control populate placeholder'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].tv_archive_duration) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Измеряется в часах</span>
+                                    <span class="small txt-default">{{ 'Measured in hours'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Разрешить nPVR</label>
-                            <div class="col-xs-10 col-sm-9">
-                                <div class=" col-xs-10 col-sm-9">
+                            <label class="col-sm-2 control-label">{{ 'Allow nPVR'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-2">
                                     <div class="checkbox">
                                         <label>
-                                            {{ form_widget(app['form'].allow_pvr) }}      
+                                         {{ form_widget(app['form'].allow_pvr) }}     
                                             <i class="fa fa-square-o small"></i>
                                         </label>
                                         <div class="bg-danger">
-                                            {{ form_errors(app['form'].allow_pvr) }}
+                                             {{ form_errors(app['form'].allow_pvr) }}
                                         </div>
                                     </div>
                                 </div>
-                                <div class=" col-xs-10 col-sm-4">
-                                    <br>
-                                    {{ form_widget(app['form'].pvr_storage_names, {'attr': {'class': 'populate placeholder'}}) }}      
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Allow the user to record selected programs on the server repository'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ 'Storage server'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                     {{ form_widget(app['form'].pvr_storage_names, {'attr': {'class': 'populate placeholder'}}) }}      
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].pvr_storage_names) }}
                                     </div>
-                                    <span class="small txt-default">Сервера хранилища</span>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Возможность пользователю осуществлять запись выбранных программ/передач на сервер хранилище</span>
-                                    <span class="small txt-default">Возможна запись только мультикаст протоколов.</span>
+                                    <span class="small txt-default">{{ 'Multicast protocols only can be recorded.'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>EPG</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'EPG'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -405,50 +386,47 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div>  </a>
                     <div class="box-content" id="add_channel_EPG">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">XMLTV ID</label>
+                            <label class="col-sm-2 control-label">{{ 'XMLTV ID'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
-                                <div class=" col-xs-10 col-sm-2">
+                                <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].xmltv_id, {'attr': {'class': 'form-control'}}) }}    
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].xmltv_id) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">XMLTV ID канала в EPG-файле. Если у источника EPG есть префикс, то укажите его в формате &lt;prefix&gt;_XMLTV ID</span>
+                                    <span class="small txt-default">{{ 'XMLTV ID of channel in EPG file. If the EPG source has the prefix state it in &lt;prefix&gt;_XMLTV ID format'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Коррекция времени для EPG</label>
-                            <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-10 col-sm-1">
-                                    {{ form_widget(app['form'].correct_time, {'attr': {'class': 'populate placeholder'}}) }}
+                            <label class="col-sm-2 control-label">{{ 'Time correction for EPG'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].correct_time, {'attr': {'class': 'form-control populate placeholder'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].correct_time) }}
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Измеряется в минутах</span>
+                                    <span class="small txt-default">{{ 'Measured in minutes'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="box">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>Безопасность</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Security'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -462,15 +440,13 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div></a>
                     <div class="box-content" id="add_channel_safety">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Ограничение по возрасту</label>
+                            <label class="col-sm-2 control-label">{{ 'Age restriction'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-2">
                                     <div class="checkbox">
@@ -484,18 +460,18 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Устанавливает парольное ограничение на просмотр канала. По умолчанию 0000</span>
+                                    <span class="small txt-default">{{ 'Sets the password restriction on the channel Default password 0000'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"><a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>Тип канала</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Channel type'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -509,15 +485,13 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div></a>
                     <div class="box-content" id="add_channel_type">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Базовый канал</label>
+                            <label class="col-sm-2 control-label">{{ 'Basic channel'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-2">
                                     <div class="checkbox">
@@ -531,18 +505,18 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Игнорируется, если используется функционал Тарифных планов</span>
+                                    <span class="small txt-default">{{ 'Ignore is Tariff plan functional is used'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box">  <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
-                                <div class="col-xs-10 col-sm-3">
-                                    <span>Запись на USB-носитель</span>
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'USB recordings'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -556,15 +530,13 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content" id="add_channel_usb_store">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">TimeShift на USB-носитель</label>
+                            <label class="col-sm-2 control-label">{{ 'TimeShift via USB devices'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-2">
                                     <div class="checkbox">
@@ -578,12 +550,12 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default">Возможность пользователю осуществлять функцию TimeShift при помощи USB-носителя</span>
+                                    <span class="small txt-default">{{ 'User can perform TimeShift function using Flash drive, HDD or SSD.'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">PVR на USB-носитель</label>
+                            <label class="col-sm-2 control-label">{{ 'PVR to the USB-driver'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-2">
                                     <div class="checkbox">
@@ -597,46 +569,46 @@
                                     </div>
                                 </div>
                                 <span class="help-inline col-xs-12 col-sm-12">
-                                    <span class="small txt-default"> Возможность пользователю осуществлять запись выбраных программ/передач на USB-носитель</span>
+                                    <span class="small txt-default">{{ 'User can record selected shows and programs to the Flash drive, HDD or SSD.'|trans }}</span>
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box">
-                    <div class="box-content">
-                        <div class="row">
-                            <div class="col-xs-10 col-sm-4 pull-right">
-                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/iptv-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
-{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
-                            </div>
+            </div>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="box">
+                <div class="box-content">
+                    <div class="row">
+                        <div class="pull-right">
+                            {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success   pull-right'}}) }}
+                            <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/iptv-list" class="btn btn-default  pull-right">{{ 'Cancel'|trans }}</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div style="display: none;">
-            {{ form_row(app['form'].cmd) }}
-            {{ form_row(app['form'].user_agent_filter) }}
-            {{ form_row(app['form'].priority) }}
-            {{ form_row(app['form'].use_http_tmp_link) }}
-            {{ form_row(app['form'].wowza_tmp_link) }}
-            {{ form_row(app['form'].nginx_secure_link) }}
-            {{ form_row(app['form'].flussonic_tmp_link) }}
-            {{ form_row(app['form'].enable_monitoring) }}
-            {{ form_row(app['form'].enable_balancer_monitoring) }}
-            {{ form_row(app['form'].monitoring_url) }}
-            {{ form_row(app['form'].use_load_balancing) }}
-            {{ form_row(app['form'].stream_server) }}
-        </div>
-        {{ form_end(app['form']) }}  
     </div>
+    <div style="display: none;">
+        {{ form_row(app['form'].cmd) }}
+        {{ form_row(app['form'].user_agent_filter) }}
+        {{ form_row(app['form'].priority) }}
+        {{ form_row(app['form'].use_http_tmp_link) }}
+        {{ form_row(app['form'].wowza_tmp_link) }}
+        {{ form_row(app['form'].nginx_secure_link) }}
+        {{ form_row(app['form'].flussonic_tmp_link) }}
+        {{ form_row(app['form'].enable_monitoring) }}
+        {{ form_row(app['form'].enable_balancer_monitoring) }}
+        {{ form_row(app['form'].monitoring_url) }}
+        {{ form_row(app['form'].use_load_balancing) }}
+        {{ form_row(app['form'].stream_server) }}
+    </div>
+        {{ form_end(app['form']) }}
     <div id="modalbox_ad">
         <div class="devoops-modal channel-form">
             <div class="devoops-modal-header">
                 <div class="modal-header-name">
-                    <span></span>
+                    <span>{{ 'Add URL'|trans }}</span>
                 </div>
                 <div class="box-icons">
                     <a class="close-link">
@@ -645,48 +617,46 @@
                 </div>
             </div>
             <div class="devoops-modal-inner">
-                <div class="box">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-4">
-                                    <span>Базовая информация</span>
+                                    <span>{{ 'Basic'|trans }}</span>
                                 </div>
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-down"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content" id="add_channel_url_base">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">URL канала</label>
+                                <label class="col-sm-3 control-label">{{ 'Channel URL'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[cmd][]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Адрес канала в сети. Формат: solution+URL. Пример: ffrt http://lpOfStream/test.js </span>
+                                        <span class="small txt-default">{{ 'Format: solution+URL Example ffrt http://5.39.70.216/live/88.ts'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Фильтр</label>
+                                <label class="col-sm-3 control-label">{{ 'Filter'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[user_agent_filter][]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Фильтр по user-agent, возможно настроить фильтрацию по типу подключения(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, RU, ...). Поле регистрозависимое</span>
+                                        <span class="small txt-default">{{ 'Filter by user-agent. Ability to set the filter by the connection type (WiFi, Ethernet), by STB model (250, 275, ...), by country (UA, RU, ...). Field is case sensitive'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Приоритет</label>
+                                <label class="col-sm-3 control-label">{{ 'Priority'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-4">
                                         <select class="populate placeholder" name="form[priority][]" id="s2_priority">
@@ -699,19 +669,19 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Приоритет для URL канала, 0 - наивысший приоритет</span>
+                                        <span class="small txt-default">{{ 'Priority for channel URL, 0 – the highest priority'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"><a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-4">
-                                    <span>Временные HTTP-ссылки</span>
+                                    <span>{{ 'Temporary URL'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -725,38 +695,30 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content" id="add_channel_temp_http_link">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Состояние</label>
+                                <label class="col-sm-3 control-label">{{ 'Enable Temporary URL'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-12">
-                                        <div class="radio-inline">
+                                    <div class=" col-xs-10 col-sm-2">
+                                        <div class="checkbox">
                                             <label>
-                                                <input type="radio" name="form[use_http_tmp_link][]" value="on"> Включено
-                                                <i class="fa fa-circle-o small"></i>
-                                            </label>
-                                        </div>
-                                        <div class="radio-inline">
-                                            <label>
-                                                <input type="radio" name="form[use_http_tmp_link][]" checked value="off"> Выключено
-                                                <i class="fa fa-circle-o small"></i>
+                                                <input type="checkbox" name="form[use_http_tmp_link][]">
+                                                <i class="fa fa-square-o small"></i>
                                             </label>
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Функция защиты каналов от несанкционированного доступа</span>
+                                        <span class="small txt-default">{{ 'Protect channel from unauthorized access'|trans }}</span>
                                     </span>
                                 </div>
-                            </div>                        
+                            </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Поддержка WOWZA</label>
+                                <label class="col-sm-3 control-label">{{ 'WOWZA support'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-2">
                                         <div class="checkbox">
@@ -766,13 +728,13 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Добавляет тип поддерживаемых серверов</span>
-                                    </span>
+                                    {#<span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ ''|trans }}Добавляет тип поддерживаемых серверов</span>
+                                    </span>#}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">NGINX secure link</label>
+                                <label class="col-sm-3 control-label">{{ 'NGINX secure link'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-2">
                                         <div class="checkbox">
@@ -782,13 +744,13 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <span class="help-inline col-xs-12 col-sm-12">
+                                    {#<span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">Добавляет тип поддерживаемых серверов</span>
-                                    </span>
+                                    </span>#}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Flussonic support</label>
+                                <label class="col-sm-3 control-label">{{ 'Flussonic support'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-2">
                                         <div class="checkbox">
@@ -798,20 +760,20 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <span class="help-inline col-xs-12 col-sm-12">
+                                    {#<span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">Добавляет тип поддерживаемых серверов</span>
-                                    </span>
+                                    </span>#}
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-4">
-                                    <span>Мониторинг ссылок</span>
+                                    <span>{{ 'Monitoring'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -825,72 +787,48 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content" id="add_channel_link_monitoring">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Вести мониторинг</label>
-                                <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-12">
-                                        <div class="radio-inline">
-                                            <label>
-                                                <input type="radio" name="form[enable_monitoring][]" value="on"> Включено
-                                                <i class="fa fa-circle-o small"></i>
-                                            </label>
-                                        </div>
-                                        <div class="radio-inline">
-                                            <label>
-                                                <input type="radio" name="form[enable_monitoring][]" checked value="off"> Выключено
-                                                <i class="fa fa-circle-o small"></i>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Функционал проверки доступности URL</span>
-                                    </span>
-                                </div>
-                            </div>                        
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Мониторинг балансера</label>
+                                <label class="col-sm-3 control-label">{{ 'Enable monitoring'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-2">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="form[enable_balancer_monitoring][]">
+                                                <input type="checkbox" name="form[enable_monitoring][]">
                                                 <i class="fa fa-square-o small"></i>
                                             </label>
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Не доступен при активном поле мониторинга</span>
+                                        <span class="small txt-default">{{ 'URL availability check'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">URL канала для мониторинга</label>
+                                <label class="col-sm-3 control-label">{{ 'Channel URL for monitoring'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[monitoring_url][]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Формат: solution+URL. Пример: ffrt http://lpOfStream/test.js</span>
+                                        <span class="small txt-default">{{ 'Format: solution+URL. Example: ffrt http://lpOfStream/test.js'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
-                <div class="box">
+                <div class="box"><a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <div class="row">
                                 <div class="col-xs-10 col-sm-4">
-                                    <span>Балансировка нагрузки</span>
+                                    <span>{{ 'Load balancing'|trans }}</span>
                                 </div>
                                 <div class="col-xs-10 col-sm-2 header_check_info">
                                     <div class="toggle-switch toggle-switch-success">
@@ -904,38 +842,30 @@
                             </div>
                         </div>
                         <div class="box-icons">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                            <i class="fa fa-chevron-up"></i>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div>  </a>
                     <div class="box-content" id="add_channel_load_balancing">
                         <form class="form-horizontal" role="form">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Включить балансировку</label>
+                                <label class="col-sm-3 control-label">{{ 'Enable load balancing'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-10">
-                                        <div class="radio-inline">
+                                    <div class=" col-xs-10 col-sm-2">
+                                        <div class="checkbox">
                                             <label>
-                                                <input type="radio" name="form[use_load_balancing][]" value="on"> Включено
-                                                <i class="fa fa-circle-o small"></i>
-                                            </label>
-                                        </div>
-                                        <div class="radio-inline">
-                                            <label>
-                                                <input type="radio" name="form[use_load_balancing][]" checked value="off"> Выключено
-                                                <i class="fa fa-circle-o small"></i>
+                                                <input type="checkbox" name="form[use_load_balancing][]">
+                                                <i class="fa fa-square-o small"></i>
                                             </label>
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Функционал переключения между серверами вещания каналов в зависимости от нагрузки</span>
+                                        <span class="small txt-default">{{ 'Switching between broadcast servers depending on the load'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Сервера вещания</label>
+                                <label class="col-sm-3 control-label">{{ 'Broadcast servers'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-10">
                                         <select class="populate placeholder" multiple name="form[stream_server][]" id="s2_stream_server">
@@ -947,30 +877,37 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Сервера вещания между которыми будект осуществляться балансировка</span>
+                                        <span class="small txt-default">{{ 'Servers which are going to be balanced'|trans }}</span>
                                     </span>
                                 </div>
-                                <!--<div class=" col-xs-10 col-sm-8 col-sm-offset-4">
-                                    <button class="btn btn-primary btn-label-left" type="button">
-                                        <span>
-                                            <i class="fa fa-times"></i>
-                                        </span>
-                                        Сервер А
-                                    </button>
-                                </div>-->
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">{{ 'Balancer monitoring'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-2">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="form[enable_balancer_monitoring][]">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+{#                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Не доступен при активном поле мониторинга</span>
+                                    </span>#}
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
-
             </div>
             <div class="devoops-modal-bottom">
                 <div class="box">
                     <div class="box-content">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            <div class="pull-right">
+                                <button type="submit" class="btn btn-success  pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default  pull-right" >{{ 'Cancel'|trans }}</button>
                             </div>
                         </div>
                     </div>
@@ -995,14 +932,14 @@
                     LoadSelect2Script(DemoSelect2);
                 }
 
-                $("#form_enable_tv_archive, #form_allow_pvr").each(function () {
+                $("#form_enable_tv_archive, #form_alloww_pvr").each(function () {
                     var _this = $(this);
                     var parent = _this.closest('div').parent();
                     parent.next().on('show hide', function (e) {
                         e.stopPropagation();
                         e.preventDefault();
                         return false;
-                    })
+                    });
                     if (_this.prop("checked")) {
                         parent.next().show().find('input').prop("disabled", false).removeAttr('disabled');
                     } else {
@@ -1060,21 +997,6 @@
                 $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-        {#$.ajax({
-            url: 'tv-channels/delete-logo',
-            data: {id: '{{ app.oneChannel.id }}'},
-            success: function(data){
-                if (data.success) {
-                    $(this).prev('div').children('img').attr('src', '');
-                    $(this).prev('div').children('input').val('');
-                } else {
-                    console.log(data.error);
-                }
-            },
-            error: function(){
-                alert('Ошибка');
-            }
-        });#}
                     return false;
                 });
                 
@@ -1092,7 +1014,7 @@
                     return false;
                 });
                 
-                $("#add_channel > form> .row > div > .box:not(:first-of-type):not(:last-of-type), #modalbox_ad > div > .devoops-modal-inner > .box:not(:first-of-type)").children('div.box-content').hide('fast');
+                $("#add_channel > form> .row > .box:not(:first-of-type), #modalbox_ad > div > .devoops-modal-inner > .box:not(:first-of-type)").children('div.box-content').hide('fast');
                 
                 $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .toggle-switch").off('click');
                 $("#modalbox_ad > .channel-form .box-header .box-name .toggle-switch, #add_channel_base #cmd_data .toggle-switch").on('click', function(e){
@@ -1102,9 +1024,29 @@
                 });
             });
 
+            $("#modalbox_ad").on('change', "input[name*='enable_balancer_monitoring']", function(e){
+                var enable_monitoring = $("#modalbox_ad input[name*='enable_monitoring']:checked");
+                if ( this.checked && (enable_monitoring.length == 0 || enable_monitoring.val() == 'off') ){
+                    showModalBox();
+                }
+            });
+
         }
 
             document.addEventListener("DOMContentLoaded", yelp, false);
+
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function showModalBox(){
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Pay attention.'|trans }}');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'For activating this option, you must enable "Enable monitoring" in the "Monitoring" section'|trans }}</span>');
+            $("#modalbox").show();
+        }
     </script>
 
     <script type="text/template" id="qq-template-bootstrap">
@@ -1113,7 +1055,7 @@
         <!--<span>Drop files here to upload</span>-->
         </div>
         <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
-        <div><i class="icon-upload icon-white"></i>Добавить картинку</div>
+        <div><i class="icon-upload icon-white"></i>{{ 'Add a picture'|trans }}</div>
         </div>
         <span class="qq-drop-processing-selector qq-drop-processing">
         <!--<span>Processing dropped files...</span>-->
@@ -1127,7 +1069,7 @@
         <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
         <span class="qq-upload-file-selector qq-upload-file"></span>
         <span class="qq-upload-size-selector qq-upload-size"></span>
-        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#">Удалить</a>-->
+        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
         <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
         </li>
         </ul>

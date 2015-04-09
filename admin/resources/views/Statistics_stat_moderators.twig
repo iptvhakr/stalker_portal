@@ -1,70 +1,62 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'statistics' %}
+{% set title = ('Statistics'|trans ~ ': ' ~ 'Moderators statistics'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Статистика модераторов</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="pull-left col-sm-2">
+                <div class="pull-left">
                     {{ main_macro.get_filter_button_bar('task_type', 'id', 'title', app['taskType']) }}
-                    </div>
-                    {{ main_macro.get_filter('archived', 'Месяц', 'id', 'title', app['allArhivedate'], 2) }}
-                    {{ main_macro.get_filter('state', 'Состояние', 'id', 'title', app['taskState'], 2) }}
-                    {{ main_macro.get_filter('video_quality', 'Качество видео', 'id', 'title', app['videoQuality'], 2, 6) }}
-                    {{ main_macro.get_filter('to_user', 'Назначено', 'id', 'login', app['taskAdmin'], 2) }}
                 </div>
+                    {{ main_macro.get_filter('archived', 'Month'|trans, 'id', 'title', app['allArhivedate'], 2) }}
+                    {{ main_macro.get_filter('state', 'Status'|trans, 'id', 'title', app['taskState'], 2) }}
+                    {{ main_macro.get_filter('video_quality', 'Quality'|trans, 'id', 'title', app['videoQuality'], 2, 6) }}
+                    {{ main_macro.get_filter('to_user', 'Assignee'|trans, 'id', 'login', app['taskAdmin'], 2) }}
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
-                    {% if attribute(app, 'allVideoDuration') is defined%}
+            <div class="box">
+                {% if attribute(app, 'allVideoDuration') is defined%}
                     <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center" style="z-index: 100;">
-                        <h4 id="videoduration">Суммарная длительность, мин: {% if app['allVideoDuration']["hd_time"] and app['allVideoDuration']["hd_time"] != -1 %} HD - {{ app['allVideoDuration']["hd_time"] }}; {% endif %} {% if app['allVideoDuration']["sd_time"] and app['allVideoDuration']["sd_time"] != -1 %} SD - {{ app['allVideoDuration']["sd_time"] }}; {% endif %}{% if not app['allVideoDuration']["sd_time"] and not app['allVideoDuration']["hd_time"] %}0{% endif %}</h4>
+                        <h4 id="videoduration">{{ 'Summary length, min'|trans }}: {% if app['allVideoDuration']["hd_time"] and app['allVideoDuration']["hd_time"] != -1 %} HD - {{ app['allVideoDuration']["hd_time"] }}; {% endif %} {% if app['allVideoDuration']["sd_time"] and app['allVideoDuration']["sd_time"] != -1 %} SD - {{ app['allVideoDuration']["sd_time"] }}; {% endif %}{% if not app['allVideoDuration']["sd_time"] and not app['allVideoDuration']["hd_time"] %}0{% endif %}</h4>
                     </div>
-                    {% endif %}
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                {% endif %}
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
-                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                {% endif %}
-                                <tbody>
-                                    {% if attribute(app, 'allData') is defined  and app.allData|length > 0%}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr data-taskid="{{ item.id }}">                                               
-                                                <td>{{ item.id }}</td>
-                                                <td>{{ item.type }}</td>
-                                                <td>{{ item.start_time|date('M d, Y H:i') }}</td>
-                                                <td>{{ item.end_time|date('M d, Y H:i') }}</td>
-                                                <td><a href="{{ app.request.baseUrl }}/tasks/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a></td>
-                                                <td>{{ item.video_quality }}</td>
-                                                <td>{{ item.duration }}</td>
-                                                <td>{{ item.to_user_name }}</td>
-                                                <td>
-                                                    <span class="txt-{{app['taskStateColor'][item.state]}}">{{ app["taskState"][item.state]['title'] }}</span>
-                                                    {% if not(item.archived == '0') %}
-                                                        <br><span class="bg-{{app['taskStateColor'][4]}}">{{ app["allTaskState"][4]['title'] }}</span>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endif %}
+                            {% endif %}
+                            <tbody>
+                                {% if attribute(app, 'allData') is defined  and app.allData|length > 0%}
+                                    <!-- Start: list_row -->
+                                    {% for item in app.allData %}
+                                        <tr data-taskid="{{ item.id }}">
+                                            <td>{{ item.id }}</td>
+                                            <td>{{ item.type }}</td>
+                                            <td>{{ item.start_time|date('M d, Y H:i') }}</td>
+                                            <td>{{ item.end_time|date('M d, Y H:i') }}</td>
+                                            <td><a href="{{ app.request.baseUrl }}/tasks/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a></td>
+                                            <td>{{ item.video_quality }}</td>
+                                            <td>{{ item.duration }}</td>
+                                            <td>{{ item.to_user_name }}</td>
+                                            <td>
+                                                <span class="txt-{{app['taskStateColor'][item.state]}}">{{ app["taskState"][item.state]['title'] }}</span>
+                                                {% if not(item.archived == '0') %}
+                                                    <br><span class="bg-{{app['taskStateColor'][4]}}">{{ app["allTaskState"][4]['title'] }}</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     <!-- End: list_row -->
-                                </tbody>
-                            </table>
-                        </div>
+                                {% endif %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -73,13 +65,6 @@
                                     
     <script type="text/javascript" defer>
 
-        function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-        
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 var taskState={
@@ -139,15 +124,11 @@
                         for (var i in params) {
                             d[i] = params[i];
                         }
-                        
-                        $('input[id^="datepicker_"]').each(function () {
-                            d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
-                        });
                     }
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                     {"data": 'id'},
@@ -162,14 +143,16 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1, -2, 1]},
-                    {"sortable": false, "targets": [1]},
-                    {#{"width": "19%", "targets": [5] },
-                    {"width": "5%", "targets": [0, 4, 6,  7, -1] },
-                    {"width": "14%", "targets": [1, 2, 3, 8] }#}
+                    {"sortable": false, "targets": [1]}
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){
@@ -179,26 +162,6 @@
 
         function yelp() {
             $(document).ready(function () {
-                
-                $("#datepicker_from").datepicker({
-                    numberOfMonths: 1,
-                    language: 'ru',
-                    dateFormat: 'dd/mm/yy',
-                    onClose: function (selectedDate) {
-                        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
-                        $('#datatable-1').DataTable().ajax.reload();
-                    }
-                });
-                $("#datepicker_to").datepicker({
-                    numberOfMonths: 1,
-                    language: 'ru',
-                    dateFormat: 'dd/mm/yy',
-                    onClose: function (selectedDate) {
-                        $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
-                        $('#datatable-1').DataTable().ajax.reload();
-                    }
-                });
-                
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -217,83 +180,11 @@
                     return false;
                 });
                 
-                $("#modalbox_ad button[type='submit']").on('click', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = new Object();
-                    var lengthObj = 0;
-                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
-                        form_fields.each(function () {
-                        if ($(this).val()) {
-                            sendData[this.name] = $(this).val();
-                            lengthObj++;
-                        }
-                    });
-                    if (lengthObj < form_fields.length) {
-                        alert('Необходимо заполнить все поля');
-                        return false;
-                    }
-                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;
-                });
-                               
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    closeModalBox();
-                    return false;
-                });
-                
-                $("#add_karaoke").on("click", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var tmp_id = $('#datatable-1 tr:last').attr('id');
-                    if (!tmp_id) {
-                        tmp_id = "tr_" + $.randString();
-                        $('#datatable-1 tr:last').attr('id', tmp_id);
-                    }
-                    $("#modalbox_ad").data('tr_id', tmp_id);
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить');
-                    $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
-                    $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
-                    $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
-                    
-                    checkModalProtocol();
-                    $("#modalbox_ad").show();
-                    //        $(this).closest('.form-group').find('tbody tr:hidden').show();
-                    return false;
-                });
-                
                 LoadDataTablesScripts(TestTable1);
             });
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-        
-        var setTasksModal = function (data) {
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать');
-            if (data.data.length == 1) {
-                var row = data.data[0];
-                for (var field_name in row) {
-                    $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
-                }
-                $("#modalbox_ad select[name='protocol'] option").each(function () {
-                    $(this).attr('selected', $(this).val().toString() == data.data[0]['protocol'].toString());
-                })
-            }
-            $("#modalbox_ad input").removeAttr('disabled');
-            $('#s2_protocol').select2("destroy").select2({minimumResultsForSearch: -1});
-            $("#modalbox_ad").show();
-        }
-        
-        var manageTasks = function (obj) {
-            closeModalBox();
-            $("#modalbox_ad").click();
-            $('#datatable-1').DataTable().ajax.reload();
-        }
-        
+
     </script>
 {% endblock %}

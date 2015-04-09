@@ -1,31 +1,26 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'tasks' %}
+{% set title = ('Tasks'|trans ~ ': ' ~ 'tasks list in section'|trans ~ '"' ~ app.task_type_title ~ '"') | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Список заданий в категории {{ app['task_type_title'] }}</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    {{ main_macro.get_filter('task_type', 'Тип задания', 'id', 'title', app['taskType'], 3, 6, 1) }}
-                    {{ main_macro.get_filter('state', 'Состояние', 'id', 'title', app['taskState'], 3, 6) }}
-                    {{ main_macro.get_filter('to_user', 'Назначено', 'id', 'login', app['taskAdmin'], 3, 6) }}
+                    {{ main_macro.get_filter('task_type', 'Tasktype'|trans, 'id', 'title', app['taskType'], 3, 6, 1) }}
+                    {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['taskState'], 3, 6) }}
+                    {{ main_macro.get_filter('to_user', 'Assigned to'|trans, 'id', 'login', app['taskAdmin'], 3, 6) }}
             </div>
         </div>
         
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            
                 <div class="box">
                     {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
                     {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                            <table class="table  table-hover table-datatable" id="datatable-1">
                                 {% if attribute(app, 'dropdownAttribute') is defined %}
                                 {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
                                 {% endif %}
@@ -39,7 +34,7 @@
                                                 <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a></td>
                                                 <td>{{ item.to_user_name }}</td>
                                                 <td>{{ item.start_time|date('M d, Y H:i' ) }}</td>
-                                                <td>{% if item.messages %}<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">новое</a>{% else %}<span>-</span>{% endif %}</td>
+                                                <td>{% if item.messages %}<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ 'new'|trans }}</a>{% else %}<span>-</span>{% endif %}</td>
                                                 <td><span class="txt-{{app['taskStateColor'][item.state]}}">{{ app["taskState"][item.state]['title'] }}</span></td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
@@ -50,12 +45,12 @@
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change" data-taskid="{{ item.id }}" data-apply="ended">
-                                                                    <span>Принять</span>
+                                                                    <span>{{ 'Done'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change" data-taskid="{{ item.id }}" data-apply="rejected">
-                                                                    <span>Отклонить</span>
+                                                                    <span>{{ 'Reject'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -77,13 +72,6 @@
                                     
     <script type="text/javascript" defer>
 
-        function closeModalBox(){
-            $("#modalbox").hide();
-            $('#modalbox').find('.modal-header-name span').empty();
-            $('#modalbox').find('.devoops-modal-inner').empty();
-            $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
-        
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 var taskState={
@@ -106,7 +94,7 @@
                         var state = json.data[i].state;
                         var name = json.data[i].name;
                         var messages = json.data[i].messages;
-                        json.data[i].messages = messages!="0"?'<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id='+ id + '">новое</a>':'<span>-</span>';
+                        json.data[i].messages = messages!="0"?'<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id='+ id + '">{{ 'new'|trans }}</a>':'<span>-</span>';
                         json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id='+ id + '">' + name + '</a>';
                         
                         json.data[i].state = '<span class="txt-' + taskStateColor[state] + '">'+taskState[state]+'</span>';
@@ -122,12 +110,12 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='ended'>\n\
-                                                                    <span>Принять</span>\n\
+                                                                    <span>{{ 'Done'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='rejected'>\n\
-                                                                    <span>Отклонить</span>\n\
+                                                                    <span>{{ 'Reject'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>";
@@ -150,7 +138,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                     {"data": 'id'},
@@ -164,6 +152,11 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "order": [[ 4, "desc" ]],
                 "columnDefs": [
@@ -171,7 +164,8 @@
                     {"searchable": false, "targets": [-1, -2, 1]},
                     {"sortable": false, "targets": [-1, 1]},
                     {#{"width": "19%", "targets": [5] },
-                    {"width": "5%", "targets": [0, 4, 6,  7, -1] },
+                    {"width": "5%", "targets": [0, 4, 6,  7] },
+					  { "width": "16px", "targets": [ -1 ] }	
                     {"width": "14%", "targets": [1, 2, 3, 8] }#}
                 ]
             });
@@ -192,91 +186,15 @@
                     return false;
                 });
 
-                $("#form_reset").on('click', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $(this).closest('form').get(0).reset();
-    {#                    $("#cmd_data").find("tr:visible").remove();#}
-                    return false;
-                });
-                
-                $("#modalbox_ad button[type='submit']").on('click', function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = new Object();
-                    var lengthObj = 0;
-                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
-                        form_fields.each(function () {
-                        if ($(this).val()) {
-                            sendData[this.name] = $(this).val();
-                            lengthObj++;
-                        }
-                    });
-                    if (lengthObj < form_fields.length) {
-                        alert('Необходимо заполнить все поля');
-                        return false;
-                    }
-                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;
-                });
-                               
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
-                    if (e.currentTarget != e.target) {
-                        return;
-                    }
-                    e.stopPropagation();
-                    e.preventDefault();
-                    closeModalBox();
-                    return false;
-                });
-                
-                $("#add_karaoke").on("click", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var tmp_id = $('#datatable-1 tr:last').attr('id');
-                    if (!tmp_id) {
-                        tmp_id = "tr_" + $.randString();
-                        $('#datatable-1 tr:last').attr('id', tmp_id);
-                    }
-                    $("#modalbox_ad").data('tr_id', tmp_id);
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить');
-                    $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
-                    $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
-                    $("#modalbox_ad select").prop("disabled", false).removeAttr('disabled').find('option').removeAttr('selected');
-                    
-                    checkModalProtocol();
-                    $("#modalbox_ad").show();
-                    //        $(this).closest('.form-group').find('tbody tr:hidden').show();
-                    return false;
-                });
-                
                 LoadDataTablesScripts(TestTable1);
             });
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-        
-        var setTasksModal = function (data) {
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать');
-            if (data.data.length == 1) {
-                var row = data.data[0];
-                for (var field_name in row) {
-                    $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
-                }
-                $("#modalbox_ad select[name='protocol'] option").each(function () {
-                    $(this).attr('selected', $(this).val().toString() == data.data[0]['protocol'].toString());
-                })
-            }
-            $("#modalbox_ad input").removeAttr('disabled');
-            $('#s2_protocol').select2("destroy").select2({minimumResultsForSearch: -1});
-            $("#modalbox_ad").show();
-        }
-        
+
         var manageTasks = function (obj) {
-            closeModalBox();
-            $("#modalbox_ad").click();
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
         
     </script>
 {% endblock %}

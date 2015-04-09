@@ -57,6 +57,7 @@ class BaseStalkerController {
         $this->setRequestMethod();
         $this->setAjaxFlag();
         $this->getData();
+        $this->setDataTablePluginSettings();
         
         $modelName = "Model\\" . (empty($modelName) ? 'BaseStalker' : str_replace(array("\\", "Controller"), '', $modelName)) . 'Model';
         $this->db = FALSE;
@@ -106,7 +107,7 @@ class BaseStalkerController {
     }
 
     private function setSideBarMenu() {
-        $side_bar  = json_decode(file_get_contents($this->baseDir . '/menu.json'), TRUE);
+        $side_bar  = json_decode(str_replace(array("_(", ")"), '', file_get_contents($this->baseDir . '/json_menu/menu.json')), TRUE);
         if (!empty($this->app['userlogin'])) {
             $side_bar[1]['add_params'] = '<span class="hidden-xs">"'. $this->app['userlogin'] .'"</span>';
             if (!empty($this->app['userTaskMsgs'])) {
@@ -132,15 +133,21 @@ class BaseStalkerController {
         $this->postData = $this->request->request->all();
     }
 
-    protected function setLocalization($source = array(), $fieldname = '') {
+    protected function setLocalization($source = array(), $fieldname = '', $number = FALSE, $params = array()) {
         if (!empty($source)) {
             if (!is_array($source)) {
-                return $this->app['translator']->trans($source, array(), 'stb', $this->app['language']);        
+                $translate = '';
+                if ($number === FALSE) {
+                    $translate =  $this->app['translator']->trans($source, $params);
+                } else {
+                    $translate =  $this->app['translator']->transChoice($source, $number, $params);
+                }
+                return (!empty($translate) ? $translate: $source);
             } elseif (array_key_exists($fieldname, $source) && is_string($source[$fieldname])) {
-                $source[$fieldname] = $this->app['translator']->trans($source[$fieldname], array(), 'stb', $this->app['language']);        
+                $source[$fieldname] = $this->setLocalization($source[$fieldname], $fieldname, $number, $params);
             } else {
                 while (list($key, $row) = each($source)) {
-                    $source[$key] = $this->setLocalization($row, $fieldname); 
+                    $source[$key] = $this->setLocalization($row, $fieldname, $number, $params);
                 }
             }
             return $source;
@@ -373,6 +380,7 @@ class BaseStalkerController {
         $dont_remove = (!empty($this->app['userlogin']) && $this->app['userlogin'] == 'admin');
         while(list($key, $row) = each($side_bar)){
             $controller = str_replace('_', '-', $row['alias']);
+            $side_bar[$key]['name'] = $row['name'] = $this->setLocalization($row['name']);
             if ($this->app['controller_alias'] == $controller) {
                     $this->app['breadcrumbs']->addItem($row['name'], $this->workURL . "/$controller");
                 }
@@ -381,6 +389,7 @@ class BaseStalkerController {
                 continue;
             }
             while(list($key_a, $row_a) = each($row['action'])){
+                $side_bar[$key]['action'][$key_a]['name'] = $row_a['name'] = $this->setLocalization($row_a['name']);
                 $action = str_replace('_', '-', $row_a['alias']);
                 if ($this->app['controller_alias'] == $controller && $this->app['action_alias'] == $action) {
                     $this->app['breadcrumbs']->addItem($row_a['name'], $this->workURL . "/$controller/$action");
@@ -433,5 +442,9 @@ class BaseStalkerController {
                 }
             }
         }
+    }
+
+    protected function setDataTablePluginSettings(){
+        $this->app['datatable_lang_file'] = "./plugins/datatables/lang/" . str_replace('utf8', 'json', $this->app['locale']);
     }
 }

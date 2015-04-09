@@ -1,5 +1,8 @@
 <?php
 
+use Symfony\Component\Translation\Loader\PoFileLoader;
+use Neutron\Silex\Provider\ImagineServiceProvider;
+
 require_once __DIR__ . '/vendor/autoload.php';
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../server/'));
 
@@ -15,8 +18,8 @@ foreach ($allowed_locales as $lang => $locale){
 
 $accept_language = !empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $_SERVER["HTTP_ACCEPT_LANGUAGE"] : null;
 
-if (!empty($_COOKIE['language']) && array_key_exists($_COOKIE['language'], $locales)){
-    $language = $_COOKIE['language'];
+if (!empty($_COOKIE['language']) && (array_key_exists($_COOKIE['language'], $locales) || in_array($_COOKIE['language'], $locales))){
+    $language = substr($_COOKIE['language'], 0, 2);
 }else if ($accept_language && array_key_exists(substr($accept_language, 0, 2), $locales)){
     $language = substr($accept_language, 0, 2);
 }else{
@@ -33,10 +36,6 @@ bindtextdomain('stb', PROJECT_PATH.'/locale');
 textdomain('stb');
 bind_textdomain_codeset('stb', 'UTF-8');
 
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\Translation\Loader\PoFileLoader;
-use Neutron\Silex\Provider\ImagineServiceProvider;
-
 $app = new Silex\Application();
 
 $app['debug'] = true;
@@ -50,7 +49,7 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale' => $language,
     'locale_fallbacks' => array($language),
 ));
-
+$app['allowed_locales'] = $allowed_locales;
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.options' => array(
         'cache' => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
@@ -61,14 +60,13 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->register(new ImagineServiceProvider());
 
-$app["language"] = $language;  
+$app["language"] = $language;
+$app["locale"] = $locale;
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app){
-//            $translator->addLoader('yaml', new YamlFileLoader());
-
-            //$translator->addResource('yaml', __DIR__.'/resources/locales/ru.yml', 'ru');
             $lang = (!empty($app["language"])? $app["language"]: "ru");
             $translator->addLoader('po', new PoFileLoader());
-            $translator->addResource('po', __DIR__."/../server/locale/$lang/LC_MESSAGES/stb.po", $lang, 'stb');
+            $translator->addResource('po', __DIR__."/../server/locale/$lang/LC_MESSAGES/stb.po", $lang);
+            $translator->setLocale($lang);
             return $translator;
         }));
 $app["breadcrumbs.separator"] = "";        

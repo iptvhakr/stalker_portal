@@ -10,28 +10,21 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class KaraokeController extends \Controller\BaseStalkerController {
 
-    private $allStatus = array(array('id' => 1, 'title' => 'Не опубликованно'), array('id' => 2, 'title' => 'Опубликованно'));
+    protected $allStatus = array();
     private $allProtocols = array(array('id' => "nfs", 'title' => 'NFS'), array('id' => "http", 'title' => 'HTTP'), array('id' => "custom", 'title' => 'Custom URL'));
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+        $this->allStatus = array(
+            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
+            array('id' => 2, 'title' => $this->setlocalization('Published'))
+        );
     }
     
     // ------------------- action method ---------------------------------------
     
     public function index() {
         
-        if (empty($this->app['action_alias'])) {
-            return $this->app->redirect($this->app['controller_alias'] . '/karaoke-list');
-        }
-        
-        if ($no_auth = $this->checkAuth()) {
-            return $no_auth;
-        }
-        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
-    }
-
-    public function karaoke_list(){
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -82,7 +75,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
             "status" => "`karaoke`.`status` as `status`"
         );
                 
-        $error = "Error";
+        $error = $this->setlocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -157,7 +150,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
     public function save_karaoke() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -190,7 +183,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
     
     public function remove_karaoke() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['karaokeid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -210,7 +203,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
     public function toggle_karaoke_done() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['karaokeid']) || !array_key_exists('done', $this->postData)) {
-            $this->app->abort(404, 'Page not found...');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -230,7 +223,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
     public function toggle_karaoke_accessed() {
         
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['karaokeid']) || !array_key_exists('accessed', $this->postData)) {
-            $this->app->abort(404, 'Page not found...');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -240,7 +233,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageKaraoke';
         $data['id'] = $this->postData['karaokeid'];
-        $error = 'Не выполнено';    
+        $error = $this->setlocalization('Failed');
         $where = array('karaoke.id'=>$this->postData['karaokeid']);
         $item = $this->db->getKaraokeList(array('select'=> array("*", "karaoke.id as id"), "where" => $where));
         if ($item[0]['protocol'] != 'custom' || !empty($item[0]['rtsp_url'])) {
@@ -252,7 +245,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
             }
             $error = '';    
         } else {
-            $error = 'Нельзя опубликовать запись с протоколом - custom, и пустым полем - URL';   
+            $error = $this->setlocalization('You can not publishing record with protocol - "custom", and with empty field - URL');
         }
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -263,7 +256,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
     public function check_karaoke_source() {
 
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['karaokeid'])) {
-            $this->app->abort(404, 'Page not found...');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -272,8 +265,8 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkSourceKaraoke';
         $data['id'] = $this->postData['karaokeid'];
-        $data['base_info'] = 'Информация отсутствует';
-        $error = 'Error';   
+        $data['base_info'] = $this->setlocalization('Information not available');
+        $error = $this->setlocalization('Error');
         $media_id = intval($this->postData['karaokeid']);
         if (empty($_SERVER['TARGET'])) {
             $_SERVER['TARGET'] = 'ADM';
@@ -303,16 +296,16 @@ class KaraokeController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',             'title'=>'ID',          'checked' => TRUE),
-            array('name'=>'name',           'title'=>'Название',    'checked' => TRUE),
-            array('name'=>'singer',         'title'=>'Исполнитель', 'checked' => TRUE),
-            array('name'=>'added',          'title'=>'Добавлено',   'checked' => TRUE),
-            array('name'=>'protocol',       'title'=>'Протокол',    'checked' => TRUE),
-            array('name'=>'rtsp_url',       'title'=>'URL',         'checked' => TRUE),
-            array('name'=>'media_claims',   'title'=>'Жалобы',      'checked' => TRUE),
-            array('name'=>'done',           'title'=>'Задание',     'checked' => TRUE),
-            array('name'=>'accessed',       'title'=>'Состояние',   'checked' => TRUE),
-            array('name'=>'operations',     'title'=>'Действия',    'checked' => TRUE)
+            array('name'=>'id',             'title'=>$this->setlocalization('ID'),      'checked' => TRUE),
+            array('name'=>'name',           'title'=>$this->setlocalization('Title'),   'checked' => TRUE),
+            array('name'=>'singer',         'title'=>$this->setlocalization('Artist'),  'checked' => TRUE),
+            array('name'=>'added',          'title'=>$this->setlocalization('Added'),   'checked' => TRUE),
+            array('name'=>'protocol',       'title'=>$this->setlocalization('Protocol'),'checked' => TRUE),
+            array('name'=>'rtsp_url',       'title'=>$this->setlocalization('URL'),     'checked' => TRUE),
+            array('name'=>'media_claims',   'title'=>$this->setlocalization('Complaints'),'checked' => TRUE),
+            array('name'=>'done',           'title'=>$this->setlocalization('Tasks'),   'checked' => TRUE),
+            array('name'=>'accessed',       'title'=>$this->setlocalization('Conditions'),'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),'checked' => TRUE)
         );
     }
     
@@ -327,11 +320,7 @@ class KaraokeController extends \Controller\BaseStalkerController {
             if (array_key_exists('protocol', $this->data['filters']) && !empty($this->data['filters']['protocol'])) {
                 $return['`karaoke`.`protocol`'] = $this->data['filters']['protocol'];
             }
-            
-//            if (array_key_exists('country', $this->data['filters']) && !is_numeric($this->data['filters']['country'])) {
-//                $like_filter['country'] = "%" . $this->data['filters']['country'] . "%";
-//            }
-            
+
             $this->app['filters'] = $this->data['filters'];
         } else {
             $this->app['filters'] = array();

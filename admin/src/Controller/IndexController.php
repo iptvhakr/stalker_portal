@@ -52,13 +52,13 @@ class IndexController extends \Controller\BaseStalkerController {
         $aliases[1] = urldecode($aliases[1]);
         $filters = explode('?', $aliases[1]);
         $aliases[1] = $filters[0];
-        if (count($filters) > 1 && (!empty($this->data['set-dropdown-attribute']) && $this->data['set-dropdown-attribute'] = 'with-button-filters')) {
+        if (count($filters) > 1 && (!empty($this->data['set-dropdown-attribute']) && $this->data['set-dropdown-attribute'] == 'with-button-filters')) {
             $filters[1] = explode("&", $filters[1]);
             $filters[1] = $filters[1][0];
             $filters[1] = str_replace(array('=', '_'), '-', $filters[1]);
             $filters[1] = preg_replace('/(\[[^\]]*\])/i', '', $filters[1]);
             $aliases[1] .= "-$filters[1]";
-        }  
+        }
 //        print_r($filters);exit;
         $param = array();
         $param['controller_name'] = $aliases[0];

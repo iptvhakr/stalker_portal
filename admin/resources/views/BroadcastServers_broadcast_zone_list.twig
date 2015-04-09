@@ -1,69 +1,64 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'streams' %}
+{% set title = ('Broadcast servers'|trans ~ ': ' ~ 'areas list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Зоны вещания</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-zone" class="btn btn-success pull-right" id="add_admin">Добавить</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-zone" class="btn btn-success pull-right" id="add_admin">{{ 'Add zone'|trans }}</a>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <div class="row">
-                                <div class="col-xs-8 col-sm-8 col-sm-offset-2">
-                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 ">
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% if attribute(app, 'allData') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.allData %}
-                                                    <tr data-adminid="{{ item.id }}">
-                                                        <td>{{ item.id }}</td>
-                                                        <td>{{ item.name }}</td>
-                                                        <td>{{ item.country_count }}</td>
-                                                        <td>{% if item.default_flag == 1 %}<i class="fa fa-check"></i>{% endif %}</td>
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
+                                    {% endif %}
+                                    <tbody>
+                                    {% if attribute(app, 'allData') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allData %}
+                                            <tr data-adminid="{{ item.id }}">
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.name }}</td>
+                                                <td>{{ item.country_count }}</td>
+                                                <td>{% if item.default_flag == 1 %}<i class="fa fa-check"></i>{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-zone?id={{ item.id }}">
+                                                                    <span>{{ 'Edit'|trans }}</span>
                                                                 </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-zone?id={{ item.id }}">
-                                                                            <span>Редактировать</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-zone" data-id="{{ item.id }}">
-                                                                            <span>Удалить</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax"
+                                                                   href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-zone"
+                                                                   data-id="{{ item.id }}">
+                                                                    <span> {{ 'Delete'|trans }} </span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -87,12 +82,12 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-zone?id=" + id + "'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-zone' data-id='" + id + "'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
@@ -118,7 +113,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                 {% if attribute(app, 'dropdownAttribute') is defined%}
@@ -129,6 +124,11 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
@@ -161,11 +161,11 @@
               
         var manageZoneList = function (obj) {
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
         
         var zoneListMsg = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
-                alert("Удалено " + data.msg.Zone + " зона для " + data.msg.Countries + " стран");
+                alert("{{ 'Deleted'|trans }} " + data.msg.Zone + " {{ 'zone for'|trans }} " + data.msg.Countries + " {{ 'countries'|trans }}");
             }
             manageZoneList(data);
         }

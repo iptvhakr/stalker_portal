@@ -10,14 +10,15 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class StoragesController extends \Controller\BaseStalkerController {
 
-    private $allServerStatus = array(
-        array('id' => 1, 'title' => 'Отключен'),
-        array('id' => 2, 'title' => 'Включен')
-    );
+    private $allServerStatus = array();
 
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
+        $this->allServerStatus = array(
+            array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
+            array('id' => 2, 'title' => $this->setLocalization('Published'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -162,7 +163,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     public function reset_cache(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -178,7 +179,7 @@ class StoragesController extends \Controller\BaseStalkerController {
             $names = array();
         }
         if ($this->db->updateStorageCache(array('changed' => '0000-00-00 00:00:00'), $names)){
-            $data['msg'] = "Кэш сброшен" . (!empty($names)? '': ' для всех серверов');
+            $data['msg'] = $this->setlocalization('A cache has been reset') . (!empty($names)? ' ' . $this->setlocalization('for') . ' ' .implode(', ', $names): ' ' . $this->setlocalization('for all servers'));
             $error = '';
         }
 
@@ -189,7 +190,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     public function refresh_cache(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -208,7 +209,7 @@ class StoragesController extends \Controller\BaseStalkerController {
 
         $not_custom_video = $this->db->getNoCustomVideo();
         
-        $data['msg'] = "Обновлено: " . count($not_custom_video) . " - видео; ";
+        $data['msg'] = $this->setlocalization('Updated') . ": " . count($not_custom_video) . " - " . $this->setLocalization('movies') . "; ";
         $_SERVER['TARGET'] = 'ADM';
         
         foreach($not_custom_video as $row){
@@ -225,7 +226,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         }
 
         $not_custom_karaoke = $this->db->getNoCustomKaraoke();
-        $data['msg'] .= count($not_custom_karaoke)  . " - караоке";
+        $data['msg'] .= count($not_custom_karaoke)  . " - " . $this->setLocalization('karaoke');
                 
         foreach($not_custom_karaoke as $row){
             set_time_limit(30);
@@ -248,7 +249,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     public function get_storage(){
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -268,7 +269,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     public function save_storage() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['form'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -291,10 +292,10 @@ class StoragesController extends \Controller\BaseStalkerController {
 
             if ($result = call_user_func_array(array($this->db, $operation), $storage)) {
                 $error = '';    
-                $data['msg'] = 'Сохранено';
+                $data['msg'] = $this->setlocalization('Saved');
             }
         } else {
-            $error = $data['msg'] = 'Не заполнены обязательные поля';
+            $error = $data['msg'] = $this->setlocalization('Fill in the required fields');
         }
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -323,7 +324,7 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     public function remove_storage() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -333,7 +334,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'listMsg';
         $result = $this->db->deleteStrages($this->postData['id']);
-        $data['msg'] = "Удалено " . (!empty($result)? $result: '');
+        $data['msg'] = $this->setlocalization('Deleted') . " " . (!empty($result)? $result: '');
 
         $error = '';
 
@@ -532,8 +533,8 @@ class StoragesController extends \Controller\BaseStalkerController {
 
     private function getLogsDropdownAttribute() {
         return array(
-            array('name' => 'added',    'title' => 'Время',     'checked' => TRUE),
-            array('name' => 'log_txt',  'title' => 'Сообщение', 'checked' => TRUE)
+            array('name' => 'added',    'title' => $this->setlocalization('Time'),  'checked' => TRUE),
+            array('name' => 'log_txt',  'title' => $this->setlocalization('Message'),'checked' => TRUE)
         );
     }
     
@@ -546,13 +547,13 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     private function getListDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => 'ID',                    'checked' => TRUE),
-            array('name' => 'storage_name', 'title' => 'Название',              'checked' => TRUE),
-            array('name' => 'storage_ip',   'title' => 'IP',                    'checked' => TRUE),
-            array('name' => 'nfs_home_path','title' => 'Домашняя директория',   'checked' => TRUE),
-            array('name' => 'max_online',   'title' => 'Максимум пользователей','checked' => TRUE),
-            array('name' => 'status',       'title' => 'Состояние',             'checked' => TRUE),
-            array('name' => 'operations',   'title' => 'Операции',              'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'storage_name', 'title' => $this->setlocalization('Title'),         'checked' => TRUE),
+            array('name' => 'storage_ip',   'title' => $this->setlocalization('IP'),            'checked' => TRUE),
+            array('name' => 'nfs_home_path','title' => $this->setlocalization('Home directory'),'checked' => TRUE),
+            array('name' => 'max_online',   'title' => $this->setlocalization('Maximum users'), 'checked' => TRUE),
+            array('name' => 'status',       'title' => $this->setlocalization('Status'),        'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setlocalization('Operation'),     'checked' => TRUE)
         );
     }
     
@@ -569,15 +570,15 @@ class StoragesController extends \Controller\BaseStalkerController {
     
     private function getSearchDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => 'ID',                    'checked' => TRUE),
-            array('name' => 'path',         'title' => 'Каталог',               'checked' => TRUE),
-            array('name' => 'name',         'title' => 'Название',              'checked' => TRUE),
-            array('name' => 'hd',           'title' => 'Качество видео',        'checked' => TRUE),
-            array('name' => 'on_storages',  'title' => 'Количество хранилищ',   'checked' => TRUE),
-            array('name' => 'count',        'title' => 'Всего просмотров',      'checked' => TRUE),
-            array('name' => 'month_counter','title' => 'Просмотров за месяц',   'checked' => TRUE),
-            array('name' => 'last_played',  'title' => 'Последний просмотр',    'checked' => TRUE),
-            array('name' => 'accessed',     'title' => 'Состояние',             'checked' => TRUE)
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),            'checked' => TRUE),
+            array('name' => 'path',         'title' => $this->setlocalization('Catalogue'),     'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setlocalization('Title'),         'checked' => TRUE),
+            array('name' => 'hd',           'title' => $this->setlocalization('Video quality'), 'checked' => TRUE),
+            array('name' => 'on_storages',  'title' => $this->setlocalization('Storage quantity'),'checked' => TRUE),
+            array('name' => 'count',        'title' => $this->setlocalization('All views'),     'checked' => TRUE),
+            array('name' => 'month_counter','title' => $this->setlocalization('Views per month'),'checked' => TRUE),
+            array('name' => 'last_played',  'title' => $this->setlocalization('Last view'),     'checked' => TRUE),
+            array('name' => 'accessed',     'title' => $this->setlocalization('Status'),        'checked' => TRUE)
         );
     }
     

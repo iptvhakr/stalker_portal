@@ -1,5 +1,5 @@
 {% extends 'layout.twig' %}
-{% set title = 'streams' %}
+{% set title = ('Broadcast servers'|trans ~ ': ' ~ ' broadcast area '|trans ~ ' - ' ~ (app.zoneEdit ? 'edit area'|trans ~ '"' ~ app.zoneName ~ '"': 'add area'|trans)) | trans %}
 
 {% block content %}
     <div id="add_channel">
@@ -14,7 +14,7 @@
                 <div class="box">
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Внешний ID</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'External ID'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
@@ -23,13 +23,13 @@
                                         {{ form_errors(app['form'].name) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Условное название зоны. Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                        <span class="small txt-default">{{ 'Title of the area. You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Зона по умолчанию</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Default area'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     <div class="checkbox">
@@ -42,7 +42,7 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Будет выбрана стартовой для всех новых серверов вещания у которых не указана зона</span>
+                                        <span class="small txt-default">{{ 'It will be selected as default for all new broadcast servers'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                             <div class="col-xs-10 col-sm-6">
                                 <fieldset id="letters" class=" col-xs-10 col-sm-12">
                                     <div class=" col-xs-10 col-sm-5">
-                                        <label class="col-sm-12 control-label">Страны</label>
+                                        <label class="col-sm-12 control-label">{{ 'Countries'|trans }}</label>
                                         {{ form_widget(app['form'].disabled_countries, {'attr': {'class': 'left populate placeholder col-sm-12', "multiple": "multiple"}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].disabled_countries) }}
@@ -60,13 +60,13 @@
                                     </div>
                                     <div class=" col-xs-10 col-sm-2">
                                         <br><br><br><br><br>
-                                        <button type="button" class="add all btn btn-block btn-default"> все &gt;&gt; </button>
+                                        <button type="button" class="add all btn btn-block btn-default"> {{ 'all'|trans }} &gt;&gt; </button>
                                         <button type="button" class="add btn btn-block btn-default"> &gt; </button>
                                         <button type="button" class="remove btn btn-block btn-default"> &lt; </button>
-                                        <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; все</button>
+                                        <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
                                     </div>
                                     <div class=" col-xs-10 col-sm-5">
-                                        <label class="col-sm-12 control-label">Выбрано</label>
+                                        <label class="col-sm-12 control-label">{{ 'Selected'|trans }}</label>
                                         {{ form_widget(app['form'].countries, {'attr': {'class': 'right populate placeholder col-sm-12', "multiple": "multiple"}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].countries) }}
@@ -81,9 +81,9 @@
                     <div class="box-content">
                         <div class="row">
                             <div class="col-xs-10 col-sm-4 pull-right">
-                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/broadcast-zone-list" class="btn btn-default col-sm-5 pull-left">Отмена</a>
-{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/broadcast-zone-list" class="btn btn-default col-sm-5 pull-left"> {{ 'Cancel'|trans }} </a>
+{#                                {{ form_widget(app['form'].reset, { 'label': ' {{ 'Cancel'|trans }} ' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,16 @@
                         }
                     });
                     $('#form_disabled_countries_json').val(JSON.stringify(sendData));
-                var sendData =[];    
+
+                    if ($('#form_disabled_countries option').length <= 1) {
+                        $('#form_disabled_countries').append($("<option value='empty_val1'></option>"));
+                        $('#form_disabled_countries').append($("<option value='empty_val2'></option>"));
+                    }
+                    $('#form_disabled_countries').attr('multiple', true);
+                    $('#form_disabled_countries option:first').attr('selected', 'selected').next('option').attr('selected', 'selected');
+
+
+                var sendData =[];
                     $('#form_countries').find('option').each(function(index, val){
                         var _val = $(this);
                         if (_val.val()) {
@@ -123,6 +132,12 @@
                         }
                     });
                     $('#form_countries_json').val(JSON.stringify(sendData));
+                    if ($('#form_countries option').length <= 1) {
+                        $('#form_countries').append($("<option value='empty_val1'></option>"));
+                        $('#form_countries').append($("<option value='empty_val2'></option>"));
+                    }
+                    $('#form_countries').attr('multiple', true);
+                    $('#form_countries option:first').attr('selected', 'selected').next('option').attr('selected', 'selected');;
                 });
             });
         }

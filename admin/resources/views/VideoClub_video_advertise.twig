@@ -1,37 +1,29 @@
 {% extends 'layout.twig' %}
-
-{% set title = 'video-club' %}
-{% set list = '<li><a href="#" data-filter="0"><span>Все</span></a></li>' %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'advertising list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-2">
-            <h3>Реклама</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-ads" class="btn btn-success pull-right">Добавить</a>
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-ads" class="btn btn-success pull-right">{{ 'Add commercial'|trans }}</a>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {% if app['ads'] %}
                     <div class="box">
                         <div class="box-content">
                             <div class="box-content no-padding">
-                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <table class="table  table-hover table-datatable" id="datatable-1">
                                     <thead>
                                         <tr>
-                                            <th data-filter="title">Название</th>
-                                            <th data-filter="url">Адрес</th>
-                                            <th data-filter="weight">Вес</th>
-                                            <th data-filter="started">Просмотр начат</th>
-                                            <th data-filter="ended">Просмотр завершен</th>
-                                            <th data-filter="must_watch">Необходимо посмотреть</th>
-                                            <th data-filter="status">Статус</th>
-                                            <th data-filter="operations">Действия</th>
+                                            <th data-filter="title">{{ 'Title'|trans }}</th>
+                                            <th data-filter="url">{{ 'Address'|trans }}</th>
+                                            <th data-filter="weight">{{ 'Weight'|trans }}</th>
+                                            <th data-filter="started"{{ 'Views'|trans }}></th>
+                                            <th data-filter="ended">{{ 'Views counted'|trans }}</th>
+                                            <th data-filter="must_watch">{{ 'Necessary to view'|trans }}</th>
+                                            <th data-filter="status"{{ 'Status'|trans }}>Статус</th>
+                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -44,7 +36,7 @@
                                                 <td data-filter="started">{{ item.started }}</td>
                                                 <td data-filter="ended">{{ item.ended }}</td>
                                                 <td data-filter="must_watch">{{ item.must_watch }}</td>
-                                                <td data-filter="status">{% if item.status %}<span class="txt-success">Опубликовано</span>{% else %}<span class="txt-danger">Не опубликовано</span>{% endif %}</td>
+                                                <td data-filter="status">{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Not published'|trans }}</span>{% endif %}</td>
                                                 <td data-filter="operations">
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
@@ -53,17 +45,17 @@
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
                                                                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-ads?id={{ item.id }}">
-                                                                    <span>Изменить</span>
+                                                                    <span>{{ 'Edit'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-ads-status" data-adsstatus="{% if item.status %}0{% else %}1{% endif %}" data-adsid="{{ item.id }}">
-                                                                    <span>{% if item.status %}Отключить{% else %}Включить{% endif %}</span>
+                                                                    <span>{% if item.status %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-ads" data-adsid="{{ item.id }}">
-                                                                    <span>Удалить</span>
+                                                                    <span>{{ 'Delete'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -86,7 +78,7 @@
     function TestTable1() {
         $('#datatable-1').dataTable({
             "language": {
-                "url": "./plugins/datatables/lang/ru_RU.json"
+                "url": "{{ app.datatable_lang_file }}"
             },
             "bFilter": true,
             "bPaginate": true,
@@ -95,6 +87,7 @@
                 { className: "action-menu", "targets": [ -1 ] },
                 { "targets": [ -1 ], "orderable": false},
                 { "targets": [ 1, 2, 3, 4, 5, 6, 7], "searchable": false},
+				 { "width": "16px", "targets": [ -1] }
 
             ]
         });
@@ -119,7 +112,7 @@
                                     _this.data(key, data[key]);
                                 }
                             } else {
-                                alert('Some server error');
+                                alert("{{ 'Some server error'|trans }}");
                             }
                         },
                         error: function (data) {
@@ -133,7 +126,7 @@
                             if ($.isFunction(window[errAction])) {
                                 window[errAction]($(_this));
                             } else {
-                                alert('Some network error or access denied');
+                                alert("{{ 'Some network error or access denied'|trans }}");
                             }
                         },
                         dataType: "json",
@@ -155,7 +148,7 @@
     var removeAds = function(obj){
         var cRow = $(obj).closest('tr');
         $('#datatable-1').DataTable().row(cRow).remove().draw( false );
-    }
+    };
     
     var toggleVideoAdsStatus = function(obj){
         $(obj).text($(obj).data('title'));

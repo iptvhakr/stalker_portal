@@ -1,14 +1,7 @@
 {% extends 'layout.twig' %}
-{% set title = 'tariffs' %}
+{% set title = ('Service packages'|trans ~ ': ' ~ (app.servicePackageEdit ? ('Edit package'|trans ~ " '"~ app.packageName ~ "'"): 'Add package'|trans)) | trans %}
 
 {% block content %}
-
-    
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-3">
-            <h3>{% if app['servicePackageEdit'] %}Редактировать{% else %}Добавить{% endif %} пакет</h3>
-        </div>
-    </div>#}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
         <div class="bg-danger">
@@ -21,7 +14,7 @@
                 <div class="box">
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Внешний ID</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'External ID'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
@@ -30,13 +23,13 @@
                                         {{ form_errors(app['form'].external_id) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Должен быть уникальным</span>
+                                        <span class="small txt-default">{{ 'Must be unique'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Пакет</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Package'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}
@@ -44,13 +37,13 @@
                                         {{ form_errors(app['form'].name) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Можно использовать буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                        <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Описание</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Description'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].description, {'attr': {'class': 'form-control'}}) }}
@@ -64,7 +57,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Услуга</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Service'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {% if attribute(app['form'].type, 'vars') is defined %}
@@ -77,13 +70,13 @@
                                         {{ form_errors(app['form'].type) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Категория контента к которой относится создаваемый пакет</span>
+                                        <span class="small txt-default">{{ 'Category of content to which this package is belongs'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Доступ</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Access'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].service_type, {'attr': {'class': 'populate placeholder'}}) }}
@@ -91,13 +84,13 @@
                                         {{ form_errors(app['form'].service_type) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Тип доступа к услуге: постоянный или разовый - с указанным сроком и ценой аренды</span>
+                                        <span class="small txt-default">{{ 'Type of access to the service: regular or one-off - with the terms and the price of rent'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Длительнгость аренды</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">Duration of rent</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].rent_duration, {'attr': {'class': 'form-control'}}) }}
@@ -105,13 +98,13 @@
                                         {{ form_errors(app['form'].rent_duration) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Длительность действия указанной услуги в часах</span>
+                                        <span class="small txt-default">{{ 'The duration of the specified service hours'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Цена</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Price'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].price, {'attr': {'class': 'form-control'}}) }}
@@ -119,13 +112,13 @@
                                         {{ form_errors(app['form'].price) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Цена за аренду услуги</span>
+                                        <span class="small txt-default">{{ 'Price for rent services'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label col-xs-offset-1">Полный пакет</label>
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Full package'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     <div class="checkbox">
@@ -138,7 +131,7 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Предоставляет полный доступ ко всему контенту выбранной услуги</span>
+                                        <span class="small txt-default">{{ 'Gives access to all content of the selected service'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -148,7 +141,7 @@
                             <div class="col-xs-10 col-sm-6">
                                 <fieldset id="letters" class=" col-xs-10 col-sm-12">
                                     <div class=" col-xs-10 col-sm-5">
-                                        <label class="col-sm-12 control-label">Доступно</label>
+                                        <label class="col-sm-12 control-label">{{ 'Available'|trans }}</label>
                                         {{ form_widget(app['form'].disabled_services, {'attr': {'class': 'left populate placeholder col-sm-12', "multiple": "multiple"}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].disabled_services) }}
@@ -156,13 +149,13 @@
                                     </div>
                                     <div class=" col-xs-10 col-sm-2">
                                         <br><br><br><br><br>
-                                        <button type="button" class="add all btn btn-block btn-default"> все &gt;&gt; </button>
+                                        <button type="button" class="add all btn btn-block btn-default"> {{ 'all'|trans }} &gt;&gt; </button>
                                         <button type="button" class="add btn btn-block btn-default"> &gt; </button>
                                         <button type="button" class="remove btn btn-block btn-default"> &lt; </button>
-                                        <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; все</button>
+                                        <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
                                     </div>
                                     <div class=" col-xs-10 col-sm-5">
-                                        <label class="col-sm-12 control-label">Выбрано</label>
+                                        <label class="col-sm-12 control-label">{{ 'Selected'|trans }}</label>
                                         {{ form_widget(app['form'].services, {'attr': {'class': 'right populate placeholder col-sm-12', "multiple": "multiple"}}) }}
                                         <div class="bg-danger">
                                             {{ form_errors(app['form'].services) }}
@@ -177,9 +170,8 @@
                     <div class="box-content">
                         <div class="row">
                             <div class="col-xs-10 col-sm-4 pull-right">
-                                {{ form_widget(app['form'].save, { 'label': 'Сохранить' , attr: {'class': 'btn btn-success col-sm-5 pull-right'}}) }}
-                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/service-packages" class="btn btn-default col-sm-5 pull-left">Отмена</a>
-{#                                {{ form_widget(app['form'].reset, { 'label': 'Отмена' , attr: {'class': 'btn btn-default col-sm-5 pull-left'}}) }}#}
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success  pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/service-packages" class="btn btn-default pull-right">{{ 'Cancel'|trans }}</a>
                             </div>
                         </div>
                     </div>
@@ -187,7 +179,6 @@
             </div>
         </div>
         <div style="">
-            {#{{ form_widget(app.form._token) }}#}
             {{ form_rest(app.form) }}
         </div>
         {{ form_end(app['form']) }}  
@@ -252,12 +243,12 @@
                     var type = $(this).val();
 
                     if (type == 'module' || type == ''){
-                        $('#form_all_services').attr('disabled', 'disbled').closest('.form-group').hide();
+                        $('#form_all_services').attr('disabled', 'disabled').closest('.form-group').hide();
                     }else{
                         $('#form_all_services').removeAttr('disabled').closest('.form-group').show();
                     }
 
-                    $('#form_service_type').attr('disabled', 'disbled').closest('.form-group').hide();
+                    $('#form_service_type').attr('disabled', 'disabled').closest('.form-group').hide();
                     
                     if (type == 'video'){
                         $('#form_service_type').removeAttr('disabled').closest('.form-group').show();
@@ -316,11 +307,11 @@
                 $('#form_disabled_services').attr('disabled', 'disabled');
                 $('#form_services').attr('disabled', 'disabled');
             }
-        }
+        };
         
         var checkExternalId = function(data){
             $('#form_external_id').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
-        }
+        };
         
         var checkExternalIdError = function(data){
             var msg = '';

@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 
 class UsersController extends \Controller\BaseStalkerController {
 
-    private $allStatus = array(array('id' => 1, 'title' => 'Выкл'), array('id' => 2, 'title' => 'Вкл'));
+    protected $allStatus = array();
     private $allState = array(array('id' => 1, 'title' => 'Offline'), array('id' => 2, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
@@ -30,6 +30,10 @@ class UsersController extends \Controller\BaseStalkerController {
         parent::__construct($app, __CLASS__);
         $this->watchdog = \Config::get('watchdog_timeout') * 2;
         $this->userFields[] = "((UNIX_TIMESTAMP() - UNIX_TIMESTAMP(`keep_alive`)) <= $this->watchdog) as state";
+        $this->allStatus = array(
+            array('id' => 1, 'title' => $this->setlocalization('on')),
+            array('id' => 2, 'title' => $this->setlocalization('off'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -91,10 +95,14 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['logList'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        
+        $user_name = '';
         if (!empty($this->app['user'])) {
-            $this->app['breadcrumbs']->addItem("Логи пользователя {$this->app['user'][0]['name']} {$this->app['user'][0]['fname']} ({$this->app['user'][0]['mac']})");
+            $user_name = " {$this->app['user'][0]['name']} {$this->app['user'][0]['fname']} ({$this->app['user'][0]['mac']})";
+            $this->app['breadcrumbs']->addItem($this->setLocalization("Log of user") . $user_name);
         }
+
+        $this->app['currentUser'] = $user_name;
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -107,7 +115,8 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['consoleReport'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
-        $this->app['breadcrumbs']->addItem("Отчет по измененным статусам приставок за " . strftime('%d.%m.%Y')  . " на " . strftime('%T'));
+        $this->app['now_time'] = strftime('%d.%m.%Y')  . " " . strftime('%T');
+        $this->app['breadcrumbs']->addItem($this->setLocalization("STB statuses report") . " " . $this->app['now_time']);
     
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -128,7 +137,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
         }
-        $this->app['breadcrumbs']->addItem("Добавить пользователя");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Add user'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -173,10 +182,15 @@ class UsersController extends \Controller\BaseStalkerController {
         
         $this->app['userTPs'] = $users_tarif_plans;
 
+        $this->app['state'] = (int) $this->user['state'];
+
         if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
         }
-        $this->app['breadcrumbs']->addItem("Редактировать пользователя приcтавки '{$this->user['mac']}'");
+
+        $this->app['userName'] = $this->user['mac'];
+
+        $this->app['breadcrumbs']->addItem($this->setLocalization("Edit user") . " '{$this->user['mac']}'");
         return $this->app['twig']->render("Users_add_users.twig");
     }
 
@@ -197,7 +211,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['consoleGroupList'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
         
-        $this->app['breadcrumbs']->addItem("Приставки группы '{$this->app['consoleGroup']['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization("STB of group") . " '{$this->app['consoleGroup']['name']}'");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -259,7 +273,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function toggle_user() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['userid']) || !isset($this->postData['userstatus'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -268,7 +282,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'toggleUserStatus';
-        $error = 'Не удалось';
+        $error = $this->setlocalization('Failed');
 
         $event = new \SysEvent();
         $event->setUserListById($this->postData['userid']);
@@ -280,7 +294,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 $event->sendCutOff();
             }
             $data['title'] = (!$this->postData['userstatus'] ? 'Отключить' : 'Включить');
-            $data['status'] = (!$this->postData['userstatus'] ? '<span class="txt-success">Вкл.</span>' : '<span class="txt-danger">Выкл</span>');
+            $data['status'] = (!$this->postData['userstatus'] ? '<span class="txt-success">' . $this->setLocalization("on") . '</span>' : '<span class="txt-danger">' . $this->setLocalization("off") . '</span>');
             $data['userstatus'] = (int) !$this->postData['userstatus'];
         }
 
@@ -291,7 +305,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function remove_user() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['userid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -313,7 +327,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function reset_users_parent_password() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['userid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -333,7 +347,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function reset_user_fav_tv() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['userid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -343,14 +357,14 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'resetUserFavTv';
         $this->db->updateUserFavItv(array('fav_ch' => ''), $id = $this->postData['userid']);
-        $response = $this->generateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, '');
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
     public function add_console_group() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -359,7 +373,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addConsoleGroup';
-        $error = 'Не удалось';
+        $error = $this->setlocalization('Failed');
         $check = $this->db->getConsoleGroup(array('name' => $this->postData['name']));
         if (empty($check)) {
             $data['id'] = $this->db->insertConsoleGroup(array('name' => $this->postData['name']));
@@ -374,7 +388,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function edit_console_group() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name']) || empty($this->postData['id'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -383,7 +397,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'editConsoleGroup';
-        $error = 'Не удалось';
+        $error = $this->setlocalization('Failed');
         $check = $this->db->getConsoleGroup(array('name' => $this->postData['name']));
         if (empty($check)) {
             $this->db->updateConsoleGroup(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
@@ -399,7 +413,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function remove_console_group() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['consolegroupid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -410,14 +424,14 @@ class UsersController extends \Controller\BaseStalkerController {
         $data['action'] = 'removeConsoleGroup';
         $data['id'] = $this->postData['consolegroupid'];
         $this->db->deleteConsoleGroup(array('id' => $this->postData['consolegroupid']));
-        $response = $this->generateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, '');
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
     public function check_login() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -425,9 +439,9 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkLogin';
-        $error = 'Имя занято';
+        $error = 'Name already used';
         if ($this->db->checkLogin(trim($this->postData['name']))) {
-            $data['chk_rezult'] = 'Имя занято';
+            $data['chk_rezult'] = 'Name already used';
         } else {
             $data['chk_rezult'] = 'Имя свободно';
             $error = '';
@@ -439,7 +453,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function check_console_name() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -447,9 +461,9 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkConsoleName';
-        $error = 'Имя занято';
+        $error = 'Name already used';
         if ($this->db->checkConsoleName(trim($this->postData['name']))) {
-            $data['chk_rezult'] = 'Имя занято';
+            $data['chk_rezult'] = 'Name already used';
         } else {
             $data['chk_rezult'] = 'Имя свободно';
             $error = '';
@@ -507,7 +521,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function remove_console_item() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['consoleid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -518,14 +532,14 @@ class UsersController extends \Controller\BaseStalkerController {
         $data['action'] = 'removeConsoleItem';
         $data['stb_in_group_id'] = $this->postData['consoleid'];
         $this->db->deleteConsoleItem(array('id' => $this->postData['consoleid']));
-        $response = $this->generateAjaxResponse($data, $error);
+        $response = $this->generateAjaxResponse($data, '');
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
     public function add_console_item() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['name']) || empty($this->postData['groupid'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -534,7 +548,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'addConsoleItem';
-        $error = 'Не удалось';
+        $error = $this->setlocalization('Failed');
         $mac = \Middleware::normalizeMac($this->postData['name']);
         if (!empty($mac)) {
             $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
@@ -567,7 +581,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
     public function check_console_item() {
         if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['mac'])) {
-            $this->app->abort(404, 'Page not found');
+            $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
@@ -575,19 +589,19 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkConsoleItem';
-        $error = 'Имя занято';
+        $error = $this->setlocalization('Name already used');
         $mac = \Middleware::normalizeMac($this->postData['mac']);
         $data['jjj'] = $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
         $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
 
         if (count($check_in_group) != 0 && (int)$check_in_group[0]['stb_group_id'] != 0) {
             $group_name = $check_in_group[0]['name'];
-            $data['chk_rezult'] = "Пользователь уже подключен к группе '$group_name'";
-            $error = "Пользователь уже подключен к группе '$group_name'";
+            $data['chk_rezult'] = $this->setLocalization('This user is already connected to the group') ." '$group_name'";
+            $error = $this->setLocalization('This user is already connected to the group') . " '$group_name'";
         } elseif (empty($check_in_users)) {
-            $data['chk_rezult'] = $error = "Пользователь с таким MAC-адресом не определен";
+            $data['chk_rezult'] = $error = $this->setLocalization("User with this MAC-address is not defined");
         } else {
-            $data['chk_rezult'] = 'Пользователя можно подключить к группе';
+            $data['chk_rezult'] = $this->setlocalization('The user can be connected to the group');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -759,15 +773,15 @@ class UsersController extends \Controller\BaseStalkerController {
     private function buildUserForm(&$data = array(), $edit = FALSE) {
 
         $builder = $this->app['form.factory'];
-        $status = array(
-            0 => 'Выключена',
-            1 => 'Включена'
+        $additional_services = $status = array(
+            0 => $this->setLocalization('on'),
+            1 => $this->setLocalization('off')
         );
-
+/*
         $additional_services = array(
             0 => 'Выключены',
             1 => 'Включены'
-        );
+        );*/
 
         $stb_groups = new \StbGroup();
 
@@ -965,15 +979,15 @@ class UsersController extends \Controller\BaseStalkerController {
     
     private function getUsersListDropdownAttribute() {
         return array(
-            array('name'=>'mac',                'title'=>'MAC',                 'checked' => TRUE),
-            array('name'=>'ip',                 'title'=>'IP',                  'checked' => TRUE),
-            array('name'=>'login',              'title'=>'Логин',               'checked' => TRUE),
-            array('name'=>'ls',                 'title'=>'Лицевой счет',        'checked' => TRUE),
-            array('name'=>'fname',              'title'=>'ФИО',                 'checked' => TRUE),
-            array('name'=>'last_change_status', 'title'=>'Последнее изменение', 'checked' => TRUE),
-            array('name'=>'state',              'title'=>'Состояние',           'checked' => TRUE),
-            array('name'=>'status',             'title'=>'Статус',              'checked' => TRUE),
-            array('name'=>'operations',         'title'=>'Действия',            'checked' => TRUE)
+            array('name'=>'mac',                'title'=>'MAC',                                 'checked' => TRUE),
+            array('name'=>'ip',                 'title'=>'IP',                                  'checked' => TRUE),
+            array('name'=>'login',              'title'=>$this->setLocalization('Login'),       'checked' => TRUE),
+            array('name'=>'ls',                 'title'=>$this->setLocalization('Account'),     'checked' => TRUE),
+            array('name'=>'fname',              'title'=>$this->setLocalization('Name'),        'checked' => TRUE),
+            array('name'=>'last_change_status', 'title'=>$this->setLocalization('Last modified'),'checked' => TRUE),
+            array('name'=>'state',              'title'=>$this->setLocalization('State'),       'checked' => TRUE),
+            array('name'=>'status',             'title'=>$this->setLocalization('Status'),      'checked' => TRUE),
+            array('name'=>'operations',         'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
         );
     }
     

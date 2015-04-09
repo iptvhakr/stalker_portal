@@ -1,29 +1,24 @@
 {% extends 'layout.twig' %}
-{% set title = 'video-club' %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'schedule'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Рассписание публикаций</h3>
-        </div>
-    </div>#}
+
     <div id="iptv_list">
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="box">
                     <div class="box-content">
                         <div class="box-content no-padding">
                             {% if app['allTasks'] %}
-                                <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
+                                <table class="table  table-hover table-datatable" id="datatable-1">
                                     <thead>
                                         <tr>
-                                            <th data-filter="task_added">Дата</th>
-                                            <th data-filter="name">Название</th>
-                                            <th data-filter="o_name">Оригинальное название</th>
-                                            <th data-filter="time">Длительность, мин</th>
-                                            <th data-filter="tasks">Задания</th>
-                                            <th data-filter="year">Год</th>
-                                            <th data-filter="operations">Действия</th>
+                                            <th data-filter="task_added">{{ 'Date'|trans }}</th>
+                                            <th data-filter="name">{{ 'Title'|trans }}</th>
+                                            <th data-filter="o_name">{{ 'Original title'|trans }}</th>
+                                            <th data-filter="time">{{ 'Length, min'|trans }}</th>
+                                            <th data-filter="tasks">{{ 'Tasks'|trans }}</th>
+                                            <th data-filter="year">{{ 'Year'|trans }}</th>
+                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -35,7 +30,7 @@
                                                 <td data-filter="o_name">{{ item.o_name }}</td>
                                                 <td data-filter="time">{{ item.time }}</td>
                                                 <td data-filter="tasks">
-                                                    <a href="#{#?task={{ item['id'] }}#}">№{{ item['id'] }} (запланированно на {{ item['date_on']|date('d-m-Y') }})</a>                                                        
+                                                    <a href="#{#?task={{ item['id'] }}#}">№{{ item['id'] }} ({{ 'scheduled'|trans }} {{ 'on'|trans }} {{ item['date_on']|date('d-m-Y') }})</a>
                                                 </td>
                                                 <td data-filter="year">{{ item.year }}</td>
                                                 <td data-filter="operations" class="action-menu">
@@ -46,17 +41,17 @@
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="{{ item.video_id }}" data-taskid="{{ item.task_id }}" data-video_on_date="{{ date()|date("y-m-d") }}" data-curr_on_date="{{ item['date_on']|date('d-m-Y') }}">
-                                                                    <span>Редактировать</span>
+                                                                    <span>{{ 'Edit'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="{{ item.video_id }}" data-video_on_date="{{ date()|date("y-m-d") }}">
-                                                                    <span>Опубликовать</span>
+                                                                    <span>{{ 'Publish now'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="{{ item.task_id }}">
-                                                                    <span>Удалить</span>
+                                                                    <span>{{ 'Remove schedule'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -68,7 +63,7 @@
                                     </tbody>
                                 </table>
                             {% else %}
-                                <h3>Нет запланированных публикаций</h3>
+                                <h3>{{ 'No scheduled publications'|trans }}</h3>
                             {% endif %}
                         </div>
                     </div>
@@ -100,7 +95,7 @@
                                         _this.data(key, data[key]);
                                     }
                                 } else {
-                                    alert('Some server error');
+                                    alert("{{ 'Some server error'|trans }}");
                                 }
                             },
                             error: function (data) {
@@ -114,7 +109,7 @@
                                 if ($.isFunction(window[errAction])) {
                                     window[errAction]($(_this));
                                 } else {
-                                    alert('Some network error or access denied');
+                                    alert("{{ 'Some network error or access denied'|trans }}");
                                 }
                             },
                             dataType: "json",
@@ -166,48 +161,46 @@
             } else {
                 $(obj).closest('tr').remove();
             }
-        }
+        };
 
         function setEnableDatePicker(obj) {
-            $('#modalbox').find('.modal-header-name span').text('Расписание включения');
+            $('#modalbox').find('.modal-header-name span').text("{{ 'Schedule switch on'|trans }}");
             $('#modalbox').find('.devoops-modal-inner')
                     .append("<input type='hidden' name='link_id' value='" + obj.data('videoid') + "'>")
                     .append("<input type='text' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='video_on_date' value='"+ obj.data('curr_on_date') +"'>");
             $('#modalbox').find('.devoops-modal-bottom')
-                    .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">Отмена</button>')
-                    .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">Включить</button>');
+                    .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
+                    .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Switch on'|trans }}</button>');
             $('#modalbox').find('.devoops-modal').width(350);
             $(".datepicker").datepicker({
                 language: 'ru',
                 dateFormat: 'dd-mm-yy',
                 firstDay: 1,
-                minDate: new Date()
+                minDate: new Date(),
+                dayNamesMin : [
+                    '{{ 'Sun'|trans }}',
+                    '{{ 'Mon'|trans }}',
+                    '{{ 'Tue'|trans }}',
+                    '{{ 'Wed'|trans }}',
+                    '{{ 'Thu'|trans }}',
+                    '{{ 'Fri'|trans }}',
+                    '{{ 'Sat'|trans }}'
+                ],
+                monthNames  : [
+                    '{{ 'January'|trans }}',
+                    '{{ 'February'|trans }}',
+                    '{{ 'March'|trans }}',
+                    '{{ 'April'|trans }}',
+                    '{{ 'May'|trans }}',
+                    '{{ 'June'|trans }}',
+                    '{{ 'July'|trans }}',
+                    '{{ 'August'|trans }}',
+                    '{{ 'September'|trans }}',
+                    '{{ 'October'|trans }}',
+                    '{{ 'November'|trans }}',
+                    '{{ 'December'|trans }}'
+                ]
             }
-        {#                    {
-                    dayNamesMin : [
-                        '<?= htmlspecialchars(_('Sun'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('Mon'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('Tue'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('Wed'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('Thu'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('Fri'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('Sat'), ENT_QUOTES)?>'
-                    ],
-                    monthNames  : [
-                        '<?= htmlspecialchars(_('January'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('February'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('March'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('April'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('May'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('June'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('July'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('August'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('September'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('October'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('November'), ENT_QUOTES)?>',
-                        '<?= htmlspecialchars(_('December'), ENT_QUOTES)?>'
-                    ]
-                }#}
                     );
             $("div[id*='datepicker']").addClass('dp_white');
             $(obj).closest('div.open').removeClass('open');

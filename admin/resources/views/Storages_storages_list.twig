@@ -1,105 +1,101 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = 'storages' %}
+{% set title = ('Storage'|trans ~ ': ' ~ 'storages list'|trans) | trans %}
 
 {% block content %}
-{#    <div class="row header_title">
-        <div class="col-xs-10 col-sm-6">
-            <h3>Список хранилищ</h3>
-        </div>
-    </div>#}
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="col-xs-4 col-sm-2 pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-storage" class="btn btn-success col-xs-12 col-sm-12 pull-right" id="add_storage">Добавить</a>
+                <div class=" pull-right">
+                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-storage" class="btn btn-success pull-right" id="add_storage">{{ 'Add storage'|trans }}</a>
                 </div>
-                <div class="col-xs-4 col-sm-2 pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/reset-cache" class="btn btn-default col-xs-12 col-sm-12 pull-right main_ajax" data-id="all">Очистить кэш</a>
+                <div class="pull-right">
+                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache" class="btn btn-default  pull-right main_ajax" data-id="all">{{ 'Clean the cache'|trans }}</a>
                 </div>
-                <div class="col-xs-4 col-sm-2 pull-right">
-                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/refresh-cache" class="btn btn-default col-xs-12 col-sm-12 pull-right main_ajax" data-id="all">Обновить кэш</a>
+                <div class="pull-right">
+                    <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/refresh-cache" class="btn btn-default pull-right main_ajax" data-id="all">{{ 'Update the cache'|trans }}</a>
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="box-header auto-height">
+                <div class="auto-height">
                     <div class="box-name">
                         <div class="row">
-                            <div class="col-xs-10 col-sm-6 col-sm-offset-3 text-center bg-warning">
-                                <span class="text_black">Очистить кэш - удалить содержимое кэша</span>
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                                <span class="text_black">{{ 'Clean the cache – remove all content from cache'|trans }}</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-10 col-sm-6 col-sm-offset-3 text-center bg-warning">
-                                <span class="text_black">Обновить кэш - получить свежую информацию обо всем контенте в хранилище</span>
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                                <span class="text_black">{{ 'Update the cache – receive new information about all content in the storage'|trans }}</span>
                             </div>
                         </div>
                     </div>
                     <div class="no-move"></div>
                 </div>
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-                                    <table class="table table-striped table-bordered table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% if attribute(app, 'allData') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for item in app.allData %}
-                                                    <tr>
-                                                        <td>{{ item.id }}</td>
-                                                        <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage" data-id="{{ item.id }}">{{ item.storage_name }}</a></td>
-                                                        <td>{{ item.storage_ip }}</td>
-                                                        <td>{{ item.nfs_home_path }}</td>
-                                                        <td>{{ item.max_online }}</td>
-                                                        <td>{% if item.status == 1 %}<span class="txt-success">Включено</span>{% else %}<span>Выключено</span>{% endif %}</td>
-                                                        
-                                                        <td>
-                                                            <div class="col-xs-3 col-sm-8">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
-                                                                    <i class="pull-right fa fa-cog"></i>
+                                    {% endif %}
+                                    <tbody>
+                                    {% if attribute(app, 'allData') is defined %}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allData %}
+                                            <tr>
+                                                <td>{{ item.id }}</td>
+                                                <td><a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage" data-id="{{ item.id }}">{{ item.storage_name }}</a></td>
+                                                <td>{{ item.storage_ip }}</td>
+                                                <td>{{ item.nfs_home_path }}</td>
+                                                <td>{{ item.max_online }}</td>
+                                                <td>{% if item.status == 1 %}<span class="txt-success">{{ 'on'|trans }}</span>{% else %} <span>{{ 'off'|trans }}</span>{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-storages-status' data-id='{{ item.id }}' data-status='{{ item.status }}'>
+                                                                    <span>{% if item.status == 1 %}{{ 'Switch off'|trans }}{% else %}{{ 'Swith on'|trans }}{% endif %}</span>
                                                                 </a>
-                                                                <ul class="dropdown-menu pull-right">
-                                                                    <li>
-                                                                        <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-storages-status' data-id='{{ item.id }}' data-status='{{ item.status }}'>
-                                                                            <span>{% if item.status == 1 %}Отключить{% else %}Включить{% endif %}</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class='main_ajax' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache" data-id="{{ item.id }}">
-                                                                            <span>Очистить кэш</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage" data-id="{{ item.id }}">
-                                                                            <span>Редактировать</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-storage" data-id="{{ item.id }}">
-                                                                            <span>Удалить</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
-                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <a class='main_ajax' href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache" data-id="{{ item.id }}">
+                                                                    <span>{{ 'Clean the cache'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage" data-id="{{ item.id }}">
+                                                                    <span>{{ 'Edit'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-storage" data-id="{{ item.id }}">
+                                                                    <span> {{ 'Delete'|trans }} </span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    {% endif %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -127,7 +123,7 @@
                             <div class="box-name">
                                 <div class="row">
                                     <div class="col-xs-10 col-sm-4">
-                                        <span>Базовая информация</span>
+                                        <span>{{ 'General information'|trans }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -140,58 +136,58 @@
                         </div>
                         <div class="box-content">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">*Название</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">*{{ 'Title'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="hidden" title="" value="" name="form[id]">
                                         <input class="form-control" type="text" title="" value="" name="form[storage_name]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Можно использовать латинские буквы, цифры и символы из списка: ! @ # $ % ^ & * ( ) _ - + : ; , .</span>
+                                        <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">*IP</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">*{{ 'IP'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[storage_ip]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">IP-адрес хранилища. Пример: http://127.0.0.1</span>
+                                        <span class="small txt-default">{{ 'IP-address of the storage. Example : http://127.0.0.1'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">*Apache port</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">*{{ 'Apache port'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[apache_port]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Номер порта через который происходит доступ к Apache server</span>
+                                        <span class="small txt-default">{{ 'Number of the port, accessing to the Apache server'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Домашняя директория</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Home directory'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[nfs_home_path]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Домашняя директория в которой будут создаваться каталоги, символьные ссылки и т.д. Пример: /home/username/slash_folder</span>
+                                        <span class="small txt-default">{{ 'Home directory where the catalogues and symbol links will be created Example: /home/username/slash_folder'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Максимум пользователей</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Maximum of the users'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[max_online]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Максимальное кол-во пользователей, которые одновременно могут смотреть контент с хранилища</span>
+                                        <span class="small txt-default">{{ 'Maximum quantity of the users, which can watching the content from the storage at the same time'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -202,7 +198,7 @@
                             <div class="box-name">
                                 <div class="row">
                                     <div class="col-xs-10 col-sm-4">
-                                        <span>Дополнительная информация</span>
+                                        <span>{{ 'Additional information'|trans }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -220,7 +216,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Хранение контента</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Content storage'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <div class="checkbox">
@@ -231,12 +227,12 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Разрешить хранение контента</span>
+                                        <span class="small txt-default">{{ 'Allow content storage'|trans }}</span>
                                     </span>
                                 </div>
                             </div>   
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Запись ТВ</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'TV recording'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <div class="checkbox">
@@ -247,12 +243,12 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Разрешить запись ТВ</span>
+                                        <span class="small txt-default">{{ 'Allow TV recording'|trans }}</span>
                                     </span>
                                 </div>
                             </div> 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Эмуляция</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Emulation'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <div class="checkbox">
@@ -263,24 +259,24 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Режим эмуляции</span>
+                                        <span class="small txt-default">{{ 'The emulation mode is used in case when two portals are attached to a single storage of TV archive. It is necessary to set the recording of TV archive at the first portal, and TV archive recording with the option of emulation at the second one. Thus, there will be two portals with the archive, though in fact it is recorded once.'|trans }}</span>
                                     </span>
                                 </div>
                             </div> 
                             <hr>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Фильтр</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Filter'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control" type="text" title="" value="" name="form[user_agent_filter]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Возможно настроить фильтрацию для приставок по типу их подключения (WiFi, Ethernet) и модели (250, 275, ...). Поле регистрозависимое.</span>
+                                        <span class="small txt-default">{{ 'You can filter the STBs according to their connection type (Wi-Fi, Ethernet) and to the models (250,275…). Field is case sensitive'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Ограничение доступа</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Access restriction'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-2">
                                         <div class="checkbox">
@@ -291,12 +287,12 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Только модераторы могут смотреть контент с хранилища</span>
+                                        <span class="small txt-default">{{ 'Only moderators can watch the content from the storage'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">Недоступно для MAG100</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Not available for the MAG100'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-2">
                                         <div class="checkbox">
@@ -307,7 +303,7 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">Хранилище недоступно на приставках MAG100</span>
+                                        <span class="small txt-default">{{ 'Storage is not available on the MAG100'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -320,8 +316,8 @@
                     <div class="box-content">
                         <div class="row">
                             <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right" id="save_button">Сохранить</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right" id="save_button">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
                             </div>
                         </div>
                     </div>
@@ -345,34 +341,32 @@
                                                         <ul class='dropdown-menu pull-right'>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-storages-status' data-id='"+ id +"' data-status='"+ json.data[i].status +"'>\n\
-                                                                    <span>" + (json.data[i].status == 1? "Отключить": "Включить") + "</span>\n\
+                                                                    <span>" + (json.data[i].status == 1? "{{ 'Switch off'|trans }}": "{{ 'Switch on'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/reset-cache' data-id='"+ id +"'>\n\
-                                                                    <span>Очистить кэш</span>\n\
+                                                                    <span>{{ 'Clean the cache'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'>\n\
-                                                                    <span>Редактировать</span>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-storage' data-id='" + id + "'>\n\
-                                                                    <span>Удалить</span>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
                         if (json.data[i].status == 1) {
-                            json.data[i].status = '<span class="txt-success">Включено</span>';
+                            json.data[i].status = '<span class="txt-success">{{ 'on'|trans }}</span>';
                         } else {
-                            json.data[i].status = '<span>Выключено</span>';
+                            json.data[i].status = '<span>{{ 'off'|trans }}</span>';
                         }
-                        json.data[i].storage_name = "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'>\n\
-                                                        <span>"+json.data[i].storage_name+"</span>\n\
-                                                    </a>"
+                        json.data[i].storage_name = "<a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-storage' data-id='"+ id +"'><span>"+json.data[i].storage_name+"</span></a>";
                     }
                 }
             }).dataTable({
@@ -389,7 +383,7 @@
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
-                    "url": "./plugins/datatables/lang/ru_RU.json"
+                    "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
                 {% if attribute(app, 'dropdownAttribute') is defined%}
@@ -400,12 +394,16 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
                 "bInfo": true,
                 "columnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [-1]},
-                    {"sortable": false, "targets": [-1,]}{#,
-                    {"width": "19%", "targets": [5] },#}
+                    {"sortable": false, "targets": [-1,]}
                 ]
             });
             $("#attribute_set input[type='checkbox']").each(function(index){
@@ -446,7 +444,7 @@
                 $(document).on('click', '#add_storage', function(e){
                     e.stopPropagation();
                     e.preventDefault();
-                    showAdModalBox('Добавить хранилище');
+                    showAdModalBox('{{ 'Add storage'|trans }}');
                     return false;
                 });
                 
@@ -490,35 +488,35 @@
         var manageList = function (obj) {
             $('#datatable-1').DataTable().ajax.reload();
             $("#modalbox").data('complete', 1);
-            $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
-        }
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Finish'|trans }}!</span>');
+        };
         
         var listMsg = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
                 alert(data.msg);
             }
             manageList(data);
-        }
+        };
         
         var listMsgError = function(data){
             if (typeof(data.msg) != 'undefined' && data.msg) {
                 alert(data.msg);
             }
             errAction();
-        }
+        };
         
         function closeModalBox(){
             $("#modalbox").hide();
             $('#modalbox').find('.modal-header-name span').empty();
             $('#modalbox').find('.devoops-modal-inner').empty();
             $('#modalbox').find('.devoops-modal-bottom').empty();
-        }
+        };
         
         function showModalBox(){
-            $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
-            $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Wait'|trans }}...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
             $("#modalbox").show();
-        }
+        };
         
         function showAdModalBox(title){
             $("#modalbox_ad").find(".modal-header-name").children('span').text(title);
@@ -542,14 +540,14 @@
         }
         
         var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
             $("#modalbox").data('complete', 1);
         }
         
         var fillModalAd = function(data){
             if (typeof(data.storage) != 'undefined') {
                 $("#modalbox").data('complete') == 1
-                showAdModalBox('Редактировать хранилище');
+                showAdModalBox('{{ 'Edit storage'|trans }}');
                 closeModalBox();
                 $("#modalbox_ad form input").each(function(){
                    var name = $(this).attr('name').replace('form[', '').replace(']', ''); 
