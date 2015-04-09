@@ -1767,9 +1767,7 @@
             "need_update_header" : false
         }
     );
-    
-    media_browser.hide();
-    
+
     module.media_browser = media_browser;
     
     /* END MEDIA BROWSER */
@@ -1780,7 +1778,8 @@
     },
     module.media_browser
     );
-    
+
+    media_browser.hide();
 })();
 
 loader.next();
