@@ -2182,7 +2182,7 @@ player.prototype.play = function(item){
 
     if (this.file_type == 'audio' || this.cur_media_item.is_audio){
         this.triggerCustomEventListener('audiostart', this.cur_media_item);
-    } else if (this.media_type == 'stream' || stb.player.cur_media_item.radio == true || typeof (stb.player.radio_idx) != 'undefined'){
+    } else if ((this.media_type == 'stream' && !stb.player.cur_media_item.rtsp_url) || stb.player.cur_media_item.radio == true || typeof (stb.player.radio_idx) != 'undefined'){
         this.triggerCustomEventListener('radiostart', this.cur_media_item);
     }
 
@@ -2195,7 +2195,7 @@ player.prototype.play = function(item){
 
     this.play_initiated = true;
     
-    if (this.media_type == 'stream'){
+    if (this.media_type == 'stream' && !stb.player.cur_media_item.rtsp_url){
         
         if (item.hasOwnProperty('open') && !item.open){
             _debug('channel is closed');
@@ -2280,7 +2280,9 @@ player.prototype.play = function(item){
     }else{
         
         var series_number = item.cur_series || 0;
-        
+        if (stb.player.cur_media_item.rtsp_url) {
+            cmd = '/media/'+this.cur_media_item.id+'.mpg'
+        }
         this.create_link('vod', cmd, series_number, item.forced_storage || '', item.disable_ad);
     }
 };
