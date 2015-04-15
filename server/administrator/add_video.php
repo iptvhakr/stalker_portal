@@ -227,8 +227,16 @@ if (count(@$_POST) > 0){
 
             $protocol = $_POST['protocol'];
 
+            $series = array();
+
             if ($protocol == 'custom'){
                 $rtsp_url = @trim($_POST['rtsp_url']);
+
+                $tmp_arr = array();
+                if (preg_match("/s\d+e(\d+).*$/i", $rtsp_url, $tmp_arr)){
+                    $series = range(1, (int) $tmp_arr[1], 1);
+                }
+
             }else{
                 $rtsp_url = '';
             }
@@ -273,6 +281,7 @@ if (count(@$_POST) > 0){
                         'video',
                         array(
                             'name'           => trim($_POST['name']),
+                            'series'         => serialize($series),
                             'o_name'         => trim($_POST['o_name']),
                             'censored'       => $censored,
                             'hd'             => $hd,
@@ -345,6 +354,7 @@ if (count(@$_POST) > 0){
                         'video',
                         array(
                             'name'           => trim($_POST['name']),
+                            'series'         => serialize($series),
                             'o_name'         => trim($_POST['o_name']),
                             'censored'       => $censored,
                             'hd'             => $hd,
