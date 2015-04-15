@@ -36,6 +36,9 @@ class RESTCommandSendEvent extends RESTCommand
                     $event->setAutoHideTimeout($request->getData('auto_hide_timeout'));
                 }
                 break;
+            case 'send_msg_with_video':
+                $event->sendMsgWithVideo($request->getData('msg'), $request->getData('video'));
+                break;
             case 'reboot':
                 $event->sendReboot();
                 break;

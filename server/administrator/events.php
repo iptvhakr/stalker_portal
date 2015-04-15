@@ -42,7 +42,7 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
     
     if (@$_POST['user_list_type'] == 'to_all'){
 
-        if ($_POST['event'] == 'send_msg'){
+        if ($_POST['event'] == 'send_msg' || $_POST['event'] == 'send_msg_with_video'){
             $event->setUserListByMac('all');
             $user_list = Middleware::getOnlineUsersId();
         }else{
@@ -155,6 +155,9 @@ if (!empty($_POST['user_list_type']) && !empty($_POST['event'])){
             } else {
                 $event->sendMsg(@$_POST['msg']);
             }
+            break;
+        case 'send_msg_with_video':
+            $event->sendMsgWithVideo(@$_POST['msg'], @$_POST['video_url']);
             break;
         case 'reboot':
             $event->sendReboot();
@@ -283,11 +286,17 @@ function check_event(){
         document.getElementById('checkbox_need_reboot').style.display = "";
         document.getElementById('msg_row').style.display = "";
         document.getElementById('ttl').value = 7*24*3600;
+    }else if (event_obj.options[event_obj.selectedIndex].value == 'send_msg_with_video'){
+        document.getElementById('checkbox_need_reboot').style.display = "none";
+        document.getElementById('msg_row').style.display = "";
+        document.getElementById('video_row').style.display = "";
+        document.getElementById('ttl').value = 7*24*3600;
     }else{
         if (need_reboot_cbox.checked){
             need_reboot_cbox.click()
         }
         document.getElementById('checkbox_need_reboot').style.display = "none";
+        document.getElementById('video_row').style.display = "none";
         document.getElementById('msg_row').style.display = "none";
         document.getElementById('ttl').value = "<?= Config::getSafe('watchdog_timeout', 120) * 2?>";
     }
@@ -423,6 +432,7 @@ function fill_msg(){
         <select name="event" id="event" onchange="check_event()">
             <option value="">----------
             <option value="send_msg">send_msg
+            <option value="send_msg_with_video">send_msg_with_video
             <option value="reboot">reboot
             <option value="reload_portal">reload_portal
             <option value="update_channels">update_channels
@@ -452,6 +462,14 @@ function fill_msg(){
         <? if (substr($locale, 0, 2) == 'ru'){?>
         <a href="#" onclick="fill_msg()" style="font-size:12px;font-weight:normal">Истек срок тестирования</a>
         <?}?>
+    </td>
+</tr>
+<tr id="video_row" style="display:none">
+    <td align="right" valign="top">
+        VIDEO URL:
+    </td>
+    <td>
+        <input type="text" name="video_url" id="video_url" size="64"/><br/>
     </td>
 </tr>
 <tr>

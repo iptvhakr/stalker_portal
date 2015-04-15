@@ -869,6 +869,12 @@ player.prototype.event_callback = function(event, params){
         case 1: // End of stream
         {
             try{
+
+                if (this.cur_media_item.stop_callback){
+                    this.cur_media_item.stop_callback();
+                    return;
+                }
+
                 //this.prev_layer && this.prev_layer.show && this.prev_layer.show.call(this.prev_layer, true);
                 
                 this.play_auto_ended = true;
@@ -1314,6 +1320,12 @@ player.prototype.event_callback = function(event, params){
         {
 
             stb.key_lock = false;
+
+            if (this.cur_media_item.stop_callback){
+                this.cur_media_item.stop_callback();
+                return;
+            }
+
             this.event5_counter++;
             if (this.media_type == 'stream'){
 
@@ -1956,7 +1968,7 @@ player.prototype.define_media_type = function(cmd){
         
         _debug('stb.cur_place', stb.cur_place);
         
-        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio){
+        if ((cmd.indexOf('mmsh://') >=0 || cmd.indexOf('rtsp://') >=0 || cmd.indexOf('rtmp://') >=0 || cmd.indexOf('udp://') >=0 || cmd.indexOf('rtp://') >=0 || cmd.indexOf('http://') >=0 || cmd.indexOf('dvb://') >=0) && !this.active_time_shift && stb.cur_place != 'demo' && stb.cur_place != 'internet' && stb.cur_place != 'epg_simple' && stb.cur_place != 'epg' && stb.cur_place != 'radio' && stb.cur_place != 'vclub' && stb.cur_place != 'karaoke' && stb.cur_place != 'audioclub' && !this.cur_media_item.is_audio && !this.cur_media_item.promo){
             this.is_tv = true;
         }else{
             this.is_tv = false;
@@ -2421,6 +2433,11 @@ player.prototype.stop = function(){
     _debug('player.stop');
 
     this.on_stop && this.on_stop();
+
+    if (this.cur_media_item.stop_callback){
+        this.cur_media_item.stop_callback();
+        return;
+    }
 
     if (module.tv_archive && this.cur_media_item.mark_archive && this.cur_media_item.archive_hist_id){
         this.update_played_tv_archive_end_time(this.cur_media_item.archive_hist_id);

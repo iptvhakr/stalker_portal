@@ -16,7 +16,8 @@ class Event extends HTTPPush
         'need_confirm'    => 0,
         'reboot_after_ok' => 0,
         'eventtime' => 0,
-        'auto_hide_timeout' => 0
+        'auto_hide_timeout' => 0,
+        'param1'    => ''
     );
     
     private $pattern;
@@ -146,7 +147,16 @@ class Event extends HTTPPush
     protected function setMsg($msg){
         $this->param['msg'] = $msg;
     }
-    
+
+    /**
+     * Set event param1
+     *
+     * @param string $param1
+     */
+    protected function setParam1($param1){
+        $this->param['param1'] = $param1;
+    }
+
     /**
      * Set event life time
      *
@@ -155,7 +165,7 @@ class Event extends HTTPPush
     protected function setEventTime($eventtime){
         $this->param['eventtime'] = $eventtime;
     }
-    
+
     /**
      * Set need confirm option
      *
@@ -200,7 +210,7 @@ class Event extends HTTPPush
         if (!$this->param['eventtime']){
 
             if (empty($this->ttl)){
-                if ($this->param['event'] == 'send_msg'){
+                if ($this->param['event'] == 'send_msg' || $this->param['event'] == 'send_msg_with_video'){
                     $this->ttl = 7*24*3600;
                 }else{
                     $this->ttl = Config::get('watchdog_timeout')*2;
@@ -211,7 +221,7 @@ class Event extends HTTPPush
         }
         
         if (!$this->param['priority']){
-            if ($this->param['event'] == 'send_msg'){
+            if ($this->param['event'] == 'send_msg' || $this->param['event'] == 'send_msg_with_video'){
                 $this->setPriority(2);
             }else{
                 $this->setPriority(1);
@@ -252,7 +262,8 @@ class Event extends HTTPPush
                     'reboot_after_ok'   => $this->param['reboot_after_ok'],
                     'msg'               => $this->param['msg'],
                     'priority'          => $this->param['priority'],
-                    'auto_hide_timeout' => $this->param['auto_hide_timeout']
+                    'auto_hide_timeout' => $this->param['auto_hide_timeout'],
+                    'param1'            => $this->param['param1']
                 );
 
                 if ($this->param['event'] == 'cut_off'){
