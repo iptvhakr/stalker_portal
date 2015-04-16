@@ -822,6 +822,8 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             if (!empty($this->response['data'][$i]['rtsp_url']) && $this->response['data'][$i]['for_rent'] == 0) {
                 if (!empty($this->response['data'][$i]['series'])) {
                     $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'] = $this->changeSeriesOnCustomURL( $this->response['data'][$i]['rtsp_url'], $this->response['data'][$i]['cur_series']);
+                }else{
+                    $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'];
                 }
             } else {
                 $this->response['data'][$i]['cmd'] = '/media/' . $this->response['data'][$i]['id'] . '.mpg';

@@ -926,7 +926,7 @@
             _debug('cmd', this.data_items[this.cur_row].cmd);
             _debug('indexOf', this.data_items[this.cur_row].cmd.indexOf('://'));
 
-            if (this.data_items[this.cur_row].cmd.indexOf('://') < 0 || (this.data_items[this.cur_row].protocol == 'custom' && this.data_items[this.cur_row].series  && this.data_items[this.cur_row].series.length > 0)){
+            if (this.data_items[this.cur_row].cmd.indexOf('://') < 0 || (this.data_items[this.cur_row].protocol == 'custom')){
             
                 stb.player.on_create_link = function(result){
                     _debug('vclub.on_create_link', result);
