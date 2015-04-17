@@ -68,6 +68,14 @@ $words['aspect_cmb'] = _('combined');
 
 // radio
 $words['radio_title'] = _('RADIO');
+$words['radio_sort'] = _('SORT');
+$words['radio_favorite'] = _('FAVORITE');
+$words['radio_search'] = _('SEARCH');
+$words['radio_by_number'] = _('by number');
+$words['radio_by_title'] = _('by title');
+$words['radio_only_favorite'] = _('only favorite');
+$words['radio_fav_add'] = _('add');
+$words['radio_fav_del'] = _('del');
 
 // tv
 $words['tv_view'] = _('VIEW');
