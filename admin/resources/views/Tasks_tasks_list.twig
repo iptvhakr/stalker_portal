@@ -6,7 +6,7 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    {{ main_macro.get_filter('task_type', 'Tasktype'|trans, 'id', 'title', app['taskType'], 3, 6, 1) }}
+                    {{ main_macro.get_filter('task_type', 'Task type'|trans, 'id', 'title', app['taskType'], 3, 6, 1) }}
                     {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['taskState'], 3, 6) }}
                     {{ main_macro.get_filter('to_user', 'Assigned to'|trans, 'id', 'login', app['taskAdmin'], 3, 6) }}
             </div>

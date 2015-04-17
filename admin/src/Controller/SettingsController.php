@@ -241,17 +241,17 @@ class SettingsController extends \Controller\BaseStalkerController {
 
     private function getCommonDropdownAttribute(){
         return array(
-            array('name'=>'id',                         'title'=>'ID',                      'checked' => TRUE),
-            array('name'=>'stb_type',                   'title'=>'Модель приставки',        'checked' => TRUE),
-            array('name'=>'require_image_version',     'title'=>'Версия STB API',          'checked' => TRUE),
-            array('name'=>'require_image_date',         'title'=>'Дата образа',             'checked' => TRUE),
-            array('name'=>'update_type',                'title'=>'Вариант обновления',      'checked' => TRUE),
-            array('name'=>'prefix',                     'title'=>'Префикс',                 'checked' => TRUE),
-            array('name'=>'image_description_contains', 'title'=>'Описание образа',         'checked' => TRUE),
-            array('name'=>'image_version_contains',      'title'=>'Требуемая версия STB API','checked' => TRUE),
-            array('name'=>'hardware_version_contains',  'title'=>'Версия hardware',         'checked' => TRUE),
-            array('name'=>'enable',                     'title'=>'Автоматическое обновление','checked' => TRUE),
-            array('name'=>'operations',                 'title'=>'Действия',                'checked' => TRUE)
+            array('name'=>'id',                         'title'=>$this->setlocalization('ID'),                      'checked' => TRUE),
+            array('name'=>'stb_type',                   'title'=>$this->setlocalization('STB model'),               'checked' => TRUE),
+            array('name'=>'require_image_version',      'title'=>$this->setlocalization('STB API version'),         'checked' => TRUE),
+            array('name'=>'require_image_date',         'title'=>$this->setlocalization('Image date'),              'checked' => TRUE),
+            array('name'=>'update_type',                'title'=>$this->setlocalization('Update type'),             'checked' => TRUE),
+            array('name'=>'prefix',                     'title'=>$this->setlocalization('Prefix'),                  'checked' => TRUE),
+            array('name'=>'image_description_contains', 'title'=>$this->setlocalization('Image description'),       'checked' => TRUE),
+            array('name'=>'image_version_contains',     'title'=>$this->setlocalization('Required STB API version'),'checked' => TRUE),
+            array('name'=>'hardware_version_contains',  'title'=>$this->setlocalization('Hardware version'),        'checked' => TRUE),
+            array('name'=>'enable',                     'title'=>$this->setlocalization('Automatic update'),        'checked' => TRUE),
+            array('name'=>'operations',                 'title'=>$this->setlocalization('Operations'),              'checked' => TRUE)
         );
     }
 }

@@ -19,22 +19,22 @@ class EventsController extends \Controller\BaseStalkerController {
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
         $this->formEvent = array(
-            array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message')),
-            array("id" => "reboot",             "title" => $this->setlocalization('Reboot')),
-            array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal')),
-            array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list')),
-            array("id" => "play_channel",       "title" => $this->setlocalization('Playback channel')),
-            array("id" => "mount_all_storages", "title" => $this->setlocalization('Mount all storages')),
-            array("id" => "cut_off",            "title" => $this->setlocalization('Turn off')),
-            array("id" => "update_image",       "title" => $this->setlocalization('Image update'))
+            array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message') ),
+            array("id" => "reboot",             "title" => $this->setlocalization('Reboot') ),
+            array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
+            array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
+            array("id" => "play_channel",       "title" => $this->setlocalization('Playback channel') ),
+            array("id" => "mount_all_storages", "title" => $this->setlocalization('Mount all storages') ),
+            array("id" => "cut_off",            "title" => $this->setlocalization('Turn off') ),
+            array("id" => "update_image",       "title" => $this->setlocalization('Image update') )
         );
         $this->hiddenEvent = array(
-            array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update')),
-            array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update')),
-            array("id" => "update_modules",             "title" => $this->setlocalization('Modules update')),
-            array("id" => "cut_on",                     "title" => $this->setlocalization('Turn on')),
-            array("id" => "show_menu",                  "title" => $this->setlocalization('Show menu')),
-            array("id" => "additional_services_status", "title" => $this->setlocalization('Status additional service'))
+            array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update') ),
+            array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update') ),
+            array("id" => "update_modules",             "title" => $this->setlocalization('Modules update') ),
+            array("id" => "cut_on",                     "title" => $this->setlocalization('Turn on') ),
+            array("id" => "show_menu",                  "title" => $this->setlocalization('Show menu') ),
+            array("id" => "additional_services_status", "title" => $this->setlocalization('Status additional service') )
         );
 
         $this->sendedStatus = array(
