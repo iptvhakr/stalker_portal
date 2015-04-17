@@ -335,7 +335,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 if (empty($row['id'])) {
                     continue;
                 }
-                $row['locked'] = (!empty($row['locked']) || $row['locked'] == "true") ? 1: 0;
+
+                $row['locked'] = (empty($row['locked']) || $row['locked'] == "false" || ((int)$row['locked']) == 0) ? 0: 1;
                 if (!$this->db->updateChannelLockedStatus($row)) {
                     $erorr = $this->setLocalization('Failed to save, update the channel list');
                     $senddata = array('action' => 'canceled');
@@ -682,7 +683,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('number', 'text', array(
-                    'constraints' => new Assert\Range(array('min' => 0, 'max' => 999)),
+                    'constraints' => array(
+                        new Assert\Range(array('min' => 0, 'max' => 999)),
+                        new Assert\NotBlank()
+                    ),
                     'data' => $def_number
                     ))
                 ->add('name', 'text', array(

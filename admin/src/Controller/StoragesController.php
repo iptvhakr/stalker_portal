@@ -281,7 +281,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         $data['action'] = 'listMsg';
         $storage = array($this->postData['form']);
         $error = 'error';
-        if (!empty($storage['storage_name']) && !empty($storage['storage_ip']) && !empty($storage['apache_port'])) {
+        if (!empty($storage[0]['storage_name']) && !empty($storage[0]['storage_ip']) && !empty($storage[0]['apache_port'])) {
             if (empty($this->postData['form']['id'])) {
                 $operation = 'insertStrages';
             } else {

@@ -6,8 +6,8 @@
     <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                {{ main_macro.get_filter('type', 'Услуга', 'id', 'title', app['allPackageTypes']) }}
-                {{ main_macro.get_filter('all_services', 'Доступ', 'id', 'title', app['allServices']) }}
+                {{ main_macro.get_filter('type', 'Service'|trans , 'id', 'title', app['allPackageTypes']) }}
+                {{ main_macro.get_filter('all_services', 'Access'|trans , 'id', 'title', app['allServices']) }}
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-service-package" class="btn btn-success pull-right">{{ 'Add package'|trans }}</a>
             </div>
         </div>

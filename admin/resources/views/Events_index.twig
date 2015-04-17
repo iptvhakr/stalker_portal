@@ -8,8 +8,8 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('event', 'Event'|trans, 'id', 'title', app['allEvent']) }}
-                {{ main_macro.get_filter('sended', 'Delivery status', 'id', 'title', app['sendedStatus'], 5, 9) }}
-                {{ main_macro.get_filter('ended', 'Receipt status', 'id', 'title', app['receivingStatus'], 5, 9) }}
+                {{ main_macro.get_filter('sended', 'Delivery status'|trans, 'id', 'title', app['sendedStatus'], 5, 9) }}
+                {{ main_macro.get_filter('ended', 'Receipt status'|trans, 'id', 'title', app['receivingStatus'], 5, 9) }}
 
                 <a id="add_events" href="#" class="btn btn-success pull-right">{{ 'Create new event'|trans }}</a>
 
