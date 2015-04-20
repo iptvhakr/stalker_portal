@@ -109,7 +109,7 @@ Function.prototype.priority_bind = function(key, context, args){
 };
 
 window.oncontextmenu = function () {
-    if (typeof(keydown_observer) != 'undefined' && typeof(stb) != 'undefined' && stb.cur_place != 'main_menu') {
+    if (typeof(keydown_observer) != 'undefined') {
         keydown_observer.emulate_key(key.EXIT);
     }
     return false;
