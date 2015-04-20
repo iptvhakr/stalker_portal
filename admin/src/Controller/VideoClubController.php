@@ -638,7 +638,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkName';
         $error = $this->setlocalization('Name is busy');
-        if ($this->db->checkName(trim($this->postData['name']))) {
+        if ($this->db->checkName($this->postData)) {
             $data['chk_rezult'] = $this->setlocalization('Name is busy');
         } else {
             $data['chk_rezult'] = $this->setlocalization('Name is available');
@@ -1288,10 +1288,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
             if ($form->isValid()) {
                 if (empty($data['id'])) {
-                    $is_repeating_name = $this->db->checkName(trim($data['name']));
+                    $is_repeating_name = $this->db->checkName($data);
                     $operation = 'insertVideo';
                 } elseif (isset($this->oneVideo)) {
-                    $is_repeating_name = !((empty($this->oneVideo['name']) || $this->oneVideo['name'] != $data['name']) xor ( (bool) $this->db->checkName(trim($data['name']))));
+                    $is_repeating_name = !((empty($this->oneVideo['name']) || $this->oneVideo['name'] != $data['name']) xor ( (bool) $this->db->checkName($data)));
                     $operation = 'updateVideo';
                 }
                 if (!$is_repeating_name) {
@@ -1305,7 +1305,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                     if ($data['hd']) {
                         $data['trans_name'] .= '_HD';
                     }
-                    $this->createMediaStorage($data['trans_name']);
+
                     $db_data = array(
                         'name' => trim($data['name']),
                         'o_name' => trim($data['o_name']),
@@ -1337,13 +1337,14 @@ class VideoClubController extends \Controller\BaseStalkerController {
                         'rating_count_imdb' => $data['rating_count_imdb'],
                         'age' => $data['age'],
                         'rating_mpaa' => $data['rating_mpaa'],
-                        'path' => $data ['trans_name'],
                         'high_quality' => $data ['high_quality'],
                         'low_quality' => $data ['low_quality'],
                         'comments' => $data['comments'],
                         'country' => $data['country']
                     );
                     if ($operation == 'insertVideo') {
+                        $this->createMediaStorage($data['trans_name'], $data['year']);
+                        $db_data['path'] = $data ['trans_name'] . (!empty($data['year']) ? "_$data[year]": '');
                         $db_data['added'] = 'NOW()';
                         $id = $this->db->$operation($db_data);
                         $db_data['id'] = $id;
@@ -1469,7 +1470,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         return $cover_id;
     }
     
-    private function createMediaStorage($trans_name) {
+    private function createMediaStorage($trans_name, $additional = '') {
 
         $existed = $this->db->getVideoByParam(array('path' => $trans_name));
 
@@ -1479,7 +1480,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $_SERVER['TARGET'] = 'ADM';
             $master = new \VideoMaster();
             try {
-                $master->createMediaDir($trans_name);
+                $master->createMediaDir($trans_name, $additional);
             } catch (\MasterException $e) {
                 //var_dump($e->getMessage(), $e->getStorageName()); exit;
                 $moderator_storages = $master->getModeratorStorages();

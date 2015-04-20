@@ -517,3 +517,5 @@ _('Number of copies');
 _('Storage quantity');
 _('Image description');
 _('Created by');
+_('Name is busy');
+_('Name is available');

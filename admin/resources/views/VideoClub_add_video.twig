@@ -474,8 +474,8 @@
                    checkProtocol();
                 });                
                 
-                $(document).on('change keyup', '#form_name', function(e){
-                    var _this = $(this);
+                $(document).on('change keyup', '#form_name, #form_year', function(e){
+                    var _this = $('#form_name');
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
                     
                     if ($.trim(_this.val()) == '' && $.trim($('#form_o_name').val()) == '') {
@@ -490,7 +490,7 @@
                    $.ajax({
                         url: 'video-club/check-name',
                         type: 'POST',
-                        data: {name: _this.val()},
+                        data: {name: _this.val(), year: $.trim($('#form_year').val())},
                         success: function (data) {
                             if (data.success) {
                                 _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
