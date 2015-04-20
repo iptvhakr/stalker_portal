@@ -1,7 +1,5 @@
 --
 
-SET NAMES 'utf8';
-
 CREATE TABLE IF NOT EXISTS `fav_radio` (
   `id`        INT          NOT NULL AUTO_INCREMENT,
   `uid`       INT UNSIGNED NOT NULL,
@@ -10,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `fav_radio` (
   `edittime`  TIMESTAMP    NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `uid_UNIQUE` (`uid` ASC)
-) ENGINE = MyISAM DEFAULT CHARSET = utf8;
+) DEFAULT CHARSET = utf8;
 
 --//@UNDO
 
