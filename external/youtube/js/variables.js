@@ -8,7 +8,7 @@ var  version='1.0.3',
             "show_all_keydowns":false
         },
         "lang":"en",                       // system language
-        "priority":"middle",                // current video quality
+        "priority":"high",                // current video quality
         "layer":0,                          // current layer (used in keyPressProcessing(key) (common.js) for navigate)
         "globalObj":new Object(),           //
         "page":1,                           // current "page" (current list of youtube moves)
@@ -17,8 +17,8 @@ var  version='1.0.3',
         "buttonsStatus":true,
         "catItems":7,
         "cat": {
-            "trying":1,
-            "id":1,
+            "trying":0,
+            "id":0,
             "url": ""
         },
         "as_cat": {
@@ -143,9 +143,9 @@ var  version='1.0.3',
         "USB_MOUNTED"   : 2080
     },
     categorias=[
-        {"name":"most_viewed","url":"http://gdata.youtube.com/feeds/api/standardfeeds/most_viewed?v=2&alt=jsonc&time=today"},
-        {"name":"most_popular","url":"http://gdata.youtube.com/feeds/api/standardfeeds/most_popular?v=2&alt=jsonc&time=today"},
-        {"name":"top_favorites","url":"http://gdata.youtube.com/feeds/api/standardfeeds/top_favorites?v=2&alt=jsonc&time=today"},
+		{"name":"most_viewed","url":"http://gdata.youtube.com/feeds/api/standardfeeds/most_viewed?v=2&alt=jsonc&time=today"},
+		{"name":"most_popular","url":"http://gdata.youtube.com/feeds/api/standardfeeds/most_popular?v=2&alt=jsonc&time=today"},
+		{"name":"top_favorites","url":"http://gdata.youtube.com/feeds/api/standardfeeds/top_favorites?v=2&alt=jsonc&time=today"},
         {"name":"top_rated","url":"http://gdata.youtube.com/feeds/api/standardfeeds/top_rated?v=2&alt=jsonc&time=today"},
         {"name":"most_discussed","url":"http://gdata.youtube.com/feeds/api/standardfeeds/most_discussed?v=2&alt=jsonc&time=today"},
         {"name":"autos","url":"http://gdata.youtube.com/feeds/api/standardfeeds/most_popular_Autos?v=2&alt=jsonc&time=today"},

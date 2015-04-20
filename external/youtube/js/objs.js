@@ -82,9 +82,10 @@ var player_cond = 0,
             player.scrolbar_width = 780;
         }
         player.obj = obj;
-        var url = "http://www.youtube.com/watch?v=" + player.obj.id;
+//        var url = "http://www.youtube.com/watch?v=" + player.obj.id;
         //var url = "http://www.youtube.com/get_video_info?video_id=" + player.obj.id;
-        getHtmlByUrl(url);
+//        getHtmlByUrl(url);
+		YoutubeDL.getInfo(player.obj.id, parseYoutubePage);
         player.current_step = 30;
         byID('playModeInPlayer').className = current.playMode;
         player.timer_check_start_player_obj = setTimeout("player.timer_check_start_player_action();", player.timer_check_start_player_interval);
@@ -131,27 +132,41 @@ var player_cond = 0,
     * player.play(arr);
     * @return void
     */
-    "play": function(arr) {
+    "play": function(error, url) {
+		if ( error ) {
+			toast.show(lang.video_not_available_on_device);
+			loading.hide();
+			player.stop();
+			log('ERROR: ' + error.message);
+            ga('send', 'event', 'error', error.message, error.videoId + ' ' + error.playerUrl);
+            ga('send', 'exception', {
+                'exDescription': error.message + ' ' + error.videoId + ' ' + error.playerUrl,
+                'exFatal': false
+            });
+            ga('send', 'pageview',  {'page': 'Error', 'title': error.message});
+			return;
+		}
+        ga('send', 'pageview',  {'page': 'Player', 'title': 'Play'});
         byID('shell').style.display = 'none';   // hide
         player.current_step = 30;               // interval step
         player_cond = 1;                        // set player condition in playing mode
         current.layer = layers.PLAYER;          // set manage layer PLAYER
         
-        var url =  "";
+//        var url =  "";
         log('- - - - player.play(obj) - - - - current quality:' + current.priority + ' - - - -');
-        var  isset_qualites = '- - - - ';
-        for(var item in arr) {
-            isset_qualites += item + ',';
-        }
-        isset_qualites += ' - - - -';
-        log(isset_qualites);
-        for(var i=0; i<prioritets[current.priority].length; i++) {  // check all current priorites
-            if(undefined != arr[prioritets[current.priority][i]]) {
-                log('- - - playing result | format:' + prioritets[current.priority][i]);
-                url = arr[prioritets[current.priority][i]]; // set url
-                break;
-            }
-        }
+//        var  isset_qualites = '- - - - ';
+//        for(var item in arr) {
+//            isset_qualites += item + ',';
+//        }
+//        isset_qualites += ' - - - -';
+//        log(isset_qualites);
+//        for(var i=0; i<prioritets[current.priority].length; i++) {  // check all current priorites
+//            if(undefined != arr[prioritets[current.priority][i]]) {
+//                log('- - - playing result | format:' + prioritets[current.priority][i]);
+//                url = arr[prioritets[current.priority][i]]; // set url
+//                break;
+//            }
+//        }
         byID('conditiion').style.marginLeft = '0px';    // set current position of scroll to begin
         byID('filename').innerHTML = player.obj.title.length > 35 ? player.obj.title.substr(0, 34) + "…" : player.obj.title;    // cut move name
         var time = player.obj.duration;
@@ -169,9 +184,9 @@ var player_cond = 0,
         byID('interval_input').innerHTML = lang.intervals[player.current_step]; // set lang interval
         
         if(proxy_enable==true){
-            stb.Play('ffrt3 '+ url, proxy_string);
+            stb.Play(url, proxy_string);
         } else {
-            stb.Play('ffrt3 '+ url);            // device start
+            stb.Play(url);            // device start
         }
         
         
@@ -243,6 +258,23 @@ var player_cond = 0,
                 current.layer = layers.BASE;
                 player.iv_stop();
             break;
+
+			case 32: // connect HDMI device
+				clearTimeout(standBy.standByTimer);
+				if ( gSTB.GetStandByStatus() ) {
+					standBy.standByTimer = setTimeout(function () {
+						standBy.toggleMode(false);
+					}, 3000);
+				}
+				break;
+			case 33: // disconnect HDMI device
+				clearTimeout(standBy.standByTimer);
+				if ( !gSTB.GetStandByStatus() ) {
+					standBy.standByTimer = setTimeout(function () {
+						standBy.toggleMode(true);
+					}, 3000);
+				}
+				break;
         }
     },
     /**
@@ -869,6 +901,7 @@ settings = {
     * @return void
     */
     "cats_start": function() {
+		current.cat.trying -= categoryes.shift;
         current.layer = layers.BASE;
         current.feed = current.cat.url;
         byID('category').style.display = "none";
@@ -969,6 +1002,7 @@ settings = {
     * @return void
     */
     "cats_hide": function() {
+		current.cat.trying -= categoryes.shift;
         current.layer = layers.BASE;
         byID('category').style.display = "none";
     },
@@ -1125,6 +1159,7 @@ settings = {
         }
     }
 },
+
 loading = {
     "show":function(block){
         if(!block) {
@@ -1135,7 +1170,7 @@ loading = {
     },
     "hide":function() {
         current.buttonsStatus = true;
-        byID('loading').style.display = "none";
+	byID('loading').style.display = "none";
         current.loading = false;
     }
 },
@@ -1159,14 +1194,14 @@ toast = {
 categoryes = {
     "shift":0,
     "draw":function() {
-        for(var i = 0; i < current.catItems; i++) {
-            var index = this.getOne(i + this.shift + current.cat.trying);
-            byID('cat_' + i).innerHTML = lang.cats[categorias[index].name];
-            if(i==1) {
-                current.cat.url = categorias[index].url;
-            }
-        }
-        current.cat.trying += this.shift;
+		for (var i = 0; i < current.catItems; i++) {
+			var index = this.getOne(i + this.shift + current.cat.trying)
+			byID('cat_' + i).innerHTML = lang.cats[categorias[index].name];
+			if (i === 1) {
+				current.cat.url = categorias[index].url;
+			}
+		}
+		current.cat.trying += this.shift;
     },
     "getOne":function(cur) {
         return cur % categorias.length >= 0 ? cur % categorias.length : categorias.length + cur % categorias.length;
