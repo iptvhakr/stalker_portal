@@ -144,11 +144,20 @@
             });
 
             this.load_fav_radio();
+
             this.load_fav_ids()
+
+            this.init_search_box();
         };
 
         this.show = function(){
             _debug('radio.show');
+
+            if (typeof(stb.user.fav_radio_on) != 'undefined' && stb.user.fav_radio_on == 1 ) {
+                this.load_params.fav = true;
+                this.load_params.sortby = 'fav';
+            }
+
             this.superclass.show.call(this);
         };
 
@@ -166,6 +175,10 @@
             this.play.bind(key.OK, this);
 
             (function(){
+                this.update_header_path([
+                    {"alias" : "search", "item" : ''},
+                    {"alias" : "sortby", "item" : ''}
+                ]);
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
@@ -249,11 +262,81 @@
         };
 
         this.search_menu_switcher = function(){
-
-            if (this.search_menu && this.search_menu.on){
-                this.search_menu.hide();
+            if (this.search_box && this.search_box.on){
+                this.search_box.hide();
             }else{
-                this.search_menu.show();
+                this.sidebar && this.sidebar.full_reset && this.sidebar.full_reset();
+                this.search_box.show();
+            }
+        };
+
+        this.init_search_box = function(){
+            _debug('radio.init_search_box');
+            var scope = this;
+
+            /* RADIO SEARCH DIALOG */
+            this.search_box = new ModalForm({"title" : get_word('radio_search_box')});
+            this.search_box.enableOnExitClose();
+            this.search_box.addItem(new ModalFormInput(
+                {
+                    "name" : "search_box_input",
+                    "oninput": function(){
+                        scope.radio_search();
+                    }
+                }
+            ));
+            this.search_box.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.search_box.reset();
+                        scope.search_box.hide();
+                    }
+                }
+            ));
+
+            this.search_box.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        scope.radio_search();
+                        scope.search_box.hide();
+                    }
+                }
+            ));
+
+            this.search_box.addCustomEventListener('hide', function(){
+                _debug('search_box_dialog', 'hide');
+                if (typeof(stb.IsVirtualKeyboardActive) == 'function' && stb.IsVirtualKeyboardActive()) {
+                    stb.HideVirtualKeyboard && stb.HideVirtualKeyboard();
+                }
+            });
+
+            this.search_box.addCustomEventListener('show', function(){
+                _debug('search_box_dialog', 'show');
+                if (typeof(stb.IsVirtualKeyboardActive) == 'function' && !stb.IsVirtualKeyboardActive()) {
+                    stb.ShowVirtualKeyboard && stb.ShowVirtualKeyboard();
+                }
+                scope.update_header_path([{"alias" : "search", "item" : ''}]);
+                scope.radio_search();
+            });
+
+            this.radio_search = function(){
+
+                var search_str = scope.search_box.getItemByName("search_box_input").getValue();
+                _debug('this.load_params.search', search_str);
+
+                try{
+                    if (scope.on && (search_str.length >= 3 || search_str.length == 0 )){
+                        scope.load_params.search = search_str;
+                        scope.update_header_path([{"alias" : "search", "item" : search_str.length >= 3 ? '"' + search_str + '"' : ''}]);
+                        scope.load_data();
+                        scope.reset();
+                    }
+                }catch(e){
+                    _debug(e);
+                }
+
             }
         };
 
@@ -261,15 +344,6 @@
             this.fav_menu = new bottom_menu(this, options);
             this.fav_menu.init(map);
             this.fav_menu.bind();
-        };
-
-        this.fav_menu_switcher = function(){
-
-            if (this.fav_menu && this.fav_menu.on){
-                this.fav_menu.hide();
-            }else{
-                this.fav_menu.show();
-            }
         };
 
         this.add_to_fav = function(){
@@ -314,6 +388,7 @@
 
             this.map[this.cur_row].fav_block.hide();
             this.active_row.fav_block.hide();
+
             if (typeof (stb.player.fav_radio) == 'undefined') {
                 stb.player.fav_radio = [];
             }
@@ -328,14 +403,6 @@
 
         this.add_del_fav = function(){
             _debug('radio.add_del_fav');
-
-            if (this.fav_manage_mode){
-                return;
-            }
-
-            //if (this.load_params.fav == true){
-            //return;
-            //}
 
             if(this.data_items[this.cur_row].fav){
                 this.del_from_fav();
@@ -454,6 +521,7 @@
             "cmd" : function(){
                 this.parent.load_params.fav = false;
                 this.parent.load_params.sortby = 'number';
+                stb.user.fav_radio_on = 0;
             }
         },
         {
@@ -461,6 +529,7 @@
             "cmd" : function(){
                 this.parent.load_params.fav = false;
                 this.parent.load_params.sortby = 'name';
+                stb.user.fav_radio_on = 0;
             }
         },
         {
@@ -468,6 +537,7 @@
             "cmd" : function(){
                 this.parent.load_params.sortby = 'fav';
                 this.parent.load_params.fav = true;
+                stb.user.fav_radio_on = 1;
             }
         }
     ];
@@ -516,11 +586,11 @@
         }
     );
 
-    radio.fav_menu.dependency  = [radio.search_menu, radio.sort_menu, radio.filter_menu];
+    radio.fav_menu.dependency  = [radio.search_menu, radio.sort_menu];
 
-    radio.sort_menu.dependency  = [radio.search_menu, radio.fav_menu, radio.filter_menu];
+    radio.sort_menu.dependency  = [radio.search_menu, radio.fav_menu];
 
-    radio.search_menu.dependency  = [radio.sort_menu, radio.fav_menu, radio.filter_menu];
+    radio.search_menu.dependency  = [radio.sort_menu, radio.fav_menu];
 
     radio.init_header_path(word['radio_title']);
     

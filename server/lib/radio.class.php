@@ -52,11 +52,15 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
 
         $result = $this->getData();
 
+        if (@$_REQUEST['search']){
+            $search = trim($_REQUEST['search']);
+            $result = $result->like(array('name' => "%$search%"));
+        }
+
         if (@$_REQUEST['sortby']){
             $sortby = $_REQUEST['sortby'];
-
             if ($sortby == 'name'){
-
+                $result = $result->orderby('name');
             }elseif ($sortby == 'number'){
                 $result = $result->orderby('number');
             }elseif ($sortby == 'fav'){
@@ -90,6 +94,12 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
                 return $row;
             }, $this->response['data']);
 
+            if (array_key_exists('fav', $_REQUEST) && ( (int) $_REQUEST['fav']) == 1 ) {
+                reset($this->response['data']);
+                while(list($key, $row) = each($this->response['data'])){
+                    $this->response['data'][$key]['number'] = (string) ($key + 1);
+                }
+            }
         }
         return $this->response;
     }
