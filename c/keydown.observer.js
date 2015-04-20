@@ -107,3 +107,10 @@ Function.prototype.priority_bind = function(key, context, args){
     keydown_observer.listeners[key].unshift({"f" : this, "c" : context, "a" : args, "priority" : true});
     return this;
 };
+
+window.oncontextmenu = function () {
+    if (typeof(keydown_observer) != 'undefined' && typeof(stb) != 'undefined' && stb.cur_place != 'main_menu') {
+        keydown_observer.emulate_key(key.EXIT);
+    }
+    return false;
+};
