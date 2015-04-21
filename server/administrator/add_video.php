@@ -263,7 +263,7 @@ if (count(@$_POST) > 0){
                 if(@$_GET['name'] && !$error){
                     $master = new VideoMaster();
                     try{
-                        $master->createMediaDir($trans_name);
+                        $master->createMediaDir($trans_name, (!empty($_POST['year']) ? $_POST['year']: ''));
                     }catch(MasterException $e){
                         //var_dump($e->getMessage(), $e->getStorageName()); exit;
                         $moderator_storages = $master->getModeratorStorages();
@@ -311,7 +311,7 @@ if (count(@$_POST) > 0){
                             'rating_count_imdb' => $_POST['rating_count_imdb'],
                             'age'            => $_POST['age'],
                             'rating_mpaa'    => $_POST['rating_mpaa'],
-                            'path'           => $trans_name,
+                            'path'           => $trans_name . (!empty($_POST['year']) ? "_$_POST[year]": ''),
                             'high_quality'   => $high_quality,
                             'low_quality'    => $low_quality,
                             'comments'       => $_POST['comments'],
