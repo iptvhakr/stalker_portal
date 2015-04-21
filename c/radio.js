@@ -175,10 +175,12 @@
             this.play.bind(key.OK, this);
 
             (function(){
-                this.update_header_path([
-                    {"alias" : "search", "item" : ''},
-                    {"alias" : "sortby", "item" : ''}
-                ]);
+                var header_path = [{"alias" : "search", "item" : ''}];
+                if (stb.user.fav_radio_on != 1) {
+                    header_path.push({"alias" : "sortby", "item" : ''});
+                }
+                this.update_header_path(header_path);
+
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
