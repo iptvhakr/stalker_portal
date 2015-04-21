@@ -230,23 +230,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 }
             }else if ($channel['nginx_secure_link']){ // http://wiki.nginx.org/HttpSecureLinkModule
 
-                if (preg_match("/:\/\/([^\/]+)\/?(\S*)/", $channel['cmd'], $match)){
-
-                    $path   = '/'.$match[2];
-                    $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
-                    $secret = Config::get('nginx_secure_link_secret');
-
-                    $hash = base64_encode(md5($secret . str_replace('/playlist.m3u8', '', $path) . $expire, true));
-                    $hash = strtr($hash, '+/', '-_');
-                    $hash = str_replace('=', '', $hash);
-
-                    $new_path = $path.(strpos($channel['cmd'], '?') ? '&' : '?').'st='.$hash.'&e='.$expire;
-
-                    $channel['cmd'] = str_replace($match[1].$path, $match[1].$new_path, $channel['cmd']);
-
-                }else{
-                    throw new ItvLinkException('link_fault');
-                }
+                $channel['cmd'] = $this->getNginxSecureLink($channel['cmd']);
 
             }else{
 
@@ -1896,6 +1880,13 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
             if ($cmd['flussonic_tmp_link']){
                 $cmd['type'] = 'flussonic_health';
+            }elseif($cmd['nginx_secure_link']){
+                try{
+                    $cmd['type'] = 'nginx_secure_link';
+                    $cmd['url'] = $this->getNginxSecureLink($cmd['url']);
+                } catch( ItvLinkException $e){
+                    return false;
+                }
             }else{
                 $cmd['type'] = 'stream';
             }
@@ -1903,7 +1894,28 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             return $cmd;
         }, $monitoring_links);
 
-        return $monitoring_links;
+        return array_values(array_filter($monitoring_links));
+    }
+
+    protected function getNginxSecureLink($cmd){
+
+        if (preg_match("/:\/\/([^\/]+)\/?(\S*)/", $cmd, $match)){
+
+            $path   = '/'.$match[2];
+            $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
+            $secret = Config::get('nginx_secure_link_secret');
+
+            $hash = base64_encode(md5($secret . str_replace('/playlist.m3u8', '', $path) . $expire, true));
+            $hash = strtr($hash, '+/', '-_');
+            $hash = str_replace('=', '', $hash);
+
+            $new_path = $path.(strpos($cmd, '?') ? '&' : '?').'st='.$hash.'&e='.$expire;
+
+            return str_replace($match[1].$path, $match[1].$new_path, $cmd);
+
+        }else{
+            throw new ItvLinkException('link_fault');
+        }
     }
 }
 
