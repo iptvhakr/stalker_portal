@@ -48,8 +48,11 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
             $all_user_radio_ids = array();
         }
 
-        $fav_str = implode(",", $this->getFav($this->stb->id));
-
+        if ($this->getFav($this->stb->id) !== FALSE) {
+            $fav_str = implode(",", $this->fav_radio);
+        } else {
+            $fav_str = 'null';
+        }
         $result = $this->getData();
 
         if (@$_REQUEST['search']){
@@ -72,7 +75,7 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
         }
 
         if (@$_REQUEST['fav']){
-            $result = $result->in('radio.id', $this->getFav($this->stb->id));
+            $result = $result->in('radio.id', ($this->fav_radio !== FALSE ? $this->fav_radio: array()));
         }
 
         $result = $result->orderby('number');
@@ -149,13 +152,14 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
     }
 
     public function getAllFavRadio(){
-        $fav_str = implode(",", $this->getFav());
-        if (empty($fav_str)){
+        if ($this->getFav() !== FALSE && !empty($this->fav_radio)) {
+            $fav_str = implode(",", $this->fav_radio);
+        } else {
             $fav_str = 'null';
         }
         $fav_radios = $this->db
             ->from('radio')
-            ->in('id', $this->getFav())
+            ->in('id', ($this->fav_radio !== FALSE? $this->fav_radio: array()))
             ->where(array('status' => 1))
             ->orderby('field(id,'.$fav_str.')');
         $this->setResponseData($fav_radios);
@@ -167,15 +171,15 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
 
     public function getFavIds(){
 
-        $fav_str = implode(",", $this->getFav());
-
-        if (empty($fav_str)){
+        if ($this->getFav() !== FALSE && !empty($this->fav_radio)) {
+            $fav_str = implode(",", $this->fav_radio);
+        } else {
             $fav_str = 'null';
         }
 
         $fav_ids = $this->db
             ->from('radio')
-            ->in('id', $this->getFav())
+            ->in('id', ($this->fav_radio !== FALSE? $this->fav_radio: array()))
             ->where(array('status' => 1))
             ->orderby('field(id,'.$fav_str.')')
             ->get()
@@ -190,7 +194,7 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
             $uid = $this->stb->id;
         }
 
-        if (empty($this->fav_radio)) {
+        if ($this->fav_radio === FALSE) {
             $fav_radio_ids_arr = $this->db
                 ->select('fav_radio')
                 ->from('fav_radio')
@@ -200,7 +204,7 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
                 ->first('fav_radio');
 
             if (!empty($fav_radio_ids_arr)) {
-                $this->fav_radio = (is_string($fav_radio_ids_arr) ? unserialize($fav_radio_ids_arr): (is_array($fav_radio_ids_arr) ? $fav_radio_ids_arr: array()));
+                $this->fav_radio = (is_string($fav_radio_ids_arr) ? unserialize($fav_radio_ids_arr): FALSE);
             }
         }
 
@@ -219,7 +223,7 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
             $this->getFav($uid);
         }
 
-        if (empty($this->fav_radio)){
+        if ($this->fav_radio === FALSE){
             return $this->db
                 ->use_caching(array('fav_radio.uid='.intval($uid)))
                 ->insert('fav_radio',
