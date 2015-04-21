@@ -18,9 +18,7 @@ function usbdisk(){
 
     var files_ext  = this.audio_ext + ' ' + this.video_ext;
 
-    if (stb.firmware_version >= 214){
-        this.image_ext += ' ' + '.bmp .tiff .tif .png';
-    }
+    this.image_ext += ' ' + '.bmp .tiff .tif .png';
 
     if (stb.type != 'MAG200'){
         files_ext += ' ' + this.image_ext;
