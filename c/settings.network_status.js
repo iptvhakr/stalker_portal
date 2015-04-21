@@ -4,11 +4,7 @@
 
 (function(){
 
-    if (stb.firmware_version < 212){
-        return;
-    }
-
-    if (stb.firmware_version >= 212 && !stb.profile['use_embedded_settings']){
+    if (!stb.profile['use_embedded_settings']){
         return;
     }
 

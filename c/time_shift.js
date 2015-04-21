@@ -4,10 +4,6 @@
 
 (function(){
 
-    if (stb.firmware_version <= 208){
-        return;
-    }
-
     module.time_shift = {
 
         cur_media_item : {},

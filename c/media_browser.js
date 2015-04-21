@@ -337,10 +337,6 @@
         this.save_smb_passwords = function(){
             _debug('media_browser.save_smb_passwords');
 
-            if (stb.firmware_version < 214){
-                return;
-            }
-
             var smb_passwords = JSON.stringify(this.smb_auth_history);
 
             _debug('smb_passwords', smb_passwords);
