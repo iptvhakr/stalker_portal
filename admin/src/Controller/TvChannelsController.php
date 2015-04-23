@@ -76,9 +76,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (is_array($allChannels)) {
             while (list($num, $row) = each($allChannels)) {
                 $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row);
+				 
             }
         }
-
+		
         $this->app['allChannels'] = $allChannels;
         $getAllGenres = $this->db->getAllGenres();
         $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');

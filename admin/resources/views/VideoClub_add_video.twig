@@ -27,14 +27,14 @@
                     </div> </a>
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id) }}
                                     {{ form_widget(app['form'].rating_count_kinopoisk) }}
                                     {{ form_widget(app['form'].rating_imdb) }}
                                     {{ form_widget(app['form'].rating_count_imdb) }}
-                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].name) }}
                                         {% if app['error_local'] and attribute(app['error_local'], 'name') is defined %}<span> {{ app['error_local']['name'] }}</span> {% endif %}
@@ -57,10 +57,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Genre'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Genre'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].cat_genre_id, {'attr': {'class': 'populate placeholder'} }) }}
+                                    {{ form_widget(app['form'].cat_genre_id, {'attr': {'class': 'populate placeholder', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].cat_genre_id) }}
                                     </div>
@@ -71,10 +71,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Old genre'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Old genre'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder'} }) }}
+                                    {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].genres) }}
                                     </div>
@@ -251,10 +251,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Year'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Year'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].year, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].year, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].year) }}
                                     </div>
@@ -265,10 +265,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Length'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Length'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].duration) }}
                                     </div>
@@ -279,10 +279,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Country'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Country'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].country, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].country, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].country) }}
                                     </div>
@@ -290,10 +290,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Director'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Director'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].director, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].director, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].director) }}
                                     </div>
@@ -301,10 +301,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control' }} ) }}
+                                    {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].actors) }}
                                     </div>
@@ -312,10 +312,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}:</label>
+                            <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}<span class="icon-required">*</span>:</label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].description, {'attr': {'class': 'form-control' }} ) }}
+                                    {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].description) }}
                                     </div>
@@ -399,6 +399,7 @@
 
         function yelp() {
             $(document).ready(function () {
+		
                 if (typeof (channelListRender) == 'function') {
                     LoadSelect2Script(DemoSelect2);
                 }
@@ -446,8 +447,10 @@
                     e.preventDefault();
                     return false;
                 });
-                
-                $("#form_save").on('click', function(e){
+                 $.validate({
+   
+    onSuccess : function() {
+     $("#form_save").on('click', function(e){
                     e.stopPropagation();
                     e.preventDefault();
                     if($('#form_protocol').val() == 'custom' && $.trim($('#form_rtsp_url').val()) == '') {
@@ -459,6 +462,9 @@
                     $(this).closest('form').get(0).submit();
                     return false;
                 });
+    }
+  });
+                
                 $("#form_reset").on('click', function(e){
                     e.stopPropagation();
                     e.preventDefault();

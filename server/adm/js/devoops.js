@@ -9,6 +9,17 @@
 //  Dynamically load jQuery Select2 plugin
 //  homepage: https://github.com/ivaynberg/select2  v3.4.5  license - GPL2
 //
+
+
+			var size_tr = $("tr").length;
+			if (size_tr > 20 && size_tr < 55 ) {$('.dropdown-toggle').parent('div').slice(-3).addClass('dropup'); }
+		    else if ( size_tr >=4) {$('.dropdown-toggle').parent('div').slice(-2).addClass('dropup'); }
+			else if ( size_tr <=4) {$('.dropdown-toggle').parent('div').slice(-2).addClass('dropup'); }
+			
+			$('#attribute_set').removeClass('dropup');
+			$('#status').removeClass('dropup');
+			$('.filter').removeClass('dropup');
+for(var f=document.forms,i=f.length;i--;)f[i].setAttribute("novalidate",i)
 function LoadSelect2Script(callback) {
     if (!$.fn.select2) {
         $.getScript('plugins/select2/select2.min.js', callback);
@@ -25,6 +36,8 @@ function LoadSelect2Script(callback) {
 //
 function LoadDataTablesScripts(callback) {
     function LoadDatatables() {
+	
+		
         $.getScript('plugins/datatables/jquery.dataTables.js', function () {
             $.getScript('plugins/datatables/ZeroClipboard.js', function () {
                 $.getScript('plugins/datatables/TableTools.js', function () {

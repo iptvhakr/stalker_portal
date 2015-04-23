@@ -41,7 +41,8 @@
                                     <tbody>
                                         <!-- Start: list_row -->
                                         {% for item in app.allChannels %}
-                                            <tr>
+										
+                                            <tr> 
                                                 <td>{{item.id}}</td>
                                                 <td>{{item.number}}</td>
 												<td><img class="img-rounded channel-logo" src="{% if item.logo %}{{item.logo}}?{{ random(100000) }}{% endif %}" alt=""></td>
@@ -51,7 +52,7 @@
                                                 <td>{{item.cmd}}</td>
                                                 <td>{% if item.status %}{{ 'Published'|trans }}{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
                                                 <td>
-                                                    <div class="col-xs-3 col-sm-8">
+                                                    <div class="col-xs-3 col-sm-8 ddd">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
                                                             <i class="pull-right fa fa-cog"></i>
                                                         </a>
@@ -186,8 +187,8 @@
 				},
 				"order": [[ 1, "asc" ]],
                 "aoColumnDefs": [ 
-                    { "targets": [ 0, -1 ], "orderable": false},
-                    { "searchable": false, "targets": [  3, 4, 5, 6, 7] },
+                    { "targets": [  -1 ], "orderable": false},
+                    { "searchable": false, "targets": [ 1,2, 3, 4, 5, 6, 7] },
                     { className: "action-menu", "targets": [ -1 ] },
 					{ "width": "3%", "targets": [ 0 ] },
 					{ "width": "6%", "targets": [ 1 ] },
@@ -201,6 +202,13 @@
 
         function yelp() {
             $(document).ready(function () {
+			
+
+			var size_tr = $("tr").length;
+			if (size_tr > 20 && size_tr < 55 ) {$('.dropdown-toggle').parent('div').slice(-3).addClass('dropup'); }
+		    else if ( size_tr >=4) {$('.dropdown-toggle').parent('div').slice(-4).addClass('dropup'); }
+			else if ( size_tr <=4) {$('.dropdown-toggle').parent('div').slice(-4).addClass('dropup'); }
+			
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
 

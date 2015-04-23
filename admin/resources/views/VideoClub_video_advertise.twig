@@ -19,7 +19,7 @@
                                             <th data-filter="title">{{ 'Title'|trans }}</th>
                                             <th data-filter="url">{{ 'Address'|trans }}</th>
                                             <th data-filter="weight">{{ 'Weight'|trans }}</th>
-                                            <th data-filter="started"{{ 'Views'|trans }}></th>
+                                           
                                             <th data-filter="ended">{{ 'Views counted'|trans }}</th>
                                             <th data-filter="must_watch">{{ 'Necessary to view'|trans }}</th>
                                             <th data-filter="status"{{ 'Status'|trans }}>Статус</th>
@@ -36,7 +36,7 @@
                                                 <td data-filter="started">{{ item.started }}</td>
                                                 <td data-filter="ended">{{ item.ended }}</td>
                                                 <td data-filter="must_watch">{{ item.must_watch }}</td>
-                                                <td data-filter="status">{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Not published'|trans }}</span>{% endif %}</td>
+                                                <td data-filter="status">{% if item.status %}<span class="">{{ 'Published'|trans }}</span>{% else %}<span class="">{{ 'Not published'|trans }}</span>{% endif %}</td>
                                                 <td data-filter="operations">
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    

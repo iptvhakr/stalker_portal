@@ -8,7 +8,7 @@
                         {% if item.icon %}
                             <i class="{{ item.icon }}"></i>
                         {% endif %}
-                        <span class="hidden-xs">{{ item.name }}</span>
+                        <span>{{ item.name }}</span>
                         {% if attribute(item, 'add_params') is defined %}
                             {% autoescape false%}
                             {{ item['add_params'] }}
@@ -32,7 +32,7 @@
                                 {% set parent_alias = '' %}
                             {% endif %}
                             <li>
-                                <a class="bord {% if item_action.alias == app.action_alias %}active-parent active{% endif %}" href="{{ app.request.baseUrl }}/{{ parent_alias ? parent_alias }}/{{ item_action.alias ? item_action.alias }}">
+                                <a class="bord {% if item_action.alias == app.action_alias %}active-parent active{% endif %} " href="{{ app.request.baseUrl }}/{{ parent_alias ? parent_alias }}/{{ item_action.alias ? item_action.alias }}">
                                     {% if item_action.icon %}<i class="{{ item_action.icon }}"></i> {% endif %}{{ item_action.name }}
                                 {% if attribute(item_action, 'add_params') is defined %}
                                     {% autoescape false%}

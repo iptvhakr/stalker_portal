@@ -37,7 +37,7 @@
                                             <td>{{ item.year }}</td>
                                             <td>{{ item.country }}</td>
                                             <td>{{ item.language }}</td>
-                                            <td>{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Unpublished'|trans }}</span>{% endif %}</td>
+                                            <td>{% if item.status %}<span class="">{{ 'Published'|trans }}</span>{% else %}<span class="">{{ 'Unpublished'|trans }}</span>{% endif %}</td>
                                             <td>
                                                 <div class="col-xs-3 col-sm-8">
                                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -82,7 +82,11 @@
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var status = json.data[i].status;
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                        var drop;
+						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
+						else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
+						else {drop=""}
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
@@ -104,7 +108,7 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].status = status != 0 ? "<span class='txt-success'>{{ 'Published'|trans }}</span>" : "<span class='txt-danger'>{{ 'Unpublished'|trans }}</span>";
+                        json.data[i].status = status != 0 ? "<span class=''>{{ 'Published'|trans }}</span>" : "<span class=''>{{ 'Unpublished'|trans }}</span>";
 
                         var name = json.data[i].name;
 
@@ -163,6 +167,9 @@
 
         function yelp() {
             $(document).ready(function () {
+				
+
+		
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();

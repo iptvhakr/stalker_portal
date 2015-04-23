@@ -91,11 +91,11 @@
                         <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-server">
                             <!-- track name -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Title'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id" class="own_fields">
-                                        <input type="text" name="name" class='own_fields form-control'>
+                                        <input type="text" name="name" data-validation=required  class='own_fields form-control'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , . It will be shown in the load balancer.'|trans }}</span>
@@ -105,10 +105,10 @@
 
                             <!-- address -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'URL'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" name="address" class='form-control own_fields'>
+                                        <input type="text" name="address" data-validation=required  class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'Example: http://server.example:8080'|trans }}</span>
@@ -118,10 +118,10 @@
                             
                             <!-- max_sessions -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Maximum users'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Maximum users'|trans }} <span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" name="max_sessions" class='form-control own_fields'>
+                                        <input type="text" name="max_sessions" data-validation=required  class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'Maximum quantity of users(load) numeric value'|trans }}</span>
@@ -148,7 +148,7 @@
                                     </span>
                                 </div>
                             </div>
-                        </form>
+                        
                     </div>
                 </div>
 
@@ -163,7 +163,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div></form>
             </div>
         </div>
     </div>
@@ -183,8 +183,11 @@
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var status = json.data[i].status;
-                        
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                        var drop;
+						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
+						else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
+						else {drop=""}
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
@@ -272,6 +275,9 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
+				
+$.validate({
+  onSuccess : function() {
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
@@ -289,6 +295,9 @@
                     }
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                     return false;
+					
+									 }
+  });
                 });
                 
                  $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){

@@ -2,7 +2,7 @@
 $.extend( true, $.fn.dataTable.defaults, {
 	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
 	"sPaginationType": "bootstrap",
-		"iDisplayLength": 50,
+	"iDisplayLength": 50,
 	"fnDrawCallback": function() {  
 					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
 					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
@@ -10,7 +10,15 @@ $.extend( true, $.fn.dataTable.defaults, {
 				},
 	"oLanguage": {
 		"sLengthMenu": "_MENU_ records per page"
-	}
+	},
+	 "aoColumnDefs": [ 
+			
+            
+                { "width": "16px", "targets": [ -1] }
+            ]
+	
+	
+	
 } );
 
 

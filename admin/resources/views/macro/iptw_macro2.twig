@@ -107,7 +107,7 @@
         {% else %}
             {% set with_all=1 %}
         {% endif %}
-        <div class=" col-xs-{{ set_width }} col-sm-{{ set_width }} col-md-{{ set_width }} col-lg-{{ set_width }} {% if list_title is defined and list_title %}no-padding{% endif %} attribute_set" id="{{ set_id }}" style="">
+        <div class="{% if list_title is defined and list_title %}no-padding{% endif %} attribute_set" id="{{ set_id }}" style="">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
                 <span>{{ set_title }}</span>
                 <i class="fa fa-caret-down"></i>

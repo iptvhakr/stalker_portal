@@ -133,7 +133,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['videoEdit'] = TRUE;
         $this->app['videoName'] = $this->oneVideo['name'];
         
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit movie') . " '{$this->oneVideo['name']}'");
+        $this->app['breadcrumbs']->addItem(" '{$this->oneVideo['name']}'");
         
         return $this->app['twig']->render('VideoClub_add_video.twig');
     }

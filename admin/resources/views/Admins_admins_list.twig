@@ -84,12 +84,12 @@
                         <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-admin">
                             <!-- singer -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Login'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Login'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="hidden" name="id" id="adm_id" class="own_fields">
-                                        <input type="text" required="required" name="login" id="adm_login" class='form-control own_fields'>
-                                        <div class="bg-danger"></div>
+                                        <input type="text" required="required" name="login" data-validation=required  id="adm_login" class='form-control own_fields'>
+                                       
                                     </div>
                                 </div>
                             </div>
@@ -110,22 +110,22 @@
                             </div>
                             <!-- URL -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Password'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Password'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="password" name="pass" id="adm_pass" class='form-control own_fields'>
+                                        <input type="password" name="pass" id="adm_pass" data-validation=required class='form-control own_fields'>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Repeat the password'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Repeat the password'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="password" name="re_pass" id="adm_re_pass" class='form-control own_fields'>
+                                        <input type="password" name="re_pass" id="adm_re_pass" data-validation=required  class='form-control own_fields'>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                      
                     </div>
                 </div>
 
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  </form>
         </div>
     </div>
                                     
@@ -252,6 +252,9 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
+			
+	  $.validate({
+  onSuccess : function() {
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
@@ -272,9 +275,12 @@
                     }
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                     return false;
+					
+					 }
+  });
                 });
                 
-                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){ 
                     if (e.currentTarget != e.target) {
                         return;
                     }
@@ -298,7 +304,7 @@
                     return false;
                 });
                 
-                $(document).on('change keyup', '#adm_login', function (e) {
+                $(document).on('change keyup', '#adm_login', function (e) { 
                     e.stopPropagation();
                     e.preventDefault();
                     var _this = $(this);

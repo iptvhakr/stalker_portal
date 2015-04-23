@@ -50,6 +50,7 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale_fallbacks' => array($language),
 ));
 $app['allowed_locales'] = $allowed_locales;
+
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.options' => array(
         'cache' => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
@@ -61,6 +62,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->register(new ImagineServiceProvider());
 
 $app["language"] = $language;
+$app['lang']=$lang=array($language);
 $app["locale"] = $locale;
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app){
             $lang = (!empty($app["language"])? $app["language"]: "ru");

@@ -28,9 +28,9 @@
             {% set i_last = app['allChannels']|last %}
             {% for item in app.allChannels %}
                 {% if loop|last %}
-            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'}
+            {'logo': '{{item.logo}}', 'link': 'tv-channels/edit-channel?id={{item.id}}', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'}
                 {% else %}
-            {'logo': '{{item.logo}}', 'link': '#', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'},
+            {'logo': '{{item.logo}}', 'link': 'tv-channels/edit-channel?id={{item.id}}', 'name': '{{item.name}}', 'id': '{{item.id}}', 'number': '{{item.number}}', 'locked': '{{item.locked}}', 'old_number': '{{item.number}}', 'empty': '{{item.empty}}'},
                 {% endif %}
             {% endfor %}
         {% endif%}

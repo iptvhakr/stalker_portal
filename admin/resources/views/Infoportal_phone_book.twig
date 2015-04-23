@@ -83,10 +83,10 @@
                         <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-phone-book-item">
                             <!-- singer -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Order'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Order'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="number" required="required" name="num" class='form-control own_fields'>
+                                        <input type="number" required="required" name="num" data-validation=required class='form-control own_fields'>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'Order of service in the directory. Must contain digits only'|trans }}</span>
@@ -95,24 +95,24 @@
                             </div>
                             <!-- name -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Title'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id" class="own_fields">
-                                        <input type="text" required="required" name="title" class='own_fields form-control'>
+                                        <input type="text" required="required" name="title" data-validation=required class='own_fields form-control'>
                                     </div>
                                 </div>
                             </div>
                             <!-- URL -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Phone number'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Phone number'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="text" name="number" required="required" class='form-control own_fields'>
+                                        <input type="text" name="number" required="required" data-validation=required class='form-control own_fields'>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                       
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> </form>
         </div>
     </div>
                                     
@@ -146,7 +146,9 @@
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var title = json.data[i].title;
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+						var drop;
+						if ( i==json.data.length-1) { drop="dropup"; } else {drop=""}
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"' >\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
@@ -229,7 +231,8 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
-                    e.stopPropagation();
+        		  $.validate({
+  onSuccess : function() {            e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
                     var lengthObj = 0;
@@ -247,7 +250,8 @@
                     sendData["phoneboocksource"] = "{{ app['filters']['service'] }}";
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                     return false;
-                });
+               }
+  }); });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {

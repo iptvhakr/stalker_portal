@@ -16,7 +16,7 @@
                                             <th data-filter="name">{{ 'Title'|trans }}</th>
                                             <th data-filter="o_name">{{ 'Original title'|trans }}</th>
                                             <th data-filter="time">{{ 'Length, min'|trans }}</th>
-                                            <th data-filter="tasks">{{ 'Tasks'|trans }}</th>
+                                            <th data-filter="tasks">{{ 'Status'|trans }}</th>
                                             <th data-filter="year">{{ 'Year'|trans }}</th>
                                             <th data-filter="operations">{{ 'Operations'|trans }}</th>
                                         </tr>
@@ -30,7 +30,7 @@
                                                 <td data-filter="o_name">{{ item.o_name }}</td>
                                                 <td data-filter="time">{{ item.time }}</td>
                                                 <td data-filter="tasks">
-                                                    <a href="#{#?task={{ item['id'] }}#}">№{{ item['id'] }} ({{ 'scheduled'|trans }} {{ 'on'|trans }} {{ item['date_on']|date('d-m-Y') }})</a>
+                                                 №{{ item['id'] }} ({{ 'scheduled'|trans }} {{ 'on'|trans }} {{ item['date_on']|date('d-m-Y') }})
                                                 </td>
                                                 <td data-filter="year">{{ item.year }}</td>
                                                 <td data-filter="operations" class="action-menu">
@@ -70,10 +70,34 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div><style type="text/css">.dataTables_filter {display: none;}</style>
     <script type="text/javascript" defer>
+	
+	 function TestTable1() {
+        $('#datatable-1').dataTable( {
+        "paging":   false,
+        "ordering": true,
+        "info":     false,
+		
+			"scrollCollapse": true,
+			
+            "bFilter": true,
+            "bPaginate": true,
+		"aoColumnDefs": [ 
+					{ "searchable": false },
+                { "targets": [ 3 ], "visible": false},
+                { "targets": [ -1 , 6], "orderable": false}
+               
+            ]
+    } );
+    }
+	
         function yelp() {
             $(document).ready(function () {
+			LoadDataTablesScripts(TestTable1);
+		
+			 
+			 
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
