@@ -41,19 +41,19 @@
                                         <td>{{ item.media_claims }}</td>
                                         <td>
                                             {% if item.done %}
-                                                <span class="txt-success">{{ 'Completed'|trans }}</span>
+                                                <span class="">{{ 'Completed'|trans }}</span>
                                             {% else %}
-                                                <span class="txt-danger">{{ 'Do not completed'|trans }}</span>
+                                                <span class="">{{ 'Do not completed'|trans }}</span>
                                             {% endif %}
                                         </td>
                                         <td>
                                             {% if item.accessed %}
-                                                <span class="txt-success">{{ 'Published'|trans }}</span>
+                                                <span class="">{{ 'Published'|trans }}</span>
                                             {% else %}
                                                 <span>{{ 'Unpublished'|trans }}</span>
                                             {% endif %}
                                             {% if not item.status %}
-                                                <br><span class="txt-danger">{{ 'Error'|trans }}</span>
+                                                <br><span class="">{{ 'Error'|trans }}</span>
                                             {% endif %}
                                         </td>
                                         <td>
@@ -263,12 +263,12 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].accessed = accessed != 0 ? "<span class='txt-success'>{{ 'Published'|trans }}</span>" : "<span>{{ 'Unpublished'|trans }}</span>";
+                        json.data[i].accessed = accessed != 0 ? "<span class=''>{{ 'Published'|trans }}</span>" : "<span>{{ 'Unpublished'|trans }}</span>";
                         if (parseInt(status, 10) == 0) {
-                            json.data[i].accessed += "<br><span class='txt-danger'>{{ 'Error'|trans }}</span>"
+                            json.data[i].accessed += "<br><span class=''>{{ 'Error'|trans }}</span>"
                         }
                         json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/karaoke-list-json" data-karaokeid="' + id + '">' + name + '</a>';
-                        json.data[i].done = done != 0 ? '<span class="txt-success">{{ 'Completed'|trans }}</span>' : '<span class="txt-danger">{{ 'Do not completed'|trans }}</span>';
+                        json.data[i].done = done != 0 ? '<span class="">{{ 'Completed'|trans }}</span>' : '<span class="">{{ 'Do not completed'|trans }}</span>';
 
                         date = json.data[i]['added'];
                         if (date > 0) {
