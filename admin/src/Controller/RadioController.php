@@ -90,7 +90,7 @@ class RadioController extends \Controller\BaseStalkerController {
         $this->app['radioEdit'] = TRUE;
         $this->app['radioID'] = $id;
         $this->app['radioName'] = $this->radio['name'];
-        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit radio') . " '{$this->radio['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit radio'));
         return $this->app['twig']->render("Radio_add_radio.twig");
     }
 
@@ -120,7 +120,7 @@ class RadioController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsRadioList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -269,8 +269,9 @@ class RadioController extends \Controller\BaseStalkerController {
             $action = (isset($this->radio) && $edit ? 'updateRadio' : 'insertRadio');
             $radio_num = $this->db->searchOneRadioParam(array('number' => $data['number']));
             $radio_name = $this->db->searchOneRadioParam(array('name' => $data['name']));
+
             $data['volume_correction'] = !empty($data['volume_correction'])? (int)str_replace('%', '', $data['volume_correction']): 0;
-            if ($edit && !empty($data['id']) && (!empty($radio_num) && $radio_num != $data['number']) && (!empty($radio_name) && $radio_name != $data['name'])) {
+            if (($edit && (empty($data['id']) || (!empty($radio_num) && $radio_num != $data['number'] ) || (!empty($radio_name) && $radio_name != $data['name'] ) ) ) || ( !$edit && ( !empty($radio_num) || !empty($radio_name)) ) ){
                 return FALSE;
             }
             if ($form->isValid()) {

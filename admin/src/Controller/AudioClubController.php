@@ -42,7 +42,10 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $allGenre = $this->setLocalization($allGenre, 'name');
         $this->app['allAudioGenres'] = $allGenre;
         $this->app['allAudioYears'] = $this->db->getAllFromTable('audio_years');
-        $this->app['allCountries'] = $this->db->getAllFromTable('countries');
+
+        $locale = substr($this->app["language"], 0, 2);
+        $this->app['allCountries'] = ($locale != 'ru' ? array_map(function($row) use ($locale){ $row['name'] = $row['name_en']; return $row; }, $this->db->getAllFromTable('countries')): $this->db->getAllFromTable('countries'));
+
         $this->app['allLanguages'] = $this->db->getAllFromTable('audio_languages');
         $this->app['allStatus'] = $this->allStatus;
         
@@ -78,6 +81,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $this->app['recordsFiltered'] = 0;
         $this->app['audioAlbumID'] = -1;
         $this->app['allLanguages'] = $this->db->getAllFromTable('audio_languages');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Albums'), $this->app['controller_alias'] . '/audio-albums');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Add audio album'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -117,7 +121,8 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $this->app['albumName'] = $this->audio_album['name'];
-        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit audio album') ." '{$this->audio_album['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Albums'), $this->app['controller_alias'] . '/audio-albums');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit audio album'));
         return $this->app['twig']->render("AudioClub_add_audio_albums.twig");
     }
     
@@ -211,7 +216,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
             "tracks_count" => "(SELECT COUNT(*) FROM `audio_compositions` WHERE `album_id` = `audio_albums`.`id`) as `tracks_count`",
             "ganre_name" => "'' as `ganre_name`",
             "year" => "`audio_years`.`name` as `year`",
-            "country" => "`countries`.`name` as `country`",
+            "country" => "`countries`.`name" . (substr($this->app["language"], 0, 2) != 'ru' ? "_en": "" ) . "` as `country`",
             "language" => "0 as `language`",
             "status" => "`audio_albums`.`status` as `status`"
         );
@@ -246,7 +251,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioAlbumsList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -315,7 +320,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioGenresList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -451,7 +456,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioArtistList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -587,7 +592,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioLanguageList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -723,7 +728,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsAudioYearList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -854,7 +859,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
                         
             $filename = $this->data['cover'];
             $path = realpath(PROJECT_PATH . "/../misc/audio_covers/");
-            $web_path = '/misc/audio_covers/';
+            $web_path = 'misc/audio_covers/';
             if (strpos($filename, 'new') !== FALSE) {
                 
                 $filename .= ($filename == 'new') ? rand(0, 100000) . "." . $this->request->files->get($key)->getClientOriginalExtension(): '';
@@ -874,6 +879,39 @@ class AudioClubController extends \Controller\BaseStalkerController {
             $data['name'] = $filename;
             $error = '';
         }
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function delete_cover() {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['cover_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'deleteCover';
+        $data['msg'] = $this->setlocalization('Deleted');
+        $error = $this->setLocalization('Failed');
+        $album = $this->db->getAudioAlbumsList(array('select' => array('audio_albums.id as id', 'audio_albums.cover as cover'), 'where' => array( 'audio_albums.id'=> $this->postData['cover_id']), 'order' => array('audio_albums.id'=>'ASC')));
+
+        $path = realpath(PROJECT_PATH . "/../misc/audio_covers/").'/' . ceil($album[0]['id']/100).'/';
+
+        if ($this->db->updateCover($this->postData['cover_id'], '')) {
+            try{
+                unlink($path . $album[0]['cover']);
+                $error = '';
+            } catch (\Exception $e){
+                $error = $this->setLocalization('image file has not been deleted') . ', ';
+                $error = $this->setLocalization('image name') . ' - "' . $album[0]['cover'] . '", ';
+                $error = $this->setLocalization('file can be deleted manually from screenshot directory');
+            }
+        }
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -933,7 +971,7 @@ class AudioClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsAlbumsCompositionList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }

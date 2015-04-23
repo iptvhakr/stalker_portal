@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Users'|trans ~ ': ' ~ 'list of STB in group '|trans ~ '"' ~ app.consoleGroup.name ~ '"') | trans %}
+{% set active_alias = 'users-consoles-groups' %}
 
 {% block content %}
     <div id="iptv_list">

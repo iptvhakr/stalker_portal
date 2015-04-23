@@ -12,6 +12,22 @@
 {#        <script src="{{app.request.baseUrl}}/plugins/tinymce/tinymce.min.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/tinymce/jquery.tinymce.min.js"></script>#}
         <!-- All functions for this theme + document.ready processing -->
+        <script type="text/javascript" defer="defer">
+            var words = [];
+            var lang = $.cookies.get('language');
+            $.ajax({
+                type: "GET",
+                url: "./js/js_translate.php",
+                async: false,
+                data: {language: lang},
+                dataType: "json",
+                success: function(data){
+                    for (var key in data){
+                        words[key] = data[key];
+                    }
+                }
+            });
+        </script>
         <script src="{{app.request.baseUrl}}/js/devoops.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/multiselect_transfer/jquery.selso.js"></script>
         <script src="{{app.request.baseUrl}}/plugins/datatables/jquery.dataTables.rowReordering.js"></script>

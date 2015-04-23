@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Video club'|trans ~ ': ' ~ (app.videoEdit ? ('Edit movie'|trans ~ " '"~ app.videoName ~ "'"): 'Add movie'|trans)) | trans %}
+{% set active_alias = 'video-list' %}
 
 {% block content %}
     <div id="add_channel">
@@ -87,10 +88,11 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'Cover'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
-                              <div class=" col-xs-10 col-sm-4 pull-right">
+                                <div class=" col-xs-10 col-sm-4 pull-right" id="cover_container">
                                     {{form_widget(app['form'].cover_big) }}
                                     {{form_widget(app['form'].cover_id) }}
                                     <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value%}{{app['curr_cover_dir']}}/{{app['form'].cover_id.vars.value}}.jpg{% endif %}" alt="" style="max-width: 100%;">
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-cover" data-cover_id="{% if app['form'].cover_id.vars.value %}{{app['form'].cover_id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete cover'|trans }}</span></a>
                                 </div>
                                 <div class="pull-left" id="bootstrapped-fine-uploader"></div>
                             </div>
@@ -409,10 +411,10 @@
                     debug: true,
                     multiple: false,
                     text: {
-                        formatProgress: "{percent}% из {total_size}",
-                        failUpload: "Сбой при загрузке",
-                        waitingForResponse: "Обработка...",
-                        paused: "Пауза"
+                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}", //из
+                        failUpload: "{{ 'Upload failed'|trans }}", //Сбой при загрузке
+                        waitingForResponse: "{{ 'Processing'|trans }}...", //Обработка
+                        paused: "{{ 'Pause'|trans }}" //Пауза
                     },
                     request: {
                         endpoint: 'video-club/edit-cover?id=' + ($('#form_cover_id').val() ? $('#form_cover_id').val() : 'new')
@@ -433,6 +435,7 @@
                     val = val[val.length - 1];
                     $('#form_cover_id').val(val);
                     $('#form_cover_big').val('');
+                    $("#cover_container a").data('cover_id', val);
                     var imageName = val.split('.');
                     if (imageName.length > 1) {
                         imageName.length -= 1;
@@ -621,6 +624,14 @@
                     });
                     
                 });
+
+                $("#cover_container").on('click', 'a', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JSshowModalBox();
+                    ajaxPostSend($(this).attr('href'), {cover_id: $(this).data('cover_id')});
+                    return false;
+                });
             });
 
         }
@@ -630,13 +641,13 @@
             {% for key, g_item in app['preparedCatGenre'] %}
                 '{{ key }}' : [{% for g_in_item in g_item %}{'id': '{{ g_in_item['id'] }}', 'title':'{{ g_in_item['title'] }}'}{% if not loop.last %},{% endif %}{% endfor %}]{% if not loop.last %},{% endif %}
             {% endfor %}
-            }
+            };
             
             var category_list = {
             {% for g_item in app['catGenres'] %}
                 '{{ g_item['id'] }}' : '{{ g_item['category_alias'] }}'{% if not loop.last %},{% endif %}
             {% endfor %}
-            }
+            };
             
             function checkCatGenreList(parent, child){
                 var selAlias = category_list[$(parent).val()];
@@ -673,6 +684,23 @@
                     buttonContainer.find('i').removeClass('txt-danger').removeClass('fa-ban').addClass('txt-success').addClass('fa-check');
                 }
             }
+
+            var deleteCover = function(data){
+                $('#form_cover_id').val('');
+                $('#form_cover_big').val('');
+                $('#cover_container img').attr('src', '');
+                $('#bootstrapped-fine-uploader ul.qq-upload-list').empty();
+                JSSuccessModalBox();
+            };
+
+            var deleteCoverError = function(){
+                JSErrorModalBox();
+            };
+
+            var closeModalBox = function(){
+                JScloseModalBox();
+            };
+
     </script>
 
     <script type="text/template" id="qq-template-bootstrap">

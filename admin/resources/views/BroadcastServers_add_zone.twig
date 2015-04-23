@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Broadcast servers'|trans ~ ': ' ~ ' broadcast area '|trans ~ ' - ' ~ (app.zoneEdit ? 'edit area'|trans ~ '"' ~ app.zoneName ~ '"': 'add area'|trans)) | trans %}
+{% set active_alias = 'broadcast-zone-list' %}
 
 {% block content %}
     <div id="add_channel">

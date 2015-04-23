@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Video club'|trans ~ ': ' ~ (app.modEdit ? ('Edit moderator'|trans ~ " '"~ app.modName ~ "'"): 'Add moderator'|trans)) | trans %}
+{% set active_alias = 'video-moderators-addresses' %}
 
 {% block content %}
     <div id="add_channel">

@@ -3498,3 +3498,40 @@ th[data-filter='operations']{
 li[data-filter='operations']{
     display: none;
 }
+
+#cover_container{
+    position: relative;
+}
+
+#cover_container > a:last-of-type, #deletelogolink{
+    display: none;
+    background-color: rgba(200, 200, 200, 0.5);
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    padding: 10px;
+    position: absolute;
+    margin: 0 auto;
+    top: 0px;
+}
+
+#cover_container > a:last-of-type{
+    width: 88%;
+}
+
+#deletelogolink{
+    width: 96px;
+}
+
+#deletelogolink a{
+    text-decoration: none;
+}
+
+#cover_container:hover > a:last-of-type, #cover_container:focus > a:last-of-type, #cover_container:active > a:last-of-type,
+#cover_container:hover > #deletelogolink, #cover_container:focus > #deletelogolink, #cover_container:active > #deletelogolink{
+    display: block;
+}
+
+#cover_container > a:last-of-type span{
+    vertical-align: middle;
+}

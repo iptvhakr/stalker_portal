@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Video club'|trans ~ ': ' ~ (app.adsEdit ? ('Edit commercial'|trans ~ " '"~ app.adsTitle ~ "'"): 'Add commercial'|trans)) | trans %}
+{% set active_alias = 'video-advertise' %}
 
 {% block content %}
     <div id="add_channel">

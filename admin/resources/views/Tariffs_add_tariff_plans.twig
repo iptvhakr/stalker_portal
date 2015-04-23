@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Tariff plans'|trans ~ ': ' ~ (app.servicePlanEdit ? ('Edit tariff plan'|trans ~ " '"~ app.planName ~ "'"): 'Add tariff plan'|trans)) | trans %}
+{% set active_alias = 'tariff-plans' %}
 
 {% block content %}
     <div id="add_channel">

@@ -250,6 +250,10 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     public function insertAlbumsComposition($param){
         return $this->mysqlInstance->insert('audio_compositions', $param)->insert_id();
     }
+
+    public function updateCover($id, $cover_name){
+        return $this->mysqlInstance->update('audio_albums', array('cover' => $cover_name), array('id' => $id))->total_rows();
+    }
     
     //--------------------------------------------------------------------------
     private function setTmpTable(){

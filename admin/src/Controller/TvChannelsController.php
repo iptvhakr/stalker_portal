@@ -74,11 +74,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $allChannels = $this->db->getAllChannels($filter);
         $allChannels = $this->setLocalization($allChannels, 'genres_name');
         if (is_array($allChannels)) {
+            reset($allChannels);
             while (list($num, $row) = each($allChannels)) {
-                $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row);
+                $allChannels[$num]['logo'] = $this->getLogoUriById(FALSE, $row, 120);
             }
         }
-
         $this->app['allChannels'] = $allChannels;
         $getAllGenres = $this->db->getAllGenres();
         $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
@@ -135,6 +135,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
                 
         $this->app['form'] = $form->createView();
+
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Channels'), $this->app['controller_alias'] . '/iptv-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Adding channel'));
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -172,8 +176,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         $this->app['form'] = $form->createView();
         
-        $this->app['breadcrumbs']->addItem("'{$this->oneChannel['name']}'");
-
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Channels'), $this->app['controller_alias'] . '/iptv-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Editing channel'));
         $this->app['editChannelName'] = $this->oneChannel['name'];
 
         return $this->app['twig']->render('TvChannels_add_channel.twig');
@@ -276,15 +280,15 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if (!$this->isAjax || empty($this->data['id']) || (!is_numeric($this->data['id']) && strpos($this->data['id'], 'new') == FALSE)) {
+        if (!$this->isAjax || empty($this->postData['logo_id']) || (!is_numeric($this->postData['logo_id']) && strpos($this->postData['logo_id'], 'new') == FALSE)) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $channel = $this->db->getChannelById($this->data['id']);
+        $channel = $this->db->getChannelById($this->postData['logo_id']);
 
         $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
         $error = $this->saveFiles->getError();
-        $response = $this->generateAjaxResponse(array('data' => 0), $error);
+        $response = $this->generateAjaxResponse(array('data' => 0, 'action'=>'deleteLogo'), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -451,7 +455,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsEPGList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -602,7 +606,6 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     private function getLogoUriById($id = FALSE, $row = FALSE, $resolution = 320) {
 
         $channel = ($row === FALSE) ? $this->db->getChannelById($id) : $row;
-
         if (empty($channel['logo'])) {
             return "";
         }

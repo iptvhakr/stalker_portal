@@ -262,7 +262,7 @@
                 $("#add_phone_book_item").on("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить');
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Adding'|trans }}');
                     $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
                     $("#modalbox_ad").show();

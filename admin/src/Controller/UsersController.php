@@ -137,6 +137,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
         }
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Users list'), $this->app['controller_alias'] . '/users-list');
         $this->app['breadcrumbs']->addItem($this->setlocalization('Add user'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -189,8 +190,8 @@ class UsersController extends \Controller\BaseStalkerController {
         }
 
         $this->app['userName'] = $this->user['mac'];
-
-        $this->app['breadcrumbs']->addItem($this->setLocalization("Edit user") . " '{$this->user['mac']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Users list'), $this->app['controller_alias'] . '/users-list');
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit user'));
         return $this->app['twig']->render("Users_add_users.twig");
     }
 
@@ -210,7 +211,8 @@ class UsersController extends \Controller\BaseStalkerController {
         $list = $this->users_groups_consoles_list_json();
         $this->app['consoleGroupList'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
-        
+
+        $this->app['breadcrumbs']->addItem($this->setLocalization('User groups'), $this->app['controller_alias'] . '/users-consoles-groups');
         $this->app['breadcrumbs']->addItem($this->setLocalization("STB of group") . " '{$this->app['consoleGroup']['name']}'");
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -247,7 +249,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsUresList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         }
         
         if (!empty($query_param['order']) && !empty($query_param['order']['state'])) {
@@ -439,11 +441,11 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkLogin';
-        $error = 'Name already used';
+        $error = $this->setlocalization('Name already used');
         if ($this->db->checkLogin(trim($this->postData['name']))) {
-            $data['chk_rezult'] = 'Name already used';
+            $data['chk_rezult'] = $this->setlocalization('Name already used');
         } else {
-            $data['chk_rezult'] = 'Имя свободно';
+            $data['chk_rezult'] = $this->setlocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -461,11 +463,11 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkConsoleName';
-        $error = 'Name already used';
+        $error = $this->setlocalization('Name already used');
         if ($this->db->checkConsoleName(trim($this->postData['name']))) {
-            $data['chk_rezult'] = 'Name already used';
+            $data['chk_rezult'] = $this->setlocalization('Name already used');
         } else {
-            $data['chk_rezult'] = 'Имя свободно';
+            $data['chk_rezult'] = $this->setlocalization('Name is available');
             $error = '';
         }
         $response = $this->generateAjaxResponse($data, $error);
@@ -500,7 +502,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $response["recordsFiltered"] = $this->db->getTotalRowsConsoleGroupList($query_param['where'], $query_param['like']);
 
             if (empty($query_param['limit']['limit'])) {
-                $query_param['limit']['limit'] = 10;
+                $query_param['limit']['limit'] = 50;
             }
 
             $query_param['select'] = array_merge(array_diff(array('*', 'stb_in_group.id as stb_in_group_id', 'stb_groups.id as stb_groups_id'), $query_param['select']), $query_param['select']);
@@ -589,7 +591,7 @@ class UsersController extends \Controller\BaseStalkerController {
         }
         $data = array();
         $data['action'] = 'checkConsoleItem';
-        $error = $this->setlocalization('Name already used');
+        $error = $this->setlocalization($this->setlocalization('Name already used'));
         $mac = \Middleware::normalizeMac($this->postData['mac']);
         $data['jjj'] = $check_in_group = $this->db->getConsoleGroupList(array('where' => array('mac' => $mac), 'order' => 'mac', 'limit' => array('limit' => 1)));
         $check_in_users = $this->db->getUsersList(array('select' => array("*", "users.id as uid"), 'where' => array('mac' => $mac), 'order' => 'mac'));
@@ -656,7 +658,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsLogList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         }
 
         $response['data'] = $this->db->getLogList($query_param);
@@ -717,7 +719,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsUresList($query_param['where'], $query_param['like']);
         
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }

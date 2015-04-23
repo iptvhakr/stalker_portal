@@ -79,6 +79,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['servicePackageEdit'] = FALSE;
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Service packages'), $this->app['controller_alias'] . '/service-packages');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Add package'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -128,7 +129,8 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['servicePackageEdit'] = TRUE;
         $this->app['packageName'] = $this->package['name'];
         ob_end_clean();
-        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit package') . " '{$this->package['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Service packages'), $this->app['controller_alias'] . '/service-packages');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit package'));
         return $this->app['twig']->render('Tariffs_add_service_package.twig');
     }
 
@@ -163,6 +165,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['userDefault'] = $this->getDefaultPlan($this->plan['id']);
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = FALSE;
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Tariff plans'), $this->app['controller_alias'] . '/tariff-plans');
         $this->app['breadcrumbs']->addItem($this->setlocalization('Add tariff plan'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -204,7 +207,8 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['servicePlanEdit'] = TRUE;
         $this->app['planName'] = $this->plan['name'];
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit tariff plan') . " '{$this->plan['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Tariff plans'), $this->app['controller_alias'] . '/tariff-plans');
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit tariff plan'));
         return $this->app['twig']->render('Tariffs_add_tariff_plans.twig');
     }
     
@@ -255,7 +259,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsTariffsList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -388,7 +392,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsTariffPlansList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }

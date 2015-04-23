@@ -2,6 +2,7 @@
 {% import '/macro/iptw_macro.twig' as main_macro %}
 
 {% set title = ('Audio club'|trans ~ ': ' ~ (app.audioAlbumEdit ? ('Edit album'|trans ~ " '"~ app.albumName ~ "'"): 'Add album'|trans)) | trans %}
+{% set active_alias = 'audio-albums' %}
 
 {% block content %}
     <div id="add_channel">
@@ -84,12 +85,12 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">{{ 'Cover'|trans }}</label>
-                           <div class="col-xs-10 col-sm-6">
-                               
+                           <div class="col-xs-10 col-sm-6" >
                                 <div class="pull-left" id="bootstrapped-fine-uploader"></div>
-								<div class=" col-xs-10 col-sm-4 pull-right">
+								<div class=" col-xs-10 col-sm-4 pull-right" id="cover_container">
                                     {{form_widget(app['form'].cover) }}
-                                    <img class="img-rounded channel-logo" src="{% if app['form'].cover.vars.value%}{{app.workHost}}{{app['curr_cover_dir']}}{{app['form'].cover.vars.value}}{% endif %}" alt="" style="max-width: 100%;">
+                                    <img class="img-rounded channel-logo" src="{% if app['form'].cover.vars.value%}{{app.workHost}}{{app['curr_cover_dir']}}{{app['form'].cover.vars.value}}?ver=000000{% endif %}" alt="" style="max-width: 100%;">
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-cover" data-cover_id="{% if app['form'].id.vars.value %}{{app['form'].id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete cover'|trans }}</span></a>
                                 </div>
                             </div>
                         </div>
@@ -379,10 +380,10 @@
                     debug: true,
                     multiple: false,
                     text: {
-                        formatProgress: "{percent}% из {total_size}",
-                        failUpload: "Сбой при загрузке",
-                        waitingForResponse: "Обработка...",
-                        paused: "Пауза"
+                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}", //из
+                        failUpload: "{{ 'Upload failed'|trans }}", //Сбой при загрузке
+                        waitingForResponse: "{{ 'Processing'|trans }}...", //Обработка
+                        paused: "{{ 'Pause'|trans }}" //Пауза
                     },
                     request: {
                         endpoint: '{{ app.controller_alias }}/edit-audio-cover?cover=' + ($('#form_cover').val() ? $('#form_cover').val() : 'new')
@@ -398,7 +399,8 @@
                     }
 
                 }).on('complete', function (event, id, name, response) {
-                    $(this).prev('div').children('img').attr('src', "{{app.workHost}}" + response.path + '/' + response.name + '?' + $.random(100000)).css('max-width', '100%');
+                    var newSrc = "{{app.workHost}}" + response.path + '/' + response.name + '?ver=' + $.random(100000);
+                    $('#cover_container img').attr('src', newSrc).css('max-width', '100%');
                     $('#form_cover').val(response.name);
 
                     var postUrl = '{{ app.controller_alias }}/edit-audio-cover?cover=' + (typeof (response.name) != 'undefined' && response.name != '' ? response.name : 'new');
@@ -468,6 +470,14 @@
                         $("#form_").append("<input type='hidden' name='album_tracks' value='" + JSON.stringify(tracksId) + "'>");
                     });
 
+                    $("#cover_container").on('click', 'a', function(e){
+                        e.stopPropagation();
+                        e.preventDefault();
+                        JSshowModalBox();
+                        ajaxPostSend($(this).attr('href'), {cover_id: $(this).data('cover_id')});
+                        return false;
+                    });
+
                     LoadSelect2Script(DemoSelect2);
                     LoadDataTablesScripts(TestTable1);
 
@@ -491,7 +501,7 @@
                 $("#modalbox_ad input").removeAttr('disabled');
                 $('#s2_track_lang').select2("destroy").select2({minimumResultsForSearch: -1});
                 $("#modalbox_ad").show();
-            }
+            };
 
             var setCompositionModalError = function (data) {
                 alert('Error no data');
@@ -500,7 +510,22 @@
             var audioTracksManage = function () {
                 $("#modalbox_ad").click();
                 $('#datatable-1').DataTable().ajax.reload();
-            }
+            };
+
+            var deleteCover = function(data){
+                $('#form_cover').val('');
+                $('#cover_container img').attr('src', '');
+                $('#bootstrapped-fine-uploader ul.qq-upload-list').empty();
+                JSSuccessModalBox();
+            };
+
+            var deleteCoverError = function(){
+                JSErrorModalBox();
+            };
+
+            var closeModalBox = function(){
+                JScloseModalBox();
+            };
     </script>
 
     <script type="text/template" id="qq-template-bootstrap">

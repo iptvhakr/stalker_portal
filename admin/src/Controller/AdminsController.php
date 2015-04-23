@@ -95,8 +95,9 @@ class AdminsController extends \Controller\BaseStalkerController {
         $this->app['adminGropID'] = $this->data['id'];
         $permissionMap = $this->setlocalization($permissionMap, 'description');
         $this->app['permissionMap'] = $permissionMap;
-        
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Permissions for group administrators') . ": '{$group_name[0]['name']}'");
+
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Groups'), $this->app['controller_alias'] . '/admins-groups');
+        $this->app['breadcrumbs']->addItem($this->setlocalization('permissions for group administrators ') . ": '{$group_name[0]['name']}'");
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -144,7 +145,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getAdminsTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -281,7 +282,7 @@ class AdminsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getAdminGropsTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }

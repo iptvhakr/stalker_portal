@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Users'|trans ~ ': ' ~ (app.userEdit ? ('Edit user'|trans ~ " '"~ app.userName ~ "'"): 'Add user'|trans)) | trans %}
+{% set active_alias = 'users-list' %}
 
 {% block content %}
     <div id="add_channel">
@@ -211,7 +212,7 @@
                                         {{ form_widget(app['form'].parent_password, {'attr': {'class': 'form-control'}}) }}
                                     </div>
                                     <div class=" col-xs-10 col-sm-6">
-                                        <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/reset-users-parent-password" data-userid = "{{ app.userID }}" class="btn btn-info pull-left main_ajax">Сбросить</a>
+                                        <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/reset-users-parent-password" data-userid = "{{ app.userID }}" class="btn btn-info pull-left main_ajax">{{ 'Reset'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +223,7 @@
                                         {{ form_widget(app['form'].fav_itv, {'attr': {'class': 'form-control'}}) }}
                                     </div>
                                     <div class=" col-xs-10 col-sm-6">
-                                        <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/reset-user-fav-tv" class="btn btn-info pull-left main_ajax" data-userid = "{{ app.userID }}">Сбросить</a>
+                                        <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/reset-user-fav-tv" class="btn btn-info pull-left main_ajax" data-userid = "{{ app.userID }}">{{ 'Reset'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
