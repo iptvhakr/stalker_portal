@@ -109,11 +109,11 @@
                         </a>
                         <div class="box-content">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">*{{ 'STB model'|trans }}</label>
+                                <label class="col-sm-3 control-label">{{ 'STB model'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <input class="form-control own_fields" type="hidden" title="" value="" name="id">
-                                        <select name="stb_type" class="populate placeholder own_fields" id="s2_stb_type" required="required">
+                                        <select name="stb_type" class="populate placeholder own_fields" data-validation=required id="s2_stb_type" required="required">
                                             <option value="MAG200">MAG200</option>
                                             <option value="MAG245">MAG245</option>
                                             <option value="MAG250">MAG250</option>
@@ -130,34 +130,34 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-11 col-sm-11 col-xs-offset-1">
+                                <div class="col-xs-8 col-sm-8 col-xs-offset-1">
                                     <p class="bg-warning txt-default">
                                         {{ 'Number and date of image due to be updated. Taken from the image. For automatic search of firmware it is enough to fill in version or date of image (one of fields).Number must be numeric.'|trans }}
                                     </p>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">*{{ 'Image version'|trans }}</label>
+                                <label class="col-sm-3 control-label">{{ 'Image version'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
-                                        <input class="form-control own_fields" type="text" title="" value="" name="require_image_version" required="required">
+                                        <input class="form-control own_fields" type="text" title="" value="" data-validation=required   name="require_image_version" required="required">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">*{{ 'Image date'|trans }}</label>
+                                <label class="col-sm-3 control-label">{{ 'Image date'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-7">
                                     <div class=" col-xs-12 col-sm-7">
-                                        <input class="form-control own_fields" type="text" title="" value="" name="require_image_date" id="require_image_date" required="required">
+                                        <input class="form-control own_fields" type="text" title=""  data-validation=required  value="" name="require_image_date" id="require_image_date" required="required">
                                     </div>
                                 </div>
                             </div>
                             <hr />
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">*{{ 'Update type'|trans }}</label>
+                                <label class="col-sm-3 control-label">{{ 'Update type'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
-                                        <select name="update_type" id="s2_update_type" class="populate placeholder own_fields" required="required">
+                                        <select name="update_type" id="s2_update_type" data-validation=required class="populate   placeholder own_fields" required="required">
                                             <option value="http_update">http update</option>
                                             <option value="reboot_dhcp">reboot dhcp</option>
                                         </select>
@@ -214,7 +214,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-11 col-sm-11 col-xs-offset-1">
+                                <div class="col-xs-8 col-sm-8 col-xs-offset-1">
                                     <p class="bg-warning txt-default">
                                         {{ "Filter the STB by set parameters. Update will be installed on STB matching the following parameters only. In 'Image descriptor, it is enough to specify the part of description or key word. Fill-in data can be found in the interface of user profile in the corresponding fields."|trans }}
                                     </p>
@@ -252,7 +252,7 @@
                             </div> 
                         </div>
                     </div>
-                </form>
+             
             </div>
             <div class="devoops-modal-bottom">
                 <div class="box">
@@ -265,7 +265,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>   </form>
         </div>
     </div>
                                                                            
@@ -285,7 +285,11 @@
                         var id = json.data[i].id;
                         var enable = json.data[i].enable;
                         json.data[i].enable = (enable == 1 ?"<span class='txt-success'>{{ 'on'|trans }}</span>":"<span>{{ 'off'|trans }}</span>");
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                        var drop;
+						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
+						else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
+						else {drop="";}
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
@@ -373,6 +377,8 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
+				  $.validate({
+  onSuccess : function() {
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
@@ -390,7 +396,8 @@
                     }
                     showModalBox();
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;
+                    return false;	 }
+  });
                 });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){

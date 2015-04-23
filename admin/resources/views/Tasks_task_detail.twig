@@ -13,7 +13,7 @@
                             <label>{{ app['creator'] }}</label>
                             <div class="col-xs-12  one-list-message bg-{{ app['taskStateColor'][0] }} message-title"><b>{{ 'Created task'|trans }} №{{ app['task_num'] }}</b></div>
                         </div>
-                        <div class="pull-left message-date">{{ app['added']|date('H:i') }}</div>
+                        <div class="pull-left message-date">{{ app['added']|date('M d, Y H:i') }}</div>
                             {% for row in app['taskAll'] %}
                                 {% if attribute(row,'comment') is defined %}
                                     {% if row['from_usr'] == app['toLeft'] %}
@@ -28,17 +28,17 @@
                                 <p>{{ row['comment'] }}</p>
                             </div>
                         </div>
-                        <div class="{{ add_class }} message-date">{{ row['send_time']|date('H:i') }}</div>
+                        <div class="{{ add_class }} message-date">{{ row['send_time']|date('M d, Y H:i') }}</div>
                                 {% endif %}
                                 {% if loop.last %}
                                     {% if row.state != 0 %}
-                        <div class="col-sm-12 one-list-message bg-{{ app['taskStateColor'][row.state] }}">
-                            <div class="col-xs-9 message-title"><b>{{ 'Task is'|trans }} {{ app['taskAllState'][row.state]['title']|lower }}</b></div>
+                       <div class="col-sm-7 pull-left  one-list-message bg-{{ app['taskStateColor'][row.state] }}">
+                            <div class="col-xs-12 message-title"><b>{{ 'Task is'|trans }} {{ app['taskAllState'][row.state]['title']|lower }}</b></div>
                             <div class="col-xs-2 message-date">{{ row['end_time']|date('M d, Y H:i') }}</div>
                         </div>
                                     {% endif %}
                                     {% if row.archived != "0" %}
-                        <div class="col-sm-12 one-list-message bg-default">
+                        <div class="col-sm-7  one-list-message bg-default">
                             <div class="col-xs-9 message-title"><b>{{ 'Task has been sent to archive'|trans }}</b></div>
                                         {% if row['archived_time'] %}
                             <div class="col-xs-2 message-date">{{ row['archived_time']|date('M d, Y H:i') }}</div>

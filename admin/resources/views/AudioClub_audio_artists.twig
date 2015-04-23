@@ -175,6 +175,7 @@
                 });
 
                 $(document).on('click submit', "#modalbox button[type='submit'], #modalbox form", function (e) {
+			
                     if (e.currentTarget != e.target) {
                         return;
                     }
@@ -188,6 +189,7 @@
                     ajaxPostSend($("#modalbox form").attr('action'), sendData, false);
                     closeModalBox();
                     return false;
+				
                 });
 
                 LoadDataTablesScripts(TestTable1);
@@ -219,24 +221,24 @@
         if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
             $('#modalbox').find('.devoops-modal-inner').html('\n\
                 <div class="box-content">\n\
-                    <form class="form-horizontal" role="form">\n\
+                    <form class="form-horizontal" id="fff" role="form">\n\
                         <div class="form-group">\n\
-                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Artist'|trans }}</label>\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Artist'|trans }}<span class="icon-required">*</span></label>\n\
                             <div class="col-xs-10 col-sm-8">\n\
                                 <span class="col-xs-12 col-sm-12">\n\
                                     <input type="hidden" name="id">\n\
-                                    <input type="text" name="name" id="audio_artists_name">\n\
+                                    <input type="text"  data-validation="required"  name="name" id="audio_artists_name">\n\
                                     <div class="bg-danger"></div>\n\
                                 </span>\n\
                             </div>\n\
                         </div>\n\
-                    </form>\n\
+                   \n\
                 </div>');
             $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
                         <div class=" pull-right no-padding">\n\
                             <button type="submit" class="btn btn-success pull-right">{{ 'Save'|trans }}</button>\n\
                             <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
-                        </div>');
+                        </div> </form>');
         }
         
         if (obj.data('artistsid')) {

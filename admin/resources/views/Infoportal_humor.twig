@@ -79,15 +79,15 @@
                         <form class="form-horizontal" role="form" id="anek_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-humor-item">
                             <!-- name -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Text'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Text'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id" class="own_fields">
-                                        <textarea required="required" name="anec_body" class='own_fields form-control'></textarea>
+                                        <textarea required="required" name="anec_body" data-validation=required  class='own_fields form-control'></textarea>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                      
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  </form>
         </div>
     </div>
                                     
@@ -121,8 +121,10 @@
                     var date;
                     for (var i in json.data) {
                         var id = json.data[i].id;
+						var drop;
+						if ( i==json.data.length-1) { drop="dropup"; } else {drop=""}
                         json.data[i].anec_body = json.data[i].anec_body.substr(0, 50) + (json.data[i].anec_body.length > 50 ? '...': '');
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
@@ -203,7 +205,10 @@
                     return false;
                 });
                 
-                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                $("#modalbox_ad button[type='submit']").on('click', function (e) { 
+				
+						  $.validate({
+  onSuccess : function() {     
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
@@ -221,7 +226,8 @@
                     }
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                     return false;
-                });
+                 }
+  }); });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {

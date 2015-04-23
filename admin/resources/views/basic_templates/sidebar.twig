@@ -8,7 +8,7 @@
                         {% if item.icon %}
                             <i class="{{ item.icon }}"></i>
                         {% endif %}
-                        <span class="hidden-xs">{{ item.name }}</span>
+                        <span>{{ item.name }}</span>
                         {% if attribute(item, 'add_params') is defined %}
                             {% autoescape false%}
                             {{ item['add_params'] }}

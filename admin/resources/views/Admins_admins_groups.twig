@@ -88,16 +88,16 @@
                         <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-admins-group">
                             <!-- singer -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Group name'|trans }}</label>
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Group name'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
                                         <input type="hidden" name="id" id="adm_id" class="own_fields">
-                                        <input type="text" required="required" name="name" id="adm_name" class='form-control own_fields'>
-                                        <div class="bg-danger"></div>
+                                        <input type="text" required="required" name="name" data-validation=required  id="adm_name" class='form-control own_fields'>
+                             
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                    
                     </div>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>    </form>
             </div>
         </div>
     </div>
@@ -125,13 +125,17 @@
             $('#modalbox').find('.devoops-modal-bottom').empty();
         }
 
-        function TestTable1() {
+        function TestTable1() { $.validate();
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
                     for (var i in json.data) {
                         var id = json.data[i].id;
                         var name = json.data[i].name;
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                        var drop;
+						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
+						else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
+						else {drop=""}
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
@@ -201,7 +205,7 @@
         }
 
         function yelp() {
-            $(document).ready(function () {
+            $(document).ready(function () { 
                 $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -218,8 +222,10 @@
     {#                    $("#cmd_data").find("tr:visible").remove();#}
                     return false;
                 });
-                
-                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+              $("#modalbox_ad button[type='submit']").on('click', function (e) {    
+  $.validate({
+  onSuccess : function() {
+    
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
@@ -232,12 +238,15 @@
                         }
                     });
                     if (lengthObj < form_fields.length) {
-                        alert('{{ 'Field "Group name" is required'|trans }}');
+                        alert('{{ 'Field "Group name" is required'|trans }}'); $.validate();
                         return false;
                     } 
                     ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
                     return false;
-                });
+               
+    }
+  });   });
+             
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {
@@ -306,7 +315,7 @@
 
         document.addEventListener("DOMContentLoaded", yelp, false);
         
-        var setAdminsGroupsModal = function (data) {
+        var setAdminsGroupsModal = function (data) { 
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit group'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];

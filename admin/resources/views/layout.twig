@@ -7,24 +7,22 @@
             {% include "basic_templates/meta.twig" %}
             {% include "basic_templates/css.twig" %}
         {% endblock head %}
-		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
     </head>
     <body>
         {% block container %}
-            {% block header %}
-                {% include "basic_templates/header.twig" %}
-            {% endblock header %}
-
-            {% block maincontainer %}
+           {% block maincontainer %}
                 <!--Start Container-->
 				<div id="wrapper">
+				{% block header %}
+                {% include "basic_templates/header.twig" %}
+				{% endblock header %}
                 <div id="main" class="container-fluid">
                     <div class="row">
-                        {% block sidebar %}
+					<!--Start Content-->
+						<div id="main-wrapper" >
+						{% block sidebar %}
                             {% include "basic_templates/sidebar.twig" %}
                         {% endblock sidebar %}
-                        <!--Start Content-->
-						<div id="main-wrapper" >
                         <div id="content" >
                             <div class="preloader">
                                 <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader"/>
@@ -37,7 +35,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                
                                 {% block content %}
                                 {% endblock content %}
                             </div>
@@ -46,12 +43,15 @@
                         <!--End Content-->
                  
                 </div></div>
+				 {% block footer %}
+                {% include "basic_templates/footer_js.twig" %}
+            {% endblock footer %}
+			
                 <!--End Container--></div>
             {% endblock maincontainer %}
 
-            {% block footer %}
-                {% include "basic_templates/footer_js.twig" %}
-            {% endblock footer %}
+           
         {% endblock container %}
+			
     </body>
 </html>

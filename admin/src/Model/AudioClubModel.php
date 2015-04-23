@@ -31,9 +31,9 @@ class AudioClubModel extends \Model\BaseStalkerModel {
                     ->join('audio_years', 'audio_albums.year_id', 'audio_years.id', 'LEFT')
                     ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT')    
                     ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
-        if (!empty($param['limit']['limit'])) {
+/*         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
+        } */
 
         return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
     }
@@ -65,9 +65,9 @@ class AudioClubModel extends \Model\BaseStalkerModel {
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('audio_genres')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
-        if (!empty($param['limit']['limit'])) {
+/*         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
+        } */
         $allRows = $obj->get()->all();
         return $allRows;
     }
@@ -96,10 +96,10 @@ class AudioClubModel extends \Model\BaseStalkerModel {
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('audio_performers')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
-        if (!empty($param['limit']['limit'])) {
+/*         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-
+ */
         return $obj->get()->all();
     }
     
@@ -127,9 +127,9 @@ class AudioClubModel extends \Model\BaseStalkerModel {
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('audio_languages')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
-        if (!empty($param['limit']['limit'])) {
+/*         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
+        } */
 
         return $obj->get()->all();
     }
@@ -158,9 +158,9 @@ class AudioClubModel extends \Model\BaseStalkerModel {
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('audio_years')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
-        if (!empty($param['limit']['limit'])) {
+/*         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
+        } */
 
         return $obj->get()->all();
     }
@@ -193,9 +193,9 @@ class AudioClubModel extends \Model\BaseStalkerModel {
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('countries')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
-        if (!empty($param['limit']['limit'])) {
+/*         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
+        } */
 
         return $obj->get()->all();
     }
@@ -235,9 +235,9 @@ class AudioClubModel extends \Model\BaseStalkerModel {
         $obj = $obj->from('audio_compositions')
                     ->join('audio_languages', 'audio_compositions.language_id', 'audio_languages.id', 'LEFT')
                     ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
-        if (!empty($param['limit']['limit'])) {
+/*         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
-        }
+        } */
 
         return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
     }

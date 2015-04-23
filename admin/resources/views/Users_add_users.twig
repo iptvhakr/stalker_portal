@@ -30,11 +30,11 @@
                     </div>
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Name'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Name'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_widget(app['form'].fname, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].fname, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].fname) }}
                                     </div>
@@ -42,10 +42,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Login'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Login'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].login, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].login, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].login) }}
                                     </div>
@@ -53,10 +53,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Password'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Password'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-6">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].password, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].password, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
                                     <div class="bg-danger">
                                         {{ form_errors(app['form'].password) }}
                                     </div>
@@ -345,7 +345,7 @@
             $('#form_status').select2({minimumResultsForSearch: -1});
         }
         function yelp() {
-            $(document).ready(function () {
+            $(document).ready(function () { $.validate();
                 $('[data-toggle="tooltip"]').tooltip();
                 
                 LoadSelect2Script(DemoSelect2);

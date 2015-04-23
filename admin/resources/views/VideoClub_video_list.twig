@@ -55,7 +55,7 @@
                                                 <td data-filter="tasks">
                                                     {% if item['tasks']|length > 0 and item['tasks'] != '0' %}
                                                         {% for task_item in item['tasks'] %}
-                                                            <a class="{% if task_item.ended or task_item.rejected %} line-through {% if task_item.rejected%} txt-warning {% elseif task_item.ended%} txt-success {% endif %}{% elseif task_item.expired%}txt-danger{% endif %}" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id={{ task_item['id'] }}">№{{ task_item['id'] }} {% if not(task_item.ended or task_item.rejected) and task_item['end_time'] %}({{ 'ending'|trans }} {{ task_item['end_time']|date('d-m-Y') }}){% endif %}</a>{% if not(loop|last) %}, {% endif %}
+                                                            <a class="{% if task_item.ended or task_item.rejected %} line-through {% if task_item.rejected%} txt-warning {% elseif task_item.ended%}{% endif %}{% elseif task_item.expired%}txt-danger{% endif %}" href="{{ app.request.baseUrl }}/tasks/task-detail-video?id={{ task_item['id'] }}">№{{ task_item['id'] }} {% if not(task_item.ended or task_item.rejected) and task_item['end_time'] %}({{ 'ending'|trans }} {{ task_item['end_time']|date('d-m-Y') }}){% endif %}</a>{% if not(loop|last) %}, {% endif %}
                                                         {% endfor %}
                                                     {% else %}
                                                         {{ 'No tasks'|trans }}
@@ -69,7 +69,7 @@
                                                         0
                                                     {% endif %}
                                                 </td>
-                                                <td data-filter="status">{% if item.accessed %}<span class="txt-success">{{ 'Published'|trans }}</span>{% elseif attribute(item, 'task_id') is defined and item.task_id %}<span class="txt-info">{{ 'Scheduled'|trans }} {% if not(item.task_date_on == 0) %}({{ 'on'|trans }} {{ item.task_date_on|date("d-m-Y") }}){% endif %}</span>{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
+                                                <td data-filter="status">{% if item.accessed %}<span class="">{{ 'Published'|trans }}</span>{% elseif attribute(item, 'task_id') is defined and item.task_id %}<span class="">{{ 'Scheduled'|trans }} {% if not(item.task_date_on == 0) %}({{ 'on'|trans }} {{ item.task_date_on|date("d-m-Y") }}){% endif %}</span>{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
                                                 <td data-filter="operations" class="action-menu">
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
@@ -189,7 +189,15 @@
                         var accessed = json.data[i].accessed;
                         var path = json.data[i].path;
                         var tasks = json.data[i].tasks;
-                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+						var drop;
+						
+						if ( i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
+						else if ( i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
+						else if ( i!==json.data.length && i==json.data.length-3) { drop="dropup"; } 
+						else if ( i!==json.data.length && i==json.data.length-4) { drop="dropup"; } 
+						else if ( i!==json.data.length && i==json.data.length-5) { drop="dropup"; } 
+						else {drop=""}
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
                                                         </a>\n\
@@ -224,7 +232,7 @@
                         if (json.data[i]['task_date_on'] != 0) {
                             var dateOn = new Date(json.data[i]['task_date_on']);
                         }
-                        json.data[i].accessed = (accessed != 0 ? "<span class='txt-success'>{{ 'Published'|trans }}</span>" : ((typeof(json.data[i].task_id) != 'undefined' && json.data[i].task_id)?"<span class='txt-info'>{{ 'Scheduled'|trans }} "+ (json.data[i]['task_date_on'] != 0 ? "({{ 'on'|trans }} " + dateOn.toLocaleFormat("%b %d, %Y")+ ")": "") +"</span>": "{{ 'Unpublished'|trans }}"));
+                        json.data[i].accessed = (accessed != 0 ? "<span class=''>{{ 'Published'|trans }}</span>" : ((typeof(json.data[i].task_id) != 'undefined' && json.data[i].task_id)?"<span class=''>{{ 'Scheduled'|trans }} "+ (json.data[i]['task_date_on'] != 0 ? "({{ 'on'|trans }} " + dateOn.toLocaleFormat("%b %d, %Y")+ ")": "") +"</span>": "{{ 'Unpublished'|trans }}"));
 
                         if (json.data[i]['added'] != 0) {
                             var dateOn = new Date(json.data[i]['added']);
@@ -247,7 +255,7 @@
                                     if (tasks[num]['rejected'] ) {
                                         msgClass += " txt-warning ";
                                     } else if (tasks[num]['ended']){
-                                        msgClass += " txt-success ";
+                                        msgClass += "";
                                     }
                                 } else if (tasks[num]['expired']){
                                     msgClass += " txt-danger ";
@@ -277,6 +285,7 @@
             }).dataTable({
             "processing": true,
             "serverSide": true,
+			
             "ajax": {
                 "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-list-json",
                 "data": function (d) {
@@ -317,7 +326,10 @@
 				},
             "bInfo":     true,
 			"order": [[ 0, "desc" ]],
+			"bSort" : true,
+	
             "aoColumnDefs": [ 
+			
                 { className: "action-menu", "targets": [ -1 ] },
                 { "targets": [ 3 ], "visible": false},
                 { "targets": [ -1 , 6], "orderable": false},

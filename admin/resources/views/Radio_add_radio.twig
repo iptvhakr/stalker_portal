@@ -15,12 +15,13 @@
                 <div class="box">
                     <div class="box-content">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Order'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Order'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
                                     {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
-                                    {{ form_widget(app['form'].number, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-number'}}) }}
-                                    <div class="bg-danger">
+                                    {{ form_widget(app['form'].number, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-number', 'data-validation':'required'}}) }}
+                                    </div><div>
+									<div class="bg-danger">
                                         {{ form_errors(app['form'].number) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -30,11 +31,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-name'}}) }}
-                                    <div class="bg-danger">
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-checkurl': 'radio-check-name', 'data-validation':'required'}}) }}
+                                    </div><div><div class="bg-danger">
                                         {{ form_errors(app['form'].name) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -44,11 +45,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label ">{{ 'URL'|trans }}</label>
+                            <label class="col-sm-2 control-label ">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
                             <div class="col-xs-10 col-sm-8">
                                 <div class=" col-xs-10 col-sm-6">
-                                    {{ form_widget(app['form'].cmd, {'attr': {'class': 'form-control'}}) }}
-                                    <div class="bg-danger">
+                                    {{ form_widget(app['form'].cmd, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    </div><div><div class="bg-danger">
                                         {{ form_errors(app['form'].cmd) }}
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -101,7 +102,7 @@
         
         function yelp() {
             $(document).ready(function () {
-                
+                $.validate();
                 $(document).on('change keyup', '#form_number, #form_name', function(e){
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
