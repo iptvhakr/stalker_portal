@@ -131,7 +131,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         ob_end_clean();
         
         $this->app['breadcrumbs']->addItem($this->setlocalization('Broadcast area'), "{$this->workURL}/{$this->app[controller_alias]}/broadcast-zone-list");
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit area') . " '{$this->zone[name]}'");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Edit area'));
         
         return $this->app['twig']->render('BroadcastServers_add_zone.twig');
     }
@@ -188,7 +188,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getServersTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -242,7 +242,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getZoneTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }

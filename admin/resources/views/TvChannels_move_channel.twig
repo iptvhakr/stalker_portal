@@ -185,12 +185,12 @@
         var manageChannel = function (obj) {
             $("#modalbox").data('complete', 1);
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}!</span>');
-        }
+        };
         
         var errAction = function(){
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}!</span>');
             $("#modalbox").data('complete', 1);
-        }
+        };
         
         var checkChanges = function(){
             var dataForSend = new Array();
@@ -199,7 +199,7 @@
                 if (this.number != this.old_number) {
                     dataForSend.push({'id': this.id, 'number': this.number, 'old_number': this.old_number})
                 }
-            })
+            });
             
             return dataForSend.length > 0;
         };

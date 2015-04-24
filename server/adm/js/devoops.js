@@ -2,6 +2,7 @@
 //    Main script of DevOOPS v1.0 Bootstrap Theme
 //
 "use strict";
+
 /*-------------------------------------------
  Dynamically load plugin scripts
  ---------------------------------------------*/
@@ -650,25 +651,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $(document).on('click', "#add_channel #add_broadcasting_link", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var tmp_id = $('#cmd_data tr:last').attr('id');
-        if (!tmp_id) {
-            tmp_id = "tr_" + $.randString();
-            $('#cmd_data tr:last').attr('id', tmp_id);
-        }
-        $("#modalbox_ad").data('tr_id', tmp_id);
-
-        $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить URL');
-        $("#modalbox_ad").find("input, select").prop("disabled", false).removeAttr('disabled');
-        $("#modalbox_ad").find('form').each(function(){
-            this.reset();
-        });
-        $("#modalbox_ad").show();
-//        $(this).closest('.form-group').find('tbody tr:hidden').show();
-        return false;
-    });
     $(document).on('click', "#modalbox_ad a.close-link, #modalbox_ad a.close-link .fa-times, #modalbox_ad, #modalbox_ad button[type='reset']", function (e) {
         if (e.target != e.currentTarget) {
             return;
@@ -716,66 +698,6 @@ $(document).ready(function () {
         return false;
     });
 
-    $(document).on("click", "#cmd_data .channel_url_remove_data", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var parentTable = $(this).closest('tbody');
-        $(this).closest('tr').remove();
-        parentTable.find('tr:visible').each(function(i){
-            $(this).find('input').each(function(){
-                $(this).attr('name', $(this).attr('name').replace(/\d+?/ig, i+1));
-                $(this).attr('id', $(this).attr('id').replace(/\d+?/ig, i+1));
-            })
-        });
-        
-        return false;
-    });
-
-    $(document).on("click", "#cmd_data .channel_url_change_data", function (e) {
-        e.stopPropagation();
-        e.preventDefault();
-        var data = channelUrlDataGet($(this).closest('tr'));
-        var tmp_id = $(this).closest('tr').attr('id');
-        if (!tmp_id) {
-            tmp_id = "tr_" + $.randString();
-            $(this).closest('tr').attr('id', tmp_id);
-        }
-        $("#modalbox_ad").data('tr_id', tmp_id);
-        $("#modalbox_ad").find('input, select').each(function () {
-            var name = (typeof ($(this).attr('name')) != 'undefined') ? $(this).attr('name').replace(/\[\d*?\]/ig, '') : false;
-            if (typeof (data[name]) == 'undefined') {
-                return true;
-            }
-            $(this).prop("disabled", false).removeAttr("disabled");
-            var type = typeof ($(this).attr('type')) != 'undefined' ? $(this).attr('type') : $(this).get(0).tagName.toLowerCase();
-            if (type == 'select') {
-                var lSelect = $(this);
-                lSelect.find('option').prop('selected', false).removeAttr('selected');
-                $.each(data[name].value.split(';'), function (i, lValue) {
-                    lSelect.find("option[value='" + lValue + "']").prop('selected', 'selected');
-                });
-                if (lSelect.attr('id').search('s2') != -1) {
-                    lSelect.select2("destroy");
-                    lSelect.select2({minimumResultsForSearch: -1});
-                }
-            } else if (type == 'checkbox') {
-                $(this).prop('checked', (data[name].value == 'on'));
-            } else if (type == 'radio') {
-                if ($(this).val() == data[name].value) {
-                    $(this).prop('checked', 'checked');
-                } else {
-                    $(this).prop('checked', false).removeAttr('checked');
-                }
-            } else {
-                $(this).val(data[name].value);
-            }
-        });
-
-        $("#modalbox_ad").find(".modal-header-name").children('span').text('Изменить URL');
-        $("#modalbox_ad").show();
-        $(this).closest('.open').removeClass('open');
-        return false;
-    });
     $(document).on('click', 'div[data-tvfilter] ul a', function (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -1103,17 +1025,17 @@ function JScloseModalBox(){
         
 function JSshowModalBox(){
     $("#modalbox").data('complete', 0);
-    $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
-    $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+    $('#modalbox').find('.modal-header-name span').text(words['Wait'] + "...");
+    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Request_is_being_prossessed'] + '...</span>');
     $("#modalbox").show();
 }
 
 function JSSuccessModalBox() {
     $("#modalbox").data('complete', 1);
-    $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Done'] + '!</span>');
 }
 
 function JSErrorModalBox(){
-    $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Failed'] + '!</span>');
     $("#modalbox").data('complete', 1);
 }

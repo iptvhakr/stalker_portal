@@ -83,7 +83,7 @@
                                                             </li>
                                                             <li>
                                                                 <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.accessed %}disable{% else %}enable{% endif %}-video" data-videoid="{{ item.id }}">
-                                                                    <span>{% if item.accessed %}{{ 'Switch off'|trans }}{% else %}{{ 'Switch on'|trans }}{% endif %}</span>
+                                                                    <span>{% if item.accessed %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
@@ -209,7 +209,7 @@
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/" + (accessed!=0 ?"disable":"enable")+"-video' data-videoid='"+id+"'>\n\
-                                                                    <span>" + ( accessed ? "{{ 'Switch off'|trans }}": "{{ 'Switch on'|trans }}") + "</span>\n\
+                                                                    <span>" + ( accessed ? "{{ 'Unpublish'|trans }}": "{{ 'Publish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
@@ -529,13 +529,13 @@
     }
 
     function setEnableDatePicker(obj){
-        $('#modalbox').find('.modal-header-name span').text('{{ 'Schedule switching on'|trans }}');
+        $('#modalbox').find('.modal-header-name span').text('{{ 'Schedule of publishing'|trans }}');
         $('#modalbox').find('.devoops-modal-inner')
                 .append("<input type='hidden' name='link_id' value='" + obj.data('videoid') + "'>")
                 .append("<input type='text' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='video_on_date'>");
         $('#modalbox').find('.devoops-modal-bottom')
                 .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
-                .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Switch on'|trans }}</button>');
+                .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Publish'|trans }}</button>');
         $('#modalbox').find('.devoops-modal').width(350);
         $(".datepicker").datepicker({
                 language    : 'ru',

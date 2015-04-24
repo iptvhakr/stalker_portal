@@ -141,7 +141,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsPhoneBoockList($table_prefix, $query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -192,7 +192,7 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsHumorList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }

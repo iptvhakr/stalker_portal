@@ -43,10 +43,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         
-        $allGenre = $this->db->getVideoGenres();
-        
         $allYears = $this->db->getAllFromTable('video', 'year', 'year');
-        
+
         $list = $this->video_list_json();
         
         $this->app['allYears'] = array_filter(array_map(function($val){
@@ -56,7 +54,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             return FALSE;
         }, $allYears));
         
-        $this->app['allGenre'] =  $this->setLocalization($allGenre, 'title');
+        $this->app['allGenre'] =  $this->prepareNewGenresListIds($this->db->getVideoCategories());
         $this->app['allVideo'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
@@ -93,7 +91,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         $this->app['videoEdit'] = FALSE;
 
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Add movie'));
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Movie list'), $this->app['controller_alias'] . '/video-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Add movie'));
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -132,9 +131,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['videoEdit'] = TRUE;
         $this->app['videoName'] = $this->oneVideo['name'];
-        
-        $this->app['breadcrumbs']->addItem(" '{$this->oneVideo['name']}'");
-        
+
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Movie list'), $this->app['controller_alias'] . '/video-list');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit movie'));
+
         return $this->app['twig']->render('VideoClub_add_video.twig');
     }
     
@@ -152,7 +152,13 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         
         $ad = new \VclubAdvertising();
-        $this->app['ads'] = $ad->getAllWithStatForMonth();
+        $self = $this;
+        $this->app['ads'] = array_map(function($row) use ($self){
+            if (!is_numeric($row['must_watch'])) {
+                $row['must_watch'] = $self->setLocalization($row['must_watch']);
+            }
+            return $row;
+        }, $ad->getAllWithStatForMonth());
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -176,6 +182,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $this->app['form'] = $form->createView();
         $this->app['adsEdit'] = FALSE;
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Advertising'), $this->app['controller_alias'] . '/video-advertise');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Add commercial'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -210,7 +217,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['adsEdit'] = TRUE;
         $this->app['adsTitle'] = $this->ad['title'];
-        $this->app['breadcrumbs']->addItem($this->setLocalization("Edit commercial") . " '{$this->ad['title']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Advertising'), $this->app['controller_alias'] . '/video-advertise');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit commercial'));
         return $this->app['twig']->render('VideoClub_add_video_ads.twig');
     }
     
@@ -237,6 +245,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $this->app['form'] = $form->createView();
         $this->app['modEdit'] = FALSE;
+        $this->app['active_alias'] = 'video-moderators-addresses';
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Moderators'), $this->app['controller_alias'] . '/video-moderators-addresses');
         $this->app['breadcrumbs']->addItem($this->setLocalization('Add moderator'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -264,7 +274,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['form'] = $form->createView();
         $this->app['modEdit'] = TRUE;
         $this->app['modName'] = $this->mod['name'];
-        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit moderator') . " '{$this->mod['name']}'");
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Moderators'), $this->app['controller_alias'] . '/video-moderators-addresses');
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Edit moderator'));
         return $this->app['twig']->render('VideoClub_add_video_moderators.twig');
     }
 
@@ -352,7 +363,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsVideoList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -638,7 +649,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkName';
         $error = $this->setlocalization('Name is busy');
-        if ($this->db->checkName(trim($this->postData['name']))) {
+        if ($this->db->checkName($this->postData)) {
             $data['chk_rezult'] = $this->setlocalization('Name is busy');
         } else {
             $data['chk_rezult'] = $this->setlocalization('Name is available');
@@ -684,22 +695,24 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $data['action'] = 'editCover';
         $error = $this->setLocalization('Information not available');
 
-        if ((\Admin::isEditAllowed() || \Admin::isCreateAllowed()) && !empty($_FILES)){
+        if (!empty($_FILES)){
             list($f_key, $tmp) = each($_FILES);
             if (is_uploaded_file($tmp['tmp_name']) && preg_match("/jpe?g/",$tmp['type'])){
-                    
-                if ($this->data['id'] == 'new') {
-                    $s_data = array(
-                        'name' => $tmp['name'],
-                        'size' => $tmp['size'],
-                        'type' => $tmp['type']
-                    );
-                            
-                    $upload_id = $this->db->saveScreenshotData($s_data);
-                } else {
-                    $upload_id = $this->data['id'];
+
+                if ($this->data['id'] != 'new' && is_numeric($this->data['id'])) {
+                    $this->db->removeScreenshotData($this->data['id']);
+                    $img_path = $this->getCoverFolder($this->data['id']);
+                    $img_path = str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path);
+                    @unlink($this->baseDir. "/stalker_portal" . $img_path.'/'.$this->data['id'].'.jpg');
                 }
 
+                $s_data = array(
+                    'name' => $tmp['name'],
+                    'size' => $tmp['size'],
+                    'type' => $tmp['type']
+                );
+
+                $upload_id = $this->db->saveScreenshotData($s_data);
                 $img_path = $this->getCoverFolder($upload_id);
                 umask(0);
 
@@ -713,6 +726,37 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         $img_path = str_replace(str_replace('/admin', '', $this->baseDir), "", $img_path);
         $response = $this->generateAjaxResponse(array('pic' => $this->baseHost . "/stalker_portal" . $img_path.'/'.$upload_id), $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function delete_cover() {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['cover_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'deleteCover';
+        $data['msg'] = $this->setlocalization('Deleted');
+        $error = $this->setLocalization('Failed');
+        $img_path = $this->getCoverFolder($this->postData['cover_id']);
+
+        if ($this->db->removeScreenshotData($this->postData['cover_id'])) {
+            try{
+                unlink($img_path . '/' . $this->postData['cover_id'] . '.jpg');
+                $error = '';
+            } catch (\Exception $e){
+                $error = $this->setLocalization('image file has not been deleted') . ', ';
+                $error = $this->setLocalization('image name') . ' - "' . $this->postData['cover_id'] . '.jpg' . '", ';
+                $error = $this->setLocalization('file can be deleted manually from screenshot directory');
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
@@ -980,7 +1024,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsVideoLog($query_param['where'], $query_param['like']);
         
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         }
         $response['data'] = $this->db->getVideoLog($query_param);
         $response['data'] = array_map(function($row){
@@ -1022,7 +1066,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
             if (array_key_exists('genre_id', $this->data['filters']) && $this->data['filters']['genre_id'] != 0) {
                 $genre_id = $this->data['filters']['genre_id'];
-                $filters["(`genre_id_1`= '$genre_id' OR `genre_id_2` = '$genre_id' OR `genre_id_3` = '$genre_id' OR `genre_id_4` = '$genre_id') AND "] = "1=1";
+                $filters["(`cat_genre_id_1` in ($genre_id) OR `cat_genre_id_2` in ($genre_id) OR `cat_genre_id_3` in ($genre_id) OR `cat_genre_id_4` in ($genre_id)) AND 1"] = "1";
             }
             $this->app['filters'] = $this->data['filters'];
         } else {
@@ -1288,10 +1332,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
             if ($form->isValid()) {
                 if (empty($data['id'])) {
-                    $is_repeating_name = $this->db->checkName(trim($data['name']));
+                    $is_repeating_name = $this->db->checkName($data);
                     $operation = 'insertVideo';
                 } elseif (isset($this->oneVideo)) {
-                    $is_repeating_name = !((empty($this->oneVideo['name']) || $this->oneVideo['name'] != $data['name']) xor ( (bool) $this->db->checkName(trim($data['name']))));
+                    $is_repeating_name = !((empty($this->oneVideo['name']) || $this->oneVideo['name'] != $data['name']) xor ( (bool) $this->db->checkName($data)));
                     $operation = 'updateVideo';
                 }
                 if (!$is_repeating_name) {
@@ -1305,7 +1349,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                     if ($data['hd']) {
                         $data['trans_name'] .= '_HD';
                     }
-                    $this->createMediaStorage($data['trans_name']);
+
                     $db_data = array(
                         'name' => trim($data['name']),
                         'o_name' => trim($data['o_name']),
@@ -1337,13 +1381,14 @@ class VideoClubController extends \Controller\BaseStalkerController {
                         'rating_count_imdb' => $data['rating_count_imdb'],
                         'age' => $data['age'],
                         'rating_mpaa' => $data['rating_mpaa'],
-                        'path' => $data ['trans_name'],
                         'high_quality' => $data ['high_quality'],
                         'low_quality' => $data ['low_quality'],
                         'comments' => $data['comments'],
                         'country' => $data['country']
                     );
                     if ($operation == 'insertVideo') {
+                        $this->createMediaStorage($data['trans_name'], $data['year']);
+                        $db_data['path'] = $data ['trans_name'] . (!empty($data['year']) ? "_$data[year]": '');
                         $db_data['added'] = 'NOW()';
                         $id = $this->db->$operation($db_data);
                         $db_data['id'] = $id;
@@ -1379,7 +1424,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         $this->app['catGenres'] = $this->setLocalization($catGenres, 'category_name');
         
         $videoCategories = $this->db->getVideoCategories();
-        $this->app['videoCategories'] = $this->setLocalization($videoCategories, 'title'); 
+        $this->app['videoCategories'] = $this->setLocalization($videoCategories, 'title');
         
         $this->app['videoEdit'] = FALSE;
         
@@ -1469,7 +1514,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         return $cover_id;
     }
     
-    private function createMediaStorage($trans_name) {
+    private function createMediaStorage($trans_name, $additional = '') {
 
         $existed = $this->db->getVideoByParam(array('path' => $trans_name));
 
@@ -1479,7 +1524,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             $_SERVER['TARGET'] = 'ADM';
             $master = new \VideoMaster();
             try {
-                $master->createMediaDir($trans_name);
+                $master->createMediaDir($trans_name, $additional);
             } catch (\MasterException $e) {
                 //var_dump($e->getMessage(), $e->getStorageName()); exit;
                 $moderator_storages = $master->getModeratorStorages();
@@ -1579,5 +1624,19 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'operations',   'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
         );
         
+    }
+
+    private function prepareNewGenresListIds($all_genre_list = array()){
+        $all_genre_list = $this->setLocalization($all_genre_list, 'title');
+        $return_list = array();
+        foreach($all_genre_list as $row){
+            if (array_key_exists($row['title'], $return_list)) {
+                $return_list["$row[title]"]['id'] .= ",$row[id]";
+            } else {
+                $return_list["$row[title]"] = array('id'=>$row['id'], 'title' => $row["title"]);
+            }
+        }
+        ksort($return_list);
+        return array_combine(range(0, count($return_list)-1), array_values($return_list));
     }
 }

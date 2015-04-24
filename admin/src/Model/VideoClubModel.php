@@ -208,8 +208,12 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         return$this->mysqlInstance->from('cat_genre')->orderby('category_alias, id')->get()->all();
     }
     
-    public function checkName($name) {
-        return $this->mysqlInstance->count()->from('video')->where(array('name' => $name))->get()->counter();
+    public function checkName($params) {
+        $where['name'] = $params['name'];
+        if (array_key_exists('year', $params) && !empty($params['year'])) {
+            $where['year'] = $params['year'];
+        }
+        return $this->mysqlInstance->count()->from('video')->where($where)->get()->counter();
     }
     
     public function saveScreenshotData($data) {

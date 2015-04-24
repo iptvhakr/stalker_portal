@@ -378,7 +378,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
 
         if ($func_alias != 'Genre') {
             if (empty($query_param['limit']['limit'])) {
-                $query_param['limit']['limit'] = 10;
+                $query_param['limit']['limit'] = 50;
             } elseif ($query_param['limit']['limit'] == -1) {
                 $query_param['limit']['limit'] = FALSE;
             }
@@ -449,7 +449,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
 
         if ($func_alias != 'Genre') {
             if (empty($query_param['limit']['limit'])) {
-                $query_param['limit']['limit'] = 10;
+                $query_param['limit']['limit'] = 50;
             } elseif ($query_param['limit']['limit'] == -1) {
                 $query_param['limit']['limit'] = FALSE;
             }
@@ -511,7 +511,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getDailyClaimsTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -592,7 +592,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getClaimsLogsTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -657,7 +657,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTvArchiveTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -716,7 +716,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTimeShiftTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -773,7 +773,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getAbonentStatTotalRows($func_alias, $query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -834,7 +834,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTvTotalRows($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -934,7 +934,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getModeratorsStatRowsList($query_param);
         
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }

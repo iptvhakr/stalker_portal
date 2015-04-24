@@ -92,6 +92,7 @@
             }).dataTable({
                 "processing": true,
                 "serverSide": true,
+                "pageLength": 50,
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-years-list-json"
                 },
@@ -190,7 +191,7 @@
                     }
                     var sendData = {
                         id: $("#modalbox input[type='hidden']").val(),
-                        name: $("#modalbox input[type='text']").val(),
+                        name: $("#modalbox input[type='text']").val()
                     };
 
                     e.stopPropagation();

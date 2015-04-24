@@ -41,15 +41,14 @@
                                     <tbody>
                                         <!-- Start: list_row -->
                                         {% for item in app.allChannels %}
-										
-                                            <tr> 
-                                                <td>{{item.id}}</td>
-                                                <td>{{item.number}}</td>
-												<td><img class="img-rounded channel-logo" src="{% if item.logo %}{{item.logo}}?{{ random(100000) }}{% endif %}" alt=""></td>
-                                                <td><a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/edit-channel?id={{item.id}}">{{item.name}}</a></td>
-                                                <td>{{item.genres_name}}</td>
+                                            <tr>
+                                                <td>{{item.id }}</td>
+                                                <td>{{item.number }}</td>
+												<td><img class="img-rounded channel-logo" src="{% if item.logo %}{{ item.logo }}?{{ random(100000) }}{% endif %}" alt=""></td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id={{ item.id }}">{{ item.name }}</a></td>
+                                                <td>{{ item.genres_name }}</td>
                                                 <td>{% if item.enable_tv_archive %}{{ 'Yes'|trans }}{% else %}{{ 'No'|trans }}{% endif %}</td>
-                                                <td>{{item.cmd}}</td>
+                                                <td>{{ item.cmd }}</td>
                                                 <td>{% if item.status %}{{ 'Published'|trans }}{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8 ddd">
@@ -58,27 +57,27 @@
                                                         </a>
                                                         <ul class="dropdown-menu pull-right">
                                                             <li>
-                                                                <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/edit-channel?id={{item.id}}">
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id={{ item.id }}">
                                                                     <span>{{ 'Edit'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/move-channel">
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-channel">
                                                                     <span>{{ 'Move'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a class="main_ajax" href="{{app.request.baseUrl}}/{{ app.controller_alias }}/remove-channel?id={{item.id}}">
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel?id={{ item.id }}">
                                                                     <span>{{ 'Delete'|trans }}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a class="main_ajax" href="{{app.request.baseUrl}}/{{ app.controller_alias }}/{% if item.status %}disable{% else %}enable{% endif %}-channel?id={{item.id}}">
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.status %}disable{% else %}enable{% endif %}-channel?id={{ item.id }}">
                                                                     <span>{% if item.status %}{{ 'Unublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
                                                                 </a>
                                                             </li>
                                                             <li>
-                                                                <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/get-channel-epg-item?id={{item.id}}">
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id={{ item.id }}">
                                                                     <span>{{ 'Manage EPG'|trans }}</span>
                                                                 </a>
                                                             </li>
@@ -260,12 +259,12 @@
                 });
 
                 $(document).on('change', "#s2_channel", function(e){
-                    ajaxPostSend("{{app.request.baseUrl}}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $(this).val(), {});
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $(this).val(), {});
                 });
                 $(document).on('click', "#get_epg_button", function(e){
                     e.stopPropagation();
                     e.preventDefault();
-                    ajaxPostSend("{{app.request.baseUrl}}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $("#s2_channel").val(), {});
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $("#s2_channel").val(), {});
                 });
 
                 $("#modalbox_ad").on('click', "button[type='submit']", function(e){

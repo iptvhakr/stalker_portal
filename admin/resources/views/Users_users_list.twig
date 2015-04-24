@@ -350,6 +350,7 @@
             }).dataTable({
                 "processing": true,
                 "serverSide": true,
+                "pageLength": 50,
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-list-json",
                     "data": function (d) {

@@ -1,5 +1,6 @@
 {% extends 'layout.twig' %}
 {% set title = ('Service packages'|trans ~ ': ' ~ (app.servicePackageEdit ? ('Edit package'|trans ~ " '"~ app.packageName ~ "'"): 'Add package'|trans)) | trans %}
+{% set active_alias = 'service-packages' %}
 
 {% block content %}
     <div id="add_channel">

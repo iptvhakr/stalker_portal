@@ -240,8 +240,12 @@ abstract class Master
      * Wrapper for storage method, that creates directory for media my name
      *
      * @param string $media_name
+     * @param string $extending_name default = ''
      */
-    public function createMediaDir($media_name){
+    public function createMediaDir($media_name, $extending_name = ''){
+        if (!empty($extending_name)) {
+            $media_name .= ("_" . ((string)$extending_name));
+        }
         foreach ($this->storages as $name => $storage){
             try {
                 $this->clients[$name]->resource($this->media_type)->update(array('media_name' => $media_name));

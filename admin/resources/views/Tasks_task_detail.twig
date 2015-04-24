@@ -1,6 +1,7 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Tasks'|trans ~ ': ' ~ 'History of task'|trans ~ ' №' ~ app.task_num ~ ' ' ~ 'in section'|trans ~ ' "' ~ app.taskTypeTitle ~'"') | trans %}
+{% set active_alias = 'tasks-list' %}
 
 {% block content %}
     <div id="iptv_list">

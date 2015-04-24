@@ -191,7 +191,8 @@ class TasksController extends \Controller\BaseStalkerController {
         $this->app['replyTo'] = $last_row['id'];
         $this->app['showForm'] = (!((bool)$last_row['archived']) && ($last_row['state'] != 1  && $last_row['state'] != 2));
         $this->app['showInput'] = TRUE;
-        
+
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Tasks list'), $this->app['controller_alias'] . '/tasks-list');
         $this->app['breadcrumbs']->addItem($this->setlocalization('History of task') . " №{$this->app['task_num']} " . $this->setlocalization('in section') . " '{$this->app['taskTypeTitle']}'");
         
         return $this->app['twig']->render("Tasks_task_detail.twig");
@@ -257,6 +258,7 @@ class TasksController extends \Controller\BaseStalkerController {
         $this->app['showForm'] = (!((bool)$last_row['archived']) && ($last_row['state'] != 1  && $last_row['state'] != 2));
         $this->app['showInput'] = FALSE;
 
+        $this->app['breadcrumbs']->addItem($this->setLocalization('Tasks list'), $this->app['controller_alias'] . '/tasks-list');
         $this->app['breadcrumbs']->addItem($this->setlocalization('History of task') . " №{$this->app['task_num']} " . $this->setlocalization('in section') . " '{$this->app['taskTypeTitle']}'");
         
         return $this->app['twig']->render("Tasks_task_detail.twig");
@@ -363,7 +365,7 @@ class TasksController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsTasksList($query_param);
         
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
@@ -468,7 +470,7 @@ class TasksController extends \Controller\BaseStalkerController {
         $response["recordsFiltered"] = $this->db->getTotalRowsTasksList($query_param);
         
         if (empty($query_param['limit']['limit'])) {
-            $query_param['limit']['limit'] = 10;
+            $query_param['limit']['limit'] = 50;
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
