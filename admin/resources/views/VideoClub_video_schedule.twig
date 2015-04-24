@@ -9,6 +9,7 @@
                     <div class="box-content">
                         <div class="box-content no-padding">
                             {% if app['allTasks'] %}
+                                <div class="dataTables_processing"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     <thead>
                                         <tr>
@@ -70,34 +71,32 @@
                 </div>
             </div>
         </div>
-    </div><style type="text/css">.dataTables_filter {display: none;}</style>
+    </div>
     <script type="text/javascript" defer>
 	
-	 function TestTable1() {
-        $('#datatable-1').dataTable( {
-        "paging":   false,
-        "ordering": true,
-        "info":     false,
-		
-			"scrollCollapse": true,
-			
-            "bFilter": true,
-            "bPaginate": true,
-		"aoColumnDefs": [ 
-					{ "searchable": false },
-                { "targets": [ 3 ], "visible": false},
-                { "targets": [ -1 , 6], "orderable": false}
-               
-            ]
-    } );
-    }
+        function TestTable1() {
+            $('#datatable-1').dataTable( {
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "paging":   false,
+                "ordering": true,
+                "info":     false,
+                "scrollCollapse": true,
+                "bFilter": true,
+                "bPaginate": true,
+                "aoColumnDefs": [
+                    { "searchable": false },
+                    { "targets": [ 3 ], "visible": false},
+                    { "targets": [ -1 , 6], "orderable": false}
+                ]
+            }).prev('.dataTables_processing').hide('');
+        }
 	
         function yelp() {
             $(document).ready(function () {
 			LoadDataTablesScripts(TestTable1);
-		
-			 
-			 
+
                 $(document).on('click', "a.main_ajax", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -175,7 +174,7 @@
 
         var removeTasks = function (obj) {
             $(obj).closest('tr').remove();
-        }
+        };
 
         var videoenable = function (obj) {
             if ($(obj).data('waiting')) {
@@ -224,8 +223,7 @@
                     '{{ 'November'|trans }}',
                     '{{ 'December'|trans }}'
                 ]
-            }
-                    );
+            });
             $("div[id*='datepicker']").addClass('dp_white');
             $(obj).closest('div.open').removeClass('open');
             $('#modalbox').show();

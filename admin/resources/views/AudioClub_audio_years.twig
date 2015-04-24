@@ -17,6 +17,7 @@
                     <div class="box-content">
                         <div class="box-content no-padding">
                             <div class="row">
+                                <div class="dataTables_processing"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     {% if attribute(app, 'dropdownAttribute') is defined %}
                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
@@ -118,7 +119,7 @@
                           {"sortable": false, "targets": [-1]},
 					{"width": "20px", "targets": [-1] }
                 ]
-            });
+            }).prev('.dataTables_processing').hide('');
         }
 
         function yelp() {

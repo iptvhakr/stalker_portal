@@ -20,6 +20,7 @@
                         <div class="box-content no-padding">
                             <div class="row">
                                 <div class="">
+                                    <div class="dataTables_processing"></div>
                                     <table class="table  table-hover table-datatable" id="datatable-1">
                                         <thead>
                                             <tr>                                       
@@ -139,7 +140,7 @@
 					  { "width": "15px", "targets": [ -1] },
                     {"sortable": false, "targets": [-1, -2]}
                 ]
-            });
+            }).prev('.dataTables_processing').hide('');
             $("#attribute_set input[type='checkbox']").each(function(index){
                 $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
             });

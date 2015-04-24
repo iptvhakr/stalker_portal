@@ -46,7 +46,7 @@
         function fnGetStartPosition(oTable, sSelector) {
             var iStart = 1000000;
             $(sSelector, oTable).each(function () {
-                iPosition = parseInt(oTable.fnGetData(this, properties.iIndexColumn));
+                var iPosition = parseInt(oTable.fnGetData(this, properties.iIndexColumn));
                 if (iPosition < iStart)
                     iStart = iPosition;
             });
