@@ -210,7 +210,7 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].status = '<span ' + ( status == 1 ? 'class="">Включен': '>Отключен') +'</span>';
+                        json.data[i].status = '<span ' + ( status == 1 ? 'class="">{{ 'On'|trans }}': '>{{ 'Off'|trans }}') +'</span>';
                     }
                 }
             }).dataTable({

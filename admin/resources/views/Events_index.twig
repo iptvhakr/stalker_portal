@@ -53,8 +53,8 @@
                                         <td>
                                             <div class="event_message">{{ item.msg }}</div>
                                         </td>
-                                        <td>{% if item.sended != '0' %}<span class="txt-success">{{ 'Delivered'|trans }}</span>{% else %}<span class="txt-primary">{{ 'Not delivered'|trans }}</span>{% endif %}</td>
-                                        <td>{% if item.ended != '0' %}<span class="txt-success">{{ 'Received'|trans }}</span>{% else %}<span class="txt-primary">{{ 'Not received'|trans }}</span>{% endif %}</td>
+                                        <td>{% if item.sended != '0' %}<span class="">{{ 'Delivered'|trans }}</span>{% else %}<span class="">{{ 'Not delivered'|trans }}</span>{% endif %}</td>
+                                        <td>{% if item.ended != '0' %}<span class="">{{ 'Received'|trans }}</span>{% else %}<span class="">{{ 'Not received'|trans }}</span>{% endif %}</td>
                                     </tr>
                                 {% endfor %}
                                 <!-- End: list_row -->
@@ -223,7 +223,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -237,7 +237,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div></form>
             </div>
         </div>
     </div>
@@ -258,8 +258,8 @@
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}?uid=' + uid + '" >' + mac + '</a>';
                         json.data[i].msg = '<div class="event_message">' + json.data[i].msg + '</div>';
-                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="txt-success">{{ 'Delivered'|trans }}</span>' : '<span class="txt-primary">{{ 'Not delivered'|trans }}</span>';
-                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="txt-success">{{ 'Received'|trans }}</span>' : '<span class="txt-primary">{{ 'Not received'|trans }}</span>';
+                        json.data[i].sended = json.data[i].sended != '0' ? '<span class="">{{ 'Delivered'|trans }}</span>' : '<span class="">{{ 'Not delivered'|trans }}</span>';
+                        json.data[i].ended = json.data[i].ended != '0' ? '<span class="">{{ 'Received'|trans }}</span>' : '<span class="">{{ 'Not received'|trans }}</span>';
                         date = json.data[i]['addtime'];
                         if (date > 0) {
                             date = new Date(date * 1000);
