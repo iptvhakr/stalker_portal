@@ -661,7 +661,7 @@ label.myErrorClass {
 }
 
 #content .col-sm-2 {padding-right: 0px !important; margin-right: -15px;  width:240px;}
-#content .col-sm-1 { width:180px;}
+
 .table-datatable .sorting {}
 
 
@@ -3398,8 +3398,7 @@ left:10px;
     margin-top: 0 !important;
 }
 
-
-.dataTables_processing {
+.dataTables_processing {  
     top: 0px !important;
     background: url("../img/preloader.gif") no-repeat center 70px rgba(255, 255, 255, 0.95) !important;
     height: 100% !important;
