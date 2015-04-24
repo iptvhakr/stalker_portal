@@ -1,6 +1,6 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = ('Broadcast servers'|trans ~ ': ' ~ 'servers list'|trans) | trans %}
+{% set title = ('Streaming servers'|trans ~ ': ' ~ 'servers list'|trans) | trans %}
 
 {% block content %}
     <div id="iptv_list">
@@ -132,7 +132,7 @@
                             
                             <!-- zone -->
                             <div class="form-group">
-                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Broadcast area'|trans }}</label>
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Streaming area'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-6 ">
                                         <select class="populate placeholder own_fields" name="stream_zone" id="s2_zone">
@@ -145,7 +145,7 @@
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">{{ 'Choose the broadcast area, if the field is clean, there will be set a default broadcast area'|trans }}</span>
+                                        <span class="small txt-default">{{ 'Choose the streaming area, if the field is clean, there will be set a default streaming area'|trans }}</span>
                                     </span>
                                 </div>
                             </div>

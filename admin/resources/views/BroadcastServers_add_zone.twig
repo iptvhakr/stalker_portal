@@ -1,5 +1,5 @@
 {% extends 'layout.twig' %}
-{% set title = ('Broadcast servers'|trans ~ ': ' ~ ' broadcast area '|trans ~ ' - ' ~ (app.zoneEdit ? 'edit area'|trans ~ '"' ~ app.zoneName ~ '"': 'add area'|trans)) | trans %}
+{% set title = ('Streaming servers'|trans ~ ': ' ~ ' streaming area '|trans ~ ' - ' ~ (app.zoneEdit ? 'edit area'|trans ~ '"' ~ app.zoneName ~ '"': 'add area'|trans)) | trans %}
 {% set active_alias = 'broadcast-zone-list' %}
 
 {% block content %}
@@ -43,7 +43,7 @@
                                         </div>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">{{ 'It will be selected as default for all new broadcast servers'|trans }}</span>
+                                        <span class="small txt-default">{{ 'It will be selected as default for all new streaming servers'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
