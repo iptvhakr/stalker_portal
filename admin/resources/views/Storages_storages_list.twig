@@ -60,7 +60,7 @@
                                                 <td>{{ item.storage_ip }}</td>
                                                 <td>{{ item.nfs_home_path }}</td>
                                                 <td>{{ item.max_online }}</td>
-                                                <td>{% if item.status == 1 %}<span class="txt-success">{{ 'on'|trans }}</span>{% else %} <span>{{ 'off'|trans }}</span>{% endif %}</td>
+                                                <td>{% if item.status == 1 %}<span class="">{{ 'on'|trans }}</span>{% else %} <span>{{ 'off'|trans }}</span>{% endif %}</td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -143,7 +143,7 @@
                                         <input class="form-control" type="text" title="" data-validation=required value="" name="form[storage_name]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
-                                        <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                        <span class="small default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
                                     </span>
                                 </div>
                             </div>
@@ -364,7 +364,7 @@
                                                         </ul>\n\
                                                     </div>";
                         if (json.data[i].status == 1) {
-                            json.data[i].status = '<span class="txt-success">{{ 'on'|trans }}</span>';
+                            json.data[i].status = '<span class="">{{ 'on'|trans }}</span>';
                         } else {
                             json.data[i].status = '<span>{{ 'off'|trans }}</span>';
                         }

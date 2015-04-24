@@ -41,7 +41,7 @@
                                         </td>
                                         <td>{{ item.users_count }}</td>
                                         <td>{{ item.type }}</td>
-                                        <td>{% if item.all_services %}<span class="txt-success">{{ 'Complete'|trans }}</span>{% else %}<span>{{ 'Optional'|trans }}</span>{% endif %}</td>
+                                        <td>{% if item.all_services %}<span class="">{{ 'Complete'|trans }}</span>{% else %}<span>{{ 'Optional'|trans }}</span>{% endif %}</td>
                                         <td>
                                             <div class="col-xs-3 col-sm-8">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -102,7 +102,7 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].all_services = all_services != 0 ? "<span class='txt-success'>{{ 'Complete'|trans }}</span>" : "<span>{{ 'Optional'|trans }}</span>";
+                        json.data[i].all_services = all_services != 0 ? "<span class=''>{{ 'Complete'|trans }}</span>" : "<span>{{ 'Optional'|trans }}</span>";
 
                         var name = json.data[i].name;
 
@@ -143,8 +143,8 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1, 0, 2, 3, 4]},
-                    {"sortable": false, "targets": [-1, 2]},
+                    {"searchable": false, "targets": [-1, 0,1, 2, 3, 4]},
+                    {"sortable": false, "targets": [-1]},
 					  { "width": "16px", "targets": [ -1 ] },		
 					  { "width": "8%", "targets": [ 0 ] }	
                 ]

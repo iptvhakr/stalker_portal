@@ -34,7 +34,7 @@
                                                 <td>{{ item.address }}</td>
                                                 <td>{{ item.max_sessions }}</td>
                                                 <td>{{ item.stream_zone_name }}</td>
-                                                <td><span {% if item.status == 1 %}class="txt-success"{% endif %}>{{ app['allServerStatus'][item.status].title }}</span></td>
+                                                <td><span {% if item.status == 1 %}class=""{% endif %}>{{ app['allServerStatus'][item.status].title }}</span></td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -209,7 +209,7 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].status = '<span ' + ( status == 1 ? 'class="txt-success">Включен': '>Отключен') +'</span>';
+                        json.data[i].status = '<span ' + ( status == 1 ? 'class="">Включен': '>Отключен') +'</span>';
                     }
                 }
             }).dataTable({
