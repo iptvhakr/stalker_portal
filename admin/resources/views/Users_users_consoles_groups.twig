@@ -166,7 +166,7 @@
                     e.preventDefault();
                     openModalBox($(this));
                     return false
-                })
+                });
                 
                 $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {
@@ -283,7 +283,8 @@
     }
     function getCeils(data){
         var firstCeil = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id='+data.id+'">'+data.name+'</a>';
-        var secondCeil = "<div class='col-xs-3 col-sm-8'>\n\
+        var secondCeil = '0';
+        var thirdCeil = "<div class='col-xs-3 col-sm-8'>\n\
                                 <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                     <i class='pull-right fa fa-cog'></i>\n\
                                 </a>\n\
@@ -300,7 +301,7 @@
                                     </li>\n\
                                 </ul>\n\
                             </div>";
-        return [firstCeil, secondCeil];
+        return [firstCeil, secondCeil, thirdCeil];
     }
     </script>
 {% endblock %}
