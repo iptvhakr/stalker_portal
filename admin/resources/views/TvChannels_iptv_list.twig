@@ -24,6 +24,7 @@
                         {% endif %}
                         <div class="box-content">
                             <div class="box-content no-padding">
+                                <div class="dataTables_processing"></div>
                                 <table class="table table-hover table-datatable" id="datatable-1">
                                     <thead>
                                         <tr>
@@ -193,7 +194,7 @@
 					{ "width": "6%", "targets": [ 1 ] },
 					{ "width": "15px", "targets": [ -1] }
                 ]
-            });
+            }).prev('.dataTables_processing').hide('');
             $("#attribute_set input[type='checkbox']").each(function(index){
                 $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
             });

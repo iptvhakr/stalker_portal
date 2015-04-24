@@ -13,6 +13,7 @@
                     <div class="box">
                         <div class="box-content">
                             <div class="box-content no-padding">
+                                <div class="dataTables_processing"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     <thead>
                                         <tr>
@@ -72,7 +73,6 @@
                 {% endif %}
             </div>
         </div>
-    </div>
 <script type="text/javascript" defer>
 
     function TestTable1() {
@@ -90,7 +90,7 @@
 				 { "width": "16px", "targets": [ -1] }
 
             ]
-        });
+        }).prev('.dataTables_processing').hide('');
     }
     function yelp() {
         $(document).ready(function () {

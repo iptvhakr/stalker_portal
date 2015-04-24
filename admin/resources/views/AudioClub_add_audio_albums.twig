@@ -135,6 +135,7 @@
                                     {% endif %}
                                     <div class="box-content">
                                         <div class="box-content no-padding">
+                                            <div class="dataTables_processing"></div>
                                             <table class="table  table-hover table-datatable" id="datatable-1" data-album_id="{{ app['audioAlbumID'] }}">
                                                 {% if attribute(app, 'dropdownAttribute') is defined %}
                                                     {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
@@ -374,7 +375,7 @@
             }).rowReordering({
                 iIndexColumn: 0,
                 sURL: "{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-track-reorder"
-            });
+            }).prev('.dataTables_processing').hide('');
         }
 
         function yelp() {

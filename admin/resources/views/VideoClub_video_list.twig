@@ -21,6 +21,7 @@
                         {% endif %}
                         <div class="box-content">
                             <div class="box-content no-padding">
+                                <div class="dataTables_processing"></div>
                                  <table class="table dataTable table-hover table-datatable"  id="datatable-1">
                                     <thead>
                                         <tr>
@@ -337,7 +338,7 @@
                 { "width": "10%", "targets": [ 1, 2, 3, 6, 8, -2] }
             ]
             
-        });
+        }).prev('.dataTables_processing').hide('');
 		  $("#datatable-1").DataTable().ajax.reload();
 		
         $("#attribute_set input[type='checkbox']").each(function(index){
