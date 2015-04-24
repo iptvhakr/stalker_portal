@@ -3392,12 +3392,21 @@ top:-10px;
 left:10px;
 
 }
-.dataTables_wrapper .dataTables_processing{
+.dataTables_wrapper .dataTables_processing,  .dataTables_processing{
     height: 100% !important;
     top: 10px !important;
     margin-top: 0 !important;
 }
+.dataTables_processing {
 
+ top: 0px !important;
+
+ background: url("../img/preloader.gif") no-repeat center 70px rgba(255, 255, 255, 0.95) !important;
+
+ height: 100% !important;
+
+
+}
 .round-text{
     display: inline-block;
     max-width: 120%;
