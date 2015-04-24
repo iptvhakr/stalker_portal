@@ -296,4 +296,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from('epg_setting')->where($param)->get()->first($key);
     }
 
+    public function updateITVChannelLogo($id, $logo_name) {
+        return $this->mysqlInstance->update('itv', array('logo' => $logo_name), array('id' => $id))->total_rows();
+    }
 }

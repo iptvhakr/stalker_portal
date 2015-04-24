@@ -276,15 +276,16 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        if (!$this->isAjax || empty($this->data['id']) || (!is_numeric($this->data['id']) && strpos($this->data['id'], 'new') == FALSE)) {
+        if (!$this->isAjax || empty($this->postData['logo_id']) || (!is_numeric($this->postData['logo_id']) && strpos($this->postData['logo_id'], 'new') == FALSE)) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         }
 
-        $channel = $this->db->getChannelById($this->data['id']);
+        $channel = $this->db->getChannelById($this->postData['logo_id']);
 
+        $this->db->updateITVChannelLogo($channel['id'], '');
         $this->saveFiles->removeFile($this->logoDir, $channel['logo']);
         $error = $this->saveFiles->getError();
-        $response = $this->generateAjaxResponse(array('data' => 0), $error);
+        $response = $this->generateAjaxResponse(array('data' => 0, 'action'=>'deleteLogo'), $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
