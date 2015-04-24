@@ -90,7 +90,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         }
         $this->app['form'] = $form->createView();
         $this->app['zoneEdit'] = FALSE;
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Broadcast area'), "{$this->workURL}/{$this->app['controller_alias']}/broadcast-zone-list");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Streaming area'), "{$this->workURL}/{$this->app['controller_alias']}/broadcast-zone-list");
         $this->app['breadcrumbs']->addItem($this->setlocalization('Add area'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -130,7 +130,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $this->app['zoneName'] = $this->zone['name'];
         ob_end_clean();
         
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Broadcast area'), "{$this->workURL}/{$this->app[controller_alias]}/broadcast-zone-list");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Streaming area'), "{$this->workURL}/{$this->app[controller_alias]}/broadcast-zone-list");
         $this->app['breadcrumbs']->addItem($this->setlocalization('Edit area'));
         
         return $this->app['twig']->render('BroadcastServers_add_zone.twig');
@@ -394,7 +394,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
             array('name' => 'name',             'title' => $this->setlocalization('Title'),         'checked' => TRUE),
             array('name' => 'address',          'title' => $this->setlocalization('URL'),           'checked' => TRUE),
             array('name' => 'max_sessions',     'title' => $this->setlocalization('Maximum users'), 'checked' => TRUE),
-            array('name' => 'stream_zone_name', 'title' => $this->setlocalization('Broadcast area'),'checked' => TRUE),
+            array('name' => 'stream_zone_name', 'title' => $this->setlocalization('Streaming area'),'checked' => TRUE),
             array('name' => 'status',           'title' => $this->setlocalization('Status'),        'checked' => TRUE),
             array('name' => 'operations',       'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
         );

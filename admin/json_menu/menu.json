@@ -304,7 +304,7 @@
         }
     },
     "15": {
-        "name": _("Broadcast servers"),
+        "name": _("Streaming servers"),
         "alias": "broadcast-servers",
         "icon": "fa fa-server",
         "icon2": "pull-right fa fa-chevron-left",
@@ -315,7 +315,7 @@
                 "icon": ""
             },
             "2": {
-                "name": _("Broadcast areas"),
+                "name": _("Streaming areas"),
                 "alias": "broadcast-zone-list",
                 "icon": ""
             }
