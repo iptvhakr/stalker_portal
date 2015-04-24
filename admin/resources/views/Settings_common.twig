@@ -421,7 +421,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                     closeModalBox();
-                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add EPG'|trans }}');
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add update'|trans }}');
                     $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
                     $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
                     $("select[id^='s2_']").select2("destroy").select2({minimumResultsForSearch: -1});
@@ -468,7 +468,7 @@
         
         var setCommonModal = function (data) {
             closeModalBox();
-            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit EPG'|trans }}');
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit update'|trans }}');
             if (data.data.length == 1) {
                 var row = data.data[0];
                 for (var field_name in row) {
