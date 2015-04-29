@@ -2195,7 +2195,7 @@ player.prototype.play = function(item){
 
     this.play_initiated = true;
     
-    if (this.media_type == 'stream' && !stb.player.cur_media_item.rtsp_url){
+    if (this.media_type == 'stream' && !stb.player.cur_media_item.series){
         
         if (item.hasOwnProperty('open') && !item.open){
             _debug('channel is closed');
