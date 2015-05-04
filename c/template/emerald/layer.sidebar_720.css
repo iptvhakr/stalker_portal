@@ -28,6 +28,10 @@ ul.items_container_passive li, ul.items_container_active li{
     text-overflow: ellipsis;
 }
 
+.footer_sidepanel .sidepanel_container > ul > li:last-of-type li{
+    text-overflow: clip;
+}
+
 ul.items_container_passive li[rel="active"], ul.items_container_active li[rel="active"]{
     background: url("i_720/footer_sidepanel_act.png") repeat-x top;
 }
