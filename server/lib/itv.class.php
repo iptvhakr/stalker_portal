@@ -856,6 +856,15 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             ->where($where)
             ->limit(self::max_page_items, $offset);
 
+        if (\Config::getSafe('enable_numbering_in_order', false) && \Config::getSafe('order_itv_channel_as_adding', false) &&
+            (empty($_REQUEST['sortby']) || (!empty($_REQUEST['sortby']) && $_REQUEST['sortby'] == 'number'))) {
+            $this->db
+                ->select(array('itv.*'))
+                ->join('service_in_package', 'itv.id', 'service_in_package.service_id', 'LEFT')
+                ->orderby('service_in_package.id', 'DESC')
+                ->groupby('service_in_package.service_id');
+        }
+
         if (isset($where_or)){
             $this->db->where($where_or, 'OR ');
         }

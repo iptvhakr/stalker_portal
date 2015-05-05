@@ -145,7 +145,7 @@
 
             this.load_fav_radio();
 
-            this.load_fav_ids()
+            this.load_fav_ids();
 
             this.init_search_box();
         };
@@ -184,6 +184,16 @@
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
+
+            (function(){
+                keydown_observer.emulate_key(key.UP);
+                keydown_observer.emulate_key(key.OK);
+            }).bind(key.CHANNEL_PREV, this);
+
+            (function(){
+                keydown_observer.emulate_key(key.DOWN);
+                keydown_observer.emulate_key(key.OK);
+            }).bind(key.CHANNEL_NEXT, this);
         };
         
         this.play = function(){
