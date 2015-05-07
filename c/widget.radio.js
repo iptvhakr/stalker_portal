@@ -122,7 +122,7 @@
                     }
                 }
 
-            }).bind(key.NEXT, this, 1).bind(key.PREV, this, -1);
+            }).bind(key.NEXT, this, 1).bind(key.PREV, this, -1).bind(key.CHANNEL_NEXT, this, 1).bind(key.CHANNEL_PREV, this, -1);
 
         },
 

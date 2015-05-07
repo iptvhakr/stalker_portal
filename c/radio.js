@@ -20,6 +20,9 @@
 
         this.superclass = ListLayer.prototype;
 
+        this.row_callback_timer;
+        this.row_callback_timeout = 500;
+
         this.init = function() {
 
             _debug('radio.init');
@@ -185,15 +188,8 @@
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
 
-            (function(){
-                keydown_observer.emulate_key(key.UP);
-                keydown_observer.emulate_key(key.OK);
-            }).bind(key.CHANNEL_PREV, this);
-
-            (function(){
-                keydown_observer.emulate_key(key.DOWN);
-                keydown_observer.emulate_key(key.OK);
-            }).bind(key.CHANNEL_NEXT, this);
+            this.shift_row_ch_channel.bind(key.CHANNEL_PREV, this, -1);
+            this.shift_row_ch_channel.bind(key.CHANNEL_NEXT, this, 1);
         };
         
         this.play = function(){
@@ -251,6 +247,26 @@
                 }
             }
 
+        };
+
+        this.shift_row_ch_channel = function(dir){
+            window.clearTimeout(this.row_callback_timer);
+            this.data_items[this.cur_row].unlocked = false;
+            this.superclass.shift_row.call(this, dir);
+            _debug('before set timeout');
+            var self = this;
+            this.row_callback_timer = window.setTimeout(function () {
+                    _debug('row_callback');
+                    if (self.loading) {
+                        return;
+                    }
+                    window.clearTimeout(self.row_callback_timer);
+                    self.play();
+                },
+                this.row_callback_timeout);
+
+            _debug('this.row_callback_timeout', this.row_callback_timeout);
+            _debug('after set timeout');
         };
 
         this.init_sort_menu = function(map, options){
