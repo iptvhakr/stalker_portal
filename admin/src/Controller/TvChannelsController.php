@@ -152,7 +152,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
         $this->app['channelEdit'] = TRUE;
         $this->oneChannel = $this->db->getChannelById($id);
+        $this->oneChannel = array_merge($this->oneChannel, $this->getStorages($id));
+        $this->oneChannel['pvr_storage_names'] = array_keys(\RemotePvr::getStoragesForChannel($id));
         settype($this->oneChannel['enable_tv_archive'], 'boolean');
+        settype($this->oneChannel['wowza_dvr'], 'boolean');
+        settype($this->oneChannel['flussonic_dvr'], 'boolean');
         settype($this->oneChannel['allow_pvr'], 'boolean');
         settype($this->oneChannel['censored'], 'boolean');
         settype($this->oneChannel['allow_local_timeshift'], 'boolean');
@@ -662,11 +666,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $genres[$row['id']] = $row['title'];
         }
 
-        $storages = array();
+        $storages = $this->getStorages();
 
-        foreach ($this->db->getStorages() as $key => $value) {
-            $storages[$value['storage_name']] = $value['storage_name'];
-        }
         $def_number = 0;
         $def_name = 'Channel';
         if (!empty($data['number'])){
@@ -701,14 +702,27 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                         )
                 )
                 ->add('pvr_storage_names', 'choice', array(
-                    'choices' => $storages,
+                    'choices' => $storages['storage_names'],
                     'multiple' => TRUE,
                         )
                 )
                 ->add('storage_names', 'choice', array(
-                    'choices' => $storages,
+                    'choices' => $storages['storage_names'],
                     'multiple' => TRUE,
                         )
+                )
+
+                ->add('wowza_dvr', 'checkbox', array('required' => false))
+                ->add('wowza_storage_names', 'choice', array(
+                        'choices' => $storages['wowza_storage_names'],
+                        'multiple' => TRUE,
+                    )
+                )
+                ->add('flussonic_dvr', 'checkbox', array('required' => false))
+                ->add('flussonic_storage_names', 'choice', array(
+                        'choices' => $storages['flussonic_storage_names'],
+                        'multiple' => TRUE,
+                    )
                 )
                 ->add('volume_correction', 'choice', array(
                             'choices' => array_combine(range(-20, 20, 1), range(-100, 100, 5)),
@@ -833,6 +847,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $operation = 'updateITVChannel';
             }
 
+            if ((!empty($data['allow_pvr']) || !empty($data['enable_tv_archive'])) && empty($data['mc_cmd'])) {
+                $error_local = array();
+                $error_local['mc_cmd'] = $this->setlocalization('This field cannot be empty if enabled TV-archive or nPVR');
+                $this->app['error_local'] = $error_local;
+                return FALSE;
+            }
+
             if ($form->isValid()) {
                 $this->dataPrepare($data);
 
@@ -871,13 +892,15 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     }
 
     private function deleteChannelTasks($new_data, $old_data) {
-        if ($old_data['enable_tv_archive'] != $new_data['enable_tv_archive'] || $old_data['wowza_dvr'] != $new_data['wowza_dvr']) {
+        if ($old_data['enable_tv_archive'] != $new_data['enable_tv_archive'] || $old_data['wowza_dvr'] != $new_data['wowza_dvr'] || $old_data['flussonic_dvr'] != $new_data['flussonic_dvr']) {
 
             if ($old_data['enable_tv_archive']) {
 
-                if ($old_data['wowza_dvr']) {
+                if ($old_data['flussonic_dvr']){
+                    $archive = new \FlussonicTvArchive();
+                } elseif ($old_data['wowza_dvr']){
                     $archive = new \WowzaTvArchive();
-                } else {
+                }else{
                     $archive = new \TvArchive();
                 }
 
@@ -887,9 +910,28 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     }
 
     private function createTasks($id, $data) {
-        if ($data['enable_tv_archive']) {
-            $archive = new \TvArchive();
-            $archive->createTasks($id, $data['storage_names']);
+
+        if (!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] != 'off'){
+
+            $storage_names = array();
+            if (!empty($data['flussonic_dvr']) && $data['flussonic_dvr'] != 'off'){
+                $archive = new \FlussonicTvArchive();
+                if (!empty($data['flussonic_storage_names'])) {
+                    $storage_names = $data['flussonic_storage_names'];
+                }
+            } elseif (!empty($data['wowza_dvr']) && $data['wowza_dvr'] != 'off'){
+                $archive = new \WowzaTvArchive();
+                if (!empty($data['wowza_storage_names'])) {
+                    $storage_names = $data['wowza_storage_names'];
+                }
+            }else{
+                $archive = new \TvArchive();
+                if (!empty($data['storage_names'])) {
+                    $storage_names = $data['storage_names'];
+                }
+            }
+
+            $archive->createTasks($id, $storage_names);
         }
     }
 
@@ -1073,5 +1115,34 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('name'=>'status',     'title'=>$this->setlocalization('State'),           'checked' => TRUE),
             array('name'=>'operations', 'title'=>$this->setlocalization('Operations'),      'checked' => TRUE)
         );
+    }
+
+    private function getStorages($id = FALSE){
+        $return = array('storage_names' => array(), 'wowza_storage_names' => array(), 'flussonic_storage_names' => array());
+        foreach ($this->db->getStorages() as $key => $value) {
+            if (($value['flussonic_dvr'] && !$value['wowza_dvr']) ) {
+                $return['flussonic_storage_names'][$value['storage_name']] = $value['storage_name'];
+            } elseif (!$value['flussonic_dvr'] && $value['wowza_dvr']) {
+                $return['wowza_storage_names'][$value['storage_name']] = $value['storage_name'];
+            } else {
+                $return['storage_names'][$value['storage_name']] = $value['storage_name'];
+            }
+        }
+        if ($id !== FALSE) {
+            $tasks = ($id == FALSE ? array(): \TvArchive::getTasksByChannelId($id));
+            if (!empty($tasks)){
+                $return = array_map(function($row) use ($tasks){
+                    $names = array_filter(array_map(function($task_row) use ($row){
+                        if (in_array($task_row['storage_name'], $row)) {
+                            return $task_row['storage_name'];
+                        }
+                    }, $tasks));
+                    return array_combine(array_values($names), $names);
+                }, $return );
+            } else {
+                $return = array('storage_names' => array(), 'wowza_storage_names' => array(), 'flussonic_storage_names' => array());
+            }
+        }
+        return $return;
     }
 }

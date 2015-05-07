@@ -58,14 +58,14 @@
                                         <td>{{ item.login }}</td>
                                         <td>{{ item.ls }}</td>
                                         <td>{{ item.fname }}</td>
-                                        <td>{{ item.last_change_status|date('M d, Y H:i') }}</td>
+                                        <td>{% if item.last_change_status > 0 %}{{ item.last_change_status|date('M d, Y H:i') }}{% else %}00-00-0000{% endif %}</td>
                                         <td>{% if item.state %}
                                                 <span class="">Online</span>
                                             {% else %}
                                                 <span class="">Offline</span>
                                                 <br><span>{{ 'Last activity'|trans }}: {% if item.last_active == 0 %}{{ item.last_active|date('M d, Y H:i') }}{% else %} - {% endif %}</span>
                                             {% endif %}</td>
-                                        <td class="data-filter-status">{% if item.status == 0 %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="txt-danger">{{ 'off'|trans }}</span>{% endif %}</td>
+                                        <td class="data-filter-status">{% if item.status == 0 %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="">{{ 'off'|trans }}</span>{% endif %}</td>
                                         <td>
                                             <div class="col-xs-3 col-sm-8">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -89,7 +89,7 @@
                                                     </li>
                                                     <li>
                                                         <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user" data-userid="{{ item.id }}" data-userstatus="{{ item.status }}">
-                                                            <span>{% if item.status %}{{ 'Turn off'|trans }}{% else %}{{ 'Turn on'|trans }}{% endif %}</span>
+                                                            <span>{% if item.status == 0 %}{{ 'Turn off'|trans }}{% else %}{{ 'Turn on'|trans }}{% endif %}</span>
                                                         </a>
                                                     </li>
                                                     <li>
@@ -205,14 +205,15 @@
                                     <div class=" col-xs-10 col-sm-6">
                                         <select class="populate placeholder" name="event" id="s2_event">
                                             <option value=""></option>
-                                            <option value="send_msg">send_msg</option>
-                                            <option value="reboot">reboot</option>
-                                            <option value="reload_portal">reload_portal</option>
-                                            <option value="update_channels">update_channels</option>
-                                            <option value="play_channel">play_channel</option>
-                                            <option value="mount_all_storages">mount_all_storages</option>
-                                            <option value="cut_off">switch_off</option>
-                                            <option value="update_image">update_image</option>
+                                            <option value="send_msg">{{ 'Sending a message'|trans }}</option>
+                                            <option value="send_msg_with_video">{{ 'Sending a message with video'|trans }}</option>
+                                            <option value="reboot">{{ 'Reboot'|trans }}</option>
+                                            <option value="reload_portal">{{ 'Restart the portal'|trans }}</option>
+                                            <option value="update_channels">{{ 'Update channel list'|trans }}</option>
+                                            <option value="play_channel">{{ 'Playback channel'|trans }}</option>
+                                            <option value="mount_all_storages">{{ 'Mount all storages'|trans }}</option>
+                                            <option value="cut_off">{{ 'Turn off'|trans }}</option>
+                                            <option value="update_image">{{ 'Image update'|trans }}</option>
                                         </select>
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -255,19 +256,27 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="form-group"  data-event-type="send_msg">
+                            <div class="form-group"  data-event-type="send_msg;send_msg_with_video">
                                 <label class="col-sm-3 control-label col-sm-offset-1">MSG</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea"></textarea>
                                     </div>
                                 </div>
-                            </div> 
-                            <div class="form-group"  data-event-type="send_msg">
+                            </div>
+                            <div class="form-group"  data-event-type="send_msg;send_msg_with_video">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message templates'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-8">
                                         <a href="#" id="msg_pattern">{{ 'Outdated testing'|trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group"  data-event-type="send_msg_with_video">
+                                <label class="col-sm-3 control-label col-sm-offset-1">VIDEO URL</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control" type="text" title="" value="" name="video_url">
                                     </div>
                                 </div>
                             </div>
@@ -330,7 +339,7 @@
                                                             </li>\n\
                                                             <li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user' data-userid='" + id + "' data-userstatus='" + status + "'>\n\
-                                                                    <span>" + (status != 0 ? "{{ 'Turn off'|trans }}" : "{{ 'Turn on'|trans }}") + "</span>\n\
+                                                                    <span>" + (status == 0 ? "{{ 'Turn off'|trans }}" : "{{ 'Turn on'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
@@ -347,6 +356,8 @@
                         if (date > 0) {
                             date = new Date(date * 1000);
                             json.data[i]['last_change_status'] = date.toLocaleFormat("%b %d, %Y");
+                        } else {
+                            json.data[i]['last_change_status'] = '00-00-0000';
                         }
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
@@ -557,10 +568,14 @@
         function checkFields(obj, e) {
             var dataName = $(obj).attr('id') == 's2_user_list_type' ? 'data-list-type' : 'data-event-type';
             $("[" + dataName + "]").hide().find('input, select, textarea').attr('disabled', 'disabled');
-            $(obj).find('option').each(function () {
-                if (this.selected) {
-                    $('[' + dataName + '="' + $(this).val() + '"]').show().find('input, select, textarea').removeAttr('disabled');
-                }
+            $(obj).find('option:selected').each(function () {
+                var searchVal = $(this).val();
+                var dataNameIn = dataName.replace('data-', '').replace('-', ' ').camelCase();
+                $('[' + dataName + '*="' + searchVal + '"]').each(function() {
+                    if ($(this).data(dataNameIn) && $(this).data(dataNameIn).split(";").indexOf(searchVal) !== -1) {
+                        $(this).show().find('input, select, textarea').removeAttr('disabled');
+                    }
+                });
             });
             return false;
         }

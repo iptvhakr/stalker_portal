@@ -290,6 +290,10 @@ class StoragesController extends \Controller\BaseStalkerController {
             }
             unset($storage[0]['id']);
 
+            $storage[0]['flussonic_dvr'] = (int)(!empty($storage[0]['flussonic_dvr']) && $storage[0]['flussonic_dvr'] != 'off' && !empty($storage[0]['for_records']));
+            $storage[0]['wowza_dvr'] = (int)(!empty($storage[0]['wowza_dvr']) && $storage[0]['wowza_dvr'] != 'off' && !empty($storage[0]['for_records']));
+            $storage[0]['fake_tv_archive'] = (int)(!empty($storage[0]['fake_tv_archive']) && $storage[0]['fake_tv_archive'] != 'off' && !empty($storage[0]['for_records']));
+
             if ($result = call_user_func_array(array($this->db, $operation), $storage)) {
                 $error = '';    
                 $data['msg'] = $this->setlocalization('Saved');

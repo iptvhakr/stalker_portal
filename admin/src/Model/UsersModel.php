@@ -30,7 +30,6 @@ class UsersModel extends \Model\BaseStalkerModel {
         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-       
         return $obj->get()->all();
     }
 

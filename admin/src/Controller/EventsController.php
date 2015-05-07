@@ -20,6 +20,7 @@ class EventsController extends \Controller\BaseStalkerController {
         parent::__construct($app, __CLASS__);
         $this->formEvent = array(
             array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message') ),
+            array("id" => "send_msg_with_video","title" => $this->setlocalization('Sending a message with video') ),
             array("id" => "reboot",             "title" => $this->setlocalization('Reboot') ),
             array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
             array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
@@ -389,6 +390,15 @@ class EventsController extends \Controller\BaseStalkerController {
     
     private function set_event_update_image(&$event, $user_list){
         $event->sendUpdateImage();
+        return TRUE;
+    }
+
+    private function set_event_send_msg_with_video(&$event, $user_list){
+        if (!empty($this->postData['video_url'])){
+            $event->sendMsgWithVideo($this->postData['msg'], $this->postData['video_url']);
+        } else {
+            return FALSE;
+        }
         return TRUE;
     }
 }
