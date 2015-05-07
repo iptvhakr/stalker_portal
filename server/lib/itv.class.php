@@ -87,9 +87,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             if (!empty($link)){
                 $link_id = $link['id'];
 
-                if ($link['status'] == 0 || Config::getSafe('force_ch_link_check', false)){
+                if ($link['status'] == 0 || Config::getSafe('force_ch_link_check', false) || !empty($_REQUEST['for_pvr']) && strpos($link['url'], '.m3u8')){
 
-                    $alternative_links = self::getUrlsForChannel($ch_id);
+                    $alternative_links = self::getUrlsForChannel($ch_id, !empty($_REQUEST['for_pvr']));
 
                     if (empty($alternative_links)){
                         throw new ItvLinkException('nothing_to_play');
@@ -1607,7 +1607,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         return $grouped_links;
     }
 
-    public static function getUrlsForChannel($ch_id){
+    public static function getUrlsForChannel($ch_id, $for_pvr = false){
 
         $user_agent = Stb::getInstance()->getUserAgent();
 
@@ -1629,6 +1629,12 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         if (empty($user_channel_links)){
             $user_channel_links = array_filter($channel_links, function($link) use ($user_agent){
                 return $link['user_agent_filter'] == '';
+            });
+        }
+
+        if ($for_pvr){
+            $user_channel_links = array_filter($user_channel_links, function($link){
+                return strpos($link['url'], '.m3u8') === false;
             });
         }
 
