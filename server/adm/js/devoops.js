@@ -1015,6 +1015,20 @@ if (!$.isFunction(d['toLocaleFormat'])) {
     };    
 }
 
+String.prototype.ucfirts = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.ucwords = function () {
+    return this.replace(/^(.)|\s(.)/g, function ($1) {
+        return $1.toUpperCase();
+    });
+};
+
+String.prototype.camelCase = function () {
+    return (this.charAt(0).toLowerCase() + this.ucwords().slice(1)).replace(' ', '');
+};
+
 function JScloseModalBox(){
     $("#modalbox").data('complete', 1);
     $("#modalbox").hide();

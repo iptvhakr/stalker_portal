@@ -117,24 +117,24 @@
                     </a>
                 </div>
             </div>
-            <div class="devoops-modal-inner">
-                <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-storage">
-                    <div class="box"><a class="collapse-link">
-                        <div class="box-header">
-                            <div class="box-name">
-                                <div class="row">
-                                    <div class="col-xs-10 col-sm-4">
-                                        <span>{{ 'General information'|trans }}</span>
+            <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-storage">
+                <div class="devoops-modal-inner">
+                    <div class="box">
+                        <a class="collapse-link">
+                            <div class="box-header">
+                                <div class="box-name">
+                                    <div class="row">
+                                        <div class="col-xs-10 col-sm-4">
+                                            <span>{{ 'General information'|trans }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="box-icons">
-                                
+                                <div class="box-icons">
                                     <i class="fa fa-chevron-up"></i>
-                               
+                                </div>
+                                <div class="no-move"></div>
                             </div>
-                            <div class="no-move"></div>
-                        </div> </a>
+                        </a>
                         <div class="box-content">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
@@ -152,7 +152,7 @@
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'IP'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
-                                        <input class="form-control" type="text" title="" data-validation=required  value="" name="form[storage_ip]">
+                                        <input class="form-control" type="text" title="" data-validation=required value="" name="form[storage_ip]">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'IP-address of the storage. Example : http://127.0.0.1'|trans }}</span>
@@ -194,26 +194,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box">  <a class="collapse-link">
-                        <div class="box-header">
-                            <div class="box-name">
-                                <div class="row">
-                                    <div class="col-xs-10 col-sm-4">
-                                        <span>{{ 'Additional information'|trans }}</span>
+                    <div class="box">
+                        <a class="collapse-link">
+                            <div class="box-header">
+                                <div class="box-name">
+                                    <div class="row">
+                                        <div class="col-xs-10 col-sm-4">
+                                            <span>{{ 'Additional information'|trans }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="box-icons">
-                              
+                                <div class="box-icons">
                                     <i class="fa fa-chevron-up"></i>
-                               
+                                </div>
+                                <div class="no-move"></div>
                             </div>
-                            <div class="no-move"></div>
-                        </div> </a>
+                        </a>
                         <div class="box-content">
-                            <div class="row">
-                            
-                            </div>
+                            <div class="row"></div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Content storage'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
@@ -229,7 +227,7 @@
                                         <span class="small txt-default">{{ 'Allow content storage'|trans }}</span>
                                     </span>
                                 </div>
-                            </div>   
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'TV recording'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
@@ -245,7 +243,33 @@
                                         <span class="small txt-default">{{ 'Allow TV recording'|trans }}</span>
                                     </span>
                                 </div>
-                            </div> 
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Flussonic DVR'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="form[flussonic_dvr]">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Wowza DVR'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="form[wowza_dvr]">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Emulation'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
@@ -261,7 +285,7 @@
                                         <span class="small txt-default">{{ 'The emulation mode is used in case when two portals are attached to a single storage of TV archive. It is necessary to set the recording of TV archive at the first portal, and TV archive recording with the option of emulation at the second one. Thus, there will be two portals with the archive, though in fact it is recorded once.'|trans }}</span>
                                     </span>
                                 </div>
-                            </div> 
+                            </div>
                             <hr>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Filter'|trans }}</label>
@@ -308,20 +332,20 @@
                             </div>
                         </div>
                     </div>
-               
-            </div>
-            <div class="devoops-modal-bottom">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="row">
-                            <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right" id="save_button">{{ 'Save'|trans }}</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
+                </div>
+                <div class="devoops-modal-bottom">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-6 pull-right">
+                                    <button type="submit" class="btn btn-success col-sm-5 pull-right" id="save_button">{{ 'Save'|trans }}</button>
+                                    <button type="reset" class="btn btn-default col-sm-5 pull-left"> {{ 'Cancel'|trans }} </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> </form>
+            </form>
         </div>
     </div>
 
@@ -451,16 +475,24 @@
                     return false;
                 });
                 
-                $(":checkbox[name*='fake_tv_archive']").closest('.form-group').hide();
+                $(":checkbox[name*='fake_tv_archive'], :checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']").closest('.form-group').hide();
                 
                 $(document).on('change', ":checkbox[name*='for_records']", function(e){
                     if ($(this).is(':checked')) {
-                        $(":checkbox[name*='fake_tv_archive']").closest('.form-group').show('slow');
+                        $(":checkbox[name*='fake_tv_archive'], :checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']").closest('.form-group').show('fast').find('input').prop("disabled", false).removeAttr('disabled');
                     } else {
-                        $(":checkbox[name*='fake_tv_archive']").closest('.form-group').hide('slow');
+                        $(":checkbox[name*='fake_tv_archive'], :checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']").closest('.form-group').hide('fast').find('input').prop("disabled", 'disabled').attr('disabled', 'disabled');
                     }
                 });
-        
+
+                $(document).on('change', ":checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']", function(){
+                    var checkedChk = $(this);
+                    var uncheckChk = $(this).attr('name').search('flussonic_dvr') !== -1 ? $(":checkbox[name*='wowza_dvr']"): $(":checkbox[name*='flussonic_dvr']");
+                    if (checkedChk.is(":checked")) {
+                        uncheckChk.prop('checked', false).removeAttr('checked');
+                    }
+                });
+
                 $(document).on('submit', '#modalbox_ad form', function(e){
                     e.stopPropagation();
                     e.preventDefault();
@@ -468,25 +500,26 @@
                 });
                 $(document).off('click', '#modalbox_ad .save_storage button[type="submit"]');
                 $(document).on('click', '#modalbox_ad .save_storage button[type="submit"]', function(e){
-				
-				
-					  $.validate({
-  onSuccess : function() {
-                    e.stopPropagation();
-                    e.preventDefault();
 
-                    var sendData = {};
 
-                    $("#modalbox_ad form input").each(function(){
-                        sendData[$(this).attr('name')] = $(this).is(':checkbox')?($(this).is(':checked')? 1: 0): $(this).val();
+                    $.validate({
+                        onSuccess: function () {
+                            e.stopPropagation();
+                            e.preventDefault();
+
+                            var sendData = {};
+
+                            $("#modalbox_ad form input").each(function () {
+                                sendData[$(this).attr('name')] = $(this).is(':checkbox') ? ($(this).is(':checked') ? 1 : 0) : $(this).val();
+                            });
+                            hideAdModalBox();
+                            $("#modalbox").data('complete', 0);
+                            showModalBox();
+                            ajaxPostSend($('#modalbox_ad form').attr('action'), sendData, false, false, true);
+                            return false;
+                        }
                     });
-                    hideAdModalBox();
-                    $("#modalbox").data('complete', 0);
-                    showModalBox();
-                    ajaxPostSend($('#modalbox_ad form').attr('action'), sendData, false, false, true);
-                    return false;
-                 }
-  }); });
+                });
                 LoadDataTablesScripts(TestTable1);
             });
         }
@@ -550,7 +583,7 @@
         var errAction = function(){
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
             $("#modalbox").data('complete', 1);
-        }
+        };
         
         var fillModalAd = function(data){
             if (typeof(data.storage) != 'undefined') {
@@ -567,9 +600,9 @@
                    }
                 });
                 if ($(":checkbox[name*='for_records']").is(':checked')) {
-                    $(":checkbox[name*='fake_tv_archive']").closest('.form-group').show('slow');
+                    $(":checkbox[name*='fake_tv_archive'], :checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']").closest('.form-group').show('fast').find('input').prop("disabled", false).removeAttr('disabled');
                 } else {
-                    $(":checkbox[name*='fake_tv_archive']").closest('.form-group').hide('slow');
+                    $(":checkbox[name*='fake_tv_archive'], :checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']").closest('.form-group').hide('fast').find('input').prop("disabled", 'disabled').attr('disabled', 'disabled');
                 }
             }
         }

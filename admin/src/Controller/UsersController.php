@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 class UsersController extends \Controller\BaseStalkerController {
 
     protected $allStatus = array();
-    private $allState = array(array('id' => 1, 'title' => 'Offline'), array('id' => 2, 'title' => 'Online'));
+    private $allState = array(array('id' => 2, 'title' => 'Offline'), array('id' => 1, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
         'users.id as id', "mac", "ip", "login", "ls", "fname",
@@ -168,7 +168,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
         $form = $this->buildUserForm($this->user, TRUE);
 
-        if ($this->saveUsersData($form)) {
+        if ($this->saveUsersData($form, TRUE)) {
             return $this->app->redirect('edit-users?id='.$id);
         }
         $this->app['form'] = $form->createView();
@@ -260,7 +260,8 @@ class UsersController extends \Controller\BaseStalkerController {
         
         $response['data'] = array_map(function($val){
             $val['last_active'] = (int)$val['last_active']; 
-            $val['last_change_status'] = (int) strtotime($val['last_change_status']); 
+            $val['last_change_status'] = (int) strtotime($val['last_change_status']);
+            $val['last_change_status'] = $val['last_change_status'] > 0 ? $val['last_change_status']: 0;
             return $val;
         }, $this->db->getUsersList($query_param));
 
@@ -295,8 +296,8 @@ class UsersController extends \Controller\BaseStalkerController {
             } else {
                 $event->sendCutOff();
             }
-            $data['title'] = (!$this->postData['userstatus'] ? 'Отключить' : 'Включить');
-            $data['status'] = (!$this->postData['userstatus'] ? '<span class="txt-success">' . $this->setLocalization("on") . '</span>' : '<span class="txt-danger">' . $this->setLocalization("off") . '</span>');
+            $data['title'] = ($this->postData['userstatus'] ? 'Отключить' : 'Включить');
+            $data['status'] = ($this->postData['userstatus'] ? '<span class="">' . $this->setLocalization("on") . '</span>' : '<span class="">' . $this->setLocalization("off") . '</span>');
             $data['userstatus'] = (int) !$this->postData['userstatus'];
         }
 
@@ -341,6 +342,26 @@ class UsersController extends \Controller\BaseStalkerController {
         $error = '';
         $data['newpass'] = '0000';
         $this->db->updateUserById(array('parent_password' => '0000'), $this->postData['userid']);
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function reset_users_settings_password() {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['userid'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'resetUsersParentPassword';
+        $error = '';
+        $data['newpass'] = '0000';
+        $this->db->updateUserById(array('settings_password' => '0000'), $this->postData['userid']);
 
         $response = $this->generateAjaxResponse($data, $error);
 
@@ -754,7 +775,7 @@ class UsersController extends \Controller\BaseStalkerController {
             $return['status'] = $this->data['filters']['status_id'] - 1;
         }
         if (array_key_exists('state_id', $this->data['filters']) && $this->data['filters']['state_id'] != 0) {
-            $return['keep_alive' . ($this->data['filters']['state_id'] - 1 ? "<" : ">")] = "'$now_time'";
+            $return['keep_alive' . ($this->data['filters']['state_id'] - 1 ? "<" : ">")] = "$now_time";
         }
         if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0) {
             $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);
@@ -842,6 +863,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (!empty($data['id'])) {
             $form->add('ip', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('parent_password', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
+                    ->add('settings_password', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('fav_itv', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('version', 'textarea', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE));
         }
