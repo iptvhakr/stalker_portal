@@ -356,12 +356,74 @@
             }
         };
         
-        this.init_search_box = function(options){
-            _debug('vclub.init_search_box', options);
-            
-            this.search_box = new search_box(this, options);
-            this.search_box.init();
-            this.search_box.bind();
+        this.init_search_box = function(){
+            _debug('vclub.init_search_box');
+            var scope = this;
+
+            /* VIDEO SEARCH DIALOG */
+            this.search_box = new ModalForm({"title" : get_word('vclub_search_box')});
+            this.search_box.enableOnExitClose();
+            this.search_box.addItem(new ModalFormInput(
+                {
+                    "name" : "search_box_input",
+                    "oninput": function(){
+                        scope.video_search();
+                    }
+                }
+            ));
+            this.search_box.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.search_box.reset();
+                        scope.search_box.hide();
+                    }
+                }
+            ));
+
+            this.search_box.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        scope.video_search();
+                        scope.search_box.hide();
+                    }
+                }
+            ));
+
+            this.search_box.addCustomEventListener('hide', function(){
+                _debug('search_box_dialog', 'hide');
+                if (typeof(stb.IsVirtualKeyboardActive) == 'function' && stb.IsVirtualKeyboardActive()) {
+                    stb.HideVirtualKeyboard && stb.HideVirtualKeyboard();
+                }
+            });
+
+            this.search_box.addCustomEventListener('show', function(){
+                _debug('search_box_dialog', 'show');
+                if (typeof(stb.IsVirtualKeyboardActive) == 'function' && !stb.IsVirtualKeyboardActive()) {
+                    stb.ShowVirtualKeyboard && stb.ShowVirtualKeyboard();
+                }
+                scope.update_header_path([{"alias" : "search", "item" : ''}]);
+                scope.video_search();
+            });
+
+            this.video_search = function(){
+
+                var search_str = scope.search_box.getItemByName("search_box_input").getValue();
+                _debug('this.load_params.search', search_str);
+
+                try{
+                    if (scope.on && (search_str.length >= 3 || search_str.length == 0 )){
+                        scope.load_params.search = search_str;
+                        scope.update_header_path([{"alias" : "search", "item" : search_str.length >= 3 ? '"' + search_str + '"' : ''}]);
+                        scope.load_data();
+                        scope.reset();
+                    }
+                }catch(e){
+                    _debug(e);
+                }
+
+            }
         };
         
         this.search_box_switcher = function(){
@@ -630,6 +692,7 @@
                     return;
                 }
 
+                this.update_header_path([{"alias" : "search", "item" : ''}]);
                 this.hide();
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
@@ -818,17 +881,33 @@
 
         this.get_link = function(video_cmd, episode, callback){
 
+            var match, link;
+
             if (video_cmd.indexOf('://') < 0){
 
                 stb.player.on_create_link = function(result){
                     _debug('vclub.on_create_link', result);
 
-                    if (result.cmd){
-                        if (match = /[\s]([^\s]*)$/.exec(result.cmd)){
-                            result.cmd = match[1];
+                    if (Array.isArray(result)){
+                        for (var i = 0; i < result.length; i++){
+                            _debug('link', link);
+                            if (result[i].type == 'ad'){
+                                continue;
+                            }
+
+                            if (result[i].cmd){
+                                if (match = /[\s]([^\s]*)$/.exec(result[i].cmd)){
+                                    result[i].cmd = match[1];
+                                    link = result[i];
+                                    break;
+                                }
+                            }
                         }
+                    }else{
+                        link = result;
                     }
-                    callback && callback(result.cmd);
+
+                    callback && callback(link.cmd);
                 }
 
             }else{
@@ -847,7 +926,7 @@
             _debug('cmd', this.data_items[this.cur_row].cmd);
             _debug('indexOf', this.data_items[this.cur_row].cmd.indexOf('://'));
 
-            if (this.data_items[this.cur_row].cmd.indexOf('://') < 0){
+            if (this.data_items[this.cur_row].cmd.indexOf('://') < 0 || (this.data_items[this.cur_row].protocol == 'custom')){
             
                 stb.player.on_create_link = function(result){
                     _debug('vclub.on_create_link', result);
@@ -1236,13 +1315,7 @@
         }
     );
     
-    vclub.init_search_box(
-        {
-            "offset_x"  : 323,
-            "color"     : "blue",
-            "languages" : get_word('search_box_languages')
-        }
-    );
+    vclub.init_search_box();
     
     vclub.init_view_menu(
         [

@@ -36,10 +36,10 @@
 
 .series_switch .continuously{
     position: absolute;
-    top: 129px;
+    top: 125px;
     width: 100%;
     font-size: 14px;
-    color: #ffc528;
+    color: #202020;
     font-weight: bold;
     text-align: center
 }

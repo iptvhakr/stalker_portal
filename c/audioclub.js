@@ -188,9 +188,7 @@
                                     if (result){
                                         scope.new_playlist_dialog.hide();
                                     }else{
-                                        stb.msg.push({
-                                            msg : get_word('audioclub_saving_error')
-                                        })
+                                        stb.notice.push(get_word('audioclub_saving_error'));
                                     }
                                 },
                                 this
@@ -242,9 +240,7 @@
                                 if (result){
                                     scope.select_playlist_dialog.hide();
                                 }else{
-                                    stb.msg.push({
-                                        msg : get_word('audioclub_saving_error')
-                                    })
+                                    stb.notice.push(get_word('audioclub_saving_error'));
                                 }
                             },
                             this
@@ -329,6 +325,92 @@
                     }
                 }
             ));
+
+            /* TRACK SEARCH DIALOG */
+            this.new_track_search_dialog = new ModalForm({"title" : get_word('track_search')});
+            this.new_track_search_dialog.enableOnExitClose();
+            this.new_track_search_dialog.addItem(new ModalFormInput(
+                {
+                    "name" : "track_search",
+                    "onchange": function(){
+                        _debug('track_search.onchange');
+                        if (typeof(stb.IsVirtualKeyboardActive) == 'function' && !stb.IsVirtualKeyboardActive()) {
+                            return;
+                        }
+                        scope.track_search();
+                    }
+                }
+            ));
+            this.new_track_search_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.new_track_search_dialog.hide();
+                    }
+                }
+            ));
+
+            this.new_track_search_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        _debug('track_search.ok_btn.onclick');
+                        scope.track_search();
+                    }
+                }
+            ));
+    
+            /* ALBUM SEARCH DIALOG */
+            this.new_album_search_dialog = new ModalForm({"title" : get_word('album_search')});
+            this.new_album_search_dialog.enableOnExitClose();
+            this.new_album_search_dialog.addItem(new ModalFormInput(
+                {
+                    "name" : "album_search",
+                    "onchange": function(){
+                        if (typeof(stb.IsVirtualKeyboardActive) == 'function' && !stb.IsVirtualKeyboardActive()) {
+                            return;
+                        }
+                        scope.album_search();
+                    }
+                }
+            ));
+            this.new_album_search_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.new_album_search_dialog.hide();
+                    }
+                }
+            ));
+
+            this.new_album_search_dialog.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+                        scope.album_search();
+                    }
+                }
+            ));
+
+            this.new_track_search_dialog.addCustomEventListener('hide', function(){
+                _debug('track_search_dialog', 'hide');
+                scope.enableAllColorButton();
+            });
+
+            this.new_track_search_dialog.addCustomEventListener('show', function(){
+                _debug('track_search_dialog', 'show');
+                scope.disableAllColorButton();
+            });
+
+            this.new_album_search_dialog.addCustomEventListener('hide', function(){
+                _debug('album_search_dialog', 'hide');
+                scope.enableAllColorButton();
+            });
+
+            this.new_album_search_dialog.addCustomEventListener('show', function(){
+                _debug('album_search_dialog', 'show');
+                scope.disableAllColorButton();
+            });
         };
 
         this._show = function(category){
@@ -350,11 +432,21 @@
 
             this.history = [];
 
-            this.update_header_path([{"alias" : "playlist", "item" : ''}, {"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
+            this.update_header_path([
+                {"alias" : "playlist", "item" : ''},
+                {"alias" : "year", "item" : ''},
+                {"alias" : "genre", "item" : ''},
+                {"alias" : "album", "item" : ''},
+                {"alias" : "performer", "item" : ''},
+                {"alias" : "search_track", "item" : ''},
+                {"alias" : "album_search", "item" : ''}
+            ]);
 
             this.new_playlist_dialog.hide();
             this.select_playlist_dialog.hide();
             this.remove_from_playlist_confirm.hide();
+            this.new_album_search_dialog.hide();
+            this.new_track_search_dialog.hide();
 
             this.superclass.hide.call(this, do_not_reset);
         };
@@ -382,21 +474,23 @@
             this.back.bind(key.EXIT, this).bind(key.LEFT, this);
         };
 
-        this.action = function(){
+        this.action = function() {
             _debug('audioclub.action');
 
-            if (this.data_items[this.cur_row].is_track){
+            if (this.data_items[this.cur_row].is_track) {
 
                 this.play();
                 return;
             }
 
-            this.history.push({
-                "page" : this.cur_page,
-                "row" : this.cur_row,
-                "load_params" : this.load_params.clone(),
-                "header_path" : this.header_path_map.clone()
-            });
+            if (this.data_items[this.cur_row].is_album && !this.data_items[this.cur_row].is_search_result) {
+                this.history.push({
+                    "page": this.cur_page,
+                    "row": this.cur_row,
+                    "load_params": this.load_params.clone(),
+                    "header_path": this.header_path_map.clone()
+                });
+            }
 
             if(this.data_items[this.cur_row].is_album){
 
@@ -425,7 +519,15 @@
                 this.load_params['playlist_id'] = this.data_items[this.cur_row].id;
                 this.load_params['action'] = 'get_track_list';
             }else{
-                this.update_header_path([{"alias" : "playlist", "item" : ''}, {"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
+                this.update_header_path([
+                    {"alias" : "playlist", "item" : ''},
+                    {"alias" : "year", "item" : ''},
+                    {"alias" : "genre", "item" : ''},
+                    {"alias" : "album", "item" : ''},
+                    {"alias" : "performer", "item" : ''},
+                    {"alias" : "search_track", "item" : ''},
+                    {"alias" : "album_search", "item" : ''}
+                ]);
 
                 if (this.category.alias == 'years'){
                     this.load_params['year_id'] = this.data_items[this.cur_row].id;
@@ -454,6 +556,7 @@
                 function(result){
                     _debug('playlist', result);
                     item.playlist = result.data;
+                    stb.player.stop();
                     stb.player.need_show_info = 0;
                     stb.player.play(item);
                 }
@@ -465,12 +568,16 @@
 
             this.superclass.set_active_row.call(this, num);
 
+            if (!this.data_items[this.cur_row]) {
+                return;
+            }
             _debug('this.data_items[this.cur_row].cmd', this.data_items[this.cur_row].cmd);
             _debug('stb.player.on', stb.player.on);
             _debug('stb.player.cur_media_item', stb.player.cur_media_item);
             _debug('stb.player.file_type', stb.player.file_type);
 
-            if (stb.player.cur_media_item && stb.player.cur_media_item.is_track && this.data_items[this.cur_row].is_track && this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on && stb.player.file_type == 'audio'){
+            if (stb.player.cur_media_item && stb.player.cur_media_item.is_track && this.data_items[this.cur_row].is_track &&
+                this.data_items[this.cur_row].id == stb.player.cur_media_item.id && stb.player.on && stb.player.file_type == 'audio'){
 
                 this.active_row['row'].setAttribute("status", "playing");
 
@@ -564,7 +671,15 @@
 
             _debug('level', level);
 
-            this.update_header_path([{"alias" : "playlist", "item" : ''}, {"alias" : "year", "item" : ''}, {"alias" : "genre", "item" : ''}, {"alias" : "album", "item" : ''}, {"alias" : "performer", "item" : ''}]);
+            this.update_header_path([
+                {"alias" : "playlist", "item" : ''},
+                {"alias" : "year", "item" : ''},
+                {"alias" : "genre", "item" : ''},
+                {"alias" : "album", "item" : ''},
+                {"alias" : "performer", "item" : ''},
+                {"alias" : "search_track", "item" : ''},
+                {"alias" : "album_search", "item" : ''}
+            ]);
 
             if (level){
                 this.load_params = level.load_params;
@@ -720,6 +835,107 @@
                 )
             }
         }
+
+        this.track_search_dialog = function(){
+            _debug('audioclub.track_search');
+            this.new_track_search_dialog._dom_obj.addClass('audioclub_wide_text_input');
+            this.new_track_search_dialog.show();
+
+            if (typeof(stb.ShowVirtualKeyboard) == 'function') {
+                stb.ShowVirtualKeyboard();
+            }
+        }
+
+        this.album_search_dialog = function(){
+            _debug('audioclub.album_search');
+            this.new_album_search_dialog._dom_obj.addClass('audioclub_wide_text_input');
+            this.new_album_search_dialog.show();
+
+            if (typeof(stb.ShowVirtualKeyboard) == 'function') {
+                stb.ShowVirtualKeyboard();
+            }
+
+        }
+
+        this.track_search = function(){
+            var search_str = this.new_track_search_dialog.getItemByName("track_search").getValue();
+            if (search_str.length == 0) {
+                return;
+            }
+            _debug('track_search: search_str = ', search_str);
+            if (typeof(stb.HideVirtualKeyboard) == 'function') {
+                stb.HideVirtualKeyboard();
+            }
+
+            this.new_track_search_dialog.hide();
+
+            if (search_str){
+                this.history.push({
+                    "page" : this.cur_page,
+                    "row" : this.cur_row,
+                    "load_params" : this.load_params.clone(),
+                    "header_path" : this.header_path_map.clone()
+                });
+                this.update_header_path([{"alias" : "album_search", "item" : ''}]);
+                this.update_header_path([{"alias" : "search_track", "item" : get_word('track_search')}]);
+
+                this.load_params = {
+                    'type'     : 'audioclub',
+                    'action'   : 'track_search',
+                    'search_str' : search_str
+                }
+                this.cur_page = 1;
+                this.load_data();
+            }
+        }
+
+        this.album_search = function(){
+
+            var search_str = this.new_album_search_dialog.getItemByName("album_search").getValue();
+            if (search_str.length == 0) {
+                return;
+            }
+            _debug('album_search: search_str = ', search_str);
+            if (typeof(stb.HideVirtualKeyboard) == 'function') {
+                stb.HideVirtualKeyboard();
+            }
+
+            this.new_album_search_dialog.hide();
+
+            if (search_str){
+                this.history.push({
+                    "page" : this.cur_page,
+                    "row" : this.cur_row,
+                    "load_params" : this.load_params.clone(),
+                    "header_path" : this.header_path_map.clone()
+                });
+                this.update_header_path([{"alias" : "search_track", "item" : ''}]);
+                this.update_header_path([{"alias" : "album_search", "item" : get_word('album_search')}]);
+
+                this.load_params = {
+                    'type'     : 'audioclub',
+                    'action'   : 'album_search',
+                    'search_str' : search_str
+                }
+                this.cur_page = 1;
+                this.load_data();
+            }
+
+        }
+
+        this.disableAllColorButton = function(){
+            this.color_buttons.get('red').disable();
+            this.color_buttons.get('green').disable();
+/*            this.color_buttons.get('yellow').disable();
+            this.color_buttons.get('blue').disable();*/
+        }
+
+        this.enableAllColorButton = function(){
+            this.color_buttons.get('red').enable();
+            this.color_buttons.get('green').enable();
+/*            this.color_buttons.get('yellow').enable();
+            this.color_buttons.get('blue').disable();*/
+        }
     }
 
     audioclub_constructor.prototype = new ListLayer();
@@ -729,13 +945,16 @@
     audioclub.init_left_ear(word['ears_back']);
 
     audioclub.init_color_buttons([
-        {"label" : ''/*get_word('track_search')*/,     "cmd" : audioclub.track_search},
-        {"label" : ''/*get_word('album_search')*/,     "cmd" : audioclub.album_search},
+        {"label" : get_word('track_search'),     "cmd" : audioclub.track_search_dialog},
+        {"label" : get_word('album_search'),     "cmd" : audioclub.album_search_dialog},
         {"label" : get_word('add_to_playlist'),  "cmd" : audioclub.add_del_to_playlist},
         {"label" : ''/*get_word('playlist')*/,         "cmd" : audioclub.playlist}
     ]);
 
+    audioclub.color_buttons.buttons_bar.addClass('audioclub_buttons_bar');
+
     audioclub.bind();
+
     audioclub.init();
 
     audioclub.init_short_info();

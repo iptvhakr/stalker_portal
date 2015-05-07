@@ -133,3 +133,15 @@
     width: 0;
     background-color: #fff;
 }
+
+.audioclub_buttons_bar span{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 85px;
+    width: 85px;
+}
+
+.audioclub_wide_text_input .item input{
+    width: 94%;
+}

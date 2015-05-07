@@ -233,7 +233,7 @@ function getXmlHttp() {
  * @return void
  */
 function getHtmlByUrl(url) {
-    try {
+	try {
         stb.EnableSetCookieFrom(".youtube.com", false); // disabled cookie receiving from domain '.youtube.com'
         var request = getXmlHttp();
 
@@ -247,7 +247,7 @@ function getHtmlByUrl(url) {
         {
             if (request.readyState == 4 && request.status == 200) {
                 log("Url " + url + " get done");
-                parseYoutubePage_new(request.responseText);     // call to function parse YouTube html
+                parseYoutubePage(request.responseText);     // call to function parse YouTube html
                 //parseVideoInfo(request.responseText);
                 setTimeout(function(){stb.EnableSetCookieFrom(".youtube.com", true);}, 500);//
                 // enabled cookie receiving from domain '.youtube.com'
@@ -289,138 +289,154 @@ function getEnvironmentValue(name){
     log('readed value: ' + name);
     return stb.RDir('getenv ' + name);
 }
-/**
- * `parseYoutubePage` is function for parse YouTube content page
- * and optional call player action
- *
- * @function
- * @name parseYoutubePage
- * @param {function(html, playNow):*}
- * @example
- * parseYoutubePage('...html...', true);
- * @return void
- */
-function parseYoutubePage(html, playNow) {
-    var s = /amp\;url_encoded_fmt_stream_map=(.*?)amp\;/.exec(html);
-    log('\n\n'+s.length+'\n\n');
-    log('\n\n'+s[1]+'\n\n');
-    var str = '({';
-    var r = s[1].split('%2C');
-    for(var i=0;i<r.length;i++){
-        //r[i] = r[i].replace('url%3D', '');
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = unescape(r[i]);
-        r[i] = unescape(r[i]);
-        r[i] = unescape(r[i]);
-		var sig = /sig=(([^&])*)/igm.exec(r[i])[1];
-		r[i]=r[i].replace(/&sig=(([^&])*)/igm,"")
-		var params = r[i].split("&");
-		var json_object = {};
-		var new_params;
-		for(var y = 0;y<params.length;y++){
-			//console.log("\n"+params[y]);
-			new_params = params[y].split("=");
-			new_params[1] = new_params[1].replace(/;.*/ig,"");
-			json_object[new_params[0]] = new_params[1];
-			//console.log("\n"+new_params[0]+" : "+new_params[1]);
-			//log("json_object["+new_params[0]+"]="+json_object[new_params[0]]);
-		}
-        var m = /itag\=(\d{1,})/.exec(r[i]);
-        r[i] = r[i].substr(r[i].indexOf('http://'));
-		
-        var splited = r[i].split(';');
-        var link = splited[0];
-		console.log(link);
-        str+=m[1]+':\''+link+'&signature='+sig+'\',';
-    }
-    str =  str.substr(0, str.length - 1) + '})';
-    //console.log(str);
-    if(!playNow || playNow == true) {
-        player.play(eval(str));  // call player
-    }
+///**
+// * `parseYoutubePage` is function for parse YouTube content page
+// * and optional call player action
+// *
+// * @function
+// * @name parseYoutubePage
+// * @param {function(html, playNow):*}
+// * @example
+// * parseYoutubePage('...html...', true);
+// * @return void
+// */
+//function parseYoutubePage(html, playNow) {
+//    var s = /amp\;url_encoded_fmt_stream_map=(.*?)amp\;/.exec(html);
+//    log('\n\n'+s.length+'\n\n');
+//    log('\n\n'+s[1]+'\n\n');
+//    var str = '({';
+//    var r = s[1].split('%2C');
+//    for(var i=0;i<r.length;i++){
+//        //r[i] = r[i].replace('url%3D', '');
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = unescape(r[i]);
+//        r[i] = unescape(r[i]);
+//        r[i] = unescape(r[i]);
+//		var sig = /sig=(([^&])*)/igm.exec(r[i])[1];
+//		r[i]=r[i].replace(/&sig=(([^&])*)/igm,"")
+//		var params = r[i].split("&");
+//		var json_object = {};
+//		var new_params;
+//		for(var y = 0;y<params.length;y++){
+//			//console.log("\n"+params[y]);
+//			new_params = params[y].split("=");
+//			new_params[1] = new_params[1].replace(/;.*/ig,"");
+//			json_object[new_params[0]] = new_params[1];
+//			//console.log("\n"+new_params[0]+" : "+new_params[1]);
+//			//log("json_object["+new_params[0]+"]="+json_object[new_params[0]]);
+//		}
+//        var m = /itag\=(\d{1,})/.exec(r[i]);
+//        r[i] = r[i].substr(r[i].indexOf('http://'));
+//
+//        var splited = r[i].split(';');
+//        var link = splited[0];
+//		console.log(link);
+//        str+=m[1]+':\''+link+'&signature='+sig+'\',';
+//    }
+//    str =  str.substr(0, str.length - 1) + '})';
+//    //console.log(str);
+//    if(!playNow || playNow == true) {
+//        player.play(eval(str));  // call player
+//    }
+//}
+
+function parseYoutubePage( error, info, obj ) {
+//    var s = /"url_encoded_fmt_stream_map": "(.*?)"/.exec(html);
+	if ( error ) {
+		toast.show(lang.video_not_available_on_device);
+		loading.hide();
+		player.stop();
+        log('ERROR: ' + error.message);
+        ga('send', 'event', 'error', error.message, error.videoId);
+        ga('send', 'exception', {
+            'exDescription': error.message + ' ' + error.videoId,
+            'exFatal': false
+        });
+        ga('send', 'pageview', {'page': 'Error', 'title': error.message});
+		return;
+	}
+	obj.getUrl(player.play);
+	return;
+//    if (!s || Array.isArray(s) && !s[1]){
+//        log('\n\ns is null\n\n');
+//        player.stop();
+//        loading.hide();
+//        toast.show(!s ? lang.video_not_available : lang.video_not_available_on_device);
+//        return;
+//    }
+//
+//    log('\n\n'+s.length+'\n\n');
+//    log('\n\n'+s[1]+'\n\n');
+//    var str = '({';
+//    var r = s[1].split(',');
+//    for(var i=0;i<r.length;i++){
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = unescape(r[i]);
+//        r[i] = unescape(r[i]);
+//        r[i] = unescape(r[i]);
+//
+//        try{
+//
+//            var url = /url=([^\\]*)/igm.exec(r[i])[1];
+//            log('\n\n'+url+'\n\n');
+//
+//            if (!url){
+//                throw new Error("Empty url");
+//            }
+//
+//        }catch(e){
+//            player.stop();
+//            loading.hide();
+//
+//            if (player.obj.restricted && player.obj.restricted == 'limitedSyndication'){
+//                toast.show(lang.video_not_available_on_device);
+//            }else{
+//                toast.show(lang.video_not_available);
+//            }
+//
+//            return;
+//        }
+//
+//        var m = /itag\=(\d{1,})/.exec(url);
+//        str+=m[1]+':\''+url;
+//
+//        str+='\',';
+//    }
+//    str =  str.substr(0, str.length - 1) + '})';
+//	console.log(str)
+//    if(!playNow || playNow == true) {
+//        player.play(eval(str));  // call player
+//    }
 }
 
-function parseYoutubePage_new(html, playNow) {
-    var s = /"url_encoded_fmt_stream_map":"(.*?)"/.exec(html);
-
-    if (!s || Array.isArray(s) && !s[1]){
-        log('\n\ns is null\n\n');
-        player.stop();
-        loading.hide();
-        toast.show(!s ? lang.video_not_available : lang.video_not_available_on_device);
-        return;
-    }
-
-    log('\n\n'+s.length+'\n\n');
-    log('\n\n'+s[1]+'\n\n');
-    var str = '({';
-    var r = s[1].split(',');
-    for(var i=0;i<r.length;i++){
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = unescape(r[i]);
-        r[i] = unescape(r[i]);
-        r[i] = unescape(r[i]);
-
-        try{
-
-            var url = /url=([^\\]*)/igm.exec(r[i])[1];
-            log('\n\n'+url+'\n\n');
-
-            if (!url){
-                throw new Error("Empty url");
-            }
-
-        }catch(e){
-            player.stop();
-            loading.hide();
-
-            if (player.obj.restricted && player.obj.restricted == 'limitedSyndication'){
-                toast.show(lang.video_not_available_on_device);
-            }else{
-                toast.show(lang.video_not_available);
-            }
-
-            return;
-        }
-
-        var m = /itag\=(\d{1,})/.exec(url);
-        str+=m[1]+':\''+url;
-
-        str+='\',';
-    }
-    str =  str.substr(0, str.length - 1) + '})';
-    if(!playNow || playNow == true) {
-        player.play(eval(str));  // call player
-    }
-}
-
-function parseVideoInfo(html, playNow){
-    var s = /url_encoded_fmt_stream_map=(.*)/.exec(html);
-    log('\n\n'+s.length+'\n\n');
-    log('\n\n'+s[1]+'\n\n');
-    var str = '({';
-    var r = s[1].split('%2C');
-    for(var i=0;i<r.length;i++){
-        r[i] = r[i].replace('url%3D', '');
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = decodeURIComponent(r[i]);
-        r[i] = decodeURIComponent(r[i]);
-        var m = /itag\=(\d{1,})/.exec(r[i]);
-        if (!m){
-            continue;
-        }
-        log('\n\nm='+m+'\n\n');
-        str+=m[1]+':\''+r[i].split(';')[0]+'\',';
-    }
-    str =  str.substr(0, str.length - 1) + '})';
-    if(!playNow || playNow == true) {
-        player.play(eval(str));  // call player
-    }
-}
+//function parseVideoInfo(html, playNow){
+//	console.log('parseVideoInfo');
+//    var s = /url_encoded_fmt_stream_map=(.*)/.exec(html);
+//    log('\n\n'+s.length+'\n\n');
+//    log('\n\n'+s[1]+'\n\n');
+//    var str = '({';
+//    var r = s[1].split('%2C');
+//    for(var i=0;i<r.length;i++){
+//        r[i] = r[i].replace('url%3D', '');
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = decodeURIComponent(r[i]);
+//        r[i] = decodeURIComponent(r[i]);
+//        var m = /itag\=(\d{1,})/.exec(r[i]);
+//        if (!m){
+//            continue;
+//        }
+//        log('\n\nm='+m+'\n\n');
+//        str+=m[1]+':\''+r[i].split(';')[0]+'\',';
+//    }
+//    str =  str.substr(0, str.length - 1) + '})';
+//    if(!playNow || playNow == true) {
+//        player.play(eval(str));  // call player
+//    }
+//}
 
 function trimLeft(str) {
   return str.replace(/^\s+/, '');
@@ -453,4 +469,70 @@ function get_params(){
             }
         }
     }
-} 
+}
+
+
+function getJson ( puth, callback ) {
+	var url = '',
+		xhr = new XMLHttpRequest(),
+		PATH_ROOT = location.pathname.split('/');
+	PATH_ROOT[PATH_ROOT.length - 1] = '';
+	PATH_ROOT = PATH_ROOT.join('/');
+	PATH_ROOT = location.protocol + '//' + location.host + PATH_ROOT;
+	url = PATH_ROOT + puth;
+	xhr.onreadystatechange = function () {
+		var jdata = null;
+		if ( xhr.readyState === 4 ) {
+			try {
+				jdata = JSON.parse(xhr.responseText);
+			} catch ( e ) {
+				jdata = {};
+			}
+			if ( typeof callback === 'function' ) {
+				callback(jdata);
+			}
+		}
+	};
+	xhr.open('GET', url, false);
+	xhr.send();
+	return xhr;
+}
+
+var standBy = {
+	toggleMode  : function ( on ) {
+		if ( on !== true && on !== false ) {
+			this.status = !this.status;
+		} else {
+			this.status = on;
+		}
+		if ( this.status ) {
+			switch(current.layer){
+				case layers.PLAYER:
+					player.stop();
+					byID('shell').style.display = 'block';
+					break;
+				default:
+					if(current.loading == true) {
+						player.stop();
+						loading.hide();
+					}
+					break;
+			}
+			gSTB.SetLedIndicatorMode(2);
+			gSTB.StandBy(true);
+		} else {
+			gSTB.SetLedIndicatorMode(1);
+			gSTB.StandBy(false);
+//			switch(as.layer){
+//				case as.layers.PLAYER:
+//					player.PAUSE();
+//					stb.SetPosTime(player.curent_time);
+//					break;
+//				case as.layers.TV_LIST:
+//					break;
+//			}
+		}
+	},
+	status      : false,
+	standByTimer: null
+};

@@ -227,8 +227,16 @@ if (count(@$_POST) > 0){
 
             $protocol = $_POST['protocol'];
 
+            $series = array();
+
             if ($protocol == 'custom'){
                 $rtsp_url = @trim($_POST['rtsp_url']);
+
+                $tmp_arr = array();
+                if (preg_match("/s\d+e(\d+).*$/i", $rtsp_url, $tmp_arr)){
+                    $series = range(1, (int) $tmp_arr[1], 1);
+                }
+
             }else{
                 $rtsp_url = '';
             }
@@ -255,7 +263,7 @@ if (count(@$_POST) > 0){
                 if(@$_GET['name'] && !$error){
                     $master = new VideoMaster();
                     try{
-                        $master->createMediaDir($trans_name);
+                        $master->createMediaDir($trans_name, (!empty($_POST['year']) ? $_POST['year']: ''));
                     }catch(MasterException $e){
                         //var_dump($e->getMessage(), $e->getStorageName()); exit;
                         $moderator_storages = $master->getModeratorStorages();
@@ -273,6 +281,7 @@ if (count(@$_POST) > 0){
                         'video',
                         array(
                             'name'           => trim($_POST['name']),
+                            'series'         => serialize($series),
                             'o_name'         => trim($_POST['o_name']),
                             'censored'       => $censored,
                             'hd'             => $hd,
@@ -302,7 +311,7 @@ if (count(@$_POST) > 0){
                             'rating_count_imdb' => $_POST['rating_count_imdb'],
                             'age'            => $_POST['age'],
                             'rating_mpaa'    => $_POST['rating_mpaa'],
-                            'path'           => $trans_name,
+                            'path'           => $trans_name . (!empty($_POST['year']) ? "_$_POST[year]": ''),
                             'high_quality'   => $high_quality,
                             'low_quality'    => $low_quality,
                             'comments'       => $_POST['comments'],
@@ -345,6 +354,7 @@ if (count(@$_POST) > 0){
                         'video',
                         array(
                             'name'           => trim($_POST['name']),
+                            'series'         => serialize($series),
                             'o_name'         => trim($_POST['o_name']),
                             'censored'       => $censored,
                             'hd'             => $hd,
@@ -1744,7 +1754,7 @@ $(function(){
     });
 
     if ($('.kinopoisk_id').val()){
-        var kinopoisk_url = 'http://www.kinopoisk.ru/level/1/film/'+$('.kinopoisk_id').val()+'/';
+        var kinopoisk_url = ('<?= Config::getSafe('vclub_info_provider', 'kinopoisk') == 'kinopoisk' ? 'http://www.kinopoisk.ru/level/1/film/:::video_id:::/' : 'https://www.themoviedb.org/movie/:::video_id:::'; ?>').replace(':::video_id:::', $('.kinopoisk_id').val());
 
         $('.kinopoisk_url').attr('href', kinopoisk_url);
         $('.kinopoisk_url').html(kinopoisk_url);

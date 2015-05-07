@@ -156,6 +156,7 @@ var lang = {
 	"Static DHCP":"Статический DHCP",
 	"New and confirm passwords must be same":"Новый пароль и подтверждение пароля должны совпадать",
 	'Parental control':'Родительские',
+    'Settings access':'Доступ к настройкам',
 	'New password:':'Новый пароль:',
 	'Confirm password:':'Подтверждение пароля:',
 	'Error filling in forms':'Ошибка заполнения формы',
@@ -229,5 +230,22 @@ var lang = {
     "Signal type:" : "Тип сигнала:",
     "Antenna power supply:" : "Включить питание антенны:",
     "Manual scan" : "Ручное сканирование",
-    "List is cleared" : "Список очищен"
+    "Auto scan" : "Автоматическое сканирование",
+    "Auto" : "Автоматически",
+    "Scan type": "Тип сканирования",
+    "Transfer rate": "Скорость передачи",
+    "Modulation": "Модуляция",
+    "Network code": "Код сети",
+    "List is cleared" : "Список очищен",
+    "Antenna power supply:" : "Включить питание антенны:",
+    "Antenna power supply:" : "Включить питание антенны:",
+    "For the selected type of signal, necessary to turn on the power of antenna. The power turns on after rebooting the device. Rebooting now?":"Для выбранного типа сигнала, необходимо включить питание антенны. Питание включится после перезагрузки устройства. Выполнить перезагрузку сейчас?",
+    "For the selected type of signal, necessary to turn off the power of antenna. The power will be turned off after rebooting the device. Rebooting now?":"Для сигнала, выбранного типа, необходимо выключить питание антенны. Питание выключится после перезагрузки устройства. Выполнить перезагрузку сейчас?",
+    "New scan": "Новое сканирование",
+
+    "Remote control": "Дистанционное управление",
+    "Enable remote control:": "Разрешить удаленное управление",
+    "Device name:": "Имя устройства",
+    "Password (only digits):": "Пароль (только цифры)",
+    "Password must contain only digits": "Пароль должен содержать только цифры"
 };

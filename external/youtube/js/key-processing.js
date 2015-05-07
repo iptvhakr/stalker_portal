@@ -14,14 +14,23 @@ function keyProcessing(e) {
     if (stb && stb.key_lock === true && code != key.FRAME) {return;}
     if (e.shiftKey) {code += 1000;}
     if (e.altKey) {code += 2000;}
-    
-    if(!current.buttonsStatus) {
-        if(code == keys.EXIT) {
-            player.stop();
-            loading.hide();
-        }
-        return;
-    }
+
+	if ( code == keys.POWER ) {
+		e.preventDefault();
+		standBy.toggleMode();
+		return;
+	}
+	if (standBy.status) {
+		e.preventDefault();
+		return;
+	}
+	if(!current.buttonsStatus) {
+		if(code == keys.EXIT) {
+			player.stop();
+			loading.hide();
+		}
+		return;
+	}
     switch(current.layer) {
         case layers.BASE: // main layer
             switch(code) {
@@ -154,6 +163,7 @@ function keyProcessing(e) {
                 case keys.OK:
                     loading.show();
                     var id = byID('frame').getElementsByClassName('active')[0].title;
+//					console.log(current);
                     if(current.isPL==true){
                         for(var i in current.globalObj){
                             if(current.globalObj[i].id == id) {

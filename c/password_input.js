@@ -139,7 +139,7 @@ password_input.prototype.bind = function(){
     
     this.hide.bind(key.EXIT, this);
 
-    (function(){}).bind(key.APP, this);
+    (function(){}).bind(key.APP, this).bind(key.REC, this).bind(key.RED, this);
 
     (function(key){
 

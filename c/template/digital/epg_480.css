@@ -29,6 +29,7 @@
     font-family: "Myriad Pro Cond";
     float: left;
     margin: 1px 6px 0 3px;
+    padding-right: 2px;
 }
 
 #epg .active_name_block, #epg .blue_row_bg[active="active"] .name_block{
@@ -44,10 +45,16 @@
     width: 449px;
     text-overflow: ellipsis;
     float: left;
+    margin-left: 1px;
+}
+
+
+#epg .number_block{
+    margin: 1px 0 0 3px;
 }
 
 #epg .active_number_block, #epg .blue_row_bg[active="active"] .number_block{
-    margin: 1px 0 0 4px;
+    margin: 1px 0 0 3px;
 }
 
 #epg .blue_row_bg[active="active"] .number_block{
@@ -107,11 +114,11 @@
 }
 
 #epg .blue_row_bg .program{
-    color: #919191;
+    color: #fff;
 }
 
 #epg .active_row_bg .program, #epg .blue_row_bg[active="active"] .program{
-    color: #919191;
+    color: #000;
 }
 
 #epg .program_txt{
@@ -140,7 +147,7 @@
 }
 
 #epg .blue_row_bg .program .larr{
-    background-position: 2px -25px;
+    background-position: 1px 0;
 }
 
 #epg .active_row_bg .program .larr, #epg .blue_row_bg[active="active"] .program .larr{

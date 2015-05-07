@@ -87,9 +87,9 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             if (!empty($link)){
                 $link_id = $link['id'];
 
-                if ($link['status'] == 0 || Config::getSafe('force_ch_link_check', false)){
+                if ($link['status'] == 0 || Config::getSafe('force_ch_link_check', false) || !empty($_REQUEST['for_pvr']) && strpos($link['url'], '.m3u8')){
 
-                    $alternative_links = self::getUrlsForChannel($ch_id);
+                    $alternative_links = self::getUrlsForChannel($ch_id, !empty($_REQUEST['for_pvr']));
 
                     if (empty($alternative_links)){
                         throw new ItvLinkException('nothing_to_play');
@@ -230,23 +230,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
                 }
             }else if ($channel['nginx_secure_link']){ // http://wiki.nginx.org/HttpSecureLinkModule
 
-                if (preg_match("/:\/\/([^\/]+)\/?(\S*)/", $channel['cmd'], $match)){
-
-                    $path   = '/'.$match[2];
-                    $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
-                    $secret = Config::get('nginx_secure_link_secret');
-
-                    $hash = base64_encode(md5($secret . str_replace('/playlist.m3u8', '', $path) . $expire, true));
-                    $hash = strtr($hash, '+/', '-_');
-                    $hash = str_replace('=', '', $hash);
-
-                    $new_path = $path.(strpos($channel['cmd'], '?') ? '&' : '?').'st='.$hash.'&e='.$expire;
-
-                    $channel['cmd'] = str_replace($match[1].$path, $match[1].$new_path, $channel['cmd']);
-
-                }else{
-                    throw new ItvLinkException('link_fault');
-                }
+                $channel['cmd'] = self::getNginxSecureLink($channel['cmd']);
 
             }else{
 
@@ -871,6 +855,15 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             ->from('itv')
             ->where($where)
             ->limit(self::max_page_items, $offset);
+
+        if (\Config::getSafe('enable_numbering_in_order', false) && \Config::getSafe('order_itv_channel_as_adding', false) &&
+            (empty($_REQUEST['sortby']) || (!empty($_REQUEST['sortby']) && $_REQUEST['sortby'] == 'number'))) {
+            $this->db
+                ->select(array('itv.*'))
+                ->join('service_in_package', 'itv.id', 'service_in_package.service_id', 'LEFT')
+                ->orderby('service_in_package.id', 'DESC')
+                ->groupby('service_in_package.service_id');
+        }
 
         if (isset($where_or)){
             $this->db->where($where_or, 'OR ');
@@ -1614,7 +1607,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         return $grouped_links;
     }
 
-    public static function getUrlsForChannel($ch_id){
+    public static function getUrlsForChannel($ch_id, $for_pvr = false){
 
         $user_agent = Stb::getInstance()->getUserAgent();
 
@@ -1636,6 +1629,12 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         if (empty($user_channel_links)){
             $user_channel_links = array_filter($channel_links, function($link) use ($user_agent){
                 return $link['user_agent_filter'] == '';
+            });
+        }
+
+        if ($for_pvr){
+            $user_channel_links = array_filter($user_channel_links, function($link){
+                return strpos($link['url'], '.m3u8') === false;
             });
         }
 
@@ -1896,6 +1895,13 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
             if ($cmd['flussonic_tmp_link']){
                 $cmd['type'] = 'flussonic_health';
+            }elseif($cmd['nginx_secure_link']){
+                try{
+                    $cmd['type'] = 'nginx_secure_link';
+                    $cmd['url'] = Itv::getNginxSecureLink($cmd['url']);
+                } catch( ItvLinkException $e){
+                    return false;
+                }
             }else{
                 $cmd['type'] = 'stream';
             }
@@ -1903,7 +1909,28 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             return $cmd;
         }, $monitoring_links);
 
-        return $monitoring_links;
+        return array_values(array_filter($monitoring_links));
+    }
+
+    public static function getNginxSecureLink($cmd){
+
+        if (preg_match("/:\/\/([^\/]+)\/?(\S*)/", $cmd, $match)){
+
+            $path   = '/'.$match[2];
+            $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
+            $secret = Config::get('nginx_secure_link_secret');
+
+            $hash = base64_encode(md5($secret . str_replace('/playlist.m3u8', '', $path) . $expire, true));
+            $hash = strtr($hash, '+/', '-_');
+            $hash = str_replace('=', '', $hash);
+
+            $new_path = $path.(strpos($cmd, '?') ? '&' : '?').'st='.$hash.'&e='.$expire;
+
+            return str_replace($match[1].$path, $match[1].$new_path, $cmd);
+
+        }else{
+            throw new ItvLinkException('link_fault');
+        }
     }
 }
 

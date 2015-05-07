@@ -27,7 +27,7 @@
 }
 
 #epg_simple .name_block{
-    color: #202020;
+    color: #fff;
     font-size: 26px;
     margin: 5px 0 0 3px;
     padding-left: 3px;
@@ -89,7 +89,7 @@
     width: 197px;
     height: 37px;
     background: url("i_720/tv_table.png") no-repeat 0 -44px;
-    color: #202020;
+    color: #fff;
     font-size: 22px;
     padding: 8px 0 0 2px;
     overflow: hidden;

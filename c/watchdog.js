@@ -136,6 +136,10 @@ watchdog.prototype.parse_result = function(data){
                 window.location = window.location;
                 break;
             }
+            case 'send_msg_with_video':
+            {
+
+            }
             case 'send_msg':
             {
 
@@ -150,16 +154,60 @@ watchdog.prototype.parse_result = function(data){
                 this.event_active_id = data.id;
                 
                 var self = this;
-                
-                stb.msg.set_callback(
-                    function(){
-                        self.send_confirm(function(){
-                            if (data.reboot_after_ok == 1){
-                                stb.Stop();
-                                stb.ExecAction('reboot');
+
+                if (data.event == 'send_msg_with_video'){
+
+                    stb.msg.set_callback(
+                        function(){
+                            self.send_confirm();
+
+                            var video = {
+                                name  : "",
+                                cmd   : data.param1,
+                                promo : true
+                            };
+
+                            if (stb.player.on){
+                                video.restore_item = stb.player.cur_media_item.clone();
+
+                                _debug('stb.cur_layer.layer_name', stb.cur_layer.layer_name);
+
+                                if (stb.cur_layer.layer_name === "vclub"){
+                                    video.restore_item.position = stb.GetPosTime && stb.GetPosTime();
+                                }
                             }
+
+                            if (stb.cur_layer.on){
+                                stb.cur_layer.hide();
+                                video.restore_layer = stb.cur_layer;
+                            }
+
+                            video.stop_callback = function(){
+                                _debug('promo_video.stop_callback');
+
+                                if (stb.player.cur_media_item.restore_layer){
+                                    stb.player.cur_media_item.restore_layer.show();
+                                }
+
+                                if (stb.player.cur_media_item.restore_item){
+                                    stb.player.play(stb.player.cur_media_item.restore_item);
+                                }
+                            };
+
+                            stb.player.play(video);
                         });
-                    });
+                }else{
+
+                    stb.msg.set_callback(
+                        function(){
+                            self.send_confirm(function(){
+                                if (data.reboot_after_ok == 1){
+                                    stb.Stop();
+                                    stb.ExecAction('reboot');
+                                }
+                            });
+                        });
+                }
 
                 stb.msg.push(
                     {

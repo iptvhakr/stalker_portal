@@ -63,7 +63,7 @@
     background-image: url("i_480/mb_table.png");
     background-position: 102px -30px;
     padding: 3px 0 0 6px;
-    color: #202020;
+    color: #fff;
     /*float: right;
     margin: 0px 0 0 4px;*/
 }
@@ -77,7 +77,7 @@
     background-image: url("i_480/mb_table.png");
     background-position: 102px -60px;
     padding: 3px 0 0 6px;
-    color: #626262;
+    color: #919191;
     /*float: right;
     margin: 0px 0 0 4px;*/
 }
@@ -93,7 +93,7 @@
     background-image: url("i_480/mb_table.png");
     background-position: 102px -75px;
     padding: 3px 0 0 6px;
-    color: #919191;
+    color: #626262;
     font-family: "Myriad Pro Cond", sans-serif;
     overflow: hidden;
     font-size: 16px;
@@ -109,7 +109,7 @@
     height: 27px;
     background-image: url("i_480/mb_table_act.png");
     background-position: 118px -58px;
-    color: #fff;
+    color: #000;
     font-family: "Myriad Pro Cond",sans-serif;
     overflow: hidden;
     padding: 11px 0 0 8px;

@@ -21,4 +21,8 @@ interface Audioclub
     public function removeFromPlaylist();
 
     public function deletePlaylist();
+
+    public function trackSearch();
+
+    public function albumSearch();
 }

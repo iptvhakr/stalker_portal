@@ -17,7 +17,7 @@
 }*/
 
 #records .blue_row_bg.close .t_start_block{
-    color: #202020;
+    color: #fff;
 }
 
 /*#records .blue_row_bg[rel=""] .t_start_block{
@@ -56,7 +56,7 @@
 }*/
 
 #records .blue_row_bg.close .ch_name_block{
-    color: #202020 !important;
+    color: #fff !important;
 }
 
 #records .active_ch_name_block{

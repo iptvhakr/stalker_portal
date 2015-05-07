@@ -140,13 +140,17 @@ class StreamServer
             ->from('ch_link_on_streamer')
             ->where(array('link_id' => $link_id))
             ->get()
-            ->all('streamer_id');
+            ->all();
 
         if ($link['enable_monitoring'] && $link['enable_balancer_monitoring']){
-            $ch_link_on_streamer = array_values(array_filter($ch_link_on_streamer, function($link){
-                return $link['monitoring_status'] == 1;
+            $ch_link_on_streamer = array_values(array_filter($ch_link_on_streamer, function($link_on_streamer){
+                return $link_on_streamer['monitoring_status'] == 1;
             }));
         }
+
+        $ch_link_on_streamer = array_map(function($link_on_streamer){
+            return $link_on_streamer['streamer_id'];
+        }, $ch_link_on_streamer);
 
         return $ch_link_on_streamer;
     }

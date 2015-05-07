@@ -55,7 +55,9 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             ->get()
             ->first();
 
-        $disable_ad = !empty($moderator) && $moderator['status'] == 1 && $moderator['disable_vclub_ad'] == 1;
+        if (!$disable_ad) {
+            $disable_ad = !empty($moderator) && $moderator['status'] == 1 && $moderator['disable_vclub_ad'] == 1;
+        }
 
         $vclub_ad = new VclubAdvertising();
 
@@ -116,7 +118,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             if (!empty($video['rtsp_url'])){
                 return array(
                     'id'  => $video_id,
-                    'cmd' => $video['rtsp_url']
+                    'cmd' => $this->changeSeriesOnCustomURL($video['rtsp_url'], $series)
                 );
             }
         }
@@ -125,6 +127,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         try {
             $res = $master->play($video_id, intval($series), true, $forced_storage);
+            $res['cmd'] = $this->changeSeriesOnCustomURL($res['cmd'], $series);
         } catch (Exception $e) {
             trigger_error($e->getMessage());
         }
@@ -817,7 +820,11 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $this->response['data'][$i]['genres_str'] = $this->getGenresStrByItem($this->response['data'][$i]);
 
             if (!empty($this->response['data'][$i]['rtsp_url']) && $this->response['data'][$i]['for_rent'] == 0) {
-                $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'];
+                if (!empty($this->response['data'][$i]['series'])) {
+                    $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'] = $this->changeSeriesOnCustomURL( $this->response['data'][$i]['rtsp_url'], $this->response['data'][$i]['cur_series']);
+                }else{
+                    $this->response['data'][$i]['cmd'] = $this->response['data'][$i]['rtsp_url'];
+                }
             } else {
                 $this->response['data'][$i]['cmd'] = '/media/' . $this->response['data'][$i]['id'] . '.mpg';
             }
@@ -979,6 +986,19 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
     {
 
         return $this->setClaimGlobal('vclub');
+    }
+
+    public function changeSeriesOnCustomURL($url = '', $series = 1){
+        $tmp_arr = array();
+        if ($series < 1) {
+            $series = 1;
+        }
+        if (preg_match("/(s\d+e)(\d+).*$/i", $url, $tmp_arr)){
+            $search_str = $tmp_arr[1].$tmp_arr[2];
+            $replace_str = $tmp_arr[1].str_pad($series, 2, '0',  STR_PAD_LEFT );
+            $url = str_replace($search_str, $replace_str, $url);
+        }
+        return $url;
     }
 }
 

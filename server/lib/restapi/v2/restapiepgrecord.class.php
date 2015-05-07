@@ -65,7 +65,11 @@ class RESTApiEpgRecord extends RESTApiController
 
         $pvr = new \RemotePvr();
 
-        $rec_id = $pvr->startRecDeferredById($program['real_id']);
+        try{
+            $rec_id = $pvr->startRecDeferredById($program['real_id']);
+        }catch (\nPVRException $e){
+            throw new RESTServerError($e->getMessage());
+        }
 
         if (!$rec_id){
             return false;

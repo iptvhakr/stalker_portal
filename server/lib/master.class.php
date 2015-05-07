@@ -140,7 +140,7 @@ abstract class Master
                         if (empty($this->storages[$name]['wowza_server'])){
                             $res['cmd'] .= $base_path.$this->media_id.'.'.$ext;
                         }else{
-                            $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink($base_path);
+                            $res['cmd'] .= $base_path.'playlist.m3u8?token='.$this->createTemporaryLink("1");
                         }
 
                         $file_info = array_filter($storage['files'], function($info) use ($file){
@@ -211,13 +211,13 @@ abstract class Master
         }
     }
 
-    protected function createTemporaryLink($url){
+    protected function createTemporaryLink($val){
 
-        $key = md5($url.time().uniqid());
+        $key = md5($val.microtime(1).uniqid());
 
         $cache = Cache::getInstance();
 
-        $result = $cache->set($key, $url, 0, Config::getSafe('vclub_tmp_link_ttl', 5));
+        $result = $cache->set($key, $val, 0, Config::getSafe('vclub_tmp_link_ttl', 5));
 
         if ($result){
             return $key;
@@ -235,7 +235,7 @@ abstract class Master
 
         return Cache::getInstance()->del($key);
     }
-    
+
     /**
      * Wrapper for storage method, that creates directory for media my name
      *
@@ -901,7 +901,7 @@ abstract class Master
 
     private function createAccessToken(){
 
-        $key = md5(mktime(1).uniqid());
+        $key = md5(microtime(1).uniqid());
 
         $cache = Cache::getInstance();
 

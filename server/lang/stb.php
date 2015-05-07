@@ -68,6 +68,15 @@ $words['aspect_cmb'] = _('combined');
 
 // radio
 $words['radio_title'] = _('RADIO');
+$words['radio_sort'] = _('SORT');
+$words['radio_favorite'] = _('FAVORITE');
+$words['radio_search'] = _('SEARCH');
+$words['radio_by_number'] = _('by number');
+$words['radio_by_title'] = _('by title');
+$words['radio_only_favorite'] = _('only favorite');
+$words['radio_fav_add'] = _('add');
+$words['radio_fav_del'] = _('del');
+$words['radio_search_box'] = $words['radio_search'] = _('SEARCH');
 
 // tv
 $words['tv_view'] = _('VIEW');
@@ -479,6 +488,7 @@ $words['local_pvr_interrupted'] = _('Recording on USB device interrupted');
 
 $words['parent_password_error'] = _('Wrong');
 $words['parent_password_title'] = _('Parent control');
+$words['settings_password_title'] = _('Access control');
 $words['password_label'] = _('Password');
 
 $words['encoding_label'] = _('Encoding');

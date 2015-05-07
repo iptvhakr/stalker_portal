@@ -11,7 +11,7 @@ class FlussonicTvArchive extends TvArchive
 
         $storages = array();
 
-        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'flussonic_server' => 1))->get()->all();
+        $data = $this->db->from('storages')->where(array('status' => 1, 'for_records' => 1, 'flussonic_dvr' => 1))->get()->all();
 
         foreach ($data as $idx => $storage){
             $storages[$storage['storage_name']] = $storage;

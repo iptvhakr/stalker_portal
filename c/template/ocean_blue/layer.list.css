@@ -729,15 +729,15 @@
     color: #048;
     text-shadow: #555 -1px -1px 2px !important;
     background: url("i/aspect_bg.png") left;
-    height: 31px;
-    padding: 10px 0 0 25px;
+    height: 36px;
+    padding: 5px 0 0 25px;
     font-weight: bold;
     float: left;
 }
 
 .ad_skip_txt{
     padding-right: 30px;
-    background: url("i/skip.png") right top no-repeat;
+    background: url("i/skip.png") right 5px no-repeat;
 }
 
 .time_shift_info_block_right{

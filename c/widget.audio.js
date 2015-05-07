@@ -28,6 +28,9 @@
             var self = this;
 
             stb.player.addCustomEventListener("audiostart", function(item){
+                if (!item.is_track) {
+                    return;
+                }
                 _debug('audio_widget.audiostart');
                 self.show(item);
             });
@@ -51,7 +54,10 @@
                 self.pause_btn.show();
             });
 
-            main_menu.addCustomEventListener("mainmenushow", function(){
+            main_menu.addCustomEventListener("mainmenushow", function(layer_name){
+                if (layer_name != 'audioclub' && layer_name != 'media_browser') {
+                    return;
+                }
                 _debug('audio_widget.mainmenushow');
 
                 self.on = self.widget_on;
@@ -72,6 +78,9 @@
         },
 
         show : function(item){
+            if (!item.is_track) {
+                return;
+            }
             _debug('audio_widget.show', item);
 
             this.title_obj.innerHTML = item.name;

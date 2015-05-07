@@ -140,11 +140,11 @@ MediaPlayer.onInit = function () {
     this.$PlayerList = this.handle.querySelector('#playerListBox');
 	this.$SlideContainer = this.handle.querySelector('#slideContainer');
 
-    this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
-    this.handle.querySelector('#playerHeaderSetting').innerHTML = playerBtnMenu;
-    this.handle.querySelector('#playerHideplayer').innerHTML = playerBtnInfo;
-    this.handle.querySelector('#playlistPrev').innerHTML = playlistPrev;
-    this.handle.querySelector('#playlistNext').innerHTML = playlistNext;
+    this.handle.querySelector('#playerHideplist').innerHTML = lang.playerBtnF2sh;
+    this.handle.querySelector('#playerHeaderSetting').innerHTML = lang.playerBtnMenu;
+    this.handle.querySelector('#playerHideplayer').innerHTML = lang.playerBtnInfo;
+    this.handle.querySelector('#playlistPrev').innerHTML = lang.playlistPrev;
+    this.handle.querySelector('#playlistNext').innerHTML = lang.playlistNext;
     
     this.Menu = new CGroupMenu();
     this.Menu.Init(this.handle.querySelector('.mbfade_sidebar'));
@@ -217,7 +217,7 @@ MediaPlayer.onInit = function () {
         }
     };
 
-    this.ModalMenu.Menu.gaudio = this.ModalMenu.Menu.AddGroup('gaudio', LANG_MEDIA_MENU_GROUPS['gaudio'], {
+    this.ModalMenu.Menu.gaudio = this.ModalMenu.Menu.AddGroup('gaudio', lang.mediaMenuGroups['gaudio'], {
         onclick: function() {
             (self.ModalMenu.Menu.gaudio.slist.states.marked || []).forEach(function(item) {
                 item.self.Marked(item, false);
@@ -235,7 +235,7 @@ MediaPlayer.onInit = function () {
         }
     });
     
-    this.ModalMenu.Menu.gsubtitle = this.ModalMenu.Menu.AddGroup('gsubtitle', LANG_MEDIA_MENU_GROUPS['gsubtitle'], {
+    this.ModalMenu.Menu.gsubtitle = this.ModalMenu.Menu.AddGroup('gsubtitle', lang.mediaMenuGroups['gsubtitle'], {
         onclick: function() {
             (self.ModalMenu.Menu.gsubtitle.slist.states.marked || []).forEach(function(item) {
                 item.self.Marked(item, false);
@@ -253,7 +253,7 @@ MediaPlayer.onInit = function () {
         }
     });
 
-    this.ModalMenu.Menu.g3d = this.ModalMenu.Menu.AddGroup('g3d', LANG_MEDIA_MENU_GROUPS['g3d'], {
+    this.ModalMenu.Menu.g3d = this.ModalMenu.Menu.AddGroup('g3d', lang.mediaMenuGroups['g3d'], {
         onclick: function() {
             (self.ModalMenu.Menu.g3d.slist.states.marked || []).forEach(function(item) {
                 item.self.Marked(item, false);
@@ -266,12 +266,12 @@ MediaPlayer.onInit = function () {
         }
     });
     
-    this.ModalMenu.Menu.g3d.i1 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 1, mediaInfoMenu_3dview +' 1', {data: 0});
-    this.ModalMenu.Menu.g3d.i2 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 2, mediaInfoMenu_3dview +' 2', {data: 1});
-    this.ModalMenu.Menu.g3d.i3 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 3, mediaInfoMenu_3dview +' 3', {data: 2});
-    this.ModalMenu.Menu.g3d.i4 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 4, mediaInfoMenu_3dview +' 4', {data: 3});
+    this.ModalMenu.Menu.g3d.i1 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 1, lang.mediaInfoMenu3D +' 1', {data: 0});
+    this.ModalMenu.Menu.g3d.i2 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 2, lang.mediaInfoMenu3D +' 2', {data: 1});
+    this.ModalMenu.Menu.g3d.i3 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 3, lang.mediaInfoMenu3D +' 3', {data: 2});
+    this.ModalMenu.Menu.g3d.i4 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.g3d, 4, lang.mediaInfoMenu3D +' 4', {data: 3});
     
-    this.ModalMenu.Menu.gslideOn = this.ModalMenu.Menu.AddGroup('gslideOn', LANG_MEDIA_MENU_GROUPS['gslideOn'], {
+    this.ModalMenu.Menu.gslideOn = this.ModalMenu.Menu.AddGroup('gslideOn', lang.mediaMenuGroups['gslideOn'], {
         onclick: function() {
             (self.ModalMenu.Menu.gslideOn.slist.states.marked || []).forEach(function(item) {
                 item.self.Marked(item, false);
@@ -297,12 +297,12 @@ MediaPlayer.onInit = function () {
         }
     });
     
-    this.ModalMenu.Menu.gslideOn.ioff = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 1, LANG_MEDIA_MENU_OFF, {data: 0, marked : true});
-    this.ModalMenu.Menu.gslideOn.i3 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '3 ' + time_seconds, {data: 3});
-    this.ModalMenu.Menu.gslideOn.i5 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '5 ' + time_seconds, {data: 5});
-    this.ModalMenu.Menu.gslideOn.i10 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '10 ' + time_seconds, {data: 10});
-    this.ModalMenu.Menu.gslideOn.i20 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '20 ' + time_seconds, {data: 20});
-    this.ModalMenu.Menu.gslideOn.i30 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '30 ' + time_seconds, {data: 30});
+    this.ModalMenu.Menu.gslideOn.ioff = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 1, lang.mediaMenuOff, {data: 0, marked : true});
+    this.ModalMenu.Menu.gslideOn.i3 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '3 ' + lang.timeSeconds, {data: 3});
+    this.ModalMenu.Menu.gslideOn.i5 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '5 ' + lang.timeSeconds, {data: 5});
+    this.ModalMenu.Menu.gslideOn.i10 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '10 ' + lang.timeSeconds, {data: 10});
+    this.ModalMenu.Menu.gslideOn.i20 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '20 ' + lang.timeSeconds, {data: 20});
+    this.ModalMenu.Menu.gslideOn.i30 = this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gslideOn, 2, '30 ' + lang.timeSeconds, {data: 30});
     echo('MediaPlayer.modalInit = {};');
     
     this.modalInit = {};
@@ -454,11 +454,11 @@ MediaPlayer.EventHandler = function(e){
             if (this.list.length > 1) {
                 if (this.playListShow && this.infoFlag) {
 					this.playListShow = false;
-					this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
+					this.handle.querySelector('#playerHideplist').innerHTML = lang.playerBtnF2sh;
 					this.$PlayerList.style.display = "none";
                 } else {
 					this.playListShow = true;
-					this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2hd;
+					this.handle.querySelector('#playerHideplist').innerHTML = lang.playerBtnF2hd;
 					this.showInfo(true);
 					this.$PlayerList.style.display = "block";
 					this.PlayList.Refresh();
@@ -503,7 +503,7 @@ MediaPlayer.preparePlayer = function ( list, parent, fullScreen, play, show ) {
 	this.$PlayerList.style.display = "none";
 	if ( this.list.length > 1 ) {
 		this.handle.querySelector('#playerHideplist').style.display = "block";
-		this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
+		this.handle.querySelector('#playerHideplist').innerHTML = lang.playerBtnF2sh;
 	} else {
 		this.handle.querySelector('#playerHideplist').style.display = "none";
 	}
@@ -777,12 +777,12 @@ MediaPlayer.event = function ( e, info ) {
 							MediaPlayer.PlayList.Focused(MediaPlayer.PlayList.handle.children[MediaPlayer.PlayList.playIndex], true);
 							MediaPlayer.prepare(MediaPlayer.list[MediaPlayer.PlayList.activeItem.data.index], true);
 							ListPage.Preview.setPosition(MediaPlayer.obj);
-							new CModalHint(currCPage, playingError, 3000);
+							new CModalHint(currCPage, lang.playingError, 3000);
 						}
 					} else {
 						if ( currCPage === MediaPlayer ) {
 							MediaPlayer.exit();
-							window.setTimeout(function () {new CModalHint(currCPage, playingError, 3000);}, 50);
+							window.setTimeout(function () {new CModalHint(currCPage, lang.playingError, 3000);}, 50);
 						} else {
 							MediaPlayer.end();
 						}
@@ -891,7 +891,7 @@ MediaPlayer.showInfo = function ( show, hidetime, showHeader ) {
 		this.$PlayerHeader.style.display = "none";
 		this.$PlayerList.style.display = "none";
 		this.playListShow = false;
-		this.handle.querySelector('#playerHideplist').innerHTML = playerBtnF2sh;
+		this.handle.querySelector('#playerHideplist').innerHTML = lang.playerBtnF2sh;
 		this.$PlayerFooter.style.display = "none";
 		if ( this.type !== MEDIA_TYPE_AUDIO ) { this.$SlideContainer.style.visibility = 'hidden'; }
 	} else {
@@ -1041,7 +1041,7 @@ MediaPlayer.setAudioMenu = function () {
 			lang_info = getLanguageNameByCode(audArr[i].lang);
 			if ( !lang_info ) {
 				lang_info = [];
-				lang_info[0] = mediaInfoMenu_langUnknown + ' ("' + getIso639LangCode(audArr[i].lang) + '")';
+				lang_info[0] = lang.mediaInfoMenuLangUnknown + ' ("' + getIso639LangCode(audArr[i].lang) + '")';
 				lang_info[1] = "null";
 			}
 			var fl = currAud === audArr[i].pid;
@@ -1055,7 +1055,7 @@ MediaPlayer.setAudioMenu = function () {
 		}
 	} else {
 		echo('no other audio');
-		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gaudio, "no", LANG_MEDIA_MENU_NO, {disabled: true});
+		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gaudio, "no", lang.mediaMenuNo, {disabled: true});
 	}
 	var currSub = gSTB.GetSubtitlePID();
 	echo('gSTB.GetSubtitlePID()=' + currSub);
@@ -1068,19 +1068,19 @@ MediaPlayer.setAudioMenu = function () {
 	echo(subArr, 'subArr');
 	gSTB.SetSubtitles(!!this.subtitles_on);
 	if ( subArr.length > 0 ) {
-		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "OFF", LANG_MEDIA_MENU_OFF, {data: "OFF", marked: this.subtitles_on !== true});
+		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "OFF", lang.mediaMenuOff, {data: "OFF", marked: this.subtitles_on !== true});
 		for ( i = 0; i < subArr.length; i++ ) {
 			lang_info = getLanguageNameByCode(subArr[i].lang);
 			echo(lang_info, 'lang_info');
 			if ( !lang_info ) {
 				lang_info = [];
-				lang_info.push(mediaInfoMenu_langUnknown + '&nbsp;("' + getIso639LangCode(subArr[i].lang) + '")');
+				lang_info.push(lang.mediaInfoMenuLangUnknown + '&nbsp;("' + getIso639LangCode(subArr[i].lang) + '")');
 				lang_info.push("null");
 			}
 			this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, lang_info[1], lang_info[0], {data: subArr[i].pid, marked: currSub === subArr[i].pid && this.subtitles_on === true});
 		}
 	} else {
-		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "no", LANG_MEDIA_MENU_NO, {disabled: true});
+		this.ModalMenu.Menu.AddItem(this.ModalMenu.Menu.gsubtitle, "no", lang.mediaMenuNo, {disabled: true});
 		echo('no subtitles');
 	}
 };

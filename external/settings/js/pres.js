@@ -36,7 +36,7 @@ function perehod_set(set)
         iid = 1;
     }
 
-    if (!document.getElementById("i" + iid) && iid>1 && iid<mid){
+    if ((!document.getElementById("i" + iid) || document.getElementById("i" + iid).style.display == 'none') && iid>1 && iid<mid){
         perehod_set(set);
     }
 

@@ -19,6 +19,20 @@ class SysEvent extends Event
         $this->setMsg($msg);
         $this->send();
     }
+
+    /**
+     * Send "message with video" event
+     *
+     * @param string $msg
+     * @param string $video_url
+     */
+    public function sendMsgWithVideo($msg, $video_url){
+        $this->setEvent('send_msg_with_video');
+        $this->setNeedConfirm(1);
+        $this->setMsg($msg);
+        $this->setParam1($video_url);
+        $this->send();
+    }
     
     /**
      * Send "message and reboot after OK" event

@@ -111,7 +111,7 @@
             </filterchain>
         </property>
 
-        <exec command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
+        <exec command="${progs.mysql} -P${mysql_port} --protocol=TCP -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
               dir="${build.dir}" checkreturn="false" outputProperty="mysql_init.error.msg" returnProperty="mysql_init.error.code" />
 
         <if>
@@ -124,7 +124,7 @@
         </if>
 
         <dbdeploy
-                url="mysql:host=${mysql_host};dbname=${db_name}"
+                url="mysql:port=${mysql_port};host=${mysql_host};dbname=${db_name}"
                 userid="${mysql_user}"
                 password="${mysql_pass}"
                 dir="${build.dir}/db/delta"
@@ -132,7 +132,7 @@
                 undooutputfile="${build.dir}/${build.dbdeploy.undofile}"/>
 
         <exec
-                command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}"
+                command="${progs.mysql} -P${mysql_port} --protocol=TCP -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}"
                 dir="${build.dir}"
                 returnProperty="dbdeploy_return" outputProperty="dbdeploy_output"/>
 
@@ -141,11 +141,12 @@
         <if>
             <equals arg1="${dbdeploy_return}" arg2="1"/>
             <then>
+                <echo msg="DbDeployTask failed reason: ${dbdeploy_output}"/>
                 <exec
-                        command="${progs.mysql} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.undofile}"
+                        command="${progs.mysql} -P${mysql_port} --protocol=TCP -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.undofile}"
                         dir="${build.dir}"
                         checkreturn="true"/>
-                <fail message="DbDeployTask failed reason: ${dbdeploy_output}"/>
+                <fail message="DbDeployTask failed."/>
             </then>
         </if>
 

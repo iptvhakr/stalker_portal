@@ -1,7 +1,7 @@
 window.onload = init;               // Initialization for event onLoad
 window.onkeydown = keyProcessing;   // Intercept events keydown and sent in into function keyProcessing (key-Processing.js)
 
-var debug = true;
+var debug = false;
 var emulate = false;
 var main_lang ="";
 var stb = new Object();
@@ -33,6 +33,14 @@ catch(e){
 
 function init() {
     win = {"width":screen.width, "height":screen.height};
+	getJson('package.json', function ( u ) {
+		var a = document.getElementById('loadingVersion');
+		a.innerHTML = u.version || '';
+        ga('set', 'appVersion', u.version);
+		window.setTimeout(function(){
+			a.style.display = 'none';
+		}, 3000);
+	});
     _GET['proxy'] = '';
     get_params();
     proxy_string = _GET['proxy'];
@@ -64,10 +72,10 @@ function init() {
         break;
     }
     
-    window.moveTo(0, 0);
+//    window.moveTo(0, 0);
     try {
         stb = gSTB;
-        window.resizeTo(win.width, win.height);
+//        window.resizeTo(win.width, win.height);
     }
     catch(e){}
     
@@ -89,6 +97,7 @@ function init() {
     
     
 }
+
 function load_vars() {
     try {
         log('test lang: some ' + lang.intervals);
@@ -147,7 +156,7 @@ function fillPage() {
             items_req = 24;
         break;
     }
-    m.html('quality',lang.quality['middle']);
+    m.html('quality',lang.quality['high']);
 
     m.html('f_mode',lang.f_mode);
     byID('mode').className = 'single';
@@ -161,7 +170,7 @@ function fillPage() {
     m.html('f_search',lang.f_search);
     m.html('f_category',lang.f_category);
     m.html('f_quality', lang.f_quality);
-    m.html('cats_all', lang.cats.all);
+    m.html('cats_all', lang.cats.most_popular);
     m.html('f_category2', lang.f_category);
     
     m.html('f_search2',lang.f_search);
@@ -232,10 +241,10 @@ function fillPage() {
     current.obj = 0;
     current.page = 1;
     workWithItems.shift = current.obj;
-    current.cat.url = current.feed = categorias[0].url;
+    current.cat.url = current.feed = categorias[1].url;
     getData(current.feed+'&start-index='+request.startIndex.toString()+'&max-results='+request.itemsPerRequest.toString(),'rebuildCurrentGlobalObj');
 
-    var imgs_preload = [new Image(),new Image(),];
+    var imgs_preload = [new Image(),new Image()];
     imgs_preload[0].src = 'img/pls_def.png';
     imgs_preload[1].src = 'img/pls.png';
 }
@@ -309,6 +318,6 @@ function rebuildCurrentGlobalObj(list) {
         workWithItems.drawBoxes();  //draw boxes in current layer
     });
     Deferred.next(function() {
-        loading.hide();             // hide loading layer and enable management from keyboard
+		loading.hide();             // hide loading layer and enable management from keyboard
     });
 }

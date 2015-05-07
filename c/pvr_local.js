@@ -170,9 +170,10 @@
 
                 stb.load(
                     {
-                        "type"   : "itv",
-                        "action" : "create_link",
-                        "cmd"    : channel.cmd
+                        "type"    : "itv",
+                        "action"  : "create_link",
+                        "cmd"     : channel.cmd,
+                        "for_pvr" : 1
                     },
                     function(result){
 

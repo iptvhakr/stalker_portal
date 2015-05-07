@@ -1858,7 +1858,6 @@
     
     tv.init_header_path(word['tv_title']);
     
-    tv.hide();
     tv.auto_play = true;
     
     module.tv = tv;
@@ -1916,8 +1915,8 @@
             
             loader.next();
         }
-    )
+    );
+
+    tv.hide();
 
 })();
-
-//loader.next();

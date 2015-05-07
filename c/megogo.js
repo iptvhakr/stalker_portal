@@ -28,10 +28,11 @@
             params += '&';
         }
 
-        params += 'referrer='+encodeURIComponent(window.location);
+        params = stb.add_referrer(params, this.module.layer_name);
 
-        _debug('url', '/' + stb.portal_path + '/external/megogo/index.html'+params);
-        window.location = '/' + stb.portal_path + '/external/megogo/index.html'+params;
+        var url = 'http://aura-app.megogo.net/'+params;
+        _debug('url', url);
+        window.location = url;
     }, {layer_name : "megogo"});
 
     loader.next();

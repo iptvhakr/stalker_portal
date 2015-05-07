@@ -292,6 +292,7 @@ function ModalFormInput(options){
     this._value = "";
     this._placeholder = "";
     this._onchange =  function(){};
+    this._oninput =  function(){};
 
     this.options = options;
 
@@ -318,6 +319,7 @@ ModalFormInput.prototype._init = function(){
     this._input_dom_odj.setAttribute("value", this._value);
     this._input_dom_odj.setAttribute("placeholder", this._placeholder);
     this._input_dom_odj.onchange = this._onchange;
+    this._input_dom_odj.oninput = this._oninput;
     this._item.appendChild(this._input_dom_odj);
 };
 

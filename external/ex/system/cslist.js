@@ -47,7 +47,7 @@ function CScrollList ( parent ) {
             self     : this,   // back link to the component itself
             // right mouse click (suppress the context menu)
             oncontextmenu : function() { 
-                if(old_system_type){
+                if(oldSystemType){
                     // activate item
                     this.self.Focused(this, true); 
                 }
@@ -60,7 +60,7 @@ function CScrollList ( parent ) {
                 return false;
             },
             onmouseover : function() {
-                if(!old_system_type){
+                if(!oldSystemType){
                     // activate item
                     this.self.Focused(this, true);
                 }

@@ -43,7 +43,8 @@ function init_m()
 {
     if(load_fl){
     var punktiT={
-        "lock":[t('Parental control'),"ico_lock","ico_lock_act","ico_l_lang","g_pass.html"],
+        "lock":[t('Parental control'),"ico_lock","ico_lock_act","ico_l_lock","g_pass.html"],
+        "settings_lock":[t('Settings access'),"ico_lock","ico_lock_act","ico_l_lock","g_settings_access.html"],
         "lang":[t('Localization'),"ico_lang","ico_lang_act","ico_l_lang","g_local.html"],
         "update":[t('Software update'),"ico_reload","ico_reload_act","ico_l_reload","g_update.html"],
         "net_info":[t('Network info'),"ico_netinfo","ico_netinfo_act","ico_l_netinfo","g_netw.html"],
@@ -52,6 +53,7 @@ function init_m()
         "playback":[t('Playback'),"ico_video","ico_video_act","ico_l_video","g_play.html"],
         "portal":[t('Portal'),"ico_lang","ico_lang_act","ico_l_lang","g_portal.html"],
         "net":[t('Network'),"ico_net","ico_net_act","ico_l_net","g_nets.html"],
+        "remote_control":[t('Remote control'),"ico_remote","ico_remote_act","ico_l_remote","g_remote_control.html"],
         "advanced":[t('Advanced settings'),"ico_advset","ico_advset_act","ico_l_advset","g_adv.html"],
         "time_shift":[t('Local TimeShift'),"ico_reload","ico_reload_act","ico_l_reload","g_ts.html"],
         "dvb":[t('DVB'),"ico_reboot","ico_reboot_act","ico_l_reboot","g_dvb.html"],
@@ -61,6 +63,7 @@ function init_m()
         "internal_portal":[t('Go to the inner portal'),"ico_switch","ico_switch_act","ico_l_switch",1],
         "reboot":[t('Reboot device'),"ico_reboot","ico_reboot_act","ico_l_reboot",3]
     };
+
 
     if (!_GET['dvb_supported_scan_types']){
         delete punktiT.dvb;
@@ -73,7 +76,15 @@ function init_m()
             continue;
         }
 
+        if (!_GET['enable_setting_access_by_pass'] && prof.modules[i].name == 'settings_lock'){
+            continue;
+        }
+
         if (gSTB.IsEmulator && ['lock', 'lang', 'playback', 'portal', 'dev_info', 'reload', 'reboot'].indexOf(prof.modules[i].name) == -1){
+            continue;
+        }
+
+        if ((!gSTB.ConfigNetRc || !gSTB.SetNetRcStatus) && prof.modules[i].name == 'remote_control') {
             continue;
         }
 

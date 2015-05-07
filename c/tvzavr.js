@@ -23,7 +23,7 @@
             params += '&';
         }
 
-        params += 'referrer='+encodeURIComponent(window.location);
+        params = stb.add_referrer(params, this.module.layer_name);
 
         var url = 'http://services.tvzavr.ru/mag/' + params;
 

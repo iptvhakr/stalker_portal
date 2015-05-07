@@ -61,6 +61,7 @@ class Watchdog extends AjaxResponse implements \Stalker\Lib\StbApi\Watchdog
                 $res['data']['msg'] = $events[0]['msg'];
                 $res['data']['reboot_after_ok']   = $events[0]['reboot_after_ok'];
                 $res['data']['auto_hide_timeout'] = $events[0]['auto_hide_timeout'];
+                $res['data']['param1'] = $events[0]['param1'];
 
                 if (Config::getSafe('display_send_time_in_message', false)){
                     $res['data']['send_time'] = $events[0]['addtime'];
