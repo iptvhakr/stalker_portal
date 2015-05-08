@@ -1916,11 +1916,39 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         if (preg_match("/:\/\/([^\/]+)\/?(\S*)/", $cmd, $match)){
 
+            $nginx_secure_link_order = Config::get('nginx_secure_link_order');
+            $nginx_secure_link_field = array(
+                '$secure_link_expires'=>'',
+                '$uri'=>'',
+                '$remote_addr'=>'',
+                '$secret'=>''
+            );
             $path   = '/'.$match[2];
-            $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
-            $secret = Config::get('nginx_secure_link_secret');
 
-            $hash = base64_encode(md5($secret . str_replace('/playlist.m3u8', '', $path) . $expire, true));
+            $expire = time() + Config::getSafe('nginx_secure_link_ttl', 5);
+
+            if (strpos($nginx_secure_link_order, '$secret') !== FALSE) {
+                $nginx_secure_link_field['$secret'] = Config::get('nginx_secure_link_secret');
+            }
+
+            if (strpos($nginx_secure_link_order, '$uri') !== FALSE) {
+                $nginx_secure_link_field['$uri'] = str_replace('/playlist.m3u8', '', $path);
+            }
+
+            if (strpos($nginx_secure_link_order, '$secure_link_expires') !== FALSE) {
+                $nginx_secure_link_field['$secure_link_expires'] = $expire;
+            }
+
+            if (strpos($nginx_secure_link_order, '$remote_addr') !== FALSE) {
+                if (!empty($_SERVER['REMOTE_ADDR'])) {
+                    $nginx_secure_link_field['$remote_addr'] = $_SERVER['REMOTE_ADDR'];
+                } else {
+                    throw new ItvLinkException('link_fault');
+                }
+            }
+
+            $hash = base64_encode(md5(strtr($nginx_secure_link_order, $nginx_secure_link_field), true));
+
             $hash = strtr($hash, '+/', '-_');
             $hash = str_replace('=', '', $hash);
 
