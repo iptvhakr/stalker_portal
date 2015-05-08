@@ -864,7 +864,6 @@ function common_xpcom(){
                     //this.user_init(result);
                     this.get_localization();
 
-
                 }
             },
 
@@ -1165,6 +1164,11 @@ function common_xpcom(){
 
                     if (mc_proxy_enabled == 'true' && mc_proxy_url){
                         this.player.mc_proxy_url = mc_proxy_url;
+                    }
+
+                    if (typeof(stb.SetCheckSSLCertificate) == 'function' && typeof(this.profile['check_ssl_certificate']) != 'undefined' && this.profile['check_ssl_certificate'] == 0) {
+                        _debug('SetCheckSSLCertificate = 0');
+                        stb.SetCheckSSLCertificate(0);
                     }
 
                 }catch(e){
