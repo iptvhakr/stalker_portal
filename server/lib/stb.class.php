@@ -730,6 +730,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['show_version_in_main_menu'] = Config::getSafe('show_version_in_main_menu', true);
 
+        $profile['check_ssl_certificate'] = (int) Config::getSafe('check_ssl_certificate', false);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);
