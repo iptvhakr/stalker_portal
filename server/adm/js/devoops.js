@@ -727,6 +727,7 @@ $(document).ready(function () {
     });
     
     $("#breadcrumb ul").addClass("breadcrumb");
+    $('[id*="datepicker"]').attr('readonly', 'readonly');
     
     $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
         if (e.currentTarget != e.target) {

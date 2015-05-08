@@ -231,20 +231,21 @@ class InfoportalController extends \Controller\BaseStalkerController {
         $item = array($this->postData);
 
         $error = 'error';
-        if (empty($this->postData['id'])) {
-            $operation = 'insertPhoneBoock';
-        } else {
-            $operation = 'updatePhoneBoock';
-            $item['id'] = $this->postData['id'];
-        }
-        unset($item[0]['id']);
-        unset($item[0]['phoneboocksource']);
+        if (count($item) != 0 && !empty($item[0]['num']) && ((int)$item[0]['num']) > 0) {
+            if (empty($this->postData['id'])) {
+                $operation = 'insertPhoneBoock';
+            } else {
+                $operation = 'updatePhoneBoock';
+                $item['id'] = $this->postData['id'];
+            }
+            unset($item[0]['id']);
+            unset($item[0]['phoneboocksource']);
 
-        if ($result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item))) {
-            $error = '';    
+            if ($result = call_user_func_array(array($this->db, $operation), array($this->postData['phoneboocksource'], $item))) {
+                $error = '';
+            }
         }
-        
-        
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));

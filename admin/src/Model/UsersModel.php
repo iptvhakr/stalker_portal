@@ -56,6 +56,7 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
 
     public function insertUsers($data) {
+        $data['created']='NOW()';
         return $this->mysqlInstance->insert('users', $data)->insert_id();
     }
     

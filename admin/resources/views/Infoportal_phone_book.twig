@@ -78,16 +78,16 @@
                     </a>
                 </div>
             </div>
+            <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-phone-book-item">
             <div class="devoops-modal-inner">
                 <div class="box">
                     <div class="box-content">
-                        <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-phone-book-item">
                             <!-- singer -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Order'|trans }}<span class="icon-required">*</span></label>
                                 <div class="col-xs-10 col-sm-8 no-padding">
                                     <div class=" col-xs-10 col-sm-10">
-                                        <input type="number" required="required" name="num" data-validation=required class='form-control own_fields'>
+                                        <input type="number" required="required" name="num" data-validation=required class='form-control own_fields' min="0">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">{{ 'Order of service in the directory. Must contain digits only'|trans }}</span>
@@ -128,7 +128,8 @@
                         </div>
                     </div>
                 </div>
-            </div> </form>
+            </div>
+            </form>
         </div>
     </div>
                                     
@@ -230,29 +231,31 @@
     {#                    $("#cmd_data").find("tr:visible").remove();#}
                     return false;
                 });
-                
+
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
-        		  $.validate({
-  onSuccess : function() {            e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = new Object();
-                    var lengthObj = 0;
-                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled)");
-                        form_fields.each(function () {
-                        if ($(this).val()) {
-                            sendData[this.name] = $(this).val();
-                            lengthObj++;
+                    $.validate({
+                        onSuccess: function () {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var sendData = new Object();
+                            var lengthObj = 0;
+                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled)");
+                            form_fields.each(function () {
+                                if ($(this).val()) {
+                                    sendData[this.name] = $(this).val();
+                                    lengthObj++;
+                                }
+                            });
+                            if (lengthObj < form_fields.length) {
+                                alert('{{ 'All fields is required'|trans }}');
+                                return false;
+                            }
+                            sendData["phoneboocksource"] = "{{ app['filters']['service'] }}";
+                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                            return false;
                         }
                     });
-                    if (lengthObj < form_fields.length) {
-                        alert('{{ 'All fields is required'|trans }}');
-                        return false;
-                    }
-                    sendData["phoneboocksource"] = "{{ app['filters']['service'] }}";
-                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;
-               }
-  }); });
+                });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {
