@@ -111,7 +111,27 @@
             </filterchain>
         </property>
 
-        <exec command="${progs.mysql} -P${mysql_port} --protocol=TCP -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
+        <property name="protocol_str" value="--protocol=TCP"/>
+        <if>
+            <and>
+                <equals arg1="${mysql_host}" arg2="localhost"/>
+                <not>
+                    <equals arg1="${mysql_port}" arg2="3306"/>
+                </not>
+            </and>
+            <then>
+                <property name="mysql_host" value="127.0.0.1" override="true"/>
+            </then>
+        </if>
+
+        <if>
+            <equals arg1="${mysql_host}" arg2="localhost"/>
+            <then>
+                <property name="protocol_str" value="" override="true"/>
+            </then>
+        </if>
+
+        <exec command="${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} -p${mysql_pass} &lt; /tmp/init_db.sql"
               dir="${build.dir}" checkreturn="false" outputProperty="mysql_init.error.msg" returnProperty="mysql_init.error.code" />
 
         <if>
@@ -132,7 +152,7 @@
                 undooutputfile="${build.dir}/${build.dbdeploy.undofile}"/>
 
         <exec
-                command="${progs.mysql} -P${mysql_port} --protocol=TCP -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}"
+                command="${progs.mysql} -P${mysql_port} ${protocol_str} -h${mysql_host} -u${mysql_user} -p${mysql_pass} ${db_name} &lt; ${build.dbdeploy.deployfile}"
                 dir="${build.dir}"
                 returnProperty="dbdeploy_return" outputProperty="dbdeploy_output"/>
 
