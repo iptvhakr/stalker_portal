@@ -2,4 +2,3 @@
 /.idea
 /admin/vendor
 /admin/composer.lock
-/deploy/composer.lock
