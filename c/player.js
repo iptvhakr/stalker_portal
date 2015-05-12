@@ -2194,6 +2194,8 @@ player.prototype.play = function(item){
     }
 
     this.play_initiated = true;
+
+    _debug('stb.cur_place', stb.cur_place);
     
     if (this.media_type == 'stream' && !stb.player.cur_media_item.series){
         
@@ -3517,8 +3519,8 @@ player.prototype.bind = function(){
             if (this.active_time_shift || this.active_local_time_shift){
                 this.show_time_shift_exit_confirm();
             }else if (this.prev_layer.layer_name == 'epg' && this.prev_layer.player_overlay_mode){
-                module.epg.show(false, true);
                 this.play_last();
+                module.epg.show(false, true);
             }else{
                 this.show_prev_layer();
             }
