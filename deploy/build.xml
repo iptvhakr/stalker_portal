@@ -195,6 +195,19 @@
         <chmod file="${project_path}/misc/logos" mode="0777" />
         <chmod file="${project_path}/misc/audio_covers" mode="0777" />
 
+        <exec command="mkdir ${project_path}/admin" level="info"/>
+        <exec command="mkdir ${project_path}/deploy/composer" level="info"/>
+        <exec command="php ${project_path}/deploy/composer/composer.phar install" level="info" outputProperty="install.error.msg" returnProperty="install.error.code"/>
+
+        <if>
+            <not>
+                <equals arg1="${install.error.code}" arg2="0"/>
+            </not>
+            <then>
+                <echo msg="${install.error.msg}" level="warning"/>
+            </then>
+        </if>
+
         <exec command="/etc/init.d/apache2 restart" level="info"/>
 
         <exec command="mkdir /var/log/stalkerd" level="info"/>
