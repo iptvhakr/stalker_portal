@@ -40,6 +40,8 @@ h1, .h1, h2, .h2, h3, .h3 {
   /*background: url(../img/logo.png) right 42px no-repeat;*/
 
 }
+#allowed_locales {text-align:left;}
+#allowed_locales .lang-xs{margin-right:10px;}
 #logo a:hover {
   background-position: right 25px;
   text-decoration: none;
@@ -2813,6 +2815,7 @@ border-bottom:1px solid #E3E3E3;padding-left:6px !important; padding-right:5px;}
 	margin-top:-5px;
 }
 .filter .dropdown-menu {max-height:360px;}
+.tfilter {min-width:80px; margin-top:10px !important;}
 #iptv_list .filter  {position: relative;    float: left;
 	display:block;}
 #iptv_list .filter a  {border-radius:5px; margin-right:0px;   border: 1px solid #fff !important; max-width: 300px; min-width:90px;  margin-top:5px; margin-bottom:5px; padding-bottom:4px;
@@ -2843,8 +2846,10 @@ position: relative;
 #iptv_list .fa-cog {float:right !important;}
 #iptv_list .filter a:hover  { text-decoration:none; border: 1px solid #E3E3E3 !important;}
 #iptv_list .filter a:focus  { text-decoration:none; border: 1px solid #E3E3E3 !important; }
+#iptv_list .btn-success, #iptv_list .btn-danger { margin-left:5px;
+margin-top:5px !important; height:31px; padding-bottom:15px !important;}
 #iptv_list .btn-success {
-color:#FFCD1C; background-color:#000 !important;margin-top:5px !important; height:31px; padding-bottom:15px !important;}
+color:#FFCD1C; background-color:#000 !important;}
 #iptv_list .btn-default{
     background-color: #FFFFFF;
     color: #000;

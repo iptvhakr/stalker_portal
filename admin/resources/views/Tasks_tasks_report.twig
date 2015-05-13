@@ -3,22 +3,24 @@
 {% set title = ('Tasks'|trans ~ ': ' ~ 'Report'|trans) | trans %}
 
 {% block content %}
-    <div id="iptv_list">
+    <div id="iptv_list"> 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['taskState'], 2, 8) }}
                     {{ main_macro.get_filter('task_type', 'Type'|trans, 'id', 'title', app['taskType'], 2, 8, 1) }}
                     {{ main_macro.get_filter('video_quality', 'Quality'|trans, 'id', 'title', app['videoQuality'], 2, 8) }}
-                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 filter no-padding" data-tvfilter="time_period">
-                        <span class="col-xs-3 col-sm-2 filter">
+                    <div class="col-xs-6 col-sm-10 col-md-6 col-lg-5 filter no-padding" data-tvfilter="time_period">
+                      <div class="col-sm-1 tfilter">
                             {{ 'Closed'|trans }}:
-                        </span>
-                        <div class="col-xs-3 col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
+                        </div>
+                        <div class="col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
                             <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'between'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
                         </div>
-                        <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="time_period">
+                        <div class="col-sm-3 filter no-padding" data-tvfilter="time_period">
                             <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'and'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
-                        </div>
+                        </div> 
+
+						
                     </div>
             </div>
         </div>
