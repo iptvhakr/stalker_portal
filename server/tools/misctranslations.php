@@ -521,3 +521,8 @@ _('Image description');
 _('Created by');
 _('Name is busy');
 _('Name is available');
+_('events');
+_('Users events');
+_('users');
+_('Sending a message with video');
+_('for');
