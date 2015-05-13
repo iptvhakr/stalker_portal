@@ -247,7 +247,8 @@ class EventsController extends \Controller\BaseStalkerController {
         
         $data = array();
         $data['action'] = 'cleanEvents';
-        $data['msg'] = $this->setlocalization('Deleted') . ' ' . $this->db->deleteEventsByUID($this->postData['uid']) . ' ' . $this->setlocalization('events');
+        $result = $this->postData['uid'] == 'all' ? $this->db->deleteAllEvents() : $this->db->deleteEventsByUID($this->postData['uid']);
+        $data['msg'] = $this->setlocalization('Deleted') . ' ' . $this->setLocalization($result) . ' ' . $this->setlocalization('events');
         $error = '';
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -282,7 +283,7 @@ class EventsController extends \Controller\BaseStalkerController {
     
     private function get_userlist_all(&$event){
         $user_list = array();
-        if ($this->postData['event'] == 'send_msg'){
+        if ($this->postData['event'] == 'send_msg' || $this->postData['event'] == 'send_msg_with_video'){
             $event->setUserListByMac('all');
             $user_list = \Middleware::getAllUsersId();
         }else{

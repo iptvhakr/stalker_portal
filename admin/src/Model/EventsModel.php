@@ -50,6 +50,11 @@ class EventsModel extends \Model\BaseStalkerModel {
     public function deleteEventsByUID($uid) {
         return $this->mysqlInstance->delete('events', array('uid' => $uid))->total_rows();
     }
+
+    public function deleteAllEvents() {
+        return $this->mysqlInstance->query('TRUNCATE TABLE `events`') ? 'all': 0;
+    }
+
 //    
 //    public function searchOneEventsParam($param = array()){
 //        reset($param);
