@@ -5,3 +5,5 @@
 /deploy/composer.lock
 /screenshots
 /misc/logos
+/db/delta
+/deploy/scripts
