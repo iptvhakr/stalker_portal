@@ -1534,7 +1534,16 @@ player.prototype.event_callback = function(event, params){
 
             if (stb.profile['hdmi_event_reaction'] == 1 && !stb.power_off){
                 if (self.is_tv){
-                    keydown_observer.emulate_key(key.MENU);
+                    if (typeof(stb.GetHDMIConnectionState) == 'function' && stb.GetHDMIConnectionState() == 2) {
+                        if (stb.player.cur_media_item.censored == '1') {
+                            module.tv._show();
+                            module.tv.shift_row(1);
+                        } else {
+                            module.tv.play_last();
+                        }
+                    } else {
+                        keydown_observer.emulate_key(key.MENU);
+                    }
                 }else if (!self.pause.on){
                     keydown_observer.emulate_key(key.PAUSE);
                 }
@@ -1549,7 +1558,11 @@ player.prototype.event_callback = function(event, params){
                 this.hdmi_reaction_timer = window.setTimeout(function(){
                     if (!stb.power_off){
                         if (self.is_tv){
-                            keydown_observer.emulate_key(key.MENU);
+                            if (typeof(stb.GetHDMIConnectionState) == 'function'){
+                                module.tv.hide('do_not_reset');
+                            } else {
+                                keydown_observer.emulate_key(key.MENU);
+                            }
                         }else if (!self.pause.on){
                             keydown_observer.emulate_key(key.PAUSE);
                         }
