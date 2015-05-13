@@ -1,0 +1,738 @@
+{% extends 'layout.twig' %}
+{% set title = ('Video club'|trans ~ ': ' ~ (app.videoEdit ? ('Edit movie'|trans ~ " '"~ app.videoName ~ "'"): 'Add movie'|trans)) | trans %}
+{% set active_alias = 'video-list' %}
+
+{% block content %}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="">
+                <div class="box"> <a class="collapse-link">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Basic'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-icons">
+                            <i class="fa fa-chevron-up"></i>
+                        </div>
+                        <div class="no-move"></div>
+                    </div> </a>
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id) }}
+                                    {{ form_widget(app['form'].rating_count_kinopoisk) }}
+                                    {{ form_widget(app['form'].rating_imdb) }}
+                                    {{ form_widget(app['form'].rating_count_imdb) }}
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                        {% if app['error_local'] and attribute(app['error_local'], 'name') is defined %}<span> {{ app['error_local']['name'] }}</span> {% endif %}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Category'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].category_id, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].category_id) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Genre'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].cat_genre_id, {'attr': {'class': 'populate placeholder', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].cat_genre_id) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'You can choose up to 4 genres'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Old genre'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].genres, {'attr': {'class': 'populate placeholder', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].genres) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Used only for MAG100 compatibility with the portal. You may choose up to 4 genres.'|trans }}в</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Cover'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-4 pull-right" id="cover_container">
+                                    {{form_widget(app['form'].cover_big) }}
+                                    {{form_widget(app['form'].cover_id) }}
+                                    <img class="img-rounded channel-logo" src="{% if app['form'].cover_id.vars.value%}{{app['curr_cover_dir']}}/{{app['form'].cover_id.vars.value}}.jpg{% endif %}" alt="" style="max-width: 100%;">
+                                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/delete-cover" data-cover_id="{% if app['form'].cover_id.vars.value %}{{app['form'].cover_id.vars.value}}{% endif %}"><span class="txt-primary">{{ 'Delete cover'|trans }}</span></a>
+                                </div>
+                                <div class="pull-left" id="bootstrapped-fine-uploader"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">HD</label>
+                            <div class="col-xs-10 col-sm-9">
+                                <div class=" col-xs-10 col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].hd) }}      
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].hd) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Adds "HD" sign in catalogue'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Age restriction'|trans }}</label>
+                            <div class="col-xs-10 col-sm-9">
+                                <div class=" col-xs-10 col-sm-9">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].censored) }}      
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].censored) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Adds the restriction for movie access (password set in the "Parental advisory"). Default password 0000'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Protocol'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-3">
+                                    {{ form_widget(app['form'].protocol, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].protocol) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Select the content delivery type (http,custom url, nfs). When using HTTP NFS the link to the content is not used, but the content is stored on the server.'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">URL</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].rtsp_url, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].rtsp_url) }}
+                                        {% if app['error_local'] and attribute(app['error_local'], 'rtsp_url') is defined %}<span> {{ app['error_local']['rtsp_url'] }}</span> {% endif %}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Example: ffmpeg http://anon.nasa-global.edgesuite.net/HD_downloads/135_launch_720p.wmv'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Volume'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-3">
+                                    {{ form_widget(app['form'].volume_correction, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].volume_correction) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Video volume adjustment'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box"><a class="collapse-link">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-2">
+                                    <span>{{ 'Movie information'|trans }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box-icons">
+                            <i class="fa fa-chevron-up"></i>
+                        </div>
+                        <div class="no-move"></div>
+                    </div></a>
+                    <div class="box-content" >
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Original title'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].o_name, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].o_name) }}
+                                        {% if app['error_local'] and attribute(app['error_local'], 'o_name') is defined %}<span> {{ app['error_local']['o_name'] }}</span> {% endif %}
+                                    </div>
+                                    <div>
+                                        <a href="" id="kinopoisk_url"></a>
+                                    </div>
+                                </div>
+                                <div class="col-xs-10 col-sm-6">
+                                    <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
+                                    <button class="btn btn-success" id="autocomplete_name" type="button">{{ 'Autocomplete'|trans }}</button>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Title on the native language. Autocomplete is available'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Kinopoisk ID'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].kinopoisk_id, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].kinopoisk_id) }}
+                                    </div>
+                                </div>
+                                <div class="col-xs-10 col-sm-6">
+                                    <span class="col-xs-10 col-sm-1 no-padding"><i class="txt-success fa fa-check"></i></span>
+                                    <button class="btn btn-success" id="autocomplete_id" type="button">{{ 'Autocomplete'|trans }}</button>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'ID of movie on the Kinopoisk'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Kinopoisk rating'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].rating_kinopoisk, {'attr': {'class': 'form-control', 'readonly': 'readonly'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].rating_kinopoisk) }}
+                                    </div>
+                                </div>
+                                    <div class="col-xs-10 col-sm-6">
+                                        <button class="btn btn-default btn-app-mini btn-circle" type="button" id="update_rating_kinopoisk"><i class="fa fa-refresh"></i></button>
+                                    </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Film rating on the Kinopoisk. Autocomplete only'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Year'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].year, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].year) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Year of the film creation Example: 2014'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Length'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].duration, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].duration) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Film length in minutes Example: 102'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Country'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].country, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].country) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Director'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].director, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].director) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Actors'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].actors, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].actors) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Movie description'|trans }}<span class="icon-required">*</span>:</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].description, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].description) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Comments'|trans }}:</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].comments, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].comments) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'MPAA rating'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-3">
+                                    {{ form_widget(app['form'].rating_mpaa, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].rating_mpaa) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'MPAA age restriction'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Age restriction'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-3">
+                                    {{ form_widget(app['form'].age, {'attr': {'class': 'populate placeholder'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].age) }}
+                                    </div>
+                                </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'Recommended viewer age'|trans }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class=" pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans, attr: {'class': 'btn btn-success   pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/video-list" class="btn btn-default  pull-right"> {{ 'Cancel'|trans }} </a>
+                            </div>
+                        </div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+
+    <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
+    <script type="text/javascript">
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
+                checkCatGenreList('#form_category_id', '#form_cat_genre_id');
+                $('#form_category_id').select2({minimumResultsForSearch: -1});
+                $('#form_cat_genre_id').select2({minimumResultsForSearch: -1, maximumSelectionSize: 4});
+                $('#form_genres').select2({minimumResultsForSearch: -1, maximumSelectionSize: 4});
+                $('#form_protocol').select2({minimumResultsForSearch: -1});
+                $('#form_volume_correction').select2({minimumResultsForSearch: -1});
+                $('#form_rating_mpaa').select2({minimumResultsForSearch: -1});
+                $('#form_age').select2({minimumResultsForSearch: -1});
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+		
+                if (typeof (channelListRender) == 'function') {
+                    LoadSelect2Script(DemoSelect2);
+                }
+
+                var uploader = $("#bootstrapped-fine-uploader").fineUploader({
+                    element: $('#bootstrapped-fine-uploader'),
+                    autoUpload: true,
+                    debug: true,
+                    multiple: false,
+                    text: {
+                        formatProgress: "{percent}% {{ 'from'|trans }} {total_size}", //из
+                        failUpload: "{{ 'Upload failed'|trans }}", //Сбой при загрузке
+                        waitingForResponse: "{{ 'Processing'|trans }}...", //Обработка
+                        paused: "{{ 'Pause'|trans }}" //Пауза
+                    },
+                    request: {
+                        endpoint: 'video-club/edit-cover?id=' + ($('#form_cover_id').val() ? $('#form_cover_id').val() : 'new')
+                    },
+                    validation: {
+                        allowedExtensions: ['jpeg', 'jpg']
+                        //sizeLimit: 1048576 // 1Mb
+                    },
+                    template: 'qq-template-bootstrap',
+                    classes: {
+                        success: 'alert alert-success',
+                        fail: 'alert alert-error'
+                    }
+
+                }).on('complete', function (event, id, name, response) {
+                    $(this).prev('div').children('img').attr('src', response.pic + '.jpg?' + $.random(100000)).css('max-width', '100%');
+                    var val = response.pic.split('/');
+                    val = val[val.length - 1];
+                    $('#form_cover_id').val(val);
+                    $('#form_cover_big').val('');
+                    $("#cover_container a").data('cover_id', val);
+                    var imageName = val.split('.');
+                    if (imageName.length > 1) {
+                        imageName.length -= 1;
+                    }
+                    var postUrl = 'video-club/edit-cover?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
+                        $(this).fineUploader('setEndpoint', postUrl);
+                        return false;
+                    });
+                $("#bootstrapped-fine-uploader").on('click', ".qq-upload-cancel", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return false;
+                });
+                 $.validate({
+   
+    onSuccess : function() {
+     $("#form_save").on('click', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if($('#form_protocol').val() == 'custom' && $.trim($('#form_rtsp_url').val()) == '') {
+                       $(document).scrollTo('#form_protocol', 'slow');
+                       $('#form_rtsp_url').focus();
+                       $('#form_rtsp_url').attr('required', 'required');
+                       return false;
+                   }
+                    $(this).closest('form').get(0).submit();
+                    return false;
+                });
+    }
+  });
+                
+                $("#form_reset").on('click', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest('form').get(0).reset();
+                    return false;
+                });
+                
+                $(document).on('change', '#form_category_id', function(){
+                   checkCatGenreList('#form_category_id', '#form_cat_genre_id');
+                });
+                
+                $(document).on('change', '#form_protocol', function(e){
+                   checkProtocol();
+                });                
+                
+                $(document).on('change keyup', '#form_name, #form_year', function(e){
+                    var _this = $('#form_name');
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    
+                    if ($.trim(_this.val()) == '' && $.trim($('#form_o_name').val()) == '') {
+                        $('#form_kinopoisk_id').removeAttr('readonly');
+                    } else {
+                        $('#form_kinopoisk_id').attr('readonly', 'readonly');
+                    }
+                    if ($.trim(_this.val()) == '' ) {
+                        return;
+                    }
+                    
+                   $.ajax({
+                        url: 'video-club/check-name',
+                        type: 'POST',
+                        data: {name: _this.val(), year: $.trim($('#form_year').val())},
+                        success: function (data) {
+                            if (data.success) {
+                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                            } else if (data.error){
+                                alert(data.error);
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+                
+                $(document).on('change keyup', '#form_o_name', function(e){
+                    if ($.trim($(this).val()) == '' && $.trim($('#form_name').val()) == '') {
+                        $('#form_kinopoisk_id').removeAttr('readonly');
+                    } else {
+                        $('#form_kinopoisk_id').attr('readonly', 'readonly');
+                    }
+                    checkAutocompliteButton('#form_o_name', '#form_kinopoisk_id');
+                });
+                
+                $(document).on('change keyup', '#form_kinopoisk_id', function(e){
+                    checkAutocompliteButton('#form_kinopoisk_id', '#form_o_name');
+                });
+                
+                checkProtocol();
+                
+                $(document).on('click', '#update_rating_kinopoisk', function(){
+                    $.ajax({
+                        url: 'video-club/update-rating-kinopoisk',
+                        type: 'POST',
+                        data: {data: $("#form_o_name").val() || $("#form_name").val()},
+                        success: function (data) {
+                            if (data.success) {
+                                $('#kinopoisk_url').attr('href', '');
+                                $('#kinopoisk_url').html('');
+                                for (var id in data.result){
+                                    if (data.result.hasOwnProperty(id)){
+                                        $("#form_"+id).val(data.result[id]);
+
+                                        if (id == 'kinopoisk_url'){
+                                            $('#kinopoisk_url').attr('href', data.result[id]);
+                                            $('#kinopoisk_url').html(data.result[id]);
+                                        }
+                                    }
+                                }
+                            } else if (data.error){
+                                alert(data.error);
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                alert(data.responseJSON.error);
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                    
+                });
+                
+                $(document).on('click', '#autocomplete_name, #autocomplete_id', function(){
+                    $("#modalbox").show().children().hide();
+                    $.ajax({
+                        url: 'video-club/get-kinopoisk-info-by-'+ $(this).attr('id').replace('autocomplete_', ''),
+                        type: 'POST',
+                        data: {data: $(this).closest('div').prev('div').find('input').val()},
+                        success: function (data) {
+                            $("#modalbox").hide().children().show();
+                            if (data.success) {
+                                if (data.result.hasOwnProperty('cover_big')){
+                                    $('#form_cover_id').next('img').attr('src', "video-club/get-image?url="+data.result['cover_big']);
+{#                                    $('#form_cover_id').val('');#}
+                                }
+
+                                if (data.result.hasOwnProperty('age')){
+                                    $('#form_age').select2("destroy");
+                                    $('#form_age option[value="'+data.result.age+'"]').attr('selected', 'selected');
+                                    $('#form_age').select2({minimumResultsForSearch: -1});
+                                }
+
+                                if (data.result.hasOwnProperty('rating_mpaa')){
+                                    $('#form_rating_mpaa').select2("destroy");
+                                    $('#form_rating_mpaa option[value="'+data.result.rating_mpaa+'"]').attr('selected', 'selected');
+                                    $('#form_rating_mpaa').select2({minimumResultsForSearch: -1});
+                                }
+
+                                for (var id in data.result){
+                                    if (data.result.hasOwnProperty(id)){
+
+                                        $("#form_"+id).val(data.result[id]);
+
+                                        if (id == 'kinopoisk_url'){
+                                            $('#kinopoisk_url').attr('href', data.result[id]);
+                                            $('#kinopoisk_url').html(data.result[id]);
+                                        }
+                                    }
+                                }
+                            } else if (data.error){
+                                alert(data.error);
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            $("#modalbox").hide().children().show();
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                alert(data.responseJSON.error);
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                    
+                });
+
+                $("#cover_container").on('click', 'a', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JSshowModalBox();
+                    ajaxPostSend($(this).attr('href'), {cover_id: $(this).data('cover_id')});
+                    return false;
+                });
+            });
+
+        }
+
+            document.addEventListener("DOMContentLoaded", yelp, false);
+            var cat_genre_list = {
+            {% for key, g_item in app['preparedCatGenre'] %}
+                '{{ key }}' : [{% for g_in_item in g_item %}{'id': '{{ g_in_item['id'] }}', 'title':'{{ g_in_item['title'] }}'}{% if not loop.last %},{% endif %}{% endfor %}]{% if not loop.last %},{% endif %}
+            {% endfor %}
+            };
+            
+            var category_list = {
+            {% for g_item in app['catGenres'] %}
+                '{{ g_item['id'] }}' : '{{ g_item['category_alias'] }}'{% if not loop.last %},{% endif %}
+            {% endfor %}
+            };
+            
+            function checkCatGenreList(parent, child){
+                var selAlias = category_list[$(parent).val()];
+                var selChildData = $(child).val();
+                $(child).empty();
+                $(child).select2("destroy");
+                if (typeof(cat_genre_list[selAlias]) != 'undefined') {
+                    $.each(cat_genre_list[selAlias], function(index, value){
+                        $(child).append('<option value="'+value.id+'" '+($.inArray(value.id, selChildData) != -1? 'selected="selected"': '')+'>'+value.title+'</option>');    
+                    });
+                }
+                $(child).select2({minimumResultsForSearch: -1, maximumSelectionSize: 4});
+                return;
+            }
+            
+            function checkProtocol(){
+                var protocol = $("#form_protocol");
+                if (protocol.val() != 'custom') {
+                    protocol.closest('.form-group').next('div.form-group').hide();
+                    $('form_rtsp_url').removeAttr('required');
+                } else {
+                    protocol.closest('.form-group').next('div.form-group').show();
+                    $('form_rtsp_url').attr('required', 'required');
+                }
+            }
+            
+            function checkAutocompliteButton(master, slave){
+                var buttonContainer = $(slave).parent('div').next();
+                if ($.trim($(master).val()) != '') {
+                    buttonContainer.find('button').attr('disabled', 'disabled').removeClass('btn-success');
+                    buttonContainer.find('i').removeClass('txt-success').removeClass('fa-check').addClass('txt-danger').addClass('fa-ban');
+                } else {
+                    buttonContainer.find('button').removeAttr('disabled').addClass('btn-success');
+                    buttonContainer.find('i').removeClass('txt-danger').removeClass('fa-ban').addClass('txt-success').addClass('fa-check');
+                }
+            }
+
+            var deleteCover = function(data){
+                $('#form_cover_id').val('');
+                $('#form_cover_big').val('');
+                $('#cover_container img').attr('src', '');
+                $('#bootstrapped-fine-uploader ul.qq-upload-list').empty();
+                JSSuccessModalBox();
+            };
+
+            var deleteCoverError = function(){
+                JSErrorModalBox();
+            };
+
+            var closeModalBox = function(){
+                JScloseModalBox();
+            };
+
+    </script>
+
+    <script type="text/template" id="qq-template-bootstrap">
+        <div class="qq-uploader-selector qq-uploader span12">
+        <div class="qq-upload-drop-area-selector qq-upload-drop-area span12" qq-hide-dropzone>
+        <!--<span>Drop files here to upload</span>-->
+        </div>
+        <div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto; margin: 0 auto; float: none; display: block;">
+        <div><i class="icon-upload icon-white"></i>{{ 'Add cover'|trans }}</div>
+        </div>
+        <span class="qq-drop-processing-selector qq-drop-processing">
+        <!--<span>Processing dropped files...</span>-->
+        <span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
+        </span>
+        <ul class="qq-upload-list-selector qq-upload-list" style="margin-top: 10px; text-align: center;">
+        <li>
+        <div class="qq-progress-bar-container-selector">
+        <div class="qq-progress-bar-selector qq-progress-bar"></div>
+        </div>
+        <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
+        <span class="qq-upload-file-selector qq-upload-file"></span>
+        <span class="qq-upload-size-selector qq-upload-size"></span>
+        <!--<a class="qq-upload-cancel-selector qq-upload-cancel" href="#"> {{ 'Delete'|trans }} </a>-->
+        <span class="qq-upload-status-text-selector qq-upload-status-text"></span>
+        </li>
+        </ul>
+        </div>
+    </script>
+{% endblock %}

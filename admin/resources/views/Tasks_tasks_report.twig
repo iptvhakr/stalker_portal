@@ -1,0 +1,234 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Tasks'|trans ~ ': ' ~ 'Report'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['taskState'], 2, 8) }}
+                    {{ main_macro.get_filter('task_type', 'Type'|trans, 'id', 'title', app['taskType'], 2, 8, 1) }}
+                    {{ main_macro.get_filter('video_quality', 'Quality'|trans, 'id', 'title', app['videoQuality'], 2, 8) }}
+                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4 filter no-padding" data-tvfilter="time_period">
+                        <span class="col-xs-3 col-sm-2 filter">
+                            {{ 'Closed'|trans }}:
+                        </span>
+                        <div class="col-xs-3 col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
+                            <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'between'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
+                        </div>
+                        <div class="col-xs-3 col-sm-3 filter no-padding" data-tvfilter="time_period">
+                            <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'and'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="">
+                    <div class="box-name">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                                <span class="text_black">{{ 'Report is formed due to done and rejected tasks'|trans }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                {% if attribute(app, 'allVideoDuration') is defined%}
+                    <div class=" text-center" style="z-index: 100;">
+                        <h4 id="videoduration">{{ 'Summary length, min'|trans }}: {{ app['allVideoDuration'] }}</h4>
+                    </div>
+                {% endif %}
+                <div class="box">
+               
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="dataTables_processing"></div>
+                            <table class="table  table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                                    {% if attribute(app, 'allData') is defined  and app.allData|length > 0%}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allData %}
+                                            <tr data-taskid="{{ item.id }}">                                               
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.type }}</td>
+                                                <td>{{ item.start_time|date('M d, Y H:i') }}</td>
+                                                <td>{{ item.end_time|date('M d, Y H:i') }}</td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a></td>
+                                                <td>{{ item.video_quality }}</td>
+                                                <td>{{ item.duration }}</td>
+                                                <td>{{ item.to_user_name }}</td>
+                                                <td>
+                                                    <span class="txt-{{app['taskStateColor'][item.state]}}">{{ app["taskState"][item.state]['title'] }}</span>
+                                                    {% if not(item.archived == '0') %}
+                                                        <br><span class="bg-{{app['taskStateColor'][4]}}">{{ app["taskState"][4]['title'] }}</span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- End: list_row -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                    
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                var taskState={
+                {% if attribute(app,'taskState') is defined %}
+                    {% for key, item in app.taskState %}
+                        {% if not loop.last %}'{{ key }}':'{{item.title}}',{% else %}'{{ key }}':'{{item.title}}'{% endif %}
+                    {% endfor %}
+                {% endif%}
+                };
+                var taskStateColor=[
+                {% if attribute(app,'taskStateColor') is defined %}
+                    {% for item in app.taskStateColor %}
+                        {% if not loop.last %}'{{item}}',{% else %}'{{item}}'{% endif %}
+                    {% endfor %}
+                {% endif%}
+                ];
+                if (typeof (json.data) == 'object'&& json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var state = json.data[i].state;
+                        var name = json.data[i].name;
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id='+ id + '">' + name + '</a>';
+                        
+                        json.data[i].state = '<span class="txt-' + taskStateColor[state] + '">'+taskState[state]+'</span>';
+                        if (json.data[i].archived != '0'){
+                            json.data[i].state += '<br><span class="bg-' + taskStateColor[4] + '">'+taskState[4]+'</span>';
+                        }
+                        date = json.data[i]['start_time'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['start_time'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                        date = json.data[i]['end_time'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['end_time'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                    }
+                }
+                if(typeof(json.videotime != 'undefined') && json.videotime!=-1) {
+                    $('#videoduration').text($('#videoduration').text().replace(/\d+/ig, json.videotime));
+                }
+                
+            }).dataTable({
+                "processing": true,   
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/tasks-report-json",
+                    "data": function (d) {
+                        d['task_type'] = '{{ app['task_type'] }}';
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                        
+                        $('input[id^="datepicker_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
+                        });
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "columns": [
+                    {"data": 'id'},
+                    {"data": 'type'},
+                    {"data": 'start_time'},
+                    {"data": 'end_time'},
+                    {"data": 'name'},
+                    {"data": 'video_quality'},
+                    {"data": 'duration'},
+                    {"data": 'to_user_name'},
+                    {"data": 'state'}
+                ],
+                "order": [[ 0, "desc" ]],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1, -2, 1]},
+                    {"sortable": false, "targets": [1]}
+                ]
+            }).prev('.dataTables_processing').hide('');
+            
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                var dayNamesMin = [
+                    '{{ 'Sun'|trans }}',
+                    '{{ 'Mon'|trans }}',
+                    '{{ 'Tue'|trans }}',
+                    '{{ 'Wed'|trans }}',
+                    '{{ 'Thu'|trans }}',
+                    '{{ 'Fri'|trans }}',
+                    '{{ 'Sat'|trans }}'
+                ];
+                var monthNames  = [
+                    '{{ 'January'|trans }}',
+                    '{{ 'February'|trans }}',
+                    '{{ 'March'|trans }}',
+                    '{{ 'April'|trans }}',
+                    '{{ 'May'|trans }}',
+                    '{{ 'June'|trans }}',
+                    '{{ 'July'|trans }}',
+                    '{{ 'August'|trans }}',
+                    '{{ 'September'|trans }}',
+                    '{{ 'October'|trans }}',
+                    '{{ 'November'|trans }}',
+                    '{{ 'December'|trans }}'
+                ];
+                $("#datepicker_from").datepicker({
+                    numberOfMonths: 1,
+                    language: 'ru',
+                    dateFormat: 'dd/mm/yy',
+                    dayNamesMin: dayNamesMin,
+                    monthNames: monthNames,
+                    onClose: function (selectedDate) {
+                        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
+                        $('#datatable-1').DataTable().ajax.reload();
+                    }
+                });
+                $("#datepicker_to").datepicker({
+                    numberOfMonths: 1,
+                    language: 'ru',
+                    dateFormat: 'dd/mm/yy',
+                    dayNamesMin: dayNamesMin,
+                    monthNames: monthNames,
+                    onClose: function (selectedDate) {
+                        $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
+                        $('#datatable-1').DataTable().ajax.reload();
+                    }
+                });
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

@@ -1,0 +1,432 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set active = 'settings' %}
+{% set title = 'settings' %}
+
+{% block content %}
+{#    <div class="row header_title">
+        <div class="col-xs-10 col-sm-6">
+            <h3>EPG</h3>
+        </div>
+    </div>#}
+    <div id="iptv_list">
+        <div class="row">
+           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="pull-right">
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-epg-item" class="btn btn-success  pull-right" id="add_epg_item">Добавить</a>
+                </div>
+                <div class="pull-right">
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax" data-id="all">Обновить EPG</a>
+                </div>
+                <div class="pull-right">
+                    <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/update-epg" class="btn btn-default pull-right main_ajax" data-id="all" data-force="1">Принудительно обновить EPG</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class=" auto-height">
+                    <div class="box-name">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                                <span class="text_black">Принудительно обновить EPG - полностью обновляет EPG для всех каналов.</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                                <span class="text_black">Обновить EPG - учитывает только новые/последние изменения.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-move"></div>
+                </div>
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="row">
+                                <div class="">
+                                    <div class="dataTables_processing"></div>
+                                    <table class="table  table-hover table-datatable" id="datatable-1">
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
+                                        <tbody>
+                                            {% if attribute(app, 'allData') is defined %}
+                                                <!-- Start: list_row -->
+                                                {% for item in app.allData %}
+                                                    <tr>
+                                                        <td>{{ item.id }}</td>
+                                                        <td>{{ item.id_prefix }}</td>
+                                                        <td>{{ item.uri }}</td>
+                                                        <td>{{ item.etag }}</td>
+                                                        <td>{{ item.updated|date('M d, Y H:i') }}</td>
+                                                        <td>{% if item.status == 1 %}<span class="txt-success">Опубликовано</span>{% else %}<span>Неопубликовано</span>{% endif %}</td>
+                                                        <td>
+                                                            <div class="col-xs-3 col-sm-8">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                                    <i class="pull-right fa fa-cog"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-list-json" data-id="{{ item.id }}">
+                                                                            <span>Редактировать</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-epg-item-status" data-id="{{ item.id }}" data-status="{{ item.status }}">
+                                                                            <span>{% if item.status == 1 %}<span>Не публиковать</span>{% else %}<span>Опубликовать</span>{% endif %}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-epg-item" data-id="{{ item.id }}">
+                                                                            <span>Удалить</span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            <!-- End: list_row -->
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalbox_ad">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span></span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box">
+                    <div class="box-content">
+                        <form class="form-horizontal" role="form" id="epg_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-epg-item">
+                            <!-- name -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">URL*</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10 ">
+                                        <input type="hidden" name="id" id="form_id" class="own_fields" required="required">
+                                        <input type="text" name="uri" id="form_uri" class='form-control own_fields' required="required">
+                                        <div>&nbsp;</div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">http://www.vserv.com/export/infomir/export.xml</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">Префикс</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10 ">
+                                        <input type="text" name="id_prefix" id="form_id_prefix" class='form-control own_fields'>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">Префикс нужен для определения источника EPGв ситуации, когда данный XNLTV ID присутствует в нескольких источниках</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">Начальное состояние</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10 ">
+                                        <select class="populate placeholder own_fields" name="status" id="s2_status" >
+                                            <option value="0">Не опубликованно</option>
+                                            <option value="1">Опубликованно</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">Сохранить</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >Отмена</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                    
+    <script type="text/javascript" defer>
+        
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
+                $('#s2_status').select2({minimumResultsForSearch: -1});
+
+            });
+        }
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var id = json.data[i].id;
+                        var status = json.data[i].status;
+                        json.data[i].status = (status == 1 ?"<span class='txt-success'>Опубликовано</span>":"<span>Неопубликовано</span>");
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-list-json' data-id='" + id + "'>\n\
+                                                                    <span>Редактировать</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-epg-item-status' data-id='" + id + "' data-status='" + status + "'>\n\
+                                                                    <span>"+ (status == 1? '<span>Не публиковать</span>':'<span>Опубликовать</span>') + "</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-epg-item' data-id='" + id + "'>\n\
+                                                                    <span>Удалить</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                        date = json.data[i]['updated'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['updated'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-list-json",
+                    "data": function (d) {
+{#                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }#}
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "./plugins/datatables/lang/ru_RU.json"
+                },
+                "columns": [
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}    
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
+                "bInfo": true,
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1]},
+                    {"sortable": false, "targets": [-1,]}{#,
+                    {"width": "19%", "targets": [5] },#}
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox").data('complete', 0);
+                    showModalBox();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $("#form_reset").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest('form').get(0).reset();
+    {#                    $("#cmd_data").find("tr:visible").remove();#}
+                    return false;
+                });
+                
+                $("#modalbox_ad button[type='submit']").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var lengthObj = 0;
+                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_status");
+                        form_fields.each(function () {
+                        sendData[this.name] = $(this).val();
+                        if ($(this).val() || !$(this).is("[required]")) {
+                            lengthObj++;
+                        }
+                    });
+                    if (lengthObj < form_fields.length) {
+                        alert('Не все обязательные поля заполнены');
+                        return false;
+                    }
+                    showModalBox();
+                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                    return false;
+                });
+                
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#modalbox").data('complete') && $("#modalbox").data('complete') == 1) {
+                        closeModalBox();
+                    } else {
+                        for(i=0;i<3;i++) {
+                            $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
+                        }
+                    }
+                    return false;
+                });
+                
+                $("#add_epg_item").on("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    closeModalBox();
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('Добавить EPG');
+                    $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
+                    $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
+                    $('#s2_status').select2("destroy").select2({minimumResultsForSearch: -1});
+                    $("#modalbox_ad").show();
+                    //        $(this).closest('.form-group').find('tbody tr:hidden').show();
+                    return false;
+                });
+                
+                $(document).on('change keyup', '#form_uri', function(e){
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                                       
+                   $.ajax({
+                        url: "{{ app.request.baseUrl }}/{{ app.controller_alias }}/epg-check-uri",
+                        type: 'POST',
+                        data: {param: _this.val(), epgid: $('#form_id').val()},
+                        success: function (data) {
+                            if (data.success) {
+                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                            } else if (data.error){
+                                console.log(data.error);
+                            } else {
+                                console.log('Some server error');
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                            } else {
+                                console.log('Some network error or access denied');
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+                
+                LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+        var setEPGModal = function (data) {
+            closeModalBox();
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('Редактировать EPG');
+            if (data.data.length == 1) {
+                var row = data.data[0];
+                for (var field_name in row) {
+                    $("#modalbox_ad .own_fields[name='" + field_name + "']").val(row[field_name]);
+                }
+            }
+            $("#modalbox_ad input").removeAttr('disabled');
+            $('#s2_status').select2("destroy").select2({minimumResultsForSearch: -1});
+            $("#modalbox_ad").show();
+        }
+
+        var removeEPG = function (obj) {
+            var cRow = $(obj).closest('tr');
+            $('#datatable-1').DataTable().row(cRow).remove().draw(false);
+        }
+        
+        var manageEPG = function (obj) {
+            $("#modalbox_ad").click();
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Выполнено!</span>');
+            var msg_type = typeof(obj.msg);
+            msg_type = msg_type.toLowerCase();
+            if (msg_type != 'undefined'){
+                if (msg_type == 'string') {
+                    $('#modalbox').find('.devoops-modal-inner').append('<span>' + obj.msg + '</span>');
+                } else if (msg_type == 'array' || msg_type == 'object') {
+                    for (var i in obj.msg){
+                        $('#modalbox').find('.devoops-modal-inner').append('<br><span>' + obj.msg[i] + '</span>');
+                    }
+                }
+            }
+            $('#datatable-1').DataTable().ajax.reload();
+        }
+        
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+        
+        function showModalBox(){
+            $('#modalbox').find('.modal-header-name span').text('Ожидайте...');
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Идет обработка запроса...</span>');
+            $("#modalbox").show();
+        }
+        
+        var errAction = function(){
+            $('#modalbox').find('.devoops-modal-inner').html('<span>Ошибка!</span>');
+            $("#modalbox").data('complete', 1);
+        }
+        
+    </script>
+{% endblock %}

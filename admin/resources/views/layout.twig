@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block head %}
+            <meta charset="utf-8">
+            <title>{{title}}</title>
+            {% include "basic_templates/meta.twig" %}
+            {% include "basic_templates/css.twig" %}
+        {% endblock head %}
+    </head>
+    <body>
+        {% block container %}
+           {% block maincontainer %}
+                <!--Start Container-->
+				<div id="wrapper">
+				{% block header %}
+                {% include "basic_templates/header.twig" %}
+				{% endblock header %}
+                <div id="main" class="container-fluid">
+                    <div class="row">
+					<!--Start Content-->
+						<div id="main-wrapper" >
+						{% block sidebar %}
+                            {% include "basic_templates/sidebar.twig" %}
+                        {% endblock sidebar %}
+                        <div id="content" >
+                            <div class="preloader">
+                                <img src="img/devoops_getdata.gif" class="devoops-getdata" alt="preloader"/>
+                            </div>
+                            <div id="ajax-content">
+                                <div class="row">
+                                    <div class="box-content">
+                                        <div id="breadcrumb">
+                                             {{ renderBreadCrumbs() }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% block content %}
+                                {% endblock content %}
+                            </div>
+                        </div>
+                        </div>
+                        <!--End Content-->
+                 
+                </div></div>
+				 {% block footer %}
+                {% include "basic_templates/footer_js.twig" %}
+            {% endblock footer %}
+			
+                <!--End Container--></div>
+            {% endblock maincontainer %}
+
+           
+        {% endblock container %}
+			
+    </body>
+</html>

@@ -440,10 +440,10 @@ if (count(@$_POST) > 0){
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link type="text/css" href="css/jquery.ui.all.css" rel="stylesheet" />
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
-<script type="text/javascript" src="js/jquery.tmpl.min.js"></script>
+<link type="text/css" href="../adm/css/jquery.ui.all.css" rel="stylesheet" />
+<script type="text/javascript" src="../adm/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../adm/js/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="../adm/js/jquery.tmpl.min.js"></script>
 <style type="text/css">
 
 body {
@@ -1818,7 +1818,7 @@ $(function(){
            </td>
            <td>
             <input name="o_name" id="o_name" class="o_name" type="text" size="40" value="<? echo @$o_name ?>">
-            <a style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>" href="javascript://" class="get_info"><?= _('autofill')?></a><img class="info_loader" src="css/ajax-loader.gif" style="display: none;"/>
+            <a style="display: <? echo (Config::getSafe('kinopoisk_rating', true) ? '' : 'none')?>" href="javascript://" class="get_info"><?= _('autofill')?></a><img class="info_loader" src="../adm/css/ajax-loader.gif" style="display: none;"/>
             <span id="org_name_chk"></span>
             <div><a class="kinopoisk_url" href=""></a></div>
            </td>
@@ -1841,7 +1841,7 @@ $(function(){
            </td>
            <td>
                <input type="text" readonly="readonly" name="rating_kinopoisk" class="rating_kinopoisk" value="<? echo @$item['rating_kinopoisk'] ?>">
-               <a href="javascript://" class="rating_refresh"><img src="css/refresh-static.gif" class="refresh_img"/></a>
+               <a href="javascript://" class="rating_refresh"><img src="../adm/css/refresh-static.gif" class="refresh_img"/></a>
            </td>
         </tr>
 

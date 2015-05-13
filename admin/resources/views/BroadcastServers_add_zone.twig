@@ -1,0 +1,148 @@
+{% extends 'layout.twig' %}
+{% set title = ('Streaming servers'|trans ~ ': ' ~ ' streaming area '|trans ~ ' - ' ~ (app.zoneEdit ? 'edit area'|trans ~ '"' ~ app.zoneName ~ '"': 'add area'|trans)) | trans %}
+{% set active_alias = 'broadcast-zone-list' %}
+
+{% block content %}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ 'External ID'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'}}) }}
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Title of the area. You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{ 'Default area'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].default_zone) }}      
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].default_zone) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'It will be selected as default for all new streaming servers'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          
+                            <div class="col-sm-6">
+                                <fieldset id="letters" class="col-sm-12">
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label">{{ 'Countries'|trans }}</label>
+                                        {{ form_widget(app['form'].disabled_countries, {'attr': {'class': 'left populate placeholder col-sm-12', "multiple": "multiple"}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].disabled_countries) }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <br><br><br><br><br>
+                                        <button type="button" class="add all btn btn-block btn-default"> {{ 'all'|trans }} &gt;&gt; </button>
+                                        <button type="button" class="add btn btn-block btn-default"> &gt; </button>
+                                        <button type="button" class="remove btn btn-block btn-default"> &lt; </button>
+                                        <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="col-sm-12 control-label">{{ 'Selected'|trans }}</label>
+                                        {{ form_widget(app['form'].countries, {'attr': {'class': 'right populate placeholder col-sm-12', "multiple": "multiple"}}) }}
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].countries) }}
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success pull-right'}}) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/broadcast-zone-list" class="btn btn-default pull-left"> {{ 'Cancel'|trans }} </a>
+{#                                {{ form_widget(app['form'].reset, { 'label': ' {{ 'Cancel'|trans }} ' , attr: {'class': 'btn btn-default pull-left'}}) }}#}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="">
+            {#{{ form_widget(app.form._token) }}#}
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+               
+        function yelp() {
+            $(document).ready(function () {
+                $('head').append('<link href="{{ app.request.baseUrl }}/plugins/multiselect_transfer/style.css" type="text/css" rel="stylesheet" />');
+
+                if ($('#form_default_zone').val() == 1){
+                    $('#form_default_zone').attr('checked', 'checked');
+                } 
+                
+                $(document).on('click', '#form_save', function(){
+                var sendData =[];
+                    $('#form_disabled_countries').find('option').each(function(index, val){
+                        var _val = $(this);
+                        if (_val.val()) {
+                            sendData.push(_val.val());
+                        }
+                    });
+                    $('#form_disabled_countries_json').val(JSON.stringify(sendData));
+
+                    if ($('#form_disabled_countries option').length <= 1) {
+                        $('#form_disabled_countries').append($("<option value='empty_val1'></option>"));
+                        $('#form_disabled_countries').append($("<option value='empty_val2'></option>"));
+                    }
+                    $('#form_disabled_countries').attr('multiple', true);
+                    $('#form_disabled_countries option:first').attr('selected', 'selected').next('option').attr('selected', 'selected');
+
+
+                var sendData =[];
+                    $('#form_countries').find('option').each(function(index, val){
+                        var _val = $(this);
+                        if (_val.val()) {
+                            sendData.push(_val.val());
+                        }
+                    });
+                    $('#form_countries_json').val(JSON.stringify(sendData));
+                    if ($('#form_countries option').length <= 1) {
+                        $('#form_countries').append($("<option value='empty_val1'></option>"));
+                        $('#form_countries').append($("<option value='empty_val2'></option>"));
+                    }
+                    $('#form_countries').attr('multiple', true);
+                    $('#form_countries option:first').attr('selected', 'selected').next('option').attr('selected', 'selected');;
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

@@ -1,0 +1,239 @@
+{% extends 'layout.twig' %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'schedule'|trans) | trans %}
+
+{% block content %}
+
+    <div id="iptv_list">
+        <div class="row">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            {% if app['allTasks'] %}
+                                <div class="dataTables_processing"></div>
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    <thead>
+                                        <tr>
+                                            <th data-filter="task_added">{{ 'Date'|trans }}</th>
+                                            <th data-filter="name">{{ 'Title'|trans }}</th>
+                                            <th data-filter="o_name">{{ 'Original title'|trans }}</th>
+                                            <th data-filter="time">{{ 'Length, min'|trans }}</th>
+                                            <th data-filter="tasks">{{ 'Status'|trans }}</th>
+                                            <th data-filter="year">{{ 'Year'|trans }}</th>
+                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allTasks %}
+                                            <tr data-videoid="{{ item.video_id }}">
+                                                <td data-filter="task_added">{{ item.task_added|date('Y-m-d') }}</td>
+                                                <td data-filter="name"><a href="video-club/edit-video?id={{ item.video_id }}" data-fieldname="name">{{ item.name }}</a></td>
+                                                <td data-filter="o_name">{{ item.o_name }}</td>
+                                                <td data-filter="time">{{ item.time }}</td>
+                                                <td data-filter="tasks">
+                                                 №{{ item['id'] }} ({{ 'scheduled'|trans }} {{ 'on'|trans }} {{ item['date_on']|date('d-m-Y') }})
+                                                </td>
+                                                <td data-filter="year">{{ item.year }}</td>
+                                                <td data-filter="operations" class="action-menu">
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="{{ item.video_id }}" data-taskid="{{ item.task_id }}" data-video_on_date="{{ date()|date("y-m-d") }}" data-curr_on_date="{{ item['date_on']|date('d-m-Y') }}">
+                                                                    <span>{{ 'Edit'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/enable-video" data-videoid="{{ item.video_id }}" data-video_on_date="{{ date()|date("y-m-d") }}">
+                                                                    <span>{{ 'Publish now'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-tasks" data-taskid="{{ item.task_id }}">
+                                                                    <span>{{ 'Remove schedule'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <h3>{{ 'No scheduled publications'|trans }}</h3>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <script type="text/javascript" defer>
+	
+        function TestTable1() {
+            $('#datatable-1').dataTable( {
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "paging":   false,
+                "ordering": true,
+                "info":     false,
+                "scrollCollapse": true,
+                "bFilter": true,
+                "bPaginate": true,
+                "aoColumnDefs": [
+                    { "searchable": false },
+                    { "targets": [ 3 ], "visible": false},
+                    { "targets": [ -1 , 6], "orderable": false}
+                ]
+            }).prev('.dataTables_processing').hide('');
+        }
+	
+        function yelp() {
+            $(document).ready(function () {
+			LoadDataTablesScripts(TestTable1);
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+
+                    if (_this.data('curr_on_date') && !_this.data('waiting')) {
+                        setEnableDatePicker(_this);
+                        return false;
+                    }
+
+                    if (!_this.data('atcion')) {
+                        $.ajax({
+                            url: $(this).attr('href'),
+                            type: 'POST',
+                            data: $(this).data(),
+                            success: function (data) {
+                                if (data.success) {
+                                    for (var key in data) {
+                                        _this.data(key, data[key]);
+                                    }
+                                } else {
+                                    alert("{{ 'Some server error'|trans }}");
+                                }
+                            },
+                            error: function (data) {
+                                var errAction = '';
+                                if (typeof (data.responseJSON) == 'object') {
+                                    errAction += data.responseJSON.action + 'Error';
+                                    for (var key in data.responseJSON) {
+                                        _this.data(key, data.responseJSON[key]);
+                                    }
+                                }
+                                if ($.isFunction(window[errAction])) {
+                                    window[errAction]($(_this));
+                                } else {
+                                    alert("{{ 'Some network error or access denied'|trans }}");
+                                }
+                            },
+                            dataType: "json",
+                            async: false
+                        });
+                    }
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+                
+                $(document).on('click', "#apply_enable_date", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("a[data-videoid='" + $("#modalbox input[type='hidden']").val() + "'][href*='enable']")
+                            .data('video_on_date', $("#modalbox input[type='text']").val()).data('waiting', true)
+                            .click();
+                    $("div[id*='datepicker']").hide().remove();
+                    closeModalBox();
+                    $("div[id*='datepicker']").remove();
+                    return false;
+                });
+                $(document).on('click', "#reset_enable_date, #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("div[id*='datepicker']").hide().remove();
+                    closeModalBox();
+                    return false;
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var removeTasks = function (obj) {
+            $(obj).closest('tr').remove();
+        };
+
+        var videoenable = function (obj) {
+            if ($(obj).data('waiting')) {
+                $(obj).closest('tr').find('td[data-filter="tasks"]').children('a').html($(obj).data('status'));
+                $(obj).removeData('waiting');
+                $(obj).data('curr_on_date', $(obj).data('date_on'));
+            } else {
+                $(obj).closest('tr').remove();
+            }
+        };
+
+        function setEnableDatePicker(obj) {
+            $('#modalbox').find('.modal-header-name span').text("{{ 'Schedule switch on'|trans }}");
+            $('#modalbox').find('.devoops-modal-inner')
+                    .append("<input type='hidden' name='link_id' value='" + obj.data('videoid') + "'>")
+                    .append("<input type='text' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='video_on_date' value='"+ obj.data('curr_on_date') +"'>");
+            $('#modalbox').find('.devoops-modal-bottom')
+                    .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
+                    .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Switch on'|trans }}</button>');
+            $('#modalbox').find('.devoops-modal').width(350);
+            $(".datepicker").datepicker({
+                language: 'ru',
+                dateFormat: 'dd-mm-yy',
+                firstDay: 1,
+                minDate: new Date(),
+                dayNamesMin : [
+                    '{{ 'Sun'|trans }}',
+                    '{{ 'Mon'|trans }}',
+                    '{{ 'Tue'|trans }}',
+                    '{{ 'Wed'|trans }}',
+                    '{{ 'Thu'|trans }}',
+                    '{{ 'Fri'|trans }}',
+                    '{{ 'Sat'|trans }}'
+                ],
+                monthNames  : [
+                    '{{ 'January'|trans }}',
+                    '{{ 'February'|trans }}',
+                    '{{ 'March'|trans }}',
+                    '{{ 'April'|trans }}',
+                    '{{ 'May'|trans }}',
+                    '{{ 'June'|trans }}',
+                    '{{ 'July'|trans }}',
+                    '{{ 'August'|trans }}',
+                    '{{ 'September'|trans }}',
+                    '{{ 'October'|trans }}',
+                    '{{ 'November'|trans }}',
+                    '{{ 'December'|trans }}'
+                ]
+            });
+            $("div[id*='datepicker']").addClass('dp_white');
+            $(obj).closest('div.open').removeClass('open');
+            $('#modalbox').show();
+        }
+        
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+    </script>
+
+{% endblock %}

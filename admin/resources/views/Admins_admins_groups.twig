@@ -1,0 +1,339 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Administrators'|trans ~ ': ' ~ 'groups list'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-admins-group" class="btn btn-success pull-right" id="add_group">{{ 'Add group'|trans }}</a>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class=" ">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class=" ">
+                                <div class=" ">
+                                    <div class="dataTables_processing"></div>
+                                    <table class="table  table-hover table-datatable" id="datatable-1">
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
+                                        <tbody>
+                                            {% if attribute(app, 'allGroups') is defined %}
+                                                <!-- Start: list_row -->
+                                                {% for item in app.allGroups %}
+                                                    <tr data-groupid="{{ item.id }}">
+                                                        <td>{{ item.id }}</td>
+                                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-permissions?id={{ item.id }}">{{ item.name }}</a></td>
+                                                        <td>
+                                                            <div class="col-xs-3 col-sm-8">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                                    <i class="pull-right fa fa-cog"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-list-json" data-id="{{ item.id }}">
+                                                                            <span>{{ 'Edit'|trans }}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-permissions?id={{ item.id }}">
+                                                                            <span>{{ 'Permissions'|trans }}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admins-group" data-id="{{ item.id }}">
+                                                                            <span> {{ 'Delete'|trans }} </span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            <!-- End: list_row -->
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalbox_ad">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span></span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box">
+                    <div class="box-content">
+                        <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-admins-group">
+                            <!-- singer -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Group name'|trans }}<span class="icon-required">*</span></label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input type="hidden" name="id" id="adm_id" class="own_fields">
+                                        <input type="text" required="required" name="name" data-validation=required  id="adm_name" class='form-control own_fields'>
+                             
+                                    </div>
+                                </div>
+                            </div>
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>    </form>
+            </div>
+        </div>
+    </div>
+                                    
+    <script type="text/javascript" defer>
+
+        function closeModalBox(){
+            $("#modalbox").hide();
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+        }
+
+        function TestTable1() { $.validate();
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var name = json.data[i].name;
+                        var drop;
+						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
+						else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
+						else {drop=""}
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
+                                                        <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-list-json' data-id='" + id + "'>\n\
+                                                                    <span>{{ 'Edit'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-permissions?id=" + id + "'>\n\
+                                                                    <span>{{ 'Permissions'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-admins-group' data-id='" + id + "'>\n\
+                                                                    <span> {{ 'Delete'|trans }} </span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>\n\
+                                                    </div>";
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-permissions?id=' + id + '">' + name + '</a>';
+                    }
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/admins-groups-list-json",
+                    "data": function (d) {
+{#                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }#}
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "columns": [
+                {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}    
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1]},
+					{ "width": "15px", "targets": [ -1] },
+                    {"sortable": false, "targets": [-1]}{#,
+                    {"width": "19%", "targets": [5] },#}
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () { 
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $("#form_reset").on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $(this).closest('form').get(0).reset();
+    {#                    $("#cmd_data").find("tr:visible").remove();#}
+                    return false;
+                });
+              $("#modalbox_ad button[type='submit']").on('click', function (e) {    
+  $.validate({
+  onSuccess : function() {
+    
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var lengthObj = 0;
+                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled)");
+                        form_fields.each(function () {
+                        if ($(this).val()) {
+                            sendData[this.name] = $(this).val();
+                            lengthObj++;
+                        }
+                    });
+                    if (lengthObj < form_fields.length) {
+                        alert('{{ 'Field "Group name" is required'|trans }}'); $.validate();
+                        return false;
+                    } 
+                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                    return false;
+               
+    }
+  });   });
+             
+                
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    closeModalBox();
+                    return false;
+                });
+                
+                $("#add_group").on("click", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add group'|trans }}');
+                    $("#adm_name").next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    $("#modalbox_ad input").prop("disabled", false).removeAttr('disabled').val('');
+                    $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
+                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
+                    $("#modalbox_ad").show();
+                    return false;
+                });
+                
+                $(document).on('change keyup', '#adm_name', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
+                    if (_this.val()) {
+                        $.ajax({
+                            url: '{{app.request.baseUrl}}/{{app.controller_alias}}/check-admins-group-name',
+                            type: 'POST',
+                            data: {name: _this.val()},
+                            success: function (data) {
+                                if (data.success) {
+                                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
+                                    _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                                } else if (data.error) {
+                                    $('#modalbox_ad button[type="submit"]').attr("disabled", "disabled");
+                                    console.log(data.error);
+                                } else {
+                                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
+                                    console.log("{{ 'Some server error'|trans }}");
+                                }
+                            },
+                            error: function (data) {
+                                if (typeof (data.responseJSON) != 'undefined' && typeof (data.responseJSON.error) != 'undefined') {
+                                    $('#modalbox_ad button[type="submit"]').attr("disabled", "disabled");
+                                    _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                                } else {
+                                    $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
+                                    console.log("{{ 'Some network error or access denied'|trans }}");
+                                }
+                            },
+                            dataType: "json",
+                            async: false
+                        });
+                    }
+                    return false;
+                });
+                
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+        var setAdminsGroupsModal = function (data) { 
+            $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit group'|trans }}');
+            if (data.data.length == 1) {
+                var row = data.data[0];
+                for (var field_name in row) {
+                    $("#modalbox_ad input[name='" + field_name + "']").val(row[field_name]);
+                }
+            }
+            $("#modalbox_ad input").removeAttr('disabled');
+            $('#modalbox_ad button[type="submit"]').removeAttr("disabled");
+            $("#modalbox_ad").show();
+        };
+
+       
+        var manageAdminGroupsList = function (obj) {
+            $("#modalbox_ad").click();
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+        
+    </script>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'layout.twig' %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'advertising list'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video-ads" class="btn btn-success pull-right">{{ 'Add commercial'|trans }}</a>
+            </div>
+        </div>
+        <div class="row">
+                {% if app['ads'] %}
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="box-content no-padding">
+                                <div class="dataTables_processing"></div>
+                                <table class="table  table-hover table-datatable" id="datatable-1">
+                                    <thead>
+                                        <tr>
+                                            <th data-filter="title">{{ 'Title'|trans }}</th>
+                                            <th data-filter="url">{{ 'Address'|trans }}</th>
+                                            <th data-filter="weight">{{ 'Weight'|trans }}</th>
+                                           
+                                            <th data-filter="ended">{{ 'Views counted'|trans }}</th>
+                                            <th data-filter="must_watch">{{ 'Necessary to view'|trans }}</th>
+                                            <th data-filter="status">{{ 'Status'|trans }}</th>
+                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Start: list_row -->
+                                        {% for item in app.ads %}
+                                            <tr data-adsid="{{ item.id }}">
+                                                <td ><a href="#">{{ item.title }}</a></td>
+                                                <td data-filter="url">{{ item.url }}</td>
+                                                <td data-filter="weight">{{ item.weight }}</td>
+                                                <td data-filter="started">{{ item.started }}</td>
+                                                <td data-filter="ended">{{ item.ended }}</td>
+                                                <td data-filter="must_watch">{{ item.must_watch }}</td>
+                                                <td data-filter="status">{% if item.status %}<span class="">{{ 'Published'|trans }}</span>{% else %}<span class="">{{ 'Not published'|trans }}</span>{% endif %}</td>
+                                                <td data-filter="operations">
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-ads?id={{ item.id }}">
+                                                                    <span>{{ 'Edit'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-video-ads-status" data-adsstatus="{% if item.status %}0{% else %}1{% endif %}" data-adsid="{{ item.id }}">
+                                                                    <span>{% if item.status %}{{ 'Unpublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-video-ads" data-adsid="{{ item.id }}">
+                                                                    <span>{{ 'Delete'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+<script type="text/javascript" defer>
+
+    function TestTable1() {
+        $('#datatable-1').dataTable({
+            "language": {
+                "url": "{{ app.datatable_lang_file }}"
+            },
+            "bFilter": true,
+            "bPaginate": true,
+            "bInfo":     true,
+            "aoColumnDefs": [ 
+                { className: "action-menu", "targets": [ -1 ] },
+                { "targets": [ -1 ], "orderable": false},
+                { "targets": [ 1, 2, 3, 4, 5, 6, 7], "searchable": false},
+				 { "width": "16px", "targets": [ -1] }
+
+            ]
+        }).prev('.dataTables_processing').hide('');
+    }
+    function yelp() {
+        $(document).ready(function () {
+            LoadDataTablesScripts(TestTable1);
+            
+            $(document).on('click', "a.main_ajax", function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                var _this = $(this);
+
+                if (!_this.data('atcion')) {
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'POST',
+                        data: $(this).data(),
+                        success: function (data) {
+                            if (data.success) {
+                                for (var key in data) {
+                                    _this.data(key, data[key]);
+                                }
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof(data.responseJSON) == 'object') {
+                                errAction +=  data.responseJSON.action + 'Error';
+                                for (var key in data.responseJSON) {
+                                    _this.data(key, data.responseJSON[key]);
+                                }
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction]($(_this));
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                } 
+
+                if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                    window[$(this).data('action')]($(this));
+                }
+                _this.closest('div.open').removeClass('open');
+                return false;
+            });
+        });
+    }
+    
+    document.addEventListener("DOMContentLoaded", yelp, false);
+    
+    var removeAds = function(obj){
+        var cRow = $(obj).closest('tr');
+        $('#datatable-1').DataTable().row(cRow).remove().draw( false );
+    };
+    
+    var toggleVideoAdsStatus = function(obj){
+        $(obj).text($(obj).data('title'));
+        $(obj).closest('tr').find('td[data-filter="status"]').html($(obj).data('status'));
+    }
+</script>
+{% endblock %}

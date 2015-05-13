@@ -1,0 +1,52 @@
+{# empty Twig template #}
+<div id="sidebar-left" class="col-xs-12 col-sm-2">
+    {% if attribute(app, 'side_bar') is defined %}
+        <ul class="nav main-menu">
+            {% for item in app.side_bar %}
+                <li class="dropdown {% if item.alias == app.controller_alias %}open{% endif %}">
+                    <a href="{{ app.request.baseUrl }}/{{ item.alias ? item.alias : '#' }}" class="dropdown-toggle {% if item.alias == app.controller_alias %}active-parent active{% endif %}">
+                        {% if item.icon %}
+                            <i class="{{ item.icon }}"></i>
+                        {% endif %}
+                        <span>{{ item.name }}</span>
+                        {% if attribute(item, 'add_params') is defined %}
+                            {% autoescape false%}
+                            {{ item['add_params'] }}
+                            {% endautoescape %}
+                        {% endif %}
+                        {% if item.icon2 %}
+                            <i class="{{ item.icon2 }}"></i>
+                        {% elseif item.action %}
+                            <i class="pull-right fa fa-chevron-left"></i>
+                        {% endif %}
+                    </a>
+                    {% if item.action %}
+                        <ul class="dropdown-menu">
+                        {% endif %}
+                        {% for item_action in item.action %}
+                            {% if attribute(item_action, 'self_parent_alias') is defined %}
+                                {% set parent_alias = item_action['self_parent_alias'] %}
+                            {% elseif attribute(item, 'alias') is defined %}
+                                {% set parent_alias = item['alias'] %}
+                            {% else %}
+                                {% set parent_alias = '' %}
+                            {% endif %}
+                            <li>
+                                <a class="bord {% if item_action.alias == app.action_alias or ((active_alias is defined) and active_alias == item_action.alias) %}active-parent active{% endif %}" href="{{ app.request.baseUrl }}/{{ parent_alias ? parent_alias }}/{{ item_action.alias ? item_action.alias }}">
+                                    {% if item_action.icon %}<i class="{{ item_action.icon }}"></i> {% endif %}{{ item_action.name }}
+                                {% if attribute(item_action, 'add_params') is defined %}
+                                    {% autoescape false%}
+                                    {{ item_action['add_params'] }}
+                                    {% endautoescape %}
+                                {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                        {% if item.action %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

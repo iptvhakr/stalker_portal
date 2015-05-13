@@ -25,6 +25,7 @@ class Mysql
     private $join = array();
     private $orderby = array();
     private $groupby = array();
+    private $having = array();
     private $limit = false;
     private $offset = false;
     private $cache_tags = array();
@@ -369,6 +370,73 @@ class Mysql
         return $this;
     }
 
+    public function having($key, $type = 'AND ', $value = null, $quote = true) {
+
+        if (empty($key)) {
+            return $this;
+        }
+
+        if (!is_array($key)) {
+            $keys = array($key => $value);
+        } else {
+            $keys = $key;
+        }
+
+        $having = array();
+
+        foreach ($keys as $key => $value) {
+
+            //$prefix = (count($this->having) == 0) ? '' : $type;
+            $prefix = (count($having) == 0) ? '' : $type;
+
+            if ($quote === -1) {
+                $value = '';
+            } else {
+
+                if ($value === null) {
+                    if (!$this->has_operator($key)) {
+                        $key .= ' IS';
+                    }
+
+                    $value = ' NULL';
+                } else {
+                    if (!$this->has_operator($key) && !empty($key)) {
+                        $key = $key . '=';
+                    } else {
+                        preg_match('/^(.+?)([<>!=]+|\bIS(?:\s+NULL))\s*$/i', $key, $matches);
+                        if (isset($matches[1]) && isset($matches[2])) {
+                            $key = trim($matches[1]) . '' . trim($matches[2]);
+                        }
+                    }
+
+                    $value = $this->escape($value);
+                }
+            }
+
+            //$this->having[] = $prefix.$key.$value;
+
+
+            /*if (empty($having)){
+                $having .= ' AND ('.$prefix.$key.$value.'';
+            }*/
+
+            $having[] = $prefix . $key . $value;
+        }
+        $having_str = '(' . implode(' ', $having) . ')';
+
+
+        if (count($this->having) != 0) {
+            //$having = "AND '('.$having.')";
+
+            $having_str = ' AND ' . $having_str;
+
+        }
+
+        /*$this->having[] = '('.$having.')';*/
+        $this->having[] = $having_str;
+        return $this;
+    }
+
     public function limit($limit, $offset = null) {
 
         $this->limit = intval($limit);
@@ -474,11 +542,10 @@ class Mysql
             $sql .= implode(', ', $database['groupby']);
         }
 
-        /*if (count($database['having']) > 0)
-        {
+        if (count($database['having']) > 0){
             $sql .= "\nHAVING ";
             $sql .= implode("\n", $database['having']);
-        }*/
+        }
 
         if (count($database['orderby']) > 0) {
             $sql .= "\nORDER BY ";
@@ -729,6 +796,7 @@ class Mysql
         $this->where   = array();
         $this->orderby = array();
         $this->groupby = array();
+        $this->having  = array();
         $this->limit   = false;
         $this->offset  = false;
         $this->allow_caching = false;

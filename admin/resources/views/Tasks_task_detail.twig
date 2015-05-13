@@ -1,0 +1,157 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Tasks'|trans ~ ': ' ~ 'History of task'|trans ~ ' №' ~ app.task_num ~ ' ' ~ 'in section'|trans ~ ' "' ~ app.taskTypeTitle ~'"') | trans %}
+{% set active_alias = 'tasks-list' %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row2">
+            <div class=" col-xs-7 col-sm-7">
+                <div class="box-content">
+                    <div class="box-content no-padding"  id="task_chat">
+                        <div class="col-sm-7 pull-left">
+                            <label>{{ app['creator'] }}</label>
+                            <div class="col-xs-12  one-list-message bg-{{ app['taskStateColor'][0] }} message-title"><b>{{ 'Created task'|trans }} №{{ app['task_num'] }}</b></div>
+                        </div>
+                        <div class="pull-left message-date">{{ app['added']|date('M d, Y H:i') }}</div>
+                            {% for row in app['taskAll'] %}
+                                {% if attribute(row,'comment') is defined %}
+                                    {% if row['from_usr'] == app['toLeft'] %}
+                                        {% set add_class = 'pull-left' %}
+                                    {% else %}
+                                        {% set add_class = 'pull-right' %}
+                                    {% endif %}
+                        <div class="col-sm-7  {{ add_class }} {% if row['readed'] == "0" %}bg-default{% endif %}">
+                            <label class='{{ add_class }}'>{{ row['from_usr_login'] }}</label><br>
+                            <div class="one-list-message col-xs-12 message-title">
+                                {% if row['readed'] == "0" %}<b>{{ 'Message has not been read'|trans }}</b>{% endif %}
+                                <p>{{ row['comment'] }}</p>
+                            </div>
+                        </div>
+                        <div class="{{ add_class }} message-date">{{ row['send_time']|date('M d, Y H:i') }}</div>
+                                {% endif %}
+                                {% if loop.last %}
+                                    {% if row.state != 0 %}
+                       <div class="col-sm-7 pull-left  one-list-message bg-{{ app['taskStateColor'][row.state] }}">
+                            <div class="col-xs-12 message-title"><b>{{ 'Task is'|trans }} {{ app['taskAllState'][row.state]['title']|lower }}</b></div>
+                            <div class="col-xs-2 message-date">{{ row['end_time']|date('M d, Y H:i') }}</div>
+                        </div>
+                                    {% endif %}
+                                    {% if row.archived != "0" %}
+                        <div class="col-sm-7  one-list-message bg-default">
+                            <div class="col-xs-9 message-title"><b>{{ 'Task has been sent to archive'|trans }}</b></div>
+                                        {% if row['archived_time'] %}
+                            <div class="col-xs-2 message-date">{{ row['archived_time']|date('M d, Y H:i') }}</div>
+                                        {% endif %}
+                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                    </div>
+                        {% if app['showForm'] %}
+                        <div class="box-content no-padding" id="task_chat_panel">
+                            <div class="col-xs-11 col-sm-11">
+                                <form class="form-horizontal" method="POST" role="form" id="task_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/send-task-message-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}">
+                                    <div class="form-group">
+                                        <div class=" col-xs-11 col-sm-11 ">
+                                            <input type="hidden" name="recipientID" class="own_fields" value="{{ app['recipientID'] }}">
+                                            <input type="hidden" name="taskid" class="own_fields" value="{{ app['taskID'] }}">
+                                            <input type="hidden" name="selfID" class="own_fields" value="{{ app['selfID'] }}">
+                                            <input type="hidden" name="task_type" class="own_fields" value="{{ app['task_type'] }}">
+                                            <input type="hidden" name="reply_to" value="{{ app['replyTo'] }}">
+                                            <input type="hidden" name="apply" value="">
+                                            {% if app['showInput'] %}
+                                                <input type="text" name="message" class='form-control input-sm chat_input own_fields form-control'>
+                                            {% endif %}
+                                        </div>
+                                            {% if app['showInput'] %}
+                                        <div class="col-xs-1 col-sm-1 pull-right">
+                                            <button type="submit" class="btn btn-primary btn-sm" id="btn-chat" data-value="message">{{ 'Reply'|trans }}</button>
+                                        </div>
+                                            {% endif %}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {% endif %}
+                </div>
+            </div>
+                {% if attribute(app, 'infoTable') is defined %}
+            <div class="col-xs-5 col-sm-5 pull-right">
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="row one-list-message">
+                            <div class="col-xs-4 checkbox">
+                                {% if attribute(app, 'creator') is defined %}
+                                    <label>{{ app['creator'] }}</label>
+                                {% endif %}
+                            </div>
+                            <div class="col-xs-5 message-title">
+                                <b>{{ app['taskAllState'][0]['title'] }}</b>
+                            </div>
+                            <div class="col-xs-3 message-date">{{ app['added']|date('M d, Y H:i') }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 message-title">
+                                <br/><br/>
+                                <table class="table">
+                                    {% autoescape false %}
+                                        {% for key, value in app['infoTable'] %}
+                                            <tr>
+                                                <td>{{ key }}</td>
+                                                <td>{{ value }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endautoescape %}
+                                </table>
+                                <br/><br/>
+                            </div>
+                            {% if attribute(app, 'comment') is defined %}
+                            <div class="col-xs-12 col-sm-12 message-title">
+                                <label>{{ 'Comments of creator'|trans }}:</label>
+                                <br/><br/>
+                                <p>{{ app['comment'] }}</p>
+                            </div>
+                                {% if app['showForm'] %}
+                            <div class="col-xs-12  col-sm-12 message-title">
+                                <button form="task_form" type="submit" class="btn btn-success pull-right" data-value="ended">{{ 'Done'|trans }}</button>
+                                    {% if app['showInput'] %}
+                                <button form="task_form" type="submit" class="btn btn-default pull-right" data-value="rejected">{{ 'Reject'|trans }}</button>
+								    {% endif %}
+                            </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+                {% endif %}
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+
+        function yelp() {
+            $(document).ready(function () {
+                $("#task_chat").height($(window).height()*2/3);
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = $(this).data();
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+               
+                $(document).on('click', 'button',function(){
+                    $("#task_form input[name=apply]").val($(this).data('value'));
+                });
+               
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

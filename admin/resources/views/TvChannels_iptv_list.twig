@@ -1,0 +1,317 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+
+{% set active = 'tv-channels' %}
+{% set title = ('IPTV channels'|trans ~ ': ' ~ 'channels list'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('tv_genre_id', 'Genre'|trans, 'id', 'title', app['allGenres'], 2) }}
+                {{ main_macro.get_filter('archive_id', 'Archive'|trans, 'id', 'title', app['allArchive'], 2) }}
+                {{ main_macro.get_filter('status_id', 'Status'|trans, 'id', 'title', app['allStatus'], 2) }}
+                <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/add-channel" class="btn btn-success pull-right">{{ 'Add a channel'|trans }}</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="">
+                {% if app['allChannels'] %}
+                    <div class="box">
+                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                        {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                        {% endif %}
+                        <div class="box-content">
+                            <div class="box-content no-padding">
+                                <div class="dataTables_processing"></div>
+                                <table class="table table-hover table-datatable" id="datatable-1">
+                                    <thead>
+                                        <tr>
+                                            <th data-filter="id">{{ 'ID'|trans }}</th>
+                                            <th data-filter="number">{{ 'Number'|trans }}</th>
+											<th data-filter="logo">{{ 'Logo'|trans }}</th>
+                                            <th data-filter="name"><span>{{ 'Title'|trans }}</span></th>
+                                            <th data-filter="genres_name">{{ 'Genre'|trans }}</th>
+                                            <th data-filter="enable_tv_archive">{{ 'Archive'|trans }}</th>
+                                            <th data-filter="cmd">{{ 'URL'|trans }}</th>
+                                            <th data-filter="status">{{ 'Status'|trans }}</th>
+                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allChannels %}
+                                            <tr>
+                                                <td>{{item.id }}</td>
+                                                <td>{{item.number }}</td>
+												<td><img class="img-rounded channel-logo" src="{% if item.logo %}{{ item.logo }}?{{ random(100000) }}{% endif %}" alt=""></td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id={{ item.id }}">{{ item.name }}</a></td>
+                                                <td>{{ item.genres_name }}</td>
+                                                <td>{% if item.enable_tv_archive %}{{ 'Yes'|trans }}{% else %}{{ 'No'|trans }}{% endif %}</td>
+                                                <td>{{ item.cmd }}</td>
+                                                <td>{% if item.status %}{{ 'Published'|trans }}{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8 ddd">
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-channel?id={{ item.id }}">
+                                                                    <span>{{ 'Edit'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-channel">
+                                                                    <span>{{ 'Move'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-channel?id={{ item.id }}">
+                                                                    <span>{{ 'Delete'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/{% if item.status %}disable{% else %}enable{% endif %}-channel?id={{ item.id }}">
+                                                                    <span>{% if item.status %}{{ 'Unublish'|trans }}{% else %}{{ 'Publish'|trans }}{% endif %}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id={{ item.id }}">
+                                                                    <span>{{ 'Manage EPG'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        <!-- End: list_row -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="modalbox_ad">
+        <div class="devoops-modal">
+            <div class="devoops-modal-header">
+                <div class="modal-header-name">
+                    <span>EPG</span>
+                </div>
+                <div class="box-icons">
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="devoops-modal-inner">
+                <div class="box">
+                    <div class="box-content">
+                        <form class="form-horizontal" role="form" id="epg_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-channel-epg-item">
+                            <!-- name -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Channel'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10 ">
+                                        <select class="populate placeholder own_fields" name="ch_id" id="s2_channel" >
+                                            {% if attribute(app, 'allChannels') is defined %}
+                                                {% for item in app.allChannels %}
+                                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Date'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10 col-sm-offset-1">
+                                        <input type='text' class='datepicker col-sm-6 own_fields' data-date-format='dd-mm-yy' name='epg_date' id="epg_date">
+                                        <button class="btn btn-success col-sm-5 pull-right" id="get_epg_button">{{ 'Show EPG'|trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">EPG</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10 ">
+                                        <textarea name="epg" id="epg_body" class='own_fields form-control' rows="18"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="devoops-modal-bottom">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-6 pull-right">
+                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                <button type="reset" class="btn btn-default col-sm-5 pull-left" >{{ 'Cancel'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function DemoSelect2() {
+            $('#s2_channel').select2({minimumResultsForSearch: -1});
+        }
+
+        function TestTable1() {
+            $('#datatable-1').dataTable({
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo":     true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
+				"order": [[ 1, "asc" ]],
+                "aoColumnDefs": [ 
+                    { "targets": [  -1 ], "orderable": false},
+                    { "searchable": false, "targets": [ 1,2, 3, 4, 5, 6, 7] },
+                    { className: "action-menu", "targets": [ -1 ] },
+					{ "width": "3%", "targets": [ 0 ] },
+					{ "width": "6%", "targets": [ 1 ] },
+					{ "width": "15px", "targets": [ -1] }
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+			
+
+			var size_tr = $("tr").length;
+			if (size_tr > 20 && size_tr < 55 ) {$('.dropdown-toggle').parent('div').slice(-3).addClass('dropup'); }
+		    else if ( size_tr >=4) {$('.dropdown-toggle').parent('div').slice(-4).addClass('dropup'); }
+			else if ( size_tr <=4) {$('.dropdown-toggle').parent('div').slice(-4).addClass('dropup'); }
+			
+                LoadDataTablesScripts(TestTable1);
+                LoadSelect2Script(DemoSelect2);
+
+                $(".datepicker").datepicker({
+                            language    : 'ru',
+                            dateFormat  : 'dd-mm-yy',
+                            firstDay    : 1
+                        }
+                );
+
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'GET',
+                        success: function (data) {
+                            if (data.success) {
+                                if (data.action == 'remove') {
+                                    $('#datatable-1').DataTable()
+                                            .row( _this.closest('tr') )
+                                            .remove()
+                                            .draw();
+                                } else {
+                                    _this.closest('td').prev('td').text(data.status);
+                                    _this.text(data.action);
+                                    _this.attr('href', _this.attr('href').replace(data.urlactfrom, data.urlactto))
+                                }
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function () {
+                            alert("{{ 'Some network error or access denied'|trans }}");
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $("#datatable-1").on('click', "a[href*='get-channel-epg-item']", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    ajaxPostSend(this.href, {});
+                    $(this).closest('div.open').removeClass('open');
+                });
+
+                $(document).on('change', "#s2_channel", function(e){
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $(this).val(), {});
+                });
+                $(document).on('click', "#get_epg_button", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    ajaxPostSend("{{ app.request.baseUrl }}/{{ app.controller_alias }}/get-channel-epg-item?id=" + $("#s2_channel").val(), {});
+                });
+
+                $("#modalbox_ad").on('click', "button[type='submit']", function(e){
+                    var sendData = {id:0, epg_data:'', epg_body: ''};
+                    sendData.id = $("#s2_channel").val();
+                    sendData.epg_date = $("#epg_date").val();
+                    sendData.epg_body = $("#epg_body").val();
+                    JSshowModalBox();
+                    ajaxPostSend($('#epg_form').attr('action'), sendData);
+                });
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    return false;
+                });
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        function closeModalBox(){
+            $("#modalbox_ad").hide();
+
+        }
+
+        function showModalBox(data){
+            fillEPGForm(data);
+            $("#modalbox_ad").show();
+        }
+
+        function fillEPGForm(data){
+            $( "#s2_channel").select2("val", data.ch_id );
+            $( "#epg_date" ).datepicker( "setDate", data.epg_date);
+            $( "#epg_body" ).val(data.epg_body);
+        }
+
+        var saveEPGSuccess = function(){
+            JSSuccessModalBox();
+        };
+
+        var saveEPGSuccessError = function(){
+            JSErrorModalBox();
+        };
+    </script>
+{% endblock %}

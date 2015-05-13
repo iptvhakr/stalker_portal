@@ -78,8 +78,8 @@ a:hover{
     font-size: 14px;
 }
 </style>
-<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery.cookies.2.2.0.js"></script>
+<script type="text/javascript" src="../adm/js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="../adm/js/jquery.cookies.2.2.0.js"></script>
 
 <script type="text/javascript">
 

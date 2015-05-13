@@ -1,0 +1,305 @@
+{% extends 'layout.twig' %}
+{% set title = ('Tariff plans'|trans ~ ': ' ~ (app.servicePlanEdit ? ('Edit tariff plan'|trans ~ " '"~ app.planName ~ "'"): 'Add tariff plan'|trans)) | trans %}
+{% set active_alias = 'tariff-plans' %}
+
+{% block content %}
+    <div id="add_channel">
+        {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'} }) }}
+        <div class="bg-danger">
+            <div class="bg-danger">
+                {{ form_errors(app['form']) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'External ID'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].id, {'attr': {'class': 'form-control'} }) }}
+                                    {{ form_widget(app['form'].external_id, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}</div>
+									<div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].external_id) }}
+                                    </div>
+                                    <span class="help-inline col-xs-12 col-sm-12">
+                                        <span class="small txt-default">{{ 'Must be unique'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Tariff'|trans }}<span class="icon-required">*</span></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].name, {'attr': {'class': 'form-control', 'data-validation':'required'}}) }}</div>
+									<div>
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].name) }}
+                                    </div>
+                                    <span class="help-inline col-sm-12">
+                                        <span class="small txt-default">{{ 'Tariff title. You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , .'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Set as default'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].user_default, {'attr': {'disabled': app['userDefault']} }) }}      
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].user_default) }}
+                                        </div>
+                                    </div>
+                                    <span class="help-inline col-sm-12">
+                                        <span class="small txt-default">{{ 'Default tariff for all new STB of the network'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1">{{ 'Service package'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].packages, {'attr': {'class': 'populate placeholder', 'multiple': 'multiple'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].packages) }}
+                                    </div>
+                                    <span class="help-inline col-sm-12">
+                                        <span class="small txt-default">{{ 'Service package for the following tariff plan. You may use several packages.'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label col-xs-offset-1"></label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].packages_optional, {'attr': {'class': 'form-control'} }) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].packages_optional) }}
+                                    </div>
+                                    <span class="help-inline col-sm-12">
+                                        <span class="small txt-default">*{{ 'Optional default package is switched off, but it can be switched on right in the user profile'|trans }}</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="box-content">
+                        <div class="row">
+                            <div class="col-xs-10 col-sm-4 pull-right">
+                                {{ form_widget(app['form'].save, { 'label': 'Save'|trans , attr: {'class': 'btn btn-success col-sm-5 pull-right'} }) }}
+                                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/tariff-plans" class="btn btn-default col-sm-5 pull-left">{{ 'Cancel'|trans }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="display: none;">
+            {{ form_rest(app.form) }}
+        </div>
+        {{ form_end(app['form']) }}  
+    </div>
+    <script type="text/javascript" defer>
+        
+        function DemoSelect2() {
+            $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function(){
+                $('#form_packages').select2({minimumResultsForSearch: -1});
+            });
+        }
+        
+        function yelp() {
+            $(document).ready(function () {
+			$.validate();
+                LoadSelect2Script(DemoSelect2);
+                
+                if ($("#form_packages_optional").val() != "[]") {
+                    
+                }
+
+                $(document).on('change keyup', '#form_external_id', function (e) {
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/check-external-id', {externalid: _this.val(), selfid: $('#form_id').val()}, false);
+                });
+                
+                $(document).on('click', '#form_save', function(){
+                var sendData =[];
+                    $('#form_disabled_services').find('option').each(function(index, val){
+                        var _val = $(this);
+                        if (_val.val()) {
+                            sendData.push(_val.val());
+                        }
+                    });
+                    $('#form_disabled_services_json').val(JSON.stringify(sendData));
+                var sendData =[];    
+                    $('#form_services').find('option').each(function(index, val){
+                        var _val = $(this);
+                        if (_val.val()) {
+                            sendData.push(_val.val());
+                        }
+                    });
+                    $('#form_services_json').val(JSON.stringify(sendData));
+                });
+                
+                //--------------------------------------------------------------------------------------------------------
+                
+        (function($){
+            $.fn.packagePicker = function(options){
+                
+                var _this = $(this);
+                
+                var defaults = {
+                    optional_title : 'optional',
+                    packages_optional : '#form_packages_optional',
+                    container_id: "opt_container",
+                    row_container_format: "<div class='row'></div>",
+                    block_container_format: "<div class='col-xs-10 col-sm-6'><div class='checkbox'><label></label></div></div>",
+                    package_chbox_format: "<input type='checkbox' name='packages[]' disabled checked='checked' value=''>",
+                    optional_chbox_format: "<input type='checkbox' name='optionals[]' value=''>",
+                    package_icon_format: "<i class='fa fa-square-o txt-success'></i>",
+                    optional_icon_format: "<i class='fa fa-square-o'></i>"
+                };
+                
+                _this.opts = $.extend(defaults, options);
+                
+                _this.getPackOpt = function(){
+                    return JSON.parse($(_this.opts.packages_optional).val());
+                };
+                
+                _this.setPackOpt = function(input){
+                    $(_this.opts.packages_optional).val(JSON.stringify(input));
+                };
+                
+                _this.getOptChBox = function(key){
+                    var currVal = key + '';
+                    var opt = $(this.opts.block_container_format);
+                        $(this.opts.optional_chbox_format + this.opts.optional_title + this.opts.optional_icon_format).appendTo(opt.find('label'));
+                        opt.find('input').val(currVal).attr('checked', (currVal != '' && currVal != 'off' && currVal != '0' && currVal != 0));
+                    return opt;
+                    
+                };
+                
+                _this.getPackChBox = function(key){
+                    var item = this.find('option:selected[value="' + key + '"]')
+                    var pack = '';
+                    if (item.length) {
+                        pack =  $(this.opts.block_container_format);
+                        $(this.opts.package_chbox_format + item.text() + this.opts.package_icon_format).appendTo(pack.find('label'));
+                        pack.find('input').val(item.val()).attr('checked', true);
+                    }
+                    return pack;
+                };
+                
+                _this.getOptRow = function(key, val){
+                    var row =  $(this.opts.row_container_format);
+                        $(this.getPackChBox(key)).appendTo(row);
+                        $(this.getOptChBox(val)).appendTo(row);
+                    return row;
+                };
+                
+                _this.checkOptArr = function(){
+                    var _this = this;
+                    var packages_optional_arr = {};
+                    this.find('option:selected').each(function(){
+                        var currPackVal = $(this).val();
+                        var currOptVal = 0;
+                        var pack = $("#" + _this.opts.container_id).find("input[name^='packages'][value='" + currPackVal + "']");
+                        if (pack.length != 0){
+                            currOptVal = pack.closest(".row").find("input[name^='optionals']").get(0).checked ? "1": "0";
+                        }
+                        packages_optional_arr[currPackVal] = currOptVal;
+                    });
+                    this.setPackOpt(packages_optional_arr);
+                };
+                
+                _this.render = function(){
+                    if ($("#" + this.opts.container_id).length == 0) {
+                        _this.init();
+                    } else {
+                        this.checkOptArr();
+                    }
+                    $("#" + this.opts.container_id).empty();
+                    var packages_optional_arr = this.getPackOpt();
+                    $.each(packages_optional_arr, function(key, val){
+                        $(_this.getOptRow(key, val)).appendTo($("#" + _this.opts.container_id));
+                    });
+                };
+                
+                $(_this).on("change", _this.find('option'), function(){
+                    _this.render();    
+                });
+                
+                _this.init = function(){
+                    $(this.opts.packages_optional).before("<div id='" + this.opts.container_id + "'></div>")
+                    $("#" + _this.opts.container_id).on("click", "input[name^='packages']", function(){
+                        var currPackVal = $(this).val();
+                        $(this).closest('.row').remove();
+                        _this.find('option[value="' + currPackVal + '"]').removeAttr('selected').change();
+                    });
+
+                    $("#" + _this.opts.container_id).on("click", "input[name^='optionals']", function(){
+                        var packages_optional_arr = _this.getPackOpt();
+                        var currPackVal = $(this).closest('.row').find("input[name^='packages']").val()+"";
+                        var currOptVal = !$(this).is("checked");
+                        packages_optional_arr[currPackVal] = currOptVal ? "1": "0";
+                        _this.setPackOpt(packages_optional_arr);
+                    })
+                };
+                
+                _this.closest("form").on("submit", function(){
+                    _this.render();
+                    $("#" + _this.opts.container_id + " input").attr("disabled", "disabled");
+                });
+                
+                _this.render();
+
+                return _this;
+            }
+        })(jQuery);
+                
+                $('#form_packages').packagePicker({
+{#                    optional_title: 'optional',
+                    packages_optional : JSON.parse($('#form_packages_optional').val())#}
+                });
+            });
+        }
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var updateService = function (data){
+            if (typeof (data.services) !== 'undefined') {
+                $('#form_disabled_services').empty();
+                $.each(data.services, function(index, item){
+                    $('#form_disabled_services').append('<option class="new" value='+item.id+'>'+ item.name +'</option>');
+                })
+            }
+
+            if ($('#form_all_services:checked').length){
+                $('#form_disabled_services').attr('disabled', 'disabled');
+                $('#form_services').attr('disabled', 'disabled');
+            }
+        };
+        
+        var checkExternalId = function(data){
+            $('#form_external_id').next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+        };
+        
+        var checkExternalIdError = function(data){
+            var msg = '';
+            msg = (typeof(data.responseJSON) != 'undefined') ? data.responseJSON.error: data.chk_rezult;
+            $('#form_external_id').next('div').append('<i class="txt-danger fa fa-ban"></i> ' + msg).css('visibility', 'visible');
+        };
+
+    </script>
+{% endblock %}

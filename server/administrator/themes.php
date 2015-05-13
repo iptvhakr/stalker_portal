@@ -100,7 +100,7 @@ $themes = Middleware::getThemes();
     </style>
     <title><?= _('Templates')?></title>
 
-    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="../adm/js/jquery-1.7.1.min.js"></script>
 
     <script>
         $(function(){

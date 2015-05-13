@@ -155,7 +155,7 @@ function get_users_count_in_tariff($tariff){
         }
     </style>
 
-    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="../adm/js/jquery-1.7.1.min.js"></script>
     <script type="text/javascript">
 
         (function($){

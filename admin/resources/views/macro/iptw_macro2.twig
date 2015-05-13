@@ -1,0 +1,167 @@
+{# empty Twig template #}
+{% extends 'layout.twig' %}
+{% import _self as main_macro_inside %}
+
+    {% macro input_checkbox(value, name, key) %}
+        {% if attribute(value, key) is defined %}
+            <div class="toggle-switch toggle-switch-success">
+                <label>
+                    {{ form_widget(value[key]) }}
+                    <div class="toggle-switch-inner"></div>
+                    <div class="toggle-switch-switch"></div>
+                    <div class="bg-danger">
+                        {{ form_errors(value[key]) }}
+                    </div>
+                </label>
+            </div>
+        {% else %}
+            <div class="toggle-switch toggle-switch-success">
+                <label>
+                    <input type="checkbox" name="form[{{ name }}][{{ key }}]" id="form_{{ name }}_{{ key }}">
+                    <div class="toggle-switch-inner"></div>
+                    <div class="toggle-switch-switch"></div>
+                </label>
+            </div>    
+        {% endif %}
+    {% endmacro %}
+
+    {% macro input_hidden(value, name, key, label) %}
+        {% if attribute(value, key) is defined %}
+            {% if label %}
+                <label data-field="form[{{ name }}]">{{ value[key].vars.value }}</label>
+            {% endif %}
+            {{ form_widget(value[key]) }}
+            <div class="bg-danger">
+                {{ form_errors(value[key]) }}
+            </div>
+        {% else %}
+            <input type="hidden" id="form_{{ name }}_{{ key }}" name="form[{{ name }}][{{ key }}]">
+        {% endif %}
+    {% endmacro %}
+    
+    {% macro get_filter(name, title, id_field, title_field, list_all, block_width, label_width, without_all) %}
+        {% if without_all %}
+            {% set list = '' %}
+        {% else %}
+            {% set list = ('<li><a href="#" data-filter="0"><span>' ~ app.translator.trans('All') ~ '</span></a></li>') | trans %}
+        {% endif %}
+        {% if not (block_width) %}
+            {% set block_width = 3 %}
+        {% else  %}
+            {% set block_width = block_width + 3 %}
+        {% endif %}
+        {% if not (label_width) %}
+            {% set label_width = 4 %}
+        {% else  %}
+            {% set label_width = label_width %}
+        {% endif %}
+        {#<div class="col-xs-3 col-sm-{{ block_width }} filter" data-tvfilter="{{ name }}">
+            <span class="col-xs-12 col-sm-{{ label_width }} no-padding">{{ title }}:</span>#}
+        <div class="br  filter" data-tvfilter="{{ name }}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">      <span class="no-padding">{{ title }}:</span>
+            {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined and app['filters'][name] != '0'%}
+                {% set f_name = app['filters'][name] %}
+            {% else %}
+                {% set f_name = 0 %}
+            {% endif %}
+            {% set list_f = list %}                       
+            {% for item in list_all %}
+                {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item[id_field] ~ '"><span>' ~ item[title_field] ~ '</span></a></li>') | trans %}
+                {% if not(f_name is sameas(0)) and f_name == item[id_field] %}                       
+                                       
+                        <span>{{ item[title_field] }}</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                {% endif %}
+            {% endfor %}
+            {% autoescape false %}
+                {% if f_name is sameas(0) %}
+                                  
+                        <span>{% if without_all %}{% else %}{{ app.translator.trans('All') }}{% endif %}</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                {% endif %}
+                <ul class="dropdown-menu pull-left">
+                    {{ list_f }}
+                </ul>
+            {% endautoescape %}
+        </div>
+    {% endmacro %}
+    
+    {% macro get_dropdown_attribute(dropdownAttribute, list_id, list_title, list_width, with_all, no_padding) %}
+        {% import _self as main_macro_inside %}
+        {% set set_id='attribute_set' %}
+        {% set set_title='А' %}
+        {% set set_width=1 %}
+        {% if list_id is defined and list_id %}
+            {% set set_id=list_id %}
+        {% endif %}
+        {% if list_title is defined and list_title %}
+            {% set set_title=list_title %}
+        {% endif %}
+        {% if list_width is defined and list_width %}
+            {% set set_width=list_width %}
+        {% endif %}
+        {% if with_all %}
+            {% set with_all=with_all %}
+        {% else %}
+            {% set with_all=1 %}
+        {% endif %}
+        <div class="{% if list_title is defined and list_title %}no-padding{% endif %} attribute_set" id="{{ set_id }}" style="">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                <span>{{ set_title }}</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu pull-left">
+                {% if with_all == 1 %}
+                <li>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="all" name="{{ set_id }}[]"> {{ app.translator.trans('All') }}
+                            <i class="fa fa-square-o"></i>
+                        </label>
+                    </div>
+                </li>
+                <li class="divider"></li>
+                {% endif %}
+                {% for item in dropdownAttribute %}
+                {{ main_macro_inside.get_dropdown_attribute_item(item, set_id) }}
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% endmacro %}
+                        
+    {% macro get_dropdown_attribute_item(item, set_id) %}
+        <li data-filter='{{ item.name }}'>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="{{ set_id }}[]" {% if item.name == 'operations'%}readonly="readonly" disabled="disabled"{% endif %} value="{{ item.name }}" {% if item.checked %}checked="{{ item.checked }}"{% endif %}> {{ item.title }}
+                    <i class="fa fa-square-o"></i>
+                </label>
+            </div>
+        </li>
+    {% endmacro %}
+    
+    {% macro get_datatable_head(dropdownAttribute) %}
+        <thead>
+            <tr>
+        {% for item in dropdownAttribute %}
+            <th data-filter="{{ item.name }}">{{ item.title }}</th>
+        {% endfor %}
+            </tr>
+        </thead>
+    {% endmacro %}
+    
+    {% macro get_filter_button_bar(name, id_field, title_field, list_all) %}           
+            {% autoescape false %}
+           
+                {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined%}
+                    {% set f_name = app['filters'][name] %}
+                    {% for item in list_all %}
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/{{app.action_alias}}?filters[{{ name }}]={{ item[id_field] }}" class="btn btn-success {% if f_name == item[id_field] %}active{% endif %}">{{ item[title_field] }}</a>
+                    {% endfor %}
+                {% endif %}
+          
+            {% endautoescape %}
+    {% endmacro %}

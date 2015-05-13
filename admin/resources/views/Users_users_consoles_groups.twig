@@ -1,0 +1,307 @@
+{% extends 'layout.twig' %}
+{% set title = ('Users'|trans ~ ': ' ~ 'list of groups STB'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-console-group" class="btn btn-success pull-right" id="add_console_group">{{ 'Add group'|trans }}</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="">
+                <div class="box">
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="">
+                                <div class="">
+                                    <div class="dataTables_processing"></div>
+                                    <table class="table  table-hover table-datatable" id="datatable-1">
+                                        <thead>
+                                            <tr>
+                                                <th data-filter="name">{{ 'Title'|trans }}</th>
+                                                <th data-filter="users_count">{{ 'Quantity of users'|trans }}</th>
+                                                <th data-filter="operations">{{ 'Operations'|trans }}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if attribute(app, 'allGroups') is defined %}
+                                                <!-- Start: list_row -->
+                                                {% for item in app.allGroups %}
+                                                    <tr data-consolegroupid="{{ item.id }}">
+                                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id={{ item.id }}" >{{ item.name }}</a></td>
+                                                        <td>{{ item.users_count }} </td>
+                                                        <td>
+                                                            <div class="col-xs-3 col-sm-8">
+                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                                    <i class="pull-right fa fa-cog"></i>
+                                                                </a>
+                                                                <ul class="dropdown-menu pull-right">
+                                                                    <li>
+                                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-console-group" data-consolegroupid="{{ item.id }}" id="edit_console_group_{{ item.id }}">
+                                                                            <span>{{ 'Edit'|trans }}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-group" data-consolegroupid="{{ item.id }}">
+                                                                            <span>{{ 'Delete'|trans }}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                            <!-- End: list_row -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').dataTable({
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "aoColumnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1]},
+                    { "width": "15px", "targets": [ -1] },
+                    {"sortable": false, "targets": [-1]}
+                ]
+            }).prev('.dataTables_processing').hide('');
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                
+                $(document).on('change keyup', '#console_name', function(e){
+                    var _this = $(this);
+                    _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+                    $('#modalbox button[type="submit"]').removeAttr("disabled");
+                   $.ajax({
+                        url: 'users/check-console-name',
+                        type: 'POST',
+                        data: {name: _this.val()},
+                        success: function (data) {
+                            if (data.success) {
+                                $('#modalbox button[type="submit"]').removeAttr("disabled");
+                                _this.next('div').append('<i class="txt-success fa fa-check"></i> ' + data.chk_rezult).css('visibility', 'visible');
+                            } else if (data.error){
+                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
+                                console.log(data.error);
+                            } else {
+                                $('#modalbox button[type="submit"]').removeAttr("disabled");
+                                console.log("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            if (typeof(data.responseJSON) != 'undefined' && typeof(data.responseJSON.error) != 'undefined') {
+                                $('#modalbox button[type="submit"]').attr("disabled", "disabled");
+                                _this.next('div').append('<i class="txt-danger fa fa-ban"></i> ' + data.responseJSON.error).css('visibility', 'visible');
+                            } else {
+                                $('#modalbox button[type="submit"]').removeAttr("disabled");
+                                console.log("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+                });
+                
+                $(document).on('click', "a.main_ajax", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+                    
+                    $.ajax({
+                        url: $(this).attr('href'),
+                        type: 'POST',
+                        data: $(this).data(),
+                        success: function (data) {
+                            if (data.success) {
+                                if ($.isFunction(window[data.action]) && !data.error) {
+                                    window[data.action](data);
+                                }
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof (data.responseJSON) == 'object') {
+                                errAction += data.responseJSON.action + 'Error';
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction]($(_this));
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+
+                    if ($.isFunction(window[$(this).data('action')]) && !$(this).data('error')) {
+                        window[$(this).data('action')]($(this));
+                    }
+                    _this.closest('div.open').removeClass('open');
+                    return false;
+                });
+                
+                $(document).on('click', '#add_console_group, a[id^="edit_console_group_"]', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    openModalBox($(this));
+                    return false
+                });
+                
+                $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    
+                    closeModalBox();
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='submit']", function (e) {
+                    var sendData = {
+                        id: $("#modalbox input[type='hidden']").val(),
+                        name: $("#modalbox input[type='text']").val()
+                    };
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.ajax({
+                        url: $("#modalbox form").attr('action'),
+                        type: 'POST',
+                        data: sendData,
+                        success: function (data) {
+                            if (data.success) {
+                                if ($.isFunction(window[data.action]) && !data.error) {
+                                    window[data.action](data);
+                                }
+                            } else {
+                                alert("{{ 'Some server error'|trans }}");
+                            }
+                        },
+                        error: function (data) {
+                            var errAction = '';
+                            if (typeof (data.responseJSON) == 'object') {
+                                errAction += data.responseJSON.action + 'Error';
+                            }
+                            if ($.isFunction(window[errAction])) {
+                                window[errAction](data.responseJSON);
+                            } else {
+                                alert("{{ 'Some network error or access denied'|trans }}");
+                            }
+                        },
+                        dataType: "json",
+                        async: false
+                    });
+
+                    closeModalBox();
+                    return false;
+                });
+                
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+        
+        var addConsoleGroup = function(data){
+            var cRow = $("#datatable-1 tr:last");
+            $('#datatable-1').DataTable().row.add(getCeils(data)).draw();
+        };
+        
+        var editConsoleGroup = function(data){
+            removeConsoleGroup(data);
+            addConsoleGroup(data);
+        };
+        
+        var removeConsoleGroup = function (data) {
+            var cRow = $('a[data-consolegroupid="' + data.id + '"]').closest('tr');
+            $('#datatable-1').DataTable().row(cRow).remove().draw();
+        };
+        
+    function closeModalBox(){
+        $("#modalbox").hide();
+        $('#modalbox').find('.modal-header-name span').empty();
+        $('#modalbox').find('.devoops-modal-inner').find('input').val('');
+    }
+    
+    function openModalBox(obj){
+        $('#modalbox').find('.modal-header-name span').text((obj.data('consolegroupid')? "{{ 'Edit'|trans }}": "{{ 'Add'|trans }}") + ' {{ 'group'|trans }}');
+        if ($('#modalbox').find('.devoops-modal-inner').find('input').length == 0) {
+            $('#modalbox').find('.devoops-modal-inner').html('\n\
+                <div class="box-content">\n\
+                    <form class="form-horizontal" role="form">\n\
+                        <div class="form-group">\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>\n\
+                            <div class="col-xs-10 col-sm-8">\n\
+                                <span class="col-xs-12 col-sm-12">\n\
+                                    <input type="hidden" name="id">\n\
+                                    <input type="text"  data-validation=required name="name" id="console_name">\n\
+                                    <div class="bg-danger"></div>\n\
+                                </span>\n\
+                            </div>\n\
+                        </div>\n\
+                    </form>\n\
+                </div>');
+            $('#modalbox').find('.devoops-modal-bottom').html('<div class="col-xs-10 col-sm-2 pull-right no-padding">&nbsp;</div>\n\
+                        <div class="col-xs-10 col-sm-5 pull-right no-padding">\n\
+                            <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>\n\
+                            <button type="reset" class="btn btn-default col-sm-5 pull-left" >{{ 'Cancel'|trans }}</button>\n\
+                        </div>');
+        }
+        
+        if (obj.data('consolegroupid')) {
+            $('#modalbox').find('.devoops-modal-inner').find('input[type="hidden"]').val(obj.data('consolegroupid'));
+            $('#modalbox').find('.devoops-modal-inner').find('input[type="text"]').val(obj.closest('tr').find('td:first a').text());
+        }
+        $('#modalbox button[type="submit"]').removeAttr("disabled");
+        $('#console_name').next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');
+        $('#modalbox form').attr('action', obj.attr('href'));
+        $("#modalbox").show();
+        obj.closest('div.open').removeClass('open');
+    }
+    function getCeils(data){
+        var firstCeil = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id='+data.id+'">'+data.name+'</a>';
+        var secondCeil = '0';
+        var thirdCeil = "<div class='col-xs-3 col-sm-8'>\n\
+                                <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                    <i class='pull-right fa fa-cog'></i>\n\
+                                </a>\n\
+                                <ul class='dropdown-menu pull-right'>\n\
+                                    <li>\n\
+                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-console-group'  id='edit_console_group_"+data.id+"' data-consolegroupid='" + data.id + "'>\n\
+                                            <span>{{ 'Edit'|trans }}</span>\n\
+                                        </a>\n\
+                                    </li>\n\
+                                    <li>\n\
+                                        <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-group' data-consolegroupid='" + data.id + "'>\n\
+                                            <span>{{ 'Delete'|trans }}</span>\n\
+                                        </a>\n\
+                                    </li>\n\
+                                </ul>\n\
+                            </div>";
+        return [firstCeil, secondCeil, thirdCeil];
+    }
+    </script>
+{% endblock %}

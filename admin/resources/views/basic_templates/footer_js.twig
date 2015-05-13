@@ -1,0 +1,56 @@
+
+{# empty Twig template #}
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!--<script src="http://code.jquery.com/jquery.js"></script>-->
+        <script src="{{app.request.baseUrl}}/plugins/jquery/jquery-2.1.0.min.js"></script>
+        <script src="{{app.request.baseUrl}}/js/jquery.cookies.2.2.0.js"></script>
+        <script src="{{app.request.baseUrl}}/plugins/jquery-ui/jquery-ui.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="{{app.request.baseUrl}}/plugins/bootstrap/bootstrap.min.js"></script>
+        <script src="{{app.request.baseUrl}}/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+        <script src="{{app.request.baseUrl}}/plugins/fineuploader/jquery.fineuploader-5.0.1.js"></script>
+{#        <script src="{{app.request.baseUrl}}/plugins/tinymce/tinymce.min.js"></script>
+        <script src="{{app.request.baseUrl}}/plugins/tinymce/jquery.tinymce.min.js"></script>#}
+        <!-- All functions for this theme + document.ready processing -->
+        <script type="text/javascript" defer="defer">
+            var words = [];
+            var lang = $.cookies.get('language');
+            $.ajax({
+                type: "GET",
+                url: "./js/js_translate.php",
+                async: false,
+                data: {language: lang},
+                dataType: "json",
+                success: function(data){
+                    for (var key in data){
+                        words[key] = data[key];
+                    }
+                }
+            });
+        </script>
+        <script src="{{app.request.baseUrl}}/js/devoops.js"></script>
+        <script src="{{app.request.baseUrl}}/plugins/multiselect_transfer/jquery.selso.js"></script>
+        <script src="{{app.request.baseUrl}}/plugins/datatables/jquery.dataTables.rowReordering.js"></script>
+   <script src="{{app.request.baseUrl}}/js/jqvalid.js"></script>
+ 
+
+		{% for key, item in app.lang %}<script src="{{app.request.baseUrl}}/js/jquery.form-validator.{{ item }}.min.js"></script>{% endfor %}
+<footer>
+    <div class="text">
+        
+        <a href="http://www.infomir.eu/eng/about/profile/" target=_blank>{{ 'Powered by'|trans }} Infomir</a> -
+        <a href="http://www.infomir.eu/eng/products/iptv-stb/" target=_blank>{{ 'IPTV/OTT Set-Top Boxes'|trans }}</a> -
+        <a href="http://www.infomir.eu/eng/support/form/index.php" target=_blank>{{ 'Report a bug'|trans }}</a> -
+        <a href="http://www.infomir.eu/eng/press-center/" target=_blank>{{ 'Infomir News'|trans }}</a> -
+		 {% if attribute(app, 'allowed_locales') is defined %}        
+        <div class="dropup">
+            <a id="dropdownMenu2" data-toggle="dropdown"></span>{% for key, item in app.lang %}<span class="lang-xs" lang="{{ item }}"></span>{% endfor %} {{ 'Language'|trans }}</a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2" id="allowed_locales">
+                {% for key, item in app.allowed_locales %}
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-locale="{{ item }}"><span class="lang-xs" lang="{{ item|slice(0,2) }}"></span>{{ key }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</footer>

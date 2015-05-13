@@ -1,0 +1,115 @@
+{% extends 'layout.twig' %}
+{% set title = ('Video club'|trans ~ ': ' ~ 'Activity log'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row2">
+            <div class="box">
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table dataTable no-footer table-hover table-datatable"  id="datatable-1">
+                            <thead>
+                                <tr>
+                                    <th data-filter="video_id">{{ 'ID'|trans }}</th>
+                                    <th data-filter="actiontime">{{ 'Date'|trans }}</th>
+                                    <th data-filter="video_name">{{ 'Title'|trans }}</th>
+                                    <th data-filter="login">{{ 'Moderator'|trans }}</th>
+                                    <th data-filter="action">{{ 'Status'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% if attribute(app, 'allVideoLogs') is defined %}
+                            <!-- Start: list_row -->
+                                {% autoescape false %}
+                                    {% for item in app.allVideoLogs %}
+                                        <tr data-videologid="{{ item.id }}">
+                                            <td>{{ item.video_id }}</td>
+                                            <td>{{ item.actiontime|date('M d, Y H:i') }}</td>
+                                            <td>{{ item.video_name }}</td>
+                                            <td>{{ item.login }}</td>
+                                            <td>{{ item.action }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endautoescape %}
+                            {% endif %}
+                            <!-- End: list_row -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript" defer>
+
+    function TestTable1() {
+        $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object' && json.data.length >0) {
+                    var date;
+                    for (var i in json.data) {
+                        date = json.data[i]['actiontime'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['actiontime'] = date.toLocaleFormat("%b %d, %Y %H:%M");
+                        }
+                    }
+                }
+            }).dataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/video-logs-json",
+                "data": function ( d ) {
+                    var RegExp = /video_id=(\d+)/;
+                    if (video_id = RegExp.exec(window.location.href)) {
+                        d.video_id = video_id[1];
+                    }
+                }
+            },
+            "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+            "language": {
+                "url": "{{ app.datatable_lang_file }}"
+            },
+            "columns": [
+                { "data": "video_id" },
+                { "data": "actiontime" },
+                { "data": "video_name" },
+                { "data": "login" },
+                { "data": "action" }
+            ],
+            "bFilter": true,
+            "bPaginate": true,
+			"scrollCollapse": true,
+			"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
+            "bInfo":     true,
+            "order": [[ 1, "desc" ]],
+            "aoColumnDefs": [ 
+                { className: "action-menu", "targets": [ -1 ] },
+				{ "width": "1%", "targets": [ 0 ] },
+				{ "width": "16px", "targets": [ -1 ] },
+				{ "width": "25%", "targets": [ 2,3] },
+				{ "width": "14%", "targets": [ 4 ] },
+				{ "width": "14%", "targets": [ 1 ] }
+{#                { "searchable": false, "targets": [0, 2, 3 ] }#}
+            ]
+        }).prev('.dataTables_processing').hide('');
+        $("#datatable-1").DataTable().ajax.reload();
+    }
+
+
+    function yelp() {
+        $(document).ready(function () {
+            LoadDataTablesScripts(TestTable1);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", yelp, false);
+
+</script>
+{% endblock %}

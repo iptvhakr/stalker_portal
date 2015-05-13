@@ -1,0 +1,201 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Tasks'|trans ~ ': ' ~ 'tasks list in section'|trans ~ '"' ~ app.task_type_title ~ '"') | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    {{ main_macro.get_filter('task_type', 'Task type'|trans, 'id', 'title', app['taskType'], 3, 6, 1) }}
+                    {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['taskState'], 3, 6) }}
+                    {{ main_macro.get_filter('to_user', 'Assigned to'|trans, 'id', 'login', app['taskAdmin'], 3, 6) }}
+            </div>
+        </div>
+        
+        <div class="row">
+            
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                            <table class="table  table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                                    {% if attribute(app, 'allData') is defined  and app.allData|length > 0%}
+                                        <!-- Start: list_row -->
+                                        {% for item in app.allData %}
+                                            <tr data-taskid="{{ item.id }}">                                               
+                                                <td>{{ item.id }}</td>
+                                                <td>{{ item.type }}</td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a></td>
+                                                <td>{{ item.to_user_name }}</td>
+                                                <td>{{ item.start_time|date('M d, Y H:i' ) }}</td>
+                                                <td>{% if item.messages %}<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ 'new'|trans }}</a>{% else %}<span>-</span>{% endif %}</td>
+                                                <td><span class="txt-{{app['taskStateColor'][item.state]}}">{{ app["taskState"][item.state]['title'] }}</span></td>
+                                                <td>
+                                                    <div class="col-xs-3 col-sm-8">
+                                                        {% if item.state == '0' or item.state == '3'%}
+                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
+                                                            <i class="pull-right fa fa-cog"></i>
+                                                        </a>
+                                                        <ul class="dropdown-menu pull-right">
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change" data-taskid="{{ item.id }}" data-apply="ended">
+                                                                    <span>{{ 'Done'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change" data-taskid="{{ item.id }}" data-apply="rejected">
+                                                                    <span>{{ 'Reject'|trans }}</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <!-- End: list_row -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                                    
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                var taskState={
+                {% if attribute(app,'taskState') is defined %}
+                    {% for key, item in app.taskState %}
+                        {% if not loop.last %}'{{ key }}':'{{item.title}}',{% else %}'{{ key }}':'{{item.title}}'{% endif %}
+                    {% endfor %}
+                {% endif%}
+                };
+                var taskStateColor=[
+                {% if attribute(app,'taskStateColor') is defined %}
+                    {% for item in app.taskStateColor %}
+                        {% if not loop.last %}'{{item}}',{% else %}'{{item}}'{% endif %}
+                    {% endfor %}
+                {% endif%}
+                ];
+                if (typeof (json.data) == 'object') {
+                    for (var i in json.data) {
+                        var id = json.data[i].id;
+                        var state = json.data[i].state;
+                        var name = json.data[i].name;
+                        var messages = json.data[i].messages;
+                        json.data[i].messages = messages!="0"?'<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id='+ id + '">{{ 'new'|trans }}</a>':'<span>-</span>';
+                        json.data[i].name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id='+ id + '">' + name + '</a>';
+                        
+                        json.data[i].state = '<span class="txt-' + taskStateColor[state] + '">'+taskState[state]+'</span>';
+                        
+                        var dateOn = new Date(json.data[i]['start_time'] * 1000);
+                        json.data[i].start_time = dateOn.toLocaleFormat("%b %d, %Y %H:%M");
+                        
+                        json.data[i].operations = "<div class='col-xs-3 col-sm-8'>";
+                        if (state == '0' || state == '3') {
+                            json.data[i].operations +="<a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
+                                                            <i class='pull-right fa fa-cog'></i>\n\
+                                                        </a>\n\
+                                                        <ul class='dropdown-menu pull-right'>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='ended'>\n\
+                                                                    <span>{{ 'Done'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                            <li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-state-change' data-taskid='" + id + "' data-apply='rejected'>\n\
+                                                                    <span>{{ 'Reject'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>\n\
+                                                        </ul>";
+                                            }
+                        json.data[i].operations +="</div>";
+                    }
+                }
+            }).dataTable({
+                "processing": true,   
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/tasks-list-json",
+                    "data": function (d) {
+                        d['task_type'] = '{{ app['task_type'] }}';
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "columns": [
+                    {"data": 'id'},
+                    {"data": 'type'},
+                    {"data": 'name'},
+                    {"data": 'to_user_name'},
+                    {"data": 'start_time'},
+                    {"data": 'messages'},
+                    {"data": 'state'},
+                    {"data": 'operations'}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+				"fnDrawCallback": function() {  
+					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+				},
+                "bInfo": true,
+                "order": [[ 4, "desc" ]],
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [-1, -2, 1]},
+                    {"sortable": false, "targets": [-1, 1]},
+                    {#{"width": "19%", "targets": [5] },
+                    {"width": "5%", "targets": [0, 4, 6,  7] },
+					  { "width": "16px", "targets": [ -1 ] }	
+                    {"width": "14%", "targets": [1, 2, 3, 8] }#}
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                $(document).on('click', "a.main_ajax[disabled!='disabled']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = $(this).data();
+                    sendData['task_type'] = '{{ app['task_type'] }}';
+                    ajaxPostSend($(this).attr('href'), sendData, false, false);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+        var manageTasks = function (obj) {
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+        
+    </script>
+{% endblock %}
