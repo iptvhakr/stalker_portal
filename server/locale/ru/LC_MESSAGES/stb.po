@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-05-13 12:23+0300\n"
-"PO-Revision-Date: 2015-05-13 12:23+0300\n"
+"PO-Revision-Date: 2015-05-14 13:50+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -5706,7 +5706,7 @@ msgstr "тв архив"
 
 #: ../../../administrator/index.php:330
 msgid "timeshift"
-msgstr "{0}:{1}"
+msgstr "timeshift"
 
 #: ../../../administrator/index.php:363
 msgid "records"
