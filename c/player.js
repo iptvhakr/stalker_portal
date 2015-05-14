@@ -782,12 +782,104 @@ player.prototype.init_subtitle_encoding_select = function(){
                     "value" : "utf-8"
                 },
                 {
-                    "text"  : "Windows-1251",
+                    "text"  : "Windows-1250 (cp1250)",
+                    "value" : "cp1250"
+                },
+                {
+                    "text"  : "Windows-1251 (cp1251)",
                     "value" : "cp1251"
                 },
                 {
-                    "text"  : "Windows-1252",
+                    "text"  : "Windows-1252 (cp1252)",
                     "value" : "cp1252"
+                },
+                {
+                    "text"  : "Windows-1253 (cp1253)",
+                    "value" : "cp1253"
+                },
+                {
+                    "text"  : "Windows-1254 (cp1254)",
+                    "value" : "cp1254"
+                },
+                {
+                    "text"  : "Windows-1255 (cp1255)",
+                    "value" : "cp1255"
+                },
+                {
+                    "text"  : "Windows-1256 (cp1256)",
+                    "value" : "cp1256"
+                },
+                {
+                    "text"  : "Windows-1257 (cp1257)",
+                    "value" : "cp1257"
+                },
+                {
+                    "text"  : "Windows-1258 (cp1258)",
+                    "value" : "cp1258"
+                },
+                {
+                    "text"  : "Latin 1 (iso8859-1)",
+                    "value" : "iso8859-1"
+                },
+                {
+                    "text"  : "Latin 2 (iso8859-2)",
+                    "value" : "iso8859-2"
+                },
+                {
+                    "text"  : "Latin 3 (iso8859-3)",
+                    "value" : "iso8859-3"
+                },
+                {
+                    "text"  : "Latin 4 (iso8859-4)",
+                    "value" : "iso8859-4"
+                },
+                {
+                    "text"  : "Latin/Cyrillic (iso8859-5)",
+                    "value" : "iso8859-5"
+                },
+                {
+                    "text"  : "Latin/Arabic (iso8859-6)",
+                    "value" : "iso8859-6"
+                },
+                {
+                    "text"  : "Latin/Greek (iso8859-7)",
+                    "value" : "iso8859-7"
+                },
+                {
+                    "text"  : "Latin/Hebrew (iso8859-8)",
+                    "value" : "iso8859-8"
+                },
+                {
+                    "text"  : "Latin 5 (iso8859-9)",
+                    "value" : "iso8859-9"
+                },
+                {
+                    "text"  : "Latin 6 (iso8859-10)",
+                    "value" : "iso8859-10"
+                },
+                {
+                    "text"  : "Latin/Thai (iso8859-11)",
+                    "value" : "iso8859-11"
+                },
+                {
+                    "text"  : "Latin/Devanagari (iso8859-12)",
+                    "value" : "iso8859-12"
+                },
+                {
+                    "text"  : "Latin 7 (iso8859-13)",
+                    "value" : "iso8859-13"
+                },
+                {
+                    "text"  : "Latin 8 (iso8859-14)",
+                    "value" : "iso8859-14"
+                },
+                {
+                    "text"  : "Latin 9 (iso8859-15)",
+                    "value" : "iso8859-15"
+                },
+                {
+                    "text"  : "Latin 10 (iso8859-16)",
+                    "value" : "iso8859-16"
                 }
             ]
         }
