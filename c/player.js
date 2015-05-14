@@ -1530,7 +1530,7 @@ player.prototype.event_callback = function(event, params){
         }
         case 32: // HDMI on
         {
-            window.clearTimeout(this.hdmi_reaction_timer);
+            /*window.clearTimeout(this.hdmi_reaction_timer);
 
             if (stb.profile['hdmi_event_reaction'] == 1 && !stb.power_off){
                 if (self.is_tv){
@@ -1549,18 +1549,26 @@ player.prototype.event_callback = function(event, params){
                     keydown_observer.emulate_key(key.PAUSE);
                 }
             }
-            break;
+            break;*/
         }
         case 33: // HDMI off
         {
             window.clearTimeout(this.hdmi_reaction_timer);
-
             if (stb.profile['hdmi_event_reaction']){
                 this.hdmi_reaction_timer = window.setTimeout(function(){
                     if (!stb.power_off){
                         if (self.is_tv){
                             if (typeof(stb.GetHDMIConnectionState) == 'function'){
-                                stb.player.stop();
+                                if (stb.GetHDMIConnectionState() == 2) {
+                                    if (module.tv.on) {
+                                        module.tv.cur_page = 0;
+                                        module.tv.load_data();
+                                    } else {
+                                        stb.player.play_last();
+                                    }
+                                } else {
+                                    stb.player.stop();
+                                }
                             } else {
                                 keydown_observer.emulate_key(key.MENU);
                             }
@@ -1568,7 +1576,7 @@ player.prototype.event_callback = function(event, params){
                             keydown_observer.emulate_key(key.PAUSE);
                         }
                     }
-                }, stb.profile['hdmi_event_reaction'] * 1000);
+                }, stb.profile['hdmi_event_reaction'] * 1000 * ((typeof(stb.GetHDMIConnectionState) == 'function' && stb.GetHDMIConnectionState() == 2) ? 0: 1));
             }
 
             break;
