@@ -42,7 +42,7 @@
                                         </td>
                                         <td>{{ item.users_count }}</td>
                                         <td>{{ item.type }}</td>
-                                        <td>{% if item.all_services %}<span class="">{{ 'Complete'|trans }}</span>{% else %}<span>{{ 'Optional'|trans }}</span>{% endif %}</td>
+                                        <td>{% if item.all_services %}<span class="">{{ 'complete'|trans }}</span>{% else %}<span>{{ 'Optional'|trans }}</span>{% endif %}</td>
                                         <td>
                                             <div class="col-xs-3 col-sm-8">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -103,7 +103,7 @@
                                                             </li>\n\
                                                         </ul>\n\
                                                     </div>";
-                        json.data[i].all_services = all_services != 0 ? "<span class=''>{{ 'Complete'|trans }}</span>" : "<span>{{ 'Optional'|trans }}</span>";
+                        json.data[i].all_services = all_services != 0 ? "<span class=''>{{ 'complete'|trans }}</span>" : "<span>{{ 'Optional'|trans }}</span>";
 
                         var name = json.data[i].name;
 

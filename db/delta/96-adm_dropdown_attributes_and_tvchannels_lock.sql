@@ -1,7 +1,6 @@
 --
 
-DROP TABLE IF EXISTS `admin_dropdown_attributes`;
-CREATE TABLE `admin_dropdown_attributes` (
+CREATE TABLE IF NOT EXISTS `admin_dropdown_attributes` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `admin_id` INT NOT NULL,
   `controller_name` VARCHAR(100) NOT NULL,

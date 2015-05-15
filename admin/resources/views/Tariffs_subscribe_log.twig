@@ -1,0 +1,112 @@
+{% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
+{% set title = ('Statistics'|trans ~ ': ' ~ 'Complaints statistics'|trans) | trans %}
+
+{% block content %}
+    <div id="iptv_list">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['allPackageStates']) }}
+                {{ main_macro.get_filter('initiator', 'Initiator'|trans, 'id', 'title', app['allInitiatorRoles']) }}
+                {{ main_macro.get_filter('package', 'Package name'|trans, 'id', 'title', app['allPackageNames']) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" ">
+                <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                        {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
+                    <div class="box-content">
+                        <div class="box-content no-padding">
+                            <div class="dataTables_processing"></div>
+                            <table class="table  table-hover table-datatable" id="datatable-1">
+                                {% if attribute(app, 'dropdownAttribute') is defined %}
+                                    {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                {% endif %}
+                                <tbody>
+                                {% autoescape false %}
+                                {% if attribute(app, 'allLogs') is defined %}
+                                    <!-- Start: list_row -->
+                                    {% for row in app.allLogs %}
+                                        <tr>
+                                            {% for key, item in row %}
+                                                {% if key == 'modified' %}
+                                                    <td>{{ item }}</td>
+                                                {% else %}
+                                                    <td>{{ item }}</td>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                                {% endautoescape %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" defer>
+
+        function TestTable1() {
+            $('#datatable-1').on('xhr.dt', function (e, settings, json) {
+                if (typeof (json.data) == 'object') {
+                    /*for (var i in json.data) {
+                        var row = json.data[i];
+                        for (var key in row) {
+                            if (key != 'date') {
+                                var val = row[key];
+                                json.data[i][key] = '<a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs?date=' + row.date + '&type=' + key + '">'+ val +'</a>';
+                            }
+                        }
+                    }*/
+                }
+            }).dataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/subscribe-log-json"
+                },
+                "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                },
+                "columns": [
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "bFilter": true,
+                "bPaginate": true,
+                "bInfo": true,
+                "fnDrawCallback": function() {
+                    var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
+                    var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
+                    if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
+                },
+                "columnDefs": [
+                    { className: "action-menu", "targets": [ -1 ] }
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $("#attribute_set input[type='checkbox']").each(function(index){
+                $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
+            });
+        }
+
+        function yelp() {
+            $(document).ready(function () {
+                LoadDataTablesScripts(TestTable1);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+
+    </script>
+{% endblock %}

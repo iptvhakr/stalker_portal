@@ -139,6 +139,11 @@
                 "name": _("Tariff plans"),
                 "alias": "tariff-plans",
                 "icon": ""
+            },
+            "3": {
+                "name": _("Subscribe log"),
+                "alias": "subscribe-log",
+                "icon": ""
             }
         }
     },

@@ -27,8 +27,19 @@ class TariffsController extends \Controller\BaseStalkerController {
             array("id" => 'single', "title" => $this->setlocalization('once-only'))
         );
         $this->allServices = array(
-            array("id" => '1', "title" => "Complete"),
+            array("id" => '1', "title" => "complete"),
             array("id" =>  '2', "title" => "Optional")
+        );
+
+        $this->allInitiatorRoles = array(
+            array("id" =>   'user',     "title" => $this->setlocalization("User")),
+            array("id" =>   'admin',    "title" => $this->setlocalization("Administrator")),
+            array("id" =>   'api',      "title" => $this->setlocalization("API"))
+        );
+
+        $this->allPackageStates = array(
+            array("id" =>   '1',    "title" => $this->setlocalization("off")),
+            array("id" =>   '2',    "title" => $this->setlocalization("on"))
         );
     }
 
@@ -58,7 +69,7 @@ class TariffsController extends \Controller\BaseStalkerController {
         $list = $this->service_packages_list_json();
 
         $this->app['allPackageTypes'] = $this->setLocalization($this->allPackageTypes, 'title');
-        $this->app['allServices'] = $this->allServices;
+        $this->app['allServices'] = $this->setLocalization($this->allServices, 'title');
 
         $this->app['allTariffsPackages'] = $list['data'];
         $this->app['totalRecords'] = $list['recordsTotal'];
@@ -211,7 +222,32 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['breadcrumbs']->addItem($this->setlocalization('Edit tariff plan'));
         return $this->app['twig']->render('Tariffs_add_tariff_plans.twig');
     }
-    
+
+    public function subscribe_log() {
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $list = $this->subscribe_log_json();
+
+        $this->app['allLogs'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        $attribute = $this->getLogsDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
+        $this->app['allInitiatorRoles'] = $this->allInitiatorRoles;
+        $this->app['allPackageStates'] = $this->allPackageStates;
+        $this->app['allPackageNames'] = $this->db->getTariffsList( array(
+            'select'=>array('id', 'name as title'),
+            'order' =>array('id'=>'ASC')
+        ));
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
     //----------------------- ajax method --------------------------------------
 
     public function service_packages_list_json() {
@@ -427,6 +463,65 @@ class TariffsController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
+
+    public function subscribe_log_json() {
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $filds_for_select = array(
+            'id' => 'P_S_L.`id` as `id`',
+            'mac' => 'U.`mac` as `mac`',
+            'package' => 'S_P.`name` as `package`',
+            'state' => 'P_S_L.`set_state` as `state`',
+            'initiator_name' => 'IF(P_S_L.`initiator` = "admin", A.login, P_S_L.`initiator`)',
+            'initiator' => 'P_S_L.`initiator` as `initiator`',
+            'modified' => 'CAST(P_S_L.`modified` as CHAR) as `modified`',
+        );
+
+        $param = (!empty($this->data) ? $this->data : array());
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        if (empty($query_param['select'])) {
+            $query_param['select'] = array_values($filds_for_select);
+        }
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        $filter = $this->getTariffsFilters();
+
+        $query_param['where'] = array_merge($query_param['where'], $filter);
+
+        $response['recordsTotal'] = $this->db->getTotalRowsSubscribeLogList();
+        $response["recordsFiltered"] = $this->db->getTotalRowsSubscribeLogList($query_param['where'], $query_param['like']);
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+        $response['data'] = $this->db->getSubscribeLogList($query_param);
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
     
     //------------------------ service method ----------------------------------
 
@@ -439,6 +534,18 @@ class TariffsController extends \Controller\BaseStalkerController {
             if (!empty($this->data['filters']['all_services'])) {
                 $return['all_services'] = (int) $this->data['filters']['all_services'] - 1;
             }
+
+            if (!empty($this->data['filters']['state'])) {
+                $return['P_S_L.`set_state`'] = (int) $this->data['state']['state'] - 1;
+            }
+
+            if (!empty($this->data['filters']['initiator'])) {
+                $return['P_S_L.`initiator`'] = $this->data['filters']['initiator'];
+            }
+            if (!empty($this->data['filters']['package'])) {
+                $return['S_P.`id`'] = (int) $this->data['filters']['package'];
+            }
+
             $this->app['filters'] = $this->data['filters'];
         } else {
             $this->app['filters'] = array();
@@ -713,6 +820,18 @@ class TariffsController extends \Controller\BaseStalkerController {
             array('name'=>'name',           'title'=>$this->setlocalization('Package'),     'checked' => TRUE),
             array('name'=>'users_count',    'title'=>$this->setlocalization('Users'),       'checked' => TRUE),
             array('name'=>'operations',     'title'=>$this->setlocalization('Operations'),  'checked' => TRUE)
+        );
+    }
+
+    private function getLogsDropdownAttribute() {
+        return array(
+            array('name'=>'id',             'title'=>$this->setlocalization('ID'),              'checked' => TRUE),
+            array('name'=>'mac',            'title'=>$this->setlocalization('MAC'),             'checked' => TRUE),
+            array('name'=>'package',        'title'=>$this->setlocalization('Package name'),    'checked' => TRUE),
+            array('name'=>'state',          'title'=>$this->setlocalization('State'),           'checked' => TRUE),
+            array('name'=>'initiator_name', 'title'=>$this->setlocalization('Initiator'),       'checked' => TRUE),
+            array('name'=>'initiator',      'title'=>$this->setlocalization('Initiator role'),  'checked' => TRUE),
+            array('name'=>'modified',       'title'=>$this->setlocalization('Modified'),        'checked' => TRUE)
         );
     }
 }
