@@ -888,12 +888,7 @@ function ajaxSuccess(data, alertMsg, consoleMsg){
             window[data.action](data);
         }
     } else if (data.error) {
-        if (alertMsg) {
-            alert(data.error);
-        }
-        if (consoleMsg) {
-            console.log(data.error);
-        }
+        ajaxError({responseJSON: data});
     } else {
         if (alertMsg) {
             alert('Some server error');

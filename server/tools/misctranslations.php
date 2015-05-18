@@ -529,3 +529,4 @@ _('for');
 _('complete');
 _('admin');
 _('Initiator role');
+_('No moved items, nothing to do');
