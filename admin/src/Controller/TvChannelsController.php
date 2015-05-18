@@ -302,23 +302,21 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if (!$this->isAjax) {
             $this->app->abort(404, $this->setLocalization('The unexpected request'));
         }
+        $senddata = array('action' => 'manageChannel');
         if (empty($this->postData['data'])) {
-            $erorr = 'nothing to do';
-            $senddata = array('action' => 'canceled');
+            $senddata['erorr'] = $this->setLocalization('No moved items, nothing to do');
         } else {
-            $erorr = '';
-            $senddata = array('action' => 'applied');
+            $senddata['erorr'] = '';
             foreach ($this->postData['data'] as $row) {
                 if (empty($row['id'])) {
                     continue;
                 }
                 if (!$this->db->updateChannelNum($row)) {
-                    $erorr = $this->setLocalization('Failed to save, update the channel list');
-                    $senddata = array('action' => 'canceled');
+                    $senddata['erorr'] = $this->setLocalization('Failed to save, update the channel list');
                 }
             }
         }
-        $response = $this->generateAjaxResponse($senddata, $erorr);
+        $response = $this->generateAjaxResponse($senddata, $senddata['erorr']);
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
@@ -341,7 +339,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                     continue;
                 }
 
-                $row['locked'] = (empty($row['locked']) || $row['locked'] == "false" || ((int)$row['locked']) == 0) ? 0: 1;
+                $row['locked'] = (empty($row['locked']) || $row['locked'] == "false" || $row['locked'] == '0') ? 0: 1;
                 if (!$this->db->updateChannelLockedStatus($row)) {
                     $erorr = $this->setLocalization('Failed to save, update the channel list');
                     $senddata = array('action' => 'canceled');

@@ -54,24 +54,9 @@
                         }
                         this.old_number = this.number;
                     });
-                
-                    $.ajax({
-                        url: '{{ app['controller_alias'] }}/move-apply',
-                        type: 'POST',
-                        dataType: "json",
-                        async: false,
-                        data: {data: dataForSend},
-                        success: function(data){
-                            if (data.success) {
-                                manageChannel();
-                            } else {
-                                errAction();
-                            }
-                        },
-                        error: function(){
-                            errAction();
-                        }
-                    });
+
+                    ajaxPostSend('{{ app['controller_alias'] }}/move-apply', {data: dataForSend});
+                    $("#modalbox").data('complete', 1);
                     return false;
                 });
                 $(document).on('keyup', "#searc_and_backlight input[type='text']", function(e){
@@ -159,7 +144,8 @@
                         $(this).closest("div.box").addClass('no-drop').draggable("disable").droppable("disable");
                         channelList[childID].locked = true;
                     }
-                    ajaxPostSend('{{ app['controller_alias'] }}/toogle-lock-channel', {data:{1: {id: childI.data('id'), locked: channelList[childID].locked} } })
+                    ajaxPostSend('{{ app['controller_alias'] }}/toogle-lock-channel', {data:{1: {id: childI.data('id'), locked: channelList[childID].locked} } });
+                    $("#modalbox").data('complete', 1);
                     return false;
                 });
                 
@@ -187,8 +173,8 @@
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}!</span>');
         };
         
-        var errAction = function(){
-            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}!</span>');
+        var manageChannelError = function(data){
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
             $("#modalbox").data('complete', 1);
         };
         
