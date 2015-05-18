@@ -53,8 +53,11 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $this->app['allServerStatus'] = $this->allServerStatus;
         
         $allZone = $this->db->getAllFromTable('stream_zones');
-        
-        $this->app['allZones'] = array_combine($this->getFieldFromArray($allZone, 'id'), $this->getFieldFromArray($allZone, 'name'));
+        $allZoneID = $this->getFieldFromArray($allZone, 'id');
+        $allZoneNames = $this->getFieldFromArray($allZone, 'name');
+        if (!empty($allZoneID) && !empty($allZoneNames) && count($allZoneNames) == count($allZoneID)) {
+            $this->app['allZones'] = array_combine($allZoneID, $allZoneNames);
+        }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
