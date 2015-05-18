@@ -4,8 +4,7 @@
 -- Table structure for table `adm_grp_action_access`
 --
 
-DROP TABLE IF EXISTS `adm_grp_action_access`;
-CREATE TABLE `adm_grp_action_access` (
+CREATE TABLE IF NOT EXISTS `adm_grp_action_access` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `controller_name` varchar(45) NOT NULL DEFAULT 'index',
   `action_name` varchar(45) NOT NULL DEFAULT 'index',

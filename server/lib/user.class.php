@@ -451,6 +451,7 @@ class User implements \Stalker\Lib\StbApi\User
             var_dump($on_subscribe_result);
 
             if ($on_subscribe_result === true){
+                Log::writePackageSubscribeLog($this->id, $package_id, 1);
                 return Mysql::getInstance()->insert('user_package_subscription', array(
                     'user_id' => $this->id,
                     'package_id' => $package_id
@@ -464,6 +465,8 @@ class User implements \Stalker\Lib\StbApi\User
             'user_id' => $this->id,
             'package_id' => $package_id
         ))->insert_id();
+
+        Log::writePackageSubscribeLog($this->id, $package_id, 1);
 
         $event = new SysEvent();
         $event->setUserListById($this->id);
@@ -495,6 +498,7 @@ class User implements \Stalker\Lib\StbApi\User
             var_dump($on_unsubscribe_result);
 
             if ($on_unsubscribe_result === true){
+                Log::writePackageSubscribeLog($this->id, $package_id, 0);
                 return Mysql::getInstance()->delete('user_package_subscription', array(
                     'user_id' => $this->id,
                     'package_id' => $package_id
@@ -508,6 +512,8 @@ class User implements \Stalker\Lib\StbApi\User
             'user_id' => $this->id,
             'package_id' => $package_id
         ))->result();
+
+        Log::writePackageSubscribeLog($this->id, $package_id, 0);
 
         $event = new SysEvent();
         $event->setUserListById($this->id);

@@ -50,6 +50,26 @@ class Log
                           array('time' => $default_row));
         
     }
+
+    public static function writePackageSubscribeLog($user_id, $package_id, $set_state){
+
+        $data = array(
+            'user_id' => $user_id,
+            'set_state' => $set_state,
+            'package_id' => $package_id
+        );
+
+        if (!empty(Stb::getInstance()->id) && (empty($_SERVER['TARGET']) || ($_SERVER['TARGET'] !== 'API' && $_SERVER['TARGET'] !== 'ADM'))) {
+            $data['initiator_id'] = Stb::getInstance()->id;
+            $data['initiator'] = 'user';
+        } else {
+            $data['initiator_id'] = Admin::getInstance()->getId();
+            if (!empty($data['initiator_id'])) {
+                $data['initiator'] = 'admin';
+            }
+        }
+        Mysql::getInstance()->insert('package_subscribe_log', $data);
+    }
 }
 
 ?>
