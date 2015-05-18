@@ -924,12 +924,12 @@ class UsersController extends \Controller\BaseStalkerController {
 
                 $data = array_intersect_key($data, $curr_fields);
 
-                if ($result = call_user_func_array(array($this->db, $action), array($data, $data['id']))) {
-                    if (!empty($this->postData['tariff_plan_packages'])) {
-                        $this->changeUserPlanPackages($id, $this->postData['tariff_plan_packages']);
-                    }
-                    return TRUE;
+                $result = call_user_func_array(array($this->db, $action), array($data, $data['id']));
+
+                if (!empty($this->postData['tariff_plan_packages'])) {
+                    $this->changeUserPlanPackages($id, $this->postData['tariff_plan_packages']);
                 }
+                return TRUE;
             }
         }
         return FALSE;
