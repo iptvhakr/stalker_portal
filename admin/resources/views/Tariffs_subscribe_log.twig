@@ -1,6 +1,6 @@
 {% extends 'layout.twig' %}
 {% import '/macro/iptw_macro.twig' as main_macro %}
-{% set title = ('Statistics'|trans ~ ': ' ~ 'Complaints statistics'|trans) | trans %}
+{% set title = ('Subscribe log'|trans ~ (attribute(app, 'currentUser') is defined ? (': ' ~ 'Log of user'|trans ~ " " ~ app.currentUser.name ~ " (" ~ app.currentUser.mac ~ ")" ) | trans : '')) | trans %}
 
 {% block content %}
     <div id="iptv_list">
@@ -32,10 +32,18 @@
                                     {% for row in app.allLogs %}
                                         <tr>
                                             {% for key, item in row %}
-                                                {% if key == 'modified' %}
-                                                    <td>{{ item }}</td>
-                                                {% else %}
-                                                    <td>{{ item }}</td>
+                                                {% if key != 'user_id' %}
+                                                    {% if key == 'modified' %}
+                                                        <td>{{ item|date('M d, Y H:i') }}</td>
+                                                    {% elseif key == 'mac' %}
+                                                        <td>
+                                                            <a href="{{ app.request.baseUrl }}/users/edit-users?id={{ row.user_id }}">{{ item }}</a>
+                                                        </td>
+                                                    {% elseif key == 'state' %}
+                                                        <td>{{ app.allPackageStates[item].title }}</td>
+                                                    {% else %}
+                                                        <td>{{ item }}</td>
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endfor %}
                                         </tr>
@@ -56,21 +64,27 @@
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
-                    /*for (var i in json.data) {
-                        var row = json.data[i];
-                        for (var key in row) {
-                            if (key != 'date') {
-                                var val = row[key];
-                                json.data[i][key] = '<a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs?date=' + row.date + '&type=' + key + '">'+ val +'</a>';
-                            }
+                    for (var i in json.data) {
+                        var date = json.data[i]['modified'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['modified'] = date.toLocaleFormat("%b %d, %Y %H:%M");
                         }
-                    }*/
+                        json.data[i]['state'] = json.data[i]['state'] ? '{{ app.allPackageStates[1].title }}': '{{ app.allPackageStates[0].title }}';
+                        json.data[i]['mac'] = '<a href="{{ app.request.baseUrl }}/users/edit-users?id=' + json.data[i]['user_id'] + '">'+ json.data[i]['mac'] +'</a>';
+                    }
                 }
             }).dataTable({
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/subscribe-log-json"
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/subscribe-log-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                    }
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
@@ -92,7 +106,8 @@
                     if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
                 },
                 "columnDefs": [
-                    { className: "action-menu", "targets": [ -1 ] }
+                    { className: "action-menu", "targets": [ -1 ] },
+                    {"searchable": false, "targets": [3]}
                 ]
             }).prev('.dataTables_processing').hide('');
             $("#attribute_set input[type='checkbox']").each(function(index){

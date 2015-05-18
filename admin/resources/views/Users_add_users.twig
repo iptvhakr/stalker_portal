@@ -276,6 +276,7 @@
                                             {{ form_errors(app['form']['tariff_plan_id']) }}
                                         </div>
                                     </div>
+                                    <a class="btn btn-default pull-right" href="{{app.request.baseUrl}}/tariffs/subscribe-log?user_id={{ app['form'].id.vars.value }}">{{ 'Subscribe log'|trans }}</a>
                                 </div>
                             </div>
                             {% if attribute(app, 'userTPs') is defined and app['userTPs']|length > 0 %}

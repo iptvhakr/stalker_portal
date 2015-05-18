@@ -242,8 +242,20 @@ class TariffsController extends \Controller\BaseStalkerController {
         $this->app['allPackageStates'] = $this->allPackageStates;
         $this->app['allPackageNames'] = $this->db->getTariffsList( array(
             'select'=>array('id', 'name as title'),
+            'where' => array(),
+            'like' => array(),
             'order' =>array('id'=>'ASC')
         ));
+
+        if (!empty($this->data['user_id'])) {
+            $currentUser = $this->db->getUser(array('id' => (int) $this->data['user_id']));
+            $this->app['currentUser'] = array(
+                'name' => $currentUser['fname'],
+                'mac' => $currentUser['mac'],
+                'uid' => $currentUser['id']
+            );
+            $this->app['breadcrumbs']->addItem($this->setlocalization('Log of user') . " " . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
+        }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -479,10 +491,10 @@ class TariffsController extends \Controller\BaseStalkerController {
 
         $filds_for_select = array(
             'id' => 'P_S_L.`id` as `id`',
-            'mac' => 'U.`mac` as `mac`',
+            'mac' => 'CAST(U.`mac` AS CHAR) as `mac`',
             'package' => 'S_P.`name` as `package`',
             'state' => 'P_S_L.`set_state` as `state`',
-            'initiator_name' => 'IF(P_S_L.`initiator` = "admin", A.login, P_S_L.`initiator`)',
+            'initiator_name' => 'IF(P_S_L.`initiator` = "admin", A.login, IF(P_S_L.`initiator` = "user" AND U.`login` <> "" AND NOT ISNULL(U.`login`) , U.`login`, P_S_L.`initiator`)) as `initiator_name`',
             'initiator' => 'P_S_L.`initiator` as `initiator`',
             'modified' => 'CAST(P_S_L.`modified` as CHAR) as `modified`',
         );
@@ -504,7 +516,13 @@ class TariffsController extends \Controller\BaseStalkerController {
 
         $query_param['where'] = array_merge($query_param['where'], $filter);
 
-        $response['recordsTotal'] = $this->db->getTotalRowsSubscribeLogList();
+        $user_id = FALSE;
+        if (!empty($this->data['user_id'])) {
+            $query_param['where']['user_id'] = $user_id =(int) $this->data['user_id'];
+        }
+        $query_param['select'][] = 'P_S_L.`user_id` as `user_id`';
+
+        $response['recordsTotal'] = $this->db->getTotalRowsSubscribeLogList(array(), array(), $user_id);
         $response["recordsFiltered"] = $this->db->getTotalRowsSubscribeLogList($query_param['where'], $query_param['like']);
 
         if (empty($query_param['limit']['limit'])) {
@@ -512,7 +530,18 @@ class TariffsController extends \Controller\BaseStalkerController {
         } elseif ($query_param['limit']['limit'] == -1) {
             $query_param['limit']['limit'] = FALSE;
         }
-        $response['data'] = $this->db->getSubscribeLogList($query_param);
+
+        $self = $this;
+
+        $response['data'] = array_map(function($row) use ($self){
+            if ($row['initiator'] != 'admin' || $row['initiator_name'] == 'user') {
+                $row['initiator_name'] = $self->setLocalization($row['initiator_name']);
+            }
+            $row['state'] = (int) $row['state'];
+            $row['initiator'] = $self->setLocalization($row['initiator']);
+            $row['modified'] = (int)  strtotime($row['modified']);
+            return $row;
+        }, $this->db->getSubscribeLogList($query_param));
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
@@ -536,7 +565,7 @@ class TariffsController extends \Controller\BaseStalkerController {
             }
 
             if (!empty($this->data['filters']['state'])) {
-                $return['P_S_L.`set_state`'] = (int) $this->data['state']['state'] - 1;
+                $return['P_S_L.`set_state`'] = ((int) $this->data['filters']['state']) - 1;
             }
 
             if (!empty($this->data['filters']['initiator'])) {

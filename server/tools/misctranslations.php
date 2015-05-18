@@ -527,3 +527,5 @@ _('users');
 _('Sending a message with video');
 _('for');
 _('complete');
+_('admin');
+_('Initiator role');
