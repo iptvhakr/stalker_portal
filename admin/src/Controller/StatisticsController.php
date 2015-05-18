@@ -122,7 +122,7 @@ class StatisticsController extends \Controller\BaseStalkerController {
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
         
-        $this->app['filters'] = $this->data['filters'];
+        $this->app['filters'] = (array_key_exists('filters', $this->data) ? $this->data['filters'] : array());
         $this->app['allTVLocale'] = $this->db->getTVLocale();
 
         $list = $this->stat_tv_list_json();

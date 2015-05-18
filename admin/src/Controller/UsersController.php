@@ -971,8 +971,13 @@ class UsersController extends \Controller\BaseStalkerController {
                 } elseif ($sub_param == 'aut') {
                     $data[$key]['type'] = $this->logObjectsTypes['video'];
                     preg_match("/auto \/media\/(\d+)\.[a-z]*$/", $row['param'], $tmp_arr);
-                    $media = $this->db->getVideo(array('id' => $tmp_arr[1]));
-                    $data[$key]['object'] = $media['name'];
+                    if (!empty($tmp_arr[1])) {
+                        $media = $this->db->getVideo(array('id' => $tmp_arr[1]));
+                        $data[$key]['object'] = $media['name'];
+                    } else {
+                        $data[$key]['type'] = $this->logObjectsTypes['unknown'];
+                        $data[$key]['object'] = '';
+                    }
                 } else {
                     $data[$key]['type'] = $this->logObjectsTypes['unknown'];
                     $data[$key]['object'] = '';

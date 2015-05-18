@@ -159,7 +159,7 @@ class UsersModel extends \Model\BaseStalkerModel {
                         ->from('user_log')->join('users', 'user_log.mac', 'users.mac', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $obj = $obj->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])?$param['limit']['offset']: FALSE));
         }
        
         return $obj->get()->all();
