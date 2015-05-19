@@ -12,6 +12,7 @@
                 {{ main_macro.get_filter('archive_id', 'Archive'|trans, 'id', 'title', app['allArchive'], 2) }}
                 {{ main_macro.get_filter('status_id', 'Status'|trans, 'id', 'title', app['allStatus'], 2) }}
                 <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/add-channel" class="btn btn-success pull-right">{{ 'Add a channel'|trans }}</a>
+                <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/restart-all-archives" class="btn btn-success pull-right" id="restart_archives_button">{{ 'Restart all TV archives'|trans }}</a>
             </div>
         </div>
 
@@ -285,6 +286,14 @@
                     JScloseModalBox();
                     return false;
                 });
+
+                $(document).on('click', '#restart_archives_button', function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JSshowModalBox();
+                    ajaxPostSend($(this).attr('href'), {});
+                    return false;
+                });
             });
         }
 
@@ -312,6 +321,16 @@
 
         var saveEPGSuccessError = function(){
             JSErrorModalBox();
+        };
+
+        var restartArchive = function(data){
+            $("#modalbox").data('complete', 1);
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Done'|trans }}! ' + (data.msg ? data.msg : '') +  '</span>');
+        };
+
+        var restartArchiveError = function(data){
+            $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Error'|trans }}! ' + (data.error? data.error: '') +  '</span>');
+            $("#modalbox").data('complete', 1);
         };
     </script>
 {% endblock %}

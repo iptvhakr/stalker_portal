@@ -36,7 +36,7 @@ bind_textdomain_codeset('stb', 'UTF-8');
 
 
 $words['Wait'] = _('Wait');
-$words['Request_is_being_prossessed'] = _('Request is being prossessed');
+$words['Request_is_being_prossessed'] = _('Request is being processed');
 $words['Done'] = _('Done');
 $words['Failed'] = _('Failed');
 

@@ -864,11 +864,13 @@ function getChannelListItem(num, item){
                         <span class="curr_num col-xs-1 col-sm-1 no-padding" data-number="'+num+'">'+item.number+'</span>\n\
                         <div class="channel col-xs-10 col-sm-10 no-padding">\n\
                             <span class="no-padding">\n\
-                              <!----  <img class="img-rounded" src="'+item.logo+'" alt="">\n\--->\
+                              <!----  <img class="img-rounded" src="'+item.logo+'" alt="">--->\n\
                             </span>\n\
                             <a style="position:relative; z-index:300;" href="'+item.link+'" class="no-padding">'+item.name+'</a>';
 	    if (item.empty != '1') {
-        return_val +='<div class="box-icons col-sm-1 no-padding"><a style="position:relative; z-index:300;" class="lock-link">\n\        <i data-id="' + item.id + '" class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\    </a></div>';
+        return_val +='<div class="box-icons col-sm-1 no-padding"><a style="position:relative; z-index:300;" class="lock-link">\n\
+                        <i data-id="' + item.id + '" class="fa fa-'+(!item.locked? 'un': '')+'lock"></i>\n\
+                        </a></div>';
 	}						
                  return_val +='    </div>\n\
                     </div>';
@@ -883,8 +885,8 @@ function getChannelListItem(num, item){
 function ajaxSuccess(data, alertMsg, consoleMsg){
     var alertMsg = typeof(alertMsg) != 'undefined'? alertMsg: true;
     var consoleMsg = typeof(consoleMsg) != 'undefined'? consoleMsg: true;
-    if (data.success) {
-        if ($.isFunction(window[data.action]) && !data.error) {
+    if (data.success  && !data.error) {
+        if ($.isFunction(window[data.action])) {
             window[data.action](data);
         }
     } else if (data.error) {
