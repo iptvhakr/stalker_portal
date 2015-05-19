@@ -600,6 +600,50 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
 
+    public function restart_all_archives(){
+        if (!$this->isAjax) {
+            $this->app->abort(404, 'Page not found...');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'restartArchive';
+        $data['error'] = $error = '';
+
+        $tv_archive = new \TvArchive();
+        $result = true;
+        $current_tasks = $this->db->getCurrentTasks();
+
+        $new_tasks = array();
+
+        foreach ($current_tasks as $task) {
+            $new_tasks[$task['ch_id']][] = $task['storage_name'];
+        }
+        foreach (array_keys($new_tasks) as $channel) {
+            if ($this->db->checkChannelParams($channel)) {
+                $tv_archive->deleteTasks($channel);
+                $result = $tv_archive->createTasks($channel, $new_tasks[$channel]) && $result;
+            } else {
+                $result = FALSE;
+                if (empty($data['error'])) {
+                    $data['error'] = $this->setLocalization('Some channels not enough params.');
+                }
+            }
+        }
+        if (!$result) {
+            $data['error'] .= ' ' . $this->setLocalization('TV Archive has NOT been restarted correctly.');
+        }  else {
+            $data['msg'] = $this->setLocalization('TV Archive has been restarted.');
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getLogoUriById($id = FALSE, $row = FALSE, $resolution = 320) {

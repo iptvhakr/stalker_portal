@@ -301,4 +301,17 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     public function updateITVChannelLogo($id, $logo_name) {
         return $this->mysqlInstance->update('itv', array('logo' => $logo_name), array('id' => $id))->total_rows();
     }
+
+    public function getCurrentTasks(){
+        return $this->mysqlInstance->select('ch_id, storage_name')->from('tv_archive')->get()->all();
+    }
+
+    public function checkChannelParams($ch_id){
+        return $this->mysqlInstance->from('itv')
+            ->where(array(
+                'id' => $ch_id,
+                'NOT ISNULL(mc_cmd) AND mc_cmd<>"" and "1"' => '1'
+            ))
+            ->get()->count();
+    }
 }
