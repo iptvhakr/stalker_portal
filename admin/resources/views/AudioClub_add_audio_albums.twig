@@ -218,10 +218,10 @@
                     </a>
                 </div>
             </div>
+            <form class="form-horizontal" role="form" id="track_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-tracks-manage">
             <div class="devoops-modal-inner">
                 <div class="box">
                     <div class="box-content">
-                        <form class="form-horizontal" role="form" id="track_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/audio-tracks-manage">
                             <!-- track name -->
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
@@ -275,8 +275,9 @@
                             </div>
                         </div>
                     </div>
-                </div>    </form>
+                </div>
             </div>
+            </form>
         </div>
     </div>
 
@@ -284,8 +285,6 @@
 
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
-			
-		
                 $('#form_performer_id').select2({minimumResultsForSearch: -1});
                 $('#form_year_id').select2({minimumResultsForSearch: -1});
                 $('#form_country_id').select2({minimumResultsForSearch: -1});
@@ -295,10 +294,6 @@
             });
         }
 
-		
-		
-		
-		
         function TestTable1() {
             $('#datatable-1').on('xhr.dt', function (e, settings, json) {
                 if (typeof (json.data) == 'object') {
@@ -381,71 +376,70 @@
         function yelp() {
 
             $(document).ready(function () {
-			
- //Initialize the validation object which will be called on form submit.
-    var validobj = $("#form_").validate({
-        onkeyup: false,
-        errorClass: "myErrorClass",
 
-        //put error message behind each form element
-        errorPlacement: function (error, element) {
-            var elem = $(element);
-            error.insertAfter(element);
-        },
+                //Initialize the validation object which will be called on form submit.
+                var validobj = $("#form_").validate({
+                    onkeyup: false,
+                    errorClass: "myErrorClass",
 
-        //When there is an error normally you just add the class to the element.
-        // But in the case of select2s you must add it to a UL to make it visible.
-        // The select element, which would otherwise get the class, is hidden from
-        // view.
-        highlight: function (element, errorClass, validClass) {
-            var elem = $(element);
-            if (elem.hasClass("select2-offscreen")) {
-                $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
-				
-            } else { 
-                elem.addClass(errorClass);
-            }
-        },
+                    //put error message behind each form element
+                    errorPlacement: function (error, element) {
+                        var elem = $(element);
+                        error.insertAfter(element);
+                    },
 
-        //When removing make the same adjustments as when adding
-        unhighlight: function (element, errorClass, validClass) {
-            var elem = $(element);
-            if (elem.hasClass("select2-offscreen")) {
-                $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
-				 $("#s2id_" + elem.attr("id") + " a").removeClass(errorClass);
-            } else {
-                elem.removeClass(errorClass);
-            }
-        }
-    });
+                    //When there is an error normally you just add the class to the element.
+                    // But in the case of select2s you must add it to a UL to make it visible.
+                    // The select element, which would otherwise get the class, is hidden from
+                    // view.
+                    highlight: function (element, errorClass, validClass) {
+                        var elem = $(element);
+                        if (elem.hasClass("select2-offscreen")) {
+                            $("#s2id_" + elem.attr("id") + " ul").addClass(errorClass);
 
-    //If the change event fires we want to see if the form validates.
-    //But we don't want to check before the form has been submitted by the user
-    //initially.
-    $(document).on("change", ".select2-offscreen", function () {
-        if (!$.isEmptyObject(validobj.submitted)) {
-            validobj.form();
-        }
-    });
+                        } else {
+                            elem.addClass(errorClass);
+                        }
+                    },
 
-    //A select2 visually resembles a textbox and a dropdown.  A textbox when
-    //unselected (or searching) and a dropdown when selecting. This code makes
-    //the dropdown portion reflect an error if the textbox portion has the
-    //error class. If no error then it cleans itself up.
-    $(document).on("select2-opening", function (arg) {
-        var elem = $(arg.target);
- 
-		
-		if ($("#s2id_" + elem.attr("id") + " a").hasClass("myErrorClass")) {
-            //jquery checks if the class exists before adding.
-            $(".select2-drop a").addClass("myErrorClass");
-        } else {
-            $(".select2-drop a").removeClass("myErrorClass");
-        }
-    });
-	
-	
- $.validate({form: '#form_'});
+                    //When removing make the same adjustments as when adding
+                    unhighlight: function (element, errorClass, validClass) {
+                        var elem = $(element);
+                        if (elem.hasClass("select2-offscreen")) {
+                            $("#s2id_" + elem.attr("id") + " ul").removeClass(errorClass);
+                            $("#s2id_" + elem.attr("id") + " a").removeClass(errorClass);
+                        } else {
+                            elem.removeClass(errorClass);
+                        }
+                    }
+                });
+
+                //If the change event fires we want to see if the form validates.
+                //But we don't want to check before the form has been submitted by the user
+                //initially.
+                $(document).on("change", ".select2-offscreen", function () {
+                    if (!$.isEmptyObject(validobj.submitted)) {
+                        validobj.form();
+                    }
+                });
+
+                //A select2 visually resembles a textbox and a dropdown.  A textbox when
+                //unselected (or searching) and a dropdown when selecting. This code makes
+                //the dropdown portion reflect an error if the textbox portion has the
+                //error class. If no error then it cleans itself up.
+                $(document).on("select2-opening", function (arg) {
+                    var elem = $(arg.target);
+
+                    if ($("#s2id_" + elem.attr("id") + " a").hasClass("myErrorClass")) {
+                        //jquery checks if the class exists before adding.
+                        $(".select2-drop a").addClass("myErrorClass");
+                    } else {
+                        $(".select2-drop a").removeClass("myErrorClass");
+                    }
+                });
+
+
+                $.validate({form: '#form_'});
                 var uploader = $("#bootstrapped-fine-uploader").fineUploader({
                     element: $('#bootstrapped-fine-uploader'),
                     autoUpload: true,
@@ -522,21 +516,22 @@
                     });
 
                     $("#modalbox_ad button[type='submit']").on('click', function (e) {
-					
-					  $.validate({
-					  form: '#track_form',
-  onSuccess : function() {
-					
-					
-                        e.stopPropagation();
-                        e.preventDefault();
-                        var sendData = {};
-                        $("#modalbox_ad input, #modalbox_ad select").each(function () {
-                            sendData[this.name] = $(this).val();
+
+                        $.validate({
+                            form: '#track_form',
+                            onSuccess: function () {
+
+                                e.stopPropagation();
+                                e.preventDefault();
+                                var sendData = {};
+                                $("#modalbox_ad input, #modalbox_ad select").each(function () {
+                                    sendData[this.name] = $(this).val();
+                                });
+                                sendData['album_id'] = {{ app['audioAlbumID'] }};
+                                ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                                return false;
+                            }
                         });
-                        sendData['album_id'] = {{ app['audioAlbumID'] }};
-                        ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                        return false; } });
                     });
 
                     $("#form_save").on('click', function (e) {

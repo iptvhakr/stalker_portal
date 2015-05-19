@@ -616,7 +616,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
             $genres_query->in('id', $user_genres);
         }
 
-        $genres = $genres_query->get()->all();
+        $genres = $genres_query->orderby('number', 'ASC')->get()->all();
 
         if (in_array('dvb', stb::getAvailableModulesByUid($this->stb->id))
             && in_array(Stb::getInstance()->getParam('stb_type'), array('MAG270', 'MAG275'))){

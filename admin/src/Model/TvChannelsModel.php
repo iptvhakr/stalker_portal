@@ -314,4 +314,36 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
             ))
             ->get()->count();
     }
+
+    public function getTotalRowsTvGenresList($where = array(), $like = array()) {
+        $obj = $this->mysqlInstance->count()->from('tv_genre')->where($where);
+        if (!empty($like)) {
+            $obj = $obj->like($like, 'OR');
+        }
+        return $obj->get()->counter();
+    }
+
+    public function getTvGenresList($param) {
+        $obj = $this->mysqlInstance->select($param['select'])
+            ->from('tv_genre')
+            ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        if (!empty($param['limit']['limit'])) {
+            $obj = $obj->limit($param['limit']['limit'], ( array_key_exists('offset', $param['limit']) ? $param['limit']['offset']: FALSE ) );
+        }
+        $allRows = $obj->get()->all();
+        return $allRows;
+    }
+
+    public function insertTvGenres($param){
+        return $this->mysqlInstance->query("INSERT INTO `tv_genre` (`title`, `number`) SELECT '$param[title]', MAX(`number`) + 1 FROM `tv_genre`")->insert_id();
+    }
+
+    public function updateTvGenres($data, $param){
+        unset($data['id']);
+        return $this->mysqlInstance->update('tv_genre', $data, $param)->total_rows();
+    }
+
+    public function deleteTvGenres($param){
+        return $this->mysqlInstance->delete('tv_genre', $param)->total_rows();
+    }
 }

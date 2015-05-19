@@ -200,6 +200,21 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
+
+    public function tv_genres(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $this->app['dropdownAttribute'] = $this->getGenresDropdownAttribute();
+        $list = $this->tv_genres_list_json();
+
+        $this->app['allData'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
     
     //----------------------- ajax method --------------------------------------
 
@@ -637,6 +652,195 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             $data['error'] .= ' ' . $this->setLocalization('TV Archive has NOT been restarted correctly.');
         }  else {
             $data['msg'] = $this->setLocalization('TV Archive has been restarted.');
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function tv_genres_list_json(){
+
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = $this->setlocalization('Error');
+        $param = (!empty($this->data) ? $this->data : array());
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'RowOrder'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsTvGenresList();
+        $response["recordsFiltered"] = $this->db->getTotalRowsTvGenresList($query_param['where'], $query_param['like']);
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        if (!empty($query_param['select']) && !in_array('id', $query_param['select'])) {
+            $query_param['select'][] = 'id';
+        }
+
+        $self = $this;
+        $query_param['order']['number'] = 'ASC';
+
+        $response['data'] = array_map(function($row) use ($self){
+            $row['localized_title'] = $self->setLocalization($row['title']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getTvGenresList($query_param));
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+
+        $error = "";
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function add_tv_genres(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['title'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'addTvGenre';
+        $error = $this->setlocalization('Failed');
+        $check = $this->db->getTvGenresList(array('where' => array('title' => $this->postData['title']), 'order' => array('title' => 'ASC')));
+        if (empty($check)) {
+            $data['id'] = $this->db->insertTvGenres(array('title' => $this->postData['title']));
+            $data['title'] = $this->postData['title'];
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function edit_tv_genres(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['title']) || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'editTvGenre';
+        $error = $this->setlocalization('Failed');
+        $check = $this->db->getTvGenresList(array('where' => array('title' => $this->postData['title']), 'order' => array('title' => 'ASC')));
+        if (empty($check)) {
+            $this->db->updateTvGenres(array('title' => $this->postData['title']), array('id' => $this->postData['id']));
+            $error = '';
+            $data['id'] = $this->postData['id'];
+            $data['title'] = $this->postData['title'];
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function remove_tv_genres(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['genresid'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'removeTvGenre';
+        $data['id'] = $this->postData['genresid'];
+        $this->db->deleteTvGenres(array('id' => $this->postData['genresid']));
+        $response = $this->generateAjaxResponse($data, '');
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function check_tv_genres_name(){
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['title'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'checkTvGenre';
+        $error = $this->setlocalization('Name already used');
+        if ($this->db->getTvGenresList(array('where' => array('title' => $this->postData['title']), 'order' => array('title' => 'ASC')))) {
+            $data['chk_rezult'] = $this->setlocalization('Name already used');
+        } else {
+            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
+    }
+
+    public function tv_genres_reorder() {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $matches = array();
+        $data = array();
+        $data['action'] = 'reorder';
+        $error = 'error';
+        if (preg_match("/(\d+)/i", $this->postData['id'], $matches)){
+            $params = array(
+                'select' => array(
+                    "id"        => 'tv_genre.id as `id`',
+                    "number"    => 'tv_genre.number as `number`'
+                ),
+                'where' => array(),
+                'like' => array(),
+                'order' => array('number'=>'DESC')
+            );
+            $curr_pos = $this->postData['fromPosition'];
+            $new_pos = $this->postData['toPosition'];
+
+            $params['where']['tv_genre.number'] = $curr_pos;
+            $curr_genre = $this->db->getTvGenresList($params);
+
+            $params['where'] = array();
+            $params['where']['tv_genre.number<='] = $new_pos;
+            $target_genre = $this->db->getTvGenresList($params);
+
+            if ($this->db->updateTvGenres($target_genre[0], array('id' => $curr_genre[0]['id'])) && $this->db->updateTvGenres($curr_genre[0], array('id' => $target_genre[0]['id']))) {
+                $error = '';
+            }
+
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1186,5 +1390,14 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             }
         }
         return $return;
+    }
+
+    private function getGenresDropdownAttribute(){
+        return array(
+            array('name'=>'number',         'title'=>$this->setLocalization('Number'),          'checked' => TRUE),
+            array('name'=>'title',          'title'=>$this->setLocalization('Title'),           'checked' => TRUE),
+            array('name'=>'localized_title','title'=>$this->setLocalization('Localized title'), 'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
+        );
     }
 }
