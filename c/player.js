@@ -2310,9 +2310,9 @@ player.prototype.play = function(item){
     this.play_initiated = true;
 
     _debug('stb.cur_place', stb.cur_place);
-    
-    if (this.media_type == 'stream' && !stb.player.cur_media_item.series){
-        
+
+    if (this.media_type == 'stream' && !stb.player.cur_media_item.hasOwnProperty('series')){
+
         if (item.hasOwnProperty('open') && !item.open){
             _debug('channel is closed');
             try{
