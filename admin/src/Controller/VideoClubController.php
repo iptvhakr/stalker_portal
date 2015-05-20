@@ -1339,11 +1339,18 @@ class VideoClubController extends \Controller\BaseStalkerController {
                     $operation = 'updateVideo';
                 }
                 if (!$is_repeating_name) {
-                    if ($data ['protocol'] == 'custom' && $data ['rtsp_url']) {
-                        $error_local = array();
-                        $error_local['rtsp_url'] = ($is_repeating_name ? $this->setlocalization('If the protocol') . " - '$data[protocol]', " . $this->setlocalization('then this field must be filled') : '');
-                        $this->app['error_local'] = $error_local;
-                        return FALSE;
+                    $series = array();
+                    if ($data ['protocol'] == 'custom') {
+                        if (empty($data['rtsp_url'])) {
+                            $error_local = array();
+                            $error_local['rtsp_url'] = ($is_repeating_name ? $this->setlocalization('If the protocol') . " - '$data[protocol]', " . $this->setlocalization('then this field must be filled') : '');
+                            $this->app['error_local'] = $error_local;
+                            return FALSE;
+                        } else {
+                            if (preg_match("/s\d+e(\d+).*$/i", $rtsp_url, $tmp_arr)) {
+                                $series = range(1, (int)$tmp_arr[1], 1);
+                            }
+                        }
                     }
                     $data['trans_name'] = $this->transliterate(@urldecode($data['name']));
                     if ($data['hd']) {
@@ -1352,28 +1359,29 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
                     $db_data = array(
                         'name' => trim($data['name']),
+                        'series' => serialize($series),
                         'o_name' => trim($data['o_name']),
-                        'censored' => $data ['censored'],
-                        'hd' => $data ['hd'],
-                        'for_sd_stb' => $data ['for_sd_stb'],
-                        'protocol' => $data ['protocol'],
-                        'rtsp_url' => $data ['rtsp_url'],
-                        'time' => @$data ['duration'],
-                        'description' => $data ['description'],
-                        'genre_id_1' => (array_key_exists(0, $data['genres']) ? $data ['genres'][0] : 0),
-                        'genre_id_2' => (array_key_exists(1, $data['genres']) ? $data ['genres'][1] : 0),
-                        'genre_id_3' => (array_key_exists(2, $data['genres']) ? $data ['genres'][2] : 0),
-                        'genre_id_4' => (array_key_exists(3, $data['genres']) ? $data ['genres'][3] : 0),
-                        'cat_genre_id_1' => (array_key_exists(0, $data['cat_genre_id']) ? $data ['cat_genre_id'][0] : 0),
-                        'cat_genre_id_2' => (array_key_exists(1, $data['cat_genre_id']) ? $data ['cat_genre_id'][1] : 0),
-                        'cat_genre_id_3' => (array_key_exists(2, $data['cat_genre_id']) ? $data ['cat_genre_id'][2] : 0),
-                        'cat_genre_id_4' => (array_key_exists(3, $data['cat_genre_id']) ? $data ['cat_genre_id'][3] : 0),
-                        'category_id' => $data ['category_id'],
-                        'director' => $data ['director'],
-                        'actors' => $data ['actors'],
-                        'status' => (int) !empty($data ['rtsp_url']),
+                        'censored' => $data['censored'],
+                        'hd' => $data['hd'],
+                        'for_sd_stb' => $data['for_sd_stb'],
+                        'protocol' => $data['protocol'],
+                        'rtsp_url' => trim($data['rtsp_url']),
+                        'time' => @$data['duration'],
+                        'description' => $data['description'],
+                        'genre_id_1' => (array_key_exists(0, $data['genres']) ? $data['genres'][0] : 0),
+                        'genre_id_2' => (array_key_exists(1, $data['genres']) ? $data['genres'][1] : 0),
+                        'genre_id_3' => (array_key_exists(2, $data['genres']) ? $data['genres'][2] : 0),
+                        'genre_id_4' => (array_key_exists(3, $data['genres']) ? $data['genres'][3] : 0),
+                        'cat_genre_id_1' => (array_key_exists(0, $data['cat_genre_id']) ? $data['cat_genre_id'][0] : 0),
+                        'cat_genre_id_2' => (array_key_exists(1, $data['cat_genre_id']) ? $data['cat_genre_id'][1] : 0),
+                        'cat_genre_id_3' => (array_key_exists(2, $data['cat_genre_id']) ? $data['cat_genre_id'][2] : 0),
+                        'cat_genre_id_4' => (array_key_exists(3, $data['cat_genre_id']) ? $data['cat_genre_id'][3] : 0),
+                        'category_id' => $data['category_id'],
+                        'director' => $data['director'],
+                        'actors' => $data['actors'],
+                        'status' => (int)!empty($data['rtsp_url']),
                         'year' => $data['year'],
-                        'volume_correction' => (int) $data['volume_correction'],
+                        'volume_correction' => (int)$data['volume_correction'],
                         'kinopoisk_id' => $data['kinopoisk_id'],
                         'rating_kinopoisk' => $data['rating_kinopoisk'],
                         'rating_count_kinopoisk' => $data['rating_count_kinopoisk'],
@@ -1381,14 +1389,14 @@ class VideoClubController extends \Controller\BaseStalkerController {
                         'rating_count_imdb' => $data['rating_count_imdb'],
                         'age' => $data['age'],
                         'rating_mpaa' => $data['rating_mpaa'],
-                        'high_quality' => $data ['high_quality'],
-                        'low_quality' => $data ['low_quality'],
+                        'high_quality' => $data['high_quality'],
+                        'low_quality' => $data['low_quality'],
                         'comments' => $data['comments'],
                         'country' => $data['country']
                     );
                     if ($operation == 'insertVideo') {
                         $this->createMediaStorage($data['trans_name'], $data['year']);
-                        $db_data['path'] = $data ['trans_name'] . (!empty($data['year']) ? "_$data[year]": '');
+                        $db_data['path'] = $data['trans_name'] . (!empty($data['year']) ? "_$data[year]": '');
                         $db_data['added'] = 'NOW()';
                         $id = $this->db->$operation($db_data);
                         $db_data['id'] = $id;
