@@ -1347,7 +1347,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                             $this->app['error_local'] = $error_local;
                             return FALSE;
                         } else {
-                            if (preg_match("/s\d+e(\d+).*$/i", $rtsp_url, $tmp_arr)) {
+                            if (preg_match("/s\d+e(\d+).*$/i", $data['rtsp_url'], $tmp_arr)) {
                                 $series = range(1, (int)$tmp_arr[1], 1);
                             }
                         }
