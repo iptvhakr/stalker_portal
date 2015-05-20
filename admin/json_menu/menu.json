@@ -39,6 +39,11 @@
                 "name": _("EPG"),
                 "alias": "epg",
                 "icon": ""
+            },
+            "4": {
+                "name": _("Genres"),
+                "alias": "tv-genres",
+                "icon": ""
             }
         }
     },
