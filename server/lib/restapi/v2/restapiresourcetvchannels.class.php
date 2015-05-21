@@ -103,16 +103,27 @@ class RESTApiResourceTvChannels extends RESTApiCollection
 
     public function filter($channels){
 
+        $genres = new \TvGenre();
+        $all_genres = $genres->getAll(true, true);
+
+        $all_genres_map = array();
+
+        foreach ($all_genres as $genre) {
+            $all_genres_map[$genre['_id']] = $genre;
+        }
+
         $fav_channels  = $this->fav_channels;
         $fields_map    = $this->fields_map;
         $user_channels = $this->user_channels;
 
-        $channels = array_map(function($channel) use ($fav_channels, $fields_map, $user_channels){
+        $channels = array_map(function($channel) use ($fav_channels, $fields_map, $user_channels, $all_genres_map){
 
             $new_channel = array_intersect_key($channel, $fields_map);
 
             $new_channel['id']     = (int) $channel['id'];
             $new_channel['number'] = (int) $channel['number'];
+
+            $new_channel['genre_id'] = isset($all_genres_map[$channel['tv_genre_id']]) ? $all_genres_map[$channel['tv_genre_id']]['id'] : '';
 
             $new_channel['favorite'] = in_array($channel['id'], $fav_channels) ? 1 : 0;
 
