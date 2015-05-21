@@ -1,266 +1,117 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>Infomir Youtube</title>
-		<script type="text/javascript">
-			(function(){
-				window.moveTo(0,0);
-				window.resizeTo(screen.width, screen.height);
-			})();
-		</script>
-        <link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="css/player.css" />
-
-		<!--<script src="http://192.168.1.71:8000/target/target-script-min.js#harry"></script>-->
-
-        <script type="text/javascript" src="js/objs.js"></script>
-        <script type="text/javascript" src="js/egSTB.js"></script>
-        <script type="text/javascript" src="js/base-funcs.js"></script>
-        <script type="text/javascript" src="js/date.difference.js"></script>
-        <script type="text/javascript" src="js/key-processing.js"></script>
-        <script type="text/javascript" src="js/common.js"></script>
-        <script type="text/javascript" src="js/jsdeferred.js"></script>
-        <script type="text/javascript" src="js/variables.js"></script>
-		<script type="text/javascript" src="js/youtube-dl.js"></script>
-        <style type="text/css">
-/*#loading { width:100%; height:100%; background-color:rgba(0, 0, 0, 0.7); position:absolute; top:0; left:0; z-index:2010; }
-#loading .render { position:absolute; z-index:2002; top:50%; left:50%; margin:-24px 0 0 -80px; height:48px; width:160px; background:#000; text-align:center; padding:10px; border-width:1px; border-style:double; border-color:#999; border-radius: 4px; -webkit-border-radius:4px; }
-#loading .render img { display:block; float:left; width:48px; height:48px; }
-#loading .render span { color:#fff; font-size:18px; display:block; float:left; width:110px; line-height:48px; }*/
-        </style>
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-61506574-2', 'auto');
-            ga('send', 'pageview', {'page': 'Start page', 'title': 'loading'});
-
-        </script>
-
-    </head>
-    <body onselectstart="return false" style="width: 100%; height: 100%;">
-        <div id="shell">
-            <div id="bg"></div>
-<!-- Header -->
-            <div id="mb_header_yt">
-                <div class="header_yt">
-                    <div class="t18b f_category_outer" id="search_block"><div id="search_block_inner"><span id="f_search"></span>:&nbsp;&nbsp;<span class="un_cats yt_category"><span id="search_query_line"></span></span></div></div>
-                    <div class="t18b f_quality_outer"><span id="f_mode"></span>:&nbsp;&nbsp;<img src="img/1x1.gif" id="mode" alt="" /></div>
-                    <div style="clear:both;height:5px;"></div>
-                    <div class="t18b f_category_outer"><span id="f_category"></span>:&nbsp;&nbsp;<span class="un_cats yt_category" id="cur_cat"><span id="cats_all"></span></span></div>
-                    <div class="t18b f_quality_outer"><span id="f_quality"></span>:&nbsp;&nbsp;<span class="un_cats yt_category" id="quality"></span></div>
-                </div>
-            </div>
-<!-- End Header -->
-<!-- categorias -->
-            <div id="category" style="display:none;">
-                <ul class="modalmenu_yt">
-                    <li class="top"><span class="t18w shadow_b" id="cat_0"></span></li>
-                    <li class="act"><span class="t20b shadow_w" id="cat_1"></span></li>
-                    <li class="top"><span class="t18w shadow_b" id="cat_2"></span></li>
-                    <li class="top"><span class="t18w shadow_b" id="cat_3"></span></li>
-                    <li class="top"><span class="t18w shadow_b" id="cat_4"></span></li>
-                    <li class="top"><span class="t18w shadow_b" id="cat_5"></span></li>
-                    <li class="top"><span class="t18w shadow_b" id="cat_6"></span></li>
-                </ul>
-            </div>
-<!-- End categorias -->
-<!-- Main@affect -->
-            <div id="frame"></div>
-<!-- End Main@affect -->
-<!-- Footer -->
-            <div id="footer_yt">
-                <div class="footer_yt_buttons">
-                    <span class="footer_btn_yt btn_red_yt"></span><span class="footer_text"><span id="f_category2"></span></span>
-                    <span class="footer_btn_yt btn_green_yt">
-                        <div id="menu_video_like">
-                            <div class="top"></div>
-                            <div class="body">
-                                <ul>
-                                    <li><span id="vl_suggestion"></span></li>
-                                    <li><span id="vl_favorites"></span></li>
-                                    <li><span id="vl_uploads"></span></li>
-                                    <li><span id="vl_playlists"></span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </span>
-                    <span class="footer_text"><span id="f_videolike2"></span></span>
-                    <span class="footer_btn_yt btn_yellow_yt"></span><span class="footer_text"><span id="f_search2"></span></span>
-                    <span class="footer_btn_yt btn_blue_yt">
-                        <div id="footer_menu_settings">
-                            <div class="top"></div>
-                            <div class="body">
-                                <ul>
-                                    <li id="menuPlayModes"><div class="l1"><span id="f_m_modes"></span></div>
-                                        <div id="subMenuPlayModes" class="submenu">
-                                            <div class="top"></div>
-                                            <div class="body">
-                                                <ul>
-                                                    <li id="menuPMsingle"><div></div><strong><b></b></strong></li>
-                                                    <li id="menuPMrepeat"><div></div><strong><b></b></strong></li>
-                                                    <li id="menuPMlist"><div></div><strong><b></b></strong></li>
-                                                    <li id="menuPMrandom"><div></div><strong><b></b></strong></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li id="menuQuality"><div class="l1"><span id="f_m_quality"></span></div>
-                                        <div id="subMenuQuality" class="submenu">
-                                            <div class="top"></div>
-                                            <div class="body">
-                                                <ul>
-                                                    <li id="menuPMlow"><strong id="f_m_q_low"></strong></li>
-                                                    <li id="menuPMmiddle"><strong id="f_m_q_middle"></strong></li>
-                                                    <li id="menuPMhigh"><strong id="f_m_q_high"></strong></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </span>
-                    <span class="footer_text"><span id="f_settings2"></span></span>
-
-                    <div id="arrows">
-                        <div class="arrow left" ><div id="arrow_left"  class="arrow"></div></div>
-                        <div class="arrow right"><div id="arrow_right" class="arrow"></div></div>
-                    </div>
-                </div>
-            </div>
-<!-- End Footer -->
-<!-- Modal Search -->
-            <div id="yt_search_bg" style="display:none;">
-                <div id="yt_searchbox1">
-                    <div class="yt_search_logo"></div>
-                    <div class="yt_search_name">
-                        <span class="text17_black bold" id="as_main_field_search"></span>
-                    </div>
-                    <div class="yt_search">
-                        <div class="left_input input_440">
-                            <input name="textfield" type="text" id="as_query_search" class="yt_input_440" />
-                            <div class="right_input"></div>
-                        </div>
-                        <div class="btn_ok"></div>
-                    </div>
-                    <div class="yt_search_line2">
-                        <div id="btn_small_red"></div>
-                        <span class="text17_black" style="float:left;" id="as_field_cat"></span>
-                        <div class="yt_search_color">
-                            <div class="left_combo input_380" id="as_cat"></div>
-                            <div class="right_combo"></div>
-<!-- begin Comobox Cats -->
-                            <div class="combo_drop">
-                                <div class="combo_drop_box">
-                                    <ul class="as_cats_menu">
-                                        <li id="as_cat_0" class="t18w shadow_b"></li>
-                                        <li id="as_cat_1" class="act_cat t20b shadow_b"></li>
-                                        <li id="as_cat_2" class="t18w shadow_b"></li>
-                                        <li id="as_cat_3" class="t18w shadow_b"></li>
-                                        <li id="as_cat_4" class="t18w shadow_b"></li>
-                                        <li id="as_cat_5" class="t18w shadow_b"></li>
-                                        <li id="as_cat_6" class="t18w shadow_b"></li>
-                                    </ul>
-                                </div>
-                            </div>
-<!-- end Comobox Cats -->
-                        </div>
-                    </div>
-                    <div class="yt_search_line3">
-                        <div id="btn_small_green"></div>
-                        <span class="text17_black" style="float:left;" id="as_field_time"></span>
-                        <div class="yt_search_color">
-                            <div class="left_combo input_110" id="as_time"></div>
-                            <div class="right_combo"></div>
-                        </div>
-                        <div id="btn_small_yellow"></div>
-                        <span class="text17_black" style="float:left;" id="as_field_orderby"></span>
-                        <div class="yt_search_color">
-                            <div class="left_combo input_140" id="as_orderby"></div>
-                            <div class="right_combo"></div>
-                        </div>
-                    </div>
-                    <div class="yt_searchbox0"></div>
-                </div>
-                <div id="yt_searchbox2">
-                    <div class="yt_search_logo"></div>
-                    <div class="yt_search_name">
-                        <span class="text17_black bold" id="as_main_field_users_video"></span>
-                    </div>
-                    <div class="yt_search">
-                        <div class="left_input input_440">
-                            <input name="textfield" type="text" id="as_query_users_video" class="yt_input_440" />
-                            <div class="right_input"></div>
-                        </div>
-                        <div class="btn_ok"></div>
-                    </div>
-                    <div class="yt_search_line2"><div id="btn_small_red"></div>
-                        <span class="text17_black" style="float:left;" id="as_field_data"></span>
-                        <div class="yt_search_color">
-                            <div class="left_combo input_140" id="as_data"></div>
-                            <div class="right_combo"></div>
-                        </div>
-                    </div>
-                    <div class="yt_searchbox0"></div>
-                </div>
-
-                <div id="yt_searchbox3">
-                    <div class="yt_search_logo"></div>
-                    <div class="yt_search_name">
-                        <span class="text17_black bold" id="as_main_field_playlists_search"></span>
-                    </div>
-                    <div class="yt_search">
-                        <div class="left_input input_440">
-                            <input name="textfield" type="text" id="as_query_playlists_search" class="yt_input_440" />
-                            <div class="right_input"></div>
-                        </div>
-                        <div class="btn_ok"></div>
-                    </div>
-                    <div class="yt_searchbox0"></div>
-                </div>
-            </div>
-<!-- End Modal Search -->
-        </div>
-<!-- Player -->
-        <div id="main" style="display: none;">
-            <div id="filename">Some name gq</div>
-            <div id="playModeInPlayer" class="single"></div>
-            <div id="time_act">00:00:00</div>
-            <div id="time_total">/ 00:00:00</div>
-            <div id="interval_above"><a href="#" class="interval_above"></a></div>
-            <div id="interval_input">30 sec</div>
-            <div id="interval_less"><a href="#" class="interval_less"></a></div>
-            <div id="rewind"><a href="#" class="rewind"></a></div>
-            <div id="scrollbar"><div id="conditiion"></div></div>
-            <div id="forward"><a href="#" class="forward"></a></div>
-        </div>
-<!-- End Player -->
-<!-- Volume@affect -->
-        <div id="mute" style="display:none;"></div>
-        <div id="playingStatus" style="display:none;"></div>
-        <div id="volumeForm" style="display:none;">
-            <div id="volume_bar"><div id="volume_right"></div></div>
-            <div id="volume_num">100%</div>
-        </div>
-<!-- End Volume@affect -->
-<!-- aspectRatio@affect -->
-        <div id="screenAspect"></div>
-<!-- End aspectRatio@affect -->
-    <div id="toast_block" style="display: none; position: absolute; height: 300px; bottom: 0; width: 100%; z-index:2010;">
-        <div id="toast" style="position:relative; padding: 10px 8px; margin:0 auto; width: 40%; font-size: 26px; font-weight: bold; color: #ccc; background-color: #000; text-align: center; border-radius: 3px"></div>
-    </div>
-<!-- Loading@affect -->
-    <div id="loading" style="width:100%; height:100%; background-color:rgba(0,0,0,0.7); position:absolute; top:0; left:0; z-index:2010;">
-        <span id="loading2" style="position: absolute; color:#ccc; font-family: 'Ubuntu'; font-size: 36px; width: 100%; text-align: center; bottom: 255px;">Loading...</span>
-		<span id="loadingVersion" style="position: absolute; color:#ccc; font-family: 'Ubuntu'; font-size: 26px; width: 100%; text-align: right; bottom: 70px; right: 70px"></span>
-    </div>
-<!--        <div id="loading">
-            <div class="render"><img src="img/loading.gif" /><span><span id="loading2"></span></span></div>
-        </div>-->
-<!-- End Loading@affect -->
-    </body>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>release :: youtube.com</title>
+		<meta charset="utf-8">
+		<link rel="icon" type="image/png" href="favicon.png">
+		<script type="text/javascript" src="app.js"></script>
+	</head>
+	<body>
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		<!-- top-level page block-->
+		<div id="pi" class="component page active">
+			<div class="main"></div>
+		</div>
+		<!-- top-level page block-->
+		<div id="pp" class="component page">
+			<div id="ppPanelPlayer">
+				<div id="playerGrid">
+					<div id="playerHeader">
+						<div id="playerChannelIcon"></div>
+						<div id="playerVideoHeader">
+							<div id="playerChannelName"></div>
+							<div id="playerVideoMeta">
+								<div id="playerVideoName" class="meta"></div>
+								<div id="playerVideoPublishedAt" class="meta"></div>
+								<div id="playerVideoViewCount" class="meta"></div>
+							</div>
+						</div>
+					</div>
+					<div id="playerSpace"></div>
+					<div id="playerProgress">
+						<div id="playerCurrentDuration">00:00</div>
+						<div id="playerProgressBar"></div>
+						<div id="playerTotalDuration">00:00</div>
+					</div>
+					<div id="playerPanelButtons"></div>
+				</div>
+				<div id="ppPanelVideo" class="hidden">
+					<div id="ppMenuList"></div>
+					<div id="ppChannelVideoListNode">
+						<div id="ppChannelTitle"></div>
+						<div id="ppChannelVideoListBody"></div>
+					</div>
+					<div id="ppVideoRelationsListNode">
+						<div id="ppVideoRelationsTitle"></div>
+						<div id="ppVideoRelationsListBody"></div>
+					</div>
+					<div id="ppChannelUploadsListNode">
+						<div id="ppChannelUploadsTitle"></div>
+						<div id="ppChannelUploadsVideoListBody"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- top-level page block-->
+		<div id="pm" class="component page">
+			<div id="pmListMainMenu" class="hidden"></div>
+			<div class="navigation">
+				<div class="panelIcons">
+					<div class="icon what-to-watch"></div>
+					<div class="icon my-subs"></div>
+					<div class="icon popular"></div>
+					<div class="icon music"></div>
+					<div class="icon ellipsis"></div>
+				</div>
+			</div>
+			<div id="pmTabCategoryContent" class="tab">
+				<div id="pmSearch" class="icon search"></div>
+				<div id="pmCategoryContent">
+					<div id="pmLoading" class="loader"></div>
+					<div id="pmListVideos0Node">
+						<div id="pmChannelTitle0"></div>
+						<div id="pmListVideos0Body"></div>
+					</div>
+					<div id="pmListVideos1Node">
+						<div id="pmChannelTitle1"></div>
+						<div id="pmListVideos1Body"></div>
+					</div>
+				</div>
+			</div>
+			<div id="pmTabSettings" class="tab">
+				<div id="pmSettingsList"></div>
+			</div>
+		</div>
+		<!-- top-level page block-->
+		<div id="ps" class="component page">
+			<div class="navigation">
+				<div class="panelIcons">
+					<div class="icon what-to-watch"></div>
+					<div class="icon my-subs"></div>
+					<div class="icon popular"></div>
+					<div class="icon music"></div>
+					<div class="icon ellipsis"></div>
+				</div>
+			</div>
+			<div id="psContentContainer">
+				<div id="psControls">
+					<div id="psSearch" class="icon search"></div>
+					<div id="psListSearchSuggestionsContainer">
+						<div id="psListSearchSuggestions" class="tipsList"></div>
+					</div>
+					<div id="psKeyboard" class="keyList"></div>
+				</div>
+				<div id="psContent">
+					<div id="psLoading" class="loader"></div>
+					<div id="psListVideos" class="movieList"></div>
+				</div>
+			</div>
+		</div>
+		<div id="widgetHintButtons">
+			<div id="hintBack" class="hint"></div>
+			<div id="hintMore" class="hint"></div>
+			<div id="hintGuide" class="hint"></div>
+			<div id="hintSearch" class="hint"></div>
+		</div>
+	</body>
 </html>
