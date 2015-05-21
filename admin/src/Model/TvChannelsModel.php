@@ -5,18 +5,17 @@ namespace Model;
 class TvChannelsModel extends \Model\BaseStalkerModel {
 
         private $broadcasting_keys = array(
-            'cmd' => array(''),
-            'user_agent_filter' => array(''),
-            'priority' => array(''),
-            'use_http_tmp_link' => array(FALSE),
-            'wowza_tmp_link' => array(''),
-            'nginx_secure_link' => array(''),
-            'flussonic_tmp_link' => array(''),
-            'enable_monitoring' => array(FALSE),
-            'enable_balancer_monitoring' => array(''),
-            'monitoring_url' => array(''),
-            'use_load_balancing' => array(FALSE),
-            'stream_server' => array('')
+            'user_agent_filter' => '',
+            'priority' => '',
+            'use_http_tmp_link' => FALSE,
+            'wowza_tmp_link' => '',
+            'nginx_secure_link' => '',
+            'flussonic_tmp_link' => '',
+            'enable_monitoring' => FALSE,
+            'enable_balancer_monitoring' => '',
+            'monitoring_url' => '',
+            'use_load_balancing' => FALSE,
+            'stream_server' => ''
         );
     
     public function __construct() {
@@ -56,7 +55,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
         $map = array();
 
         foreach ($links as $link){
-            $map[$link['id']] = $link;
+            $map[] = $link;
         }
 
         return $map;
@@ -82,13 +81,15 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     public function insertITVChannel($data){
         if (!empty($data['cmd'])) {
             while(list($cmd_key, $cmd_data) = each($data['cmd'])) {
-                foreach ($this->broadcasting_keys as $key => $value) {
-                    if (!isset($data[$key][$cmd_key])) {
-                        $data[$key][$cmd_key] = $value;
+                reset($this->broadcasting_keys);
+                while (list($key, $value) = each($this->broadcasting_keys)) {
+                    if (array_key_exists($key, $data) and array_key_exists($cmd_key, $data[$key])) {
+                        $this->broadcasting_keys[$key] |= (is_numeric($data[$key][$cmd_key])? (int) $data[$key][$cmd_key]: ($data[$key][$cmd_key] == 'on'));
                     }
                 }
             }
         }
+        $data = array_merge($data, $this->broadcasting_keys);
         $cmd_val = FALSE;
         if (is_array($data['cmd']) && !empty($data['cmd'])) {
             $cmd_val = array_values($data['cmd']);
@@ -132,18 +133,20 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     public function updateITVChannel($data){
         if (!empty($data['cmd'])) {
             while(list($cmd_key, $cmd_data) = each($data['cmd'])) {
-                foreach ($this->broadcasting_keys as $key => $value) {
-                    if (!array_key_exists($key, $data) || !is_array($data[$key]) || !array_key_exists($cmd_key, $data[$key])) {
-                        $data[$key][$cmd_key] = $value;
+                reset($this->broadcasting_keys);
+                while (list($key, $value) = each($this->broadcasting_keys)) {
+                    if (array_key_exists($key, $data) and array_key_exists($cmd_key, $data[$key])) {
+                        $this->broadcasting_keys[$key] |= (bool)(is_numeric($data[$key][$cmd_key])? (int) $data[$key][$cmd_key]: ($data[$key][$cmd_key] == 'on'));
                     }
                 }
             }
         }
+        $data = array_merge($data, $this->broadcasting_keys);
         $cmd_val = FALSE;
         if (is_array($data['cmd']) && !empty($data['cmd'])) {
             $cmd_val = array_values($data['cmd']);
         }
-        $this->mysqlInstance->update('itv', array(
+         $input = array(
                             'name' => $data['name'],
                             'number' => $data['number'],
                             'use_http_tmp_link' => (int)(!empty($data['use_http_tmp_link']) && $data['use_http_tmp_link'] != 'off'),
@@ -176,8 +179,11 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                             'correct_time' => (!empty($data['correct_time'])? intval($data['correct_time']): 0),
                             'modified' => 'NOW()',
                             'tv_archive_duration' => (!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] != 'off' && !empty($data['tv_archive_duration'])? intval($data['tv_archive_duration']): 0)
-                        ), array('id' => intval($data['id']))
-                );
+                        );
+        if (!$input['enable_monitoring']){
+            $input['monitoring_status'] = 1;
+        }
+        $this->mysqlInstance->update('itv', $input, array('id' => intval($data['id'])));
         return $data['id'];
     }
     
