@@ -14,9 +14,6 @@
             'action' : 'get_user_packages'
         };
 
-        this.password_input = new password_input({"parent" : this});
-        this.password_input.bind();
-
         this.superclass = ListLayer.prototype;
 
         this.hide = function(do_not_reset){
@@ -180,6 +177,45 @@
                     "value" : get_word("cancel_btn"),
                     "onclick" : function(){
                         scope.parent_password_promt.hide();
+                    }
+                }
+            ));
+
+            this.password_input = new ModalForm({"title" : get_word('parent_password_title'), "parent" : main_menu});
+            this.password_input.enableOnExitClose();
+
+            this.password_input.addItem(new ModalFormInput({
+                "label" : get_word('password_label'),
+                "name" : "password_input",
+                "type" : "password",
+                "onchange" : function(){_debug('change'); scope.password_input.resetStatus()}
+            }));
+
+            this.password_input.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("ok_btn"),
+                    "onclick" : function(){
+
+                        var password_input = scope.password_input.getItemByName('password_input').getValue();
+
+                        _debug('password_input', password_input);
+                        _debug('stb.user.parent_password', stb.user.parent_password);
+
+                        if (password_input == stb.user.parent_password){
+                            scope.password_input.hide();
+                            scope.password_input.callback && scope.password_input.callback();
+                        }else{
+                            scope.password_input.setStatus(get_word('parent_password_error'));
+                        }
+                    }
+                }
+            ));
+
+            this.password_input.addItem(new ModalFormButton(
+                {
+                    "value" : get_word("cancel_btn"),
+                    "onclick" : function(){
+                        scope.password_input.hide();
                     }
                 }
             ));
