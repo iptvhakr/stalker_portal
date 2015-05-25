@@ -35,19 +35,9 @@
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-1">
-                            <thead>
-                                <tr>
-                                    <th data-filter="mac">MAC</th>
-                                    <th data-filter="ip">IP</th>
-                                    <th data-filter="login">{{ 'Login'|trans }}</th>
-                                    <th data-filter="ls">{{ 'Account'|trans }}</th>
-                                    <th data-filter="fname">{{ 'Name'|trans }}</th>
-                                    <th data-filter="last_change_status">{{ 'Last modified'|trans }}</th>
-                                    <th data-filter="state">{{ 'State'|trans }}</th>
-                                    <th data-filter="status">{{ 'Status'|trans }}</th>
-                                    <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                                </tr>
-                            </thead>
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
                             <tbody>
                             {% if attribute(app, 'allUsers') is defined %}
                                 <!-- Start: list_row -->
@@ -66,6 +56,9 @@
                                                 <br><span>{{ 'Last activity'|trans }}: {% if item.last_active == 0 %}{{ item.last_active|date('M d, Y H:i') }}{% else %} - {% endif %}</span>
                                             {% endif %}</td>
                                         <td class="data-filter-status">{% if item.status == 0 %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="txt-danger">{{ 'off'|trans }}</span>{% endif %}</td>
+                                        {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+                                        <td>{% if item.expire_billing_date > 0 %}{{ item.expire_billing_date|date('M d, Y H:i') }}{% else %}{{ 'Unlimited'|trans }}{% endif %}</td>
+                                        {% endif %}
                                         <td>
                                             <div class="col-xs-3 col-sm-8">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -92,6 +85,20 @@
                                                             <span>{% if item.status == 0 %}{{ 'Turn off'|trans }}{% else %}{{ 'Turn on'|trans }}{% endif %}</span>
                                                         </a>
                                                     </li>
+                                                    {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+                                                        <li>
+                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date" data-userid="{{ item.id }}" data-setaction="set">
+                                                                <span>{{ 'Set expires billing date'|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                        {% if item.expire_billing_date > 0 %}
+                                                        <li>
+                                                            <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date" data-userid="{{ item.id }}" data-setaction="unset">
+                                                                <span>{{ 'Unset expires billing date'|trans }}</span>
+                                                            </a>
+                                                        </li>
+                                                        {% endif %}
+                                                    {% endif %}
                                                     <li>
                                                         <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user" data-userid="{{ item.id }}">
                                                             <span>{{ 'Delete'|trans }}</span>
@@ -301,6 +308,30 @@
                                     
     <script type="text/javascript" defer>
 
+        var dayNamesMin = [
+            '{{ 'Sun'|trans }}',
+            '{{ 'Mon'|trans }}',
+            '{{ 'Tue'|trans }}',
+            '{{ 'Wed'|trans }}',
+            '{{ 'Thu'|trans }}',
+            '{{ 'Fri'|trans }}',
+            '{{ 'Sat'|trans }}'
+        ];
+        var monthNames = [
+            '{{ 'January'|trans }}',
+            '{{ 'February'|trans }}',
+            '{{ 'March'|trans }}',
+            '{{ 'April'|trans }}',
+            '{{ 'May'|trans }}',
+            '{{ 'June'|trans }}',
+            '{{ 'July'|trans }}',
+            '{{ 'August'|trans }}',
+            '{{ 'September'|trans }}',
+            '{{ 'October'|trans }}',
+            '{{ 'November'|trans }}',
+            '{{ 'December'|trans }}'
+        ];
+
         function DemoSelect2() {
             $("[id^='s2_']").select2({minimumResultsForSearch: -1});
         }
@@ -313,10 +344,15 @@
                         var id = json.data[i].id;
                         var status = json.data[i].status;
                         var state = json.data[i].state;
+                        var expire_billing_date = json.data[i].expire_billing_date;
                         var drop;
-						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) { drop="dropup"; } 
-						else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) { drop="dropup"; } 
-						else {drop=""}
+						if (json.data.length >1 && i!==json.data.length && i==json.data.length-1) {
+                            drop="dropup";
+                        } else if ( json.data.length >2 && i!==json.data.length && i==json.data.length-2) {
+                            drop="dropup";
+                        } else {
+                            drop=""
+                        }
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
@@ -341,8 +377,22 @@
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-user' data-userid='" + id + "' data-userstatus='" + status + "'>\n\
                                                                     <span>" + (status == 0 ? "{{ 'Turn off'|trans }}" : "{{ 'Turn on'|trans }}") + "</span>\n\
                                                                 </a>\n\
-                                                            </li>\n\
-                                                            <li>\n\
+                                                            </li>";
+                                                            {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+                        json.data[i].operations +=          "<li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date' data-userid='" + id + "' data-setaction='set'>\n\
+                                                                    <span>{{ 'Set expires billing date'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                                                            if (expire_billing_date > 0) {
+                        json.data[i].operations +=          "<li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date' data-userid='" + id + "' data-setaction='unset'>\n\
+                                                                    <span>{{ 'Unset expires billing date'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                                                            }
+                                                            {% endif %}
+                        json.data[i].operations +=          "<li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-user' data-userid='" + id + "'>\n\
                                                                     <span>{{ 'Delete'|trans }}</span>\n\
                                                                 </a>\n\
@@ -359,6 +409,15 @@
                         } else {
                             json.data[i]['last_change_status'] = '00-00-0000';
                         }
+                        {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+                        date = json.data[i]['expire_billing_date'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['expire_billing_date'] = date.toLocaleFormat("%b %d, %Y");
+                        } else {
+                            json.data[i]['expire_billing_date'] = '{{ 'Unlimited'|trans }}';
+                        }
+                        {% endif %}
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
                     }
@@ -389,15 +448,11 @@
                             "url": "{{ app.datatable_lang_file }}"
                         },
                 "columns": [
-                    {"data": "mac"},
-                    {"data": "ip"},
-                    {"data": "login"},
-                    {"data": "ls"},
-                    {"data": "fname"},
-                    {"data": "last_change_status"},
-                    {"data": "state"},
-                    {"data": "status"},
-                    {"data": "operations"}
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                    {% endif %}
                 ],
                 "bFilter": true,
                 "bPaginate": true,
@@ -406,7 +461,7 @@
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [3, 4, 5, 6, 7, 8]},
                     {"sortable": false, "targets": [-1]},
-                    {className: "data-filter-status", "targets": [-2 ]},
+                    {className: "data-filter-status", "targets": [-3 ]},
                     { "width": "16px", "targets": [ -1 ] }
                 ]
             }).prev('.dataTables_processing').hide('');
@@ -417,33 +472,13 @@
 
         function yelp() {
             $(document).ready(function () {
+
                 $("#datepicker_from").datepicker({
                     numberOfMonths: 1,
                     language: 'ru',
                     dateFormat: 'dd/mm/yy',
-                    dayNamesMin : [
-                        '{{ 'Sun'|trans }}',
-                        '{{ 'Mon'|trans }}',
-                        '{{ 'Tue'|trans }}',
-                        '{{ 'Wed'|trans }}',
-                        '{{ 'Thu'|trans }}',
-                        '{{ 'Fri'|trans }}',
-                        '{{ 'Sat'|trans }}'
-                    ],
-                    monthNames  : [
-                        '{{ 'January'|trans }}',
-                        '{{ 'February'|trans }}',
-                        '{{ 'March'|trans }}',
-                        '{{ 'April'|trans }}',
-                        '{{ 'May'|trans }}',
-                        '{{ 'June'|trans }}',
-                        '{{ 'July'|trans }}',
-                        '{{ 'August'|trans }}',
-                        '{{ 'September'|trans }}',
-                        '{{ 'October'|trans }}',
-                        '{{ 'November'|trans }}',
-                        '{{ 'December'|trans }}'
-                    ],
+                    dayNamesMin : dayNamesMin,
+                    monthNames  : monthNames,
                     onClose: function (selectedDate) {
                         $("#datepicker_to").datepicker("option", "minDate", selectedDate);
                         $('#datatable-1').DataTable().ajax.reload();
@@ -453,6 +488,8 @@
                     numberOfMonths: 1,
                     language: 'ru',
                     dateFormat: 'dd/mm/yy',
+                    dayNamesMin : dayNamesMin,
+                    monthNames  : monthNames,
                     onClose: function (selectedDate) {
                         $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
                         $('#datatable-1').DataTable().ajax.reload();
@@ -464,7 +501,7 @@
                     e.preventDefault();
                     var _this = $(this);
 
-                    if (_this.attr('href').search("send-message") != -1) {
+                    if (_this.attr('href').search("send-message") != -1 || _this.attr('href').search("set-expire-billing-date") != -1) {
                         return false;
                     }
 
@@ -537,7 +574,31 @@
                     $(this).closest("div.open").removeClass('open');
                     return false;
                 });
+                {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+                $(document).on('click', 'a[href*="set-expire-billing-date"]', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var _this = $(this);
+                    if (_this.data('setaction') == 'set') {
+                        setExpireDateModal(_this);
+                    } else {
+                        ajaxPostSend(_this.attr('href'), _this.data());
+                    }
+                    return false;
+                });
+                $(document).on('click', '#apply_enable_date', function(e){
+                    var sendData = {setaction: 'set'};
+                    $("#modalbox").find('input').each(function(){
+                        sendData[$(this).attr('name')] = $(this).val();
+                    });
+                    ajaxPostSend("{{app.request.baseUrl}}/{{ app.controller_alias }}/set-expire-billing-date", sendData);
+                    closeModalBox();
+                });
 
+                $(document).on('click', '#reset_enable_date', function(e){
+                    closeModalBox();
+                });
+                {% endif %}
                 $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -579,12 +640,53 @@
             });
             return false;
         }
-        
+
+        {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+        function setExpireDateModal(obj){
+            $('#modalbox').find('.modal-header-name span').text('{{ 'Expire billing date'|trans }}');
+            $('#modalbox').find('.devoops-modal-inner')
+                    .append("<input type='hidden' name='userid' value='" + obj.data('userid') + "'>")
+                    .append("<input type='text' readonly='readonly' class='datepicker col-sm-12' data-date-format='dd-mm-yy' name='expire_date' id='expire_date_datepicker'>");
+            $('#modalbox').find('.devoops-modal-bottom')
+                    .append('<button class="btn btn-default col-sm-4 pull-left" type="reset" id="reset_enable_date">{{ 'Cancel'|trans }}</button>')
+                    .append('<button class="btn btn-success col-sm-4 pull-right" type="submit" id="apply_enable_date">{{ 'Set date'|trans }}</button>');
+            $('#modalbox').find('.devoops-modal').width(350);
+            $("#expire_date_datepicker").datepicker({
+                        language    : 'ru',
+                        dateFormat  : 'dd-mm-yy',
+                        firstDay    : 1,
+                        minDate     : new Date(),
+                        dayNamesMin : dayNamesMin,
+                        monthNames  : monthNames
+                    }
+            );
+            $("div[id*='datepicker']").addClass('dp_white');
+            $(obj).closest('div.open').removeClass('open');
+            $('#modalbox').show();
+        };
+
+        var setExpireBillingDate = function(data){
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+
+        var setExpireBillingDateError = function(data){
+
+        };
+        {% endif %}
+
+        function closeModalBox(){
+            $('#modalbox').find('.modal-header-name span').empty();
+            $('#modalbox').find('.devoops-modal-inner').empty();
+            $('#modalbox').find('.devoops-modal-bottom').empty();
+            $("div[id*='datepicker']").removeClass('dp_white');
+            $('#modalbox').hide();
+        }
+
         var addEvent = function(data){
             alert(data.msg);
             $('#modalbox_ad').click();
-        }
-        
+        };
+
     </script>
     <script type="text/template" id="msg_textarea_pattern">
         {{ 'Dear Subscriber! Term free testing of our service is ended. We ask you to go to Customer Care.'|trans }}
