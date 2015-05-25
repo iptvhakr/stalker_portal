@@ -18,7 +18,8 @@ class UsersController extends \Controller\BaseStalkerController {
         "status", 'tariff_plan.name as tariff_plan_name',
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
         "concat (users.fname) as fname",
-        "UNIX_TIMESTAMP(`keep_alive`) as last_active"
+        "UNIX_TIMESTAMP(`keep_alive`) as last_active",
+        "DATE_FORMAT(`expire_billing_date`,'%d.%m.%Y') as `expire_billing_date`"
     );
     private $logObjectsTypes = array(
         'itv' => 'IPTV каналы',
@@ -67,6 +68,9 @@ class UsersController extends \Controller\BaseStalkerController {
         $attribute = $this->getUsersListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
+        if (\Config::getSafe('enable_internal_billing', 'false')) {
+            $this->app['enableBilling'] = TRUE;
+        }
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -137,6 +141,9 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
         }
+        if (\Config::getSafe('enable_internal_billing', 'false')) {
+            $this->app['enableBilling'] = TRUE;
+        }
         $this->app['breadcrumbs']->addItem($this->setLocalization('Users list'), $this->app['controller_alias'] . '/users-list');
         $this->app['breadcrumbs']->addItem($this->setlocalization('Add user'));
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -166,6 +173,13 @@ class UsersController extends \Controller\BaseStalkerController {
         $user = $this->db->getUsersList($query_param);
         $this->user = (is_array($user) && count($user) > 0) ? $user[0] : array();
         $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
+        if (!empty($this->user['expire_billing_date']) && preg_match("/(19|20)\d\d([- \/\.])(0[1-9]|1[012])[- \/\.](0[1-9]|[12][0-9]|3[01])/im", $this->user['expire_billing_date'], $match)) {
+            $this->user['expire_billing_date'] = implode('-', array_reverse(explode($match[2], $this->user['expire_billing_date'])));
+        } elseif (((int) str_replace(array('-', '.'), '', $this->user['expire_billing_date'])) == 0) {
+            $this->user['expire_billing_date'] = '';
+        } else {
+            $this->user['expire_billing_date'] = str_replace('.', '-', $this->user['expire_billing_date']);
+        }
         $form = $this->buildUserForm($this->user, TRUE);
 
         if ($this->saveUsersData($form, TRUE)) {
@@ -187,6 +201,9 @@ class UsersController extends \Controller\BaseStalkerController {
 
         if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
             $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
+        }
+        if (\Config::getSafe('enable_internal_billing', 'false')) {
+            $this->app['enableBilling'] = TRUE;
         }
 
         $this->app['userName'] = $this->user['mac'];
@@ -257,11 +274,12 @@ class UsersController extends \Controller\BaseStalkerController {
             unset($query_param['order']['state']);
         }
         
-        
         $response['data'] = array_map(function($val){
             $val['last_active'] = (int)$val['last_active']; 
             $val['last_change_status'] = (int) strtotime($val['last_change_status']);
             $val['last_change_status'] = $val['last_change_status'] > 0 ? $val['last_change_status']: 0;
+            $val['expire_billing_date'] = (int) strtotime($val['expire_billing_date']);
+            $val['expire_billing_date'] = $val['expire_billing_date'] > 0 ? $val['expire_billing_date']: 0;
             return $val;
         }, $this->db->getUsersList($query_param));
 
@@ -759,6 +777,36 @@ class UsersController extends \Controller\BaseStalkerController {
             return $response;
         }
     }
+
+    public function set_expire_billing_date(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['userid']) || empty($this->postData['setaction'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'setExpireBillingDate';
+        $error = 'Error';
+        if ($this->postData['setaction'] == 'set' && !empty($this->postData['expire_date'])){
+            $date = $this->postData['expire_date'];
+        } elseif ($this->postData['setaction'] == 'unset') {
+            $date = 0;
+        }
+        if (isset($date)) {
+            if (!empty($date) && preg_match("/(0[1-9]|[12][0-9]|3[01])([- \/\.])(0[1-9]|1[012])[- \/\.](19|20)\d\d/im", $date, $match)) {
+                $date = implode('-', array_reverse(explode($match[2], $date)));
+            }
+            $this->db->updateUserById(array('expire_billing_date' => $date), $this->postData['userid']);
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
     
     //------------------------ service method ----------------------------------
 
@@ -882,6 +930,11 @@ class UsersController extends \Controller\BaseStalkerController {
                         )
                 );
         }
+
+        if (\Config::getSafe('enable_internal_billing', 'false')) {
+            $form->add('expire_billing_date', 'text', array('required' => FALSE));
+        }
+
         return $form->getForm();
     }
 
@@ -923,6 +976,12 @@ class UsersController extends \Controller\BaseStalkerController {
                 $curr_fields = array_flip($curr_fields);
 
                 $data = array_intersect_key($data, $curr_fields);
+                $match = array();
+                if (!empty($data['expire_billing_date']) && preg_match("/(0[1-9]|[12][0-9]|3[01])([- \/\.])(0[1-9]|1[012])[- \/\.](19|20)\d\d/im", $data['expire_billing_date'], $match)) {
+                    $data['expire_billing_date'] = implode('-', array_reverse(explode($match[2], $data['expire_billing_date'])));
+                } else {
+                    $data['expire_billing_date'] = 0;
+                }
 
                 $result = call_user_func_array(array($this->db, $action), array($data, $data['id']));
 
@@ -1007,7 +1066,7 @@ class UsersController extends \Controller\BaseStalkerController {
     }
     
     private function getUsersListDropdownAttribute() {
-        return array(
+        $attribute = array(
             array('name'=>'mac',                'title'=>'MAC',                                 'checked' => TRUE),
             array('name'=>'ip',                 'title'=>'IP',                                  'checked' => TRUE),
             array('name'=>'login',              'title'=>$this->setLocalization('Login'),       'checked' => TRUE),
@@ -1015,9 +1074,14 @@ class UsersController extends \Controller\BaseStalkerController {
             array('name'=>'fname',              'title'=>$this->setLocalization('Name'),        'checked' => TRUE),
             array('name'=>'last_change_status', 'title'=>$this->setLocalization('Last modified'),'checked' => TRUE),
             array('name'=>'state',              'title'=>$this->setLocalization('State'),       'checked' => TRUE),
-            array('name'=>'status',             'title'=>$this->setLocalization('Status'),      'checked' => TRUE),
-            array('name'=>'operations',         'title'=>$this->setLocalization('Operations'),  'checked' => TRUE)
-        );
+            array('name'=>'status',             'title'=>$this->setLocalization('Status'),      'checked' => TRUE)
+            );
+        if (\Config::getSafe('enable_internal_billing', 'false')) {
+            $attribute[] = array('name'=>'expire_billing_date', 'title'=>$this->setLocalization('Expire billing date'),'checked' => TRUE);
+        }
+        $attribute[] = array('name'=>'operations',         'title'=>$this->setLocalization('Operations'),  'checked' => TRUE);
+
+        return $attribute;
     }
     
 }

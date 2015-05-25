@@ -7,7 +7,7 @@ class RESTCommandStb extends RESTCommand
 
     public function __construct(){
         $this->manager = Stb::getInstance();
-        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'login', 'status', 'online', 'additional_services_on', 'ip', 'version'), true);
+        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'login', 'status', 'online', 'additional_services_on', 'ip', 'version', 'expire_billing_date'), true);
     }
 
     public function get(RESTRequest $request){
@@ -25,7 +25,7 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('HTTP PUT data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('status', 'additional_services_on', 'ls', 'reboot'), true);
+        $allowed_to_update_fields = array_fill_keys(array('status', 'additional_services_on', 'ls', 'reboot', 'expire_billing_date'), true);
 
         $data = array_intersect_key($put, $allowed_to_update_fields);
 
@@ -73,7 +73,7 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('HTTP POST data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('mac', 'login', 'password', 'status', 'additional_services_on', 'ls'), true);
+        $allowed_to_update_fields = array_fill_keys(array('mac', 'login', 'password', 'status', 'additional_services_on', 'ls', 'expire_billing_date'), true);
 
         $data = array_intersect_key($data, $allowed_to_update_fields);
 

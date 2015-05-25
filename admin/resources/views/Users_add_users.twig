@@ -144,6 +144,16 @@
                                 </div>
                             </div>
                         </div>
+                        {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Expire billing date'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    {{ form_widget(app['form'].expire_billing_date, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'State'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
@@ -357,10 +367,44 @@
             $('#form_status').select2({minimumResultsForSearch: -1});
         }
         function yelp() {
-            $(document).ready(function () { $.validate();
+            $(document).ready(function () {
+                $.validate();
                 $('[data-toggle="tooltip"]').tooltip();
                 
                 LoadSelect2Script(DemoSelect2);
+
+                {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
+                $("#form_expire_billing_date").datepicker({
+                            language: 'ru',
+                            dateFormat: 'dd-mm-yy',
+                            firstDay: 1,
+                            minDate: new Date(),
+                            dayNamesMin: [
+                                '{{ 'Sun'|trans }}',
+                                '{{ 'Mon'|trans }}',
+                                '{{ 'Tue'|trans }}',
+                                '{{ 'Wed'|trans }}',
+                                '{{ 'Thu'|trans }}',
+                                '{{ 'Fri'|trans }}',
+                                '{{ 'Sat'|trans }}'
+                            ],
+                            monthNames: [
+                                '{{ 'January'|trans }}',
+                                '{{ 'February'|trans }}',
+                                '{{ 'March'|trans }}',
+                                '{{ 'April'|trans }}',
+                                '{{ 'May'|trans }}',
+                                '{{ 'June'|trans }}',
+                                '{{ 'July'|trans }}',
+                                '{{ 'August'|trans }}',
+                                '{{ 'September'|trans }}',
+                                '{{ 'October'|trans }}',
+                                '{{ 'November'|trans }}',
+                                '{{ 'December'|trans }}'
+                            ]
+                        }
+                );
+                {% endif %}
 
                 $(document).on('change keyup', '#form_login', function (e) {
                     var _this = $(this);
