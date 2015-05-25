@@ -31,28 +31,40 @@ class RESTApiResourceEpg extends RESTApiCollection
             throw new RESTBadRequest("ch_id required");
         }
 
-        $ch_id = (int) $this->nested_params['ch_id'];
+        $ch_ids = explode(',', $this->nested_params['ch_id']);
 
-        $channel = \Itv::getChannelById($ch_id);
+        $epg_data = array();
 
-        if (empty($channel)){
-            throw new RESTNotFound("Channel not found");
+        foreach ($ch_ids as $ch_id) {
+
+            $channel = \Itv::getChannelById((int) $ch_id);
+
+            if (empty($channel)) {
+                throw new RESTNotFound("Channel " . intval($ch_id) . " not found");
+            }
+
+            $from = (int)$request->getParam('from');
+            $to = (int)$request->getParam('to');
+
+            $next = (int)$request->getParam('next');
+
+            if (!empty($next)) {
+                $epg_data[(int) $ch_id] = $this->filter($this->manager->getCurProgramAndFewNext($channel['id'], $next));
+            } else {
+                $from = empty($from) ? "" : date("Y-m-d H:i:s", $from);
+                $to = empty($to) ? "" : date("Y-m-d H:i:s", $to);
+
+                $epg = $this->manager->getEpgForChannelsOnPeriod(array($channel['id']), $from, $to);
+
+                $epg_data[(int) $ch_id] = $this->filter($epg[$channel['id']]);
+            }
         }
 
-        $from = (int) $request->getParam('from');
-        $to   = (int) $request->getParam('to');
-
-        $next = (int) $request->getParam('next');
-
-        if (!empty($next)){
-            return $this->filter($this->manager->getCurProgramAndFewNext($channel['id'], $next));
+        if (count($epg_data) == 1){
+            $keys = array_keys($epg_data);
+            return $epg_data[$keys[0]];
         }else{
-            $from = empty($from) ? "" : date("Y-m-d H:i:s", $from);
-            $to   = empty($to)   ? "" : date("Y-m-d H:i:s", $to);
-
-            $epg = $this->manager->getEpgForChannelsOnPeriod(array($channel['id']), $from, $to);
-
-            return $this->filter($epg[$channel['id']]);
+            return $epg_data;
         }
     }
 

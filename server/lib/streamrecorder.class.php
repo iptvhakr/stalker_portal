@@ -23,7 +23,7 @@ class StreamRecorder extends Master
 
         $storages = $this->sortByLoad($storages);
 
-        var_dump($storages);
+        //var_dump($storages);
 
         return $storages;
     }
