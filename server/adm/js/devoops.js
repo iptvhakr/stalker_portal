@@ -21,8 +21,7 @@ $('.dropdown-toggle').click(function() {
 		console.log(dropdownWidth);
         var docWidth = $('#ajax-content').height();
         console.log(docWidth);
-      
-        
+
         var isDropdownVisible = (dropdownOffset.top + dropdownWidth + dropdownWidth + dropdownWidth <= docWidth);
      
         if (!isDropdownVisible) {
@@ -31,16 +30,12 @@ $('.dropdown-toggle').click(function() {
            $('.dropdown-toggle').parent('div').removeClass('dropup');
         }
     });
-	
-	
-		
-			
-			
-			
-			$('#attribute_set').removeClass('dropup');
-			$('#status').removeClass('dropup');
-			$('.filter').removeClass('dropup');
-for(var f=document.forms,i=f.length;i--;)f[i].setAttribute("novalidate",i)
+
+
+$('#attribute_set').removeClass('dropup');
+$('#status').removeClass('dropup');
+$('.filter').removeClass('dropup');
+for (var f = document.forms, i = f.length; i--;)f[i].setAttribute("novalidate", i)
 function LoadSelect2Script(callback) {
     if (!$.fn.select2) {
         $.getScript('plugins/select2/select2.min.js', callback);
@@ -57,8 +52,6 @@ function LoadSelect2Script(callback) {
 //
 function LoadDataTablesScripts(callback) {
     function LoadDatatables() {
-	
-		
         $.getScript('plugins/datatables/jquery.dataTables.js', function () {
             $.getScript('plugins/datatables/ZeroClipboard.js', function () {
                 $.getScript('plugins/datatables/TableTools.js', function () {
@@ -747,8 +740,38 @@ $(document).ready(function () {
     });
     
     $("#breadcrumb ul").addClass("breadcrumb");
+
+    $.datepicker.setDefaults({
+        showButtonPanel: true,
+        beforeShow: function (input) {
+            setTimeout(function () {
+                var buttonPane = $(input).datepicker("widget").find(".ui-datepicker-buttonpane");
+                buttonPane.empty();
+                $("<button>", {
+                    text: words['Clean'],
+                    click: function () {
+                        //Code to clear your date field (text box, read only field etc.) I had to remove the line below and add custom code here
+                        $.datepicker._clearDate(input);
+                    }
+                }).appendTo(buttonPane).addClass("ui-datepicker-clear ui-state-default ui-priority-primary ui-corner-all");
+            }, 1);
+        },
+        onChangeMonthYear: function (year, month, instance) {
+            setTimeout(function () {
+                var buttonPane = $(instance).datepicker("widget").find(".ui-datepicker-buttonpane");
+                buttonPane.empty();
+                $("<button>", {
+                    text: words['Clean'],
+                    click: function () {
+                        //Code to clear your date field (text box, read only field etc.) I had to remove the line below and add custom code here
+                        $.datepicker._clearDate(instance.input);
+                    }
+                }).appendTo(buttonPane).addClass("ui-datepicker-clear ui-state-default ui-priority-primary ui-corner-all");
+            }, 1);
+        }
+    });
+
     $('[id*="datepicker"]').attr('readonly', 'readonly');
-    
     $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
         if (e.currentTarget != e.target) {
             return;
