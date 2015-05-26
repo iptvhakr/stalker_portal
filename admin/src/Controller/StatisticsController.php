@@ -1432,8 +1432,8 @@ class StatisticsController extends \Controller\BaseStalkerController {
             }
             case 'stat-video': {
                 if (empty($this->data['filters']['stat_to']) || $this->data['filters']['stat_to'] != 'genre') {
-                    $return['time_end'] = $return['time_begin'] = $this->data['filters']['stat_to'] != 'daily'? 'last_played': 'date';
-                    $return['target_table'] = $this->data['filters']['stat_to'] != 'daily'? 'video': 'daily_played_video';
+                    $return['time_end'] = $return['time_begin'] = empty($this->data['filters']['stat_to']) || $this->data['filters']['stat_to'] != 'daily'? 'last_played': 'date';
+                    $return['target_table'] = empty($this->data['filters']['stat_to']) || $this->data['filters']['stat_to'] != 'daily'? 'video': 'daily_played_video';
                 }
                 break;
             }
