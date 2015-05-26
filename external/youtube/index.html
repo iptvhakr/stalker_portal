@@ -5,6 +5,13 @@
 		<meta charset="utf-8">
 		<link rel="icon" type="image/png" href="favicon.png">
 		<script type="text/javascript" src="app.js"></script>
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			
+			
+		</script>
 	</head>
 	<body>
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -65,7 +72,9 @@
 				</div>
 			</div>
 			<div id="pmTabCategoryContent" class="tab">
-				<div id="pmSearch" class="icon search"></div>
+				<div id="pmSearch">
+					<div class="icon search"></div>
+				</div>
 				<div id="pmCategoryContent">
 					<div id="pmLoading" class="loader"></div>
 					<div id="pmListVideos0Node">
@@ -95,7 +104,9 @@
 			</div>
 			<div id="psContentContainer">
 				<div id="psControls">
-					<div id="psSearch" class="icon search"></div>
+					<div id="psSearch">
+						<div class="icon search"></div>
+					</div>
 					<div id="psListSearchSuggestionsContainer">
 						<div id="psListSearchSuggestions" class="tipsList"></div>
 					</div>
@@ -112,6 +123,25 @@
 			<div id="hintMore" class="hint"></div>
 			<div id="hintGuide" class="hint"></div>
 			<div id="hintSearch" class="hint"></div>
+		</div>
+		<div id="volumeWidget" class="hidden">
+			<table>
+				<tr>
+					<td>
+						<div id="volumeTopValue"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="volumeCurrentValue"></div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div id="volumeBotValue"></div>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>
