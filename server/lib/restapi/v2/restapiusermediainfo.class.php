@@ -22,6 +22,11 @@ class RESTApiUserMediaInfo extends RESTApiController
             'target' => 'karaoke',
             'title_field' => 'name'
         ),
+        'tv-archive' => array(
+            'code'   => 11,
+            'target' => 'epg',
+            'title_field' => 'name'
+        )
     );
 
     public function __construct(){}
@@ -51,10 +56,24 @@ class RESTApiUserMediaInfo extends RESTApiController
             throw new RESTNotFound("Media not found");
         }
 
+        //todo: save storage name for video and karaoke?
+        //todo: load balancing
+
+        if ($type == 'tv-archive'){
+
+            $channel = \Itv::getChannelById($media['ch_id']);
+
+            $now_playing_content = $channel ? $channel['name'] : '--';
+
+        }else{
+            $now_playing_content = $media[$this->types_map[$type]['title_field']];
+        }
+
         return \Mysql::getInstance()->update('users',
             array(
                  'now_playing_type'    => $this->types_map[$type]['code'],
-                 'now_playing_content' => $media[$this->types_map[$type]['title_field']],
+                 'now_playing_link_id' => $media_id,
+                 'now_playing_content' => $now_playing_content,
                  'now_playing_start'   => 'NOW()',
                  'last_active'         => 'NOW()',
             ),
@@ -64,8 +83,53 @@ class RESTApiUserMediaInfo extends RESTApiController
 
     public function delete(RESTApiRequest $request, $parent_id){
 
-        //todo: save storage name for video and karaoke?
-        //todo: load balancing
+        $user = \Mysql::getInstance()->from('users')->where(array('id' => $parent_id))->get()->first();
+
+        if (!empty($user['now_playing_link_id'])){
+            switch ($user['now_playing_type']){
+                case 1: // tv
+
+                    if (time() - strtotime($user['now_playing_start']) > 30*60){ // more then 30 min
+                        \Mysql::getInstance()->insert('played_itv', array(
+                            'itv_id'      => $user['now_playing_link_id'],
+                            'uid'         => $parent_id,
+                            'playtime'    => 'NOW()',
+                            'user_locale' => $user['locale']
+                        ));
+                    }
+
+                    break;
+                case 2: // video
+
+                    if (time() - strtotime($user['now_playing_start']) > 60*60){ // more then 1 hour (70% can't be counted)
+                        \Mysql::getInstance()->insert('played_video', array(
+                            'video_id' => $user['now_playing_link_id'],
+                            'uid'      => $parent_id,
+                            'playtime' => 'NOW()'
+                        ));
+                    }
+
+                    break;
+
+                case 11: // tvarchive
+
+                    if (time() - strtotime($user['now_playing_start']) > 60) { // more then 1 min
+
+                        $program = \Mysql::getInstance()->from('epg')->where(array('id' => $user['now_playing_link_id']))->get()->first();
+
+                        if (!empty($program)){
+                            \Mysql::getInstance()->insert('played_tv_archive', array(
+                                'ch_id'    => $program['ch_id'],
+                                'uid'      => $parent_id,
+                                'playtime' => 'NOW()',
+                                'length'   => time() - strtotime($user['now_playing_start'])
+                            ));
+                        }
+                    }
+
+                    break;
+            }
+        }
 
         return \Mysql::getInstance()->update('users',
             array(
