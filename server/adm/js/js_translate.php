@@ -39,5 +39,6 @@ $words['Wait'] = _('Wait');
 $words['Request_is_being_prossessed'] = _('Request is being processed');
 $words['Done'] = _('Done');
 $words['Failed'] = _('Failed');
+$words['Clean'] = _('Clean');
 
 echo json_encode($words);

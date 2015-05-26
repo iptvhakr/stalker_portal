@@ -7,6 +7,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/stat-claims-logs" class="btn btn-default pull-right" id="add_audio_years">{{ 'Complaints log'|trans }}</a>
+                {{ main_macro.get_datepicker_double_input() }}
             </div>
         </div>
         
@@ -68,7 +69,16 @@
                 "processing": true,
                 "serverSide": true,
                 "ajax": {
-                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-claims-list-json"
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/stat-claims-list-json",
+                    "data": function (d) {
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+                        $('input[id^="datepicker_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
+                        });
+                    }
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {
@@ -100,6 +110,7 @@
 
         function yelp() {
             $(document).ready(function () {
+                {{ main_macro.get_datepicker_js_script() }}
                 LoadDataTablesScripts(TestTable1);
             });
         }

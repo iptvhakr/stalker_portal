@@ -7,6 +7,9 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter_button_bar('stat_to', 'id', 'title', app['allVideoStat']) }}
+                {% if (attribute(app, 'filters') is defined and attribute(app.filters, 'stat_to') is defined and app.filters.stat_to != 'genre') or not (attribute(app, 'filters') is defined)%}
+                {{ main_macro.get_datepicker_double_input() }}
+                {% endif %}
             </div>
         </div>
 
@@ -90,6 +93,9 @@
                         for (var i in params) {
                             d[i] = params[i];
                         }
+                        $('input[id^="datepicker_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("datepicker_", "interval_") + ']'] = $(this).val();
+                        });
                     }
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
@@ -129,9 +135,8 @@
 
         function yelp() {
             $(document).ready(function () {
-                
+                {{ main_macro.get_datepicker_js_script() }}
                 LoadDataTablesScripts(TestTable1);
-
             });
         }
 

@@ -53,7 +53,7 @@ if ($from_id){
 $from_id = Mysql::getInstance()
     ->select('max(id) as max_id')
     ->from('played_video')
-    ->where(array('playtime<' => date(Mysql::DATETIME_FORMAT, time()-2764800)))
+    ->where(array('playtime<' => date(Mysql::DATETIME_FORMAT, time()-5184000)))
     ->get()
     ->first('max_id');
 
@@ -65,7 +65,7 @@ if ($from_id){
 $from_id = Mysql::getInstance()
     ->select('max(id) as max_id')
     ->from('played_itv')
-    ->where(array('playtime<' => date(Mysql::DATETIME_FORMAT, time()-2764800)))
+    ->where(array('playtime<' => date(Mysql::DATETIME_FORMAT, time()-5184000)))
     ->get()
     ->first('max_id');
 
@@ -77,7 +77,7 @@ if ($from_id){
 $from_id = Mysql::getInstance()
     ->select('max(id) as max_id')
     ->from('played_tv_archive')
-    ->where(array('playtime<' => date(Mysql::DATETIME_FORMAT, time()-2764800)))
+    ->where(array('playtime<' => date(Mysql::DATETIME_FORMAT, time()-5184000)))
     ->get()
     ->first('max_id');
 
@@ -89,7 +89,7 @@ if ($from_id){
 $from_id = Mysql::getInstance()
     ->select('max(id) as max_id')
     ->from('media_claims_log')
-    ->where(array('added<' => date(Mysql::DATETIME_FORMAT, time()-2592000)))
+    ->where(array('added<' => date(Mysql::DATETIME_FORMAT, time()-5184000)))
     ->get()
     ->first('max_id');
 
