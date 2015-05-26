@@ -32,7 +32,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if (!empty($param['limit']['limit'])) {
             $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-        
+
         return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
     }
 
@@ -42,11 +42,9 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getVideoStatDailyList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from("daily_played_video")
                         ->where($param['where'])->like($param['like'], 'OR')
-                        ->where(array('`daily_played_video`.`date`>'=>$date_obj->format('Y-m-d H:i:s')))
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
@@ -70,11 +68,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getNoActiveAbonentTvList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from("users")
                         ->where($param['where'])
-                        ->where(array('`users`.`time_last_play_tv`<'=>$date_obj->format('Y-m-d H:i:s')))
+                        ->where(array('NOT `users`.`time_last_play_tv`'=>NULL))
                         ->like($param['like'], 'OR')
                         ->orderby($param['order']);
 
@@ -86,11 +83,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getNoActiveAbonentVideoList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from("users")
                         ->where($param['where'])
-                        ->where(array('`users`.`time_last_play_video`<'=>$date_obj->format('Y-m-d H:i:s')))
+                        ->where(array('NOT `users`.`time_last_play_video`'=>NULL))
                         ->like($param['like'], 'OR')
                         ->orderby($param['order']);
 
@@ -172,12 +168,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getTvArchiveList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from("`played_tv_archive`")
                         ->join('itv', 'itv.id', 'played_tv_archive.ch_id', 'INNER')
                         ->where($param['where'])
-                        ->where(array('playtime>=' => $date_obj->format('Y-m-d H:i:s')))
                         ->like($param['like'], 'OR')
                         ->groupby('ch_id')
                         ->orderby('counter', 'DESC');
@@ -190,7 +184,6 @@ class StatisticsModel extends \Model\BaseStalkerModel {
             $result = $obj->get()->all();
             return count($result);
         }
-        
         return $obj->get()->all();
     }
     
@@ -208,12 +201,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getTimeShiftList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from("`played_timeshift`")
                         ->join('itv', 'itv.id', 'played_timeshift.ch_id', 'INNER')
                         ->where($param['where'])
-                        ->where(array('playtime>=' => $date_obj->format('Y-m-d H:i:s')))
                         ->like($param['like'], 'OR')
                         ->groupby('ch_id')
                         ->orderby('counter', 'DESC');
@@ -244,7 +235,6 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
 
     public function getAbonentStatTvList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         if ($counter) {
             $param['select'][] = "count(`played_itv`.`id`) as `counter`";
         }
@@ -253,7 +243,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->from("users")
                         ->join("played_itv", "users.id", "played_itv.uid", "LEFT")
                         ->where($param['where'])
-                        ->where(array("played_itv.playtime>" => $date_obj->format('Y-m-d H:i:s')))
+                        ->where(array("NOT played_itv.playtime" => NULL))
                         ->like($param['like'], 'OR')
                         ->groupby(array("users.id"))
                         ->orderby($param['order']);
@@ -271,7 +261,6 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getAbonentStatVideoList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         if ($counter) {
             $param['select'][] = "count(`played_video`.`id`) as `counter`";
         }
@@ -280,7 +269,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->from("users")
                         ->join("played_video", "users.id", "played_video.uid", "LEFT")
                         ->where($param['where'])->like($param['like'], 'OR')
-                        ->where(array('played_video.playtime>'=>$date_obj->format('Y-m-d H:i:s')))
+                        ->where(array('NOT played_video.playtime'=>NULL))
                         ->groupby(array("users.id"))
                         ->orderby($param['order']);
 
@@ -297,13 +286,12 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getAbonentStatAnecList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         if ($counter) {
             $param['select'][] = "`readed_anec`.`mac` as `mac`";
         }
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from("readed_anec")->where($param['where'])->like($param['like'], 'OR')
-                        ->where(array('readed>'=>$date_obj->format('Y-m-d H:i:s')))
+                        ->where(array('NOT readed'=>NULL))
                         ->groupby(array("mac"))
                         ->orderby($param['order']);
         
@@ -333,12 +321,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getTvList($param, $counter = FALSE) {
-        $date_obj =  new \DateTime( 'midnight 30 days ago' );
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from("`played_itv`")
                         ->join('itv', 'itv.id', 'played_itv.itv_id', 'LEFT')
                         ->where($param['where'])
-                        ->where(array('playtime>=' => $date_obj->format('Y-m-d H:i:s')))
                         ->like($param['like'], 'OR')
                         ->groupby('itv_id');
         if (!empty($param['order'])) {
@@ -402,9 +388,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
             }
             return $data;
         }
-//        print_r($obj->get());
-//        exit;
-        
+
         return ($counter) ? $obj : $obj->get()->all();
     }
     
@@ -419,5 +403,15 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     public function getArhiveIDs($table) {
         return $this->mysqlInstance->select(array('id', 'CONCAT_WS(" - ", `year`, `month`) as `title`'))->from($table)->orderby('year, month')->get()->all();
     }
-    
+
+    public function getMinDateFromTable($table, $date_field){
+        if (empty($table) || empty($date_field)) {
+            return 0;
+        }
+        $result = $this->mysqlInstance->query("SELECT MIN($date_field) as min_date FROM $table")->get();
+        if ($result = strtotime($result['min_date'])) {
+            return $result;
+        }
+        return 0;
+    }
 }

@@ -538,3 +538,8 @@ _('Remove the tv genre');
 _('Validation names tv genre');
 _('Change the order of genres');
 _('Localized title');
+_('Object of complaint');
+_('Last view movie');
+_('By day');
+_('Overall movies');
+_('Genre popularity');

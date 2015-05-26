@@ -164,3 +164,61 @@
           
             {% endautoescape %}
     {% endmacro %}
+
+    {% macro get_datepicker_double_input() %}
+        <div class="col-xs-6 col-sm-10 col-md-6 col-lg-5 filter no-padding pull-right" data-tvfilter="time_period">
+            <div class="col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
+                <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'from'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
+            </div>
+            <div class="col-sm-3 filter no-padding" data-tvfilter="time_period">
+                <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'to'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
+            </div>
+        </div>
+    {% endmacro %}
+
+    {% macro get_datepicker_js_script() %}
+        var datePickerOpt = {
+        maxDate: 0,
+        {% if attribute(app, 'minDatepickerDate') is defined %}
+        minDate: new Date({{ app['minDatepickerDate'] }} * 1000),
+        {% endif %}
+        numberOfMonths: 1,
+        language: 'ru',
+        dateFormat: 'dd/mm/yy',
+        dayNamesMin: [
+        '{{ 'Sun'|trans }}',
+        '{{ 'Mon'|trans }}',
+        '{{ 'Tue'|trans }}',
+        '{{ 'Wed'|trans }}',
+        '{{ 'Thu'|trans }}',
+        '{{ 'Fri'|trans }}',
+        '{{ 'Sat'|trans }}'
+        ],
+        monthNames: [
+        '{{ 'January'|trans }}',
+        '{{ 'February'|trans }}',
+        '{{ 'March'|trans }}',
+        '{{ 'April'|trans }}',
+        '{{ 'May'|trans }}',
+        '{{ 'June'|trans }}',
+        '{{ 'July'|trans }}',
+        '{{ 'August'|trans }}',
+        '{{ 'September'|trans }}',
+        '{{ 'October'|trans }}',
+        '{{ 'November'|trans }}',
+        '{{ 'December'|trans }}'
+        ],
+        onClose: function(){}
+        };
+        datePickerOpt.onClose = function (selectedDate) {
+        $("#datepicker_to").datepicker("option", "minDate", selectedDate);
+        $('#datatable-1').DataTable().ajax.reload();
+        };
+        $("#datepicker_from").datepicker(datePickerOpt);
+
+        datePickerOpt.onClose = function (selectedDate) {
+        $("#datepicker_from").datepicker("option", "maxDate", selectedDate);
+        $('#datatable-1').DataTable().ajax.reload();
+        };
+        $("#datepicker_to").datepicker(datePickerOpt);
+    {% endmacro %}
