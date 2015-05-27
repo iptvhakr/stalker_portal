@@ -172,6 +172,9 @@ class UsersController extends \Controller\BaseStalkerController {
         $query_param['order'] = 'users.id';
         $user = $this->db->getUsersList($query_param);
         $this->user = (is_array($user) && count($user) > 0) ? $user[0] : array();
+        if (empty($this->user)) {
+            return $this->app->redirect('add-users');
+        }
         $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
         if (!empty($this->user['expire_billing_date']) && preg_match("/(19|20)\d\d([- \/\.])(0[1-9]|1[012])[- \/\.](0[1-9]|[12][0-9]|3[01])/im", $this->user['expire_billing_date'], $match)) {
             $this->user['expire_billing_date'] = implode('-', array_reverse(explode($match[2], $this->user['expire_billing_date'])));
