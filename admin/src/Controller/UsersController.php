@@ -862,7 +862,12 @@ class UsersController extends \Controller\BaseStalkerController {
         $all_groups = $stb_groups->getAll();
         $group_keys = $this->getFieldFromArray($all_groups, 'id');
         $group_names = $this->getFieldFromArray($all_groups, 'name');
-        $all_groups = array_combine($group_keys, $group_names);
+
+        if (is_array($group_keys) && is_array($group_names) && count($group_keys) == count($group_names)) {
+            $all_groups = array_combine($group_keys, $group_names);
+        } else {
+            $all_groups = array();
+        }
 
         if (!empty($data['id'])) {
             $tmp = $stb_groups->getMemberByUid($data['id']);
@@ -886,7 +891,12 @@ class UsersController extends \Controller\BaseStalkerController {
         $tarif_plans = $this->db->getAllTariffPlans();
         $plan_keys = $this->getFieldFromArray($tarif_plans, 'id');
         $plan_names = $this->getFieldFromArray($tarif_plans, 'name');
-        $tariff_plans = array_combine($plan_keys, $plan_names);
+
+        if (is_array($plan_keys) && is_array($plan_names) && count($plan_keys) == count($plan_names)) {
+            $tariff_plans = array_combine($plan_keys, $plan_names);
+        } else {
+            $tariff_plans = array();
+        }
 
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
