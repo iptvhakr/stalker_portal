@@ -133,7 +133,7 @@ class BaseStalkerController {
         $this->postData = $this->request->request->all();
     }
 
-    protected function setLocalization($source = array(), $fieldname = '', $number = FALSE, $params = array()) {
+    public function setLocalization($source = array(), $fieldname = '', $number = FALSE, $params = array()) {
         if (!empty($source)) {
             if (!is_array($source)) {
                 $translate = '';

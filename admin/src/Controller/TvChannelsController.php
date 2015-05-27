@@ -750,7 +750,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'editTvGenre';
         $error = $this->setlocalization('Failed');
-        $check = $this->db->getTvGenresList(array('where' => array('title' => $this->postData['title']), 'order' => array('title' => 'ASC')));
+        $check = $this->db->getTvGenresList(array(
+            'select'=>array('*'),
+            'where' => array('title' => $this->postData['title']),
+            'order' => array('title' => 'ASC'),
+            'like' => array()
+        ));
         if (empty($check)) {
             $this->db->updateTvGenres(array('title' => $this->postData['title']), array('id' => $this->postData['id']));
             $error = '';
@@ -793,7 +798,12 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'checkTvGenre';
         $error = $this->setlocalization('Name already used');
-        if ($this->db->getTvGenresList(array('where' => array('title' => $this->postData['title']), 'order' => array('title' => 'ASC')))) {
+        if ($this->db->getTvGenresList(array(
+            'select'=>array('*'),
+            'where' => array('title' => $this->postData['title']),
+            'order' => array('title' => 'ASC'),
+            'like' => array()
+        ))) {
             $data['chk_rezult'] = $this->setlocalization('Name already used');
         } else {
             $data['chk_rezult'] = $this->setlocalization('Name is available');
