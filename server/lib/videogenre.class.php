@@ -117,6 +117,15 @@ class VideoGenre
             return array();
         }
 
-        return Mysql::getInstance()->from('cat_genre')->where(array('category_alias' => $category['category_alias']))->get()->all();
+        $genres = Mysql::getInstance()->from('cat_genre')->where(array('category_alias' => $category['category_alias']))->get()->all();
+
+        if ($pretty_id){
+            $genres = array_map(function($genre){
+                $genre['id'] = preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['title']);
+                return $genre;
+            },$genres);
+        }
+
+        return $genres;
     }
 }

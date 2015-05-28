@@ -48,7 +48,13 @@ class VideoCategory
 
             $categories = array_values($categories);
 
-            return Mysql::getInstance()->from('media_category')->where(array('category_name' => $categories[0]['original_title']))->get()->first();
+            $category = Mysql::getInstance()->from('media_category')->where(array('category_name' => $categories[0]['original_title']))->get()->first();
+
+            if (!empty($category)){
+                $category['id'] = $id;
+            }
+
+            return $category;
         }else{
             return Mysql::getInstance()->from('media_category')->where(array('id' => intval($id)))->get()->first();
         }
