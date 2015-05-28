@@ -685,6 +685,11 @@ function common_xpcom(){
                 req.setRequestHeader("Authorization", "Bearer " + this.access_token);
             }
 
+            req.addEventListener("error", function(){
+                console.log('XMLHttpRequest error event');
+                connection_problem.show();
+            }, false);
+
             req.onreadystatechange = function(){
                 if (req.readyState == 4) {
                     if (req.status == 200) {
