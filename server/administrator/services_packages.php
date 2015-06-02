@@ -268,7 +268,9 @@ function get_users_count_in_tariff($tariff){
                         },'');
 
                         $.each(picked_services, function(num, row){
-                            $('<option value='+options_picked[row].id+'>'+options_picked[row].name+'</option>').appendTo('.services-picked');
+                            if (options_picked.hasOwnProperty(row)) {
+                                $('<option value=' + options_picked[row].id + '>' + options_picked[row].name + '</option>').appendTo('.services-picked');
+                            }
                         });
 
                         $(options_str).appendTo('.services-available');
