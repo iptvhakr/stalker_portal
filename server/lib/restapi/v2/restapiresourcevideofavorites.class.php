@@ -6,11 +6,13 @@ class RESTApiResourceVideoFavorites extends RESTApiCollection
 {
     protected $params_map = array("users" => "users.id");
     private   $user_id;
-    private   $manager;
+    public    $manager;
 
     public function __construct(array $nested_params, array $external_params){
 
         parent::__construct($nested_params, $external_params);
+
+        $this->document = new RESTApiVideoFavoriteDocument($this, $this->external_params);
 
         if (empty($this->nested_params['users.id'])){
             throw new RESTBadRequest("User must be specified");
@@ -26,6 +28,10 @@ class RESTApiResourceVideoFavorites extends RESTApiCollection
 
         $this->user_id = $user['id'];
         $this->manager = \Vod::getInstance();
+    }
+
+    public function getUserId(){
+        return $this->user_id;
     }
 
     public function getCount(RESTApiRequest $request){

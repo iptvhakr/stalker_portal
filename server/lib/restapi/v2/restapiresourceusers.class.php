@@ -10,6 +10,9 @@ class RESTApiResourceUsers extends RESTApiCollection
         parent::__construct($nested_params, $external_params);
         $this->document = new RESTApiUsersDocument();
         $this->document->controllers->add(new RESTApiUserSettings());
+        $this->document->controllers->add(new RESTApiUserPaymentInfo());
+        $this->document->controllers->add(new RESTApiUserAgreement());
+        $this->document->controllers->add(new RESTApiUserToS());
         $this->document->controllers->add(new RESTApiUserPing());
         $this->document->controllers->add(new RESTApiUserMediaInfo());
         $this->document->controllers->add(new RESTApiPvrSummary());

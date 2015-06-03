@@ -549,7 +549,7 @@
 
                 var mark_archive = create_block_element('mark_archive', marks);
 
-                if (epg[j]['mark_archive']){
+                if (epg[j]['mark_archive'] && module.tv_archive){
                     mark_archive.show();
                 }else{
                     mark_archive.hide();

@@ -64,16 +64,19 @@ function init_m()
         "reboot":[t('Reboot device'),"ico_reboot","ico_reboot_act","ico_l_reboot",3]
     };
 
-
-    if (!_GET['dvb_supported_scan_types']){
-        delete punktiT.dvb;
+    try{
+        _GET['dvb_supported_scan_types'] = JSON.parse(decodeURIComponent(_GET['dvb_supported_scan_types'])) || [];
+    }catch(e){
+        console.log(e.message);
+        _GET['dvb_supported_scan_types'] = [];
     }
 
     punkti=[];
     var cache=[];
     for(var i=0;i<prof.modules.length;i++){
-        if (!_GET['dvb_supported_scan_types'] && prof.modules[i].name == 'dvb'){
-            continue;
+
+        if (prof.modules[i].name == 'dvb' && (!_GET['dvb_supported_scan_types'] || Array.isArray(_GET['dvb_supported_scan_types']) && _GET['dvb_supported_scan_types'].length == 0)){
+            continue
         }
 
         if (!_GET['enable_setting_access_by_pass'] && prof.modules[i].name == 'settings_lock'){

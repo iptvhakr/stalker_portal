@@ -14,7 +14,7 @@
             scan_progress(msg);
         };
 
-        var supported_scan_types = parent._GET['dvb_supported_scan_types'] ? JSON.parse(decodeURIComponent(parent._GET['dvb_supported_scan_types'])) : [];
+        var supported_scan_types = parent._GET['dvb_supported_scan_types'] ? parent._GET['dvb_supported_scan_types'] : [];
         var current_scan_types   = parent._GET['dvb_current_scan_types'] ? JSON.parse(decodeURIComponent(parent._GET['dvb_current_scan_types'])) : [];
 
         var signal_type_select = ['select', parent.t('Signal type:')];
@@ -306,8 +306,8 @@
                 return;
             }
 
-            console.log(e.keyCode);
-            console.log(iid);
+            //console.log(e.keyCode);
+            //console.log(iid);
 
             pressKey(e);
         }

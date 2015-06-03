@@ -1384,7 +1384,15 @@ player.prototype.event_callback = function(event, params){
             if (module.tv_archive && this.cur_media_item.mark_archive){
                 window.clearTimeout(this.archive_continue_dialog_to);
 
-                _debug('archive_continue_dialog timeout', (this.cur_media_length - this.cur_pos_time - 60)*1000);
+                var match = /-\d{10}-(\d+)\.m3u8/.exec(this.cur_media_item.cmd);
+
+                if (match){
+                    this.cur_media_length = match[1];
+                }
+
+                var archive_continue_dialog_delay = (this.cur_media_length - this.cur_pos_time - 30) * 1000;
+
+                _debug('archive_continue_dialog_delay 1', archive_continue_dialog_delay);
 
                 this.archive_continue_dialog_to = window.setTimeout(function(){
                     if (stb.profile['tv_archive_continued']){
@@ -1392,7 +1400,7 @@ player.prototype.event_callback = function(event, params){
                     }else{
                         module.tv_archive.continue_dialog.show();
                     }
-                }, (this.cur_media_length - this.cur_pos_time - 30)*1000);
+                }, archive_continue_dialog_delay);
 
                 self = this;
 
@@ -2818,14 +2826,26 @@ player.prototype.disable_pause = function(){
 
         try{
             if (module.tv_archive && this.cur_media_item.mark_archive){
-                window.clearTimeout(this.archive_continue_dialog_to);
+
+                var match = /-\d{10}-(\d+)\.m3u8/.exec(this.cur_media_item.cmd);
+
+                if (match){
+                    var cur_media_length = match[1];
+                }else{
+                    cur_media_length = stb.GetMediaLen();
+                }
+
+                var archive_continue_dialog_delay = (cur_media_length - stb.GetPosTime() - 30)*1000;
+
+                _debug('archive_continue_dialog_delay 1', archive_continue_dialog_delay);
+
                 this.archive_continue_dialog_to = window.setTimeout(function(){
                     if (stb.profile['tv_archive_continued']){
                         module.tv_archive.get_next_part_url();
                     }else{
                         module.tv_archive.continue_dialog.show();
                     }
-                }, (stb.GetMediaLen() - stb.GetPosTime() - 30)*1000);
+                }, archive_continue_dialog_delay);
             }
         }catch(e){}
         

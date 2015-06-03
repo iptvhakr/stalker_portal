@@ -6,15 +6,24 @@ class RESTApiResourceVideoGenres extends RESTApiCollection
 {
 
     protected $params_map = array("video-categories" => "video.category");
-    protected $category;
+    protected $categories;
 
     public function __construct(array $nested_params, array $external_params){
         parent::__construct($nested_params, $external_params);
         $this->document = new RESTApiVideoGenreDocument();
 
         if (!empty($this->nested_params['video.category'])){
+
             $category = new \VideoCategory();
-            $this->category = $category->getById($this->nested_params['video.category'], true);
+            $category_ids = explode(',', $this->nested_params['video.category']);
+
+            foreach ($category_ids as $category_id) {
+                $this->categories[] = $category->getById($category_id, true);
+            }
+
+            if (empty($this->categories)){
+                throw new RESTNotFound("Category not found");
+            }
         }
     }
 
@@ -27,8 +36,13 @@ class RESTApiResourceVideoGenres extends RESTApiCollection
         $genres = new \VideoGenre();
         $genres->setLocale($request->getLanguage());
 
-        if (!empty($this->category)){
-            return $this->filter($genres->getByCategoryId($this->nested_params['video.category'], true));
+        if (!empty($this->categories)){
+            $response = array();
+
+            foreach ($this->categories as $category){
+                $response[$category['id']] = $this->filter($genres->getByCategoryId($category['id'], true));
+            }
+            return $response;
         }else{
             return $this->filter($genres->getAll(true));
         }
@@ -36,17 +50,11 @@ class RESTApiResourceVideoGenres extends RESTApiCollection
 
     private function filter($genres){
 
-        $category = $this->category;
-
         $genres = array_map(function($genre){
             unset($genre['category_alias']);
             unset($genre['original_title']);
             return $genre;
-        }, array_filter($genres, function($genre) use ($category) {
-            return $category['category_alias'] == $genre['category_alias'] || empty($category);
-        }));
-
-        $genres = array_values($genres);
+        }, $genres);
 
         return $genres;
     }
