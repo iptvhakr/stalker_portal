@@ -14,7 +14,7 @@ class UsersController extends \Controller\BaseStalkerController {
     private $allState = array(array('id' => 2, 'title' => 'Offline'), array('id' => 1, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
-        'users.id as id', "mac", "ip", "login", "ls", "fname",
+        'users.id as id', "mac", "ip", "login", "ls", "fname", "reseller.id as reseller_id",
         "status", 'tariff_plan.name as tariff_plan_name',
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
         "concat (users.fname) as fname",
@@ -35,6 +35,9 @@ class UsersController extends \Controller\BaseStalkerController {
             array('id' => 1, 'title' => $this->setlocalization('on')),
             array('id' => 2, 'title' => $this->setlocalization('off'))
         );
+        if (empty($this->app['reseller'])) {
+            $this->userFields[] = "reseller.name as reseller_name";
+        }
     }
 
     // ------------------- action method ---------------------------------------
@@ -71,7 +74,11 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
-        
+
+        if (empty($this->app['reseller'])) {
+            $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
+            $this->app['allResellers'] = array_merge($resellers, $this->db->getAllFromTable('reseller'));
+        }
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -80,7 +87,26 @@ class UsersController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-        $this->app['allGroups'] = $this->db->getConsoleGroup();
+        $empty_reseller = $this->setLocalization('Empty');
+        $data = $this->db->getConsoleGroup();
+        if (empty($this->app['reseller'])) {
+            $this->app['allGroups'] = array_map(function ($row) use ($empty_reseller) {
+                if (empty($row['reseller_name'])) {
+                    $row['reseller_name'] = $empty_reseller;
+                }
+                if (empty($row['reseller_id'])) {
+                    $row['reseller_id'] = '-';
+                }
+                $row['operations'] = '';
+                return $row;
+            }, $data);
+            $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
+            $this->app['allResellers'] = array_merge($resellers, $this->db->getAllFromTable('reseller'));
+        } else {
+            $this->app['allGroups'] = $data;
+        }
+
+        $this->app['dropdownAttribute'] = $this->getUsersConsolesGroupsDropdownAttribute();
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -225,7 +251,7 @@ class UsersController extends \Controller\BaseStalkerController {
         } else {
             return $this->app->redirect('users-consoles-groups');
         }
-        $tmp = $this->db->getConsoleGroup(array('id' => $id));
+        $tmp = $this->db->getConsoleGroup(array('Sg.id' => $id));
         $this->app['consoleGroup'] = $tmp[0];
         $this->app['groupid'] = $id;
         $list = $this->users_groups_consoles_list_json();
@@ -249,7 +275,7 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $param = (!empty($this->data) ? $this->data : array());
 
-        $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'reseller_name'));
         if (($search = array_search('state', $query_param['select'])) != FALSE) {
             unset($query_param['select'][$search]);
             unset($query_param['where']['state']);
@@ -276,13 +302,15 @@ class UsersController extends \Controller\BaseStalkerController {
             $query_param['order']['`keep_alive`'] = $query_param['order']['state'];
             unset($query_param['order']['state']);
         }
-        
-        $response['data'] = array_map(function($val){
+        $reseller_empty_name = $this->setLocalization('Empty');
+        $response['data'] = array_map(function($val) use ($reseller_empty_name) {
             $val['last_active'] = (int)$val['last_active']; 
             $val['last_change_status'] = (int) strtotime($val['last_change_status']);
             $val['last_change_status'] = $val['last_change_status'] > 0 ? $val['last_change_status']: 0;
             $val['expire_billing_date'] = (int) strtotime($val['expire_billing_date']);
             $val['expire_billing_date'] = $val['expire_billing_date'] > 0 ? $val['expire_billing_date']: 0;
+            $val['reseller_id'] = !empty($val['reseller_id']) ? $val['reseller_id']: '-';
+            $val['reseller_name'] = !empty($val['reseller_name']) ? $val['reseller_name']: $reseller_empty_name;
             return $val;
         }, $this->db->getUsersList($query_param));
 
@@ -418,10 +446,11 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'addConsoleGroup';
         $error = $this->setlocalization('Failed');
-        $check = $this->db->getConsoleGroup(array('name' => $this->postData['name']));
+        $check = $this->db->getConsoleGroup(array('Sg.name' => $this->postData['name']));
         if (empty($check)) {
             $data['id'] = $this->db->insertConsoleGroup(array('name' => $this->postData['name']));
             $data['name'] = $this->postData['name'];
+            $data['reseller_id'] = $this->admin->getResellerID();
             $error = '';
         }
 
@@ -442,12 +471,13 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'editConsoleGroup';
         $error = $this->setlocalization('Failed');
-        $check = $this->db->getConsoleGroup(array('name' => $this->postData['name']));
+        $check = $this->db->getConsoleGroup(array('Sg.name' => $this->postData['name']));
         if (empty($check)) {
             $this->db->updateConsoleGroup(array('name' => $this->postData['name']), array('id' => $this->postData['id']));
             $error = '';
             $data['id'] = $this->postData['id'];
             $data['name'] = $this->postData['name'];
+            $data['reseller_id'] = $this->admin->getResellerID();
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -810,6 +840,79 @@ class UsersController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
+
+    public function move_user_to_reseller(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id']) || empty($this->postData['source_id']) || empty($this->postData['target_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageUserReseller';
+        $user_id = $this->postData['id'];
+        $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
+        $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
+        $error = '';
+
+        if (!empty($target_id)) {
+            $count_reseller = $this->db->getReseller(array('select'=>array('*'), 'where'=>array('id' => $target_id)), TRUE);
+        } else{
+            $count_reseller = 1;
+        }
+
+        if (!empty($count_reseller) && $source_id !== $target_id) {
+            $this->db->updateResellerMemberByID('users', $user_id, $target_id);
+            $data['msg'] = $this->setLocalization('Moved');
+        } else {
+            $error = $data['msg'] = empty($count_reseller) ? $this->setLocalization('Not found reseller for moving') : $this->setLocalization('Nothing to do');
+        }
+
+        $response = $this->generateAjaxResponse($data);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function move_user_group_to_reseller(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['consolegroupid']) || empty($this->postData['source_id']) || empty($this->postData['target_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'editConsoleGroup';
+        $console_group_id = $this->postData['consolegroupid'];
+        $source_id = $this->postData['source_id'] !== '-' ? $this->postData['source_id']: NULL;
+        $target_id = $this->postData['target_id'] !== '-' ? $this->postData['target_id']: NULL;
+        $error = '';
+
+        if (!empty($target_id)) {
+            $count_reseller = $this->db->getReseller(array('select'=>array('*'), 'where'=>array('id' => $target_id)), TRUE);
+        } else{
+            $count_reseller = 1;
+        }
+
+        if (!empty($count_reseller) && $source_id !== $target_id) {
+            $this->db->updateResellerMemberByID('stb_groups', $console_group_id, $target_id);
+            $data['msg'] = $this->setLocalization('Moved');
+            $check = $this->db->getConsoleGroup(array('Sg.id' => $this->postData['consolegroupid']));
+            $data['id'] = $this->postData['consolegroupid'];
+            $data['name'] = $check[0]['name'];
+            $data['reseller_id'] = $check[0]['reseller_id'];
+
+        } else {
+            $error = $data['msg'] = empty($count_reseller) ? $this->setLocalization('Not found reseller for moving') : $this->setLocalization('Nothing to do');
+        }
+
+        $response = $this->generateAjaxResponse($data);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
     
     //------------------------ service method ----------------------------------
 
@@ -898,6 +1001,16 @@ class UsersController extends \Controller\BaseStalkerController {
             $tariff_plans = array();
         }
 
+        if (empty($this->app['reseller'])) {
+            $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
+            $resellers = array_merge($resellers, $this->db->getAllFromTable('reseller'));
+            $resellers = array_combine($this->getFieldFromArray($resellers, 'id'), $this->getFieldFromArray($resellers, 'name'));
+
+            if (empty($data['reseller_id'])) {
+                $data['reseller_id'] = '-';
+            }
+        }
+
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('fname', 'text', array('required' => FALSE))
@@ -947,6 +1060,14 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_internal_billing', 'false')) {
             $form->add('expire_billing_date', 'text', array('required' => FALSE));
         }
+        if (empty($this->app['reseller'])) {
+            $form->add('reseller_id', 'choice', array(
+                    'choices' => $resellers,
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($resellers)))),
+                    'required' => FALSE
+                )
+            );
+        }
 
         return $form->getForm();
     }
@@ -994,6 +1115,9 @@ class UsersController extends \Controller\BaseStalkerController {
                     $data['expire_billing_date'] = implode('-', array_reverse(explode($match[2], $data['expire_billing_date'])));
                 } else {
                     $data['expire_billing_date'] = 0;
+                }
+                if ($data['reseller_id'] == '-') {
+                    $data['reseller_id'] = NULL;
                 }
 
                 $result = call_user_func_array(array($this->db, $action), array($data, $data['id']));
@@ -1089,6 +1213,9 @@ class UsersController extends \Controller\BaseStalkerController {
             array('name'=>'state',              'title'=>$this->setLocalization('State'),       'checked' => TRUE),
             array('name'=>'status',             'title'=>$this->setLocalization('Status'),      'checked' => TRUE)
             );
+        if (empty($this->app['reseller'])) {
+            $attribute[] = array('name'=>'reseller_name',      'title'=>$this->setLocalization('Reseller'),    'checked' => TRUE);
+        }
         if (\Config::getSafe('enable_internal_billing', 'false')) {
             $attribute[] = array('name'=>'expire_billing_date', 'title'=>$this->setLocalization('Expire billing date'),'checked' => TRUE);
         }
@@ -1096,5 +1223,16 @@ class UsersController extends \Controller\BaseStalkerController {
 
         return $attribute;
     }
-    
+
+    private function getUsersConsolesGroupsDropdownAttribute() {
+        $attribute = array(
+            array('name'=>'name',               'title'=>$this->setLocalization('Name'),            'checked' => TRUE),
+            array('name'=>'users_count',        'title'=>$this->setLocalization('Quantity of users'),'checked' => TRUE)
+        );
+        if (empty($this->app['reseller'])) {
+            $attribute[] = array('name'=>'reseller_name',      'title'=>$this->setLocalization('Reseller'),    'checked' => TRUE);
+        }
+        $attribute[] = array('name'=>'operations',         'title'=>$this->setLocalization('Operations'),  'checked' => TRUE);
+        return $attribute;
+    }
 }

@@ -190,8 +190,9 @@ class EventsController extends \Controller\BaseStalkerController {
         $event->setTtl($this->postData['ttl']);
         $get_list_func_name = 'get_userlist_' . str_replace('to_', '', $this->postData['user_list_type']);
         $set_event_func_name = 'set_event_' . str_replace('to_', '', $this->postData['event']);
-        $user_list = $this->$get_list_func_name($event);
-//        $event->setUserListById($user_list);
+        $user_list = array_intersect($this->$get_list_func_name($event), $this->getFieldFromArray($this->db->getUser(array(), 'ALL'), 'id'));
+        $event->setUserListById($user_list);
+
         if ($this->$set_event_func_name($event, $user_list)){
             $data['msg'] .= count($user_list). ' ' . $this->setlocalization('users');
             $error = '';
@@ -248,7 +249,7 @@ class EventsController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'cleanEvents';
         $result = $this->postData['uid'] == 'all' ? $this->db->deleteAllEvents() : $this->db->deleteEventsByUID($this->postData['uid']);
-        $data['msg'] = $this->setlocalization('Deleted') . ' ' . $this->setLocalization($result) . ' ' . $this->setlocalization('events');
+        $data['msg'] = $this->setlocalization('Deleted') . ' ' . (is_numeric($result)? $result: $this->setLocalization($result)) . ' ' . $this->setlocalization('events');
         $error = '';
         
         $response = $this->generateAjaxResponse($data, $error);
@@ -284,10 +285,8 @@ class EventsController extends \Controller\BaseStalkerController {
     private function get_userlist_all(&$event){
         $user_list = array();
         if ($this->postData['event'] == 'send_msg' || $this->postData['event'] == 'send_msg_with_video'){
-            $event->setUserListByMac('all');
             $user_list = \Middleware::getAllUsersId();
         }else{
-            $event->setUserListByMac('online');
             $user_list = \Middleware::getOnlineUsersId();
         }
         return $user_list;
@@ -310,17 +309,14 @@ class EventsController extends \Controller\BaseStalkerController {
             @unlink($file_name);
         }
         
-        $event->setUserListById($user_list);
         return $user_list;
     }
     
     private function get_userlist_by_group(&$event){
         $user_list = array();
         if (intval($this->postData['group_id']) > 0){
-            $user_list = $this->db->getConsoleInGroup(array('stb_group_id' => $this->postData['group_id']));
-            $user_list = $this->getFieldFromArray($user_list, 'id');
+            $user_list = $this->getFieldFromArray($this->db->getConsoleInGroup(array('stb_group_id' => $this->postData['group_id'])), 'id');
         }
-        $event->setUserListById($user_list);
         return $user_list;
     }
     
@@ -335,12 +331,10 @@ class EventsController extends \Controller\BaseStalkerController {
             }
             $user_list = \Middleware::getUidsByPattern($param);
         }
-        $event->setUserListById($user_list);
         return $user_list;
     }
     
     private function get_userlist_single(&$event){
-        $event->setUserListByMac($this->postData['mac']);
         $user_list = \Middleware::getUidByMac($this->postData['mac']);
         $user_list = array($user_list);
         return $user_list;

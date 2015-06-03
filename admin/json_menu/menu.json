@@ -203,6 +203,11 @@
                 "name": _("Groups"),
                 "alias": "admins-groups",
                 "icon": ""
+            },
+            "3": {
+                "name": _("Resellers"),
+                "alias": "resellers-list",
+                "icon": ""
             }
         }
     },

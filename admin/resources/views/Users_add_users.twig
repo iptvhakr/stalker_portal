@@ -154,6 +154,19 @@
                             </div>
                         </div>
                         {% endif %}
+                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label ">{{ 'Reseller'|trans }}</label>
+                            <div class="col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-4">
+                                    {{ form_widget(app['form'].reseller_id, {'attr': {'class': 'populate placeholder'}}) }}
+                                    <div class="bg-danger">
+                                        {{ form_errors(app['form'].reseller_id) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'State'|trans }}</label>
                             <div class="col-xs-10 col-sm-6">
@@ -365,6 +378,9 @@
             $('#form_tariff_plan_id').select2({minimumResultsForSearch: -1});
             $('#form_additional_services_on').select2({minimumResultsForSearch: -1});
             $('#form_status').select2({minimumResultsForSearch: -1});
+            {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+            $('#form_reseller_id').select2({minimumResultsForSearch: -1});
+            {% endif %}
         }
         function yelp() {
             $(document).ready(function () {

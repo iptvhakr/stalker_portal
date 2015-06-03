@@ -9,6 +9,9 @@ class EventsModel extends \Model\BaseStalkerModel {
     }
 
     public function getTotalRowsEventsList($where = array(), $like = array()) {
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
         $obj = $this->mysqlInstance->count()->from('events');
         if (!empty($where) || !empty($like)) {
             $obj = $obj->join('users', 'events.uid', 'users.id', 'LEFT');    
@@ -21,6 +24,9 @@ class EventsModel extends \Model\BaseStalkerModel {
     }
    
     public function getEventsList($param) {
+        if (!empty($this->reseller_id)) {
+            $param['where']['reseller_id'] = $this->reseller_id;
+        }
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('events')->join('users', 'events.uid', 'users.id', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
@@ -31,11 +37,23 @@ class EventsModel extends \Model\BaseStalkerModel {
         return $obj->get()->all();
     }
     
-    public function getUser($param) {
-        return $this->mysqlInstance->from('users')->where($param, 'OR')->get()->first();
+    public function getUser($param = array(), $all = FALSE) {
+        $where = array();
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
+
+        if ($all !== FALSE) {
+            return $this->mysqlInstance->from('users')->where($param, 'OR')->where($where)->get()->all();
+        }
+
+        return $this->mysqlInstance->from('users')->where($param, 'OR')->where($where)->get()->first();
     }
     
     public function getConsoleGroup($param = array()){
+        if (!empty($this->reseller_id)) {
+            $param['reseller_id'] = $this->reseller_id;
+        }
         return $this->mysqlInstance->from('stb_groups')->where($param)->get()->all();
     }
     
@@ -44,15 +62,36 @@ class EventsModel extends \Model\BaseStalkerModel {
     }
     
     public function updateUser($params, $where) {
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
         return $this->mysqlInstance->where($where)->update('users', $params)->total_rows();
     }
     
     public function deleteEventsByUID($uid) {
-        return $this->mysqlInstance->delete('events', array('uid' => $uid))->total_rows();
+        if (empty($this->reseller_id)) {
+            return $this->mysqlInstance->delete('events', array('uid' => $uid))->total_rows();
+        } else {
+            $users = array();
+            foreach($this->getUser(array('id' => $uid), 'ALL') as $row) {
+                $users[] = $row['id'];
+            }
+
+            return $this->mysqlInstance->in('uid', $users)->delete('events', array())->total_rows();
+        }
     }
 
     public function deleteAllEvents() {
-        return $this->mysqlInstance->query('TRUNCATE TABLE `events`') ? 'all': 0;
+        if (empty($this->reseller_id)) {
+            return $this->mysqlInstance->query('TRUNCATE TABLE `events`') ? 'all': 0;
+        } else {
+            $users = array();
+            foreach($this->getUser(array(), 'ALL') as $row) {
+                $users[] = $row['id'];
+            }
+
+            return $this->mysqlInstance->in('uid', $users)->delete('events', array())->total_rows();
+        }
     }
 
 //    

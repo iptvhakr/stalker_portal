@@ -410,7 +410,7 @@
                     $(document).on('click', "#clean_events", function (e) {
                         e.stopPropagation();
                         e.preventDefault();
-                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean_events", {uid: $(this).data('uid')});
+                        ajaxPostSend("{{app.request.baseUrl}}/{{app.controller_alias}}/clean-events", {uid: $(this).data('uid')});
                         return false;
                     });
                     

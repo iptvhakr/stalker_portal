@@ -779,7 +779,11 @@ $(document).ready(function () {
         e.stopPropagation();
         e.preventDefault();
         if (typeof($("#modalbox").data('complete')) == 'undefined' || $("#modalbox").data('complete') == 1) {
-            closeModalBox();
+            if (typeof(closeModalBox) == 'function') {
+
+            } else {
+                JScloseModalBox();
+            }
         } else {
             for(var i=0;i<3;i++) {
                 $('#modalbox > div').fadeTo('slow', 0.5).fadeTo('slow', 1.0);
@@ -942,6 +946,8 @@ function ajaxError(data, alertMsg, consoleMsg){
         }
         if ($.isFunction(window['errAction'])) {
             window['errAction']();
+        } else {
+            JSErrorModalBox();
         }
     }
 }
@@ -1085,12 +1091,20 @@ function JSshowModalBox(){
     $("#modalbox").show();
 }
 
-function JSSuccessModalBox() {
+function JSSuccessModalBox(data) {
+    var msg = (typeof(data)!= 'undefined' && typeof(data.msg)!= 'undefined'? data.msg: '');
     $("#modalbox").data('complete', 1);
-    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Done'] + '!</span>');
+    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Done'] + '!' + msg +'</span>');
+    $('#modalbox').find('.devoops-modal-bottom').empty();
 }
 
-function JSErrorModalBox(){
-    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Failed'] + '!</span>');
+function JSErrorModalBox(data){
+    var msg = '';
+    if (typeof(data)!= 'undefined' ) {
+        msg = ( typeof(data.msg)!= 'undefined' ? data.msg: '');
+        msg = ( msg.length == 0 && typeof(data.error)!= 'undefined' ? data.error: msg);
+    }
+    $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Failed'] + '!' + msg + '!</span>');
     $("#modalbox").data('complete', 1);
+    $('#modalbox').find('.devoops-modal-bottom').empty();
 }
