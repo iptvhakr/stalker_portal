@@ -633,6 +633,12 @@
             if (this.cur_row == -1){
                 this.cur_row = 0;
             }
+
+            for (var i=0; i<data.length; i++){
+                if (data[i]['mark_archive'] == 1 && !module.tv_archive){
+                    data[i]['mark_archive'] = 0;
+                }
+            }
             
             this.superclass.fill_list.call(this, data);
             

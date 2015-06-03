@@ -817,6 +817,10 @@
                     channel.now_playing = 1;
                 }
 
+                if (channel.archive == 1 && !module.time_shift){
+                    channel.archive = 0;
+                }
+
                 if (stb.profile.ts_enable_icon && module.time_shift_local && module.time_shift_local.enabled && channel.allow_local_timeshift == 1 && channel.archive != 1){
                     channel.local_time_shift = 1;
                 }else{
