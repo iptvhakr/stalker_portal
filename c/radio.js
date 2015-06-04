@@ -34,7 +34,7 @@
             stb.player.addCustomEventListener("radiostart", function(item){
                 _debug('radio.radiostart', item);
 
-                if (self.on && !self.data_items[0].is_track && !item.is_track){
+                if (self.on && self.data_items[0].radio && item.radio){
 
                     var cur_idx = stb.player.radio_idx || 0;
 
@@ -75,7 +75,7 @@
             stb.player.addCustomEventListener("radiostop", function(item){
                 _debug('radio.radiostop', item);
 
-                if (self.on && !self.data_items[0].is_track && !item.is_track){
+                if (self.on && self.data_items[0].radio && item.radio){
 
                     var cur_idx = stb.player.radio_idx || -1;
 
@@ -101,7 +101,7 @@
             stb.player.addCustomEventListener("radiopause", function(item){
                 _debug('radio.radiopause', item);
 
-                if (self.on && !self.data_items[0].is_track && !item.is_track){
+                if (self.on && self.data_items[0].radio && item.radio){
 
                     var cur_idx = self.data_items.getIdxByVal("id", item.id);
 
@@ -125,7 +125,7 @@
             stb.player.addCustomEventListener("radiocontinue", function(item){
                 _debug('radio.radiocontinue', item);
 
-                if (self.on && !self.data_items[0].is_track && !item.is_track){
+                if (self.on && self.data_items[0].radio && item.radio){
 
                     var cur_idx = self.data_items.getIdxByVal("id", item.id);
 
@@ -166,15 +166,15 @@
 
         this.hide = function(do_not_reset){
             _debug('radio.hide');
-            
+
             this.superclass.hide.call(this, do_not_reset);
             /*stb.player.stop();*/
             this.update_header_path([{"alias" : "playing", "item" : "*"}]);
         };
-        
+
         this.bind = function(){
             this.superclass.bind.apply(this);
-            
+
             this.play.bind(key.OK, this);
 
             (function(){
@@ -191,19 +191,18 @@
             this.shift_row_ch_channel.bind(key.CHANNEL_PREV, this, -1);
             this.shift_row_ch_channel.bind(key.CHANNEL_NEXT, this, 1);
         };
-        
+
         this.play = function(){
             _debug('radio.play');
-            
+
             this.update_header_path([{"alias" : "playing", "item" : this.data_items[this.cur_row].name}]);
-            
+
             stb.player.stop();
             stb.player.need_show_info = 1;
             if (this.data_items) {
                 stb.player.playlist = this.data_items;
             }
             stb.player.play(this.data_items[this.cur_row]);
-            stb.player.cur_media_item.radio = true;
         };
 
         this.set_active_row = function(num){
@@ -233,7 +232,7 @@
 
             }
 
-            if (num==0 && stb.player.cur_media_item.radio == true && typeof (stb.player.radio_idx) != 'undefined') {
+            if (num==0 && stb.player.cur_media_item.radio && typeof (stb.player.radio_idx) != 'undefined') {
                 var idx = stb.player.radio_idx;
                 this.data_items[idx].playing = 1;
                 this.map[idx].playing_block.show();
