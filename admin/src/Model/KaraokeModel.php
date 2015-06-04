@@ -10,7 +10,7 @@ class KaraokeModel extends \Model\BaseStalkerModel {
 
     public function getTotalRowsKaraokeList($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -22,25 +22,27 @@ class KaraokeModel extends \Model\BaseStalkerModel {
     }
 
     public function getKaraokeList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select']);
-        $obj = $obj->from('karaoke')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('karaoke')
                         ->join('administrators', 'administrators.id', 'karaoke.add_by', 'LEFT')
                         ->join('media_claims', 'karaoke.id', 'media_claims.media_id', 'LEFT')
                         ->where($param['where']);
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
         if (!$counter) {
-            $obj = $obj->groupby(array("karaoke.id", "karaoke.add_by"));
+            $this->mysqlInstance->groupby(array("karaoke.id", "karaoke.add_by"));
         }
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function updateKaraoke($param, $where){

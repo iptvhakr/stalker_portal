@@ -10,7 +10,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
 
     public function getVideoStatTotalRows($func_alias, $where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -22,41 +22,48 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
 
     public function getVideoStatAllList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("video")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("video")
                         ->where($param['where'])
                         ->where(array("accessed" => 1))
                         ->like($param['like'], 'OR')
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function getVideoStatGenreList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])->from("genre");
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("genre");
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getVideoStatDailyList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("daily_played_video")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("daily_played_video")
                         ->where($param['where'])->like($param['like'], 'OR')
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getNoActiveAbonentTotalRows($func_alias, $where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -68,38 +75,42 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getNoActiveAbonentTvList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("users")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("users")
                         ->where($param['where'])
                         ->where(array('NOT `users`.`time_last_play_tv`'=>NULL))
                         ->like($param['like'], 'OR')
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getNoActiveAbonentVideoList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("users")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("users")
                         ->where($param['where'])
                         ->where(array('NOT `users`.`time_last_play_video`'=>NULL))
                         ->like($param['like'], 'OR')
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getDailyClaimsTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -111,22 +122,24 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getDailyClaimsList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("daily_media_claims")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("daily_media_claims")
                         ->where($param['where'])
                         ->like($param['like'], 'OR')
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getClaimsLogsTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -138,8 +151,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getClaimsLogsList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("`media_claims_log` as M_C_L")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("`media_claims_log` as M_C_L")
                             ->join('`itv` as I', 'M_C_L.`media_id`', 'I.`id` and M_C_L.`media_type` = "itv"', "LEFT")
                             ->join('`karaoke` as K', 'M_C_L.`media_id`', 'K.`id` and M_C_L.`media_type` = "karaoke"', "LEFT")
                             ->join('`video` as V', 'M_C_L.`media_id`', 'V.`id` and M_C_L.`media_type` = "video"', "LEFT")
@@ -149,14 +164,14 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getTvArchiveTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*", 'count(`ch_id`) as `counter`'),
+            'select' => array('count(`ch_id`) as `counter`'),
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -168,8 +183,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getTvArchiveList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("`played_tv_archive`")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("`played_tv_archive`")
                         ->join('itv', 'itv.id', 'played_tv_archive.ch_id', 'INNER')
                         ->where($param['where'])
                         ->like($param['like'], 'OR')
@@ -177,19 +194,19 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->orderby('counter', 'DESC');
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getTimeShiftTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*", 'count(`ch_id`) as `counter`'),
+            'select' => array('count(`ch_id`) as `counter`'),
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -201,8 +218,10 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getTimeShiftList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("`played_timeshift`")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("`played_timeshift`")
                         ->join('itv', 'itv.id', 'played_timeshift.ch_id', 'INNER')
                         ->where($param['where'])
                         ->like($param['like'], 'OR')
@@ -210,20 +229,20 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->orderby('counter', 'DESC');
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
         
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getAbonentStatTotalRows($func_alias, $where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -238,9 +257,11 @@ class StatisticsModel extends \Model\BaseStalkerModel {
         if ($counter) {
             $param['select'][] = "count(`played_itv`.`id`) as `counter`";
         }
-        
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("users")
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("users")
                         ->join("played_itv", "users.id", "played_itv.uid", "LEFT")
                         ->where($param['where'])
                         ->where(array("NOT played_itv.playtime" => NULL))
@@ -249,24 +270,26 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getAbonentStatVideoList($param, $counter = FALSE) {
         if ($counter) {
             $param['select'][] = "count(`played_video`.`id`) as `counter`";
         }
-        
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("users")
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("users")
                         ->join("played_video", "users.id", "played_video.uid", "LEFT")
                         ->where($param['where'])->like($param['like'], 'OR')
                         ->where(array('NOT played_video.playtime'=>NULL))
@@ -274,42 +297,44 @@ class StatisticsModel extends \Model\BaseStalkerModel {
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getAbonentStatAnecList($param, $counter = FALSE) {
         if ($counter) {
             $param['select'][] = "`readed_anec`.`mac` as `mac`";
         }
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("readed_anec")->where($param['where'])->like($param['like'], 'OR')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("readed_anec")->where($param['where'])->like($param['like'], 'OR')
                         ->where(array('NOT readed'=>NULL))
                         ->groupby(array("mac"))
                         ->orderby($param['order']);
         
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getTvTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*", 'count(`played_itv`.id) as `counter`'),
+            'select' => array('count(`played_itv`.id) as `counter`'),
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -321,26 +346,28 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getTvList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("`played_itv`")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("`played_itv`")
                         ->join('itv', 'itv.id', 'played_itv.itv_id', 'LEFT')
                         ->where($param['where'])
                         ->like($param['like'], 'OR')
                         ->groupby('itv_id');
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
         
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getTVLocale() {
@@ -354,7 +381,7 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
     
     public function getModeratorsStatRowsList($incoming = array(), $all = FALSE) {
-        $incoming['select'] = '*';
+        /*$incoming['select'] = '*';*/
         if ($all) {
             $incoming['like'] = array();    
         }
@@ -362,23 +389,26 @@ class StatisticsModel extends \Model\BaseStalkerModel {
     }
 
     public function getModeratorsStatList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])->from($param['from']);
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from($param['from']);
         if (array_key_exists('joined', $param)) {
             foreach ($param['joined'] as $table => $keys) {
-                $obj = $obj->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
+                $this->mysqlInstance->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
             }
         }
-        $obj = $obj->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        $this->mysqlInstance->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['groupby'])) {
-            $obj = $obj->groupby($param['groupby']);
+            $this->mysqlInstance->groupby($param['groupby']);
         }
 
         if (!empty($param['limit']['limit']) && !$counter) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->count()->get()->all();
+            $result = $this->mysqlInstance->count()->get()->all();
             if (count($result) > 1) {
                 return count($result);
             } else if (!empty ($result[0])){
@@ -389,15 +419,16 @@ class StatisticsModel extends \Model\BaseStalkerModel {
             return $data;
         }
 
-        return ($counter) ? $obj : $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getAdmins($id = FALSE) {
-        $obj = $this->mysqlInstance->select()->from('administrators');
+
+        $this->mysqlInstance->from('administrators');
         if ($id !== FALSE) {
-            $obj = $obj->where(array('id'=>$id));
+            $this->mysqlInstance->where(array('id'=>$id));
         }
-        return $obj->orderby('login')->get()->all();
+        return $this->mysqlInstance->orderby('login')->get()->all();
     }
     
     public function getArhiveIDs($table) {

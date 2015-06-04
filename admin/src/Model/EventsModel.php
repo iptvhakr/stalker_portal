@@ -12,29 +12,32 @@ class EventsModel extends \Model\BaseStalkerModel {
         if (!empty($this->reseller_id)) {
             $where['reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->count()->from('events');
+        $this->mysqlInstance->count()->from('events');
         if (!empty($where) || !empty($like)) {
-            $obj = $obj->join('users', 'events.uid', 'users.id', 'LEFT');    
+            $this->mysqlInstance->join('users', 'events.uid', 'users.id', 'LEFT');
         }
-        $obj = $obj->where($where);
+        $this->mysqlInstance->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+
+        return $this->mysqlInstance->get()->counter();
     }
    
     public function getEventsList($param) {
         if (!empty($this->reseller_id)) {
             $param['where']['reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('events')->join('users', 'events.uid', 'users.id', 'LEFT')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('events')->join('users', 'events.uid', 'users.id', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
+            $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
         }
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getUser($param = array(), $all = FALSE) {

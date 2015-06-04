@@ -366,7 +366,7 @@ class StoragesController extends \Controller\BaseStalkerController {
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
         }
-        $like_filter = $having= array();
+        $like_filter = $having = $query_param['having'] = array();
         $filter = $this->getSearchFilters($like_filter, $having);
 
         if (empty($query_param['like']) && !empty($like_filter)) {

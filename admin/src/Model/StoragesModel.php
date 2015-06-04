@@ -10,7 +10,7 @@ class StoragesModel extends \Model\BaseStalkerModel {
     
     public function getLogsTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -22,23 +22,26 @@ class StoragesModel extends \Model\BaseStalkerModel {
     }
     
     public function getLogsList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])->from("master_log as M_L")->where($param['where']);
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("master_log as M_L")->where($param['where']);
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getListTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -50,18 +53,21 @@ class StoragesModel extends \Model\BaseStalkerModel {
     }
     
     public function getListList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])->from("storages as S")->where($param['where']);
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("storages as S")->where($param['where']);
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function updateStorageCache($param, $id = array()){
@@ -90,7 +96,7 @@ class StoragesModel extends \Model\BaseStalkerModel {
     
     public function getTotalRowsVideoList($select = array(), $where = array(), $like = array(), $having = array()) {
         $params = array(
-            'select' => $select,
+            /*'select' => $select,*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -105,30 +111,32 @@ class StoragesModel extends \Model\BaseStalkerModel {
     }
    
     public function getVideoList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select']);
-        $obj = $obj->from('video, storage_cache')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('video, storage_cache')
                     ->where($param['where'])
                     ->where(array('media_type'=>'vclub','video.id=storage_cache.media_id  and '=>'1=1','storage_cache.status'=>'1'))
                 ->like($param['like'], 'OR');
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
-        $obj = $obj->groupby('media_id');
+        $this->mysqlInstance->groupby('media_id');
         
         if (!empty($param['having'])) {
-            $obj = $obj->having($param['having']);
+            $this->mysqlInstance->having($param['having']);
         }
         
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         } 
-//        print_r($obj->get());
+//        print_r($this->mysqlInstance->get());
 //        exit;
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     //------------------------------------------------
@@ -158,7 +166,7 @@ class StoragesModel extends \Model\BaseStalkerModel {
     
     public function getServersTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -170,21 +178,23 @@ class StoragesModel extends \Model\BaseStalkerModel {
     }
     
     public function getServersList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("`streaming_servers` as S_S")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("`streaming_servers` as S_S")
                         ->join("stream_zones as S_Z", "S_S.stream_zone", "S_Z.id", "LEFT")
                         ->where($param['where']);
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function updateServers($param, $id){

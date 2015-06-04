@@ -416,8 +416,10 @@ class StatisticsController extends \Controller\BaseStalkerController {
         
         while (list($num, $row) = each($response["data"])){
             if ($func_alias == 'Genre'){
-                if ($row['played_movies'] != 0) {
-                   $response["data"][$num]['ratio'] = round(($row['played_movies'] / $row['total_movies'])*100, 2); 
+                if ($row['total_movies'] == 0){
+                    $response["data"][$num]['ratio'] = 0;
+                } elseif ($row['played_movies'] != 0) {
+                    $response["data"][$num]['ratio'] = round(($row['played_movies'] / $row['total_movies'])*100, 2);
                 }
                 $response["data"][$num]['title'] =  $this->setLocalization($row['title']);
             } else {
