@@ -24,32 +24,35 @@
             var self = this;
 
             stb.player.addCustomEventListener("radiostart", function (item) {
-                if (item.is_track) {
-                    return;
+                if (item.radio) {
+                    _debug('radio_widget.radiostart');
+                    self.show(item);
                 }
-                _debug('radio_widget.radiostart');
-                self.show(item);
             });
 
             stb.player.addCustomEventListener("radiostop", function (item) {
-                _debug('radio_widget.radiostop');
-                self.hide();
+                if (self.on || self.widget_on) {
+                    _debug('radio_widget.radiostop');
+                    self.hide();
+                }
             });
 
             stb.player.addCustomEventListener("radiopause", function (item) {
-                _debug('radio_widget.radiopause');
-
-                self.show(item);
-                self.pause_btn.hide();
-                self.play_btn.show();
+                if (item.radio) {
+                    _debug('radio_widget.radiopause');
+                    self.show(item);
+                    self.pause_btn.hide();
+                    self.play_btn.show();
+                }
             });
 
             stb.player.addCustomEventListener("radiocontinue", function (item) {
-                _debug('radio_widget.radiopause');
-
-                self.show(item);
-                self.play_btn.hide();
-                self.pause_btn.show();
+                if (item.radio) {
+                    _debug('radio_widget.radiocontinue');
+                    self.show(item);
+                    self.play_btn.hide();
+                    self.pause_btn.show();
+                }
             });
 
             main_menu.addCustomEventListener("mainmenushow", function (layer_name) {
