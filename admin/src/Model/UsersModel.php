@@ -9,6 +9,9 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
 
     public function getTotalRowsUresList($where = array(), $like = array()) {
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
         $obj = $this->mysqlInstance->count()->from('users')->where($where);
         if (!empty($like)) {
             $obj = $obj->like($like, 'OR');
@@ -18,8 +21,12 @@ class UsersModel extends \Model\BaseStalkerModel {
 
     public function getUsersList($param, $report = FALSE) {
         $obj = $this->mysqlInstance->select($param['select'])->from('users');
+        if (!empty($this->reseller_id)) {
+            $param['where']['reseller_id'] = $this->reseller_id;
+        }
         if (!$report) {
             $obj = $obj->join('tariff_plan', 'users.tariff_plan_id', 'tariff_plan.id', 'LEFT');
+            $obj = $obj->join('reseller', 'users.reseller_id', 'reseller.id', 'LEFT');
         } else {
             $obj = $obj->join('(SELECT @rank := 0) r', '1', '1', 'INNER');
         }
@@ -34,14 +41,26 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
 
     public function toggleUserStatus($id, $status) {
-        return $this->mysqlInstance->update('users', array('status' => $status, 'last_change_status' => 'NOW()'), array('id' => $id))->total_rows();
+        $where = array('id' => $id);
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
+        return $this->mysqlInstance->update('users', array('status' => $status, 'last_change_status' => 'NOW()'), $where)->total_rows();
     }
 
     public function deleteUserById($id) {
-        return $this->mysqlInstance->delete('users', array('id' => $id))->total_rows();
+        $where = array('id' => $id);
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
+        return $this->mysqlInstance->delete('users', $where)->total_rows();
     }
     
     public function updateUserById($data, $id) {
+        $where = array('id' => $id);
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
         if (array_key_exists('last_change_status', $data) && empty($data['last_change_status'])) {
             $data['last_change_status'] = 'NOW()';
         }
@@ -52,11 +71,14 @@ class UsersModel extends \Model\BaseStalkerModel {
         if (array_key_exists('password', $data) && empty($data['password'])) {
             unset($data['password']);
         }
-        return $this->mysqlInstance->update('users', $data, array('id' => $id))->total_rows();
+        return $this->mysqlInstance->update('users', $data, $where)->total_rows();
     }
 
     public function insertUsers($data) {
         $data['created']='NOW()';
+        if (!empty($this->reseller_id)) {
+            $data['reseller_id'] = $this->reseller_id;
+        }
         return $this->mysqlInstance->insert('users', $data)->insert_id();
     }
     
@@ -93,10 +115,24 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
     
     public function getConsoleGroup($param = array()){
-        return $this->mysqlInstance->select(array('*', '(select count(*) from stb_in_group as Si where Si.stb_group_id = Sg.id) as users_count'))->from('stb_groups as Sg')->where($param)->get()->all();
+        if (!empty($this->reseller_id)) {
+            $param['reseller_id'] = $this->reseller_id;
+        }
+        return $this->mysqlInstance->select(array(
+            'Sg.`id` as `id`',
+            'Sg.name as `name`',
+            '(select count(*) from stb_in_group as Si where Si.stb_group_id = Sg.id) as users_count',
+            'R.id as reseller_id',
+            'R.name as reseller_name',
+        ))->from('stb_groups as Sg')
+            ->join('reseller as R', 'Sg.reseller_id', 'R.id', 'LEFT')
+            ->where($param)->get()->all();
     }
     
     public function getConsoleGroupList($param = array()){
+        if (!empty($this->reseller_id)) {
+            $param['where']['reseller_id'] = $this->reseller_id;
+        }
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('stb_in_group')
                         ->join('stb_groups', 'stb_in_group.stb_group_id', 'stb_groups.id', 'LEFT')
@@ -117,14 +153,23 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
     
     public function insertConsoleGroup($param){
+        if (!empty($this->reseller_id)) {
+            $param['reseller_id'] = $this->reseller_id;
+        }
         return $this->mysqlInstance->insert('stb_groups', $param)->insert_id();
     }
     
     public function updateConsoleGroup($data, $param){
+        if (!empty($this->reseller_id)) {
+            $param['reseller_id'] = $this->reseller_id;
+        }
         return $this->mysqlInstance->update('stb_groups', $data, $param)->total_rows();
     }
     
     public function deleteConsoleGroup($param){
+        if (!empty($this->reseller_id)) {
+            $param['reseller_id'] = $this->reseller_id;
+        }
         return $this->mysqlInstance->delete('stb_groups', $param)->total_rows();
     }
     
@@ -145,6 +190,9 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
     
     public function getTotalRowsLogList($where = array(), $like = array()) {
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
         $obj = $this->mysqlInstance->count()->from('user_log')
                 ->join('users', 'user_log.mac', 'users.mac', 'LEFT')
                 ->where($where);
@@ -155,6 +203,9 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
     
     public function getLogList($param) {
+        if (!empty($this->reseller_id)) {
+            $param['where']['reseller_id'] = $this->reseller_id;
+        }
         $obj = $this->mysqlInstance->select($param['select'])
                         ->from('user_log')->join('users', 'user_log.mac', 'users.mac', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
@@ -174,7 +225,10 @@ class UsersModel extends \Model\BaseStalkerModel {
     }    
     
     public function getTarifPlanByUserID($id) {
-        
+        $where = array('U.id' => $id);
+        if (!empty($this->reseller_id)) {
+            $where['reseller_id'] = $this->reseller_id;
+        }
         return $this->mysqlInstance->select(array(
                 "P_P . *",
                 "S_P.id as services_package_id",
@@ -190,7 +244,31 @@ class UsersModel extends \Model\BaseStalkerModel {
             ->join("package_in_plan as P_P", "T_P.id", "P_P.plan_id", "LEFT")
             ->join("services_package as S_P", "S_P.id", "P_P.package_id", "INNER")
             ->join("user_package_subscription as U_P_S", "U.id", "U_P_S.user_id and P_P.package_id = U_P_S.package_id", "LEFT")
-            ->where(array('U.id' => $id))
+            ->where($where)
             ->orderby("P_P.optional, S_P.external_id")->get()->all();
+    }
+
+    public function getReseller($param, $counter = FALSE) {
+        $obj = $this->mysqlInstance->select($param['select'])
+            ->from("reseller as R");
+        if (!empty($param['where'])) {
+            $obj = $obj->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $obj = $obj->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $obj = $obj->orderby($param['order']);
+        }
+
+        if (!empty($param['limit']['limit'])) {
+            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+    }
+
+    public function updateResellerMemberByID($table_name, $id, $target_id){
+        return $this->mysqlInstance->update($table_name, array("reseller_id" => $target_id), array("id" => $id))->total_rows();
     }
 }

@@ -46,6 +46,10 @@ class Admin
         return $this->profile['login'];
     }
 
+    public function getResellerID(){
+        return $this->profile['reseller_id'];
+    }
+
     public static function checkAuthorization($login, $pass) {
 
         $admin = Mysql::getInstance()

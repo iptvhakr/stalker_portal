@@ -56,6 +56,9 @@
                                                 <br><span>{{ 'Last activity'|trans }}: {% if item.last_active == 0 %}{{ item.last_active|date('M d, Y H:i') }}{% else %} - {% endif %}</span>
                                             {% endif %}</td>
                                         <td class="data-filter-status">{% if item.status == 0 %}<span class="">{{ 'on'|trans }}</span>{% else %}<span class="txt-danger">{{ 'off'|trans }}</span>{% endif %}</td>
+                                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                                        <td>{{ item.reseller_name }}</td>
+                                        {% endif %}
                                         {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
                                         <td>{% if item.expire_billing_date > 0 %}{{ item.expire_billing_date|date('M d, Y H:i') }}{% else %}{{ 'Unlimited'|trans }}{% endif %}</td>
                                         {% endif %}
@@ -85,6 +88,13 @@
                                                             <span>{% if item.status == 0 %}{{ 'Turn off'|trans }}{% else %}{{ 'Turn on'|trans }}{% endif %}</span>
                                                         </a>
                                                     </li>
+                                                    {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                                                    <li>
+                                                        <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller" data-id="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">
+                                                            <span>{{ 'Change reseller for current user'|trans }}</span>
+                                                        </a>
+                                                    </li>
+                                                    {% endif %}
                                                     {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
                                                         <li>
                                                             <a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date" data-userid="{{ item.id }}" data-setaction="set">
@@ -342,6 +352,10 @@
                     var date;
                     for (var i in json.data) {
                         var id = json.data[i].id;
+                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                        var reseller_id = json.data[i].reseller_id;
+                        var reseller_name = json.data[i].reseller_name;
+                        {% endif %}
                         var status = json.data[i].status;
                         var state = json.data[i].state;
                         var expire_billing_date = json.data[i].expire_billing_date;
@@ -378,6 +392,13 @@
                                                                     <span>" + (status == 0 ? "{{ 'Turn off'|trans }}" : "{{ 'Turn on'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>";
+                                                            {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                        json.data[i].operations +=          "<li>\n\
+                                                                <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller' data-id='" + id + "' data-reseller_id='" + reseller_id + "'>\n\
+                                                                    <span>{{ 'Change reseller for current user'|trans }}</span>\n\
+                                                                </a>\n\
+                                                            </li>";
+                                                            {% endif %}
                                                             {% if attribute(app, 'enableBilling') is defined and app.enableBilling %}
                         json.data[i].operations +=          "<li>\n\
                                                                 <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/set-expire-billing-date' data-userid='" + id + "' data-setaction='set'>\n\
@@ -420,6 +441,9 @@
                         {% endif %}
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
+                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                        json.data[i].reseller_name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller" data-id="' + id + '" data-reseller_id="' + reseller_id + '">'+ reseller_name +'</a>';
+                        {% endif %}
                     }
                 }
             }).dataTable({
@@ -461,7 +485,7 @@
                     { className: "action-menu", "targets": [ -1 ] },
                     {"searchable": false, "targets": [3, 4, 5, 6, 7, 8]},
                     {"sortable": false, "targets": [-1]},
-                    {className: "data-filter-status", "targets": [-3 ]},
+                    {className: "data-filter-status", "targets": [-{% if attribute(app, 'reseller') is defined and not app['reseller'] %}3{% else %}2{% endif %} ]},
                     { "width": "16px", "targets": [ -1 ] }
                 ]
             }).prev('.dataTables_processing').hide('');
@@ -501,7 +525,7 @@
                     e.preventDefault();
                     var _this = $(this);
 
-                    if (_this.attr('href').search("send-message") != -1 || _this.attr('href').search("set-expire-billing-date") != -1) {
+                    if (_this.attr('href').search("send-message") != -1 || _this.attr('href').search("set-expire-billing-date") != -1  || _this.attr('href').search("move-user-to-reseller") != -1) {
                         return false;
                     }
 
@@ -599,6 +623,81 @@
                     closeModalBox();
                 });
                 {% endif %}
+                {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                $(document).on('click', "a[href*='move-user-to-reseller']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox").data('complete', 1);
+                    $('#modalbox').find('.modal-header-name span').text("{{ 'Resellers'|trans }}");
+                    var reseller_id = $(this).data('reseller_id');
+                    var formHtml = '\n\
+                <div class="box-content">\n\
+                    <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-to-reseller">\n\
+                        <div class="form-group">\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>\n\
+                            <div class="col-xs-10 col-sm-8">\n\
+                                <span class="col-xs-12 col-sm-12">\n\
+                                    <input type="hidden" class="own_fields" name="id" value="'+ $(this).data('id') + '">\n\
+                                    <input type="hidden" class="own_fields" name="source_id" value="'+ reseller_id + '">\n\
+                                    <select class="own_fields" name="target_id" id="target_reseller">\n\
+                    {% if attribute(app, 'allResellers') is defined %}
+                        {% for row in app.allResellers %}
+                            <option value="{{ row.id }}" >{{ row.name }}</option>\n\
+                        {% endfor %}
+                    {% endif %}
+                                    </select>\n\
+                                </span>\n\
+                            </div>\n\
+                        </div>\n\
+                    </form>\n\
+                </div>';
+                    $('#modalbox').find('.devoops-modal-inner').html(formHtml);
+                    $('#target_reseller option').removeAttr('selected');
+                    $('#target_reseller option[value="'+ reseller_id +'"]').attr('selected', 'selected');
+                    $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
+                        <div class="pull-right no-padding">\n\
+                            <button type="submit" class="btn btn-success pull-right">{{ 'Move'|trans }}</button>\n\
+                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
+                        </div>');
+
+                    $("#target_reseller").select2("destroy");
+                    $("#target_reseller").select2({minimumResultsForSearch: -1});
+
+                    $("#modalbox").show();
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                $(document).on('click', "#modalbox button[type='submit']", function (e) {
+                    var _this = $(this);
+
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var sendData = new Object();
+                    var form_fields = _this.closest("#modalbox").find('form').find(".own_fields:not(:disabled)");
+                    form_fields.each(function () {
+                        if ($(this).val()) {
+                            sendData[this.name] = $(this).val();
+                        }
+                    });
+                    var action = _this.closest("#modalbox").find('form').attr('action');
+                    JSshowModalBox();
+                    ajaxPostSend(action, sendData, false, false);
+                    return false;
+
+                });
+
+                $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
+                    if (e.currentTarget != e.target) {
+                        return;
+                    }
+                    e.stopPropagation();
+                    e.preventDefault();
+                    closeModalBox();
+                    return false;
+                });
+                {% endif %}
+
                 $(document).on('click', "#modalbox_ad button[type='submit']", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -663,7 +762,7 @@
             $("div[id*='datepicker']").addClass('dp_white');
             $(obj).closest('div.open').removeClass('open');
             $('#modalbox').show();
-        };
+        }
 
         var setExpireBillingDate = function(data){
             $('#datatable-1').DataTable().ajax.reload();
@@ -686,6 +785,17 @@
             alert(data.msg);
             $('#modalbox_ad').click();
         };
+
+        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+        var manageUserReseller = function (obj) {
+            JSSuccessModalBox(obj);
+            $('#datatable-1').DataTable().ajax.reload();
+        };
+
+        var manageUserResellerError = function (obj) {
+            JSErrorModalBox(obj);
+        };
+        {% endif %}
 
     </script>
     <script type="text/template" id="msg_textarea_pattern">

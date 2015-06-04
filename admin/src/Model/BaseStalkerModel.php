@@ -5,9 +5,11 @@ namespace Model;
 class BaseStalkerModel {
 
     protected $mysqlInstance;
+    protected $reseller_id;
 
     public function __construct() {
         $this->mysqlInstance = \Mysql::getInstance();
+        $this->reseller_id = NULL;
     }
 
     public function __call($name, $arguments) {
@@ -21,6 +23,10 @@ class BaseStalkerModel {
         if (!method_exists($this, $name)) {
             return FALSE;
         }
+    }
+
+    public function setReseller($reseller_id){
+        $this->reseller_id = $reseller_id;
     }
 
     public function getTableFields($table_name){
@@ -52,14 +58,17 @@ class BaseStalkerModel {
         return $this->mysqlInstance->query("select count(moderators_history.id) as counter from moderators_history,moderator_tasks where moderators_history.task_id = moderator_tasks.id and moderators_history.to_usr=$uid and moderators_history.readed=0 and moderator_tasks.archived=0 and moderator_tasks.ended=0")->first('counter');
     }
     
-    public function getControllerAccess($uid){
-        $params = array(' hidden ' => 1);
+    public function getControllerAccess($uid, $reseller){
+        /*$params = array(' hidden ' => 1);*/
+        if ($reseller) {
+            $params = array('only_top_admin<>' => 1);
+        }
         if (!empty($uid)){
             $params[" group_id"]=$uid;
         } else {
-            $params[" isnull(group_id) and 1"]='1';
+            $params["group_id"]=NULL;
         }
-        return $this->mysqlInstance->from("adm_grp_action_access")->where($params, 'OR')->get()->all();
+        return $this->mysqlInstance->from("adm_grp_action_access")->where($params)->get()->all();
     }
     
     public function getDropdownAttribute($param) {

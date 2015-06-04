@@ -175,7 +175,7 @@
                             box.resize();
                             box.find('[id^=map-]').resize();
                     }, 50);
-		});
+		        });
                 
                 $(".box-header :checkbox").each(function(){
                     checkBlock(this);
@@ -212,8 +212,11 @@
                             if (typeof(sendData[controller][action]) == 'undefined') {
                                 sendData[controller][action] = {};
                             }
-                            
-                            sendData[controller][action][permission_poin] = ($(this).prop('checked') ? 1: 0);
+                            if ($(this).attr('type') == 'checkbox') {
+                                sendData[controller][action][permission_poin] = ($(this).prop('checked') ? 1: 0);
+                            } else {
+                                sendData[controller][action][permission_poin] = ($(this).val('on') ? 1: 0);
+                            }
                         });
                     });
                     ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/save-admins-group-permissions', sendData, false, true);
@@ -226,10 +229,13 @@
         function checkBlock(obj){
             var permission_poin = $(obj).attr('name').match(/\[([^\]]*)\]/ig)[1].replace(/[\[\]\'\"]/ig, '');
             var checkVal = 0;
-            $(obj).closest('.box').children('.box-content').find(":checkbox[name*='" + permission_poin + "']").each(function(){
-                checkVal += $(this).prop('checked') ? 1: 0;
-            });
-            $(obj).prop('checked', checkVal != 0);
+            var colCheckBox = $(obj).closest('.box').children('.box-content').find(":checkbox[name*='" + permission_poin + "']");
+            if (colCheckBox.find(':not(:disabled)').length > 0) {
+                colCheckBox.each(function(){
+                    checkVal += $(this).prop('checked') ? 1: 0;
+                });
+                $(obj).prop('checked', checkVal != 0);
+            }
         }
         
         var managePermissions = function(data){

@@ -72,6 +72,8 @@ class BaseStalkerController {
         if ($this->db !== FALSE && !empty($uid)) {
             $this->app['userTaskMsgs'] = $this->db->getCountUnreadedMsgsByUid($uid);
         }
+        $this->app['reseller'] = $this->admin->getResellerID();
+        $this->db->setReseller($this->app['reseller']);
 
         $this->saveFiles = $app['saveFiles'];
         $this->setSideBarMenu();
@@ -189,7 +191,7 @@ class BaseStalkerController {
                 } else {
                     return $this->app->redirect($this->workURL . '/login', 302);
                 }
-            } 
+            }
             if($this->access_level == 0 || ($this->isAjax && $this->access_level < 4) || (!empty($this->postData) && $this->access_level < 2)) {
                 if ($this->isAjax) {
                     $response = $this->generateAjaxResponse(array(), 'Access denied');
@@ -338,7 +340,10 @@ class BaseStalkerController {
     private function setAccessLevel() {
         $this->setControllerAccessMap();
         if (array_key_exists($this->app['controller_alias'], $this->app['controllerAccessMap']) && $this->app['controllerAccessMap'][$this->app['controller_alias']]['access']) {
-            if (array_key_exists($this->app['action_alias'], $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'])) {
+            if ($this->app['action_alias'] == '' || $this->app['action_alias'] == 'index') {
+                $this->access_level = $this->app['controllerAccessMap'][$this->app['controller_alias']]['access'];
+                return;
+            } elseif (array_key_exists($this->app['action_alias'], $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'])) {
                 $this->access_level = $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'][$this->app['action_alias']]['access'];
                 return;
             }
@@ -351,7 +356,7 @@ class BaseStalkerController {
             $is_admin = (!empty($this->app['userlogin']) && $this->app['userlogin'] == 'admin');
             $gid = ($is_admin)?'':$this->admin->getGID(); 
             $map = array();
-            $tmp_map = $this->db->getControllerAccess($gid);
+            $tmp_map = $this->db->getControllerAccess($gid, $this->app['reseller']);
             foreach ($tmp_map as $row) {
                 if(!array_key_exists($row['controller_name'], $map)) {
                     $map[$row['controller_name']]['access'] = (!$is_admin) ? $this->getDecFromBin($row): '8';

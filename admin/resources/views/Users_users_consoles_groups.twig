@@ -1,4 +1,5 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Users'|trans ~ ': ' ~ 'list of groups STB'|trans) | trans %}
 
 {% block content %}
@@ -8,7 +9,6 @@
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-console-group" class="btn btn-success pull-right" id="add_console_group">{{ 'Add group'|trans }}</a>
             </div>
         </div>
-
         <div class="row">
             <div class="">
                 <div class="box">
@@ -18,13 +18,9 @@
                                 <div class="">
                                     <div class="dataTables_processing"></div>
                                     <table class="table  table-hover table-datatable" id="datatable-1">
-                                        <thead>
-                                            <tr>
-                                                <th data-filter="name">{{ 'Title'|trans }}</th>
-                                                <th data-filter="users_count">{{ 'Quantity of users'|trans }}</th>
-                                                <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                                            </tr>
-                                        </thead>
+                                        {% if attribute(app, 'dropdownAttribute') is defined %}
+                                            {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                        {% endif %}
                                         <tbody>
                                             {% if attribute(app, 'allGroups') is defined %}
                                                 <!-- Start: list_row -->
@@ -32,6 +28,13 @@
                                                     <tr data-consolegroupid="{{ item.id }}">
                                                         <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id={{ item.id }}" >{{ item.name }}</a></td>
                                                         <td>{{ item.users_count }} </td>
+                                                        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                                                        <td>
+                                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">
+                                                                {{ item.reseller_name }}
+                                                            </a>
+                                                        </td>
+                                                        {% endif %}
                                                         <td>
                                                             <div class="col-xs-3 col-sm-8">
                                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">                    
@@ -48,6 +51,13 @@
                                                                             <span>{{ 'Delete'|trans }}</span>
                                                                         </a>
                                                                     </li>
+                                                                    {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                                                                    <li>
+                                                                        <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="{{ item.id }}" data-reseller_id="{{ item.reseller_id }}">
+                                                                            <span>{{ 'Change reseller for current group'|trans }}</span>
+                                                                        </a>
+                                                                    </li>
+                                                                    {% endif %}
                                                                 </ul>
                                                             </div>
                                                         </td>
@@ -66,12 +76,23 @@
         </div>
     </div>
     <script type="text/javascript" defer>
-
+        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+        function DemoSelect2() {
+            $("[id^='s2_']").select2({minimumResultsForSearch: -1});
+        }
+        {% endif %}
         function TestTable1() {
             $('#datatable-1').dataTable({
                 "language": {
                     "url": "{{ app.datatable_lang_file }}"
                 },
+                "columns": [
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                    {% endif %}
+                ],
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
@@ -167,23 +188,73 @@
                     openModalBox($(this));
                     return false
                 });
-                
+
+                {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+                $(document).on('click', "a[href*='move-user-group-to-reseller']", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $("#modalbox").data('complete', 1);
+                    $('#modalbox').find('.modal-header-name span').text("{{ 'Resellers'|trans }}");
+                    var reseller_id = $(this).data('reseller_id');
+                    var formHtml = '\n\
+                <div class="box-content">\n\
+                    <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller">\n\
+                        <div class="form-group">\n\
+                            <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Reseller name'|trans }}</label>\n\
+                            <div class="col-xs-10 col-sm-8">\n\
+                                <span class="col-xs-12 col-sm-12">\n\
+                                    <input type="hidden" class="own_fields" name="consolegroupid" value="'+ $(this).data('consolegroupid') + '">\n\
+                                    <input type="hidden" class="own_fields" name="source_id" value="'+ reseller_id + '">\n\
+                                    <select class="own_fields" name="target_id" id="target_reseller">\n\
+                    {% if attribute(app, 'allResellers') is defined %}
+                            {% for row in app.allResellers %}
+                            <option value="{{ row.id }}" >{{ row.name }}</option>\n\
+                    {% endfor %}
+                    {% endif %}
+                                    </select>\n\
+                                </span>\n\
+                            </div>\n\
+                        </div>\n\
+                    </form>\n\
+                </div>';
+                    $('#modalbox').find('.devoops-modal-inner').html(formHtml);
+                    $('#target_reseller option').removeAttr('selected');
+                    $('#target_reseller option[value="'+ reseller_id +'"]').attr('selected', 'selected');
+                    $('#modalbox').find('.devoops-modal-bottom').html('<div class="pull-right no-padding">&nbsp;</div>\n\
+                        <div class="pull-right no-padding">\n\
+                            <button type="submit" class="btn btn-success pull-right">{{ 'Move'|trans }}</button>\n\
+                            <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>\n\
+                        </div>');
+
+                    $("#target_reseller").select2("destroy");
+                    $("#target_reseller").select2({minimumResultsForSearch: -1});
+
+                    $("#modalbox").show();
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
+                LoadSelect2Script(DemoSelect2);
+
+                {% endif %}
+
                 $(document).on('click', "#modalbox button[type='reset'], #modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
                     if (e.currentTarget != e.target) {
                         return;
                     }
                     e.stopPropagation();
                     e.preventDefault();
-                    
+
                     closeModalBox();
                     return false;
                 });
 
                 $(document).on('click', "#modalbox button[type='submit']", function (e) {
-                    var sendData = {
-                        id: $("#modalbox input[type='hidden']").val(),
-                        name: $("#modalbox input[type='text']").val()
-                    };
+                    var sendData = {};
+
+                    $("#modalbox").find('input.own_fields, select.own_fields').each(function(){
+                        sendData[$(this).attr('name')] = $(this).val();
+                    });
 
                     e.stopPropagation();
                     e.preventDefault();
@@ -218,7 +289,6 @@
                     closeModalBox();
                     return false;
                 });
-                
                 LoadDataTablesScripts(TestTable1);
             });
         }
@@ -243,7 +313,7 @@
     function closeModalBox(){
         $("#modalbox").hide();
         $('#modalbox').find('.modal-header-name span').empty();
-        $('#modalbox').find('.devoops-modal-inner').find('input').val('');
+        $('#modalbox').find('.devoops-modal-inner').empty();
     }
     
     function openModalBox(obj){
@@ -256,8 +326,8 @@
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Title'|trans }}<span class="icon-required">*</span></label>\n\
                             <div class="col-xs-10 col-sm-8">\n\
                                 <span class="col-xs-12 col-sm-12">\n\
-                                    <input type="hidden" name="id">\n\
-                                    <input type="text"  data-validation=required name="name" id="console_name">\n\
+                                    <input type="hidden" class="own_fields" name="id">\n\
+                                    <input type="text" class="own_fields" data-validation=required name="name" id="console_name">\n\
                                     <div class="bg-danger"></div>\n\
                                 </span>\n\
                             </div>\n\
@@ -282,9 +352,18 @@
         obj.closest('div.open').removeClass('open');
     }
     function getCeils(data){
-        var firstCeil = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id='+data.id+'">'+data.name+'</a>';
-        var secondCeil = '0';
-        var thirdCeil = "<div class='col-xs-3 col-sm-8'>\n\
+        var resellers = {};
+        {% if attribute(app, 'allResellers') is defined %}
+        {% for item in app.allResellers %}
+        resellers['{{ item.id }}'] = '{{ item.name }}';
+        {% endfor %}
+        {% endif %}
+        var ceils = {};
+        ceils.name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/users-groups-consoles-list?id='+data.id+'">'+data.name+'</a>';
+        var reseller_id = '' + (typeof (data.reseller_id) != 'undefined' ? data.reseller_id: '-') + '';
+        ceils.users_count  = '0';
+        ceils.reseller_name = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller" data-consolegroupid="'+data.id+'" data-reseller_id="'+reseller_id+'">' + resellers[reseller_id] + '</a>';
+        ceils.operations = "<div class='col-xs-3 col-sm-8'>\n\
                                 <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                     <i class='pull-right fa fa-cog'></i>\n\
                                 </a>\n\
@@ -298,10 +377,17 @@
                                         <a class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/remove-console-group' data-consolegroupid='" + data.id + "'>\n\
                                             <span>{{ 'Delete'|trans }}</span>\n\
                                         </a>\n\
+                                    </li>";
+        {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
+        ceils.operations        += "<li>\n\
+                                        <a href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/move-user-group-to-reseller' data-consolegroupid='" + data.id + "' data-reseller_id='-'>\n\
+                                            <span>{{ 'Change reseller for current group'|trans }}</span>\n\
+                                        </a>\n\
                                     </li>\n\
                                 </ul>\n\
                             </div>";
-        return [firstCeil, secondCeil, thirdCeil];
+        {% endif %}
+        return ceils;
     }
     </script>
 {% endblock %}
