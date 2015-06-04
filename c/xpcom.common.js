@@ -1062,7 +1062,7 @@ function common_xpcom(){
 
                 _debug('this.user[update_url]', this.user['update_url']);
 
-                if (['MAG200', 'MAG245', 'MAG250', 'MAG254', 'MAG255', 'MAG270', 'MAG275', 'WR320'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
+                if (['MAG200', 'MAG245', 'MAG250', 'MAG254', 'MAG255', 'MAG270', 'MAG275', 'WR320', 'IP_STB_HD'].indexOf(this.type) >= 0 || this.type.indexOf('AuraHD') != -1){
                     this.check_image_version();
                 }
 
