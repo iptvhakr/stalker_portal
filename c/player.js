@@ -1657,7 +1657,7 @@ player.prototype.event_callback = function(event, params){
             if (stb.profile['hdmi_event_reaction']){
                 this.hdmi_reaction_timer = window.setTimeout(function(){
                     if (!stb.power_off){
-                        if (self.is_tv){
+                        if (stb.cur_place == 'tv' && self.is_tv){
                             if (typeof(stb.GetHDMIConnectionState) == 'function'){
                                 if (stb.GetHDMIConnectionState() == 2) {
                                     if (module.tv.on) {
