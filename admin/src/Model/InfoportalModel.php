@@ -10,7 +10,7 @@ class InfoportalModel extends \Model\BaseStalkerModel {
 
     public function getTotalRowsPhoneBoockList($table_prefix, $where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -22,16 +22,18 @@ class InfoportalModel extends \Model\BaseStalkerModel {
     }
 
     public function getPhoneBoockList($table_prefix, $param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                ->from("{$table_prefix}_city_info")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("{$table_prefix}_city_info")
                 ->where($param['where'])->like($param['like'], 'OR')
                 ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function updatePhoneBoock($table_prefix, $param) {
@@ -49,7 +51,7 @@ class InfoportalModel extends \Model\BaseStalkerModel {
 
     public function getTotalRowsHumorList($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -61,16 +63,18 @@ class InfoportalModel extends \Model\BaseStalkerModel {
     }
 
     public function getHumorList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                ->from("anec")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("anec")
                 ->where($param['where'])->like($param['like'], 'OR')
                 ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function updateHumor($param, $where) {

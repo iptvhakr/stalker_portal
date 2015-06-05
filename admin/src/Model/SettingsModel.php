@@ -18,7 +18,7 @@ class SettingsModel extends \Model\BaseStalkerModel {
     
     public function getTotalRowsCommonList($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -30,16 +30,18 @@ class SettingsModel extends \Model\BaseStalkerModel {
     }
     
     public function getCommonList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                ->from("image_update_settings")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("image_update_settings")
                 ->where($param['where'])->like($param['like'], 'OR')
                 ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function updateCommon($param, $where) {

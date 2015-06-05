@@ -12,32 +12,35 @@ class UsersModel extends \Model\BaseStalkerModel {
         if (!empty($this->reseller_id)) {
             $where['reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->count()->from('users')->where($where);
+        $this->mysqlInstance->count()->from('users')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
 
     public function getUsersList($param, $report = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])->from('users');
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('users');
         if (!empty($this->reseller_id)) {
             $param['where']['reseller_id'] = $this->reseller_id;
         }
         if (!$report) {
-            $obj = $obj->join('tariff_plan', 'users.tariff_plan_id', 'tariff_plan.id', 'LEFT');
-            $obj = $obj->join('reseller', 'users.reseller_id', 'reseller.id', 'LEFT');
+            $this->mysqlInstance->join('tariff_plan', 'users.tariff_plan_id', 'tariff_plan.id', 'LEFT');
+            $this->mysqlInstance->join('reseller', 'users.reseller_id', 'reseller.id', 'LEFT');
         } else {
-            $obj = $obj->join('(SELECT @rank := 0) r', '1', '1', 'INNER');
+            $this->mysqlInstance->join('(SELECT @rank := 0) r', '1', '1', 'INNER');
         }
-        $obj = $obj->where($param['where'])->like($param['like'], 'OR');
+        $this->mysqlInstance->where($param['where'])->like($param['like'], 'OR');
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);    
+            $this->mysqlInstance->orderby($param['order']);
         }
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
 
     public function toggleUserStatus($id, $status) {
@@ -133,23 +136,25 @@ class UsersModel extends \Model\BaseStalkerModel {
         if (!empty($this->reseller_id)) {
             $param['where']['reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('stb_in_group')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('stb_in_group')
                         ->join('stb_groups', 'stb_in_group.stb_group_id', 'stb_groups.id', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getTotalRowsConsoleGroupList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('stb_in_group')->where($where);
+        $this->mysqlInstance->count()->from('stb_in_group')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
     
     public function insertConsoleGroup($param){
@@ -193,27 +198,29 @@ class UsersModel extends \Model\BaseStalkerModel {
         if (!empty($this->reseller_id)) {
             $where['reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->count()->from('user_log')
+        $this->mysqlInstance->count()->from('user_log')
                 ->join('users', 'user_log.mac', 'users.mac', 'LEFT')
                 ->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }        
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
     
     public function getLogList($param) {
         if (!empty($this->reseller_id)) {
             $param['where']['reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('user_log')->join('users', 'user_log.mac', 'users.mac', 'LEFT')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('user_log')->join('users', 'user_log.mac', 'users.mac', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])?$param['limit']['offset']: FALSE));
+            $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])?$param['limit']['offset']: FALSE));
         }
        
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getITV($param) {
@@ -249,23 +256,25 @@ class UsersModel extends \Model\BaseStalkerModel {
     }
 
     public function getReseller($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-            ->from("reseller as R");
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("reseller as R");
         if (!empty($param['where'])) {
-            $obj = $obj->where($param['where']);
+            $this->mysqlInstance->where($param['where']);
         }
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function updateResellerMemberByID($table_name, $id, $target_id){

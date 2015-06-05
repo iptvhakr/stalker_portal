@@ -9,22 +9,24 @@ class RadioModel extends \Model\BaseStalkerModel {
     }
 
     public function getTotalRowsRadioList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('radio')->where($where);
+        $this->mysqlInstance->count()->from('radio')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
    
     public function getRadioList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('radio')//->join('users', 'user_log.mac', 'users.mac', 'LEFT')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('radio')//->join('users', 'user_log.mac', 'users.mac', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function toggleRadioStatus($id, $status) {

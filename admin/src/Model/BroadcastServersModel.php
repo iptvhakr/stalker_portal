@@ -10,7 +10,7 @@ class BroadcastServersModel extends \Model\BaseStalkerModel {
     
     public function getZoneTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -22,27 +22,29 @@ class BroadcastServersModel extends \Model\BaseStalkerModel {
     }
     
     public function getZoneList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("stream_zones as S_Z")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("stream_zones as S_Z")
                         ->join("countries_in_zone as C_I_Z", "S_Z.id", "C_I_Z.zone_id", "LEFT")
                         ->where($param['where']);
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
-        $obj = $obj->groupby('S_Z.id');
+        $this->mysqlInstance->groupby('S_Z.id');
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->get()->all();
+            $result = $this->mysqlInstance->get()->all();
             return count($result);
         }
         
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getContryByZoneId($id) {
@@ -71,7 +73,7 @@ class BroadcastServersModel extends \Model\BaseStalkerModel {
     
     public function getServersTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -83,21 +85,23 @@ class BroadcastServersModel extends \Model\BaseStalkerModel {
     }
     
     public function getServersList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("`streaming_servers` as S_S")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("`streaming_servers` as S_S")
                         ->join("stream_zones as S_Z", "S_S.stream_zone", "S_Z.id", "LEFT")
                         ->where($param['where']);
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function updateServers($param, $id){

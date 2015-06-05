@@ -34,11 +34,11 @@ class BaseStalkerModel {
     }
     
     public function getAllFromTable($table_name, $order = 'name', $groupby=''){
-        $result = $this->mysqlInstance->from($table_name)->orderby($order);
+        $this->mysqlInstance->from($table_name)->orderby($order);
         if (!empty($groupby)) {
-            $result = $result->groupby($groupby);
+            $this->mysqlInstance->groupby($groupby);
         }
-        return $result->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function existsTable($tablename, $temporary = FALSE){
@@ -46,7 +46,7 @@ class BaseStalkerModel {
             return $this->mysqlInstance->query("SHOW TABLES LIKE '$tablename'")->first();
         } else {
             try{
-                $result = $this->mysqlInstance->query("SELECT count(*) FROM $tablename")->first();
+                $this->mysqlInstance->query("SELECT count(*) FROM $tablename")->first();
                 return TRUE;
             } catch (\MysqlException $ex) {
                 return FALSE;

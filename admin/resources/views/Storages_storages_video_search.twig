@@ -19,8 +19,8 @@
                         {% endif %} 
                     </div>
 					
-					 <div class="col-sm-3">
-                        <label class="col-xs-7 col-sm-8 col-md-4">{{ 'Quantity of the storages'|trans }}</label>
+					 <div class="col-sm-2">
+                        <label class="col-xs-8 col-sm-8 col-md-5">{{ 'Quantity of the storages'|trans }}</label>
                         <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3  no-padding">
                             <input type="hidden" name="textview" value="0">
                             <input class="form-control" type="text" name="total_storages" id="total_storages">
@@ -28,7 +28,7 @@
                         <br><br>
                     </div>
 
-					<div class="col-sm-1 ">
+					<div class="col-sm-2 ">
                         {{ main_macro.get_dropdown_attribute(app['dropdownQuality'], 'quality', 'Video quality'|trans, 4, 0, 'true') }}
                        
                     </div>
@@ -36,7 +36,7 @@
                      {{ main_macro.get_dropdown_attribute(app['dropdownStatus'], 'status', 'Status'|trans, 4, 0, 'true') }}
 					</div>
 					
-				<div class="col-sm-2  pull-right">
+				<div class="col-sm-3  pull-right">
                    
 					 <a class="btn btn-default pull-right" id="video_search_submit">{{ 'Search'|trans }}</a>
                         <button class="btn btn-default pull-right" id="textshow" type="submit" form="video_search_form">{{ 'In text format'|trans }}</button>

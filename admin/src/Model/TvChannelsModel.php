@@ -248,7 +248,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
             ->where(array('ch_id'  => $id,'time>=' => $time_from,'time<=' => $time_to))
             ->orderby('time')
             ->get()
-            ->all();;
+            ->all();
     }
 
     public function deleteEPGForChannel($id, $time_from, $time_to){
@@ -261,7 +261,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
 
     public function getTotalRowsEPGList($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -273,16 +273,18 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
 
     public function getEPGList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-            ->from("epg_setting")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("epg_setting")
             ->where($param['where'])->like($param['like'], 'OR')
             ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
     public function updateEPG($param, $where) {
@@ -322,22 +324,23 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
 
     public function getTotalRowsTvGenresList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('tv_genre')->where($where);
+        $this->mysqlInstance->count()->from('tv_genre')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
 
     public function getTvGenresList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-            ->from('tv_genre')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('tv_genre')
             ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], ( array_key_exists('offset', $param['limit']) ? $param['limit']['offset']: FALSE ) );
+            $this->mysqlInstance->limit($param['limit']['limit'], ( array_key_exists('offset', $param['limit']) ? $param['limit']['offset']: FALSE ) );
         }
-        $allRows = $obj->get()->all();
-        return $allRows;
+        return $this->mysqlInstance->get()->all();
     }
 
     public function insertTvGenres($param){
