@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-13 13:42+0300\n"
-"PO-Revision-Date: 2015-03-13 13:43+0300\n"
+"PO-Revision-Date: 2015-06-05 13:43+0100\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: de_CH\n"
@@ -205,11 +205,11 @@ msgstr "Trickfilm"
 
 #: ../../../tools/misctranslations.php:59
 msgid "Ours cinema"
-msgstr "Kino International"
+msgstr "Unser Kino"
 
 #: ../../../tools/misctranslations.php:60
 msgid "World cinema"
-msgstr "Kino Deutsch"
+msgstr "Welt Kino"
 
 #: ../../../tools/misctranslations.php:61
 #: ../../../tools/misctranslations.php:72
@@ -223,11 +223,11 @@ msgstr "Humor"
 
 #: ../../../tools/misctranslations.php:63
 msgid "Hobbies"
-msgstr "3D"
+msgstr "Hobbies"
 
 #: ../../../tools/misctranslations.php:64
 msgid "Our Serial"
-msgstr "4K"
+msgstr "Unsere Serien"
 
 #: ../../../tools/misctranslations.php:65
 msgid "Foreign Serial"
@@ -376,16 +376,15 @@ msgstr "Wissenschaftliche Unterhaltung"
 
 #: ../../../tools/misctranslations.php:118
 msgid "Alternative Rock"
-msgstr ""
+msgstr "Alternativ Rock"
 
 #: ../../../tools/misctranslations.php:119
 msgid "Blues"
-msgstr ""
+msgstr "Blues"
 
 #: ../../../tools/misctranslations.php:120
-#, fuzzy
 msgid "Children's Music"
-msgstr "Kinder"
+msgstr "Kinder Musik"
 
 #: ../../../tools/misctranslations.php:121
 #: ../../../tools/misctranslations.php:162
@@ -394,11 +393,11 @@ msgstr "Jazz"
 
 #: ../../../tools/misctranslations.php:122
 msgid "Disco"
-msgstr ""
+msgstr "Disco"
 
 #: ../../../tools/misctranslations.php:123
 msgid "Indie"
-msgstr ""
+msgstr "Indie"
 
 #: ../../../tools/misctranslations.php:124
 #: ../../../administrator/audio_album.php:427
@@ -409,25 +408,24 @@ msgid "Country"
 msgstr "Land"
 
 #: ../../../tools/misctranslations.php:125
-#, fuzzy
 msgid "Classical"
-msgstr "Musical"
+msgstr "Klassisch"
 
 #: ../../../tools/misctranslations.php:126
 msgid "Latin Music"
-msgstr ""
+msgstr "Latin Musik"
 
 #: ../../../tools/misctranslations.php:127
 msgid "Easy Listening"
-msgstr ""
+msgstr "Unterhaltungsmusik"
 
 #: ../../../tools/misctranslations.php:128
 msgid "Metal"
-msgstr ""
+msgstr "Metal"
 
 #: ../../../tools/misctranslations.php:129
 msgid "Hillbilly music"
-msgstr ""
+msgstr "Hillbilly Musik"
 
 #: ../../../tools/misctranslations.php:130
 #: ../../../tools/misctranslations.php:156
@@ -436,7 +434,7 @@ msgstr "Pop"
 
 #: ../../../tools/misctranslations.php:131
 msgid "Oldies"
-msgstr ""
+msgstr "Oldies"
 
 #: ../../../tools/misctranslations.php:132
 #: ../../../tools/misctranslations.php:157
@@ -445,59 +443,59 @@ msgstr "Rock"
 
 #: ../../../tools/misctranslations.php:133
 msgid "Adult Contemporary"
-msgstr ""
+msgstr "Erwachsen"
 
 #: ../../../tools/misctranslations.php:134
 msgid "Soul and R&B"
-msgstr ""
+msgstr "Soul and R&B"
 
 #: ../../../tools/misctranslations.php:135
 msgid "Themes music"
-msgstr ""
+msgstr "Themes Musik"
 
 #: ../../../tools/misctranslations.php:136
 msgid "Hip Hop"
-msgstr ""
+msgstr "Hip Hop"
 
 #: ../../../tools/misctranslations.php:137
 msgid "Electronic"
-msgstr ""
+msgstr "Electronisch"
 
 #: ../../../tools/misctranslations.php:143
 msgid "1920s and earlier"
-msgstr ""
+msgstr "1920s und früher"
 
 #: ../../../tools/misctranslations.php:144
 msgid "1930s"
-msgstr ""
+msgstr "1930er"
 
 #: ../../../tools/misctranslations.php:145
 msgid "1940s"
-msgstr ""
+msgstr "1940er"
 
 #: ../../../tools/misctranslations.php:146
 msgid "1950s"
-msgstr ""
+msgstr "1950er"
 
 #: ../../../tools/misctranslations.php:147
 msgid "1960s"
-msgstr ""
+msgstr "1960er"
 
 #: ../../../tools/misctranslations.php:148
 msgid "1970s"
-msgstr ""
+msgstr "1970er"
 
 #: ../../../tools/misctranslations.php:149
 msgid "1980s"
-msgstr ""
+msgstr "1980er"
 
 #: ../../../tools/misctranslations.php:150
 msgid "1990s"
-msgstr ""
+msgstr "1990er"
 
 #: ../../../tools/misctranslations.php:151
 msgid "2000s"
-msgstr ""
+msgstr "2000er"
 
 #: ../../../tools/misctranslations.php:158
 msgid "Chanson"
@@ -612,10 +610,9 @@ msgid "on channel"
 msgstr "auf Sender"
 
 #: ../../../tools/misctranslations.php:201
-#, fuzzy
 msgid ""
 "Services are updated according to the subscription. The STB will be rebooted."
-msgstr "Aktualisiert nach den Abo-Kanälen."
+msgstr "Aktualisiert nach den Abo-Kanälen. STB wird neu gestartet."
 
 #: ../../../tools/misctranslations.php:203
 msgid "Firmware of your STB is outdated.<br>Please update it."
@@ -867,7 +864,7 @@ msgstr "nicht geändert"
 
 #: ../../../lib/epg.class.php:102
 msgid "failed to open"
-msgstr ""
+msgstr "Fehler beim Öffnen"
 
 #: ../../../lib/epg.class.php:247
 msgid "Errors"
@@ -1029,7 +1026,7 @@ msgstr "Dokumentationen"
 
 #: ../../../lib/itv.class.php:645
 msgid "Channels with PVR"
-msgstr ""
+msgstr "Sender mit PVR"
 
 #: ../../../lib/itv.class.php:1810
 #, php-format
@@ -1099,11 +1096,11 @@ msgstr "Nicht abonniert"
 
 #: ../../../lib/audioclub.class.php:15
 msgid "Albums"
-msgstr ""
+msgstr "Album"
 
 #: ../../../lib/audioclub.class.php:19
 msgid "Artists"
-msgstr ""
+msgstr "Künstler"
 
 #: ../../../lib/audioclub.class.php:23 ../../../administrator/playlists.php:99
 #: ../../../administrator/playlists.php:105
@@ -1119,19 +1116,20 @@ msgstr "Genre"
 
 #: ../../../lib/audioclub.class.php:31
 #: ../../../administrator/audio_album.php:394
-#, fuzzy
 msgid "Years"
-msgstr "Jahr"
+msgstr "Jahre"
 
 #: ../../../lib/tvarchive.class.php:316
 msgid "Break in the program"
-msgstr ""
+msgstr "Beende das Programm"
 
 #: ../../../lib/stb.class.php:400
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
 msgstr ""
+"Das Portal ist temporär nicht verfügbar.<br>Bitte versuche es später "
+"nochmals.<br>Sorry für die Umstände."
 
 #: ../../../lib/stb.class.php:576
 #, php-format
@@ -1831,14 +1829,13 @@ msgstr "Error: Alle Felder werden benötigt"
 
 #: ../../../administrator/audio_album.php:79
 #: ../../../administrator/audio_album.php:143
-#, fuzzy
 msgid "Error: could not save cover"
-msgstr "Fehler: Bild konnte nicht gepseichert werden"
+msgstr "Fehler: Bild konnte nicht gespeichert werden"
 
 #: ../../../administrator/audio_album.php:257
 #: ../../../administrator/audio_album.php:385
 msgid "AUDIO ALBUMS"
-msgstr ""
+msgstr "AUDIO ALBEN"
 
 #: ../../../administrator/audio_album.php:392
 #, fuzzy
@@ -1846,14 +1843,12 @@ msgid "Performers"
 msgstr "Künstler"
 
 #: ../../../administrator/audio_album.php:414
-#, fuzzy
 msgid "search by album name or performer"
-msgstr "Suche nach Dateinamen der Filmnamen"
+msgstr "Suche nach Album oder Künstler"
 
 #: ../../../administrator/audio_album.php:424
-#, fuzzy
 msgid "Tracks"
-msgstr "Spur"
+msgstr "Titel"
 
 #: ../../../administrator/audio_album.php:425
 #: ../../../administrator/add_itv.php:1074
@@ -1881,9 +1876,8 @@ msgstr "Jahr"
 #: ../../../administrator/audio_track.php:325
 #: ../../../administrator/audio_language.php:222 ../../../lang/stb.php:534
 #: ../../../lang/stb.php:535
-#, fuzzy
 msgid "Language"
-msgstr "Benutzer Sprache"
+msgstr "Sprache"
 
 #: ../../../administrator/audio_album.php:478
 #: ../../../administrator/audio_performer.php:222
@@ -1904,7 +1898,7 @@ msgstr "hinzufügen"
 
 #: ../../../administrator/audio_album.php:502 ../../../lang/stb.php:537
 msgid "Album"
-msgstr ""
+msgstr "Album"
 
 #: ../../../administrator/audio_album.php:584
 #: ../../../administrator/add_video.php:2093
@@ -2018,15 +2012,14 @@ msgstr "Sind Sie sicher, dass Sie den Tester %s entfernen möchten?"
 #: ../../../administrator/audio_year.php:100
 #: ../../../administrator/audio_year.php:149
 msgid "AUDIO YEARS"
-msgstr ""
+msgstr "AUDIO JAHRE"
 
 #: ../../../administrator/audio_year.php:174
 #: ../../../administrator/audio_performer.php:174
 #: ../../../administrator/audio_language.php:174
 #: ../../../administrator/audio_genre.php:174
-#, fuzzy
 msgid "search by name"
-msgstr "Suche nach Clipnamen"
+msgstr "Suche nach Namen"
 
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
@@ -2259,7 +2252,7 @@ msgstr "Keine aktiven Ereignisse für %s"
 #: ../../../administrator/themes.php:101 ../../../administrator/themes.php:128
 #: ../../../administrator/index.php:492
 msgid "Templates"
-msgstr ""
+msgstr "Templates"
 
 #: ../../../administrator/themes.php:111 ../../../lang/stb.php:41
 msgid "not found"
@@ -2267,16 +2260,15 @@ msgstr "nicht gefunden"
 
 #: ../../../administrator/themes.php:152
 msgid "CURRENT THEME"
-msgstr ""
+msgstr "AKTUELLES THEME"
 
 #: ../../../administrator/themes.php:154 ../../../administrator/themes.php:164
-#, fuzzy
 msgid "preview not available"
-msgstr "Server nicht verfügbar"
+msgstr "Vorschau nicht verfügbar"
 
 #: ../../../administrator/themes.php:169
 msgid "Apply"
-msgstr ""
+msgstr "Anwenden"
 
 #: ../../../administrator/cache_refresh.php:35
 #, php-format
@@ -2291,7 +2283,7 @@ msgstr "Speicher Cache refresh"
 #: ../../../administrator/audio_performer.php:100
 #: ../../../administrator/audio_performer.php:149
 msgid "AUDIO PERFORMERS"
-msgstr ""
+msgstr "Audio Künstler"
 
 #: ../../../administrator/all_userlog.php:57
 #: ../../../administrator/all_userlog.php:64
@@ -2526,13 +2518,12 @@ msgid "Enable TV archive"
 msgstr "Aktiviere TV Archiv"
 
 #: ../../../administrator/add_itv.php:1625
-#, fuzzy
 msgid "Flussonic DVR"
-msgstr "Flussonic Unterstützung"
+msgstr "Flussonic DVR"
 
 #: ../../../administrator/add_itv.php:1626
 msgid "Wowza DVR"
-msgstr ""
+msgstr "Wowza  DVR"
 
 #: ../../../administrator/add_itv.php:1657
 msgid "TV archive duration, h"
@@ -2576,17 +2567,15 @@ msgstr "Abbrechen"
 #: ../../../administrator/audio_track.php:137
 #: ../../../administrator/audio_track.php:208
 msgid "AUDIO TRACKS"
-msgstr ""
+msgstr "AUDIO TITEL"
 
 #: ../../../administrator/audio_track.php:215
-#, fuzzy
 msgid "Languages"
-msgstr "Benutzer Sprache"
+msgstr "Sprachen"
 
 #: ../../../administrator/audio_track.php:235
-#, fuzzy
 msgid "search by track name"
-msgstr "Suche nach Clipnamen"
+msgstr "Suche nach Name"
 
 #: ../../../administrator/videolog.php:50
 #: ../../../administrator/videolog.php:56
@@ -2723,7 +2712,7 @@ msgstr "Meine Nachrichten"
 #: ../../../administrator/audio_language.php:100
 #: ../../../administrator/audio_language.php:149
 msgid "AUDIO LANGUAGES"
-msgstr ""
+msgstr "AUDIO SPRACHEN"
 
 #: ../../../administrator/tasks.php:59 ../../../administrator/tasks.php:65
 msgid "Tasks"
@@ -2799,9 +2788,8 @@ msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: ../../../administrator/profile.php:367 ../../../lang/stb.php:482
-#, fuzzy
 msgid "Access control"
-msgstr "Eltern Kontrolle"
+msgstr "Zugangskontrolle"
 
 #: ../../../administrator/profile.php:371
 msgid "favorite tv"
@@ -2870,9 +2858,8 @@ msgstr "Zusätzliche Dienstleistung"
 
 #: ../../../administrator/audio_genre.php:100
 #: ../../../administrator/audio_genre.php:149
-#, fuzzy
 msgid "AUDIO GENRES"
-msgstr "GENRE"
+msgstr "AUDIO GENRE"
 
 #: ../../../administrator/stat_tv_archive.php:59
 #: ../../../administrator/stat_tv_archive.php:65
@@ -3032,16 +3019,15 @@ msgstr "Nachfolge"
 
 #: ../../../administrator/storages.php:338
 msgid "Wowza VOD"
-msgstr ""
+msgstr "Wowza VOD"
 
 #: ../../../administrator/storages.php:342
-#, fuzzy
 msgid "Wowza port"
-msgstr "Reload Portal"
+msgstr "Wowza Port"
 
 #: ../../../administrator/storages.php:346
 msgid "Wowza App"
-msgstr ""
+msgstr "Wowza App"
 
 #: ../../../administrator/storages.php:350
 msgid "External"
@@ -3490,9 +3476,8 @@ msgid "Sections"
 msgstr "Sektionen"
 
 #: ../../../administrator/index.php:150 ../../../lang/stb.php:526
-#, fuzzy
 msgid "AUDIO CLUB"
-msgstr "VIDEO CLUB"
+msgstr "AUDIO CLUB"
 
 #: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
@@ -3532,9 +3517,8 @@ msgid "videoclub"
 msgstr "videoclub"
 
 #: ../../../administrator/index.php:271
-#, fuzzy
 msgid "audioclub"
-msgstr "videoclub"
+msgstr "audioclub"
 
 #: ../../../administrator/index.php:279
 msgid "radio"
@@ -5279,76 +5263,64 @@ msgid "Video will be available soon"
 msgstr "Das Video wird in Kürze verfügbar sein"
 
 #: ../../../lang/stb.php:524
-#, fuzzy
 msgid "Install application?"
-msgstr "Anwendung"
+msgstr "Anwendung installieren?"
 
 #: ../../../lang/stb.php:527
-#, fuzzy
 msgid "TRACK SEARCH"
-msgstr "SUCHE"
+msgstr "TITEL SUCHE"
 
 #: ../../../lang/stb.php:528
-#, fuzzy
 msgid "ALBUM SEARCH"
-msgstr "SUCHE"
+msgstr "ALBUM SUCHE"
 
 #: ../../../lang/stb.php:529
 msgid "ADD TO PLAYLIST"
-msgstr ""
+msgstr "zu Playlist hinzufügen"
 
 #: ../../../lang/stb.php:530
 msgid "DEL FROM PLAYLIST"
-msgstr ""
+msgstr "Lösche von der Playlist"
 
 #: ../../../lang/stb.php:531
-#, fuzzy
 msgid "PLAYLIST"
-msgstr "ABSPIELEN"
+msgstr "PLAYLIST"
 
 #: ../../../lang/stb.php:536
 msgid "Artist"
-msgstr ""
+msgstr "Künstler"
 
 #: ../../../lang/stb.php:538
-#, fuzzy
 msgid "Compositions"
-msgstr "Optionen"
+msgstr "Kompositionen"
 
 #: ../../../lang/stb.php:540
-#, fuzzy
 msgid "Playlist select"
-msgstr "Playlisten"
+msgstr "Playlist auswählen"
 
 #: ../../../lang/stb.php:542
-#, fuzzy
 msgid "NEW"
-msgstr "Nordost"
+msgstr "Neu"
 
 #: ../../../lang/stb.php:544
-#, fuzzy
 msgid "New Playlist"
-msgstr "Playlist"
+msgstr "Neue Playlist"
 
 #: ../../../lang/stb.php:545
-#, fuzzy
 msgid "Error while saving"
-msgstr "Fehler beim Senden eines Ereignisses"
+msgstr "Fehler beim Speichern"
 
 #: ../../../lang/stb.php:546
-#, fuzzy
 msgid "CREATE NEW"
-msgstr "ERSTELLE"
+msgstr "ERSTELLE NEU"
 
 #: ../../../lang/stb.php:547
-#, fuzzy
 msgid "Do you really want to delete this track from playlist?"
-msgstr "Möchten Sie diese Aufnahme wirklich löschen?"
+msgstr "Möchten Sie diesen Titel wirklich löschen?"
 
 #: ../../../lang/stb.php:548
-#, fuzzy
 msgid "Do you really want to delete this playlist?"
-msgstr "Willst du diesen Artikel wirklich löschen?"
+msgstr "Willst du diese Playlist wirklich löschen?"
 
 #~ msgid "Only for API"
 #~ msgstr "Nur für API"
