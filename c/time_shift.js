@@ -117,7 +117,7 @@
 
             _debug('stb.player.cur_media_item.cmd', stb.player.cur_media_item.cmd);
 
-            if (/([^\/]*)\.mp[g,4]/.exec(stb.player.cur_media_item.cmd) || this.cur_media_item['wowza_dvr'] == 1){
+            if (/([^\/]*)\.mp[g,4]/.exec(stb.player.cur_media_item.cmd) || this.cur_media_item['wowza_dvr'] == 1 || this.cur_media_item['flussonic_dvr'] == 1){
 
                 _debug('stb.player.play_initiated', stb.player.play_initiated);
 
@@ -165,6 +165,8 @@
 
             if (this.cur_media_item['wowza_dvr'] == 1){
                 var cur_file_date = this._get_wowza_playlist_start_date_by_url(this.cur_media_item.cmd);
+            }else if (this.cur_media_item['flussonic_dvr'] == 1){
+                cur_file_date = this._get_flussonic_playlist_start_date_by_url(this.cur_media_item.cmd);
             }else{
                 cur_file_date = this._get_file_date_by_url(this.cur_media_item.cmd);
             }
@@ -199,6 +201,29 @@
             _debug('true_file_date', true_file_date);
 
             return new Date(true_file_date);
+        },
+
+        _get_flussonic_playlist_start_date_by_url : function(url){
+            _debug('time_shift._get_flussonic_playlist_start_date_by_url', url);
+
+            if (url.indexOf('/mpegts') != -1){
+                var date_part = /\/(\d{10})\//.exec(url);
+            }else{
+                date_part = /-(\d{10})-/.exec(url);
+            }
+
+
+            _debug('date_part', date_part);
+
+            if (!date_part){
+                return new Date();
+            }
+
+            var file_date_str = date_part[1];
+
+            _debug('file_date_str', file_date_str);
+
+            return new Date(file_date_str*1000);
         },
 
         _get_file_date_by_url : function(url){
@@ -366,6 +391,19 @@
 
                 var url = this.cur_media_item.cmd.replace(/wowzadvrplayliststart=(\d+)/, 'wowzadvrplayliststart='+new_playlist_start).trim();
 
+            }else if (this.cur_media_item['flussonic_dvr'] == 1){
+
+                new_playlist_start = this.get_flussonic_playlist_start(cur_file_date);
+
+                _debug('new_playlist_start', new_playlist_start);
+
+                if (this.cur_media_item.cmd.indexOf('/mpegts') != -1){
+                    url = this.cur_media_item.cmd.replace(/\/(\d{10})\//, '/'+new_playlist_start+'/').trim();
+                }else{
+                    url = this.cur_media_item.cmd.replace(/-(\d{10})-/, '-'+new_playlist_start+'-').trim();
+                }
+
+
             }else{
                 var new_file_name = this.get_filename_by_date(cur_file_date);
 
@@ -404,6 +442,15 @@
                 + '0000';
         },
 
+        get_flussonic_playlist_start : function(date){
+            _debug('time_shift.get_flussonic_playlist_start', date);
+            date.setMinutes(0);
+            date.setSeconds(0);
+            date.setMilliseconds(0);
+
+            return date.getTime()/1000;
+        },
+
         get_filename_by_date : function(date){
             _debug('time_shift.get_filename_by_date', date);
 
@@ -413,7 +460,7 @@
 
             _debug('date 2', date);
 
-            _debug('stb.player.cur_tv_item[wowza_dvr]', stb.player.cur_tv_item);
+            _debug('stb.player.cur_tv_item', stb.player.cur_tv_item);
 
             return date.getFullYear() + ''
                     + this.format_date(date.getMonth() + 1) + ''
@@ -448,6 +495,8 @@
 
             if (stb.player.cur_tv_item['wowza_dvr'] == 1){
                 var cur_file_date = this._get_wowza_playlist_start_date_by_url(stb.player.cur_media_item.cmd);
+            }else if (stb.player.cur_tv_item['flussonic_dvr'] == 1){
+                cur_file_date = this._get_flussonic_playlist_start_date_by_url(stb.player.cur_media_item.cmd);
             }else{
                 cur_file_date = this._get_file_date_by_url(stb.player.cur_media_item.cmd);
             }
@@ -465,6 +514,17 @@
 
                 var url = this.cur_media_item.cmd.replace(/wowzadvrplayliststart=(\d+)/, 'wowzadvrplayliststart='+new_playlist_start).replace(/position:(\d*)/, '').trim();
 
+            }else if (stb.player.cur_tv_item['flussonic_dvr'] == 1){
+
+                new_playlist_start = this.get_flussonic_playlist_start(next_file_date);
+
+                _debug('new_playlist_start', new_playlist_start);
+
+                if (this.cur_media_item.cmd.indexOf('/mpegts') != -1){
+                    url = this.cur_media_item.cmd.replace(/\/(\d{10})\//, '/'+new_playlist_start+'/').replace(/position:(\d*)/, '').trim();
+                }else{
+                    url = this.cur_media_item.cmd.replace(/-(\d{10})-/, '-'+new_playlist_start+'-').replace(/position:(\d*)/, '').trim();
+                }
             }else{
                 var next_file_name = this.get_filename_by_date(next_file_date);
 

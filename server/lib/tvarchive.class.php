@@ -452,7 +452,28 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
         $filename = $date->format("Ymd-H");
         $filename .= '.mpg';
 
-        if ($channel['wowza_dvr']){
+        if ($channel['flussonic_dvr']){
+
+            if (preg_match("/:\/\/([^\/]*)\/([^\/]*).*(mpegts|m3u8)$/", $channel['mc_cmd'], $match)){
+
+                if ($match[3] == 'mpegts'){
+                    $res['cmd'] = 'http://'.$storage['storage_ip'].'/'.$match[2].'/archive/'.strtotime(date("Y-m-d H:00:00")).'/3600/mpegts';
+                }else{
+                    $res['cmd'] = preg_replace('/:\/\/([^\/]*)/', '://'.$storage['storage_ip'], $channel['mc_cmd']);
+                    $res['cmd'] = preg_replace('/\.m3u8/', '-' . strtotime(date("Y-m-d H:00:00"))
+                        . '-3600' . '.m3u8', $res['cmd']); // todo: current hour?
+                }
+
+                $res['cmd'] .= ''
+                    . '?token='.$this->createTemporaryToken(true)
+                    . ' position:' . $position
+                    . ' media_len:' . (intval(date("H")) * 3600 + intval(date("i")) * 60 + intval(date("s")));
+
+            }else{
+                $res['error'] = 'server_error';
+            }
+
+        }elseif ($channel['wowza_dvr']){
 
             if (preg_match("/:\/\/([^\/]*)\/.*\.m3u8/", $channel['mc_cmd'], $match)){
 
