@@ -13,7 +13,7 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     
     public function getTotalRowsAudioAlbumsList($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*, (select count(*) from audio_compositions as a_c where a_c.album_id = audio_albums.id) as tracks_count"),
+            'select' => array("(select count(*) from audio_compositions as a_c where a_c.album_id = audio_albums.id) as tracks_count"),
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -25,17 +25,19 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
    
     public function getAudioAlbumsList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select']);
-        $obj = $obj->from('audio_albums')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('audio_albums')
                     ->join('audio_performers', 'audio_albums.performer_id', 'audio_performers.id', 'LEFT')
                     ->join('audio_years', 'audio_albums.year_id', 'audio_years.id', 'LEFT')
                     ->join('countries', 'audio_albums.country_id', 'countries.id', 'LEFT')    
                     ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
 /*         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         } */
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function getGenreForAlbum($id, $field = null) {
@@ -54,22 +56,23 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getTotalRowsAudioGenresList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('audio_genres')->where($where);
+        $this->mysqlInstance->count()->from('audio_genres')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
    
     public function getAudioGenresList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('audio_genres')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('audio_genres')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
 /*         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         } */
-        $allRows = $obj->get()->all();
-        return $allRows;
+        return $this->mysqlInstance->get()->all();
     }
     
     public function insertAudioGenres($param){
@@ -85,22 +88,24 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getTotalRowsAudioArtistList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('audio_performers')->where($where);
+        $this->mysqlInstance->count()->from('audio_performers')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
    
     public function getAudioArtistList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('audio_performers')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('audio_performers')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
 /*         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
  */
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function insertAudioArtist($param){
@@ -116,22 +121,24 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getTotalRowsAudioLanguageList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('audio_languages')->where($where);
+        $this->mysqlInstance->count()->from('audio_languages')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
    
     public function getAudioLanguageList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('audio_languages')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('audio_languages')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
 /*         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         } */
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function insertAudioLanguage($param){
@@ -147,22 +154,24 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getTotalRowsAudioYearList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('audio_years')->where($where);
+        $this->mysqlInstance->count()->from('audio_years')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
    
     public function getAudioYearList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('audio_years')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('audio_years')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
 /*         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         } */
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function insertAudioYear($param){
@@ -190,14 +199,16 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getAudioCountryList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('countries')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('countries')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
 /*         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         } */
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function insertAudioAlbum($param){
@@ -218,7 +229,7 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     
     public function getTotalRowsAlbumsCompositionList($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -230,16 +241,18 @@ class AudioClubModel extends \Model\BaseStalkerModel {
     }
     
     public function getAlbumsCompositionList($param, $counter = FALSE) {
-        
-        $obj = $this->mysqlInstance->select($param['select']);
-        $obj = $obj->from('audio_compositions')
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('audio_compositions')
                     ->join('audio_languages', 'audio_compositions.language_id', 'audio_languages.id', 'LEFT')
                     ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
 /*         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         } */
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function updateAlbumsComposition($param, $where){

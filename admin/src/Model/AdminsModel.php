@@ -10,7 +10,7 @@ class AdminsModel extends \Model\BaseStalkerModel {
     
     public function getAdminsTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -26,8 +26,10 @@ class AdminsModel extends \Model\BaseStalkerModel {
         if (!empty($this->reseller_id)) {
             $where['A.reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("administrators as A")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("administrators as A")
                         ->join("admin_groups as A_G", "A.gid", "A_G.id", "LEFT")
                         ->join("reseller as R", "A.reseller_id", "R.id", "LEFT")
                         ->where($param['where'])
@@ -36,10 +38,10 @@ class AdminsModel extends \Model\BaseStalkerModel {
                         ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function insertAdmin($param){
@@ -59,7 +61,7 @@ class AdminsModel extends \Model\BaseStalkerModel {
     
     public function getAdminGropsTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -75,27 +77,29 @@ class AdminsModel extends \Model\BaseStalkerModel {
         if (!empty($this->reseller_id)) {
             $where['A_G.reseller_id'] = $this->reseller_id;
         }
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from("admin_groups as A_G")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("admin_groups as A_G")
                         ->join("reseller as R", "A_G.reseller_id", "R.id", 'LEFT');
         if (!empty($param['where'])) {
-            $obj = $obj->where($param['where']);
+            $this->mysqlInstance->where($param['where']);
         }
 
-        $obj = $obj->where($where);
+        $this->mysqlInstance->where($where);
 
         if (!empty($param['like'])) {
-            $obj = $obj->like($param['like'], 'OR');
+            $this->mysqlInstance->like($param['like'], 'OR');
         }
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
     
     public function insertAdminsGroup($param){
@@ -114,13 +118,13 @@ class AdminsModel extends \Model\BaseStalkerModel {
     }
     
     public function getAdminGroupPermissions($gid = FALSE) {
-        $obj = $this->mysqlInstance->from("adm_grp_action_access")->where(array('hidden<>'=>1));
+        $this->mysqlInstance->from("adm_grp_action_access")->where(array('hidden<>'=>1));
         if ($gid !== FALSE) {
-            $obj = $obj->where(array('group_id'=>$gid));
+            $this->mysqlInstance->where(array('group_id'=>$gid));
         } else {
-            $obj = $obj->groupby('concat(`controller_name`, `action_name`)');
+            $this->mysqlInstance->groupby('concat(`controller_name`, `action_name`)');
         }
-        return $obj->orderby(array('concat(`controller_name`, `action_name`)'=>'asc'))->get()->all();
+        return $this->mysqlInstance->orderby(array('concat(`controller_name`, `action_name`)'=>'asc'))->get()->all();
     }
     
     public function setAdminGroupPermissions($param) {
@@ -133,7 +137,7 @@ class AdminsModel extends \Model\BaseStalkerModel {
 
     public function getResellersTotalRows($where = array(), $like = array()) {
         $params = array(
-            'select' => array("*"),
+            /*'select' => array("*"),*/
             'where' => $where,
             'like' => array(),
             'order' => array()
@@ -145,17 +149,19 @@ class AdminsModel extends \Model\BaseStalkerModel {
     }
 
     public function getResellersList($param, $counter = FALSE) {
-        $obj = $this->mysqlInstance->select($param['select'])
-            ->from("reseller as R")
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("reseller as R")
             ->where($param['where'])
             ->like($param['like'], 'OR')
             ->orderby($param['order']);
 
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
 
-        return ($counter) ? $obj->count()->get()->counter() : $obj->get()->all();
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
     }
 
 

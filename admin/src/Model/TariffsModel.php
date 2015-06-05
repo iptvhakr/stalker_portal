@@ -9,22 +9,24 @@ class TariffsModel extends \Model\BaseStalkerModel {
     }
 
     public function getTotalRowsTariffsList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('services_package')->where($where);
+        $this->mysqlInstance->count()->from('services_package')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
    
     public function getTariffsList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('services_package')//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('services_package')//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
+            $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
         }
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getUserCountForPackage($package_id){
@@ -70,22 +72,24 @@ class TariffsModel extends \Model\BaseStalkerModel {
     }
     
     public function getTariffPlansList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('tariff_plan')//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('tariff_plan')//->join('users', 'tariffs.uid', 'users.id', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
+            $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
         }
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function getTotalRowsTariffPlansList($where = array(), $like = array()) {
-        $obj = $this->mysqlInstance->count()->from('tariff_plan')->where($where);
+        $this->mysqlInstance->count()->from('tariff_plan')->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
     
     public function deletePlanById($id) {
@@ -97,14 +101,16 @@ class TariffsModel extends \Model\BaseStalkerModel {
     }
     
     public function getOptionalForPlan($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-                        ->from('package_in_plan')->join('services_package', 'package_in_plan.package_id', 'services_package.id', 'LEFT')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('package_in_plan')->join('services_package', 'package_in_plan.package_id', 'services_package.id', 'LEFT')
                         ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
+            $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
         }
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function updatePlan($param, $id){
@@ -128,32 +134,34 @@ class TariffsModel extends \Model\BaseStalkerModel {
     }
 
     public function getSubscribeLogList($param) {
-        $obj = $this->mysqlInstance->select($param['select'])
-            ->from('package_subscribe_log as P_S_L')
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from('package_subscribe_log as P_S_L')
             ->join('users as U', 'P_S_L.user_id', 'U.id', 'LEFT')
             ->join('administrators as A', 'P_S_L.initiator_id', 'A.id', 'LEFT')
             ->join('services_package as S_P', 'P_S_L.package_id', 'S_P.id', 'LEFT')
             ->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['limit']['limit'])) {
-            $obj = $obj->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
+            $this->mysqlInstance->limit($param['limit']['limit'], (array_key_exists('offset', $param['limit'])? $param['limit']['offset']: NULL));
         }
 
-        return $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
 
     public function getTotalRowsSubscribeLogList($where = array(), $like = array(), $user_id = FALSE) {
         if ($user_id !== FALSE && !array_key_exists('user_id', $where)) {
             $where['user_id'] = $user_id;
         }
-        $obj = $this->mysqlInstance->count()->from('package_subscribe_log as P_S_L')
+        $this->mysqlInstance->count()->from('package_subscribe_log as P_S_L')
             ->join('services_package as S_P', 'P_S_L.package_id', 'S_P.id', 'LEFT')
             ->join('users as U', 'P_S_L.user_id', 'U.id', 'LEFT')
             ->join('administrators as A', 'P_S_L.initiator_id', 'A.id', 'LEFT')
             ->where($where);
         if (!empty($like)) {
-            $obj = $obj->like($like, 'OR');
+            $this->mysqlInstance->like($like, 'OR');
         }
-        return $obj->get()->counter();
+        return $this->mysqlInstance->get()->counter();
     }
 
     public function getUser($param) {

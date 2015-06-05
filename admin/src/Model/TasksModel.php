@@ -9,7 +9,7 @@ class TasksModel extends \Model\BaseStalkerModel {
     }
 
     public function getTotalRowsTasksList($incoming = array(), $all = FALSE) {
-        $incoming['select'] = '*';
+        /*$incoming['select'] = '*';*/
         if ($all) {
             $incoming['like'] = array();    
         }
@@ -17,28 +17,31 @@ class TasksModel extends \Model\BaseStalkerModel {
     }
 
     public function getTasksList($param, $counter = FALSE) {
-        
-        $obj = $this->mysqlInstance->select($param['select'])->from($param['from']);
+
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from($param['from']);
         if (array_key_exists('joined', $param)) {
             foreach ($param['joined'] as $table => $keys) {
-                $obj = $obj->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
+                $this->mysqlInstance->join($table, $keys['left_key'], $keys['right_key'], $keys['type']);
             }
         }
-        $obj = $obj->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
+        $this->mysqlInstance->where($param['where'])->like($param['like'], 'OR')->orderby($param['order']);
         if (!empty($param['groupby'])) {
-            $obj = $obj->groupby($param['groupby']);
+            $this->mysqlInstance->groupby($param['groupby']);
         }
 
         if (!empty($param['order'])) {
-            $obj = $obj->orderby($param['order']);
+            $this->mysqlInstance->orderby($param['order']);
         }
 
         if (!empty($param['limit']['limit']) && !$counter) {
-            $obj = $obj->limit($param['limit']['limit'], $param['limit']['offset']);
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
         }
         
         if ($counter) {
-            $result = $obj->count()->get()->all();
+            $result = $this->mysqlInstance->count()->get()->all();
             if (count($result) > 1) {
                 return count($result);
             } else if (!empty ($result[0])){
@@ -48,18 +51,18 @@ class TasksModel extends \Model\BaseStalkerModel {
             }
             return $data;
         }
-//        print_r($obj->get());
+//        print_r($this->mysqlInstance->get());
 //        exit;
         
-        return ($counter) ? $obj : $obj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
 
     public function getAdmins($id = FALSE) {
-        $obj = $this->mysqlInstance->select()->from('administrators');
+        $this->mysqlInstance->from('administrators');
         if ($id !== FALSE) {
-            $obj = $obj->where(array('id'=>$id));
+            $this->mysqlInstance->where(array('id'=>$id));
         }
-        return $obj->orderby('login')->get()->all();
+        return $this->mysqlInstance->orderby('login')->get()->all();
     }
     
     public function getSimpleTasks($task_id, $table) {
@@ -108,7 +111,7 @@ class TasksModel extends \Model\BaseStalkerModel {
     }
     
     public function getVideoTaskChatList($task_id, $after_id = 0) {
-        $odj = $this->mysqlInstance->select(
+        $this->mysqlInstance->select(
             array( 
                 "M_H.*", 
                 "A.login as `from_usr_login`",
@@ -125,7 +128,7 @@ class TasksModel extends \Model\BaseStalkerModel {
             ->join("`moderator_tasks`  as M_T", "M_H.task_id", "M_T.id", "LEFT")
             ->where(array('M_H.task_id' => $task_id, 'M_H.id >= ' => $after_id))
             ->orderby("M_H.id");
-        return $odj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
     
     public function setReadedTaskMessage($task_id, $user_id){
@@ -144,7 +147,7 @@ class TasksModel extends \Model\BaseStalkerModel {
     }
     
     public function getKaraokeTaskChatList($task_id) {
-        $odj = $this->mysqlInstance->select(
+        $this->mysqlInstance->select(
             array( 
                 "K.*",
                 "concat_ws(' - ', K.`singer`, K.`name`) as `name`",
@@ -157,6 +160,6 @@ class TasksModel extends \Model\BaseStalkerModel {
             ->from("`karaoke` as K")
             ->join("`administrators`  as A", "K.add_by", "A.id", "LEFT")
             ->where(array('K.id' => $task_id));        
-        return $odj->get()->all();
+        return $this->mysqlInstance->get()->all();
     }
 }
