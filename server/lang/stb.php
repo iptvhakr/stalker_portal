@@ -556,3 +556,6 @@ $words['audioclub_create_new'] = _('CREATE NEW');
 $words['remove_from_playlist_confirm'] = _('Do you really want to delete this track from playlist?');
 $words['delete_playlist_confirm'] = _('Do you really want to delete this playlist?');
 $words['audioclub_remove_playlist'] = _('DELETE');
+
+$words['vk_music_title'] = _('VK MUSIC');
+
