@@ -694,7 +694,7 @@ class User implements \Stalker\Lib\StbApi\User
         return self::getInstance((int) $user['id']);
     }
 
-    public static function authorizeFromOss($login, $password){
+    public static function authorizeFromOss($login, $password, $mac){
 
         $oss_wrapper = OssWrapper::getWrapper();
 
@@ -702,7 +702,7 @@ class User implements \Stalker\Lib\StbApi\User
             return false;
         }
 
-        $info = $oss_wrapper->authorize($login, $password);
+        $info = $oss_wrapper->authorize($login, $password, $mac);
 
         if (!$info){
             return false;

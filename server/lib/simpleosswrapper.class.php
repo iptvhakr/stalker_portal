@@ -26,7 +26,7 @@ class SimpleOssWrapper implements OssWrapperInterface
         return $this->parseResult($data, Config::getSafe('strict_oss_url_check', true));
     }
 
-    public function authorize($login, $password){
+    public function authorize($login, $password, $mac){
 
         if (!Config::exist('oss_url')){
             return false;
@@ -40,6 +40,8 @@ class SimpleOssWrapper implements OssWrapperInterface
             .'login='.$login
             .'&password='.$password
             .'&portal='.(empty($_SERVER['HTTP_HOST']) ? '' : $_SERVER['HTTP_HOST'])
+            .'&mac='.$mac
+            .'&ip='.(!empty($_SERVER['HTTP_X_REAL_IP']) ? $_SERVER['HTTP_X_REAL_IP'] : @$_SERVER['REMOTE_ADDR'])
         );
 
         return $this->parseResult($data, false);

@@ -15,6 +15,15 @@ class RESTCommandStbAuth extends RESTCommand
                 array('access_token' => strtoupper(md5(microtime(1).uniqid()))),
                 array('id' => $uid)
             );
+
+            Mysql::getInstance()
+                 ->update('access_tokens',
+                     array(
+                         'token'         => 'invalid_'.md5(microtime(1).uniqid()),
+                         'refresh_token' => 'invalid_'.md5(microtime(1).uniqid()),
+                     ),
+                     array('uid' => $uid)
+                 );
         }
 
         return true;

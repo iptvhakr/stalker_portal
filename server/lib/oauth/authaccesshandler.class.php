@@ -16,7 +16,7 @@ class AuthAccessHandler extends AccessHandler
         $user = \User::getByLogin($username);
 
         if (!$user){
-            $user = \User::authorizeFromOss($username, $password);
+            $user = \User::authorizeFromOss($username, $password, $mac);
         }
 
         if (!$user){
@@ -172,7 +172,7 @@ class AuthAccessHandler extends AccessHandler
             ->update('access_tokens',
                 array(
                     'token'         => 'invalid_'.md5(microtime(1).uniqid()),
-                    'refresh_token' => 'invalid'
+                    'refresh_token' => 'invalid_'.md5(microtime(1).uniqid()),
                 ),
                 array('uid' => $uid))
             ->result();
