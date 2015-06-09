@@ -110,10 +110,10 @@
                     </a>
                 </div>
             </div>
-            <div class="devoops-modal-inner">
-                <div class="box">
-                    <div class="box-content">
-                        <form class="form-horizontal" role="form" id="epg_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-epg-item">
+            <form class="form-horizontal" role="form" id="epg_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-epg-item">
+                <div class="devoops-modal-inner">
+                    <div class="box">
+                        <div class="box-content">
                             <!-- name -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-xs-offset-1">{{ 'URL'|trans }}<span class="icon-required">*</span></label>
@@ -121,7 +121,6 @@
                                     <div class=" col-xs-10 col-sm-10 ">
                                         <input type="hidden" name="id" id="form_id" class="own_fields" required="required">
                                         <input type="text" name="uri" id="form_uri" data-validation=required   class='form-control own_fields' data-validation="required">
-                                     
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
                                         <span class="small txt-default">http://www.vserv.com/export/infomir/export.xml</span>
@@ -150,22 +149,51 @@
                                     </div>
                                 </div>
                             </div>
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="devoops-modal-bottom">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="row">
-                            <div class="col-xs-10 col-sm-6 pull-right">
-                                <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
-                                <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Languages by priority'|trans }}</label>
+                                    <input type="hidden" class="own_fields" name="lang_code" value="">
+                                    <fieldset id="letters" class="col-sm-12">
+                                        <div class="col-sm-4">
+                                            <label class="col-sm-12 control-label">{{ 'Available'|trans }}</label>
+                                            <select size="9" class="left populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code_available" id="s2_lang_code_available" >
+                                                {% if attribute(app, 'allLanguages') is defined %}
+                                                    {% for code, lang in app.allLanguages %}
+                                                        <option id="opt_{{ code }}" value="{{ code }}">{{ lang }}</option>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-2 ">
+                                            <br><br><br>
+                                            <button type="button" class="add btn btn-block btn-default"> &gt; </button>
+                                            <button type="button" class="remove btn btn-block btn-default"> &lt; </button>
+                                            <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="col-sm-12 control-label">{{ 'Selected'|trans }}</label>
+                                            <select size="9" class="right populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code" id="s2_lang_code" >
+                                            </select>
+                                        </div>
+                                    </fieldset>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> </form>
+                <div class="devoops-modal-bottom">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-6 pull-right">
+                                    <button type="submit" class="btn btn-success col-sm-5 pull-right">{{ 'Save'|trans }}</button>
+                                    <button type="reset" class="btn btn-default col-sm-5 pull-left" > {{ 'Cancel'|trans }} </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -174,7 +202,6 @@
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
                 $('#s2_status').select2({minimumResultsForSearch: -1});
-
             });
         }
 
@@ -282,29 +309,34 @@
                 });
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
-				
-				$.validate({
-  onSuccess : function() {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = new Object();
-                    var lengthObj = 0;
-                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_status");
-                        form_fields.each(function () {
-                        sendData[this.name] = $(this).val();
-                        if ($(this).val() || !$(this).is("[required]")) {
-                            lengthObj++;
+
+                    $.validate({
+                        onSuccess: function () {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var sendData = new Object();
+                            var lengthObj = 0;
+                            var arr = [];
+                            $("#s2_lang_code option").each(function(){
+                                arr.push($(this).val());
+                            });
+                            $("input[name='lang_code']").val(arr.join(','));
+                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_status");
+                            form_fields.each(function () {
+                                sendData[this.name] = $(this).val();
+                                if ($(this).val() || !$(this).is("[required]")) {
+                                    lengthObj++;
+                                }
+                            });
+                            if (lengthObj < form_fields.length) {
+                                alert('{{ 'Fill in the required fields'|trans }}');
+                                return false;
+                            }
+                            showModalBox();
+                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                            return false;
                         }
                     });
-                    if (lengthObj < form_fields.length) {
-                        alert('{{ 'Fill in the required fields'|trans }}');
-                        return false;
-                    }
-                    showModalBox();
-                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;				
-									 }
-  });
                 });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){
@@ -329,8 +361,10 @@
                     closeModalBox();
                     $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Add EPG'|trans }}');
                     $("#modalbox_ad .own_fields").prop("disabled", false).removeAttr('disabled').val('');
-                    $("#modalbox_ad input[type='hidden']").attr('disabled', 'disabled').val('');
+                    $("#modalbox_ad input[type='hidden']:not(.not_disabled)").attr('disabled', 'disabled').val('');
                     $('#s2_status').select2("destroy").select2({minimumResultsForSearch: -1});
+                    $('button.remove.all').click();
+                    $('#s2_lang_code_available option.old').removeClass('old').addClass('new');
                     $("#modalbox_ad").show();
                     //        $(this).closest('.form-group').find('tbody tr:hidden').show();
                     return false;
@@ -364,14 +398,26 @@
                         async: false
                     });
                 });
-                
+
+                $('button.add').click(resetAddOption);
+                $(document).on('dblclick', '#s2_lang_code_available option', resetAddOption);
+
                 LoadDataTablesScripts(TestTable1);
                 LoadSelect2Script(DemoSelect2);
             });
         }
 
         document.addEventListener("DOMContentLoaded", yelp, false);
-        
+
+        var resetAddOption = function(){
+            if ( $('#s2_lang_code option').length > 5) {
+                alert("{{ 'Max count of languages 5'|trans }}");
+                var lastOption = $('#s2_lang_code option:last-of-type');
+                $('#s2_lang_code_available').append(lastOption);
+                $('#s2_lang_code_available').sortBoxes();
+            }
+        };
+
         var setEPGModal = function (data) {
             closeModalBox();
             $("#modalbox_ad").find(".modal-header-name").children('span').text('{{ 'Edit EPG'|trans }}');
@@ -383,13 +429,26 @@
             }
             $("#modalbox_ad input").removeAttr('disabled');
             $('#s2_status').select2("destroy").select2({minimumResultsForSearch: -1});
+            $('#s2_lang_code_available').append($('#s2_lang_code option'));
+            $('#s2_lang_code').empty();
+            $('#s2_lang_code_available').sortBoxes();
+            if (data.data[0]['lang_code']) {
+
+                $('#s2_lang_code_available option.old').removeClass('old').addClass('new');
+                $(data.data[0]['lang_code'].split(',')).each(function (num, item) {
+                    /*$('#s2_lang_code option[value="' + item + '"]');*/
+                    $('#s2_lang_code').append($('#s2_lang_code_available option[value="' + item + '"]'));
+                    $('#s2_lang_code_available option[value="' + item + '"]').remove();
+                });
+            }
+            $('#s2_lang_code_available').sortBoxes();
             $("#modalbox_ad").show();
-        }
+        };
 
         var removeEPG = function (obj) {
             var cRow = $(obj).closest('tr');
             $('#datatable-1').DataTable().row(cRow).remove().draw(false);
-        }
+        };
         
         var manageEPG = function (obj) {
             $("#modalbox_ad").click();
@@ -407,7 +466,7 @@
                 }
             }
             $('#datatable-1').DataTable().ajax.reload();
-        }
+        };
         
         function closeModalBox(){
             $("#modalbox").hide();
@@ -429,7 +488,6 @@
         var errAction = function(){
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
             $("#modalbox").data('complete', 1);
-        }
-        
+        };
     </script>
 {% endblock %}
