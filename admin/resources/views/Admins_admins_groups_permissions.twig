@@ -219,7 +219,7 @@
                             }
                         });
                     });
-                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/save-admins-group-permissions', sendData, false, true);
+                    ajaxPostSend('{{app.request.baseUrl}}/{{app.controller_alias}}/save-admins-group-permissions', {data: JSON.stringify(sendData)}, false, true);
                 })
             });
         }

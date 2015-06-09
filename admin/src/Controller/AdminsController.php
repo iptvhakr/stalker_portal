@@ -422,22 +422,24 @@ class AdminsController extends \Controller\BaseStalkerController {
     }
     
     public function save_admins_group_permissions(){
-        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData)) {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['data'])) {
             $this->app->abort(404, $this->setLocalization('Page not found'));
         }
 
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
+        $postData = json_decode($this->postData['data'], TRUE);
+
         $data = array();
         $data['action'] = 'managePermissions';
         $data['msg'] = $this->setlocalization('Failed');
         $error = 'Ошибка';
         
         $write_data = array();
-        $adminGropID = $this->postData['adminGropID'];
-        unset($this->postData['adminGropID']);
+        $adminGropID = $postData['adminGropID'];
+        unset($postData['adminGropID']);
         
         $baseMap = $this->db->getAdminGroupPermissions();
         $baseMap = $this->getJoinedNameArray($baseMap, 'controller_name', 'action_name');
@@ -446,7 +448,7 @@ class AdminsController extends \Controller\BaseStalkerController {
             return $val;
         }, $baseMap);
 
-        foreach ($this->postData as $controller => $row) {
+        foreach ($postData as $controller => $row) {
             foreach ($row as $action => $permissions) {
                 $baseKey = (empty($action) || $action == 'index')? $controller: $controller . '-' . $action;
                 $baseMap[$baseKey]['view_access'] = $permissions['view_access'];
