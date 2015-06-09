@@ -201,24 +201,28 @@
 
             return this;
 
+        },
+
+        // sorts all the combo select boxes
+        sortBoxes: function (setteings) {
+            if (!setteings) {
+                setteings = {
+                    type: 'alpha',
+                    extract: function (o) {
+                        return $(o).text();
+                    }
+                };
+            }
+            $(this).find('option').selso(setteings);
+
+            // clear all highlighted items
+            $(this).find('option:selected').removeAttr('selected');
         }
     });
 
 })(jQuery);
 
 $(function () {
-    // sorts all the combo select boxes
-    function sortBoxes() {
-        $('select.left, select.right').find('option').selso({
-            type: 'alpha',
-            extract: function (o) {
-                return $(o).text();
-            }
-        });
-
-        // clear all highlighted items
-        $('select.left, select.right').find('option:selected').removeAttr('selected');
-    }
     $('#letters select option:empty').remove();
     $('select.left option').addClass('new');
     $('select.right option').addClass('old');
@@ -228,7 +232,8 @@ $(function () {
         var left = $(this).closest('fieldset').find('select.left option:selected');
         var right = $(this).closest('fieldset').find('select.right');
         right.append(left);
-        sortBoxes();
+        $('select.left').sortBoxes(); //, select.right
+        right.find('option:selected').removeAttr('selected');
         return false;
     });
     
@@ -236,7 +241,8 @@ $(function () {
         var left = $(this).closest('fieldset').find('select.left');
         var right = $(this).closest('fieldset').find('select.right option:selected');
         left.append(right);
-        sortBoxes();
+        $('select.left').sortBoxes(); //, select.right
+        right.find('option:selected').removeAttr('selected');
         return false;
     });
 
@@ -245,7 +251,8 @@ $(function () {
         var left = $(this).closest('fieldset').find('select.left option');
         var right = $(this).closest('fieldset').find('select.right');
         right.append(left);
-        sortBoxes();
+        $('select.left').sortBoxes(); //, select.right
+        right.find('option:selected').removeAttr('selected');
         return false;
     });
     
@@ -253,7 +260,8 @@ $(function () {
         var left = $(this).closest('fieldset').find('select.left');
         var right = $(this).closest('fieldset').find('select.right option');
         left.append(right);
-        sortBoxes();
+        $('select.left').sortBoxes(); //, select.right
+        right.find('option:selected').removeAttr('selected');
         return false;
     });
     $(document).on('dblclick', 'select.left option, select.right option', function(){
@@ -262,6 +270,7 @@ $(function () {
         var o_from = $(this).closest('select.' + fromclass).find('option:selected, option:focus');
         var o_to = $(this).closest('fieldset').find('select.' + toclass);
         o_to.append(o_from);
-        sortBoxes();
+        $('select.left').sortBoxes(); //, select.right
+        $('select.right').find('option:selected').removeAttr('selected');
     });
 });

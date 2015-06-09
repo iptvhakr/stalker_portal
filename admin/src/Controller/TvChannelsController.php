@@ -46,16 +46,16 @@ class TvChannelsController extends \Controller\BaseStalkerController {
     }
 
     // ------------------- action method ---------------------------------------
-    
+
     public function index() {
-        
+
         if (empty($this->app['action_alias'])) {
             return $this->app->redirect($this->app['controller_alias'] . '/iptv-list');
         }
-        
+
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
-        } 
+        }
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -64,7 +64,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
         $filter = array();
 
         if ($this->method == 'GET' && !empty($this->data['filters'])) {
@@ -82,11 +82,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['allChannels'] = $allChannels;
         $getAllGenres = $this->db->getAllGenres();
         $this->app['allGenres'] = $this->setLocalization($getAllGenres, 'title');
-        
+
         $attribute = $this->getIptvListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
-        
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -95,7 +95,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
         $filter = array();
 
         if ($this->method == 'GET' && !empty($this->data['filters'])) {
@@ -133,7 +133,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($this->saveChannelData($form)) {
             return $this->app->redirect('iptv-list');
         }
-                
+
         $this->app['form'] = $form->createView();
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -175,7 +175,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         }
 
         $this->app['form'] = $form->createView();
-        
+
         $this->app['breadcrumbs']->addItem("'{$this->oneChannel['name']}'");
 
         $this->app['editChannelName'] = $this->oneChannel['name'];
@@ -198,6 +198,8 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
 
+        $this->app['allLanguages'] = $this->getLanguageCodesEN();
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -215,7 +217,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
-    
+
     //----------------------- ajax method --------------------------------------
 
     public function remove_channel() {
@@ -276,7 +278,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
         if (empty($this->data['id']) || (!is_numeric($this->data['id']) && strpos($this->data['id'], 'new') === FALSE)) {
             $this->app->abort(404, $this->setLocalization('Cannot find channel'));
         } elseif ($this->data['id'] == 'new') {
@@ -313,7 +315,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
         if (!$this->isAjax) {
             $this->app->abort(404, $this->setLocalization('The unexpected request'));
         }
@@ -339,7 +341,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        
+
         if (!$this->isAjax) {
             $this->app->abort(404, $this->setLocalization('The unexpected request'));
         }
@@ -931,13 +933,13 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         } else {
             $def_number = $this->getFirstFreeChannelNumber();
         }
-        
+
         if (!empty($data['name'])){
             $def_name = $data['name'];
         } else {
            $def_name = "$def_name $def_number";
         }
-        
+
         $form = $builder->createBuilder('form', $data)
                 ->add('id', 'hidden')
                 ->add('number', 'text', array(
@@ -983,7 +985,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('volume_correction', 'choice', array(
                             'choices' => array_combine(range(-20, 20, 1), range(-100, 100, 5)),
                             'constraints' => array(
-                                new Assert\Range(array('min' => -20, 'max' => 20)), 
+                                new Assert\Range(array('min' => -20, 'max' => 20)),
                                 new Assert\NotBlank()),
                             'required' => TRUE,
                             'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
@@ -1277,7 +1279,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['filters'] = $this->data['filters'];
         return $filters;
     }
-    
+
     private function getFirstFreeChannelNumber(){
         $channels = $this->db->getAllChannels();
         while(list($key, $row) = each($channels)) {
@@ -1286,11 +1288,11 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 if (($channels[$next_key]['number'] - $row['number']) >=2 ) {
                     return ++$row['number'];
                 }
-            } 
+            }
         }
         return ++$row['number'];
     }
-    
+
     private function fillEmptyRows($input_array = array()){
         $result = array();
         $empty_row = array('logo'=>'', 'name' =>'', 'id'=>'', 'number'=>0, 'empty'=>TRUE, 'locked'=>FALSE);
@@ -1309,7 +1311,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         reset($result);
         return $result;
     }
-    
+
     private function getIptvListDropdownAttribute(){
         return array(
 			array('name' => 'id',               'title' => $this->setLocalization('ID'),      'checked' => false),
@@ -1322,7 +1324,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('name' => 'status',           'title' => $this->setLocalization('Status'),    'checked' => TRUE),
             array('name' => 'operations',       'title' => $this->setLocalization('Operations'),  'checked' => TRUE)
         );
-        
+
     }
 
     private function get_epg_row($date, $epg_lines, $line_num = 0){
@@ -1408,6 +1410,185 @@ class TvChannelsController extends \Controller\BaseStalkerController {
             array('name'=>'title',          'title'=>$this->setLocalization('Title'),           'checked' => TRUE),
             array('name'=>'localized_title','title'=>$this->setLocalization('Localized title'), 'checked' => TRUE),
             array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
+        );
+    }
+
+    private function getLanguageCodesEN()
+    {
+        return array(
+            'aa' => $this->setlocalization('Afar'),
+            'ab' => $this->setlocalization('Abkhazian'),
+            'af' => $this->setlocalization('Afrikaans'),
+            'ak' => $this->setlocalization('Akan'),
+            'am' => $this->setlocalization('Amharic'),
+            'ar' => $this->setlocalization('Arabic'),
+            'as' => $this->setlocalization('Assamese'),
+            'av' => $this->setlocalization('Avaric'),
+            'ae' => $this->setlocalization('Avestan'),
+            'ay' => $this->setlocalization('Aymara'),
+            'az' => $this->setlocalization('Azerbaijani'),
+            'ba' => $this->setlocalization('Bashkir'),
+            'bm' => $this->setlocalization('Bambara'),
+            'eu' => $this->setlocalization('Basque'),
+            'be' => $this->setlocalization('Belarusian'),
+            'bn' => $this->setlocalization('Bengali'),
+            'bi' => $this->setlocalization('Bislama'),
+            'bo' => $this->setlocalization('Tibetan'),
+            'bs' => $this->setlocalization('Bosnian'),
+            'br' => $this->setlocalization('Breton'),
+            'bg' => $this->setlocalization('Bulgarian'),
+            'ca' => $this->setlocalization('Catalan'),
+            'cs' => $this->setlocalization('Czech'),
+            'ch' => $this->setlocalization('Chamorro'),
+            'ce' => $this->setlocalization('Chechen'),
+            'cu' => $this->setlocalization('Church Slavic'),
+            'cv' => $this->setlocalization('Chuvash'),
+            'kw' => $this->setlocalization('Cornish'),
+            'co' => $this->setlocalization('Corsican'),
+            'cy' => $this->setlocalization('Welsh'),
+            'da' => $this->setlocalization('Danish'),
+            'de' => $this->setlocalization('German'),
+            'dv' => $this->setlocalization('Divehi'),
+            'dz' => $this->setlocalization('Dzongkha'),
+            'el' => $this->setlocalization('Greek'),
+            'en' => $this->setlocalization('English'),
+            'eo' => $this->setlocalization('Esperanto'),
+            'et' => $this->setlocalization('Estonian'),
+            'ee' => $this->setlocalization('Ewe'),
+            'fo' => $this->setlocalization('Faroese'),
+            'fa' => $this->setlocalization('Persian'),
+            'fj' => $this->setlocalization('Fijian'),
+            'fi' => $this->setlocalization('Finnish'),
+            'fr' => $this->setlocalization('French'),
+            'fy' => $this->setlocalization('Western Frisian'),
+            'ff' => $this->setlocalization('Fulah'),
+            'ka' => $this->setlocalization('Georgian'),
+            'gd' => $this->setlocalization('Gaelic'),
+            'ga' => $this->setlocalization('Irish'),
+            'gl' => $this->setlocalization('Galician'),
+            'gv' => $this->setlocalization('Manx'),
+            'gn' => $this->setlocalization('Guarani'),
+            'gu' => $this->setlocalization('Gujarati'),
+            'ha' => $this->setlocalization('Hausa'),
+            'he' => $this->setlocalization('Hebrew'),
+            'hz' => $this->setlocalization('Herero'),
+            'hi' => $this->setlocalization('Hindi'),
+            'ho' => $this->setlocalization('Hiri Motu'),
+            'hr' => $this->setlocalization('Croatian'),
+            'hu' => $this->setlocalization('Hungarian'),
+            'hy' => $this->setlocalization('Armenian'),
+            'ig' => $this->setlocalization('Igbo'),
+            'iu' => $this->setlocalization('Inuktitut'),
+            'ie' => $this->setlocalization('Interlingue'),
+            'ia' => $this->setlocalization('Interlingua'),
+            'id' => $this->setlocalization('Indonesian'),
+            'ik' => $this->setlocalization('Inupiaq'),
+            'is' => $this->setlocalization('Icelandic'),
+            'it' => $this->setlocalization('Italian'),
+            'jv' => $this->setlocalization('Javanese'),
+            'ja' => $this->setlocalization('Japanese'),
+            'kl' => $this->setlocalization('Kalaallisut'),
+            'kn' => $this->setlocalization('Kannada'),
+            'ks' => $this->setlocalization('Kashmiri'),
+            'kr' => $this->setlocalization('Kanuri'),
+            'kk' => $this->setlocalization('Kazakh'),
+            'km' => $this->setlocalization('Central Khmer'),
+            'ki' => $this->setlocalization('Kikuyu'),
+            'rw' => $this->setlocalization('Kinyarwanda'),
+            'ky' => $this->setlocalization('Kirghiz'),
+            'kv' => $this->setlocalization('Komi'),
+            'kg' => $this->setlocalization('Kongo'),
+            'ko' => $this->setlocalization('Korean'),
+            'kj' => $this->setlocalization('Kuanyama'),
+            'ku' => $this->setlocalization('Kurdish'),
+            'lo' => $this->setlocalization('Lao'),
+            'la' => $this->setlocalization('Latin'),
+            'lv' => $this->setlocalization('Latvian'),
+            'ln' => $this->setlocalization('Lingala'),
+            'lt' => $this->setlocalization('Lithuanian'),
+            'lb' => $this->setlocalization('Luxembourgish'),
+            'lu' => $this->setlocalization('Luba-Katanga'),
+            'lg' => $this->setlocalization('Ganda'),
+            'mk' => $this->setlocalization('Macedonian'),
+            'mh' => $this->setlocalization('Marshallese'),
+            'ml' => $this->setlocalization('Malayalam'),
+            'mi' => $this->setlocalization('Maori'),
+            'mr' => $this->setlocalization('Marathi'),
+            'mg' => $this->setlocalization('Malagasy'),
+            'mt' => $this->setlocalization('Maltese'),
+            'mn' => $this->setlocalization('Mongolian'),
+            'ms' => $this->setlocalization('Malay'),
+            'my' => $this->setlocalization('Burmese'),
+            'na' => $this->setlocalization('Nauru'),
+            'nv' => $this->setlocalization('Navajo'),
+            'nr' => $this->setlocalization('Ndebele'),
+            'nd' => $this->setlocalization('North Ndebele'),
+            'ng' => $this->setlocalization('Ndonga'),
+            'ne' => $this->setlocalization('Nepali'),
+            'nl' => $this->setlocalization('Dutch'),
+            'no' => $this->setlocalization('Norwegian'),
+            'ny' => $this->setlocalization('Chichewa'),
+            'oc' => $this->setlocalization('Occitan'),
+            'oj' => $this->setlocalization('Ojibwa'),
+            'or' => $this->setlocalization('Oriya'),
+            'om' => $this->setlocalization('Oromo'),
+            'os' => $this->setlocalization('Ossetian'),
+            'pa' => $this->setlocalization('Panjabi'),
+            'pi' => $this->setlocalization('Pali'),
+            'pl' => $this->setlocalization('Polish'),
+            'pt' => $this->setlocalization('Portuguese'),
+            'ps' => $this->setlocalization('Pushto'),
+            'qu' => $this->setlocalization('Quechua'),
+            'rm' => $this->setlocalization('Romansh'),
+            'ro' => $this->setlocalization('Romanian'),
+            'rn' => $this->setlocalization('Rundi'),
+            'ru' => $this->setlocalization('Russian'),
+            'sg' => $this->setlocalization('Sango'),
+            'sa' => $this->setlocalization('Sanskrit'),
+            'si' => $this->setlocalization('Sinhala'),
+            'sk' => $this->setlocalization('Slovak'),
+            'sl' => $this->setlocalization('Slovenian'),
+            'sm' => $this->setlocalization('Samoan'),
+            'sn' => $this->setlocalization('Shona'),
+            'sd' => $this->setlocalization('Sindhi'),
+            'so' => $this->setlocalization('Somali'),
+            'st' => $this->setlocalization('Southern Sotho'),
+            'es' => $this->setlocalization('Spanish'),
+            'sq' => $this->setlocalization('Albanian'),
+            'sc' => $this->setlocalization('Sardinian'),
+            'sr' => $this->setlocalization('Serbian'),
+            'ss' => $this->setlocalization('Swati'),
+            'su' => $this->setlocalization('Sundanese'),
+            'sw' => $this->setlocalization('Swahili'),
+            'sv' => $this->setlocalization('Swedish'),
+            'ty' => $this->setlocalization('Tahitian'),
+            'ta' => $this->setlocalization('Tamil'),
+            'tt' => $this->setlocalization('Tatar'),
+            'te' => $this->setlocalization('Telugu'),
+            'tg' => $this->setlocalization('Tajik'),
+            'tl' => $this->setlocalization('Tagalog'),
+            'th' => $this->setlocalization('Thai'),
+            'ti' => $this->setlocalization('Tigrinya'),
+            'to' => $this->setlocalization('Tonga'),
+            'tn' => $this->setlocalization('Tswana'),
+            'ts' => $this->setlocalization('Tsonga'),
+            'tk' => $this->setlocalization('Turkmen'),
+            'tr' => $this->setlocalization('Turkish'),
+            'tw' => $this->setlocalization('Twi'),
+            'ug' => $this->setlocalization('Uighur'),
+            'uk' => $this->setlocalization('Ukrainian'),
+            'ur' => $this->setlocalization('Urdu'),
+            'uz' => $this->setlocalization('Uzbek'),
+            've' => $this->setlocalization('Venda'),
+            'vi' => $this->setlocalization('Vietnamese'),
+            'vo' => $this->setlocalization('Volap'),
+            'wo' => $this->setlocalization('Wolof'),
+            'xh' => $this->setlocalization('Xhosa'),
+            'yi' => $this->setlocalization('Yiddish'),
+            'yo' => $this->setlocalization('Yoruba'),
+            'za' => $this->setlocalization('Zhuang'),
+            'zh' => $this->setlocalization('Chinese'),
+            'zu' => $this->setlocalization('Zulu')
         );
     }
 }
