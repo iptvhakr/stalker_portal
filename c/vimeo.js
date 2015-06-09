@@ -3,6 +3,11 @@
  */
 (function(){
 
+    if (stb.type == 'MAG200'){
+        loader.next();
+        return;
+    }
+
     main_menu.add('VIMEO', [], 'mm_ico_vimeo.png', function(){
 
         var params = '';
