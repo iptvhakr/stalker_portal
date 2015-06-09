@@ -87,7 +87,11 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 $etag = time();
             }
         }else{
-            $etag = md5_file($setting['uri']);
+            if (is_readable($setting['uri'])) {
+                $etag = md5_file($setting['uri']);
+            } else {
+                return "\n"._("Source")." ".$setting['uri']." "._("failed to open")."\n";
+            }
         }
 
         if ($setting['etag'] == $etag && !$force){
@@ -126,18 +130,16 @@ class Epg implements \Stalker\Lib\StbApi\Epg
         $start_time = microtime(1);
 
         $total_need_to_delete = array();
-
         foreach ($xml->programme as $programme){
 
             $itv_id_arr = @$ids_arr[$setting['id_prefix'].strval($programme->attributes()->channel)];
-
             if ($itv_id_arr){
 
                 $start = strtotime(strval($programme->attributes()->start));
                 $stop  = strtotime(strval($programme->attributes()->stop));
 
-                $title = strval($programme->title);
-                $descr = strval($programme->desc);
+                $title = strval($this->getElementByLangCode($programme->title, $setting['lang_code']));
+                $descr = strval($this->getElementByLangCode($programme->desc, $setting['lang_code']));
 
                 $category = array();
                 $director = array();
@@ -146,7 +148,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 if (!empty($programme->category)){
 
                     foreach ($programme->category as $_category){
-                        $category[] = strval($_category);
+                        $category[] = strval($this->getElementByLangCode($_category, $setting['lang_code']));
                     }
                 }
 
@@ -155,7 +157,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                 if (!empty($programme->credits->director)){
 
                     foreach ($programme->credits->director as $_director){
-                        $director[] = strval($_director);
+                        $director[] = strval($this->getElementByLangCode($_director, $setting['lang_code']));
                     }
                 }
 
@@ -163,7 +165,7 @@ class Epg implements \Stalker\Lib\StbApi\Epg
 
                 if (!empty($programme->credits->actor)){
                     foreach ($programme->credits->actor as $_actor){
-                        $actor[] = strval($_actor);
+                        $actor[] = strval($this->getElementByLangCode($_actor, $setting['lang_code']));
                     }
                 }
 
@@ -1037,6 +1039,21 @@ class Epg implements \Stalker\Lib\StbApi\Epg
                         'max_page_items' => $page_items,
                         'data'           => $program
                     );
+    }
+
+    public function getElementByLangCode($element, $lang_code){
+        if (empty($lang_code) || count($element) <= 1) {
+            return $element;
+        }
+        $lang_code = explode(',', $lang_code);
+        foreach ($lang_code as $lang) {
+            foreach ($element as $row) {
+                if ($row->attributes()->lang == $lang) {
+                    return $row;
+                }
+            }
+        }
+        return $element;
     }
 }
 ?>
