@@ -966,10 +966,10 @@ class UsersController extends \Controller\BaseStalkerController {
         $group_keys = $this->getFieldFromArray($all_groups, 'id');
         $group_names = $this->getFieldFromArray($all_groups, 'name');
 
-        if (is_array($group_keys) && is_array($group_names) && count($group_keys) == count($group_names)) {
+        if (is_array($group_keys) && is_array($group_names) && count($group_keys) == count($group_names) && count($group_keys) > 0) {
             $all_groups = array_combine($group_keys, $group_names);
         } else {
-            $all_groups = array();
+            $all_groups = array(NULL);
         }
 
         if (!empty($data['id'])) {
@@ -1019,9 +1019,9 @@ class UsersController extends \Controller\BaseStalkerController {
                 ->add('phone', 'text', array('required' => FALSE))
                 ->add('ls', 'text', array('required' => FALSE))
                 ->add('group_id', 'choice', array(
-                    'choices' => $all_groups,
-                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($all_groups)))),
-                    'required' => FALSE
+                        'choices' => $all_groups,
+                        'data' => (!empty($data['group_id'])? $data['group_id']: NULL) ,
+                        'required' => FALSE
                         )
                 )
                 ->add('mac', 'text', ($edit?array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE):array('required' => FALSE)))
@@ -1098,7 +1098,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 $stb_groups = new \StbGroup();
                 $member = $stb_groups->getMemberByUid(intval($data['id']));
                 $id = $data['id'];
-                
+
                 if (empty($member)) {
                     $stb_groups->addMember(array('mac' => \Middleware::normalizeMac($data['mac']), 'uid' => \Middleware::getUidByMac($data['mac']), 'stb_group_id' => $data['group_id']));
                 } else {
