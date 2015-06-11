@@ -1,0 +1,14 @@
+#!/bin/sh
+# Pre-commit hook for git which remove lines starting with
+
+files_with_whitespace=$(git diff-index --name-only --cached HEAD | sed /\.po\$/!d | uniq )
+
+for FILE in $files_with_whitespace ; do
+
+      if grep -q "^#: /tmp" $FILE
+      then
+        sed -i '/^#: \/tmp/d' $FILE
+      fi
+
+      git add "$FILE"
+done

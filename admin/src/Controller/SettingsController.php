@@ -152,6 +152,9 @@ class SettingsController extends \Controller\BaseStalkerController {
         $commonList = $this->db->getCommonList($query_param);
         $response['data'] = array_map(function($val){
             $val['enable'] = (int)$val['enable'];
+            if (strtotime($val['require_image_date']) === FALSE) {
+                $val['require_image_date'] = "0000-00-00";
+            }
             return $val;
         }, $commonList);
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
@@ -184,8 +187,9 @@ class SettingsController extends \Controller\BaseStalkerController {
             $operation = 'updateCommon';
             $item['id'] = $this->postData['id'];
         }
-        $date = \DateTime::createFromFormat('d/m/Y', $this->postData['require_image_date']);
-        $item[0]['require_image_date'] = $date->format('Y-m-d');
+        if ($date = \DateTime::createFromFormat('d/m/Y', $this->postData['require_image_date'])){
+            $item[0]['require_image_date'] = $date->format('Y-m-d');
+        }
         unset($item[0]['id']);
         $error = 'Не удалось. ';
         
