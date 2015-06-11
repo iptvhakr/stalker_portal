@@ -1,0 +1,4 @@
+#!/bin/sh
+# Pjst-commit hook for git which reset duplicate files after commit
+
+git reset HEAD

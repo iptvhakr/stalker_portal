@@ -744,6 +744,7 @@ $(document).ready(function () {
     $.datepicker.setDefaults({
         showButtonPanel: true,
         beforeShow: function (input) {
+            $(input).attr('readonly', 'readonly');
             setTimeout(function () {
                 var buttonPane = $(input).datepicker("widget").find(".ui-datepicker-buttonpane");
                 buttonPane.empty();
