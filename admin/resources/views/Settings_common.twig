@@ -33,7 +33,7 @@
                                                 <td>{{ item.id }}</td>
                                                 <td>{{ item.stb_type }}</td>
                                                 <td>{{ item.image_version_contains }}</td>
-                                                <td>{% if item.require_image_date %}{{ item.require_image_date|date('M d, Y H:i') }}{% endif %}</td>
+                                                <td>{% if attribute(item, 'require_image_date') is defined and item.require_image_date %}{{ item.require_image_date }}{% endif %}</td>
                                                 <td>{{ item.update_type }}</td>
                                                 <td>{{ item.prefix }}</td>
                                                 <td>{{ item.image_description_contains }}</td>
@@ -90,8 +90,8 @@
                     </a>
                 </div>
             </div>
-            <div class="devoops-modal-inner">
-                <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-common-item">
+            <form class="form-horizontal" role="form" action="{{app.request.baseUrl}}/{{app.controller_alias}}/save-common-item">
+                <div class="devoops-modal-inner">
                     <div class="box">
                         <a class="collapse-link">
                             <div class="box-header">
@@ -254,20 +254,20 @@
                             </div> 
                         </div>
                     </div>
-             
-            </div>
-            <div class="devoops-modal-bottom">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="row">
-                            <div class=" pull-right">
-                                <button type="submit" class="btn btn-success  pull-right" id="save_button">{{ 'Save'|trans }}</button>
-                                <button type="reset" class="btn btn-default pull-right" > {{ 'Cancel'|trans }} </button>
+                </div>
+                <div class="devoops-modal-bottom">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class=" pull-right">
+                                    <button type="submit" class="btn btn-success  pull-right" id="save_button">{{ 'Save'|trans }}</button>
+                                    <button type="reset" class="btn btn-default pull-right" > {{ 'Cancel'|trans }} </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>   </form>
+            </form>
         </div>
     </div>
                                                                            
@@ -276,7 +276,6 @@
         function DemoSelect2() {
             $.getScript("{{ app.request.baseUrl }}/plugins/select2/select2_locale_ru.js", function () {
                 $('select[id^="s2_"]').select2({minimumResultsForSearch: -1});
-
             });
         }
 
@@ -380,26 +379,27 @@
                 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
 				  $.validate({
-  onSuccess : function() {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = new Object();
-                    var lengthObj = 0;
-                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
-                        form_fields.each(function () {
-                        sendData[this.name] = $(this).val();
-                        if ($(this).val() || !$(this).is("[required]")) {
-                            lengthObj++;
-                        }
-                    });
-                    if (lengthObj < form_fields.length) {
-                        alert('Не все обязательные поля заполнены');
-                        return false;
-                    }
-                    showModalBox();
-                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;	 }
-  });
+                      onSuccess: function () {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          var sendData = new Object();
+                          var lengthObj = 0;
+                          var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #s2_stb_type,  #s2_update_type");
+                          form_fields.each(function () {
+                              sendData[this.name] = $(this).val();
+                              if ($(this).val() || !$(this).is("[required]")) {
+                                  lengthObj++;
+                              }
+                          });
+                          if (lengthObj < form_fields.length) {
+                              alert('{{ 'Not all required fields are filled'|trans }}');
+                              return false;
+                          }
+                          showModalBox();
+                          ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                          return false;
+                      }
+                  });
                 });
                 
                 $(document).on('click', "#modalbox, #modalbox a.close-link, #modalbox a.close-link *", function(e){

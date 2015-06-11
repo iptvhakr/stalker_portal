@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-11 17:11+0300\n"
-"PO-Revision-Date: 2015-06-11 17:11+0300\n"
+"POT-Creation-Date: 2015-06-11 17:59+0300\n"
+"PO-Revision-Date: 2015-06-11 17:59+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -3271,6 +3271,10 @@ msgstr "Китайский"
 #: ../../../tools/misctranslations.php:730
 msgid "Zulu"
 msgstr "Зулу"
+
+#: ../../../tools/misctranslations.php:731
+msgid "Not all required fields are filled"
+msgstr "Не все обязательные поля заполнены"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
