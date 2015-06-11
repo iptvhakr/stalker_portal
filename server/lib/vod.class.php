@@ -68,6 +68,9 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             $picked_ad = $vclub_ad->getOneWeightedRandom($video['category_id']);
 
             if (!empty($picked_ad)){
+
+                $link['cmd'] = $_REQUEST['cmd'];
+
                 $link = array(
                     array(
                         'id'    => 0,

@@ -1111,6 +1111,7 @@ player.prototype.event_callback = function(event, params){
 
                                 if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
                                     delete cur_media_item.media_type;
+                                    cur_media_item.disable_ad = true;
                                     module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen(), true);
                                 }
 
@@ -4043,7 +4044,7 @@ player.prototype.bind = function(){
 
         if (this.cur_media_item.media_type && this.cur_media_item.media_type == 'vclub_ad'){
             delete cur_media_item.media_type;
-
+            cur_media_item.disable_ad = true;
             module && module.vclub && module.vclub.set_ad_ended_time && module.vclub.set_ad_ended_time(this.cur_media_item.ad_id, stb.GetPosTime(), stb.GetMediaLen());
         }
 
