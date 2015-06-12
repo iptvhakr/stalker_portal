@@ -1544,6 +1544,10 @@
             start : function(){
                 _debug('progressBar.start');
 
+                if (stb.player.cur_media_item.cmd.indexOf('rtp ') === 0){
+                    return;
+                }
+
                 this.dom_obj.show();
 
                 var self = this;

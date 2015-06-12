@@ -1244,7 +1244,7 @@ player.prototype.event_callback = function(event, params){
 
             this.triggerCustomEventListener('event_2', this.cur_media_item);
             //if (this.is_tv){
-            if (stb.user['enable_buffering_indication']){
+            if (stb.user['enable_buffering_indication'] && this.cur_media_item.cmd.indexOf('rtp ') != 0){
                 this.progress_bar.start();
             }
             //}
@@ -1257,7 +1257,7 @@ player.prototype.event_callback = function(event, params){
             this.event5_counter = 0;
 
             this.triggerCustomEventListener('event_4', this.cur_media_item);
-            if (stb.user['enable_buffering_indication']){
+            if (stb.user['enable_buffering_indication'] && this.cur_media_item.cmd.indexOf('rtp ') != 0){
                 this.progress_bar.stop();
             }
 
