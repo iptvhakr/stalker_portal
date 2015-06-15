@@ -13,4 +13,6 @@ interface Radio
     public function setFavStatus();
 
     public function getFavIds();
+
+    public function getChannelById();
 }

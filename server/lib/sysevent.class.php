@@ -98,6 +98,17 @@ class SysEvent extends Event
         $this->setMsg($ch_num);
         $this->send();
     }
+
+    /**
+     * Send "play radio channel" event
+     *
+     * @param int $ch_num
+     */
+    public function sendPlayRadioChannel($ch_num){
+        $this->setEvent('play_radio_channel');
+        $this->setMsg($ch_num);
+        $this->send();
+    }
     
     /**
      * Send "cut off" event

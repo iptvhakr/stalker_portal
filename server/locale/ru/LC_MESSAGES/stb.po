@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-11 17:59+0300\n"
-"PO-Revision-Date: 2015-06-11 17:59+0300\n"
+"POT-Creation-Date: 2015-06-15 13:12+0300\n"
+"PO-Revision-Date: 2015-06-15 13:13+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -101,9 +101,9 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/TvChannelsController.php:775
 #: ../../../../admin/src/Controller/TvChannelsController.php:794
 #: ../../../../admin/src/Controller/TvChannelsController.php:822
-#: ../../../../admin/src/Controller/EventsController.php:176
-#: ../../../../admin/src/Controller/EventsController.php:208
-#: ../../../../admin/src/Controller/EventsController.php:242
+#: ../../../../admin/src/Controller/EventsController.php:177
+#: ../../../../admin/src/Controller/EventsController.php:209
+#: ../../../../admin/src/Controller/EventsController.php:243
 #: ../../../../admin/src/Controller/VideoClubController.php:477
 #: ../../../../admin/src/Controller/VideoClubController.php:503
 #: ../../../../admin/src/Controller/VideoClubController.php:735
@@ -3505,11 +3505,11 @@ msgstr "м"
 msgid "s"
 msgstr "с"
 
-#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:862
+#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:865
 msgid "today"
 msgstr "сегодня"
 
-#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:865
+#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:868
 msgid "yesterday"
 msgstr "вчера"
 
@@ -3680,7 +3680,7 @@ msgid "Action \"%s\" denied for page \"%s\""
 msgstr ""
 
 #
-#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:769
+#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:772
 #: ../../../lib/user.class.php:1096 ../../../lib/user.class.php:1097
 #, php-format
 msgid "video_name_format"
@@ -3820,11 +3820,11 @@ msgstr "Добро пожаловать %s<br>Мы рады видеть Вас 
 msgid "city_name_field"
 msgstr "name"
 
-#: ../../../lib/vod.class.php:868
+#: ../../../lib/vod.class.php:871
 msgid "last week"
 msgstr "7 дней"
 
-#: ../../../lib/vod.class.php:897
+#: ../../../lib/vod.class.php:900
 msgid "coming soon"
 msgstr "скоро"
 
@@ -8603,6 +8603,9 @@ msgstr ""
 
 msgid "Outdated testing"
 msgstr "Истек срок тестирования"
+
+msgid "Playback radio channel"
+msgstr "Воспроизвести радио канал"
 
 msgid "Quantity of the storages"
 msgstr "Количество хранилищ"

@@ -304,6 +304,11 @@ watchdog.prototype.parse_result = function(data){
                 stb.player.play_last();
                 break;
             }
+            case 'play_radio_channel': {
+                keydown_observer.emulate_key(key.MENU);
+                stb.load_radio_channel(parseInt(data.msg));
+                break;
+            }
             case 'update_modules':
             {
                 stb.update_modules();

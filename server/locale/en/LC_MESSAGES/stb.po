@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-11 18:00+0300\n"
-"PO-Revision-Date: 2015-06-11 18:00+0300\n"
+"POT-Creation-Date: 2015-06-15 13:12+0300\n"
+"PO-Revision-Date: 2015-06-15 13:12+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -100,9 +100,9 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/TvChannelsController.php:775
 #: ../../../../admin/src/Controller/TvChannelsController.php:794
 #: ../../../../admin/src/Controller/TvChannelsController.php:822
-#: ../../../../admin/src/Controller/EventsController.php:176
-#: ../../../../admin/src/Controller/EventsController.php:208
-#: ../../../../admin/src/Controller/EventsController.php:242
+#: ../../../../admin/src/Controller/EventsController.php:177
+#: ../../../../admin/src/Controller/EventsController.php:209
+#: ../../../../admin/src/Controller/EventsController.php:243
 #: ../../../../admin/src/Controller/VideoClubController.php:477
 #: ../../../../admin/src/Controller/VideoClubController.php:503
 #: ../../../../admin/src/Controller/VideoClubController.php:735
@@ -3504,11 +3504,11 @@ msgstr "m"
 msgid "s"
 msgstr "s"
 
-#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:862
+#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:865
 msgid "today"
 msgstr "today"
 
-#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:865
+#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:868
 msgid "yesterday"
 msgstr "yesterday"
 
@@ -3678,7 +3678,7 @@ msgstr "DECEMBER"
 msgid "Action \"%s\" denied for page \"%s\""
 msgstr "Action \"%s\" denied for page \"%s\""
 
-#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:769
+#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:772
 #: ../../../lib/user.class.php:1096 ../../../lib/user.class.php:1097
 #, php-format
 msgid "video_name_format"
@@ -3818,11 +3818,11 @@ msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgid "city_name_field"
 msgstr "name_en"
 
-#: ../../../lib/vod.class.php:868
+#: ../../../lib/vod.class.php:871
 msgid "last week"
 msgstr "last week"
 
-#: ../../../lib/vod.class.php:897
+#: ../../../lib/vod.class.php:900
 msgid "coming soon"
 msgstr "coming soon"
 
@@ -8591,6 +8591,9 @@ msgstr ""
 
 msgid "Outdated testing"
 msgstr "Outdated testing"
+
+msgid "Playback radio channel"
+msgstr "Playback radio channel"
 
 msgid "Quantity of the storages"
 msgstr "Quantity of the storages"
