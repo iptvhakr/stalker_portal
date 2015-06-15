@@ -601,11 +601,8 @@ table.no-border-bottom tr:last-child td {
   border-bottom:0;
 }
 .dataTables_wrapper {
- overflow-y: hidden;
- overflow-x:hidden;
- 
- 
- 
+/* overflow-y: hidden;
+ overflow-x:hidden;*/
 }
 
 
