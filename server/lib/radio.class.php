@@ -243,6 +243,14 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
                     array('uid' => (int) $uid))->result();
         }
     }
+
+    public function getChannelById(){
+        $number = @$_REQUEST['number'];
+        $result = Mysql::getInstance()->from('radio')->where(array('status' => 1, 'number' => $number));
+        $this->setResponseData($result);
+
+        return $this->getResponse('prepareData');
+    }
 }
 
 ?>

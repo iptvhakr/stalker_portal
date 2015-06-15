@@ -25,6 +25,7 @@ class EventsController extends \Controller\BaseStalkerController {
             array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
             array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
             array("id" => "play_channel",       "title" => $this->setlocalization('Playback channel') ),
+            array("id" => "play_radio_channel", "title" => $this->setlocalization('Playback radio channel') ),
             array("id" => "mount_all_storages", "title" => $this->setlocalization('Mount all storages') ),
             array("id" => "cut_off",            "title" => $this->setlocalization('Turn off') ),
             array("id" => "update_image",       "title" => $this->setlocalization('Image update') )
@@ -366,6 +367,11 @@ class EventsController extends \Controller\BaseStalkerController {
     
     private function set_event_play_channel(&$event, $user_list){
         $event->sendPlayChannel($this->postData['channel']);
+        return TRUE;
+    }
+
+    private function set_event_play_radio_channel(&$event, $user_list){
+        $event->sendPlayRadioChannel($this->postData['channel']);
         return TRUE;
     }
     

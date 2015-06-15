@@ -1674,6 +1674,31 @@ function common_xpcom(){
         }*/
     };
 
+    this.load_radio_channel = function (number) {
+        if (number) {
+            this.load(
+                {
+                    "type": "radio",
+                    "action": "get_channel_by_id",
+                    "number": number
+                },
+                function (result) {
+                    _debug("get_channel_by_id", result);
+                    if (result.data && result.data.length) {
+                        this.player.playlist = result.data;
+                        this.player.stop();
+                        if (module.radio_widget) {
+                            this.player.radio_idx = 0;
+                            module.radio_widget.show(result.data[0]);
+                            this.player.play(result.data[0]);
+                        }
+                    }
+                },
+                this
+            );
+        }
+    };
+
     this.log_stream_error = function(ch_id, event){
 
         this.load(
