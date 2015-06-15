@@ -729,3 +729,4 @@ _('Zhuang');
 _('Chinese');
 _('Zulu');
 _('Not all required fields are filled');
+_('{{minute}} minutes ago');

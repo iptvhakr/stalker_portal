@@ -11,6 +11,7 @@
                 {{ main_macro.get_filter('tv_genre_id', 'Genre'|trans, 'id', 'title', app['allGenres'], 2) }}
                 {{ main_macro.get_filter('archive_id', 'Archive'|trans, 'id', 'title', app['allArchive'], 2) }}
                 {{ main_macro.get_filter('status_id', 'Status'|trans, 'id', 'title', app['allStatus'], 2) }}
+                {{ main_macro.get_filter('monitoring_status', 'Monitoring status'|trans, 'id', 'title', app['allMonitoringStatus'], 2) }}
                 <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/add-channel" class="btn btn-success pull-right">{{ 'Add a channel'|trans }}</a>
                 <a href="{{app.request.baseUrl}}/{{ app.controller_alias }}/restart-all-archives" class="btn btn-success pull-right" id="restart_archives_button">{{ 'Restart all TV archives'|trans }}</a>
             </div>
@@ -36,6 +37,7 @@
                                             <th data-filter="genres_name">{{ 'Genre'|trans }}</th>
                                             <th data-filter="enable_tv_archive">{{ 'Archive'|trans }}</th>
                                             <th data-filter="cmd">{{ 'URL'|trans }}</th>
+                                            <th data-filter="status">{{ 'Monitoring status'|trans }}</th>
                                             <th data-filter="status">{{ 'Status'|trans }}</th>
                                             <th data-filter="operations">{{ 'Operations'|trans }}</th>
                                         </tr>
@@ -51,6 +53,9 @@
                                                 <td>{{ item.genres_name }}</td>
                                                 <td>{% if item.enable_tv_archive %}{{ 'Yes'|trans }}{% else %}{{ 'No'|trans }}{% endif %}</td>
                                                 <td>{{ item.cmd }}</td>
+                                                {% autoescape false %}
+                                                <td>{{ item.monitoring_status }}</td>
+                                                {% endautoescape %}
                                                 <td>{% if item.status %}{{ 'Published'|trans }}{% else %}{{ 'Unpublished'|trans }}{% endif %}</td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8 ddd">
@@ -189,7 +194,7 @@
 				"order": [[ 1, "asc" ]],
                 "aoColumnDefs": [ 
                     { "targets": [  -1 ], "orderable": false},
-                    { "searchable": false, "targets": [ 1,2, 3, 4, 5, 6, 7] },
+                    { "searchable": false, "targets": [ 1,2, 3, 4, 5, 6, 7, 8] },
                     { className: "action-menu", "targets": [ -1 ] },
 					{ "width": "3%", "targets": [ 0 ] },
 					{ "width": "6%", "targets": [ 1 ] },
