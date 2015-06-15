@@ -51,6 +51,9 @@ class RESTCommandSendEvent extends RESTCommand
             case 'play_channel':
                 $event->sendPlayChannel($request->getData('channel'));
                 break;
+            case 'play_radio_channel':
+                $event->sendPlayRadioChannel($request->getData('channel'));
+                break;
             case 'update_image':
                 $event->sendUpdateImage();
                 break;
