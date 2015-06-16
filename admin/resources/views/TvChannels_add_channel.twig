@@ -113,6 +113,7 @@
                                                 <th>{{ 'Priority'|trans }}</th>
                                                 <th>{{ 'Temporary HTTP–link'|trans }}</th>
                                                 <th>{{ 'Monitoring'|trans }}</th>
+                                                <th>{{ 'Monitoring status'|trans }}</th>
                                                 <th>{{ 'Loading balance'|trans }}</th>
                                                 <th></th>
                                             </tr>
@@ -143,6 +144,11 @@
                                                             {{ main_macro.input_checkbox(app['form']['enable_monitoring'], 'enable_monitoring', key) }}
                                                             {{ main_macro.input_hidden(app['form']['enable_balancer_monitoring'], 'enable_balancer_monitoring', key, 0) }}
                                                             {{ main_macro.input_hidden(app['form']['monitoring_url'], 'monitoring_url', key, 0) }}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-sm-12">
+                                                            {{ main_macro.set_monitoring_status(app['form']['monitoring_status'], key, app['form']['enable_monitoring'][key].vars.data) }}
                                                         </div>
                                                     </td>
                                                     <td>
@@ -208,6 +214,13 @@
                                                                 </label>
                                                                 <input type="hidden" disabled="disabled" name="form[enable_balancer_monitoring][0]" id="form_enable_balancer_monitoring_0">
                                                                 <input type="hidden" disabled="disabled" name="form[monitoring_url][0]" id="form_monitoring_url_0">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="col-sm-12">
+                                                            <div >
+                                                                <label>-</label>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -630,6 +643,7 @@
         {{ form_row(app['form'].monitoring_url) }}
         {{ form_row(app['form'].use_load_balancing) }}
         {{ form_row(app['form'].stream_server) }}
+        {{ form_row(app['form'].monitoring_status) }}
     </div>
         {{ form_end(app['form']) }}
     <div id="modalbox_ad">
@@ -1014,18 +1028,18 @@
                     e.preventDefault();
                     return false;
                 });
-                
-                $("#form_save").on('click', function(e){
-				
-				 $.validate({
-   
-    onSuccess : function() {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $(this).closest('form').get(0).submit();
-                    return false;
-					 }
-  });
+
+                $("#form_save").on('click', function (e) {
+
+                    $.validate({
+
+                        onSuccess: function () {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            $(this).closest('form').get(0).submit();
+                            return false;
+                        }
+                    });
                 });
                 $("#form_reset").on('click', function(e){
                     e.stopPropagation();

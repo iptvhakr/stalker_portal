@@ -51,7 +51,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
 
     public function getChannelLinksById($id){
-        $links = $this->mysqlInstance->select(' *, `url` as `cmd` ')->from('ch_links')->where(array('ch_id' => (int) $id))->orderby('priority')->get()->all();
+        $links = $this->mysqlInstance->select(' *, `url` as `cmd`, `status` as `monitoring_status`')->from('ch_links')->where(array('ch_id' => (int) $id))->orderby('priority')->get()->all();
         $map = array();
 
         foreach ($links as $link){

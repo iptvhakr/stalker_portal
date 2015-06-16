@@ -21,6 +21,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         'nginx_secure_link' => array(''),
         'flussonic_tmp_link' => array(''),
         'enable_monitoring' => array(FALSE),
+        'monitoring_status' => array(FALSE),
         'enable_balancer_monitoring' => array(''),
         'monitoring_url' => array(''),
         'use_load_balancing' => array(FALSE),
@@ -47,7 +48,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
         $this->app['allMonitoringStatus'] = array(
             array('id' => 1, 'title' => $this->setLocalization('monitoring off')),
             array('id' => 2, 'title' => $this->setLocalization('errors occurred')),
-            array('id' => 3, 'title' => $this->setLocalization('is monitored')),
+            array('id' => 3, 'title' => $this->setLocalization('no errors')),
             array('id' => 4, 'title' => $this->setLocalization('there are some problems'))
         );
     }
@@ -1012,6 +1013,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 ->add('nginx_secure_link', 'collection', $this->getDefaultOptions())
                 ->add('flussonic_tmp_link', 'collection', $this->getDefaultOptions())
                 ->add('enable_monitoring', 'collection', $this->getDefaultOptions('checkbox'))
+                ->add('monitoring_status', 'collection', $this->getDefaultOptions())
                 ->add('enable_balancer_monitoring', 'collection', $this->getDefaultOptions())
                 ->add('monitoring_url', 'collection', $this->getDefaultOptions())
                 ->add('use_load_balancing', 'collection', $this->getDefaultOptions('checkbox'))
@@ -1250,7 +1252,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                     if (empty($this->streamers_map)) {
                         $this->streamers_map[$link_id] = $this->db->getStreamersIdMapForLink($link_id);
                     }
-                    $on_streamers = array_keys($this->streamers_map[$link_id]);
+                    $on_streamers = array();
+                    if (is_array($this->streamers_map) && array_key_exists($link_id, $this->streamers_map)) {
+                        $on_streamers = array_keys($this->streamers_map[$link_id]);
+                    }
 
                     if ($on_streamers) {
                         $need_to_delete = array_diff($on_streamers, $links_on_server);
@@ -1633,15 +1638,15 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 $disabled_link = $this->db->getChanelDisabledLink($row['id']);
 
                 if (!empty($disabled_link)) {
-                    if (array_key_exists('monitoring_status', $this->data['filters']) && ((int) $this->data['filters']['monitoring_status']) != 0 && ((int) $this->data['filters']['monitoring_status']) != 4) {
+                    if (!empty($this->data['filters']) && array_key_exists('monitoring_status', $this->data['filters']) && ((int) $this->data['filters']['monitoring_status']) != 0 && ((int) $this->data['filters']['monitoring_status']) != 4) {
                         return FALSE;
                     }
                     $return .= '#f4c430;">' . $this->setLocalization('there are some problems');
                 } else {
-                    if (array_key_exists('monitoring_status', $this->data['filters']) && ((int) $this->data['filters']['monitoring_status']) != 0 && ((int) $this->data['filters']['monitoring_status']) != 3) {
+                    if (!empty($this->data['filters']) && array_key_exists('monitoring_status', $this->data['filters']) && ((int) $this->data['filters']['monitoring_status']) != 0 && ((int) $this->data['filters']['monitoring_status']) != 3) {
                         return FALSE;
                     }
-                    $return .= 'green;">' . $this->setLocalization('is monitored');
+                    $return .= 'green;">' . $this->setLocalization('no errors');
                 }
 
             } else {
