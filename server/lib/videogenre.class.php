@@ -121,7 +121,8 @@ class VideoGenre
 
         if ($pretty_id){
             $genres = array_map(function($genre){
-                $genre['id'] = preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['title']);
+                $genre['id']    = preg_replace(array("/\s/i", "/[^a-z0-9-]/i"), array("-", ""), $genre['title']);
+                $genre['title'] = _($genre['title']);
                 return $genre;
             },$genres);
         }
