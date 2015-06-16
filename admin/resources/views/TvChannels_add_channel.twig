@@ -148,7 +148,13 @@
                                                     </td>
                                                     <td>
                                                         <div class="col-sm-12">
+                                                            {% if attribute(app['form']['monitoring_status'], key) is defined and attribute(app['form']['enable_monitoring'], key) is defined %}
                                                             {{ main_macro.set_monitoring_status(app['form']['monitoring_status'], key, app['form']['enable_monitoring'][key].vars.data) }}
+                                                            {% else %}
+                                                                <div>
+                                                                    <label> - </label>
+                                                                </div>
+                                                            {% endif %}
                                                         </div>
                                                     </td>
                                                     <td>
