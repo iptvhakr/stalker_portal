@@ -51,7 +51,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
     }
 
     public function getChannelLinksById($id){
-        $links = $this->mysqlInstance->select(' *, `url` as `cmd` ')->from('ch_links')->where(array('ch_id' => (int) $id))->orderby('priority')->get()->all();
+        $links = $this->mysqlInstance->select(' *, `url` as `cmd`, `status` as `monitoring_status`')->from('ch_links')->where(array('ch_id' => (int) $id))->orderby('priority')->get()->all();
         $map = array();
 
         foreach ($links as $link){
@@ -354,5 +354,9 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
 
     public function deleteTvGenres($param){
         return $this->mysqlInstance->delete('tv_genre', $param)->total_rows();
+    }
+
+    public function getChanelDisabledLink($id){
+        return $this->mysqlInstance->from('ch_links')->where(array('ch_id' => $id, 'enable_monitoring' => 1,'status' => 0, ))->get()->all();
     }
 }

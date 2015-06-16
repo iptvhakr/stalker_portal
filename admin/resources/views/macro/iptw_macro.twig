@@ -222,3 +222,23 @@
         };
         $("#datepicker_to").datepicker(datePickerOpt);
     {% endmacro %}
+
+    {% macro set_monitoring_status(value, key, status) %}
+        {% if status %}
+            {% if attribute(value, key) is defined %}
+            <div >
+                <label class="txt-{% if value[key].vars.data %}success{% else %}danger{% endif %}">
+                    {% if attribute(app, 'allMonitoringStatus') is defined %}
+                        {% if value[key].vars.data %}{{ app.allMonitoringStatus[2].title }}{% else %}{{ app.allMonitoringStatus[1].title }}{% endif %}
+                    {% else %}
+                        {{ value[key].vars.data }}
+                    {% endif %}
+                </label>
+            </div>
+            {% endif %}
+        {% else %}
+            <div>
+                <label> - </label>
+            </div>
+        {% endif %}
+    {% endmacro %}
