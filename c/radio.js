@@ -68,7 +68,7 @@
 
                     stb.player.radio_idx = idx;
 
-                    self.set_active_row(self.cur_row);
+                    /*self.set_active_row(self.cur_row);*/
                 }
             });
 
@@ -94,7 +94,7 @@
                         }
                     }
 
-                    self.set_active_row(self.cur_row);
+                    /*self.set_active_row(self.cur_row);*/
                 }
             });
 
