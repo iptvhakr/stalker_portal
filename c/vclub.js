@@ -904,7 +904,13 @@
                             }
                         }
                     }else{
-                        link = result;
+                        if (result.cmd){
+                            if (match = /[\s]([^\s]*)$/.exec(result.cmd)){
+                                result.cmd = match[1];
+                            }
+                        }
+
+                        link = result
                     }
 
                     callback && callback(link.cmd);
