@@ -830,6 +830,13 @@ function channelUrlDataUpdate(container, data){
         }
         var type = $(this).attr('type');
         if (type == 'checkbox') {
+            if ($(this).attr('name').search('enable_monitoring') != -1) {
+                var targetLabel = $(this).closest('td').next('td').find('label');
+                if (targetLabel.text() != '-' && $(this).prop('checked') != (data[name].value == 'on')) {
+                    targetLabel.text('-');
+                    targetLabel.removeClass();
+                }
+            }
             $(this).prop('checked', (data[name].value == 'on'));
         } else {
             $(this).val(data[name].value);
