@@ -468,6 +468,17 @@ Array.prototype.inArray = function (value){
     return false;
 };
 
+Array.prototype.sortBy = function(field){
+    if (empty(field)) {
+        return;
+    }
+    return this.sort(function(a, b){
+        var _a = ''+a[field]+'';
+        var _b = ''+b[field]+'';
+        return _a < _b ? -1 : (_a > _b ? 1: 0);
+    });
+};
+
 Math.__proto__.isEven = function(x){
     return !(x % 2);
 };

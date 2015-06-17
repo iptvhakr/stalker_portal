@@ -1691,6 +1691,7 @@
                 }else{
                     this.parent.fav_menu && this.parent.fav_menu.disable_by_name("fav_manage");
                 }
+                stb.player.channels = stb.player.channels.sortBy('number');
             }
         },
         {
@@ -1707,6 +1708,7 @@
                 }else{
                     this.parent.fav_menu && this.parent.fav_menu.disable_by_name("fav_manage");
                 }
+                stb.player.channels = stb.player.channels.sortBy('name');
             }
         },
         {
@@ -1724,6 +1726,7 @@
                     this.parent.fav_menu && this.parent.fav_menu.disable_by_name("fav_manage");
                 }
 
+                stb.player.channels = stb.player.channels.sortBy('number');
             }
         }
     ];
