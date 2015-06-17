@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-17 17:17+0300\n"
-"PO-Revision-Date: 2015-06-17 17:18+0300\n"
+"PO-Revision-Date: 2015-06-17 17:44+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -6236,7 +6236,7 @@ msgstr "rozpoczęte"
 
 #: ../../../lang/stb.php:238
 msgid "MORE"
-msgstr ""
+msgstr "WIĘCEJ"
 
 #: ../../../lang/stb.php:245
 msgid "search_box_languages"
