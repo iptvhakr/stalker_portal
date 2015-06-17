@@ -452,7 +452,7 @@
 .pos_time{
     position: absolute;
     top: 68px;
-    right: 48px;
+    right: 55px;
     font-size: 20px;
     color: #fff;
     text-shadow: #000 0 1px 0;
@@ -484,7 +484,7 @@
 .pos_series{
     position: absolute;
     top: 68px;
-    left: 46px;
+    left: 55px;
     font-size: 20px;
     color: #fff;
     text-shadow: #000 0 1px 0;
