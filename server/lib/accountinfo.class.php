@@ -47,8 +47,6 @@ class AccountInfo implements \Stalker\Lib\StbApi\AccountInfo
             $info['tariff_plan'] = $user->getTariffPlanName();
         }
 
-        print_r($info);
-
         return $info;
     }
 

@@ -1119,6 +1119,18 @@ class UsersController extends \Controller\BaseStalkerController {
                 if ($data['reseller_id'] == '-') {
                     $data['reseller_id'] = NULL;
                 }
+                if (!empty($this->user) && array_key_exists('status', $this->user) && ((int) $this->user['status'] != (int)$data['status'])) {
+                    $data['last_change_status'] = FALSE;
+                    $event = new \SysEvent();
+                    $event->setUserListById($data['id']);
+                    if ((int)$data['status'] == 0) {
+                        $event->sendCutOn();
+                    } else {
+                        $event->sendCutOff();
+                    }
+                } else {
+                    unset($data['last_change_status']);
+                }
 
                 $result = call_user_func_array(array($this->db, $action), array($data, $data['id']));
 
