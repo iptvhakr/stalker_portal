@@ -136,15 +136,29 @@ foreach ($queue as $item){
 
     if (($offset + $item["from_byte"] + $seek_start) <= ($offset + filesize($item["filename"]))){
 
+        $is_first_file = !isset($fp);
+
         $fp = fopen($item["filename"], 'rb');
-        //fseek($fp, $item["from_byte"]);
-        //$seek = $seek_start - $offset;
+
         fseek($fp, $item["from_byte"] + $seek_start);
+
+        if ($is_first_file && $seek_start == 0){ // seek to 0x47 for first file
+
+            $skipped = 0;
+
+            while (($char = fgetc($fp)) != 'G'){
+                $skipped++;
+            }
+
+            header('Content-Length: '.($seek_end - $seek_start + 1 - $skipped));
+            header('Content-Range: bytes '.$seek_start.'-'.($seek_end-$skipped).'/'.($size-$skipped));
+
+            fseek($fp, ftell($fp)-1);
+        }
 
         _log("Seek: ".($item["from_byte"] + $seek_start));
 
     }else{
-        //$offset += $item["size"];
         $offset     += filesize($item["filename"]);
         $seek_start -= filesize($item["filename"]) - $item["from_byte"];
         continue;
