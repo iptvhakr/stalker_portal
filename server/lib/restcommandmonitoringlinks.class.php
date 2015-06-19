@@ -15,7 +15,7 @@ class RESTCommandMonitoringLinks extends RESTCommand
             throw new RESTCommandException('Unsupported Accept header, use text/channel-monitoring-id-url');
         }
 
-        return $this->manager->getLinksForMonitoring();
+        return $this->manager->getLinksForMonitoring(@$_GET['status']);
     }
 
     public function update(RESTRequest $request){

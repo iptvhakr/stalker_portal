@@ -1096,6 +1096,7 @@ function JSshowModalBox(){
     $("#modalbox").data('complete', 0);
     $('#modalbox').find('.modal-header-name span').text(words['Wait'] + "...");
     $('#modalbox').find('.devoops-modal-inner').html('<span>' + words['Request_is_being_prossessed'] + '...</span>');
+    $('#modalbox').find('.devoops-modal-bottom').empty();
     $("#modalbox").show();
 }
 
