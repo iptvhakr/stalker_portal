@@ -1825,28 +1825,39 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
         return Mysql::getInstance()->update('itv', array('monitoring_status_updated' => 'NOW()'), array('id' => $ch_id))->result();
     }
 
-    public function getLinksForMonitoring(){
+    public function getLinksForMonitoring($status=FALSE){
 
-        $monitoring_links = Mysql::getInstance()
+        $result = Mysql::getInstance()
+            ->select('ch_links.*, itv.name as ch_name')
             ->from('ch_links')
+            ->join('itv', 'itv.id', 'ch_links.ch_id', 'INNER')
             ->where(array(
-                'enable_monitoring' => 1,
-                'enable_balancer_monitoring' => 0
-            ))
-            ->orderby('ch_id')
+                'ch_links.enable_monitoring' => 1,
+                'ch_links.enable_balancer_monitoring' => 0
+            ));
+
+        if ($status) {
+            $result->where(array('ch_links.status'=> (int) ($status=='up')));
+        }
+
+        $monitoring_links = $result->orderby('ch_id')
             ->get()
             ->all();
 
-        $balanser_monitoring_links_raw = Mysql::getInstance()
-            ->select('ch_links.*, streamer_id, ch_link_on_streamer.id as streamer_link_id')
+        $result = Mysql::getInstance()
+            ->select('ch_links.*, streamer_id, ch_link_on_streamer.id as streamer_link_id, itv.name as ch_name')
             ->from('ch_links')
             ->join('ch_link_on_streamer', 'link_id', 'ch_links.id', 'INNER')
+            ->join('itv', 'itv.id', 'ch_links.ch_id', 'INNER')
             ->where(array(
-                'enable_monitoring' => 1,
-                'enable_balancer_monitoring' => 1,
-                'use_load_balancing' => 1
-            ))
-            ->orderby('ch_id')
+                'ch_links.enable_monitoring' => 1,
+                'ch_links.enable_balancer_monitoring' => 1,
+                'ch_links.use_load_balancing' => 1
+            ));
+        if ($status) {
+            $result->where(array('ch_links.status'=> (int) ($status=='up')));
+        }
+        $balanser_monitoring_links_raw = $result->orderby('ch_id')
             ->get()
             ->all();
 
@@ -1887,8 +1898,8 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
             $cmd['monitoring_url'] = trim($cmd['monitoring_url']);
 
-            if (!empty($cmd['monitoring_url'])){
-                $cmd['url'] = $cmd['monitoring_url'];
+            if (!empty($cmd['monitoring_url']) && preg_match("/(\S+:\/\/\S+)/", $cmd['monitoring_url'], $match)){
+                $cmd['url'] = $match[1];
             }else if (preg_match("/(\S+:\/\/\S+)/", $cmd['url'], $match)){
                 $cmd['url'] = $match[1];
             }
