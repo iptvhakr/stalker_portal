@@ -74,7 +74,7 @@ class RESTResponse
                 }
 
                 $body = array_reduce($channels, function($prev, $curr){
-                    return $prev.$curr['id'].' '.$curr['url'].(isset($curr['type']) ? ' '.$curr['type'] : '')."\n";
+                    return $prev.$curr['id'].' '.$curr['url'].(isset($curr['type']) ? ' '.$curr['type'] : '').' '.str_replace(' ', '_', $curr["ch_name"]).' '.((int)$curr["status"] ==1?"up":"down")."\n";
                 }, '');
 
                 header("Content-Type: text/plain");
