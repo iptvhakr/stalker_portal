@@ -209,6 +209,8 @@ class UsersController extends \Controller\BaseStalkerController {
         } else {
             $this->user['expire_billing_date'] = str_replace('.', '-', $this->user['expire_billing_date']);
         }
+
+        $this->user['version'] = preg_replace("/(\r\n|\n\r|\r|\n|\s){2,}/i", "$1", stripcslashes($this->user['version']));
         $form = $this->buildUserForm($this->user, TRUE);
 
         if ($this->saveUsersData($form, TRUE)) {
@@ -1131,6 +1133,8 @@ class UsersController extends \Controller\BaseStalkerController {
                 } else {
                     unset($data['last_change_status']);
                 }
+
+                unset($data['version']);
 
                 $result = call_user_func_array(array($this->db, $action), array($data, $data['id']));
 
