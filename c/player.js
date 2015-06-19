@@ -2840,6 +2840,8 @@ player.prototype.disable_pause = function(){
 
                 _debug('archive_continue_dialog_delay 1', archive_continue_dialog_delay);
 
+                window.clearTimeout(this.archive_continue_dialog_to);
+
                 this.archive_continue_dialog_to = window.setTimeout(function(){
                     if (stb.profile['tv_archive_continued']){
                         module.tv_archive.get_next_part_url();
