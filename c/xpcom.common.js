@@ -1239,7 +1239,7 @@ function common_xpcom(){
             this.player.init_first_channel();
         }
 
-        if (this.user['display_menu_after_loading'] || !this.player.channels || this.player.channels.length == 0 || !module.tv){
+        if (this.user['display_menu_after_loading'] || focus_module || !this.player.channels || this.player.channels.length == 0 || !module.tv){
             main_menu.show();
             this.on_first_menu_show();
         }else{
