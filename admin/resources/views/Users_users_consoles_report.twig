@@ -64,7 +64,7 @@
                         var mac = json.data[i].mac;
                         var id = json.data[i].id;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
-                        json.data[i].status = (status != 0 ? "<span class=''>{{ 'on'|trans }}</span>" : "<span class=''>{{ 'off'|trans }}</span>");
+                        json.data[i].status = (status != 0 ? "<span class=''>{{ 'off'|trans }}</span>" : "<span class=''>{{ 'on'|trans }}</span>");
                         date = json.data[i]['last_change_status'];
                         if (date > 0) {
                             date = new Date(date * 1000);
