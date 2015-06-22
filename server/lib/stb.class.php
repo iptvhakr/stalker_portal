@@ -732,6 +732,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $profile['check_ssl_certificate'] = (int) Config::getSafe('check_ssl_certificate', false);
 
+        $profile['disable_youtube_for_mag200'] = Config::getSafe('disable_youtube_for_mag200', true);
+
         unset($profile['device_id']);
         unset($profile['device_id2']);
         unset($profile['access_token']);
