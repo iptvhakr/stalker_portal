@@ -94,6 +94,8 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
             $fav_ids = $this->getFavIds();
             $this->response['data'] = array_map(function($row) use ($fav_ids){
                 $row['fav'] = ((int)in_array($row['id'], $fav_ids));
+                $row['error'] = (int) $row['monitoring_status'] == 1 ? '': 'link_fault';
+                $row['open'] = (int) $row['monitoring_status'] == 1;
                 $row['radio'] = TRUE;
                 return $row;
             }, $this->response['data']);
@@ -289,7 +291,7 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
             return false;
         }
 
-        if ((int)$status != (int)$channel['status']) {
+        if ((int)$status != (int)$channel['monitoring_status']) {
 
             if ((int)$status == 0) {
 
