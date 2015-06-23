@@ -2,7 +2,7 @@
 
 # Use login and password from the configuration file. (api_auth_login and api_auth_password in server/custom.ini)
 
-#type channel for scaning; first argument from console or or manualy edit; posible value - itv or radio
+#type channel for scaning; first argument from console or or manualy edit; posible value - "itv" or "radio"
 MONITORING_TYPE="$1"
 
 if [ $MONITORING_TYPE ] ; then
@@ -14,7 +14,7 @@ fi
 
 PART=1/1
 
-#status of ch_link; second argument from console or manualy edit; posible value - up, down or nothing
+#status of ch_link; second argument from console or manualy edit; posible value - "up", "down" or ""
 STATUS="$2"
 
 function get_channels {
