@@ -3,6 +3,11 @@
  */
 (function(){
 
+    if (stb.type == 'MAG200' && stb.user['disable_youtube_for_mag200']){
+        loader.next();
+        return;
+    }
+
     var app_name = "Youtube";
     var app_id   = "com.google.android.youtube";
     var app_install_url = "";

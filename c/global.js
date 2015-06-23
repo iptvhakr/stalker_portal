@@ -473,8 +473,8 @@ Array.prototype.sortBy = function(field){
         return;
     }
     return this.sort(function(a, b){
-        var _a = ''+a[field]+'';
-        var _b = ''+b[field]+'';
+        var _a = field == 'number' ? parseInt(a[field], 10) : ''+a[field]+'';
+        var _b = field == 'number' ? parseInt(b[field], 10) : ''+b[field]+'';
         return _a < _b ? -1 : (_a > _b ? 1: 0);
     });
 };
