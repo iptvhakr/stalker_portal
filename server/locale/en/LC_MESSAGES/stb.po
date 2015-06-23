@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-16 13:45+0300\n"
-"PO-Revision-Date: 2015-06-16 13:45+0300\n"
-"Last-Translator: Ivan <massiw@inbox.ru>\n"
+"PO-Revision-Date: 2015-06-23 13:42+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -1261,7 +1261,7 @@ msgstr "Firmware of your STB is outdated.<br>Please update it."
 #: ../../../tools/misctranslations.php:204 ../../../lib/stb.class.php:505
 #: ../../../lib/stb.class.php:516
 msgid "Your STB is damaged.<br/> Call the provider."
-msgstr "Your STB is damaged.<br/> Call the provider."
+msgstr "Please contact your provider<br>to register this device."
 
 #: ../../../tools/misctranslations.php:206
 msgid "Management system administrators, groups and rights"
@@ -1487,8 +1487,7 @@ msgstr "Messages"
 
 #: ../../../tools/misctranslations.php:263
 #: ../../../tools/misctranslations.php:388 ../../../administrator/tasks.php:59
-#: ../../../administrator/tasks.php:65
-#: ../../../../admin/json_menu/menu.json:9
+#: ../../../administrator/tasks.php:65 ../../../../admin/json_menu/menu.json:9
 #: ../../../../admin/json_menu/menu.json:215
 msgid "Tasks"
 msgstr "Tasks"
