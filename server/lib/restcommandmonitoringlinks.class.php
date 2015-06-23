@@ -15,18 +15,21 @@ class RESTCommandMonitoringLinks extends RESTCommand
             throw new RESTCommandException('Unsupported Accept header, use text/channel-monitoring-id-url');
         }
 
+        $this->setManager($request);
+
         return $this->manager->getLinksForMonitoring(@$_GET['status']);
     }
 
     public function update(RESTRequest $request){
 
+        $this->setManager($request);
         $put = $request->getPut();
 
         if (empty($put)){
             throw new RESTCommandException('HTTP PUT data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('status'), true);
+        $allowed_to_update_fields = array_fill_keys(array('status', 'link_id'), true);
 
         $data = array_intersect_key($put, $allowed_to_update_fields);
 
@@ -40,11 +43,29 @@ class RESTCommandMonitoringLinks extends RESTCommand
             throw new RESTCommandException('Empty link id');
         }
 
-        $link_id = $ids[0];
+        if ($ids[0] == 'radio' || $ids[0] == 'itv') {
+            if (array_key_exists('link_id', $data)) {
+                $link_id = $data['link_id'];
+            } else {
+                $link_id = FALSE;
+            }
+        } else {
+            $link_id = $ids[0];
+        }
 
-        return Itv::setChannelLinkStatus($link_id, (int) $data['status']);
+        $manager_class = get_class($this->manager);
+
+        return $manager_class::setChannelLinkStatus($link_id, (int) $data['status']);
 
         //return Mysql::getInstance()->update('itv', $data, array('id' => $channel_id));
+    }
+
+    private function setManager(RESTRequest $request){
+        $identifiers = $request->getIdentifiers();
+        $base_class = ucfirst(!empty($identifiers[0]) && !is_numeric($identifiers[0]) ? $identifiers[0]: 'itv');
+        if (class_exists($base_class)) {
+            $this->manager = $base_class::getInstance();
+        }
     }
 }
 

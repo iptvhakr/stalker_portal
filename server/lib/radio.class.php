@@ -251,6 +251,69 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
 
         return $this->getResponse('prepareData');
     }
+
+    public function getLinksForMonitoring($status=FALSE){
+        $result = Mysql::getInstance()
+            ->select("id, name as ch_name, cmd as url, 'stream' as type, monitoring_status as status, enable_monitoring")
+            ->from('radio')
+            ->where(array('enable_monitoring' => 1));
+
+        if ($status) {
+            $result->where(array('monitoring_status'=> (int) ($status=='up')));
+        }
+
+        $monitoring_links = $result->orderby('id')
+            ->get()
+            ->all();
+
+        $monitoring_links = array_map(function ($row) {
+            if (!empty($row['url']) && preg_match("/(\S+:\/\/\S+)/", $row['url'], $match)) {
+                $row['url'] = $match[1];
+            }
+
+            return $row;
+        }, $monitoring_links);
+
+        return $monitoring_links;
+    }
+
+    public static function setChannelLinkStatus($link_id, $status){
+
+        if (empty($link_id) || !is_numeric($link_id)) {
+            return false;
+        }
+
+        $channel = Mysql::getInstance()->from('radio')->where(array('id' => $link_id))->get()->first();
+
+        if (empty($channel)) {
+            return false;
+        }
+
+        if ((int)$status != (int)$channel['status']) {
+
+            if ((int)$status == 0) {
+
+                if (Config::exist('administrator_email')) {
+
+                    $message = sprintf(_("Radio-channel %s set to active because its URL became available."), $channel['number'] . ' ' . $channel['name']);
+
+                    mail(Config::get('administrator_email'), 'Radio-channels monitoring report: channel enabled', $message, "Content-type: text/html; charset=UTF-8\r\n");
+                }
+
+            } else {
+
+                if (Config::exist('administrator_email')) {
+
+                    $message = sprintf(_('Radio-channel %s set to inactive because its URL are not available.'), $channel['number'] . ' ' . $channel['name']);
+
+                    mail(Config::get('administrator_email'), 'Radio-channels monitoring report: channel disabled', $message, "Content-type: text/html; charset=UTF-8\r\n");
+                }
+            }
+            Mysql::getInstance()->update('radio', array('monitoring_status' => $status), array('id' => $link_id))->result();
+        }
+
+        return Mysql::getInstance()->update('radio', array('monitoring_status_updated' => 'NOW()'), array('id' => $link_id))->result();
+    }
 }
 
 ?>
