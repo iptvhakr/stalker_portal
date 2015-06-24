@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-23 16:57+0300\n"
-"PO-Revision-Date: 2015-06-23 17:01+0300\n"
-"Last-Translator: Ivan <massiw@inbox.ru>\n"
+"PO-Revision-Date: 2015-06-24 11:20+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -1268,7 +1268,7 @@ msgstr "Прошивка вашей приставки устарела.<br>По
 #: ../../../tools/misctranslations.php:204 ../../../lib/stb.class.php:505
 #: ../../../lib/stb.class.php:516
 msgid "Your STB is damaged.<br/> Call the provider."
-msgstr "Ваша приставка повреждена.<br/> Свяжитесь с провайдером."
+msgstr "Для регистрации этого устройства<br>свяжитесь с провайдером."
 
 #: ../../../tools/misctranslations.php:206
 msgid "Management system administrators, groups and rights"
@@ -1494,8 +1494,7 @@ msgstr "Сообщения"
 
 #: ../../../tools/misctranslations.php:263
 #: ../../../tools/misctranslations.php:388 ../../../administrator/tasks.php:59
-#: ../../../administrator/tasks.php:65
-#: ../../../../admin/json_menu/menu.json:9
+#: ../../../administrator/tasks.php:65 ../../../../admin/json_menu/menu.json:9
 #: ../../../../admin/json_menu/menu.json:215
 msgid "Tasks"
 msgstr "Задания"
@@ -7871,7 +7870,7 @@ msgid "Add composition"
 msgstr "Добавить композицию"
 
 msgid "Add group"
-msgstr "Добавить группе"
+msgstr "Добавить группу"
 
 msgid "Add user"
 msgstr "Добавить пользователя"
@@ -8151,9 +8150,9 @@ msgid ""
 "(WiFi, Ethernet), by STB model (250, 275, ...), by country (UA, RU, ...). "
 "Field is case sensitive"
 msgstr ""
-"Фильтр по user-agent, возможно настроить фильтрацию по типу "
-"подключения(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, "
-"RU, ...). Поле регистрозависимое"
+"Фильтр по user-agent, возможно настроить фильтрацию по типу подключения"
+"(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, RU, ...). "
+"Поле регистрозависимое"
 
 msgid ""
 "For activating this option, you must enable \"Enable monitoring\" in the "
@@ -8587,7 +8586,7 @@ msgid "Inactive"
 msgstr "По поиск неактивных"
 
 msgid "Last activity"
-msgstr "Последний активность"
+msgstr "Последняя активность"
 
 msgid "List of MAC-addresses"
 msgstr "Список MAC-адресов"
@@ -9008,7 +9007,7 @@ msgid "Select preset for STB type"
 msgstr "Выберите шаблон для типа приставки"
 
 msgid "Storage is not available on the MAG100"
-msgstr "НХранилище недоступно на приставках MAG100"
+msgstr "Хранилище недоступно на приставках MAG100"
 
 msgid "Streaming area"
 msgstr "Зона вещания"
@@ -9017,7 +9016,7 @@ msgid "Swith on"
 msgstr "Включиьт"
 
 msgid "TV recording"
-msgstr "запись ТВ"
+msgstr "Запись ТВ"
 
 msgid "Task type"
 msgstr "Тип задания"

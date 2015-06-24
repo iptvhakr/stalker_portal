@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-06-05 17:53+0300\n"
-"PO-Revision-Date: 2015-06-05 17:53+0300\n"
+"PO-Revision-Date: 2015-06-23 13:41+0300\n"
 "Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3432,7 +3432,7 @@ msgstr "Прошивка вашої приставки застаріла.<br>Б
 #: ../../../tools/misctranslations.php:204 ../../../lib/stb.class.php:505
 #: ../../../lib/stb.class.php:516
 msgid "Your STB is damaged.<br/> Call the provider."
-msgstr "Ваша приставка пошкоджена.<br/> Зв'яжіться з провайдером."
+msgstr "Для реєстрації цього пристрою<br/>зв'яжіться з провайдером."
 
 #: ../../../tools/misctranslations.php:206
 msgid "Management system administrators, groups and rights"
