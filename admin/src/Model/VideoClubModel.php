@@ -159,11 +159,10 @@ class VideoClubModel extends \Model\BaseStalkerModel {
     public function getModerators($id = FALSE) {
         $this->mysqlInstance->from('moderators');
         if ($id !== FALSE) {
-            $this->mysqlInstance->where(array('id' => $id))->get()->first();
+            return $this->mysqlInstance->where(array('id' => $id))->get()->first();
         } else {
-            $this->mysqlInstance->get()->all();
+            return $this->mysqlInstance->get()->all();
         }
-        return $this->mysqlInstance;
     }
     
     public function deleteModeratorsById($id) {
