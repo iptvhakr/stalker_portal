@@ -7,6 +7,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 {{ main_macro.get_filter('status_id', 'Status'|trans, 'id', 'title', app['allStatus']) }}
+                {{ main_macro.get_filter('monitoring_status', 'Monitoring status'|trans, 'id', 'title', app['allMonitoringStatus'], 2) }}
                 <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-radio" class="btn btn-success pull-right">{{ 'Add radio'|trans }}</a>
             </div>
         </div>
@@ -20,17 +21,9 @@
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-1">
-                            <thead>
-                            <tr>
-                                <th data-filter="id">{{ 'ID'|trans }}</th>
-                                <th data-filter="number">{{ 'Order'|trans }}</th>
-                                <th data-filter="name">{{ 'Title'|trans }}</th>
-                                <th data-filter="cmd">{{ 'URL'|trans }}</th>
-                                <th data-filter="volume_correction">{{ 'Volume'|trans }} (%)</th>
-                                <th data-filter="status">{{ 'Status'|trans }}</th>
-                                <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                            </tr>
-                            </thead>
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
                             <tbody>
                             {% if attribute(app, 'allRadio') is defined %}
                                 <!-- Start: list_row -->
@@ -42,6 +35,9 @@
                                         <td>{{ item.cmd }}</td>
                                         <td>{{ item.volume_correction * 5}}</td>
                                         <td class="data-filter-status">{% if item.status %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span class="txt-danger">{{ 'Unpublished'|trans }}</span>{% endif %}</td>
+                                        {% autoescape false %}
+                                        <td>{{ item.monitoring_status }}</td>
+                                        {% endautoescape %}
                                         <td>
                                             <div class="col-xs-3 col-sm-8">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -136,22 +132,20 @@
                             "url": "{{ app.datatable_lang_file }}"
                         },
                 "columns": [
-                    {"data": "id"},
-                    {"data": "number"},
-                    {"data": "name"},
-                    {"data": "cmd"},
-                    {"data": "volume_correction"},
-                    {"data": "status"},
-                    {"data": "operations"}
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                    {% endif %}
                 ],
                 "bFilter": true,
                 "bPaginate": true,
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [-1, -2]},
+                    {"searchable": false, "targets": [-1, -2, -3]},
                     {"sortable": false, "targets": [-1]},
-                    {className: "data-filter-status", "targets": [-2]},
+                    {className: "data-filter-status", "targets": [-3]},
 		            { "width": "16px", "targets": [ -1 ] }			
                 ]
             }).prev('.dataTables_processing').hide('');
@@ -216,7 +210,7 @@
             a_obj.text(a_obj.data('title'));
             a_obj.closest('tr').find('td.data-filter-status').html(a_obj.data('status'));
             a_obj.closest('div.open').removeClass('open');
-        }
+        };
 
         var removeRadio = function (obj) {
             var cRow = $(obj).closest('tr');

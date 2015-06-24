@@ -202,6 +202,17 @@
             if (this.data_items) {
                 stb.player.playlist = this.data_items;
             }
+
+            if(!this.data_items[this.cur_row].open){
+
+                if (this.data_items[this.cur_row].hasOwnProperty('error') && this.data_items[this.cur_row].error){
+                    stb.notice.show(get_word('error_channel_'+this.data_items[this.cur_row].error));
+                }else{
+                    stb.notice.show(get_word('msg_channel_not_available'));
+                }
+                return;
+            }
+
             stb.player.play(this.data_items[this.cur_row]);
         };
 
@@ -251,6 +262,13 @@
         this.shift_row_ch_channel = function(dir){
             window.clearTimeout(this.row_callback_timer);
             this.data_items[this.cur_row].unlocked = false;
+            if (this.data_items[this.cur_row].hasOwnProperty('open') && !this.data_items[this.cur_row].open){
+                this.map[this.cur_row]['row'].addClass('close');
+                this.active_row['row'].addClass('close');
+            }else{
+                this.map[this.cur_row]['row'].removeClass('close');
+                this.active_row['row'].removeClass('close');
+            }
             this.superclass.shift_row.call(this, dir);
             _debug('before set timeout');
             var self = this;

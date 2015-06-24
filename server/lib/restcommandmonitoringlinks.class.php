@@ -15,18 +15,21 @@ class RESTCommandMonitoringLinks extends RESTCommand
             throw new RESTCommandException('Unsupported Accept header, use text/channel-monitoring-id-url');
         }
 
+        $this->setManager($request);
+
         return $this->manager->getLinksForMonitoring(@$_GET['status']);
     }
 
     public function update(RESTRequest $request){
 
+        $this->setManager($request);
         $put = $request->getPut();
 
         if (empty($put)){
             throw new RESTCommandException('HTTP PUT data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('status'), true);
+        $allowed_to_update_fields = array_fill_keys(array('status', 'link_id'), true);
 
         $data = array_intersect_key($put, $allowed_to_update_fields);
 
@@ -42,9 +45,22 @@ class RESTCommandMonitoringLinks extends RESTCommand
 
         $link_id = $ids[0];
 
-        return Itv::setChannelLinkStatus($link_id, (int) $data['status']);
+        $manager_class = get_class($this->manager);
+
+        return $manager_class::setChannelLinkStatus($link_id, (int) $data['status']);
 
         //return Mysql::getInstance()->update('itv', $data, array('id' => $channel_id));
+    }
+
+    private function setManager(RESTRequest $request){
+        $type = $request->getData('type');
+        if (empty($type)) {
+            $type = (empty($_GET['type']) ? 'itv': $_GET['type']);
+        }
+        $base_class = ucfirst($type);
+        if (class_exists($base_class)) {
+            $this->manager = $base_class::getInstance();
+        }
     }
 }
 
