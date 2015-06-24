@@ -43,15 +43,7 @@ class RESTCommandMonitoringLinks extends RESTCommand
             throw new RESTCommandException('Empty link id');
         }
 
-        if ($ids[0] == 'radio' || $ids[0] == 'itv') {
-            if (array_key_exists('link_id', $data)) {
-                $link_id = $data['link_id'];
-            } else {
-                $link_id = FALSE;
-            }
-        } else {
-            $link_id = $ids[0];
-        }
+        $link_id = $ids[0];
 
         $manager_class = get_class($this->manager);
 
@@ -61,8 +53,11 @@ class RESTCommandMonitoringLinks extends RESTCommand
     }
 
     private function setManager(RESTRequest $request){
-        $identifiers = $request->getIdentifiers();
-        $base_class = ucfirst(!empty($identifiers[0]) && !is_numeric($identifiers[0]) ? $identifiers[0]: 'itv');
+        $type = $request->getData('type');
+        if (empty($type)) {
+            $type = (empty($_GET['type']) ? 'itv': $_GET['type']);
+        }
+        $base_class = ucfirst($type);
         if (class_exists($base_class)) {
             $this->manager = $base_class::getInstance();
         }
