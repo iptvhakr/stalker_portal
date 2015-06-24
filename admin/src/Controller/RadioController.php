@@ -18,6 +18,12 @@ class RadioController extends \Controller\BaseStalkerController {
             array('id' => 1, 'title' => $this->setLocalization('Unpublished')),
             array('id' => 2, 'title' => $this->setlocalization('Published'))
         );
+
+        $this->app['allMonitoringStatus'] = array(
+            array('id' => 1, 'title' => $this->setLocalization('monitoring off')),
+            array('id' => 2, 'title' => $this->setLocalization('errors occurred')),
+            array('id' => 3, 'title' => $this->setLocalization('no errors'))
+        );
     }
 
     // ------------------- action method ---------------------------------------
@@ -81,6 +87,8 @@ class RadioController extends \Controller\BaseStalkerController {
         $radio = $this->db->getRadioList($query_param);
         $this->radio = (is_array($radio) && count($radio) > 0) ? $radio[0] : array();
 
+        settype($this->radio['enable_monitoring'], 'bool');
+
         $form = $this->buildRadioForm($this->radio);
 
         if ($this->saveRadioData($form, TRUE)) {
@@ -108,6 +116,11 @@ class RadioController extends \Controller\BaseStalkerController {
 
         $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
 
+        if (!empty($query_param['select'])) {
+            $query_param['select'][] = 'monitoring_status_updated';
+            $query_param['select'][] = 'enable_monitoring';
+        }
+
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
         }
@@ -130,6 +143,17 @@ class RadioController extends \Controller\BaseStalkerController {
         }
         
         $response['data'] = $this->db->getRadioList($query_param);
+
+        if (is_array($response['data'])) {
+            reset($response['data']);
+            while (list($key, $row) = each($response['data'])) {
+                if ($monitoring_status = $this->getMonitoringStatus($row)) {
+                    $response['data'][$key]['monitoring_status'] = $monitoring_status;
+                } else {
+                    unset($response['data'][$key]);
+                }
+            }
+        }
 
         $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
         if ($this->isAjax) {
@@ -257,6 +281,7 @@ class RadioController extends \Controller\BaseStalkerController {
                             'data' => (empty($data['volume_correction']) ? 0: $data['volume_correction'])
                         )
                     )
+                ->add('enable_monitoring', 'checkbox', array('required' => FALSE))
                 ->add('save', 'submit');
 //                ->add('reset', 'reset');
         return $form->getForm();
@@ -303,6 +328,16 @@ class RadioController extends \Controller\BaseStalkerController {
             if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id']!= 0) {
                 $return['status'] = $this->data['filters']['status_id'] - 1;
             }
+
+            if (array_key_exists('monitoring_status', $this->data['filters']) && $this->data['filters']['monitoring_status'] != 0) {
+                if (((int)$this->data['filters']['monitoring_status']) == 1) {
+                    $return['enable_monitoring'] = 0;
+                } else {
+                    $return['enable_monitoring'] = 1;
+                    $return['monitoring_status'] = (int) ($this->data['filters']['monitoring_status'] - 2);
+                }
+            }
+
             $this->app['filters'] = $this->data['filters'];
         } else {
             $this->app['filters'] = array();
@@ -312,15 +347,40 @@ class RadioController extends \Controller\BaseStalkerController {
     
     private function getDropdownAttribute() {
         return array(
-            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),          'checked' => TRUE),
-            array('name'=>'number',             'title'=>$this->setlocalization('Order'),      'checked' => TRUE),
-            array('name'=>'name',               'title'=>$this->setlocalization('Title'),       'checked' => TRUE),
-            array('name'=>'cmd',                'title'=>$this->setlocalization('URL'),         'checked' => TRUE),
-            array('name'=>'volume_correction',  'title'=>$this->setlocalization('Volume'),      'checked' => TRUE),
-            array('name'=>'status',             'title'=>$this->setlocalization('Status'),      'checked' => TRUE),
-            array('name'=>'operations',         'title'=>$this->setlocalization('Operations'),  'checked' => TRUE),
+            array('name'=>'id',                 'title'=>$this->setlocalization('ID'),                  'checked' => TRUE),
+            array('name'=>'number',             'title'=>$this->setlocalization('Order'),               'checked' => TRUE),
+            array('name'=>'name',               'title'=>$this->setlocalization('Title'),               'checked' => TRUE),
+            array('name'=>'cmd',                'title'=>$this->setlocalization('URL'),                 'checked' => TRUE),
+            array('name'=>'volume_correction',  'title'=>$this->setlocalization('Volume'),              'checked' => TRUE),
+            array('name'=>'status',             'title'=>$this->setlocalization('Status'),              'checked' => TRUE),
+            array('name'=>'monitoring_status','title' => $this->setLocalization('Monitoring status'),   'checked' => TRUE),
+            array('name'=>'operations',         'title'=>$this->setlocalization('Operations'),          'checked' => TRUE),
         );
     }
-    
+
+
+    private function getMonitoringStatus($row) {
+        $return = '';
+        if (!$row['enable_monitoring']) {
+            $return .= $this->setlocalization('monitoring off');
+        } else {
+            $diff = time() - strtotime($row['monitoring_status_updated']);
+            if ($diff > 3600) {
+                $return .= $this->setlocalization('more than an hour ago');
+            } else if ($diff < 60) {
+                $return .= $this->setlocalization('less than a minute ago');
+            } else {
+                $return .= $this->setlocalization('{{minute}} minutes ago', '', 0, array('{{minute}}' => round($diff / 60)));
+            }
+            $return .= '<br><span style="color: ';
+            if ($row['monitoring_status'] == 1) {
+                $return .= 'green;">' . $this->setLocalization('no errors');
+            } else {
+                $return .= 'red;">' . $this->setLocalization('errors occurred');
+            }
+            $return .= '</span>';
+        }
+        return $return;
+    }
 
 }
