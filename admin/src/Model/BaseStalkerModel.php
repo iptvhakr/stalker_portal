@@ -59,15 +59,16 @@ class BaseStalkerModel {
     }
     
     public function getControllerAccess($uid, $reseller){
-        /*$params = array(' hidden ' => 1);*/
         if ($reseller) {
-            $params = array('only_top_admin<>' => 1);
+            $params['only_top_admin<>'] = 1;
         }
         if (!empty($uid)){
-            $params[" group_id"]=$uid;
+            $params["group_id"]=$uid;
         } else {
             $params["group_id"]=NULL;
         }
+        $params[' 1=1 OR `hidden`='] = 1;
+
         return $this->mysqlInstance->from("adm_grp_action_access")->where($params)->get()->all();
     }
     
