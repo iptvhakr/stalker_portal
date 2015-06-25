@@ -20,9 +20,7 @@ class BaseStalkerModel {
 
     /**  Начиная с версии PHP 5.3.0  */
     public static function __callStatic($name, $arguments) {
-        if (!method_exists($this, $name)) {
-            return FALSE;
-        }
+        return FALSE;
     }
 
     public function setReseller($reseller_id){

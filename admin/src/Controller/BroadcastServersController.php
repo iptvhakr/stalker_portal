@@ -133,7 +133,7 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         $this->app['zoneName'] = $this->zone['name'];
         ob_end_clean();
         
-        $this->app['breadcrumbs']->addItem($this->setlocalization('Streaming area'), "{$this->workURL}/{$this->app[controller_alias]}/broadcast-zone-list");
+        $this->app['breadcrumbs']->addItem($this->setlocalization('Streaming area'), "{$this->workURL}/{$this->app["controller_alias"]}/broadcast-zone-list");
         $this->app['breadcrumbs']->addItem($this->setlocalization('Edit area'));
         
         return $this->app['twig']->render('BroadcastServers_add_zone.twig');
@@ -446,24 +446,26 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
         if (empty($countries)) {
             $countries[] = '';
         }
+        $disabled_countries["0"] = '';
+        $countries["0"] = '';
 
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))
                 ->add('id', 'hidden')
-                ->add('name', 'text', array('constraints' => array(
-                        new Assert\NotBlank(),
-                        'required' => TRUE
-                    ), 'required' => TRUE))
+                ->add('name', 'text', array(
+                    'constraints' => new Assert\NotBlank(),
+                    'required' => TRUE
+                ))
                 ->add('default_zone', 'checkbox', $default_array)
                 ->add('disabled_countries_json', 'hidden')
                 ->add('disabled_countries', 'choice', array(
                     'choices' => $disabled_countries,
-//                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($disabled_countries)))),
+                    'multiple' => TRUE,
                     'required' => FALSE
                 ))
                 ->add('countries_json', 'hidden')
                 ->add('countries', 'choice', array(
                     'choices' => $countries,
-//                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($countries)))),
+                    'multiple' => TRUE,
                     'required' => FALSE
                 ))
                 ->add('save', 'submit');
@@ -476,8 +478,8 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
 
             $form->handleRequest($this->request);
             $data = $form->getData();
-            $data['countries'] = json_decode($data['countries_json']);
-            $data['disabled_countries'] = json_decode($data['disabled_countries_json']);
+            $data['countries'] = array_flip(json_decode($data['countries_json']));
+            $data['disabled_countries'] = array_flip(json_decode($data['disabled_countries_json']));
             $action = (isset($this->zone) && $edit ? 'updateZone' : 'insertZone');
 
             if ($form->isValid()) {
@@ -489,9 +491,9 @@ class BroadcastServersController extends \Controller\BaseStalkerController {
                 }
                 if ($return_val = call_user_func_array(array($this->db, $action), $param)) {
                     if (!empty($data['countries'])) {
-                        foreach ($data['countries'] as $country) {
+                        foreach ($data['countries'] as $id=>$country) {
                             $this->db->insertCountriesInZone(array(
-                                'country_id' => $country,
+                                'country_id' => $id,
                                 'zone_id' => ($action == 'updateZone' ? $data['id'] : $return_val)
                             ));
                         }
