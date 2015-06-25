@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-23 16:57+0300\n"
-"PO-Revision-Date: 2015-06-24 11:20+0300\n"
-"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
+"POT-Creation-Date: 2015-06-25 12:03+0300\n"
+"PO-Revision-Date: 2015-06-25 12:04+0300\n"
+"Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -1494,7 +1494,8 @@ msgstr "Сообщения"
 
 #: ../../../tools/misctranslations.php:263
 #: ../../../tools/misctranslations.php:388 ../../../administrator/tasks.php:59
-#: ../../../administrator/tasks.php:65 ../../../../admin/json_menu/menu.json:9
+#: ../../../administrator/tasks.php:65
+#: ../../../../admin/json_menu/menu.json:9
 #: ../../../../admin/json_menu/menu.json:215
 msgid "Tasks"
 msgstr "Задания"
@@ -3309,6 +3310,14 @@ msgstr "Не все обязательные поля заполнены"
 #: ../../../tools/misctranslations.php:732
 msgid "{{minute}} minutes ago"
 msgstr "{{minute}} минут назад"
+
+#: ../../../tools/misctranslations.php:733
+msgid "Add area"
+msgstr "Добавить зону"
+
+#: ../../../tools/misctranslations.php:734
+msgid "Edit area"
+msgstr "Редактировать зону"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
@@ -7881,9 +7890,6 @@ msgstr "Отменить выполнение задания"
 msgid "Check file"
 msgstr "Проверить файл"
 
-msgid "Complete"
-msgstr "Выполнено"
-
 msgid "Completed"
 msgstr "Выполнено"
 
@@ -8150,9 +8156,9 @@ msgid ""
 "(WiFi, Ethernet), by STB model (250, 275, ...), by country (UA, RU, ...). "
 "Field is case sensitive"
 msgstr ""
-"Фильтр по user-agent, возможно настроить фильтрацию по типу подключения"
-"(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, RU, ...). "
-"Поле регистрозависимое"
+"Фильтр по user-agent, возможно настроить фильтрацию по типу "
+"подключения(WiFi, Ethernet), по модели приставки(250, 275, ...), стране (UA, "
+"RU, ...). Поле регистрозависимое"
 
 msgid ""
 "For activating this option, you must enable \"Enable monitoring\" in the "
@@ -9333,6 +9339,9 @@ msgstr "Зоны вещания"
 #: ../../../../admin/json_menu/menu.json:346
 msgid "Appearance"
 msgstr "Внешний вид"
+
+#~ msgid "Complete"
+#~ msgstr "Выполнено"
 
 #~ msgid "Time of your account is expired"
 #~ msgstr "Срок действия вашего аккаунта истек"
