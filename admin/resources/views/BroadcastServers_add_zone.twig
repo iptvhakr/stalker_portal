@@ -50,7 +50,7 @@
                         </div>
                         <div class="form-group">
                           
-                            <div class="col-sm-6">
+                            <div class="col-sm-8">
                                 <fieldset id="letters" class="col-sm-12">
                                     <div class="col-sm-4">
                                         <label class="col-sm-12 control-label">{{ 'Countries'|trans }}</label>
@@ -59,7 +59,7 @@
                                             {{ form_errors(app['form'].disabled_countries) }}
                                         </div>
                                     </div>
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                         <br><br><br><br><br>
                                         <button type="button" class="add all btn btn-block btn-default"> {{ 'all'|trans }} &gt;&gt; </button>
                                         <button type="button" class="add btn btn-block btn-default"> &gt; </button>
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div style="">
+        <div style="display: none;">
             {#{{ form_widget(app.form._token) }}#}
             {{ form_rest(app.form) }}
         </div>
@@ -102,6 +102,8 @@
         function yelp() {
             $(document).ready(function () {
                 $('head').append('<link href="{{ app.request.baseUrl }}/plugins/multiselect_transfer/style.css" type="text/css" rel="stylesheet" />');
+
+                $('#form_disabled_countries, #form_countries').find('option[value="0"]').remove();
 
                 if ($('#form_default_zone').val() == 1){
                     $('#form_default_zone').attr('checked', 'checked');
@@ -115,15 +117,10 @@
                             sendData.push(_val.val());
                         }
                     });
+                    $('#form_disabled_countries').empty().append("<option value='0'></option>");
+                    $('#form_disabled_countries option').attr('selected', 'selected');
+
                     $('#form_disabled_countries_json').val(JSON.stringify(sendData));
-
-                    if ($('#form_disabled_countries option').length <= 1) {
-                        $('#form_disabled_countries').append($("<option value='empty_val1'></option>"));
-                        $('#form_disabled_countries').append($("<option value='empty_val2'></option>"));
-                    }
-                    $('#form_disabled_countries').attr('multiple', true);
-                    $('#form_disabled_countries option:first').attr('selected', 'selected').next('option').attr('selected', 'selected');
-
 
                 var sendData =[];
                     $('#form_countries').find('option').each(function(index, val){
@@ -133,12 +130,8 @@
                         }
                     });
                     $('#form_countries_json').val(JSON.stringify(sendData));
-                    if ($('#form_countries option').length <= 1) {
-                        $('#form_countries').append($("<option value='empty_val1'></option>"));
-                        $('#form_countries').append($("<option value='empty_val2'></option>"));
-                    }
-                    $('#form_countries').attr('multiple', true);
-                    $('#form_countries option:first').attr('selected', 'selected').next('option').attr('selected', 'selected');;
+                    $('#form_countries').empty().append("<option value='0'></option>");
+                    $('#form_countries option').attr('selected', 'selected');
                 });
             });
         }
