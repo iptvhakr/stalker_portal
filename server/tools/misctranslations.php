@@ -730,3 +730,5 @@ _('Chinese');
 _('Zulu');
 _('Not all required fields are filled');
 _('{{minute}} minutes ago');
+_('Add area');
+_('Edit area');
