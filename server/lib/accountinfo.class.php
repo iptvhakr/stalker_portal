@@ -25,11 +25,15 @@ class AccountInfo implements \Stalker\Lib\StbApi\AccountInfo
 
         $info['last_change_status'] = $user->getProfileParam('last_change_status');
 
-        if (Config::getSafe('enable_internal_billing', 'false') && !array_key_exists('end_date', $info)) {
+        if (Config::getSafe('enable_internal_billing', false) && !array_key_exists('end_date', $info)) {
             $expire_billing_date = $user->getProfileParam('expire_billing_date');
             if (strtotime($expire_billing_date) > 0) {
                 $info['end_date'] = $expire_billing_date;
             }
+        }
+
+        if (!array_key_exists('account_balance', $info) && $user->getProfileParam('account_balance') != ''){
+            $info['account_balance'] = $user->getProfileParam('account_balance');
         }
 
         if (array_key_exists('end_date', $info)){
