@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-06-25 12:03+0300\n"
-"PO-Revision-Date: 2015-06-25 12:03+0300\n"
+"POT-Creation-Date: 2015-06-25 15:57+0300\n"
+"PO-Revision-Date: 2015-06-25 15:57+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -197,10 +197,10 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
 #: ../../../../admin/src/Controller/InfoportalController.php:308
-#: ../../../../admin/src/Controller/TariffsController.php:328
-#: ../../../../admin/src/Controller/TariffsController.php:348
-#: ../../../../admin/src/Controller/TariffsController.php:371
-#: ../../../../admin/src/Controller/TariffsController.php:461
+#: ../../../../admin/src/Controller/TariffsController.php:330
+#: ../../../../admin/src/Controller/TariffsController.php:350
+#: ../../../../admin/src/Controller/TariffsController.php:373
+#: ../../../../admin/src/Controller/TariffsController.php:463
 #: ../../../../admin/src/Controller/AdminsController.php:199
 #: ../../../../admin/src/Controller/AdminsController.php:222
 #: ../../../../admin/src/Controller/AdminsController.php:260
@@ -606,25 +606,30 @@ msgstr "Expire billing date"
 msgid "Quantity of users"
 msgstr "Quantity of users"
 
-#: ../../../../admin/src/Controller/TariffsController.php:93
-#: ../../../../admin/src/Controller/TariffsController.php:143
+#: ../../../../admin/src/Controller/TariffsController.php:95
+#: ../../../../admin/src/Controller/TariffsController.php:145
 #: ../../../../admin/json_menu/menu.json:139
 msgid "Service packages"
 msgstr "Service packages"
 
-#: ../../../../admin/src/Controller/TariffsController.php:94
+#: ../../../../admin/src/Controller/TariffsController.php:96
 msgid "Add package"
 msgstr "Add package"
 
-#: ../../../../admin/src/Controller/TariffsController.php:144
+#: ../../../../admin/src/Controller/TariffsController.php:146
 msgid "Edit package"
 msgstr "Edit package"
 
-#: ../../../../admin/src/Controller/TariffsController.php:179
-#: ../../../../admin/src/Controller/TariffsController.php:221
+#: ../../../../admin/src/Controller/TariffsController.php:181
+#: ../../../../admin/src/Controller/TariffsController.php:223
 #: ../../../../admin/json_menu/menu.json:144
 msgid "Tariff plans"
 msgstr "Tariff plans"
+
+#: ../../../../admin/src/Controller/TariffsController.php:635
+#: ../../../../admin/src/Controller/TariffsController.php:691
+msgid "ID already used"
+msgstr "ID already used"
 
 #: ../../../../admin/src/Controller/AdminsController.php:108
 #: ../../../../admin/json_menu/menu.json:203

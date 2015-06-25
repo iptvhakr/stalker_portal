@@ -141,7 +141,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            
                             <div class="col-sm-8">
                                 <fieldset id="letters" class="col-sm-12">
                                     <div class="col-sm-4">
@@ -276,8 +275,9 @@
                     $('#form_type option[value="tv"]').attr('selected', 'selected');
                 }
                 $('#form_type').change();
-                
-                
+
+                $('#form_disabled_services, #form_services').find('option[value="0"]').remove();
+
                 $(document).on('click', '#form_save', function(){
                 var sendData =[];
                     $('#form_disabled_services').find('option').each(function(index, val){
@@ -286,6 +286,9 @@
                             sendData.push(_val.val());
                         }
                     });
+                    $('#form_disabled_services').empty().append("<option value='0'></option>");
+                    $('#form_disabled_services option').attr('selected', 'selected');
+
                     $('#form_disabled_services_json').val(JSON.stringify(sendData));
                 var sendData =[];    
                     $('#form_services').find('option').each(function(index, val){
@@ -294,6 +297,10 @@
                             sendData.push(_val.val());
                         }
                     });
+
+                    $('#form_services').empty().append("<option value='0'></option>");
+                    $('#form_services option').attr('selected', 'selected');
+
                     $('#form_services_json').val(JSON.stringify(sendData));
                 });
             });

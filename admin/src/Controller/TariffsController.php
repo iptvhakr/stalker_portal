@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
+use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Form\FormError;
 
 class TariffsController extends \Controller\BaseStalkerController {
 
@@ -595,6 +597,8 @@ class TariffsController extends \Controller\BaseStalkerController {
         if (array_key_exists('all_services', $data)) {
             $val = $data['all_services'];
             settype($data['all_services'], 'bool');
+        } else {
+            $val = FALSE;
         }
         $all_services = $services = $disabled_services = array('');
         if (!empty($data)) {
@@ -611,41 +615,44 @@ class TariffsController extends \Controller\BaseStalkerController {
             }
         }
 
-        if (empty($services)) {
-            $services[] = '';
-        }
-
-        if (empty($disabled_services)) {
-            $disabled_services[] = '';
-        }
+        $disabled_services["0"] = '';
+        $services["0"] = '';
 
         $allPackageTypes = array_combine($this->getFieldFromArray($this->allPackageTypes, 'id'), $this->getFieldFromArray($this->allPackageTypes, 'title'));
         $allServiceTypes = array_combine($this->getFieldFromArray($this->allServiceTypes, 'id'), $this->getFieldFromArray($this->allServiceTypes, 'title'));
-        
+
+        $self = $this;
+        $self_pack_id = (!empty($data["id"])? $data["id"]: '');
         $form = $builder->createBuilder('form', $data, array('csrf_protection' => false))
                 ->add('id', 'hidden')
-                ->add('external_id', 'text', array('constraints' => array(
-                        new Assert\NotBlank(),
+                ->add('external_id', 'text', array(
+                        'constraints' => array(
+                            new Assert\NotBlank(),
+                            new Assert\Callback(array(
+                                "methods"   =>  array(function ($external_id, ExecutionContext $context) use ($self, $self_pack_id) {
+                                    $finded = $self->db->getTariffsList(array('where' => array('external_id' => $external_id, "id<>"=>$self_pack_id)));
+                                    if (!empty($finded)) {
+                                        $context->addViolation($self->setLocalization('ID already used'));
+                                    }
+                                }),
+                            ))
+                        ),
                         'required' => TRUE
-                    ), 'required' => TRUE))
-                ->add('name', 'text', array('constraints' => array(
-                        new Assert\NotBlank(),
+                    ))
+                ->add('name', 'text', array(
+                    'constraints' => new Assert\NotBlank(),
                         'required' => TRUE
-                    ), 'required' => TRUE))
+                    ))
                 ->add('description', 'textarea', array('required' => false))
                 ->add('type', 'choice', array(
                     'choices' => $allPackageTypes,
-                    'constraints' => array(
-                        new Assert\Choice(array('choices' => array_keys($allPackageTypes))), new Assert\NotBlank()
-                    ),
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($allPackageTypes))), new Assert\NotBlank()),
                     'required' => TRUE
                 ))
                 ->add('service_type', 'choice', array(
                     'choices' => $allServiceTypes,
-                    'constraints' => array(
-                        new Assert\Choice(array('choices' => array_keys($allServiceTypes)))//, new Assert\NotBlank()
-                    ),
-                    'required' => TRUE
+                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($allServiceTypes)))),
+                    'required' => FALSE
                 ))
                 ->add('price', 'text', array('required' => false))
                 ->add('rent_duration', 'text', array('required' => false))
@@ -653,13 +660,13 @@ class TariffsController extends \Controller\BaseStalkerController {
                 ->add('disabled_services_json', 'hidden')
                 ->add('disabled_services', 'choice', array(
                     'choices' => $disabled_services,
-//                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($disabled_services)))),
+                    'multiple' => TRUE,
                     'required' => FALSE
                 ))
                 ->add('services_json', 'hidden')
                 ->add('services', 'choice', array(
                     'choices' => $services,
-//                    'constraints' => array(new Assert\Choice(array('choices' => array_keys($services)))),
+                    'multiple' => TRUE,
                     'required' => FALSE
                 ))
                 ->add('save', 'submit');
@@ -672,15 +679,16 @@ class TariffsController extends \Controller\BaseStalkerController {
 
             $form->handleRequest($this->request);
             $data = $form->getData();
-            $data['services'] = json_decode($data['services_json']);
-            $data['disabled_services'] = json_decode($data['disabled_services_json']);
+            $data['services'] = array_flip(json_decode($data['services_json']));
+            $data['disabled_services'] = array_flip(json_decode($data['disabled_services_json']));
             $action = (isset($this->package) && $edit ? 'updatePackage' : 'insertPackage');
-            $package_external_id = $this->db->searchOneRadioParam(array('name' => $data['name']));
+            $package_external_id = $this->db->getTariffsList(array('where' => array('external_id' => $data['external_id'], "id<>"=>($edit? $data['id']: ''))));
             $data['all_services'] = !empty($data['all_services']) ? (int) $data['all_services'] : 0;
             if (empty($data['service_type'])) {
                 $data['service_type'] = 'periodic';
             }
-            if ($edit && !empty($data['id']) && (!empty($package_external_id) && $package_external_id != $data['package_external_id'])) {
+            if ($edit && (!empty($package_external_id) && $package_external_id[0]['external_id'] != $data['external_id'])) {
+                $form->get('external_id')->addError(new FormError($this->setLocalization('ID already used')));
                 return FALSE;
             }
             if ($form->isValid()) {
@@ -695,9 +703,9 @@ class TariffsController extends \Controller\BaseStalkerController {
                 }
                 if ($return_val = call_user_func_array(array($this->db, $action), $param)) {
                     if (!empty($data['services'])) {
-                        foreach ($data['services'] as $service) {
+                        foreach ($data['services'] as $id => $service) {
                             $this->db->insertServices(array(
-                                'service_id' => $service,
+                                'service_id' => $id,
                                 'package_id' => ($action == 'updatePackage' ? $data['id'] : $return_val),
                                 'type' => $data['type']
                             ));
@@ -743,6 +751,8 @@ class TariffsController extends \Controller\BaseStalkerController {
         if (array_key_exists('user_default', $data)) {
             $val = $data['user_default'];
             settype($data['user_default'], 'bool');
+        } else {
+            $val = FALSE;
         }
         $tmp = $this->db->getTariffsList(array('select' => array('id', 'name'), 'order' => array('id' => '')));
         $all_packeges = array_combine($this->getFieldFromArray($tmp, 'id'), $this->getFieldFromArray($tmp, 'name'));
