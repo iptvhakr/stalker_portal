@@ -1540,7 +1540,7 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
     }
 
     public static function getServices(){
-        Mysql::$debug=true;
+        /*Mysql::$debug=true;*/
         return Mysql::getInstance()->select('id, CONCAT_WS(". ", cast(number as char), name) as name')->from('itv')->orderby('number')->get()->all();
     }
 
