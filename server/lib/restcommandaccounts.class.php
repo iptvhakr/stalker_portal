@@ -35,7 +35,7 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('HTTP POST data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'status', 'stb_mac', 'comment', 'expire_billing_date'), true);
+        $allowed_to_update_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'status', 'stb_mac', 'comment', 'end_date', 'account_balance'), true);
 
         $account = array_intersect_key($data, $allowed_to_update_fields);
 
@@ -82,7 +82,7 @@ class RESTCommandAccounts extends RESTCommand
             throw new RESTCommandException('HTTP POST data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'status', 'stb_mac', 'comment', 'expire_billing_date'), true);
+        $allowed_to_update_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'status', 'stb_mac', 'comment', 'end_date', 'account_balance'), true);
 
         $account = array_intersect_key($data, $allowed_to_update_fields);
 

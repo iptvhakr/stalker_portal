@@ -7,7 +7,7 @@ class RESTCommandStb extends RESTCommand
 
     public function __construct(){
         $this->manager = Stb::getInstance();
-        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'login', 'status', 'online', 'additional_services_on', 'ip', 'version', 'expire_billing_date'), true);
+        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'login', 'status', 'online', 'additional_services_on', 'ip', 'version', 'expire_billing_date', 'account_balance'), true);
     }
 
     public function get(RESTRequest $request){
@@ -25,12 +25,17 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('HTTP PUT data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('status', 'additional_services_on', 'ls', 'reboot', 'expire_billing_date'), true);
+        $allowed_to_update_fields = array_fill_keys(array('status', 'additional_services_on', 'ls', 'reboot', 'end_date'), true);
 
         $data = array_intersect_key($put, $allowed_to_update_fields);
 
         if (array_key_exists('status', $data)){
             $data['status'] = intval(!$data['status']);
+        }
+
+        if (isset($data['end_date'])){
+            $data['expire_billing_date'] = $data['end_date'];
+            unset($data['end_date']);
         }
 
         if (empty($data)){
@@ -73,12 +78,17 @@ class RESTCommandStb extends RESTCommand
             throw new RESTCommandException('HTTP POST data is empty');
         }
 
-        $allowed_to_update_fields = array_fill_keys(array('mac', 'login', 'password', 'status', 'additional_services_on', 'ls', 'expire_billing_date'), true);
+        $allowed_to_update_fields = array_fill_keys(array('mac', 'login', 'password', 'status', 'additional_services_on', 'ls', 'end_date', 'account_balance'), true);
 
         $data = array_intersect_key($data, $allowed_to_update_fields);
 
         if (empty($data)){
             throw new RESTCommandException('Insert data is empty');
+        }
+
+        if (isset($data['end_date'])){
+            $data['expire_billing_date'] = $data['end_date'];
+            unset($data['end_date']);
         }
 
         if (!empty($data['mac'])){
@@ -116,11 +126,19 @@ class RESTCommandStb extends RESTCommand
 
         $allowed_fields = $this->allowed_fields;
 
-        $list = array_map(function($item) use ($allowed_fields){
+        $enable_internal_billing = Config::getSafe('enable_internal_billing', false);
+
+        $list = array_map(function($item) use ($allowed_fields, $enable_internal_billing){
 
             $item = array_intersect_key($item, $allowed_fields);
 
             $item['status'] = intval(!$item['status']);
+
+            if ($enable_internal_billing){
+                $item['end_date'] = $item['expire_billing_date'];
+            }
+
+            unset($item['expire_billing_date']);
 
             return $item;
         },

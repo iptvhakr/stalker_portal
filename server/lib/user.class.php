@@ -533,7 +533,7 @@ class User implements \Stalker\Lib\StbApi\User
     public function getAccountInfo(){
         $info = Mysql::getInstance()
             ->select('login, fname as full_name, phone, ls as account_number, external_id as tariff_plan, serial_number as stb_sn,
-                mac as stb_mac, stb_type, status, keep_alive>=FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout').') online, ip, version, comment, expire_billing_date')
+                mac as stb_mac, stb_type, status, keep_alive>=FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout').') online, ip, version, comment, expire_billing_date as end_date, account_balance')
             ->from('users')
             ->join('tariff_plan', 'tariff_plan_id', 'tariff_plan.id', 'LEFT')
             ->where(array('users.id' => $this->id))
@@ -542,8 +542,12 @@ class User implements \Stalker\Lib\StbApi\User
 
         $info['status'] = intval(!$info['status']);
 
-                if ($info['tariff_plan'] === null){
+        if ($info['tariff_plan'] === null){
             $info['tariff_plan'] = Mysql::getInstance()->from('tariff_plan')->where(array('user_default' => 1))->get()->first('external_id');
+        }
+
+        if (!Config::getSafe('enable_internal_billing', false)){
+            unset($info['end_date']);
         }
 
         $packages = $this->getPackages();
@@ -570,12 +574,13 @@ class User implements \Stalker\Lib\StbApi\User
 
     public static function createAccount($account){
 
-        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'tariff_plan_id', 'stb_mac', 'comment', 'expire_billing_date'), true);
+        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'tariff_plan_id', 'stb_mac', 'comment', 'end_date', 'account_balance'), true);
 
         $key_map = array(
             'full_name'      => 'fname',
             'account_number' => 'ls',
             'stb_mac'        => 'mac',
+            'end_date'       => 'expire_billing_date'
         );
 
         $new_account = array_intersect_key($account, $allowed_fields);
@@ -622,12 +627,13 @@ class User implements \Stalker\Lib\StbApi\User
 
     public function updateAccount($account){
 
-        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'stb_mac', 'comment', 'expire_billing_date'), true);
+        $allowed_fields = array_fill_keys(array('login', 'password', 'full_name', 'phone', 'account_number', 'tariff_plan', 'stb_mac', 'comment', 'end_date', 'account_balance'), true);
 
         $key_map = array(
             'full_name'      => 'fname',
             'account_number' => 'ls',
-            'stb_mac'        => 'mac'
+            'stb_mac'        => 'mac',
+            'end_date'       => 'expire_billing_date'
         );
 
         $new_account = array_intersect_key($account, $allowed_fields);
