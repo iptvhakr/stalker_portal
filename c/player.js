@@ -1655,12 +1655,44 @@ player.prototype.event_callback = function(event, params){
         case 33: // HDMI off
         {
             window.clearTimeout(this.hdmi_reaction_timer);
+
+            _debug('stb.profile[hdmi_event_reaction]', stb.profile['hdmi_event_reaction']);
+
             if (stb.profile['hdmi_event_reaction']){
+
+                /*  GetHDMIConnectionState
+                 *  0     | HDMI disconnected from TV.
+                 *  1     | HDMI connected to TV, but not in active state e.i. standby mode, TV is off
+                 *  2     | HDMI connected to TV in active state.
+                 */
+
+                _debug('stb.GetHDMIConnectionState()', typeof(stb.GetHDMIConnectionState) == 'function' ? stb.GetHDMIConnectionState() : undefined);
+
+                // wait 3s to get more real GetHDMIConnectionState
+                var hdmi_reaction_timeout = (stb.profile['hdmi_event_reaction'] == 1 ? 3 : stb.profile['hdmi_event_reaction']) * 1000 * ((typeof(stb.GetHDMIConnectionState) == 'function' && stb.GetHDMIConnectionState() == 2) ? 0: 1);
+
+                _debug('hdmi_reaction_timeout', hdmi_reaction_timeout);
+
                 this.hdmi_reaction_timer = window.setTimeout(function(){
+
+                    _debug('stb.power_off', stb.power_off);
+
                     if (!stb.power_off){
+
+                        _debug('stb.cur_place', stb.cur_place);
+                        _debug('self.is_tv', self.is_tv);
+
                         if (stb.cur_place == 'tv' && self.is_tv){
                             if (typeof(stb.GetHDMIConnectionState) == 'function'){
-                                if (stb.GetHDMIConnectionState() == 2) {
+
+                                var hdmi_connection_state = stb.GetHDMIConnectionState();
+
+                                _debug('hdmi_connection_state', hdmi_connection_state);
+
+                                if (hdmi_connection_state == 2) {
+
+                                    _debug('module.tv.on', module.tv.on);
+
                                     if (module.tv.on) {
                                         module.tv.cur_page = 0;
                                         module.tv.load_data();
@@ -1677,7 +1709,7 @@ player.prototype.event_callback = function(event, params){
                             keydown_observer.emulate_key(key.PAUSE);
                         }
                     }
-                }, stb.profile['hdmi_event_reaction'] * 1000 * ((typeof(stb.GetHDMIConnectionState) == 'function' && stb.GetHDMIConnectionState() == 2) ? 0: 1));
+                }, hdmi_reaction_timeout);
             }
 
             break;
