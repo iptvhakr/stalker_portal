@@ -1,7 +1,261 @@
 {% extends 'layout.twig' %}
-{% set active = 'tv-channels' %}
-{% set title = 'tv-channels' %}
+{% set title = 'index' %}
 
 {% block content %}
+    <div id="iptv_list" class="dashboard">
+        <div class="row" style="background: #fff none repeat scroll 0 0;"></div>
+        <div class="row">
+            <br>
 
+            <div class="col-xs-12 col-sm-5">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <span>{{ 'Statistisc'|trans }}</span>
+                        </div>
+                        <div class="circle-button box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {#<thead>
+                            <tr>
+                                <th data-filter="category">{{ 'Category'|trans }}</th>
+                                <th data-filter="number">{{ 'Number'|trans }}</th>
+                            </tr>
+                            </thead>#}
+                            <tbody>
+                            {% if attribute(app, 'datatables') is defined and attribute(app.datatables, 'datatable-1') is defined %}
+                            {%  autoescape false %}
+                                {% for item in app.datatables['datatable-1'].data %}
+                                    <tr>
+                                        <td>{{ item.category }}</td>
+                                        <td>{{ item.number }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endautoescape %}
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-7">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <span>{{ 'Storages (measured in the number of the current session)'|trans }}</span>
+                        </div>
+                        <div class="circle-button box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+                        <div class="box-content">
+                            <div class="dataTables_processing"></div>
+                            <table class="table  table-hover table-datatable" id="datatable-2">
+                                <thead>
+                                <tr>
+                                    <th data-filter="events_id">#</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-5">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <span>{{ 'Streaming servers'|trans }}</span>
+                        </div>
+                        <div class="circle-button box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+                        <div class="box-content">
+                            <div class="dataTables_processing"></div>
+                            <table class="table  table-hover table-datatable" id="datatable-3">
+                                <thead>
+                                <tr>
+                                    <th data-filter="events_id">#</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-7">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <span>{{ 'Tasks'|trans }}</span>
+                        </div>
+                        <div class="circle-button box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+                        <div class="box-content">
+                            <div class="dataTables_processing"></div>
+                            <table class="table  table-hover table-datatable" id="datatable-4">
+                                <thead>
+                                <tr>
+                                    <th data-filter="events_id">#</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <span>{{ 'User\'s activity'|trans }}</span>
+                        </div>
+                        <div class="circle-button box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-4">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="box-name">
+                            <span>{{ 'Popularity of services'|trans }}</span>
+                        </div>
+                        <div class="circle-button box-icons">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                        <div class="no-move"></div>
+                    </div>
+                    <div class="box-content">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" defer>
+        // Draw all test xCharts
+        function DrawAllxCharts() {
+            xGraph1();
+            xGraph2();
+            xGraph3();
+        }
+
+        function TestTable1() {
+            $.getScript('plugins/datatables/fnReloadAjax.js');
+            $.extend( $.fn.dataTable.defaults, {
+                "searching": false,
+                "ordering": false,
+                "processing": true,
+                "serverSide": true,
+                "bFilter": false,
+                "bPaginate": true,
+                "bInfo": false,
+                "bJQueryUI": true,
+                'iDisplayLength': 5,
+                'bLengthChange': false,
+                "language": {
+                    "url": "{{ app.datatable_lang_file }}"
+                }
+            } );
+
+            {% if attribute(app, 'datatables') is defined %}
+            {% for item in app.datatables %}
+            $('#{{ item.datatableID }}').dataTable({
+                "ajax": {
+                    "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/{{ item.json_action_alias }}",
+                    "data": function (d) {/*
+                        var RegExp = /video_id=(\d+)/;
+                        if (video_id = RegExp.exec(window.location.href)) {
+                            d.video_id = video_id[1];
+                        }
+                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || ''
+                        for (var i in params) {
+                            d[i] = params[i];
+                        }
+
+                        $('input[id^="filter_"]').each(function () {
+                            d['filters[' + $(this).attr("id").replace("filter_", "") + ']'] = $(this).val();
+                        });*/
+                    }
+                },
+                "deferLoading": {{ item.data|length }},
+                "columns": [
+                    {% for key,field in item.data.0 %}
+                    {"data": "{{ key }}"}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                "aoColumnDefs": [
+                    /*{"width": '20%', "targets": [-3]}*/
+                ]
+            }).prev('.dataTables_processing').hide('');
+            $('#{{ item.datatableID }}').DataTable().order( [ 0, 'desc' ] ).draw();
+            {% endfor%}
+            {% endif %}
+        }
+
+
+        function yelp() {
+            $(document).ready(function () {
+
+                $("#content, #main").css("background-color", "#f2f2f2");
+
+                LoadDataTablesScripts(TestTable1);
+
+                // Load required scripts and callback to draw
+                /*LoadXChartScript(DrawAllxCharts);*/
+                // Required for correctly resize charts, when boxes expand
+                var graphxChartsResize;
+                $(".box").resize(function (event) {
+                    event.preventDefault();
+                    clearTimeout(graphxChartsResize);
+                    /*graphxChartsResize = setTimeout(DrawAllxCharts, 500);*/
+                });
+                /*WinMove();*/
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", yelp, false);
+    </script>
 {% endblock %}

@@ -528,6 +528,13 @@ z-index:20;
   -o-transition: 0.2s;
   transition: 0.2s;
 }
+
+.circle-button.box-icons a {
+    border-left:  inherit !important;
+    line-height: inherit !important;
+    text-align:  inherit !important;
+}
+
 .box-icons a.beauty-table-to-json {
   width: auto;
   padding: 0 10px;
@@ -3206,7 +3213,7 @@ outline: 0px none currentColor!important;
 	font-weight:bold !important;
 }
 
-#add_channel .box-header .box-icons {
+#add_channel .box-header .box-icons, .circle-button {
   background-color:#FFF;
 	margin:6px;
 	padding-left:4px;

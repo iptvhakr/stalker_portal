@@ -465,8 +465,9 @@ class BaseStalkerController {
     protected function getParentActionAccess(){
         $return = FALSE;
         if ($this->isAjax && preg_match("/-json$/", $this->app['action_alias'])) {
-            $parent_1 = str_replace('-json', '', $this->app['action_alias']);
-            $parent_2 = str_replace('-list-json', '', $this->app['action_alias']);
+            $action_alias = str_replace(array('-composition'), '', $this->app['action_alias']);
+            $parent_1 = str_replace('-json', '', $action_alias);
+            $parent_2 = str_replace('-list-json', '', $action_alias);
             $parent_access = 0;
             if ($parent_1 == $this->app['controller_alias'] || $parent_2 == $this->app['controller_alias']) {
                 $parent_access = $this->app['controllerAccessMap'][$this->app['controller_alias']]['access'];

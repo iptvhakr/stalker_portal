@@ -21,12 +21,13 @@ class IndexController extends \Controller\BaseStalkerController {
     // ------------------- action method ---------------------------------------
 
     public function index() {
-        if (empty($this->app['action_alias'])) {
-            return $this->app->redirect('tv-channels/iptv-list');
-        }
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
+        $datatables['datatable-1'] = $this->index_datatable1_list_json();
+
+        $this->app['datatables'] = $datatables;
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -44,7 +45,7 @@ class IndexController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'dropdownAttributesAction';
-        $error = 'Не удалось';
+        $error = $this->setLocalization('Не удалось');
 
         $aliases = trim(str_replace($this->workURL, '', $this->refferer), '/');
         $aliases = array_pad(explode('/', $aliases), 2, 'index');
@@ -83,6 +84,63 @@ class IndexController extends \Controller\BaseStalkerController {
         }
 
         exit;
+    }
+
+    public function index_datatable1_list_json(){
+        $data = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+
+        $data['action'] = 'datatableReload';
+        $data['datatableID'] = 'datatable-1';
+        $data['json_action_alias'] = 'index-datatable1-list-json';
+        $error = $this->setLocalization('Не удалось');
+
+        $data['data'] = array();
+        $row = array('category'=>'', 'number' => '');
+
+        $row['category'] = $this->setLocalization('Users online');
+        $row['number'] = '<span class="txt-success">' . $this->db->get_users('online') . '</sapn>';
+        $data['data'][] = $row;
+
+        $row['category'] = $this->setLocalization('Users offline');
+        $row['number'] = '<span class="txt-danger">' . $this->db->get_users('offline') . '</sapn>';
+        $data['data'][] = $row;
+
+        $row['category'] = $this->setLocalization('TV channels');
+        $row['number'] = $this->db->getCountForStatistics('itv');
+        $data['data'][] = $row;
+
+        $row['category'] = $this->setLocalization('Films, serials');
+        $row['number'] = $this->db->getCountForStatistics('video');
+        $data['data'][] = $row;
+
+        $row['category'] = $this->setLocalization('Audio albums');
+        $row['number'] = $this->db->getCountForStatistics('audio_albums');
+        $data['data'][] = $row;
+
+        $row['category'] = $this->setLocalization('Karaoke songs');
+        $row['number'] = $this->db->getCountForStatistics('karaoke');
+        $data['data'][] = $row;
+
+        $row['category'] = $this->setLocalization('Installed applications');
+        $row['number'] = 0;
+        $data['data'][] = $row;
+
+        $data["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        if ($this->isAjax) {
+            $data = $this->generateAjaxResponse($data);
+            return new Response(json_encode($data), (empty($error) ? 200 : 500));
+        } else {
+            return $data;
+        }
     }
 
     //------------------------ service method ----------------------------------
