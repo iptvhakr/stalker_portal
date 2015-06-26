@@ -192,7 +192,15 @@ class BaseStalkerController {
                     return $this->app->redirect($this->workURL . '/login', 302);
                 }
             }
-            if($this->access_level == 0 || ($this->isAjax && $this->access_level < 4) || (!empty($this->postData) && $this->access_level < 2)) {
+
+            $parent_access = $this->getParentActionAccess();
+
+            if(
+                $this->access_level < 1 ||
+                (!empty($this->postData) && !$this->isAjax && $this->access_level < 2) ||
+                (!empty($this->postData) && $this->isAjax && $this->access_level < 4 && $parent_access === FALSE) ||
+                ($parent_access !== FALSE && !$parent_access)
+            ) {
                 if ($this->isAjax) {
                     $response = $this->generateAjaxResponse(array(), 'Access denied');
                     return new Response(json_encode($response), 403);
@@ -344,7 +352,8 @@ class BaseStalkerController {
                 $this->access_level = $this->app['controllerAccessMap'][$this->app['controller_alias']]['access'];
                 return;
             } elseif (array_key_exists($this->app['action_alias'], $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'])) {
-                $this->access_level = $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'][$this->app['action_alias']]['access'];
+                $parent_access = $this->getParentActionAccess();
+                $this->access_level = ($parent_access !== FALSE) ? $parent_access: $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'][$this->app['action_alias']]['access'];
                 return;
             }
         }
@@ -451,5 +460,23 @@ class BaseStalkerController {
 
     protected function setDataTablePluginSettings(){
         $this->app['datatable_lang_file'] = "./plugins/datatables/lang/" . str_replace('utf8', 'json', $this->app['locale']);
+    }
+
+    protected function getParentActionAccess(){
+        $return = FALSE;
+        if ($this->isAjax && preg_match("/-json$/", $this->app['action_alias'])) {
+            $parent_1 = str_replace('-json', '', $this->app['action_alias']);
+            $parent_2 = str_replace('-list-json', '', $this->app['action_alias']);
+            $parent_access = 0;
+            if ($parent_1 == $this->app['controller_alias'] || $parent_2 == $this->app['controller_alias']) {
+                $parent_access = $this->app['controllerAccessMap'][$this->app['controller_alias']]['access'];
+            } elseif (array_key_exists($parent_1, $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'])){
+                $parent_access = $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'][$parent_1]['access'];
+            } elseif (array_key_exists($parent_2, $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'])) {
+                $parent_access = $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'][$parent_2]['access'];
+            }
+            $return = (int) ($parent_access > 0);
+        }
+        return $return;
     }
 }

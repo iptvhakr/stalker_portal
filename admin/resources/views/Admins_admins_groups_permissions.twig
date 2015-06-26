@@ -102,7 +102,7 @@
                                             <div class="toggle-switch toggle-switch-success">
                                                 <label>
                                                     <input type="hidden" name="controller['{{ row.controller_name }}']['{{ row.action_name }}']['is_ajax']" value="{% if row.is_ajax == 1%}on{% else %}off{% endif %}">
-                                                    <input type="checkbox" {% if row.is_ajax == 1 %} value="off" disabled="disabled" {% elseif row.view_access == 1%}checked="checked"{% endif %} name="controller['{{ row.controller_name }}']['{{ row.action_name }}']['view_access']" >
+                                                    <input type="checkbox" {% if row.is_ajax == 1 %}disabled="disabled"{% endif %} value="{% if row.view_access == 1 %}on" checked="checked"{% else %}off"{% endif %} name="controller['{{ row.controller_name }}']['{{ row.action_name }}']['view_access']" >
                                                     <div class="toggle-switch-inner"></div>
                                                     <div class="toggle-switch-switch"></div>
                                                 </label>

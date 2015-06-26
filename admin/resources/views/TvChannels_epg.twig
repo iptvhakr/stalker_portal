@@ -58,8 +58,7 @@
                                                 <td>{{ item.uri }}</td>
                                                 <td>{{ item.etag }}</td>
                                                 <td>{{ item.updated|date('M d, Y H:i') }}</td>
-                                                <td>{% if item.status == 1 %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span>{{ 'Unpublished'|trans }}</span>{% endif %}
-                                                </td>
+                                                <td>{% if item.status == 1 %}<span class="txt-success">{{ 'Published'|trans }}</span>{% else %}<span>{{ 'Unpublished'|trans }}</span>{% endif %}</td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
                                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -210,7 +209,6 @@
                 if (typeof (json.data) == 'object' && json.data.length >0) {
                     var date;
                     for (var i in json.data) {
-                        var id = json.data[i].id;
                         var id = json.data[i].id;
                         var status = json.data[i].status;
                         json.data[i].status = (status == 1 ?"<span class='txt-success'>{{ 'Published'|trans }}</span>":"<span>{{ 'Unpublished'|trans }}</span>");
