@@ -1682,7 +1682,7 @@ player.prototype.event_callback = function(event, params){
                         _debug('stb.cur_place', stb.cur_place);
                         _debug('self.is_tv', self.is_tv);
 
-                        if (stb.cur_place == 'tv' && self.is_tv){
+                        if ((stb.cur_place == 'tv' || stb.cur_place == 'main_menu') && self.is_tv){
                             if (typeof(stb.GetHDMIConnectionState) == 'function'){
 
                                 var hdmi_connection_state = stb.GetHDMIConnectionState();
