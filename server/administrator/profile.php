@@ -428,7 +428,15 @@ if (empty($packages)){
                 <input type="text" name="" readonly="readonly" disabled="disabled" value="<? echo $user['last_change_status'] ?>"/>
             </td>
         </tr>
-        <? if (Config::getSafe('enable_internal_billing', 'false')) { ?>
+        <tr>
+            <td>
+                <?= _('Account balance') ?>:
+            </td>
+            <td>
+                <input type="text" name="" readonly="readonly" disabled="disabled" value="<? echo $user['account_balance'] ?>"/>
+            </td>
+        </tr>
+        <? if (Config::getSafe('enable_internal_billing', false)) { ?>
         <tr>
             <td>
                 <?= _('Expire billing date') ?>:
