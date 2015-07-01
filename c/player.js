@@ -1676,8 +1676,9 @@ player.prototype.event_callback = function(event, params){
                 this.hdmi_reaction_timer = window.setTimeout(function(){
 
                     _debug('stb.power_off', stb.power_off);
+                    _debug('module.blocking.on', module.blocking.on);
 
-                    if (!stb.power_off){
+                    if (!stb.power_off && !module.blocking.on){
 
                         _debug('stb.cur_place', stb.cur_place);
                         _debug('self.is_tv', self.is_tv);
