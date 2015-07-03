@@ -1350,7 +1350,7 @@ function common_xpcom(){
 
             this.StandBy(0);
 
-            if (!this.user['display_menu_after_loading']){
+            if (!this.user['display_menu_after_loading'] && !module.blocking.on){
                 main_menu.hide();
                 stb.player.play_last();
             }

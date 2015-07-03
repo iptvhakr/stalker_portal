@@ -1316,9 +1316,14 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     $_sql .= ", now_playing_content='$video_name'";
                     break;*/
                 case 11:
-                    if (preg_match("/http:\/\/([^\/]*)/", $param, $tmp_arr)){
+                    if (preg_match("/http:\/\/([^:\/]*)/", $param, $tmp_arr)){
                          $storage_ip = $tmp_arr[1];
                          $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip, 'for_records' => 1))->get()->first('storage_name');
+                    }
+
+                    if (empty($update_data['storage_name']) && preg_match("/http:\/\/([^\/]*)/", $param, $tmp_arr)){
+                        $storage_ip = $tmp_arr[1];
+                        $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip, 'for_records' => 1))->get()->first('storage_name');
                     }
 
                     $update_data['now_playing_content'] = $param;
@@ -1333,7 +1338,12 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                         
                     break;
                 case 14:
-                    if (preg_match("/http:\/\/([^\/]*)/", $param, $tmp_arr)){
+                    if (preg_match("/http:\/\/([^:\/]*)/", $param, $tmp_arr)){
+                        $storage_ip = $tmp_arr[1];
+                        $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip, 'for_records' => 1))->get()->first('storage_name');
+                    }
+
+                    if (empty($update_data['storage_name']) && preg_match("/http:\/\/([^\/]*)/", $param, $tmp_arr)){
                         $storage_ip = $tmp_arr[1];
                         $update_data['storage_name'] = Mysql::getInstance()->from('storages')->where(array('storage_ip' => $storage_ip, 'for_records' => 1))->get()->first('storage_name');
                     }

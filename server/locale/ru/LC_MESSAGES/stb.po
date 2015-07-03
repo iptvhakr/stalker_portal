@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-03 12:48+0300\n"
-"PO-Revision-Date: 2015-07-03 12:52+0300\n"
+"POT-Creation-Date: 2015-07-03 13:34+0300\n"
+"PO-Revision-Date: 2015-07-03 13:34+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -178,22 +178,22 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/RadioController.php:194
 #: ../../../../admin/src/Controller/RadioController.php:213
 #: ../../../../admin/src/Controller/RadioController.php:236
-#: ../../../../admin/src/Controller/UsersController.php:330
-#: ../../../../admin/src/Controller/UsersController.php:362
-#: ../../../../admin/src/Controller/UsersController.php:384
-#: ../../../../admin/src/Controller/UsersController.php:404
-#: ../../../../admin/src/Controller/UsersController.php:424
-#: ../../../../admin/src/Controller/UsersController.php:441
-#: ../../../../admin/src/Controller/UsersController.php:466
-#: ../../../../admin/src/Controller/UsersController.php:492
-#: ../../../../admin/src/Controller/UsersController.php:510
-#: ../../../../admin/src/Controller/UsersController.php:532
-#: ../../../../admin/src/Controller/UsersController.php:600
-#: ../../../../admin/src/Controller/UsersController.php:618
-#: ../../../../admin/src/Controller/UsersController.php:660
-#: ../../../../admin/src/Controller/UsersController.php:818
-#: ../../../../admin/src/Controller/UsersController.php:848
-#: ../../../../admin/src/Controller/UsersController.php:882
+#: ../../../../admin/src/Controller/UsersController.php:331
+#: ../../../../admin/src/Controller/UsersController.php:363
+#: ../../../../admin/src/Controller/UsersController.php:385
+#: ../../../../admin/src/Controller/UsersController.php:405
+#: ../../../../admin/src/Controller/UsersController.php:425
+#: ../../../../admin/src/Controller/UsersController.php:442
+#: ../../../../admin/src/Controller/UsersController.php:467
+#: ../../../../admin/src/Controller/UsersController.php:493
+#: ../../../../admin/src/Controller/UsersController.php:511
+#: ../../../../admin/src/Controller/UsersController.php:533
+#: ../../../../admin/src/Controller/UsersController.php:601
+#: ../../../../admin/src/Controller/UsersController.php:619
+#: ../../../../admin/src/Controller/UsersController.php:661
+#: ../../../../admin/src/Controller/UsersController.php:819
+#: ../../../../admin/src/Controller/UsersController.php:849
+#: ../../../../admin/src/Controller/UsersController.php:883
 #: ../../../../admin/src/Controller/InfoportalController.php:222
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
@@ -304,15 +304,15 @@ msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1352
-#: ../../../../admin/src/Controller/UsersController.php:1230
+#: ../../../../admin/src/Controller/UsersController.php:1232
 #: ../../../administrator/events.php:494 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
 msgstr "Статус"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1238
-#: ../../../../admin/src/Controller/UsersController.php:1251
+#: ../../../../admin/src/Controller/UsersController.php:1240
+#: ../../../../admin/src/Controller/UsersController.php:1253
 msgid "Operations"
 msgstr "Действия"
 
@@ -434,8 +434,8 @@ msgstr "Информация недоступна"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:571
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
-#: ../../../../admin/src/Controller/UsersController.php:351
-#: ../../../../admin/src/Controller/UsersController.php:956
+#: ../../../../admin/src/Controller/UsersController.php:352
+#: ../../../../admin/src/Controller/UsersController.php:957
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "вкл"
@@ -506,11 +506,11 @@ msgstr "Добавить радио"
 msgid "Edit radio"
 msgstr "Редактировать радио"
 
-#: ../../../../admin/src/Controller/UsersController.php:79
-#: ../../../../admin/src/Controller/UsersController.php:90
-#: ../../../../admin/src/Controller/UsersController.php:103
-#: ../../../../admin/src/Controller/UsersController.php:307
-#: ../../../../admin/src/Controller/UsersController.php:1007
+#: ../../../../admin/src/Controller/UsersController.php:80
+#: ../../../../admin/src/Controller/UsersController.php:91
+#: ../../../../admin/src/Controller/UsersController.php:104
+#: ../../../../admin/src/Controller/UsersController.php:308
+#: ../../../../admin/src/Controller/UsersController.php:1008
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:66
 #: ../../../../admin/src/Controller/AdminsController.php:323
@@ -518,67 +518,67 @@ msgstr "Редактировать радио"
 msgid "Empty"
 msgstr "Пустой"
 
-#: ../../../../admin/src/Controller/UsersController.php:131
+#: ../../../../admin/src/Controller/UsersController.php:132
 msgid "Log of user"
 msgstr "Логи пользователя"
 
-#: ../../../../admin/src/Controller/UsersController.php:149
+#: ../../../../admin/src/Controller/UsersController.php:150
 msgid "STB statuses report"
 msgstr "Отчет по измененным статусам приставок"
 
-#: ../../../../admin/src/Controller/UsersController.php:173
-#: ../../../../admin/src/Controller/UsersController.php:241
+#: ../../../../admin/src/Controller/UsersController.php:174
+#: ../../../../admin/src/Controller/UsersController.php:242
 #: ../../../../admin/json_menu/menu.json:168
 msgid "Users list"
 msgstr "Список пользователей"
 
-#: ../../../../admin/src/Controller/UsersController.php:263
+#: ../../../../admin/src/Controller/UsersController.php:264
 #: ../../../../admin/json_menu/menu.json:173
 msgid "User groups"
 msgstr "Группы пользователей"
 
-#: ../../../../admin/src/Controller/UsersController.php:264
+#: ../../../../admin/src/Controller/UsersController.php:265
 msgid "STB of group"
 msgstr "приставки в группе"
 
-#: ../../../../admin/src/Controller/UsersController.php:351
-#: ../../../../admin/src/Controller/UsersController.php:957
+#: ../../../../admin/src/Controller/UsersController.php:352
+#: ../../../../admin/src/Controller/UsersController.php:958
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "выкл"
 
-#: ../../../../admin/src/Controller/UsersController.php:675
 #: ../../../../admin/src/Controller/UsersController.php:676
+#: ../../../../admin/src/Controller/UsersController.php:677
 msgid "This user is already connected to the group"
 msgstr "Пользователь уже подключен к группе"
 
-#: ../../../../admin/src/Controller/UsersController.php:678
+#: ../../../../admin/src/Controller/UsersController.php:679
 msgid "User with this MAC-address is not defined"
 msgstr "Пользователь с таким MAC-адресом не определен"
 
-#: ../../../../admin/src/Controller/UsersController.php:870
-#: ../../../../admin/src/Controller/UsersController.php:904
+#: ../../../../admin/src/Controller/UsersController.php:871
+#: ../../../../admin/src/Controller/UsersController.php:905
 #: ../../../../admin/src/Controller/AdminsController.php:630
 #: ../../../../admin/src/Controller/AdminsController.php:664
 #: ../../../../admin/src/Controller/AdminsController.php:698
 msgid "Moved"
 msgstr "Перемещено"
 
-#: ../../../../admin/src/Controller/UsersController.php:872
-#: ../../../../admin/src/Controller/UsersController.php:911
+#: ../../../../admin/src/Controller/UsersController.php:873
+#: ../../../../admin/src/Controller/UsersController.php:912
 #: ../../../../admin/src/Controller/AdminsController.php:666
 #: ../../../../admin/src/Controller/AdminsController.php:700
 msgid "Not found reseller for moving"
 msgstr "Не найден реселлер для перемещения"
 
-#: ../../../../admin/src/Controller/UsersController.php:872
-#: ../../../../admin/src/Controller/UsersController.php:911
+#: ../../../../admin/src/Controller/UsersController.php:873
+#: ../../../../admin/src/Controller/UsersController.php:912
 #: ../../../../admin/src/Controller/AdminsController.php:666
 #: ../../../../admin/src/Controller/AdminsController.php:700
 msgid "Nothing to do"
 msgstr "Нечего сохранять"
 
-#: ../../../../admin/src/Controller/UsersController.php:1225
+#: ../../../../admin/src/Controller/UsersController.php:1227
 #: ../../../administrator/profile.php:409 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -587,12 +587,12 @@ msgstr "Нечего сохранять"
 msgid "Login"
 msgstr "Логин"
 
-#: ../../../../admin/src/Controller/UsersController.php:1226
+#: ../../../../admin/src/Controller/UsersController.php:1228
 msgid "Account"
 msgstr "Лицевой счет"
 
-#: ../../../../admin/src/Controller/UsersController.php:1227
-#: ../../../../admin/src/Controller/UsersController.php:1245
+#: ../../../../admin/src/Controller/UsersController.php:1229
+#: ../../../../admin/src/Controller/UsersController.php:1247
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -602,7 +602,7 @@ msgstr "Лицевой счет"
 #: ../../../administrator/audio_track.php:245
 #: ../../../administrator/admin_groups.php:215
 #: ../../../administrator/admin_groups.php:238
-#: ../../../administrator/profile.php:540
+#: ../../../administrator/profile.php:548
 #: ../../../administrator/audio_genre.php:183
 #: ../../../administrator/stream_zones.php:257
 #: ../../../administrator/stream_zones.php:285
@@ -620,25 +620,25 @@ msgstr "Лицевой счет"
 msgid "Name"
 msgstr "Имя"
 
-#: ../../../../admin/src/Controller/UsersController.php:1228
+#: ../../../../admin/src/Controller/UsersController.php:1230
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: ../../../../admin/src/Controller/UsersController.php:1229
+#: ../../../../admin/src/Controller/UsersController.php:1231
 msgid "State"
 msgstr "Состояние"
 
-#: ../../../../admin/src/Controller/UsersController.php:1233
-#: ../../../../admin/src/Controller/UsersController.php:1249
+#: ../../../../admin/src/Controller/UsersController.php:1235
+#: ../../../../admin/src/Controller/UsersController.php:1251
 msgid "Reseller"
 msgstr "Реселлер"
 
-#: ../../../../admin/src/Controller/UsersController.php:1236
-#: ../../../administrator/profile.php:434
+#: ../../../../admin/src/Controller/UsersController.php:1238
+#: ../../../administrator/profile.php:442
 msgid "Expire billing date"
 msgstr "Действительно до"
 
-#: ../../../../admin/src/Controller/UsersController.php:1246
+#: ../../../../admin/src/Controller/UsersController.php:1248
 msgid "Quantity of users"
 msgstr "Количество пользователей"
 
@@ -3850,7 +3850,7 @@ msgid "account_terms_info"
 msgstr "Правила пользования"
 
 #: ../../../lib/accountinfo.class.php:109
-#: ../../../administrator/profile.php:542
+#: ../../../administrator/profile.php:550
 msgid "Subscribed"
 msgstr "Подключено"
 
@@ -4298,7 +4298,7 @@ msgid "Use as default"
 msgstr "По умолчанию"
 
 #: ../../../administrator/tariffs.php:355
-#: ../../../administrator/profile.php:538
+#: ../../../administrator/profile.php:546
 msgid "Packages"
 msgstr "Пакеты"
 
@@ -4689,7 +4689,7 @@ msgstr "Задание отклонено"
 
 #: ../../../administrator/playlists.php:157
 #: ../../../administrator/events.php:412
-#: ../../../administrator/profile.php:457
+#: ../../../administrator/profile.php:465
 #: ../../../administrator/administrators.php:165
 #: ../../../administrator/administrators.php:206
 msgid "Group"
@@ -4812,7 +4812,7 @@ msgstr "Служба"
 #: ../../../administrator/other_city_info.php:232
 #: ../../../administrator/help_city_info.php:222
 #: ../../../administrator/city_info.php:236
-#: ../../../administrator/profile.php:443
+#: ../../../administrator/profile.php:451
 msgid "Phone number"
 msgstr "Номер телефона"
 
@@ -5332,7 +5332,7 @@ msgstr "Отправить сообщение"
 msgid "To"
 msgstr "Кому"
 
-#: ../../../administrator/reply.php:135 ../../../administrator/profile.php:451
+#: ../../../administrator/reply.php:135 ../../../administrator/profile.php:459
 #: ../../../administrator/send_to.php:152
 msgid "Comment"
 msgstr "Примечание"
@@ -5448,29 +5448,33 @@ msgstr "Номер лицевого счета"
 msgid "Last change of status"
 msgstr "Изменение статуса"
 
-#: ../../../administrator/profile.php:502
-#: ../../../administrator/profile.php:564
+#: ../../../administrator/profile.php:433 ../../../lang/stb.php:453
+msgid "Account balance"
+msgstr "Баланс"
+
+#: ../../../administrator/profile.php:510
+#: ../../../administrator/profile.php:572
 msgid "TV subscription"
 msgstr "Подписка"
 
-#: ../../../administrator/profile.php:509 ../../../administrator/user.php:162
+#: ../../../administrator/profile.php:517 ../../../administrator/user.php:162
 #: ../../../lang/stb.php:390
 msgid "Tariff plan"
 msgstr "Тарифный план"
 
-#: ../../../administrator/profile.php:525
+#: ../../../administrator/profile.php:533
 msgid "Change"
 msgstr "Изменить"
 
-#: ../../../administrator/profile.php:534
+#: ../../../administrator/profile.php:542
 msgid "No packages available"
 msgstr "Нет доступных пакетов"
 
-#: ../../../administrator/profile.php:541
+#: ../../../administrator/profile.php:549
 msgid "Optional"
 msgstr "Опциональный"
 
-#: ../../../administrator/profile.php:567
+#: ../../../administrator/profile.php:575
 msgid "Additional services"
 msgstr "Доп. сервисы"
 
@@ -7644,10 +7648,6 @@ msgstr "Ошибка подключения"
 msgid "Authentication problem"
 msgstr "Ошибка аутентификации"
 
-#: ../../../lang/stb.php:453
-msgid "Account balance"
-msgstr "Баланс"
-
 #: ../../../lang/stb.php:456
 msgid "Start recording on the server?"
 msgstr "Начать запись на сервере?"
@@ -8625,7 +8625,7 @@ msgid "In text format"
 msgstr "В текстовом виде"
 
 msgid "Inactive"
-msgstr "По поиск неактивных"
+msgstr "Поиск неактивных"
 
 msgid "Last activity"
 msgstr "Последняя активность"

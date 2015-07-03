@@ -19,7 +19,8 @@ class UsersController extends \Controller\BaseStalkerController {
         "DATE_FORMAT(last_change_status,'%d.%m.%Y') as last_change_status",
         "concat (users.fname) as fname",
         "UNIX_TIMESTAMP(`keep_alive`) as last_active",
-        "DATE_FORMAT(`expire_billing_date`,'%d.%m.%Y') as `expire_billing_date`"
+        "DATE_FORMAT(`expire_billing_date`,'%d.%m.%Y') as `expire_billing_date`",
+        "account_balance"
     );
     private $logObjectsTypes = array(
         'itv' => 'IPTV каналы',
@@ -1041,7 +1042,8 @@ class UsersController extends \Controller\BaseStalkerController {
                     ->add('parent_password', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('settings_password', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
                     ->add('fav_itv', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
-                    ->add('version', 'textarea', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE));
+                    ->add('version', 'textarea', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE))
+                    ->add('account_balance', 'text', array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE));
         }
         if ($this->app['tarifPlanFlag']){
             $form->add('tariff_plan_id', 'choice', array(
