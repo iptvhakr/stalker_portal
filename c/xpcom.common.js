@@ -373,7 +373,12 @@ function common_xpcom(){
                 loader.append_style('load_bar');
                 loader.append_style('blocking');
 
-                loader.add(this.all_modules);
+                if (result.supermodule){
+                    this.supermodule = result.supermodule;
+                    loader.add(this.base_modules.concat([result.supermodule]));
+                }else{
+                    loader.add(this.all_modules);
+                }
             },
 
             this
@@ -410,7 +415,13 @@ function common_xpcom(){
                 this.all_modules = this.base_modules.concat(all_modules);
                 _debug('all_modules', this.all_modules);
 
-                loader.add(this.all_modules);
+                if (result.supermodule){
+                    this.supermodule = result.supermodule
+                    loader.add(this.base_modules.concat([result.supermodule]));
+                }else{
+                    loader.add(this.all_modules);
+                }
+
             },
 
             this
@@ -1066,7 +1077,9 @@ function common_xpcom(){
                     this.check_image_version();
                 }
 
-                this.epg_loader.start();
+                if (single_module == 'tv' || !single_module) {
+                    this.epg_loader.start();
+                }
 
                 this.locale = this.user.locale;
 
@@ -1184,9 +1197,15 @@ function common_xpcom(){
 
                 this.set_storages(this.user['storages']);
 
-                this.load_channels();
-                this.load_fav_channels();
-                this.load_fav_itv();
+                if (single_module && single_module != 'tv') {
+                    stb.loader.add_pos(this.load_step, 'skip channels loading');
+                    stb.loader.add_pos(this.load_step, 'skip fav_channels loading');
+                }else{
+                    this.load_channels();
+                    this.load_fav_channels();
+                    this.load_fav_itv();
+                }
+
                 this.load_recordings();
 
             }catch(e){
@@ -1231,7 +1250,13 @@ function common_xpcom(){
         this.key_lock = false;
 
         if (single_module && module[single_module]){
-            module[single_module]._show && module[single_module]._show() || module[single_module].show && module[single_module].show();
+
+            if (module[single_module]._show){
+                module[single_module]._show();
+            }else if (module[single_module].show){
+                module[single_module].show();
+            }
+
             return;
         }
 

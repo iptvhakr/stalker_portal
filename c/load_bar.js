@@ -54,6 +54,7 @@ load_bar.prototype.t_hide = function(){
     this.hide_timer = window.setTimeout(
         
         function(){
+            main_menu.build();
             self.hide();
         },
         

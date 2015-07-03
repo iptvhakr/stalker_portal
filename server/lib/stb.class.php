@@ -1445,13 +1445,28 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $template = $this->getUserPortalTheme();
 
-        return array(
+        $result = array(
             'all_modules'        => Config::get('all_modules'),
             'switchable_modules' => Config::get('disabled_modules'),
             'disabled_modules'   => $this->getDisabledModules(),
             'restricted_modules' => $this->getRestrictedModules(),
             'template'           => $template
         );
+
+        if (Config::getSafe('enable_supermodule', false)) {
+
+            $key = md5($this->mac . time() . uniqid());
+            $cache = Cache::getInstance();
+            $cache->set($key, $this->mac, 0, 60);
+
+            $result['supermodule'] = Config::getSafe('portal_url', '/stalker_portal/') . 'server/api/supermodule.php'
+                . '?key=' . $key
+                . '&mac=' . $this->mac
+                . '&uid=' . $this->id
+                . '&type=';
+        }
+
+        return $result;
     }
 
     private function getDisabledModules(){
