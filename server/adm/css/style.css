@@ -512,6 +512,15 @@ z-index:20;
   left: 0;
   top: 0;
 }
+
+.dashboard .box-content{
+    padding: 0;
+}
+
+.dashboard .box-content .table{
+    margin: 0 !important;
+}
+
 .box-icons a {
   cursor: pointer;
   text-decoration: none !important;
@@ -528,6 +537,13 @@ z-index:20;
   -o-transition: 0.2s;
   transition: 0.2s;
 }
+
+.circle-button.box-icons a {
+    border-left:  inherit !important;
+    line-height: inherit !important;
+    text-align:  inherit !important;
+}
+
 .box-icons a.beauty-table-to-json {
   width: auto;
   padding: 0 10px;
@@ -2022,6 +2038,18 @@ border: 1px solid #F3E3AA;
   font-size: 12px;
   text-align: center;
 }
+
+div.google-visualization-tooltip{
+    background-color: rgba(240, 240, 240, 0.8);
+    border: 1px solid rgba(210, 210, 210, 0.9);
+    border-radius: 3px;
+    padding: 3px 6px;
+}
+
+div.google-visualization-tooltip span{
+    white-space: nowrap;
+}
+
 .morris-hover.morris-default-style .morris-hover-row-label{
   font-weight:bold;
   margin:0.25em 0;
@@ -3206,7 +3234,7 @@ outline: 0px none currentColor!important;
 	font-weight:bold !important;
 }
 
-#add_channel .box-header .box-icons {
+#add_channel .box-header .box-icons, .circle-button {
   background-color:#FFF;
 	margin:6px;
 	padding-left:4px;

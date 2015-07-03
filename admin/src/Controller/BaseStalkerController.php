@@ -113,13 +113,13 @@ class BaseStalkerController {
         if (!empty($this->app['userlogin'])) {
             $side_bar[1]['add_params'] = '<span class="hidden-xs">"'. $this->app['userlogin'] .'"</span>';
             if (!empty($this->app['userTaskMsgs'])) {
-                $side_bar[1]['action'][3]['add_params'] = '<span class="hidden-xs badge">'. $this->app['userTaskMsgs'] .'</span>';
+                $side_bar[1]['action'][2]['add_params'] = '<span class="hidden-xs badge">'. $this->app['userTaskMsgs'] .'</span>';
             }
         }
         
         $this->setControllerAccessMap();
         $this->cleanSideBar($side_bar);
-        $this->app['side_bar'] = $side_bar;       
+        $this->app['side_bar'] = $side_bar;
     }
 
     private function setRequestMethod() {
@@ -347,13 +347,14 @@ class BaseStalkerController {
 
     private function setAccessLevel() {
         $this->setControllerAccessMap();
-        if (array_key_exists($this->app['controller_alias'], $this->app['controllerAccessMap']) && $this->app['controllerAccessMap'][$this->app['controller_alias']]['access']) {
+        $controller_alias = !empty($this->app['controller_alias']) ? $this->app['controller_alias']: 'index';
+        if (array_key_exists($controller_alias, $this->app['controllerAccessMap']) && $this->app['controllerAccessMap'][$controller_alias]['access']) {
             if ($this->app['action_alias'] == '' || $this->app['action_alias'] == 'index') {
-                $this->access_level = $this->app['controllerAccessMap'][$this->app['controller_alias']]['access'];
+                $this->access_level = $this->app['controllerAccessMap'][$controller_alias]['access'];
                 return;
-            } elseif (array_key_exists($this->app['action_alias'], $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'])) {
+            } elseif (array_key_exists($this->app['action_alias'], $this->app['controllerAccessMap'][$controller_alias]['action'])) {
                 $parent_access = $this->getParentActionAccess();
-                $this->access_level = ($parent_access !== FALSE) ? $parent_access: $this->app['controllerAccessMap'][$this->app['controller_alias']]['action'][$this->app['action_alias']]['access'];
+                $this->access_level = ($parent_access !== FALSE) ? $parent_access: $this->app['controllerAccessMap'][$controller_alias]['action'][$this->app['action_alias']]['access'];
                 return;
             }
         }
@@ -374,7 +375,7 @@ class BaseStalkerController {
                     }
                     $map[$row['controller_name']]['action'] = array();
                 }
-                if (!empty($row['action_name']) && $row['action_name'] != 'index') {
+                if ((!empty($row['action_name']) && $row['action_name'] != 'index') || $row['controller_name'] != 'index') {
                     $map[$row['controller_name']]['action'][$row['action_name']]['access'] = (!$is_admin) ? $this->getDecFromBin($row): '8';
                 }
             }
@@ -465,8 +466,9 @@ class BaseStalkerController {
     protected function getParentActionAccess(){
         $return = FALSE;
         if ($this->isAjax && preg_match("/-json$/", $this->app['action_alias'])) {
-            $parent_1 = str_replace('-json', '', $this->app['action_alias']);
-            $parent_2 = str_replace('-list-json', '', $this->app['action_alias']);
+            $action_alias = preg_replace(array('/-composition/i', '/-datatable\d/i'), '', $this->app['action_alias'], 1);
+            $parent_1 = str_replace('-json', '', $action_alias);
+            $parent_2 = str_replace('-list-json', '', $action_alias);
             $parent_access = 0;
             if ($parent_1 == $this->app['controller_alias'] || $parent_2 == $this->app['controller_alias']) {
                 $parent_access = $this->app['controllerAccessMap'][$this->app['controller_alias']]['access'];
