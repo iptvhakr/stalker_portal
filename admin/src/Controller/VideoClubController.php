@@ -143,6 +143,9 @@ class VideoClubController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
         $this->app['allTasks'] = $this->db->getAllVideoTasks();
+
+        $this->app['dropdownAttribute'] = $this->getVideoScheduleDropdownAttribute();
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -159,6 +162,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
             }
             return $row;
         }, $ad->getAllWithStatForMonth());
+
+        $this->app['dropdownAttribute'] = $this->getVideoAdvertiseDropdownAttribute();
         
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -1632,6 +1637,30 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'operations',   'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
         );
         
+    }
+
+    private function getVideoScheduleDropdownAttribute(){
+        return array(
+            array('name' => 'task_added',   'title' => $this->setlocalization('Date'),          'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setlocalization('Title'),         'checked' => TRUE),
+            array('name' => 'o_name',       'title' => $this->setlocalization('Original title'),'checked' => TRUE),
+            array('name' => 'time',         'title' => $this->setlocalization('Length, min'),   'checked' => TRUE),
+            array('name' => 'tasks',        'title' => $this->setlocalization('Tasks'),         'checked' => TRUE),
+            array('name' => 'year',         'title' => $this->setlocalization('Year'),          'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
+        );
+    }
+
+    private function getVideoAdvertiseDropdownAttribute(){
+        return array(
+            array('name' => 'title',        'title' => $this->setlocalization('Title'),             'checked' => TRUE),
+            array('name' => 'url',          'title' => $this->setlocalization('Address'),           'checked' => TRUE),
+            array('name' => 'weight',       'title' => $this->setlocalization('Weight'),            'checked' => TRUE),
+            array('name' => 'ended',        'title' => $this->setlocalization('Views counted'),     'checked' => TRUE),
+            array('name' => 'must_watch',   'title' => $this->setlocalization('Necessary to view'), 'checked' => TRUE),
+            array('name' => 'status',       'title' => $this->setlocalization('Status'),            'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setlocalization('Operations'),        'checked' => TRUE)
+        );
     }
 
     private function prepareNewGenresListIds($all_genre_list = array()){
