@@ -558,4 +558,5 @@ $words['delete_playlist_confirm'] = _('Do you really want to delete this playlis
 $words['audioclub_remove_playlist'] = _('DELETE');
 
 $words['vk_music_title'] = _('VK MUSIC');
+$words['all_title'] = _('All');
 

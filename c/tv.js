@@ -70,6 +70,10 @@
             _debug('this.auto_play', this.auto_play);
             
             genre = genre || this.genre || this.genres[0];
+
+            if (!genre){
+                genre = {"id" : "*", "title" : get_word("all_title")};
+            }
             
             this.load_params['genre'] = genre.id;
 

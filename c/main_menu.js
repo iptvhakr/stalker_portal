@@ -206,6 +206,24 @@ var main_menu = {
         this.clear_menu();
         
         var sub_menu_item;
+
+        var idx_map = [];
+        var sorted_map = [];
+
+        for(i=0; i<this.map.length; i++){
+            idx_map[idx_map.length] = this.map[i].idx;
+        }
+
+        idx_map.sort();
+
+        _debug('idx_map', idx_map);
+
+        for(i=0; i<this.map.length; i++){
+            var new_idx = idx_map.indexOf(this.map[i].idx);
+            sorted_map[new_idx] = this.map[i];
+        }
+
+        this.map = sorted_map;
         
         for(var i=0; i<this.map.length; i++){
             
@@ -413,6 +431,11 @@ var main_menu = {
     },
     
     add : function(title, sub, img, cmd, module){
+
+        if (single_module){
+            return;
+        }
+
         cmd = cmd || '';
         sub = sub || [];
         
@@ -424,17 +447,38 @@ var main_menu = {
             }
         }
 
+        if (stb.supermodule){
+
+            _debug('module.layer_name', module.layer_name);
+
+            var idx = stb.all_modules.indexOf(module.layer_name);
+
+            _debug('idx', idx);
+
+        }
+
+        if (idx === undefined || idx === -1){
+            idx = this.map.length;
+        }
+
+        _debug('idx 2', idx);
+
         this.map.push(
             {
-                "title"    : title,
-                "img"      : 'template/' + loader.template + '/i' + resolution_prefix + '/' + img,
-                "cmd"      : cmd,
-                "sub"      : sub,
-                "module"   : module
+                "title": title,
+                "img": 'template/' + loader.template + '/i' + resolution_prefix + '/' + img,
+                "cmd": cmd,
+                "sub": sub,
+                "module": module,
+                "idx" : idx
             }
         );
-        
-        this.build();
+
+        _debug('stb.loader.on', stb.loader.on);
+
+        if (!stb.loader.on){
+            this.build();
+        }
     }
 };
 

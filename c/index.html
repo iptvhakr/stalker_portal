@@ -127,7 +127,13 @@ var loader = {
         var _style = document.createElement('link');
         _style.type = "text/css";
         _style.rel = "stylesheet";
-        _style.href = 'template/' + this.template + '/' + module + resolution_prefix +".css";
+
+        if (module.indexOf('supermodule') > 0){
+            _style.href = module + resolution_prefix +".css&single_module="+single_module;
+        }else{
+            _style.href = 'template/' + this.template + '/' + module + resolution_prefix +".css";
+        }
+
         this.head.appendChild(_style);
         _debug('append', _style.href);
     },
@@ -137,7 +143,11 @@ var loader = {
 
         var _script = document.createElement('script');
         _script.type = "text/javascript";
-        _script.src  = module + ".js";
+        if (module.indexOf('supermodule') > 0){
+            _script.src  = module + ".js&single_module="+single_module;
+        }else{
+            _script.src  = module + ".js";
+        }
         this.head.appendChild(_script);
         _debug('append', _script.src);
     }
