@@ -113,7 +113,7 @@ class BaseStalkerController {
         if (!empty($this->app['userlogin'])) {
             $side_bar[1]['add_params'] = '<span class="hidden-xs">"'. $this->app['userlogin'] .'"</span>';
             if (!empty($this->app['userTaskMsgs'])) {
-                $side_bar[1]['action'][3]['add_params'] = '<span class="hidden-xs badge">'. $this->app['userTaskMsgs'] .'</span>';
+                $side_bar[1]['action'][2]['add_params'] = '<span class="hidden-xs badge">'. $this->app['userTaskMsgs'] .'</span>';
             }
         }
         
