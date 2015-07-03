@@ -32,7 +32,7 @@
                                 {% set parent_alias = '' %}
                             {% endif %}
                             <li>
-                                <a class="bord {% if item_action.alias == app.action_alias or ((active_alias is defined) and active_alias == item_action.alias) %}active-parent active{% endif %}" href="{{ app.request.baseUrl }}/{{ parent_alias ? parent_alias }}/{{ item_action.alias ? item_action.alias }}">
+                                <a class="bord {% if item_action.alias == app.action_alias or ((active_alias is defined) and active_alias == item_action.alias) %}active-parent active{% endif %}" href="{{ app.request.baseUrl }}/{{ parent_alias ? (parent_alias ~ '/') | trans}}{{ item_action.alias ? item_action.alias }}">
                                     {% if item_action.icon %}<i class="{{ item_action.icon }}"></i> {% endif %}{{ item_action.name }}
                                 {% if attribute(item_action, 'add_params') is defined %}
                                     {% autoescape false%}

@@ -160,9 +160,11 @@ function WinMove() {
                         draggable.find('[id^=map-]').resize();
                         droppable.find('[id^=map-]').resize();
                     }, 250);
-                    setTimeout(function () {
-                        channelListRender('#channelListContainer');
-                    }, 300);
+                    if ($("#channelListContainer").length > 0) {
+                        setTimeout(function () {
+                            channelListRender('#channelListContainer');
+                        }, 300);
+                    }
                 }
             });
     $('div.box.no-drop').draggable( "disable" ).droppable( "disable" );
