@@ -6,12 +6,18 @@
         "icon2": "",
         "action": {
             "1": {
+              "name": _("Dashboard"),
+              "self_parent_alias": "",
+              "alias": "",
+              "icon": "fa fa-bar-chart-o"
+            },
+            "2": {
                 "name": _("Tasks"),
                 "self_parent_alias": "tasks",
                 "alias": "tasks-list",
                 "icon": "fa fa-tasks"
             },
-            "2": {
+            "3": {
                 "name": _("Logout"),
                 "alias": "auth-user-logout",
                 "icon": "fa fa-power-off"

@@ -512,6 +512,15 @@ z-index:20;
   left: 0;
   top: 0;
 }
+
+.dashboard .box-content{
+    padding: 0;
+}
+
+.dashboard .box-content .table{
+    margin: 0 !important;
+}
+
 .box-icons a {
   cursor: pointer;
   text-decoration: none !important;
@@ -2029,6 +2038,18 @@ border: 1px solid #F3E3AA;
   font-size: 12px;
   text-align: center;
 }
+
+div.google-visualization-tooltip{
+    background-color: rgba(240, 240, 240, 0.8);
+    border: 1px solid rgba(210, 210, 210, 0.9);
+    border-radius: 3px;
+    padding: 3px 6px;
+}
+
+div.google-visualization-tooltip span{
+    white-space: nowrap;
+}
+
 .morris-hover.morris-default-style .morris-hover-row-label{
   font-weight:bold;
   margin:0.25em 0;
