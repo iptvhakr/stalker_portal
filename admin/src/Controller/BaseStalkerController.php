@@ -189,7 +189,7 @@ class BaseStalkerController {
                     $response = $this->generateAjaxResponse(array(), 'Need authorization');
                     return new Response(json_encode($response), 401);
                 } else {
-                    return $this->app->redirect($this->workURL . '/login', 302);
+                    return $this->app->redirect(trim($this->workURL, '/') . '/login', 302);
                 }
             }
 

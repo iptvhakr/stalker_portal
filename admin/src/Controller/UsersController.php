@@ -11,6 +11,27 @@ use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
 class UsersController extends \Controller\BaseStalkerController {
 
     protected $allStatus = array();
+    protected $mediaTypeName = array(
+        0 => '--',
+        1 => 'TV',
+        2 => 'Video',
+        3 => 'Karaoke',
+        4 => 'Audio',
+        5 => 'Radio',
+        6 => 'My records',
+        7 => 'Records',
+        9 => 'ad',
+        10 => 'Media browser',
+        11 => 'Tv archive',
+        12 => 'Records',
+        14 => 'TimeShift',
+        20 => 'Infoportal',
+        21 => 'Infoportal',
+        22 => 'Infoportal',
+        23 => 'Infoportal',
+        24 => 'Infoportal',
+        25 => 'Infoportal'
+    );
     private $allState = array(array('id' => 2, 'title' => 'Offline'), array('id' => 1, 'title' => 'Online'));
     private $watchdog = 0;
     private $userFields = array(
@@ -20,7 +41,7 @@ class UsersController extends \Controller\BaseStalkerController {
         "concat (users.fname) as fname",
         "UNIX_TIMESTAMP(`keep_alive`) as last_active",
         "DATE_FORMAT(`expire_billing_date`,'%d.%m.%Y') as `expire_billing_date`",
-        "account_balance"
+        "account_balance", "now_playing_type", "IF(now_playing_type = 2 and storage_name, CONCAT('[', storage_name, ']', now_playing_content), now_playing_content) as now_playing_content"
     );
     private $logObjectsTypes = array(
         'itv' => 'IPTV каналы',
@@ -75,6 +96,9 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
+
+        $this->app['hide_media_info'] = \Config::getSafe('hide_media_info_for_offline_stb', false);
+        $this->app['mediaTypeName'] = $this->setLocalization($this->mediaTypeName);
 
         if (empty($this->app['reseller'])) {
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
@@ -1227,6 +1251,8 @@ class UsersController extends \Controller\BaseStalkerController {
             array('name'=>'login',              'title'=>$this->setLocalization('Login'),       'checked' => TRUE),
             array('name'=>'ls',                 'title'=>$this->setLocalization('Account'),     'checked' => TRUE),
             array('name'=>'fname',              'title'=>$this->setLocalization('Name'),        'checked' => TRUE),
+            array('name'=>'now_playing_type',   'title'=>$this->setLocalization('Type'),        'checked' => FALSE),
+            array('name'=>'now_playing_content','title'=>$this->setLocalization('Media'),       'checked' => FALSE),
             array('name'=>'last_change_status', 'title'=>$this->setLocalization('Last modified'),'checked' => TRUE),
             array('name'=>'state',              'title'=>$this->setLocalization('State'),       'checked' => TRUE),
             array('name'=>'status',             'title'=>$this->setLocalization('Status'),      'checked' => TRUE)

@@ -48,6 +48,19 @@
                                         <td>{{ item.login }}</td>
                                         <td>{{ item.ls }}</td>
                                         <td>{{ item.fname }}</td>
+                                        <td>
+                                            {% if app.hide_media_info and not item.status %}
+                                                --
+                                            {% else %}
+                                                {{ app.mediaTypeName[item.now_playing_type] }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if app.hide_media_info and not item.status %}
+                                            {% else %}
+                                                {{ item.now_playing_content }}
+                                            {% endif %}
+                                        </td>
                                         <td>{% if item.last_change_status > 0 %}{{ item.last_change_status|date('M d, Y H:i') }}{% else %}00-00-0000{% endif %}</td>
                                         <td>{% if item.state %}
                                                 <span class="">Online</span>
@@ -343,6 +356,12 @@
             '{{ 'December'|trans }}'
         ];
 
+        var mediaTypeName = [
+            {% for key, val in app.mediaTypeName %}
+            '{{ val }}'{% if not loop.last %},{% endif %}
+            {% endfor %}
+        ];
+
         function DemoSelect2() {
             $("[id^='s2_']").select2({minimumResultsForSearch: -1});
         }
@@ -368,6 +387,7 @@
                         } else {
                             drop=""
                         }
+                        json.data[i].now_playing_type = mediaTypeName[json.data[i].now_playing_type];
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
