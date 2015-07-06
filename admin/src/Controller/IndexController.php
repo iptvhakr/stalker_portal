@@ -282,6 +282,7 @@ class IndexController extends \Controller\BaseStalkerController {
         }
 
     }
+
     public function index_datatable5_list_json(){
 
         $data = array(
