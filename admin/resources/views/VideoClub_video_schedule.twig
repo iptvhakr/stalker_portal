@@ -1,4 +1,5 @@
 {% extends 'layout.twig' %}
+{% import '/macro/iptw_macro.twig' as main_macro %}
 {% set title = ('Video club'|trans ~ ': ' ~ 'schedule'|trans) | trans %}
 
 {% block content %}
@@ -6,9 +7,12 @@
     <div id="iptv_list">
         <div class="row">
                 <div class="box">
+                    {% if attribute(app, 'dropdownAttribute') is defined %}
+                        {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                    {% endif %}
                     <div class="box-content">
                         <div class="box-content no-padding">
-                            {% if app['allTasks'] %}
+                            {% if attribute(app, 'allTasks') is defined %}
                                 <div class="dataTables_processing"></div>
                                 <table class="table  table-hover table-datatable" id="datatable-1">
                                     <thead>

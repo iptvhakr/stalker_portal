@@ -989,7 +989,14 @@
                     }
                 });
 
-
+                $(document).on('click', '#bootstrapped-fine-uploader input[type="file"]', function(e){
+                    var imgItem = $(this).closest('.form-group').find('img');
+                    if (imgItem.attr('src') && !confirm('{{ 'Do you realy wont to delete or replace this image?'|trans }}')) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        return false;
+                    }
+                });
 
                 var uploader = $("#bootstrapped-fine-uploader").fineUploader({
                     element: $('#bootstrapped-fine-uploader'),
