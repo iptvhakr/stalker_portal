@@ -494,7 +494,6 @@
                     _debug('fav_radio_ids', result);
                     stb.player.fav_radio_ids  = typeof(result) != 'undefined' && result ? result : [];
                     _debug('stb.player.fav_radio_ids', stb.player.fav_radio_ids);
-                    /*this.channels_loaded();*/
                 },
 
                 this

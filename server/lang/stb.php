@@ -560,3 +560,5 @@ $words['audioclub_remove_playlist'] = _('DELETE');
 $words['vk_music_title'] = _('VK MUSIC');
 $words['all_title'] = _('All');
 
+$words['outdated_firmware'] = _('Firmware of your STB is outdated.<br>Please update it.');
+

@@ -416,7 +416,7 @@ function common_xpcom(){
                 _debug('all_modules', this.all_modules);
 
                 if (result.supermodule){
-                    this.supermodule = result.supermodule
+                    this.supermodule = result.supermodule;
                     loader.add(this.base_modules.concat([result.supermodule]));
                 }else{
                     loader.add(this.all_modules);
@@ -430,7 +430,7 @@ function common_xpcom(){
 
     this.update_modules = function(){
         _debug('stb.get_modules');
-        
+
         this.load(
 
             {
@@ -507,9 +507,9 @@ function common_xpcom(){
             this.header_ua_ext.push('Model: ' + this.type);
 
             this.stb_lang = stb.RDir('getenv language').clearnl();
-            
+
             this.timezone = stb.RDir('getenv timezone_conf').clearnl();
-            
+
             this.ntp_server = stb.RDir('getenv ntpurl').clearnl();
 
             this.firmware_version = this.image_version = stb.RDir('ImageVersion').clearnl();
@@ -542,7 +542,7 @@ function common_xpcom(){
 
                 this.header_ua_ext.push('Link: '+link.join(','));
             }
-            
+
         }catch(e){
             _debug(e);
         }
@@ -565,11 +565,6 @@ function common_xpcom(){
         this.set_cookie('mac',      this.mac);
         this.set_cookie('stb_lang', this.stb_lang);
         this.set_cookie('timezone', this.timezone);
-        /*this.set_cookie('stb_type', this.type);
-        this.set_cookie('sn',       this.serial_number);
-        this.set_cookie('num_banks',this.num_banks);*/
-
-        //this.get_localization();
 
         _debug('this.mac:', this.mac);
         _debug('this.serial_number:', this.serial_number);
@@ -616,49 +611,6 @@ function common_xpcom(){
             this
         )
     };
-
-    /**
-     * Ajax wrapper.
-     * @param params
-     * @param {...} var_args
-     */
-    /*this.load = function(params, var_args){
-        _debug('stb.load()');
-        _debug('params:', params);
-
-        var callback = arguments[1];
-
-        var context = window;
-
-        if (arguments.length == 3){
-            context = arguments[2];
-        }
-
-        try{
-
-            return JsHttpRequest.query(
-
-                //this.ajax_loader,
-                'GET '+this.ajax_loader,
-
-                params,
-
-                function(result, errors){
-                    _debug('stb.load callback');
-                    _debug(errors);
-                    try{
-                        callback.call(context, result);
-                    }catch(e){
-                        _debug(e);
-                    }
-                },
-
-                true
-            );
-        }catch(e){
-            _debug(e);
-        }
-    };*/
 
     this.load = function(params, var_args){
         _debug('stb.load()');
@@ -901,8 +853,6 @@ function common_xpcom(){
 
     this.check_image_version = function(){
 
-        /*var cur_version = this.image_version;
-        this.firmware_version = cur_version;*/
         _debug('this.image_version:', this.image_version);
         _debug('this.image_desc:', this.image_desc);
         _debug('this.image_date:', this.image_date);
@@ -1002,6 +952,24 @@ function common_xpcom(){
             return;
         }
 
+        if (this.type != 'MAG200'){
+            var match = /Player Engine version: (\S+)/.exec(this.version);
+            _debug('match', match);
+
+            if (match && match.length == 2){
+                var player_version = parseInt((match[1] + '').replace('0x', '').replace(/[^a-f0-9]/gi, ''), 16);
+                _debug('player_version', player_version);
+            }
+
+            if (!match || match.length != 2 || player_version < 1382){
+
+                stb.loader.stop();
+                this.cut_off(get_word('outdated_firmware'));
+
+                return;
+            }
+        }
+
         if (this.user['store_auth_data_on_stb']){
             this.save_access_token();
         }
@@ -1015,14 +983,6 @@ function common_xpcom(){
 
         }else if (this.user['status'] == 0){
             try{
-
-                //if (this.type == 'MAG200'){
-
-                /*if (!this.check_graphic_res()){
-                    return;
-                }*/
-
-                //this.get_localization();
 
                 this.usbdisk.init();
 
@@ -1465,7 +1425,6 @@ function common_xpcom(){
 
             _debug('gres', gres);
 
-            //if (gres == '720'){
             if (res["r"+gres]){
 
                 resolution_prefix = res["r"+gres].prefix;
@@ -1475,8 +1434,6 @@ function common_xpcom(){
 
                 _debug('window.moveTo', (res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
                 window.moveTo((res["r"+gres].w - res["r"+gres].window_w)/2, (res["r"+gres].h - res["r"+gres].window_h)/2);
-
-                //window.resizeTo(res["r"+gres].window_w, res["r"+gres].window_h);
 
                 if (gres == 1080 && !window.referrer){
                     stb.ExecAction('graphicres 1280');
@@ -1491,26 +1448,6 @@ function common_xpcom(){
             stb.ExecAction('reboot');
             return 0;
 
-
-            /*if (gres != '720'){
-
-                _debug('window.referrer', window.referrer);
-
-                if (stb.type == 'MAG200'){
-                    if (window.referrer){
-                        window.resizeTo(720, 576);
-                        if (res["r"+gres]){
-                            _debug('window.moveTo', (res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
-                            window.moveTo((res["r"+gres].w - 720)/2, (res["r"+gres].h - 576)/2);
-                        }
-                    }else{
-                        //_debug('Reboot');
-                        //stb.ExecAction('graphicres 720');
-                        //stb.ExecAction('reboot');
-                        //return 0;
-                    }
-                }
-            }*/
         }catch(e){
             _debug(e);
             return 1;
@@ -1532,7 +1469,6 @@ function common_xpcom(){
                 stb.loader.add_pos(this.load_step, 'channels loaded');
 
                 this.player.channels = result.data || [];
-                this.channels_loaded();
 
                 if (this.player.is_tv){
 
@@ -1573,7 +1509,6 @@ function common_xpcom(){
                 stb.loader.add_pos(this.load_step, 'fav_channels loaded');
 
                 this.player.fav_channels = result.data || [];
-                this.channels_loaded();
             },
 
             this
@@ -1595,7 +1530,6 @@ function common_xpcom(){
                 if (this.player.fav_channels_ids.length == 0){
                     this.user.fav_itv_on = 0;
                 }
-                this.channels_loaded();
             },
 
             this
@@ -1629,10 +1563,6 @@ function common_xpcom(){
 
                 _debug('now_ts', now_ts);
 
-                /*this.recordings = this.recordings.filter(function(task){
-                    return task.local == 0 || active_tasks.getIdxByVal('fileName', task.file) !== null && now_ts < task.t_stop_ts || now_ts < task.t_start_ts;
-                });*/
-
                 _debug('this.recordings after', this.recordings);
 
                 stb.player.on_play = function(ch_id){
@@ -1664,39 +1594,6 @@ function common_xpcom(){
             },
             this
         )
-    };
-
-    this.channels_loaded = function(){
-
-        /*if (this.channels_inited){
-            return;
-        }
-
-        if (typeof(this.player.channels) != 'undefined' &&
-            typeof(this.player.fav_channels) != 'undefined' &&
-            typeof(this.player.fav_channels_ids) != 'undefined'){
-
-
-            if (this.user.fav_itv_on){
-                this.player.f_ch_idx = this.player.fav_channels.getIdxById(this.user.last_itv_id);
-                if (this.player.f_ch_idx === null){
-                    this.player.f_ch_idx = 0;
-                }
-                var channel = this.player.fav_channels[this.player.f_ch_idx];
-            }else{
-                this.player.ch_idx = this.player.channels.getIdxById(this.user.last_itv_id);
-                if (this.player.ch_idx === null){
-                    this.player.ch_idx = 0;
-                }
-                var channel = this.player.channels[this.player.ch_idx];
-            }
-
-            this.player.need_show_info = 1;
-            this.player.play(channel);
-
-            this.key_lock = false;
-            this.channels_inited = 1;
-        }*/
     };
 
     this.load_radio_channel = function (number) {
@@ -1827,7 +1724,7 @@ function common_xpcom(){
                             if (typeof(this.epg[ch_id][i-1]) == 'object'){
                                 result.push(this.epg[ch_id][i-1]);
 
-                                for (var j = 0; j < length - 1; j++){
+                                for (j = 0; j < length - 1; j++){
                                     if (typeof(this.epg[ch_id][i + j]) == 'object'){
                                         result.push(this.epg[ch_id][i + j]);
                                     }
@@ -1902,9 +1799,6 @@ function common_xpcom(){
         }
 
         stb.SetDefaultFlicker && stb.SetDefaultFlicker(1);
-
-        /*var text_msg = create_block_element('cut_off_text', this.cut_off.dom_obj);
-        text_msg.innerHTML = get_word('cut_off_msg');*/
 
         module.blocking.show(msg);
     };
@@ -2180,7 +2074,7 @@ function common_xpcom(){
             }
             return value;
         }
-    }
+    };
 
     this.add_referrer = function(paramStr, layer_name){
         var returnParams = paramStr || '';
@@ -2201,7 +2095,7 @@ function common_xpcom(){
         focus_module = layer_name;
         returnParams += encodeURIComponent('&focus_module='+layer_name);
         return returnParams;
-    }
+    };
 
     this.get_rc_data = function () {
         _debug("this.get_rc_data");
@@ -2229,7 +2123,7 @@ function common_xpcom(){
         gSTB.SetNetRcStatus(remoteControlFileData.enable);
         _debug("remote control enabled - ", remoteControlFileData.enable);
     }
-};
+}
 
 var screensaver = {
 
@@ -2353,7 +2247,7 @@ var screensaver = {
 
     toggle : function(){
         _debug('screensaver.toggle');
-        
+
         if (this.on){
             this.hide();
         }else{

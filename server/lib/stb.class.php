@@ -31,11 +31,8 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public $additional_services_on = 0;
     private static $just_created = false;
 
-    //private static $all_modules = array();
-    //private static $disabled_modules = array();
     private static $allowed_languages;
-    //private static $allowed_locales;
-    
+
     private static $instance = NULL;
 
     /**
@@ -51,10 +48,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
     
     private function __construct(){
-
-        /*if (!empty($_COOKIE['debug']) || !empty($_REQUEST['debug'])){
-            Mysql::$debug = true;
-        }*/
 
         $debug_key = $this->getDebugKey();
 
@@ -108,8 +101,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             $this->timezone = @trim($_COOKIE['timezone']);
         }
 
-        //var_dump($_COOKIE, $this->stb_lang);
-        
         if (@$_SERVER['HTTP_X_REAL_IP']){
             $this->ip = @$_SERVER['HTTP_X_REAL_IP'];
         }else{
@@ -516,6 +507,23 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                         'block_msg' => _('Your STB is damaged.<br/> Call the provider.')
                     );
                 }
+            }
+        }
+
+        if ($model != 'MAG200'){
+
+            preg_match("/Player Engine version: (\S+)/", $version, $match);
+
+            if (!empty($match[1])){
+                $player_version = hexdec($match[1]);
+            }
+
+            if (empty($player_version) || empty($match) || $player_version < 1382){
+                return array(
+                    'status'    => 1,
+                    'msg'       => 'old firmware',
+                    'block_msg' => _('Firmware of your STB is outdated.<br>Please update it.')
+                );
             }
         }
 
@@ -1044,7 +1052,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     }
     
     public function getUpdatedPlaces(){
-        //return $this->db->getFirstData('updated_places', array('uid' => $this->id));
         return $this->db->from('updated_places')->where(array('uid' => $this->id))->get()->first();
     }
     
@@ -1264,57 +1271,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                     
                     break;
                 case 6: // My Records
-                
-                    /*$my_record_name = '';
-                    
-                    preg_match("/\/(\d+).mpg/", $param, $tmp_arr);
-                    $my_record_id = $tmp_arr[1];
-                    
-                    $sql = "select t_start,itv.name from users_rec, itv where users_rec.ch_id=itv.id and users_rec.id=$my_record_id";
-                    $rs = $db->executeQuery($sql);
-                    
-                    if ($rs->getRowCount() == 1){
-                        $my_record_name = $rs->getValueByName(0, 't_start').' '.$rs->getValueByName(0, 'name');
-                    }else{
-                        $my_record_name = $param;
-                    }
-                    
-                    $_sql .= ", now_playing_content='$my_record_name'";
-                    break;*/
+                    break;
                 case 7: // Shared Records
-                    /*$shared_record_name = '';
-
-                    preg_match("/(\d+).mpg$/", $param, $tmp_arr);
-                    $shared_record_id = $tmp_arr[1];
-
-                    $sql = "select * from video_records where id=$shared_record_id";
-                    $rs = $db->executeQuery($sql);
-
-                    if ($rs->getRowCount() == 1){
-                        $shared_record_name = $rs->getValueByName(0, 'descr');
-                    }else{
-                        $shared_record_name = $param;
-                    }
-
-                    $_sql .= ", now_playing_content='$shared_record_name'";*/
                     break;
                 case 8: // Video clips
-                    /*$video_name = '';
-
-                    preg_match("/(\d+).mpg$/", $param, $tmp_arr);
-                    $media_id = $tmp_arr[1];
-
-                    $sql = "select * from video_clips where id=$media_id";
-                    $rs = $db->executeQuery($sql);
-
-                    if ($rs->getRowCount() == 1){
-                        $video_name = $rs->getValueByName(0, 'name');
-                    }else{
-                        $video_name = $param;
-                    }
-
-                    $_sql .= ", now_playing_content='$video_name'";
-                    break;*/
+                    break;
                 case 11:
                     if (preg_match("/http:\/\/([^:\/]*)/", $param, $tmp_arr)){
                          $storage_ip = $tmp_arr[1];
@@ -1517,10 +1478,6 @@ class Stb implements \Stalker\Lib\StbApi\Stb
     public static function setDisabledModulesByUid($uid, $disabled_modules = array()){
 
         self::initModulesRecord($uid);
-
-        /*$event = new SysEvent();
-        $event->setUserListById(array($uid));
-        $event->sendUpdateModules();*/
 
         return Mysql::getInstance()->update('user_modules', array('disabled' => serialize($disabled_modules)), array('uid' => intval($uid)));
     }
@@ -1827,9 +1784,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $result = Mysql::getInstance()->select('*, keep_alive>=FROM_UNIXTIME(UNIX_TIMESTAMP(NOW())-'.Config::get('watchdog_timeout').') online')->from('users');
 
-        //if (!empty($uids)){
         $result = $result->in('id', $uids);
-        //}
 
         $result = $result->get()->all();
 
@@ -1844,9 +1799,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
         $result = Mysql::getInstance();
 
-        //if (!empty($uids)){
         $result = $result->in('id', $uids);
-        //}
 
         if (array_key_exists("reboot", $data)){
             unset($data['reboot']);
@@ -1995,15 +1948,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             $mac = Middleware::normalizeMacArray($mac);
 
-            //var_dump($mac);
-            //var_dump($mac);
-
             $result = $result->in('mac', $mac);
         }
 
         return $result->get()->all('id');
-
-        //return Mysql::getInstance()->from('users')->in('mac', $mac)->get()->all('id');
     }
 
     public static function setAdditionServicesById($uid, $value){
