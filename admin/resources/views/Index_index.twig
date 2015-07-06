@@ -178,23 +178,6 @@
         var google = {};
         var updateTimerInterval = null;
 
-        var tableData = {
-            {% if attribute(app, 'datatables') is defined %}
-            {% for item in app.datatables %}
-            '{{ item.datatableID }}': {
-                'table_index': '{{ loop.index0 }}',
-                'table_ajax_url': "{{ app.request.baseUrl }}/index/{{ item.json_action_alias }}",
-                'table_data_length': {{ item.data|length }},
-                'table_fields': [
-                    {% for key,field in item.data.0 %}
-                    {"data": "{{ key }}"}{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                ]
-            }{% if not loop.last %}, {% endif %}
-            {% endfor%}
-        };
-        {% endif %}
-
         // Draw all test xCharts
         function DrawAllxCharts(data) {
             //  Chart 1
@@ -278,11 +261,13 @@
                     "url": "{{ app.request.baseUrl }}/index/{{ item.json_action_alias }}",
                 },
                 "deferLoading": {{ item.data|length }},
+                {% if item.data|length %}
                 "columns": [
                     {% for key,field in item.data.0 %}
                     {"data": "{{ key }}"}{% if not loop.last %},{% endif %}
                     {% endfor %}
                 ],
+                {% endif %}
                 "aoColumnDefs": [
                     /*{"width": '20%', "targets": [-3]}*/
                 ]
