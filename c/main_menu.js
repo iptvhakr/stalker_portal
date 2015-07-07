@@ -67,6 +67,10 @@ var main_menu = {
             _debug('stb.player.channels', stb.player.channels);
             if (stb.player.channels && stb.player.channels.length>0 && module.tv){
                 this.hide();
+                if (module && module.tv){
+                    stb.set_cur_place(module.tv.layer_name);
+                    stb.set_cur_layer(module.tv);
+                }
                 stb.player.play_last();
             }
         }).bind(key.EXIT, this);

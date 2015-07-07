@@ -1682,9 +1682,10 @@ player.prototype.event_callback = function(event, params){
 
                         _debug('stb.cur_place', stb.cur_place);
                         _debug('self.is_tv', self.is_tv);
+                        _debug('stb.player.on', stb.player.on);
 
-                        if ((stb.cur_place == 'tv' || stb.cur_place == 'main_menu') && self.is_tv){
-                            if (typeof(stb.GetHDMIConnectionState) == 'function'){
+                        if (stb.cur_place == 'tv' && self.is_tv) {
+                            if (typeof(stb.GetHDMIConnectionState) == 'function') {
 
                                 var hdmi_connection_state = stb.GetHDMIConnectionState();
 
@@ -1706,7 +1707,7 @@ player.prototype.event_callback = function(event, params){
                             } else {
                                 keydown_observer.emulate_key(key.MENU);
                             }
-                        }else if (!self.pause.on){
+                        }else if (!self.is_tv && !self.pause.on){
                             keydown_observer.emulate_key(key.PAUSE);
                         }
                     }
