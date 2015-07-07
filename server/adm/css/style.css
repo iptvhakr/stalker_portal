@@ -2612,7 +2612,7 @@ div.google-visualization-tooltip span{
     /*line-height: 36px;*/
 }
 
-#modalbox_ad .devoops-modal-header .box-icons a{
+#modalbox .devoops-modal-header .box-icons a, #modalbox_ad .devoops-modal-header .box-icons a{
   background-color:#FFF;
 	margin:6px;
 	padding-left:0px;
@@ -2637,7 +2637,7 @@ div.google-visualization-tooltip span{
 }
 
 
-#modalbox_ad .devoops-modal-inner .box-header .box-icons {
+#modalbox .devoops-modal-inner .box-header .box-icons, #modalbox_ad .devoops-modal-inner .box-header .box-icons {
   background-color:#FFF;
 	margin:6px;
 	padding-left:4px;
@@ -2649,7 +2649,7 @@ div.google-visualization-tooltip span{
     width: 16px;
 }
 
-#modalbox_ad .devoops-modal-inner {height:540px;  overflow-y:auto !important;}
+#modalbox_ad .devoops-modal-inner { /*height:540px;*/  overflow-y:auto !important;}
 #modalbox_ad .devoops-modal-inner > .box:last-of-type, #modalbox_ad .devoops-modal-bottom > .box:last-of-type,
 #modalbox_ad .devoops-modal-bottom .btn{
     margin-bottom: 0;
