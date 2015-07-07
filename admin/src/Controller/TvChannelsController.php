@@ -1317,7 +1317,7 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 }
             }
         }
-        return ++$row['number'];
+        return (!empty($row['number']) ? ++$row['number']: 1);
     }
 
     private function fillEmptyRows($input_array = array()){
