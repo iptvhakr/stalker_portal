@@ -451,15 +451,11 @@ var main_menu = {
             }
         }
 
-        if (stb.supermodule){
+        _debug('module.layer_name', module.layer_name);
 
-            _debug('module.layer_name', module.layer_name);
+        var idx = stb.all_modules.indexOf(module.layer_name);
 
-            var idx = stb.all_modules.indexOf(module.layer_name);
-
-            _debug('idx', idx);
-
-        }
+        _debug('idx', idx);
 
         if (idx === undefined || idx === -1){
             idx = this.map.length;
