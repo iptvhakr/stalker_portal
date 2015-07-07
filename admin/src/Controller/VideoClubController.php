@@ -1101,7 +1101,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
         
         $cat_video = array();
         foreach ($this->app['videoCategories'] as $row) {
-            $cat_video[$row['id']] = $row['title'];
+            $cat_video[$row['id']] = $row['title'].$row['id'];
         }
         
         $for_sd_stb = $this->getConfigOptionalyFormField('for_sd_stb', 'vclub_mag100_filter');
@@ -1120,10 +1120,10 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 /*+*/->add('rating_imdb', 'hidden')
                 /*+*/->add('rating_count_imdb', 'hidden')
                 /*ориг название*/
-                /*+*/->add('o_name', 'text', array('constraints' => array('required' => FALSE), 'required' => FALSE))
+                /*+*/->add('o_name', 'text', array('required' => FALSE))
                 /*кинопосик ИД*/
-                /*+*/->add('kinopoisk_id', 'text', array('constraints' => array(new Assert\Type(array('type' => 'numeric')), 'required' => FALSE), 'required' => FALSE))
-                /*+*/->add('rating_kinopoisk', 'text', array('constraints' => array(new Assert\Type(array('type' => 'numeric')), 'required' => FALSE), 'required' => FALSE))
+                /*+*/->add('kinopoisk_id', 'text', array('constraints' => array(new Assert\Type(array('type' => 'numeric'))), 'required' => FALSE))
+                /*+*/->add('rating_kinopoisk', 'text', array('constraints' => array(new Assert\Type(array('type' => 'numeric'))), 'required' => FALSE))
                 /*возраст рейтинг*/
                 /*+*/->add('age', 'choice', array(
                             'choices' => $ages,
@@ -1189,8 +1189,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                             'choices' => $cat_video,
                             'constraints' => array(
                                     new Assert\Choice(array('choices' => array_keys($cat_video), 'multiple' => TRUE)),
-                                    new Assert\NotBlank(),
-                                    'required' => TRUE
+                                    new Assert\NotBlank()
                                 ),
                             'multiple' => TRUE, 
                             'required' => TRUE
