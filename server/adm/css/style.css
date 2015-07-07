@@ -3112,7 +3112,7 @@ margin-bottom:5px;
     border-radius: 0;
     margin-bottom: 10px;
 }
-
+.box .collapse-link:hover {text-decoration: none;}
 .box_v2 .box-header{
 position:relative;
 z-index:10;

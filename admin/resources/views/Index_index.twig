@@ -4,25 +4,22 @@
 {% block content %}
     <div id="iptv_list" class="dashboard">
         <div class="row" style="background: #fff none repeat scroll 0 0;">
-            <div class="col-xs-4 col-sm-2 pull-right col-sm-pull-1">
-                <button type="button" class="btn btn-success" id="auto-update-button">{{ 'Auto-update within 59 seconds'|trans }}</button>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             </div>
         </div>
         <div class="row">
             <br>
             <div class="col-xs-12 col-sm-5">
-                <div class="box">
+                <div class="box"> <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <span>{{ 'Statistisc'|trans }}</span>
                         </div>
                         <div class="circle-button box-icons">
-                            <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-1">
@@ -49,18 +46,16 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-7">
-                <div class="box">
+                <div class="box"><a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <span>{{ 'Storages (measured in the number of the current session)'|trans }}</span>
                         </div>
                         <div class="circle-button box-icons">
-                            <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-2">
@@ -93,18 +88,16 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-5">
-                <div class="box">
+                <div class="box">  <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <span>{{ 'Streaming servers'|trans }}</span>
                         </div>
                         <div class="circle-button box-icons">
-                            <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-3">
@@ -135,36 +128,32 @@
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-8">
-                <div class="box">
+                <div class="box"><a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <span>{{ 'Users activity'|trans }}</span>
                         </div>
                         <div class="circle-button box-icons">
-                            <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content" style="padding: 5px 0 5px 5px;">
                         <div id="visit-plot" style="min-height: 300px; left: 10px;"> </div>
                     </div>
                 </div>
             </div>
             <div class="col-xs-6 col-sm-4">
-                <div class="box">
+                <div class="box">  <a class="collapse-link">
                     <div class="box-header">
                         <div class="box-name">
                             <span>{{ 'Popularity of services'|trans }}</span>
                         </div>
                         <div class="circle-button box-icons">
-                            <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
-                            </a>
                         </div>
                         <div class="no-move"></div>
-                    </div>
+                    </div> </a>
                     <div class="box-content">
                         <div id="google-chart-1" style="min-height: 300px;"> </div>
                         <br/>
