@@ -5070,10 +5070,12 @@ player.prototype.set_media_aspect = function(){
     _debug('player.set_media_aspect');
 
     _debug('this.cur_media_item.mark_archive', this.cur_media_item.mark_archive);
+    _debug('this.active_time_shift', this.active_time_shift);
+    _debug('this.active_local_time_shift', this.active_local_time_shift);
 
-    if (this.is_tv || module.tv_archive && this.cur_media_item.mark_archive){
+    if (this.is_tv || module.tv_archive && this.cur_media_item.mark_archive || this.active_time_shift || this.active_local_time_shift){
 
-        var ch_id = this.is_tv ? this.cur_media_item.id : this.cur_media_item.ch_id;
+        var ch_id = this.is_tv || this.active_time_shift || this.active_local_time_shift ? this.cur_media_item.id : this.cur_media_item.ch_id;
 
         _debug('ch_id', ch_id);
 
