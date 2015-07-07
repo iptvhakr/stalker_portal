@@ -83,7 +83,7 @@ class Save extends \Lib\Base {
             $this->_target = "$uploadDirectory/original/";
 
             if (!is_dir($this->_target)) {
-                if (!@mkdir($this->_target, 0777)) {
+                if (!@mkdir($this->_target, 0755)) {
                     $this->_error = "Server error. Directory for '$uploadDirectory/original/' original size dosn't exists" ;
                     return FALSE;
                 }
@@ -95,7 +95,7 @@ class Save extends \Lib\Base {
                 foreach ($this->resolutions as $resolution => $dimension) {
                     if ( (strtolower($this->_ext) == "gif") or (strtolower($this->_ext) == "png") or (strtolower($this->_ext) == "jpg") or (strtolower($this->_ext) == "jpeg") ) {
                         if (!is_dir("$uploadDirectory/$resolution/")) {
-                            if(!@mkdir("$uploadDirectory/$resolution/", 0777)){
+                            if(!@mkdir("$uploadDirectory/$resolution/", 0755)){
                                 $this->_error = "Server error. Directory for '$uploadDirectory/$resolution/' size dosn't exists" ;
                                 continue;
                             }
