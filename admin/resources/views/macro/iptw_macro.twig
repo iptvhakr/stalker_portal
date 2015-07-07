@@ -158,7 +158,7 @@
                 {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined%}
                     {% set f_name = app['filters'][name] %}
                     {% for item in list_all %}
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/{{app.action_alias}}?filters[{{ name }}]={{ item[id_field] }}" class="btn btn-success {% if f_name == item[id_field] %}active{% endif %}">{{ item[title_field] }}</a>
+                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/{{app.action_alias}}?filters[{{ name }}]={{ item[id_field] }}" class="pull-left btn btn-success {% if f_name == item[id_field] %}active{% endif %}">{{ item[title_field] }}</a>
                     {% endfor %}
                 {% endif %}
           
@@ -166,7 +166,7 @@
     {% endmacro %}
 
     {% macro get_datepicker_double_input() %}
-        <div class="col-xs-6 col-sm-10 col-md-6 col-lg-5 filter no-padding pull-right" data-tvfilter="time_period">
+        <div class="col-xs-6 col-sm-10 col-md-6 col-lg-5 filter pull-left" data-tvfilter="time_period">
             <div class="col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
                 <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'from'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
             </div>

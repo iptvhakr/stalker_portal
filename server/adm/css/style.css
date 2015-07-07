@@ -1392,7 +1392,7 @@ a.disabled, a.disabled:focus, a.disabled:hover, a.disabled:active, a.disabled.ac
 }
 .toggle-switch-inner:before {
   content: "On";
-  padding-left: 15px;
+  padding-left: 30px;
   color: #60B880;
 /*  -webkit-border-radius: 20px 0 0 20px;
   -moz-border-radius: 20px 0 0 20px;
@@ -2612,7 +2612,7 @@ div.google-visualization-tooltip span{
     /*line-height: 36px;*/
 }
 
-#modalbox_ad .devoops-modal-header .box-icons a{
+#modalbox .devoops-modal-header .box-icons a, #modalbox_ad .devoops-modal-header .box-icons a{
   background-color:#FFF;
 	margin:6px;
 	padding-left:0px;
@@ -2622,6 +2622,7 @@ div.google-visualization-tooltip span{
     font-size: 12px;
     height: 20px;
     width: 14px;
+
 }
 
 #modalbox_ad .form-horizontal .control-label{
@@ -2637,7 +2638,7 @@ div.google-visualization-tooltip span{
 }
 
 
-#modalbox_ad .devoops-modal-inner .box-header .box-icons {
+#modalbox .devoops-modal-inner .box-header .box-icons, #modalbox_ad .devoops-modal-inner .box-header .box-icons {
   background-color:#FFF;
 	margin:6px;
 	padding-left:4px;
@@ -2647,9 +2648,11 @@ div.google-visualization-tooltip span{
     font-size: 12px;
     height: 20px;
     width: 16px;
+    top:0px !important;
+    position: absolute;
 }
 
-#modalbox_ad .devoops-modal-inner {height:540px;  overflow-y:auto !important;}
+#modalbox_ad .devoops-modal-inner { /*height:540px;*/  overflow-y:auto !important;}
 #modalbox_ad .devoops-modal-inner > .box:last-of-type, #modalbox_ad .devoops-modal-bottom > .box:last-of-type,
 #modalbox_ad .devoops-modal-bottom .btn{
     margin-bottom: 0;
@@ -2673,7 +2676,8 @@ div.google-visualization-tooltip span{
 }
 .devoops-modal .col-sm-3 {padding-right: 0px !important; margin-right: -15px;}
 .devoops-modal .col-sm-2 {padding-right: 0px !important; margin-right: -15px;}
-.devoops-modal .col-sm-10 {padding-left: 10px !important; margin-left: 15px !important;}
+.devoops-modal .col-sm-10,.devoops-modal .col-sm-6,.devoops-modal .col-sm-12  {padding-left: 10px !important; margin-left: 15px !important;}
+
 
 #modalbox_ad  .devoops-modal-bottom {
 /*    background-color: #DCDCDC;
@@ -2914,7 +2918,7 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
     border-radius: 12px 0 0 12px;
 }
 #iptv_list input[type=text]:first-of-type, #iptv_list_move input[type=text]:first-of-type{
-    border-left-color: transparent;
+   border-left-color: transparent;
     border-radius: 0 12px 12px 0;
     padding-left: 5px;
     padding-right: 0;
@@ -3236,14 +3240,15 @@ outline: 0px none currentColor!important;
 
 #add_channel .box-header .box-icons, .circle-button {
   background-color:#FFF;
-	margin:6px;
-	padding-left:4px;
+	margin:6px !important;
+	padding-left:4px !important;
     border-radius:25px;
-    line-height: 20px;
+    line-height: 20px !important;
 	width:20px !important;
     font-size: 12px;
     height: 20px;
     width: 16px;
+
 }
 #add_channel .box-header .box-name, #add_channel .box-header .box-name span,
 #modalbox_ad .box-header .box-name, #modalbox_ad .box-header .box-name span{
