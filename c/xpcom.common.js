@@ -952,7 +952,7 @@ function common_xpcom(){
             return;
         }
 
-        if (this.type != 'MAG200'){
+        if (this.type != 'MAG200' && !_GET['debug_key']){
             var match = /Player Engine version: (\S+)/.exec(this.version);
             _debug('match', match);
 

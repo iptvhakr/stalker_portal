@@ -510,7 +510,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }
 
-        if ($model != 'MAG200'){
+        if ($model != 'MAG200' && (empty($debug_key) || !$this->checkDebugKey($debug_key))){
 
             preg_match("/Player Engine version: (\S+)/", $version, $match);
 
