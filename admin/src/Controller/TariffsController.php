@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface as FormFactoryInterface;
-use Symfony\Component\Validator\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Form\FormError;
 
 class TariffsController extends \Controller\BaseStalkerController {

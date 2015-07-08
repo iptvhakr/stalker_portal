@@ -87,7 +87,7 @@ class SettingsController extends \Controller\BaseStalkerController {
 
         $data = array();
         $data['action'] = 'manageTheme';
-        $error = 'Нет такого скина';    
+        $error = $this->setlocalization('There is no such skin');
         $data['name'] = $data['title'] = $data['preview'] = '';
         $themes = \Middleware::getThemes();
         if (!empty($themes) && in_array($this->postData['themename'], $themes) ) {
@@ -121,7 +121,7 @@ class SettingsController extends \Controller\BaseStalkerController {
             'action' => 'setCommonModal'
         );
         
-        $error = "Error";
+        $error = $this->setlocalization("Error");
         $param = (empty($param) ? (!empty($this->data)?$this->data: $this->postData) : $param);
 
         $query_param = $this->prepareDataTableParams($param, array('operations', 'RowOrder', '_'));
@@ -187,11 +187,9 @@ class SettingsController extends \Controller\BaseStalkerController {
             $operation = 'updateCommon';
             $item['id'] = $this->postData['id'];
         }
-        if ($date = \DateTime::createFromFormat('d/m/Y', $this->postData['require_image_date'])){
-            $item[0]['require_image_date'] = $date->format('Y-m-d');
-        }
+
         unset($item[0]['id']);
-        $error = 'Не удалось. ';
+        $error = $this->setlocalization('Failed');
         
         if ($result = call_user_func_array(array($this->db, $operation), $item)) {
             $error = '';    
