@@ -159,10 +159,12 @@ class BaseStalkerController {
 
     public function getFieldFromArray($array, $field) {
         $return_array = array();
-        $tmp = array_values($array);
-        if (!empty($tmp) && is_array($tmp[0]) && array_key_exists($field, $tmp[0])) {
-            foreach ($array as $key => $value) {
-                $return_array[] = $value[$field];
+        if (is_array($array) && !empty($array)) {
+            $tmp = array_values($array);
+            if (!empty($tmp) && is_array($tmp[0]) && array_key_exists($field, $tmp[0])) {
+                foreach ($array as $key => $value) {
+                    $return_array[] = $value[$field];
+                }
             }
         }
         return $return_array;

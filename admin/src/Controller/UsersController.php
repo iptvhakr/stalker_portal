@@ -978,14 +978,10 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $builder = $this->app['form.factory'];
         $additional_services = $status = array(
-            0 => $this->setLocalization('on'),
-            1 => $this->setLocalization('off')
+            0 => $this->setLocalization('off'),
+            1 => $this->setLocalization('on')
         );
-/*
-        $additional_services = array(
-            0 => 'Выключены',
-            1 => 'Включены'
-        );*/
+
 
         $stb_groups = new \StbGroup();
 
@@ -1018,14 +1014,16 @@ class UsersController extends \Controller\BaseStalkerController {
             $data['version'] = str_replace(";", ";\r\n", $data['version']);
         }
 
-        $tarif_plans = $this->db->getAllTariffPlans();
-        $plan_keys = $this->getFieldFromArray($tarif_plans, 'id');
-        $plan_names = $this->getFieldFromArray($tarif_plans, 'name');
+        if ($this->app['tarifPlanFlag']) {
+            $tarif_plans = $this->db->getAllTariffPlans();
+            $plan_keys = $this->getFieldFromArray($tarif_plans, 'id');
+            $plan_names = $this->getFieldFromArray($tarif_plans, 'name');
 
-        if (is_array($plan_keys) && is_array($plan_names) && count($plan_keys) == count($plan_names)) {
-            $tariff_plans = array_combine($plan_keys, $plan_names);
-        } else {
-            $tariff_plans = array();
+            if (is_array($plan_keys) && is_array($plan_names) && count($plan_keys) == count($plan_names) && count($plan_keys) > 0) {
+                $tariff_plans = array_combine($plan_keys, $plan_names);
+            } else {
+                $tariff_plans = array(NULL);
+            }
         }
 
         if (empty($this->app['reseller'])) {
@@ -1051,7 +1049,7 @@ class UsersController extends \Controller\BaseStalkerController {
                         'required' => FALSE
                         )
                 )
-                ->add('mac', 'text', ($edit?array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE):array('required' => FALSE)))
+                ->add('mac', 'text', ($edit ? array('required' => FALSE, 'read_only' => TRUE, 'disabled' => TRUE) : array('required' => FALSE)))
                 ->add('status', 'choice', array(
                     'choices' => $status,
                     'constraints' => array(new Assert\Choice(array('choices' => array_keys($status)))),
@@ -1104,8 +1102,7 @@ class UsersController extends \Controller\BaseStalkerController {
         if (!$edit) {
             return array(
                 'constraints' => array(
-                    new Assert\NotBlank(),
-                    'required' => TRUE
+                    new Assert\NotBlank()
                 ),
                 'required' => TRUE
             );
