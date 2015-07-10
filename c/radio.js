@@ -160,15 +160,33 @@
                 this.load_params.fav = true;
                 this.load_params.sortby = 'fav';
             }
+            if (stb.player.cur_media_item && stb.player.cur_media_item.radio) {
+                if (this.cur_page != stb.player.cur_media_item.page) {
+                    this.load_params.p = this.cur_page = stb.player.cur_media_item.page;
+                }
+            }
+
+            this.load_params.all = 0;
 
             this.superclass.show.call(this);
+
         };
 
         this.hide = function(do_not_reset){
             _debug('radio.hide');
 
-            this.superclass.hide.call(this, do_not_reset);
+            /*this.superclass.hide.call(this, do_not_reset);*/
             /*stb.player.stop();*/
+
+            if (!do_not_reset) {
+                this.sidebar && this.sidebar.reset && this.sidebar.reset();
+
+                if (this.sidebar && this.sidebar.on) {
+                    this.sidebar.hide();
+                }
+            }
+            this.dom_obj.hide();
+            this.on = false;
             this.update_header_path([{"alias" : "playing", "item" : "*"}]);
         };
 
@@ -184,7 +202,7 @@
                 }
                 this.update_header_path(header_path);
 
-                this.hide();
+                this.hide(true);
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);
 
@@ -243,7 +261,7 @@
 
             }
 
-            if (num==0 && stb.player.cur_media_item.radio && typeof (stb.player.radio_idx) != 'undefined') {
+            if (num==0 && stb.player.cur_media_item.radio && typeof (stb.player.radio_idx) != 'undefined'  && stb.player.cur_media_item.id == this.data_items[this.cur_row].id) {
                 var idx = stb.player.radio_idx;
                 this.data_items[idx].playing = 1;
                 this.map[idx].playing_block.show();
@@ -251,7 +269,25 @@
                 this.data_items[idx].paused = 0;
                 this.map[idx].paused_block.hide();
 
-                if (this.cur_row == idx) {
+                if (this.cur_row == idx  && this.cur_page == stb.player.cur_media_item.page) {
+                    this.active_row.playing_block.show();
+                    this.active_row.paused_block.hide();
+                }
+            } else if (typeof(stb.player.radio_idx) != 'undefined' || (stb.player.cur_media_item && stb.player.cur_media_item.radio)) {
+                var idx = typeof(stb.player.radio_idx) != 'undefined' ? stb.player.radio_idx : this.data_items.getIdxByVal('id', stb.player.cur_media_item.id);
+                idx = idx || 0;
+                /*this.superclass.set_active_row.call(this, idx);*/
+                if (stb.player.cur_media_item && this.data_items[idx] && this.data_items[idx].id == stb.player.cur_media_item.id) {
+                    if (stb.player.cur_media_item.playing) {
+                        this.map[idx].paused_block.hide();
+                        this.map[idx].playing_block.show();
+                    }
+                    if (stb.player.cur_media_item.paused) {
+                        this.map[idx].paused_block.show();
+                        this.map[idx].playing_block.hide();
+                    }
+                }
+                if (this.cur_row == idx && this.cur_page == stb.player.cur_media_item.page) {
                     this.active_row.playing_block.show();
                     this.active_row.paused_block.hide();
                 }
@@ -563,25 +599,34 @@
         {
             "label" : word['radio_by_number'],
             "cmd" : function(){
+                stb.player.stop();
                 this.parent.load_params.fav = false;
                 this.parent.load_params.sortby = 'number';
                 stb.user.fav_radio_on = 0;
+                module.radio_widget.set_radio_widget_items_list();
+                this.parent.load_params.all = 0;
             }
         },
         {
             "label" : word['radio_by_title'],
             "cmd" : function(){
+                stb.player.stop();
                 this.parent.load_params.fav = false;
                 this.parent.load_params.sortby = 'name';
                 stb.user.fav_radio_on = 0;
+                module.radio_widget.set_radio_widget_items_list();
+                this.parent.load_params.all = 0;
             }
         },
         {
             "label"   : word['radio_only_favorite'],
             "cmd" : function(){
+                stb.player.stop();
                 this.parent.load_params.sortby = 'fav';
                 this.parent.load_params.fav = true;
                 stb.user.fav_radio_on = 1;
+                module.radio_widget.set_radio_widget_items_list();
+                this.parent.load_params.all = 0;
             }
         }
     ];
