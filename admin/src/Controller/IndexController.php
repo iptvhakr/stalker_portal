@@ -218,10 +218,11 @@ class IndexController extends \Controller\BaseStalkerController {
         $streaming_servers = $this->db->getStreamServer();
 
         foreach($streaming_servers as $server){
+            $user_sessions = $this->db->getStreamServerStatus($server['id'], TRUE);
             $row = array(
                 'server'=> $server['name'],
-                'sessions' => $this->db->getStreamServerStatus($server['id']),
-                'loading' => $this->db->getStreamServerStatus($server['id'], TRUE)."%"
+                'sessions' => $user_sessions,
+                'loading' => ((int) $server['max_sessions'] > 0 ? round(($user_sessions * 100)/$server['max_sessions'], 2)."%" : "&infin;")
             );
             $data['data'][] = $row;
         }
