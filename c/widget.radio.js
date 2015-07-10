@@ -4,6 +4,7 @@
 
         on: false,
         widget_on: false,
+        get_result: {data: []},
 
         init: function () {
             _debug('radio_widget.init');
@@ -70,6 +71,8 @@
                 self.on = false;
             });
 
+            this.set_radio_widget_items_list();
+
             this.hide();
         },
 
@@ -84,7 +87,6 @@
             if (main_menu.on) {
                 this.on = true;
             }
-
             this.play_btn.hide();
             this.pause_btn.show();
         },
@@ -97,26 +99,35 @@
 
         bind: function () {
             _debug('radio_widget.bind');
-
+            var self = this;
             (function (dir) {
 
                 _debug('dir', dir);
 
-                var idx = this._get_current_idx();
+                var idx = self._get_current_idx();
 
                 _debug('playlist idx', idx);
 
-                if (idx >= 0 && idx <= stb.player.playlist.length - 1) {
+                if (idx >= 0 && idx <= self._get_total_playlist_items() - 1) {
 
                     idx = idx + dir;
 
-                    if (!stb.player.playlist[idx]) {
+                    if (!self.get_result.data[idx]) {
                         return;
                     }
                     try{
-                        if (typeof(stb.player.playlist[idx]) == 'object') {
-                            var cur_media_item = stb.player.playlist[idx].clone();
-                            stb.player.radio_idx = idx;
+                        if (typeof(self.get_result.data[idx]) == 'object') {
+                            var cur_media_item = self.get_result.data[idx].clone();
+                            if (cur_media_item.page != module.radio.cur_page) {
+                                module.radio.cur_page = cur_media_item.page;
+                                module.radio.load_params.p = cur_media_item.page;
+                                module.radio.load_data();
+                            }
+                            stb.player.radio_idx = idx - ( cur_media_item.page - 1) * self.get_result.max_page_items;
+                            stb.player.cur_media_item = cur_media_item;
+                            module.radio.cur_row = stb.player.radio_idx;
+                            stb.player.cur_media_item.playing = module.radio.data_items[stb.player.radio_idx].playing = 1;
+                            stb.player.cur_media_item.paused = module.radio.data_items[stb.player.radio_idx].paused = 0;
                             stb.player.play(cur_media_item);
                         }
                     } catch (e){
@@ -151,16 +162,30 @@
 
         _get_current_idx: function () {
             _debug('radio_widget._get_current_idx');
-            return stb.player.radio_idx;
+            return this.get_result.data.getIdxByVal("id", stb.player.cur_media_item.id);
         },
 
         _get_total_playlist_items: function () {
             _debug('radio_widget._get_total_playlist_items');
-            return stb.player.playlist.length || 0;
+            return this.get_result.data.length || 0;
         },
 
         shift_playlist: function (dir) {
             _debug('radio_widget.shift_playlist', dir);
+        },
+
+        set_radio_widget_items_list: function(){
+            _debug('set_radio_widget_items_list');
+            var load_params = (module.radio.load_params) ? module.radio.load_params : { 'type'   : 'radio', 'action' : 'get_ordered_list'};
+            load_params.all = 1;
+            _debug('load_params', load_params);
+            stb.load(
+                load_params,
+                function(result){
+                    this.get_result = result;
+                },
+                this
+            );
         }
 
     };
