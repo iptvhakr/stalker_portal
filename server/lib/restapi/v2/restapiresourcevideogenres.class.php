@@ -53,6 +53,7 @@ class RESTApiResourceVideoGenres extends RESTApiCollection
         $genres = array_map(function($genre){
             unset($genre['category_alias']);
             unset($genre['original_title']);
+            unset($genre['_id']);
             return $genre;
         }, $genres);
 

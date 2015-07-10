@@ -7,7 +7,7 @@ class RESTCommandStb extends RESTCommand
 
     public function __construct(){
         $this->manager = Stb::getInstance();
-        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'login', 'status', 'online', 'additional_services_on', 'ip', 'version', 'expire_billing_date', 'account_balance'), true);
+        $this->allowed_fields = array_fill_keys(array('mac', 'ls', 'login', 'status', 'online', 'additional_services_on', 'ip', 'version', 'expire_billing_date', 'account_balance', 'last_active'), true);
     }
 
     public function get(RESTRequest $request){

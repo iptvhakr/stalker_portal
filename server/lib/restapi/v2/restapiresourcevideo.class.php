@@ -50,7 +50,7 @@ class RESTApiResourceVideo extends RESTApiCollection
             }
 
             $this->genres_ids = array_map(function($genre){
-                return (int) $genre['id'];
+                return (int) $genre['_id'];
             }, $genres);
 
         }else if (!empty($this->nested_params['video.genre']) && empty($this->nested_params['video.category'])){
