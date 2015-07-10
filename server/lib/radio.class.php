@@ -33,11 +33,11 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
         if (!$this->stb->isModerator()){
             $where['status'] = 1;
         }
-        
-        return $this->db
-                        ->from('radio')
-                        ->where($where)
-                        ->limit(self::max_page_items, $offset);
+        $this->db->from('radio')->where($where);
+        if (empty($_REQUEST['all'])) {
+            $this->db->limit(self::max_page_items, $offset);
+        }
+        return $this->db;
     }
     
     public function getOrderedList(){
@@ -92,11 +92,15 @@ class Radio extends AjaxResponse implements \Stalker\Lib\StbApi\Radio
     public function prepareData(){
         if (is_array($this->response['data'])) {
             $fav_ids = $this->getFavIds();
-            $this->response['data'] = array_map(function($row) use ($fav_ids){
+            $counter = 1;
+            $delimiter = self::max_page_items;
+            $this->response['data'] = array_map(function($row) use ($fav_ids, &$counter, $delimiter){
                 $row['fav'] = ((int)in_array($row['id'], $fav_ids));
                 $row['error'] = (int) $row['monitoring_status'] == 1 ? '': 'link_fault';
                 $row['open'] = (int) $row['monitoring_status'] == 1;
                 $row['radio'] = TRUE;
+                $row['page'] = ceil($counter/$delimiter);
+                $counter++;
                 return $row;
             }, $this->response['data']);
 
