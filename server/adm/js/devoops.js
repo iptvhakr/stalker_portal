@@ -370,7 +370,11 @@ $(document).ready(function () {
 
     if ($("#allowed_locales").length > 0) {
         $("#allowed_locales").on('click', 'a', function(e){
+            e.stopPropagation();
+            e.preventDefault();
             $.cookies.set('language', $(this).data('locale'), {expiresAt: new Date( 2037, 1, 1 )});
+            window.location.reload(true);
+            return false;
         });
     }
 
