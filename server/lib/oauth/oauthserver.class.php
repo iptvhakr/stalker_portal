@@ -66,7 +66,7 @@ class OAuthServer
                         $response->setAdditionalParams($additional_params);
                     }
 
-                }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword(), $request->getMacAddress(), $request->getSerialNumber())){
+                }else if ($this->access_handler->checkUserAuth($request->getUsername(), $request->getPassword(), $request->getMacAddress(), $request->getSerialNumber(), $request)){
 
                     $user  = \Mysql::getInstance()->from('users')->where(array('login' => $request->getUsername()))->get()->first();
 
@@ -221,6 +221,11 @@ class OAuthRequest
     protected $password;
     protected $mac;
     protected $serial_number;
+    protected $stb_type;
+    protected $version;
+    protected $device_id;
+    protected $device_id2;
+    protected $signature;
     protected $client_id;
     protected $client_secret;
     protected $refresh_token;
@@ -280,7 +285,7 @@ class OAuthRequest
             throw new OAuthInvalidRequest("Require valid grant_type", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.3.2");
         }
 
-        if (empty($_POST['username']) || empty($_POST['password'])){
+        if ((empty($_POST['username']) || empty($_POST['password'])) && empty($_POST['mac'])){
             throw new OAuthInvalidRequest("Username and password must bee specified", "http://tools.ietf.org/html/draft-ietf-oauth-v2-23#section-4.3.2");
         }
 
@@ -293,6 +298,22 @@ class OAuthRequest
 
         if (isset($_POST['serial_number'])){
             $this->serial_number = $_POST['serial_number'];
+        }
+
+        if (isset($_POST['stb_type'])){
+            $this->stb_type = $_POST['stb_type'];
+        }
+
+        if (isset($_POST['version'])){
+            $this->version = $_POST['version'];
+        }
+
+        if (isset($_POST['device_id'])){
+            $this->device_id = $_POST['device_id'];
+        }
+
+        if (isset($_POST['device_id2'])){
+            list($this->signature, $this->device_id2) = explode('.', $_POST['device_id2']);
         }
 
         return true;
@@ -331,6 +352,26 @@ class OAuthRequest
 
     public function getSerialNumber(){
         return $this->serial_number;
+    }
+
+    public function getStbType(){
+        return $this->stb_type;
+    }
+
+    public function getVersion(){
+        return $this->version;
+    }
+
+    public function getDeviceId(){
+        return $this->device_id;
+    }
+
+    public function getDeviceId2(){
+        return $this->device_id2;
+    }
+
+    public function getSignature(){
+        return $this->signature;
     }
 
     public function getClientId(){
