@@ -234,20 +234,38 @@ class KaraokeController extends \Controller\BaseStalkerController {
         $data['action'] = 'manageKaraoke';
         $data['id'] = $this->postData['karaokeid'];
         $error = $this->setlocalization('Failed');
-        $where = array('karaoke.id'=>$this->postData['karaokeid']);
-        $item = $this->db->getKaraokeList(array('select'=> array("*", "karaoke.id as id"), "where" => $where));
-        if ($item[0]['protocol'] != 'custom' || !empty($item[0]['rtsp_url'])) {
-            $this->db->updateKaraoke(array('accessed' => (int)(!((bool) $this->postData['accessed'])), 'added' => 'NOW()'), $this->postData['karaokeid']);
-            if ((int)(!((bool) $this->postData['accessed'])) == 1){
-                chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0444);
-            }else{
-                chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0666);
-            }
-            $error = '';    
-        } else {
-            $error = $this->setlocalization('You can not publishing record with protocol - "custom", and with empty field - URL');
+
+        $good_storages = array();
+        $media_id = intval($this->postData['karaokeid']);
+        if (empty($_SERVER['TARGET'])) {
+            $_SERVER['TARGET'] = 'ADM';
         }
-        
+        ob_start();
+        if ($master = new \KaraokeMaster()){
+            $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
+
+            $this->db->updateKaraoke(array('status' => (int)(count($good_storages) > 0)), $this->postData['karaokeid']);
+
+        }
+        ob_end_clean();
+        if (!empty($good_storages)) {
+            $where = array('karaoke.id'=>$this->postData['karaokeid']);
+            $item = $this->db->getKaraokeList(array('select'=> array("*", "karaoke.id as id"), "where" => $where));
+            if ($item[0]['protocol'] != 'custom' || !empty($item[0]['rtsp_url'])) {
+                $this->db->updateKaraoke(array('accessed' => (int)(!((bool) $this->postData['accessed'])), 'added' => 'NOW()'), $this->postData['karaokeid']);
+                if ((int)(!((bool) $this->postData['accessed'])) == 1){
+                    @chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0444);
+                }else{
+                    @chmod(KARAOKE_STORAGE_DIR.'/'.$this->postData['karaokeid'].'.mpg', 0666);
+                }
+                $error = '';
+            } else {
+                $error = $this->setlocalization('You can not publishing record with protocol - "custom", and with empty field - URL');
+            }
+        } else {
+            $error = $this->setlocalization('File unavailable and cannot be published');
+        }
+
         $response = $this->generateAjaxResponse($data, $error);
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
@@ -276,6 +294,8 @@ class KaraokeController extends \Controller\BaseStalkerController {
             $good_storages = $master->getAllGoodStoragesForMediaFromNet($media_id, true);
 
             $this->db->updateKaraoke(array('status' => (int)(count($good_storages) > 0)), $this->postData['karaokeid']);
+
+            $arr = array();
 
             foreach ($good_storages as $name => $val){
                 $arr[] = array(

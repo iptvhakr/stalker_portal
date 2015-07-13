@@ -70,7 +70,7 @@
                                                         </a>
                                                     </li>
                                                     <li>
-                                                        <a {% if not item.status %}disabled="disabled"{% endif %} class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed" data-karaokeid="{{ item.id }}" data-accessed="{{ item.accessed }}">
+                                                        <a {% if not item.status and not item.accessed %}disabled="disabled"{% endif %} class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed" data-karaokeid="{{ item.id }}" data-accessed="{{ item.accessed }}">
                                                             <span>{% if not item.accessed %}{{ 'Publish'|trans }}{% else %}{{ 'Unpublish'|trans }}{% endif %}</span>
                                                         </a>
                                                     </li>
@@ -244,7 +244,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li>\n\
-                                                                <a " + ( status == 0 ?"disabled='disabled'":"") + " class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed' data-karaokeid='" + id + "' data-accessed='" + accessed + "'>\n\
+                                                                <a " + ( status == 0 && accessed == 0 ?"disabled='disabled'":"") + " class='main_ajax' href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/toggle-karaoke-accessed' data-karaokeid='" + id + "' data-accessed='" + accessed + "'>\n\
                                                                     <span>" + ( accessed == 0 ?"{{ 'Publish'|trans }}":"{{ 'Unpublish'|trans }}") + "</span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -340,6 +340,16 @@
                     return false;
                 });
 
+                $(document).on('click', "a.main_ajax[disabled][href*='toggle-karaoke-accessed']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    var data = { error: "{{ 'File unavailable and cannot be published'|trans }}"};
+                    JSshowModalBox();
+                    JSErrorModalBox(data);
+                    $(this).closest('div.open').removeClass('open');
+                    return false;
+                });
+
                 $("#form_reset").on('click', function (e) {
                     e.stopPropagation();
                     e.preventDefault();
@@ -348,28 +358,29 @@
                 });
 
                 $("#modalbox_ad button[type='submit']").on('click', function (e) {
-				
-					  $.validate({
-  onSuccess : function() {  
-                    e.stopPropagation();
-                    e.preventDefault();
-                    var sendData = new Object();
-                    var lengthObj = 0;
-                    var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
-                    form_fields.each(function () {
-                        if ($(this).val()) {
-                            sendData[this.name] = $(this).val();
-                            lengthObj++;
+
+                    $.validate({
+                        onSuccess: function () {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var sendData = new Object();
+                            var lengthObj = 0;
+                            var form_fields = $("#modalbox_ad input.own_fields:not(:disabled), #modalbox_ad select.own_fields:not(:disabled)");
+                            form_fields.each(function () {
+                                if ($(this).val()) {
+                                    sendData[this.name] = $(this).val();
+                                    lengthObj++;
+                                }
+                            });
+                            if (lengthObj < form_fields.length) {
+                                alert('{{ 'You must fill in all fields'|trans }}');
+                                return false;
+                            }
+                            ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
+                            return false;
+
                         }
                     });
-                    if (lengthObj < form_fields.length) {
-                        alert('{{ 'You must fill in all fields'|trans }}');
-                        return false;
-                    }
-                    ajaxPostSend($("#modalbox_ad form").attr('action'), sendData, false, false);
-                    return false;
-					
-					} });
                 });
 
                 $('#s2_protocol').on('change', function(){checkModalProtocol()});
@@ -438,9 +449,12 @@
         };
 
         var manageKaraokeError = function(obj){
-            if (typeof(obj.error) != 'undefined' && obj.error.length > 0) {
+            /*if (typeof(obj.error) != 'undefined' && obj.error.length > 0) {
                 alert(obj.error);
-            }
+            }*/
+            JSshowModalBox();
+            JSErrorModalBox(obj);
+            $('#datatable-1').DataTable().ajax.reload();
         };
 
         var checkSourceKaraoke = function (obj){
