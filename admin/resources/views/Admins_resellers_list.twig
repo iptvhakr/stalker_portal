@@ -31,7 +31,18 @@
                                             {% for row in app.allData %}
                                                 <tr>
                                                     {% for key, item in row %}
-                                                        <td>{% if key == 'created' or key == 'modified' %}{% if item > 0 %}{{ item|date('M d, Y H:i') }}{% else %}0{% endif %}{% else %}{{ item }}{% endif %}</td>
+                                                        <td>
+                                                            {% if key == 'created' or key == 'modified' %}
+                                                                {% if item > 0 %}
+                                                                    {{ item|date('M d, Y H:i') }}
+                                                                {% else %}
+                                                                    0
+                                                                {% endif %}
+                                                            {% elseif  key == 'max_users' %}
+                                                                {% if item > 0 %}item{% else %}&#8734;{% endif %}
+                                                            {% else %}
+                                                                {{ item }}
+                                                            {% endif %}</td>
                                                     {% endfor %}
                                                     <td>
                                                         <div class="col-xs-3 col-sm-8">
@@ -87,7 +98,7 @@
                 </div>
             </div>
             <form class="form-horizontal" role="form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-save">
-                <div class="devoops-modal-inner" style="height: 140px;">
+                <div class="devoops-modal-inner" style="height: 220px;">
                     <div class="box">
                         <div class="box-content">
                             <!-- singer -->
@@ -98,6 +109,17 @@
                                         <input type="hidden" name="id" class="own_fields">
                                         <input type="text" required="required" name="name" data-validation=required class='form-control own_fields'>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-xs-offset-1">{{ 'Maximum number of users'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8 no-padding">
+                                    <div class=" col-xs-10 col-sm-10">
+                                        <input type="text" required="required" name="max_users" data-validation=required class='form-control own_fields'>
+                                    </div>
+                                    <span class="help-inline col-xs-10 col-sm-10">
+                                        <span class="txt-default">{{ 'Maximum number of users for current reseller. Set \'0\' for unlimited number of users.'|trans }}</span>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -159,6 +181,9 @@
                         json.data[i].operations += "</ul>\n\
                                                     </div>";
                         json.data[i].name = '<a class="main_ajax" href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json" data-id="' + id + '">' + name + '</a>';
+                        if (json.data[i].max_users <= 0) {
+                            json.data[i].max_users = "&#8734";
+                        }
                         var possibleDateKeys = ['created', 'modified'], date;
                         for (var num in possibleDateKeys) {
                             var key = possibleDateKeys[num];
@@ -177,12 +202,6 @@
                 "serverSide": true,
                 "ajax": {
                     "url": "{{ app.request.baseUrl }}/{{ app.controller_alias }}/resellers-list-json",
-                    "data": function (d) {
-{#                        var params = $.parseParams(window.location.href.split('?')[1] || ''); //window.location.href.split('?')[1] || '' 
-                        for (var i in params) {
-                            d[i] = params[i];
-                        }#}
-                    }
                 },
                 "deferLoading": [ {{ app.recordsFiltered }}, {{ app.totalRecords }} ],
                 "language": {

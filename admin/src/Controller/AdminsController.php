@@ -524,7 +524,8 @@ class AdminsController extends \Controller\BaseStalkerController {
                 "created" => 0,
                 "modified" => 0,
                 "admins_count" => $this->db->getResellerMember('administrators', NULL),
-                "users_count" => $this->db->getResellerMember('users', NULL)
+                "users_count" => $this->db->getResellerMember('users', NULL),
+                "max_users" => "&#8734;"
             );
         }
 
@@ -771,12 +772,13 @@ class AdminsController extends \Controller\BaseStalkerController {
 
     private function getResellerDropdownAttribute() {
         return array(
-            array('name' => 'id',           'title' => $this->setlocalization('ID'),                'checked' => TRUE),
-            array('name' => 'name',         'title' => $this->setlocalization('Name'),              'checked' => TRUE),
-            array('name' => 'created',      'title' => $this->setlocalization('Created'),           'checked' => TRUE),
-            array('name' => 'modified',     'title' => $this->setlocalization('Modified'),          'checked' => TRUE),
-            array('name' => 'admins_count', 'title' => $this->setlocalization('Admins of reseller'),'checked' => TRUE),
-            array('name' => 'users_count',  'title' => $this->setlocalization('Users of reseller'), 'checked' => TRUE),
+            array('name' => 'id',           'title' => $this->setlocalization('ID'),                    'checked' => TRUE),
+            array('name' => 'name',         'title' => $this->setlocalization('Name'),                  'checked' => TRUE),
+            array('name' => 'created',      'title' => $this->setlocalization('Created'),               'checked' => TRUE),
+            array('name' => 'modified',     'title' => $this->setlocalization('Modified'),              'checked' => TRUE),
+            array('name' => 'admins_count', 'title' => $this->setlocalization('Admins of reseller'),    'checked' => TRUE),
+            array('name' => 'users_count',  'title' => $this->setlocalization('Users of reseller'),     'checked' => TRUE),
+            array('name' => 'max_users',    'title' => $this->setlocalization('Maximum number of users'),'checked' => TRUE),
             array('name' => 'operations',   'title' => $this->setlocalization('Operations'),        'checked' => TRUE)
         );
     }
@@ -788,7 +790,8 @@ class AdminsController extends \Controller\BaseStalkerController {
             "created" => "R.`created` as `created`",
             "modified" => "R.`modified` as `modified`",
             "admins_count" => "(select count(*) from administrators as A where A.reseller_id = R.id) as admins_count",
-            "users_count" => "(select count(*) from users as U where U.reseller_id = R.id) as users_count"
+            "users_count" => "(select count(*) from users as U where U.reseller_id = R.id) as users_count",
+            "max_users" => "R.`max_users` as `max_users`"
         );
     }
 }
