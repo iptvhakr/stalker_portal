@@ -10,10 +10,32 @@ class AuthAccessHandler extends AccessHandler
 {
     private $token_expire = 86400;
 
-    public function checkUserAuth($username, $password, $mac = null, $serial_number = null){
+    public function checkUserAuth($username, $password, $mac = null, $serial_number = null, OAuthRequest $request){
         sleep(1); // anti brute-force delay
 
-        $user = \User::getByLogin($username);
+        $user = null;
+
+        if ($username){
+            $user = \User::getByLogin($username);
+        }elseif(!$password && $mac){
+
+            if ($serial_number){
+                $_REQUEST['serial_number'] = $serial_number;
+            }
+
+            if ($request->getVersion()){
+                $_REQUEST['version'] = $request->getVersion();
+            }
+
+            if ($request->getDeviceId2()){
+                $_REQUEST['device_id2'] = $request->getDeviceId2();
+                $_REQUEST['signature'] =  $request->getSignature();
+            }
+
+            // init user as STB
+            \Stb::getInstance()->getProfile();
+            $user = \User::getByMac(\Stb::getInstance()->mac);
+        }
 
         if (!$user){
             $user = \User::authorizeFromOss($username, $password, $mac);
