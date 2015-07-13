@@ -116,10 +116,10 @@
                     </a>
                 </div>
             </div>
-            <div class="devoops-modal-inner">
-                <div class="box">
-                    <div class="box-content">
-                        <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-karaoke">
+            <form class="form-horizontal" role="form" id="karaoke_form" action="{{ app.request.baseUrl }}/{{ app.controller_alias }}/save-karaoke">
+                <div class="devoops-modal-inner">
+                    <div class="box">
+                        <div class="box-content">
                             <!-- track name -->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label ">{{ 'Title'|trans }}<span class="icon-required">*</span></label>
@@ -172,23 +172,22 @@
                                     </span>
                                 </div>
                             </div>
-                     
+                        </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="devoops-modal-bottom">
-                <div class="box">
-                    <div class="box-content">
-                        <div class="row">
-                            <div class="pull-right">
-                                <button type="submit" class="btn btn-success  pull-right">{{ 'Save'|trans }}</button>
-                                <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>
+                <div class="devoops-modal-bottom">
+                    <div class="box">
+                        <div class="box-content">
+                            <div class="row">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-success  pull-right">{{ 'Save'|trans }}</button>
+                                    <button type="reset" class="btn btn-default pull-right" >{{ 'Cancel'|trans }}</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>   </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 

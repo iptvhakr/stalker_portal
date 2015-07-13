@@ -18,17 +18,9 @@
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-1">
-                            <thead>
-                            <tr>
-                                <th data-filter="title">{{ 'Title'|trans }}</th>
-                                <th data-filter="url">{{ 'Address'|trans }}</th>
-                                <th data-filter="weight">{{ 'Weight'|trans }}</th>
-                                <th data-filter="ended">{{ 'Views counted'|trans }}</th>
-                                <th data-filter="must_watch">{{ 'Necessary to view'|trans }}</th>
-                                <th data-filter="status">{{ 'Status'|trans }}</th>
-                                <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                            </tr>
-                            </thead>
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
                             <tbody>
                             {% if attribute(app, 'ads') is defined %}
                                 <!-- Start: list_row -->
