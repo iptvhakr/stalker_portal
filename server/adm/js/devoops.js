@@ -684,8 +684,34 @@ $(document).ready(function () {
     $(document).on('click', "#modalbox_ad .channel-form button[type='submit']", function (e) {
         e.stopPropagation();
         e.preventDefault();
+
         var tmp_id = $("#modalbox_ad").data('tr_id');
         var dataObj = {};
+
+        var currentCMD = $("#modalbox_ad #add_channel_url_base input[name*='cmd']");
+        var currentCMDVal = $(currentCMD).val();
+        currentCMDVal = currentCMDVal.replace(/\s/ig, '');
+        var duplicate = false;
+
+        $('#cmd_data tr:visible td:first-of-type input[name*="cmd"]').each(function(){
+            var existsCMDVal = $(this).val();
+            existsCMDVal = existsCMDVal.replace(/\s/ig, '');
+            var currID = $(this).closest('tr').attr('id') || false;
+            if (existsCMDVal == currentCMDVal &&  currID != tmp_id) {
+                duplicate = true;
+                return false;
+            }
+        });
+
+        if (duplicate) {
+            currentCMD.closest('div').after('<span class="help-inline col-xs-12 col-sm-12 duplicate"><span class="txt-danger">' + words['CMD_Exists'] + "</span></span>");
+            $("#modalbox_ad").scrollTo(0);
+            currentCMD.focus();
+            return false;
+        } else {
+            currentCMD.closest('div').next('span.duplicate').remove();
+        }
+
         $('#modalbox_ad').find('input, select').each(function () {
             var name = (typeof ($(this).attr('name')) != 'undefined') ? $(this).attr('name').replace(/\[\d*?\]/ig, '') : false;
             if (!name) {
