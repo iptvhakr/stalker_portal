@@ -1652,14 +1652,14 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
     private function getVideoAdvertiseDropdownAttribute(){
         return array(
-            array('name' => 'title',        'title' => $this->setlocalization('Title'),                     'checked' => TRUE),
-            array('name' => 'url',          'title' => $this->setlocalization('Address'),                   'checked' => TRUE),
-            array('name' => 'weight',       'title' => $this->setlocalization('Weight'),                    'checked' => TRUE),
-            array('name' => 'started',      'title' => $this->setlocalization('Started'),                   'checked' => TRUE),
-            array('name' => 'ended',        'title' => $this->setlocalization('Views counted'),             'checked' => TRUE),
-            array('name' => 'must_watch',   'title' => $this->setlocalization('Necessary to view')." (%)",  'checked' => TRUE),
-            array('name' => 'status',       'title' => $this->setlocalization('Status'),                    'checked' => TRUE),
-            array('name' => 'operations',   'title' => $this->setlocalization('Operations'),                'checked' => TRUE)
+            array('name' => 'title',        'title' => $this->setlocalization("Title"),                     'checked' => TRUE),
+            array('name' => 'url',          'title' => $this->setlocalization("Address"),                   'checked' => TRUE),
+            array('name' => 'weight',       'title' => $this->setlocalization("Weight"),                    'checked' => TRUE),
+            array('name' => 'started',      'title' => $this->setlocalization("Views started"),             'checked' => TRUE),
+            array('name' => 'ended',        'title' => $this->setlocalization("Views counted"),             'checked' => TRUE),
+            array('name' => 'must_watch',   'title' => $this->setlocalization("Necessary to view")." (%)",  'checked' => TRUE),
+            array('name' => 'status',       'title' => $this->setlocalization("Status"),                    'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setlocalization("Operations"),                'checked' => TRUE)
         );
     }
 

@@ -732,3 +732,6 @@ _('Not all required fields are filled');
 _('{{minute}} minutes ago');
 _('Add area');
 _('Edit area');
+_('Views started');
+_('Views counted');
+_('Necessary to view');

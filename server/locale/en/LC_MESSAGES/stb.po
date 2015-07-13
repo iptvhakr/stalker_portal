@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-13 10:28+0300\n"
-"PO-Revision-Date: 2015-07-13 10:28+0300\n"
+"POT-Creation-Date: 2015-07-13 16:04+0300\n"
+"PO-Revision-Date: 2015-07-13 16:04+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -52,21 +52,21 @@ msgid "monitoring off"
 msgstr "monitoring off"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:50
-#: ../../../../admin/src/Controller/TvChannelsController.php:1653
+#: ../../../../admin/src/Controller/TvChannelsController.php:1654
 #: ../../../../admin/src/Controller/RadioController.php:24
 #: ../../../../admin/src/Controller/RadioController.php:379
 msgid "errors occurred"
 msgstr "errors occurred"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:51
-#: ../../../../admin/src/Controller/TvChannelsController.php:1649
+#: ../../../../admin/src/Controller/TvChannelsController.php:1650
 #: ../../../../admin/src/Controller/RadioController.php:25
 #: ../../../../admin/src/Controller/RadioController.php:377
 msgid "no errors"
 msgstr "no errors"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:52
-#: ../../../../admin/src/Controller/TvChannelsController.php:1644
+#: ../../../../admin/src/Controller/TvChannelsController.php:1645
 msgid "there are some problems"
 msgstr "there are some problems"
 
@@ -167,7 +167,7 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/KaraokeController.php:186
 #: ../../../../admin/src/Controller/KaraokeController.php:206
 #: ../../../../admin/src/Controller/KaraokeController.php:226
-#: ../../../../admin/src/Controller/KaraokeController.php:259
+#: ../../../../admin/src/Controller/KaraokeController.php:277
 #: ../../../../admin/src/Controller/TasksController.php:137
 #: ../../../../admin/src/Controller/TasksController.php:206
 #: ../../../../admin/src/Controller/TasksController.php:224
@@ -216,12 +216,12 @@ msgstr "TV Archive has been restarted."
 msgid "Page not found"
 msgstr "Page not found"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1344
+#: ../../../../admin/src/Controller/TvChannelsController.php:1345
 msgid "ID"
 msgstr "ID"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1345
-#: ../../../../admin/src/Controller/TvChannelsController.php:1437
+#: ../../../../admin/src/Controller/TvChannelsController.php:1346
+#: ../../../../admin/src/Controller/TvChannelsController.php:1438
 #: ../../../administrator/other_city_info.php:151
 #: ../../../administrator/other_city_info.php:214
 #: ../../../administrator/help_city_info.php:141
@@ -237,13 +237,13 @@ msgstr "ID"
 msgid "Number"
 msgstr "Number"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1346
+#: ../../../../admin/src/Controller/TvChannelsController.php:1347
 #: ../../../administrator/add_itv.php:1772
 msgid "Logo"
 msgstr "Logo"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1347
-#: ../../../../admin/src/Controller/TvChannelsController.php:1438
+#: ../../../../admin/src/Controller/TvChannelsController.php:1348
+#: ../../../../admin/src/Controller/TvChannelsController.php:1439
 #: ../../../../admin/src/Controller/AudioClubController.php:1342
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
@@ -268,7 +268,7 @@ msgstr "Logo"
 msgid "Title"
 msgstr "Title"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1348
+#: ../../../../admin/src/Controller/TvChannelsController.php:1349
 #: ../../../administrator/audio_album.php:425
 #: ../../../administrator/add_itv.php:1074
 #: ../../../administrator/add_itv.php:1556
@@ -282,13 +282,13 @@ msgstr "Title"
 msgid "Genre"
 msgstr "Genre"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1349
+#: ../../../../admin/src/Controller/TvChannelsController.php:1350
 #: ../../../tools/misctranslations.php:500
 #: ../../../administrator/add_itv.php:1075
 msgid "Archive"
 msgstr "Archive"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1350
+#: ../../../../admin/src/Controller/TvChannelsController.php:1351
 #: ../../../administrator/add_itv.php:1072
 #: ../../../administrator/audio_track.php:246
 #: ../../../administrator/audio_track.php:316
@@ -297,30 +297,30 @@ msgstr "Archive"
 msgid "URL"
 msgstr "URL"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1351
+#: ../../../../admin/src/Controller/TvChannelsController.php:1352
 #: ../../../../admin/src/Controller/RadioController.php:356
 msgid "Monitoring status"
 msgstr "Monitoring status"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1352
+#: ../../../../admin/src/Controller/TvChannelsController.php:1353
 #: ../../../../admin/src/Controller/UsersController.php:1255
 #: ../../../administrator/events.php:494 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
 msgstr "Status"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1353
+#: ../../../../admin/src/Controller/TvChannelsController.php:1354
 #: ../../../../admin/src/Controller/UsersController.php:1263
 #: ../../../../admin/src/Controller/UsersController.php:1276
 msgid "Operations"
 msgstr "Operations"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1439
+#: ../../../../admin/src/Controller/TvChannelsController.php:1440
 #: ../../../tools/misctranslations.php:540
 msgid "Localized title"
 msgstr "Localized title"
 
-#: ../../../../admin/src/Controller/TvChannelsController.php:1440
+#: ../../../../admin/src/Controller/TvChannelsController.php:1441
 #: ../../../../admin/src/Controller/AudioClubController.php:1343
 msgid "Operation"
 msgstr "Operation"
@@ -3373,6 +3373,18 @@ msgstr "Add area"
 msgid "Edit area"
 msgstr "Edit area"
 
+#: ../../../tools/misctranslations.php:735
+msgid "Views started"
+msgstr "Views started"
+
+#: ../../../tools/misctranslations.php:736
+msgid "Views counted"
+msgstr "Views counted"
+
+#: ../../../tools/misctranslations.php:737
+msgid "Necessary to view"
+msgstr "Necessary to view"
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Wait"
@@ -3384,6 +3396,10 @@ msgstr "Request is being processed"
 #: ../../../adm/js/js_translate.php:42
 msgid "Clean"
 msgstr "Clean"
+
+#: ../../../adm/js/js_translate.php:43
+msgid "This URL already exists"
+msgstr "This URL already exists"
 
 #: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_1l"
@@ -7915,6 +7931,9 @@ msgstr "Add composition"
 msgid "Add group"
 msgstr "Add group"
 
+msgid "Add tariff plans"
+msgstr "Add tariff plans"
+
 msgid "Add user"
 msgstr "Add user"
 
@@ -7986,9 +8005,6 @@ msgstr ""
 msgid "Move"
 msgstr "Move"
 
-msgid "Necessary to view"
-msgstr "Necessary to view"
-
 msgid "Not published"
 msgstr "Not published"
 
@@ -8045,6 +8061,9 @@ msgstr "Storage"
 msgid "Subscribe log"
 msgstr "Subscribe log"
 
+msgid "Tariff"
+msgstr "Tariff"
+
 msgid "User group"
 msgstr "User group"
 
@@ -8054,9 +8073,6 @@ msgstr "Version"
 msgid "Viewing"
 msgstr "Viewing"
 
-msgid "Views counted"
-msgstr "Views counted"
-
 msgid "You have unsaved data. Really want to go?"
 msgstr "You have unsaved data. Really want to go?"
 
@@ -8065,6 +8081,9 @@ msgstr "You must fill in all fields"
 
 msgid "advertising list"
 msgstr "advertising list"
+
+msgid "default"
+msgstr "default"
 
 msgid "groups list"
 msgstr "groups list"
@@ -8077,6 +8096,9 @@ msgstr "karaoke list"
 
 msgid "list of radio"
 msgstr "list of radio"
+
+msgid "list of tariff plans"
+msgstr "list of tariff plans"
 
 msgid "permissions for group administrators "
 msgstr "permissions for group administrators "
@@ -8094,6 +8116,9 @@ msgstr "Add a picture"
 msgid "Add administrator"
 msgstr "Add administrator"
 
+msgid "Add cover"
+msgstr "Add cover"
+
 msgid "Add genre"
 msgstr "Add genre"
 
@@ -8106,14 +8131,21 @@ msgstr "Add reseller"
 msgid "Add streaming link"
 msgstr "Add streaming link"
 
-msgid "Add tariff plans"
-msgstr "Add tariff plans"
-
 msgid "Adding administrator"
 msgstr "Adding administrator"
 
 msgid "Adding reseller"
 msgstr "Adding reseller"
+
+msgid "Adds \"HD\" sign in catalogue"
+msgstr "Adds \"HD\" sign in catalogue"
+
+msgid ""
+"Adds the restriction for movie access (password set in the \"Parental "
+"advisory\"). Default password 0000"
+msgstr ""
+"Adds the restriction for movie access (password set in the \"Parental "
+"advisory\"). Default password 0000"
 
 msgid "Adress"
 msgstr "Adress"
@@ -8123,6 +8155,9 @@ msgstr "Allow the user to record selected programs on the server repository"
 
 msgid "Archive servers"
 msgstr "Archive servers"
+
+msgid "Autocomplete"
+msgstr "Autocomplete"
 
 msgid "Basic"
 msgstr "Basic"
@@ -8160,6 +8195,9 @@ msgstr "Complaints"
 msgid "Created task"
 msgstr "Created task"
 
+msgid "Delete cover"
+msgstr "Delete cover"
+
 msgid "Delete logo"
 msgstr "Delete logo"
 
@@ -8186,6 +8224,19 @@ msgstr "Enable load balancing"
 
 msgid "Episodes"
 msgstr "Episodes"
+
+msgid ""
+"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
+"HD_downloads/135_launch_720p.wmv"
+msgstr ""
+"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
+"HD_downloads/135_launch_720p.wmv"
+
+msgid "Film length in minutes Example: 102"
+msgstr "Film length in minutes Example: 102"
+
+msgid "Film rating on the Kinopoisk. Autocomplete only"
+msgstr "Film rating on the Kinopoisk. Autocomplete only"
 
 msgid "Filter"
 msgstr "Filter"
@@ -8224,6 +8275,9 @@ msgstr "Format: solution+URL. Example: ffrt http://lpOfStream/test.js"
 msgid "History of task"
 msgstr "History of task"
 
+msgid "ID of movie on the Kinopoisk"
+msgstr "ID of movie on the Kinopoisk"
+
 msgid "Ignore is Tariff plan functional is used"
 msgstr "Ignore is Tariff plan functional is used"
 
@@ -8232,6 +8286,12 @@ msgstr "Load balancing"
 
 msgid "Loading balance"
 msgstr "Loading balance"
+
+msgid "MPAA age restriction"
+msgstr "MPAA age restriction"
+
+msgid "MPAA rating"
+msgstr "MPAA rating"
 
 msgid "Measured in hours"
 msgstr "Measured in hours"
@@ -8248,6 +8308,12 @@ msgstr "Monitoring"
 msgid "Move all users to another reseller"
 msgstr "Move all users to another reseller"
 
+msgid "Movie description"
+msgstr "Movie description"
+
+msgid "Movie information"
+msgstr "Movie information"
+
 msgid "Necessary to see"
 msgstr "Necessary to see"
 
@@ -8256,6 +8322,9 @@ msgstr "No tasks"
 
 msgid "Number in channel list must contain only numbers from 0 to 999"
 msgstr "Number in channel list must contain only numbers from 0 to 999"
+
+msgid "Old genre"
+msgstr "Old genre"
 
 msgid "Order"
 msgstr "Order"
@@ -8301,6 +8370,9 @@ msgstr ""
 "Recommended format – png, no smaller than 96*96 pixels, maximum size of the "
 "file – 1 MB."
 
+msgid "Recommended viewer age"
+msgstr "Recommended viewer age"
+
 msgid "Reject"
 msgstr "Reject"
 
@@ -8318,6 +8390,13 @@ msgstr "Schedule of publishing"
 
 msgid "Security"
 msgstr "Security"
+
+msgid ""
+"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
+"the link to the content is not used, but the content is stored on the server."
+msgstr ""
+"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
+"the link to the content is not used, but the content is stored on the server."
 
 msgid "Servers which are going to be balanced"
 msgstr "Servers which are going to be balanced"
@@ -8360,9 +8439,6 @@ msgstr "TV archive length"
 msgid "TV archive statistics"
 msgstr "TV archive statistics"
 
-msgid "Tariff"
-msgstr "Tariff"
-
 msgid "Task description"
 msgstr "Task description"
 
@@ -8384,6 +8460,9 @@ msgstr "Time correction for EPG"
 msgid "TimeShift via USB devices"
 msgstr "TimeShift via USB devices"
 
+msgid "Title on the native language. Autocomplete is available"
+msgstr "Title on the native language. Autocomplete is available"
+
 msgid "URL availability check"
 msgstr "URL availability check"
 
@@ -8392,6 +8471,13 @@ msgstr "USB recordings"
 
 msgid "Upload failed"
 msgstr "Upload failed"
+
+msgid ""
+"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
+"genres."
+msgstr ""
+"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
+"genres."
 
 msgid "User can perform TimeShift function using Flash drive, HDD or SSD."
 msgstr "User can perform TimeShift function using Flash drive, HDD or SSD."
@@ -8403,6 +8489,9 @@ msgstr ""
 
 msgid "Video title"
 msgstr "Video title"
+
+msgid "Video volume adjustment"
+msgstr "Video volume adjustment"
 
 msgid "Volume"
 msgstr "Volume"
@@ -8416,6 +8505,12 @@ msgid ""
 msgstr ""
 "XMLTV ID of channel in EPG file. If the EPG source has the prefix state it "
 "in &lt;prefix&gt;_XMLTV ID format"
+
+msgid "Year of the film creation Example: 2014"
+msgstr "Year of the film creation Example: 2014"
+
+msgid "You can choose up to 4 genres"
+msgstr "You can choose up to 4 genres"
 
 msgid ""
 "You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * "
@@ -8437,9 +8532,6 @@ msgstr ""
 msgid "administrators list"
 msgstr "administrators list"
 
-msgid "default"
-msgstr "default"
-
 msgid "edit channel \""
 msgstr "edit channel \""
 
@@ -8457,9 +8549,6 @@ msgstr "genres list"
 
 msgid "in section"
 msgstr "in section"
-
-msgid "list of tariff plans"
-msgstr "list of tariff plans"
 
 msgid "movie list"
 msgstr "movie list"
@@ -8479,9 +8568,6 @@ msgstr "title"
 msgid "Add STB"
 msgstr "Add STB"
 
-msgid "Add cover"
-msgstr "Add cover"
-
 msgid "Add server"
 msgstr "Add server"
 
@@ -8494,24 +8580,14 @@ msgstr "Add update"
 msgid "Add year"
 msgstr "Add year"
 
+msgid "Add zone"
+msgstr "Add zone"
+
 msgid "Additional"
 msgstr "Additional"
 
-msgid "Adds \"HD\" sign in catalogue"
-msgstr "Adds \"HD\" sign in catalogue"
-
-msgid ""
-"Adds the restriction for movie access (password set in the \"Parental "
-"advisory\"). Default password 0000"
-msgstr ""
-"Adds the restriction for movie access (password set in the \"Parental "
-"advisory\"). Default password 0000"
-
 msgid "Assignee"
 msgstr "Assignee"
-
-msgid "Autocomplete"
-msgstr "Autocomplete"
 
 msgid "Automatic update"
 msgstr "Automatic update"
@@ -8543,9 +8619,6 @@ msgstr ""
 msgid "Default tariff for all new STB of the network"
 msgstr "Default tariff for all new STB of the network"
 
-msgid "Delete cover"
-msgstr "Delete cover"
-
 msgid "Details"
 msgstr "Details"
 
@@ -8564,24 +8637,11 @@ msgstr "Enter the MAC-address according to the format"
 msgid "Enter the MAC-address of the user"
 msgstr "Enter the MAC-address of the user"
 
-msgid ""
-"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
-"HD_downloads/135_launch_720p.wmv"
-msgstr ""
-"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
-"HD_downloads/135_launch_720p.wmv"
-
 msgid "Example: http://server.example:8080"
 msgstr "Example: http://server.example:8080"
 
 msgid "Fill in the required fields"
 msgstr "Fill in the required fields"
-
-msgid "Film length in minutes Example: 102"
-msgstr "Film length in minutes Example: 102"
-
-msgid "Film rating on the Kinopoisk. Autocomplete only"
-msgstr "Film rating on the Kinopoisk. Autocomplete only"
 
 msgid ""
 "Filter the STB by set parameters. Update will be installed on STB matching "
@@ -8612,9 +8672,6 @@ msgstr "General information"
 
 msgid "Hardware version"
 msgstr "Hardware version"
-
-msgid "ID of movie on the Kinopoisk"
-msgstr "ID of movie on the Kinopoisk"
 
 msgid ""
 "If you have several firmware files in one catalogue, please specify the file "
@@ -8649,12 +8706,6 @@ msgstr "List of MAC-addresses"
 msgid "MAC-address"
 msgstr "MAC-address"
 
-msgid "MPAA age restriction"
-msgstr "MPAA age restriction"
-
-msgid "MPAA rating"
-msgstr "MPAA rating"
-
 msgid "Maximum quantity of users(load) numeric value"
 msgstr "Maximum quantity of users(load) numeric value"
 
@@ -8666,12 +8717,6 @@ msgstr "Message templates"
 
 msgid "Month"
 msgstr "Month"
-
-msgid "Movie description"
-msgstr "Movie description"
-
-msgid "Movie information"
-msgstr "Movie information"
 
 msgid "Must be unique"
 msgstr "Must be unique"
@@ -8688,9 +8733,6 @@ msgstr ""
 "automatic search of firmware it is enough to fill in version or date of "
 "image (one of fields).Number must be numeric."
 
-msgid "Old genre"
-msgstr "Old genre"
-
 msgid ""
 "Optional default package is switched off, but it can be switched on right in "
 "the user profile"
@@ -8706,9 +8748,6 @@ msgstr "Playback radio channel"
 
 msgid "Quantity of the storages"
 msgstr "Quantity of the storages"
-
-msgid "Recommended viewer age"
-msgstr "Recommended viewer age"
 
 msgid "Report is formed due to done and rejected tasks"
 msgstr "Report is formed due to done and rejected tasks"
@@ -8733,13 +8772,6 @@ msgstr "Select a template for the type of STB"
 
 msgid "Select one of the actions"
 msgstr "Select one of the actions"
-
-msgid ""
-"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
-"the link to the content is not used, but the content is stored on the server."
-msgstr ""
-"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
-"the link to the content is not used, but the content is stored on the server."
 
 msgid ""
 "Selecting a destination. Example one, all, on the list, on the template, the "
@@ -8800,9 +8832,6 @@ msgstr ""
 "The file must contain pre-compiled list of MAC-addresses in the txt "
 "extension or another text format"
 
-msgid "Title on the native language. Autocomplete is available"
-msgstr "Title on the native language. Autocomplete is available"
-
 msgid "Unlimited"
 msgstr "Unlimited"
 
@@ -8816,24 +8845,8 @@ msgstr ""
 "Update type: http update (load the image from HTTP) or reboot DHCP (reboot "
 "the STB to the DHCP boot mode)"
 
-msgid ""
-"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
-"genres."
-msgstr ""
-"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
-"genres."
-
 msgid "Video quality"
 msgstr "Video quality"
-
-msgid "Video volume adjustment"
-msgstr "Video volume adjustment"
-
-msgid "Year of the film creation Example: 2014"
-msgstr "Year of the film creation Example: 2014"
-
-msgid "You can choose up to 4 genres"
-msgstr "You can choose up to 4 genres"
 
 msgid ""
 "You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ "
@@ -8845,8 +8858,14 @@ msgstr ""
 msgid "and"
 msgstr "and"
 
+msgid "areas list"
+msgstr "areas list"
+
 msgid "between"
 msgstr "between"
+
+msgid "countries"
+msgstr "countries"
 
 msgid "firmware update"
 msgstr "firmware update"
@@ -8878,6 +8897,9 @@ msgstr "year"
 msgid "years list"
 msgstr "years list"
 
+msgid "zone for"
+msgstr "zone for"
+
 msgid "Access"
 msgstr "Access"
 
@@ -8892,9 +8914,6 @@ msgstr "Add storage"
 
 msgid "Add track"
 msgstr "Add track"
-
-msgid "Add zone"
-msgstr "Add zone"
 
 msgid "Added"
 msgstr "Added"
@@ -9172,23 +9191,20 @@ msgstr ""
 msgid "You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , ."
 msgstr "You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , ."
 
+msgid "albums list"
+msgstr "albums list"
+
 msgid "all"
 msgstr "all"
 
 msgid "appearance"
 msgstr "appearance"
 
-msgid "areas list"
-msgstr "areas list"
-
 msgid "artist"
 msgstr "artist"
 
 msgid "artists list"
 msgstr "artists list"
-
-msgid "countries"
-msgstr "countries"
 
 msgid "list of events "
 msgstr "list of events "
@@ -9210,9 +9226,6 @@ msgstr "user"
 
 msgid "users log"
 msgstr "users log"
-
-msgid "zone for"
-msgstr "zone for"
 
 msgid " streaming area "
 msgstr " streaming area "
@@ -9298,9 +9311,6 @@ msgstr "View is an uninterrupted playback of channel for more than 30 minutes"
 msgid "add area"
 msgstr "add area"
 
-msgid "albums list"
-msgstr "albums list"
-
 msgid "channels list"
 msgstr "channels list"
 
@@ -9318,6 +9328,9 @@ msgstr "languages list"
 
 msgid "list of groups STB"
 msgstr "list of groups STB"
+
+msgid "list of service packages"
+msgstr "list of service packages"
 
 msgid "moderators list"
 msgstr "moderators list"
@@ -9367,9 +9380,6 @@ msgstr "Switch off advertising"
 
 msgid "Update EPG – consider only the new/last changes"
 msgstr "Update EPG – consider only the new/last changes"
-
-msgid "list of service packages"
-msgstr "list of service packages"
 
 msgid "logs"
 msgstr "logs"
