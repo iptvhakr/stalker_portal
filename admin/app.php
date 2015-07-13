@@ -5,6 +5,7 @@ use Neutron\Silex\Provider\ImagineServiceProvider;
 
 require_once __DIR__ . '/vendor/autoload.php';
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../server/'));
+require_once PROJECT_PATH . '/../storage/config.php';
 
 $_SERVER['TARGET'] = 'ADM';
 

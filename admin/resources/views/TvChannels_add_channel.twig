@@ -954,6 +954,7 @@
         </div>
     </div>
 
+    <script type="text/javascript" src="./plugins/scrollTo/jquery.scrollTo.min.js" defer=""></script>
     <script type="text/javascript">
         function DemoSelect2() {
             $('#form_tv_genre_id').select2({minimumResultsForSearch: -1});
@@ -1032,7 +1033,6 @@
                         imageName.length -= 1;
                     }
                     var postUrl = 'tv-channels/edit-logo?id=' + (typeof (imageName) != 'undefined' && imageName != '' ? imageName : 'new');
-        {#                    uploader.fineUploader('setEndpoint', postUrl);#}
                         $(this).fineUploader('setEndpoint', postUrl);
                         return false;
                     });
@@ -1087,7 +1087,6 @@
                         this.reset();
                     });
                     $("#modalbox_ad").show();
-//        $(this).closest('.form-group').find('tbody tr:hidden').show();
                     return false;
                 });
 
@@ -1109,6 +1108,7 @@
                 $(document).on("click", "#cmd_data .channel_url_change_data", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
+                    $("#modalbox_ad #add_channel_url_base input[name*='cmd']").closest('div').next('span.duplicate').remove();
                     var data = channelUrlDataGet($(this).closest('tr'));
                     var tmp_id = $(this).closest('tr').attr('id');
                     if (!tmp_id) {

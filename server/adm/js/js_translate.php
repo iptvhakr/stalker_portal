@@ -40,5 +40,6 @@ $words['Request_is_being_prossessed'] = _('Request is being processed');
 $words['Done'] = _('Done');
 $words['Failed'] = _('Failed');
 $words['Clean'] = _('Clean');
+$words['CMD_Exists'] = _('This URL already exists');
 
 echo json_encode($words);

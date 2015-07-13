@@ -1246,9 +1246,10 @@ class TvChannelsController extends \Controller\BaseStalkerController {
                 if (!$link['enable_monitoring']) {
                     $link['status'] = 1;
                 }
-                $this->db->updateCHLink($ch_id, $link);
 
                 if ($link_id) {
+                    $this->db->updateCHLink($ch_id, $link);
+
                     if (empty($this->streamers_map)) {
                         $this->streamers_map[$link_id] = $this->db->getStreamersIdMapForLink($link_id);
                     }
