@@ -382,9 +382,7 @@ function common_xpcom(){
 
                 if (typeof(stbWebWindow) != 'undefined'){
                     // notify parent to show this window
-                    //window.setTimeout(function(){
-                        stbWebWindow.messageSend(1, 'app:ready');
-                    //}, 100);
+                    stbWebWindow.messageSend(1, 'app:ready');
                 }
             },
 
@@ -795,7 +793,7 @@ function common_xpcom(){
             {
                 "type"   : "stb",
                 "action" : "handshake",
-                "token"  : this.get_saved_access_token() || ''
+                "token"  : this.get_saved_access_token() || this.access_token || ''
             },
             function(result){
                 _debug('on handshake', result);
@@ -804,6 +802,10 @@ function common_xpcom(){
                 this.not_valid_token = result.not_valid || 0;
 
                 _debug('this.access_token', this.access_token);
+
+                if (typeof(stbWebWindow) != 'undefined'){
+                    stbWebWindow.messageSend(1, 'stalker:access_token', this.access_token);
+                }
 
                 this.get_user_profile();
             },

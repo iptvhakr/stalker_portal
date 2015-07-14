@@ -277,8 +277,8 @@ player.prototype.init = function(){
             _debug('stbEvent.onBroadcastMessage', win_id, msg);
         };
 
-        stbEvent.onMessage = function(win_id, msg){
-            _debug('stbEvent.onMessage', win_id, msg);
+        stbEvent.onMessage = function(win_id, msg, data){
+            _debug('stbEvent.onMessage', win_id, msg, data);
         };
 
     }catch(e){

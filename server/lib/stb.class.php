@@ -346,7 +346,7 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             return array('token' => $this->getParam('access_token'));
         }
 
-        if (Config::exist('auth_url') && !empty($_REQUEST['token']) && $_REQUEST['token'] == $this->getParam('access_token')){
+        if (!empty($_REQUEST['token']) && $_REQUEST['token'] == $this->getParam('access_token')){
             return array('token' => $this->getParam('access_token'));
         }
 

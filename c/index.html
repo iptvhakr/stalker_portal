@@ -178,7 +178,9 @@ function init(){
 
     _debug('windowId', windowId);
 
-
+    if (_GET && _GET.hasOwnProperty('access_token')){
+        stb.access_token = _GET['access_token'];
+    }
 
     /*if (typeof(gSTB) != 'undefined'){
         if (gSTB.RDir('gmode') != 720){
