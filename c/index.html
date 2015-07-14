@@ -37,6 +37,7 @@ var resolution_prefix = '';
 
 var module = module || {};
 var word = {};
+var windowId;
 
 window.onerror = function(msg, url, lno){
     _debug('line: '+lno+'; msg: "'+msg+'" url: '+url);
@@ -170,6 +171,12 @@ function init(){
     }else{
         stb.check_graphic_res();
     }
+
+    if (typeof(stbWebWindow) != 'undefined'){
+        windowId = stbWebWindow.windowId();
+    }
+
+    _debug('windowId', windowId);
 
 
 

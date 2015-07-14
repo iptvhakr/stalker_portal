@@ -202,6 +202,18 @@
                 }
                 this.update_header_path(header_path);
 
+                if (single_module == this.layer_name){
+                    if (windowId !== 1) {
+                        stb.player.stop();
+                        // minimize
+                        stbWindowMgr.windowHide(windowId);
+                    } else if (window.referrer){
+                        stb.player.stop();
+                        window.location = window.referrer;
+                    }
+                    return;
+                }
+
                 this.hide(true);
                 main_menu.show();
             }).bind(key.EXIT, this).bind(key.LEFT, this).bind(key.MENU, this);

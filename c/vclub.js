@@ -686,7 +686,11 @@
             (function(){
 
                 if (single_module == this.layer_name){
-                    if (window.referrer){
+                    if (windowId !== 1) {
+                        stb.player.stop();
+                        // minimize
+                        stbWindowMgr.windowHide(windowId);
+                    } else if (window.referrer){
                         window.location = window.referrer;
                     }
                     return;
