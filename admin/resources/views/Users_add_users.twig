@@ -3,6 +3,7 @@
 {% set active_alias = 'users-list' %}
 
 {% block content %}
+    {% if app.resellerUserLimit %}
     <div id="add_channel">
         {{ form_start(app['form'], {'method': 'POST', 'action': (app.request.baseUrl ~ '/' ~ app.controller_alias  ~ '/' ~ app.action_alias) | trans, 'attr': {'class': 'form-horizontal', 'role': 'form', 'id': 'form_'}}) }}
         <div class="bg-danger">
@@ -378,7 +379,7 @@
         <div style="display: none;">
             {{ form_rest(app.form) }}
         </div>
-        {{ form_end(app['form']) }}  
+        {{ form_end(app['form']) }}
     </div>
     <script type="text/javascript" defer>
         function DemoSelect2() {
@@ -541,4 +542,13 @@
             $(obj).closest('.form-group').find('input').val(0);
         };
     </script>
+    {% else %}
+    <div id="add_channel">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h2 class="txt-danger">{{ 'Limit of number of the users has been reached'|trans }}</h2>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}

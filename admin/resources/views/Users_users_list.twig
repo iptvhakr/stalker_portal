@@ -21,8 +21,8 @@
                         </div>
                   
                     </div>
-               
-                <a href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-users" class="btn btn-success pull-right">{{ 'Add user'|trans }}</a>
+                <a id="add_button" href="{{app.request.baseUrl}}/{{app.controller_alias}}/add-users" class="btn btn-success pull-right" {% if not app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Add user'|trans }}</a>
+                <span id="limit_message" class="btn btn-default pull-right" {% if app.resellerUserLimit %}style="display: none;"{% endif %}>{{ 'Limit of number of the users has been reached'|trans }}</span>
             </div>
         </div>
 
@@ -731,6 +731,13 @@
         };
 
         var removeUser = function (obj) {
+            if (obj.data('add_button')) {
+                $("#add_button").show();
+                $("#limit_message").hide();
+            } else {
+                $("#add_button").hide();
+                $("#limit_message").show();
+            }
             var cRow = $(obj).closest('tr');
             $('#datatable-1').DataTable().row(cRow).remove().draw(false);
         };

@@ -104,6 +104,14 @@ class UsersController extends \Controller\BaseStalkerController {
             $resellers = array(array('id' => '-', 'name' => $this->setLocalization('Empty')));
             $this->app['allResellers'] = array_merge($resellers, $this->db->getAllFromTable('reseller'));
         }
+
+        $reseller_info = $this->db->getReseller(array('where'=>array('id' => $this->app['reseller'])));
+        if (!empty($reseller_info[0]['max_users'])) {
+            $this->app['resellerUserLimit'] = ((int)$reseller_info[0]['max_users'] - (int)$users['recordsTotal']) > 0;
+        } else {
+            $this->app['resellerUserLimit'] = TRUE;
+        }
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -180,20 +188,32 @@ class UsersController extends \Controller\BaseStalkerController {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
-        $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
-        $form = $this->buildUserForm();
-
-        if ($this->saveUsersData($form)) {
-            return $this->app->redirect('users-list');
-        }
-        $this->app['form'] = $form->createView();
         $this->app['userEdit'] = FALSE;
 
-        if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
-            $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();    
+        $reseller_info = $this->db->getReseller(array('where'=>array('id' => $this->app['reseller'])));
+        $users_total = $this->db->getTotalRowsUresList();
+
+        if (!empty($reseller_info[0]['max_users'])) {
+            $this->app['resellerUserLimit'] = ((int)$reseller_info[0]['max_users'] - (int)$users_total) > 0;
+        } else {
+            $this->app['resellerUserLimit'] = TRUE;
         }
-        if (\Config::getSafe('enable_internal_billing', 'false')) {
-            $this->app['enableBilling'] = TRUE;
+
+        if ($this->app['resellerUserLimit']) {
+            $this->app['tarifPlanFlag'] = \Config::getSafe('enable_tariff_plans', false);
+            $form = $this->buildUserForm();
+
+            if ($this->saveUsersData($form)) {
+                return $this->app->redirect('users-list');
+            }
+            $this->app['form'] = $form->createView();
+
+            if (\Config::getSafe('enable_tv_subscription_for_tariff_plans', false)) {
+                $this->app['channelsCost'] = "0.00"; //$this->getCostSubChannels();
+            }
+            if (\Config::getSafe('enable_internal_billing', 'false')) {
+                $this->app['enableBilling'] = TRUE;
+            }
         }
         $this->app['breadcrumbs']->addItem($this->setLocalization('Users list'), $this->app['controller_alias'] . '/users-list');
         $this->app['breadcrumbs']->addItem($this->setlocalization('Add user'));
@@ -261,6 +281,8 @@ class UsersController extends \Controller\BaseStalkerController {
         if (\Config::getSafe('enable_internal_billing', 'false')) {
             $this->app['enableBilling'] = TRUE;
         }
+
+        $this->app['resellerUserLimit'] = TRUE;
 
         $this->app['userName'] = $this->user['mac'];
         $this->app['breadcrumbs']->addItem($this->setLocalization('Users list'), $this->app['controller_alias'] . '/users-list');
@@ -398,6 +420,15 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->db->deleteUserFavVclub($this->postData['userid']);
         $this->db->deleteUserFavMedia($this->postData['userid']);
         $error = '';
+
+        $reseller_info = $this->db->getReseller(array('where'=>array('id' => $this->app['reseller'])));
+        $users_total = $this->db->getTotalRowsUresList();
+
+        if (!empty($reseller_info[0]['max_users'])) {
+            $data['add_button'] = ((int)$reseller_info[0]['max_users'] - (int)$users_total) > 0;
+        } else {
+            $data['add_button'] = TRUE;
+        }
 
         $response = $this->generateAjaxResponse($data, $error);
 
