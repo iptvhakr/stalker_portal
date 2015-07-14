@@ -3,6 +3,10 @@
     <script>
         var iid = 1;
         var scanning = false;
+        var keyCodeNum = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+        var keyCodeArrow = [37, 38, 39, 40];
+        var keyCodeService = [8, 13, 27, 116];
+
         parent.stbEvent.onBroadcastMessage = function(win_id, msg){
             try{
                 msg = JSON.parse(msg);
@@ -89,6 +93,9 @@
             check_scan_type();
             document.getElementById("i3").onchange = function(){check_signal_type();};
 
+            document.getElementById("i2").addEventListener('input', function(e){
+                this.value = this.value.replace(/[^\d]/ig, '');
+            });
         }
 
         function submit() {
@@ -308,6 +315,31 @@
 
             //console.log(e.keyCode);
             //console.log(iid);
+
+            if (iid == 2) {
+                if (keyCodeNum.indexOf(e.keyCode) != -1 || keyCodeArrow.indexOf(e.keyCode) != -1 || keyCodeService.indexOf(e.keyCode) != -1) {
+                    var d = document.getElementById('i' + iid);
+                    if (keyCodeArrow.indexOf(e.keyCode) != -1) {
+                        d.setAttribute('readonly', 0);
+                        if(isNaN(d.value) || d.value == '' || !d.value){
+                            d.value = 50000;
+                        }
+                        if (parseInt(d.value, 10) < 50000) {
+                            d.value = 50000;
+                        } else if (parseInt(d.value, 10) > 858000) {
+                            d.value = 858000;
+                        }
+                        console.log('d.value =' +d.value + '\r\n');
+                    } else {
+                        d.removeAttribute('readonly', 0);
+                        if (e.keyCode == 13) {
+                            d.value = '';
+                            return false;
+                        }
+                        d.focus();
+                    }
+                }
+            }
 
             pressKey(e);
         }
