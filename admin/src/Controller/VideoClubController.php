@@ -328,6 +328,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
             "series" => "`video`.`series` as `series`",
             "tasks" => "(select count(*) from moderator_tasks where media_id = video.id) as `tasks`", //moderator_tasks.ended = 0 and 
             "task_id" => "`video_on_tasks`.`id` as `task_id`",
+            "count" => "`video`.`count` as `count`",
+            "counter" => "(`video`.count_second_0_5 + `video`.count_first_0_5) as `counter`",
             "year" => "`video`.`year` as `year`",
             "added" => "CAST(`video`.`added` as CHAR) as `added`",
             "complaints" => "media_claims.sound_counter + media_claims.video_counter as `complaints`",
@@ -410,7 +412,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
                 $response['data'][$key]['cat_genre'] = implode(', ', $response['data'][$key]['cat_genre']);
                 $response['data'][$key]['added'] = (int) strtotime($response['data'][$key]['added']) * ($this->isAjax? 1000 : 1);
                 $response['data'][$key]['task_date_on'] = ((int)$response['data'][$key]['task_date_on']) * ($this->isAjax? 1000 : 1);
-                $response['data'][$key]['accessed'] = (int)$response['data'][$key]['accessed'];
+                $response['data'][$key]['accessed'] = !empty($response['data'][$key]['accessed']) ? (int)$response['data'][$key]['accessed']: 0;
                 $response['data'][$key]['series'] = count(unserialize($row['series']));
                 if (!array_key_exists('tasks', $response['data'][$key]) || !is_array($response['data'][$key]['tasks'])) {
                     $response['data'][$key]['tasks'] = array();
@@ -1631,6 +1633,8 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'year',         'title' => $this->setlocalization('Year'),          'checked' => TRUE),
             array('name' => 'added',        'title' => $this->setlocalization('Date'),          'checked' => TRUE),
             array('name' => 'tasks',        'title' => $this->setlocalization('Tasks'),         'checked' => TRUE),
+            array('name' => 'count',        'title' => $this->setlocalization('Views lifetime'),'checked' => FALSE),
+            array('name' => 'counter',      'title' => $this->setlocalization('Views last month'),'checked' => FALSE),
             array('name' => 'complaints',   'title' => $this->setlocalization('Complaints'),    'checked' => TRUE),
             array('name' => 'status',       'title' => $this->setlocalization('Status'),        'checked' => TRUE),
             array('name' => 'operations',   'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
