@@ -735,3 +735,8 @@ _('Edit area');
 _('Views started');
 _('Views counted');
 _('Necessary to view');
+_('Complaints');
+_('Original');
+_('title');
+_('Term of your account will expire in "%s" days. In order to prevent tripping, prolong your account');
+_('Term of your account will expire today. In order to prevent tripping, prolong your account');
