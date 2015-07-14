@@ -97,6 +97,24 @@
         
         this.bind = function(){
             this.superclass.bind.apply(this);
+
+            (function(){
+
+                if (single_module == this.layer_name){
+                    if (windowId !== 1) {
+                        stb.player.stop();
+                        // minimize
+                        stbWindowMgr.windowHide(windowId);
+                    } else if (window.referrer){
+                        stb.player.stop();
+                        window.location = window.referrer;
+                    }
+                    return;
+                }
+
+                this.hide();
+                main_menu.show();
+            }).bind(key.MENU, this).bind(key.EXIT, this).bind(key.LEFT, this);
             
             this.play.bind(key.OK, this);
         };
@@ -146,8 +164,10 @@
     
     karaoke.bind();
     karaoke.init();
-    
-    karaoke.init_left_ear(word['ears_back']);
+
+    if (single_module != 'karaoke') {
+        karaoke.init_left_ear(word['ears_back']);
+    }
     
     karaoke.init_color_buttons([
         {"label" : word['karaoke_view'], "cmd" : (function(){})},

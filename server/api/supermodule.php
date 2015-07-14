@@ -53,7 +53,7 @@ if (!empty($_GET['single_module'])){
 
     $single_module = $_GET['single_module'];
 
-    if ($dependencies[$single_module]){
+    if (isset($dependencies[$single_module])){
         $available_modules = array_intersect($dependencies[$single_module], $available_modules);
     }else{
         $available_modules = array_intersect(array($single_module), $available_modules);

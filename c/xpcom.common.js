@@ -379,6 +379,13 @@ function common_xpcom(){
                 }else{
                     loader.add(this.all_modules);
                 }
+
+                if (typeof(stbWebWindow) != 'undefined'){
+                    // notify parent to show this window
+                    //window.setTimeout(function(){
+                        stbWebWindow.messageSend(1, 'app:ready');
+                    //}, 100);
+                }
             },
 
             this
