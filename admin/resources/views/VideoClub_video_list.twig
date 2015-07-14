@@ -23,23 +23,9 @@
                             <div class="box-content no-padding">
                                 <div class="dataTables_processing"></div>
                                  <table class="table dataTable table-hover table-datatable"  id="datatable-1">
-                                    <thead>
-                                        <tr>
-                                            <th data-filter="id">{{ 'ID'|trans }}</th>
-                                            <th data-filter="path">{{ 'Catalogue'|trans }}</th>
-                                            <th data-filter="name">{{ 'Title'|trans }}</th>
-                                            <th data-filter="o_name">{{ 'Original'|trans }}<br>{{ 'title'|trans }}</th>
-                                            <th data-filter="time">{{ 'Length'|trans }},<br>{{ 'min'|trans }}</th>
-                                            <th data-filter="series">{{ 'Episodes'|trans }}</th>
-                                            <th data-filter="cat_genre">{{ 'Genre'|trans }}</th>
-                                            <th data-filter="year">{{ 'Year'|trans }}</th>
-                                            <th data-filter="added">{{ 'Date'|trans }}</th>
-                                            <th data-filter="tasks">{{ 'Tasks'|trans }}</th>
-                                            <th data-filter="complaints">{{ 'Complaints'|trans }}</th>
-                                            <th data-filter="status">{{ 'Status'|trans }}</th>
-                                            <th data-filter="operations">{{ 'Operations'|trans }}</th>
-                                        </tr>
-                                    </thead>
+                                     {% if attribute(app, 'dropdownAttribute') is defined %}
+                                         {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                                     {% endif %}
                                     <tbody>
                                         <!-- Start: list_row -->
                                         {% for item in app.allVideo %}
@@ -62,6 +48,8 @@
                                                         {{ 'No tasks'|trans }}
                                                     {% endif%}
                                                 </td>
+                                                <td data-filter="count">{{ item.count }}</td>
+                                                <td data-filter="counter">{{ item.counter }}</td>
                                                 <td data-filter="complaints">
                                                     {% if item.video_counter or item.sound_counter%}
                                                         {% if item.video_counter %}{{ 'video'|trans }} - {{ item.video_counter }} {% endif %}
@@ -301,20 +289,12 @@
                 "url": "{{ app.datatable_lang_file }}"
             },
 			"order": [[ 1, "asc" ]],
-            "columns": [     
-                {"data": "id"},
-                {"data": "path"},
-                {"data": "name"},
-                {"data": "o_name"},
-                {"data": "time"},
-                {"data": "series"},
-                {"data": "cat_genre"},
-                {"data": "year"},
-                {"data": "added"},
-                {"data": "tasks"},
-                {"data": "complaints"},
-                {"data": "accessed"},
-                {"data": "operations"}
+            "columns": [
+                {% if attribute(app, 'dropdownAttribute') is defined%}
+                {% for item in app.dropdownAttribute %}
+                {"data": "{{ item.name }}"},
+                {% endfor %}
+                {% endif %}
             ],
 			"scrollCollapse": true,
 			
@@ -334,7 +314,7 @@
                 { className: "action-menu", "targets": [ -1 ] },
                 { "targets": [ 3 ], "visible": false},
                 { "targets": [ -1 , 6], "orderable": false},
-                { "searchable": false, "targets": [ 4, 5, 6, 7, 8, 9, 10, 11 ] },
+                { "searchable": false, "targets": [ 4, 5, 6, 7, 8, 9, 10, 11, -3, -2, -1 ] },
                 { "width": "10%", "targets": [ 1, 2, 3, 6, 8, -2] }
             ]
             
