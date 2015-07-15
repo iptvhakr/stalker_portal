@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-13 18:46+0300\n"
-"PO-Revision-Date: 2015-07-13 18:46+0300\n"
+"POT-Creation-Date: 2015-07-14 19:04+0300\n"
+"PO-Revision-Date: 2015-07-14 19:04+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -85,7 +85,7 @@ msgid "Publish"
 msgstr "Publish"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:284
-#: ../../../../admin/src/Controller/VideoClubController.php:939
+#: ../../../../admin/src/Controller/VideoClubController.php:941
 msgid "Unpublish"
 msgstr "Unpublish"
 
@@ -128,9 +128,9 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/EventsController.php:177
 #: ../../../../admin/src/Controller/EventsController.php:209
 #: ../../../../admin/src/Controller/EventsController.php:243
-#: ../../../../admin/src/Controller/VideoClubController.php:482
-#: ../../../../admin/src/Controller/VideoClubController.php:508
-#: ../../../../admin/src/Controller/VideoClubController.php:740
+#: ../../../../admin/src/Controller/VideoClubController.php:484
+#: ../../../../admin/src/Controller/VideoClubController.php:510
+#: ../../../../admin/src/Controller/VideoClubController.php:742
 #: ../../../../admin/src/Controller/BroadcastServersController.php:267
 #: ../../../../admin/src/Controller/BroadcastServersController.php:287
 #: ../../../../admin/src/Controller/BroadcastServersController.php:328
@@ -331,7 +331,7 @@ msgstr "Operation"
 #: ../../../../admin/src/Controller/IndexController.php:214
 #: ../../../../admin/src/Controller/IndexController.php:256
 #: ../../../../admin/src/Controller/IndexController.php:303
-#: ../../../../admin/src/Controller/VideoClubController.php:750
+#: ../../../../admin/src/Controller/VideoClubController.php:752
 #: ../../../../admin/src/Controller/AudioClubController.php:899
 #: ../../../adm/js/js_translate.php:41
 msgid "Failed"
@@ -367,7 +367,7 @@ msgid "Installed applications"
 msgstr "Installed applications"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:23
-#: ../../../../admin/src/Controller/VideoClubController.php:576
+#: ../../../../admin/src/Controller/VideoClubController.php:578
 msgid "Scheduled"
 msgstr "Scheduled"
 
@@ -414,24 +414,24 @@ msgstr "Add moderator"
 msgid "Edit moderator"
 msgstr "Edit moderator"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:445
+#: ../../../../admin/src/Controller/VideoClubController.php:447
 msgid "Information about the video source"
 msgstr "Information about the video source"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:446
+#: ../../../../admin/src/Controller/VideoClubController.php:448
 msgid "information not available"
 msgstr "information not available"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:493
-#: ../../../../admin/src/Controller/VideoClubController.php:520
-#: ../../../../admin/src/Controller/VideoClubController.php:547
-#: ../../../../admin/src/Controller/VideoClubController.php:595
-#: ../../../../admin/src/Controller/VideoClubController.php:625
-#: ../../../../admin/src/Controller/VideoClubController.php:701
+#: ../../../../admin/src/Controller/VideoClubController.php:495
+#: ../../../../admin/src/Controller/VideoClubController.php:522
+#: ../../../../admin/src/Controller/VideoClubController.php:549
+#: ../../../../admin/src/Controller/VideoClubController.php:597
+#: ../../../../admin/src/Controller/VideoClubController.php:627
+#: ../../../../admin/src/Controller/VideoClubController.php:703
 msgid "Information not available"
 msgstr "Information not available"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:576
+#: ../../../../admin/src/Controller/VideoClubController.php:578
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
 #: ../../../../admin/src/Controller/UsersController.php:398
 #: ../../../../admin/src/Controller/UsersController.php:1013
@@ -439,31 +439,31 @@ msgstr "Information not available"
 msgid "on"
 msgstr "on"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:725
+#: ../../../../admin/src/Controller/VideoClubController.php:727
 #: ../../../administrator/add_video.php:134
 #, php-format
 msgid "Error during file moving from %s to %s"
 msgstr "Error during file moving from %s to %s"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:758
+#: ../../../../admin/src/Controller/VideoClubController.php:760
 #: ../../../../admin/src/Controller/AudioClubController.php:909
 msgid "image file has not been deleted"
 msgstr "image file has not been deleted"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:759
+#: ../../../../admin/src/Controller/VideoClubController.php:761
 #: ../../../../admin/src/Controller/AudioClubController.php:910
 msgid "image name"
 msgstr "image name"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:760
+#: ../../../../admin/src/Controller/VideoClubController.php:762
 #: ../../../../admin/src/Controller/AudioClubController.php:911
 msgid "file can be deleted manually from screenshot directory"
 msgstr "file can be deleted manually from screenshot directory"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:779
-#: ../../../../admin/src/Controller/VideoClubController.php:806
-#: ../../../../admin/src/Controller/VideoClubController.php:836
-#: ../../../../admin/src/Controller/VideoClubController.php:866
+#: ../../../../admin/src/Controller/VideoClubController.php:781
+#: ../../../../admin/src/Controller/VideoClubController.php:808
+#: ../../../../admin/src/Controller/VideoClubController.php:838
+#: ../../../../admin/src/Controller/VideoClubController.php:868
 msgid "No data"
 msgstr "No data"
 
@@ -3384,6 +3384,35 @@ msgstr "Views counted"
 #: ../../../tools/misctranslations.php:737
 msgid "Necessary to view"
 msgstr "Necessary to view"
+
+#: ../../../tools/misctranslations.php:738
+msgid "Complaints"
+msgstr "Complaints"
+
+#: ../../../tools/misctranslations.php:739
+msgid "Original"
+msgstr "Original"
+
+#: ../../../tools/misctranslations.php:740
+msgid "title"
+msgstr "title"
+
+#: ../../../tools/misctranslations.php:741
+#, php-format
+msgid ""
+"Term of your account will expire in \"%s\" days. In order to prevent "
+"tripping, prolong your account"
+msgstr ""
+"Term of your account will expire in \"%s\" days. In order to prevent "
+"tripping, prolong your account"
+
+#: ../../../tools/misctranslations.php:742
+msgid ""
+"Term of your account will expire today. In order to prevent tripping, "
+"prolong your account"
+msgstr ""
+"Term of your account will expire today. In order to prevent tripping, "
+"prolong your account"
 
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
@@ -8192,9 +8221,6 @@ msgstr "Channel type"
 msgid "Comments of creator"
 msgstr "Comments of creator"
 
-msgid "Complaints"
-msgstr "Complaints"
-
 msgid "Created task"
 msgstr "Created task"
 
@@ -8341,9 +8367,6 @@ msgstr "Old genre"
 
 msgid "Order"
 msgstr "Order"
-
-msgid "Original"
-msgstr "Original"
 
 msgid "PVR to the USB-driver"
 msgstr "PVR to the USB-driver"
@@ -8574,9 +8597,6 @@ msgstr "resellers list"
 
 msgid "sound"
 msgstr "sound"
-
-msgid "title"
-msgstr "title"
 
 msgid "Add STB"
 msgstr "Add STB"
