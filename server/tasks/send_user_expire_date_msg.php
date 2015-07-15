@@ -7,26 +7,8 @@ if (Config::getSafe('enable_internal_billing', false) && Config::getSafe('number
     $locales = array();
 
     $allowed_locales = Config::get("allowed_locales");
+    $default_locale = Config::get("default_locale");
 
-    foreach ($allowed_locales as $lang => $locale){
-        $locales[substr($locale, 0, 2)] = $locale;
-    }
-
-    $accept_language = !empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $_SERVER["HTTP_ACCEPT_LANGUAGE"] : null;
-
-    if (!empty($_COOKIE['language']) && array_key_exists($_COOKIE['language'], $locales)){
-        $locale = $locales[$_COOKIE['language']];
-    }else if ($accept_language && array_key_exists(substr($accept_language, 0, 2), $locales)){
-        $locale = $locales[substr($accept_language, 0, 2)];
-    }else{
-        $locale = $locales[key($locales)];
-    }
-
-    setcookie("debug_key", "", time() - 3600, "/");
-
-    setlocale(LC_MESSAGES, $locale);
-    setlocale(LC_TIME, $locale);
-    putenv('LC_MESSAGES='.$locale);
     bindtextdomain('stb', PROJECT_PATH.'/locale');
     textdomain('stb');
     bind_textdomain_codeset('stb', 'UTF-8');
@@ -35,7 +17,8 @@ if (Config::getSafe('enable_internal_billing', false) && Config::getSafe('number
 
     $users = Mysql::getInstance()->select(array(
         'id',
-        '(TO_DAYS(`expire_billing_date`) - TO_DAYS(NOW())) as `end_billing_days`'
+        '(TO_DAYS(`expire_billing_date`) - TO_DAYS(NOW())) as `end_billing_days`',
+        'locale'
     ))->from("`users`")
         ->where(array(
             "(TO_DAYS(`expire_billing_date`) - TO_DAYS(NOW())) <= $end_billing_interval AND CAST(`expire_billing_date` AS CHAR) <> '0000-00-00 00:00:00' AND 1=" => 1,
@@ -47,13 +30,23 @@ if (Config::getSafe('enable_internal_billing', false) && Config::getSafe('number
     $msg_more = 'Term of your account will expire in "%s" days. In order to prevent tripping, prolong your account';
     $msg_today = "Term of your account will expire today. In order to prevent tripping, prolong your account";
     $msg = '';
+
+    $locale = $default_locale;
+
     foreach($users as $user){
+        $current_local = setlocale(LC_MESSAGES, 0);
         $event->setUserListById($user['id']);
+        if (in_array($user['locale'], $allowed_locales)) {
+            $locale = $user['locale'];
+        } else {
+            $locale = $default_locale;
+        }
+        putenv("LC_MESSAGES=$locale");
+        putenv("LANGUAGE=$locale");
+        setlocale(LC_MESSAGES, $locale);
+
         $msg = $user['end_billing_days'] > 0? sprintf(_($msg_more), $user['end_billing_days']) : $msg_today;
         $event->sendMsg($msg);
-        echo '-----------------------------------------------------------', PHP_EOL;
-        echo $user['id'], PHP_EOL;
-        echo $msg, PHP_EOL;
     }
 }
 ?>
