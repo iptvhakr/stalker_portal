@@ -279,6 +279,22 @@ player.prototype.init = function(){
 
         stbEvent.onMessage = function(win_id, msg, data){
             _debug('stbEvent.onMessage', win_id, msg, data);
+
+            if (msg == 'stalker:open' && data && module[data]){
+
+                stb.cur_single_module = data;
+                _debug('stb.cur_single_module', stb.cur_single_module);
+
+                module[stb.cur_layer.layer_name].hide && module[stb.cur_layer.layer_name].hide();
+
+                if (module[data]._show){
+                    module[data]._show();
+                }else if (module[data].show){
+                    module[data].show();
+                }
+
+                stb.cur_single_module = data;
+            }
         };
 
     }catch(e){

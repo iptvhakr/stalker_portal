@@ -57,9 +57,9 @@ if (_GET.hasOwnProperty('referrer')){
 }
 
 if (_GET.hasOwnProperty('single_module')){
-    var single_module = _GET['single_module'];
+    var single_module = _GET['single_module'].split(',');
 }else{
-    single_module = '';
+    single_module = [];
 }
 
 var focus_module;
@@ -130,7 +130,7 @@ var loader = {
         _style.rel = "stylesheet";
 
         if (module.indexOf('supermodule') > 0){
-            _style.href = module + resolution_prefix +".css&single_module="+single_module;
+            _style.href = module + resolution_prefix +".css&single_module="+single_module.join(',');
         }else{
             _style.href = 'template/' + this.template + '/' + module + resolution_prefix +".css";
         }
@@ -145,7 +145,7 @@ var loader = {
         var _script = document.createElement('script');
         _script.type = "text/javascript";
         if (module.indexOf('supermodule') > 0){
-            _script.src  = module + ".js&single_module="+single_module;
+            _script.src  = module + ".js&single_module="+single_module.join(',');
         }else{
             _script.src  = module + ".js";
         }
@@ -223,7 +223,7 @@ function init(){
                 stb.player.con_menu.hide();
             }
 
-            if(single_module){
+            if(single_module.length){
                 if (stb.player.on){
                     stb.player.show_prev_layer();
                 }
@@ -243,7 +243,9 @@ function init(){
     
     (function(){
 
-        if (single_module && single_module != 'tv'){
+        _debug('stb.cur_single_module', stb.cur_single_module);
+
+        if (single_module.length && (single_module.indexOf('tv') == -1 || stb.cur_single_module != 'tv')){
             return;
         }
 

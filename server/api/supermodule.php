@@ -51,14 +51,19 @@ $dependencies = array(
 
 if (!empty($_GET['single_module'])){
 
-    $single_module = $_GET['single_module'];
+    $single_modules = explode(',', $_GET['single_module']);
 
-    if (isset($dependencies[$single_module])){
-        $available_modules = array_intersect($dependencies[$single_module], $available_modules);
-    }else{
-        $available_modules = array_intersect(array($single_module), $available_modules);
+    $modules = array();
+
+    foreach ($single_modules as $single_module) {
+        if (isset($dependencies[$single_module])) {
+            $modules = array_merge($modules, $dependencies[$single_module]);
+        }else{
+            $modules = array_merge($modules, array($single_module));
+        }
     }
 
+    $available_modules = array_intersect($modules, $available_modules);
 }
 
 if ($_GET['type'] == '.js'){

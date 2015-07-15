@@ -100,7 +100,7 @@
 
             (function(){
 
-                if (single_module == this.layer_name){
+                if (single_module.indexOf(this.layer_name) != -1){
                     if (windowId !== 1) {
                         stb.player.stop();
                         // minimize
@@ -165,7 +165,7 @@
     karaoke.bind();
     karaoke.init();
 
-    if (single_module != 'karaoke') {
+    if (single_module.indexOf('karaoke') == -1) {
         karaoke.init_left_ear(word['ears_back']);
     }
     
