@@ -304,6 +304,21 @@ class VideoClubController extends \Controller\BaseStalkerController {
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
+
+    public function video_categories(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $this->app['dropdownAttribute'] = $this->getVideoCategoriesDropdownAttribute();
+        $list = $this->video_categories_list_json();
+
+        $this->app['allData'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
     
     //----------------------- ajax method --------------------------------------
     
@@ -1051,7 +1066,221 @@ class VideoClubController extends \Controller\BaseStalkerController {
             return $response;
         }
     }
-    
+
+    public function video_categories_list_json(){
+
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = $this->setlocalization('Error');
+        $param = (!empty($this->data) ? $this->data : array());
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_', 'localized_title', 'RowOrder'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsCategoriesGenresList();
+        $response["recordsFiltered"] = $this->db->getTotalRowsCategoriesGenresList($query_param['where'], $query_param['like']);
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        } elseif ($query_param['limit']['limit'] == -1) {
+            $query_param['limit']['limit'] = FALSE;
+        }
+
+        if (!empty($query_param['select']) && !in_array('id', $query_param['select'])) {
+            $query_param['select'][] = 'id';
+        }
+
+        $query_param['order']['num'] = 'ASC';
+
+        $self = $this;
+        $response['data'] = array_map(function($row) use ($self){
+            $row['localized_title'] = $self->setLocalization($row['category_name']);
+            $row['RowOrder'] = "dTRow_" . $row['id'];
+            return $row;
+        }, $this->db->getCategoriesGenres($query_param));
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+
+        $error = "";
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function video_categories_reorder() {
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $matches = array();
+        $data = array();
+        $data['action'] = 'reorder';
+        $error = 'error';
+        if (preg_match("/(\d+)/i", $this->postData['id'], $matches) && preg_match("/(\d+)/i", $this->postData['target_id'], $matches_1)){
+            $params = array(
+                'select' => array(
+                    "id"        => 'media_category.id as `id`',
+                    "num"    => 'media_category.num as `num`'
+                ),
+                'where' => array(),
+                'like' => array(),
+                'order' => array('num'=>'DESC')
+            );
+            $curr_pos = $matches[1];
+            $new_pos = $matches_1[1];
+
+            $params['where']['media_category.id'] = $curr_pos;
+            $curr_genre = $this->db->getCategoriesGenres($params);
+
+            $params['where'] = array();
+            $params['where']['media_category.id'] = $new_pos;
+            $target_genre = $this->db->getCategoriesGenres($params);
+
+            if ($this->db->updateCategoriesGenres($target_genre[0], array('id' => $curr_genre[0]['id'])) && $this->db->updateCategoriesGenres($curr_genre[0], array('id' => $target_genre[0]['id']))) {
+                $error = '';
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function add_video_categories(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['category_name']) || empty($this->postData['num'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'addVideoCategory';
+        $error = $this->setlocalization('Failed');
+
+        $category_alias  = $this->transliterate($this->postData['category_name']);
+
+        $check = $this->db->getTvGenresList(array(
+            'where' => array(
+                'category_name' => $this->postData['category_name'],
+                'category_alias' => $category_alias,
+                'num' => $this->postData['num']
+            ), 'order' => array('title' => 'ASC')));
+
+        if (empty($check)) {
+            $data['id']  = $this->db->insertCategoriesGenres(array('category_name' => $this->postData['category_name'], 'num' => $this->postData['num'], 'category_alias' => $category_alias));
+            $data['category_name'] = $this->postData['category_name'];
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function edit_video_categories(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['category_name']) || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'editVideoCategory';
+        $error = $this->setlocalization('Failed');
+
+        $check = $this->db->getCategoriesGenres(array(
+            'select'=>array('*'),
+            'where' => array(
+                'category_name' => $this->postData['category_name'],
+                'num' => $this->postData['num'],
+                'id<>' => $this->postData['id']
+            ),
+            'order' => array('category_name' => 'ASC'),
+            'like' => array()
+        ));
+        if (empty($check)) {
+            $this->db->updateCategoriesGenres(array(
+                'category_name' => $this->postData['category_name'],
+                'num' => $this->postData['num']
+            ), array('id' => $this->postData['id']));
+            $error = '';
+            $data['id'] = $this->postData['id'];
+            $data['category_name'] = $this->postData['category_name'];
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function remove_video_categories(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['categoriesid'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'removeVideoCategory';
+        $data['id'] = $this->postData['categoriesid'];
+        $this->db->deleteCategoriesGenres(array('id' => $this->postData['categoriesid']));
+        $response = $this->generateAjaxResponse($data, '');
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function check_video_categories_name(){
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['category_name'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        $data = array();
+        $data['action'] = 'checkVideoCategory';
+        $error = $this->setlocalization('Name already used');
+
+        $add = (array_key_exists('edit', $this->postData) && (strtolower((string)$this->postData['edit']) == 'false' || $this->postData['edit'] === FALSE));
+
+        if ($this->db->getCategoriesGenres(array('where' => array('category_name' => $this->postData['category_name']))) ||
+            ($add ? $this->db->getCategoriesGenres(array('where' => array('category_alias' => $this->transliterate($this->postData['category_name'])))): 0)) {
+            $data['chk_rezult'] = $this->setlocalization('Name already used');
+        } else {
+            $data['chk_rezult'] = $this->setlocalization('Name is available');
+            $error = '';
+        }
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getVideoListFilters()
@@ -1636,7 +1865,7 @@ class VideoClubController extends \Controller\BaseStalkerController {
             array('name' => 'count',        'title' => $this->setlocalization('Views lifetime'),'checked' => FALSE),
             array('name' => 'counter',      'title' => $this->setlocalization('Views last month'),'checked' => FALSE),
             array('name' => 'complaints',   'title' => $this->setlocalization('Complaints'),    'checked' => TRUE),
-            array('name' => 'status',       'title' => $this->setlocalization('Status'),        'checked' => TRUE),
+            array('name' => 'accessed',       'title' => $this->setlocalization('Status'),        'checked' => TRUE),
             array('name' => 'operations',   'title' => $this->setlocalization('Operations'),    'checked' => TRUE)
         );
         
@@ -1679,5 +1908,14 @@ class VideoClubController extends \Controller\BaseStalkerController {
         }
         ksort($return_list);
         return array_combine(range(0, count($return_list)-1), array_values($return_list));
+    }
+
+    private function getVideoCategoriesDropdownAttribute(){
+        return array(
+            array('name'=>'num',            'title'=>$this->setLocalization('Number'),          'checked' => TRUE),
+            array('name'=>'category_name',  'title'=>$this->setLocalization('Title'),           'checked' => TRUE),
+            array('name'=>'localized_title','title'=>$this->setLocalization('Localized title'), 'checked' => TRUE),
+            array('name'=>'operations',     'title'=>$this->setLocalization('Operation'),       'checked' => TRUE)
+        );
     }
 }

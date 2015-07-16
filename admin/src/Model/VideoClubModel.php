@@ -203,10 +203,51 @@ class VideoClubModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->from('genre')->orderby('title')->get()->all();
     }
     
-    public function getCategoriesGenres() {
-        return $this->mysqlInstance->from('media_category')->orderby('id')->get()->all();
+    public function getCategoriesGenres($param = array()) {
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+
+        $this->mysqlInstance->from('media_category');
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], 'OR');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        } else {
+            $this->mysqlInstance->orderby('id');
+        }
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], ( array_key_exists('offset', $param['limit']) ? $param['limit']['offset']: FALSE ) );
+        }
+
+        return $this->mysqlInstance->get()->all();
     }
-    
+
+    public function getTotalRowsCategoriesGenresList($where = array(), $like = array()) {
+        $this->mysqlInstance->count()->from('media_category')->where($where);
+        if (!empty($like)) {
+            $this->mysqlInstance->like($like, 'OR');
+        }
+        return $this->mysqlInstance->get()->counter();
+    }
+
+    public function insertCategoriesGenres($param){
+        return $this->mysqlInstance->insert('media_category', $param)->insert_id();
+    }
+
+    public function updateCategoriesGenres($data, $param){
+        unset($data['id']);
+        return $this->mysqlInstance->update('media_category', $data, $param)->total_rows();
+    }
+
+    public function deleteCategoriesGenres($param){
+        return $this->mysqlInstance->delete('media_category', $param)->total_rows();
+    }
+
     public function getVideoCategories() {
         return$this->mysqlInstance->from('cat_genre')->orderby('category_alias, id')->get()->all();
     }

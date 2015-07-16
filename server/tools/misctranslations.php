@@ -740,3 +740,4 @@ _('Original');
 _('title');
 _('Term of your account will expire in "%s" days. In order to prevent tripping, prolong your account');
 _('Term of your account will expire today. In order to prevent tripping, prolong your account');
+_('Name already used');

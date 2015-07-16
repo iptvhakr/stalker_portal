@@ -72,13 +72,16 @@
             var iNewPosition = -1; // fnGetStartPosition(sSelector);
             var sDirection;
             var trPrevious = tr.prev(sSelector);
+            var trTargetId;
             if (trPrevious.length > 0) {
                 iNewPosition = parseInt(oTable.fnGetData(trPrevious[0], properties.iIndexColumn));
+                trTargetId = oTable.fnGetData(trPrevious[0], properties.id);
                 if (iNewPosition < iCurrentPosition) {
                     iNewPosition = iNewPosition + 1;
                 }
             } else {
                 var trNext = tr.next(sSelector);
+                trTargetId = oTable.fnGetData(trNext[0], properties.id);
                 if (trNext.length > 0) {
                     iNewPosition = parseInt(oTable.fnGetData(trNext[0], properties.iIndexColumn));
                     if (iNewPosition > iCurrentPosition)//moved back
@@ -90,7 +93,7 @@
             else
                 sDirection = "forward";
 
-            return {sDirection: sDirection, iCurrentPosition: iCurrentPosition, iNewPosition: iNewPosition};
+            return {sDirection: sDirection, iCurrentPosition: iCurrentPosition, iNewPosition: iNewPosition, trTargetId: trTargetId.RowOrder || ''};
 
         }
 
@@ -231,6 +234,7 @@
                             url: properties.sURL,
                             type: properties.sRequestType,
                             data: {id: ui.item.context.id,
+                                target_id: oState.trTargetId,
                                 fromPosition: oState.iCurrentPosition,
                                 toPosition: oState.iNewPosition,
                                 direction: oState.sDirection,
