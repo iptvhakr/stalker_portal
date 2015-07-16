@@ -416,7 +416,11 @@
         this._show = function(category){
             _debug('audioclub._show', category);
 
-            this.category = category = category || this.categories[0];
+            this.category = category = category || this.categories && this.categories[0];
+
+            if (!this.category){
+                this.category = category = {"alias" : "albums", "title" : get_word("audioclub_albums")};
+            }
 
             this.load_params['category'] = category.alias;
 
@@ -675,6 +679,7 @@
                     if (windowId !== 1) {
                         stb.player.stop();
                         // minimize
+                        this.hide();
                         stbWindowMgr.windowHide(windowId);
                     } else if (window.referrer){
                         stb.player.stop();

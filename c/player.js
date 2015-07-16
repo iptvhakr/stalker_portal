@@ -280,7 +280,7 @@ player.prototype.init = function(){
         stbEvent.onMessage = function(win_id, msg, data){
             _debug('stbEvent.onMessage', win_id, msg, data);
 
-            if (msg == 'stalker:open' && data && module[data]){
+            /*if (msg == 'stalker:open' && data && module[data]){
 
                 stb.cur_single_module = data;
                 _debug('stb.cur_single_module', stb.cur_single_module);
@@ -293,7 +293,28 @@ player.prototype.init = function(){
                     module[data].show();
                 }
 
-                stb.cur_single_module = data;
+            }else */
+            if (msg == 'show'){
+                if (data) {
+                    data = JSON.parse(data);
+
+                    if (data.module && module[data.module]){
+                        stb.cur_single_module = data.module;
+                        _debug('stb.cur_single_module', stb.cur_single_module);
+
+                        module[stb.cur_layer.layer_name].hide && module[stb.cur_layer.layer_name].hide();
+
+                        if (module[stb.cur_single_module]._show){
+                            module[stb.cur_single_module]._show();
+                        }else if (module[stb.cur_single_module].show){
+                            module[stb.cur_single_module].show();
+                        }
+                    }
+                }
+
+                stbWindowMgr.windowShow(windowId);
+            }else if (msg == 'exit'){
+                stbWebWindow.close();
             }
         };
 

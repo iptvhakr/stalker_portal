@@ -104,6 +104,7 @@
                     if (windowId !== 1) {
                         stb.player.stop();
                         // minimize
+                        this.hide();
                         stbWindowMgr.windowHide(windowId);
                     } else if (window.referrer){
                         stb.player.stop();

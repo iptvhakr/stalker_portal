@@ -544,6 +544,7 @@ $words['audioclub_languages'] = _('Language');
 $words['audioclub_language'] = _('Language');
 $words['audioclub_performer'] = _('Artist');
 $words['audioclub_album'] = _('Album');
+$words['audioclub_albums'] = _('Albums');
 $words['audioclub_tracks'] = _('Compositions');
 
 $words['audioclub_select_playlist'] = _('Playlist select');
