@@ -1008,9 +1008,13 @@ class UsersController extends \Controller\BaseStalkerController {
     private function buildUserForm(&$data = array(), $edit = FALSE) {
 
         $builder = $this->app['form.factory'];
-        $additional_services = $status = array(
+        $additional_services = array(
             0 => $this->setLocalization('off'),
             1 => $this->setLocalization('on')
+        );
+        $status = array(
+            1 => $this->setLocalization('off'),
+            0 => $this->setLocalization('on')
         );
 
 
