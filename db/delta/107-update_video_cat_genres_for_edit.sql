@@ -18,8 +18,7 @@ VALUES    ('video-club',         'video-categories',                    0, 'List
 
           ('video-club',         'video-genres',                        0, 'List of video genres'),
           ('video-club',         'video-genres-list-json',              1, 'List of video genres by page + filters'),
-          ('video-club',         'add-video-genres',                    1, 'Add video genre'),
-          ('video-club',         'edit-video-genres',                   1, 'Edit video genre'),
+          ('video-club',         'save-video-genres',                   1, 'Save video genre'),
           ('video-club',         'remove-video-genres',                 1, 'Remove the video genre'),
           ('video-club',         'check-video-genres-name',             1, 'Validation names video genre');
 

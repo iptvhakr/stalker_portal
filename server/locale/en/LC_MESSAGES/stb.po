@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-16 12:57+0300\n"
-"PO-Revision-Date: 2015-07-16 12:57+0300\n"
+"POT-Creation-Date: 2015-07-17 13:35+0300\n"
+"PO-Revision-Date: 2015-07-17 13:35+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -85,7 +85,7 @@ msgid "Publish"
 msgstr "Publish"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:284
-#: ../../../../admin/src/Controller/VideoClubController.php:956
+#: ../../../../admin/src/Controller/VideoClubController.php:979
 msgid "Unpublish"
 msgstr "Unpublish"
 
@@ -128,14 +128,16 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/EventsController.php:177
 #: ../../../../admin/src/Controller/EventsController.php:209
 #: ../../../../admin/src/Controller/EventsController.php:243
-#: ../../../../admin/src/Controller/VideoClubController.php:499
-#: ../../../../admin/src/Controller/VideoClubController.php:525
-#: ../../../../admin/src/Controller/VideoClubController.php:757
-#: ../../../../admin/src/Controller/VideoClubController.php:1127
-#: ../../../../admin/src/Controller/VideoClubController.php:1169
-#: ../../../../admin/src/Controller/VideoClubController.php:1202
-#: ../../../../admin/src/Controller/VideoClubController.php:1240
-#: ../../../../admin/src/Controller/VideoClubController.php:1259
+#: ../../../../admin/src/Controller/VideoClubController.php:522
+#: ../../../../admin/src/Controller/VideoClubController.php:548
+#: ../../../../admin/src/Controller/VideoClubController.php:780
+#: ../../../../admin/src/Controller/VideoClubController.php:1150
+#: ../../../../admin/src/Controller/VideoClubController.php:1192
+#: ../../../../admin/src/Controller/VideoClubController.php:1225
+#: ../../../../admin/src/Controller/VideoClubController.php:1263
+#: ../../../../admin/src/Controller/VideoClubController.php:1282
+#: ../../../../admin/src/Controller/VideoClubController.php:1380
+#: ../../../../admin/src/Controller/VideoClubController.php:1424
 #: ../../../../admin/src/Controller/BroadcastServersController.php:267
 #: ../../../../admin/src/Controller/BroadcastServersController.php:287
 #: ../../../../admin/src/Controller/BroadcastServersController.php:328
@@ -227,7 +229,7 @@ msgstr "ID"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1346
 #: ../../../../admin/src/Controller/TvChannelsController.php:1438
-#: ../../../../admin/src/Controller/VideoClubController.php:1915
+#: ../../../../admin/src/Controller/VideoClubController.php:2079
 #: ../../../administrator/other_city_info.php:151
 #: ../../../administrator/other_city_info.php:214
 #: ../../../administrator/help_city_info.php:141
@@ -250,7 +252,8 @@ msgstr "Logo"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1348
 #: ../../../../admin/src/Controller/TvChannelsController.php:1439
-#: ../../../../admin/src/Controller/VideoClubController.php:1916
+#: ../../../../admin/src/Controller/VideoClubController.php:2080
+#: ../../../../admin/src/Controller/VideoClubController.php:2088
 #: ../../../../admin/src/Controller/AudioClubController.php:1342
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
@@ -323,13 +326,15 @@ msgid "Operations"
 msgstr "Operations"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1440
-#: ../../../../admin/src/Controller/VideoClubController.php:1917
+#: ../../../../admin/src/Controller/VideoClubController.php:2081
+#: ../../../../admin/src/Controller/VideoClubController.php:2089
 #: ../../../tools/misctranslations.php:540
 msgid "Localized title"
 msgstr "Localized title"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1441
-#: ../../../../admin/src/Controller/VideoClubController.php:1918
+#: ../../../../admin/src/Controller/VideoClubController.php:2082
+#: ../../../../admin/src/Controller/VideoClubController.php:2091
 #: ../../../../admin/src/Controller/AudioClubController.php:1343
 msgid "Operation"
 msgstr "Operation"
@@ -340,7 +345,7 @@ msgstr "Operation"
 #: ../../../../admin/src/Controller/IndexController.php:214
 #: ../../../../admin/src/Controller/IndexController.php:256
 #: ../../../../admin/src/Controller/IndexController.php:303
-#: ../../../../admin/src/Controller/VideoClubController.php:767
+#: ../../../../admin/src/Controller/VideoClubController.php:790
 #: ../../../../admin/src/Controller/AudioClubController.php:899
 #: ../../../adm/js/js_translate.php:41
 msgid "Failed"
@@ -376,7 +381,7 @@ msgid "Installed applications"
 msgstr "Installed applications"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:23
-#: ../../../../admin/src/Controller/VideoClubController.php:593
+#: ../../../../admin/src/Controller/VideoClubController.php:616
 msgid "Scheduled"
 msgstr "Scheduled"
 
@@ -423,24 +428,24 @@ msgstr "Add moderator"
 msgid "Edit moderator"
 msgstr "Edit moderator"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:462
+#: ../../../../admin/src/Controller/VideoClubController.php:485
 msgid "Information about the video source"
 msgstr "Information about the video source"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:463
+#: ../../../../admin/src/Controller/VideoClubController.php:486
 msgid "information not available"
 msgstr "information not available"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:510
-#: ../../../../admin/src/Controller/VideoClubController.php:537
-#: ../../../../admin/src/Controller/VideoClubController.php:564
-#: ../../../../admin/src/Controller/VideoClubController.php:612
-#: ../../../../admin/src/Controller/VideoClubController.php:642
-#: ../../../../admin/src/Controller/VideoClubController.php:718
+#: ../../../../admin/src/Controller/VideoClubController.php:533
+#: ../../../../admin/src/Controller/VideoClubController.php:560
+#: ../../../../admin/src/Controller/VideoClubController.php:587
+#: ../../../../admin/src/Controller/VideoClubController.php:635
+#: ../../../../admin/src/Controller/VideoClubController.php:665
+#: ../../../../admin/src/Controller/VideoClubController.php:741
 msgid "Information not available"
 msgstr "Information not available"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:593
+#: ../../../../admin/src/Controller/VideoClubController.php:616
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
 #: ../../../../admin/src/Controller/UsersController.php:398
 #: ../../../../admin/src/Controller/UsersController.php:1013
@@ -448,33 +453,51 @@ msgstr "Information not available"
 msgid "on"
 msgstr "on"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:742
+#: ../../../../admin/src/Controller/VideoClubController.php:765
 #: ../../../administrator/add_video.php:134
 #, php-format
 msgid "Error during file moving from %s to %s"
 msgstr "Error during file moving from %s to %s"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:775
+#: ../../../../admin/src/Controller/VideoClubController.php:798
 #: ../../../../admin/src/Controller/AudioClubController.php:909
 msgid "image file has not been deleted"
 msgstr "image file has not been deleted"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:776
+#: ../../../../admin/src/Controller/VideoClubController.php:799
 #: ../../../../admin/src/Controller/AudioClubController.php:910
 msgid "image name"
 msgstr "image name"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:777
+#: ../../../../admin/src/Controller/VideoClubController.php:800
 #: ../../../../admin/src/Controller/AudioClubController.php:911
 msgid "file can be deleted manually from screenshot directory"
 msgstr "file can be deleted manually from screenshot directory"
 
-#: ../../../../admin/src/Controller/VideoClubController.php:796
-#: ../../../../admin/src/Controller/VideoClubController.php:823
-#: ../../../../admin/src/Controller/VideoClubController.php:853
-#: ../../../../admin/src/Controller/VideoClubController.php:883
+#: ../../../../admin/src/Controller/VideoClubController.php:819
+#: ../../../../admin/src/Controller/VideoClubController.php:846
+#: ../../../../admin/src/Controller/VideoClubController.php:876
+#: ../../../../admin/src/Controller/VideoClubController.php:906
 msgid "No data"
 msgstr "No data"
+
+#: ../../../../admin/src/Controller/VideoClubController.php:1412
+msgid "Inserted"
+msgstr "Inserted"
+
+#: ../../../../admin/src/Controller/VideoClubController.php:1414
+msgid "In this category already exists such a genre"
+msgstr "In this category already exists such a genre"
+
+#: ../../../../admin/src/Controller/VideoClubController.php:1436
+#: ../../../../admin/src/Controller/AdminsController.php:602
+msgid "Deleted"
+msgstr "Deleted"
+
+#: ../../../../admin/src/Controller/VideoClubController.php:2090
+#: ../../../administrator/add_video.php:1993 ../../../lang/stb.php:239
+msgid "Category"
+msgstr "Category"
 
 #: ../../../../admin/src/Controller/AudioClubController.php:84
 #: ../../../../admin/src/Controller/AudioClubController.php:124
@@ -711,10 +734,6 @@ msgstr "Group name is already used"
 #: ../../../../admin/src/Controller/AdminsController.php:361
 msgid "Group name is available"
 msgstr "Group name is available"
-
-#: ../../../../admin/src/Controller/AdminsController.php:602
-msgid "Deleted"
-msgstr "Deleted"
 
 #: ../../../../admin/src/Controller/AdminsController.php:604
 msgid "Found members of this reseller. Deleting not possible."
@@ -6086,10 +6105,6 @@ msgstr "Low quality"
 msgid "old genre"
 msgstr "old genre"
 
-#: ../../../administrator/add_video.php:1993 ../../../lang/stb.php:239
-msgid "Category"
-msgstr "Category"
-
 #: ../../../administrator/add_video.php:2055 ../../../lang/stb.php:484
 msgid "Duration"
 msgstr "Duration"
@@ -9280,9 +9295,6 @@ msgstr "user"
 msgid "users log"
 msgstr "users log"
 
-msgid " streaming area "
-msgstr " streaming area "
-
 msgid "Add a channel"
 msgstr "Add a channel"
 
@@ -9295,9 +9307,6 @@ msgstr "Adding"
 msgid "All fields is required"
 msgstr "All fields is required"
 
-msgid "Default area"
-msgstr "Default area"
-
 #: ../../../../admin/json_menu/menu.json:260
 msgid "Humor"
 msgstr "Humor"
@@ -9308,9 +9317,6 @@ msgstr "Information portal"
 
 msgid "Initiator"
 msgstr "Initiator"
-
-msgid "It will be selected as default for all new streaming servers"
-msgstr "It will be selected as default for all new streaming servers"
 
 msgid "MAC address"
 msgstr "MAC address"
@@ -9341,13 +9347,6 @@ msgstr "Subscribers statistic"
 msgid "Text"
 msgstr "Text"
 
-msgid ""
-"Title of the area. You can use letters, digits and symbols from the list: ! "
-"@ # $ % ^ & * ( ) _ - + : ; , ."
-msgstr ""
-"Title of the area. You can use letters, digits and symbols from the list: ! "
-"@ # $ % ^ & * ( ) _ - + : ; , ."
-
 msgid "Unublish"
 msgstr "Unublish"
 
@@ -9361,17 +9360,11 @@ msgstr "View is a review of at least one joke"
 msgid "View is an uninterrupted playback of channel for more than 30 minutes"
 msgstr "View is an uninterrupted playback of channel for more than 30 minutes"
 
-msgid "add area"
-msgstr "add area"
-
 msgid "albums list"
 msgstr "albums list"
 
 msgid "channels list"
 msgstr "channels list"
-
-msgid "edit area"
-msgstr "edit area"
 
 msgid "group"
 msgstr "group"
@@ -9388,8 +9381,14 @@ msgstr "list of groups STB"
 msgid "moderators list"
 msgstr "moderators list"
 
+msgid " streaming area "
+msgstr " streaming area "
+
 msgid "Add EPG"
 msgstr "Add EPG"
+
+msgid "Default area"
+msgstr "Default area"
 
 msgid "Edit EPG"
 msgstr "Edit EPG"
@@ -9408,6 +9407,9 @@ msgstr "Infomir News"
 
 msgid "Initial state"
 msgstr "Initial state"
+
+msgid "It will be selected as default for all new streaming servers"
+msgstr "It will be selected as default for all new streaming servers"
 
 msgid "Languages by priority"
 msgstr "Languages by priority"
@@ -9431,8 +9433,21 @@ msgstr "Report a bug"
 msgid "Switch off advertising"
 msgstr "Switch off advertising"
 
+msgid ""
+"Title of the area. You can use letters, digits and symbols from the list: ! "
+"@ # $ % ^ & * ( ) _ - + : ; , ."
+msgstr ""
+"Title of the area. You can use letters, digits and symbols from the list: ! "
+"@ # $ % ^ & * ( ) _ - + : ; , ."
+
 msgid "Update EPG – consider only the new/last changes"
 msgstr "Update EPG – consider only the new/last changes"
+
+msgid "add area"
+msgstr "add area"
+
+msgid "edit area"
+msgstr "edit area"
 
 msgid "list of service packages"
 msgstr "list of service packages"
