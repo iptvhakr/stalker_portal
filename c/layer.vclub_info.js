@@ -202,7 +202,7 @@ vclub_info.prototype.bind = function(){
     
     (function(){
 
-        if (single_module){
+        if (single_module.length){
             return;
         }
 

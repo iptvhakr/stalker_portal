@@ -416,7 +416,11 @@
         this._show = function(category){
             _debug('audioclub._show', category);
 
-            this.category = category = category || this.categories[0];
+            this.category = category = category || this.categories && this.categories[0];
+
+            if (!this.category){
+                this.category = category = {"alias" : "albums", "title" : get_word("audioclub_albums")};
+            }
 
             this.load_params['category'] = category.alias;
 
@@ -466,7 +470,7 @@
 
             (function(){
 
-                if (single_module == this.layer_name){
+                if (single_module.indexOf(this.layer_name) != -1){
                     return;
                 }
 
@@ -671,10 +675,11 @@
 
             if (this.history.length == 1){
 
-                if (single_module == this.layer_name){
+                if (single_module.indexOf(this.layer_name) != -1){
                     if (windowId !== 1) {
                         stb.player.stop();
                         // minimize
+                        this.hide();
                         stbWindowMgr.windowHide(windowId);
                     } else if (window.referrer){
                         stb.player.stop();
@@ -962,7 +967,7 @@
 
     var audioclub = new audioclub_constructor();
 
-    if (single_module != 'audioclub') {
+    if (single_module.indexOf('audioclub') == -1) {
         audioclub.init_left_ear(word['ears_back']);
     }
 
@@ -1025,7 +1030,7 @@
                 );
             }
 
-            if (single_module == 'audioclub') {
+            if (single_module.indexOf('audioclub') != -1) {
                 module.audioclub.history.push({
                     "page" : module.audioclub.cur_page,
                     "row" : module.audioclub.cur_row,

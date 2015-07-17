@@ -70,6 +70,11 @@ class AuthAccessHandler extends AccessHandler
         if (!empty($verified_user)){
             $user->setSerialNumber($serial_number);
             $user->updateUserInfoFromOSS();
+
+            if (\Config::getSafe('bind_stb_auth_and_oauth', true)){
+                // invalidate stb access_token
+                $user->resetAccessToken();
+            }
         }
 
         $user->updateIp();

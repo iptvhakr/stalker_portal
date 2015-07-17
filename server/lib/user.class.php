@@ -123,6 +123,16 @@ class User implements \Stalker\Lib\StbApi\User
         return $this->profile['serial_number'] = $serial_number;
     }
 
+    public function resetAccessToken($token = ''){
+
+        return Mysql::getInstance()->update('users',
+            array(
+                'access_token' => empty($token) ? strtoupper(md5(microtime(1).uniqid())) : $token
+            ),
+            array('id' => $this->id)
+        )->result();
+    }
+
     public function getExternalTariffId(){
         $tariff_plan_id = $this->profile['tariff_plan_id'];
         return Mysql::getInstance()->from('tariff_plan')->where(array('id' => $tariff_plan_id))->get()->first('external_id');

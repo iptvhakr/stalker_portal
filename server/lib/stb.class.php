@@ -382,6 +382,9 @@ class Stb implements \Stalker\Lib\StbApi\Stb
 
             try{
                 Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
+                if (\Config::getSafe('bind_stb_auth_and_oauth', true)) {
+                    $this->resetOauthToken();
+                }
             }catch (MysqlException $e){
                 echo $e->getMessage().PHP_EOL;
             }
@@ -550,6 +553,10 @@ class Stb implements \Stalker\Lib\StbApi\Stb
             }
         }else{
             Mysql::getInstance()->update('users', array('access_token' => $this->access_token), array('id' => $this->id));
+
+            if (\Config::getSafe('bind_stb_auth_and_oauth', true)) {
+                $this->resetOauthToken();
+            }
 
             if (!$valid_saved_auth && (intval($_REQUEST['auth_second_step']) === 0) && Config::exist('auth_url') && (strpos(Config::get('auth_url'), 'auth_every_load') || $force_auth === true)){
                 $this->getInfoFromOss(!$force_auth);
@@ -783,6 +790,16 @@ class Stb implements \Stalker\Lib\StbApi\Stb
         );
     }
 
+    private function resetOauthToken(){
+
+        Mysql::getInstance()->update('access_tokens',
+            array(
+                'token'         => 'invalid_'.md5(microtime(1).uniqid()),
+                'refresh_token' => 'invalid_'.md5(microtime(1).uniqid()),
+            ),
+            array('uid' => $this->id));
+    }
+
     public function getUserPortalTheme(){
 
         return empty($this->params['theme']) || !in_array($this->params['theme'], Middleware::getThemes())
@@ -874,6 +891,11 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 'device_id2'   => $device_id2
             );
             $uid = self::create($data);
+
+            if (\Config::getSafe('bind_stb_auth_and_oauth', true)) {
+                $this->resetOauthToken();
+            }
+
         }else if (!empty($user)){
 
             Mysql::getInstance()->update('users',
@@ -927,9 +949,13 @@ class Stb implements \Stalker\Lib\StbApi\Stb
                 );
                 $uid = $user['id'];
             }
+
+            if (\Config::getSafe('bind_stb_auth_and_oauth', true)) {
+                $this->resetOauthToken();
+            }
         }
-                
-        $this->getStbParams();        
+
+        $this->getStbParams();
         
         $this->setId($uid);
 

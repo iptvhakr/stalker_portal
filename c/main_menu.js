@@ -436,7 +436,7 @@ var main_menu = {
     
     add : function(title, sub, img, cmd, module){
 
-        if (single_module){
+        if (single_module.length){
             return;
         }
 

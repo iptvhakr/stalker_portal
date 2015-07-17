@@ -1046,7 +1046,7 @@ function common_xpcom(){
                     this.check_image_version();
                 }
 
-                if (single_module == 'tv' || !single_module) {
+                if (single_module.indexOf('tv') != -1 || single_module.length == 0) {
                     this.epg_loader.start();
                 }
 
@@ -1166,7 +1166,7 @@ function common_xpcom(){
 
                 this.set_storages(this.user['storages']);
 
-                if (single_module && single_module != 'tv') {
+                if (single_module.length && single_module.indexOf('tv') == -1) {
                     stb.loader.add_pos(this.load_step, 'skip channels loading');
                     stb.loader.add_pos(this.load_step, 'skip fav_channels loading');
                 }else{
@@ -1218,12 +1218,14 @@ function common_xpcom(){
 
         this.key_lock = false;
 
-        if (single_module && module[single_module]){
+        if (single_module.length > 0 && module[single_module[0]]){
 
-            if (module[single_module]._show){
-                module[single_module]._show();
-            }else if (module[single_module].show){
-                module[single_module].show();
+            stb.cur_single_module = single_module[0];
+
+            if (module[single_module[0]]._show){
+                module[single_module[0]]._show();
+            }else if (module[single_module[0]].show){
+                module[single_module[0]].show();
             }
 
             return;

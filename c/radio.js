@@ -202,10 +202,11 @@
                 }
                 this.update_header_path(header_path);
 
-                if (single_module == this.layer_name){
+                if (single_module.indexOf(this.layer_name) != -1){
                     if (windowId !== 1) {
                         stb.player.stop();
                         // minimize
+                        this.hide();
                         stbWindowMgr.windowHide(windowId);
                     } else if (window.referrer){
                         stb.player.stop();
@@ -594,7 +595,7 @@
     radio.bind();
     radio.init();
 
-    if (single_module != 'radio'){
+    if (single_module.indexOf('radio') == -1){
         radio.init_left_ear(word['ears_back']);
     }
 

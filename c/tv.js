@@ -314,7 +314,7 @@
             
             (function(){
 
-                if (single_module == this.layer_name){
+                if (single_module.indexOf(this.layer_name) != -1){
                     return;
                 }
 
@@ -373,10 +373,11 @@
                     this.cancel_quick_ch_switch();
                 }else{
 
-                    if (single_module == this.layer_name){
+                    if (single_module.indexOf(this.layer_name) != -1){
                         if (windowId !== 1) {
                             stb.player.stop();
                             // minimize
+                            this.hide();
                             stbWindowMgr.windowHide(windowId);
                         } else if (window.referrer){
                             stb.player.stop();
@@ -1663,7 +1664,7 @@
     //tv.set_wide_container();
     //tv.set_short_container();
 
-    if (single_module != 'tv'){
+    if (single_module.indexOf('tv') == -1){
         tv.init_left_ear(word['ears_back']);
     }
 

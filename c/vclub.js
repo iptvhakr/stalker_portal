@@ -685,10 +685,11 @@
 
             (function(){
 
-                if (single_module == this.layer_name){
+                if (single_module.indexOf(this.layer_name) != -1){
                     if (windowId !== 1) {
                         stb.player.stop();
                         // minimize
+                        this.hide();
                         stbWindowMgr.windowHide(windowId);
                     } else if (window.referrer){
                         window.location = window.referrer;
@@ -1273,7 +1274,7 @@
     //vclub.set_wide_container();
     vclub.set_middle_container();
 
-    if (single_module != 'vclub'){
+    if (single_module.indexOf('vclub') == -1){
         vclub.init_left_ear(word['ears_back']);
     }
 

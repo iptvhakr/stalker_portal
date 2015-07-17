@@ -202,7 +202,7 @@
             
             (function(){
 
-                if (single_module){
+                if (single_module.length){
                     return;
                 }
 
