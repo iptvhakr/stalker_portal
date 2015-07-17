@@ -738,5 +738,6 @@ _('Necessary to view');
 _('Complaints');
 _('Original');
 _('title');
-_('Term of your account will expire in "%s" days. In order to prevent tripping, prolong your account');
-_('Term of your account will expire today. In order to prevent tripping, prolong your account');
+_('Dear Subscriber! Your payment term will expire in "%s" days. Please refill a personal account in order to avoid tripping of services.');
+_("Dear Subscriber! Your payment term will expire today. Please refill a personal account in order to avoid tripping of services.");
+_('Name already used');

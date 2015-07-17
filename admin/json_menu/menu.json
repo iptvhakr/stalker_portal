@@ -64,24 +64,34 @@
                 "alias": "video-list",
                 "icon": ""
             },
-            "3": {
+            "2": {
                 "name": _("Schedule"),
                 "alias": "video-schedule",
                 "icon": ""
             },
-            "4": {
+            "3": {
                 "name": _("Advertising"),
                 "alias": "video-advertise",
                 "icon": ""
             },
-            "5": {
+            "4": {
                 "name": _("Moderators"),
                 "alias": "video-moderators-addresses",
                 "icon": ""
             },
-            "6": {
+            "5": {
                 "name": _("Activity log"),
                 "alias": "video-logs",
+                "icon": ""
+            },
+            "6": {
+                "name": _("Categories"),
+                "alias": "video-categories",
+                "icon": ""
+            },
+            "7": {
+                "name": _("Genres"),
+                "alias": "video-genres",
                 "icon": ""
             }
         }

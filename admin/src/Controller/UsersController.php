@@ -350,7 +350,11 @@ class UsersController extends \Controller\BaseStalkerController {
         if (!empty($query_param['order']) && !empty($query_param['order']['state'])) {
             $query_param['order']['`keep_alive`'] = $query_param['order']['state'];
             unset($query_param['order']['state']);
+        } elseif (!empty($query_param['order']) && !empty($query_param['order']['last_change_status'])) {
+            $query_param['order']['unix_timestamp(last_change_status)'] = $query_param['order']['last_change_status'];
+            unset($query_param['order']['last_change_status']);
         }
+
         $reseller_empty_name = $this->setLocalization('Empty');
         $response['data'] = array_map(function($val) use ($reseller_empty_name) {
             $val['last_active'] = (int)$val['last_active']; 
@@ -1008,9 +1012,13 @@ class UsersController extends \Controller\BaseStalkerController {
     private function buildUserForm(&$data = array(), $edit = FALSE) {
 
         $builder = $this->app['form.factory'];
-        $additional_services = $status = array(
+        $additional_services = array(
             0 => $this->setLocalization('off'),
             1 => $this->setLocalization('on')
+        );
+        $status = array(
+            1 => $this->setLocalization('off'),
+            0 => $this->setLocalization('on')
         );
 
 
