@@ -27,8 +27,8 @@ if (Config::getSafe('enable_internal_billing', false) && Config::getSafe('number
 
     $event = new SysEvent();
     $event->setTtl(86340);
-    $msg_more = 'Term of your account will expire in "%s" days. In order to prevent tripping, prolong your account';
-    $msg_today = "Term of your account will expire today. In order to prevent tripping, prolong your account";
+    $msg_more = 'Dear Subscriber! Your payment term will expire in "%s" days. Please refill a personal account in order to avoid tripping of services.';
+    $msg_today = "Dear Subscriber! Your payment term will expire today. Please refill a personal account in order to avoid tripping of services.";
     $msg = '';
 
     $locale = $default_locale;

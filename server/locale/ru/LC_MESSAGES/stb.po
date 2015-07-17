@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-17 13:35+0300\n"
-"PO-Revision-Date: 2015-07-17 13:36+0300\n"
+"POT-Creation-Date: 2015-07-17 16:44+0300\n"
+"PO-Revision-Date: 2015-07-17 16:45+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -185,22 +185,22 @@ msgstr "ТВ архив был успешно перезапущен."
 #: ../../../../admin/src/Controller/RadioController.php:194
 #: ../../../../admin/src/Controller/RadioController.php:213
 #: ../../../../admin/src/Controller/RadioController.php:236
-#: ../../../../admin/src/Controller/UsersController.php:377
-#: ../../../../admin/src/Controller/UsersController.php:409
-#: ../../../../admin/src/Controller/UsersController.php:440
-#: ../../../../admin/src/Controller/UsersController.php:460
-#: ../../../../admin/src/Controller/UsersController.php:480
-#: ../../../../admin/src/Controller/UsersController.php:497
-#: ../../../../admin/src/Controller/UsersController.php:522
-#: ../../../../admin/src/Controller/UsersController.php:548
-#: ../../../../admin/src/Controller/UsersController.php:566
-#: ../../../../admin/src/Controller/UsersController.php:588
-#: ../../../../admin/src/Controller/UsersController.php:656
-#: ../../../../admin/src/Controller/UsersController.php:674
-#: ../../../../admin/src/Controller/UsersController.php:716
-#: ../../../../admin/src/Controller/UsersController.php:874
-#: ../../../../admin/src/Controller/UsersController.php:904
-#: ../../../../admin/src/Controller/UsersController.php:938
+#: ../../../../admin/src/Controller/UsersController.php:381
+#: ../../../../admin/src/Controller/UsersController.php:413
+#: ../../../../admin/src/Controller/UsersController.php:444
+#: ../../../../admin/src/Controller/UsersController.php:464
+#: ../../../../admin/src/Controller/UsersController.php:484
+#: ../../../../admin/src/Controller/UsersController.php:501
+#: ../../../../admin/src/Controller/UsersController.php:526
+#: ../../../../admin/src/Controller/UsersController.php:552
+#: ../../../../admin/src/Controller/UsersController.php:570
+#: ../../../../admin/src/Controller/UsersController.php:592
+#: ../../../../admin/src/Controller/UsersController.php:660
+#: ../../../../admin/src/Controller/UsersController.php:678
+#: ../../../../admin/src/Controller/UsersController.php:720
+#: ../../../../admin/src/Controller/UsersController.php:878
+#: ../../../../admin/src/Controller/UsersController.php:908
+#: ../../../../admin/src/Controller/UsersController.php:942
 #: ../../../../admin/src/Controller/InfoportalController.php:222
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
@@ -314,15 +314,15 @@ msgid "Monitoring status"
 msgstr "Статус мониторинга"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1286
+#: ../../../../admin/src/Controller/UsersController.php:1294
 #: ../../../administrator/events.php:494 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
 msgstr "Статус"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1354
-#: ../../../../admin/src/Controller/UsersController.php:1294
-#: ../../../../admin/src/Controller/UsersController.php:1307
+#: ../../../../admin/src/Controller/UsersController.php:1302
+#: ../../../../admin/src/Controller/UsersController.php:1315
 msgid "Operations"
 msgstr "Действия"
 
@@ -361,7 +361,7 @@ msgid "Users offline"
 msgstr "Пользователей оффлайн"
 
 #: ../../../../admin/src/Controller/IndexController.php:121
-#: ../../../lib/user.class.php:1112
+#: ../../../lib/user.class.php:1122
 msgid "TV channels"
 msgstr "ТВ каналы"
 
@@ -448,8 +448,9 @@ msgstr "Информация недоступна"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:616
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
-#: ../../../../admin/src/Controller/UsersController.php:398
-#: ../../../../admin/src/Controller/UsersController.php:1013
+#: ../../../../admin/src/Controller/UsersController.php:402
+#: ../../../../admin/src/Controller/UsersController.php:1017
+#: ../../../../admin/src/Controller/UsersController.php:1021
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "вкл"
@@ -502,7 +503,7 @@ msgstr "Категория"
 
 #: ../../../../admin/src/Controller/AudioClubController.php:84
 #: ../../../../admin/src/Controller/AudioClubController.php:124
-#: ../../../lib/audioclub.class.php:15
+#: ../../../lib/audioclub.class.php:15 ../../../lang/stb.php:547
 #: ../../../../admin/json_menu/menu.json:106
 msgid "Albums"
 msgstr "Альбомы"
@@ -541,8 +542,8 @@ msgstr "Редактировать радио"
 #: ../../../../admin/src/Controller/UsersController.php:104
 #: ../../../../admin/src/Controller/UsersController.php:123
 #: ../../../../admin/src/Controller/UsersController.php:136
-#: ../../../../admin/src/Controller/UsersController.php:354
-#: ../../../../admin/src/Controller/UsersController.php:1061
+#: ../../../../admin/src/Controller/UsersController.php:358
+#: ../../../../admin/src/Controller/UsersController.php:1069
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:66
 #: ../../../../admin/src/Controller/AdminsController.php:323
@@ -573,44 +574,45 @@ msgstr "Группы пользователей"
 msgid "STB of group"
 msgstr "приставки в группе"
 
-#: ../../../../admin/src/Controller/UsersController.php:398
-#: ../../../../admin/src/Controller/UsersController.php:1012
+#: ../../../../admin/src/Controller/UsersController.php:402
+#: ../../../../admin/src/Controller/UsersController.php:1016
+#: ../../../../admin/src/Controller/UsersController.php:1020
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "выкл"
 
-#: ../../../../admin/src/Controller/UsersController.php:731
-#: ../../../../admin/src/Controller/UsersController.php:732
+#: ../../../../admin/src/Controller/UsersController.php:735
+#: ../../../../admin/src/Controller/UsersController.php:736
 msgid "This user is already connected to the group"
 msgstr "Пользователь уже подключен к группе"
 
-#: ../../../../admin/src/Controller/UsersController.php:734
+#: ../../../../admin/src/Controller/UsersController.php:738
 msgid "User with this MAC-address is not defined"
 msgstr "Пользователь с таким MAC-адресом не определен"
 
-#: ../../../../admin/src/Controller/UsersController.php:926
-#: ../../../../admin/src/Controller/UsersController.php:960
+#: ../../../../admin/src/Controller/UsersController.php:930
+#: ../../../../admin/src/Controller/UsersController.php:964
 #: ../../../../admin/src/Controller/AdminsController.php:631
 #: ../../../../admin/src/Controller/AdminsController.php:665
 #: ../../../../admin/src/Controller/AdminsController.php:699
 msgid "Moved"
 msgstr "Перемещено"
 
-#: ../../../../admin/src/Controller/UsersController.php:928
-#: ../../../../admin/src/Controller/UsersController.php:967
+#: ../../../../admin/src/Controller/UsersController.php:932
+#: ../../../../admin/src/Controller/UsersController.php:971
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Not found reseller for moving"
 msgstr "Не найден реселлер для перемещения"
 
-#: ../../../../admin/src/Controller/UsersController.php:928
-#: ../../../../admin/src/Controller/UsersController.php:967
+#: ../../../../admin/src/Controller/UsersController.php:932
+#: ../../../../admin/src/Controller/UsersController.php:971
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Nothing to do"
 msgstr "Нечего сохранять"
 
-#: ../../../../admin/src/Controller/UsersController.php:1279
+#: ../../../../admin/src/Controller/UsersController.php:1287
 #: ../../../administrator/profile.php:409 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -619,12 +621,12 @@ msgstr "Нечего сохранять"
 msgid "Login"
 msgstr "Логин"
 
-#: ../../../../admin/src/Controller/UsersController.php:1280
+#: ../../../../admin/src/Controller/UsersController.php:1288
 msgid "Account"
 msgstr "Лицевой счет"
 
-#: ../../../../admin/src/Controller/UsersController.php:1281
-#: ../../../../admin/src/Controller/UsersController.php:1301
+#: ../../../../admin/src/Controller/UsersController.php:1289
+#: ../../../../admin/src/Controller/UsersController.php:1309
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -648,43 +650,43 @@ msgstr "Лицевой счет"
 #: ../../../administrator/stream_servers.php:209
 #: ../../../administrator/vclub_schedule.php:113
 #: ../../../administrator/add_radio.php:168
-#: ../../../administrator/add_radio.php:249 ../../../lang/stb.php:552
+#: ../../../administrator/add_radio.php:249 ../../../lang/stb.php:553
 msgid "Name"
 msgstr "Имя"
 
-#: ../../../../admin/src/Controller/UsersController.php:1282
+#: ../../../../admin/src/Controller/UsersController.php:1290
 #: ../../../administrator/claims_log.php:174
 #: ../../../administrator/users.php:580 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:500
 msgid "Type"
 msgstr "Тип"
 
-#: ../../../../admin/src/Controller/UsersController.php:1283
+#: ../../../../admin/src/Controller/UsersController.php:1291
 #: ../../../administrator/msg.php:145
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Медиа"
 
-#: ../../../../admin/src/Controller/UsersController.php:1284
+#: ../../../../admin/src/Controller/UsersController.php:1292
 msgid "Last modified"
 msgstr "Последнее изменение"
 
-#: ../../../../admin/src/Controller/UsersController.php:1285
+#: ../../../../admin/src/Controller/UsersController.php:1293
 msgid "State"
 msgstr "Состояние"
 
-#: ../../../../admin/src/Controller/UsersController.php:1289
-#: ../../../../admin/src/Controller/UsersController.php:1305
+#: ../../../../admin/src/Controller/UsersController.php:1297
+#: ../../../../admin/src/Controller/UsersController.php:1313
 msgid "Reseller"
 msgstr "Реселлер"
 
-#: ../../../../admin/src/Controller/UsersController.php:1292
+#: ../../../../admin/src/Controller/UsersController.php:1300
 #: ../../../administrator/profile.php:442
 msgid "Expire billing date"
 msgstr "Действительно до"
 
-#: ../../../../admin/src/Controller/UsersController.php:1302
+#: ../../../../admin/src/Controller/UsersController.php:1310
 msgid "Quantity of users"
 msgstr "Количество пользователей"
 
@@ -1343,13 +1345,13 @@ msgid ""
 "Services are updated according to the subscription. The STB will be rebooted."
 msgstr "Услуги обновлены согласно подписке. Приставка будет перезагружена."
 
-#: ../../../tools/misctranslations.php:203 ../../../lib/stb.class.php:525
-#: ../../../lang/stb.php:563
+#: ../../../tools/misctranslations.php:203 ../../../lib/stb.class.php:528
+#: ../../../lang/stb.php:564
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Прошивка вашей приставки устарела.<br>Пожалуйста обновите её."
 
-#: ../../../tools/misctranslations.php:204 ../../../lib/stb.class.php:496
-#: ../../../lib/stb.class.php:507
+#: ../../../tools/misctranslations.php:204 ../../../lib/stb.class.php:499
+#: ../../../lib/stb.class.php:510
 msgid "Your STB is damaged.<br/> Call the provider."
 msgstr "Для регистрации этого устройства<br>свяжитесь с провайдером."
 
@@ -3429,19 +3431,19 @@ msgstr "название"
 #: ../../../tools/misctranslations.php:741
 #, php-format
 msgid ""
-"Term of your account will expire in \"%s\" days. In order to prevent "
-"tripping, prolong your account"
+"Dear Subscriber! Your payment term will expire in \"%s\" days. Please refill "
+"a personal account in order to avoid tripping of services."
 msgstr ""
-"Срок действия вашего лицевого счета истекает через \"%s\" дней. Для "
-"предотвращения отключения, продлите свой акаунт"
+"Уважаемый абонент! Срок вашей оплаты истекает через \"%s\" дней. Просим "
+"пополнить лицевой счет во избежание отключения услуг."
 
 #: ../../../tools/misctranslations.php:742
 msgid ""
-"Term of your account will expire today. In order to prevent tripping, "
-"prolong your account"
+"Dear Subscriber! Your payment term will expire today. Please refill a "
+"personal account in order to avoid tripping of services."
 msgstr ""
-"Срок действия вашего лицевого счета истекает сегодня. Для предотвращения "
-"отключения, продлите свой акаунт"
+"Уважаемый абонент! Срок вашей оплаты истекает сегодня. Просим пополнить "
+"лицевой счет во избежание отключения услуг."
 
 #: ../../../tools/misctranslations.php:743
 msgid "Name already used"
@@ -3647,7 +3649,7 @@ msgstr "декабрь"
 #: ../../../administrator/subscribe.php:360
 #: ../../../administrator/subscribe.php:363
 #: ../../../administrator/vclub_ad.php:161
-#: ../../../administrator/vclub_ad.php:219 ../../../lang/stb.php:561
+#: ../../../administrator/vclub_ad.php:219 ../../../lang/stb.php:562
 msgid "All"
 msgstr "Все"
 
@@ -3665,7 +3667,7 @@ msgstr "Новая жалоба на %s - %s (%s, id: %s). От %s"
 msgid "Exchange rate on"
 msgstr "Курс НБУ на"
 
-#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1056
+#: ../../../lib/system.class.php:69 ../../../lib/user.class.php:1066
 #: ../../../administrator/services_packages.php:439
 msgid "h"
 msgstr "ч"
@@ -3856,7 +3858,7 @@ msgstr ""
 
 #
 #: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:772
-#: ../../../lib/user.class.php:1102 ../../../lib/user.class.php:1103
+#: ../../../lib/user.class.php:1112 ../../../lib/user.class.php:1113
 #, php-format
 msgid "video_name_format"
 msgstr "%1$s"
@@ -3915,7 +3917,7 @@ msgstr ""
 msgid "end_date_format"
 msgstr "d.m.Y"
 
-#: ../../../lib/accountinfo.class.php:46 ../../../lib/user.class.php:1052
+#: ../../../lib/accountinfo.class.php:46 ../../../lib/user.class.php:1062
 #, php-format
 msgid "%d day"
 msgid_plural "%d days"
@@ -3989,7 +3991,7 @@ msgstr "Года"
 msgid "Break in the program"
 msgstr "Разрыв в программе"
 
-#: ../../../lib/stb.class.php:391
+#: ../../../lib/stb.class.php:394
 msgid ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
@@ -3997,7 +3999,7 @@ msgstr ""
 "Портал временно недоступен.<br>Пожалуйста, повторите попытку позже."
 "<br>Приносим извинения за неудобства."
 
-#: ../../../lib/stb.class.php:584
+#: ../../../lib/stb.class.php:591
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Добро пожаловать %s<br>Мы рады видеть Вас в портале Stalker!"
@@ -4131,25 +4133,25 @@ msgstr "давление"
 msgid "wind"
 msgstr "ветер"
 
-#: ../../../lib/user.class.php:1060 ../../../administrator/add_itv.php:1732
+#: ../../../lib/user.class.php:1070 ../../../administrator/add_itv.php:1732
 #: ../../../administrator/add_video.php:2058 ../../../lang/stb.php:100
 #: ../../../lang/stb.php:316
 msgid "min"
 msgstr "мин"
 
-#: ../../../lib/user.class.php:1113
+#: ../../../lib/user.class.php:1123
 msgid "Movies"
 msgstr "Видео"
 
-#: ../../../lib/user.class.php:1114
+#: ../../../lib/user.class.php:1124
 msgid "Radio channels"
 msgstr "Радио каналы"
 
-#: ../../../lib/user.class.php:1115
+#: ../../../lib/user.class.php:1125
 msgid "Modules"
 msgstr "Модули"
 
-#: ../../../lib/user.class.php:1116
+#: ../../../lib/user.class.php:1126
 msgid "Options"
 msgstr "Опции"
 
@@ -5325,7 +5327,7 @@ msgid "Joke"
 msgstr "Анекдот"
 
 #: ../../../administrator/playlist.php:136
-#: ../../../administrator/playlist.php:142 ../../../lang/stb.php:550
+#: ../../../administrator/playlist.php:142 ../../../lang/stb.php:551
 msgid "Playlist"
 msgstr "Плейлист"
 
@@ -7248,7 +7250,7 @@ msgid "NTP Server"
 msgstr "NTP Сервер"
 
 #: ../../../lang/stb.php:256 ../../../lang/stb.php:303
-#: ../../../lang/stb.php:558
+#: ../../../lang/stb.php:559
 msgid "DELETE"
 msgstr "УДАЛИТЬ"
 
@@ -7949,39 +7951,39 @@ msgstr "ПЛЕЙЛИСТ"
 msgid "Artist"
 msgstr "Исполнитель"
 
-#: ../../../lang/stb.php:547
+#: ../../../lang/stb.php:548
 msgid "Compositions"
 msgstr "Композиции"
 
-#: ../../../lang/stb.php:549
+#: ../../../lang/stb.php:550
 msgid "Playlist select"
 msgstr "Выбор Плейлиста"
 
-#: ../../../lang/stb.php:551
+#: ../../../lang/stb.php:552
 msgid "NEW"
 msgstr "НОВЫЙ"
 
-#: ../../../lang/stb.php:553
+#: ../../../lang/stb.php:554
 msgid "New Playlist"
 msgstr "Новый Плейлист"
 
-#: ../../../lang/stb.php:554
+#: ../../../lang/stb.php:555
 msgid "Error while saving"
 msgstr "Ошибка при сохранении"
 
-#: ../../../lang/stb.php:555
+#: ../../../lang/stb.php:556
 msgid "CREATE NEW"
 msgstr "СОЗДАТЬ НОВЫЙ"
 
-#: ../../../lang/stb.php:556
+#: ../../../lang/stb.php:557
 msgid "Do you really want to delete this track from playlist?"
 msgstr "Вы действительно хотите удалить этот трек из плейлиста?"
 
-#: ../../../lang/stb.php:557
+#: ../../../lang/stb.php:558
 msgid "Do you really want to delete this playlist?"
 msgstr "Вы действительно хотите удалить этот плейлист?"
 
-#: ../../../lang/stb.php:560
+#: ../../../lang/stb.php:561
 msgid "VK MUSIC"
 msgstr "VK MUSIC"
 
@@ -9512,6 +9514,20 @@ msgstr "Зоны вещания"
 #: ../../../../admin/json_menu/menu.json:362
 msgid "Appearance"
 msgstr "Внешний вид"
+
+#~ msgid ""
+#~ "Term of your account will expire in \"%s\" days. In order to prevent "
+#~ "tripping, prolong your account"
+#~ msgstr ""
+#~ "Срок действия вашего лицевого счета истекает через \"%s\" дней. Для "
+#~ "предотвращения отключения, продлите свой акаунт"
+
+#~ msgid ""
+#~ "Term of your account will expire today. In order to prevent tripping, "
+#~ "prolong your account"
+#~ msgstr ""
+#~ "Срок действия вашего лицевого счета истекает сегодня. Для предотвращения "
+#~ "отключения, продлите свой акаунт"
 
 #~ msgid "Started"
 #~ msgstr "Начато"
