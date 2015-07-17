@@ -156,7 +156,7 @@ abstract class Master
 
                                 $lang = substr($subtitle, strlen($file_base), strrpos($subtitle, '.') - strlen($file_base));
 
-                                if ($lang{0} == '_' || $lang{0} == '.'){
+                                if ($lang && ($lang{0} == '_' || $lang{0} == '.')){
                                     $lang = substr($lang, 1);
                                 }
 

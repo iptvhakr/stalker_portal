@@ -138,7 +138,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             }
 
         }else{
-            $res['cmd'] = $res['download_cmd'] = Config::getSafe('tv_archive_player_solution', 'ffmpeg').' http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
+            $res['cmd'] = Config::getSafe('tv_archive_player_solution', 'ffmpeg').' http://' . $storage['storage_ip'] . ':' . $storage['apache_port']
                 . '/stalker_portal/storage/get.php?filename=' . $filename
                 . '&ch_id=' . $program['ch_id']
                 . '&token='.$this->createTemporaryToken(true)
@@ -146,6 +146,13 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
                 . '&duration=' . ($stop_timestamp - $start_timestamp)
                 . '&osd_title=' . urlencode($channel['name'].' — '.$program['name'])
                 . '&real_id=' . $program['real_id'];
+
+            if (!empty($_REQUEST['download'])){
+                $downloads = new Downloads();
+                $res['download_cmd'] = $downloads->createDownloadLink('tv_archive', $program_id, Stb::getInstance()->id);
+            }else{
+                $res['download_cmd'] = false;
+            }
         }
 
         $res['to_file'] = date("Ymd-H", $start_timestamp).'_'.System::transliterate($channel['name'].'_'.$program['name']).'.mpg';
@@ -205,7 +212,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
 
         $overlap_start = Config::getSafe('tv_archive_playback_overlap_start', 0) * 60;
 
-        $tz = new DateTimeZone(Stb::$server_timezone);
+        $tz = new DateTimeZone(!empty(Stb::$server_timezone) ? Stb::$server_timezone : date_default_timezone_get());
 
         $date = new DateTime(date('r', strtotime($program['time'])));
         $date->setTimeZone($tz);
@@ -222,7 +229,7 @@ class TvArchive extends Master implements \Stalker\Lib\StbApi\TvArchive
             }
         }
 
-        $date_now = new DateTime('now', new DateTimeZone(Stb::$server_timezone));
+        $date_now = new DateTime('now', new DateTimeZone(!empty(Stb::$server_timezone) ? Stb::$server_timezone : date_default_timezone_get()));
 
         $date_to = new DateTime(date('r', strtotime($program['time_to'])));
         $date_to->setTimeZone($tz);

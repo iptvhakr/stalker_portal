@@ -2468,9 +2468,9 @@ player.prototype.play = function(item){
     }else if (stb.cur_place == 'records' || stb.cur_place == 'remote_pvr' || stb.cur_place == 'epg_simple' || stb.cur_place == 'epg'){
 
         if (item.mark_archive && !item.mark_rec){
-            this.create_link('tv_archive', cmd, 0);
+            this.create_link('tv_archive', cmd, 0, '', false, item.download || false);
         }else{
-            this.create_link('remote_pvr', cmd, 0);
+            this.create_link('remote_pvr', cmd, 0, '', false, item.download || false);
         }
 
     }else{
@@ -2479,15 +2479,15 @@ player.prototype.play = function(item){
         if (stb.player.cur_media_item.rtsp_url) {
             cmd = '/media/'+this.cur_media_item.id+'.mpg'
         }
-        this.create_link('vod', cmd, series_number, item.forced_storage || '', item.disable_ad);
+        this.create_link('vod', cmd, series_number, item.forced_storage || '', item.disable_ad, item.download || false);
     }
 };
 
-player.prototype.create_link = function(type, uri, series_number, forced_storage, disable_ad){
+player.prototype.create_link = function(type, uri, series_number, forced_storage, disable_ad, download){
 
     series_number = series_number || "";
 
-    _debug('player.create_link', type, uri, series_number, forced_storage, disable_ad);
+    _debug('player.create_link', type, uri, series_number, forced_storage, disable_ad, download);
 
     stb.load(
 
@@ -2496,8 +2496,10 @@ player.prototype.create_link = function(type, uri, series_number, forced_storage
             "action" : "create_link",
             "cmd"    : uri,
             "series" : series_number,
-            forced_storage : forced_storage,
-            disable_ad : disable_ad || false
+            "forced_storage" : forced_storage,
+            "disable_ad" : disable_ad || false,
+            "download" : download || false
+
         },
 
         function(result){

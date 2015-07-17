@@ -36,7 +36,17 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
 
         $link = $this->getLinkByVideoId($media_id, intval($_REQUEST['series']), $forced_storage);
 
-        $link['cmd'] = $link['cmd'] . $params;
+        if ($_REQUEST['download']){
+
+            if (preg_match('/\.(\w*)$/', $link['cmd'], $match)){
+                $extension = $match[1];
+            }
+
+            $downloads = new Downloads();
+            $link['cmd'] = $downloads->createDownloadLink('vclub', $media_id, Stb::getInstance()->id, intval($_REQUEST['series'])).(isset($extension) ? '&ext=.'.$extension : '');
+        }else{
+            $link['cmd'] = $link['cmd'] . $params;
+        }
 
         if (Config::get('enable_tariff_plans')){
             $user = User::getInstance(Stb::getInstance()->id);
@@ -56,7 +66,7 @@ class Vod extends AjaxResponse implements \Stalker\Lib\StbApi\Vod
             ->first();
 
         if (!$disable_ad) {
-            $disable_ad = !empty($moderator) && $moderator['status'] == 1 && $moderator['disable_vclub_ad'] == 1;
+            $disable_ad = !empty($moderator) && $moderator['status'] == 1 && $moderator['disable_vclub_ad'] == 1 || !empty($_REQUEST['download']);
         }
 
         $vclub_ad = new VclubAdvertising();

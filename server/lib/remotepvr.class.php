@@ -48,6 +48,11 @@ class RemotePvr extends AjaxResponse implements \Stalker\Lib\StbApi\RemotePvr
             $res['to_file'] .= '.'.$ext_arr[1];
         }
 
+        if ($_REQUEST['download']){
+            $downloads = new Downloads();
+            $res['cmd'] = $downloads->createDownloadLink('pvr', $rec_id, Stb::getInstance()->id);
+        }
+
         return $res;
     }
 

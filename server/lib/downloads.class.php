@@ -25,5 +25,24 @@ class Downloads implements \Stalker\Lib\StbApi\Downloads
         }
     }
 
+    public function createDownloadLink($type, $media_id, $user_id, $param = ''){
+
+        $link_hash = md5(microtime(1).uniqid());
+
+        $id = Mysql::getInstance()->insert('download_links',
+            array(
+                'link_hash' => $link_hash,
+                'uid'       => $user_id,
+                'type'      => $type,
+                'media_id'  => $media_id,
+                'param1'    => $param,
+                'added'     => 'NOW()'
+            ))->insert_id();
+
+        return 'http'.(((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443) ? 's' : '')
+            .'://'.$_SERVER['HTTP_HOST']
+            .'/'.str_replace('/', '', Config::getSafe('portal_url', '/stalker_portal/'))
+            .'/server/api/get_download_link.php?lid='.($id ? $link_hash : '');
+    }
 }
 

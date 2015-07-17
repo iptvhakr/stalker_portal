@@ -155,7 +155,7 @@
                         stb.player.play_now(result.cmd);
                     }else{
 
-                        self.add_download.call(self, current_record.cmd, result.to_file);
+                        self.add_download.call(self, result.cmd, result.to_file);
                     }
                 }
             };
@@ -169,7 +169,13 @@
                 stb.player.cur_tv_item = channel;
             }
 
-            stb.player.play(this.data_items[this.cur_row]);
+            var item = this.data_items[this.cur_row].clone();
+
+            if (!play_url){
+                item.download = true;
+            }
+
+            stb.player.play(item);
         };
 
         this.bind = function(){
@@ -294,7 +300,7 @@
             if (module.downloads){
                 _debug('downloads');
                 var dialog_options = {"parent" : this, "secure_url" : true, "name" : to_filename};
-                dialog_options.url = {"type" : "records", "exec" : "module.records.get_link", "scope" : "module.records", "options" : [url]};
+                dialog_options.url = url;
                 module.downloads.dialog.show(dialog_options);
             }
         }

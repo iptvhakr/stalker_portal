@@ -274,7 +274,11 @@
             
             _debug('vclub.show');
 
-            category = category || this.categories[0];
+            category = category || this.categories && this.categories[0];
+
+            if (!category){
+                category = {"id" : "*", "alias" : "*", "title" : get_word("all_title")};
+            }
             
             this.load_params['category'] = category.id;
 
@@ -867,20 +871,12 @@
                 this.series_switch.callback = function(series){
                     _debug('series', series);
                     self.data_items[self.cur_row].cur_series = series;
-                    if (play_url){
-                        self.play(play_url, storage);
-                    }else{
-                        self.add_download.call(self, self.data_items[self.cur_row]);
-                    }
+                    self.play(play_url, storage);
                 };
                 
                 this.series_switch.show(this.data_items[this.cur_row].series, this.data_items[this.cur_row].cur_series);
             }else{
-                if (play_url){
-                    this.play(play_url, storage);
-                }else{
-                    this.add_download.call(this, this.data_items[this.cur_row]);
-                }
+                this.play(play_url, storage);
             }
         };
 
@@ -930,7 +926,7 @@
         };
         
         this.play = function(play_url, storage, callback){
-            _debug('vclub.play', play_url);
+            _debug('vclub.play', play_url, storage);
             
             var self = this;
             
@@ -1067,11 +1063,15 @@
                 played_item.forced_storage = storage;
             }
 
+            if (!play_url){
+                played_item.download = !play_url;
+            }
+
             stb.player.play(played_item);
         };
 
         this.add_download = function(item, url){
-            _debug('vclub.add_download', item);
+            _debug('vclub.add_download', item, url);
             
             _debug('path: ', this.data_items[this.cur_row].path);
             _debug('url', url);
@@ -1110,10 +1110,6 @@
             var episode   = this.data_items[this.cur_row].cur_series || 0;
 
             var dialog_options = {"parent" : this, "url" : url, "name" : filename, "secure_url" : true};
-
-            if (!url){
-                dialog_options.url = {"secure_url" : true, "type" : "vclub", "exec" : "module.vclub.get_link", "scope" : "module.vclub", "options" : [video_cmd, episode]};
-            }
 
             if (module.downloads){
                 _debug('downloads');
