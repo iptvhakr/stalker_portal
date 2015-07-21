@@ -11,6 +11,7 @@
 			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 			ga('create', 'UA-42736570-2', 'auto');
 			ga('send', 'pageview');
+			ga('send', 'event', 'model', gSTB.GetDeviceImageDesc(), gSTB.GetDeviceModelExt());
 			
 		</script>
 	</head>
@@ -19,7 +20,10 @@
 		<!-- top-level page block-->
 		<div id="pi" class="component page active">
 			<div class="main"></div>
+			<div class="version">v&nbsp;<span class="value">1.3.5</span></div>
 		</div>
+		<!-- top-level page block-->
+		<div id="pl" class="component page"></div>
 		<!-- top-level page block-->
 		<div id="pp" class="component page">
 			<div id="ppPanelPlayer">
@@ -43,7 +47,6 @@
 					</div>
 					<div id="playerPanelButtons"></div>
 				</div>
-				<div id="ppLoading" class="loader"></div>
 				<div id="ppPanelVideo" class="hidden">
 					<div id="ppMenuList"></div>
 					<div id="ppChannelVideoListNode">
@@ -60,10 +63,10 @@
 					</div>
 				</div>
 				<div id="ppVideoParseError" class="hidden">
-					<div id="ppVideoParseErrorHeader">Ошибка воспроизведения</div>
+					<div id="ppVideoParseErrorHeader"></div>
 					<div id="ppVideoParseErrorContent">
 						<div class="icon settings-term"></div>
-						<div id="ppVideoParseErrorMessage">Видео недоступно</div>
+						<div id="ppVideoParseErrorMessage"></div>
 					</div>
 				</div>
 			</div>
@@ -80,39 +83,57 @@
 					<div class="icon ellipsis"></div>
 				</div>
 			</div>
-			<div id="pmTabCategoryContent" class="tab">
-				<div id="pmCategorySearch">
+			<div id="pmTabCategoryContent" class="tab hidden">
+				<div id="pmCategorySearch" class="tabInputSearch">
 					<div class="icon search"></div>
 				</div>
-				<div id="pmCategoryContent">
-					<div id="pmCategoryLoading" class="loader"></div>
-					<div id="pmListCategoryVideos0Node">
+				<div id="pmCategoryContent" class="tabContent">
+					<div id="pmListCategoryVideos0Node" class="listMovie0Node">
 						<div id="pmCategoryChannelTitle0"></div>
-						<div id="pmListCategoryVideos0Body"></div>
+						<div id="pmListCategoryVideos0Body" class="listMovie0Body"></div>
 					</div>
-					<div id="pmListCategoryVideos1Node">
+					<div id="pmListCategoryVideos1Node" class="listMovie1Node">
 						<div id="pmCategoryChannelTitle1"></div>
-						<div id="pmListCategoryVideos1Body"></div>
+						<div id="pmListCategoryVideos1Body" class="listMovie1Body"></div>
 					</div>
 				</div>
 			</div>
-			<div id="pmTabChannelContent" class="tab">
+			<div id="pmTabChannelContent" class="tab hidden">
 				<div id="pmChannelMeta">
 					<div id="pmChannelIcon"></div>
 					<div id="pmChannelTitle"></div>
 				</div>
-				<div id="pmChannelContent">
-					<div id="pmChannelLoading" class="loader"></div>
-					<div id="pmListChannelVideos0Node">
+				<div id="pmChannelContent" class="tabContent">
+					<div id="pmListChannelVideos0Node" class="listMovie0Node">
 						<div id="pmChannelTitle0"></div>
-						<div id="pmListChannelVideos0Body"></div>
+						<div id="pmListChannelVideos0Body" class="listMovie0Body"></div>
 					</div>
-					<div id="pmListChannelVideos1Node">
+					<div id="pmListChannelVideos1Node" class="listMovie1Node">
 						<div id="pmChannelTitle1"></div>
-						<div id="pmListChannelVideos1Body"></div>
+						<div id="pmListChannelVideos1Body" class="listMovie1Body"></div>
 					</div>
 				</div>
 			</div>
+			<div id="pmTabMainContent" class="tab hidden">
+				<div id="pmMainSearch" class="tabInputSearch">
+					<div class="icon search"></div>
+				</div>
+				<div id="pmMainContent" class="tabContent">
+					<div id="pmListMainVideos0Node" class="listMovie0Node">
+						<div id="pmMainChannelTitle0"></div>
+						<div id="pmListMainVideos0Body" class="listMovie0Body"></div>
+					</div>
+					<div id="pmListMainVideos1Node" class="listMovie1Node">
+						<div id="pmMainChannelTitle1"></div>
+						<div id="pmListMainVideos1Body" class="listMovie1Body"></div>
+					</div>
+				</div>
+			</div>
+			<!--#pmTabSingleListContent.tab.hidden-->
+			<!--	#pmSingleListContent-->
+			<!--		#pmSingleListVideosNode-->
+			<!--			#pmSingleListTitle-->
+			<!--			#pmSingleListVideosBody-->
 			<div id="pmTabSettings" class="tab">
 				<div id="pmSettingsList"></div>
 			</div>
@@ -130,7 +151,6 @@
 			</div>
 			<div id="psContentContainer">
 				<div id="psContent">
-					<div id="psLoading" class="loader"></div>
 					<div id="psListVideos" class="movieList"></div>
 				</div>
 				<div id="psControls">
@@ -169,5 +189,7 @@
 				</tr>
 			</table>
 		</div>
+		<div id="loaderWidget"></div>
+		<div id="exitMessage"></div>
 	</body>
 </html>
