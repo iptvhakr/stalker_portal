@@ -10,19 +10,9 @@ var main_menu = {
     show : function(){
         _debug('main_menu.show');
         this.dom_obj.show();
-        _debug('focus_module - ', focus_module);
-        if (focus_module) {
-            this.sub_menu_hide();
-            var mapLength = this.map.length;
-            stb.player.stop();
-            while(this.map[1].module.layer_name != focus_module && mapLength != 0) {
-                this.map.push(this.map.shift());
-                if (mapLength) {
-                    mapLength--;
-                }
-            }
-            focus_module = '';
-        }
+
+        this.set_focused_module();
+
         this.on = true;
         this.render();
         stb.set_cur_place('main_menu');
@@ -41,6 +31,31 @@ var main_menu = {
         this.on = false;
 
         this.triggerCustomEventListener('mainmenuhide');
+    },
+
+    set_focused_module : function(){
+        _debug('main_menu.set_focused_module');
+
+        _debug('focus_module - ', focus_module);
+        if (focus_module) {
+            this.sub_menu_hide();
+            var mapLength = this.map.length;
+            stb.player.stop();
+            while(this.map[1] && this.map[1].module.layer_name != focus_module && mapLength != 0) {
+                this.map.push(this.map.shift());
+                if (mapLength) {
+                    mapLength--;
+                }
+            }
+
+            if(!stb.supermodule){
+                focus_module = ''
+            }
+
+            if (this.on){
+                this.render();
+            }
+        }
     },
     
     init : function(){
@@ -228,6 +243,8 @@ var main_menu = {
         }
 
         this.map = sorted_map;
+
+        this.set_focused_module();
         
         for(var i=0; i<this.map.length; i++){
             
