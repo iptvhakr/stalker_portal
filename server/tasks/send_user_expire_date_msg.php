@@ -45,7 +45,7 @@ if (Config::getSafe('enable_internal_billing', false) && Config::getSafe('number
         putenv("LANGUAGE=$locale");
         setlocale(LC_MESSAGES, $locale);
 
-        $msg = $user['end_billing_days'] > 0? sprintf(_($msg_more), $user['end_billing_days']) : $msg_today;
+        $msg = $user['end_billing_days'] > 0? sprintf(_($msg_more), $user['end_billing_days']) : _($msg_today);
         $event->sendMsg($msg);
     }
 }
