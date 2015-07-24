@@ -12,7 +12,7 @@ class Weatherco extends WeatherProvider
         $start = microtime(1);
 
         $content = file_get_contents(
-            'http://xml.weather.co.ua/1.2/fullcurrent/',
+            'http://xml.weather.ua/1.2/fullcurrent/',
             false,
             stream_context_create($this->context_params)
         );
@@ -57,7 +57,7 @@ class Weatherco extends WeatherProvider
         $start = microtime(1);
 
         $content = file_get_contents(
-            'http://xml.weather.co.ua/1.2/fullforecast/',
+            'http://xml.weather.ua/1.2/fullforecast/',
             false,
             stream_context_create($this->context_params)
         );

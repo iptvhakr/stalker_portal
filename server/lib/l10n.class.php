@@ -17,7 +17,7 @@ class L10n {
             Mysql::getInstance()->query('truncate table cities');
         }
 
-        $xml_resp = simplexml_load_file('http://xml.weather.co.ua/1.2/country/');
+        $xml_resp = simplexml_load_file('http://xml.weather.ua/1.2/country/');
 
         if (!$xml_resp){
             throw new ErrorException("Couldn't load country xml");
@@ -56,7 +56,7 @@ class L10n {
             return;
         }
 
-        $xml_resp = simplexml_load_file('http://xml.weather.co.ua/1.2/city/?country='.$country_id);
+        $xml_resp = simplexml_load_file('http://xml.weather.ua/1.2/city/?country='.$country_id);
 
         if (!$xml_resp){
             throw new ErrorException("Couldn't load city xml for country ".$country_id);

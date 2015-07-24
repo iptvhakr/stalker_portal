@@ -4,7 +4,7 @@ namespace Stalker\Lib\OAuth;
 
 abstract class AccessHandler
 {
-    public function checkUserAuth($username, $password, $mac = null, $serial_number = null, $request){}
+    public function checkUserAuth($username, $password, $mac = null, $serial_number = null, OAuthRequest $request){}
 
     public function generateUniqueToken($username){}
 

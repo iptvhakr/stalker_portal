@@ -1,0 +1,83 @@
+{
+	"meta": {
+		"charset": "utf-8",
+		"project": "youtube.com 1.2.3",
+		"language": "de",
+		"plural": "(n != 1)"
+	},
+	"data": {
+		"": {
+			"Author": "Auteur",
+			"Back": "Zurück",
+			"Best": "Best",
+			"Cancel": "",
+			"Categories": "Kategorien",
+			"Choose default video quality": "Kies standaard videokwaliteit",
+			"Close Guide": "Sluiten Guide",
+			"Default extension": "Standarderweiterung",
+			"Error playing": "",
+			"Exit": "Afrit",
+			"Exit from app?": "",
+			"Guide": "Guide",
+			"Hide unwanted content": "Ausblenden unerwünschte Inhalte",
+			"In order to apply a new language, you must restart the application": "Om een nieuwe taal toe te passen, moet u de toepassing opnieuw starten",
+			"Interface language": "Schnittstellensprache",
+			"Language": "Sprache",
+			"Login": "",
+			"Logout": "",
+			"Logout from application?": "",
+			"Main": "",
+			"More": "meer",
+			"My playlists": "",
+			"No videos": "Geen video's",
+			"Off": "Af",
+			"Ok": "Ok",
+			"On": "Op",
+			"Pause": "Pauzeren",
+			"Play": "Spelen",
+			"Playlists": "Spelen",
+			"Related videos": "Ähnliche Videoss",
+			"Safe mode": "Sicherheitsmodus",
+			"Search": "Zoeken",
+			"Settings": "Einstellungen",
+			"Sing in": "",
+			"Subscriptions": "",
+			"Uploads on the channel": "Uploads auf dem Kanal",
+			"Video is not available": "",
+			"You want to login into app?": "",
+			"ago": "geleden",
+			"day": [
+				"dag",
+				"dagen"
+			],
+			"hour": [
+				"uur",
+				"uur"
+			],
+			"minute": [
+				"minuut",
+				"notulen"
+			],
+			"month": [
+				"maand",
+				"maanden"
+			],
+			"second": [
+				"tweede",
+				"seconden"
+			],
+			"subscriber": [
+				"abonnee",
+				"abonnees"
+			],
+			"view": [
+				"beke",
+				"bekeken"
+			],
+			"year": [
+				"jaar",
+				"jaren"
+			]
+		}
+	}
+}

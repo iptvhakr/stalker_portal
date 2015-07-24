@@ -176,7 +176,7 @@
 
         set_radio_widget_items_list: function(){
             _debug('set_radio_widget_items_list');
-            var load_params = (module.radio.load_params) ? module.radio.load_params : { 'type'   : 'radio', 'action' : 'get_ordered_list'};
+            var load_params = (module.radio && module.radio.load_params) ? module.radio.load_params : { 'type'   : 'radio', 'action' : 'get_ordered_list'};
             load_params.all = 1;
             _debug('load_params', load_params);
             stb.load(
