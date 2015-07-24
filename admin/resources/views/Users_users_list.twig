@@ -49,10 +49,10 @@
                                         <td>{{ item.ls }}</td>
                                         <td>{{ item.fname }}</td>
                                         <td>
-                                            {% if app.hide_media_info and not item.status %}
-                                                --
-                                            {% else %}
+                                            {% if attribute(app.mediaTypeName, item.now_playing_type) is defined and not app.hide_media_info and item.status %}
                                                 {{ app.mediaTypeName[item.now_playing_type] }}
+                                            {% else %}
+                                                --
                                             {% endif %}
                                         </td>
                                         <td>
@@ -387,7 +387,7 @@
                         } else {
                             drop=""
                         }
-                        json.data[i].now_playing_type = mediaTypeName[json.data[i].now_playing_type];
+                        json.data[i].now_playing_type = (typeof (mediaTypeName[json.data[i].now_playing_type]) != 'undefined' ? mediaTypeName[json.data[i].now_playing_type]: '--');
                         json.data[i].operations = "<div class='col-xs-3 col-sm-8 "+drop+"'>\n\
                                                         <a href='#' class='dropdown-toggle' data-toggle='dropdown'>\n\
                                                             <i class='pull-right fa fa-cog'></i>\n\
