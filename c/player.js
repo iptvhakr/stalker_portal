@@ -2477,7 +2477,11 @@ player.prototype.play = function(item){
 
         var series_number = item.cur_series || 0;
         if (stb.player.cur_media_item.rtsp_url) {
-            cmd = '/media/'+this.cur_media_item.id+'.mpg'
+            cmd = '/media/'+this.cur_media_item.id+'.mpg';
+
+            if (this.cur_media_item.hasOwnProperty('position')){
+                cmd += ' position:'+this.cur_media_item.position;
+            }
         }
         this.create_link('vod', cmd, series_number, item.forced_storage || '', item.disable_ad, item.download || false);
     }
