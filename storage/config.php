@@ -9,3 +9,4 @@ define('API_URL', 'http://login:password@192.168.1.71/stalker_portal/api/');
 define('PORTAL_URL', 'http://192.168.1.71/stalker_portal/');
 define('STORAGE_NAME', 'bb3');
 define('ASTRA_RECORDER', false);
+define('DUMPSTREAM_BUFFERING', 8);

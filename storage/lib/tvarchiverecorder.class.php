@@ -56,6 +56,7 @@ class TvArchiveRecorder extends Storage
                         .' -p'.$port
                         .' -d'.$path
                         .' -n'.intval($task['parts_number'])
+                        .' -b'.(defined('DUMPSTREAM_BUFFERING') ? DUMPSTREAM_BUFFERING : 8)
                         .' > /dev/null 2>&1 & echo $!'
                         , $out);
                 }
