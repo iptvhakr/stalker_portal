@@ -93,7 +93,8 @@ def main():
                     async_open_url(args.callback_url, {'action': 'ended'})
                 sys.exit()
 
-            f = open(args.out_file, 'ab')
+            if not f:
+                f = open(args.out_file, 'ab', args.buffering)
 
             f.write(data)
 
@@ -110,7 +111,7 @@ def main():
                         async_open_url(args.callback_url, {'start_time': int(time.mktime((datetime.datetime.strptime(fname, date_format) - datetime.timedelta(hours=args.pieces_number)).timetuple()))})
                         async_open_url(args.callback_url, {'end_time': int(time.time())})
 
-                f = open(args.save_directory + fname + '.mpg', 'ab')
+                f = open(args.save_directory + fname + '.mpg', 'ab', args.buffering)
 
             prev_fname = fname
 
@@ -238,7 +239,9 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--length', help='recording length', type=int)
     parser.add_argument('-s', '--start_delay', help='delay before start recording', type=int, default=0)
     parser.add_argument('-o', '--out_file', help='save output to file with specified name')
+    parser.add_argument('-b', '--buffering', help='buffer to use when opening files', type=int, default=8)
     args = parser.parse_args()
+    args.buffering *= 1024*1024
     stop_time = 0
     #print args
     date_format = '%Y%m%d-%H'
