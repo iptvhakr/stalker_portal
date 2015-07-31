@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-13 13:42+0300\n"
-"PO-Revision-Date: 2015-06-05 13:43+0100\n"
-"Last-Translator: Ivan <massiw@inbox.ru>\n"
+"PO-Revision-Date: 2015-07-31 15:32+0300\n"
+"Last-Translator: Aleksey Zhurbitsky <zhurbitsky@gmail.com>\n"
 "Language-Team: \n"
 "Language: de_CH\n"
 "MIME-Version: 1.0\n"
@@ -621,7 +621,7 @@ msgstr "Die Firmware deiner STB ist alt.<br> Bitte update sie."
 #: ../../../tools/misctranslations.php:204 ../../../lib/stb.class.php:505
 #: ../../../lib/stb.class.php:516
 msgid "Your STB is damaged.<br/> Call the provider."
-msgstr "Deine STB ist beschädigt.<br> Bitte melde dich bei www.streamstorm.org"
+msgstr "Deine STB ist beschädigt.<br> Bitte rufen den Provider."
 
 #: ../../../lib/ajaxresponse.class.php:40
 msgid "ABC_1l"
@@ -1134,7 +1134,7 @@ msgstr ""
 #: ../../../lib/stb.class.php:576
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
-msgstr "Wilkommen %s<br>Wir freuen uns, dich auf Streamstorm zu sehen!"
+msgstr "Wilkommen %s<br>Wir freuen uns, dich auf Stalker zu sehen!"
 
 #: ../../../lib/weatherco.class.php:131 ../../../lib/weatherco.class.php:156
 msgid "city_name_field"
@@ -3469,7 +3469,7 @@ msgstr ""
 
 #: ../../../administrator/index.php:17
 msgid "Stalker MW admin interface"
-msgstr "Streamstorm Admin Interface"
+msgstr "Stalker MW admin interface"
 
 #: ../../../administrator/index.php:134
 msgid "Sections"
@@ -4283,7 +4283,7 @@ msgstr "Miete endet"
 
 #: ../../../lang/stb.php:125
 msgid "Your STB is blocked.<br/> Call the provider."
-msgstr "Deine STB ist blockiert.<br> Bitte melde dich bei www.streamstorm.to"
+msgstr "Deine STB ist blockiert.<br> Bitte rufen den Provider."
 
 #: ../../../lang/stb.php:136
 msgid "BACK"
