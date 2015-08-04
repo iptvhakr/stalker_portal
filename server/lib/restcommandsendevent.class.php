@@ -61,7 +61,7 @@ class RESTCommandSendEvent extends RESTCommand
                 $event->sendCutOff();
                 break;
             case 'show_menu':
-                $event->sendResetPaused();
+                $event->sendShowMenu();
                 break;
             default:
                 return false;

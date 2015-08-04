@@ -51,6 +51,7 @@ class Recorder extends Storage
                     .' -l'.$duration
                     .' -c'.API_URL.'stream_recorder/'.$rec_id
                     .' -o'.RECORDS_DIR.$filename
+                    .' -b'.(defined('DUMPSTREAM_BUFFERING') ? DUMPSTREAM_BUFFERING : 8)
                     .' > /dev/null 2>&1 & echo $!'
                     , $out);
             }

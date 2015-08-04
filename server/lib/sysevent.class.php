@@ -130,6 +130,13 @@ class SysEvent extends Event
      * Send "reset paused" event
      */
     public function sendResetPaused(){
+        $this->sendShowMenu();
+    }
+
+    /**
+     * Send "show_menu" event
+     */
+    public function sendShowMenu(){
         $this->setEvent('show_menu');
         $this->send();
     }

@@ -1229,6 +1229,12 @@ class Itv extends AjaxResponse implements \Stalker\Lib\StbApi\Itv
 
         $filtered_channels = self::getFilteredUserChannelsIds();
 
+        if (!empty($_COOKIE['ext_channels']) && in_array('ext_channels', stb::getAvailableModulesByUid($this->stb->id))){
+            $ext_channels = explode(',', $_COOKIE['ext_channels']);
+            $ext_channels = Mysql::getInstance()->from('itv')->where(array('bonus_ch' => 1))->in('id', $ext_channels)->get()->all('id');
+            $channel_ids = array_merge($channel_ids, $ext_channels);
+        }
+
         if ($channel_ids == 'all'){
             $channel_ids = $filtered_channels;
         }else{

@@ -182,6 +182,8 @@ class RESTApiResourceVideo extends RESTApiCollection
             $new_video['added']         = strtotime($video['added']);
             $new_video['original_name'] = $video['o_name'];
             $new_video['hd']            = (int) $video['hd'];
+            $new_video['rating_kinopoisk'] = (float) $video['rating_kinopoisk'];
+            $new_video['rating_imdb']   = (float) $video['rating_imdb'];
 
             $series = unserialize($video['series']);
             $new_video['series'] = ($series !== false) ? $series : array();
