@@ -57,18 +57,17 @@
         {% endif %}
         {#<div class="col-xs-3 col-sm-{{ block_width }} filter" data-tvfilter="{{ name }}">
             <span class="col-xs-12 col-sm-{{ label_width }} no-padding">{{ title }}:</span>#}
-        <div class="br  filter" data-tvfilter="{{ name }}">
+        {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined and app['filters'][name] != '0'%}
+            {% set f_name = app['filters'][name] %}
+        {% else %}
+            {% set f_name = 0 %}
+        {% endif %}
+        <div class="br  filter" data-tvfilter="{{ name }}" data-filterval="{{ f_name }}">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="no-padding">{{ title }}:</span>
-            {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined and app['filters'][name] != '0'%}
-                {% set f_name = app['filters'][name] %}
-            {% else %}
-                {% set f_name = 0 %}
-            {% endif %}
-            {% set list_f = list %}                       
+            {% set list_f = list %}
             {% for item in list_all %}
                 {% set list_f = (list_f ~ '<li><a href="#" data-filter="' ~ item[id_field] ~ '"><span>' ~ item[title_field] ~ '</span></a></li>') | trans %}
                 {% if not(f_name is sameas(0)) and f_name == item[id_field] %}                       
-                                       
                         <span>{{ item[title_field] }}</span>
                         <i class="fa fa-caret-down"></i>
                     </a>
@@ -83,6 +82,66 @@
                 <ul class="dropdown-menu pull-left">
                     {{ list_f }}
                 </ul>
+            {% endautoescape %}
+        </div>
+    {% endmacro %}
+
+    {% macro get_filter_string_input(name, title, id_field, title_field, list_all, block_width, label_width) %}
+        {% if not (block_width) %}
+            {% set block_width = 3 %}
+        {% else  %}
+            {% set block_width = block_width + 3 %}
+        {% endif %}
+        {% if not (label_width) %}
+            {% set label_width = 4 %}
+        {% else  %}
+            {% set label_width = label_width %}
+        {% endif %}
+        {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined and app['filters'][name] != ''%}
+            {% set value=app['filters'][name] %}
+        {% else  %}
+            {% set value='' %}
+        {% endif %}
+        <div class="br filter" data-tvfilter="{{ name }}" data-filterval="{{ value }}">
+            {% autoescape false %}
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="no-padding">{{ title }}:</span>
+                    <span>{{ value }}</span>
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <input type="text" name="{{ name }}" id="filter_string_{{ name }}" value="{{ value }}" class="filter_string">
+                    <button class="btn btn-success filter_string" type="button"><i class="fa fa-check"></i></button>
+                </div>
+            {% endautoescape %}
+        </div>
+    {% endmacro %}
+
+    {% macro get_filter_datetime_input(name, title, id_field, title_field, list_all, block_width, label_width) %}
+        {% if not (block_width) %}
+            {% set block_width = 3 %}
+        {% else  %}
+            {% set block_width = block_width + 3 %}
+        {% endif %}
+        {% if not (label_width) %}
+            {% set label_width = 4 %}
+        {% else  %}
+            {% set label_width = label_width %}
+        {% endif %}
+        {% if attribute(app, 'filters') is defined and attribute(app['filters'], name) is defined and app['filters'][name] != ''%}
+            {% set value=app['filters'][name] %}
+        {% else  %}
+            {% set value='' %}
+        {% endif %}
+        <div class="br filter" data-tvfilter="{{ name }}" data-filterval="{{ value }}">
+            {% autoescape false %}
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="no-padding">{{ title }}:</span>
+                <span>{{ value }}</span>
+                <i class="fa fa-caret-down"></i>
+            </a>
+            <div class="dropdown-menu">
+                <input type='text' class='datepicker filter_string' data-date-format='dd-mm-yy' name="{{ name }}" id="filter_string_{{ name }}" value="{{ value }}">
+                <button class="btn btn-success filter_string" type="button"><i class="fa fa-check"></i></button>
+            </div>
             {% endautoescape %}
         </div>
     {% endmacro %}

@@ -8,11 +8,15 @@ class UsersModel extends \Model\BaseStalkerModel {
         parent::__construct();
     }
 
-    public function getTotalRowsUresList($where = array(), $like = array()) {
+    public function getTotalRowsUresList($where = array(), $like = array(), $in = array()) {
         if (!empty($this->reseller_id)) {
             $where['reseller_id'] = $this->reseller_id;
         }
         $this->mysqlInstance->count()->from('users')->where($where);
+        if (!empty($in)) {
+            list($field, $data) = each($in);
+            $this->mysqlInstance->in($field, $data);
+        }
         if (!empty($like)) {
             $this->mysqlInstance->like($like, 'OR');
         }
@@ -34,6 +38,12 @@ class UsersModel extends \Model\BaseStalkerModel {
             $this->mysqlInstance->join('(SELECT @rank := 0) r', '1', '1', 'INNER');
         }
         $this->mysqlInstance->where($param['where'])->like($param['like'], 'OR');
+
+        if (!empty($param['in'])) {
+            list($field, $data) = each($param['in']);
+            $this->mysqlInstance->in($field, $data);
+        }
+
         if (!empty($param['order'])) {
             $this->mysqlInstance->orderby($param['order']);
         }
@@ -279,5 +289,69 @@ class UsersModel extends \Model\BaseStalkerModel {
 
     public function updateResellerMemberByID($table_name, $id, $target_id){
         return $this->mysqlInstance->update($table_name, array("reseller_id" => $target_id), array("id" => $id))->total_rows();
+    }
+
+    public function getFilterSet($params){
+        return $this->mysqlInstance->from('filter_set')->where($params)->get()->all();
+    }
+
+    public function insertFilterSet($params){
+        return $this->mysqlInstance->insert('filter_set', $params)->insert_id();
+    }
+
+    public function updateFilterSet($id, $params){
+        return $this->mysqlInstance->update('filter_set', $params, array('id'=>$id))->total_rows();
+    }
+
+    public function getTotalRowsUsersFilters($where = array(), $like = array()) {
+        $params = array(
+            'where' => $where
+        );
+        if (!empty($like)) {
+            $params['like'] = $like;
+        }
+        return $this->getUsersFiltersList($params, TRUE);
+    }
+
+    public function getUsersFiltersList($param, $counter = FALSE) {
+        $where = array();
+        if (!empty($this->admin_login) && $this->admin_login != 'admin') {
+            $where = array('admin_id' => $this->admin_id, 'for_all' => 1);
+        }
+        if (!empty($param['select'])) {
+            $this->mysqlInstance->select($param['select']);
+        }
+        $this->mysqlInstance->from("filter_set as F_S")
+            ->join("administrators as A", "F_S.admin_id", "A.id", "LEFT")
+            ->join("reseller as R", "A.reseller_id", "R.id", "LEFT");
+        if (!empty($param['where'])) {
+            $this->mysqlInstance->where($param['where']);
+        }
+        if (!empty($where)) {
+            $this->mysqlInstance->where($where, ' OR ');
+        }
+        if (!empty($param['like'])) {
+            $this->mysqlInstance->like($param['like'], ' OR ');
+        }
+        if (!empty($param['order'])) {
+            $this->mysqlInstance->orderby($param['order']);
+        }
+        if (!empty($param['limit']['limit'])) {
+            $this->mysqlInstance->limit($param['limit']['limit'], $param['limit']['offset']);
+        }
+
+        return ($counter) ? $this->mysqlInstance->count()->get()->counter() : $this->mysqlInstance->get()->all();
+    }
+
+    public function toggleFilterFavorite($id, $status) {
+        return $this->mysqlInstance->update('filter_set', array('favorites' => $status), array('id'=>$id))->total_rows();
+    }
+
+    public function deleteFilter($id, $admin_id = NULL) {
+        $where = array('id'=>$id);
+        if (!empty($this->admin_login) && $this->admin_login != 'admin') {
+            $where['for_all = 1 OR admin_id'] = $this->admin_id;
+        }
+        return $this->mysqlInstance->delete('filter_set', $where)->total_rows();
     }
 }

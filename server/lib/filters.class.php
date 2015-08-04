@@ -1,9 +1,7 @@
 <?php
-
 // require_once('../common.php'); //for debug from command line
 
-class Filters
-{
+class Filters {
 
     private $db;
     private $filters;
@@ -25,26 +23,27 @@ class Filters
 
     private static $instance = NULL;
 
-    public static function getInstance()
-    {
+    public static function getInstance() {
         if (self::$instance == NULL) {
             self::$instance = new self;
         }
         return self::$instance;
     }
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->db = Mysql::getInstance();
         $this->getDBFilters();
         $this->watchdog = Config::get('watchdog_timeout') * 2;
     }
 
-    private function getDBFilters()
-    {
+    private function getDBFilters() {
         $this->filters = array();
         if (class_exists('Mysql') && $this->db instanceof Mysql && $this->db) {
             foreach ($this->db->from(self::FILTERS_TABLE)->get()->all() as $row) {
+                $filter_text_id = $row['method'];
+                $filter_text_id = preg_replace('/([a-z]+)([A-Z]+)/', '$1_$2', $filter_text_id);
+                $filter_text_id = str_replace('get_Users_By_', '', $filter_text_id);
+                $row['text_id'] = strtolower($filter_text_id);
                 if (!empty($row['values_set']) && method_exists($this, $row['values_set'])) {
                     $row['values_set'] = call_user_func(array($this, $row['values_set']));
                 } else {
@@ -56,13 +55,11 @@ class Filters
         }
     }
 
-    private function cleanDataSet()
-    {
+    private function cleanDataSet() {
         $this->db->reset();
     }
 
-    public static function custom_array_intersect()
-    {
+    public static function custom_array_intersect() {
         $args = func_get_args();
         if (count($args) > 0 && is_array($args[0])) {
             $result = $args[0];
@@ -76,8 +73,7 @@ class Filters
         return FALSE;
     }
 
-    private static function custom_array_intersect_simple($a = array(), $b = array())
-    {
+    private static function custom_array_intersect_simple($a = array(), $b = array()) {
         $result = array();
 
         $length_a = count($a);
@@ -105,8 +101,7 @@ class Filters
         return $result;
     }
 
-    private function getFilterIdByMethodName($method_name = '')
-    {
+    private function getFilterIdByMethodName($method_name = '') {
         if (!empty($method_name)) {
             foreach ($this->filters as $row) {
                 if (in_array($method_name, $row)) {
@@ -117,23 +112,22 @@ class Filters
         return FALSE;
     }
 
-    private function fromTable()
-    {
+    private function fromTable() {
         if (empty($this->field)) {
             $this->db->select("{$this->fromTable}.*");
+        } else {
+            $this->db->select("{$this->fromTable}.{$this->field}");
         }
         $this->db->from($this->fromTable);
     }
 
-    private function applyFilter()
-    {
+    private function applyFilter() {
         $this->fromTable();
         $this->data = self::custom_array_intersect_simple($this->data, $this->db->get()->all($this->field));
         $this->cleanDataSet();
     }
 
-    private function getAllUsers()
-    {
+    private function getAllUsers() {
         $this->fromTable();
         if (!empty($this->reseller)) {
             $this->db->where(array('reseller_id' => $this->reseller));
@@ -142,8 +136,7 @@ class Filters
         $this->cleanDataSet();
     }
 
-    private function setLikeCondVal($cond, $cond_val)
-    {
+    private function setLikeCondVal($cond, $cond_val) {
         switch ($cond) {
             case 'in' : {
                 if (is_array($cond_val)) {
@@ -164,8 +157,7 @@ class Filters
         return '';
     }
 
-    private function setStringFilter($field, $cond, $cond_value)
-    {
+    private function setStringFilter($field, $cond, $cond_value) {
         if (in_array($cond, $this->compare_cond) || in_array($cond, $this->like_cond)) {
             if (in_array($cond, $this->like_cond)) {
                 $cond_value = $this->setLikeCondVal($cond, $cond_value);
@@ -181,8 +173,7 @@ class Filters
         }
     }
 
-    private function setDateTimeFilter($field, $cond, $cond_value)
-    {
+    private function setDateTimeFilter($field, $cond, $cond_value) {
         if (in_array($cond, $this->compare_cond)) {
             try {
                 $date = @date_create($cond_value);
@@ -194,76 +185,64 @@ class Filters
         }
     }
 
-    private function setTimeStampFilter($field, $cond, $cond_value)
-    {
+    private function setTimeStampFilter($field, $cond, $cond_value) {
         $this->db->where(array("unix_timestamp($field) $cond" => (is_numeric($cond_value) ? $cond_value : strtotime($cond_value))));
         $this->applyFilter();
     }
 
-    private function setNumericFilter($field, $cond, $cond_value)
-    {
+    private function setNumericFilter($field, $cond, $cond_value) {
         if (in_array($cond, $this->compare_cond)) {
             $this->db->where(array("$field $cond " => $cond_value));
         }
         $this->applyFilter();
     }
 
-    private function getUsersByStatus($cond, $cond_value)
-    {
+    private function getUsersByStatus($cond, $cond_value) {
         $this->setNumericFilter('status', $cond, $cond_value);
     }
 
-    private function getUsersStatusSet()
-    {
+    private function getUsersStatusSet() {
         return array(
-            array('value' => 1, 'title' => 'off'),
-            array('value' => 0, 'title' => 'on')
+            array('value' => 2, 'title' => 'off'),
+            array('value' => 1, 'title' => 'on')
         );
     }
 
-    private function getUsersByState($cond, $cond_value)
-    {
+    private function getUsersByState($cond, $cond_value) {
         $this->setTimeStampFilter('keep_alive', ($cond_value ? ">" : "<"), time() - $this->watchdog);
     }
 
-    private function getUsersStateSet()
-    {
+    private function getUsersStateSet() {
         return array(
-            array('value' => 0, 'title' => 'offline'),
-            array('value' => 1, 'title' => 'online')
+            array('value' => 1, 'title' => 'offline'),
+            array('value' => 2, 'title' => 'online')
         );
     }
 
-    private function getUsersByCreateDate($cond, $cond_value)
-    {
+    private function getUsersByCreateDate($cond, $cond_value) {
         $this->setDateTimeFilter('created', $cond, $cond_value);
     }
 
-    private function getUsersByCountry($cond, $cond_value)
-    {
+    private function getUsersByCountry($cond, $cond_value) {
         $this->setStringFilter('country', $cond, $cond_value);
     }
 
-    private function getUsersByLastStart($cond, $cond_value)
-    {
+    private function getUsersByLastStart($cond, $cond_value) {
         $this->setTimeStampFilter('last_start', $cond, $cond_value);
     }
 
-    private function getUsersByLastActivity($cond, $cond_value)
-    {
+    private function getUsersByLastActivity($cond, $cond_value) {
         $this->setTimeStampFilter('last_active', $cond, $cond_value);
     }
 
-    private function getUsersByGroup($cond, $cond_value)
-    {
+    private function getUsersByGroup($cond, $cond_value) {
         $this->cleanDataSet();
         $this->db->join('stb_in_group as S_I_G', 'users.id', 'S_I_G.uid', 'LEFT');
         $this->db->where(array('S_I_G.stb_group_id' => $cond_value));
         $this->applyFilter();
     }
 
-    private function getUsersGroupSet()
-    {
+    private function getUsersGroupSet() {
         $this->cleanDataSet();
         $this->db->select(array('`id` as `value`', '`name` as `title`'))
             ->from('stb_groups');
@@ -273,15 +252,17 @@ class Filters
         return $this->db->get()->all();
     }
 
-    private function getUsersByInterfaceLanguage($cond, $cond_value)
-    {
+    private function getUsersByInterfaceLanguage($cond, $cond_value) {
         $this->setStringFilter('locale', '=', $cond_value);
     }
 
-    private function getUsersInterfaceLanguageSet()
-    {
+    private function getUsersInterfaceLanguageSet() {
         $this->cleanDataSet();
-        $data = $this->db->select('locale')->from('users')->groupby('locale')->get()->all('locale');
+        $this->db->select('locale')->from('users');
+        if (!empty($this->reseller)) {
+            $this->db->where(array('reseller_id' => $this->reseller));
+        }
+        $data = $this->db->groupby('locale')->get()->all('locale');
 
         $data = array_intersect_key(array_flip(Config::get('allowed_locales')), array_flip($data));
 
@@ -292,60 +273,55 @@ class Filters
         return $return_data;
     }
 
-    private function getUsersByWatchingTV($cond, $cond_value)
-    {
+    private function getUsersByWatchingTV($cond, $cond_value) {
         $this->cleanDataSet();
         $this->db->where(array('now_playing_type' => 1));
         $this->setStringFilter("now_playing_content", $cond, $cond_value);
     }
 
-    private function getUsersByWatchingMovie($cond, $cond_value)
-    {
+    private function getUsersByWatchingMovie($cond, $cond_value) {
         $this->cleanDataSet();
         $this->db->where(array('now_playing_type' => 2));
         $this->setStringFilter("now_playing_content", $cond, $cond_value);
     }
 
-    private function getUserByUsingStreamServer($cond, $cond_value)
-    {
+    private function getUsersByUsingStreamServer($cond, $cond_value) {
         $this->cleanDataSet();
         $this->db->where(array('now_playing_type' => 1));
         $this->db->where(array('now_playing_streamer_id' => $cond_value));
         $this->setTimeStampFilter('keep_alive', '>', $this->watchdog);
     }
 
-    private function getStreamServerSet()
-    {
+    private function getStreamServerSet() {
         $this->cleanDataSet();
         $this->db->select(array('`id` as `value`', '`name` as `title`'))->from('streaming_servers');
         return $this->db->get()->all();
     }
 
-    private function getUserBySTBModel($cond, $cond_value)
-    {
+    private function getUsersBySTBModel($cond, $cond_value) {
         $this->setStringFilter('stb_type', '=', $cond_value);
     }
 
-    private function getUserSTBModelSet()
-    {
+    private function getUserSTBModelSet() {
         $this->cleanDataSet();
 
         $this->db->select(array('`stb_type` as `value`', '`stb_type` as `title`'))
             ->from('users')
             ->where(array('stb_type <>' => '', 'stb_type IS NOT ' => NULL))
             ->groupby('stb_type');
+        if (!empty($this->reseller)) {
+            $this->db->where(array('reseller_id' => $this->reseller));
+        }
 
         return $this->db->get()->all();
     }
 
-    private function getUserBySTBFirmwareVersion($cond, $cond_value)
-    {
+    private function getUsersBySTBFirmwareVersion($cond, $cond_value) {
         $this->db->where(array('now_playing_type' => 1));
         $this->setStringFilter('version', "*=", $cond_value);
     }
 
-    private function getUserByConnectedTariffPlan($cond, $cond_value)
-    {
+    private function getUsersByConnectedTariffPlan($cond, $cond_value) {
         $this->cleanDataSet();
         $this->db->join('tariff_plan', 'users.tariff_plan_id', 'tariff_plan.id or (users.tariff_plan_id = 0 and tariff_plan.user_default)', 'LEFT');
         $this->db->where(array(
@@ -355,8 +331,7 @@ class Filters
         $this->applyFilter();
     }
 
-    private function getUserTariffPlanSet()
-    {
+    private function getUserTariffPlanSet() {
         $this->cleanDataSet();
 
         $this->db->select(array('`id` as `value`', '`name` as `title`'))->from('tariff_plan');
@@ -364,8 +339,7 @@ class Filters
         return $this->db->get()->all();
     }
 
-    private function getUserByAaccessibleServicePackages($cond, $cond_value)
-    {
+    private function getUsersByAccessibleServicePackages($cond, $cond_value) {
         $this->cleanDataSet();
         $this->db->from('package_in_plan');
         if (is_array($cond_value)) {
@@ -411,8 +385,7 @@ class Filters
         }
     }
 
-    private function getUserAaccessibleServicePackagesSet()
-    {
+    private function getUserAccessibleServicePackagesSet() {
         $this->cleanDataSet();
 
         $this->db->select(array('`id` as `value`', '`name` as `title`'))->from('services_package');
@@ -420,20 +393,18 @@ class Filters
         return $this->db->get()->all();
     }
 
-    public function initData($table_name, $field_name = NULL)
-    {
+    public function initData($table_name, $field_name = NULL) {
         $this->fromTable = $table_name;
         $this->field = $field_name;
         $this->getAllUsers();
     }
 
-    public function setResellerID($id = 0)
-    {
+    public function setResellerID($id = 0) {
         $this->reseller = $id;
+        $this->getDBFilters();
     }
 
-    public function setFilters($filter, $cond = NULL, $cond_value = NULL)
-    {
+    public function setFilters($filter, $cond = NULL, $cond_value = NULL) {
         if (is_array($filter)) {
             foreach ($filter as $row) {
                 call_user_func_array(array($this, 'setFilters'), $row);
@@ -458,8 +429,7 @@ class Filters
         }
     }
 
-    public function getData()
-    {
+    public function getData() {
         if ($this->reseller == -1) {
             return array(
                 'error' => 'Data is empty, because  not set reseller\'s id. If system of resellers is not used set the reseller\'s id at "0" or use method "setResellerID()" without parameters'
@@ -468,8 +438,7 @@ class Filters
         return $this->data;
     }
 
-    public function getFilters($filter_id = array())
-    {
+    public function getFilters($filter_id = array()) {
         $return_filter = array();
         $dbt = debug_backtrace(0, 2);
         $caller = isset($dbt[1]['function']) ? $dbt[1]['function'] : null;
@@ -479,7 +448,7 @@ class Filters
                     $return_filter[] = $this->getFilters($filter);
                 }
             } else {
-                $field = (is_numeric($filter_id) ? 'id' : 'method');
+                $field = (is_numeric($filter_id) ? 'id' : (strpos($filter_id, 'getUsersBy') !== FALSE ? 'method': 'text_id'));
                 foreach ($this->filters as $item) {
                     if (array_key_exists($field, $item) && $item[$field] == $filter_id) {
                         return $item;
@@ -494,13 +463,11 @@ class Filters
 
 }
 
-class FiltersException extends Exception
-{
+class FiltersException extends Exception {
     protected $message = "";
     protected $code = 0;
 
-    public function __construct($message)
-    {
+    public function __construct($message) {
         $this->message = $message;
         error_log($message);
     }
@@ -509,11 +476,10 @@ class FiltersException extends Exception
 /* ----------- init -----------
 
 $filter_set = Filters::getInstance();
-$filter_set->setResellerID(0);
-$filter_set->initData('users'); //, 'id'
+$filter_set->setResellerID(0); // if unused system of resellers with parameter 0, else with parameter reseller_id
+$filter_set->initData('users'); // data table e.g. 'users', getting field  e.g. 'id'
 $param = array();
 */
-
 /* ----------- setFilters -----------
     $param[] = array('getUsersByStatus', '=', 0);
     $param[] = array('getUsersByState', '=', 1);
@@ -525,20 +491,23 @@ $param = array();
     $param[] = array('getUsersByInterfaceLanguage', '=', 'en_GB.utf8');
     $param[] = array('getUsersByWatchingTV', '=', 'M1');
     $param[] = array('getUsersByWatchingMovie', '^=', 'Гарри Поттер и Дары Смерти: Часть');
-    $param[] = array('getUserByUsingStreamServer', '=', '5');
-    $param[] = array('getUserBySTBModel', '=', 'MAG250');
-    $param[] = array('getUserBySTBFirmwareVersion', '=', '0.2.18-r10-pub-250');
-    $param[] = array('getUserByConnectedTariffPlan', '=', '8');
-    $param[] = array('getUserByAaccessibleServicePackages', '=', array(8, 9));
+    $param[] = array('getUsersByUsingStreamServer', '=', '5');
+    $param[] = array('getUsersBySTBModel', '=', 'MAG250');
+    $param[] = array('getUsersBySTBFirmwareVersion', '=', '0.2.18-r10-pub-250');
+    $param[] = array('getUsersByConnectedTariffPlan', '=', '8');
+    $param[] = array('getUsersByAccessibleServicePackages', '=', array(8, 9));
 */
 
 /* ----------- getFilters -----------
     $param = array();                                       // all
-    $param = array('getUsersByStatus', 'getUsersByStatus'); // by filter method name
+    $param = array('getUsersByStatus', 'getUsersByStatus'); // by filter method name or text_id
     $param = array('1', '2');                               // by filter id
 */
 
+/* ----------- getData -----------
+    $filter_set->setFilters
+*/
 
 /*$filter_set->setFilters($param);*/
 
-/*$filter_set->getFilters($param);*/
+/*print_r($filter_set->getFilters('getUsersByGroup'));*/

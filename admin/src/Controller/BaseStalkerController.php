@@ -72,8 +72,12 @@ class BaseStalkerController {
         if ($this->db !== FALSE && !empty($uid)) {
             $this->app['userTaskMsgs'] = $this->db->getCountUnreadedMsgsByUid($uid);
         }
+
+        $this->app['user_id'] = $uid;
+
         $this->app['reseller'] = $this->admin->getResellerID();
         $this->db->setReseller($this->app['reseller']);
+        $this->db->setAdmin($this->app['user_id'], $this->app['userlogin']);
 
         $this->saveFiles = $app['saveFiles'];
         $this->setSideBarMenu();

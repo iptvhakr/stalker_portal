@@ -6,10 +6,14 @@ class BaseStalkerModel {
 
     protected $mysqlInstance;
     protected $reseller_id;
+    protected $admin_id;
+    protected $admin_login;
 
     public function __construct() {
         $this->mysqlInstance = \Mysql::getInstance();
         $this->reseller_id = NULL;
+        $this->admin_id = NULL;
+        $this->admin_login = NULL;
     }
 
     public function __call($name, $arguments) {
@@ -25,6 +29,11 @@ class BaseStalkerModel {
 
     public function setReseller($reseller_id){
         $this->reseller_id = $reseller_id;
+    }
+
+    public function setAdmin($admin_id, $admin_login){
+        $this->admin_id = $admin_id;
+        $this->admin_login = $admin_login;
     }
 
     public function getTableFields($table_name){

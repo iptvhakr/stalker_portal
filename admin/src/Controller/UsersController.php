@@ -81,6 +81,57 @@ class UsersController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
+
+        $users_filter = array();
+        if (!empty($this->data['filters'])) {
+            $users_filter = $this->data['filters'];
+        }
+        if ( !empty($this->data['filter_set'])) {
+            $curr_filter_set = $this->db->getFilterSet(array('id' => $this->data['filter_set']));
+            if (!empty($curr_filter_set) && count($curr_filter_set) > 0 && !empty($curr_filter_set[0]['filter_set'])) {
+                $curr_filter_set[0]['filter_set'] = unserialize($curr_filter_set[0]['filter_set']);
+                if (!empty($curr_filter_set[0]['filter_set'])) {
+                    $curr_filter_set[0]['filter_set'] = array_combine($this->getFieldFromArray($curr_filter_set[0]['filter_set'], 0), $this->getFieldFromArray($curr_filter_set[0]['filter_set'], 2));
+                    $users_filter = array_merge($users_filter, $curr_filter_set[0]['filter_set']);
+                }
+                $this->app['filter_set'] = $curr_filter_set[0];
+            }
+        }
+
+        if (empty($users_filter)) {
+            $users_filter = array('state' => 0, 'status' => 0);
+        }
+
+        $filter_set = \Filters::getInstance();
+        $filter_set->setResellerID($this->app['reseller']);
+        $filter_set->initData('users', 'id');
+        $filters = array_map(function($row) use ($users_filter){
+            if (array_key_exists($row['text_id'], $users_filter)) {
+                $row['value'] = $users_filter[$row['text_id']];
+            }
+            return $row;
+        }, $filter_set->getFilters(array_keys($users_filter)));
+
+        if (!empty($this->app['filters'])) {
+            $this->app['filters'] = array_merge($this->app['filters'], $users_filter);
+        } else {
+            $this->app['filters'] = $users_filter;
+        }
+
+        if (!empty($filters)) {
+            $this->app['filters_set'] = array_combine($this->getFieldFromArray($filters, 'text_id'), array_values($filters));
+        }
+
+        $filters_template = array_map(function($row) use ($users_filter){
+            $row['name'] = $row['text_id'];
+            $row['checked'] = array_key_exists($row['text_id'], $users_filter);
+            return $row;
+        }, $filter_set->getFilters());
+
+        if (!empty($filters_template)) {
+            $this->app['filters_template'] = array_combine($this->getFieldFromArray($filters_template, 'text_id'), array_values($filters_template));
+        }
+
         $users = $this->users_list_json();
 
         $this->app['allUsers'] = $users['data'];
@@ -89,7 +140,7 @@ class UsersController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $users['recordsTotal'];
         $this->app['recordsFiltered'] = $users['recordsFiltered'];
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
-        
+
         $attribute = $this->getUsersListDropdownAttribute();
         $this->checkDropdownAttribute($attribute);
         $this->app['dropdownAttribute'] = $attribute;
@@ -110,6 +161,10 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['resellerUserLimit'] = ((int)$reseller_info[0]['max_users'] - (int)$users['recordsTotal']) > 0;
         } else {
             $this->app['resellerUserLimit'] = TRUE;
+        }
+
+        if (!empty($curr_filter_set)) {
+            $this->app['breadcrumbs']->addItem($this->setLocalization("Used filter") . ' "' . $curr_filter_set[0]['title'] . '"');
         }
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
@@ -312,6 +367,29 @@ class UsersController extends \Controller\BaseStalkerController {
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
+    public function users_filter_list(){
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $attribute = $this->getUsersFiltersDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
+        $this->app['allAdmins'] = $this->db->getAllFromTable('administrators', 'login');
+
+        $list = $this->users_filter_list_json();
+        $this->app['allData'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        if (!empty($this->data['filters'])) {
+            $this->app['filters'] = $this->data['filters'];
+        }
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
     //----------------------- ajax method --------------------------------------
 
     public function users_list_json($param = array()) {
@@ -337,11 +415,50 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $filter = $this->getUsersFilters();
 
+        $query_param['in'] = array();
+        if (!empty($this->app['filters']) || !empty($this->data['filter_set'])) {
+            $filter_set = \Filters::getInstance();
+            $filter_set->setResellerID($this->app['reseller']);
+            $filter_set->initData('users', 'id');
+            $app_filter = array();
+            if (!empty($this->app['filters'])) {
+                $app_filter = $this->app['filters'];
+            }
+            if($this->isAjax && !empty($this->data['filter_set'])) {
+                $app_filter = $this->db->getFilterSet(array('id'=>$this->data['filter_set']));
+                if (!empty($app_filter[0]) && array_key_exists('filter_set', $app_filter[0])) {
+                    $app_filter = @unserialize($app_filter[0]['filter_set']);
+                    if (is_array($app_filter) && count($app_filter)>0 ) {
+                        $app_filter = array_combine($this->getFieldFromArray($app_filter, 0), $this->getFieldFromArray($app_filter, 2));
+                    }
+                }
+            }
+
+            $all_filters = $filter_set->getFilters();
+            $filters_with_cond = array_filter(array_map(function($row) use ($app_filter) {
+                if (array_key_exists($row['text_id'], $app_filter)) {
+                    if ($row['type'] == 'STRING') {
+                        $cond = "*=";
+                    } elseif($row['type'] == 'DATETIME') {
+                        $cond = ">=";
+                    } else {
+                        $cond = "=";
+                    }
+                    $value = (($row['text_id'] == 'status') || ($row['text_id'] == 'state') ? (int)($app_filter[$row['text_id']] - 1 > 0) : $app_filter[$row['text_id']]);
+                    return array($row['method'], $cond, $value);
+                }
+            }, $all_filters));
+
+            $filter_set->setFilters($filters_with_cond);
+            $filtered_users = $filter_set->getData();
+            $query_param['in'] = array('users.id'=>$filtered_users) ;
+        }
+
         $query_param['where'] = array_merge($query_param['where'], $filter);
 
         $query_param['select'] = array_merge($query_param['select'], array_diff($this->userFields, $query_param['select']));
         $response['recordsTotal'] = $this->db->getTotalRowsUresList();
-        $response["recordsFiltered"] = $this->db->getTotalRowsUresList($query_param['where'], $query_param['like']);
+        $response["recordsFiltered"] = $this->db->getTotalRowsUresList($query_param['where'], $query_param['like'], $query_param['in']);
 
         if (empty($query_param['limit']['limit'])) {
             $query_param['limit']['limit'] = 50;
@@ -759,7 +876,7 @@ class UsersController extends \Controller\BaseStalkerController {
             'param' => "user_log.`param` as `param`"
         );
 
-        $error = "Error";
+        $error = $this->setLocalization("Error");
         if ($this->isAjax) {
             if ($no_auth = $this->checkAuth()) {
                 return $no_auth;
@@ -975,37 +1092,261 @@ class UsersController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
-    
+
+    public function get_filter(){
+
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['text_id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'addFilter';
+        $error = $this->setlocalization($this->setlocalization('Not exists'));
+
+        $filter_set = \Filters::getInstance();
+        $filter_set->setResellerID($this->app['reseller']);
+        $filter_set->initData('users', 'id');
+        $data['filter'] = $filter_set->getFilters($this->postData['text_id']);
+
+        if (!empty($data['filter'])) {
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+
+    }
+
+    public function save_filter(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['filter_set'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'saveFilterData';
+        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+
+        $params = $this->postData['filter_set'];
+
+        if (!empty($params['filter_set'])) {
+            $params['filter_set'] = json_decode(urldecode($params['filter_set']), TRUE);
+        }
+
+        if (!empty($params['title']) && !empty($params['filter_set'])) {
+
+            $filter_set = \Filters::getInstance();
+            $filter_set->setResellerID($this->app['reseller']);
+            $filter_set->initData('users', 'id');
+            $app_filter = $params['filter_set'];
+            $all_filters = $filter_set->getFilters();
+            $filters_with_cond = array_filter(array_map(function($row) use ($app_filter) {
+                if (array_key_exists($row['text_id'], $app_filter)) {
+                    if ($row['type'] == 'STRING') {
+                        $cond = "*=";
+                    } elseif($row['type'] == 'DATETIME') {
+                        $cond = ">=";
+                    } else {
+                        $cond = "=";
+                    }
+                    return array($row['text_id'], $cond, $app_filter[$row['text_id']]);
+                }
+            }, $all_filters));
+
+            $params['filter_set'] = serialize($filters_with_cond);
+            if (!empty($params['filter_set'])) {
+                $current = $this->db->getFilterSet(array('id' => $params['id'], 'admin_id' => $params['admin_id']));
+                if (!empty($current)) {
+                    $operation = 'update';
+                    $filter_data['id'] = $params['id'];
+                } else {
+                    $operation = 'insert';
+                }
+                $filter_data['params'] = $params;
+                unset($params['id']);
+                $filter_data['params']['for_all'] = (int)(array_key_exists('for_all', $params) && !empty($params['for_all']));
+
+                $return_id = 0;
+                if ($return_id = call_user_func_array(array($this->db, $operation."FilterSet"), $filter_data)) {
+                    $error = '';
+                     if ($operation == 'insert') {
+                         $data['return_id'] = $return_id;
+                     }
+                } else {
+                    $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+                }
+            }
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function users_filter_list_json(){
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+        $error = $this->setLocalization("Error");
+        $param = (!empty($this->data) ? $this->data : array());
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filds_for_select = $this->getFilterSetFields();
+        $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+
+        if (!empty($this->data['filters']['admin_id'])) {
+            $query_param['where'] = array('A.id'=>$this->data['filters']['admin_id']);
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsUsersFilters();
+        $response["recordsFiltered"] = $this->db->getTotalRowsUsersFilters($query_param['where'], $query_param['like']);
+
+        if (empty($query_param['limit']['limit'])) {
+            $query_param['limit']['limit'] = 50;
+        }
+
+        $filter_set = \Filters::getInstance();
+        $filter_set->setResellerID($this->app['reseller']);
+        $filter_set->initData('users', 'id');
+
+        $self = $this;
+
+        $response['data'] = array_map(function($row) use ($filter_set, $self){
+            if(($filter_set_data = @unserialize($row['filter_set'])) !== FALSE){
+                $row['filter_set'] = '';
+                foreach($filter_set_data as $data_row){
+                    $filter_set_filter = $filter_set->getFilters(array($data_row[0]));
+                    $row_filter_set = $self->setLocalization($filter_set_filter[0]['title']).': ';
+                    if ($filter_set_filter[0]['type'] == 'VALUES_SET' && !empty($filter_set_filter[0]['values_set']) && is_array($filter_set_filter[0]['values_set'])) {
+                        foreach($filter_set_filter[0]['values_set'] as $filter_row){
+                            if ($data_row[2] == $filter_row['value'] ) {
+                                $row_filter_set .= $self->setLocalization($filter_row['title']).'; ';
+                            }
+                        }
+                    } else {
+                        $row_filter_set .= $data_row[2].'; ';
+                    }
+                    $row['filter_set'] .= $row_filter_set;
+                }
+            }
+            settype($row['favorites'], 'int');
+            settype($row['for_all'], 'int');
+            return $row;
+        }, $this->db->getUsersFiltersList($query_param));
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $error = '';
+
+        if ($this->isAjax) {
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function remove_filter(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageList';
+        $error = $this->setlocalization($this->setlocalization('Failed'));
+        $admin_id = (!empty($this->app['userlogin']) && $this->app['userlogin'] == 'admin') ? FALSE: $this->app['user_id'];
+
+        if ($error = $this->db->deleteFilter($this->postData['id'], $admin_id)) {
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function toggle_filter_favorite(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id']) || !array_key_exists('favorite', $this->postData)) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageList';
+        $error = $this->setlocalization($this->setlocalization('Failed'));
+
+        if ($this->db->toggleFilterFavorite($this->postData['id'], (int) $this->postData['favorite'] == 1 ? 0: 1)) {
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getUsersFilters() {
         $return = array();
 
-        if (empty($this->data['filters'])){
+        if (empty($this->data['filters']) && empty($this->app['filters'])){
             $this->app['filters'] =  array('interval_from'=>'', 'interval_to'=>'');
             return $return;
         }
         $now_timestamp = time() - $this->watchdog;
         $now_time = date("Y-m-d H:i:s", $now_timestamp);
-        if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id'] != 0) {
-            $return['status'] = $this->data['filters']['status_id'] - 1;
-        }
-        if (array_key_exists('state_id', $this->data['filters']) && $this->data['filters']['state_id'] != 0) {
-            $return['keep_alive' . ($this->data['filters']['state_id'] - 1 ? "<" : ">")] = "$now_time";
-        }
-        if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0) {
-            $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);
-            $return['UNIX_TIMESTAMP(last_active)>='] = $date->getTimestamp();
-        }
-        if (array_key_exists('interval_to', $this->data['filters']) && $this->data['filters']['interval_to']!= 0) {
-            $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_to']);
-            $return['UNIX_TIMESTAMP(last_active)<='] = $date->getTimestamp();
+        if (array_key_exists('filters', $this->data)) {
+            if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id'] != 0) {
+                $return['status'] = $this->data['filters']['status_id'] - 1;
+            }
+            if (array_key_exists('state_id', $this->data['filters']) && $this->data['filters']['state_id'] != 0) {
+                $return['keep_alive' . ($this->data['filters']['state_id'] - 1 ? "<" : ">")] = "$now_time";
+            }
+            if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0) {
+                $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);
+                $return['UNIX_TIMESTAMP(last_active)>='] = $date->getTimestamp();
+            }
+            if (array_key_exists('interval_to', $this->data['filters']) && $this->data['filters']['interval_to']!= 0) {
+                $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_to']);
+                $return['UNIX_TIMESTAMP(last_active)<='] = $date->getTimestamp();
+            }
+
+            $this->data['filters']['interval_from'] = (empty($this->data['filters']['interval_from']) ? '' : $this->data['filters']['interval_from']);
+            $this->data['filters']['interval_to'] = (empty($this->data['filters']['interval_to']) ? '' : $this->data['filters']['interval_to']);
+
+            if (!empty($this->app['filters'])) {
+                $this->app['filters'] = array_merge($this->app['filters'], $this->data['filters']);
+            } else {
+                $this->app['filters'] = $this->data['filters'];
+            }
         }
 
-        $this->data['filters']['interval_from'] = (empty($this->data['filters']['interval_from']) ? '' : $this->data['filters']['interval_from']);
-        $this->data['filters']['interval_to'] = (empty($this->data['filters']['interval_to']) ? '' : $this->data['filters']['interval_to']);
-
-        $this->app['filters'] = $this->data['filters'];
         return $return;
     }
 
@@ -1315,4 +1656,29 @@ class UsersController extends \Controller\BaseStalkerController {
         $attribute[] = array('name'=>'operations',         'title'=>$this->setLocalization('Operations'),  'checked' => TRUE);
         return $attribute;
     }
+
+    private function getUsersFiltersDropdownAttribute() {
+        $attribute = array(
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),                'checked' => TRUE),
+            array('name' => 'login',        'title' => $this->setLocalization('Author'),            'checked' => TRUE),
+            array('name' => 'title',        'title' => $this->setLocalization('Title'),            'checked' => TRUE),
+            array('name' => 'filter_set',   'title' => $this->setLocalization('Filter conditions'), 'checked' => TRUE),
+            array('name' => 'for_all',      'title' => $this->setLocalization('Visibility'),        'checked' => TRUE),
+            array('name' => 'favorites',    'title' => $this->setLocalization('Favorites'),         'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),        'checked' => TRUE)
+        );
+        return $attribute;
+    }
+
+    private function getFilterSetFields(){
+        return array(
+            'id' => 'F_S.`id` as `id`',
+            'login' => 'A.`login` as `login`',
+            'title' => 'F_S.title as `title`',
+            'filter_set' => 'F_S.filter_set as `filter_set`',
+            'for_all' => 'F_S.for_all as `for_all`',
+            'favorites' => 'F_S.`favorites` as `favorites`'
+        );
+    }
+
 }

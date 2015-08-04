@@ -2924,6 +2924,37 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
     padding-right: 0;
 }
 
+#iptv_list .filter_string{
+    border-color: inherit !important;
+    border-radius: 0 !important;
+    margin: 0 50px 0 5px !important;
+    padding-right: 5px !important;
+}
+
+#iptv_list .btn.filter_string {
+    margin: 0 !important;
+    padding: 6px 12px !important;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    border-radius: inherit !important;
+}
+
+#iptv_list .green{
+    background-color: #0F9C16 !important;
+    color: #ffffff !important;
+}
+
+#filter_param{
+    line-height: 26px;
+    margin: 5px 0 !important;
+    padding: 5px 10px !important;
+}
+
+#filter_param > ul > li:first-of-type, #filter_param > ul > li.divider{
+    display: none;
+}
+
 #total_storages{
     border-radius: 5px !important;
     border-left-color: #CCC !important;
@@ -2941,7 +2972,7 @@ color:#000; background-color:#FFF !important; border:1px solid #000; margin-top:
     background: url("../img/no_image.png") no-repeat center center transparent;
 }
 .open .dropdown-menu {margin-top:0px;}
-#attribute_set {
+.attribute_set, #attribute_set {
     position: absolute; 
     top: 9px; 
     right: 10px; 
@@ -3003,7 +3034,7 @@ width:200px;
 }
 
 #attribute_set  .dropdown-menu li, .attribute_set .dropdown-menu li{
-    padding-left: 10px;
+    /*padding-left: 10px;*/
 }
 
 /*#attribute_set .dropdown-menu li:first-of-type{
@@ -3017,20 +3048,21 @@ width:200px;
 }
 
 #attribute_set .checkbox, .attribute_set .checkbox{
-min-width:190px;
+    min-width:190px;
     margin: 4px 0 4px 0px;
+    padding-left: 15px;
 }
 
 #attribute_set .checkbox label, .attribute_set .checkbox label{
-    padding-left: 35px;
+    padding-left: 15px;
 	width:100%;
-	padding-right:80px;
+	padding-right: 10px;
 }
 
 #attribute_set .checkbox i, #attribute_set .checkbox-inline i, 
 .attribute_set .checkbox i, .attribute_set .checkbox-inline i{
     font-size: 14px;
-	padding-left:25px;
+	padding-left:10px;
 	padding-top:4px;
 	color: #000000 !important;
 	border-color: #B7B7B7 !important;
