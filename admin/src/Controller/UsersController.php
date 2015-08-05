@@ -1114,6 +1114,13 @@ class UsersController extends \Controller\BaseStalkerController {
 
         if (!empty($data['filter'])) {
             $error = '';
+            $data['filter']['title'] = $this->setLocalization($data['filter']['title']);
+            if (!empty($data['filter']['values_set'])) {
+                reset($data['filter']['values_set']);
+                while(list($key, $row) = each($data['filter']['values_set'])){
+                    $data['filter']['values_set'][$key]['title'] = $this->setLocalization($row['title']);
+                }
+            }
         }
 
         $response = $this->generateAjaxResponse($data, $error);
@@ -1277,9 +1284,8 @@ class UsersController extends \Controller\BaseStalkerController {
         $data = array();
         $data['action'] = 'manageList';
         $error = $this->setlocalization($this->setlocalization('Failed'));
-        $admin_id = (!empty($this->app['userlogin']) && $this->app['userlogin'] == 'admin') ? FALSE: $this->app['user_id'];
 
-        if ($error = $this->db->deleteFilter($this->postData['id'], $admin_id)) {
+        if ($error = $this->db->deleteFilter($this->postData['id'])) {
             $error = '';
         }
 

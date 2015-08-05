@@ -347,7 +347,7 @@ class UsersModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->update('filter_set', array('favorites' => $status), array('id'=>$id))->total_rows();
     }
 
-    public function deleteFilter($id, $admin_id = NULL) {
+    public function deleteFilter($id) {
         $where = array('id'=>$id);
         if (!empty($this->admin_login) && $this->admin_login != 'admin') {
             $where['for_all = 1 OR admin_id'] = $this->admin_id;

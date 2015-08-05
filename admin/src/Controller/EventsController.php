@@ -51,8 +51,20 @@ class EventsController extends \Controller\BaseStalkerController {
     }
 
     // ------------------- action method ---------------------------------------
-    
+
     public function index() {
+
+        if (empty($this->app['action_alias'])) {
+            return $this->app->redirect($this->app['controller_alias'] . '/events');
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+    }
+
+    public function events() {
         if ($no_auth = $this->checkAuth()) {
             return $no_auth;
         }
@@ -89,7 +101,32 @@ class EventsController extends \Controller\BaseStalkerController {
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
-    
+
+    public function message_templates(){
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $attribute = $this->getMessagesTemplatesDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
+        $this->app['allAdmins'] = $this->db->getAllFromTable('administrators', 'login');
+
+        $list = $this->message_templates_list_json();
+        $this->app['allData'] = $list['data'];
+        $this->app['totalRecords'] = $list['recordsTotal'];
+        $this->app['recordsFiltered'] = $list['recordsFiltered'];
+
+        if (!empty($this->data['filters'])) {
+            $this->app['filters'] = $this->data['filters'];
+        }
+
+        return $this->app['twig']->render($this->getTemplateName(__METHOD__));
+
+    }
+
     //----------------------- ajax method --------------------------------------
     
     public function events_list_json(){
@@ -257,7 +294,129 @@ class EventsController extends \Controller\BaseStalkerController {
 
         return new Response(json_encode($response), (empty($error) ? 200 : 500));
     }
-    
+
+    public function message_templates_list_json(){
+        if ($this->isAjax) {
+            if ($no_auth = $this->checkAuth()) {
+                return $no_auth;
+            }
+        }
+        $response = array(
+            'data' => array(),
+            'recordsTotal' => 0,
+            'recordsFiltered' => 0
+        );
+
+        $error = $this->setLocalization("Error");
+        $param = (!empty($this->data) ? $this->data : array());
+
+        $query_param = $this->prepareDataTableParams($param, array('operations', '_'));
+
+        if (!isset($query_param['where'])) {
+            $query_param['where'] = array();
+        }
+
+        $filds_for_select = $this->getMsgTemplatesFields();
+        if (!empty($query_param['select'])) {
+            $this->cleanQueryParams($query_param, array_keys($filds_for_select), $filds_for_select);
+        } else {
+            $query_param['select'] = $filds_for_select;
+        }
+
+        if (!empty($this->data['filters']['admin_id'])) {
+            $query_param['where']['M_T.id'] = $this->data['filters']['admin_id'];
+        }
+
+        if (array_key_exists('id', $this->postData)) {
+            $query_param['where'] = array('M_T.id'=>$this->postData['id']);
+            $response['action'] = 'fillModalForm';
+        }
+
+        $response['recordsTotal'] = $this->db->getTotalRowsMsgTemplates();
+        $response["recordsFiltered"] = $this->db->getTotalRowsMsgTemplates($query_param['where'], $query_param['like']);
+
+        $response['data'] = array_map(function($row){
+            $row['created'] = (int)strtotime($row['created']) * 1000;
+            $row['edited'] = (int)strtotime($row['edited']) * 1000;
+            return $row;
+        }, $this->db->getMsgTemplates($query_param));
+
+        $response["draw"] = !empty($this->data['draw']) ? $this->data['draw'] : 1;
+        $error = '';
+
+        if ($this->isAjax) {
+
+            $response = $this->generateAjaxResponse($response);
+            return new Response(json_encode($response), (empty($error) ? 200 : 500));
+        } else {
+            return $response;
+        }
+    }
+
+    public function save_message_template(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['msg_tpl'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageList';
+        $error = $this->setlocalization($this->setlocalization('Not enough data'));
+
+        $tpl_data['params'] = $this->postData['msg_tpl'];
+        $tpl_data['params']['author'] = $tpl_data['params']['admin_id'];
+
+        if (!empty($this->postData['msg_tpl']['id'])) {
+            $operation = 'update';
+            $tpl_data['id'] = $this->postData['msg_tpl']['id'];
+        } else {
+            $operation = 'insert';
+            $tpl_data['params']['created'] = "NOW()";
+
+        }
+        unset($tpl_data['params']['id']);
+        unset($tpl_data['params']['admin_id']);
+
+        $return_id = 0;
+        if ($return_id = call_user_func_array(array($this->db, $operation."MsgTemplate"), $tpl_data)) {
+            $error = '';
+            if ($operation == 'insert') {
+                $data['return_id'] = $return_id;
+            }
+        } else {
+            $data['msg'] = $error = $this->setlocalization($this->setlocalization('Nothing to do'));
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
+    public function remove_template(){
+        if (!$this->isAjax || $this->method != 'POST' || empty($this->postData['id'])) {
+            $this->app->abort(404, $this->setLocalization('Page not found'));
+        }
+
+        if ($no_auth = $this->checkAuth()) {
+            return $no_auth;
+        }
+
+        $data = array();
+        $data['action'] = 'manageList';
+        $error = $this->setlocalization($this->setlocalization('Failed'));
+
+        if ($error = $this->db->deleteMsgTemplate($this->postData['id'])) {
+            $error = '';
+        }
+
+        $response = $this->generateAjaxResponse($data, $error);
+
+        return new Response(json_encode($response), (empty($error) ? 200 : 500));
+    }
+
     //------------------------ service method ----------------------------------
 
     private function getEventsFilters() {
@@ -401,5 +560,30 @@ class EventsController extends \Controller\BaseStalkerController {
             return FALSE;
         }
         return TRUE;
+    }
+
+    private function getMessagesTemplatesDropdownAttribute(){
+        $attribute = array(
+            array('name' => 'id',           'title' => $this->setLocalization('ID'),        'checked' => TRUE),
+            array('name' => 'title',        'title' => $this->setLocalization('Title'),     'checked' => TRUE),
+            array('name' => 'login',        'title' => $this->setLocalization('Author'),    'checked' => TRUE),
+            array('name' => 'created',      'title' => $this->setLocalization('Created'),   'checked' => TRUE),
+            array('name' => 'edited',       'title' => $this->setLocalization('Edited'),    'checked' => TRUE),
+            array('name' => 'operations',   'title' => $this->setLocalization('Operations'),'checked' => TRUE)
+        );
+        return $attribute;
+    }
+
+    private function getMsgTemplatesFields(){
+        return array(
+            'id' => 'M_T.`id` as `id`',
+            'login' => 'A.`login` as `login`',
+            'admin_id' => 'A.`id` as `admin_id`',
+            'title' => 'M_T.title as `title`',
+            'header' => 'M_T.header as `header`',
+            'body' => 'M_T.body as `body`',
+            'created' => 'M_T.created as `created`',
+            'edited' => 'M_T.edited as `edited`'
+        );
     }
 }

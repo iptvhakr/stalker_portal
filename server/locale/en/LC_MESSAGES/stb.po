@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: stalker_portal\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-17 16:46+0300\n"
-"PO-Revision-Date: 2015-07-17 16:46+0300\n"
+"POT-Creation-Date: 2015-08-05 18:31+0300\n"
+"PO-Revision-Date: 2015-08-05 18:32+0300\n"
 "Last-Translator: Ivan <massiw@inbox.ru>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -125,9 +125,11 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/TvChannelsController.php:788
 #: ../../../../admin/src/Controller/TvChannelsController.php:807
 #: ../../../../admin/src/Controller/TvChannelsController.php:835
-#: ../../../../admin/src/Controller/EventsController.php:177
-#: ../../../../admin/src/Controller/EventsController.php:209
-#: ../../../../admin/src/Controller/EventsController.php:243
+#: ../../../../admin/src/Controller/EventsController.php:214
+#: ../../../../admin/src/Controller/EventsController.php:246
+#: ../../../../admin/src/Controller/EventsController.php:280
+#: ../../../../admin/src/Controller/EventsController.php:358
+#: ../../../../admin/src/Controller/EventsController.php:400
 #: ../../../../admin/src/Controller/VideoClubController.php:522
 #: ../../../../admin/src/Controller/VideoClubController.php:548
 #: ../../../../admin/src/Controller/VideoClubController.php:780
@@ -184,22 +186,26 @@ msgstr "TV Archive has been restarted."
 #: ../../../../admin/src/Controller/RadioController.php:194
 #: ../../../../admin/src/Controller/RadioController.php:213
 #: ../../../../admin/src/Controller/RadioController.php:236
-#: ../../../../admin/src/Controller/UsersController.php:381
-#: ../../../../admin/src/Controller/UsersController.php:413
-#: ../../../../admin/src/Controller/UsersController.php:444
-#: ../../../../admin/src/Controller/UsersController.php:464
-#: ../../../../admin/src/Controller/UsersController.php:484
-#: ../../../../admin/src/Controller/UsersController.php:501
-#: ../../../../admin/src/Controller/UsersController.php:526
-#: ../../../../admin/src/Controller/UsersController.php:552
-#: ../../../../admin/src/Controller/UsersController.php:570
-#: ../../../../admin/src/Controller/UsersController.php:592
-#: ../../../../admin/src/Controller/UsersController.php:660
-#: ../../../../admin/src/Controller/UsersController.php:678
-#: ../../../../admin/src/Controller/UsersController.php:720
-#: ../../../../admin/src/Controller/UsersController.php:878
-#: ../../../../admin/src/Controller/UsersController.php:908
-#: ../../../../admin/src/Controller/UsersController.php:942
+#: ../../../../admin/src/Controller/UsersController.php:498
+#: ../../../../admin/src/Controller/UsersController.php:530
+#: ../../../../admin/src/Controller/UsersController.php:561
+#: ../../../../admin/src/Controller/UsersController.php:581
+#: ../../../../admin/src/Controller/UsersController.php:601
+#: ../../../../admin/src/Controller/UsersController.php:618
+#: ../../../../admin/src/Controller/UsersController.php:643
+#: ../../../../admin/src/Controller/UsersController.php:669
+#: ../../../../admin/src/Controller/UsersController.php:687
+#: ../../../../admin/src/Controller/UsersController.php:709
+#: ../../../../admin/src/Controller/UsersController.php:777
+#: ../../../../admin/src/Controller/UsersController.php:795
+#: ../../../../admin/src/Controller/UsersController.php:837
+#: ../../../../admin/src/Controller/UsersController.php:995
+#: ../../../../admin/src/Controller/UsersController.php:1025
+#: ../../../../admin/src/Controller/UsersController.php:1059
+#: ../../../../admin/src/Controller/UsersController.php:1099
+#: ../../../../admin/src/Controller/UsersController.php:1134
+#: ../../../../admin/src/Controller/UsersController.php:1277
+#: ../../../../admin/src/Controller/UsersController.php:1299
 #: ../../../../admin/src/Controller/InfoportalController.php:222
 #: ../../../../admin/src/Controller/InfoportalController.php:256
 #: ../../../../admin/src/Controller/InfoportalController.php:276
@@ -224,6 +230,8 @@ msgid "Page not found"
 msgstr "Page not found"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1345
+#: ../../../../admin/src/Controller/EventsController.php:567
+#: ../../../../admin/src/Controller/UsersController.php:1668
 msgid "ID"
 msgstr "ID"
 
@@ -252,9 +260,11 @@ msgstr "Logo"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1348
 #: ../../../../admin/src/Controller/TvChannelsController.php:1439
+#: ../../../../admin/src/Controller/EventsController.php:568
 #: ../../../../admin/src/Controller/VideoClubController.php:2080
 #: ../../../../admin/src/Controller/VideoClubController.php:2088
 #: ../../../../admin/src/Controller/AudioClubController.php:1342
+#: ../../../../admin/src/Controller/UsersController.php:1670
 #: ../../../administrator/tariffs.php:311
 #: ../../../administrator/tariffs.php:342
 #: ../../../administrator/audio_album.php:423
@@ -313,15 +323,17 @@ msgid "Monitoring status"
 msgstr "Monitoring status"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1353
-#: ../../../../admin/src/Controller/UsersController.php:1294
+#: ../../../../admin/src/Controller/UsersController.php:1641
 #: ../../../administrator/events.php:494 ../../../administrator/tasks.php:132
 #: ../../../administrator/add_video.php:828
 msgid "Status"
 msgstr "Status"
 
 #: ../../../../admin/src/Controller/TvChannelsController.php:1354
-#: ../../../../admin/src/Controller/UsersController.php:1302
-#: ../../../../admin/src/Controller/UsersController.php:1315
+#: ../../../../admin/src/Controller/EventsController.php:572
+#: ../../../../admin/src/Controller/UsersController.php:1649
+#: ../../../../admin/src/Controller/UsersController.php:1662
+#: ../../../../admin/src/Controller/UsersController.php:1674
 msgid "Operations"
 msgstr "Operations"
 
@@ -379,6 +391,28 @@ msgstr "Karaoke songs"
 #: ../../../../admin/src/Controller/IndexController.php:137
 msgid "Installed applications"
 msgstr "Installed applications"
+
+#: ../../../../admin/src/Controller/EventsController.php:310
+#: ../../../../admin/src/Controller/UsersController.php:879
+#: ../../../../admin/src/Controller/UsersController.php:1212
+#: ../../../lang/stb.php:362
+msgid "Error"
+msgstr "Error"
+
+#: ../../../../admin/src/Controller/EventsController.php:569
+#: ../../../../admin/src/Controller/UsersController.php:1669
+#: ../../../administrator/add_karaoke.php:813
+msgid "Author"
+msgstr "Author"
+
+#: ../../../../admin/src/Controller/EventsController.php:570
+#: ../../../tools/misctranslations.php:493
+msgid "Created"
+msgstr "Created"
+
+#: ../../../../admin/src/Controller/EventsController.php:571
+msgid "Edited"
+msgstr "Edited"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:23
 #: ../../../../admin/src/Controller/VideoClubController.php:616
@@ -447,9 +481,9 @@ msgstr "Information not available"
 
 #: ../../../../admin/src/Controller/VideoClubController.php:616
 #: ../../../../admin/src/Controller/BroadcastServersController.php:19
-#: ../../../../admin/src/Controller/UsersController.php:402
-#: ../../../../admin/src/Controller/UsersController.php:1017
-#: ../../../../admin/src/Controller/UsersController.php:1021
+#: ../../../../admin/src/Controller/UsersController.php:519
+#: ../../../../admin/src/Controller/UsersController.php:1364
+#: ../../../../admin/src/Controller/UsersController.php:1368
 #: ../../../lang/stb.php:369
 msgid "on"
 msgstr "on"
@@ -526,7 +560,7 @@ msgstr "karaoke"
 
 #: ../../../../admin/src/Controller/TasksController.php:195
 #: ../../../../admin/src/Controller/TasksController.php:261
-#: ../../../../admin/json_menu/menu.json:237
+#: ../../../../admin/json_menu/menu.json:252
 msgid "Tasks list"
 msgstr "Tasks list"
 
@@ -538,11 +572,11 @@ msgstr "Add radio"
 msgid "Edit radio"
 msgstr "Edit radio"
 
-#: ../../../../admin/src/Controller/UsersController.php:104
-#: ../../../../admin/src/Controller/UsersController.php:123
-#: ../../../../admin/src/Controller/UsersController.php:136
-#: ../../../../admin/src/Controller/UsersController.php:358
-#: ../../../../admin/src/Controller/UsersController.php:1069
+#: ../../../../admin/src/Controller/UsersController.php:155
+#: ../../../../admin/src/Controller/UsersController.php:178
+#: ../../../../admin/src/Controller/UsersController.php:191
+#: ../../../../admin/src/Controller/UsersController.php:475
+#: ../../../../admin/src/Controller/UsersController.php:1416
 #: ../../../../admin/src/Controller/AdminsController.php:48
 #: ../../../../admin/src/Controller/AdminsController.php:66
 #: ../../../../admin/src/Controller/AdminsController.php:323
@@ -550,68 +584,72 @@ msgstr "Edit radio"
 msgid "Empty"
 msgstr "Empty"
 
-#: ../../../../admin/src/Controller/UsersController.php:164
+#: ../../../../admin/src/Controller/UsersController.php:167
+msgid "Used filter"
+msgstr "Used filter"
+
+#: ../../../../admin/src/Controller/UsersController.php:219
 msgid "Log of user"
 msgstr "Log of user"
 
-#: ../../../../admin/src/Controller/UsersController.php:182
+#: ../../../../admin/src/Controller/UsersController.php:237
 msgid "STB statuses report"
 msgstr "STB statuses report"
 
-#: ../../../../admin/src/Controller/UsersController.php:218
-#: ../../../../admin/src/Controller/UsersController.php:288
+#: ../../../../admin/src/Controller/UsersController.php:273
+#: ../../../../admin/src/Controller/UsersController.php:343
 #: ../../../../admin/json_menu/menu.json:178
 msgid "Users list"
 msgstr "Users list"
 
-#: ../../../../admin/src/Controller/UsersController.php:310
-#: ../../../../admin/json_menu/menu.json:183
+#: ../../../../admin/src/Controller/UsersController.php:365
+#: ../../../../admin/json_menu/menu.json:188
 msgid "User groups"
 msgstr "User groups"
 
-#: ../../../../admin/src/Controller/UsersController.php:311
+#: ../../../../admin/src/Controller/UsersController.php:366
 msgid "STB of group"
 msgstr "STB of group"
 
-#: ../../../../admin/src/Controller/UsersController.php:402
-#: ../../../../admin/src/Controller/UsersController.php:1016
-#: ../../../../admin/src/Controller/UsersController.php:1020
+#: ../../../../admin/src/Controller/UsersController.php:519
+#: ../../../../admin/src/Controller/UsersController.php:1363
+#: ../../../../admin/src/Controller/UsersController.php:1367
 #: ../../../lang/stb.php:370
 msgid "off"
 msgstr "off"
 
-#: ../../../../admin/src/Controller/UsersController.php:735
-#: ../../../../admin/src/Controller/UsersController.php:736
+#: ../../../../admin/src/Controller/UsersController.php:852
+#: ../../../../admin/src/Controller/UsersController.php:853
 msgid "This user is already connected to the group"
 msgstr "This user is already connected to the group"
 
-#: ../../../../admin/src/Controller/UsersController.php:738
+#: ../../../../admin/src/Controller/UsersController.php:855
 msgid "User with this MAC-address is not defined"
 msgstr "User with this MAC-address is not defined"
 
-#: ../../../../admin/src/Controller/UsersController.php:930
-#: ../../../../admin/src/Controller/UsersController.php:964
+#: ../../../../admin/src/Controller/UsersController.php:1047
+#: ../../../../admin/src/Controller/UsersController.php:1081
 #: ../../../../admin/src/Controller/AdminsController.php:631
 #: ../../../../admin/src/Controller/AdminsController.php:665
 #: ../../../../admin/src/Controller/AdminsController.php:699
 msgid "Moved"
 msgstr "Moved"
 
-#: ../../../../admin/src/Controller/UsersController.php:932
-#: ../../../../admin/src/Controller/UsersController.php:971
+#: ../../../../admin/src/Controller/UsersController.php:1049
+#: ../../../../admin/src/Controller/UsersController.php:1088
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Not found reseller for moving"
 msgstr "Not found reseller for moving"
 
-#: ../../../../admin/src/Controller/UsersController.php:932
-#: ../../../../admin/src/Controller/UsersController.php:971
+#: ../../../../admin/src/Controller/UsersController.php:1049
+#: ../../../../admin/src/Controller/UsersController.php:1088
 #: ../../../../admin/src/Controller/AdminsController.php:667
 #: ../../../../admin/src/Controller/AdminsController.php:701
 msgid "Nothing to do"
 msgstr "Nothing to do"
 
-#: ../../../../admin/src/Controller/UsersController.php:1287
+#: ../../../../admin/src/Controller/UsersController.php:1634
 #: ../../../administrator/profile.php:409 ../../../administrator/user.php:138
 #: ../../../administrator/administrators.php:164
 #: ../../../administrator/administrators.php:191
@@ -620,12 +658,12 @@ msgstr "Nothing to do"
 msgid "Login"
 msgstr "Login"
 
-#: ../../../../admin/src/Controller/UsersController.php:1288
+#: ../../../../admin/src/Controller/UsersController.php:1635
 msgid "Account"
 msgstr "Account"
 
-#: ../../../../admin/src/Controller/UsersController.php:1289
-#: ../../../../admin/src/Controller/UsersController.php:1309
+#: ../../../../admin/src/Controller/UsersController.php:1636
+#: ../../../../admin/src/Controller/UsersController.php:1656
 #: ../../../administrator/playlists.php:129
 #: ../../../administrator/playlists.php:153
 #: ../../../administrator/audio_year.php:183
@@ -653,41 +691,54 @@ msgstr "Account"
 msgid "Name"
 msgstr "Name"
 
-#: ../../../../admin/src/Controller/UsersController.php:1290
+#: ../../../../admin/src/Controller/UsersController.php:1637
 #: ../../../administrator/claims_log.php:174
 #: ../../../administrator/users.php:580 ../../../lang/stb.php:396
 #: ../../../lang/stb.php:500
 msgid "Type"
 msgstr "Type"
 
-#: ../../../../admin/src/Controller/UsersController.php:1291
+#: ../../../../admin/src/Controller/UsersController.php:1638
 #: ../../../administrator/msg.php:145
 #: ../../../administrator/claims_log.php:175
 #: ../../../administrator/users.php:581 ../../../administrator/msgs.php:116
 msgid "Media"
 msgstr "Media"
 
-#: ../../../../admin/src/Controller/UsersController.php:1292
+#: ../../../../admin/src/Controller/UsersController.php:1639
 msgid "Last modified"
 msgstr "Last modified"
 
-#: ../../../../admin/src/Controller/UsersController.php:1293
+#: ../../../../admin/src/Controller/UsersController.php:1640
 msgid "State"
 msgstr "State"
 
-#: ../../../../admin/src/Controller/UsersController.php:1297
-#: ../../../../admin/src/Controller/UsersController.php:1313
+#: ../../../../admin/src/Controller/UsersController.php:1644
+#: ../../../../admin/src/Controller/UsersController.php:1660
 msgid "Reseller"
 msgstr "Reseller"
 
-#: ../../../../admin/src/Controller/UsersController.php:1300
+#: ../../../../admin/src/Controller/UsersController.php:1647
 #: ../../../administrator/profile.php:442
 msgid "Expire billing date"
 msgstr "Expire billing date"
 
-#: ../../../../admin/src/Controller/UsersController.php:1310
+#: ../../../../admin/src/Controller/UsersController.php:1657
 msgid "Quantity of users"
 msgstr "Quantity of users"
+
+#: ../../../../admin/src/Controller/UsersController.php:1671
+msgid "Filter conditions"
+msgstr "Filter conditions"
+
+#: ../../../../admin/src/Controller/UsersController.php:1672
+msgid "Visibility"
+msgstr "Visibility"
+
+#: ../../../../admin/src/Controller/UsersController.php:1673
+#: ../../../lang/stb.php:385
+msgid "Favorites"
+msgstr "Favorites"
 
 #: ../../../../admin/src/Controller/TariffsController.php:95
 #: ../../../../admin/src/Controller/TariffsController.php:145
@@ -715,7 +766,7 @@ msgid "ID already used"
 msgstr "ID already used"
 
 #: ../../../../admin/src/Controller/AdminsController.php:108
-#: ../../../../admin/json_menu/menu.json:219
+#: ../../../../admin/json_menu/menu.json:234
 msgid "Groups"
 msgstr "Groups"
 
@@ -1345,7 +1396,7 @@ msgid ""
 msgstr ""
 "Services are updated according to the subscription. The STB will be rebooted."
 
-#: ../../../tools/misctranslations.php:203 ../../../lib/stb.class.php:528
+#: ../../../tools/misctranslations.php:203 ../../../lib/stb.class.php:531
 #: ../../../lang/stb.php:564
 msgid "Firmware of your STB is outdated.<br>Please update it."
 msgstr "Firmware of your STB is outdated.<br>Please update it."
@@ -1581,14 +1632,14 @@ msgstr "Messages"
 #: ../../../tools/misctranslations.php:388 ../../../administrator/tasks.php:59
 #: ../../../administrator/tasks.php:65
 #: ../../../../admin/json_menu/menu.json:15
-#: ../../../../admin/json_menu/menu.json:231
+#: ../../../../admin/json_menu/menu.json:246
 msgid "Tasks"
 msgstr "Tasks"
 
 #: ../../../tools/misctranslations.php:264
 #: ../../../tools/misctranslations.php:324
 #: ../../../administrator/index.php:477
-#: ../../../../admin/json_menu/menu.json:356
+#: ../../../../admin/json_menu/menu.json:371
 msgid "Settings"
 msgstr "Settings"
 
@@ -1644,6 +1695,7 @@ msgid "Removing an existing area"
 msgstr "Removing an existing area"
 
 #: ../../../tools/misctranslations.php:279
+#: ../../../tools/misctranslations.php:766
 msgid "List of events"
 msgstr "List of events"
 
@@ -1676,7 +1728,7 @@ msgid "Info portal"
 msgstr "Info portal"
 
 #: ../../../tools/misctranslations.php:289
-#: ../../../../admin/json_menu/menu.json:255
+#: ../../../../admin/json_menu/menu.json:270
 msgid "Phone book"
 msgstr "Phone book"
 
@@ -1820,7 +1872,7 @@ msgid "Setting the skin"
 msgstr "Setting the skin"
 
 #: ../../../tools/misctranslations.php:334
-#: ../../../../admin/json_menu/menu.json:367
+#: ../../../../admin/json_menu/menu.json:382
 msgid "Firmware update"
 msgstr "Firmware update"
 
@@ -1842,7 +1894,7 @@ msgstr "Change the on/off state firmware update"
 
 #: ../../../tools/misctranslations.php:340
 #: ../../../administrator/index.php:432
-#: ../../../../admin/json_menu/menu.json:267
+#: ../../../../admin/json_menu/menu.json:282
 msgid "Statistics"
 msgstr "Statistics"
 
@@ -1895,7 +1947,7 @@ msgid "Subscriber statistics by page + filters"
 msgstr "Subscriber statistics by page + filters"
 
 #: ../../../tools/misctranslations.php:353
-#: ../../../../admin/json_menu/menu.json:303
+#: ../../../../admin/json_menu/menu.json:318
 msgid "Inactive subscribers"
 msgstr "Inactive subscribers"
 
@@ -2057,8 +2109,8 @@ msgid "Sending messages, change status karaoke-task"
 msgstr "Sending messages, change status karaoke-task"
 
 #: ../../../tools/misctranslations.php:396 ../../../administrator/users.php:99
-#: ../../../../admin/json_menu/menu.json:193
-#: ../../../../admin/json_menu/menu.json:242
+#: ../../../../admin/json_menu/menu.json:198
+#: ../../../../admin/json_menu/menu.json:257
 msgid "Report"
 msgstr "Report"
 
@@ -2446,10 +2498,6 @@ msgstr "EPG does not match"
 msgid "Reference services"
 msgstr "Reference services"
 
-#: ../../../tools/misctranslations.php:493
-msgid "Created"
-msgstr "Created"
-
 #: ../../../tools/misctranslations.php:494
 msgid "Modified"
 msgstr "Modified"
@@ -2572,6 +2620,7 @@ msgid "events"
 msgstr "events"
 
 #: ../../../tools/misctranslations.php:525
+#: ../../../../admin/json_menu/menu.json:211
 msgid "Users events"
 msgstr "Users events"
 
@@ -3448,6 +3497,107 @@ msgstr ""
 msgid "Name already used"
 msgstr "Name already used"
 
+#: ../../../tools/misctranslations.php:744
+msgid "Users status"
+msgstr "Users status"
+
+#: ../../../tools/misctranslations.php:745
+msgid "Users state"
+msgstr "Users state"
+
+#: ../../../tools/misctranslations.php:746
+msgid "Users date creation"
+msgstr "Users date creation"
+
+#: ../../../tools/misctranslations.php:747
+msgid "User country"
+msgstr "User country"
+
+#: ../../../tools/misctranslations.php:748
+msgid "Last start STB"
+msgstr "Last start STB"
+
+#: ../../../tools/misctranslations.php:749
+msgid "Last user activity"
+msgstr "Last user activity"
+
+#: ../../../tools/misctranslations.php:750
+msgid "Users group"
+msgstr "Users group"
+
+#: ../../../tools/misctranslations.php:751
+msgid "Users interface language"
+msgstr "Users interface language"
+
+#: ../../../tools/misctranslations.php:752
+msgid "Watch the TV-channel"
+msgstr "Watch the TV-channel"
+
+#: ../../../tools/misctranslations.php:753
+msgid "Watch the movie"
+msgstr "Watch the movie"
+
+#: ../../../tools/misctranslations.php:754
+msgid "Using streaming server"
+msgstr "Using streaming server"
+
+#: ../../../tools/misctranslations.php:755
+msgid "User's STB model"
+msgstr "User's STB model"
+
+#: ../../../tools/misctranslations.php:756
+msgid "STB firmware version"
+msgstr "STB firmware version"
+
+#: ../../../tools/misctranslations.php:757
+msgid "Connected tariff plan"
+msgstr "Connected tariff plan"
+
+#: ../../../tools/misctranslations.php:758
+msgid "User by accessible packages of service"
+msgstr "User by accessible packages of service"
+
+#: ../../../tools/misctranslations.php:759
+#: ../../../tools/misctranslations.php:767
+msgid "List of templates of messages"
+msgstr "List of templates of messages"
+
+#: ../../../tools/misctranslations.php:760
+msgid "List of filters"
+msgstr "List of filters"
+
+#: ../../../tools/misctranslations.php:761
+msgid "List of filters by page + filters"
+msgstr "List of filters by page + filters"
+
+#: ../../../tools/misctranslations.php:762
+msgid "Get data for filter construct"
+msgstr "Get data for filter construct"
+
+#: ../../../tools/misctranslations.php:763
+msgid "Save filters set"
+msgstr "Save filters set"
+
+#: ../../../tools/misctranslations.php:764
+msgid "Remove filters set"
+msgstr "Remove filters set"
+
+#: ../../../tools/misctranslations.php:765
+msgid "Toggle favorite status for current filter"
+msgstr "Toggle favorite status for current filter"
+
+#: ../../../tools/misctranslations.php:768
+msgid "List of templates of messages by page + filters"
+msgstr "List of templates of messages by page + filters"
+
+#: ../../../tools/misctranslations.php:769
+msgid "Adding and editing the templates of messages"
+msgstr "Adding and editing the templates of messages"
+
+#: ../../../tools/misctranslations.php:770
+msgid "Removing the templates of messages"
+msgstr "Removing the templates of messages"
+
 #: ../../../adm/js/js_translate.php:38
 msgid "Wait"
 msgstr "Wait"
@@ -3681,11 +3831,11 @@ msgstr "m"
 msgid "s"
 msgstr "s"
 
-#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:865
+#: ../../../lib/system.class.php:99 ../../../lib/vod.class.php:875
 msgid "today"
 msgstr "today"
 
-#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:868
+#: ../../../lib/system.class.php:101 ../../../lib/vod.class.php:878
 msgid "yesterday"
 msgstr "yesterday"
 
@@ -3855,7 +4005,7 @@ msgstr "DECEMBER"
 msgid "Action \"%s\" denied for page \"%s\""
 msgstr "Action \"%s\" denied for page \"%s\""
 
-#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:772
+#: ../../../lib/video.class.php:95 ../../../lib/vod.class.php:782
 #: ../../../lib/user.class.php:1112 ../../../lib/user.class.php:1113
 #, php-format
 msgid "video_name_format"
@@ -3869,14 +4019,14 @@ msgstr "DVB"
 msgid "Channels with PVR"
 msgstr "Channels with PVR"
 
-#: ../../../lib/itv.class.php:1809
+#: ../../../lib/itv.class.php:1815
 #, php-format
 msgid ""
 "Channel %s set to active because at least one of its URLs became available."
 msgstr ""
 "Channel %s set to active because at least one of its URLs became available."
 
-#: ../../../lib/itv.class.php:1819
+#: ../../../lib/itv.class.php:1825
 #, php-format
 msgid "Channel %s set to inactive because all its URLs are not available."
 msgstr "Channel %s set to inactive because all its URLs are not available."
@@ -3888,27 +4038,27 @@ msgid "This operation is temporarily unavailable."
 msgstr "This operation is temporarily unavailable."
 
 #: ../../../lib/account.class.php:80 ../../../lib/account.class.php:114
-#: ../../../lib/remotepvr.class.php:482 ../../../lang/stb.php:48
+#: ../../../lib/remotepvr.class.php:487 ../../../lang/stb.php:48
 msgid "Server error"
 msgstr "Server error"
 
-#: ../../../lib/remotepvr.class.php:132
+#: ../../../lib/remotepvr.class.php:137
 msgid "recording"
 msgstr "recording"
 
-#: ../../../lib/remotepvr.class.php:134
+#: ../../../lib/remotepvr.class.php:139
 msgid "scheduled"
 msgstr "scheduled"
 
-#: ../../../lib/remotepvr.class.php:467
+#: ../../../lib/remotepvr.class.php:472
 msgid "Channel not found"
 msgstr "Channel not found"
 
-#: ../../../lib/remotepvr.class.php:472
+#: ../../../lib/remotepvr.class.php:477
 msgid "Recording for this channel already exist"
 msgstr "Recording for this channel already exist"
 
-#: ../../../lib/remotepvr.class.php:477
+#: ../../../lib/remotepvr.class.php:482
 msgid "Recording duration limit is reached"
 msgstr "Recording duration limit is reached"
 
@@ -3985,7 +4135,7 @@ msgstr "Genres"
 msgid "Years"
 msgstr "Years"
 
-#: ../../../lib/tvarchive.class.php:362
+#: ../../../lib/tvarchive.class.php:369
 msgid "Break in the program"
 msgstr "Break in the program"
 
@@ -3997,7 +4147,7 @@ msgstr ""
 "The portal is temporarily unavailable.<br>Please try again later.<br>Sorry "
 "for the inconvenience."
 
-#: ../../../lib/stb.class.php:591
+#: ../../../lib/stb.class.php:596
 #, php-format
 msgid "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
@@ -4006,11 +4156,11 @@ msgstr "Welcome %s<br>We are glad to see you on the Stalker portal!"
 msgid "city_name_field"
 msgstr "name_en"
 
-#: ../../../lib/vod.class.php:871
+#: ../../../lib/vod.class.php:881
 msgid "last week"
 msgstr "last week"
 
-#: ../../../lib/vod.class.php:900
+#: ../../../lib/vod.class.php:910
 msgid "coming soon"
 msgstr "coming soon"
 
@@ -4812,7 +4962,7 @@ msgstr "search by name"
 #: ../../../administrator/stat_moderators.php:59
 #: ../../../administrator/stat_moderators.php:65
 #: ../../../administrator/index.php:460
-#: ../../../../admin/json_menu/menu.json:293
+#: ../../../../admin/json_menu/menu.json:308
 msgid "Moderators statistics"
 msgstr "Moderators statistics"
 
@@ -4932,7 +5082,7 @@ msgstr "File with list is missing"
 
 #: ../../../administrator/events.php:239 ../../../administrator/events.php:245
 #: ../../../administrator/profile.php:325 ../../../administrator/index.php:146
-#: ../../../../admin/json_menu/menu.json:200
+#: ../../../../admin/json_menu/menu.json:205
 msgid "Events"
 msgstr "Events"
 
@@ -5479,8 +5629,8 @@ msgstr "User profile"
 
 #: ../../../administrator/profile.php:325
 #: ../../../administrator/storages.php:223
-#: ../../../../admin/json_menu/menu.json:188
-#: ../../../../admin/json_menu/menu.json:331
+#: ../../../../admin/json_menu/menu.json:193
+#: ../../../../admin/json_menu/menu.json:346
 msgid "Logs"
 msgstr "Logs"
 
@@ -6159,7 +6309,7 @@ msgstr "AUDIO CLUB"
 #: ../../../administrator/index.php:152
 #: ../../../administrator/administrators.php:98
 #: ../../../administrator/administrators.php:141
-#: ../../../../admin/json_menu/menu.json:208
+#: ../../../../admin/json_menu/menu.json:223
 msgid "Administrators"
 msgstr "Administrators"
 
@@ -6237,7 +6387,7 @@ msgid "Users statistics for TV"
 msgstr "Users statistics for TV"
 
 #: ../../../administrator/index.php:442
-#: ../../../../admin/json_menu/menu.json:278
+#: ../../../../admin/json_menu/menu.json:293
 msgid "TV statistics"
 msgstr "TV statistics"
 
@@ -6254,7 +6404,7 @@ msgid "Users statistics for Jokes"
 msgstr "Users statistics for Jokes"
 
 #: ../../../administrator/index.php:454
-#: ../../../../admin/json_menu/menu.json:288
+#: ../../../../admin/json_menu/menu.json:303
 msgid "TimeShift statistics"
 msgstr "TimeShift statistics"
 
@@ -6296,10 +6446,6 @@ msgstr "Song name"
 #: ../../../administrator/add_karaoke.php:483
 msgid "Posted by"
 msgstr "Posted by"
-
-#: ../../../administrator/add_karaoke.php:813
-msgid "Author"
-msgstr "Author"
 
 #: ../../../administrator/video_search.php:24
 #: ../../../administrator/video_search.php:252
@@ -7515,10 +7661,6 @@ msgstr "permanent error"
 msgid "Authentication"
 msgstr "Authentication"
 
-#: ../../../lang/stb.php:362
-msgid "Error"
-msgstr "Error"
-
 #: ../../../lang/stb.php:364
 msgid "Play this url or start download?"
 msgstr "Play this url or start download?"
@@ -7558,10 +7700,6 @@ msgstr "Notice"
 #: ../../../lang/stb.php:383
 msgid "Select"
 msgstr "Select"
-
-#: ../../../lang/stb.php:385
-msgid "Favorites"
-msgstr "Favorites"
 
 #: ../../../lang/stb.php:387
 msgid "Your STB is not supported"
@@ -8106,7 +8244,7 @@ msgstr ""
 msgid "Reseller name"
 msgstr "Reseller name"
 
-#: ../../../../admin/json_menu/menu.json:224
+#: ../../../../admin/json_menu/menu.json:239
 msgid "Resellers"
 msgstr "Resellers"
 
@@ -8116,7 +8254,7 @@ msgstr "Some network error or access denied"
 msgid "Some server error"
 msgstr "Some server error"
 
-#: ../../../../admin/json_menu/menu.json:315
+#: ../../../../admin/json_menu/menu.json:330
 msgid "Storage"
 msgstr "Storage"
 
@@ -8179,8 +8317,8 @@ msgstr "Add a picture"
 msgid "Add administrator"
 msgstr "Add administrator"
 
-msgid "Add cover"
-msgstr "Add cover"
+msgid "Add event"
+msgstr "Add event"
 
 msgid "Add genre"
 msgstr "Add genre"
@@ -8194,21 +8332,17 @@ msgstr "Add reseller"
 msgid "Add streaming link"
 msgstr "Add streaming link"
 
+msgid "Add to favorites"
+msgstr "Add to favorites"
+
+msgid "Added"
+msgstr "Added"
+
 msgid "Adding administrator"
 msgstr "Adding administrator"
 
 msgid "Adding reseller"
 msgstr "Adding reseller"
-
-msgid "Adds \"HD\" sign in catalogue"
-msgstr "Adds \"HD\" sign in catalogue"
-
-msgid ""
-"Adds the restriction for movie access (password set in the \"Parental "
-"advisory\"). Default password 0000"
-msgstr ""
-"Adds the restriction for movie access (password set in the \"Parental "
-"advisory\"). Default password 0000"
 
 msgid "Adress"
 msgstr "Adress"
@@ -8218,9 +8352,6 @@ msgstr "Allow the user to record selected programs on the server repository"
 
 msgid "Archive servers"
 msgstr "Archive servers"
-
-msgid "Autocomplete"
-msgstr "Autocomplete"
 
 msgid "Basic"
 msgstr "Basic"
@@ -8249,17 +8380,39 @@ msgstr "Channel number"
 msgid "Channel type"
 msgstr "Channel type"
 
+msgid ""
+"Choose recipient. Example: to one, to all, on the list, on the preset, to "
+"the group"
+msgstr ""
+"Choose recipient. Example: to one, to all, on the list, on the preset, to "
+"the group"
+
+msgid "Clean all"
+msgstr "Clean all"
+
 msgid "Comments of creator"
 msgstr "Comments of creator"
+
+msgid "Create new event"
+msgstr "Create new event"
+
+msgid "Create new filter"
+msgstr "Create new filter"
 
 msgid "Created task"
 msgstr "Created task"
 
-msgid "Delete cover"
-msgstr "Delete cover"
+msgid "Dear Subscriber! Term of free testing of our service is ended."
+msgstr "Dear Subscriber! Term of free testing of our service is ended."
 
 msgid "Delete logo"
 msgstr "Delete logo"
+
+msgid "Delivered"
+msgstr "Delivered"
+
+msgid "Delivery status"
+msgstr "Delivery status"
 
 msgid "Display frequency rate"
 msgstr "Display frequency rate"
@@ -8285,18 +8438,8 @@ msgstr "Enable load balancing"
 msgid "Episodes"
 msgstr "Episodes"
 
-msgid ""
-"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
-"HD_downloads/135_launch_720p.wmv"
-msgstr ""
-"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
-"HD_downloads/135_launch_720p.wmv"
-
-msgid "Film length in minutes Example: 102"
-msgstr "Film length in minutes Example: 102"
-
-msgid "Film rating on the Kinopoisk. Autocomplete only"
-msgstr "Film rating on the Kinopoisk. Autocomplete only"
+msgid "Expiration date"
+msgstr "Expiration date"
 
 msgid "Filter"
 msgstr "Filter"
@@ -8310,12 +8453,18 @@ msgstr ""
 "(WiFi, Ethernet), by STB model (250, 275, ...), by country (UA, RU, ...). "
 "Field is case sensitive"
 
+msgid "Finish"
+msgstr "Finish"
+
 msgid ""
 "For activating this option, you must enable \"Enable monitoring\" in the "
 "\"Monitoring\" section"
 msgstr ""
 "For activating this option, you must enable \"Enable monitoring\" in the "
 "\"Monitoring\" section"
+
+msgid "For all"
+msgstr "For all"
 
 msgid "Forbidden for categories"
 msgstr "Forbidden for categories"
@@ -8335,11 +8484,14 @@ msgstr "Format: solution+URL. Example: ffrt http://lpOfStream/test.js"
 msgid "History of task"
 msgstr "History of task"
 
-msgid "ID of movie on the Kinopoisk"
-msgstr "ID of movie on the Kinopoisk"
-
 msgid "Ignore is Tariff plan functional is used"
 msgstr "Ignore is Tariff plan functional is used"
+
+msgid "Input user MAC-address"
+msgstr "Input user MAC-address"
+
+msgid "List of MAC-addresses"
+msgstr "List of MAC-addresses"
 
 msgid "Load balancing"
 msgstr "Load balancing"
@@ -8347,11 +8499,8 @@ msgstr "Load balancing"
 msgid "Loading balance"
 msgstr "Loading balance"
 
-msgid "MPAA age restriction"
-msgstr "MPAA age restriction"
-
-msgid "MPAA rating"
-msgstr "MPAA rating"
+msgid "MAC-address"
+msgstr "MAC-address"
 
 msgid "Maximum number of users"
 msgstr "Maximum number of users"
@@ -8372,17 +8521,14 @@ msgstr "Measured in minutes"
 msgid "Message has not been read"
 msgstr "Message has not been read"
 
+msgid "Message templates"
+msgstr "Message templates"
+
 msgid "Monitoring"
 msgstr "Monitoring"
 
 msgid "Move all users to another reseller"
 msgstr "Move all users to another reseller"
-
-msgid "Movie description"
-msgstr "Movie description"
-
-msgid "Movie information"
-msgstr "Movie information"
 
 msgid "Necessary to see"
 msgstr "Necessary to see"
@@ -8390,11 +8536,23 @@ msgstr "Necessary to see"
 msgid "No tasks"
 msgstr "No tasks"
 
+msgid "Not delivered"
+msgstr "Not delivered"
+
+msgid "Not received"
+msgstr "Not received"
+
 msgid "Number in channel list must contain only numbers from 0 to 999"
 msgstr "Number in channel list must contain only numbers from 0 to 999"
 
-msgid "Old genre"
-msgstr "Old genre"
+msgid "On the preset"
+msgstr "On the preset"
+
+msgid "One"
+msgstr "One"
+
+msgid "Only for"
+msgstr "Only for"
 
 msgid "Order"
 msgstr "Order"
@@ -8415,6 +8573,9 @@ msgstr ""
 "Percentage of the total length of video that user has to watch to skip "
 "commercials."
 
+msgid "Preset"
+msgstr "Preset"
+
 msgid "Print"
 msgstr "Print"
 
@@ -8430,6 +8591,18 @@ msgstr "Processing"
 msgid "Protect channel from unauthorized access"
 msgstr "Protect channel from unauthorized access"
 
+msgid "Reboot the STB after OK button is pressed"
+msgstr "Reboot the STB after OK button is pressed"
+
+msgid "Receipt status"
+msgstr "Receipt status"
+
+msgid "Received"
+msgstr "Received"
+
+msgid "Recipient"
+msgstr "Recipient"
+
 msgid ""
 "Recommended format – png, no smaller than 96*96 pixels, maximum size of the "
 "file – 1 MB."
@@ -8437,14 +8610,14 @@ msgstr ""
 "Recommended format – png, no smaller than 96*96 pixels, maximum size of the "
 "file – 1 MB."
 
-msgid "Recommended viewer age"
-msgstr "Recommended viewer age"
-
 msgid "Reject"
 msgstr "Reject"
 
 msgid "Remove"
 msgstr "Remove"
+
+msgid "Remove from favorites"
+msgstr "Remove from favorites"
 
 msgid "Repeat the password"
 msgstr "Repeat the password"
@@ -8458,12 +8631,14 @@ msgstr "Schedule of publishing"
 msgid "Security"
 msgstr "Security"
 
-msgid ""
-"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
-"the link to the content is not used, but the content is stored on the server."
-msgstr ""
-"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
-"the link to the content is not used, but the content is stored on the server."
+msgid "Select a group of users that will be delivered message"
+msgstr "Select a group of users that will be delivered message"
+
+msgid "Select one of the actions"
+msgstr "Select one of the actions"
+
+msgid "Select preset for STB type"
+msgstr "Select preset for STB type"
 
 msgid "Servers which are going to be balanced"
 msgstr "Servers which are going to be balanced"
@@ -8486,7 +8661,7 @@ msgstr "Stream volume adjustment"
 msgid "Streaming links"
 msgstr "Streaming links"
 
-#: ../../../../admin/json_menu/menu.json:338
+#: ../../../../admin/json_menu/menu.json:353
 msgid "Streaming servers"
 msgstr "Streaming servers"
 
@@ -8502,7 +8677,7 @@ msgstr "TV archive address"
 msgid "TV archive length"
 msgstr "TV archive length"
 
-#: ../../../../admin/json_menu/menu.json:283
+#: ../../../../admin/json_menu/menu.json:298
 msgid "TV archive statistics"
 msgstr "TV archive statistics"
 
@@ -8521,14 +8696,24 @@ msgstr "Temporary HTTP–link"
 msgid "Temporary URL"
 msgstr "Temporary URL"
 
+msgid "Testing time has been expired"
+msgstr "Testing time has been expired"
+
+msgid ""
+"The file must contain pre-compiled list of MAC-addresses in the txt "
+"extension or another text format"
+msgstr ""
+"The file must contain pre-compiled list of MAC-addresses in the txt "
+"extension or another text format"
+
 msgid "Time correction for EPG"
 msgstr "Time correction for EPG"
 
+msgid "Time to live, measured in seconds"
+msgstr "Time to live, measured in seconds"
+
 msgid "TimeShift via USB devices"
 msgstr "TimeShift via USB devices"
-
-msgid "Title on the native language. Autocomplete is available"
-msgstr "Title on the native language. Autocomplete is available"
 
 msgid "URL availability check"
 msgstr "URL availability check"
@@ -8538,13 +8723,6 @@ msgstr "USB recordings"
 
 msgid "Upload failed"
 msgstr "Upload failed"
-
-msgid ""
-"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
-"genres."
-msgstr ""
-"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
-"genres."
 
 msgid "User can perform TimeShift function using Flash drive, HDD or SSD."
 msgstr "User can perform TimeShift function using Flash drive, HDD or SSD."
@@ -8556,9 +8734,6 @@ msgstr ""
 
 msgid "Video title"
 msgstr "Video title"
-
-msgid "Video volume adjustment"
-msgstr "Video volume adjustment"
 
 msgid "Volume"
 msgstr "Volume"
@@ -8572,12 +8747,6 @@ msgid ""
 msgstr ""
 "XMLTV ID of channel in EPG file. If the EPG source has the prefix state it "
 "in &lt;prefix&gt;_XMLTV ID format"
-
-msgid "Year of the film creation Example: 2014"
-msgstr "Year of the film creation Example: 2014"
-
-msgid "You can choose up to 4 genres"
-msgstr "You can choose up to 4 genres"
 
 msgid ""
 "You can use Latin letters, digits and symbols from the list ! @ # $ % ^ & * "
@@ -8617,6 +8786,12 @@ msgstr "genres list"
 msgid "in section"
 msgstr "in section"
 
+msgid "list of events "
+msgstr "list of events "
+
+msgid "list of filters of users"
+msgstr "list of filters of users"
+
 msgid "movie list"
 msgstr "movie list"
 
@@ -8629,11 +8804,17 @@ msgstr "resellers list"
 msgid "sound"
 msgstr "sound"
 
+msgid "user"
+msgstr "user"
+
 msgid "Add STB"
 msgstr "Add STB"
 
-msgid "Add server"
-msgstr "Add server"
+msgid "Add cover"
+msgstr "Add cover"
+
+msgid "Add parametr"
+msgstr "Add parametr"
 
 msgid "Add tariff plan"
 msgstr "Add tariff plan"
@@ -8644,14 +8825,24 @@ msgstr "Add update"
 msgid "Add year"
 msgstr "Add year"
 
-msgid "Add zone"
-msgstr "Add zone"
-
 msgid "Additional"
 msgstr "Additional"
 
+msgid "Adds \"HD\" sign in catalogue"
+msgstr "Adds \"HD\" sign in catalogue"
+
+msgid ""
+"Adds the restriction for movie access (password set in the \"Parental "
+"advisory\"). Default password 0000"
+msgstr ""
+"Adds the restriction for movie access (password set in the \"Parental "
+"advisory\"). Default password 0000"
+
 msgid "Assignee"
 msgstr "Assignee"
+
+msgid "Autocomplete"
+msgstr "Autocomplete"
 
 msgid "Automatic update"
 msgstr "Automatic update"
@@ -8659,19 +8850,15 @@ msgstr "Automatic update"
 msgid "Available on the serves"
 msgstr "Available on the serves"
 
-msgid ""
-"Choose the streaming area, if the field is clean, there will be set a "
-"default streaming area"
-msgstr ""
-"Choose the streaming area, if the field is clean, there will be set a "
-"default streaming area"
-
 msgid "Complaints log"
 msgstr "Complaints log"
 
-#: ../../../../admin/json_menu/menu.json:308
+#: ../../../../admin/json_menu/menu.json:323
 msgid "Complaints statistics"
 msgstr "Complaints statistics"
+
+msgid "Create new message template"
+msgstr "Create new message template"
 
 msgid ""
 "Dear Subscriber! Term free testing of our service is ended. We ask you to go "
@@ -8683,6 +8870,9 @@ msgstr ""
 msgid "Default tariff for all new STB of the network"
 msgstr "Default tariff for all new STB of the network"
 
+msgid "Delete cover"
+msgstr "Delete cover"
+
 msgid "Details"
 msgstr "Details"
 
@@ -8691,6 +8881,9 @@ msgstr "Edit tariff plan"
 
 msgid "Edit update"
 msgstr "Edit update"
+
+msgid "Editing template"
+msgstr "Editing template"
 
 msgid "Enter MAC-address according to the format"
 msgstr "Enter MAC-address according to the format"
@@ -8701,11 +8894,21 @@ msgstr "Enter the MAC-address according to the format"
 msgid "Enter the MAC-address of the user"
 msgstr "Enter the MAC-address of the user"
 
-msgid "Example: http://server.example:8080"
-msgstr "Example: http://server.example:8080"
+msgid ""
+"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
+"HD_downloads/135_launch_720p.wmv"
+msgstr ""
+"Example: ffmpeg http://anon.nasa-global.edgesuite.net/"
+"HD_downloads/135_launch_720p.wmv"
 
-msgid "Fill in the required fields"
-msgstr "Fill in the required fields"
+msgid "Film length in minutes Example: 102"
+msgstr "Film length in minutes Example: 102"
+
+msgid "Film rating on the Kinopoisk. Autocomplete only"
+msgstr "Film rating on the Kinopoisk. Autocomplete only"
+
+msgid "Filter name"
+msgstr "Filter name"
 
 msgid ""
 "Filter the STB by set parameters. Update will be installed on STB matching "
@@ -8717,9 +8920,6 @@ msgstr ""
 "the following parameters only. In 'Image descriptor, it is enough to specify "
 "the part of description or key word. Fill-in data can be found in the "
 "interface of user profile in the corresponding fields."
-
-msgid "Finish"
-msgstr "Finish"
 
 msgid "Finished"
 msgstr "Finished"
@@ -8736,6 +8936,12 @@ msgstr "General information"
 
 msgid "Hardware version"
 msgstr "Hardware version"
+
+msgid "Header"
+msgstr "Header"
+
+msgid "ID of movie on the Kinopoisk"
+msgstr "ID of movie on the Kinopoisk"
 
 msgid ""
 "If you have several firmware files in one catalogue, please specify the file "
@@ -8758,32 +8964,29 @@ msgstr "Image version"
 msgid "In text format"
 msgstr "In text format"
 
-msgid "Inactive"
-msgstr "Inactive"
-
 msgid "Last activity"
 msgstr "Last activity"
 
-msgid "List of MAC-addresses"
-msgstr "List of MAC-addresses"
+msgid "MPAA age restriction"
+msgstr "MPAA age restriction"
 
-msgid "MAC-address"
-msgstr "MAC-address"
-
-msgid "Maximum quantity of users(load) numeric value"
-msgstr "Maximum quantity of users(load) numeric value"
-
-msgid "Maximum users"
-msgstr "Maximum users"
-
-msgid "Message templates"
-msgstr "Message templates"
+msgid "MPAA rating"
+msgstr "MPAA rating"
 
 msgid "Month"
 msgstr "Month"
 
+msgid "Movie description"
+msgstr "Movie description"
+
+msgid "Movie information"
+msgstr "Movie information"
+
 msgid "Must be unique"
 msgstr "Must be unique"
+
+msgid "New template"
+msgstr "New template"
 
 msgid "Not available on the servers"
 msgstr "Not available on the servers"
@@ -8796,6 +8999,9 @@ msgstr ""
 "Number and date of image due to be updated. Taken from the image. For "
 "automatic search of firmware it is enough to fill in version or date of "
 "image (one of fields).Number must be numeric."
+
+msgid "Old genre"
+msgstr "Old genre"
 
 msgid ""
 "Optional default package is switched off, but it can be switched on right in "
@@ -8813,6 +9019,9 @@ msgstr "Playback radio channel"
 msgid "Quantity of the storages"
 msgstr "Quantity of the storages"
 
+msgid "Recommended viewer age"
+msgstr "Recommended viewer age"
+
 msgid "Report is formed due to done and rejected tasks"
 msgstr "Report is formed due to done and rejected tasks"
 
@@ -8828,14 +9037,21 @@ msgstr "Restart STB by pressing the \"OK\""
 msgid "STB model"
 msgstr "STB model"
 
+msgid "Save filter"
+msgstr "Save filter"
+
 msgid "Select a group of users that will be sent a message"
 msgstr "Select a group of users that will be sent a message"
 
 msgid "Select a template for the type of STB"
 msgstr "Select a template for the type of STB"
 
-msgid "Select one of the actions"
-msgstr "Select one of the actions"
+msgid ""
+"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
+"the link to the content is not used, but the content is stored on the server."
+msgstr ""
+"Select the content delivery type (http,custom url, nfs). When using HTTP NFS "
+"the link to the content is not used, but the content is stored on the server."
 
 msgid ""
 "Selecting a destination. Example one, all, on the list, on the template, the "
@@ -8864,9 +9080,6 @@ msgstr "Set expires billing date"
 msgid "Single"
 msgstr "Single"
 
-msgid "Streaming area"
-msgstr "Streaming area"
-
 msgid "Summary length, min"
 msgstr "Summary length, min"
 
@@ -8886,15 +9099,17 @@ msgstr ""
 msgid "Template"
 msgstr "Template"
 
+msgid "Template name"
+msgstr "Template name"
+
 msgid "Term relevance of action, is measured in seconds"
 msgstr "Term relevance of action, is measured in seconds"
 
-msgid ""
-"The file must contain pre-compiled list of MAC-addresses in the txt "
-"extension or another text format"
-msgstr ""
-"The file must contain pre-compiled list of MAC-addresses in the txt "
-"extension or another text format"
+msgid "Text"
+msgstr "Text"
+
+msgid "Title on the native language. Autocomplete is available"
+msgstr "Title on the native language. Autocomplete is available"
 
 msgid "Unlimited"
 msgstr "Unlimited"
@@ -8909,27 +9124,30 @@ msgstr ""
 "Update type: http update (load the image from HTTP) or reboot DHCP (reboot "
 "the STB to the DHCP boot mode)"
 
+msgid ""
+"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
+"genres."
+msgstr ""
+"Used only for MAG100 compatibility with the portal. You may choose up to 4 "
+"genres."
+
 msgid "Video quality"
 msgstr "Video quality"
 
-msgid ""
-"You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ "
-"- + : ; , . It will be shown in the load balancer."
-msgstr ""
-"You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ "
-"- + : ; , . It will be shown in the load balancer."
+msgid "Video volume adjustment"
+msgstr "Video volume adjustment"
+
+msgid "Year of the film creation Example: 2014"
+msgstr "Year of the film creation Example: 2014"
+
+msgid "You can choose up to 4 genres"
+msgstr "You can choose up to 4 genres"
 
 msgid "and"
 msgstr "and"
 
-msgid "areas list"
-msgstr "areas list"
-
 msgid "between"
 msgstr "between"
-
-msgid "countries"
-msgstr "countries"
 
 msgid "firmware update"
 msgstr "firmware update"
@@ -8943,15 +9161,6 @@ msgstr "list of users"
 msgid "movie statistics"
 msgstr "movie statistics"
 
-msgid "servers"
-msgstr "servers"
-
-msgid "servers list"
-msgstr "servers list"
-
-msgid "to"
-msgstr "to"
-
 msgid "video search"
 msgstr "video search"
 
@@ -8960,12 +9169,6 @@ msgstr "year"
 
 msgid "years list"
 msgstr "years list"
-
-msgid "zone for"
-msgstr "zone for"
-
-msgid "Access"
-msgstr "Access"
 
 msgid "Access restriction"
 msgstr "Access restriction"
@@ -8976,14 +9179,17 @@ msgstr "Add album"
 msgid "Add category"
 msgstr "Add category"
 
+msgid "Add server"
+msgstr "Add server"
+
 msgid "Add storage"
 msgstr "Add storage"
 
 msgid "Add track"
 msgstr "Add track"
 
-msgid "Added"
-msgstr "Added"
+msgid "Add zone"
+msgstr "Add zone"
 
 msgid "Additional information"
 msgstr "Additional information"
@@ -9003,18 +9209,12 @@ msgstr "Assigned to"
 msgid "Auto-update within 59 seconds"
 msgstr "Auto-update within 59 seconds"
 
-msgid "Category of content to which this package is belongs"
-msgstr "Category of content to which this package is belongs"
-
 msgid ""
-"Choose recipient. Example: to one, to all, on the list, on the preset, to "
-"the group"
+"Choose the streaming area, if the field is clean, there will be set a "
+"default streaming area"
 msgstr ""
-"Choose recipient. Example: to one, to all, on the list, on the preset, to "
-"the group"
-
-msgid "Clean all"
-msgstr "Clean all"
+"Choose the streaming area, if the field is clean, there will be set a "
+"default streaming area"
 
 msgid "Clean the cache"
 msgstr "Clean the cache"
@@ -9025,24 +9225,12 @@ msgstr "Clean the cache – remove all content from cache"
 msgid "Content storage"
 msgstr "Content storage"
 
-msgid "Create new event"
-msgstr "Create new event"
-
 msgid "Current"
 msgstr "Current"
 
 #: ../../../../admin/json_menu/menu.json:9
 msgid "Dashboard"
 msgstr "Dashboard"
-
-msgid "Dear Subscriber! Term of free testing of our service is ended."
-msgstr "Dear Subscriber! Term of free testing of our service is ended."
-
-msgid "Delivered"
-msgstr "Delivered"
-
-msgid "Delivery status"
-msgstr "Delivery status"
 
 msgid "Edit album"
 msgstr "Edit album"
@@ -9053,14 +9241,11 @@ msgstr "Edit storage"
 msgid "Edit track"
 msgstr "Edit track"
 
-msgid "Expiration date"
-msgstr "Expiration date"
+msgid "Example: http://server.example:8080"
+msgstr "Example: http://server.example:8080"
 
-msgid "Full package"
-msgstr "Full package"
-
-msgid "Gives access to all content of the selected service"
-msgstr "Gives access to all content of the selected service"
+msgid "Fill in the required fields"
+msgstr "Fill in the required fields"
 
 msgid "Home directory"
 msgstr "Home directory"
@@ -9078,12 +9263,6 @@ msgstr "IP"
 msgid "IP-address of the storage. Example : http://127.0.0.1"
 msgstr "IP-address of the storage. Example : http://127.0.0.1"
 
-msgid "Input user MAC-address"
-msgstr "Input user MAC-address"
-
-msgid "Length, min"
-msgstr "Length, min"
-
 msgid "Mainpage"
 msgstr "Mainpage"
 
@@ -9097,17 +9276,14 @@ msgstr ""
 "Maximum quantity of the users, which can watching the content from the "
 "storage at the same time"
 
-msgid "No scheduled publications"
-msgstr "No scheduled publications"
+msgid "Maximum quantity of users(load) numeric value"
+msgstr "Maximum quantity of users(load) numeric value"
+
+msgid "Maximum users"
+msgstr "Maximum users"
 
 msgid "Not available for the MAG100"
 msgstr "Not available for the MAG100"
-
-msgid "Not delivered"
-msgstr "Not delivered"
-
-msgid "Not received"
-msgstr "Not received"
 
 msgid "Number of sessions"
 msgstr "Number of sessions"
@@ -9115,59 +9291,14 @@ msgstr "Number of sessions"
 msgid "Number of the port, accessing to the Apache server"
 msgstr "Number of the port, accessing to the Apache server"
 
-msgid "Object"
-msgstr "Object"
-
-msgid "On the preset"
-msgstr "On the preset"
-
-msgid "One"
-msgstr "One"
-
 msgid "Only moderators can watch the content from the storage"
 msgstr "Only moderators can watch the content from the storage"
-
-msgid "Package"
-msgstr "Package"
 
 msgid "Popularity"
 msgstr "Popularity"
 
 msgid "Popularity of services"
 msgstr "Popularity of services"
-
-msgid "Preset"
-msgstr "Preset"
-
-msgid "Price for rent services"
-msgstr "Price for rent services"
-
-msgid "Publish now"
-msgstr "Publish now"
-
-msgid "Reboot the STB after OK button is pressed"
-msgstr "Reboot the STB after OK button is pressed"
-
-msgid "Receipt status"
-msgstr "Receipt status"
-
-msgid "Received"
-msgstr "Received"
-
-msgid "Recipient"
-msgstr "Recipient"
-
-msgid "Remove schedule"
-msgstr "Remove schedule"
-
-msgid "Schedule switch on"
-msgstr "Schedule switch on"
-
-msgid "Select a group of users that will be delivered message"
-msgstr "Select a group of users that will be delivered message"
-
-msgid "Select preset for STB type"
-msgstr "Select preset for STB type"
 
 msgid "Server name"
 msgstr "Server name"
@@ -9184,6 +9315,9 @@ msgstr "Storage name"
 msgid "Storages (measured in the number of the current session)"
 msgstr "Storages (measured in the number of the current session)"
 
+msgid "Streaming area"
+msgstr "Streaming area"
+
 msgid "Swith on"
 msgstr "Swith on"
 
@@ -9193,12 +9327,6 @@ msgstr "TV recording"
 msgid "Task type"
 msgstr "Task type"
 
-msgid "Testing time has been expired"
-msgstr "Testing time has been expired"
-
-msgid "The duration of the specified service hours"
-msgstr "The duration of the specified service hours"
-
 msgid ""
 "The emulation mode is used in case when two portals are attached to a single "
 "storage of TV archive. It is necessary to set the recording of TV archive at "
@@ -9211,9 +9339,6 @@ msgstr ""
 "the first portal, and TV archive recording with the option of emulation at "
 "the second one. Thus, there will be two portals with the archive, though in "
 "fact it is recorded once."
-
-msgid "Time to live, measured in seconds"
-msgstr "Time to live, measured in seconds"
 
 msgid "Timeshift"
 msgstr "Timeshift"
@@ -9223,13 +9348,6 @@ msgstr "Total sessions"
 
 msgid "Tv"
 msgstr "Tv"
-
-msgid ""
-"Type of access to the service: regular or one-off - with the terms and the "
-"price of rent"
-msgstr ""
-"Type of access to the service: regular or one-off - with the terms and the "
-"price of rent"
 
 msgid "Update the cache"
 msgstr "Update the cache"
@@ -9255,14 +9373,21 @@ msgstr ""
 "You can filter the STBs according to their connection type (Wi-Fi, Ethernet) "
 "and to the models (250,275…). Field is case sensitive"
 
+msgid ""
+"You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ "
+"- + : ; , . It will be shown in the load balancer."
+msgstr ""
+"You can use letters, digits and symbols from the list: ! @ # $ % ^ & * ( ) _ "
+"- + : ; , . It will be shown in the load balancer."
+
 msgid "You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , ."
 msgstr "You can use symbols from the list: ! @ # $ % ^ & * ( ) _ - + : ; , ."
 
-msgid "all"
-msgstr "all"
-
 msgid "appearance"
 msgstr "appearance"
+
+msgid "areas list"
+msgstr "areas list"
 
 msgid "artist"
 msgstr "artist"
@@ -9273,14 +9398,17 @@ msgstr "artists list"
 msgid "categories list"
 msgstr "categories list"
 
-msgid "list of events "
-msgstr "list of events "
+msgid "countries"
+msgstr "countries"
 
 msgid "new"
 msgstr "new"
 
-msgid "schedule"
-msgstr "schedule"
+msgid "servers"
+msgstr "servers"
+
+msgid "servers list"
+msgstr "servers list"
 
 msgid "storages list"
 msgstr "storages list"
@@ -9291,11 +9419,11 @@ msgstr "tasks list in section"
 msgid "the category"
 msgstr "the category"
 
-msgid "user"
-msgstr "user"
+msgid "zone for"
+msgstr "zone for"
 
-msgid "users log"
-msgstr "users log"
+msgid "Access"
+msgstr "Access"
 
 msgid "Add a channel"
 msgstr "Add a channel"
@@ -9309,16 +9437,24 @@ msgstr "Adding"
 msgid "All fields is required"
 msgstr "All fields is required"
 
-#: ../../../../admin/json_menu/menu.json:260
-msgid "Humor"
-msgstr "Humor"
+msgid "Category of content to which this package is belongs"
+msgstr "Category of content to which this package is belongs"
 
-#: ../../../../admin/json_menu/menu.json:249
+msgid "Full package"
+msgstr "Full package"
+
+msgid "Gives access to all content of the selected service"
+msgstr "Gives access to all content of the selected service"
+
+#: ../../../../admin/json_menu/menu.json:264
 msgid "Information portal"
 msgstr "Information portal"
 
 msgid "Initiator"
 msgstr "Initiator"
+
+msgid "Length, min"
+msgstr "Length, min"
 
 msgid "MAC address"
 msgstr "MAC address"
@@ -9326,11 +9462,29 @@ msgstr "MAC address"
 msgid "Manage EPG"
 msgstr "Manage EPG"
 
+msgid "No scheduled publications"
+msgstr "No scheduled publications"
+
+msgid "Object"
+msgstr "Object"
+
 msgid "Order of service in the directory. Must contain digits only"
 msgstr "Order of service in the directory. Must contain digits only"
 
+msgid "Package"
+msgstr "Package"
+
 msgid "Package name"
 msgstr "Package name"
+
+msgid "Price for rent services"
+msgstr "Price for rent services"
+
+msgid "Publish now"
+msgstr "Publish now"
+
+msgid "Remove schedule"
+msgstr "Remove schedule"
 
 msgid ""
 "STB of moderators  allow to show unpublished video and optionally skipping "
@@ -9339,15 +9493,25 @@ msgstr ""
 "STB of moderators  allow to show unpublished video and optionally skipping "
 "advertising"
 
+msgid "Schedule switch on"
+msgstr "Schedule switch on"
+
 msgid "Show EPG"
 msgstr "Show EPG"
 
-#: ../../../../admin/json_menu/menu.json:298
+#: ../../../../admin/json_menu/menu.json:313
 msgid "Subscribers statistic"
 msgstr "Subscribers statistic"
 
-msgid "Text"
-msgstr "Text"
+msgid "The duration of the specified service hours"
+msgstr "The duration of the specified service hours"
+
+msgid ""
+"Type of access to the service: regular or one-off - with the terms and the "
+"price of rent"
+msgstr ""
+"Type of access to the service: regular or one-off - with the terms and the "
+"price of rent"
 
 msgid "Unublish"
 msgstr "Unublish"
@@ -9364,6 +9528,9 @@ msgstr "View is an uninterrupted playback of channel for more than 30 minutes"
 
 msgid "albums list"
 msgstr "albums list"
+
+msgid "all"
+msgstr "all"
 
 msgid "channels list"
 msgstr "channels list"
@@ -9383,6 +9550,12 @@ msgstr "list of groups STB"
 msgid "moderators list"
 msgstr "moderators list"
 
+msgid "schedule"
+msgstr "schedule"
+
+msgid "users log"
+msgstr "users log"
+
 msgid " streaming area "
 msgstr " streaming area "
 
@@ -9400,6 +9573,10 @@ msgstr "Force update of EPG"
 
 msgid "Force update of EPG - complete EPG update for all channels"
 msgstr "Force update of EPG - complete EPG update for all channels"
+
+#: ../../../../admin/json_menu/menu.json:275
+msgid "Humor"
+msgstr "Humor"
 
 msgid "IPTV/OTT Set-Top Boxes"
 msgstr "IPTV/OTT Set-Top Boxes"
@@ -9457,6 +9634,9 @@ msgstr "list of service packages"
 msgid "logs"
 msgstr "logs"
 
+msgid "to"
+msgstr "to"
+
 #: ../../../../admin/json_menu/menu.json:3
 msgid "Administrator"
 msgstr "Administrator"
@@ -9469,33 +9649,44 @@ msgstr "Channels"
 msgid "Categories"
 msgstr "Categories"
 
-#: ../../../../admin/json_menu/menu.json:214
+#: ../../../../admin/json_menu/menu.json:183
+msgid "Filters"
+msgstr "Filters"
+
+#: ../../../../admin/json_menu/menu.json:216
+msgid "Templates of messages"
+msgstr "Templates of messages"
+
+#: ../../../../admin/json_menu/menu.json:229
 msgid "Administrators list"
 msgstr "Administrators list"
 
-#: ../../../../admin/json_menu/menu.json:273
+#: ../../../../admin/json_menu/menu.json:288
 msgid "Movie statistics"
 msgstr "Movie statistics"
 
-#: ../../../../admin/json_menu/menu.json:321
+#: ../../../../admin/json_menu/menu.json:336
 msgid "Storage list"
 msgstr "Storage list"
 
-#: ../../../../admin/json_menu/menu.json:326
+#: ../../../../admin/json_menu/menu.json:341
 msgid "Video search"
 msgstr "Video search"
 
-#: ../../../../admin/json_menu/menu.json:344
+#: ../../../../admin/json_menu/menu.json:359
 msgid "Servers list"
 msgstr "Servers list"
 
-#: ../../../../admin/json_menu/menu.json:349
+#: ../../../../admin/json_menu/menu.json:364
 msgid "Streaming areas"
 msgstr "Streaming areas"
 
-#: ../../../../admin/json_menu/menu.json:362
+#: ../../../../admin/json_menu/menu.json:377
 msgid "Appearance"
 msgstr "Appearance"
+
+#~ msgid "Inactive"
+#~ msgstr "Inactive"
 
 #~ msgid ""
 #~ "Term of your account will expire in \"%s\" days. In order to prevent "
