@@ -324,7 +324,7 @@ class EventsController extends \Controller\BaseStalkerController {
         }
 
         if (!empty($this->data['filters']['admin_id'])) {
-            $query_param['where']['M_T.id'] = $this->data['filters']['admin_id'];
+            $query_param['where']['M_T.author'] = $this->data['filters']['admin_id'];
         }
 
         if (array_key_exists('id', $this->postData)) {

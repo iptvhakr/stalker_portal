@@ -205,8 +205,6 @@
                 });
 
                 $(document).on('click', "#modalbox button[type='submit']", function (e) {
-                    var _this = $(this);
-
                     e.stopPropagation();
                     e.preventDefault();
                     var sendData = new Object();
@@ -222,7 +220,13 @@
                     JSshowModalBox();
                     ajaxPostSend(action, sendData, false, false);
                     return false;
+                });
 
+                $(document).on('click', "#modalbox button[type='reset']", function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    JScloseModalBox();
+                    return false;
                 });
 
                 LoadDataTablesScripts(TestTable1);
@@ -249,6 +253,10 @@
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Request is being processed'|trans }}...</span>');
             $("#modalbox").show();
         }
+
+        var manageListError = function(obj){
+            JSErrorModalBox(obj);
+        };
 
         var errAction = function(){
             $('#modalbox').find('.devoops-modal-inner').html('<span>{{ 'Failed'|trans }}!</span>');
