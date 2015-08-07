@@ -41,6 +41,7 @@ class UsersController extends \Controller\BaseStalkerController {
         "concat (users.fname) as fname",
         "UNIX_TIMESTAMP(`keep_alive`) as last_active",
         "DATE_FORMAT(`expire_billing_date`,'%d.%m.%Y') as `expire_billing_date`",
+        "DATE_FORMAT(users.`created`,'%d.%m.%Y') as `created`",
         "account_balance", "now_playing_type", "IF(now_playing_type = 2 and storage_name, CONCAT('[', storage_name, ']', now_playing_content), now_playing_content) as now_playing_content"
     );
     private $logObjectsTypes = array(
@@ -471,6 +472,12 @@ class UsersController extends \Controller\BaseStalkerController {
             unset($query_param['like']['state']);
         }
 
+        if (($search = array_search('created', $query_param['select'])) != FALSE) {
+            unset($query_param['select'][$search]);
+            unset($query_param['where']['created']);
+            unset($query_param['like']['created']);
+        }
+
         if (!isset($query_param['where'])) {
             $query_param['where'] = array();
         }
@@ -507,6 +514,9 @@ class UsersController extends \Controller\BaseStalkerController {
                     } else {
                         $cond = "=";
                     }
+                    if (empty($app_filter[$row['text_id']]) || (is_numeric($app_filter[$row['text_id']]) && (int)$app_filter[$row['text_id']] == 0) ){
+                        return FALSE;
+                    }
                     $value = (($row['text_id'] == 'status') || ($row['text_id'] == 'state') ? (int)($app_filter[$row['text_id']] - 1 > 0) : $app_filter[$row['text_id']]);
                     return array($row['method'], $cond, $value);
                 }
@@ -542,6 +552,8 @@ class UsersController extends \Controller\BaseStalkerController {
             $val['last_change_status'] = $val['last_change_status'] > 0 ? $val['last_change_status']: 0;
             $val['expire_billing_date'] = (int) strtotime($val['expire_billing_date']);
             $val['expire_billing_date'] = $val['expire_billing_date'] > 0 ? $val['expire_billing_date']: 0;
+            $val['created'] = (int) strtotime($val['created']);
+            $val['created'] = $val['created'] > 0 ? $val['created']: 0;
             $val['reseller_id'] = !empty($val['reseller_id']) ? $val['reseller_id']: '-';
             $val['reseller_name'] = !empty($val['reseller_name']) ? $val['reseller_name']: $reseller_empty_name;
             return $val;
@@ -1697,6 +1709,7 @@ class UsersController extends \Controller\BaseStalkerController {
             array('name'=>'login',              'title'=>$this->setLocalization('Login'),       'checked' => TRUE),
             array('name'=>'ls',                 'title'=>$this->setLocalization('Account'),     'checked' => TRUE),
             array('name'=>'fname',              'title'=>$this->setLocalization('Name'),        'checked' => TRUE),
+            array('name'=>'created',            'title'=>$this->setLocalization('Created'),     'checked' => FALSE),
             array('name'=>'now_playing_type',   'title'=>$this->setLocalization('Type'),        'checked' => FALSE),
             array('name'=>'now_playing_content','title'=>$this->setLocalization('Media'),       'checked' => FALSE),
             array('name'=>'last_change_status', 'title'=>$this->setLocalization('Last modified'),'checked' => TRUE),

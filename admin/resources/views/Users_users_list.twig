@@ -51,6 +51,7 @@
                                         <td>{{ item.login }}</td>
                                         <td>{{ item.ls }}</td>
                                         <td>{{ item.fname }}</td>
+                                        <td>{% if item.created > 0 %}{{ item.created|date('M d, Y H:i') }}{% else %}---{% endif %}</td>
                                         <td>
                                             {% if attribute(app.mediaTypeName, item.now_playing_type) is defined and not app.hide_media_info and item.status %}
                                                 {{ app.mediaTypeName[item.now_playing_type] }}
@@ -478,6 +479,13 @@
                             json.data[i]['expire_billing_date'] = '{{ 'Unlimited'|trans }}';
                         }
                         {% endif %}
+                        date = json.data[i]['created'];
+                        if (date > 0) {
+                            date = new Date(date * 1000);
+                            json.data[i]['created'] = date.toLocaleFormat("%b %d, %Y");
+                        } else {
+                            json.data[i]['created'] = '---';
+                        }
                         var mac = json.data[i].mac;
                         json.data[i].mac = '<a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-users?id='+ id +'" >'+ mac +'</a>';
                         {% if attribute(app, 'reseller') is defined and not app['reseller'] %}
@@ -522,7 +530,7 @@
                 "bInfo": true,
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ] },
-                    {"searchable": false, "targets": [6, 7, 8, 9, -3, -2, -1]},
+                    {"searchable": false, "targets": [6, 7, 8, 9, 10, -3, -2, -1]},
                     {"sortable": false, "targets": [-1]},
                     {className: "data-filter-status", "targets": [-{% if attribute(app, 'reseller') is defined and not app['reseller'] %}3{% else %}2{% endif %} ]},
                     { "width": "16px", "targets": [ -1 ] }

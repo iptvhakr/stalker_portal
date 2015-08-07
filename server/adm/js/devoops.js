@@ -449,6 +449,10 @@ $(document).ready(function () {
         }
     });
     var height = window.innerHeight - 49;
+    var tableHeight = $('#datatable-1 tr').length * 50 + $('#datatable-1').position().top + 200;
+    if (tableHeight > height) {
+        height = tableHeight;
+    }
     $('.attribute_set').each(function(){
         var newHeight = $(this).position().top + $(this).children('a').height() + $(this).children('ul').height();
         if (newHeight > height) {
@@ -456,7 +460,7 @@ $(document).ready(function () {
         }
         $('#main-wrapper').height(height);
     });
-    $('#main').css('min-height', height)
+    $('#main').css({minHeight: height})
             .on('click', '.expand-link', function (e) {
                 var body = $('body');
                 e.preventDefault();
