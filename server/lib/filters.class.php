@@ -1,5 +1,4 @@
 <?php
-// require_once('../common.php'); //for debug from command line
 
 class Filters {
 
@@ -209,13 +208,13 @@ class Filters {
     }
 
     private function getUsersByState($cond, $cond_value) {
-        $this->setTimeStampFilter('keep_alive', ($cond_value ? ">" : "<"), time() - $this->watchdog);
+        $this->setTimeStampFilter('keep_alive', ($cond_value ? "<" : ">"), time() - $this->watchdog);
     }
 
     private function getUsersStateSet() {
         return array(
-            array('value' => 1, 'title' => 'offline'),
-            array('value' => 2, 'title' => 'online')
+            array('value' => 2, 'title' => 'offline'),
+            array('value' => 1, 'title' => 'online')
         );
     }
 
@@ -473,8 +472,10 @@ class FiltersException extends Exception {
     }
 }
 
-/* ----------- init -----------
+//for debug from command line
 
+/* ----------- init -----------
+require_once('../common.php');
 $filter_set = Filters::getInstance();
 $filter_set->setResellerID(0); // if unused system of resellers with parameter 0, else with parameter reseller_id
 $filter_set->initData('users'); // data table e.g. 'users', getting field  e.g. 'id'
@@ -505,9 +506,8 @@ $param = array();
 */
 
 /* ----------- getData -----------
-    $filter_set->setFilters
+    $filter_set->setFilters($param);
+    print_r($filter_set->getData());
 */
-
-/*$filter_set->setFilters($param);*/
 
 /*print_r($filter_set->getFilters('getUsersByGroup'));*/

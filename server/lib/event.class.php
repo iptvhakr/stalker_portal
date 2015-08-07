@@ -11,6 +11,7 @@ class Event extends HTTPPush
     private $param = array(
         'user_list' => array(),
         'event'     => '',
+        'header'     => '',
         'priority'  => 0,
         'msg'       => '',
         'need_confirm'    => 0,
@@ -149,6 +150,15 @@ class Event extends HTTPPush
     }
 
     /**
+     * Set event header
+     *
+     * @param string $header
+     */
+    protected function setHeader($header = ''){
+        $this->param['header'] = $header;
+    }
+
+    /**
      * Set event param1
      *
      * @param string $param1
@@ -256,6 +266,7 @@ class Event extends HTTPPush
                 $data[] = array(
                     'uid'               => $uid,
                     'event'             => $this->param['event'],
+                    'header'             => $this->param['header'],
                     'addtime'           => 'NOW()',
                     'eventtime'         => $this->param['eventtime'],
                     'need_confirm'      => $this->param['need_confirm'],

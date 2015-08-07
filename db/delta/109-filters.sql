@@ -64,10 +64,12 @@ VALUES    ('users',             'users-filters-list',             0, 'List of fi
           ('events',            'save-message-template',          1, 'Adding and editing the templates of messages'),
           ('events',            'remove-template',                1, 'Removing the templates of messages');
 
+ALTER TABLE `events` ADD COLUMN `header` VARCHAR(128) NULL AFTER `event`;
+
 --//@ UNDO
 
 DROP TABLE `filters`;
 DROP TABLE `filter_set`;
 DROP TABLE `messages_templates`;
-
+ALTER TABLE `events` DROP COLUMN `header`;
 --

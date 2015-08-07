@@ -153,6 +153,10 @@ class EventsModel extends \Model\BaseStalkerModel {
         return $this->mysqlInstance->delete('messages_templates', $where)->total_rows();
     }
 
+    public function getFilterSet($params){
+        return $this->mysqlInstance->from('filter_set')->where($params)->get()->all();
+    }
+
 //    
 //    public function searchOneEventsParam($param = array()){
 //        reset($param);

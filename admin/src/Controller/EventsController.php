@@ -94,7 +94,38 @@ class EventsController extends \Controller\BaseStalkerController {
         $this->app['totalRecords'] = $list['recordsTotal'];
         $this->app['recordsFiltered'] = $list['recordsFiltered'];
         $this->app['consoleGroup'] = $this->db->getConsoleGroup();
-        
+
+        $filter_set = \Filters::getInstance();
+        $filter_set->setResellerID($this->app['reseller']);
+        $filter_set->initData('users', 'id');
+
+        $self = $this;
+
+        $this->app['allFilters'] = array_map(function($row) use ($filter_set, $self){
+            if(($filter_set_data = @unserialize($row['filter_set'])) !== FALSE){
+                $row['filter_set'] = '';
+                foreach($filter_set_data as $data_row){
+                    $filter_set_filter = $filter_set->getFilters(array($data_row[0]));
+                    $row_filter_set = $self->setLocalization($filter_set_filter[0]['title']).': ';
+                    if (!empty($filter_set_filter[0]['values_set']) && is_array($filter_set_filter[0]['values_set'])) {
+                        foreach($filter_set_filter[0]['values_set'] as $filter_row){
+                            if ($data_row[2] == $filter_row['value'] ) {
+                                $row_filter_set .= $self->setLocalization($filter_row['title']).'; ';
+                            }
+                        }
+                    } else {
+                        $row_filter_set .= $data_row[2].'; ';
+                    }
+                    $row['filter_set'] .= $row_filter_set;
+                }
+            }
+            settype($row['favorites'], 'int');
+            settype($row['for_all'], 'int');
+            return $row;
+        }, $this->db->getAllFromTable('filter_set', 'title'));
+
+        $this->app['messagesTemplates'] = $this->db->getAllFromTable('messages_templates', 'title');
+
         if (!empty($this->app['currentUser'])) {
             $this->app['breadcrumbs']->addItem($this->setlocalization('Users events') . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
         }
@@ -493,6 +524,32 @@ class EventsController extends \Controller\BaseStalkerController {
         }
         return $user_list;
     }
+
+    private function get_userlist_by_filter(&$event){
+        $user_list = array();
+        if (!empty($this->postData['filter_set'])) {
+
+            $filter_set = \Filters::getInstance();
+            $filter_set->setResellerID($this->app['reseller']);
+            $filter_set->initData('users', 'id');
+
+            $curr_filter_set = $this->db->getFilterSet(array('id' => $this->postData['filter_set']));
+            if (!empty($curr_filter_set) && is_array($curr_filter_set) && count($curr_filter_set) > 0) {
+                $filter_data = @unserialize($curr_filter_set[0]['filter_set']);
+                $filter_data = array_combine($this->getFieldFromArray($filter_data, 0), array_values($filter_data));
+                $filters_with_cond = array_filter(array_map(function($row) use ($filter_data) {
+                    if (array_key_exists($row['text_id'], $filter_data)) {
+                        $value = (($row['text_id'] == 'status') || ($row['text_id'] == 'state') ? (int)($filter_data[$row['text_id']][2] - 1 > 0) : $filter_data[$row['text_id']][2]);
+                        return array($row['method'], $filter_data[$row['text_id']][1], $value);
+                    }
+                }, $filter_set->getFilters()));
+
+                $filter_set->setFilters($filters_with_cond);
+                $user_list = $filter_set->getData();
+            }
+        }
+        return $user_list;
+    }
     
     private function get_userlist_single(&$event){
         $user_list = \Middleware::getUidByMac($this->postData['mac']);
@@ -502,9 +559,9 @@ class EventsController extends \Controller\BaseStalkerController {
     
     private function set_event_send_msg(&$event, $user_list){
         if (!empty($this->postData['need_reboot'])) {
-            $event->sendMsgAndReboot($this->postData['msg']);
+            $event->sendMsgAndReboot($this->postData['msg'], $this->postData['header']);
         } else {
-            $event->sendMsg($this->postData['msg']);
+            $event->sendMsg($this->postData['msg'], $this->postData['header']);
         }
         return TRUE;
     }
@@ -555,7 +612,7 @@ class EventsController extends \Controller\BaseStalkerController {
 
     private function set_event_send_msg_with_video(&$event, $user_list){
         if (!empty($this->postData['video_url'])){
-            $event->sendMsgWithVideo($this->postData['msg'], $this->postData['video_url']);
+            $event->sendMsgWithVideo($this->postData['msg'], $this->postData['video_url'], $this->postData['header']);
         } else {
             return FALSE;
         }

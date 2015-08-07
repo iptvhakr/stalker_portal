@@ -48,6 +48,8 @@ class UsersController extends \Controller\BaseStalkerController {
         'video' => 'Видео клуб',
         'unknown' => '',
     );
+    protected $formEvent = array();
+    protected $hiddenEvent = array();
 
     public function __construct(Application $app) {
         parent::__construct($app, __CLASS__);
@@ -57,6 +59,28 @@ class UsersController extends \Controller\BaseStalkerController {
             array('id' => 1, 'title' => $this->setlocalization('on')),
             array('id' => 2, 'title' => $this->setlocalization('off'))
         );
+
+        $this->formEvent = array(
+            array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message') ),
+            array("id" => "send_msg_with_video","title" => $this->setlocalization('Sending a message with video') ),
+            array("id" => "reboot",             "title" => $this->setlocalization('Reboot') ),
+            array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
+            array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
+            array("id" => "play_channel",       "title" => $this->setlocalization('Playback channel') ),
+            array("id" => "play_radio_channel", "title" => $this->setlocalization('Playback radio channel') ),
+            array("id" => "mount_all_storages", "title" => $this->setlocalization('Mount all storages') ),
+            array("id" => "cut_off",            "title" => $this->setlocalization('Turn off') ),
+            array("id" => "update_image",       "title" => $this->setlocalization('Image update') )
+        );
+        $this->hiddenEvent = array(
+            array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update') ),
+            array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update') ),
+            array("id" => "update_modules",             "title" => $this->setlocalization('Modules update') ),
+            array("id" => "cut_on",                     "title" => $this->setlocalization('Turn on') ),
+            array("id" => "show_menu",                  "title" => $this->setlocalization('Show menu') ),
+            array("id" => "additional_services_status", "title" => $this->setlocalization('Status additional service') )
+        );
+
         if (empty($this->app['reseller'])) {
             $this->userFields[] = "reseller.name as reseller_name";
         }
@@ -92,7 +116,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 $curr_filter_set[0]['filter_set'] = unserialize($curr_filter_set[0]['filter_set']);
                 if (!empty($curr_filter_set[0]['filter_set'])) {
                     $curr_filter_set[0]['filter_set'] = array_combine($this->getFieldFromArray($curr_filter_set[0]['filter_set'], 0), $this->getFieldFromArray($curr_filter_set[0]['filter_set'], 2));
-                    $users_filter = array_merge($users_filter, $curr_filter_set[0]['filter_set']);
+                    $users_filter = array_replace($curr_filter_set[0]['filter_set'], $users_filter);
                 }
                 $this->app['filter_set'] = $curr_filter_set[0];
             }
@@ -166,6 +190,8 @@ class UsersController extends \Controller\BaseStalkerController {
         if (!empty($curr_filter_set)) {
             $this->app['breadcrumbs']->addItem($this->setLocalization("Used filter") . ' "' . $curr_filter_set[0]['title'] . '"');
         }
+
+        $this->app['messagesTemplates'] = $this->db->getAllFromTable('messages_templates', 'title');
 
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
@@ -387,6 +413,42 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['filters'] = $this->data['filters'];
         }
 
+        $this->app['consoleGroup'] = $this->db->getConsoleGroup();
+
+        $this->app['formEvent'] = $this->formEvent;
+        $this->app['allEvent'] = array_merge($this->formEvent, $this->hiddenEvent);
+
+        $filter_set = \Filters::getInstance();
+        $filter_set->setResellerID($this->app['reseller']);
+        $filter_set->initData('users', 'id');
+
+        $self = $this;
+
+        $this->app['allFilters'] = array_map(function($row) use ($filter_set, $self){
+            if(($filter_set_data = @unserialize($row['filter_set'])) !== FALSE){
+                $row['filter_set'] = '';
+                foreach($filter_set_data as $data_row){
+                    $filter_set_filter = $filter_set->getFilters(array($data_row[0]));
+                    $row_filter_set = $self->setLocalization($filter_set_filter[0]['title']).': ';
+                    if (!empty($filter_set_filter[0]['values_set']) && is_array($filter_set_filter[0]['values_set'])) {
+                        foreach($filter_set_filter[0]['values_set'] as $filter_row){
+                            if ($data_row[2] == $filter_row['value'] ) {
+                                $row_filter_set .= $self->setLocalization($filter_row['title']).'; ';
+                            }
+                        }
+                    } else {
+                        $row_filter_set .= $data_row[2].'; ';
+                    }
+                    $row['filter_set'] .= $row_filter_set;
+                }
+            }
+            settype($row['favorites'], 'int');
+            settype($row['for_all'], 'int');
+            return $row;
+        }, $this->db->getAllFromTable('filter_set', 'title'));
+
+        $this->app['messagesTemplates'] = $this->db->getAllFromTable('messages_templates', 'title');
+
         return $this->app['twig']->render($this->getTemplateName(__METHOD__));
     }
 
@@ -424,12 +486,13 @@ class UsersController extends \Controller\BaseStalkerController {
             if (!empty($this->app['filters'])) {
                 $app_filter = $this->app['filters'];
             }
-            if($this->isAjax && !empty($this->data['filter_set'])) {
-                $app_filter = $this->db->getFilterSet(array('id'=>$this->data['filter_set']));
-                if (!empty($app_filter[0]) && array_key_exists('filter_set', $app_filter[0])) {
-                    $app_filter = @unserialize($app_filter[0]['filter_set']);
-                    if (is_array($app_filter) && count($app_filter)>0 ) {
-                        $app_filter = array_combine($this->getFieldFromArray($app_filter, 0), $this->getFieldFromArray($app_filter, 2));
+            if(!empty($this->data['filter_set'])) {
+                $data_filter = $this->db->getFilterSet(array('id'=>$this->data['filter_set']));
+                if (!empty($data_filter[0]) && array_key_exists('filter_set', $data_filter[0])) {
+                    $data_filter = @unserialize($data_filter[0]['filter_set']);
+                    if (is_array($data_filter) && count($data_filter)>0 ) {
+                        $data_filter = array_combine($this->getFieldFromArray($data_filter, 0), $this->getFieldFromArray($data_filter, 2));
+                        $app_filter = array_replace($data_filter, $app_filter);
                     }
                 }
             }
@@ -1244,7 +1307,7 @@ class UsersController extends \Controller\BaseStalkerController {
                 foreach($filter_set_data as $data_row){
                     $filter_set_filter = $filter_set->getFilters(array($data_row[0]));
                     $row_filter_set = $self->setLocalization($filter_set_filter[0]['title']).': ';
-                    if ($filter_set_filter[0]['type'] == 'VALUES_SET' && !empty($filter_set_filter[0]['values_set']) && is_array($filter_set_filter[0]['values_set'])) {
+                    if (!empty($filter_set_filter[0]['values_set']) && is_array($filter_set_filter[0]['values_set'])) {
                         foreach($filter_set_filter[0]['values_set'] as $filter_row){
                             if ($data_row[2] == $filter_row['value'] ) {
                                 $row_filter_set .= $self->setLocalization($filter_row['title']).'; ';
@@ -1328,11 +1391,11 @@ class UsersController extends \Controller\BaseStalkerController {
         $now_timestamp = time() - $this->watchdog;
         $now_time = date("Y-m-d H:i:s", $now_timestamp);
         if (array_key_exists('filters', $this->data)) {
-            if (array_key_exists('status_id', $this->data['filters']) && $this->data['filters']['status_id'] != 0) {
-                $return['status'] = $this->data['filters']['status_id'] - 1;
+            if (array_key_exists('status', $this->data['filters']) && $this->data['filters']['status'] != 0) {
+                $return['status'] = $this->data['filters']['status'] - 1;
             }
-            if (array_key_exists('state_id', $this->data['filters']) && $this->data['filters']['state_id'] != 0) {
-                $return['keep_alive' . ($this->data['filters']['state_id'] - 1 ? "<" : ">")] = "$now_time";
+            if (array_key_exists('state', $this->data['filters']) && $this->data['filters']['state'] != 0) {
+                $return['keep_alive' . ((int)$this->data['filters']['state'] - 1 ? "<" : ">")] = "$now_time";
             }
             if (array_key_exists('interval_from', $this->data['filters']) && $this->data['filters']['interval_from']!= 0) {
                 $date = \DateTime::createFromFormat('d/m/Y', $this->data['filters']['interval_from']);

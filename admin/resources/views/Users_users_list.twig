@@ -266,7 +266,7 @@
                             <div class="form-group" data-event-type="send_msg">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Restart'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" value="1" name="need_reboot">
@@ -282,7 +282,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">TTL</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
                                         <input class="form-control" type="text" title="" value="" name="ttl">
                                     </div>
                                     <span class="help-inline col-xs-12 col-sm-12">
@@ -290,19 +290,34 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="form-group"  data-event-type="send_msg;send_msg_with_video">
-                                <label class="col-sm-3 control-label col-sm-offset-1">MSG</label>
+                            <div class="form-group" data-event-type="send_msg;send_msg_with_video">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message header'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control" type="text" title="" value="" name="header" id="msg_header">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="send_msg;send_msg_with_video">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message text'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
                                         <textarea class="form-control" rows="4" title="" value="" name="msg" id="msg_textarea"></textarea>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group"  data-event-type="send_msg;send_msg_with_video">
+                            <div class="form-group" data-event-type="send_msg;send_msg_with_video">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message templates'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-8">
-                                        <a href="#" id="msg_pattern">{{ 'Outdated testing'|trans }}</a>
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" data-validation=required name="" id="s2_msg_pattern">
+                                            <option value="0" data-filter-descriprion=""></option>
+                                            {% if attribute(app,'messagesTemplates') is defined and app['messagesTemplates']|length > 0 %}
+                                                {% for item in app['messagesTemplates'] %}
+                                                    <option value="{{ item['id'] }}" data-template-header="{{ item['header'] }}">{{ item['title'] }}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -599,10 +614,11 @@
                     checkFields($(this), e);
                 });
 
-                $(document).on('click', "#msg_pattern", function (e) {
+                $(document).on('change', "#s2_msg_pattern", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
-                    $('#msg_textarea').text($.trim($('#msg_textarea_pattern').text()));
+                    $('#msg_textarea').text($.trim($('#msg_textarea_pattern_'+$(this).val()).text()));
+                    $('#msg_header').val($(this).find('option:selected').data('template-header'));
                     return false;
                 });
 
@@ -975,7 +991,11 @@
         }
 
     </script>
-    <script type="text/template" id="msg_textarea_pattern">
-        {{ 'Dear Subscriber! Term free testing of our service is ended. We ask you to go to Customer Care.'|trans }}
-    </script>
+    {% if attribute(app, 'messagesTemplates') is defined and app.messagesTemplates|length> 0%}
+        {% for item in app.messagesTemplates %}
+            <script type="text/template" id="msg_textarea_pattern_{{ item.id }}">
+                {{ item.body }}
+            </script>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
