@@ -26,7 +26,7 @@
                                 <!-- Start: list_row -->
                                 {% for item in app.ads %}
                                     <tr data-adsid="{{ item.id }}">
-                                        <td ><a href="#">{{ item.title }}</a></td>
+                                        <td ><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-video-ads?id={{ item.id }}">{{ item.title }}</a></td>
                                         <td data-filter="url">{{ item.url }}</td>
                                         <td data-filter="weight">{{ item.weight }}</td>
                                         <td data-filter="started">{{ item.started }}</td>

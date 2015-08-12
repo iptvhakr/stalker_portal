@@ -154,8 +154,8 @@
                                     <input type="hidden" class="own_fields" name="lang_code" value="">
                                     <fieldset id="letters" class="col-sm-12">
                                         <div class="col-sm-4">
-                                            <label class="col-sm-12 control-label">{{ 'Available'|trans }}</label>
-                                            <select size="9" class="left populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code_available" id="s2_lang_code_available" >
+                                            <label class="col-sm-10 control-label">{{ 'Available'|trans }}</label>
+                                            <select size="9" class="left populate placeholder col-sm-10" multiple="multiple" name="s2_lang_code_available" id="s2_lang_code_available" >
                                                 {% if attribute(app, 'allLanguages') is defined %}
                                                     {% for code, lang in app.allLanguages %}
                                                         <option id="opt_{{ code }}" value="{{ code }}">{{ lang }}</option>
@@ -170,8 +170,8 @@
                                             <button type="button" class="remove all btn btn-block btn-default"> &lt;&lt; {{ 'all'|trans }}</button>
                                         </div>
                                         <div class="col-sm-4">
-                                            <label class="col-sm-12 control-label">{{ 'Selected'|trans }}</label>
-                                            <select size="9" class="right populate placeholder col-sm-12" multiple="multiple" name="s2_lang_code" id="s2_lang_code" >
+                                            <label class="col-sm-10 control-label">{{ 'Selected'|trans }}</label>
+                                            <select size="9" class="right populate placeholder col-sm-10" multiple="multiple" name="s2_lang_code" id="s2_lang_code" >
                                             </select>
                                         </div>
                                     </fieldset>

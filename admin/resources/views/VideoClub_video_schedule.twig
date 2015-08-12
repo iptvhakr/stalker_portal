@@ -33,7 +33,7 @@
                                         <!-- Start: list_row -->
                                         {% for item in app.allTasks %}
                                             <tr data-videoid="{{ item.video_id }}">
-                                                <td data-filter="task_added">{{ item.task_added|date('Y-m-d') }}</td>
+                                                <td data-filter="task_added">{{ item.task_added|date('M d, Y') }}</td>
                                                 <td data-filter="name"><a href="video-club/edit-video?id={{ item.video_id }}" data-fieldname="name">{{ item.name }}</a></td>
                                                 <td data-filter="o_name">{{ item.o_name }}</td>
                                                 <td data-filter="time">{{ item.time }}</td>

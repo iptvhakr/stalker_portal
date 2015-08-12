@@ -210,7 +210,7 @@
                                 <div class="no-move"></div>
                             </div>
                         </a>
-                        <div class="box-content">
+                        <div class="box-content" id="Additional_information">
                             <div class="row"></div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Content storage'|trans }}</label>
@@ -474,7 +474,7 @@
                     showAdModalBox('{{ 'Add storage'|trans }}');
                     return false;
                 });
-                
+                $("#Additional_information").hide('fast');
                 $(":checkbox[name*='fake_tv_archive'], :checkbox[name*='flussonic_dvr'], :checkbox[name*='wowza_dvr']").closest('.form-group').hide();
                 
                 $(document).on('change', ":checkbox[name*='for_records']", function(e){
