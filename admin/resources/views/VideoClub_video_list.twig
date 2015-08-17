@@ -124,7 +124,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Video title'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
-                                <span class="col-xs-8 col-sm-8">
+                                <span class="col-xs-10 col-sm-6">
                                     <input type="hidden" name="id">
                                     <span class="txt-default">{{ 'Video title'|trans }}</span>
                                 </span>
@@ -134,7 +134,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'To'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
-                                <div class=" col-xs-8 col-sm-8">
+                                <div class="col-xs-10 col-sm-6">
                                     <select class="populate placeholder" name="to_usr" id="s2_video_moderators" required="">
                                         {% if app['allModerators'] %}
                                             {% for m_item in app.allModerators %}
@@ -148,7 +148,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Task description'|trans }}</label>
                             <div class="col-xs-10 col-sm-8">
-                                <div class="col-xs-8 col-sm-8">
+                                <div class="col-xs-10 col-sm-11">
                                     <textarea class="col-xs-12 col-sm-12 " name="comment" rows="6" required=""></textarea>
                                 </div>
                             </div>
