@@ -24,6 +24,11 @@ class Watchdog extends AjaxResponse implements \Stalker\Lib\StbApi\Watchdog
                 Stb::logDoubleMAC($clone_ip);
             }
         }
+
+        if ($this->stb->getParam('ip') != $this->stb->ip){
+            $user = User::getInstance($this->stb->id);
+            $user->getInfoFromOSS();
+        }
         
         $this->db->update('users',
                          array(
