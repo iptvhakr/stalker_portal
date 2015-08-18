@@ -24,7 +24,7 @@
                                 <!-- Start: list_row -->
                                 {% for item in app.allAudioArtists %}
                                     <tr data-artistsid="{{ item.id }}">
-                                        <td><a href="#">{{ item.name }}</a></td>
+                                        <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-audio-artists" data-artistsid="{{ item.id }}" id="edit_audio_artists_{{ item.id }}">{{ item.name }}</a></td>
                                         <td>
                                             <div class="col-xs-3 col-sm-8">
                                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
