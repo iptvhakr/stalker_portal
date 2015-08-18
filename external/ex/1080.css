@@ -122,7 +122,7 @@ a {text-decoration: none;}
 			.page .body .footer .crop { padding-top:0 }
 			.page .body .footer .exit { padding-right:0; width:150px; background: url("img/1080/exit_wrapper_bg.png") 0 0 transparent }
 			.page .body .footer .exit div { height:100%; background: url("img/1080/ico_exit.png") no-repeat center center transparent; cursor:pointer }
-			.new-buttons .page .body .footer .exit div { height:100%; background: url("img/1080/new/exit2.png") no-repeat center center transparent; cursor:pointer }
+			.new-buttons .page .body .footer .exit div { font-size: 24px; height:100%; line-height:112px; background:url("img/1080/new/exit2.png") no-repeat center left transparent; text-align:right; padding-right:15px; cursor:pointer }
 
 
 /*--- VOLUME ---*/
@@ -226,13 +226,13 @@ a {text-decoration: none;}
 #pageMediaPlayer ::-webkit-scrollbar-thumb { background:#fd3; }
         
 #pageMediaPlayer .player_header {height:74px; padding:75px 75px 15px; width:1770px; background:url(img/1080/player_menu_bg.png)}
-	#pageMediaPlayer .player_header .exit_bg {height:90px; width:120px; margin:-75px 0 0 -75px; padding-top:75px; padding-left:75px; background:url(img/1080/exit_wrapper_bg.png); float:left;}
+	#pageMediaPlayer .player_header .exit_bg {height:90px; width:145px; margin:-75px 0 0 -75px; padding-top:75px; padding-left:75px; background:url(img/1080/exit_wrapper_bg.png); float:left;}
 	#pageMediaPlayer .player_header .exit {height:57px; width:78px; background:url(img/1080/ico_exit.png) bottom no-repeat; display:block;}
-	.new-buttons #pageMediaPlayer .player_header .exit {height:57px; width:78px; background:url(img/1080/new/exit2.png) bottom no-repeat; display:block;}
+	.new-buttons #pageMediaPlayer .player_header .exit {font-size: 24px; height:57px;line-height:57px; width:135px; text-align:right; color:white; background:url(img/1080/new/exit2.png) bottom left no-repeat; display:block; cursor:pointer;}
 	#pageMediaPlayer .player_header .settings  {height:57px; margin-left:45px; float:left; padding-left:90px; font-size:30px; color:#fff; line-height:63px; background:url(img/1080/ico_menu.png) left bottom no-repeat;}
-	.new-buttons #pageMediaPlayer .player_header .settings  {height:57px; margin-left:45px; float:left; padding-left:90px; font-size:30px; color:#fff; line-height:63px; background:url(img/1080/new/menu2.png) left bottom no-repeat;}
+	.new-buttons #pageMediaPlayer .player_header .settings  {height:57px; margin-left:45px; float:left; padding-left:70px; font-size:30px; color:#fff; line-height:63px; background:url(img/1080/new/menu2.png) left bottom no-repeat;}
 	#pageMediaPlayer .player_header .hideplayer{height:57px; margin-left:45px; float:left; max-width:135px; padding-left:90px; font-size:30px; color:#fff; line-height:30px; background:url(img/1080/ico_info.png) left bottom no-repeat;}
-	.new-buttons #pageMediaPlayer .player_header .hideplayer{height:57px; margin-left:45px; float:left; max-width:135px; padding-left:90px; font-size:30px; color:#fff; line-height:30px; background:url(img/1080/new/info2.png) left bottom no-repeat;}
+	.new-buttons #pageMediaPlayer .player_header .hideplayer{height:57px; margin-left:45px; float:left; max-width:135px; padding-left:70px; font-size:30px; color:#fff; line-height:30px; background:url(img/1080/new/info2.png) left bottom no-repeat;}
 	#pageMediaPlayer .player_header .hideplist {height:57px; margin-left:45px; float:right; max-width:135px; padding-left:90px; font-size:30px; color:#fff; line-height:30px; background:url(img/1080/ico_f2.png) left bottom no-repeat;}
 	#pageMediaPlayer .player_header .blue      {height:57px; margin-left:45px; float:right; max-width:165px; padding-left:90px; font-size:30px; color:#fff; line-height:30px; background:url(img/1080/ico_f4.png) left bottom no-repeat;}
 	#pageMediaPlayer .player_header .clock {height:60px;color:#fff; font-size:57px; float:right; margin-left:60px;}

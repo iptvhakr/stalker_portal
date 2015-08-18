@@ -82,7 +82,8 @@ window.onload = function onPageLoad () {
 	}
 
 	function continueMainInit () {
-		echo(data, 'gSTB.LoadUserData(ex.ua.data.json)');
+		var exitElementsArr, i;
+
 		echo('continueMainInit');
 		MainPage.handleInner = document.getElementById('MainPage');
 		MainPage.Init(MainPage.handleInner);
@@ -102,6 +103,10 @@ window.onload = function onPageLoad () {
 		MainPage.$catTypeName = MainPage.handleInner.querySelector('.content  .mainContent  .servText');
 		MainPage.$catTypeName.innerHTML = lang.catVideo + ':';
 		MainPage.handleInner.querySelector('.content  .rightContent .servText').innerHTML = lang.news;
+		if ( useNewIcons ) {
+			exitElementsArr = document.querySelectorAll('.exitValue');
+			for ( i = 0; i < exitElementsArr.length; i++ ) { exitElementsArr[i].innerText = lang.exit; }
+		}
 
 		// изменение параметров при малых разрешениях
 		window.rightMenuTextLength = 200;
