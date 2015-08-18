@@ -4,7 +4,7 @@
 
 {% block content %}
     <div id="iptv_list">
-        <div class="row2">
+        <div class="row row_no_padding">
             <div class="box">
                 {% if attribute(app, 'dropdownAttribute') is defined %}
                     {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}

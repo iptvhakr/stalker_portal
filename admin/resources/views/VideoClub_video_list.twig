@@ -12,8 +12,7 @@
                 <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/add-video" class="btn btn-success pull-right">{{ 'Add movie'|trans }}</a>
             </div>
         </div>
-        <div class="row2">
-            <div class="">
+        <div class="row">
                 {% if app['allVideo'] %}
                     <div class="box">
                         {% if attribute(app, 'dropdownAttribute') is defined %}
@@ -102,7 +101,6 @@
                         </div>
                     </div>
                 {% endif %}
-            </div>
         </div>
     </div>
             
