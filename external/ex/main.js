@@ -4,6 +4,8 @@
  * @mentor DarkPark
  ********************/
 
+/* jshint strict:false */
+
 // global event
 var stbEvent = {
 	onEvent           : function ( data ) {},
@@ -67,7 +69,17 @@ var _GET = {referer: '', proxy: ''};
 window.onload = function onPageLoad () {
 	echo('******** STB STARTED ********');
 	var curLangIdx = getCurrentLanguage(),
-		data = gSTB.LoadUserData('ex.ua.data.json');
+		data = gSTB.LoadUserData('ex.ua.data.json'),
+		models = ['AuraHD2', 'AuraHD7', 'AuraHD8', 'WR320'],
+		i;
+
+	for ( i = 0; i < models.length; i++ ) { // new buttons icons for new device models
+		if ( models[i].indexOf(gSTB.GetDeviceModelExt()) !== -1 ) {
+			document.body.className = document.body.className + ' new-buttons';
+			useNewIcons = true;
+			break;
+		}
+	}
 
 	function continueMainInit () {
 		echo(data, 'gSTB.LoadUserData(ex.ua.data.json)');
@@ -175,21 +187,7 @@ function mainEventListener ( event ) {
 			volume.setVol(volume.currVol);
 			break;
 		case KEYS.POWER:
-			standby = !standby;
-			if ( standby ) {
-				if ( currCPage === MediaPlayer ) { MediaPlayer.playPause(); }
-				if ( currCPage === MainPage && MainPage.newsList.isActive ) { MainPage.typeList.Activate(true); }
-				setTimeout(function () {gSTB.StandBy(standby);}, 1000);
-				gSTB.ExecAction('front_panel ' + standby ? 'led-on' : 'led-off');
-			} else {
-				gSTB.StandBy(standby);
-				setTimeout(function () {
-					if ( currCPage === MediaPlayer ) {
-						MediaPlayer.playPause();
-					}
-				}, 3000);
-				gSTB.ExecAction('front_panel ' + standby ? 'led-on' : 'led-off');
-			}
+			standBy.toggleMode();
 			break;
 		default:
 			if ( currCPage && currCPage.EventHandler instanceof Function ) {
@@ -1170,17 +1168,17 @@ ListPage.onInit = function () {
 		gSTB.EnableVKButton(false);
 		setTimeout(function () {
 			CSListManager.Current().Activate(true);
-		}, 5)
+		}, 5);
 	};
 
 
 	// панель кнопок
 	ListPage.BPanel = new CButtonPanel(ListPage);
 	ListPage.BPanel.Init('img/' + screen.height, ListPage.handleInner.querySelector('.footer div.cbpanel-main'));
-	ListPage.BPanel.btnMenu = ListPage.BPanel.Add(KEYS.MENU, 'ico_menu.png', lang.mainMenu, ListPage.actionMainMenu);
+	ListPage.BPanel.btnMenu = ListPage.BPanel.Add(KEYS.MENU, useNewIcons ? 'new/menu2.png' : 'ico_menu.png', lang.mainMenu, ListPage.actionMainMenu);
 	ListPage.BPanel.btnF3 = ListPage.BPanel.Add(KEYS.F3, 'ico_f3.png', lang.mark, ListPage.actionF3);
-	ListPage.BPanel.btnOnINFO = ListPage.BPanel.Add(KEYS.INFO, 'ico_info.png', lang.filmDescription, ListPage.actionINFO);
-	ListPage.BPanel.btnOffINFO = ListPage.BPanel.Add(KEYS.INFO, 'ico_info.png', lang.filmDescriptionOff, ListPage.actionBack);
+	ListPage.BPanel.btnOnINFO = ListPage.BPanel.Add(KEYS.INFO, useNewIcons ? 'new/info2.png' : 'ico_info.png', lang.filmDescription, ListPage.actionINFO);
+	ListPage.BPanel.btnOffINFO = ListPage.BPanel.Add(KEYS.INFO, useNewIcons ? 'new/info2.png' : 'ico_info.png', lang.filmDescriptionOff, ListPage.actionBack);
 	ListPage.BPanel.btnOKINFO = ListPage.BPanel.Add(KEYS.OK, 'ico_ok.png', lang.toFiles, ListPage.objShortCut);
 	ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnF3, true);
 	ListPage.BPanel.Hidden(CSListManager.parent.BPanel.btnOnINFO, true);
@@ -1989,12 +1987,14 @@ ListPage.Preview.setProgress = function ( value ) {
 ListPage.Preview.setPosition = function ( data ) {
 	echo(data, 'ListPage.Preview.setPosition ');
 	// find it in the new list if necessary
-	if ( data ) for ( var item, i = 0, l = CSListManager.Current().handleInner.children.length; i < l; i++ ) {
-		item = CSListManager.Current().handleInner.children[i];
-		// url and type match
-		if ( data.type === item.data.type && data.url === item.data.url && data.name === item.data.name ) {
-			// make it active again
-			return CSListManager.Current().Focused(item, true);
+	if ( data ) {
+		for ( var item, i = 0, l = CSListManager.Current().handleInner.children.length; i < l; i++ ) {
+			item = CSListManager.Current().handleInner.children[i];
+			// url and type match
+			if ( data.type === item.data.type && data.url === item.data.url && data.name === item.data.name ) {
+				// make it active again
+				return CSListManager.Current().Focused(item, true);
+			}
 		}
 	}
 	return false;

@@ -123,6 +123,7 @@ a {text-decoration: none;}
 			.page .body .footer .crop { padding-top:0 }
 			.page .body .footer .exit { padding-right:0; width:100px; background: url("img/576/exit_wrapper_bg.png") 0 0 transparent }
 			.page .body .footer .exit div { height:100%; background: url("img/576/ico_exit.png") no-repeat center center transparent; cursor:pointer }
+			.new-buttons .page .body .footer .exit div { height:100%; background: url("img/576/new/exit2.png") no-repeat center center transparent; cursor:pointer }
 
 
 /*--- VOLUME ---*/
@@ -232,8 +233,11 @@ a {text-decoration: none;}
 #pageMediaPlayer .player_header {height:49px; padding:35px 30px 10px 60px; width:720px; background:url(img/576/player_menu_bg.png)}
 #pageMediaPlayer .player_header .exit_bg {height:60px; width:80px; margin:-50px 0 0 -50px; padding-top:50px; padding-left:50px; background:url(img/576/exit_wrapper_bg.png); float:left;}
 #pageMediaPlayer .player_header .exit {height:38px; width:52px; background:url(img/576/ico_exit.png) bottom no-repeat; display:block;}
+.new-buttons #pageMediaPlayer .player_header .exit {height:38px; width:52px; background:url(img/576/new/exit2.png) bottom no-repeat; display:block;}
 #pageMediaPlayer .player_header .settings {height:38px; margin-left:10px; float:left; padding-left:60px; font-size:20px; color:#fff; line-height:42px; background:url(img/576/ico_menu.png) left bottom no-repeat;}
+.new-buttons #pageMediaPlayer .player_header .settings {height:38px; margin-left:10px; float:left; padding-left:60px; font-size:20px; color:#fff; line-height:42px; background:url(img/576/new/menu2.png) left bottom no-repeat;}
 #pageMediaPlayer .player_header .hideplayer {height:38px; margin-left:10px; float:left;max-width:90px; padding-left:60px; font-size:20px; color:#fff; line-height:20px; background:url(img/576/ico_info.png) left bottom no-repeat;}
+.new-buttons #pageMediaPlayer .player_header .hideplayer {height:38px; margin-left:10px; float:left;max-width:90px; padding-left:60px; font-size:20px; color:#fff; line-height:20px; background:url(img/576/new/info2.png) left bottom no-repeat;}
 #pageMediaPlayer .player_header .hideplist {height:38px; margin-right: 60px; float:right; max-width:90px; padding-left:40px; font-size:20px; color:#fff; line-height:20px; background:url(img/576/ico_f2.png) left bottom no-repeat;}
 #pageMediaPlayer .player_header .blue {height:38px; margin-left:30px; float:right; max-width:110px; padding-left:60px; font-size:20px; color:#fff; line-height:20px; background:url(img/576/ico_f4.png) left bottom no-repeat;}
 #pageMediaPlayer .player_header .clock {height:40px;color:#fff; font-size:38px; float:right; margin-left:40px;}
