@@ -164,7 +164,7 @@ class TvChannelsModel extends \Model\BaseStalkerModel {
                             'cmd_1' => (!empty($data['cmd_1'])? $data['cmd_1']: ''),
                             'cmd_2' => (!empty($data['cmd_2'])? $data['cmd_2']: ''),
                             'cmd_3' => (!empty($data['cmd_3'])? $data['cmd_3']: ''),
-                            'mc_cmd' => (!empty($data['enable_tv_archive']) && $data['enable_tv_archive'] != 'off' && !empty($data['mc_cmd'])? $data['mc_cmd']: ''),
+                            'mc_cmd' => (!empty($data['enable_tv_archive']) || !empty($data['allow_pvr'])) && !empty($data['mc_cmd']) ? $data['mc_cmd']: '',
                             'enable_wowza_load_balancing' => (int)(!empty($data['enable_wowza_load_balancing']) && $data['enable_wowza_load_balancing'] != 'off'),
                             'allow_pvr' => (int)(!empty($data['allow_pvr']) && $data['allow_pvr'] != 'off'),
                             'allow_local_pvr' => (int)(!empty($data['allow_local_pvr']) && $data['allow_local_pvr'] != 'off'),
