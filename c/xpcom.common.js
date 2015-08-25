@@ -302,7 +302,12 @@ function common_xpcom(){
                             _debug('auth result', result);
 
                             if (result){
-                                stb.get_user_profile(true);
+                                if (stb.user['status'] == 2){
+                                    stb.get_user_profile(true);
+                                }else{
+                                    stb.loader.stop();
+                                    main_menu.show();
+                                }
                                 stb.auth_dialog.hide();
                             }else{
                                 stb.auth_dialog.setStatus(get_word('auth_error'));
@@ -667,7 +672,18 @@ function common_xpcom(){
                         }catch(er){
                             _debug('req.responseText', req.responseText);
                             if (req.responseText == 'Authorization failed.'){
-                                authentication_problem.show();
+                                if (stb.auth_access){
+                                    keydown_observer.emulate_key(key.MENU);
+                                    main_menu.hide();
+                                    stb.loader.show();
+                                    stb.key_lock = false;
+                                    if (!stb.auth_dialog){
+                                        stb.init_auth_dialog();
+                                    }
+                                    stb.auth_dialog.show();
+                                }else if (!stb.auth_dialog.on){
+                                    authentication_problem.show();
+                                }
                             }
                             throw new Error(er);
                         }
@@ -988,10 +1004,10 @@ function common_xpcom(){
         }
 
         if (this.user['status'] == 2){
+            this.auth_access = true;
             this.init_auth_dialog();
             this.key_lock = false;
             this.auth_dialog.show();
-
             loader.append('alert');
 
         }else if (this.user['status'] == 0){
