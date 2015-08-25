@@ -768,3 +768,5 @@ _('List of templates of messages');
 _('List of templates of messages by page + filters');
 _('Adding and editing the templates of messages');
 _('Removing the templates of messages');
+_('Send msg with video');
+_('Run application');

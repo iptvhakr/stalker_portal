@@ -22,22 +22,16 @@
         </div>
         <div class="row">
             <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
                 <div class="box-content">
                     <div class="box-content no-padding">
                         <div class="dataTables_processing"></div>
                         <table class="table  table-hover table-datatable" id="datatable-1">
-                            <thead>
-                            <tr>
-                                <th data-filter="events_id">#</th>
-                                <th data-filter="addtime">{{ 'Added'|trans }}</th>
-                                <th data-filter="eventtime">{{ 'Expiration date'|trans }}</th>
-                                <th data-filter="mac">MAC</th>
-                                <th data-filter="event">{{ 'Event'|trans }}</th>
-                                <th data-filter="msg">{{ 'Message'|trans }}</th>
-                                <th data-filter="sended">{{ 'Delivery status'|trans }}</th>
-                                <th data-filter="ended">{{ 'Receipt status'|trans }}</th>
-                            </tr>
-                            </thead>
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
                             <tbody>
                             {% if attribute(app, 'eventList') is defined %}
                                 <!-- Start: list_row -->
@@ -53,6 +47,8 @@
                                         <td>
                                             <div class="event_message">{{ item.msg }}</div>
                                         </td>
+                                        <td>{{ item.post_function }}</td>
+                                        <td>{{ item.param1 }}</td>
                                         <td>{% if item.sended != '0' %}<span class="">{{ 'Delivered'|trans }}</span>{% else %}<span class="">{{ 'Not delivered'|trans }}</span>{% endif %}</td>
                                         <td>{% if item.ended != '0' %}<span class="">{{ 'Received'|trans }}</span>{% else %}<span class="">{{ 'Not received'|trans }}</span>{% endif %}</td>
                                     </tr>
@@ -120,14 +116,11 @@
                     "url": "{{ app.datatable_lang_file }}"
                 },
                 "columns": [
-                    {"data": "events_id"},
-                    {"data": "addtime"},
-                    {"data": "eventtime"},
-                    {"data": "mac"},
-                    {"data": "event"},
-                    {"data": "msg"},
-                    {"data": "sended"},
-                    {"data": "ended"}
+                    {% if attribute(app, 'dropdownAttribute') is defined%}
+                    {% for item in app.dropdownAttribute %}
+                    {"data": "{{ item.name }}"},
+                    {% endfor %}
+                    {% endif %}
                 ],
                 "bFilter": true,
                 "bPaginate": true,

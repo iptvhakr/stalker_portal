@@ -18,7 +18,8 @@ class Event extends HTTPPush
         'reboot_after_ok' => 0,
         'eventtime' => 0,
         'auto_hide_timeout' => 0,
-        'param1'    => ''
+        'param1'    => '',
+        'post_function' => ''
     );
     
     private $pattern;
@@ -168,6 +169,15 @@ class Event extends HTTPPush
     }
 
     /**
+     * Set event post_function
+     *
+     * @param string $post_function
+     */
+    protected function setPostFunction($post_function){
+        $this->param['post_function'] = $post_function;
+    }
+
+    /**
      * Set event life time
      *
      * @param string $eventtime must be valid mysql datetime "Y-m-d H:i:s"
@@ -274,7 +284,8 @@ class Event extends HTTPPush
                     'msg'               => $this->param['msg'],
                     'priority'          => $this->param['priority'],
                     'auto_hide_timeout' => $this->param['auto_hide_timeout'],
-                    'param1'            => $this->param['param1']
+                    'param1'            => $this->param['param1'],
+                    'post_function'     => $this->param['post_function']
                 );
 
                 if ($this->param['event'] == 'cut_off'){

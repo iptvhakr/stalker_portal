@@ -186,6 +186,17 @@ class SysEvent extends Event
         $this->setEvent('update_image');
         $this->send();
     }
+
+    /**
+     * Set post function parameters
+     *
+     * @param string $post_func post function name
+     * @param string $param1 post function parameter, e.g. video URL
+     */
+    public function setPostFunctionParam($post_func, $param1){
+        $this->setPostFunction($post_func);
+        $this->setParam1($param1);
+    }
 }
 
 ?>

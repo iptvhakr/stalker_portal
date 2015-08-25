@@ -63,7 +63,6 @@ class UsersController extends \Controller\BaseStalkerController {
 
         $this->formEvent = array(
             array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message') ),
-            array("id" => "send_msg_with_video","title" => $this->setlocalization('Sending a message with video') ),
             array("id" => "reboot",             "title" => $this->setlocalization('Reboot') ),
             array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
             array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
@@ -74,6 +73,7 @@ class UsersController extends \Controller\BaseStalkerController {
             array("id" => "update_image",       "title" => $this->setlocalization('Image update') )
         );
         $this->hiddenEvent = array(
+            /*array("id" => "send_msg_with_video",        "title" => $this->setlocalization('Sending a message with video') ),*/
             array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update') ),
             array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update') ),
             array("id" => "update_modules",             "title" => $this->setlocalization('Modules update') ),
@@ -106,7 +106,6 @@ class UsersController extends \Controller\BaseStalkerController {
             return $no_auth;
         }
 
-
         $users_filter = array();
         if (!empty($this->data['filters'])) {
             $users_filter = $this->data['filters'];
@@ -130,7 +129,9 @@ class UsersController extends \Controller\BaseStalkerController {
         $filter_set = \Filters::getInstance();
         $filter_set->setResellerID($this->app['reseller']);
         $filter_set->initData('users', 'id');
-        $filters = array_map(function($row) use ($users_filter){
+        $self = $this;
+        $filters = array_map(function($row) use ($users_filter, $self){
+            $row['title']= $self->setLocalization($row['title']);
             if (array_key_exists($row['text_id'], $users_filter)) {
                 $row['value'] = $users_filter[$row['text_id']];
             }
@@ -147,7 +148,8 @@ class UsersController extends \Controller\BaseStalkerController {
             $this->app['filters_set'] = array_combine($this->getFieldFromArray($filters, 'text_id'), array_values($filters));
         }
 
-        $filters_template = array_map(function($row) use ($users_filter){
+        $filters_template = array_map(function($row) use ($users_filter, $self){
+            $row['title']= $self->setLocalization($row['title']);
             $row['name'] = $row['text_id'];
             $row['checked'] = array_key_exists($row['text_id'], $users_filter);
             return $row;

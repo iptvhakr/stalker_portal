@@ -20,7 +20,6 @@ class EventsController extends \Controller\BaseStalkerController {
         parent::__construct($app, __CLASS__);
         $this->formEvent = array(
             array("id" => "send_msg",           "title" => $this->setlocalization('Sending a message') ),
-            array("id" => "send_msg_with_video","title" => $this->setlocalization('Sending a message with video') ),
             array("id" => "reboot",             "title" => $this->setlocalization('Reboot') ),
             array("id" => "reload_portal",      "title" => $this->setlocalization('Restart the portal') ),
             array("id" => "update_channels",    "title" => $this->setlocalization('Update channel list') ),
@@ -31,6 +30,7 @@ class EventsController extends \Controller\BaseStalkerController {
             array("id" => "update_image",       "title" => $this->setlocalization('Image update') )
         );
         $this->hiddenEvent = array(
+            /*array("id" => "send_msg_with_video",        "title" => $this->setlocalization('Sending a message with video') ),*/
             array("id" => "update_epg",                 "title" => $this->setlocalization('EPG update') ),
             array("id" => "update_subscription",        "title" => $this->setlocalization('Subscribe update') ),
             array("id" => "update_modules",             "title" => $this->setlocalization('Modules update') ),
@@ -126,6 +126,10 @@ class EventsController extends \Controller\BaseStalkerController {
 
         $this->app['messagesTemplates'] = $this->db->getAllFromTable('messages_templates', 'title');
 
+        $attribute = $this->getEventsListDropdownAttribute();
+        $this->checkDropdownAttribute($attribute);
+        $this->app['dropdownAttribute'] = $attribute;
+
         if (!empty($this->app['currentUser'])) {
             $this->app['breadcrumbs']->addItem($this->setlocalization('Users events') . " {$this->app['currentUser']['name']} ({$this->app['currentUser']['mac']})");
         }
@@ -181,7 +185,9 @@ class EventsController extends \Controller\BaseStalkerController {
             'sended' => "events.`sended` as `sended`",
             'ended' => "events.`ended` as `ended`",
             'uid' => "events.`uid` as `uid`",
-            'name' => "users.`fname` as `name`"
+            'name' => "users.`fname` as `name`",
+            'post_function' => "events.`post_function` as `post_function`",
+            'param1' => "events.`param1` as `param1`"
         );
 
         $error = "";
@@ -223,11 +229,19 @@ class EventsController extends \Controller\BaseStalkerController {
         
         $events = array_merge($allevents, $hiddenevents);
 
-        $response['data'] = array_map(function($row) use ($events){
+        $self = $this;
+
+        $response['data'] = array_map(function($row) use ($events, $self){
             $row['event'] = $events[$row['event']];
             $row['mac'] = (!empty($row['mac']) ? $row['mac']: 'no_mac_address');
             $row['addtime'] = (int)  strtotime($row['addtime']);
             $row['eventtime'] = (int)  strtotime($row['eventtime']);
+            if (!empty($row['post_function'])) {
+                $row['post_function'] = $self->setLocalization(str_replace('_', ' ', ucfirst($row['post_function'])));
+            }
+            if (!empty($row['param1']) && strpos($row['param1'], '://') === FALSE) {
+                $row['param1'] = $self->setLocalization($row['param1']);
+            }
             return $row;
         }, $response['data']);
 
@@ -257,6 +271,9 @@ class EventsController extends \Controller\BaseStalkerController {
         $_SERVER['TARGET'] = 'ADM';
         $event = new \SysEvent();
         $event->setTtl($this->postData['ttl']);
+        if (!empty($this->postData['add_post_function']) && !empty($this->postData['post_function']) && !empty($this->postData['param1'])) {
+            $event->setPostFunctionParam($this->postData['post_function'], $this->postData['param1']);
+        }
         $get_list_func_name = 'get_userlist_' . str_replace('to_', '', $this->postData['user_list_type']);
         $set_event_func_name = 'set_event_' . str_replace('to_', '', $this->postData['event']);
         $user_list = array_intersect($this->$get_list_func_name($event), $this->getFieldFromArray($this->db->getUser(array(), 'ALL'), 'id'));
@@ -642,5 +659,23 @@ class EventsController extends \Controller\BaseStalkerController {
             'created' => 'M_T.created as `created`',
             'edited' => 'M_T.edited as `edited`'
         );
+    }
+
+    private function getEventsListDropdownAttribute(){
+
+        $attribute = array(
+            array('name'=>'events_id',      'title'=>$this->setLocalization('ID'),                      'checked' => TRUE),
+            array('name'=>'addtime',        'title'=>$this->setLocalization('Added'),                   'checked' => TRUE),
+            array('name'=>'eventtime',      'title'=>$this->setLocalization('Expiration date'),         'checked' => TRUE),
+            array('name'=>'mac',            'title'=>$this->setLocalization('MAC'),                     'checked' => TRUE),
+            array('name'=>'event',          'title'=>$this->setLocalization('Event'),                   'checked' => TRUE),
+            array('name'=>'msg',            'title'=>$this->setLocalization('Message'),                 'checked' => TRUE),
+            array('name'=>'post_function',  'title'=>$this->setLocalization('Post function'),           'checked' => TRUE),
+            array('name'=>'param1',         'title'=>$this->setLocalization('Post function parameter'), 'checked' => FALSE),
+            array('name'=>'sended',         'title'=>$this->setLocalization('Delivery status'),         'checked' => TRUE),
+            array('name'=>'ended',          'title'=>$this->setLocalization('Receipt status'),          'checked' => TRUE)
+        );
+
+        return $attribute;
     }
 }

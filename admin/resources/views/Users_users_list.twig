@@ -240,7 +240,6 @@
                                         <select class="populate placeholder" name="event" id="s2_event">
                                             <option value=""></option>
                                             <option value="send_msg">{{ 'Sending a message'|trans }}</option>
-                                            <option value="send_msg_with_video">{{ 'Sending a message with video'|trans }}</option>
                                             <option value="reboot">{{ 'Reboot'|trans }}</option>
                                             <option value="reload_portal">{{ 'Restart the portal'|trans }}</option>
                                             <option value="update_channels">{{ 'Update channel list'|trans }}</option>
@@ -291,7 +290,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="form-group" data-event-type="send_msg;send_msg_with_video">
+                            <div class="form-group" data-event-type="send_msg">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message header'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
@@ -299,7 +298,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" data-event-type="send_msg;send_msg_with_video">
+                            <div class="form-group" data-event-type="send_msg">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message text'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-12">
@@ -307,7 +306,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group" data-event-type="send_msg;send_msg_with_video">
+                            <div class="form-group" data-event-type="send_msg">
                                 <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Message templates'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
                                     <div class=" col-xs-10 col-sm-6">
@@ -322,14 +321,53 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group"  data-event-type="send_msg_with_video">
-                                <label class="col-sm-3 control-label col-sm-offset-1">VIDEO URL</label>
+                            <div class="form-group" data-event-type="send_msg" id="add_post_function_container">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Add post-function'|trans }}</label>
                                 <div class="col-xs-10 col-sm-8">
-                                    <div class=" col-xs-10 col-sm-12">
-                                        <input class="form-control" type="text" title="" value="" name="video_url">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" value="1" name="add_post_function" id="add_post_function">
+                                                <i class="fa fa-square-o small"></i>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group" data-event-type="post_function_type" id="post_function_type">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Post-function'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" data-validation=required name="post_function" id="s2_post_function">
+                                            <option value="send_msg_with_video">{{ 'Send message whith video'|trans }}</option>
+                                            {#<option value="run_application">{{ 'Run application'|trans }}</option>#}
+                                        </select>
+                                    </div>
+                                <span class="help-inline col-xs-12 col-sm-12">
+                                    <span class="small txt-default">{{ 'The function to be executed when pressing the "OK" button'|trans }}</span>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="form-group" data-event-type="post_function_video_url" id="send_msg_with_video">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'VIDEO URL'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-12">
+                                        <input class="form-control" type="text" title="" value="" name="param1">
+                                    </div>
+                                </div>
+                            </div>
+                            {#<div class="form-group" data-event-type="post_function_run_application" id="run_application">
+                                <label class="col-sm-3 control-label col-sm-offset-1">{{ 'Application'|trans }}</label>
+                                <div class="col-xs-10 col-sm-8">
+                                    <div class=" col-xs-10 col-sm-6">
+                                        <select class="populate placeholder" data-validation=required name="param1" id="s2_applications">
+                                            <option value="youtube">{{ 'YouTube'|trans }}</option>
+                                            <option value="itv">{{ 'TV'|trans }}</option>
+                                            <option value="radio">{{ 'Radio'|trans }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>#}
                         </form>
                     </div>
                 </div>
@@ -833,6 +871,27 @@
                         </div>');
                     $('#modalbox').show();
                     return false;
+                });
+
+                $(document).on('hide', "#add_post_function_container", function(e){
+                    $("[data-event-type^='post_function']").hide().find('select, input').attr('disabled', 'disabled');
+                });
+
+                $(document).on('change show', "#add_post_function, #add_post_function_container", function(e){
+                    e.stopPropagation();
+                    e.preventDefault();
+                    if ($("#add_post_function").is(':checked')) {
+                        $("#post_function_type").show().find('select').removeAttr('disabled');
+                    } else {
+                        $("#post_function_type").hide().find('select').attr('disabled', 'disabled');
+                        $("[data-event-type^='post_function']").hide().find('select, input').attr('disabled', 'disabled');
+                    }
+                    return false;
+                });
+
+                $(document).on('change show', "#s2_post_function, #post_function_type", function(e){
+                    $("[data-event-type^='post_function']").filter("[data-event-type!='post_function_type']").hide().find('select, input').attr('disabled', 'disabled');
+                    $("#" + $("#s2_post_function").val()).show().find('select, input').removeAttr('disabled');
                 });
 
                 LoadDataTablesScripts(TestTable1);
