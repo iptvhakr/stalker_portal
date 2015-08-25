@@ -30,7 +30,7 @@
 
         params += 'referrer='+encodeURIComponent(window.location);
 
-        var url = 'http://vimeo.freemultiplex.com/app/'+params;
+        var url = 'http://vimeo.magapps.net/app/'+params;
         _debug('url', url);
         window.location = url;
     }, {layer_name : "vimeo"});

@@ -28,7 +28,7 @@
                                         {% for item in app.allData %}
                                             <tr data-genresid="{{ item.id }}">
                                                 <td>{{ item.number }}</td>
-                                                <td><a href="#">{{ item.title }}</a></td>
+                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres" data-genresid="{{ item.id }}" id="edit_tv_genres_{{ item.id }}">{{ item.title }}</a></td>
                                                 <td>{{ item.localized_title }}</td>
                                                 <td>
                                                     <div class="col-xs-3 col-sm-8">
@@ -89,7 +89,7 @@
                                                     </div>";
                         var title = json.data[i].title;
 
-                        json.data[i].title = '<a href="#" >' + title + '</a>';
+                        json.data[i].title = "<a  href='{{ app.request.baseUrl }}/{{ app.controller_alias }}/edit-tv-genres' data-genresid='" + id + "' id='edit_tv_genres_" + id + "' >" + title + "</a>";
                     }
                 }
             }).dataTable({
@@ -120,7 +120,8 @@
                 "aoColumnDefs": [
                     { className: "action-menu", "targets": [ -1 ]},
                     { "sortable": false, "targets": [-1, -2]},
-                    { "searchable": false, "targets": [-1, -2]}
+                    { "searchable": false, "targets": [-1, -2]},
+					{ "width": "15px", "targets": [ -1] }
                 ]
             }).rowReordering({
                 iIndexColumn: 0,
