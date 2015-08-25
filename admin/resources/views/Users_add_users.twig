@@ -282,22 +282,22 @@
                     </div>
                 {% endif%}
                 {% if app['userEdit'] and attribute(app['form'], 'tariff_plan_id') is defined %}
-                    <div class="box"> <a class="collapse-link">
-                        <div class="box-header">
-                            <div class="box-name">
-                                <div class="row">
-                                    <div class="col-xs-10 col-sm-3">
-                                        <span>{{ 'Tariff plan'|trans }}</span>
+                    <div class="box">
+                        <a class="collapse-link">
+                            <div class="box-header">
+                                <div class="box-name">
+                                    <div class="row">
+                                        <div class="col-xs-10 col-sm-3">
+                                            <span>{{ 'Tariff plan'|trans }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="box-icons">
-                               
+                                <div class="box-icons">
                                     <i class="fa fa-chevron-up"></i>
-                                
+                                </div>
+                                <div class="no-move"></div>
                             </div>
-                            <div class="no-move"></div>
-                        </div></a>
+                        </a>
                         <div class="box-content" id="Additional2">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label ">{{ 'Tariff plan'|trans }}</label>
@@ -430,8 +430,8 @@
                         }
                 );
                 {% endif %}
-  $("#Additional").hide('fast');
-  $("#Additional2").hide('fast');
+                $("#Additional").hide('fast');
+                $("#Additional2").hide('fast');
                 $(document).on('change keyup', '#form_login', function (e) {
                     var _this = $(this);
                     _this.next('div').removeClass('bg-danger').css('visibility', 'hidden').html('&nbsp;');

@@ -98,10 +98,7 @@
 					var paginateRow = $(this).parent().prev().children('div.dataTables_paginate');
 					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
 					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
-				},
-                "columnDefs": [
-                    { className: "", "targets": [ -1 ] }
-                ]
+				}
             }).prev('.dataTables_processing').hide('');
             $("#attribute_set input[type='checkbox']").each(function(index){
                 $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );

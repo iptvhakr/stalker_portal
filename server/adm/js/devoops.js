@@ -31,6 +31,9 @@ $('.dropdown-toggle').click(function() {
         }
     });
 
+$(document).on("click", "div.dropdown-menu *", function(e){
+    e.stopPropagation();
+});
 
 $('#attribute_set').removeClass('dropup');
 $('#status').removeClass('dropup');
@@ -446,7 +449,7 @@ $(document).ready(function () {
         }
     });
     var height = window.innerHeight - 49;
-    var tableHeight = $('#datatable-1 tr').length * 50 + $('#datatable-1').position().top + 200;
+    var tableHeight = $("#datatable-1").length ? $('#datatable-1 tr').length * 50 + $('#datatable-1').position().top + 200: 0;
     if (tableHeight > height) {
         height = tableHeight;
     }

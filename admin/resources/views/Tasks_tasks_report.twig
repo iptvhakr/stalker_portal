@@ -3,79 +3,81 @@
 {% set title = ('Tasks'|trans ~ ': ' ~ 'Report'|trans) | trans %}
 
 {% block content %}
-    <div id="iptv_list"> 
+    <div id="iptv_list">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['taskState'], 2, 8) }}
-                    {{ main_macro.get_filter('task_type', 'Type'|trans, 'id', 'title', app['taskType'], 2, 8, 1) }}
-                    {{ main_macro.get_filter('video_quality', 'Quality'|trans, 'id', 'title', app['videoQuality'], 2, 8) }}
-                    <div class="col-xs-6 col-sm-10 col-md-6 col-lg-5 filter no-padding" data-tvfilter="time_period">
-                        <div class="col-sm-1 tfilter">
-                            {{ 'Closed'|trans }}:
-                        </div>
-                        <div class="col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
-                            <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'between'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
-                        </div>
-                        <div class="col-sm-3 filter no-padding" data-tvfilter="time_period">
-                            <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'and'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
-                        </div> 
+                {{ main_macro.get_filter('state', 'State'|trans, 'id', 'title', app['taskState'], 2, 8) }}
+                {{ main_macro.get_filter('task_type', 'Type'|trans, 'id', 'title', app['taskType'], 2, 8, 1) }}
+                {{ main_macro.get_filter('video_quality', 'Quality'|trans, 'id', 'title', app['videoQuality'], 2, 8) }}
+                <div class="col-xs-6 col-sm-10 col-md-6 col-lg-5 filter no-padding" data-tvfilter="time_period">
+                    <div class="col-sm-1 tfilter">
+                        {{ 'Closed'|trans }}:
                     </div>
+                    <div class="col-sm-3 filter no-padding leftbordercircle" data-tvfilter="time_period">
+                        <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'between'|trans }}" type="text" id="datepicker_from" name="interval_from" value="{% if attribute(app['filters'], 'interval_from') is defined %}{{ app['filters']['interval_from'] }}{% endif %}">
+                    </div>
+                    <div class="col-sm-3 filter no-padding" data-tvfilter="time_period">
+                        <input class="col-xs-12 col-sm-12 filter" placeholder="{{ 'and'|trans }}" type="text" id="datepicker_to" name="interval_to" value="{% if attribute(app['filters'], 'interval_to') is defined %}{{ app['filters']['interval_to'] }}{% endif %}">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
-                    <div class="box-name">
-                        <div class="row">
-                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
-                                <span class="text_black">{{ 'Report is formed due to done and rejected tasks'|trans }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="no-move"></div>
-                {% if attribute(app, 'allVideoDuration') is defined%}
-                    <div class=" text-center" style="z-index: 100;">
-                        <h4 id="videoduration">{{ 'Summary length, min'|trans }}: {{ app['allVideoDuration'] }}</h4>
-                    </div>
-                {% endif %}
-                <div class="box">
-               
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <div class="dataTables_processing"></div>
-                            <table class="table  table-hover table-datatable" id="datatable-1">
-                                {% if attribute(app, 'dropdownAttribute') is defined %}
-                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                {% endif %}
-                                <tbody>
-                                    {% if attribute(app, 'allData') is defined  and app.allData|length > 0%}
-                                        <!-- Start: list_row -->
-                                        {% for item in app.allData %}
-                                            <tr data-taskid="{{ item.id }}">                                               
-                                                <td>{{ item.id }}</td>
-                                                <td>{{ item.type }}</td>
-                                                <td>{{ item.start_time|date('M d, Y H:i') }}</td>
-                                                <td>{{ item.end_time|date('M d, Y H:i') }}</td>
-                                                <td><a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a></td>
-                                                <td>{{ item.video_quality }}</td>
-                                                <td>{{ item.duration }}</td>
-                                                <td>{{ item.to_user_name }}</td>
-                                                <td>
-                                                    <span class="txt-{{app['taskStateColor'][item.state]}}">{{ app["taskState"][item.state]['title'] }}</span>
-                                                    {% if not(item.archived == '0') %}
-                                                        <br><span class="bg-{{app['taskStateColor'][4]}}">{{ app["taskState"][4]['title'] }}</span>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                    {% endif %}
-                                    <!-- End: list_row -->
-                                </tbody>
-                            </table>
-                        </div>
+            <div class="box-name">
+                <div class="row">
+                    <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                        <span class="text_black">{{ 'Report is formed due to done and rejected tasks'|trans }}</span>
                     </div>
                 </div>
+            </div>
+            <div class="no-move"></div>
+            {% if attribute(app, 'allVideoDuration') is defined %}
+                <div class=" text-center" style="z-index: 100;">
+                    <h4 id="videoduration">{{ 'Summary length, min'|trans }}: {{ app['allVideoDuration'] }}</h4>
+                </div>
+            {% endif %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                            {% if attribute(app, 'allData') is defined  and app.allData|length > 0 %}
+                                <!-- Start: list_row -->
+                                {% for item in app.allData %}
+                                    <tr data-taskid="{{ item.id }}">
+                                        <td>{{ item.id }}</td>
+                                        <td>{{ item.type }}</td>
+                                        <td>{{ item.start_time|date('M d, Y H:i') }}</td>
+                                        <td>{{ item.end_time|date('M d, Y H:i') }}</td>
+                                        <td>
+                                            <a href="{{ app.request.baseUrl }}/{{ app.controller_alias }}/task-detail-{% if app['task_type'] == 'karaoke' %}karaoke{% else %}video{% endif %}?id={{ item.id }}">{{ item.name }}</a>
+                                        </td>
+                                        <td>{{ item.video_quality }}</td>
+                                        <td>{{ item.duration }}</td>
+                                        <td>{{ item.to_user_name }}</td>
+                                        <td>
+                                            <span class="txt-{{ app['taskStateColor'][item.state] }}">{{ app["taskState"][item.state]['title'] }}</span>
+                                            {% if not(item.archived == '0') %}
+                                                <br><span
+                                                    class="bg-{{ app['taskStateColor'][4] }}">{{ app["taskState"][4]['title'] }}</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                            <!-- End: list_row -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
                                     

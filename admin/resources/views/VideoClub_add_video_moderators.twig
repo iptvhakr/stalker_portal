@@ -39,15 +39,17 @@
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label ">{{ 'Switch off advertising'|trans }}</label>
-                            <div class=" col-xs-10 col-sm-6"> <div class=" col-xs-10 col-sm-6">
-                                <div class="checkbox">
-                                    <label>
-                                        {{ form_widget(app['form'].disable_vclub_ad) }}      
-                                        <i class="fa fa-square-o small"></i>
-                                    </label>
-                                    <div class="bg-danger">
-                                        {{ form_errors(app['form'].disable_vclub_ad) }}
-                                    </div></div>
+                            <div class=" col-xs-10 col-sm-6">
+                                <div class=" col-xs-10 col-sm-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            {{ form_widget(app['form'].disable_vclub_ad) }}
+                                            <i class="fa fa-square-o small"></i>
+                                        </label>
+                                        <div class="bg-danger">
+                                            {{ form_errors(app['form'].disable_vclub_ad) }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

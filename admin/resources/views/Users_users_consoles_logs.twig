@@ -92,11 +92,7 @@
 					var pageCount = Math.ceil((this.fnSettings().fnRecordsDisplay()) / this.fnSettings()._iDisplayLength);
 					if (pageCount > 1)  {$("#datatable-1_paginate").css("display", "block");} else { $("#datatable-1_paginate").css("display", "none");  }
 				},
-                "bInfo": true,
-                "aoColumnDefs": [
-                    { className: "", "targets": [ -1 ] }
-                    {#{"searchable": false, "targets": [1]}#}
-                ]
+                "bInfo": true
             }).prev('.dataTables_processing').hide('');
             $('#datatable-1').DataTable().ajax.reload();
         }

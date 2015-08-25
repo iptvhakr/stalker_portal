@@ -10,54 +10,54 @@
                 {{ main_macro.get_datepicker_double_input() }}
             </div>
         </div>
-        
+
         <div class="row">
-                {% if attribute(app, 'filters') is defined  and attribute(app['filters'], 'abon_to') is defined %}
-                    <div class="box-name">
-                        <div class="row">
-                            <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
-                                <span class="text_black">
-                                    {% if app['filters']['abon_to'] == 'anec' %}
+            {% if attribute(app, 'filters') is defined  and attribute(app['filters'], 'abon_to') is defined %}
+                <div class="box-name">
+                    <div class="row">
+                        <div class="col-xs-10 col-sm-8 col-sm-offset-2 text-center bg-warning">
+                            <span class="text_black">
+                                {% if app['filters']['abon_to'] == 'anec' %}
                                     {{ 'View is a review of at least one joke'|trans }}
-                                    {% elseif app['filters']['abon_to'] == 'video' %}
+                                {% elseif app['filters']['abon_to'] == 'video' %}
                                     {{ 'View is a playback of more than 70%% of movie length'|trans }}
-                                    {% else %}
+                                {% else %}
                                     {{ 'View is an uninterrupted playback of channel for more than 30 minutes'|trans }}
-                                    {% endif %}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="no-move"></div>
-                {% endif %}
-                <div class="box">
-                    {% if attribute(app, 'dropdownAttribute') is defined %}
-                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
-                    {% endif %}
-                    <div class="box-content">
-                        <div class="box-content no-padding">
-                            <div class="dataTables_processing"></div>
-                                    <table class="table  table-hover table-datatable" id="datatable-1">
-                                        {% if attribute(app, 'dropdownAttribute') is defined %}
-                                        {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
-                                        {% endif %}
-                                        <tbody>
-                                            {% if attribute(app, 'allStat') is defined %}
-                                                <!-- Start: list_row -->
-                                                {% for row in app.allStat %}
-                                                    <tr>
-                                                        {% for key, item in row %}
-                                                        <td>"{% if key == 'readed' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
-                                                        {% endfor %}
-                                                    </tr>
-                                                {% endfor %}
-                                            <!-- End: list_row -->
-                                            {% endif %}
-                                        </tbody>
-                                    </table>
+                                {% endif %}
+                            </span>
                         </div>
                     </div>
                 </div>
+                <div class="no-move"></div>
+            {% endif %}
+            <div class="box">
+                {% if attribute(app, 'dropdownAttribute') is defined %}
+                    {{ main_macro.get_dropdown_attribute(app['dropdownAttribute']) }}
+                {% endif %}
+                <div class="box-content">
+                    <div class="box-content no-padding">
+                        <div class="dataTables_processing"></div>
+                        <table class="table  table-hover table-datatable" id="datatable-1">
+                            {% if attribute(app, 'dropdownAttribute') is defined %}
+                                {{ main_macro.get_datatable_head(app['dropdownAttribute']) }}
+                            {% endif %}
+                            <tbody>
+                            {% if attribute(app, 'allStat') is defined %}
+                                <!-- Start: list_row -->
+                                {% for row in app.allStat %}
+                                    <tr>
+                                        {% for key, item in row %}
+                                            <td>{% if key == 'readed' %}{{ item|date('M d, Y H:i') }}{% else %}{{ item }}{% endif %}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                                <!-- End: list_row -->
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -112,10 +112,7 @@
                 ],
                 "bFilter": true,
                 "bPaginate": true,
-                "bInfo": true,
-                "columnDefs": [
-                    { className: "", "targets": [ -1 ] }
-                ]
+                "bInfo": true
             }).prev('.dataTables_processing').hide('');
             $("#attribute_set input[type='checkbox']").each(function(index){
                 $("#datatable-1").dataTable().fnSetColumnVis( index - 1, $(this).prop('checked') );
